@@ -10,9 +10,37 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+enum nDPId_l3_type {
+    L3_IP, L3_IP6
+};
+
+struct nDPId_flow_info {
+    uint32_t flow_id;
+    uint32_t hashval;
+    enum nDPId_l3_type l3_type;
+    union {
+        struct {
+            uint32_t src;
+            uint32_t dst;
+        } v4;
+        struct {
+            struct ndpi_in6_addr src;
+            struct ndpi_in6_addr dst;
+        } v6;
+    } ip_tuple;
+    uint16_t src_port;
+    uint16_t dst_port;
+    uint8_t detection_completed, protocol, bidirectional, check_extra_packets;
+    struct ndpi_flow_struct * ndpi_flow;
+};
+
 struct nDPId_workflow {
     pcap_t * pcap_handle;
     struct timeval last_packet_received;
+
+    void ** ndpi_flows_root;
+    size_t max_available_flows;
+    size_t num_allocated_flows;
 
     struct ndpi_detection_module_struct * ndpi_struct;
 };
@@ -39,6 +67,13 @@ static struct nDPId_workflow * init_workflow(void)
     ndpi_init_prefs init_prefs = ndpi_no_prefs;
     workflow->ndpi_struct = ndpi_init_detection_module(init_prefs);
     if (workflow->ndpi_struct == NULL) {
+        return NULL;
+    }
+
+    workflow->num_allocated_flows = 0;
+    workflow->max_available_flows = 1024;
+    workflow->ndpi_flows_root = (void **)ndpi_calloc(workflow->max_available_flows, sizeof(void *));
+    if (workflow->ndpi_flows_root == NULL) {
         return NULL;
     }
 
@@ -112,11 +147,12 @@ static int setup_reader_threads(void)
 }
 
 static void print_packet_info(int thread_array_index,
-                              const struct pcap_pkthdr * const header,
-                              uint16_t type, uint8_t proto,
-                              const char * const src_addr,
-                              const char * const dst_addr)
+                              struct pcap_pkthdr const * const header,
+                              uint16_t type,
+                              struct nDPId_flow_info const * const flow)
 {
+    char src_addr_str[INET6_ADDRSTRLEN+1] = {0};
+    char dst_addr_str[INET6_ADDRSTRLEN+1] = {0};
     char buf[256];
     int used = 0, ret;
 
@@ -128,12 +164,18 @@ static void print_packet_info(int thread_array_index,
 
     switch (type) {
         case ETH_P_IP:
+            inet_ntop(AF_INET, (struct sockaddr_in *)&flow->ip_tuple.v4.src, src_addr_str, sizeof(src_addr_str));
+            inet_ntop(AF_INET, (struct sockaddr_in *)&flow->ip_tuple.v4.dst, dst_addr_str, sizeof(dst_addr_str));
             ret = snprintf(buf + used, sizeof(buf) - used, "IP[%s -> %s]",
-                           src_addr, dst_addr);
+                           src_addr_str, dst_addr_str);
             break;
         case ETH_P_IPV6:
+            inet_ntop(AF_INET6, (struct sockaddr_in6 *)&flow->ip_tuple.v6.src.u6_addr.u6_addr8[0],
+                      src_addr_str, sizeof(src_addr_str));
+            inet_ntop(AF_INET6, (struct sockaddr_in6 *)&flow->ip_tuple.v6.dst.u6_addr.u6_addr8[0],
+                      dst_addr_str, sizeof(dst_addr_str));
             ret = snprintf(buf + used, sizeof(buf) - used, "IP6[%s -> %s]",
-                           src_addr, dst_addr);
+                           src_addr_str, dst_addr_str);
             break;
         default:
             ret = snprintf(buf + used, sizeof(buf) - used, "Unknown[0x%X]", type);
@@ -143,12 +185,14 @@ static void print_packet_info(int thread_array_index,
         used += ret;
     }
 
-    switch (proto) {
+    switch (flow->protocol) {
         case IPPROTO_UDP:
-            ret = snprintf(buf + used, sizeof(buf) - used, " -> UDP");
+            ret = snprintf(buf + used, sizeof(buf) - used, " -> UDP[%u -> %u]",
+                           flow->src_port, flow->dst_port);
             break;
         case IPPROTO_TCP:
-            ret = snprintf(buf + used, sizeof(buf) - used, " -> TCP");
+            ret = snprintf(buf + used, sizeof(buf) - used, " -> TCP[%u -> %u]",
+                           flow->src_port, flow->dst_port);
             break;
         case IPPROTO_ICMP:
             ret = snprintf(buf + used, sizeof(buf) - used, " -> ICMP");
@@ -160,7 +204,7 @@ static void print_packet_info(int thread_array_index,
             ret = snprintf(buf + used, sizeof(buf) - used, " -> ICMP6 Hop-By-Hop");
             break;
         default:
-            ret = snprintf(buf + used, sizeof(buf) - used, " -> Unknown[0x%X]", proto);
+            ret = snprintf(buf + used, sizeof(buf) - used, " -> Unknown[0x%X]", flow->protocol);
             break;
     }
     if (ret > 0) {
@@ -172,23 +216,23 @@ static void print_packet_info(int thread_array_index,
 
 static void ndpi_process_packet(uint8_t * const args,
                                 const struct pcap_pkthdr * const header,
-                                const u_char * const packet)
+                                const uint8_t * const packet)
 {
     struct nDPId_reader_thread * const reader_thread =
         (struct nDPId_reader_thread *)args;
     struct nDPId_workflow * workflow;
+    struct nDPId_flow_info flow;
 
     const struct ndpi_ethhdr * ethernet;
     const struct ndpi_iphdr * ip;
     const struct ndpi_ipv6hdr * ip6;
+
     const uint16_t eth_offset = 0;
     uint16_t ip_offset;
+    uint16_t l4_offset;
     uint16_t type;
     uint16_t frag_off = 0;
-    uint8_t proto;
     int thread_index;
-    char src_addr_str[INET6_ADDRSTRLEN+1] = {0};
-    char dst_addr_str[INET6_ADDRSTRLEN+1] = {0};
 
     if (reader_thread == NULL) {
         return;
@@ -202,7 +246,7 @@ static void ndpi_process_packet(uint8_t * const args,
 
     switch (pcap_datalink(workflow->pcap_handle)) {
         case DLT_NULL:
-            if (ntohl(*((u_int32_t*)&packet[eth_offset])) == 2) {
+            if (ntohl(*((uint32_t *)&packet[eth_offset])) == 0x00000002) {
                 type = ETH_P_IP;
             } else {
                 type = ETH_P_IPV6;
@@ -226,7 +270,7 @@ static void ndpi_process_packet(uint8_t * const args,
                     break;
                 case ETH_P_IPV6: /* IPV6 */
                     if (header->caplen < sizeof(struct ndpi_ethhdr) + sizeof(struct ndpi_ipv6hdr)) {
-                        fprintf(stderr, "IPv6 packet too short - skipping\n");
+                        fprintf(stderr, "IP6 packet too short - skipping\n");
                         return;
                     }
                     break;
@@ -234,7 +278,7 @@ static void ndpi_process_packet(uint8_t * const args,
                     printf("%s\n", "ARP - skipping");
                     return;
                 default:
-                    fprintf(stderr, "Invalid Ethernet packet with type 0x%X - skipping\n", type);
+                    fprintf(stderr, "Unknown Ethernet packet with type 0x%X - skipping\n", type);
                     return;
             }
             break;
@@ -265,54 +309,70 @@ static void ndpi_process_packet(uint8_t * const args,
     }
 
     if (ip != NULL && ip->version == 4) {
-        proto = ip->protocol;
+        flow.l3_type = L3_IP;
+        flow.protocol = ip->protocol;
+        l4_offset = ip_offset + sizeof(*ip);
 
         if ((frag_off & 0x1FFF) != 0) {
-            fprintf(stderr, "IPv4 fragments are not handled by this demo (nDPI supports them)\n");
+            fprintf(stderr, "IP fragments are not handled by this demo (nDPI supports them)\n");
             return;
         }
 
-        uint32_t min_addr = (ip->saddr > ip->daddr ? ip->daddr : ip->saddr);
+        flow.ip_tuple.v4.src = ip->saddr;
+        flow.ip_tuple.v4.dst = ip->daddr;
+        uint32_t min_addr = (flow.ip_tuple.v4.src > flow.ip_tuple.v4.dst ?
+                             flow.ip_tuple.v4.dst : flow.ip_tuple.v4.src);
         thread_index = min_addr % reader_thread_count;
-
-        uint32_t src_addr = ip->saddr;
-        uint32_t dst_addr = ip->daddr;
-        inet_ntop(AF_INET, (struct sockaddr_in *)&src_addr, src_addr_str, sizeof(src_addr_str));
-        inet_ntop(AF_INET, (struct sockaddr_in *)&dst_addr, dst_addr_str, sizeof(dst_addr_str));
-    } else if (ip6 != NULL && ip6->ip6_hdr.ip6_un1_flow == 0x60) {
-        proto = ip6->ip6_hdr.ip6_un1_nxt;
-
-        uint32_t min_addr[4];
-        if (ip6->ip6_src.u6_addr.u6_addr64[0] > ip6->ip6_dst.u6_addr.u6_addr64[0] &&
-            ip6->ip6_src.u6_addr.u6_addr64[1] > ip6->ip6_dst.u6_addr.u6_addr64[1])
-        {
-            min_addr[0] = ip6->ip6_dst.u6_addr.u6_addr32[0];
-            min_addr[1] = ip6->ip6_dst.u6_addr.u6_addr32[1];
-            min_addr[2] = ip6->ip6_dst.u6_addr.u6_addr32[2];
-            min_addr[3] = ip6->ip6_dst.u6_addr.u6_addr32[3];
-        } else {
-            min_addr[0] = ip6->ip6_src.u6_addr.u6_addr64[0];
-            min_addr[1] = ip6->ip6_src.u6_addr.u6_addr64[1];
-            min_addr[2] = ip6->ip6_src.u6_addr.u6_addr32[2];
-            min_addr[3] = ip6->ip6_src.u6_addr.u6_addr32[3];
+    } else if (ip6 != NULL) {
+        if (ip6->ip6_hdr.ip6_un1_plen < header->caplen - ip_offset - sizeof(ip6->ip6_hdr)) {
+            fprintf(stderr, "IP6 payload length smaller than packet size: %u < %lu\n",
+                    ip6->ip6_hdr.ip6_un1_plen, header->caplen - ip_offset + sizeof(ip6->ip6_hdr));
         }
-        thread_index = min_addr[0] + min_addr[1] + min_addr[2] + min_addr[3];
-        thread_index %= reader_thread_count;
 
-        inet_ntop(AF_INET6, (struct sockaddr_in6 *)&ip6->ip6_src.u6_addr.u6_addr8[0],
-                  src_addr_str, sizeof(src_addr_str));
-        inet_ntop(AF_INET6, (struct sockaddr_in6 *)&ip6->ip6_dst.u6_addr.u6_addr8[0],
-                  dst_addr_str, sizeof(dst_addr_str));
+        flow.l3_type = L3_IP6;
+        flow.protocol = ip6->ip6_hdr.ip6_un1_nxt;
+        l4_offset = ip_offset + sizeof(ip6->ip6_hdr);
+
+        flow.ip_tuple.v6.src.u6_addr.u6_addr64[0] = ip6->ip6_src.u6_addr.u6_addr64[0];
+        flow.ip_tuple.v6.src.u6_addr.u6_addr64[1] = ip6->ip6_src.u6_addr.u6_addr64[1];
+        flow.ip_tuple.v6.dst.u6_addr.u6_addr64[0] = ip6->ip6_dst.u6_addr.u6_addr64[0];
+        flow.ip_tuple.v6.dst.u6_addr.u6_addr64[1] = ip6->ip6_dst.u6_addr.u6_addr64[1];
+        uint64_t min_addr[2];
+        if (flow.ip_tuple.v6.src.u6_addr.u6_addr64[0] > flow.ip_tuple.v6.dst.u6_addr.u6_addr64[0] &&
+            flow.ip_tuple.v6.src.u6_addr.u6_addr64[1] > flow.ip_tuple.v6.dst.u6_addr.u6_addr64[1])
+        {
+            min_addr[0] = flow.ip_tuple.v6.dst.u6_addr.u6_addr64[0];
+            min_addr[1] = flow.ip_tuple.v6.dst.u6_addr.u6_addr64[0];
+        } else {
+            min_addr[0] = flow.ip_tuple.v6.src.u6_addr.u6_addr64[0];
+            min_addr[1] = flow.ip_tuple.v6.src.u6_addr.u6_addr64[0];
+        }
+        thread_index = min_addr[0] + min_addr[1];
+        thread_index %= reader_thread_count;
     } else {
+        fprintf(stderr, "Non IP/IPv6 protocol detected: 0x%X\n", type);
         return;
+    }
+
+    if (flow.protocol == IPPROTO_TCP) {
+        const struct ndpi_tcphdr * tcp;
+
+        tcp = (struct ndpi_tcphdr *)&packet[l4_offset];
+        flow.src_port = ntohs(tcp->source);
+        flow.dst_port = ntohs(tcp->dest);
+    } else if (flow.protocol == IPPROTO_UDP) {
+        const struct ndpi_udphdr * udp;
+
+        udp = (struct ndpi_udphdr *)&packet[l4_offset];
+        flow.src_port = ntohs(udp->source);
+        flow.dst_port = ntohs(udp->dest);
     }
 
     if (thread_index != reader_thread->array_index) {
         return;
     }
 
-    print_packet_info(reader_thread->array_index, header, type, proto,
-                      src_addr_str, dst_addr_str);
+    print_packet_info(reader_thread->array_index, header, type, &flow);
 }
 
 static void run_pcap_loop(struct nDPId_reader_thread * const reader_thread)
@@ -417,10 +477,15 @@ static int stop_reader_threads(void)
 void sighandler(int signum)
 {
     fprintf(stderr, "Got a %d\n", signum);
-    main_thread_shutdown = 1;
-    if (stop_reader_threads() != 0) {
-        fprintf(stderr, "Failed to stop reader threads!\n");
-        exit(EXIT_FAILURE);
+
+    if (main_thread_shutdown == 0) {
+        main_thread_shutdown = 1;
+        if (stop_reader_threads() != 0) {
+            fprintf(stderr, "Failed to stop reader threads!\n");
+            exit(EXIT_FAILURE);
+        }
+    } else {
+        fprintf(stderr, "Reader threads are already shutting down, please be patient.\n");
     }
 }
 
