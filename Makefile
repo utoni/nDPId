@@ -4,6 +4,10 @@ LIBS = -pthread -lpcap -lm
 
 ifneq ($(CUSTOM_LIBNDPI),)
 LIBS += '$(CUSTOM_LIBNDPI)'
+CFLAGS += '-I$(shell dirname $(CUSTOM_LIBNDPI))/../include'
+ifeq ($(findstring $*.so, $(CUSTOM_LIBNDPI)),.so)
+LDFLAGS += -Wl,-rpath='$(shell dirname $(CUSTOM_LIBNDPI))'
+endif
 else
 LIBS += -lndpi
 endif
