@@ -145,7 +145,7 @@ static int setup_reader_threads(void)
 
 static void print_packet_info(int thread_array_index,
                               struct pcap_pkthdr const * const header,
-                              uint16_t type,
+                              uint16_t type, uint32_t l4_data_len,
                               struct nDPId_flow_info const * const flow)
 {
     char src_addr_str[INET6_ADDRSTRLEN+1] = {0};
@@ -184,12 +184,12 @@ static void print_packet_info(int thread_array_index,
 
     switch (flow->protocol) {
         case IPPROTO_UDP:
-            ret = snprintf(buf + used, sizeof(buf) - used, " -> UDP[%u -> %u]",
-                           flow->src_port, flow->dst_port);
+            ret = snprintf(buf + used, sizeof(buf) - used, " -> UDP[%u -> %u, %u bytes]",
+                           flow->src_port, flow->dst_port, l4_data_len);
             break;
         case IPPROTO_TCP:
-            ret = snprintf(buf + used, sizeof(buf) - used, " -> TCP[%u -> %u]",
-                           flow->src_port, flow->dst_port);
+            ret = snprintf(buf + used, sizeof(buf) - used, " -> TCP[%u -> %u, %u bytes]",
+                           flow->src_port, flow->dst_port, l4_data_len);
             break;
         case IPPROTO_ICMP:
             ret = snprintf(buf + used, sizeof(buf) - used, " -> ICMP");
@@ -292,6 +292,7 @@ static void ndpi_process_packet(uint8_t * const args,
     const uint16_t eth_offset = 0;
     uint16_t ip_offset;
     uint16_t l4_offset;
+    uint32_t l4_data_len = 0;
     uint16_t type;
     uint16_t frag_off = 0;
     int thread_index;
@@ -316,7 +317,7 @@ static void ndpi_process_packet(uint8_t * const args,
             ip_offset = 4 + eth_offset;
             break;
         case DLT_EN10MB:
-            if (header->caplen < sizeof(struct ndpi_ethhdr)) {
+            if (header->len < sizeof(struct ndpi_ethhdr)) {
                 fprintf(stderr, "Ethernet packet too short - skipping\n");
                 return;
             }
@@ -325,13 +326,13 @@ static void ndpi_process_packet(uint8_t * const args,
             type = ntohs(ethernet->h_proto);
             switch (type) {
                 case ETH_P_IP: /* IPv4 */
-                    if (header->caplen < sizeof(struct ndpi_ethhdr) + sizeof(struct ndpi_iphdr)) {
+                    if (header->len < sizeof(struct ndpi_ethhdr) + sizeof(struct ndpi_iphdr)) {
                         fprintf(stderr, "IP packet too short - skipping\n");
                         return;
                     }
                     break;
                 case ETH_P_IPV6: /* IPV6 */
-                    if (header->caplen < sizeof(struct ndpi_ethhdr) + sizeof(struct ndpi_ipv6hdr)) {
+                    if (header->len < sizeof(struct ndpi_ethhdr) + sizeof(struct ndpi_ipv6hdr)) {
                         fprintf(stderr, "IP6 packet too short - skipping\n");
                         return;
                     }
@@ -345,7 +346,7 @@ static void ndpi_process_packet(uint8_t * const args,
             }
             break;
         default:
-            fprintf(stderr, "Received non IP/Ethernet packet with datalink type 0x%X - skipping\n",
+            fprintf(stderr, "Captured non IP/Ethernet packet with datalink type 0x%X - skipping\n",
                     pcap_datalink(workflow->pcap_handle));
             return;
     }
@@ -357,12 +358,11 @@ static void ndpi_process_packet(uint8_t * const args,
         ip = NULL;
         ip6 = (struct ndpi_ipv6hdr *)&packet[ip_offset];
     } else {
-        fprintf(stderr, "Received non IP packet with type 0x%X - skipping\n", type);
+        fprintf(stderr, "Captured non IPv4/IPv6 packet with type 0x%X - skipping\n", type);
         return;
     }
 
-    /* just work on Ethernet packets that contain IP */
-    if (type == ETH_P_IP && header->caplen >= ip_offset) {
+    if (type == ETH_P_IP && header->len >= ip_offset) {
         frag_off = ntohs(ip->frag_off);
         if (header->caplen < header->len) {
             fprintf(stderr, "Captured packet size is smaller than packet size: %u < %u\n",
@@ -386,9 +386,9 @@ static void ndpi_process_packet(uint8_t * const args,
                              flow.ip_tuple.v4.dst : flow.ip_tuple.v4.src);
         thread_index = min_addr % reader_thread_count;
     } else if (ip6 != NULL) {
-        if (ip6->ip6_hdr.ip6_un1_plen < header->caplen - ip_offset - sizeof(ip6->ip6_hdr)) {
+        if (ip6->ip6_hdr.ip6_un1_plen < header->len - ip_offset - sizeof(ip6->ip6_hdr)) {
             fprintf(stderr, "IP6 payload length smaller than packet size: %u < %lu\n",
-                    ip6->ip6_hdr.ip6_un1_plen, header->caplen - ip_offset + sizeof(ip6->ip6_hdr));
+                    ip6->ip6_hdr.ip6_un1_plen, header->len - ip_offset + sizeof(ip6->ip6_hdr));
         }
 
         flow.l3_type = L3_IP6;
@@ -419,22 +419,34 @@ static void ndpi_process_packet(uint8_t * const args,
     if (flow.protocol == IPPROTO_TCP) {
         const struct ndpi_tcphdr * tcp;
 
+        if (header->len < l4_offset + sizeof(struct ndpi_tcphdr)) {
+            fprintf(stderr, "Malformed TCP packet, packet size smaller than expected: %u < %zu\n",
+                            header->len, l4_offset + sizeof(struct ndpi_tcphdr));
+            return;
+        }
         tcp = (struct ndpi_tcphdr *)&packet[l4_offset];
         flow.src_port = ntohs(tcp->source);
         flow.dst_port = ntohs(tcp->dest);
+        l4_data_len = header->len - l4_offset - sizeof(struct ndpi_tcphdr);
     } else if (flow.protocol == IPPROTO_UDP) {
         const struct ndpi_udphdr * udp;
 
+        if (header->len < l4_offset + sizeof(struct ndpi_udphdr)) {
+            fprintf(stderr, "Malformed UDP packet, packet size smaller than expected: %u < %zu\n",
+                            header->len, l4_offset + sizeof(struct ndpi_udphdr));
+            return;
+        }
         udp = (struct ndpi_udphdr *)&packet[l4_offset];
         flow.src_port = ntohs(udp->source);
         flow.dst_port = ntohs(udp->dest);
+        l4_data_len = header->len - l4_offset - sizeof(struct ndpi_udphdr);
     }
 
     if (thread_index != reader_thread->array_index) {
         return;
     }
 
-    print_packet_info(reader_thread->array_index, header, type, &flow);
+    print_packet_info(reader_thread->array_index, header, type, l4_data_len, &flow);
 
     if (flow.l3_type == L3_IP) {
         flow.hashval = flow.ip_tuple.v4.src + flow.ip_tuple.v4.dst;
