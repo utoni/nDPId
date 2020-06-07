@@ -214,10 +214,10 @@ static void print_packet_info(int thread_array_index,
 static int ip_tuples_equal(struct nDPId_flow_info const * const A,
                            struct nDPId_flow_info const * const B)
 {
-    if (A->l3_type == L3_IP) {
+    if (A->l3_type == L3_IP && B->l3_type == L3_IP6) {
         return A->ip_tuple.v4.src == B->ip_tuple.v4.src &&
                A->ip_tuple.v4.dst == B->ip_tuple.v4.dst;
-    } else if (A->l3_type == L3_IP6) {
+    } else if (A->l3_type == L3_IP6 && B->l3_type == L3_IP6) {
         return A->ip_tuple.v6.src[0] == B->ip_tuple.v6.src[0] &&
                A->ip_tuple.v6.src[1] == B->ip_tuple.v6.src[1] &&
                A->ip_tuple.v6.dst[0] == B->ip_tuple.v6.dst[0] &&
@@ -226,52 +226,96 @@ static int ip_tuples_equal(struct nDPId_flow_info const * const A,
     return 0;
 }
 
-static int ndpi_workflow_node_cmp(void const * const a, void const * const b) {
-    struct nDPId_flow_info const * const fa = (struct nDPId_flow_info*)a;
-    struct nDPId_flow_info const * const fb = (struct nDPId_flow_info*)b;
+static int ip_tuples_compare(struct nDPId_flow_info const * const A,
+                             struct nDPId_flow_info const * const B)
+{
+    if (A->l3_type == L3_IP && B->l3_type == L3_IP6) {
+        if (A->ip_tuple.v4.src < B->ip_tuple.v4.src ||
+            A->ip_tuple.v4.dst < B->ip_tuple.v4.dst)
+        {
+            return -1;
+        }
+        if (A->ip_tuple.v4.src > B->ip_tuple.v4.src ||
+            A->ip_tuple.v4.dst > B->ip_tuple.v4.dst)
+        {
+            return 1;
+        }
+    } else if (A->l3_type == L3_IP6 && B->l3_type == L3_IP6) {
+        if ((A->ip_tuple.v6.src[0] < B->ip_tuple.v6.src[0] &&
+             A->ip_tuple.v6.src[1] < B->ip_tuple.v6.src[1]) ||
+            (A->ip_tuple.v6.dst[0] < B->ip_tuple.v6.dst[0] &&
+             A->ip_tuple.v6.dst[1] < B->ip_tuple.v6.dst[1]))
+        {
+            return -1;
+        }
+        if ((A->ip_tuple.v6.src[0] > B->ip_tuple.v6.src[0] &&
+             A->ip_tuple.v6.src[1] > B->ip_tuple.v6.src[1]) ||
+            (A->ip_tuple.v6.dst[0] > B->ip_tuple.v6.dst[0] &&
+             A->ip_tuple.v6.dst[1] > B->ip_tuple.v6.dst[1]))
+        {
+            return 1;
+        }
+    }
+    if (A->src_port < B->src_port ||
+        A->dst_port < B->dst_port)
+    {
+        return -1;
+    } else if (A->src_port > B->src_port ||
+               A->dst_port > B->dst_port)
+    {
+        return 1;
+    }
+    return 0;
+}
 
-    if (fa->hashval < fb->hashval) {
+#if 0
+static void ndpi_workflow_node_walk(void const * const A, ndpi_VISIT which, int depth,
+                                    void * const user_data)
+{
+    struct nDPId_flow_info const * const flow_info = (struct nDPId_flow_info *)A;
+
+    (void)depth;
+    (void)user_data;
+
+    switch (which) {
+        case ndpi_preorder:
+            break;
+        case ndpi_postorder:
+            break;
+        case ndpi_endorder:
+            break;
+        case ndpi_leaf:
+            printf("PTR: %p\n", flow_info);
+            break;
+    }
+}
+#endif
+
+static int ndpi_workflow_node_cmp(void const * const A, void const * const B) {
+    struct nDPId_flow_info const * const flow_info_a = (struct nDPId_flow_info *)A;
+    struct nDPId_flow_info const * const flow_info_b = (struct nDPId_flow_info *)B;
+
+    if (flow_info_a->hashval < flow_info_b->hashval) {
         return(-1);
-    } else if (fa->hashval > fb->hashval) {
+    } else if (flow_info_a->hashval > flow_info_b->hashval) {
         return(1);
     }
 
     /* Flows have the same hash */
-    if (fa->protocol < fb->protocol) {
+    if (flow_info_a->protocol < flow_info_b->protocol) {
         return(-1);
-    } else if (fa->protocol > fb->protocol) {
+    } else if (flow_info_a->protocol > flow_info_b->protocol) {
         return(1);
     }
 
-    if (ip_tuples_equal(fa, fb) != 0 &&
-        fa->src_port == fb->src_port &&
-        fa->dst_port == fb->dst_port)
+    if (ip_tuples_equal(flow_info_a, flow_info_b) != 0 &&
+        flow_info_a->src_port == flow_info_b->src_port &&
+        flow_info_a->dst_port == flow_info_b->dst_port)
     {
         return(0);
     }
 
-    if (fa->ip_tuple.v4.src < fb->ip_tuple.v4.src) {
-        return(-1);
-    } else if(fa->ip_tuple.v4.dst > fb->ip_tuple.v4.dst) {
-        return(1);
-    }
-    if (fa->ip_tuple.v4.src < fb->ip_tuple.v4.src) {
-        return(-1);
-    } else if(fa->src_port > fb->src_port) {
-        return(1);
-    }
-    if(fa->ip_tuple.v4.dst < fb->ip_tuple.v4.dst) {
-        return(-2);
-    } else if(fa->ip_tuple.v4.dst > fb->ip_tuple.v4.dst) {
-        return(1);
-    }
-    if (fa->dst_port < fb->dst_port) {
-        return(-1);
-    } else if (fa->dst_port > fb->dst_port) {
-        return(1);
-    }
-
-    return(0); /* notreached */
+    return ip_tuples_compare(flow_info_a, flow_info_b);
 }
 
 static void ndpi_process_packet(uint8_t * const args,
@@ -282,7 +326,8 @@ static void ndpi_process_packet(uint8_t * const args,
         (struct nDPId_reader_thread *)args;
     struct nDPId_workflow * workflow;
     struct nDPId_flow_info flow = {};
-    void * opaque_flow;
+    void * tree_result;
+    struct nDPId_flow_info * flow_to_process;
     size_t hashed_index;
 
     const struct ndpi_ethhdr * ethernet;
@@ -416,6 +461,10 @@ static void ndpi_process_packet(uint8_t * const args,
         return;
     }
 
+    if (thread_index != reader_thread->array_index) {
+        return;
+    }
+
     if (flow.protocol == IPPROTO_TCP) {
         const struct ndpi_tcphdr * tcp;
 
@@ -442,10 +491,6 @@ static void ndpi_process_packet(uint8_t * const args,
         l4_data_len = header->len - l4_offset - sizeof(struct ndpi_udphdr);
     }
 
-    if (thread_index != reader_thread->array_index) {
-        return;
-    }
-
     print_packet_info(reader_thread->array_index, header, type, l4_data_len, &flow);
 
     if (flow.l3_type == L3_IP) {
@@ -457,8 +502,8 @@ static void ndpi_process_packet(uint8_t * const args,
     flow.hashval += flow.protocol + flow.src_port + flow.dst_port;
 
     hashed_index = flow.hashval % workflow->max_available_flows;
-    opaque_flow = ndpi_tfind(&flow, &workflow->ndpi_flows_root[hashed_index], ndpi_workflow_node_cmp);
-    if (opaque_flow == NULL) {
+    tree_result = ndpi_tfind(&flow, &workflow->ndpi_flows_root[hashed_index], ndpi_workflow_node_cmp);
+    if (tree_result == NULL) {
         uint64_t orig_src_ip[2] = { flow.ip_tuple.v6.src[0], flow.ip_tuple.v6.src[1] };
         uint64_t orig_dst_ip[2] = { flow.ip_tuple.v6.dst[0], flow.ip_tuple.v6.dst[1] };
         uint16_t orig_src_port = flow.src_port;
@@ -471,8 +516,7 @@ static void ndpi_process_packet(uint8_t * const args,
         flow.src_port = orig_dst_port;
         flow.dst_port = orig_src_port;
 
-        opaque_flow = ndpi_tfind(&flow, &workflow->ndpi_flows_root[hashed_index], ndpi_workflow_node_cmp);
-
+        tree_result = ndpi_tfind(&flow, &workflow->ndpi_flows_root[hashed_index], ndpi_workflow_node_cmp);
         flow.ip_tuple.v6.src[0] = orig_src_ip[0];
         flow.ip_tuple.v6.src[1] = orig_src_ip[1];
         flow.ip_tuple.v6.dst[0] = orig_dst_ip[0];
@@ -481,31 +525,33 @@ static void ndpi_process_packet(uint8_t * const args,
         flow.dst_port = orig_dst_port;
     }
 
-    if (opaque_flow == NULL) {
+    if (tree_result == NULL) {
         if (workflow->num_allocated_flows == workflow->max_available_flows) {
             fprintf(stderr, "Max flows to track reached: %zu\n", workflow->max_available_flows);
             return;
         }
 
-        struct nDPId_flow_info * const newflow = (struct nDPId_flow_info *)ndpi_malloc(sizeof(*newflow));
-        if (newflow == NULL) {
+        flow_to_process = (struct nDPId_flow_info *)ndpi_malloc(sizeof(*flow_to_process));
+        if (flow_to_process == NULL) {
             fprintf(stderr, "Not enough memory for flow info\n");
             return;
         }
 
         workflow->num_allocated_flows++;
-        memcpy(newflow, &flow, sizeof(*newflow));
-        newflow->flow_id = flow_id++;
+        memcpy(flow_to_process, &flow, sizeof(*flow_to_process));
+        flow_to_process->flow_id = flow_id++;
 
-        newflow->ndpi_flow = (struct ndpi_flow_struct *)ndpi_flow_malloc(SIZEOF_FLOW_STRUCT);
-        if (newflow->ndpi_flow == NULL) {
+        flow_to_process->ndpi_flow = (struct ndpi_flow_struct *)ndpi_flow_malloc(SIZEOF_FLOW_STRUCT);
+        if (flow_to_process->ndpi_flow == NULL) {
             fprintf(stderr, "Not enough memory for flow struct\n");
             return;
         }
-        memset(newflow->ndpi_flow, 0, SIZEOF_FLOW_STRUCT);
+        memset(flow_to_process->ndpi_flow, 0, SIZEOF_FLOW_STRUCT);
 
-        printf("New flow with id %u\n", newflow->flow_id);
-        ndpi_tsearch(newflow, &workflow->ndpi_flows_root[hashed_index], ndpi_workflow_node_cmp); /* Add */
+        printf("New flow with id %u\n", flow_to_process->flow_id);
+        ndpi_tsearch(flow_to_process, &workflow->ndpi_flows_root[hashed_index], ndpi_workflow_node_cmp); /* Add */
+    } else {
+        flow_to_process = *(struct nDPId_flow_info **)tree_result;
     }
 }
 
