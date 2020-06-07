@@ -48,6 +48,7 @@ struct nDPId_flow_info {
 struct nDPId_workflow {
     pcap_t * pcap_handle;
     struct timeval last_packet_received;
+    unsigned long long int thread_packets_processed;
 
     void ** ndpi_flows_root;
     size_t max_available_flows;
@@ -455,7 +456,7 @@ static void ndpi_process_packet(uint8_t * const args,
         flow.ip_tuple.v4.dst = ip->daddr;
         uint32_t min_addr = (flow.ip_tuple.v4.src > flow.ip_tuple.v4.dst ?
                              flow.ip_tuple.v4.dst : flow.ip_tuple.v4.src);
-        thread_index = min_addr % reader_thread_count;
+        thread_index = (min_addr + ip->protocol) % reader_thread_count;
     } else if (ip6 != NULL) {
         if (ip6->ip6_hdr.ip6_un1_plen < header->len - ip_offset - sizeof(ip6->ip6_hdr)) {
             fprintf(stderr, "IP6 payload length smaller than packet size: %u < %lu\n",
@@ -480,7 +481,7 @@ static void ndpi_process_packet(uint8_t * const args,
             min_addr[0] = flow.ip_tuple.v6.src[0];
             min_addr[1] = flow.ip_tuple.v6.src[0];
         }
-        thread_index = min_addr[0] + min_addr[1];
+        thread_index = min_addr[0] + min_addr[1] + ip6->ip6_hdr.ip6_un1_nxt;
         thread_index %= reader_thread_count;
     } else {
         fprintf(stderr, "Non IP/IPv6 protocol detected: 0x%X\n", type);
@@ -490,6 +491,7 @@ static void ndpi_process_packet(uint8_t * const args,
     if (thread_index != reader_thread->array_index) {
         return;
     }
+    workflow->thread_packets_processed++;
 
     if (flow.l4_protocol == IPPROTO_TCP) {
         const struct ndpi_tcphdr * tcp;
@@ -699,6 +701,8 @@ static int start_reader_threads(void)
 
 static int stop_reader_threads(void)
 {
+    unsigned long long int total_packets_processed = 0;
+
     for (int i = 0; i < reader_thread_count; ++i) {
         break_pcap_loop(&reader_threads[i]);
     }
@@ -708,8 +712,11 @@ static int stop_reader_threads(void)
             continue;
         }
 
-        printf("Stopping ThreadID %d\n", reader_threads[i].array_index);
+        total_packets_processed += reader_threads[i].workflow->thread_packets_processed;
+        printf("Stopping Thread %d, processed %llu packets\n",
+               reader_threads[i].array_index, reader_threads[i].workflow->thread_packets_processed);
     }
+    printf("Total packets processed: %llu\n", total_packets_processed);
 
     for (int i = 0; i < reader_thread_count; ++i) {
         if (reader_threads[i].workflow == NULL) {
@@ -763,7 +770,7 @@ int main(int argc, char ** argv)
         sleep(1);
     }
 
-    if (stop_reader_threads() != 0) {
+    if (main_thread_shutdown == 0 && stop_reader_threads() != 0) {
         fprintf(stderr, "%s: stop_reader_threads\n", argv[0]);
         return 1;
     }
