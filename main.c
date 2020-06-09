@@ -11,6 +11,10 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#if !(NDPI_MAJOR >= 3 && NDPI_MINOR >= 2)
+#error "nDPI 3.2.0 requiired"
+#endif
+
 #define TICK_RESOLUTION 1000
 
 enum nDPId_l3_type {
@@ -68,6 +72,8 @@ static int reader_thread_count = MAX_READER_THREADS;
 static int main_thread_shutdown = 0;
 static uint32_t flow_id = 0;
 
+static void free_workflow(struct nDPId_workflow ** const workflow);
+
 static struct nDPId_workflow * init_workflow(void)
 {
     char pcap_error_buffer[PCAP_ERRBUF_SIZE];
@@ -77,15 +83,17 @@ static struct nDPId_workflow * init_workflow(void)
         return NULL;
     }
 
-    workflow->pcap_handle = pcap_open_live("wifi0" /* "lo" */, /* 1536 */ 65535, 1, 250, pcap_error_buffer);
+    workflow->pcap_handle = pcap_open_live("br0" /* "lo" */, /* 1536 */ 65535, 1, 250, pcap_error_buffer);
     if (workflow->pcap_handle == NULL) {
         fprintf(stderr, "pcap_open_live: %s\n", pcap_error_buffer);
+        free_workflow(&workflow);
         return NULL;
     }
 
     ndpi_init_prefs init_prefs = ndpi_no_prefs;
     workflow->ndpi_struct = ndpi_init_detection_module(init_prefs);
     if (workflow->ndpi_struct == NULL) {
+        free_workflow(&workflow);
         return NULL;
     }
 
@@ -93,15 +101,15 @@ static struct nDPId_workflow * init_workflow(void)
     workflow->max_available_flows = 1024;
     workflow->ndpi_flows_root = (void **)ndpi_calloc(workflow->max_available_flows, sizeof(void *));
     if (workflow->ndpi_flows_root == NULL) {
+        free_workflow(&workflow);
         return NULL;
     }
 
     NDPI_PROTOCOL_BITMASK protos;
     NDPI_BITMASK_SET_ALL(protos);
     ndpi_set_protocol_detection_bitmask2(workflow->ndpi_struct, &protos);
-#if NDPI_MAJOR >= 3 && NDPI_MINOR >= 2
     ndpi_finalize_initalization(workflow->ndpi_struct);
-#endif
+
     return workflow;
 }
 
