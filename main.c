@@ -23,6 +23,8 @@ enum nDPId_l3_type {
 
 struct nDPId_flow_info {
     uint32_t flow_id;
+    struct timeval first_seen;
+    struct timeval last_seen;
     uint64_t hashval;
 
     enum nDPId_l3_type l3_type;
@@ -51,7 +53,6 @@ struct nDPId_flow_info {
 
 struct nDPId_workflow {
     pcap_t * pcap_handle;
-    struct timeval last_packet_received;
     unsigned long long int thread_packets_processed;
 
     void ** ndpi_flows_root;
@@ -345,6 +346,12 @@ static int ndpi_workflow_node_cmp(void const * const A, void const * const B) {
     return ip_tuples_compare(flow_info_a, flow_info_b);
 }
 
+#if 0
+static void ndpi_idle_scan_walker(void const * const A, ndpi_VISIT which, int depth, void * const user_data)
+{
+}
+#endif
+
 static void ndpi_process_packet(uint8_t * const args,
                                 struct pcap_pkthdr const * const header,
                                 uint8_t const * const packet)
@@ -384,7 +391,6 @@ static void ndpi_process_packet(uint8_t * const args,
     if (workflow == NULL) {
         return;
     }
-    workflow->last_packet_received = header->ts;
 
     switch (pcap_datalink(workflow->pcap_handle)) {
         case DLT_NULL:
@@ -460,11 +466,11 @@ static void ndpi_process_packet(uint8_t * const args,
             return;
         }
 
-        flow.ip_tuple.v4.src = ip->saddr;
-        flow.ip_tuple.v4.dst = ip->daddr;
+        flow.ip_tuple.v4.src = ntohl(ip->saddr);
+        flow.ip_tuple.v4.dst = ntohl(ip->daddr);
         uint32_t min_addr = (flow.ip_tuple.v4.src > flow.ip_tuple.v4.dst ?
                              flow.ip_tuple.v4.dst : flow.ip_tuple.v4.src);
-        thread_index = (min_addr + ip->protocol) % reader_thread_count;
+        thread_index = min_addr + ip->protocol;
     } else if (ip6 != NULL) {
         if (ip6->ip6_hdr.ip6_un1_plen < header->len - ip_offset - sizeof(ip6->ip6_hdr)) {
             fprintf(stderr, "IP6 payload length smaller than packet size: %u < %lu\n",
@@ -475,10 +481,10 @@ static void ndpi_process_packet(uint8_t * const args,
         flow.l4_protocol = ip6->ip6_hdr.ip6_un1_nxt;
         l4_offset = ip_offset + sizeof(ip6->ip6_hdr);
 
-        flow.ip_tuple.v6.src[0] = ip6->ip6_src.u6_addr.u6_addr64[0];
-        flow.ip_tuple.v6.src[1] = ip6->ip6_src.u6_addr.u6_addr64[1];
-        flow.ip_tuple.v6.dst[0] = ip6->ip6_dst.u6_addr.u6_addr64[0];
-        flow.ip_tuple.v6.dst[1] = ip6->ip6_dst.u6_addr.u6_addr64[1];
+        flow.ip_tuple.v6.src[0] = be64toh(ip6->ip6_src.u6_addr.u6_addr64[0]);
+        flow.ip_tuple.v6.src[1] = be64toh(ip6->ip6_src.u6_addr.u6_addr64[1]);
+        flow.ip_tuple.v6.dst[0] = be64toh(ip6->ip6_dst.u6_addr.u6_addr64[0]);
+        flow.ip_tuple.v6.dst[1] = be64toh(ip6->ip6_dst.u6_addr.u6_addr64[1]);
         uint64_t min_addr[2];
         if (flow.ip_tuple.v6.src[0] > flow.ip_tuple.v6.dst[0] &&
             flow.ip_tuple.v6.src[1] > flow.ip_tuple.v6.dst[1])
@@ -490,16 +496,10 @@ static void ndpi_process_packet(uint8_t * const args,
             min_addr[1] = flow.ip_tuple.v6.src[0];
         }
         thread_index = min_addr[0] + min_addr[1] + ip6->ip6_hdr.ip6_un1_nxt;
-        thread_index %= reader_thread_count;
     } else {
         fprintf(stderr, "Non IP/IPv6 protocol detected: 0x%X\n", type);
         return;
     }
-
-    if (thread_index != reader_thread->array_index) {
-        return;
-    }
-    workflow->thread_packets_processed++;
 
     if (flow.l4_protocol == IPPROTO_TCP) {
         const struct ndpi_tcphdr * tcp;
@@ -526,6 +526,13 @@ static void ndpi_process_packet(uint8_t * const args,
         flow.dst_port = ntohs(udp->dest);
         l4_data_len = header->len - l4_offset - sizeof(struct ndpi_udphdr);
     }
+
+    thread_index += (flow.src_port < flow.dst_port ? flow.dst_port : flow.src_port);
+    thread_index %= reader_thread_count;
+    if (thread_index != reader_thread->array_index) {
+        return;
+    }
+    workflow->thread_packets_processed++;
 
     print_packet_info(reader_thread->array_index, header, l4_data_len, &flow);
 
@@ -600,6 +607,8 @@ static void ndpi_process_packet(uint8_t * const args,
             return;
         }
 
+        flow_to_process->first_seen = header->ts;
+
         printf("New flow with id %u\n", flow_to_process->flow_id);
         if (ndpi_tsearch(flow_to_process, &workflow->ndpi_flows_root[hashed_index], ndpi_workflow_node_cmp) == NULL) {
             /* TODO: Cleanup this flow! Possible Leak. */
@@ -610,6 +619,8 @@ static void ndpi_process_packet(uint8_t * const args,
         ndpi_dst = flow_to_process->ndpi_dst;
     } else {
         flow_to_process = *(struct nDPId_flow_info **)tree_result;
+
+        flow_to_process->last_seen = header->ts;
 
         if (direction_changed != 0) {
             ndpi_src = flow_to_process->ndpi_dst;
