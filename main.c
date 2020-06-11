@@ -15,7 +15,9 @@
 #error "nDPI 3.2.0 requiired"
 #endif
 
+#define MAX_FLOWS_PER_THREAD 10 //1024
 #define TICK_RESOLUTION 1000
+#define MAX_READER_THREADS 8
 
 enum nDPId_l3_type {
     L3_IP, L3_IP6
@@ -23,8 +25,8 @@ enum nDPId_l3_type {
 
 struct nDPId_flow_info {
     uint32_t flow_id;
-    struct timeval first_seen;
-    struct timeval last_seen;
+    uint64_t first_seen;
+    uint64_t last_seen;
     uint64_t hashval;
 
     enum nDPId_l3_type l3_type;
@@ -54,10 +56,13 @@ struct nDPId_flow_info {
 struct nDPId_workflow {
     pcap_t * pcap_handle;
     unsigned long long int thread_packets_processed;
+    uint64_t last_idle_scan_time;
+    uint64_t last_time;
 
     void ** ndpi_flows_root;
     size_t max_available_flows;
     size_t num_allocated_flows;
+
     struct ndpi_detection_module_struct * ndpi_struct;
 };
 
@@ -67,7 +72,6 @@ struct nDPId_reader_thread {
     int array_index;
 };
 
-#define MAX_READER_THREADS 8
 static struct nDPId_reader_thread reader_threads[MAX_READER_THREADS] = {};
 static int reader_thread_count = MAX_READER_THREADS;
 static int main_thread_shutdown = 0;
@@ -99,7 +103,7 @@ static struct nDPId_workflow * init_workflow(void)
     }
 
     workflow->num_allocated_flows = 0;
-    workflow->max_available_flows = 1024;
+    workflow->max_available_flows = MAX_FLOWS_PER_THREAD;
     workflow->ndpi_flows_root = (void **)ndpi_calloc(workflow->max_available_flows, sizeof(void *));
     if (workflow->ndpi_flows_root == NULL) {
         free_workflow(&workflow);
@@ -346,12 +350,6 @@ static int ndpi_workflow_node_cmp(void const * const A, void const * const B) {
     return ip_tuples_compare(flow_info_a, flow_info_b);
 }
 
-#if 0
-static void ndpi_idle_scan_walker(void const * const A, ndpi_VISIT which, int depth, void * const user_data)
-{
-}
-#endif
-
 static void ndpi_process_packet(uint8_t * const args,
                                 struct pcap_pkthdr const * const header,
                                 uint8_t const * const packet)
@@ -381,7 +379,7 @@ static void ndpi_process_packet(uint8_t * const args,
     uint32_t l4_data_len = 0;
     uint16_t type;
     uint16_t frag_off = 0;
-    int thread_index;
+    int thread_index = 0x0daa8ef6; // generated with `dd if=/dev/random bs=1024 count=1 |& hd'
 
     if (reader_thread == NULL) {
         return;
@@ -466,8 +464,8 @@ static void ndpi_process_packet(uint8_t * const args,
             return;
         }
 
-        flow.ip_tuple.v4.src = ntohl(ip->saddr);
-        flow.ip_tuple.v4.dst = ntohl(ip->daddr);
+        flow.ip_tuple.v4.src = ip->saddr;
+        flow.ip_tuple.v4.dst = ip->daddr;
         uint32_t min_addr = (flow.ip_tuple.v4.src > flow.ip_tuple.v4.dst ?
                              flow.ip_tuple.v4.dst : flow.ip_tuple.v4.src);
         thread_index = min_addr + ip->protocol;
@@ -481,10 +479,10 @@ static void ndpi_process_packet(uint8_t * const args,
         flow.l4_protocol = ip6->ip6_hdr.ip6_un1_nxt;
         l4_offset = ip_offset + sizeof(ip6->ip6_hdr);
 
-        flow.ip_tuple.v6.src[0] = be64toh(ip6->ip6_src.u6_addr.u6_addr64[0]);
-        flow.ip_tuple.v6.src[1] = be64toh(ip6->ip6_src.u6_addr.u6_addr64[1]);
-        flow.ip_tuple.v6.dst[0] = be64toh(ip6->ip6_dst.u6_addr.u6_addr64[0]);
-        flow.ip_tuple.v6.dst[1] = be64toh(ip6->ip6_dst.u6_addr.u6_addr64[1]);
+        flow.ip_tuple.v6.src[0] = ip6->ip6_src.u6_addr.u6_addr64[0];
+        flow.ip_tuple.v6.src[1] = ip6->ip6_src.u6_addr.u6_addr64[1];
+        flow.ip_tuple.v6.dst[0] = ip6->ip6_dst.u6_addr.u6_addr64[0];
+        flow.ip_tuple.v6.dst[1] = ip6->ip6_dst.u6_addr.u6_addr64[1];
         uint64_t min_addr[2];
         if (flow.ip_tuple.v6.src[0] > flow.ip_tuple.v6.dst[0] &&
             flow.ip_tuple.v6.src[1] > flow.ip_tuple.v6.dst[1])
@@ -574,7 +572,8 @@ static void ndpi_process_packet(uint8_t * const args,
 
     if (tree_result == NULL) {
         if (workflow->num_allocated_flows == workflow->max_available_flows) {
-            fprintf(stderr, "Max flows to track reached: %zu\n", workflow->max_available_flows);
+            fprintf(stderr, "ThreadID %d, max flows to track reached: %zu\n", thread_index,
+                    workflow->max_available_flows);
             return;
         }
 
@@ -607,9 +606,7 @@ static void ndpi_process_packet(uint8_t * const args,
             return;
         }
 
-        flow_to_process->first_seen = header->ts;
-
-        printf("New flow with id %u\n", flow_to_process->flow_id);
+        printf("ThreadID %d, new flow with id %u\n", thread_index, flow_to_process->flow_id);
         if (ndpi_tsearch(flow_to_process, &workflow->ndpi_flows_root[hashed_index], ndpi_workflow_node_cmp) == NULL) {
             /* TODO: Cleanup this flow! Possible Leak. */
             return;
@@ -619,8 +616,6 @@ static void ndpi_process_packet(uint8_t * const args,
         ndpi_dst = flow_to_process->ndpi_dst;
     } else {
         flow_to_process = *(struct nDPId_flow_info **)tree_result;
-
-        flow_to_process->last_seen = header->ts;
 
         if (direction_changed != 0) {
             ndpi_src = flow_to_process->ndpi_dst;
@@ -636,6 +631,12 @@ static void ndpi_process_packet(uint8_t * const args,
     }
 
     time_ms = ((uint64_t) header->ts.tv_sec) * TICK_RESOLUTION + header->ts.tv_usec / (1000000 / TICK_RESOLUTION);
+    workflow->last_time = time_ms;
+    if (flow_to_process->first_seen == 0) {
+        flow_to_process->first_seen = time_ms;
+    }
+    flow_to_process->last_seen = time_ms;
+
     flow_to_process->detected_l7_protocol =
         ndpi_detection_process_packet(workflow->ndpi_struct, flow_to_process->ndpi_flow,
                                       ip != NULL ? (uint8_t *)ip : (uint8_t *)ip6,
