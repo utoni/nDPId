@@ -15,7 +15,7 @@
 #error "nDPI 3.2.0 requiired"
 #endif
 
-#define MAX_FLOWS_PER_THREAD 10 //1024
+#define MAX_FLOW_ROOTS_PER_THREAD 10 //1024
 #define TICK_RESOLUTION 1000
 #define MAX_READER_THREADS 8
 
@@ -25,6 +25,7 @@ enum nDPId_l3_type {
 
 struct nDPId_flow_info {
     uint32_t flow_id;
+    unsigned long long int packets;
     uint64_t first_seen;
     uint64_t last_seen;
     uint64_t hashval;
@@ -59,7 +60,7 @@ struct nDPId_workflow {
     uint64_t last_idle_scan_time;
     uint64_t last_time;
 
-    void ** ndpi_flows_root;
+    void ** ndpi_flow_roots;
     size_t max_available_flows;
     size_t num_allocated_flows;
 
@@ -103,9 +104,9 @@ static struct nDPId_workflow * init_workflow(void)
     }
 
     workflow->num_allocated_flows = 0;
-    workflow->max_available_flows = MAX_FLOWS_PER_THREAD;
-    workflow->ndpi_flows_root = (void **)ndpi_calloc(workflow->max_available_flows, sizeof(void *));
-    if (workflow->ndpi_flows_root == NULL) {
+    workflow->max_available_flows = MAX_FLOW_ROOTS_PER_THREAD;
+    workflow->ndpi_flow_roots = (void **)ndpi_calloc(workflow->max_available_flows, sizeof(void *));
+    if (workflow->ndpi_flow_roots == NULL) {
         free_workflow(&workflow);
         return NULL;
     }
@@ -145,9 +146,9 @@ static void free_workflow(struct nDPId_workflow ** const workflow)
         ndpi_exit_detection_module(w->ndpi_struct);
     }
     for(size_t i = 0; i < w->max_available_flows; i++) {
-        ndpi_tdestroy(w->ndpi_flows_root[i], ndpi_flow_info_freer);
+        ndpi_tdestroy(w->ndpi_flow_roots[i], ndpi_flow_info_freer);
     }
-    ndpi_free(w->ndpi_flows_root);
+    ndpi_free(w->ndpi_flow_roots);
     ndpi_free(w);
     *workflow = NULL;
 }
@@ -304,7 +305,7 @@ static int ip_tuples_compare(struct nDPId_flow_info const * const A,
 static void ndpi_workflow_node_walk(void const * const A, ndpi_VISIT which, int depth,
                                     void * const user_data)
 {
-    struct nDPId_flow_info const * const flow_info = (struct nDPId_flow_info *)A;
+    struct nDPId_flow_info const * const flow_info = *(struct nDPId_flow_info **)A;
 
     (void)depth;
     (void)user_data;
@@ -317,7 +318,8 @@ static void ndpi_workflow_node_walk(void const * const A, ndpi_VISIT which, int 
         case ndpi_endorder:
             break;
         case ndpi_leaf:
-            printf("PTR: %p\n", flow_info);
+            printf("PTR: %p, FlowID: %d, Packets: %llu\n",
+                   flow_info, flow_info->flow_id, flow_info->packets);
             break;
     }
 }
@@ -389,6 +391,12 @@ static void ndpi_process_packet(uint8_t * const args,
     if (workflow == NULL) {
         return;
     }
+
+#if 0
+    for (size_t i = 0; i < workflow->max_available_flows; ++i) {
+        ndpi_twalk(workflow->ndpi_flow_roots[i], ndpi_workflow_node_walk, workflow);
+    }
+#endif
 
     switch (pcap_datalink(workflow->pcap_handle)) {
         case DLT_NULL:
@@ -543,7 +551,7 @@ static void ndpi_process_packet(uint8_t * const args,
     flow.hashval += flow.l4_protocol + flow.src_port + flow.dst_port;
 
     hashed_index = flow.hashval % workflow->max_available_flows;
-    tree_result = ndpi_tfind(&flow, &workflow->ndpi_flows_root[hashed_index], ndpi_workflow_node_cmp);
+    tree_result = ndpi_tfind(&flow, &workflow->ndpi_flow_roots[hashed_index], ndpi_workflow_node_cmp);
     if (tree_result == NULL) {
         uint64_t orig_src_ip[2] = { flow.ip_tuple.v6.src[0], flow.ip_tuple.v6.src[1] };
         uint64_t orig_dst_ip[2] = { flow.ip_tuple.v6.dst[0], flow.ip_tuple.v6.dst[1] };
@@ -557,7 +565,7 @@ static void ndpi_process_packet(uint8_t * const args,
         flow.src_port = orig_dst_port;
         flow.dst_port = orig_src_port;
 
-        tree_result = ndpi_tfind(&flow, &workflow->ndpi_flows_root[hashed_index], ndpi_workflow_node_cmp);
+        tree_result = ndpi_tfind(&flow, &workflow->ndpi_flow_roots[hashed_index], ndpi_workflow_node_cmp);
         if (tree_result != NULL) {
             direction_changed = 1;
         }
@@ -607,7 +615,7 @@ static void ndpi_process_packet(uint8_t * const args,
         }
 
         printf("ThreadID %d, new flow with id %u\n", thread_index, flow_to_process->flow_id);
-        if (ndpi_tsearch(flow_to_process, &workflow->ndpi_flows_root[hashed_index], ndpi_workflow_node_cmp) == NULL) {
+        if (ndpi_tsearch(flow_to_process, &workflow->ndpi_flow_roots[hashed_index], ndpi_workflow_node_cmp) == NULL) {
             /* TODO: Cleanup this flow! Possible Leak. */
             return;
         }
@@ -625,6 +633,8 @@ static void ndpi_process_packet(uint8_t * const args,
             ndpi_dst = flow_to_process->ndpi_dst;
         }
     }
+
+    flow_to_process->packets++;
 
     if (flow_to_process->detection_completed != 0) {
         return;
