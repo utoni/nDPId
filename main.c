@@ -439,7 +439,7 @@ static void ndpi_process_packet(uint8_t * const args,
 
     const struct ndpi_ethhdr * ethernet;
     const struct ndpi_iphdr * ip;
-    const struct ndpi_ipv6hdr * ip6;
+    struct ndpi_ipv6hdr * ip6;
 
     uint64_t time_ms;
     const uint16_t eth_offset = 0;
@@ -635,10 +635,20 @@ static void ndpi_process_packet(uint8_t * const args,
 #endif
 
     if (flow.l3_type == L3_IP) {
-        flow.hashval = flow.ip_tuple.v4.src + flow.ip_tuple.v4.dst;
+        if (ndpi_flowv4_flow_hash(flow.l4_protocol, flow.ip_tuple.v4.src, flow.ip_tuple.v4.dst,
+                                  flow.src_port, flow.dst_port, 0, 0,
+                                  (uint8_t *)&flow.hashval, sizeof(flow.hashval)) != 0)
+        {
+            flow.hashval = flow.ip_tuple.v4.src + flow.ip_tuple.v4.dst; // fallback
+        }
     } else if (flow.l3_type == L3_IP6) {
-        flow.hashval = flow.ip_tuple.v6.src[0] + flow.ip_tuple.v6.src[1];
-        flow.hashval += flow.ip_tuple.v6.dst[0] + flow.ip_tuple.v6.dst[1];
+        if (ndpi_flowv6_flow_hash(flow.l4_protocol, &ip6->ip6_src, &ip6->ip6_dst,
+                                  flow.src_port, flow.dst_port, 0, 0,
+                                  (uint8_t *)&flow.hashval, sizeof(flow.hashval)) != 0)
+        {
+            flow.hashval = flow.ip_tuple.v6.src[0] + flow.ip_tuple.v6.src[1];
+            flow.hashval += flow.ip_tuple.v6.dst[0] + flow.ip_tuple.v6.dst[1];
+        }
     }
     flow.hashval += flow.l4_protocol + flow.src_port + flow.dst_port;
 
