@@ -60,6 +60,7 @@ struct nDPId_flow_info {
 
 struct nDPId_workflow {
     pcap_t * pcap_handle;
+    int error_or_eof;
     unsigned long long int thread_packets_processed;
     uint64_t last_idle_scan_time;
     size_t idle_scan_index;
@@ -91,7 +92,7 @@ static uint32_t flow_id = 0;
 
 static void free_workflow(struct nDPId_workflow ** const workflow);
 
-static struct nDPId_workflow * init_workflow(void)
+static struct nDPId_workflow * init_workflow(char const * const file_or_device)
 {
     char pcap_error_buffer[PCAP_ERRBUF_SIZE];
     struct nDPId_workflow * workflow = (struct nDPId_workflow *)ndpi_calloc(1, sizeof(*workflow));
@@ -100,9 +101,14 @@ static struct nDPId_workflow * init_workflow(void)
         return NULL;
     }
 
-    workflow->pcap_handle = pcap_open_live("br0" /* "lo" */, /* 1536 */ 65535, 1, 250, pcap_error_buffer);
+    if (access(file_or_device, R_OK) != 0 && errno == ENOENT) {
+        workflow->pcap_handle = pcap_open_live(file_or_device, /* 1536 */ 65535, 1, 250, pcap_error_buffer);
+    } else {
+        workflow->pcap_handle = pcap_open_offline_with_tstamp_precision(file_or_device, PCAP_TSTAMP_PRECISION_MICRO, pcap_error_buffer);
+    }
+
     if (workflow->pcap_handle == NULL) {
-        fprintf(stderr, "pcap_open_live: %s\n", pcap_error_buffer);
+        fprintf(stderr, "pcap_open_live / pcap_open_offline_with_tstamp_precision: %s\n", pcap_error_buffer);
         free_workflow(&workflow);
         return NULL;
     }
@@ -173,14 +179,27 @@ static void free_workflow(struct nDPId_workflow ** const workflow)
     *workflow = NULL;
 }
 
-static int setup_reader_threads(void)
+static int setup_reader_threads(char const * const file_or_device)
 {
+    char const * file_or_default_device;
+    char pcap_error_buffer[PCAP_ERRBUF_SIZE];
+
     if (reader_thread_count > MAX_READER_THREADS) {
         return 1;
     }
 
+    if (file_or_device == NULL) {
+        file_or_default_device = pcap_lookupdev(pcap_error_buffer);
+        if (file_or_default_device == NULL) {
+            fprintf(stderr, "pcap_lookupdev: %s\n", pcap_error_buffer);
+            return 1;
+        }
+    } else {
+        file_or_default_device = file_or_device;
+    }
+
     for (int i = 0; i < reader_thread_count; ++i) {
-        reader_threads[i].workflow = init_workflow();
+        reader_threads[i].workflow = init_workflow(file_or_default_device);
         if (reader_threads[i].workflow == NULL)
         {
             return 1;
@@ -736,8 +755,9 @@ static void run_pcap_loop(struct nDPId_reader_thread const * const reader_thread
         if (pcap_loop(reader_thread->workflow->pcap_handle, -1,
             &ndpi_process_packet, (uint8_t *)reader_thread) == PCAP_ERROR) {
 
-            printf("Error while reading pcap file: '%s'\n",
-                   pcap_geterr(reader_thread->workflow->pcap_handle));
+            fprintf(stderr, "Error while reading pcap file: '%s'\n",
+                    pcap_geterr(reader_thread->workflow->pcap_handle));
+            reader_thread->workflow->error_or_eof = 1;
         }
     }
 }
@@ -758,7 +778,18 @@ static void * processing_thread(void * const ndpi_thread_arg)
 
     printf("Starting ThreadID %d\n", reader_thread->array_index);
     run_pcap_loop(reader_thread);
+    reader_thread->workflow->error_or_eof = 1;
     return NULL;
+}
+
+static int processing_threads_error_or_eof(void)
+{
+    for (int i = 0; i < reader_thread_count; ++i) {
+        if (reader_threads[i].workflow->error_or_eof == 0) {
+            return 0;
+        }
+    }
+    return 1;
 }
 
 static int start_reader_threads(void)
@@ -823,7 +854,6 @@ static int stop_reader_threads(void)
     printf("Total flows captured...: %zu\n", total_flows_captured);
     printf("Total flows timed out..: %zu\n", total_flows_idle);
 
-
     for (int i = 0; i < reader_thread_count; ++i) {
         if (reader_threads[i].workflow == NULL) {
             continue;
@@ -860,7 +890,7 @@ int main(int argc, char ** argv)
         return 1;
     }
 
-    if (setup_reader_threads() != 0) {
+    if (setup_reader_threads((argc >= 2 ? argv[1] : NULL)) != 0) {
         fprintf(stderr, "%s: setup_reader_threads failed\n", argv[0]);
         return 1;
     }
@@ -872,7 +902,7 @@ int main(int argc, char ** argv)
 
     signal(SIGINT, sighandler);
     signal(SIGTERM, sighandler);
-    while (main_thread_shutdown == 0) {
+    while (main_thread_shutdown == 0 && processing_threads_error_or_eof() == 0) {
         sleep(1);
     }
 
