@@ -21,6 +21,10 @@ CFLAGS += -fsanitize=address -fsanitize=undefined -fsanitize=leak
 LIBS += -lasan -lubsan
 endif
 
+ifeq ($(VERBOSE),yes)
+CFLAGS += -DVERBOSE
+endif
+
 RM = rm -f
 
 main: main.c

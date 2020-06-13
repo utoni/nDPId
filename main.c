@@ -61,20 +61,21 @@ struct nDPId_flow_info {
 struct nDPId_workflow {
     pcap_t * pcap_handle;
     int error_or_eof;
-    unsigned long long int thread_packets_processed;
+    unsigned long long int packets_captured;
+    unsigned long long int packets_processed;
     uint64_t last_idle_scan_time;
     size_t idle_scan_index;
     uint64_t last_time;
 
     void ** ndpi_flows_active;
-    size_t max_active_flows;
-    size_t num_active_flows;
-    size_t cur_active_flows;
+    unsigned long long int max_active_flows;
+    unsigned long long int num_active_flows;
+    unsigned long long int cur_active_flows;
 
     void ** ndpi_flows_idle;
-    size_t max_idle_flows;
-    size_t num_idle_flows;
-    size_t cur_idle_flows;
+    unsigned long long int max_idle_flows;
+    unsigned long long int num_idle_flows;
+    unsigned long long int cur_idle_flows;
 
     struct ndpi_detection_module_struct * ndpi_struct;
 };
@@ -229,6 +230,7 @@ static int ip_tuple_to_string(struct nDPId_flow_info const * const flow,
     return 0;
 }
 
+#ifdef VERBOSE
 static void print_packet_info(int thread_array_index,
                               struct pcap_pkthdr const * const header,
                               uint32_t l4_data_len,
@@ -282,6 +284,7 @@ static void print_packet_info(int thread_array_index,
 
     printf("%.*s\n", used, buf);
 }
+#endif
 
 static int ip_tuples_equal(struct nDPId_flow_info const * const A,
                            struct nDPId_flow_info const * const B)
@@ -457,6 +460,7 @@ static void ndpi_process_packet(uint8_t * const args,
         return;
     }
 
+    workflow->packets_captured++;
     time_ms = ((uint64_t) header->ts.tv_sec) * TICK_RESOLUTION + header->ts.tv_usec / (1000000 / TICK_RESOLUTION);
     workflow->last_time = time_ms;
 
@@ -624,9 +628,11 @@ static void ndpi_process_packet(uint8_t * const args,
     if (thread_index != reader_thread->array_index) {
         return;
     }
-    workflow->thread_packets_processed++;
+    workflow->packets_processed++;
 
+#ifdef VERBOSE
     print_packet_info(reader_thread->array_index, header, l4_data_len, &flow);
+#endif
 
     if (flow.l3_type == L3_IP) {
         flow.hashval = flow.ip_tuple.v4.src + flow.ip_tuple.v4.dst;
@@ -666,7 +672,7 @@ static void ndpi_process_packet(uint8_t * const args,
 
     if (tree_result == NULL) {
         if (workflow->cur_active_flows == workflow->max_active_flows) {
-            fprintf(stderr, "ThreadID %d, max flows to track reached: %zu, idle: %zu\n", thread_index,
+            fprintf(stderr, "ThreadID %d, max flows to track reached: %llu, idle: %llu\n", thread_index,
                     workflow->max_active_flows, workflow->cur_idle_flows);
             return;
         }
@@ -831,8 +837,8 @@ static int start_reader_threads(void)
 static int stop_reader_threads(void)
 {
     unsigned long long int total_packets_processed = 0;
-    size_t total_flows_captured = 0;
-    size_t total_flows_idle = 0;
+    unsigned long long int total_flows_captured = 0;
+    unsigned long long int total_flows_idle = 0;
 
     for (int i = 0; i < reader_thread_count; ++i) {
         break_pcap_loop(&reader_threads[i]);
@@ -843,16 +849,18 @@ static int stop_reader_threads(void)
             continue;
         }
 
-        total_packets_processed += reader_threads[i].workflow->thread_packets_processed;
+        total_packets_processed += reader_threads[i].workflow->packets_processed;
         total_flows_captured += reader_threads[i].workflow->num_active_flows;
         total_flows_idle += reader_threads[i].workflow->num_idle_flows;
 
         printf("Stopping Thread %d, processed %llu packets\n",
-               reader_threads[i].array_index, reader_threads[i].workflow->thread_packets_processed);
+               reader_threads[i].array_index, reader_threads[i].workflow->packets_processed);
     }
+    printf("Total packets captured.: %llu\n",
+           reader_threads[0].workflow->packets_captured); // same value for all threads as packet2thread distribution happens later
     printf("Total packets processed: %llu\n", total_packets_processed);
-    printf("Total flows captured...: %zu\n", total_flows_captured);
-    printf("Total flows timed out..: %zu\n", total_flows_idle);
+    printf("Total flows captured...: %llu\n", total_flows_captured);
+    printf("Total flows timed out..: %llu\n", total_flows_idle);
 
     for (int i = 0; i < reader_thread_count; ++i) {
         if (reader_threads[i].workflow == NULL) {
