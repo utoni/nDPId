@@ -475,7 +475,7 @@ static void ndpi_process_packet(uint8_t * const args,
 
         while (workflow->cur_idle_flows > 0) {
             struct nDPId_flow_info * const f = (struct nDPId_flow_info *)workflow->ndpi_flows_idle[--workflow->cur_idle_flows];
-            printf("ThreadID %d, free idle flow with id %u\n", thread_index, f->flow_id);
+            printf("Free idle flow with id %u\n", f->flow_id);
             ndpi_tdelete(f, &workflow->ndpi_flows_active[workflow->idle_scan_index],
                          ndpi_workflow_node_cmp);
             ndpi_flow_info_freer(f);
