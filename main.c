@@ -497,7 +497,6 @@ static void ndpi_process_packet(uint8_t * const args,
                     }
                     break;
                 case ETH_P_ARP: /* ARP */
-                    printf("%s\n", "ARP - skipping");
                     return;
                 default:
                     fprintf(stderr, "Unknown Ethernet packet with type 0x%X - skipping\n", type);
@@ -719,11 +718,13 @@ static void ndpi_process_packet(uint8_t * const args,
                                       ip != NULL ? (uint8_t *)ip : (uint8_t *)ip6,
                                       ip_size, time_ms, ndpi_src, ndpi_dst);
 
-    if (flow_to_process->detected_l7_protocol.master_protocol != NDPI_PROTOCOL_UNKNOWN) {
+    if (ndpi_is_protocol_detected(workflow->ndpi_struct,
+                                  flow_to_process->detected_l7_protocol) != 0) {
         flow_to_process->detection_completed = 1;
-        fprintf(stderr, "DETECTED PROTOCOL: %s | APP PROTOCOL: %s\n",
+        fprintf(stderr, "DETECTED PROTOCOL: %s | APP PROTOCOL: %s | CATEGORY: %s\n",
                 ndpi_get_proto_name(workflow->ndpi_struct, flow_to_process->detected_l7_protocol.master_protocol),
-                ndpi_get_proto_name(workflow->ndpi_struct, flow_to_process->detected_l7_protocol.app_protocol));
+                ndpi_get_proto_name(workflow->ndpi_struct, flow_to_process->detected_l7_protocol.app_protocol),
+                ndpi_category_get_name(workflow->ndpi_struct, flow_to_process->detected_l7_protocol.category));
     }
 }
 
