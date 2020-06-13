@@ -65,10 +65,10 @@ struct nDPId_workflow {
     size_t idle_scan_index;
     uint64_t last_time;
 
-    void ** ndpi_flow_roots;
-    size_t max_available_flows;
-    size_t num_allocated_flows;
-    size_t cur_allocated_flows;
+    void ** ndpi_flows_active;
+    size_t max_active_flows;
+    size_t num_active_flows;
+    size_t cur_active_flows;
 
     void ** ndpi_flows_idle;
     size_t max_idle_flows;
@@ -114,10 +114,10 @@ static struct nDPId_workflow * init_workflow(void)
         return NULL;
     }
 
-    workflow->num_allocated_flows = 0;
-    workflow->max_available_flows = MAX_FLOW_ROOTS_PER_THREAD;
-    workflow->ndpi_flow_roots = (void **)ndpi_calloc(workflow->max_available_flows, sizeof(void *));
-    if (workflow->ndpi_flow_roots == NULL) {
+    workflow->num_active_flows = 0;
+    workflow->max_active_flows = MAX_FLOW_ROOTS_PER_THREAD;
+    workflow->ndpi_flows_active = (void **)ndpi_calloc(workflow->max_active_flows, sizeof(void *));
+    if (workflow->ndpi_flows_active == NULL) {
         free_workflow(&workflow);
         return NULL;
     }
@@ -164,10 +164,10 @@ static void free_workflow(struct nDPId_workflow ** const workflow)
     if (w->ndpi_struct != NULL) {
         ndpi_exit_detection_module(w->ndpi_struct);
     }
-    for(size_t i = 0; i < w->max_available_flows; i++) {
-        ndpi_tdestroy(w->ndpi_flow_roots[i], ndpi_flow_info_freer);
+    for(size_t i = 0; i < w->max_active_flows; i++) {
+        ndpi_tdestroy(w->ndpi_flows_active[i], ndpi_flow_info_freer);
     }
-    ndpi_free(w->ndpi_flow_roots);
+    ndpi_free(w->ndpi_flows_active);
     ndpi_free(w->ndpi_flows_idle);
     ndpi_free(w);
     *workflow = NULL;
@@ -442,24 +442,24 @@ static void ndpi_process_packet(uint8_t * const args,
     workflow->last_time = time_ms;
 
 #if 0
-    for (size_t i = 0; i < workflow->max_available_flows; ++i) {
-        ndpi_twalk(workflow->ndpi_flow_roots[i], ndpi_workflow_node_walk, workflow);
+    for (size_t i = 0; i < workflow->max_active_flows; ++i) {
+        ndpi_twalk(workflow->ndpi_flows_active[i], ndpi_workflow_node_walk, workflow);
     }
 #endif
 
     if (workflow->last_idle_scan_time + IDLE_SCAN_PERIOD < workflow->last_time) {
-        ndpi_twalk(workflow->ndpi_flow_roots[workflow->idle_scan_index], ndpi_idle_scan_walker, workflow);
+        ndpi_twalk(workflow->ndpi_flows_active[workflow->idle_scan_index], ndpi_idle_scan_walker, workflow);
 
         while (workflow->cur_idle_flows > 0) {
             struct nDPId_flow_info * const f = (struct nDPId_flow_info *)workflow->ndpi_flows_idle[--workflow->cur_idle_flows];
             printf("ThreadID %d, free idle flow with id %u\n", thread_index, f->flow_id);
-            ndpi_tdelete(f, &workflow->ndpi_flow_roots[workflow->idle_scan_index],
+            ndpi_tdelete(f, &workflow->ndpi_flows_active[workflow->idle_scan_index],
                          ndpi_workflow_node_cmp);
             ndpi_flow_info_freer(f);
-            workflow->cur_allocated_flows--;
+            workflow->cur_active_flows--;
         }
 
-        if (++workflow->idle_scan_index == workflow->max_available_flows) {
+        if (++workflow->idle_scan_index == workflow->max_active_flows) {
             workflow->idle_scan_index = 0;
         }
 
@@ -618,8 +618,8 @@ static void ndpi_process_packet(uint8_t * const args,
     }
     flow.hashval += flow.l4_protocol + flow.src_port + flow.dst_port;
 
-    hashed_index = flow.hashval % workflow->max_available_flows;
-    tree_result = ndpi_tfind(&flow, &workflow->ndpi_flow_roots[hashed_index], ndpi_workflow_node_cmp);
+    hashed_index = flow.hashval % workflow->max_active_flows;
+    tree_result = ndpi_tfind(&flow, &workflow->ndpi_flows_active[hashed_index], ndpi_workflow_node_cmp);
     if (tree_result == NULL) {
         uint64_t orig_src_ip[2] = { flow.ip_tuple.v6.src[0], flow.ip_tuple.v6.src[1] };
         uint64_t orig_dst_ip[2] = { flow.ip_tuple.v6.dst[0], flow.ip_tuple.v6.dst[1] };
@@ -633,7 +633,7 @@ static void ndpi_process_packet(uint8_t * const args,
         flow.src_port = orig_dst_port;
         flow.dst_port = orig_src_port;
 
-        tree_result = ndpi_tfind(&flow, &workflow->ndpi_flow_roots[hashed_index], ndpi_workflow_node_cmp);
+        tree_result = ndpi_tfind(&flow, &workflow->ndpi_flows_active[hashed_index], ndpi_workflow_node_cmp);
         if (tree_result != NULL) {
             direction_changed = 1;
         }
@@ -647,9 +647,9 @@ static void ndpi_process_packet(uint8_t * const args,
     }
 
     if (tree_result == NULL) {
-        if (workflow->cur_allocated_flows == workflow->max_available_flows) {
+        if (workflow->cur_active_flows == workflow->max_active_flows) {
             fprintf(stderr, "ThreadID %d, max flows to track reached: %zu, idle: %zu\n", thread_index,
-                    workflow->max_available_flows, workflow->cur_idle_flows);
+                    workflow->max_active_flows, workflow->cur_idle_flows);
             return;
         }
 
@@ -659,8 +659,8 @@ static void ndpi_process_packet(uint8_t * const args,
             return;
         }
 
-        workflow->cur_allocated_flows++;
-        workflow->num_allocated_flows++;
+        workflow->cur_active_flows++;
+        workflow->num_active_flows++;
         memcpy(flow_to_process, &flow, sizeof(*flow_to_process));
         flow_to_process->flow_id = flow_id++;
 
@@ -684,7 +684,7 @@ static void ndpi_process_packet(uint8_t * const args,
         }
 
         printf("ThreadID %d, new flow with id %u\n", thread_index, flow_to_process->flow_id);
-        if (ndpi_tsearch(flow_to_process, &workflow->ndpi_flow_roots[hashed_index], ndpi_workflow_node_cmp) == NULL) {
+        if (ndpi_tsearch(flow_to_process, &workflow->ndpi_flows_active[hashed_index], ndpi_workflow_node_cmp) == NULL) {
             /* TODO: Cleanup this flow! Possible Leak. */
             return;
         }
@@ -812,7 +812,7 @@ static int stop_reader_threads(void)
         }
 
         total_packets_processed += reader_threads[i].workflow->thread_packets_processed;
-        total_flows_captured += reader_threads[i].workflow->num_allocated_flows;
+        total_flows_captured += reader_threads[i].workflow->num_active_flows;
         total_flows_idle += reader_threads[i].workflow->num_idle_flows;
 
         printf("Stopping Thread %d, processed %llu packets\n",
