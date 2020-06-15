@@ -46,13 +46,18 @@ struct nDPId_flow_info {
         } v6;
     } ip_tuple;
 
-    uint16_t l4_protocol;
     unsigned long long int total_l4_data_len;
+    uint16_t l4_protocol;
     uint16_t src_port;
     uint16_t dst_port;
 
-    uint8_t detection_completed;
+    uint8_t is_midstream_flow:1;
+    uint8_t detection_completed:1;
+    uint8_t tls_client_hello_seen:1;
+    uint8_t tls_server_hello_seen:1;
+    uint8_t pad:4;
     struct ndpi_proto detected_l7_protocol;
+    struct ndpi_proto guessed_protocol;
 
     struct ndpi_flow_struct * ndpi_flow;
     struct ndpi_id_struct * ndpi_src;
@@ -61,7 +66,8 @@ struct nDPId_flow_info {
 
 struct nDPId_workflow {
     pcap_t * pcap_handle;
-    int error_or_eof;
+    uint8_t error_or_eof:1;
+    uint8_t pad:7;
     unsigned long long int packets_captured;
     unsigned long long int packets_processed;
     unsigned long long int total_l4_data_len;
@@ -610,6 +616,7 @@ static void ndpi_process_packet(uint8_t * const args,
             return;
         }
         tcp = (struct ndpi_tcphdr *)&packet[l4_offset];
+        flow.is_midstream_flow = (tcp->syn == 0 ? 1 : 0);
         flow.src_port = ntohs(tcp->source);
         flow.dst_port = ntohs(tcp->dest);
         l4_data_len = header->len - l4_offset - sizeof(struct ndpi_tcphdr);
@@ -722,9 +729,11 @@ static void ndpi_process_packet(uint8_t * const args,
             return;
         }
 
-        printf("ThreadID %d, new flow with id %u\n", thread_index, flow_to_process->flow_id);
+        printf("ThreadID %d, new %sflow with id %u\n", thread_index,
+               (flow_to_process->is_midstream_flow != 0 ? "midstream-" : ""),
+               flow_to_process->flow_id);
         if (ndpi_tsearch(flow_to_process, &workflow->ndpi_flows_active[hashed_index], ndpi_workflow_node_cmp) == NULL) {
-            /* TODO: Cleanup this flow! Possible Leak. */
+            /* TODO: Possible Leak, but should not happen as we abort earlier. */
             return;
         }
 
@@ -746,8 +755,21 @@ static void ndpi_process_packet(uint8_t * const args,
     flow_to_process->total_l4_data_len += l4_data_len;
     flow_to_process->last_seen = time_ms;
 
-    if (flow_to_process->detection_completed != 0) {
+    if (flow_to_process->ndpi_flow->num_processed_pkts == 0xFF) {
         return;
+    } else if (flow_to_process->ndpi_flow->num_processed_pkts == 0xFE) {
+        uint8_t protocol_was_guessed = 0;
+        flow_to_process->guessed_protocol =
+            ndpi_detection_giveup(workflow->ndpi_struct,
+                                  flow_to_process->ndpi_flow,
+                                  1, &protocol_was_guessed);
+        if (protocol_was_guessed != 0) {
+            fprintf(stderr, "[%4d] GUESSED PROTOCOL: %s | APP PROTOCOL: %s | CATEGORY: %s\n",
+                    flow_to_process->flow_id,
+                    ndpi_get_proto_name(workflow->ndpi_struct, flow_to_process->guessed_protocol.master_protocol),
+                    ndpi_get_proto_name(workflow->ndpi_struct, flow_to_process->guessed_protocol.app_protocol),
+                    ndpi_category_get_name(workflow->ndpi_struct, flow_to_process->guessed_protocol.category));
+        }
     }
 
     if (flow_to_process->first_seen == 0) {
@@ -760,19 +782,56 @@ static void ndpi_process_packet(uint8_t * const args,
                                       ip_size, time_ms, ndpi_src, ndpi_dst);
 
     if (ndpi_is_protocol_detected(workflow->ndpi_struct,
-                                  flow_to_process->detected_l7_protocol) != 0) {
-        flow_to_process->detection_completed = 1;
-        workflow->detected_flow_protocols++;
-        fprintf(stderr, "DETECTED PROTOCOL: %s | APP PROTOCOL: %s | CATEGORY: %s\n",
-                ndpi_get_proto_name(workflow->ndpi_struct, flow_to_process->detected_l7_protocol.master_protocol),
-                ndpi_get_proto_name(workflow->ndpi_struct, flow_to_process->detected_l7_protocol.app_protocol),
-                ndpi_category_get_name(workflow->ndpi_struct, flow_to_process->detected_l7_protocol.category));
+                                  flow_to_process->detected_l7_protocol) != 0 &&
+        flow_to_process->detection_completed == 0) {
+
+        if (flow_to_process->detected_l7_protocol.master_protocol != NDPI_PROTOCOL_UNKNOWN ||
+            flow_to_process->detected_l7_protocol.app_protocol != NDPI_PROTOCOL_UNKNOWN) {
+            flow_to_process->detection_completed = 1;
+            workflow->detected_flow_protocols++;
+            fprintf(stderr, "[%4d] DETECTED PROTOCOL: %s | APP PROTOCOL: %s | CATEGORY: %s\n",
+                    flow_to_process->flow_id,
+                    ndpi_get_proto_name(workflow->ndpi_struct, flow_to_process->detected_l7_protocol.master_protocol),
+                    ndpi_get_proto_name(workflow->ndpi_struct, flow_to_process->detected_l7_protocol.app_protocol),
+                    ndpi_category_get_name(workflow->ndpi_struct, flow_to_process->detected_l7_protocol.category));
+        }
     }
 
-    if (ndpi_extra_dissection_possible(workflow->ndpi_struct, flow_to_process->ndpi_flow) != 0) {
+    if (flow_to_process->ndpi_flow->num_extra_packets_checked < flow_to_process->ndpi_flow->max_extra_packets_to_check &&
+        ndpi_extra_dissection_possible(workflow->ndpi_struct, flow_to_process->ndpi_flow) != 0) {
         ndpi_process_extra_packet(workflow->ndpi_struct, flow_to_process->ndpi_flow,
                                   ip != NULL ? (uint8_t *)ip : (uint8_t *)ip6,
                                   ip_size, time_ms, ndpi_src, ndpi_dst);
+
+        if (flow_to_process->detected_l7_protocol.master_protocol == NDPI_PROTOCOL_TLS ||
+            flow_to_process->detected_l7_protocol.app_protocol == NDPI_PROTOCOL_TLS) {
+
+            if (flow_to_process->tls_client_hello_seen == 0 && flow_to_process->ndpi_flow->l4.tcp.tls.hello_processed != 0) {
+                uint8_t unknown_tls_version = 0;
+                fprintf(stderr, "[%4d] VERSION: %s | SNI: %s | ALPN: %s\n",
+                        flow_to_process->flow_id,
+                        ndpi_ssl_version2str(flow_to_process->ndpi_flow->protos.stun_ssl.ssl.ssl_version,
+                                             &unknown_tls_version),
+                        flow_to_process->ndpi_flow->protos.stun_ssl.ssl.client_requested_server_name,
+                        (flow_to_process->ndpi_flow->protos.stun_ssl.ssl.alpn != NULL ?
+                         flow_to_process->ndpi_flow->protos.stun_ssl.ssl.alpn : "-"));
+                flow_to_process->tls_client_hello_seen = 1;
+            }
+            if (flow_to_process->tls_server_hello_seen == 0 && flow_to_process->ndpi_flow->l4.tcp.tls.certificate_processed != 0) {
+                uint8_t unknown_tls_version = 0;
+                fprintf(stderr, "[%4d] VERSION: %s | COMMON-NAME(s): %.*s | ISSUER: %s | SUBJECT: %s\n",
+                        flow_to_process->flow_id,
+                        ndpi_ssl_version2str(flow_to_process->ndpi_flow->protos.stun_ssl.ssl.ssl_version,
+                                             &unknown_tls_version),
+                        flow_to_process->ndpi_flow->protos.stun_ssl.ssl.server_names_len,
+                        flow_to_process->ndpi_flow->protos.stun_ssl.ssl.server_names,
+                        (flow_to_process->ndpi_flow->protos.stun_ssl.ssl.issuerDN != NULL ?
+                         flow_to_process->ndpi_flow->protos.stun_ssl.ssl.issuerDN : "-"),
+                        (flow_to_process->ndpi_flow->protos.stun_ssl.ssl.subjectDN != NULL ?
+                         flow_to_process->ndpi_flow->protos.stun_ssl.ssl.subjectDN : "-"));
+                flow_to_process->tls_server_hello_seen = 1;
+            }
+        }
     }
 }
 
