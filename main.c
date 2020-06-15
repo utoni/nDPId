@@ -52,10 +52,11 @@ struct nDPId_flow_info {
     uint16_t dst_port;
 
     uint8_t is_midstream_flow:1;
+    uint8_t flow_fin_seen:1;
     uint8_t detection_completed:1;
     uint8_t tls_client_hello_seen:1;
     uint8_t tls_server_hello_seen:1;
-    uint8_t pad:4;
+    uint8_t pad:3;
     struct ndpi_proto detected_l7_protocol;
     struct ndpi_proto guessed_protocol;
 
@@ -353,30 +354,6 @@ static int ip_tuples_compare(struct nDPId_flow_info const * const A,
     return 0;
 }
 
-#if 0
-static void ndpi_workflow_node_walk(void const * const A, ndpi_VISIT which, int depth,
-                                    void * const user_data)
-{
-    struct nDPId_flow_info const * const flow_info = *(struct nDPId_flow_info **)A;
-
-    (void)depth;
-    (void)user_data;
-
-    switch (which) {
-        case ndpi_preorder:
-            break;
-        case ndpi_postorder:
-            break;
-        case ndpi_endorder:
-            break;
-        case ndpi_leaf:
-            printf("PTR: %p, FlowID: %d, Packets: %llu\n",
-                   flow_info, flow_info->flow_id, flow_info->packets);
-            break;
-    }
-}
-#endif
-
 static void ndpi_idle_scan_walker(void const * const A, ndpi_VISIT which, int depth, void * const user_data)
 {
     struct nDPId_workflow * const workflow = (struct nDPId_workflow *)user_data;
@@ -473,12 +450,6 @@ static void ndpi_process_packet(uint8_t * const args,
     workflow->packets_captured++;
     time_ms = ((uint64_t) header->ts.tv_sec) * TICK_RESOLUTION + header->ts.tv_usec / (1000000 / TICK_RESOLUTION);
     workflow->last_time = time_ms;
-
-#if 0
-    for (size_t i = 0; i < workflow->max_active_flows; ++i) {
-        ndpi_twalk(workflow->ndpi_flows_active[i], ndpi_workflow_node_walk, workflow);
-    }
-#endif
 
     if (workflow->last_idle_scan_time + IDLE_SCAN_PERIOD < workflow->last_time) {
         ndpi_twalk(workflow->ndpi_flows_active[workflow->idle_scan_index], ndpi_idle_scan_walker, workflow);
@@ -617,6 +588,7 @@ static void ndpi_process_packet(uint8_t * const args,
         }
         tcp = (struct ndpi_tcphdr *)&packet[l4_offset];
         flow.is_midstream_flow = (tcp->syn == 0 ? 1 : 0);
+        flow.flow_fin_seen = (tcp->fin == 1 ? 1 : 0);
         flow.src_port = ntohs(tcp->source);
         flow.dst_port = ntohs(tcp->dest);
         l4_data_len = header->len - l4_offset - sizeof(struct ndpi_tcphdr);
@@ -733,7 +705,7 @@ static void ndpi_process_packet(uint8_t * const args,
                (flow_to_process->is_midstream_flow != 0 ? "midstream-" : ""),
                flow_to_process->flow_id);
         if (ndpi_tsearch(flow_to_process, &workflow->ndpi_flows_active[hashed_index], ndpi_workflow_node_cmp) == NULL) {
-            /* TODO: Possible Leak, but should not happen as we abort earlier. */
+            /* Possible Leak, but should not happen as we abort earlier. */
             return;
         }
 
@@ -754,6 +726,11 @@ static void ndpi_process_packet(uint8_t * const args,
     flow_to_process->packets_processed++;
     flow_to_process->total_l4_data_len += l4_data_len;
     flow_to_process->last_seen = time_ms;
+
+    if (flow.flow_fin_seen != 0 && flow_to_process->flow_fin_seen == 0) {
+        flow_to_process->flow_fin_seen = 1;
+        fprintf(stderr, "ThreadID %d, flow fin seen for id %d\n", thread_index, flow_to_process->flow_id);
+    }
 
     if (flow_to_process->ndpi_flow->num_processed_pkts == 0xFF) {
         return;
