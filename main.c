@@ -242,18 +242,20 @@ static int ip_tuple_to_string(struct nDPId_flow_info const * const flow,
 }
 
 #ifdef VERBOSE
-static void print_packet_info(int thread_array_index,
+static void print_packet_info(struct nDPId_reader_thread const * const reader_thread,
                               struct pcap_pkthdr const * const header,
                               uint32_t l4_data_len,
                               struct nDPId_flow_info const * const flow)
 {
+    struct nDPId_workflow const * const workflow = reader_thread->workflow;
     char src_addr_str[INET6_ADDRSTRLEN+1] = {0};
     char dst_addr_str[INET6_ADDRSTRLEN+1] = {0};
     char buf[256];
     int used = 0, ret;
 
-    ret = snprintf(buf, sizeof(buf), "[%lu:%lu, ThreadID %d, %u bytes] ",
-                   header->ts.tv_sec, header->ts.tv_usec, thread_array_index, header->caplen);
+    ret = snprintf(buf, sizeof(buf), "[%8llu, %d, %4u] %4u bytes: ",
+                   workflow->packets_captured, reader_thread->array_index,
+                   flow->flow_id, header->caplen);
     if (ret > 0) {
         used += ret;
     }
@@ -615,7 +617,7 @@ static void ndpi_process_packet(uint8_t * const args,
     workflow->total_l4_data_len += l4_data_len;
 
 #ifdef VERBOSE
-    print_packet_info(reader_thread->array_index, header, l4_data_len, &flow);
+    print_packet_info(reader_thread, header, l4_data_len, &flow);
 #endif
 
     if (flow.l3_type == L3_IP) {
@@ -701,9 +703,9 @@ static void ndpi_process_packet(uint8_t * const args,
             return;
         }
 
-        printf("ThreadID %d, new %sflow with id %u\n", thread_index,
-               (flow_to_process->is_midstream_flow != 0 ? "midstream-" : ""),
-               flow_to_process->flow_id);
+        printf("[%8llu, %d, %4u] new %sflow\n", workflow->packets_captured, thread_index,
+               flow_to_process->flow_id,
+               (flow_to_process->is_midstream_flow != 0 ? "midstream-" : ""));
         if (ndpi_tsearch(flow_to_process, &workflow->ndpi_flows_active[hashed_index], ndpi_workflow_node_cmp) == NULL) {
             /* Possible Leak, but should not happen as we abort earlier. */
             return;
@@ -729,7 +731,8 @@ static void ndpi_process_packet(uint8_t * const args,
 
     if (flow.flow_fin_seen != 0 && flow_to_process->flow_fin_seen == 0) {
         flow_to_process->flow_fin_seen = 1;
-        fprintf(stderr, "ThreadID %d, flow fin seen for id %d\n", thread_index, flow_to_process->flow_id);
+        fprintf(stderr, "[%8llu, %d, %4u] end of flow\n",  workflow->packets_captured, thread_index,
+                flow_to_process->flow_id);
     }
 
     if (flow_to_process->ndpi_flow->num_processed_pkts == 0xFF) {
@@ -741,7 +744,9 @@ static void ndpi_process_packet(uint8_t * const args,
                                   flow_to_process->ndpi_flow,
                                   1, &protocol_was_guessed);
         if (protocol_was_guessed != 0) {
-            fprintf(stderr, "[%4d] GUESSED PROTOCOL: %s | APP PROTOCOL: %s | CATEGORY: %s\n",
+            fprintf(stderr, "[%8llu, %d, %4d] GUESSED PROTOCOL: %s | APP PROTOCOL: %s | CATEGORY: %s\n",
+                    workflow->packets_captured,
+                    reader_thread->array_index,
                     flow_to_process->flow_id,
                     ndpi_get_proto_name(workflow->ndpi_struct, flow_to_process->guessed_protocol.master_protocol),
                     ndpi_get_proto_name(workflow->ndpi_struct, flow_to_process->guessed_protocol.app_protocol),
@@ -766,7 +771,9 @@ static void ndpi_process_packet(uint8_t * const args,
             flow_to_process->detected_l7_protocol.app_protocol != NDPI_PROTOCOL_UNKNOWN) {
             flow_to_process->detection_completed = 1;
             workflow->detected_flow_protocols++;
-            fprintf(stderr, "[%4d] DETECTED PROTOCOL: %s | APP PROTOCOL: %s | CATEGORY: %s\n",
+            fprintf(stderr, "[%8llu, %d, %4d] DETECTED PROTOCOL: %s | APP PROTOCOL: %s | CATEGORY: %s\n",
+                    workflow->packets_captured,
+                    reader_thread->array_index,
                     flow_to_process->flow_id,
                     ndpi_get_proto_name(workflow->ndpi_struct, flow_to_process->detected_l7_protocol.master_protocol),
                     ndpi_get_proto_name(workflow->ndpi_struct, flow_to_process->detected_l7_protocol.app_protocol),
@@ -785,7 +792,9 @@ static void ndpi_process_packet(uint8_t * const args,
 
             if (flow_to_process->tls_client_hello_seen == 0 && flow_to_process->ndpi_flow->l4.tcp.tls.hello_processed != 0) {
                 uint8_t unknown_tls_version = 0;
-                fprintf(stderr, "[%4d] VERSION: %s | SNI: %s | ALPN: %s\n",
+                fprintf(stderr, "[%8llu, %d, %4d] VERSION: %s | SNI: %s | ALPN: %s\n",
+                        workflow->packets_captured,
+                        reader_thread->array_index,
                         flow_to_process->flow_id,
                         ndpi_ssl_version2str(flow_to_process->ndpi_flow->protos.stun_ssl.ssl.ssl_version,
                                              &unknown_tls_version),
@@ -796,7 +805,9 @@ static void ndpi_process_packet(uint8_t * const args,
             }
             if (flow_to_process->tls_server_hello_seen == 0 && flow_to_process->ndpi_flow->l4.tcp.tls.certificate_processed != 0) {
                 uint8_t unknown_tls_version = 0;
-                fprintf(stderr, "[%4d] VERSION: %s | COMMON-NAME(s): %.*s | ISSUER: %s | SUBJECT: %s\n",
+                fprintf(stderr, "[%8llu, %d, %4d] VERSION: %s | COMMON-NAME(s): %.*s | ISSUER: %s | SUBJECT: %s\n",
+                        workflow->packets_captured,
+                        reader_thread->array_index,
                         flow_to_process->flow_id,
                         ndpi_ssl_version2str(flow_to_process->ndpi_flow->protos.stun_ssl.ssl.ssl_version,
                                              &unknown_tls_version),
