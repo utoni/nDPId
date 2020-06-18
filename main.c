@@ -15,7 +15,7 @@
 #error "nDPI 3.2.0 requiired"
 #endif
 
-#define MAX_FLOW_ROOTS_PER_THREAD 8192
+#define MAX_FLOW_ROOTS_PER_THREAD 2048
 #define MAX_IDLE_FLOWS_PER_THREAD 128
 #define TICK_RESOLUTION 1000
 #define MAX_READER_THREADS 8
@@ -744,13 +744,16 @@ static void ndpi_process_packet(uint8_t * const args,
                                   flow_to_process->ndpi_flow,
                                   1, &protocol_was_guessed);
         if (protocol_was_guessed != 0) {
-            fprintf(stderr, "[%8llu, %d, %4d] GUESSED PROTOCOL: %s | APP PROTOCOL: %s | CATEGORY: %s\n",
+            fprintf(stderr, "[%8llu, %d, %4d][GUESSED] protocol: %s | app protocol: %s | category: %s\n",
                     workflow->packets_captured,
                     reader_thread->array_index,
                     flow_to_process->flow_id,
                     ndpi_get_proto_name(workflow->ndpi_struct, flow_to_process->guessed_protocol.master_protocol),
                     ndpi_get_proto_name(workflow->ndpi_struct, flow_to_process->guessed_protocol.app_protocol),
                     ndpi_category_get_name(workflow->ndpi_struct, flow_to_process->guessed_protocol.category));
+        } else {
+            fprintf(stderr, "[%8llu, %d, %4d] !!! FLOW NOT CLASSIFIED !!!\n",
+                    workflow->packets_captured, reader_thread->array_index, flow_to_process->flow_id);
         }
     }
 
@@ -771,7 +774,7 @@ static void ndpi_process_packet(uint8_t * const args,
             flow_to_process->detected_l7_protocol.app_protocol != NDPI_PROTOCOL_UNKNOWN) {
             flow_to_process->detection_completed = 1;
             workflow->detected_flow_protocols++;
-            fprintf(stderr, "[%8llu, %d, %4d] DETECTED PROTOCOL: %s | APP PROTOCOL: %s | CATEGORY: %s\n",
+            fprintf(stderr, "[%8llu, %d, %4d][DETECTED] protocol: %s | app protocol: %s | category: %s\n",
                     workflow->packets_captured,
                     reader_thread->array_index,
                     flow_to_process->flow_id,
@@ -792,7 +795,7 @@ static void ndpi_process_packet(uint8_t * const args,
 
             if (flow_to_process->tls_client_hello_seen == 0 && flow_to_process->ndpi_flow->l4.tcp.tls.hello_processed != 0) {
                 uint8_t unknown_tls_version = 0;
-                fprintf(stderr, "[%8llu, %d, %4d] VERSION: %s | SNI: %s | ALPN: %s\n",
+                fprintf(stderr, "[%8llu, %d, %4d][TLS-CLIENT-HELLO] version: %s | sni: %s | alpn: %s\n",
                         workflow->packets_captured,
                         reader_thread->array_index,
                         flow_to_process->flow_id,
@@ -805,7 +808,7 @@ static void ndpi_process_packet(uint8_t * const args,
             }
             if (flow_to_process->tls_server_hello_seen == 0 && flow_to_process->ndpi_flow->l4.tcp.tls.certificate_processed != 0) {
                 uint8_t unknown_tls_version = 0;
-                fprintf(stderr, "[%8llu, %d, %4d] VERSION: %s | COMMON-NAME(s): %.*s | ISSUER: %s | SUBJECT: %s\n",
+                fprintf(stderr, "[%8llu, %d, %4d][TLS-SERVER-HELLO] version: %s | common-name(s): %.*s | issuer: %s | subject: %s\n",
                         workflow->packets_captured,
                         reader_thread->array_index,
                         flow_to_process->flow_id,
