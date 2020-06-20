@@ -20,7 +20,7 @@
 #define TICK_RESOLUTION 1000
 #define MAX_READER_THREADS 4
 #define IDLE_SCAN_PERIOD 10000 /* msec */
-#define MAX_IDLE_TIME 240000 /* msec */
+#define MAX_IDLE_TIME 300000 /* msec */
 #define INITIAL_THREAD_HASH 0x03dd018b
 
 enum nDPId_l3_type {
@@ -52,11 +52,12 @@ struct nDPId_flow_info {
     uint16_t dst_port;
 
     uint8_t is_midstream_flow:1;
-    uint8_t flow_fin_seen:1;
+    uint8_t flow_fin_ack_seen:1;
+    uint8_t flow_ack_seen:1;
     uint8_t detection_completed:1;
     uint8_t tls_client_hello_seen:1;
     uint8_t tls_server_hello_seen:1;
-    uint8_t reserved_00:3;
+    uint8_t reserved_00:2;
     uint8_t reserved_01;
 
     struct ndpi_proto detected_l7_protocol;
@@ -376,7 +377,9 @@ static void ndpi_idle_scan_walker(void const * const A, ndpi_VISIT which, int de
     }
 
     if (which == ndpi_preorder || which == ndpi_leaf) {
-        if (flow->flow_fin_seen == 1 || flow->last_seen + MAX_IDLE_TIME < workflow->last_time) {
+        if ((flow->flow_fin_ack_seen == 1 && flow->flow_ack_seen == 1) ||
+            flow->last_seen + MAX_IDLE_TIME < workflow->last_time)
+        {
             char src_addr_str[INET6_ADDRSTRLEN+1];
             char dst_addr_str[INET6_ADDRSTRLEN+1];
             ip_tuple_to_string(flow, src_addr_str, sizeof(src_addr_str), dst_addr_str, sizeof(dst_addr_str));
@@ -463,7 +466,7 @@ static void ndpi_process_packet(uint8_t * const args,
 
             while (workflow->cur_idle_flows > 0) {
                 struct nDPId_flow_info * const f = (struct nDPId_flow_info *)workflow->ndpi_flows_idle[--workflow->cur_idle_flows];
-                if (f->flow_fin_seen == 1) {
+                if (f->flow_fin_ack_seen == 1) {
                     printf("Free fin flow with id %u\n", f->flow_id);
                 } else {
                     printf("Free idle flow with id %u\n", f->flow_id);
@@ -596,7 +599,8 @@ static void ndpi_process_packet(uint8_t * const args,
         }
         tcp = (struct ndpi_tcphdr *)&packet[l4_offset];
         flow.is_midstream_flow = (tcp->syn == 0 ? 1 : 0);
-        flow.flow_fin_seen = (tcp->fin == 1 ? 1 : 0);
+        flow.flow_fin_ack_seen = (tcp->fin == 1 && tcp->ack == 1 ? 1 : 0);
+        flow.flow_ack_seen = tcp->ack;
         flow.src_port = ntohs(tcp->source);
         flow.dst_port = ntohs(tcp->dest);
         l4_data_len = header->len - l4_offset - sizeof(struct ndpi_tcphdr);
@@ -734,9 +738,10 @@ static void ndpi_process_packet(uint8_t * const args,
     flow_to_process->packets_processed++;
     flow_to_process->total_l4_data_len += l4_data_len;
     flow_to_process->last_seen = time_ms;
+    flow_to_process->flow_ack_seen = flow.flow_ack_seen;
 
-    if (flow.flow_fin_seen != 0 && flow_to_process->flow_fin_seen == 0) {
-        flow_to_process->flow_fin_seen = 1;
+    if (flow.flow_fin_ack_seen != 0 && flow_to_process->flow_fin_ack_seen == 0) {
+        flow_to_process->flow_fin_ack_seen = 1;
         fprintf(stderr, "[%8llu, %d, %4u] end of flow\n",  workflow->packets_captured, thread_index,
                 flow_to_process->flow_id);
     }
