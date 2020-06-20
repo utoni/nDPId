@@ -16,11 +16,11 @@
 #endif
 
 #define MAX_FLOW_ROOTS_PER_THREAD 2048
-#define MAX_IDLE_FLOWS_PER_THREAD 128
+#define MAX_IDLE_FLOWS_PER_THREAD 64
 #define TICK_RESOLUTION 1000
-#define MAX_READER_THREADS 8
-#define IDLE_SCAN_PERIOD 1000 /* msec (TICK_RESOLUTION = 1000) */
-#define MAX_IDLE_TIME 300000 /* msec (TICK_RESOLUTION = 1000) */
+#define MAX_READER_THREADS 4
+#define IDLE_SCAN_PERIOD 10000 /* msec */
+#define MAX_IDLE_TIME 240000 /* msec */
 #define INITIAL_THREAD_HASH 0x03dd018b
 
 enum nDPId_l3_type {
@@ -56,7 +56,9 @@ struct nDPId_flow_info {
     uint8_t detection_completed:1;
     uint8_t tls_client_hello_seen:1;
     uint8_t tls_server_hello_seen:1;
-    uint8_t pad:3;
+    uint8_t reserved_00:3;
+    uint8_t reserved_01;
+
     struct ndpi_proto detected_l7_protocol;
     struct ndpi_proto guessed_protocol;
 
@@ -67,15 +69,17 @@ struct nDPId_flow_info {
 
 struct nDPId_workflow {
     pcap_t * pcap_handle;
+
     uint8_t error_or_eof:1;
-    uint8_t pad:7;
+    uint8_t reserved_00:7;
+    uint8_t reserved_01[3];
+
     unsigned long long int packets_captured;
     unsigned long long int packets_processed;
     unsigned long long int total_l4_data_len;
     unsigned long long int detected_flow_protocols;
 
     uint64_t last_idle_scan_time;
-    size_t idle_scan_index;
     uint64_t last_time;
 
     void ** ndpi_flows_active;
@@ -372,7 +376,7 @@ static void ndpi_idle_scan_walker(void const * const A, ndpi_VISIT which, int de
     }
 
     if (which == ndpi_preorder || which == ndpi_leaf) {
-        if (flow->last_seen + MAX_IDLE_TIME < workflow->last_time) {
+        if (flow->flow_fin_seen == 1 || flow->last_seen + MAX_IDLE_TIME < workflow->last_time) {
             char src_addr_str[INET6_ADDRSTRLEN+1];
             char dst_addr_str[INET6_ADDRSTRLEN+1];
             ip_tuple_to_string(flow, src_addr_str, sizeof(src_addr_str), dst_addr_str, sizeof(dst_addr_str));
@@ -454,19 +458,21 @@ static void ndpi_process_packet(uint8_t * const args,
     workflow->last_time = time_ms;
 
     if (workflow->last_idle_scan_time + IDLE_SCAN_PERIOD < workflow->last_time) {
-        ndpi_twalk(workflow->ndpi_flows_active[workflow->idle_scan_index], ndpi_idle_scan_walker, workflow);
+        for (size_t idle_scan_index = 0; idle_scan_index < workflow->max_active_flows; ++idle_scan_index) {
+            ndpi_twalk(workflow->ndpi_flows_active[idle_scan_index], ndpi_idle_scan_walker, workflow);
 
-        while (workflow->cur_idle_flows > 0) {
-            struct nDPId_flow_info * const f = (struct nDPId_flow_info *)workflow->ndpi_flows_idle[--workflow->cur_idle_flows];
-            printf("Free idle flow with id %u\n", f->flow_id);
-            ndpi_tdelete(f, &workflow->ndpi_flows_active[workflow->idle_scan_index],
-                         ndpi_workflow_node_cmp);
-            ndpi_flow_info_freer(f);
-            workflow->cur_active_flows--;
-        }
-
-        if (++workflow->idle_scan_index == workflow->max_active_flows) {
-            workflow->idle_scan_index = 0;
+            while (workflow->cur_idle_flows > 0) {
+                struct nDPId_flow_info * const f = (struct nDPId_flow_info *)workflow->ndpi_flows_idle[--workflow->cur_idle_flows];
+                if (f->flow_fin_seen == 1) {
+                    printf("Free fin flow with id %u\n", f->flow_id);
+                } else {
+                    printf("Free idle flow with id %u\n", f->flow_id);
+                }
+                ndpi_tdelete(f, &workflow->ndpi_flows_active[idle_scan_index],
+                             ndpi_workflow_node_cmp);
+                ndpi_flow_info_freer(f);
+                workflow->cur_active_flows--;
+            }
         }
 
         workflow->last_idle_scan_time = workflow->last_time;
@@ -752,7 +758,7 @@ static void ndpi_process_packet(uint8_t * const args,
                     ndpi_get_proto_name(workflow->ndpi_struct, flow_to_process->guessed_protocol.app_protocol),
                     ndpi_category_get_name(workflow->ndpi_struct, flow_to_process->guessed_protocol.category));
         } else {
-            fprintf(stderr, "[%8llu, %d, %4d] !!! FLOW NOT CLASSIFIED !!!\n",
+            fprintf(stderr, "[%8llu, %d, %4d][FLOW NOT CLASSIFIED]\n",
                     workflow->packets_captured, reader_thread->array_index, flow_to_process->flow_id);
         }
     }
