@@ -47,7 +47,6 @@ struct nDPId_flow_info {
     } ip_tuple;
 
     unsigned long long int total_l4_data_len;
-    uint16_t l4_protocol;
     uint16_t src_port;
     uint16_t dst_port;
 
@@ -58,7 +57,7 @@ struct nDPId_flow_info {
     uint8_t tls_client_hello_seen:1;
     uint8_t tls_server_hello_seen:1;
     uint8_t reserved_00:2;
-    uint8_t reserved_01;
+    uint8_t l4_protocol;
 
     struct ndpi_proto detected_l7_protocol;
     struct ndpi_proto guessed_protocol;
@@ -441,10 +440,11 @@ static void ndpi_process_packet(uint8_t * const args,
     const uint16_t eth_offset = 0;
     uint16_t ip_offset;
     uint16_t ip_size;
-    uint16_t l4_offset;
-    uint32_t l4_data_len = 0;
+
+    const uint8_t * l4_ptr = NULL;
+    uint16_t l4_len = 0;
+
     uint16_t type;
-    uint16_t frag_off = 0;
     int thread_index = INITIAL_THREAD_HASH; // generated with `dd if=/dev/random bs=1024 count=1 |& hd'
 
     if (reader_thread == NULL) {
@@ -537,7 +537,6 @@ static void ndpi_process_packet(uint8_t * const args,
     ip_size = header->len - ip_offset;
 
     if (type == ETH_P_IP && header->len >= ip_offset) {
-        frag_off = ntohs(ip->frag_off);
         if (header->caplen < header->len) {
             fprintf(stderr, "Captured packet size is smaller than packet size: %u < %u\n",
                     header->caplen, header->len);
@@ -546,11 +545,11 @@ static void ndpi_process_packet(uint8_t * const args,
 
     if (ip != NULL && ip->version == 4) {
         flow.l3_type = L3_IP;
-        flow.l4_protocol = ip->protocol;
-        l4_offset = ip_offset + sizeof(*ip);
-
-        if ((frag_off & 0x1FFF) != 0) {
-            fprintf(stderr, "IP fragments are not handled by this demo (nDPI supports them)\n");
+        if (ndpi_detection_get_l4((uint8_t*)ip, ip_size, &l4_ptr, &l4_len,
+                                  &flow.l4_protocol, NDPI_DETECTION_ONLY_IPV4) != 0)
+        {
+            fprintf(stderr, "nDPI IPv4/L4 payload detection failed, L4 length: %zu\n",
+                    ip_size - sizeof(*ip));
             return;
         }
 
@@ -566,8 +565,13 @@ static void ndpi_process_packet(uint8_t * const args,
         }
 
         flow.l3_type = L3_IP6;
-        flow.l4_protocol = ip6->ip6_hdr.ip6_un1_nxt;
-        l4_offset = ip_offset + sizeof(ip6->ip6_hdr);
+        if (ndpi_detection_get_l4((uint8_t*)ip6, ip_size, &l4_ptr, &l4_len,
+                                  &flow.l4_protocol, NDPI_DETECTION_ONLY_IPV6) != 0)
+        {
+            fprintf(stderr, "nDPI IPv6/L4 payload detection failed, L4 length: %zu\n",
+                    ip_size - sizeof(*ip6));
+            return;
+        }
 
         flow.ip_tuple.v6.src[0] = ip6->ip6_src.u6_addr.u6_addr64[0];
         flow.ip_tuple.v6.src[1] = ip6->ip6_src.u6_addr.u6_addr64[1];
@@ -592,30 +596,28 @@ static void ndpi_process_packet(uint8_t * const args,
     if (flow.l4_protocol == IPPROTO_TCP) {
         const struct ndpi_tcphdr * tcp;
 
-        if (header->len < l4_offset + sizeof(struct ndpi_tcphdr)) {
+        if (header->len < (l4_ptr - packet) + sizeof(struct ndpi_tcphdr)) {
             fprintf(stderr, "Malformed TCP packet, packet size smaller than expected: %u < %zu\n",
-                            header->len, l4_offset + sizeof(struct ndpi_tcphdr));
+                            header->len, (l4_ptr - packet) + sizeof(struct ndpi_tcphdr));
             return;
         }
-        tcp = (struct ndpi_tcphdr *)&packet[l4_offset];
+        tcp = (struct ndpi_tcphdr *)l4_ptr;
         flow.is_midstream_flow = (tcp->syn == 0 ? 1 : 0);
         flow.flow_fin_ack_seen = (tcp->fin == 1 && tcp->ack == 1 ? 1 : 0);
         flow.flow_ack_seen = tcp->ack;
         flow.src_port = ntohs(tcp->source);
         flow.dst_port = ntohs(tcp->dest);
-        l4_data_len = header->len - l4_offset - sizeof(struct ndpi_tcphdr);
     } else if (flow.l4_protocol == IPPROTO_UDP) {
         const struct ndpi_udphdr * udp;
 
-        if (header->len < l4_offset + sizeof(struct ndpi_udphdr)) {
+        if (header->len < (l4_ptr - packet) + sizeof(struct ndpi_udphdr)) {
             fprintf(stderr, "Malformed UDP packet, packet size smaller than expected: %u < %zu\n",
-                            header->len, l4_offset + sizeof(struct ndpi_udphdr));
+                            header->len, (l4_ptr - packet) + sizeof(struct ndpi_udphdr));
             return;
         }
-        udp = (struct ndpi_udphdr *)&packet[l4_offset];
+        udp = (struct ndpi_udphdr *)l4_ptr;
         flow.src_port = ntohs(udp->source);
         flow.dst_port = ntohs(udp->dest);
-        l4_data_len = header->len - l4_offset - sizeof(struct ndpi_udphdr);
     }
 
     thread_index += (flow.src_port < flow.dst_port ? flow.dst_port : flow.src_port);
@@ -624,7 +626,7 @@ static void ndpi_process_packet(uint8_t * const args,
         return;
     }
     workflow->packets_processed++;
-    workflow->total_l4_data_len += l4_data_len;
+    workflow->total_l4_data_len += l4_len;
 
 #ifdef VERBOSE
     print_packet_info(reader_thread, header, l4_data_len, &flow);
@@ -736,7 +738,7 @@ static void ndpi_process_packet(uint8_t * const args,
     }
 
     flow_to_process->packets_processed++;
-    flow_to_process->total_l4_data_len += l4_data_len;
+    flow_to_process->total_l4_data_len += l4_len;
     flow_to_process->last_seen = time_ms;
     flow_to_process->flow_ack_seen = flow.flow_ack_seen;
 
@@ -744,6 +746,7 @@ static void ndpi_process_packet(uint8_t * const args,
         flow_to_process->flow_fin_ack_seen = 1;
         fprintf(stderr, "[%8llu, %d, %4u] end of flow\n",  workflow->packets_captured, thread_index,
                 flow_to_process->flow_id);
+        return;
     }
 
     if (flow_to_process->ndpi_flow->num_processed_pkts == 0xFF) {
