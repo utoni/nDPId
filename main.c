@@ -544,6 +544,12 @@ static void ndpi_process_packet(uint8_t * const args,
     }
 
     if (ip != NULL && ip->version == 4) {
+        if (ip_size < sizeof(*ip)) {
+            fprintf(stderr, "Packet smaller than IP4 header length: %u < %zu\n",
+                    ip_size, sizeof(*ip));
+            return;
+        }
+
         flow.l3_type = L3_IP;
         if (ndpi_detection_get_l4((uint8_t*)ip, ip_size, &l4_ptr, &l4_len,
                                   &flow.l4_protocol, NDPI_DETECTION_ONLY_IPV4) != 0)
@@ -559,9 +565,10 @@ static void ndpi_process_packet(uint8_t * const args,
                              flow.ip_tuple.v4.dst : flow.ip_tuple.v4.src);
         thread_index = min_addr + ip->protocol;
     } else if (ip6 != NULL) {
-        if (ip6->ip6_hdr.ip6_un1_plen < header->len - ip_offset - sizeof(ip6->ip6_hdr)) {
-            fprintf(stderr, "IP6 payload length smaller than packet size: %u < %lu\n",
-                    ip6->ip6_hdr.ip6_un1_plen, header->len - ip_offset + sizeof(ip6->ip6_hdr));
+        if (ip_size < sizeof(ip6->ip6_hdr)) {
+            fprintf(stderr, "Packet smaller than IP6 header length: %u < %zu\n",
+                    ip_size, sizeof(ip6->ip6_hdr));
+            return;
         }
 
         flow.l3_type = L3_IP6;
