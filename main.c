@@ -798,11 +798,7 @@ static void ndpi_process_packet(uint8_t * const args,
         }
     }
 
-    if (flow_to_process->ndpi_flow->num_extra_packets_checked < flow_to_process->ndpi_flow->max_extra_packets_to_check &&
-        ndpi_extra_dissection_possible(workflow->ndpi_struct, flow_to_process->ndpi_flow) != 0) {
-        ndpi_process_extra_packet(workflow->ndpi_struct, flow_to_process->ndpi_flow,
-                                  ip != NULL ? (uint8_t *)ip : (uint8_t *)ip6,
-                                  ip_size, time_ms, ndpi_src, ndpi_dst);
+    if (flow_to_process->ndpi_flow->num_extra_packets_checked < flow_to_process->ndpi_flow->max_extra_packets_to_check) {
 
         if (flow_to_process->detected_l7_protocol.master_protocol == NDPI_PROTOCOL_TLS ||
             flow_to_process->detected_l7_protocol.app_protocol == NDPI_PROTOCOL_TLS) {
