@@ -12,7 +12,7 @@
 #include <unistd.h>
 
 #if !(NDPI_MAJOR >= 3 && NDPI_MINOR >= 2)
-#error "nDPI 3.2.0 requiired"
+#error "nDPI >= 3.2.0 requiired"
 #endif
 
 #define MAX_FLOW_ROOTS_PER_THREAD 2048
@@ -823,6 +823,7 @@ static void ndpi_process_packet(uint8_t * const args,
                          flow_to_process->ndpi_flow->protos.stun_ssl.ssl.alpn : "-"));
                 flow_to_process->tls_client_hello_seen = 1;
             }
+#if (NDPI_MAJOR >= 3 && NDPI_MINOR > 2)
             if (flow_to_process->tls_server_hello_seen == 0 && flow_to_process->ndpi_flow->l4.tcp.tls.certificate_processed != 0) {
                 uint8_t unknown_tls_version = 0;
                 fprintf(stderr, "[%8llu, %d, %4d][TLS-SERVER-HELLO] version: %s | common-name(s): %.*s | issuer: %s | subject: %s\n",
@@ -839,6 +840,7 @@ static void ndpi_process_packet(uint8_t * const args,
                          flow_to_process->ndpi_flow->protos.stun_ssl.ssl.subjectDN : "-"));
                 flow_to_process->tls_server_hello_seen = 1;
             }
+#endif
         }
     }
 }

@@ -1,6 +1,6 @@
 CC = gcc
-CFLAGS = -Wall -Wextra $(EXTRA_CFLAGS)
-LIBS = -pthread -lpcap -lm
+CFLAGS += -Wall -Wextra $(EXTRA_CFLAGS)
+LIBS += -pthread -lpcap -lm
 
 ifneq ($(CUSTOM_LIBNDPI),)
 LIBS += '$(CUSTOM_LIBNDPI)'
