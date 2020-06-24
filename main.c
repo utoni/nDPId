@@ -500,7 +500,8 @@ static void ndpi_process_packet(uint8_t * const args,
             break;
         case DLT_EN10MB:
             if (header->len < sizeof(struct ndpi_ethhdr)) {
-                fprintf(stderr, "Ethernet packet too short - skipping\n");
+                fprintf(stderr, "[%8llu, %d] Ethernet packet too short - skipping\n",
+                        workflow->packets_captured, reader_thread->array_index);
                 return;
             }
             ethernet = (struct ndpi_ethhdr *) &packet[eth_offset];
@@ -509,26 +510,29 @@ static void ndpi_process_packet(uint8_t * const args,
             switch (type) {
                 case ETH_P_IP: /* IPv4 */
                     if (header->len < sizeof(struct ndpi_ethhdr) + sizeof(struct ndpi_iphdr)) {
-                        fprintf(stderr, "IP packet too short - skipping\n");
+                        fprintf(stderr, "[%8llu, %d] IP packet too short - skipping\n",
+                                workflow->packets_captured, reader_thread->array_index);
                         return;
                     }
                     break;
                 case ETH_P_IPV6: /* IPV6 */
                     if (header->len < sizeof(struct ndpi_ethhdr) + sizeof(struct ndpi_ipv6hdr)) {
-                        fprintf(stderr, "IP6 packet too short - skipping\n");
+                        fprintf(stderr, "[%8llu, %d] IP6 packet too short - skipping\n",
+                                workflow->packets_captured, reader_thread->array_index);
                         return;
                     }
                     break;
                 case ETH_P_ARP: /* ARP */
                     return;
                 default:
-                    fprintf(stderr, "Unknown Ethernet packet with type 0x%X - skipping\n", type);
+                    fprintf(stderr, "[%8llu, %d] Unknown Ethernet packet with type 0x%X - skipping\n",
+                            workflow->packets_captured, reader_thread->array_index, type);
                     return;
             }
             break;
         default:
-            fprintf(stderr, "Captured non IP/Ethernet packet with datalink type 0x%X - skipping\n",
-                    pcap_datalink(workflow->pcap_handle));
+            fprintf(stderr, "[%8llu, %d] Captured non IP/Ethernet packet with datalink type 0x%X - skipping\n",
+                    workflow->packets_captured, reader_thread->array_index, pcap_datalink(workflow->pcap_handle));
             return;
     }
 
@@ -539,23 +543,24 @@ static void ndpi_process_packet(uint8_t * const args,
         ip = NULL;
         ip6 = (struct ndpi_ipv6hdr *)&packet[ip_offset];
     } else {
-        fprintf(stderr, "Captured non IPv4/IPv6 packet with type 0x%X - skipping\n", type);
+        fprintf(stderr, "[%8llu, %d] Captured non IPv4/IPv6 packet with type 0x%X - skipping\n",
+                workflow->packets_captured, reader_thread->array_index, type);
         return;
     }
     ip_size = header->len - ip_offset;
 
     if (type == ETH_P_IP && header->len >= ip_offset) {
         if (header->caplen < header->len) {
-            fprintf(stderr, "Captured packet size is smaller than packet size: %u < %u\n",
-                    header->caplen, header->len);
+            fprintf(stderr, "[%8llu, %d] Captured packet size is smaller than packet size: %u < %u\n",
+                    workflow->packets_captured, reader_thread->array_index, header->caplen, header->len);
         }
     }
 
     /* process layer3 e.g. IPv4 / IPv6 */
     if (ip != NULL && ip->version == 4) {
         if (ip_size < sizeof(*ip)) {
-            fprintf(stderr, "Packet smaller than IP4 header length: %u < %zu\n",
-                    ip_size, sizeof(*ip));
+            fprintf(stderr, "[%8llu, %d] Packet smaller than IP4 header length: %u < %zu\n",
+                    workflow->packets_captured, reader_thread->array_index, ip_size, sizeof(*ip));
             return;
         }
 
@@ -563,8 +568,8 @@ static void ndpi_process_packet(uint8_t * const args,
         if (ndpi_detection_get_l4((uint8_t*)ip, ip_size, &l4_ptr, &l4_len,
                                   &flow.l4_protocol, NDPI_DETECTION_ONLY_IPV4) != 0)
         {
-            fprintf(stderr, "nDPI IPv4/L4 payload detection failed, L4 length: %zu\n",
-                    ip_size - sizeof(*ip));
+            fprintf(stderr, "[%8llu, %d] nDPI IPv4/L4 payload detection failed, L4 length: %zu\n",
+                    workflow->packets_captured, reader_thread->array_index, ip_size - sizeof(*ip));
             return;
         }
 
@@ -575,8 +580,8 @@ static void ndpi_process_packet(uint8_t * const args,
         thread_index = min_addr + ip->protocol;
     } else if (ip6 != NULL) {
         if (ip_size < sizeof(ip6->ip6_hdr)) {
-            fprintf(stderr, "Packet smaller than IP6 header length: %u < %zu\n",
-                    ip_size, sizeof(ip6->ip6_hdr));
+            fprintf(stderr, "[%8llu, %d] Packet smaller than IP6 header length: %u < %zu\n",
+                    workflow->packets_captured, reader_thread->array_index, ip_size, sizeof(ip6->ip6_hdr));
             return;
         }
 
@@ -584,8 +589,8 @@ static void ndpi_process_packet(uint8_t * const args,
         if (ndpi_detection_get_l4((uint8_t*)ip6, ip_size, &l4_ptr, &l4_len,
                                   &flow.l4_protocol, NDPI_DETECTION_ONLY_IPV6) != 0)
         {
-            fprintf(stderr, "nDPI IPv6/L4 payload detection failed, L4 length: %zu\n",
-                    ip_size - sizeof(*ip6));
+            fprintf(stderr, "[%8llu, %d] nDPI IPv6/L4 payload detection failed, L4 length: %zu\n",
+                    workflow->packets_captured, reader_thread->array_index, ip_size - sizeof(*ip6));
             return;
         }
 
@@ -605,7 +610,8 @@ static void ndpi_process_packet(uint8_t * const args,
         }
         thread_index = min_addr[0] + min_addr[1] + ip6->ip6_hdr.ip6_un1_nxt;
     } else {
-        fprintf(stderr, "Non IP/IPv6 protocol detected: 0x%X\n", type);
+        fprintf(stderr, "[%8llu, %d] Non IP/IPv6 protocol detected: 0x%X\n",
+                workflow->packets_captured, reader_thread->array_index, type);
         return;
     }
 
@@ -614,8 +620,9 @@ static void ndpi_process_packet(uint8_t * const args,
         const struct ndpi_tcphdr * tcp;
 
         if (header->len < (l4_ptr - packet) + sizeof(struct ndpi_tcphdr)) {
-            fprintf(stderr, "Malformed TCP packet, packet size smaller than expected: %u < %zu\n",
-                            header->len, (l4_ptr - packet) + sizeof(struct ndpi_tcphdr));
+            fprintf(stderr, "[%8llu, %d] Malformed TCP packet, packet size smaller than expected: %u < %zu\n",
+                    workflow->packets_captured, reader_thread->array_index,
+                    header->len, (l4_ptr - packet) + sizeof(struct ndpi_tcphdr));
             return;
         }
         tcp = (struct ndpi_tcphdr *)l4_ptr;
@@ -628,8 +635,9 @@ static void ndpi_process_packet(uint8_t * const args,
         const struct ndpi_udphdr * udp;
 
         if (header->len < (l4_ptr - packet) + sizeof(struct ndpi_udphdr)) {
-            fprintf(stderr, "Malformed UDP packet, packet size smaller than expected: %u < %zu\n",
-                            header->len, (l4_ptr - packet) + sizeof(struct ndpi_udphdr));
+            fprintf(stderr, "[%8llu, %d] Malformed UDP packet, packet size smaller than expected: %u < %zu\n",
+                    workflow->packets_captured, reader_thread->array_index,
+                    header->len, (l4_ptr - packet) + sizeof(struct ndpi_udphdr));
             return;
         }
         udp = (struct ndpi_udphdr *)l4_ptr;
@@ -701,14 +709,16 @@ static void ndpi_process_packet(uint8_t * const args,
     if (tree_result == NULL) {
         /* flow still not found, must be new */
         if (workflow->cur_active_flows == workflow->max_active_flows) {
-            fprintf(stderr, "ThreadID %d, max flows to track reached: %llu, idle: %llu\n", thread_index,
+            fprintf(stderr, "[%8llu, %d] max flows to track reached: %llu, idle: %llu\n",
+                    workflow->packets_captured, reader_thread->array_index,
                     workflow->max_active_flows, workflow->cur_idle_flows);
             return;
         }
 
         flow_to_process = (struct nDPId_flow_info *)ndpi_malloc(sizeof(*flow_to_process));
         if (flow_to_process == NULL) {
-            fprintf(stderr, "Not enough memory for flow info\n");
+            fprintf(stderr, "[%8llu, %d] Not enough memory for flow info\n",
+                    workflow->packets_captured, reader_thread->array_index);
             return;
         }
 
@@ -719,20 +729,23 @@ static void ndpi_process_packet(uint8_t * const args,
 
         flow_to_process->ndpi_flow = (struct ndpi_flow_struct *)ndpi_flow_malloc(SIZEOF_FLOW_STRUCT);
         if (flow_to_process->ndpi_flow == NULL) {
-            fprintf(stderr, "Not enough memory for flow struct\n");
+            fprintf(stderr, "[%8llu, %d, %4u] Not enough memory for flow struct\n",
+                    workflow->packets_captured, reader_thread->array_index, flow_to_process->flow_id);
             return;
         }
         memset(flow_to_process->ndpi_flow, 0, SIZEOF_FLOW_STRUCT);
 
         flow_to_process->ndpi_src = (struct ndpi_id_struct *)ndpi_calloc(1, SIZEOF_ID_STRUCT);
         if (flow_to_process->ndpi_src == NULL) {
-            fprintf(stderr, "Not enough memory for src id struct\n");
+            fprintf(stderr, "[%8llu, %d, %4u] Not enough memory for src id struct\n",
+                    workflow->packets_captured, reader_thread->array_index, flow_to_process->flow_id);
             return;
         }
 
         flow_to_process->ndpi_dst = (struct ndpi_id_struct *)ndpi_calloc(1, SIZEOF_ID_STRUCT);
         if (flow_to_process->ndpi_dst == NULL) {
-            fprintf(stderr, "Not enough memory for dst id struct\n");
+            fprintf(stderr, "[%8llu, %d, %4u] Not enough memory for dst id struct\n",
+                    workflow->packets_captured, reader_thread->array_index, flow_to_process->flow_id);
             return;
         }
 
