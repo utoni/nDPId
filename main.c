@@ -4,6 +4,7 @@
 #include <netinet/in.h>
 #include <ndpi/ndpi_api.h>
 #include <ndpi/ndpi_main.h>
+#include <ndpi/ndpi_typedefs.h>
 #include <pcap/pcap.h>
 #include <pthread.h>
 #include <signal.h>
@@ -92,6 +93,7 @@ struct nDPId_workflow {
     unsigned long long int cur_idle_flows;
     unsigned long long int total_idle_flows;
 
+    ndpi_serializer ndpi_serializer;
     struct ndpi_detection_module_struct * ndpi_struct;
 };
 
@@ -158,6 +160,11 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     ndpi_set_protocol_detection_bitmask2(workflow->ndpi_struct, &protos);
     ndpi_finalize_initalization(workflow->ndpi_struct);
 
+    if (ndpi_init_serializer_ll(&workflow->ndpi_serializer, ndpi_serialization_format_json, BUFSIZ) != 1)
+    {
+        return NULL;
+    }
+
     return workflow;
 }
 
@@ -192,6 +199,7 @@ static void free_workflow(struct nDPId_workflow ** const workflow)
     }
     ndpi_free(w->ndpi_flows_active);
     ndpi_free(w->ndpi_flows_idle);
+    ndpi_term_serializer(&w->ndpi_serializer);
     ndpi_free(w);
     *workflow = NULL;
 }
@@ -439,6 +447,52 @@ static void check_for_idle_flows(struct nDPId_workflow * const workflow)
 
         workflow->last_idle_scan_time = workflow->last_time;
     }
+}
+
+static int flow2json(struct ndpi_detection_module_struct *ndpi_struct,
+                     struct ndpi_flow_struct *flow,
+                     uint8_t ip_version, uint8_t l4_protocol,
+                     uint32_t src_v4, uint32_t dst_v4,
+                     struct ndpi_in6_addr *src_v6, struct ndpi_in6_addr *dst_v6,
+                     uint16_t src_port, uint16_t dst_port,
+                     ndpi_protocol l7_protocol, ndpi_serializer *serializer)
+{
+    char src_name[32], dst_name[32];
+
+    if(ip_version == 4) {
+      inet_ntop(AF_INET, &src_v4, src_name, sizeof(src_name));
+      inet_ntop(AF_INET, &dst_v4, dst_name, sizeof(dst_name));
+    } else {
+      inet_ntop(AF_INET6, src_v6, src_name, sizeof(src_name));
+      inet_ntop(AF_INET6, dst_v6, dst_name, sizeof(dst_name));
+      /* For consistency across platforms replace :0: with :: */
+      ndpi_patchIPv6Address(src_name), ndpi_patchIPv6Address(dst_name);
+    }
+
+    ndpi_serialize_string_string(serializer, "src_ip", src_name);
+    ndpi_serialize_string_string(serializer, "dest_ip", dst_name);
+    if(src_port) ndpi_serialize_string_uint32(serializer, "src_port", src_port);
+    if(dst_port) ndpi_serialize_string_uint32(serializer, "dst_port", dst_port);
+
+    switch(l4_protocol) {
+    case IPPROTO_TCP:
+      ndpi_serialize_string_string(serializer, "proto", "TCP");
+      break;
+
+    case IPPROTO_UDP:
+      ndpi_serialize_string_string(serializer, "proto", "UDP");
+      break;
+
+    case IPPROTO_ICMP:
+      ndpi_serialize_string_string(serializer, "proto", "ICMP");
+      break;
+
+    default:
+      ndpi_serialize_string_uint32(serializer, "proto", l4_protocol);
+      break;
+    }
+
+    return(ndpi_dpi2json(ndpi_struct, flow, l7_protocol, serializer));
 }
 
 static void ndpi_process_packet(uint8_t * const args,
@@ -759,6 +813,25 @@ static void ndpi_process_packet(uint8_t * const args,
 
         ndpi_src = flow_to_process->ndpi_src;
         ndpi_dst = flow_to_process->ndpi_dst;
+
+        if (ip != NULL) {
+            if (flow2json(workflow->ndpi_struct, flow_to_process->ndpi_flow,
+                          4, flow_to_process->l4_protocol, ip->saddr, ip->daddr,
+                          NULL, NULL, flow_to_process->src_port, flow_to_process->dst_port,
+                          flow_to_process->detected_l7_protocol, &workflow->ndpi_serializer) == 0)
+            {
+                uint32_t len = 0;
+                char * out;
+                out = ndpi_serializer_get_buffer(&workflow->ndpi_serializer, &len);
+                if (len > 0) {
+                    printf("%.*s\n", (int)len, out);
+                    ndpi_reset_serializer(&workflow->ndpi_serializer);
+                }
+            } else {
+                fprintf(stderr, "[%8llu, %d, %4u] nDPId JSON serializer failed\n",
+                        workflow->packets_captured, reader_thread->array_index, flow_to_process->flow_id);
+            }
+        }
     } else {
         flow_to_process = *(struct nDPId_flow_info **)tree_result;
 
