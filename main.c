@@ -263,7 +263,7 @@ static int ip_tuple_to_string(struct nDPId_flow_info const * const flow,
     return 0;
 }
 
-#ifdef VERBOSE
+#ifdef EXTRA_VERBOSE
 static void print_packet_info(struct nDPId_reader_thread const * const reader_thread,
                               struct pcap_pkthdr const * const header,
                               uint32_t l4_data_len,
@@ -456,11 +456,13 @@ static void check_for_idle_flows(struct nDPId_reader_thread * const reader_threa
             while (workflow->cur_idle_flows > 0) {
                 struct nDPId_flow_info * const f =
                     (struct nDPId_flow_info *)workflow->ndpi_flows_idle[--workflow->cur_idle_flows];
+#ifdef VERBOSE
                 if (f->flow_fin_ack_seen == 1) {
                     printf("Free fin flow with id %u\n", f->flow_id);
                 } else {
                     printf("Free idle flow with id %u\n", f->flow_id);
                 }
+#endif
                 jsonize_flow_event(reader_thread, f, FLOW_IDLE);
                 ndpi_tdelete(f, &workflow->ndpi_flows_active[idle_scan_index],
                              ndpi_workflow_node_cmp);
@@ -802,7 +804,7 @@ static void ndpi_process_packet(uint8_t * const args,
     workflow->packets_processed++;
     workflow->total_l4_data_len += l4_len;
 
-#ifdef VERBOSE
+#ifdef EXTRA_VERBOSE
     print_packet_info(reader_thread, header, l4_data_len, &flow);
 #endif
 
@@ -899,10 +901,11 @@ static void ndpi_process_packet(uint8_t * const args,
                     workflow->packets_captured, reader_thread->array_index, flow_to_process->flow_id);
             return;
         }
-
+#ifdef VERBOSE
         printf("[%8llu, %d, %4u] new %sflow\n", workflow->packets_captured, thread_index,
                flow_to_process->flow_id,
                (flow_to_process->is_midstream_flow != 0 ? "midstream-" : ""));
+#endif
         if (ndpi_tsearch(flow_to_process, &workflow->ndpi_flows_active[hashed_index], ndpi_workflow_node_cmp) == NULL) {
             /* Possible Leak, but should not happen as we'd abort earlier. */
             return;
@@ -937,8 +940,10 @@ static void ndpi_process_packet(uint8_t * const args,
     /* TCP-FIN: indicates that at least one side wants to end the connection */
     if (flow.flow_fin_ack_seen != 0 && flow_to_process->flow_fin_ack_seen == 0) {
         flow_to_process->flow_fin_ack_seen = 1;
+#ifdef VERBOSE
         printf("[%8llu, %d, %4u] end of flow\n",  workflow->packets_captured, thread_index,
                 flow_to_process->flow_id);
+#endif
         jsonize_flow_event(reader_thread, flow_to_process, FLOW_END);
         return;
     }

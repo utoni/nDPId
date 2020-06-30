@@ -9,26 +9,51 @@ ifeq ($(findstring $*.so, $(CUSTOM_LIBNDPI)),.so)
 CFLAGS += -Wl,-rpath='$(shell dirname $(CUSTOM_LIBNDPI))'
 endif
 else
+CUSTOM_LIBNDPI = no
 LIBS += -lndpi
 endif
 
 ifeq ($(ENABLE_DEBUG),yes)
 CFLAGS += -Og -g3
+else
+ENABLE_DEBUG = no
 endif
 
 ifeq ($(ENABLE_SANITIZER),yes)
 CFLAGS += -fsanitize=address -fsanitize=undefined -fsanitize=leak
 LIBS += -lasan -lubsan
+else
+ENABLE_SANITIZER = no
 endif
 
 ifeq ($(VERBOSE),yes)
 CFLAGS += -DVERBOSE
+else
+VERBOSE = no
+endif
+
+ifeq ($(EXTRA_VERBOSE),yes)
+CFLAGS += -DEXTRA_VERBOSE
+else
+EXTRA_VERBOSE = no
 endif
 
 RM = rm -f
 
-main: main.c
-	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS)
+main: help main.c
+	$(CC) $(CFLAGS) main.c -o $@ $(LDFLAGS) $(LIBS)
 
 clean:
 	$(RM) main
+
+help:
+	@echo 'CC               = $(CC)'
+	@echo 'CFLAGS           = $(CFLAGS)'
+	@echo 'LIBS             = $(LIBS)'
+	@echo 'CUSTOM_LIBNDPI   = $(CUSTOM_LIBNDPI)'
+	@echo 'ENABLE_DEBUG     = $(ENABLE_DEBUG)'
+	@echo 'ENABLE_SANITIZER = $(ENABLE_SANITIZER)'
+	@echo 'VERBOSE          = $(VERBOSE)'
+	@echo 'EXTRA_VERBOSE    = $(EXTRA_VERBOSE)'
+
+.PHONY: help
