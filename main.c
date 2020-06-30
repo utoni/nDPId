@@ -492,7 +492,36 @@ static int flow2json(struct ndpi_detection_module_struct *ndpi_struct,
       break;
     }
 
-    return(ndpi_dpi2json(ndpi_struct, flow, l7_protocol, serializer));
+    return ndpi_dpi2json(ndpi_struct, flow, l7_protocol, serializer);
+}
+
+static char * jsonize_flow(struct nDPId_workflow * const workflow,
+                           struct nDPId_flow_info const * const flow,
+                           uint32_t * out_size)
+{
+    char * out = NULL;
+
+    ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "flow_id", flow->flow_id);
+    ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "packet_id", workflow->packets_captured);
+    ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "midstream", flow->is_midstream_flow);
+
+    if (flow->l3_type == L3_IP) {
+        if (flow2json(workflow->ndpi_struct, flow->ndpi_flow,
+                      4, flow->l4_protocol, flow->ip_tuple.v4.src, flow->ip_tuple.v4.dst,
+                      NULL, NULL, flow->src_port, flow->dst_port,
+                      flow->detected_l7_protocol, &workflow->ndpi_serializer) == 0)
+        {
+            out = ndpi_serializer_get_buffer(&workflow->ndpi_serializer, out_size);
+            if (out == NULL || *out_size == 0) {
+                fprintf(stderr, "[%8llu, %4u] nDPId JSON serializer failed\n",
+                        workflow->packets_captured, flow->flow_id);
+            }
+        } else {
+        }
+    } else if (flow->l3_type == L3_IP6) {
+    }
+
+    return out;
 }
 
 static void ndpi_process_packet(uint8_t * const args,
@@ -815,21 +844,16 @@ static void ndpi_process_packet(uint8_t * const args,
         ndpi_dst = flow_to_process->ndpi_dst;
 
         if (ip != NULL) {
-            if (flow2json(workflow->ndpi_struct, flow_to_process->ndpi_flow,
-                          4, flow_to_process->l4_protocol, ip->saddr, ip->daddr,
-                          NULL, NULL, flow_to_process->src_port, flow_to_process->dst_port,
-                          flow_to_process->detected_l7_protocol, &workflow->ndpi_serializer) == 0)
-            {
-                uint32_t len = 0;
-                char * out;
-                out = ndpi_serializer_get_buffer(&workflow->ndpi_serializer, &len);
-                if (len > 0) {
-                    printf("%.*s\n", (int)len, out);
-                    ndpi_reset_serializer(&workflow->ndpi_serializer);
-                }
-            } else {
+            char * json_str;
+            uint32_t json_str_len = 0;
+
+            json_str = jsonize_flow(workflow, flow_to_process, &json_str_len);
+            if (json_str == NULL) {
                 fprintf(stderr, "[%8llu, %d, %4u] nDPId JSON serializer failed\n",
                         workflow->packets_captured, reader_thread->array_index, flow_to_process->flow_id);
+            } else {
+                printf("%.*s\n", (int)json_str_len, json_str);
+                ndpi_reset_serializer(&workflow->ndpi_serializer);
             }
         }
     } else {
