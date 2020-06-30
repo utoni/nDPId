@@ -10,6 +10,7 @@
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <syslog.h>
 #include <unistd.h>
 
 #if (NDPI_MAJOR == 3 && NDPI_MINOR < 3) || NDPI_MAJOR < 3
@@ -111,6 +112,7 @@ static struct nDPId_reader_thread reader_threads[MAX_READER_THREADS] = {};
 static int reader_thread_count = MAX_READER_THREADS;
 static int main_thread_shutdown = 0;
 static uint32_t flow_id = 0;
+static int log_to_stderr = 0;
 
 static void free_workflow(struct nDPId_workflow ** const workflow);
 
@@ -1201,9 +1203,13 @@ int main(int argc, char ** argv)
            "----------------------------------\n"
            "nDPI version: %s\n"
            " API version: %u\n"
+           "pcap version: %s\n"
            "----------------------------------\n",
            argv[0],
-           ndpi_revision(), ndpi_get_api_version());
+           ndpi_revision(), ndpi_get_api_version(),
+           pcap_lib_version() + strlen("libpcap version "));
+
+    openlog("nDPId", LOG_CONS | (log_to_stderr != 0 ? LOG_PERROR : 0), LOG_DAEMON);
 
     if (setup_reader_threads((argc >= 2 ? argv[1] : NULL)) != 0) {
         fprintf(stderr, "%s: setup_reader_threads failed\n", argv[0]);
@@ -1225,6 +1231,8 @@ int main(int argc, char ** argv)
         fprintf(stderr, "%s: stop_reader_threads\n", argv[0]);
         return 1;
     }
+
+    closelog();
 
     return 0;
 }
