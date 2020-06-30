@@ -105,7 +105,7 @@ struct nDPId_reader_thread {
 };
 
 enum flow_event {
-    FLOW_NEW, FLOW_END
+    FLOW_NEW, FLOW_END, FLOW_IDLE
 };
 
 static struct nDPId_reader_thread reader_threads[MAX_READER_THREADS] = {};
@@ -115,6 +115,9 @@ static uint32_t flow_id = 0;
 static int log_to_stderr = 0;
 
 static void free_workflow(struct nDPId_workflow ** const workflow);
+static void jsonize_flow_event(struct nDPId_reader_thread const * const reader_thread,
+                               struct nDPId_flow_info const * const flow,
+                               enum flow_event event);
 
 static struct nDPId_workflow * init_workflow(char const * const file_or_device)
 {
@@ -442,8 +445,10 @@ static int ndpi_workflow_node_cmp(void const * const A, void const * const B) {
     return ip_tuples_compare(flow_info_a, flow_info_b);
 }
 
-static void check_for_idle_flows(struct nDPId_workflow * const workflow)
+static void check_for_idle_flows(struct nDPId_reader_thread * const reader_thread)
 {
+    struct nDPId_workflow * const workflow = reader_thread->workflow;
+
     if (workflow->last_idle_scan_time + IDLE_SCAN_PERIOD < workflow->last_time) {
         for (size_t idle_scan_index = 0; idle_scan_index < workflow->max_active_flows; ++idle_scan_index) {
             ndpi_twalk(workflow->ndpi_flows_active[idle_scan_index], ndpi_idle_scan_walker, workflow);
@@ -456,6 +461,7 @@ static void check_for_idle_flows(struct nDPId_workflow * const workflow)
                 } else {
                     printf("Free idle flow with id %u\n", f->flow_id);
                 }
+                jsonize_flow_event(reader_thread, f, FLOW_IDLE);
                 ndpi_tdelete(f, &workflow->ndpi_flows_active[idle_scan_index],
                              ndpi_workflow_node_cmp);
                 ndpi_flow_info_freer(f);
@@ -467,95 +473,78 @@ static void check_for_idle_flows(struct nDPId_workflow * const workflow)
     }
 }
 
-static int flow2json(struct ndpi_detection_module_struct *ndpi_struct,
-                     struct ndpi_flow_struct *flow,
-                     uint8_t ip_version, uint8_t l4_protocol,
-                     uint32_t src_v4, uint32_t dst_v4,
-                     struct ndpi_in6_addr *src_v6, struct ndpi_in6_addr *dst_v6,
-                     uint16_t src_port, uint16_t dst_port,
-                     ndpi_protocol l7_protocol, ndpi_serializer *serializer)
+static int flow2json(struct nDPId_workflow * const workflow,
+                     struct nDPId_flow_info const * const flow,
+                     enum flow_event event)
 {
+    ndpi_serializer * const serializer = &workflow->ndpi_serializer;
     char src_name[32] = {};
     char dst_name[32] = {};
 
-    if (ip_version == 4) {
-        ndpi_serialize_string_string(serializer, "l3_proto", "ip4");
-        inet_ntop(AF_INET, &src_v4, src_name, sizeof(src_name));
-        inet_ntop(AF_INET, &dst_v4, dst_name, sizeof(dst_name));
-    } else if (ip_version == 6) {
-        ndpi_serialize_string_string(serializer, "l3_proto", "ip6");
-        inet_ntop(AF_INET6, src_v6, src_name, sizeof(src_name));
-        inet_ntop(AF_INET6, dst_v6, dst_name, sizeof(dst_name));
-        /* For consistency across platforms replace :0: with :: */
-        ndpi_patchIPv6Address(src_name), ndpi_patchIPv6Address(dst_name);
-    } else {
-        ndpi_serialize_string_string(serializer, "l3_proto", "unknown");
+    switch (flow->l3_type) {
+        case L3_IP:
+            ndpi_serialize_string_string(serializer, "l3_proto", "ip4");
+            inet_ntop(AF_INET, &flow->ip_tuple.v4.src, src_name, sizeof(src_name));
+            inet_ntop(AF_INET, &flow->ip_tuple.v4.dst, dst_name, sizeof(dst_name));
+            break;
+        case L3_IP6:
+            ndpi_serialize_string_string(serializer, "l3_proto", "ip6");
+            inet_ntop(AF_INET6, &flow->ip_tuple.v6.src[0], src_name, sizeof(src_name));
+            inet_ntop(AF_INET6, &flow->ip_tuple.v6.dst[0], dst_name, sizeof(dst_name));
+            /* For consistency across platforms replace :0: with :: */
+            ndpi_patchIPv6Address(src_name), ndpi_patchIPv6Address(dst_name);
+            break;
+        default:
+            ndpi_serialize_string_string(serializer, "l3_proto", "unknown");
     }
 
     ndpi_serialize_string_string(serializer, "src_ip", src_name);
     ndpi_serialize_string_string(serializer, "dest_ip", dst_name);
-    if (src_port) {
-        ndpi_serialize_string_uint32(serializer, "src_port", src_port);
+    if (flow->src_port) {
+        ndpi_serialize_string_uint32(serializer, "src_port", flow->src_port);
     }
-    if (dst_port) {
-        ndpi_serialize_string_uint32(serializer, "dst_port", dst_port);
+    if (flow->dst_port) {
+        ndpi_serialize_string_uint32(serializer, "dst_port", flow->dst_port);
     }
 
-    switch (l4_protocol) {
+    switch (flow->l4_protocol) {
         case IPPROTO_TCP:
-          ndpi_serialize_string_string(serializer, "l4_proto", "TCP");
+          ndpi_serialize_string_string(serializer, "l4_proto", "tcp");
           break;
         case IPPROTO_UDP:
-          ndpi_serialize_string_string(serializer, "l4_proto", "UDP");
+          ndpi_serialize_string_string(serializer, "l4_proto", "udp");
           break;
         case IPPROTO_ICMP:
-          ndpi_serialize_string_string(serializer, "l4_proto", "ICMP");
+          ndpi_serialize_string_string(serializer, "l4_proto", "icmp");
           break;
         case IPPROTO_ICMPV6:
-          ndpi_serialize_string_string(serializer, "l4_proto", "ICMP6");
+          ndpi_serialize_string_string(serializer, "l4_proto", "icmp6");
           break;
         default:
-          ndpi_serialize_string_uint32(serializer, "l4_proto", l4_protocol);
+          ndpi_serialize_string_uint32(serializer, "l4_proto", flow->l4_protocol);
           break;
     }
 
-    return ndpi_dpi2json(ndpi_struct, flow, l7_protocol, serializer);
+    if (event != FLOW_END && event != FLOW_IDLE) {
+        return ndpi_dpi2json(workflow->ndpi_struct, flow->ndpi_flow,
+                             flow->detected_l7_protocol, serializer);
+    } else {
+        return 0;
+    }
 }
 
 static char * jsonize_flow(struct nDPId_workflow * const workflow,
                            struct nDPId_flow_info const * const flow,
+                           enum flow_event event,
                            uint32_t * out_size)
 {
     char * out = NULL;
-    uint8_t ip_version = 0;
-    uint32_t ip4_src = 0;
-    uint32_t ip4_dst = 0;
-    struct ndpi_in6_addr ip6_src;
-    struct ndpi_in6_addr ip6_dst;
 
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "flow_id", flow->flow_id);
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "packet_id", workflow->packets_captured);
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "midstream", flow->is_midstream_flow);
 
-    switch (flow->l3_type) {
-        case L3_IP:
-            ip_version = 4;
-            ip4_src = flow->ip_tuple.v4.src;
-            ip4_dst = flow->ip_tuple.v4.dst;
-            break;
-        case L3_IP6:
-            ip_version = 6;
-            ip6_src.u6_addr.u6_addr64[0] = flow->ip_tuple.v6.src[0];
-            ip6_src.u6_addr.u6_addr64[1] = flow->ip_tuple.v6.src[1];
-            ip6_dst.u6_addr.u6_addr64[0] = flow->ip_tuple.v6.dst[0];
-            ip6_dst.u6_addr.u6_addr64[1] = flow->ip_tuple.v6.dst[1];
-            break;
-    }
-
-    if (flow2json(workflow->ndpi_struct, flow->ndpi_flow, ip_version,
-                  flow->l4_protocol, ip4_src, ip4_dst, &ip6_src, &ip6_dst,
-                  flow->src_port, flow->dst_port,
-                  flow->detected_l7_protocol, &workflow->ndpi_serializer) == 0)
+    if (flow2json(workflow, flow, event) == 0)
     {
         out = ndpi_serializer_get_buffer(&workflow->ndpi_serializer, out_size);
         if (out == NULL || *out_size == 0) {
@@ -585,8 +574,11 @@ static void jsonize_flow_event(struct nDPId_reader_thread const * const reader_t
         case FLOW_END:
             ndpi_serialize_string_string(&workflow->ndpi_serializer, "flow_event", "end");
             break;
+        case FLOW_IDLE:
+            ndpi_serialize_string_string(&workflow->ndpi_serializer, "flow_event", "idle");
+            break;
     }
-    json_str = jsonize_flow(workflow, flow, &json_str_len);
+    json_str = jsonize_flow(workflow, flow, event, &json_str_len);
 
     if (json_str == NULL) {
         fprintf(stderr, "[%8llu, %d, %4u] jsonize failed, buffer length: %u\n",
@@ -642,7 +634,7 @@ static void ndpi_process_packet(uint8_t * const args,
     time_ms = ((uint64_t) header->ts.tv_sec) * TICK_RESOLUTION + header->ts.tv_usec / (1000000 / TICK_RESOLUTION);
     workflow->last_time = time_ms;
 
-    check_for_idle_flows(workflow);
+    check_for_idle_flows(reader_thread);
 
     /* process datalink layer */
     switch (pcap_datalink(workflow->pcap_handle)) {
@@ -947,6 +939,7 @@ static void ndpi_process_packet(uint8_t * const args,
         flow_to_process->flow_fin_ack_seen = 1;
         printf("[%8llu, %d, %4u] end of flow\n",  workflow->packets_captured, thread_index,
                 flow_to_process->flow_id);
+        jsonize_flow_event(reader_thread, flow_to_process, FLOW_END);
         return;
     }
 
