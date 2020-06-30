@@ -950,7 +950,9 @@ static void ndpi_process_packet(uint8_t * const args,
 
     if (flow_to_process->ndpi_flow->num_processed_pkts == 0xFF) {
         return;
-    } else if (flow_to_process->ndpi_flow->num_processed_pkts == 0xFE) {
+    } else if (flow_to_process->detection_completed == 0 &&
+               flow_to_process->ndpi_flow->num_processed_pkts == 0xFE)
+    {
         /* last chance to guess something, better then nothing */
         uint8_t protocol_was_guessed = 0;
         flow_to_process->guessed_protocol =
