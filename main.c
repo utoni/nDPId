@@ -12,8 +12,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#if !(NDPI_MAJOR >= 3 && NDPI_MINOR >= 2)
-#error "nDPI >= 3.2.0 requiired"
+#if (NDPI_MAJOR == 3 && NDPI_MINOR < 3) || NDPI_MAJOR < 3
+#error "nDPI >= 3.3.0 requiired"
 #endif
 
 #define MAX_FLOW_ROOTS_PER_THREAD 2048
@@ -101,6 +101,10 @@ struct nDPId_reader_thread {
     struct nDPId_workflow * workflow;
     pthread_t thread_id;
     int array_index;
+};
+
+enum flow_event {
+    FLOW_NEW, FLOW_END
 };
 
 static struct nDPId_reader_thread reader_threads[MAX_READER_THREADS] = {};
@@ -315,6 +319,12 @@ static void print_packet_info(struct nDPId_reader_thread const * const reader_th
 static int ip_tuples_equal(struct nDPId_flow_info const * const A,
                            struct nDPId_flow_info const * const B)
 {
+    // generate a warning if the enum changes
+    switch (A->l3_type) {
+        case L3_IP:
+        case L3_IP6:
+            break;
+    }
     if (A->l3_type == L3_IP && B->l3_type == L3_IP6) {
         return A->ip_tuple.v4.src == B->ip_tuple.v4.src &&
                A->ip_tuple.v4.dst == B->ip_tuple.v4.dst;
@@ -330,6 +340,12 @@ static int ip_tuples_equal(struct nDPId_flow_info const * const A,
 static int ip_tuples_compare(struct nDPId_flow_info const * const A,
                              struct nDPId_flow_info const * const B)
 {
+    // generate a warning if the enum changes
+    switch (A->l3_type) {
+        case L3_IP:
+        case L3_IP6:
+            break;
+    }
     if (A->l3_type == L3_IP && B->l3_type == L3_IP6) {
         if (A->ip_tuple.v4.src < B->ip_tuple.v4.src ||
             A->ip_tuple.v4.dst < B->ip_tuple.v4.dst)
@@ -457,39 +473,48 @@ static int flow2json(struct ndpi_detection_module_struct *ndpi_struct,
                      uint16_t src_port, uint16_t dst_port,
                      ndpi_protocol l7_protocol, ndpi_serializer *serializer)
 {
-    char src_name[32], dst_name[32];
+    char src_name[32] = {};
+    char dst_name[32] = {};
 
-    if(ip_version == 4) {
-      inet_ntop(AF_INET, &src_v4, src_name, sizeof(src_name));
-      inet_ntop(AF_INET, &dst_v4, dst_name, sizeof(dst_name));
+    if (ip_version == 4) {
+        ndpi_serialize_string_string(serializer, "l3_proto", "ip4");
+        inet_ntop(AF_INET, &src_v4, src_name, sizeof(src_name));
+        inet_ntop(AF_INET, &dst_v4, dst_name, sizeof(dst_name));
+    } else if (ip_version == 6) {
+        ndpi_serialize_string_string(serializer, "l3_proto", "ip6");
+        inet_ntop(AF_INET6, src_v6, src_name, sizeof(src_name));
+        inet_ntop(AF_INET6, dst_v6, dst_name, sizeof(dst_name));
+        /* For consistency across platforms replace :0: with :: */
+        ndpi_patchIPv6Address(src_name), ndpi_patchIPv6Address(dst_name);
     } else {
-      inet_ntop(AF_INET6, src_v6, src_name, sizeof(src_name));
-      inet_ntop(AF_INET6, dst_v6, dst_name, sizeof(dst_name));
-      /* For consistency across platforms replace :0: with :: */
-      ndpi_patchIPv6Address(src_name), ndpi_patchIPv6Address(dst_name);
+        ndpi_serialize_string_string(serializer, "l3_proto", "unknown");
     }
 
     ndpi_serialize_string_string(serializer, "src_ip", src_name);
     ndpi_serialize_string_string(serializer, "dest_ip", dst_name);
-    if(src_port) ndpi_serialize_string_uint32(serializer, "src_port", src_port);
-    if(dst_port) ndpi_serialize_string_uint32(serializer, "dst_port", dst_port);
+    if (src_port) {
+        ndpi_serialize_string_uint32(serializer, "src_port", src_port);
+    }
+    if (dst_port) {
+        ndpi_serialize_string_uint32(serializer, "dst_port", dst_port);
+    }
 
-    switch(l4_protocol) {
-    case IPPROTO_TCP:
-      ndpi_serialize_string_string(serializer, "proto", "TCP");
-      break;
-
-    case IPPROTO_UDP:
-      ndpi_serialize_string_string(serializer, "proto", "UDP");
-      break;
-
-    case IPPROTO_ICMP:
-      ndpi_serialize_string_string(serializer, "proto", "ICMP");
-      break;
-
-    default:
-      ndpi_serialize_string_uint32(serializer, "proto", l4_protocol);
-      break;
+    switch (l4_protocol) {
+        case IPPROTO_TCP:
+          ndpi_serialize_string_string(serializer, "l4_proto", "TCP");
+          break;
+        case IPPROTO_UDP:
+          ndpi_serialize_string_string(serializer, "l4_proto", "UDP");
+          break;
+        case IPPROTO_ICMP:
+          ndpi_serialize_string_string(serializer, "l4_proto", "ICMP");
+          break;
+        case IPPROTO_ICMPV6:
+          ndpi_serialize_string_string(serializer, "l4_proto", "ICMP6");
+          break;
+        default:
+          ndpi_serialize_string_uint32(serializer, "l4_proto", l4_protocol);
+          break;
     }
 
     return ndpi_dpi2json(ndpi_struct, flow, l7_protocol, serializer);
@@ -500,28 +525,74 @@ static char * jsonize_flow(struct nDPId_workflow * const workflow,
                            uint32_t * out_size)
 {
     char * out = NULL;
+    uint8_t ip_version = 0;
+    uint32_t ip4_src = 0;
+    uint32_t ip4_dst = 0;
+    struct ndpi_in6_addr ip6_src;
+    struct ndpi_in6_addr ip6_dst;
 
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "flow_id", flow->flow_id);
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "packet_id", workflow->packets_captured);
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "midstream", flow->is_midstream_flow);
 
-    if (flow->l3_type == L3_IP) {
-        if (flow2json(workflow->ndpi_struct, flow->ndpi_flow,
-                      4, flow->l4_protocol, flow->ip_tuple.v4.src, flow->ip_tuple.v4.dst,
-                      NULL, NULL, flow->src_port, flow->dst_port,
-                      flow->detected_l7_protocol, &workflow->ndpi_serializer) == 0)
-        {
-            out = ndpi_serializer_get_buffer(&workflow->ndpi_serializer, out_size);
-            if (out == NULL || *out_size == 0) {
-                fprintf(stderr, "[%8llu, %4u] nDPId JSON serializer failed\n",
-                        workflow->packets_captured, flow->flow_id);
-            }
-        } else {
+    switch (flow->l3_type) {
+        case L3_IP:
+            ip_version = 4;
+            ip4_src = flow->ip_tuple.v4.src;
+            ip4_dst = flow->ip_tuple.v4.dst;
+            break;
+        case L3_IP6:
+            ip_version = 6;
+            ip6_src.u6_addr.u6_addr64[0] = flow->ip_tuple.v6.src[0];
+            ip6_src.u6_addr.u6_addr64[1] = flow->ip_tuple.v6.src[1];
+            ip6_dst.u6_addr.u6_addr64[0] = flow->ip_tuple.v6.dst[0];
+            ip6_dst.u6_addr.u6_addr64[1] = flow->ip_tuple.v6.dst[1];
+            break;
+    }
+
+    if (flow2json(workflow->ndpi_struct, flow->ndpi_flow, ip_version,
+                  flow->l4_protocol, ip4_src, ip4_dst, &ip6_src, &ip6_dst,
+                  flow->src_port, flow->dst_port,
+                  flow->detected_l7_protocol, &workflow->ndpi_serializer) == 0)
+    {
+        out = ndpi_serializer_get_buffer(&workflow->ndpi_serializer, out_size);
+        if (out == NULL || *out_size == 0) {
+            fprintf(stderr, "[%8llu, %4u] nDPId JSON serializer failed, buffer length: %u\n",
+                    workflow->packets_captured, flow->flow_id, *out_size);
         }
-    } else if (flow->l3_type == L3_IP6) {
+    } else {
+        fprintf(stderr, "[%8llu, %4u] flow2json/dpi2json failed\n",
+                workflow->packets_captured, flow->flow_id);
     }
 
     return out;
+}
+
+static void jsonize_flow_event(struct nDPId_reader_thread const * const reader_thread,
+                               struct nDPId_flow_info const * const flow,
+                               enum flow_event event)
+{
+    char * json_str;
+    uint32_t json_str_len = 0;
+    struct nDPId_workflow * const workflow = reader_thread->workflow;
+
+    switch (event) {
+        case FLOW_NEW:
+            ndpi_serialize_string_string(&workflow->ndpi_serializer, "flow_event", "new");
+            break;
+        case FLOW_END:
+            ndpi_serialize_string_string(&workflow->ndpi_serializer, "flow_event", "end");
+            break;
+    }
+    json_str = jsonize_flow(workflow, flow, &json_str_len);
+
+    if (json_str == NULL) {
+        fprintf(stderr, "[%8llu, %d, %4u] jsonize failed, buffer length: %u\n",
+                workflow->packets_captured, reader_thread->array_index, flow->flow_id, json_str_len);
+    } else {
+        printf("%.*s\n", (int)json_str_len, json_str);
+    }
+    ndpi_reset_serializer(&workflow->ndpi_serializer);
 }
 
 static void ndpi_process_packet(uint8_t * const args,
@@ -742,21 +813,24 @@ static void ndpi_process_packet(uint8_t * const args,
 #endif
 
     /* calculate flow hash for btree find, search(insert) */
-    if (flow.l3_type == L3_IP) {
-        if (ndpi_flowv4_flow_hash(flow.l4_protocol, flow.ip_tuple.v4.src, flow.ip_tuple.v4.dst,
-                                  flow.src_port, flow.dst_port, 0, 0,
-                                  (uint8_t *)&flow.hashval, sizeof(flow.hashval)) != 0)
-        {
-            flow.hashval = flow.ip_tuple.v4.src + flow.ip_tuple.v4.dst; // fallback
-        }
-    } else if (flow.l3_type == L3_IP6) {
-        if (ndpi_flowv6_flow_hash(flow.l4_protocol, &ip6->ip6_src, &ip6->ip6_dst,
-                                  flow.src_port, flow.dst_port, 0, 0,
-                                  (uint8_t *)&flow.hashval, sizeof(flow.hashval)) != 0)
-        {
-            flow.hashval = flow.ip_tuple.v6.src[0] + flow.ip_tuple.v6.src[1];
-            flow.hashval += flow.ip_tuple.v6.dst[0] + flow.ip_tuple.v6.dst[1];
-        }
+    switch (flow.l3_type) {
+        case L3_IP:
+            if (ndpi_flowv4_flow_hash(flow.l4_protocol, flow.ip_tuple.v4.src, flow.ip_tuple.v4.dst,
+                                      flow.src_port, flow.dst_port, 0, 0,
+                                      (uint8_t *)&flow.hashval, sizeof(flow.hashval)) != 0)
+            {
+                flow.hashval = flow.ip_tuple.v4.src + flow.ip_tuple.v4.dst; // fallback
+            }
+            break;
+        case L3_IP6:
+            if (ndpi_flowv6_flow_hash(flow.l4_protocol, &ip6->ip6_src, &ip6->ip6_dst,
+                                      flow.src_port, flow.dst_port, 0, 0,
+                                      (uint8_t *)&flow.hashval, sizeof(flow.hashval)) != 0)
+            {
+                flow.hashval = flow.ip_tuple.v6.src[0] + flow.ip_tuple.v6.src[1];
+                flow.hashval += flow.ip_tuple.v6.dst[0] + flow.ip_tuple.v6.dst[1];
+            }
+            break;
     }
     flow.hashval += flow.l4_protocol + flow.src_port + flow.dst_port;
 
@@ -843,19 +917,7 @@ static void ndpi_process_packet(uint8_t * const args,
         ndpi_src = flow_to_process->ndpi_src;
         ndpi_dst = flow_to_process->ndpi_dst;
 
-        if (ip != NULL) {
-            char * json_str;
-            uint32_t json_str_len = 0;
-
-            json_str = jsonize_flow(workflow, flow_to_process, &json_str_len);
-            if (json_str == NULL) {
-                fprintf(stderr, "[%8llu, %d, %4u] nDPId JSON serializer failed\n",
-                        workflow->packets_captured, reader_thread->array_index, flow_to_process->flow_id);
-            } else {
-                printf("%.*s\n", (int)json_str_len, json_str);
-                ndpi_reset_serializer(&workflow->ndpi_serializer);
-            }
-        }
+        jsonize_flow_event(reader_thread, flow_to_process, FLOW_NEW);
     } else {
         flow_to_process = *(struct nDPId_flow_info **)tree_result;
 
@@ -953,7 +1015,6 @@ static void ndpi_process_packet(uint8_t * const args,
                          flow_to_process->ndpi_flow->protos.stun_ssl.ssl.alpn : "-"));
                 flow_to_process->tls_client_hello_seen = 1;
             }
-#if (NDPI_MAJOR >= 3 && NDPI_MINOR > 2)
             if (flow_to_process->tls_server_hello_seen == 0 &&
                 flow_to_process->ndpi_flow->l4.tcp.tls.certificate_processed != 0)
             {
@@ -973,7 +1034,6 @@ static void ndpi_process_packet(uint8_t * const args,
                          flow_to_process->ndpi_flow->protos.stun_ssl.ssl.subjectDN : "-"));
                 flow_to_process->tls_server_hello_seen = 1;
             }
-#endif
         }
     }
 }
