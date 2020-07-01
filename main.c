@@ -481,8 +481,7 @@ static void check_for_idle_flows(struct nDPId_reader_thread * const reader_threa
 
 #ifndef DISABLE_JSONIZER
 static int flow2json(struct nDPId_workflow * const workflow,
-                     struct nDPId_flow_info const * const flow,
-                     enum flow_event event)
+                     struct nDPId_flow_info const * const flow)
 {
     ndpi_serializer * const serializer = &workflow->ndpi_serializer;
     char src_name[32] = {};
@@ -532,17 +531,12 @@ static int flow2json(struct nDPId_workflow * const workflow,
           break;
     }
 
-    if (event != FLOW_END && event != FLOW_IDLE) {
-        return ndpi_dpi2json(workflow->ndpi_struct, flow->ndpi_flow,
-                             flow->detected_l7_protocol, serializer);
-    } else {
-        return 0;
-    }
+    return ndpi_dpi2json(workflow->ndpi_struct, flow->ndpi_flow,
+                         flow->detected_l7_protocol, serializer);
 }
 
 static char * jsonize_flow(struct nDPId_workflow * const workflow,
                            struct nDPId_flow_info const * const flow,
-                           enum flow_event event,
                            uint32_t * out_size)
 {
     char * out = NULL;
@@ -551,7 +545,7 @@ static char * jsonize_flow(struct nDPId_workflow * const workflow,
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "packet_id", workflow->packets_captured);
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "midstream", flow->is_midstream_flow);
 
-    if (flow2json(workflow, flow, event) == 0)
+    if (flow2json(workflow, flow) == 0)
     {
         out = ndpi_serializer_get_buffer(&workflow->ndpi_serializer, out_size);
         if (out == NULL || *out_size == 0) {
@@ -594,7 +588,7 @@ static void jsonize_flow_event(struct nDPId_reader_thread const * const reader_t
             ndpi_serialize_string_string(&workflow->ndpi_serializer, "flow_event", "not-detected");
             break;
     }
-    json_str = jsonize_flow(workflow, flow, event, &json_str_len);
+    json_str = jsonize_flow(workflow, flow, &json_str_len);
 
     if (json_str == NULL) {
         fprintf(stderr, "[%8llu, %d, %4u] jsonize failed, buffer length: %u\n",
@@ -968,34 +962,46 @@ static void ndpi_process_packet(uint8_t * const args,
 
     if (flow_to_process->ndpi_flow->num_processed_pkts == 0xFF) {
         return;
-    } else if (flow_to_process->detection_completed == 0 &&
-               flow_to_process->ndpi_flow->num_processed_pkts == 0xFE)
-    {
-        /* last chance to guess something, better then nothing */
-        uint8_t protocol_was_guessed = 0;
-        flow_to_process->guessed_protocol =
-            ndpi_detection_giveup(workflow->ndpi_struct,
-                                  flow_to_process->ndpi_flow,
-                                  1, &protocol_was_guessed);
-        if (protocol_was_guessed != 0) {
+    } else if (flow_to_process->ndpi_flow->num_processed_pkts == 0xFE) {
+        if (flow_to_process->detection_completed != 0) {
 #ifdef DISABLE_JSONIZER
-            printf("[%8llu, %d, %4d][GUESSED] protocol: %s | app protocol: %s | category: %s\n",
-                    workflow->packets_captured,
-                    reader_thread->array_index,
-                    flow_to_process->flow_id,
-                    ndpi_get_proto_name(workflow->ndpi_struct, flow_to_process->guessed_protocol.master_protocol),
-                    ndpi_get_proto_name(workflow->ndpi_struct, flow_to_process->guessed_protocol.app_protocol),
-                    ndpi_category_get_name(workflow->ndpi_struct, flow_to_process->guessed_protocol.category));
+            printf("[%8llu, %d, %4d][DETECTED] protocol: %s | app protocol: %s | category: %s\n",
+                   workflow->packets_captured,
+                   reader_thread->array_index,
+                   flow_to_process->flow_id,
+                   ndpi_get_proto_name(workflow->ndpi_struct, flow_to_process->detected_l7_protocol.master_protocol),
+                   ndpi_get_proto_name(workflow->ndpi_struct, flow_to_process->detected_l7_protocol.app_protocol),
+                   ndpi_category_get_name(workflow->ndpi_struct, flow_to_process->detected_l7_protocol.category));
 #else
-            jsonize_flow_event(reader_thread, flow_to_process, FLOW_GUESSED);
+            jsonize_flow_event(reader_thread, flow_to_process, FLOW_DETECTED);
 #endif
         } else {
+            /* last chance to guess something, better then nothing */
+            uint8_t protocol_was_guessed = 0;
+            flow_to_process->guessed_protocol =
+                ndpi_detection_giveup(workflow->ndpi_struct,
+                                      flow_to_process->ndpi_flow,
+                                      1, &protocol_was_guessed);
+            if (protocol_was_guessed != 0) {
 #ifdef DISABLE_JSONIZER
-            printf("[%8llu, %d, %4d][FLOW NOT DETECTED]\n",
-                    workflow->packets_captured, reader_thread->array_index, flow_to_process->flow_id);
+                printf("[%8llu, %d, %4d][GUESSED] protocol: %s | app protocol: %s | category: %s\n",
+                       workflow->packets_captured,
+                       reader_thread->array_index,
+                       flow_to_process->flow_id,
+                       ndpi_get_proto_name(workflow->ndpi_struct, flow_to_process->guessed_protocol.master_protocol),
+                       ndpi_get_proto_name(workflow->ndpi_struct, flow_to_process->guessed_protocol.app_protocol),
+                       ndpi_category_get_name(workflow->ndpi_struct, flow_to_process->guessed_protocol.category));
 #else
-            jsonize_flow_event(reader_thread, flow_to_process, FLOW_NOT_DETECTED);
+                jsonize_flow_event(reader_thread, flow_to_process, FLOW_GUESSED);
 #endif
+            } else {
+#ifdef DISABLE_JSONIZER
+                printf("[%8llu, %d, %4d][FLOW NOT DETECTED]\n",
+                       workflow->packets_captured, reader_thread->array_index, flow_to_process->flow_id);
+#else
+                jsonize_flow_event(reader_thread, flow_to_process, FLOW_NOT_DETECTED);
+#endif
+            }
         }
     }
 

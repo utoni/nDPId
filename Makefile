@@ -14,7 +14,7 @@ LIBS += -lndpi
 endif
 
 ifeq ($(ENABLE_DEBUG),yes)
-CFLAGS += -Og -g3
+CFLAGS += -O0 -g3
 else
 ENABLE_DEBUG = no
 endif
