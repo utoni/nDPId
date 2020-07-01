@@ -26,10 +26,10 @@ else
 ENABLE_SANITIZER = no
 endif
 
-ifeq ($(VERBOSE),yes)
-CFLAGS += -DVERBOSE
+ifeq ($(DISABLE_JSONIZER),yes)
+CFLAGS += -DDISABLE_JSONIZER
 else
-VERBOSE = no
+DISABLE_JSONIZER = no
 endif
 
 ifeq ($(EXTRA_VERBOSE),yes)
@@ -53,7 +53,7 @@ help:
 	@echo 'CUSTOM_LIBNDPI   = $(CUSTOM_LIBNDPI)'
 	@echo 'ENABLE_DEBUG     = $(ENABLE_DEBUG)'
 	@echo 'ENABLE_SANITIZER = $(ENABLE_SANITIZER)'
-	@echo 'VERBOSE          = $(VERBOSE)'
+	@echo 'DISABLE_JSONIZER = $(DISABLE_JSONIZER)'
 	@echo 'EXTRA_VERBOSE    = $(EXTRA_VERBOSE)'
 
 .PHONY: help

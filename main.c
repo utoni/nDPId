@@ -105,7 +105,8 @@ struct nDPId_reader_thread {
 };
 
 enum flow_event {
-    FLOW_NEW, FLOW_END, FLOW_IDLE
+    FLOW_NEW, FLOW_END, FLOW_IDLE,
+    FLOW_GUESSED, FLOW_DETECTED, FLOW_NOT_DETECTED
 };
 
 static struct nDPId_reader_thread reader_threads[MAX_READER_THREADS] = {};
@@ -115,9 +116,11 @@ static uint32_t flow_id = 0;
 static int log_to_stderr = 0;
 
 static void free_workflow(struct nDPId_workflow ** const workflow);
+#ifndef DISABLE_JSONIZER
 static void jsonize_flow_event(struct nDPId_reader_thread const * const reader_thread,
                                struct nDPId_flow_info const * const flow,
                                enum flow_event event);
+#endif
 
 static struct nDPId_workflow * init_workflow(char const * const file_or_device)
 {
@@ -456,14 +459,15 @@ static void check_for_idle_flows(struct nDPId_reader_thread * const reader_threa
             while (workflow->cur_idle_flows > 0) {
                 struct nDPId_flow_info * const f =
                     (struct nDPId_flow_info *)workflow->ndpi_flows_idle[--workflow->cur_idle_flows];
-#ifdef VERBOSE
+#ifdef DISABLE_JSONIZER
                 if (f->flow_fin_ack_seen == 1) {
                     printf("Free fin flow with id %u\n", f->flow_id);
                 } else {
                     printf("Free idle flow with id %u\n", f->flow_id);
                 }
-#endif
+#else
                 jsonize_flow_event(reader_thread, f, FLOW_IDLE);
+#endif
                 ndpi_tdelete(f, &workflow->ndpi_flows_active[idle_scan_index],
                              ndpi_workflow_node_cmp);
                 ndpi_flow_info_freer(f);
@@ -475,6 +479,7 @@ static void check_for_idle_flows(struct nDPId_reader_thread * const reader_threa
     }
 }
 
+#ifndef DISABLE_JSONIZER
 static int flow2json(struct nDPId_workflow * const workflow,
                      struct nDPId_flow_info const * const flow,
                      enum flow_event event)
@@ -579,6 +584,15 @@ static void jsonize_flow_event(struct nDPId_reader_thread const * const reader_t
         case FLOW_IDLE:
             ndpi_serialize_string_string(&workflow->ndpi_serializer, "flow_event", "idle");
             break;
+        case FLOW_GUESSED:
+            ndpi_serialize_string_string(&workflow->ndpi_serializer, "flow_event", "guessed");
+            break;
+        case FLOW_DETECTED:
+            ndpi_serialize_string_string(&workflow->ndpi_serializer, "flow_event", "detected");
+            break;
+        case FLOW_NOT_DETECTED:
+            ndpi_serialize_string_string(&workflow->ndpi_serializer, "flow_event", "not-detected");
+            break;
     }
     json_str = jsonize_flow(workflow, flow, event, &json_str_len);
 
@@ -590,6 +604,7 @@ static void jsonize_flow_event(struct nDPId_reader_thread const * const reader_t
     }
     ndpi_reset_serializer(&workflow->ndpi_serializer);
 }
+#endif
 
 static void ndpi_process_packet(uint8_t * const args,
                                 struct pcap_pkthdr const * const header,
@@ -805,7 +820,7 @@ static void ndpi_process_packet(uint8_t * const args,
     workflow->total_l4_data_len += l4_len;
 
 #ifdef EXTRA_VERBOSE
-    print_packet_info(reader_thread, header, l4_data_len, &flow);
+    print_packet_info(reader_thread, header, l4_len, &flow);
 #endif
 
     /* calculate flow hash for btree find, search(insert) */
@@ -901,7 +916,7 @@ static void ndpi_process_packet(uint8_t * const args,
                     workflow->packets_captured, reader_thread->array_index, flow_to_process->flow_id);
             return;
         }
-#ifdef VERBOSE
+#ifdef DISABLE_JSONIZER
         printf("[%8llu, %d, %4u] new %sflow\n", workflow->packets_captured, thread_index,
                flow_to_process->flow_id,
                (flow_to_process->is_midstream_flow != 0 ? "midstream-" : ""));
@@ -914,7 +929,9 @@ static void ndpi_process_packet(uint8_t * const args,
         ndpi_src = flow_to_process->ndpi_src;
         ndpi_dst = flow_to_process->ndpi_dst;
 
+#ifndef DISABLE_JSONIZER
         jsonize_flow_event(reader_thread, flow_to_process, FLOW_NEW);
+#endif
     } else {
         flow_to_process = *(struct nDPId_flow_info **)tree_result;
 
@@ -940,11 +957,12 @@ static void ndpi_process_packet(uint8_t * const args,
     /* TCP-FIN: indicates that at least one side wants to end the connection */
     if (flow.flow_fin_ack_seen != 0 && flow_to_process->flow_fin_ack_seen == 0) {
         flow_to_process->flow_fin_ack_seen = 1;
-#ifdef VERBOSE
+#ifdef DISABLE_JSONIZER
         printf("[%8llu, %d, %4u] end of flow\n",  workflow->packets_captured, thread_index,
                 flow_to_process->flow_id);
-#endif
+#else
         jsonize_flow_event(reader_thread, flow_to_process, FLOW_END);
+#endif
         return;
     }
 
@@ -960,6 +978,7 @@ static void ndpi_process_packet(uint8_t * const args,
                                   flow_to_process->ndpi_flow,
                                   1, &protocol_was_guessed);
         if (protocol_was_guessed != 0) {
+#ifdef DISABLE_JSONIZER
             printf("[%8llu, %d, %4d][GUESSED] protocol: %s | app protocol: %s | category: %s\n",
                     workflow->packets_captured,
                     reader_thread->array_index,
@@ -967,9 +986,16 @@ static void ndpi_process_packet(uint8_t * const args,
                     ndpi_get_proto_name(workflow->ndpi_struct, flow_to_process->guessed_protocol.master_protocol),
                     ndpi_get_proto_name(workflow->ndpi_struct, flow_to_process->guessed_protocol.app_protocol),
                     ndpi_category_get_name(workflow->ndpi_struct, flow_to_process->guessed_protocol.category));
+#else
+            jsonize_flow_event(reader_thread, flow_to_process, FLOW_GUESSED);
+#endif
         } else {
-            printf("[%8llu, %d, %4d][FLOW NOT CLASSIFIED]\n",
+#ifdef DISABLE_JSONIZER
+            printf("[%8llu, %d, %4d][FLOW NOT DETECTED]\n",
                     workflow->packets_captured, reader_thread->array_index, flow_to_process->flow_id);
+#else
+            jsonize_flow_event(reader_thread, flow_to_process, FLOW_NOT_DETECTED);
+#endif
         }
     }
 
@@ -986,6 +1012,7 @@ static void ndpi_process_packet(uint8_t * const args,
             flow_to_process->detected_l7_protocol.app_protocol != NDPI_PROTOCOL_UNKNOWN) {
             flow_to_process->detection_completed = 1;
             workflow->detected_flow_protocols++;
+#ifdef DISABLE_JSONIZER
             printf("[%8llu, %d, %4d][DETECTED] protocol: %s | app protocol: %s | category: %s\n",
                     workflow->packets_captured,
                     reader_thread->array_index,
@@ -993,9 +1020,13 @@ static void ndpi_process_packet(uint8_t * const args,
                     ndpi_get_proto_name(workflow->ndpi_struct, flow_to_process->detected_l7_protocol.master_protocol),
                     ndpi_get_proto_name(workflow->ndpi_struct, flow_to_process->detected_l7_protocol.app_protocol),
                     ndpi_category_get_name(workflow->ndpi_struct, flow_to_process->detected_l7_protocol.category));
+#else
+            jsonize_flow_event(reader_thread, flow_to_process, FLOW_DETECTED);
+#endif
         }
     }
 
+#ifdef DISABLE_JSONIZER
     if (flow_to_process->ndpi_flow->num_extra_packets_checked <
         flow_to_process->ndpi_flow->max_extra_packets_to_check)
     {
@@ -1038,6 +1069,7 @@ static void ndpi_process_packet(uint8_t * const args,
             }
         }
     }
+#endif
 }
 
 static void run_pcap_loop(struct nDPId_reader_thread const * const reader_thread)
