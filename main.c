@@ -22,12 +22,10 @@
 #define TICK_RESOLUTION 1000
 #define MAX_READER_THREADS 4
 #define IDLE_SCAN_PERIOD 10000 /* msec */
-#define MAX_IDLE_TIME 300000 /* msec */
+#define MAX_IDLE_TIME 300000   /* msec */
 #define INITIAL_THREAD_HASH 0x03dd018b
 
-enum nDPId_l3_type {
-    L3_IP, L3_IP6
-};
+enum nDPId_l3_type { L3_IP, L3_IP6 };
 
 struct nDPId_flow_info {
     uint32_t flow_id;
@@ -54,11 +52,11 @@ struct nDPId_flow_info {
     uint16_t src_port;
     uint16_t dst_port;
 
-    uint8_t is_midstream_flow:1;
-    uint8_t flow_fin_ack_seen:1;
-    uint8_t flow_ack_seen:1;
-    uint8_t detection_completed:1;
-    uint8_t reserved_01:4;
+    uint8_t is_midstream_flow : 1;
+    uint8_t flow_fin_ack_seen : 1;
+    uint8_t flow_ack_seen : 1;
+    uint8_t detection_completed : 1;
+    uint8_t reserved_01 : 4;
     uint8_t l4_protocol;
 
     struct ndpi_proto detected_l7_protocol;
@@ -72,8 +70,8 @@ struct nDPId_flow_info {
 struct nDPId_workflow {
     pcap_t * pcap_handle;
 
-    uint8_t error_or_eof:1;
-    uint8_t reserved_00:7;
+    uint8_t error_or_eof : 1;
+    uint8_t reserved_00 : 7;
     uint8_t reserved_01[3];
 
     unsigned long long int packets_captured;
@@ -104,16 +102,13 @@ struct nDPId_reader_thread {
     int array_index;
 };
 
-enum flow_event {
-    FLOW_NEW, FLOW_END, FLOW_IDLE,
-    FLOW_GUESSED, FLOW_DETECTED, FLOW_NOT_DETECTED
-};
+enum flow_event { FLOW_NEW, FLOW_END, FLOW_IDLE, FLOW_GUESSED, FLOW_DETECTED, FLOW_NOT_DETECTED };
 
 static struct nDPId_reader_thread reader_threads[MAX_READER_THREADS] = {};
 static int reader_thread_count = MAX_READER_THREADS;
 static int main_thread_shutdown = 0;
 static uint32_t flow_id = 0;
-static int log_to_stderr = 0;
+static int log_to_stderr = 1;
 
 static void free_workflow(struct nDPId_workflow ** const workflow);
 #ifndef DISABLE_JSONIZER
@@ -134,8 +129,8 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     if (access(file_or_device, R_OK) != 0 && errno == ENOENT) {
         workflow->pcap_handle = pcap_open_live(file_or_device, /* 1536 */ 65535, 1, 250, pcap_error_buffer);
     } else {
-        workflow->pcap_handle = pcap_open_offline_with_tstamp_precision(file_or_device, PCAP_TSTAMP_PRECISION_MICRO,
-                                                                        pcap_error_buffer);
+        workflow->pcap_handle =
+            pcap_open_offline_with_tstamp_precision(file_or_device, PCAP_TSTAMP_PRECISION_MICRO, pcap_error_buffer);
     }
 
     if (workflow->pcap_handle == NULL) {
@@ -172,8 +167,7 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     ndpi_set_protocol_detection_bitmask2(workflow->ndpi_struct, &protos);
     ndpi_finalize_initalization(workflow->ndpi_struct);
 
-    if (ndpi_init_serializer_ll(&workflow->ndpi_serializer, ndpi_serialization_format_json, BUFSIZ) != 1)
-    {
+    if (ndpi_init_serializer_ll(&workflow->ndpi_serializer, ndpi_serialization_format_json, BUFSIZ) != 1) {
         return NULL;
     }
 
@@ -206,7 +200,7 @@ static void free_workflow(struct nDPId_workflow ** const workflow)
     if (w->ndpi_struct != NULL) {
         ndpi_exit_detection_module(w->ndpi_struct);
     }
-    for(size_t i = 0; i < w->max_active_flows; i++) {
+    for (size_t i = 0; i < w->max_active_flows; i++) {
         ndpi_tdestroy(w->ndpi_flows_active[i], ndpi_flow_info_freer);
     }
     ndpi_free(w->ndpi_flows_active);
@@ -237,8 +231,7 @@ static int setup_reader_threads(char const * const file_or_device)
 
     for (int i = 0; i < reader_thread_count; ++i) {
         reader_threads[i].workflow = init_workflow(file_or_default_device);
-        if (reader_threads[i].workflow == NULL)
-        {
+        if (reader_threads[i].workflow == NULL) {
             return 1;
         }
     }
@@ -247,20 +240,21 @@ static int setup_reader_threads(char const * const file_or_device)
 }
 
 static int ip_tuple_to_string(struct nDPId_flow_info const * const flow,
-                              char * const src_addr_str, size_t src_addr_len,
-                              char * const dst_addr_str, size_t dst_addr_len)
+                              char * const src_addr_str,
+                              size_t src_addr_len,
+                              char * const dst_addr_str,
+                              size_t dst_addr_len)
 {
     switch (flow->l3_type) {
         case L3_IP:
-            return inet_ntop(AF_INET, (struct sockaddr_in *)&flow->ip_tuple.v4.src,
-                             src_addr_str, src_addr_len) != NULL &&
-                   inet_ntop(AF_INET, (struct sockaddr_in *)&flow->ip_tuple.v4.dst,
-                             dst_addr_str, dst_addr_len) != NULL;
+            return inet_ntop(AF_INET, (struct sockaddr_in *)&flow->ip_tuple.v4.src, src_addr_str, src_addr_len) !=
+                       NULL &&
+                   inet_ntop(AF_INET, (struct sockaddr_in *)&flow->ip_tuple.v4.dst, dst_addr_str, dst_addr_len) != NULL;
         case L3_IP6:
-            return inet_ntop(AF_INET6, (struct sockaddr_in6 *)&flow->ip_tuple.v6.src[0],
-                             src_addr_str, src_addr_len) != NULL &&
-                   inet_ntop(AF_INET6, (struct sockaddr_in6 *)&flow->ip_tuple.v6.dst[0],
-                             dst_addr_str, dst_addr_len) != NULL;
+            return inet_ntop(AF_INET6, (struct sockaddr_in6 *)&flow->ip_tuple.v6.src[0], src_addr_str, src_addr_len) !=
+                       NULL &&
+                   inet_ntop(AF_INET6, (struct sockaddr_in6 *)&flow->ip_tuple.v6.dst[0], dst_addr_str, dst_addr_len) !=
+                       NULL;
     }
 
     return 0;
@@ -273,14 +267,18 @@ static void print_packet_info(struct nDPId_reader_thread const * const reader_th
                               struct nDPId_flow_info const * const flow)
 {
     struct nDPId_workflow const * const workflow = reader_thread->workflow;
-    char src_addr_str[INET6_ADDRSTRLEN+1] = {0};
-    char dst_addr_str[INET6_ADDRSTRLEN+1] = {0};
+    char src_addr_str[INET6_ADDRSTRLEN + 1] = {0};
+    char dst_addr_str[INET6_ADDRSTRLEN + 1] = {0};
     char buf[256];
     int used = 0, ret;
 
-    ret = snprintf(buf, sizeof(buf), "[%8llu, %d, %4u] %4u bytes: ",
-                   workflow->packets_captured, reader_thread->array_index,
-                   flow->flow_id, header->caplen);
+    ret = snprintf(buf,
+                   sizeof(buf),
+                   "[%8llu, %d, %4u] %4u bytes: ",
+                   workflow->packets_captured,
+                   reader_thread->array_index,
+                   flow->flow_id,
+                   header->caplen);
     if (ret > 0) {
         used += ret;
     }
@@ -296,12 +294,20 @@ static void print_packet_info(struct nDPId_reader_thread const * const reader_th
 
     switch (flow->l4_protocol) {
         case IPPROTO_UDP:
-            ret = snprintf(buf + used, sizeof(buf) - used, " -> UDP[%u -> %u, %u bytes]",
-                           flow->src_port, flow->dst_port, l4_data_len);
+            ret = snprintf(buf + used,
+                           sizeof(buf) - used,
+                           " -> UDP[%u -> %u, %u bytes]",
+                           flow->src_port,
+                           flow->dst_port,
+                           l4_data_len);
             break;
         case IPPROTO_TCP:
-            ret = snprintf(buf + used, sizeof(buf) - used, " -> TCP[%u -> %u, %u bytes]",
-                           flow->src_port, flow->dst_port, l4_data_len);
+            ret = snprintf(buf + used,
+                           sizeof(buf) - used,
+                           " -> TCP[%u -> %u, %u bytes]",
+                           flow->src_port,
+                           flow->dst_port,
+                           l4_data_len);
             break;
         case IPPROTO_ICMP:
             ret = snprintf(buf + used, sizeof(buf) - used, " -> ICMP");
@@ -324,8 +330,7 @@ static void print_packet_info(struct nDPId_reader_thread const * const reader_th
 }
 #endif
 
-static int ip_tuples_equal(struct nDPId_flow_info const * const A,
-                           struct nDPId_flow_info const * const B)
+static int ip_tuples_equal(struct nDPId_flow_info const * const A, struct nDPId_flow_info const * const B)
 {
     // generate a warning if the enum changes
     switch (A->l3_type) {
@@ -334,19 +339,15 @@ static int ip_tuples_equal(struct nDPId_flow_info const * const A,
             break;
     }
     if (A->l3_type == L3_IP && B->l3_type == L3_IP6) {
-        return A->ip_tuple.v4.src == B->ip_tuple.v4.src &&
-               A->ip_tuple.v4.dst == B->ip_tuple.v4.dst;
+        return A->ip_tuple.v4.src == B->ip_tuple.v4.src && A->ip_tuple.v4.dst == B->ip_tuple.v4.dst;
     } else if (A->l3_type == L3_IP6 && B->l3_type == L3_IP6) {
-        return A->ip_tuple.v6.src[0] == B->ip_tuple.v6.src[0] &&
-               A->ip_tuple.v6.src[1] == B->ip_tuple.v6.src[1] &&
-               A->ip_tuple.v6.dst[0] == B->ip_tuple.v6.dst[0] &&
-               A->ip_tuple.v6.dst[1] == B->ip_tuple.v6.dst[1];
+        return A->ip_tuple.v6.src[0] == B->ip_tuple.v6.src[0] && A->ip_tuple.v6.src[1] == B->ip_tuple.v6.src[1] &&
+               A->ip_tuple.v6.dst[0] == B->ip_tuple.v6.dst[0] && A->ip_tuple.v6.dst[1] == B->ip_tuple.v6.dst[1];
     }
     return 0;
 }
 
-static int ip_tuples_compare(struct nDPId_flow_info const * const A,
-                             struct nDPId_flow_info const * const B)
+static int ip_tuples_compare(struct nDPId_flow_info const * const A, struct nDPId_flow_info const * const B)
 {
     // generate a warning if the enum changes
     switch (A->l3_type) {
@@ -355,39 +356,25 @@ static int ip_tuples_compare(struct nDPId_flow_info const * const A,
             break;
     }
     if (A->l3_type == L3_IP && B->l3_type == L3_IP6) {
-        if (A->ip_tuple.v4.src < B->ip_tuple.v4.src ||
-            A->ip_tuple.v4.dst < B->ip_tuple.v4.dst)
-        {
+        if (A->ip_tuple.v4.src < B->ip_tuple.v4.src || A->ip_tuple.v4.dst < B->ip_tuple.v4.dst) {
             return -1;
         }
-        if (A->ip_tuple.v4.src > B->ip_tuple.v4.src ||
-            A->ip_tuple.v4.dst > B->ip_tuple.v4.dst)
-        {
+        if (A->ip_tuple.v4.src > B->ip_tuple.v4.src || A->ip_tuple.v4.dst > B->ip_tuple.v4.dst) {
             return 1;
         }
     } else if (A->l3_type == L3_IP6 && B->l3_type == L3_IP6) {
-        if ((A->ip_tuple.v6.src[0] < B->ip_tuple.v6.src[0] &&
-             A->ip_tuple.v6.src[1] < B->ip_tuple.v6.src[1]) ||
-            (A->ip_tuple.v6.dst[0] < B->ip_tuple.v6.dst[0] &&
-             A->ip_tuple.v6.dst[1] < B->ip_tuple.v6.dst[1]))
-        {
+        if ((A->ip_tuple.v6.src[0] < B->ip_tuple.v6.src[0] && A->ip_tuple.v6.src[1] < B->ip_tuple.v6.src[1]) ||
+            (A->ip_tuple.v6.dst[0] < B->ip_tuple.v6.dst[0] && A->ip_tuple.v6.dst[1] < B->ip_tuple.v6.dst[1])) {
             return -1;
         }
-        if ((A->ip_tuple.v6.src[0] > B->ip_tuple.v6.src[0] &&
-             A->ip_tuple.v6.src[1] > B->ip_tuple.v6.src[1]) ||
-            (A->ip_tuple.v6.dst[0] > B->ip_tuple.v6.dst[0] &&
-             A->ip_tuple.v6.dst[1] > B->ip_tuple.v6.dst[1]))
-        {
+        if ((A->ip_tuple.v6.src[0] > B->ip_tuple.v6.src[0] && A->ip_tuple.v6.src[1] > B->ip_tuple.v6.src[1]) ||
+            (A->ip_tuple.v6.dst[0] > B->ip_tuple.v6.dst[0] && A->ip_tuple.v6.dst[1] > B->ip_tuple.v6.dst[1])) {
             return 1;
         }
     }
-    if (A->src_port < B->src_port ||
-        A->dst_port < B->dst_port)
-    {
+    if (A->src_port < B->src_port || A->dst_port < B->dst_port) {
         return -1;
-    } else if (A->src_port > B->src_port ||
-               A->dst_port > B->dst_port)
-    {
+    } else if (A->src_port > B->src_port || A->dst_port > B->dst_port) {
         return 1;
     }
     return 0;
@@ -410,10 +397,9 @@ static void ndpi_idle_scan_walker(void const * const A, ndpi_VISIT which, int de
 
     if (which == ndpi_preorder || which == ndpi_leaf) {
         if ((flow->flow_fin_ack_seen == 1 && flow->flow_ack_seen == 1) ||
-            flow->last_seen + MAX_IDLE_TIME < workflow->last_time)
-        {
-            char src_addr_str[INET6_ADDRSTRLEN+1];
-            char dst_addr_str[INET6_ADDRSTRLEN+1];
+            flow->last_seen + MAX_IDLE_TIME < workflow->last_time) {
+            char src_addr_str[INET6_ADDRSTRLEN + 1];
+            char dst_addr_str[INET6_ADDRSTRLEN + 1];
             ip_tuple_to_string(flow, src_addr_str, sizeof(src_addr_str), dst_addr_str, sizeof(dst_addr_str));
             workflow->ndpi_flows_idle[workflow->cur_idle_flows++] = flow;
             workflow->total_idle_flows++;
@@ -421,28 +407,27 @@ static void ndpi_idle_scan_walker(void const * const A, ndpi_VISIT which, int de
     }
 }
 
-static int ndpi_workflow_node_cmp(void const * const A, void const * const B) {
+static int ndpi_workflow_node_cmp(void const * const A, void const * const B)
+{
     struct nDPId_flow_info const * const flow_info_a = (struct nDPId_flow_info *)A;
     struct nDPId_flow_info const * const flow_info_b = (struct nDPId_flow_info *)B;
 
     if (flow_info_a->hashval < flow_info_b->hashval) {
-        return(-1);
+        return (-1);
     } else if (flow_info_a->hashval > flow_info_b->hashval) {
-        return(1);
+        return (1);
     }
 
     /* Flows have the same hash */
     if (flow_info_a->l4_protocol < flow_info_b->l4_protocol) {
-        return(-1);
+        return (-1);
     } else if (flow_info_a->l4_protocol > flow_info_b->l4_protocol) {
-        return(1);
+        return (1);
     }
 
-    if (ip_tuples_equal(flow_info_a, flow_info_b) != 0 &&
-        flow_info_a->src_port == flow_info_b->src_port &&
-        flow_info_a->dst_port == flow_info_b->dst_port)
-    {
-        return(0);
+    if (ip_tuples_equal(flow_info_a, flow_info_b) != 0 && flow_info_a->src_port == flow_info_b->src_port &&
+        flow_info_a->dst_port == flow_info_b->dst_port) {
+        return (0);
     }
 
     return ip_tuples_compare(flow_info_a, flow_info_b);
@@ -468,8 +453,7 @@ static void check_for_idle_flows(struct nDPId_reader_thread * const reader_threa
 #else
                 jsonize_flow_event(reader_thread, f, FLOW_IDLE);
 #endif
-                ndpi_tdelete(f, &workflow->ndpi_flows_active[idle_scan_index],
-                             ndpi_workflow_node_cmp);
+                ndpi_tdelete(f, &workflow->ndpi_flows_active[idle_scan_index], ndpi_workflow_node_cmp);
                 ndpi_flow_info_freer(f);
                 workflow->cur_active_flows--;
             }
@@ -480,8 +464,7 @@ static void check_for_idle_flows(struct nDPId_reader_thread * const reader_threa
 }
 
 #ifndef DISABLE_JSONIZER
-static int flow2json(struct nDPId_workflow * const workflow,
-                     struct nDPId_flow_info const * const flow)
+static int flow2json(struct nDPId_workflow * const workflow, struct nDPId_flow_info const * const flow)
 {
     ndpi_serializer * const serializer = &workflow->ndpi_serializer;
     char src_name[32] = {};
@@ -515,24 +498,23 @@ static int flow2json(struct nDPId_workflow * const workflow,
 
     switch (flow->l4_protocol) {
         case IPPROTO_TCP:
-          ndpi_serialize_string_string(serializer, "l4_proto", "tcp");
-          break;
+            ndpi_serialize_string_string(serializer, "l4_proto", "tcp");
+            break;
         case IPPROTO_UDP:
-          ndpi_serialize_string_string(serializer, "l4_proto", "udp");
-          break;
+            ndpi_serialize_string_string(serializer, "l4_proto", "udp");
+            break;
         case IPPROTO_ICMP:
-          ndpi_serialize_string_string(serializer, "l4_proto", "icmp");
-          break;
+            ndpi_serialize_string_string(serializer, "l4_proto", "icmp");
+            break;
         case IPPROTO_ICMPV6:
-          ndpi_serialize_string_string(serializer, "l4_proto", "icmp6");
-          break;
+            ndpi_serialize_string_string(serializer, "l4_proto", "icmp6");
+            break;
         default:
-          ndpi_serialize_string_uint32(serializer, "l4_proto", flow->l4_protocol);
-          break;
+            ndpi_serialize_string_uint32(serializer, "l4_proto", flow->l4_protocol);
+            break;
     }
 
-    return ndpi_dpi2json(workflow->ndpi_struct, flow->ndpi_flow,
-                         flow->detected_l7_protocol, serializer);
+    return ndpi_dpi2json(workflow->ndpi_struct, flow->ndpi_flow, flow->detected_l7_protocol, serializer);
 }
 
 static char * jsonize_flow(struct nDPId_workflow * const workflow,
@@ -545,21 +527,26 @@ static char * jsonize_flow(struct nDPId_workflow * const workflow,
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_l4_data_len", flow->total_l4_data_len);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_min_l4_data_len", flow->min_l4_data_len);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_max_l4_data_len", flow->max_l4_data_len);
-    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_avg_l4_data_len",
+    ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
+                                 "flow_avg_l4_data_len",
                                  (flow->packets_processed > 0 ? flow->total_l4_data_len / flow->packets_processed : 0));
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "packet_id", workflow->packets_captured);
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "midstream", flow->is_midstream_flow);
 
-    if (flow2json(workflow, flow) == 0)
-    {
+    if (flow2json(workflow, flow) == 0) {
         out = ndpi_serializer_get_buffer(&workflow->ndpi_serializer, out_size);
         if (out == NULL || *out_size == 0) {
-            fprintf(stderr, "[%8llu, %4u] nDPId JSON serializer failed, buffer length: %u\n",
-                    workflow->packets_captured, flow->flow_id, *out_size);
+            syslog(LOG_DAEMON | LOG_ERR,
+                   "[%8llu, %4u] nDPId JSON serializer failed, buffer length: %u\n",
+                   workflow->packets_captured,
+                   flow->flow_id,
+                   *out_size);
         }
     } else {
-        fprintf(stderr, "[%8llu, %4u] flow2json/dpi2json failed\n",
-                workflow->packets_captured, flow->flow_id);
+        syslog(LOG_DAEMON | LOG_ERR,
+               "[%8llu, %4u] flow2json/dpi2json failed\n",
+               workflow->packets_captured,
+               flow->flow_id);
     }
 
     return out;
@@ -596,8 +583,12 @@ static void jsonize_flow_event(struct nDPId_reader_thread const * const reader_t
     json_str = jsonize_flow(workflow, flow, &json_str_len);
 
     if (json_str == NULL) {
-        fprintf(stderr, "[%8llu, %d, %4u] jsonize failed, buffer length: %u\n",
-                workflow->packets_captured, reader_thread->array_index, flow->flow_id, json_str_len);
+        syslog(LOG_DAEMON | LOG_ERR,
+               "[%8llu, %d, %4u] jsonize failed, buffer length: %u\n",
+               workflow->packets_captured,
+               reader_thread->array_index,
+               flow->flow_id,
+               json_str_len);
     } else {
         printf("%.*s\n", (int)json_str_len, json_str);
     }
@@ -609,8 +600,7 @@ static void ndpi_process_packet(uint8_t * const args,
                                 struct pcap_pkthdr const * const header,
                                 uint8_t const * const packet)
 {
-    struct nDPId_reader_thread * const reader_thread =
-        (struct nDPId_reader_thread *)args;
+    struct nDPId_reader_thread * const reader_thread = (struct nDPId_reader_thread *)args;
     struct nDPId_workflow * workflow;
     struct nDPId_flow_info flow = {};
 
@@ -647,7 +637,7 @@ static void ndpi_process_packet(uint8_t * const args,
     }
 
     workflow->packets_captured++;
-    time_ms = ((uint64_t) header->ts.tv_sec) * TICK_RESOLUTION + header->ts.tv_usec / (1000000 / TICK_RESOLUTION);
+    time_ms = ((uint64_t)header->ts.tv_sec) * TICK_RESOLUTION + header->ts.tv_usec / (1000000 / TICK_RESOLUTION);
     workflow->last_time = time_ms;
 
     check_for_idle_flows(reader_thread);
@@ -664,39 +654,51 @@ static void ndpi_process_packet(uint8_t * const args,
             break;
         case DLT_EN10MB:
             if (header->len < sizeof(struct ndpi_ethhdr)) {
-                fprintf(stderr, "[%8llu, %d] Ethernet packet too short - skipping\n",
-                        workflow->packets_captured, reader_thread->array_index);
+                syslog(LOG_DAEMON | LOG_WARNING,
+                       "[%8llu, %d] Ethernet packet too short - skipping\n",
+                       workflow->packets_captured,
+                       reader_thread->array_index);
                 return;
             }
-            ethernet = (struct ndpi_ethhdr *) &packet[eth_offset];
+            ethernet = (struct ndpi_ethhdr *)&packet[eth_offset];
             ip_offset = sizeof(struct ndpi_ethhdr) + eth_offset;
             type = ntohs(ethernet->h_proto);
             switch (type) {
                 case ETH_P_IP: /* IPv4 */
                     if (header->len < sizeof(struct ndpi_ethhdr) + sizeof(struct ndpi_iphdr)) {
-                        fprintf(stderr, "[%8llu, %d] IP packet too short - skipping\n",
-                                workflow->packets_captured, reader_thread->array_index);
+                        syslog(LOG_DAEMON | LOG_WARNING,
+                               "[%8llu, %d] IP packet too short - skipping\n",
+                               workflow->packets_captured,
+                               reader_thread->array_index);
                         return;
                     }
                     break;
                 case ETH_P_IPV6: /* IPV6 */
                     if (header->len < sizeof(struct ndpi_ethhdr) + sizeof(struct ndpi_ipv6hdr)) {
-                        fprintf(stderr, "[%8llu, %d] IP6 packet too short - skipping\n",
-                                workflow->packets_captured, reader_thread->array_index);
+                        syslog(LOG_DAEMON | LOG_WARNING,
+                               "[%8llu, %d] IP6 packet too short - skipping\n",
+                               workflow->packets_captured,
+                               reader_thread->array_index);
                         return;
                     }
                     break;
                 case ETH_P_ARP: /* ARP */
                     return;
                 default:
-                    fprintf(stderr, "[%8llu, %d] Unknown Ethernet packet with type 0x%X - skipping\n",
-                            workflow->packets_captured, reader_thread->array_index, type);
+                    syslog(LOG_DAEMON | LOG_NOTICE,
+                           "[%8llu, %d] Unknown Ethernet packet with type 0x%X - skipping\n",
+                           workflow->packets_captured,
+                           reader_thread->array_index,
+                           type);
                     return;
             }
             break;
         default:
-            fprintf(stderr, "[%8llu, %d] Captured non IP/Ethernet packet with datalink type 0x%X - skipping\n",
-                    workflow->packets_captured, reader_thread->array_index, pcap_datalink(workflow->pcap_handle));
+            syslog(LOG_DAEMON | LOG_WARNING,
+                   "[%8llu, %d] Captured non IP/Ethernet packet with datalink type 0x%X - skipping\n",
+                   workflow->packets_captured,
+                   reader_thread->array_index,
+                   pcap_datalink(workflow->pcap_handle));
             return;
     }
 
@@ -707,54 +709,72 @@ static void ndpi_process_packet(uint8_t * const args,
         ip = NULL;
         ip6 = (struct ndpi_ipv6hdr *)&packet[ip_offset];
     } else {
-        fprintf(stderr, "[%8llu, %d] Captured non IPv4/IPv6 packet with type 0x%X - skipping\n",
-                workflow->packets_captured, reader_thread->array_index, type);
+        syslog(LOG_DAEMON | LOG_WARNING,
+               "[%8llu, %d] Captured non IPv4/IPv6 packet with type 0x%X - skipping\n",
+               workflow->packets_captured,
+               reader_thread->array_index,
+               type);
         return;
     }
     ip_size = header->len - ip_offset;
 
     if (type == ETH_P_IP && header->len >= ip_offset) {
         if (header->caplen < header->len) {
-            fprintf(stderr, "[%8llu, %d] Captured packet size is smaller than packet size: %u < %u\n",
-                    workflow->packets_captured, reader_thread->array_index, header->caplen, header->len);
+            syslog(LOG_DAEMON | LOG_WARNING,
+                   "[%8llu, %d] Captured packet size is smaller than packet size: %u < %u\n",
+                   workflow->packets_captured,
+                   reader_thread->array_index,
+                   header->caplen,
+                   header->len);
         }
     }
 
     /* process layer3 e.g. IPv4 / IPv6 */
     if (ip != NULL && ip->version == 4) {
         if (ip_size < sizeof(*ip)) {
-            fprintf(stderr, "[%8llu, %d] Packet smaller than IP4 header length: %u < %zu\n",
-                    workflow->packets_captured, reader_thread->array_index, ip_size, sizeof(*ip));
+            syslog(LOG_DAEMON | LOG_WARNING,
+                   "[%8llu, %d] Packet smaller than IP4 header length: %u < %zu\n",
+                   workflow->packets_captured,
+                   reader_thread->array_index,
+                   ip_size,
+                   sizeof(*ip));
             return;
         }
 
         flow.l3_type = L3_IP;
-        if (ndpi_detection_get_l4((uint8_t*)ip, ip_size, &l4_ptr, &l4_len,
-                                  &flow.l4_protocol, NDPI_DETECTION_ONLY_IPV4) != 0)
-        {
-            fprintf(stderr, "[%8llu, %d] nDPI IPv4/L4 payload detection failed, L4 length: %zu\n",
-                    workflow->packets_captured, reader_thread->array_index, ip_size - sizeof(*ip));
+        if (ndpi_detection_get_l4(
+                (uint8_t *)ip, ip_size, &l4_ptr, &l4_len, &flow.l4_protocol, NDPI_DETECTION_ONLY_IPV4) != 0) {
+            syslog(LOG_DAEMON | LOG_WARNING,
+                   "[%8llu, %d] nDPI IPv4/L4 payload detection failed, L4 length: %zu\n",
+                   workflow->packets_captured,
+                   reader_thread->array_index,
+                   ip_size - sizeof(*ip));
             return;
         }
 
         flow.ip_tuple.v4.src = ip->saddr;
         flow.ip_tuple.v4.dst = ip->daddr;
-        uint32_t min_addr = (flow.ip_tuple.v4.src > flow.ip_tuple.v4.dst ?
-                             flow.ip_tuple.v4.dst : flow.ip_tuple.v4.src);
+        uint32_t min_addr = (flow.ip_tuple.v4.src > flow.ip_tuple.v4.dst ? flow.ip_tuple.v4.dst : flow.ip_tuple.v4.src);
         thread_index = min_addr + ip->protocol;
     } else if (ip6 != NULL) {
         if (ip_size < sizeof(ip6->ip6_hdr)) {
-            fprintf(stderr, "[%8llu, %d] Packet smaller than IP6 header length: %u < %zu\n",
-                    workflow->packets_captured, reader_thread->array_index, ip_size, sizeof(ip6->ip6_hdr));
+            syslog(LOG_DAEMON | LOG_WARNING,
+                   "[%8llu, %d] Packet smaller than IP6 header length: %u < %zu\n",
+                   workflow->packets_captured,
+                   reader_thread->array_index,
+                   ip_size,
+                   sizeof(ip6->ip6_hdr));
             return;
         }
 
         flow.l3_type = L3_IP6;
-        if (ndpi_detection_get_l4((uint8_t*)ip6, ip_size, &l4_ptr, &l4_len,
-                                  &flow.l4_protocol, NDPI_DETECTION_ONLY_IPV6) != 0)
-        {
-            fprintf(stderr, "[%8llu, %d] nDPI IPv6/L4 payload detection failed, L4 length: %zu\n",
-                    workflow->packets_captured, reader_thread->array_index, ip_size - sizeof(*ip6));
+        if (ndpi_detection_get_l4(
+                (uint8_t *)ip6, ip_size, &l4_ptr, &l4_len, &flow.l4_protocol, NDPI_DETECTION_ONLY_IPV6) != 0) {
+            syslog(LOG_DAEMON | LOG_WARNING,
+                   "[%8llu, %d] nDPI IPv6/L4 payload detection failed, L4 length: %zu\n",
+                   workflow->packets_captured,
+                   reader_thread->array_index,
+                   ip_size - sizeof(*ip6));
             return;
         }
 
@@ -763,9 +783,7 @@ static void ndpi_process_packet(uint8_t * const args,
         flow.ip_tuple.v6.dst[0] = ip6->ip6_dst.u6_addr.u6_addr64[0];
         flow.ip_tuple.v6.dst[1] = ip6->ip6_dst.u6_addr.u6_addr64[1];
         uint64_t min_addr[2];
-        if (flow.ip_tuple.v6.src[0] > flow.ip_tuple.v6.dst[0] &&
-            flow.ip_tuple.v6.src[1] > flow.ip_tuple.v6.dst[1])
-        {
+        if (flow.ip_tuple.v6.src[0] > flow.ip_tuple.v6.dst[0] && flow.ip_tuple.v6.src[1] > flow.ip_tuple.v6.dst[1]) {
             min_addr[0] = flow.ip_tuple.v6.dst[0];
             min_addr[1] = flow.ip_tuple.v6.dst[0];
         } else {
@@ -774,8 +792,11 @@ static void ndpi_process_packet(uint8_t * const args,
         }
         thread_index = min_addr[0] + min_addr[1] + ip6->ip6_hdr.ip6_un1_nxt;
     } else {
-        fprintf(stderr, "[%8llu, %d] Non IP/IPv6 protocol detected: 0x%X\n",
-                workflow->packets_captured, reader_thread->array_index, type);
+        syslog(LOG_DAEMON | LOG_WARNING,
+               "[%8llu, %d] Non IP/IPv6 protocol detected: 0x%X\n",
+               workflow->packets_captured,
+               reader_thread->array_index,
+               type);
         return;
     }
 
@@ -784,9 +805,12 @@ static void ndpi_process_packet(uint8_t * const args,
         const struct ndpi_tcphdr * tcp;
 
         if (header->len < (l4_ptr - packet) + sizeof(struct ndpi_tcphdr)) {
-            fprintf(stderr, "[%8llu, %d] Malformed TCP packet, packet size smaller than expected: %u < %zu\n",
-                    workflow->packets_captured, reader_thread->array_index,
-                    header->len, (l4_ptr - packet) + sizeof(struct ndpi_tcphdr));
+            syslog(LOG_DAEMON | LOG_WARNING,
+                   "[%8llu, %d] Malformed TCP packet, packet size smaller than expected: %u < %zu\n",
+                   workflow->packets_captured,
+                   reader_thread->array_index,
+                   header->len,
+                   (l4_ptr - packet) + sizeof(struct ndpi_tcphdr));
             return;
         }
         tcp = (struct ndpi_tcphdr *)l4_ptr;
@@ -799,9 +823,12 @@ static void ndpi_process_packet(uint8_t * const args,
         const struct ndpi_udphdr * udp;
 
         if (header->len < (l4_ptr - packet) + sizeof(struct ndpi_udphdr)) {
-            fprintf(stderr, "[%8llu, %d] Malformed UDP packet, packet size smaller than expected: %u < %zu\n",
-                    workflow->packets_captured, reader_thread->array_index,
-                    header->len, (l4_ptr - packet) + sizeof(struct ndpi_udphdr));
+            syslog(LOG_DAEMON | LOG_WARNING,
+                   "[%8llu, %d] Malformed UDP packet, packet size smaller than expected: %u < %zu\n",
+                   workflow->packets_captured,
+                   reader_thread->array_index,
+                   header->len,
+                   (l4_ptr - packet) + sizeof(struct ndpi_udphdr));
             return;
         }
         udp = (struct ndpi_udphdr *)l4_ptr;
@@ -825,18 +852,28 @@ static void ndpi_process_packet(uint8_t * const args,
     /* calculate flow hash for btree find, search(insert) */
     switch (flow.l3_type) {
         case L3_IP:
-            if (ndpi_flowv4_flow_hash(flow.l4_protocol, flow.ip_tuple.v4.src, flow.ip_tuple.v4.dst,
-                                      flow.src_port, flow.dst_port, 0, 0,
-                                      (uint8_t *)&flow.hashval, sizeof(flow.hashval)) != 0)
-            {
+            if (ndpi_flowv4_flow_hash(flow.l4_protocol,
+                                      flow.ip_tuple.v4.src,
+                                      flow.ip_tuple.v4.dst,
+                                      flow.src_port,
+                                      flow.dst_port,
+                                      0,
+                                      0,
+                                      (uint8_t *)&flow.hashval,
+                                      sizeof(flow.hashval)) != 0) {
                 flow.hashval = flow.ip_tuple.v4.src + flow.ip_tuple.v4.dst; // fallback
             }
             break;
         case L3_IP6:
-            if (ndpi_flowv6_flow_hash(flow.l4_protocol, &ip6->ip6_src, &ip6->ip6_dst,
-                                      flow.src_port, flow.dst_port, 0, 0,
-                                      (uint8_t *)&flow.hashval, sizeof(flow.hashval)) != 0)
-            {
+            if (ndpi_flowv6_flow_hash(flow.l4_protocol,
+                                      &ip6->ip6_src,
+                                      &ip6->ip6_dst,
+                                      flow.src_port,
+                                      flow.dst_port,
+                                      0,
+                                      0,
+                                      (uint8_t *)&flow.hashval,
+                                      sizeof(flow.hashval)) != 0) {
                 flow.hashval = flow.ip_tuple.v6.src[0] + flow.ip_tuple.v6.src[1];
                 flow.hashval += flow.ip_tuple.v6.dst[0] + flow.ip_tuple.v6.dst[1];
             }
@@ -848,8 +885,8 @@ static void ndpi_process_packet(uint8_t * const args,
     tree_result = ndpi_tfind(&flow, &workflow->ndpi_flows_active[hashed_index], ndpi_workflow_node_cmp);
     if (tree_result == NULL) {
         /* flow not found in btree: switch src <-> dst and try to find it again */
-        uint64_t orig_src_ip[2] = { flow.ip_tuple.v6.src[0], flow.ip_tuple.v6.src[1] };
-        uint64_t orig_dst_ip[2] = { flow.ip_tuple.v6.dst[0], flow.ip_tuple.v6.dst[1] };
+        uint64_t orig_src_ip[2] = {flow.ip_tuple.v6.src[0], flow.ip_tuple.v6.src[1]};
+        uint64_t orig_dst_ip[2] = {flow.ip_tuple.v6.dst[0], flow.ip_tuple.v6.dst[1]};
         uint16_t orig_src_port = flow.src_port;
         uint16_t orig_dst_port = flow.dst_port;
 
@@ -876,16 +913,21 @@ static void ndpi_process_packet(uint8_t * const args,
     if (tree_result == NULL) {
         /* flow still not found, must be new */
         if (workflow->cur_active_flows == workflow->max_active_flows) {
-            fprintf(stderr, "[%8llu, %d] max flows to track reached: %llu, idle: %llu\n",
-                    workflow->packets_captured, reader_thread->array_index,
-                    workflow->max_active_flows, workflow->cur_idle_flows);
+            syslog(LOG_DAEMON | LOG_WARNING,
+                   "[%8llu, %d] max flows to track reached: %llu, idle: %llu\n",
+                   workflow->packets_captured,
+                   reader_thread->array_index,
+                   workflow->max_active_flows,
+                   workflow->cur_idle_flows);
             return;
         }
 
         flow_to_process = (struct nDPId_flow_info *)ndpi_malloc(sizeof(*flow_to_process));
         if (flow_to_process == NULL) {
-            fprintf(stderr, "[%8llu, %d] Not enough memory for flow info\n",
-                    workflow->packets_captured, reader_thread->array_index);
+            syslog(LOG_DAEMON | LOG_WARNING,
+                   "[%8llu, %d] Not enough memory for flow info\n",
+                   workflow->packets_captured,
+                   reader_thread->array_index);
             return;
         }
 
@@ -896,27 +938,38 @@ static void ndpi_process_packet(uint8_t * const args,
 
         flow_to_process->ndpi_flow = (struct ndpi_flow_struct *)ndpi_flow_malloc(SIZEOF_FLOW_STRUCT);
         if (flow_to_process->ndpi_flow == NULL) {
-            fprintf(stderr, "[%8llu, %d, %4u] Not enough memory for flow struct\n",
-                    workflow->packets_captured, reader_thread->array_index, flow_to_process->flow_id);
+            syslog(LOG_DAEMON | LOG_WARNING,
+                   "[%8llu, %d, %4u] Not enough memory for flow struct\n",
+                   workflow->packets_captured,
+                   reader_thread->array_index,
+                   flow_to_process->flow_id);
             return;
         }
         memset(flow_to_process->ndpi_flow, 0, SIZEOF_FLOW_STRUCT);
 
         flow_to_process->ndpi_src = (struct ndpi_id_struct *)ndpi_calloc(1, SIZEOF_ID_STRUCT);
         if (flow_to_process->ndpi_src == NULL) {
-            fprintf(stderr, "[%8llu, %d, %4u] Not enough memory for src id struct\n",
-                    workflow->packets_captured, reader_thread->array_index, flow_to_process->flow_id);
+            syslog(LOG_DAEMON | LOG_WARNING,
+                   "[%8llu, %d, %4u] Not enough memory for src id struct\n",
+                   workflow->packets_captured,
+                   reader_thread->array_index,
+                   flow_to_process->flow_id);
             return;
         }
 
         flow_to_process->ndpi_dst = (struct ndpi_id_struct *)ndpi_calloc(1, SIZEOF_ID_STRUCT);
         if (flow_to_process->ndpi_dst == NULL) {
-            fprintf(stderr, "[%8llu, %d, %4u] Not enough memory for dst id struct\n",
-                    workflow->packets_captured, reader_thread->array_index, flow_to_process->flow_id);
+            syslog(LOG_DAEMON | LOG_WARNING,
+                   "[%8llu, %d, %4u] Not enough memory for dst id struct\n",
+                   workflow->packets_captured,
+                   reader_thread->array_index,
+                   flow_to_process->flow_id);
             return;
         }
 #ifdef DISABLE_JSONIZER
-        printf("[%8llu, %d, %4u] new %sflow\n", workflow->packets_captured, thread_index,
+        printf("[%8llu, %d, %4u] new %sflow\n",
+               workflow->packets_captured,
+               thread_index,
                flow_to_process->flow_id,
                (flow_to_process->is_midstream_flow != 0 ? "midstream-" : ""));
 #endif
@@ -957,8 +1010,7 @@ static void ndpi_process_packet(uint8_t * const args,
     if (flow.flow_fin_ack_seen != 0 && flow_to_process->flow_fin_ack_seen == 0) {
         flow_to_process->flow_fin_ack_seen = 1;
 #ifdef DISABLE_JSONIZER
-        printf("[%8llu, %d, %4u] end of flow\n",  workflow->packets_captured, thread_index,
-                flow_to_process->flow_id);
+        printf("[%8llu, %d, %4u] end of flow\n", workflow->packets_captured, thread_index, flow_to_process->flow_id);
 #else
         jsonize_flow_event(reader_thread, flow_to_process, FLOW_END);
 #endif
@@ -991,9 +1043,7 @@ static void ndpi_process_packet(uint8_t * const args,
             /* last chance to guess something, better then nothing */
             uint8_t protocol_was_guessed = 0;
             flow_to_process->guessed_protocol =
-                ndpi_detection_giveup(workflow->ndpi_struct,
-                                      flow_to_process->ndpi_flow,
-                                      1, &protocol_was_guessed);
+                ndpi_detection_giveup(workflow->ndpi_struct, flow_to_process->ndpi_flow, 1, &protocol_was_guessed);
             if (protocol_was_guessed != 0) {
 #ifdef DISABLE_JSONIZER
                 printf("[%8llu, %d, %4d][GUESSED] protocol: %s | app protocol: %s | category: %s\n",
@@ -1009,7 +1059,9 @@ static void ndpi_process_packet(uint8_t * const args,
             } else {
 #ifdef DISABLE_JSONIZER
                 printf("[%8llu, %d, %4d][FLOW NOT DETECTED]\n",
-                       workflow->packets_captured, reader_thread->array_index, flow_to_process->flow_id);
+                       workflow->packets_captured,
+                       reader_thread->array_index,
+                       flow_to_process->flow_id);
 #else
                 jsonize_flow_event(reader_thread, flow_to_process, FLOW_NOT_DETECTED);
 #endif
@@ -1017,27 +1069,28 @@ static void ndpi_process_packet(uint8_t * const args,
         }
     }
 
-    flow_to_process->detected_l7_protocol =
-        ndpi_detection_process_packet(workflow->ndpi_struct, flow_to_process->ndpi_flow,
-                                      ip != NULL ? (uint8_t *)ip : (uint8_t *)ip6,
-                                      ip_size, time_ms, ndpi_src, ndpi_dst);
+    flow_to_process->detected_l7_protocol = ndpi_detection_process_packet(workflow->ndpi_struct,
+                                                                          flow_to_process->ndpi_flow,
+                                                                          ip != NULL ? (uint8_t *)ip : (uint8_t *)ip6,
+                                                                          ip_size,
+                                                                          time_ms,
+                                                                          ndpi_src,
+                                                                          ndpi_dst);
 
-    if (ndpi_is_protocol_detected(workflow->ndpi_struct,
-                                  flow_to_process->detected_l7_protocol) != 0 &&
-        flow_to_process->detection_completed == 0)
-    {
+    if (ndpi_is_protocol_detected(workflow->ndpi_struct, flow_to_process->detected_l7_protocol) != 0 &&
+        flow_to_process->detection_completed == 0) {
         if (flow_to_process->detected_l7_protocol.master_protocol != NDPI_PROTOCOL_UNKNOWN ||
             flow_to_process->detected_l7_protocol.app_protocol != NDPI_PROTOCOL_UNKNOWN) {
             flow_to_process->detection_completed = 1;
             workflow->detected_flow_protocols++;
 #ifdef DISABLE_JSONIZER
             printf("[%8llu, %d, %4d][DETECTED] protocol: %s | app protocol: %s | category: %s\n",
-                    workflow->packets_captured,
-                    reader_thread->array_index,
-                    flow_to_process->flow_id,
-                    ndpi_get_proto_name(workflow->ndpi_struct, flow_to_process->detected_l7_protocol.master_protocol),
-                    ndpi_get_proto_name(workflow->ndpi_struct, flow_to_process->detected_l7_protocol.app_protocol),
-                    ndpi_category_get_name(workflow->ndpi_struct, flow_to_process->detected_l7_protocol.category));
+                   workflow->packets_captured,
+                   reader_thread->array_index,
+                   flow_to_process->flow_id,
+                   ndpi_get_proto_name(workflow->ndpi_struct, flow_to_process->detected_l7_protocol.master_protocol),
+                   ndpi_get_proto_name(workflow->ndpi_struct, flow_to_process->detected_l7_protocol.app_protocol),
+                   ndpi_category_get_name(workflow->ndpi_struct, flow_to_process->detected_l7_protocol.category));
 #else
             jsonize_flow_event(reader_thread, flow_to_process, FLOW_DETECTED);
 #endif
@@ -1047,14 +1100,12 @@ static void ndpi_process_packet(uint8_t * const args,
 
 static void run_pcap_loop(struct nDPId_reader_thread const * const reader_thread)
 {
-    if (reader_thread->workflow != NULL &&
-        reader_thread->workflow->pcap_handle != NULL) {
+    if (reader_thread->workflow != NULL && reader_thread->workflow->pcap_handle != NULL) {
 
-        if (pcap_loop(reader_thread->workflow->pcap_handle, -1,
-            &ndpi_process_packet, (uint8_t *)reader_thread) == PCAP_ERROR) {
+        if (pcap_loop(reader_thread->workflow->pcap_handle, -1, &ndpi_process_packet, (uint8_t *)reader_thread) ==
+            PCAP_ERROR) {
 
-            fprintf(stderr, "Error while reading pcap file: '%s'\n",
-                    pcap_geterr(reader_thread->workflow->pcap_handle));
+            fprintf(stderr, "Error while reading pcap file: '%s'\n", pcap_geterr(reader_thread->workflow->pcap_handle));
             reader_thread->workflow->error_or_eof = 1;
         }
     }
@@ -1062,19 +1113,16 @@ static void run_pcap_loop(struct nDPId_reader_thread const * const reader_thread
 
 static void break_pcap_loop(struct nDPId_reader_thread * const reader_thread)
 {
-    if (reader_thread->workflow != NULL &&
-        reader_thread->workflow->pcap_handle != NULL)
-    {
+    if (reader_thread->workflow != NULL && reader_thread->workflow->pcap_handle != NULL) {
         pcap_breakloop(reader_thread->workflow->pcap_handle);
     }
 }
 
 static void * processing_thread(void * const ndpi_thread_arg)
 {
-    struct nDPId_reader_thread const * const reader_thread =
-        (struct nDPId_reader_thread *)ndpi_thread_arg;
+    struct nDPId_reader_thread const * const reader_thread = (struct nDPId_reader_thread *)ndpi_thread_arg;
 
-    printf("Starting ThreadID %d\n", reader_thread->array_index);
+    fprintf(stderr, "Starting ThreadID %d\n", reader_thread->array_index);
     run_pcap_loop(reader_thread);
     reader_thread->workflow->error_or_eof = 1;
     return NULL;
@@ -1110,9 +1158,7 @@ static int start_reader_threads(void)
             break;
         }
 
-        if (pthread_create(&reader_threads[i].thread_id, NULL,
-            processing_thread, &reader_threads[i]) != 0)
-        {
+        if (pthread_create(&reader_threads[i].thread_id, NULL, processing_thread, &reader_threads[i]) != 0) {
             fprintf(stderr, "pthread_create: %s\n", strerror(errno));
             return 1;
         }
@@ -1151,15 +1197,18 @@ static int stop_reader_threads(void)
         total_flows_idle += reader_threads[i].workflow->total_idle_flows;
         total_flows_detected += reader_threads[i].workflow->detected_flow_protocols;
 
-        printf("Stopping Thread %d, processed %10llu packets, %12llu bytes, total flows: %8llu, "
-                                                     "idle flows: %8llu, detected flows: %8llu\n",
-               reader_threads[i].array_index, reader_threads[i].workflow->packets_processed,
-               reader_threads[i].workflow->total_l4_data_len, reader_threads[i].workflow->total_active_flows,
-               reader_threads[i].workflow->total_idle_flows, reader_threads[i].workflow->detected_flow_protocols);
+        printf(
+            "Stopping Thread %d, processed %10llu packets, %12llu bytes, total flows: %8llu, "
+            "idle flows: %8llu, detected flows: %8llu\n",
+            reader_threads[i].array_index,
+            reader_threads[i].workflow->packets_processed,
+            reader_threads[i].workflow->total_l4_data_len,
+            reader_threads[i].workflow->total_active_flows,
+            reader_threads[i].workflow->total_idle_flows,
+            reader_threads[i].workflow->detected_flow_protocols);
     }
     /* total packets captured: same value for all threads as packet2thread distribution happens later */
-    printf("Total packets captured.: %llu\n",
-           reader_threads[0].workflow->packets_captured);
+    printf("Total packets captured.: %llu\n", reader_threads[0].workflow->packets_captured);
     printf("Total packets processed: %llu\n", total_packets_processed);
     printf("Total layer4 data size.: %llu\n", total_l4_data_len);
     printf("Total flows captured...: %llu\n", total_flows_captured);
@@ -1172,7 +1221,7 @@ static int stop_reader_threads(void)
         }
 
         if (pthread_join(reader_threads[i].thread_id, NULL) != 0) {
-            fprintf(stderr, "pthread_join: %s\n", strerror(errno));
+            syslog(LOG_DAEMON | LOG_ERR, "pthread_join: %s\n", strerror(errno));
         }
 
         free_workflow(&reader_threads[i].workflow);
@@ -1183,16 +1232,16 @@ static int stop_reader_threads(void)
 
 static void sighandler(int signum)
 {
-    fprintf(stderr, "Received SIGNAL %d\n", signum);
+    syslog(LOG_DAEMON | LOG_NOTICE, "Received SIGNAL %d\n", signum);
 
     if (main_thread_shutdown == 0) {
         main_thread_shutdown = 1;
         if (stop_reader_threads() != 0) {
-            fprintf(stderr, "Failed to stop reader threads!\n");
+            syslog(LOG_DAEMON | LOG_ERR, "Failed to stop reader threads!\n");
             exit(EXIT_FAILURE);
         }
     } else {
-        fprintf(stderr, "Reader threads are already shutting down, please be patient.\n");
+        syslog(LOG_DAEMON | LOG_NOTICE, "Reader threads are already shutting down, please be patient.\n");
     }
 }
 
@@ -1202,15 +1251,17 @@ int main(int argc, char ** argv)
         return 1;
     }
 
-    printf("usage: %s [PCAP-FILE-OR-INTERFACE]\n"
-           "----------------------------------\n"
-           "nDPI version: %s\n"
-           " API version: %u\n"
-           "pcap version: %s\n"
-           "----------------------------------\n",
-           argv[0],
-           ndpi_revision(), ndpi_get_api_version(),
-           pcap_lib_version() + strlen("libpcap version "));
+    printf(
+        "usage: %s [PCAP-FILE-OR-INTERFACE]\n"
+        "----------------------------------\n"
+        "nDPI version: %s\n"
+        " API version: %u\n"
+        "pcap version: %s\n"
+        "----------------------------------\n",
+        argv[0],
+        ndpi_revision(),
+        ndpi_get_api_version(),
+        pcap_lib_version() + strlen("libpcap version "));
 
     openlog("nDPId", LOG_CONS | (log_to_stderr != 0 ? LOG_PERROR : 0), LOG_DAEMON);
 
