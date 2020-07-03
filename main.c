@@ -48,6 +48,8 @@ struct nDPId_flow_info {
         } v6;
     } ip_tuple;
 
+    uint16_t min_l4_data_len;
+    uint16_t max_l4_data_len;
     unsigned long long int total_l4_data_len;
     uint16_t src_port;
     uint16_t dst_port;
@@ -56,9 +58,7 @@ struct nDPId_flow_info {
     uint8_t flow_fin_ack_seen:1;
     uint8_t flow_ack_seen:1;
     uint8_t detection_completed:1;
-    uint8_t tls_client_hello_seen:1;
-    uint8_t tls_server_hello_seen:1;
-    uint8_t reserved_00:2;
+    uint8_t reserved_01:4;
     uint8_t l4_protocol;
 
     struct ndpi_proto detected_l7_protocol;
@@ -542,6 +542,11 @@ static char * jsonize_flow(struct nDPId_workflow * const workflow,
     char * out = NULL;
 
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "flow_id", flow->flow_id);
+    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_l4_data_len", flow->total_l4_data_len);
+    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_min_l4_data_len", flow->min_l4_data_len);
+    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_max_l4_data_len", flow->max_l4_data_len);
+    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_avg_l4_data_len",
+                                 (flow->packets_processed > 0 ? flow->total_l4_data_len / flow->packets_processed : 0));
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "packet_id", workflow->packets_captured);
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "midstream", flow->is_midstream_flow);
 
@@ -960,6 +965,13 @@ static void ndpi_process_packet(uint8_t * const args,
         return;
     }
 
+    if (l4_len > flow_to_process->max_l4_data_len) {
+        flow_to_process->max_l4_data_len = l4_len;
+    }
+    if (l4_len < flow_to_process->min_l4_data_len) {
+        flow_to_process->min_l4_data_len = l4_len;
+    }
+
     if (flow_to_process->ndpi_flow->num_processed_pkts == 0xFF) {
         return;
     } else if (flow_to_process->ndpi_flow->num_processed_pkts == 0xFE) {
@@ -1031,51 +1043,6 @@ static void ndpi_process_packet(uint8_t * const args,
 #endif
         }
     }
-
-#ifdef DISABLE_JSONIZER
-    if (flow_to_process->ndpi_flow->num_extra_packets_checked <
-        flow_to_process->ndpi_flow->max_extra_packets_to_check)
-    {
-        if (flow_to_process->detected_l7_protocol.master_protocol == NDPI_PROTOCOL_TLS ||
-            flow_to_process->detected_l7_protocol.app_protocol == NDPI_PROTOCOL_TLS)
-        {
-            if (flow_to_process->tls_client_hello_seen == 0 &&
-                flow_to_process->ndpi_flow->l4.tcp.tls.hello_processed != 0)
-            {
-                uint8_t unknown_tls_version = 0;
-                printf("[%8llu, %d, %4d][TLS-CLIENT-HELLO] version: %s | sni: %s | alpn: %s\n",
-                        workflow->packets_captured,
-                        reader_thread->array_index,
-                        flow_to_process->flow_id,
-                        ndpi_ssl_version2str(flow_to_process->ndpi_flow->protos.stun_ssl.ssl.ssl_version,
-                                             &unknown_tls_version),
-                        flow_to_process->ndpi_flow->protos.stun_ssl.ssl.client_requested_server_name,
-                        (flow_to_process->ndpi_flow->protos.stun_ssl.ssl.alpn != NULL ?
-                         flow_to_process->ndpi_flow->protos.stun_ssl.ssl.alpn : "-"));
-                flow_to_process->tls_client_hello_seen = 1;
-            }
-            if (flow_to_process->tls_server_hello_seen == 0 &&
-                flow_to_process->ndpi_flow->l4.tcp.tls.certificate_processed != 0)
-            {
-                uint8_t unknown_tls_version = 0;
-                printf("[%8llu, %d, %4d][TLS-SERVER-HELLO] version: %s | common-name(s): %.*s | "
-                                                           "issuer: %s | subject: %s\n",
-                        workflow->packets_captured,
-                        reader_thread->array_index,
-                        flow_to_process->flow_id,
-                        ndpi_ssl_version2str(flow_to_process->ndpi_flow->protos.stun_ssl.ssl.ssl_version,
-                                             &unknown_tls_version),
-                        flow_to_process->ndpi_flow->protos.stun_ssl.ssl.server_names_len,
-                        flow_to_process->ndpi_flow->protos.stun_ssl.ssl.server_names,
-                        (flow_to_process->ndpi_flow->protos.stun_ssl.ssl.issuerDN != NULL ?
-                         flow_to_process->ndpi_flow->protos.stun_ssl.ssl.issuerDN : "-"),
-                        (flow_to_process->ndpi_flow->protos.stun_ssl.ssl.subjectDN != NULL ?
-                         flow_to_process->ndpi_flow->protos.stun_ssl.ssl.subjectDN : "-"));
-                flow_to_process->tls_server_hello_seen = 1;
-            }
-        }
-    }
-#endif
 }
 
 static void run_pcap_loop(struct nDPId_reader_thread const * const reader_thread)
