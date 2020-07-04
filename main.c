@@ -1,6 +1,7 @@
 #include <arpa/inet.h>
 #include <errno.h>
 #include <linux/if_ether.h>
+#include <linux/un.h>
 #include <netinet/in.h>
 #include <ndpi/ndpi_api.h>
 #include <ndpi/ndpi_main.h>
@@ -99,6 +100,7 @@ struct nDPId_workflow {
 struct nDPId_reader_thread {
     struct nDPId_workflow * workflow;
     pthread_t thread_id;
+    int json_sockfd;
     int array_index;
 };
 
@@ -108,7 +110,8 @@ static struct nDPId_reader_thread reader_threads[MAX_READER_THREADS] = {};
 static int reader_thread_count = MAX_READER_THREADS;
 static int main_thread_shutdown = 0;
 static uint32_t flow_id = 0;
-static int log_to_stderr = 1;
+static int log_to_stderr = 0;
+static char json_sockpath[UNIX_PATH_MAX] = "/tmp/ndpid-collector.sock";
 
 static void free_workflow(struct nDPId_workflow ** const workflow);
 #ifndef DISABLE_JSONIZER
@@ -1120,9 +1123,26 @@ static void break_pcap_loop(struct nDPId_reader_thread * const reader_thread)
 
 static void * processing_thread(void * const ndpi_thread_arg)
 {
-    struct nDPId_reader_thread const * const reader_thread = (struct nDPId_reader_thread *)ndpi_thread_arg;
+    struct nDPId_reader_thread * const reader_thread = (struct nDPId_reader_thread *)ndpi_thread_arg;
+    struct sockaddr_un saddr;
 
-    fprintf(stderr, "Starting ThreadID %d\n", reader_thread->array_index);
+    reader_thread->json_sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
+    if (reader_thread->json_sockfd < 0) {
+        fprintf(stderr, "Thread %u: socket() failed: %s\n",
+                reader_thread->array_index, strerror(errno));
+        reader_thread->workflow->error_or_eof = 1;
+        return NULL;
+    }
+
+    saddr.sun_family = AF_UNIX;
+    strncpy(saddr.sun_path, json_sockpath, strnlen(saddr.sun_path, sizeof(saddr.sun_path)));
+    if (connect(reader_thread->json_sockfd, (struct sockaddr *)&saddr, sizeof(saddr)) < 0) {
+        fprintf(stderr, "Thread %u: connect(\"%s\") failed: %s\n",
+                reader_thread->array_index, json_sockpath, strerror(errno));
+        reader_thread->workflow->error_or_eof = 1;
+        return NULL;
+    }
+
     run_pcap_loop(reader_thread);
     reader_thread->workflow->error_or_eof = 1;
     return NULL;
@@ -1245,20 +1265,43 @@ static void sighandler(int signum)
     }
 }
 
+static int parse_options(int argc, char ** argv)
+{
+    int opt;
+
+    while ((opt = getopt(argc, argv, "hlc:")) != -1) {
+        switch (opt) {
+            case 'l':
+                log_to_stderr = 1;
+                break;
+            case 'c':
+                strncpy(json_sockpath, optarg, sizeof(json_sockpath));
+                break;
+            default:
+                fprintf(stderr, "Usage: %s [-l] [-c path-to-unix-sock] pcap-file/interface\n", argv[0]);
+                return 1;
+        }
+    }
+
+    return 0;
+}
+
 int main(int argc, char ** argv)
 {
     if (argc == 0) {
         return 1;
     }
 
+    if (parse_options(argc, argv) != 0) {
+        return 1;
+    }
+
     printf(
-        "usage: %s [PCAP-FILE-OR-INTERFACE]\n"
         "----------------------------------\n"
         "nDPI version: %s\n"
         " API version: %u\n"
         "pcap version: %s\n"
         "----------------------------------\n",
-        argv[0],
         ndpi_revision(),
         ndpi_get_api_version(),
         pcap_lib_version() + strlen("libpcap version "));
