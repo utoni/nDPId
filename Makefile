@@ -40,11 +40,11 @@ endif
 
 RM = rm -f
 
-main: help main.c
-	$(CC) $(CFLAGS) main.c -o $@ $(LDFLAGS) $(LIBS)
+nDPId: help nDPId.c
+	$(CC) $(CFLAGS) nDPId.c -o $@ $(LDFLAGS) $(LIBS)
 
 clean:
-	$(RM) main
+	$(RM) nDPId
 
 help:
 	@echo 'CC               = $(CC)'

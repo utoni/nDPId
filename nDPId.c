@@ -1,5 +1,6 @@
 #include <arpa/inet.h>
 #include <errno.h>
+#include <fcntl.h>
 #include <linux/if_ether.h>
 #include <linux/un.h>
 #include <netinet/in.h>
@@ -100,7 +101,10 @@ struct nDPId_workflow {
 struct nDPId_reader_thread {
     struct nDPId_workflow * workflow;
     pthread_t thread_id;
+#ifndef DISABLE_JSONIZER
     int json_sockfd;
+    int json_sock_reconnect;
+#endif
     int array_index;
 };
 
@@ -110,12 +114,16 @@ static struct nDPId_reader_thread reader_threads[MAX_READER_THREADS] = {};
 static int reader_thread_count = MAX_READER_THREADS;
 static int main_thread_shutdown = 0;
 static uint32_t flow_id = 0;
+
+static char * pcap_file_or_interface = NULL;
 static int log_to_stderr = 0;
+#ifndef DISABLE_JSONIZER
 static char json_sockpath[UNIX_PATH_MAX] = "/tmp/ndpid-collector.sock";
+#endif
 
 static void free_workflow(struct nDPId_workflow ** const workflow);
 #ifndef DISABLE_JSONIZER
-static void jsonize_flow_event(struct nDPId_reader_thread const * const reader_thread,
+static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
                                struct nDPId_flow_info const * const flow,
                                enum flow_event event);
 #endif
@@ -555,13 +563,44 @@ static char * jsonize_flow(struct nDPId_workflow * const workflow,
     return out;
 }
 
-static void jsonize_flow_event(struct nDPId_reader_thread const * const reader_thread,
+static int connect_to_json_socket(struct nDPId_reader_thread * const reader_thread)
+{
+    struct sockaddr_un saddr;
+
+    close(reader_thread->json_sockfd);
+
+    reader_thread->json_sockfd = socket(AF_UNIX, SOCK_STREAM | SOCK_CLOEXEC, 0);
+    if (reader_thread->json_sockfd < 0) {
+        reader_thread->json_sock_reconnect = 1;
+        return 1;
+    }
+
+    saddr.sun_family = AF_UNIX;
+    if (snprintf(saddr.sun_path, sizeof(saddr.sun_path), "%s", json_sockpath) < 0 ||
+        connect(reader_thread->json_sockfd, (struct sockaddr *)&saddr, sizeof(saddr)) < 0)
+    {
+        reader_thread->json_sock_reconnect = 1;
+        return 1;
+    }
+
+    if (fcntl(reader_thread->json_sockfd, F_SETFL, fcntl(reader_thread->json_sockfd, F_GETFL, 0) | O_NONBLOCK) == -1) {
+        reader_thread->json_sock_reconnect = 1;
+        return 1;
+    }
+
+    reader_thread->json_sock_reconnect = 0;
+
+    return 0;
+}
+
+static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
                                struct nDPId_flow_info const * const flow,
                                enum flow_event event)
 {
     char * json_str;
     uint32_t json_str_len = 0;
     struct nDPId_workflow * const workflow = reader_thread->workflow;
+    int saved_errno;
 
     switch (event) {
         case FLOW_NEW:
@@ -593,7 +632,34 @@ static void jsonize_flow_event(struct nDPId_reader_thread const * const reader_t
                flow->flow_id,
                json_str_len);
     } else {
-        printf("%.*s\n", (int)json_str_len, json_str);
+        if (reader_thread->json_sock_reconnect != 0) {
+            if (connect_to_json_socket(reader_thread) == 0) {
+                syslog(LOG_DAEMON | LOG_ERR,
+                         "[%8llu, %d, %4u] Reconnected to JSON sink",
+                         workflow->packets_captured,
+                         reader_thread->array_index,
+                         flow->flow_id);
+            }
+        }
+
+        if (reader_thread->json_sock_reconnect == 0 &&
+            send(reader_thread->json_sockfd, json_str, json_str_len, MSG_NOSIGNAL) < 0)
+        {
+            saved_errno = errno;
+            syslog(LOG_DAEMON | LOG_ERR,
+                   "[%8llu, %d, %4u] send data to JSON sink failed: %s",
+                   workflow->packets_captured,
+                   reader_thread->array_index,
+                   flow->flow_id, strerror(saved_errno));
+            if (saved_errno == EPIPE) {
+                syslog(LOG_DAEMON | LOG_ERR,
+                       "[%8llu, %d, %4u] Lost connection to JSON sink",
+                       workflow->packets_captured,
+                       reader_thread->array_index,
+                       flow->flow_id);
+            }
+            reader_thread->json_sock_reconnect = 1;
+        }
     }
     ndpi_reset_serializer(&workflow->ndpi_serializer);
 }
@@ -1108,7 +1174,8 @@ static void run_pcap_loop(struct nDPId_reader_thread const * const reader_thread
         if (pcap_loop(reader_thread->workflow->pcap_handle, -1, &ndpi_process_packet, (uint8_t *)reader_thread) ==
             PCAP_ERROR) {
 
-            fprintf(stderr, "Error while reading pcap file: '%s'\n", pcap_geterr(reader_thread->workflow->pcap_handle));
+            syslog(LOG_DAEMON | LOG_ERR,
+                   "Error while reading pcap file: '%s'\n", pcap_geterr(reader_thread->workflow->pcap_handle));
             reader_thread->workflow->error_or_eof = 1;
         }
     }
@@ -1124,25 +1191,14 @@ static void break_pcap_loop(struct nDPId_reader_thread * const reader_thread)
 static void * processing_thread(void * const ndpi_thread_arg)
 {
     struct nDPId_reader_thread * const reader_thread = (struct nDPId_reader_thread *)ndpi_thread_arg;
-    struct sockaddr_un saddr;
 
-    reader_thread->json_sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
-    if (reader_thread->json_sockfd < 0) {
-        fprintf(stderr, "Thread %u: socket() failed: %s\n",
-                reader_thread->array_index, strerror(errno));
-        reader_thread->workflow->error_or_eof = 1;
-        return NULL;
+#ifndef DISABLE_JSONIZER
+    if (connect_to_json_socket(reader_thread) != 0) {
+        syslog(LOG_DAEMON | LOG_ERR,
+               "Thread %u: Could not connect to JSON sink, will try again later",
+               reader_thread->array_index);
     }
-
-    saddr.sun_family = AF_UNIX;
-    strncpy(saddr.sun_path, json_sockpath, strnlen(saddr.sun_path, sizeof(saddr.sun_path)));
-    if (connect(reader_thread->json_sockfd, (struct sockaddr *)&saddr, sizeof(saddr)) < 0) {
-        fprintf(stderr, "Thread %u: connect(\"%s\") failed: %s\n",
-                reader_thread->array_index, json_sockpath, strerror(errno));
-        reader_thread->workflow->error_or_eof = 1;
-        return NULL;
-    }
-
+#endif
     run_pcap_loop(reader_thread);
     reader_thread->workflow->error_or_eof = 1;
     return NULL;
@@ -1269,16 +1325,24 @@ static int parse_options(int argc, char ** argv)
 {
     int opt;
 
-    while ((opt = getopt(argc, argv, "hlc:")) != -1) {
+    while ((opt = getopt(argc, argv, "hi:lc:")) != -1) {
         switch (opt) {
+            case 'i':
+                pcap_file_or_interface = strdup(optarg);
+                break;
             case 'l':
                 log_to_stderr = 1;
                 break;
             case 'c':
+#ifndef DISABLE_JSONIZER
                 strncpy(json_sockpath, optarg, sizeof(json_sockpath));
                 break;
+#else
+                fprintf(stderr, "Feature not available, DISABLE_JSONIZER=yes\n");
+                return 1;
+#endif
             default:
-                fprintf(stderr, "Usage: %s [-l] [-c path-to-unix-sock] pcap-file/interface\n", argv[0]);
+                fprintf(stderr, "Usage: %s [-i pcap-file/interface ] [-l] [-c path-to-unix-sock]\n", argv[0]);
                 return 1;
         }
     }
@@ -1308,7 +1372,7 @@ int main(int argc, char ** argv)
 
     openlog("nDPId", LOG_CONS | (log_to_stderr != 0 ? LOG_PERROR : 0), LOG_DAEMON);
 
-    if (setup_reader_threads((argc >= 2 ? argv[1] : NULL)) != 0) {
+    if (setup_reader_threads(pcap_file_or_interface) != 0) {
         fprintf(stderr, "%s: setup_reader_threads failed\n", argv[0]);
         return 1;
     }
