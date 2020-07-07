@@ -665,7 +665,7 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
     ndpi_reset_serializer(&workflow->ndpi_serializer);
 }
 
-static void jsonize_basic_event_error(struct nDPId_reader_thread * const reader_thread, uint32_t format_index)
+static void jsonize_format_error(struct nDPId_reader_thread * const reader_thread, uint32_t format_index)
 {
     char * out;
     uint32_t out_size = 0;
@@ -714,7 +714,7 @@ static void jsonize_basic_event(struct nDPId_reader_thread * const reader_thread
                                                 json_key, value, "%.2f");
                     got_jsonkey = 0;
                 } else {
-                    jsonize_basic_event_error(reader_thread, format_index);
+                    jsonize_format_error(reader_thread, format_index);
                     return;
                 }
                 break;
@@ -722,7 +722,7 @@ static void jsonize_basic_event(struct nDPId_reader_thread * const reader_thread
             case 'l':
                 format_index++;
                 if (got_jsonkey != 1) {
-                    jsonize_basic_event_error(reader_thread, format_index);
+                    jsonize_format_error(reader_thread, format_index);
                     return;
                 }
                 if (*(format++) == 'd') {
@@ -736,7 +736,7 @@ static void jsonize_basic_event(struct nDPId_reader_thread * const reader_thread
                                                  json_key, value);
                     got_jsonkey = 0;
                 } else {
-                    jsonize_basic_event_error(reader_thread, format_index);
+                    jsonize_format_error(reader_thread, format_index);
                     return;
                 }
                 break;
@@ -748,7 +748,7 @@ static void jsonize_basic_event(struct nDPId_reader_thread * const reader_thread
                                                  json_key, value);
                     got_jsonkey = 0;
                 } else {
-                    jsonize_basic_event_error(reader_thread, format_index);
+                    jsonize_format_error(reader_thread, format_index);
                     return;
                 }
                 break;
@@ -760,7 +760,7 @@ static void jsonize_basic_event(struct nDPId_reader_thread * const reader_thread
                                                 json_key, value);
                     got_jsonkey = 0;
                 } else {
-                    jsonize_basic_event_error(reader_thread, format_index);
+                    jsonize_format_error(reader_thread, format_index);
                     return;
                 }
                 break;
@@ -768,7 +768,7 @@ static void jsonize_basic_event(struct nDPId_reader_thread * const reader_thread
                 format_index++;
                 break;
             default:
-                jsonize_basic_event_error(reader_thread, format_index);
+                jsonize_format_error(reader_thread, format_index);
                 return;
         }
     }
