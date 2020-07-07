@@ -10,6 +10,7 @@
 #include <pcap/pcap.h>
 #include <pthread.h>
 #include <signal.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <syslog.h>
@@ -662,6 +663,116 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
         }
     }
     ndpi_reset_serializer(&workflow->ndpi_serializer);
+}
+
+static void jsonize_basic_event_error(struct nDPId_reader_thread * const reader_thread, uint32_t format_index)
+{
+    char * out;
+    uint32_t out_size = 0;
+
+    ndpi_serialize_string_string(&reader_thread->workflow->ndpi_serializer,
+                                 "serializer-error", "format");
+    ndpi_serialize_string_uint32(&reader_thread->workflow->ndpi_serializer,
+                              "serializer-format-index", format_index);
+    out = ndpi_serializer_get_buffer(&reader_thread->workflow->ndpi_serializer, &out_size);
+    if (out != NULL && out_size > 0) {
+        printf("ERR: %s\n", out);
+    }
+    ndpi_reset_serializer(&reader_thread->workflow->ndpi_serializer);
+}
+
+static void jsonize_basic_event(struct nDPId_reader_thread * const reader_thread,
+                                char const * format, ...)
+{
+    va_list ap;
+    uint8_t got_jsonkey = 0;
+    char json_key[BUFSIZ];
+    uint32_t format_index = 0;
+
+    (void)reader_thread;
+    va_start(ap, format);
+    while (*format) {
+        switch (*format++) {
+            case 's': {
+                format_index++;
+                char * value = va_arg(ap, char *);
+                if (got_jsonkey == 0) {
+                    snprintf(json_key, sizeof(json_key), "%s", value);
+                    got_jsonkey = 1;
+                } else {
+                    ndpi_serialize_string_string(&reader_thread->workflow->ndpi_serializer,
+                                                 json_key, value);
+                    got_jsonkey = 0;
+                }
+                break;
+            }
+            case 'f': {
+                format_index++;
+                if (got_jsonkey == 1) {
+                    float value = va_arg(ap, double);
+                    ndpi_serialize_string_float(&reader_thread->workflow->ndpi_serializer,
+                                                json_key, value, "%.2f");
+                    got_jsonkey = 0;
+                } else {
+                    jsonize_basic_event_error(reader_thread, format_index);
+                    return;
+                }
+                break;
+            }
+            case 'l':
+                format_index++;
+                if (got_jsonkey != 1) {
+                    jsonize_basic_event_error(reader_thread, format_index);
+                    return;
+                }
+                if (*(format++) == 'd') {
+                    long long int value = va_arg(ap, long long int);
+                    ndpi_serialize_string_int64(&reader_thread->workflow->ndpi_serializer,
+                                                json_key, value);
+                    got_jsonkey = 0;
+                } else if (*(format++) == 'u') {
+                    unsigned long long int value = va_arg(ap, unsigned long long int);
+                    ndpi_serialize_string_uint64(&reader_thread->workflow->ndpi_serializer,
+                                                 json_key, value);
+                    got_jsonkey = 0;
+                } else {
+                    jsonize_basic_event_error(reader_thread, format_index);
+                    return;
+                }
+                break;
+            case 'u':
+                format_index++;
+                if (got_jsonkey == 1) {
+                    unsigned int value = va_arg(ap, unsigned int);
+                    ndpi_serialize_string_uint32(&reader_thread->workflow->ndpi_serializer,
+                                                 json_key, value);
+                    got_jsonkey = 0;
+                } else {
+                    jsonize_basic_event_error(reader_thread, format_index);
+                    return;
+                }
+                break;
+            case 'd':
+                format_index++;
+                if (got_jsonkey == 1) {
+                    int value = va_arg(ap, int);
+                    ndpi_serialize_string_int32(&reader_thread->workflow->ndpi_serializer,
+                                                json_key, value);
+                    got_jsonkey = 0;
+                } else {
+                    jsonize_basic_event_error(reader_thread, format_index);
+                    return;
+                }
+                break;
+            case '%':
+                format_index++;
+                break;
+            default:
+                jsonize_basic_event_error(reader_thread, format_index);
+                return;
+        }
+    }
+    va_end(ap);
 }
 #endif
 
