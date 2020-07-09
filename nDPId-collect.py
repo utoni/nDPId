@@ -6,7 +6,7 @@ import asyncio
 
 JSON_SOCKPATH = '/tmp/ndpid-collector.sock'
 
-class EchoServer(asyncio.Protocol):
+class JsonCollector(asyncio.Protocol):
     def connection_made(self, transport):
         sys.stderr.write('New Connection.\n')
         self.transport = transport
@@ -26,7 +26,7 @@ class EchoServer(asyncio.Protocol):
             print('{}'.format(line))
 
 loop = asyncio.get_event_loop()
-coro = loop.create_unix_server(EchoServer, JSON_SOCKPATH)
+coro = loop.create_unix_server(JsonCollector, JSON_SOCKPATH)
 server = loop.run_until_complete(coro)
 sys.stderr.write('Serving on {}\n'.format(server.sockets[0].getsockname()))
 loop.run_forever()
