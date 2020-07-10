@@ -17,6 +17,8 @@ def json_filter_check(json_object):
         return True
     for (key, value) in JSON_FILTER:
         if key in json_object:
+            if value is None:
+                return True
             if str(json_object[key]) == str(value):
                 return True
     return False
@@ -46,10 +48,13 @@ class JsonCollector(asyncio.Protocol):
 def main():
     for arg in sys.argv[1:]:
         kv = arg.split('=')
-        if len(kv) != 2:
-            sys.stderr.write('JSON filter format invalid for argument "{}", required format: "key=value"\n'.format(str(arg)))
+        if len(kv) == 1:
+            json_filter_add(kv[0], None)
+        elif len(kv) == 2:
+            json_filter_add(kv[0], kv[1])
+        else:
+            sys.stderr.write('JSON filter format invalid for argument "{}", required format: either "key" or "key=value"\n'.format(str(arg)))
             sys.exit(1)
-        json_filter_add(kv[0], kv[1])
 
     loop = asyncio.get_event_loop()
     coro = loop.create_unix_server(JsonCollector, JSON_SOCKPATH)
