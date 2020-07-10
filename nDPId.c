@@ -1668,7 +1668,20 @@ static int stop_reader_threads(void)
     }
 
     printf("------------------------------------ Stopping reader threads\n");
+    for (int i = 0; i < reader_thread_count; ++i)
+    {
+        if (reader_threads[i].workflow == NULL)
+        {
+            continue;
+        }
 
+        if (pthread_join(reader_threads[i].thread_id, NULL) != 0)
+        {
+            syslog(LOG_DAEMON | LOG_ERR, "pthread_join: %s\n", strerror(errno));
+        }
+    }
+
+    printf("------------------------------------ Results\n");
     for (int i = 0; i < reader_thread_count; ++i)
     {
         if (reader_threads[i].workflow == NULL)
@@ -1699,19 +1712,6 @@ static int stop_reader_threads(void)
     printf("Total flows captured...: %llu\n", total_flows_captured);
     printf("Total flows timed out..: %llu\n", total_flows_idle);
     printf("Total flows detected...: %llu\n", total_flows_detected);
-
-    for (int i = 0; i < reader_thread_count; ++i)
-    {
-        if (reader_threads[i].workflow == NULL)
-        {
-            continue;
-        }
-
-        if (pthread_join(reader_threads[i].thread_id, NULL) != 0)
-        {
-            syslog(LOG_DAEMON | LOG_ERR, "pthread_join: %s\n", strerror(errno));
-        }
-    }
 
     return 0;
 }
