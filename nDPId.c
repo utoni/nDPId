@@ -66,7 +66,8 @@ struct nDPId_flow_info
     uint8_t flow_fin_ack_seen : 1;
     uint8_t flow_ack_seen : 1;
     uint8_t detection_completed : 1;
-    uint8_t reserved_01 : 4;
+    uint8_t reserved_00 : 4;
+    uint8_t reserved_01[3];
     uint8_t l4_protocol;
 
     struct ndpi_proto detected_l7_protocol;
@@ -141,7 +142,7 @@ enum basic_event
 static struct nDPId_reader_thread reader_threads[MAX_READER_THREADS] = {};
 static int reader_thread_count = MAX_READER_THREADS;
 static int main_thread_shutdown = 0;
-static uint32_t flow_id = 0;
+static uint32_t global_flow_id = 0;
 
 static char * pcap_file_or_interface = NULL;
 static int log_to_stderr = 0;
@@ -631,6 +632,9 @@ static void jsonize_basic(struct nDPId_reader_thread * const reader_thread)
 static void jsonize_flow(struct nDPId_workflow * const workflow, struct nDPId_flow_info const * const flow)
 {
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "flow_id", flow->flow_id);
+    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_packet_id", flow->packets_processed);
+    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_first_seen", flow->first_seen);
+    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_last_seen", flow->last_seen);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_l4_data_len", flow->total_l4_data_len);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_min_l4_data_len", flow->min_l4_data_len);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_max_l4_data_len", flow->max_l4_data_len);
@@ -992,7 +996,8 @@ static void ndpi_process_packet(uint8_t * const args,
     void * tree_result;
     struct nDPId_flow_info * flow_to_process;
 
-    int direction_changed = 0;
+    uint8_t direction_changed = 0;
+    uint8_t is_new_flow = 0;
     struct ndpi_id_struct * ndpi_src;
     struct ndpi_id_struct * ndpi_dst;
 
@@ -1355,7 +1360,12 @@ static void ndpi_process_packet(uint8_t * const args,
         workflow->cur_active_flows++;
         workflow->total_active_flows++;
         memcpy(flow_to_process, &flow, sizeof(*flow_to_process));
-        flow_to_process->flow_id = flow_id++;
+#ifdef __GCC_HAVE_SYNC_COMPARE_AND_SWAP_4
+        flow_to_process->flow_id = __sync_fetch_and_add(&global_flow_id, 1);
+#else
+#warning "Compare and Fetch aka __sync_fetch_and_add not available on your platform/compiler, do not trust any flow_id!"
+        flow_to_process->flow_id = global_flow_id++;
+#endif
 
         flow_to_process->ndpi_flow = (struct ndpi_flow_struct *)ndpi_flow_malloc(SIZEOF_FLOW_STRUCT);
         if (flow_to_process->ndpi_flow == NULL)
@@ -1406,9 +1416,7 @@ static void ndpi_process_packet(uint8_t * const args,
         ndpi_src = flow_to_process->ndpi_src;
         ndpi_dst = flow_to_process->ndpi_dst;
 
-#ifndef DISABLE_JSONIZER
-        jsonize_flow_event(reader_thread, flow_to_process, FLOW_NEW);
-#endif
+        is_new_flow = 1;
     }
     else
     {
@@ -1437,6 +1445,23 @@ static void ndpi_process_packet(uint8_t * const args,
     /* current packet is an TCP-ACK? */
     flow_to_process->flow_ack_seen = flow.flow_ack_seen;
 
+    if (l4_len > flow_to_process->max_l4_data_len)
+    {
+        flow_to_process->max_l4_data_len = l4_len;
+    }
+    if (l4_len < flow_to_process->min_l4_data_len)
+    {
+        flow_to_process->min_l4_data_len = l4_len;
+    }
+
+    if (is_new_flow != 0) {
+        flow_to_process->max_l4_data_len = l4_len;
+        flow_to_process->min_l4_data_len = l4_len;
+#ifndef DISABLE_JSONIZER
+        jsonize_flow_event(reader_thread, flow_to_process, FLOW_NEW);
+#endif
+    }
+
     /* TCP-FIN: indicates that at least one side wants to end the connection */
     if (flow.flow_fin_ack_seen != 0 && flow_to_process->flow_fin_ack_seen == 0)
     {
@@ -1447,15 +1472,6 @@ static void ndpi_process_packet(uint8_t * const args,
         jsonize_flow_event(reader_thread, flow_to_process, FLOW_END);
 #endif
         return;
-    }
-
-    if (l4_len > flow_to_process->max_l4_data_len)
-    {
-        flow_to_process->max_l4_data_len = l4_len;
-    }
-    if (l4_len < flow_to_process->min_l4_data_len)
-    {
-        flow_to_process->min_l4_data_len = l4_len;
     }
 
     if (flow_to_process->ndpi_flow->num_processed_pkts == 0xFF)
