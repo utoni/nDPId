@@ -1589,6 +1589,8 @@ static void * processing_thread(void * const ndpi_thread_arg)
     struct nDPId_reader_thread * const reader_thread = (struct nDPId_reader_thread *)ndpi_thread_arg;
 
 #ifndef DISABLE_JSONIZER
+    reader_thread->json_sockfd = -1;
+    reader_thread->json_sock_reconnect = 1;
     if (connect_to_json_socket(reader_thread) != 0)
     {
         syslog(LOG_DAEMON | LOG_ERR,
@@ -1709,11 +1711,22 @@ static int stop_reader_threads(void)
         {
             syslog(LOG_DAEMON | LOG_ERR, "pthread_join: %s\n", strerror(errno));
         }
-
-        free_workflow(&reader_threads[i].workflow);
     }
 
     return 0;
+}
+
+static void free_reader_threads(void)
+{
+    for (int i = 0; i < reader_thread_count; ++i)
+    {
+        if (reader_threads[i].workflow == NULL)
+        {
+            continue;
+        }
+
+        free_workflow(&reader_threads[i].workflow);
+    }
 }
 
 static void sighandler(int signum)
@@ -1814,6 +1827,7 @@ int main(int argc, char ** argv)
         fprintf(stderr, "%s: stop_reader_threads\n", argv[0]);
         return 1;
     }
+    free_reader_threads();
 
     closelog();
 
