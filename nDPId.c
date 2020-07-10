@@ -109,7 +109,8 @@ struct nDPId_reader_thread {
     int array_index;
 };
 
-enum flow_event { FLOW_NEW, FLOW_END, FLOW_IDLE, FLOW_GUESSED, FLOW_DETECTED, FLOW_NOT_DETECTED };
+enum flow_event { FLOW_INVALID = 0, FLOW_NEW, FLOW_END, FLOW_IDLE, FLOW_GUESSED, FLOW_DETECTED, FLOW_NOT_DETECTED };
+enum basic_event { BASIC_INVALID = 0, NON_ETHERNET_OR_IP_PACKET, ETHERNET_PACKET_TOO_SHORT, ETHERNET_PACKET_UNKNOWN, IP4_PACKET_TOO_SHORT, IP6_PACKET_TOO_SHORT };
 
 static struct nDPId_reader_thread reader_threads[MAX_READER_THREADS] = {};
 static int reader_thread_count = MAX_READER_THREADS;
@@ -476,7 +477,7 @@ static void check_for_idle_flows(struct nDPId_reader_thread * const reader_threa
 }
 
 #ifndef DISABLE_JSONIZER
-static int flow2json(struct nDPId_workflow * const workflow, struct nDPId_flow_info const * const flow)
+static int jsonize_l3_l4_dpi(struct nDPId_workflow * const workflow, struct nDPId_flow_info const * const flow)
 {
     ndpi_serializer * const serializer = &workflow->ndpi_serializer;
     char src_name[32] = {};
@@ -529,12 +530,17 @@ static int flow2json(struct nDPId_workflow * const workflow, struct nDPId_flow_i
     return ndpi_dpi2json(workflow->ndpi_struct, flow->ndpi_flow, flow->detected_l7_protocol, serializer);
 }
 
-static char * jsonize_flow(struct nDPId_workflow * const workflow,
-                           struct nDPId_flow_info const * const flow,
-                           uint32_t * out_size)
+static void jsonize_basic(struct nDPId_reader_thread * const reader_thread)
 {
-    char * out = NULL;
+    struct nDPId_workflow * const workflow = reader_thread->workflow;
 
+    ndpi_serialize_string_int32(&workflow->ndpi_serializer, "thread_id", reader_thread->array_index);
+    ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "packet_id", workflow->packets_captured);
+}
+
+static void jsonize_flow(struct nDPId_workflow * const workflow,
+                         struct nDPId_flow_info const * const flow)
+{
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "flow_id", flow->flow_id);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_l4_data_len", flow->total_l4_data_len);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_min_l4_data_len", flow->min_l4_data_len);
@@ -542,26 +548,14 @@ static char * jsonize_flow(struct nDPId_workflow * const workflow,
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
                                  "flow_avg_l4_data_len",
                                  (flow->packets_processed > 0 ? flow->total_l4_data_len / flow->packets_processed : 0));
-    ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "packet_id", workflow->packets_captured);
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "midstream", flow->is_midstream_flow);
 
-    if (flow2json(workflow, flow) == 0) {
-        out = ndpi_serializer_get_buffer(&workflow->ndpi_serializer, out_size);
-        if (out == NULL || *out_size == 0) {
-            syslog(LOG_DAEMON | LOG_ERR,
-                   "[%8llu, %4u] nDPId JSON serializer failed, buffer length: %u\n",
-                   workflow->packets_captured,
-                   flow->flow_id,
-                   *out_size);
-        }
-    } else {
+    if (jsonize_l3_l4_dpi(workflow, flow) != 0) {
         syslog(LOG_DAEMON | LOG_ERR,
                "[%8llu, %4u] flow2json/dpi2json failed\n",
                workflow->packets_captured,
                flow->flow_id);
     }
-
-    return out;
 }
 
 static int connect_to_json_socket(struct nDPId_reader_thread * const reader_thread)
@@ -639,60 +633,13 @@ static void send_to_json_sink(struct nDPId_reader_thread * const reader_thread,
     }
 }
 
-static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
-                               struct nDPId_flow_info const * const flow,
-                               enum flow_event event)
+static void serialize_and_send(struct nDPId_reader_thread * const reader_thread)
 {
     char * json_str;
-    uint32_t json_str_len = 0;
-    struct nDPId_workflow * const workflow = reader_thread->workflow;
+    uint32_t json_str_len;
 
-    switch (event) {
-        case FLOW_NEW:
-            ndpi_serialize_string_string(&workflow->ndpi_serializer, "flow_event", "new");
-            break;
-        case FLOW_END:
-            ndpi_serialize_string_string(&workflow->ndpi_serializer, "flow_event", "end");
-            break;
-        case FLOW_IDLE:
-            ndpi_serialize_string_string(&workflow->ndpi_serializer, "flow_event", "idle");
-            break;
-        case FLOW_GUESSED:
-            ndpi_serialize_string_string(&workflow->ndpi_serializer, "flow_event", "guessed");
-            break;
-        case FLOW_DETECTED:
-            ndpi_serialize_string_string(&workflow->ndpi_serializer, "flow_event", "detected");
-            break;
-        case FLOW_NOT_DETECTED:
-            ndpi_serialize_string_string(&workflow->ndpi_serializer, "flow_event", "not-detected");
-            break;
-    }
-    json_str = jsonize_flow(workflow, flow, &json_str_len);
-
-    if (json_str == NULL || json_str_len == 0) {
-        syslog(LOG_DAEMON | LOG_ERR,
-               "[%8llu, %d, %4u] jsonize failed, buffer length: %u\n",
-               workflow->packets_captured,
-               reader_thread->array_index,
-               flow->flow_id,
-               json_str_len);
-    } else {
-        send_to_json_sink(reader_thread, json_str, json_str_len);
-    }
-    ndpi_reset_serializer(&workflow->ndpi_serializer);
-}
-
-static void jsonize_format_error(struct nDPId_reader_thread * const reader_thread, uint32_t format_index)
-{
-    char * json_str;
-    uint32_t json_str_len = 0;
-
-    ndpi_serialize_string_string(&reader_thread->workflow->ndpi_serializer,
-                                 "serializer-error", "format");
-    ndpi_serialize_string_uint32(&reader_thread->workflow->ndpi_serializer,
-                              "serializer-format-index", format_index);
     json_str = ndpi_serializer_get_buffer(&reader_thread->workflow->ndpi_serializer, &json_str_len);
-    if (json_str != NULL && json_str_len == 0) {
+    if (json_str == NULL || json_str_len == 0) {
 
         syslog(LOG_DAEMON | LOG_ERR,
                "[%8llu, %d] jsonize failed, buffer length: %u\n",
@@ -706,23 +653,67 @@ static void jsonize_format_error(struct nDPId_reader_thread * const reader_threa
     ndpi_reset_serializer(&reader_thread->workflow->ndpi_serializer);
 }
 
-static void jsonize_basic_event(struct nDPId_reader_thread * const reader_thread,
-                                char const * format, ...)
+static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
+                               struct nDPId_flow_info const * const flow,
+                               enum flow_event event)
 {
-    va_list ap;
+    struct nDPId_workflow * const workflow = reader_thread->workflow;
+    char const ev[] = "flow_event_name";
+
+    ndpi_serialize_string_int32(&workflow->ndpi_serializer, "flow_event_id", event);
+
+    switch (event) {
+        case FLOW_INVALID:
+            ndpi_serialize_string_string(&workflow->ndpi_serializer, ev, "invalid");
+            break;
+        case FLOW_NEW:
+            ndpi_serialize_string_string(&workflow->ndpi_serializer, ev, "new");
+            break;
+        case FLOW_END:
+            ndpi_serialize_string_string(&workflow->ndpi_serializer, ev, "end");
+            break;
+        case FLOW_IDLE:
+            ndpi_serialize_string_string(&workflow->ndpi_serializer, ev, "idle");
+            break;
+        case FLOW_GUESSED:
+            ndpi_serialize_string_string(&workflow->ndpi_serializer, ev, "guessed");
+            break;
+        case FLOW_DETECTED:
+            ndpi_serialize_string_string(&workflow->ndpi_serializer, ev, "detected");
+            break;
+        case FLOW_NOT_DETECTED:
+            ndpi_serialize_string_string(&workflow->ndpi_serializer, ev, "not-detected");
+            break;
+    }
+    jsonize_basic(reader_thread);
+    jsonize_flow(workflow, flow);
+    serialize_and_send(reader_thread);
+}
+
+static void jsonize_format_error(struct nDPId_reader_thread * const reader_thread, uint32_t format_index)
+{
+    ndpi_serialize_string_string(&reader_thread->workflow->ndpi_serializer,
+                                 "serializer-error", "format");
+    ndpi_serialize_string_uint32(&reader_thread->workflow->ndpi_serializer,
+                              "serializer-format-index", format_index);
+    serialize_and_send(reader_thread);
+}
+
+static void vjsonize_basic_eventf(struct nDPId_reader_thread * const reader_thread,
+                                  char const * format, va_list ap)
+{
     uint8_t got_jsonkey = 0;
+    uint8_t is_long_long = 0;
     char json_key[BUFSIZ];
     uint32_t format_index = 0;
 
-    (void)reader_thread;
-    va_start(ap, format);
     while (*format) {
         if (got_jsonkey == 0) {
             json_key[0] = '\0';
         }
 
         switch (*format++) {
-            case 's': {
+           case 's': {
                 format_index++;
                 char * value = va_arg(ap, char *);
                 if (got_jsonkey == 0) {
@@ -754,13 +745,29 @@ static void jsonize_basic_event(struct nDPId_reader_thread * const reader_thread
                     jsonize_format_error(reader_thread, format_index);
                     return;
                 }
+                if (*format == 'l') {
+                    format++;
+                    is_long_long = 1;
+                } else {
+                    is_long_long = 0;
+                }
                 if (*format == 'd') {
-                    long long int value = va_arg(ap, long long int);
+                    long long int value;
+                    if (is_long_long != 0) {
+                        value = va_arg(ap, long long int);
+                    } else {
+                        value = va_arg(ap, long int);
+                    }
                     ndpi_serialize_string_int64(&reader_thread->workflow->ndpi_serializer,
                                                 json_key, value);
                     got_jsonkey = 0;
                 } else if (*format == 'u') {
-                    unsigned long long int value = va_arg(ap, unsigned long long int);
+                    unsigned long long int value;
+                    if (is_long_long != 0) {
+                        value = va_arg(ap, unsigned long long int);
+                    } else {
+                        value = va_arg(ap, unsigned long int);
+                    }
                     ndpi_serialize_string_uint64(&reader_thread->workflow->ndpi_serializer,
                                                  json_key, value);
                     got_jsonkey = 0;
@@ -803,7 +810,54 @@ static void jsonize_basic_event(struct nDPId_reader_thread * const reader_thread
                 return;
         }
     }
-    va_end(ap);
+}
+
+__attribute__ ((format (printf, 3, 4)))
+static void jsonize_basic_eventf(struct nDPId_reader_thread * const reader_thread,
+                                 enum basic_event event,
+                                 char const * format, ...)
+{
+    struct nDPId_workflow * const workflow = reader_thread->workflow;
+    va_list ap;
+    char const ev[] = "basic_event_name";
+
+    ndpi_serialize_string_int32(&reader_thread->workflow->ndpi_serializer,
+                                "basic_event_id", event);
+
+    switch (event) {
+        case BASIC_INVALID:
+            ndpi_serialize_string_string(&workflow->ndpi_serializer, ev, "invalid");
+            break;
+        case NON_ETHERNET_OR_IP_PACKET:
+            ndpi_serialize_string_string(&workflow->ndpi_serializer, ev,
+                                         "Captured non IP/Ethernet packet - skipping");
+            break;
+        case ETHERNET_PACKET_TOO_SHORT:
+            ndpi_serialize_string_string(&workflow->ndpi_serializer, ev,
+                                         "Ethernet packet too short - skipping");
+            break;
+        case ETHERNET_PACKET_UNKNOWN:
+            ndpi_serialize_string_string(&workflow->ndpi_serializer, ev,
+                                         "Unknown Ethernet packet type - skipping");
+            break;
+        case IP4_PACKET_TOO_SHORT:
+            ndpi_serialize_string_string(&workflow->ndpi_serializer, ev,
+                                         "IP4 packet too short - skipping");
+            break;
+        case IP6_PACKET_TOO_SHORT:
+            ndpi_serialize_string_string(&workflow->ndpi_serializer, ev,
+                                         "IP6 packet too short - skipping");
+            break;
+    }
+    jsonize_basic(reader_thread);
+
+    if (format != NULL) {
+        va_start(ap, format);
+        vjsonize_basic_eventf(reader_thread, format, ap);
+        va_end(ap);
+    }
+
+    serialize_and_send(reader_thread);
 }
 #endif
 
@@ -865,13 +919,7 @@ static void ndpi_process_packet(uint8_t * const args,
             break;
         case DLT_EN10MB:
             if (header->len < sizeof(struct ndpi_ethhdr)) {
-                jsonize_basic_event(reader_thread, "%s%lu %s%lu %s%d %s%s", "packet_id", workflow->packets_captured,
-                                    "thread_id", reader_thread->array_index, "msg_id", 0,
-                                    "msg", "Ethernet packet too short - skipping");
-                syslog(LOG_DAEMON | LOG_WARNING,
-                       "[%8llu, %d] Ethernet packet too short - skipping\n",
-                       workflow->packets_captured,
-                       reader_thread->array_index);
+                jsonize_basic_eventf(reader_thread, ETHERNET_PACKET_TOO_SHORT, NULL);
                 return;
             }
             ethernet = (struct ndpi_ethhdr *)&packet[eth_offset];
@@ -880,39 +928,25 @@ static void ndpi_process_packet(uint8_t * const args,
             switch (type) {
                 case ETH_P_IP: /* IPv4 */
                     if (header->len < sizeof(struct ndpi_ethhdr) + sizeof(struct ndpi_iphdr)) {
-                        syslog(LOG_DAEMON | LOG_WARNING,
-                               "[%8llu, %d] IP packet too short - skipping\n",
-                               workflow->packets_captured,
-                               reader_thread->array_index);
+                        jsonize_basic_eventf(reader_thread, IP4_PACKET_TOO_SHORT, NULL);
                         return;
                     }
                     break;
                 case ETH_P_IPV6: /* IPV6 */
                     if (header->len < sizeof(struct ndpi_ethhdr) + sizeof(struct ndpi_ipv6hdr)) {
-                        syslog(LOG_DAEMON | LOG_WARNING,
-                               "[%8llu, %d] IP6 packet too short - skipping\n",
-                               workflow->packets_captured,
-                               reader_thread->array_index);
+                        jsonize_basic_eventf(reader_thread, IP6_PACKET_TOO_SHORT, NULL);
                         return;
                     }
                     break;
                 case ETH_P_ARP: /* ARP */
                     return;
                 default:
-                    syslog(LOG_DAEMON | LOG_NOTICE,
-                           "[%8llu, %d] Unknown Ethernet packet with type 0x%X - skipping\n",
-                           workflow->packets_captured,
-                           reader_thread->array_index,
-                           type);
+                    jsonize_basic_eventf(reader_thread, ETHERNET_PACKET_UNKNOWN, "%s%u", "type", type);
                     return;
             }
             break;
         default:
-            syslog(LOG_DAEMON | LOG_WARNING,
-                   "[%8llu, %d] Captured non IP/Ethernet packet with datalink type 0x%X - skipping\n",
-                   workflow->packets_captured,
-                   reader_thread->array_index,
-                   pcap_datalink(workflow->pcap_handle));
+            jsonize_basic_eventf(reader_thread, NON_ETHERNET_OR_IP_PACKET, "%s%u", "type", pcap_datalink(workflow->pcap_handle));
             return;
     }
 
