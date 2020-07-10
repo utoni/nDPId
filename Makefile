@@ -26,6 +26,13 @@ else
 ENABLE_SANITIZER = no
 endif
 
+ifeq ($(ENABLE_SANITIZER_THREAD),yes)
+CFLAGS += -fsanitize=undefined -fsanitize=thread
+LIBS += -lubsan
+else
+ENABLE_SANITIZER_THREAD = no
+endif
+
 ifeq ($(DISABLE_JSONIZER),yes)
 CFLAGS += -DDISABLE_JSONIZER
 else
@@ -53,6 +60,7 @@ help:
 	@echo 'CUSTOM_LIBNDPI   = $(CUSTOM_LIBNDPI)'
 	@echo 'ENABLE_DEBUG     = $(ENABLE_DEBUG)'
 	@echo 'ENABLE_SANITIZER = $(ENABLE_SANITIZER)'
+	@echo 'ENABLE_SANITIZER_THREAD = $(ENABLE_SANITIZER_THREAD)'
 	@echo 'DISABLE_JSONIZER = $(DISABLE_JSONIZER)'
 	@echo 'EXTRA_VERBOSE    = $(EXTRA_VERBOSE)'
 
