@@ -14,7 +14,7 @@ LIBS += -lndpi
 endif
 
 ifeq ($(ENABLE_DEBUG),yes)
-CFLAGS += -O0 -g3
+CFLAGS += -O0 -g3 -fno-omit-frame-pointer
 else
 ENABLE_DEBUG = no
 endif
