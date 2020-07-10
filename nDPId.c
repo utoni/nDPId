@@ -634,8 +634,7 @@ static void jsonize_flow(struct nDPId_workflow * const workflow, struct nDPId_fl
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_l4_data_len", flow->total_l4_data_len);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_min_l4_data_len", flow->min_l4_data_len);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_max_l4_data_len", flow->max_l4_data_len);
-    ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
-                                 "flow_avg_l4_data_len",
+    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_avg_l4_data_len",
                                  (flow->packets_processed > 0 ? flow->total_l4_data_len / flow->packets_processed : 0));
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "midstream", flow->is_midstream_flow);
 
@@ -1046,7 +1045,9 @@ static void ndpi_process_packet(uint8_t * const args,
         case DLT_EN10MB:
             if (header->len < sizeof(struct ndpi_ethhdr))
             {
+#ifndef DISABLE_JSONIZER
                 jsonize_basic_eventf(reader_thread, ETHERNET_PACKET_TOO_SHORT, NULL);
+#endif
                 return;
             }
             ethernet = (struct ndpi_ethhdr *)&packet[eth_offset];
@@ -1057,27 +1058,35 @@ static void ndpi_process_packet(uint8_t * const args,
                 case ETH_P_IP: /* IPv4 */
                     if (header->len < sizeof(struct ndpi_ethhdr) + sizeof(struct ndpi_iphdr))
                     {
+#ifndef DISABLE_JSONIZER
                         jsonize_basic_eventf(reader_thread, IP4_PACKET_TOO_SHORT, NULL);
+#endif
                         return;
                     }
                     break;
                 case ETH_P_IPV6: /* IPV6 */
                     if (header->len < sizeof(struct ndpi_ethhdr) + sizeof(struct ndpi_ipv6hdr))
                     {
+#ifndef DISABLE_JSONIZER
                         jsonize_basic_eventf(reader_thread, IP6_PACKET_TOO_SHORT, NULL);
+#endif
                         return;
                     }
                     break;
                 case ETH_P_ARP: /* ARP */
                     return;
                 default:
+#ifndef DISABLE_JSONIZER
                     jsonize_basic_eventf(reader_thread, ETHERNET_PACKET_UNKNOWN, "%s%u", "type", type);
+#endif
                     return;
             }
             break;
         default:
+#ifndef DISABLE_JSONIZER
             jsonize_basic_eventf(
                 reader_thread, NON_ETHERNET_OR_IP_PACKET, "%s%u", "type", pcap_datalink(workflow->pcap_handle));
+#endif
             return;
     }
 
