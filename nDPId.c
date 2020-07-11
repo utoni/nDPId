@@ -222,7 +222,7 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
 
     if (workflow->pcap_handle == NULL)
     {
-        fprintf(stderr, "pcap_open_live / pcap_open_offline_with_tstamp_precision: %s\n", pcap_error_buffer);
+        syslog(LOG_DAEMON | LOG_ERR, "pcap_open_live / pcap_open_offline_with_tstamp_precision: %s\n", pcap_error_buffer);
         free_workflow(&workflow);
         return NULL;
     }
@@ -321,7 +321,7 @@ static int setup_reader_threads(char const * const file_or_device)
         file_or_default_device = pcap_lookupdev(pcap_error_buffer);
         if (file_or_default_device == NULL)
         {
-            fprintf(stderr, "pcap_lookupdev: %s\n", pcap_error_buffer);
+            syslog(LOG_DAEMON | LOG_ERR, "pcap_lookupdev: %s\n", pcap_error_buffer);
             return 1;
         }
     }
@@ -1430,9 +1430,11 @@ static int start_reader_threads(void)
     sigdelset(&thread_signal_set, SIGTERM);
     if (pthread_sigmask(SIG_BLOCK, &thread_signal_set, &old_signal_set) != 0)
     {
-        fprintf(stderr, "pthread_sigmask: %s\n", strerror(errno));
+        syslog(LOG_DAEMON | LOG_ERR, "pthread_sigmask: %s\n", strerror(errno));
         return 1;
     }
+
+    openlog("nDPId", LOG_CONS | (log_to_stderr != 0 ? LOG_PERROR : 0), LOG_DAEMON);
 
     for (int i = 0; i < reader_thread_count; ++i)
     {
@@ -1446,14 +1448,14 @@ static int start_reader_threads(void)
 
         if (pthread_create(&reader_threads[i].thread_id, NULL, processing_thread, &reader_threads[i]) != 0)
         {
-            fprintf(stderr, "pthread_create: %s\n", strerror(errno));
+            syslog(LOG_DAEMON | LOG_ERR, "pthread_create: %s\n", strerror(errno));
             return 1;
         }
     }
 
     if (pthread_sigmask(SIG_BLOCK, &old_signal_set, NULL) != 0)
     {
-        fprintf(stderr, "pthread_sigmask: %s\n", strerror(errno));
+        syslog(LOG_DAEMON | LOG_ERR, "pthread_sigmask: %s\n", strerror(errno));
         return 1;
     }
 
@@ -1602,17 +1604,17 @@ int main(int argc, char ** argv)
         ndpi_get_api_version(),
         pcap_lib_version() + strlen("libpcap version "));
 
-    openlog("nDPId", LOG_CONS | (log_to_stderr != 0 ? LOG_PERROR : 0), LOG_DAEMON);
+    openlog("nDPId", LOG_CONS | LOG_PERROR, LOG_DAEMON);
 
     if (setup_reader_threads(pcap_file_or_interface) != 0)
     {
-        fprintf(stderr, "%s: setup_reader_threads failed\n", argv[0]);
+        syslog(LOG_DAEMON | LOG_ERR, "%s: setup_reader_threads failed\n", argv[0]);
         return 1;
     }
 
     if (start_reader_threads() != 0)
     {
-        fprintf(stderr, "%s: start_reader_threads\n", argv[0]);
+        syslog(LOG_DAEMON | LOG_ERR, "%s: start_reader_threads\n", argv[0]);
         return 1;
     }
 
@@ -1625,7 +1627,7 @@ int main(int argc, char ** argv)
 
     if (main_thread_shutdown == 0 && stop_reader_threads() != 0)
     {
-        fprintf(stderr, "%s: stop_reader_threads\n", argv[0]);
+        syslog(LOG_DAEMON | LOG_ERR, "%s: stop_reader_threads\n", argv[0]);
         return 1;
     }
     free_reader_threads();
