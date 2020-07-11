@@ -39,12 +39,6 @@ else
 DISABLE_JSONIZER = no
 endif
 
-ifeq ($(EXTRA_VERBOSE),yes)
-CFLAGS += -DEXTRA_VERBOSE
-else
-EXTRA_VERBOSE = no
-endif
-
 RM = rm -f
 
 nDPId: help nDPId.c
@@ -62,6 +56,5 @@ help:
 	@echo 'ENABLE_SANITIZER = $(ENABLE_SANITIZER)'
 	@echo 'ENABLE_SANITIZER_THREAD = $(ENABLE_SANITIZER_THREAD)'
 	@echo 'DISABLE_JSONIZER = $(DISABLE_JSONIZER)'
-	@echo 'EXTRA_VERBOSE    = $(EXTRA_VERBOSE)'
 
 .PHONY: help

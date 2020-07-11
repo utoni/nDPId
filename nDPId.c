@@ -370,83 +370,6 @@ static int ip_tuple_to_string(struct nDPId_flow_info const * const flow,
     return 0;
 }
 
-#ifdef EXTRA_VERBOSE
-static void print_packet_info(struct nDPId_reader_thread const * const reader_thread,
-                              struct pcap_pkthdr const * const header,
-                              uint32_t l4_data_len,
-                              struct nDPId_flow_info const * const flow)
-{
-    struct nDPId_workflow const * const workflow = reader_thread->workflow;
-    char src_addr_str[INET6_ADDRSTRLEN + 1] = {0};
-    char dst_addr_str[INET6_ADDRSTRLEN + 1] = {0};
-    char buf[256];
-    int used = 0, ret;
-
-    ret = snprintf(buf,
-                   sizeof(buf),
-                   "[%8llu, %d, %4u] %4u bytes: ",
-                   workflow->packets_captured,
-                   reader_thread->array_index,
-                   flow->flow_id,
-                   header->caplen);
-    if (ret > 0)
-    {
-        used += ret;
-    }
-
-    if (ip_tuple_to_string(flow, src_addr_str, sizeof(src_addr_str), dst_addr_str, sizeof(dst_addr_str)) != 0)
-    {
-        ret = snprintf(buf + used, sizeof(buf) - used, "IP[%s -> %s]", src_addr_str, dst_addr_str);
-    }
-    else
-    {
-        ret = snprintf(buf + used, sizeof(buf) - used, "IP[ERROR]");
-    }
-    if (ret > 0)
-    {
-        used += ret;
-    }
-
-    switch (flow->l4_protocol)
-    {
-        case IPPROTO_UDP:
-            ret = snprintf(buf + used,
-                           sizeof(buf) - used,
-                           " -> UDP[%u -> %u, %u bytes]",
-                           flow->src_port,
-                           flow->dst_port,
-                           l4_data_len);
-            break;
-        case IPPROTO_TCP:
-            ret = snprintf(buf + used,
-                           sizeof(buf) - used,
-                           " -> TCP[%u -> %u, %u bytes]",
-                           flow->src_port,
-                           flow->dst_port,
-                           l4_data_len);
-            break;
-        case IPPROTO_ICMP:
-            ret = snprintf(buf + used, sizeof(buf) - used, " -> ICMP");
-            break;
-        case IPPROTO_ICMPV6:
-            ret = snprintf(buf + used, sizeof(buf) - used, " -> ICMP6");
-            break;
-        case IPPROTO_HOPOPTS:
-            ret = snprintf(buf + used, sizeof(buf) - used, " -> ICMP6 Hop-By-Hop");
-            break;
-        default:
-            ret = snprintf(buf + used, sizeof(buf) - used, " -> Unknown[0x%X]", flow->l4_protocol);
-            break;
-    }
-    if (ret > 0)
-    {
-        used += ret;
-    }
-
-    printf("%.*s\n", used, buf);
-}
-#endif
-
 static int ip_tuples_equal(struct nDPId_flow_info const * const A, struct nDPId_flow_info const * const B)
 {
     // generate a warning if the enum changes
@@ -1261,10 +1184,6 @@ static void ndpi_process_packet(uint8_t * const args,
     }
     workflow->packets_processed++;
     workflow->total_l4_data_len += l4_len;
-
-#ifdef EXTRA_VERBOSE
-    print_packet_info(reader_thread, header, l4_len, &flow);
-#endif
 
     /* calculate flow hash for btree find, search(insert) */
     switch (flow.l3_type)
