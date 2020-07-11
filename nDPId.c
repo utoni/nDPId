@@ -121,24 +121,73 @@ struct nDPId_reader_thread
 
 enum flow_event
 {
-    FLOW_INVALID = 0,
-    FLOW_NEW,
-    FLOW_END,
-    FLOW_IDLE,
-    FLOW_GUESSED,
-    FLOW_DETECTED,
-    FLOW_NOT_DETECTED
+    FLOW_EVENT_INVALID = 0,
+
+    FLOW_EVENT_NEW,
+    FLOW_EVENT_END,
+    FLOW_EVENT_IDLE,
+    FLOW_EVENT_GUESSED,
+    FLOW_EVENT_DETECTED,
+    FLOW_EVENT_NOT_DETECTED,
+
+    FLOW_EVENT_COUNT
 };
 enum basic_event
 {
-    BASIC_INVALID = 0,
-    NON_ETHERNET_OR_IP_PACKET,
+    BASIC_EVENT_INVALID = 0,
+
+    UNKNOWN_DATALINK_LAYER,
+    UNKNOWN_L3_PROTOCOL,
+    NON_IP_PACKET,
     ETHERNET_PACKET_TOO_SHORT,
     ETHERNET_PACKET_UNKNOWN,
     IP4_PACKET_TOO_SHORT,
-    IP6_PACKET_TOO_SHORT
+    IP4_SIZE_SMALLER_THAN_HEADER,
+    IP4_L4_PAYLOAD_DETECTION_FAILED,
+    IP6_PACKET_TOO_SHORT,
+    IP6_SIZE_SMALLER_THAN_HEADER,
+    IP6_L4_PAYLOAD_DETECTION_FAILED,
+    TCP_PACKET_TOO_SHORT,
+    UDP_PACKET_TOO_SHORT,
+    CAPTURE_SIZE_SMALLER_THAN_PACKET_SIZE,
+    MAX_FLOW_TO_TRACK,
+    FLOW_MEMORY_ALLOCATION_FAILED,
+    NDPI_FLOW_MEMORY_ALLOCATION_FAILED,
+    NDPI_ID_MEMORY_ALLOCATION_FAILED,
+
+    BASIC_EVENT_COUNT
 };
 
+static char const * const flow_event_name_table[FLOW_EVENT_COUNT] = {
+    [FLOW_EVENT_INVALID]        = "invalid",
+    [FLOW_EVENT_NEW]            = "new",
+    [FLOW_EVENT_END]            = "end",
+    [FLOW_EVENT_IDLE]           = "idle",
+    [FLOW_EVENT_GUESSED]        = "guessed",
+    [FLOW_EVENT_DETECTED]       = "detected",
+    [FLOW_EVENT_NOT_DETECTED]   = "not-detected"
+};
+static char const * const basic_event_name_table[BASIC_EVENT_COUNT] = {
+    [BASIC_EVENT_INVALID]                   = "invalid",
+    [UNKNOWN_DATALINK_LAYER]                = "Unknown datalink layer packet",
+    [UNKNOWN_L3_PROTOCOL]                   = "Unknown L3 protocol",
+    [NON_IP_PACKET]                         = "Non IP packet",
+    [ETHERNET_PACKET_TOO_SHORT]             = "Ethernet packet too short",
+    [ETHERNET_PACKET_UNKNOWN]               = "Unknown Ethernet packet type",
+    [IP4_PACKET_TOO_SHORT]                  = "IP4 packet too short",
+    [IP4_SIZE_SMALLER_THAN_HEADER]          = "Packet smaller than IP4 header",
+    [IP4_L4_PAYLOAD_DETECTION_FAILED]       = "nDPI IPv4/L4 payload detection failed",
+    [IP6_PACKET_TOO_SHORT]                  = "IP6 packet too short",
+    [IP6_SIZE_SMALLER_THAN_HEADER]          = "Packet smaller than IP6 header",
+    [IP6_L4_PAYLOAD_DETECTION_FAILED]       = "nDPI IPv6/L4 payload detection failed",
+    [TCP_PACKET_TOO_SHORT]                  = "TCP packet smaller than expected",
+    [UDP_PACKET_TOO_SHORT]                  = "UDP packet smaller than expected",
+    [CAPTURE_SIZE_SMALLER_THAN_PACKET_SIZE] = "Captured packet size is smaller than packet size",
+    [MAX_FLOW_TO_TRACK]                     = "Max flows to track reached",
+    [FLOW_MEMORY_ALLOCATION_FAILED]         = "Flow memory allocation failed",
+    [NDPI_FLOW_MEMORY_ALLOCATION_FAILED]    = "nDPI Flow memory allocation failed",
+    [NDPI_ID_MEMORY_ALLOCATION_FAILED]      = "Not enough memory for src id struct",
+};
 static struct nDPId_reader_thread reader_threads[MAX_READER_THREADS] = {};
 static int reader_thread_count = MAX_READER_THREADS;
 static int main_thread_shutdown = 0;
@@ -551,7 +600,7 @@ static void check_for_idle_flows(struct nDPId_reader_thread * const reader_threa
                     printf("Free idle flow with id %u\n", f->flow_id);
                 }
 #else
-                jsonize_flow_event(reader_thread, f, FLOW_IDLE);
+                jsonize_flow_event(reader_thread, f, FLOW_EVENT_IDLE);
 #endif
                 ndpi_tdelete(f, &workflow->ndpi_flows_active[idle_scan_index], ndpi_workflow_node_cmp);
                 ndpi_flow_info_freer(f);
@@ -638,7 +687,8 @@ static void jsonize_flow(struct nDPId_workflow * const workflow, struct nDPId_fl
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_l4_data_len", flow->total_l4_data_len);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_min_l4_data_len", flow->min_l4_data_len);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_max_l4_data_len", flow->max_l4_data_len);
-    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_avg_l4_data_len",
+    ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
+                                 "flow_avg_l4_data_len",
                                  (flow->packets_processed > 0 ? flow->total_l4_data_len / flow->packets_processed : 0));
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "midstream", flow->is_midstream_flow);
 
@@ -764,30 +814,11 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
     char const ev[] = "flow_event_name";
 
     ndpi_serialize_string_int32(&workflow->ndpi_serializer, "flow_event_id", event);
-
-    switch (event)
+    if (event > FLOW_EVENT_INVALID && event < FLOW_EVENT_COUNT)
     {
-        case FLOW_INVALID:
-            ndpi_serialize_string_string(&workflow->ndpi_serializer, ev, "invalid");
-            break;
-        case FLOW_NEW:
-            ndpi_serialize_string_string(&workflow->ndpi_serializer, ev, "new");
-            break;
-        case FLOW_END:
-            ndpi_serialize_string_string(&workflow->ndpi_serializer, ev, "end");
-            break;
-        case FLOW_IDLE:
-            ndpi_serialize_string_string(&workflow->ndpi_serializer, ev, "idle");
-            break;
-        case FLOW_GUESSED:
-            ndpi_serialize_string_string(&workflow->ndpi_serializer, ev, "guessed");
-            break;
-        case FLOW_DETECTED:
-            ndpi_serialize_string_string(&workflow->ndpi_serializer, ev, "detected");
-            break;
-        case FLOW_NOT_DETECTED:
-            ndpi_serialize_string_string(&workflow->ndpi_serializer, ev, "not-detected");
-            break;
+        ndpi_serialize_string_string(&workflow->ndpi_serializer, ev, flow_event_name_table[event]);
+    } else {
+        ndpi_serialize_string_string(&workflow->ndpi_serializer, ev, flow_event_name_table[FLOW_EVENT_INVALID]);
     }
     jsonize_basic(reader_thread);
     jsonize_flow(workflow, flow);
@@ -949,27 +980,11 @@ __attribute__((format(printf, 3, 4))) static void jsonize_basic_eventf(struct nD
     char const ev[] = "basic_event_name";
 
     ndpi_serialize_string_int32(&reader_thread->workflow->ndpi_serializer, "basic_event_id", event);
-
-    switch (event)
+    if (event > BASIC_EVENT_INVALID && event < BASIC_EVENT_COUNT)
     {
-        case BASIC_INVALID:
-            ndpi_serialize_string_string(&workflow->ndpi_serializer, ev, "invalid");
-            break;
-        case NON_ETHERNET_OR_IP_PACKET:
-            ndpi_serialize_string_string(&workflow->ndpi_serializer, ev, "Captured non IP/Ethernet packet - skipping");
-            break;
-        case ETHERNET_PACKET_TOO_SHORT:
-            ndpi_serialize_string_string(&workflow->ndpi_serializer, ev, "Ethernet packet too short - skipping");
-            break;
-        case ETHERNET_PACKET_UNKNOWN:
-            ndpi_serialize_string_string(&workflow->ndpi_serializer, ev, "Unknown Ethernet packet type - skipping");
-            break;
-        case IP4_PACKET_TOO_SHORT:
-            ndpi_serialize_string_string(&workflow->ndpi_serializer, ev, "IP4 packet too short - skipping");
-            break;
-        case IP6_PACKET_TOO_SHORT:
-            ndpi_serialize_string_string(&workflow->ndpi_serializer, ev, "IP6 packet too short - skipping");
-            break;
+        ndpi_serialize_string_string(&workflow->ndpi_serializer, ev, basic_event_name_table[event]);
+    } else {
+        ndpi_serialize_string_string(&workflow->ndpi_serializer, ev, basic_event_name_table[BASIC_EVENT_INVALID]);
     }
     jsonize_basic(reader_thread);
 
@@ -1090,7 +1105,7 @@ static void ndpi_process_packet(uint8_t * const args,
         default:
 #ifndef DISABLE_JSONIZER
             jsonize_basic_eventf(
-                reader_thread, NON_ETHERNET_OR_IP_PACKET, "%s%u", "type", pcap_datalink(workflow->pcap_handle));
+                reader_thread, UNKNOWN_DATALINK_LAYER, "%s%u", "datalink", pcap_datalink(workflow->pcap_handle));
 #endif
             return;
     }
@@ -1107,11 +1122,9 @@ static void ndpi_process_packet(uint8_t * const args,
     }
     else
     {
-        syslog(LOG_DAEMON | LOG_WARNING,
-               "[%8llu, %d] Captured non IPv4/IPv6 packet with type 0x%X - skipping\n",
-               workflow->packets_captured,
-               reader_thread->array_index,
-               type);
+#ifndef DISABLE_JSONIZER
+        jsonize_basic_eventf(reader_thread, UNKNOWN_L3_PROTOCOL, "%s%u", "protocol", type);
+#endif
         return;
     }
     ip_size = header->len - ip_offset;
@@ -1120,12 +1133,10 @@ static void ndpi_process_packet(uint8_t * const args,
     {
         if (header->caplen < header->len)
         {
-            syslog(LOG_DAEMON | LOG_WARNING,
-                   "[%8llu, %d] Captured packet size is smaller than packet size: %u < %u\n",
-                   workflow->packets_captured,
-                   reader_thread->array_index,
-                   header->caplen,
-                   header->len);
+#ifndef DISABLE_JSONIZER
+          jsonize_basic_eventf(reader_thread, CAPTURE_SIZE_SMALLER_THAN_PACKET_SIZE,
+                               "%s%u %s%u", "caplen", header->caplen, "len", header->len);
+#endif
         }
     }
 
@@ -1134,12 +1145,10 @@ static void ndpi_process_packet(uint8_t * const args,
     {
         if (ip_size < sizeof(*ip))
         {
-            syslog(LOG_DAEMON | LOG_WARNING,
-                   "[%8llu, %d] Packet smaller than IP4 header length: %u < %zu\n",
-                   workflow->packets_captured,
-                   reader_thread->array_index,
-                   ip_size,
-                   sizeof(*ip));
+#ifndef DISABLE_JSONIZER
+            jsonize_basic_eventf(reader_thread, IP4_SIZE_SMALLER_THAN_HEADER,
+                                 "%s%u %s%lu", "ip_size", ip_size, "expected", sizeof(*ip));
+#endif
             return;
         }
 
@@ -1147,11 +1156,10 @@ static void ndpi_process_packet(uint8_t * const args,
         if (ndpi_detection_get_l4(
                 (uint8_t *)ip, ip_size, &l4_ptr, &l4_len, &flow.l4_protocol, NDPI_DETECTION_ONLY_IPV4) != 0)
         {
-            syslog(LOG_DAEMON | LOG_WARNING,
-                   "[%8llu, %d] nDPI IPv4/L4 payload detection failed, L4 length: %zu\n",
-                   workflow->packets_captured,
-                   reader_thread->array_index,
-                   ip_size - sizeof(*ip));
+#ifndef DISABLE_JSONIZER
+            jsonize_basic_eventf(reader_thread, IP4_L4_PAYLOAD_DETECTION_FAILED,
+                                 "%s%lu", "l4_data_len", ip_size - sizeof(*ip));
+#endif
             return;
         }
 
@@ -1164,12 +1172,10 @@ static void ndpi_process_packet(uint8_t * const args,
     {
         if (ip_size < sizeof(ip6->ip6_hdr))
         {
-            syslog(LOG_DAEMON | LOG_WARNING,
-                   "[%8llu, %d] Packet smaller than IP6 header length: %u < %zu\n",
-                   workflow->packets_captured,
-                   reader_thread->array_index,
-                   ip_size,
-                   sizeof(ip6->ip6_hdr));
+#ifndef DISABLE_JSONIZER
+            jsonize_basic_eventf(reader_thread, IP6_SIZE_SMALLER_THAN_HEADER,
+                                 "%s%u %s%lu", "ip_size", ip_size, "expected", sizeof(ip6->ip6_hdr));
+#endif
             return;
         }
 
@@ -1177,11 +1183,10 @@ static void ndpi_process_packet(uint8_t * const args,
         if (ndpi_detection_get_l4(
                 (uint8_t *)ip6, ip_size, &l4_ptr, &l4_len, &flow.l4_protocol, NDPI_DETECTION_ONLY_IPV6) != 0)
         {
-            syslog(LOG_DAEMON | LOG_WARNING,
-                   "[%8llu, %d] nDPI IPv6/L4 payload detection failed, L4 length: %zu\n",
-                   workflow->packets_captured,
-                   reader_thread->array_index,
-                   ip_size - sizeof(*ip6));
+#ifndef DISABLE_JSONIZER
+            jsonize_basic_eventf(reader_thread, IP6_L4_PAYLOAD_DETECTION_FAILED,
+                                 "%s%lu", "l4_data_len", ip_size - sizeof(*ip));
+#endif
             return;
         }
 
@@ -1204,11 +1209,9 @@ static void ndpi_process_packet(uint8_t * const args,
     }
     else
     {
-        syslog(LOG_DAEMON | LOG_WARNING,
-               "[%8llu, %d] Non IP/IPv6 protocol detected: 0x%X\n",
-               workflow->packets_captured,
-               reader_thread->array_index,
-               type);
+#ifndef DISABLE_JSONIZER
+        jsonize_basic_eventf(reader_thread, UNKNOWN_L3_PROTOCOL, "%s%u", "protocol", type);
+#endif
         return;
     }
 
@@ -1219,12 +1222,10 @@ static void ndpi_process_packet(uint8_t * const args,
 
         if (header->len < (l4_ptr - packet) + sizeof(struct ndpi_tcphdr))
         {
-            syslog(LOG_DAEMON | LOG_WARNING,
-                   "[%8llu, %d] Malformed TCP packet, packet size smaller than expected: %u < %zu\n",
-                   workflow->packets_captured,
-                   reader_thread->array_index,
-                   header->len,
-                   (l4_ptr - packet) + sizeof(struct ndpi_tcphdr));
+#ifndef DISABLE_JSONIZER
+            jsonize_basic_eventf(reader_thread, TCP_PACKET_TOO_SHORT, "%s%u %s%lu",
+                                 "header_len", header->len, "expected", (l4_ptr - packet) + sizeof(struct ndpi_tcphdr));
+#endif
             return;
         }
         tcp = (struct ndpi_tcphdr *)l4_ptr;
@@ -1240,12 +1241,10 @@ static void ndpi_process_packet(uint8_t * const args,
 
         if (header->len < (l4_ptr - packet) + sizeof(struct ndpi_udphdr))
         {
-            syslog(LOG_DAEMON | LOG_WARNING,
-                   "[%8llu, %d] Malformed UDP packet, packet size smaller than expected: %u < %zu\n",
-                   workflow->packets_captured,
-                   reader_thread->array_index,
-                   header->len,
-                   (l4_ptr - packet) + sizeof(struct ndpi_udphdr));
+#ifndef DISABLE_JSONIZER
+            jsonize_basic_eventf(reader_thread, UDP_PACKET_TOO_SHORT, "%s%u %s%lu",
+                                 "header_len", header->len, "expected", (l4_ptr - packet) + sizeof(struct ndpi_udphdr));
+#endif
             return;
         }
         udp = (struct ndpi_udphdr *)l4_ptr;
@@ -1338,22 +1337,21 @@ static void ndpi_process_packet(uint8_t * const args,
         /* flow still not found, must be new */
         if (workflow->cur_active_flows == workflow->max_active_flows)
         {
-            syslog(LOG_DAEMON | LOG_WARNING,
-                   "[%8llu, %d] max flows to track reached: %llu, idle: %llu\n",
-                   workflow->packets_captured,
-                   reader_thread->array_index,
-                   workflow->max_active_flows,
-                   workflow->cur_idle_flows);
+#ifndef DISABLE_JSONIZER
+            jsonize_basic_eventf(reader_thread, MAX_FLOW_TO_TRACK, "%s%llu %s%llu %s%llu",
+                                 "current_active", workflow->max_active_flows,
+                                 "current_idle", workflow->cur_idle_flows,
+                                 "max_active", workflow->max_active_flows);
+#endif
             return;
         }
 
         flow_to_process = (struct nDPId_flow_info *)ndpi_malloc(sizeof(*flow_to_process));
         if (flow_to_process == NULL)
         {
-            syslog(LOG_DAEMON | LOG_WARNING,
-                   "[%8llu, %d] Not enough memory for flow info\n",
-                   workflow->packets_captured,
-                   reader_thread->array_index);
+#ifndef DISABLE_JSONIZER
+            jsonize_basic_eventf(reader_thread, FLOW_MEMORY_ALLOCATION_FAILED, "%s%lu", "size", sizeof(*flow_to_process));
+#endif
             return;
         }
 
@@ -1370,11 +1368,10 @@ static void ndpi_process_packet(uint8_t * const args,
         flow_to_process->ndpi_flow = (struct ndpi_flow_struct *)ndpi_flow_malloc(SIZEOF_FLOW_STRUCT);
         if (flow_to_process->ndpi_flow == NULL)
         {
-            syslog(LOG_DAEMON | LOG_WARNING,
-                   "[%8llu, %d, %4u] Not enough memory for flow struct\n",
-                   workflow->packets_captured,
-                   reader_thread->array_index,
-                   flow_to_process->flow_id);
+#ifndef DISABLE_JSONIZER
+            jsonize_basic_eventf(reader_thread, NDPI_FLOW_MEMORY_ALLOCATION_FAILED,
+                                 "%s%u %s%lu", "flow_id", flow_to_process->flow_id, "size", SIZEOF_FLOW_STRUCT);
+#endif
             return;
         }
         memset(flow_to_process->ndpi_flow, 0, SIZEOF_FLOW_STRUCT);
@@ -1382,22 +1379,20 @@ static void ndpi_process_packet(uint8_t * const args,
         flow_to_process->ndpi_src = (struct ndpi_id_struct *)ndpi_calloc(1, SIZEOF_ID_STRUCT);
         if (flow_to_process->ndpi_src == NULL)
         {
-            syslog(LOG_DAEMON | LOG_WARNING,
-                   "[%8llu, %d, %4u] Not enough memory for src id struct\n",
-                   workflow->packets_captured,
-                   reader_thread->array_index,
-                   flow_to_process->flow_id);
+#ifndef DISABLE_JSONIZER
+            jsonize_basic_eventf(reader_thread, NDPI_ID_MEMORY_ALLOCATION_FAILED, "%s%u %s%lu %s%s",
+                                 "flow_id", flow_to_process->flow_id, "size", SIZEOF_ID_STRUCT, "direction", "src");
+#endif
             return;
         }
 
         flow_to_process->ndpi_dst = (struct ndpi_id_struct *)ndpi_calloc(1, SIZEOF_ID_STRUCT);
         if (flow_to_process->ndpi_dst == NULL)
         {
-            syslog(LOG_DAEMON | LOG_WARNING,
-                   "[%8llu, %d, %4u] Not enough memory for dst id struct\n",
-                   workflow->packets_captured,
-                   reader_thread->array_index,
-                   flow_to_process->flow_id);
+#ifndef DISABLE_JSONIZER
+            jsonize_basic_eventf(reader_thread, NDPI_ID_MEMORY_ALLOCATION_FAILED, "%s%u %s%lu %s%s",
+                                 "flow_id", flow_to_process->flow_id, "size", SIZEOF_ID_STRUCT, "direction", "dst");
+#endif
             return;
         }
 #ifdef DISABLE_JSONIZER
@@ -1454,11 +1449,12 @@ static void ndpi_process_packet(uint8_t * const args,
         flow_to_process->min_l4_data_len = l4_len;
     }
 
-    if (is_new_flow != 0) {
+    if (is_new_flow != 0)
+    {
         flow_to_process->max_l4_data_len = l4_len;
         flow_to_process->min_l4_data_len = l4_len;
 #ifndef DISABLE_JSONIZER
-        jsonize_flow_event(reader_thread, flow_to_process, FLOW_NEW);
+        jsonize_flow_event(reader_thread, flow_to_process, FLOW_EVENT_NEW);
 #endif
     }
 
@@ -1469,7 +1465,7 @@ static void ndpi_process_packet(uint8_t * const args,
 #ifdef DISABLE_JSONIZER
         printf("[%8llu, %d, %4u] end of flow\n", workflow->packets_captured, thread_index, flow_to_process->flow_id);
 #else
-        jsonize_flow_event(reader_thread, flow_to_process, FLOW_END);
+        jsonize_flow_event(reader_thread, flow_to_process, FLOW_EVENT_END);
 #endif
         return;
     }
@@ -1491,7 +1487,7 @@ static void ndpi_process_packet(uint8_t * const args,
                    ndpi_get_proto_name(workflow->ndpi_struct, flow_to_process->detected_l7_protocol.app_protocol),
                    ndpi_category_get_name(workflow->ndpi_struct, flow_to_process->detected_l7_protocol.category));
 #else
-            jsonize_flow_event(reader_thread, flow_to_process, FLOW_DETECTED);
+            jsonize_flow_event(reader_thread, flow_to_process, FLOW_EVENT_DETECTED);
 #endif
         }
         else
@@ -1511,7 +1507,7 @@ static void ndpi_process_packet(uint8_t * const args,
                        ndpi_get_proto_name(workflow->ndpi_struct, flow_to_process->guessed_protocol.app_protocol),
                        ndpi_category_get_name(workflow->ndpi_struct, flow_to_process->guessed_protocol.category));
 #else
-                jsonize_flow_event(reader_thread, flow_to_process, FLOW_GUESSED);
+                jsonize_flow_event(reader_thread, flow_to_process, FLOW_EVENT_GUESSED);
 #endif
             }
             else
@@ -1522,7 +1518,7 @@ static void ndpi_process_packet(uint8_t * const args,
                        reader_thread->array_index,
                        flow_to_process->flow_id);
 #else
-                jsonize_flow_event(reader_thread, flow_to_process, FLOW_NOT_DETECTED);
+                jsonize_flow_event(reader_thread, flow_to_process, FLOW_EVENT_NOT_DETECTED);
 #endif
             }
         }
@@ -1553,7 +1549,7 @@ static void ndpi_process_packet(uint8_t * const args,
                    ndpi_get_proto_name(workflow->ndpi_struct, flow_to_process->detected_l7_protocol.app_protocol),
                    ndpi_category_get_name(workflow->ndpi_struct, flow_to_process->detected_l7_protocol.category));
 #else
-            jsonize_flow_event(reader_thread, flow_to_process, FLOW_DETECTED);
+            jsonize_flow_event(reader_thread, flow_to_process, FLOW_EVENT_DETECTED);
 #endif
         }
     }
