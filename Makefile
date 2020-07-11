@@ -20,14 +20,14 @@ ENABLE_DEBUG = no
 endif
 
 ifeq ($(ENABLE_SANITIZER),yes)
-CFLAGS += -fsanitize=address -fsanitize=undefined -fsanitize=leak
+CFLAGS += -fsanitize=address -fsanitize=undefined -fsanitize=enum -fsanitize=leak
 LIBS += -lasan -lubsan
 else
 ENABLE_SANITIZER = no
 endif
 
 ifeq ($(ENABLE_SANITIZER_THREAD),yes)
-CFLAGS += -fsanitize=undefined -fsanitize=thread
+CFLAGS += -fsanitize=undefined -fsanitize=enum -fsanitize=thread
 LIBS += -lubsan
 else
 ENABLE_SANITIZER_THREAD = no
