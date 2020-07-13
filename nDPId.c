@@ -627,6 +627,10 @@ static int connect_to_json_socket(struct nDPId_reader_thread * const reader_thre
         return 1;
     }
 
+    if (shutdown(reader_thread->json_sockfd, SHUT_RD) != 0) {
+        return 1;
+    }
+
     if (fcntl(reader_thread->json_sockfd, F_SETFL, fcntl(reader_thread->json_sockfd, F_GETFL, 0) | O_NONBLOCK) == -1)
     {
         reader_thread->json_sock_reconnect = 1;
