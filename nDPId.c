@@ -209,6 +209,7 @@ static int log_to_stderr = 0;
 static char json_sockpath[UNIX_PATH_MAX] = "/tmp/ndpid-collector.sock";
 
 static void free_workflow(struct nDPId_workflow ** const workflow);
+static void serialize_and_send(struct nDPId_reader_thread * const reader_thread);
 static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
                                struct nDPId_flow_info const * const flow,
                                enum flow_event event);
@@ -604,13 +605,14 @@ static void jsonize_flow(struct nDPId_workflow * const workflow, struct nDPId_fl
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_packet_id", flow->packets_processed);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_first_seen", flow->first_seen);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_last_seen", flow->last_seen);
-    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_l4_data_len", flow->total_l4_data_len);
+    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_tot_l4_data_len", flow->total_l4_data_len);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_min_l4_data_len", flow->min_l4_data_len);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_max_l4_data_len", flow->max_l4_data_len);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
                                  "flow_avg_l4_data_len",
                                  (flow->packets_processed > 0 ? flow->total_l4_data_len / flow->packets_processed : 0));
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "midstream", flow->is_midstream_flow);
+    ndpi_serialize_risk(&workflow->ndpi_serializer, flow->ndpi_flow);
 
     if (jsonize_l3_l4_dpi(workflow, flow) != 0)
     {
@@ -623,6 +625,7 @@ static void jsonize_flow(struct nDPId_workflow * const workflow, struct nDPId_fl
 
 static int connect_to_json_socket(struct nDPId_reader_thread * const reader_thread)
 {
+    struct nDPId_workflow * const workflow = reader_thread->workflow;
     struct sockaddr_un saddr;
 
     close(reader_thread->json_sockfd);
@@ -654,6 +657,16 @@ static int connect_to_json_socket(struct nDPId_reader_thread * const reader_thre
     }
 
     reader_thread->json_sock_reconnect = 0;
+
+    if (ndpi_serialize_string_int32(&workflow->ndpi_serializer, "thread_id", reader_thread->array_index) != 0 ||
+        ndpi_serialize_string_boolean(&workflow->ndpi_serializer, "init_complete", 1) != 0)
+    {
+        syslog(LOG_DAEMON | LOG_ERR,
+               "[%8llu, %d] JSON serialize buffer failed",
+               reader_thread->workflow->packets_captured,
+               reader_thread->array_index);
+    }
+    serialize_and_send(reader_thread);
 
     return 0;
 }
@@ -821,6 +834,7 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
         }
         ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "flow_id", flow->flow_id);
         ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_packet_id", flow->packets_processed);
+        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "max_packets", MAX_PACKETS_PER_FLOW_TO_SEND);
     }
 
     ndpi_serialize_string_int32(&workflow->ndpi_serializer, "packet_event_id", event);
