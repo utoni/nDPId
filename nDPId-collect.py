@@ -3,6 +3,12 @@
 import json
 import sys
 import asyncio
+try:
+    import base64
+    from scapy.all import wrpcap
+    WRITE_PCAP=True
+except ModuleNotFoundError:
+    WRITE_PCAP=False
 
 JSON_SOCKPATH = '/tmp/ndpid-collector.sock'
 JSON_FILTER = []
@@ -23,10 +29,54 @@ def json_filter_check(json_object):
                 return True
     return False
 
+class nDPIdFlow(object):
+    def __init__(self, thread_id):
+        self.thread_id = thread_id
+    packets = []
+
 class JsonCollector(asyncio.Protocol):
+    def log_key_error(self, exception):
+        sys.stderr.write('ERROR: {}'.format(str(exception)))
+
+    def add_flow(self, json_object):
+        try:
+            thread_id = json_object['thread_id']
+            flow_id = str(json_object['flow_id'])
+            self.flows[flow_id] = nDPIdFlow(thread_id)
+        except KeyError as exc:
+            self.log_key_error(exc)
+
+    def del_flow(self, json_object):
+        try:
+            flow_id = str(json_object['flow_id'])
+            del self.flows[flow_id]
+        except KeyError as exc:
+            self.log_key_error(exc)
+
+    def add_pkt(self, json_object):
+        try:
+            flow_id = str(json_object['flow_id'])
+            max_pkt = json_object['max_packets']
+            self.flows[flow_id].packets += [ base64.b64decode(json_object['pkt']) ]
+            if len(self.flows[flow_id].packets) == max_pkt:
+                #wrpcap('ndpid-unknown-' + flow_id, self.flows[flow_id].packets)
+                del self.flows[flow_id].packets
+        except KeyError as exc:
+            self.log_key_error(exc)
+
+    def cleanup(self, json_object):
+        try:
+            thread_id = json_object['thread_id']
+        except KeyError:
+            return
+        for flow_id in self.flows:
+            if self.flows[flow_id].thread_id == thread_id:
+                self.flows[flow_id] = None
+
     def connection_made(self, transport):
         sys.stderr.write('New Connection.\n')
         self.transport = transport
+        self.flows = {}
 
     def data_received(self, data):
         message = data.decode()
@@ -36,6 +86,20 @@ class JsonCollector(asyncio.Protocol):
                 continue
             try:
                 json_object = json.loads(line)
+
+                if 'init_complete' in json_object:
+                    self.cleanup(json_object)
+                if 'flow_event_name' in json_object:
+                    if json_object['flow_event_name'] == 'new':
+                        self.add_flow(json_object)
+                    elif json_object['flow_event_name'] == 'end':
+                        self.del_flow(json_object)
+                    elif json_object['flow_event_name'] == 'idle':
+                        self.del_flow(json_object)
+                if 'packet_event_name' in json_object:
+                    if json_object['packet_event_name'] == 'packet-flow':
+                        self.add_pkt(json_object)
+
                 if json_filter_check(json_object) is False:
                     continue
                 line = json.dumps(json_object, indent=2)
