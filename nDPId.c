@@ -945,6 +945,7 @@ static void vjsonize_basic_eventf(struct nDPId_reader_thread * const reader_thre
                 }
                 break;
             }
+            case 'z':
             case 'l':
                 format_index++;
                 if (got_jsonkey != 1)
@@ -1211,7 +1212,7 @@ static void ndpi_process_packet(uint8_t * const args,
         {
             jsonize_packet_event(reader_thread, header, packet, NULL, PACKET_EVENT_PAYLOAD);
             jsonize_basic_eventf(
-                reader_thread, IP4_SIZE_SMALLER_THAN_HEADER, "%s%u %s%lu", "ip_size", ip_size, "expected", sizeof(*ip));
+                reader_thread, IP4_SIZE_SMALLER_THAN_HEADER, "%s%u %s%zu", "ip_size", ip_size, "expected", sizeof(*ip));
             return;
         }
 
@@ -1221,7 +1222,7 @@ static void ndpi_process_packet(uint8_t * const args,
         {
             jsonize_packet_event(reader_thread, header, packet, NULL, PACKET_EVENT_PAYLOAD);
             jsonize_basic_eventf(
-                reader_thread, IP4_L4_PAYLOAD_DETECTION_FAILED, "%s%lu", "l4_data_len", ip_size - sizeof(*ip));
+                reader_thread, IP4_L4_PAYLOAD_DETECTION_FAILED, "%s%zu", "l4_data_len", ip_size - sizeof(*ip));
             return;
         }
 
@@ -1237,7 +1238,7 @@ static void ndpi_process_packet(uint8_t * const args,
             jsonize_packet_event(reader_thread, header, packet, NULL, PACKET_EVENT_PAYLOAD);
             jsonize_basic_eventf(reader_thread,
                                  IP6_SIZE_SMALLER_THAN_HEADER,
-                                 "%s%u %s%lu",
+                                 "%s%u %s%zu",
                                  "ip_size",
                                  ip_size,
                                  "expected",
@@ -1251,7 +1252,7 @@ static void ndpi_process_packet(uint8_t * const args,
         {
             jsonize_packet_event(reader_thread, header, packet, NULL, PACKET_EVENT_PAYLOAD);
             jsonize_basic_eventf(
-                reader_thread, IP6_L4_PAYLOAD_DETECTION_FAILED, "%s%lu", "l4_data_len", ip_size - sizeof(*ip));
+                reader_thread, IP6_L4_PAYLOAD_DETECTION_FAILED, "%s%zu", "l4_data_len", ip_size - sizeof(*ip));
             return;
         }
 
@@ -1289,7 +1290,7 @@ static void ndpi_process_packet(uint8_t * const args,
             jsonize_packet_event(reader_thread, header, packet, NULL, PACKET_EVENT_PAYLOAD);
             jsonize_basic_eventf(reader_thread,
                                  TCP_PACKET_TOO_SHORT,
-                                 "%s%u %s%lu",
+                                 "%s%u %s%zu",
                                  "header_len",
                                  header->len,
                                  "expected",
@@ -1312,7 +1313,7 @@ static void ndpi_process_packet(uint8_t * const args,
             jsonize_packet_event(reader_thread, header, packet, NULL, PACKET_EVENT_PAYLOAD);
             jsonize_basic_eventf(reader_thread,
                                  UDP_PACKET_TOO_SHORT,
-                                 "%s%u %s%lu",
+                                 "%s%u %s%zu",
                                  "header_len",
                                  header->len,
                                  "expected",
@@ -1423,7 +1424,7 @@ static void ndpi_process_packet(uint8_t * const args,
         {
             jsonize_packet_event(reader_thread, header, packet, NULL, PACKET_EVENT_PAYLOAD);
             jsonize_basic_eventf(
-                reader_thread, FLOW_MEMORY_ALLOCATION_FAILED, "%s%lu", "size", sizeof(*flow_to_process));
+                reader_thread, FLOW_MEMORY_ALLOCATION_FAILED, "%s%zu", "size", sizeof(*flow_to_process));
             return;
         }
 
@@ -1443,7 +1444,7 @@ static void ndpi_process_packet(uint8_t * const args,
             jsonize_packet_event(reader_thread, header, packet, NULL, PACKET_EVENT_PAYLOAD);
             jsonize_basic_eventf(reader_thread,
                                  NDPI_FLOW_MEMORY_ALLOCATION_FAILED,
-                                 "%s%u %s%lu",
+                                 "%s%u %s%zu",
                                  "flow_id",
                                  flow_to_process->flow_id,
                                  "size",
@@ -1458,7 +1459,7 @@ static void ndpi_process_packet(uint8_t * const args,
             jsonize_packet_event(reader_thread, header, packet, NULL, PACKET_EVENT_PAYLOAD);
             jsonize_basic_eventf(reader_thread,
                                  NDPI_ID_MEMORY_ALLOCATION_FAILED,
-                                 "%s%u %s%lu %s%s",
+                                 "%s%u %s%zu %s%s",
                                  "flow_id",
                                  flow_to_process->flow_id,
                                  "size",
@@ -1474,7 +1475,7 @@ static void ndpi_process_packet(uint8_t * const args,
             jsonize_packet_event(reader_thread, header, packet, NULL, PACKET_EVENT_PAYLOAD);
             jsonize_basic_eventf(reader_thread,
                                  NDPI_ID_MEMORY_ALLOCATION_FAILED,
-                                 "%s%u %s%lu %s%s",
+                                 "%s%u %s%zu %s%s",
                                  "flow_id",
                                  flow_to_process->flow_id,
                                  "size",
@@ -1799,7 +1800,8 @@ static int parse_options(int argc, char ** argv)
                 log_to_stderr = 1;
                 break;
             case 'c':
-                strncpy(json_sockpath, optarg, sizeof(json_sockpath));
+                strncpy(json_sockpath, optarg, sizeof(json_sockpath) - 1);
+                json_sockpath[sizeof(json_sockpath) - 1] = '\0';
                 break;
             default:
                 fprintf(stderr, "Usage: %s [-i pcap-file/interface ] [-l] [-c path-to-unix-sock]\n", argv[0]);
