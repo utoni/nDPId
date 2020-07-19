@@ -35,11 +35,16 @@ endif
 
 RM = rm -f
 
+all: nDPId nDPIsrvd
+
 nDPId: help nDPId.c
 	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) nDPId.c -o $@ $(LDFLAGS) $(LIBS)
 
+nDPIsrvd: nDPIsrvd.c
+	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) nDPIsrvd.c -o $@ $(LDFLAGS) $(LIBS)
+
 clean:
-	$(RM) nDPId
+	$(RM) -f nDPId nDPIsrvd
 
 help:
 	@echo 'CC               = $(CC)'
@@ -51,4 +56,4 @@ help:
 	@echo 'ENABLE_SANITIZER = $(ENABLE_SANITIZER)'
 	@echo 'ENABLE_SANITIZER_THREAD = $(ENABLE_SANITIZER_THREAD)'
 
-.PHONY: help
+.PHONY: all clean help
