@@ -8,9 +8,26 @@
 #include <stdint.h>
 #include <string.h>
 #include <syslog.h>
+#include <sys/epoll.h>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
+
+enum ev_type { JSON_SOCK, SERV_SOCK };
+
+struct event {
+    enum ev_type type;
+    union {
+        struct {
+            int json_sockfd;
+            struct sockaddr_un peer;
+        } event_json;
+        struct {
+            int serv_sockfd;
+            struct sockaddr_in peer;
+        } event_serv;
+    };
+};
 
 static char json_sockpath[UNIX_PATH_MAX] = "/tmp/ndpid-collector.sock";
 static char serv_listen_addr[INET6_ADDRSTRLEN] = "127.0.0.1";
@@ -75,6 +92,20 @@ static int create_listen_sockets(void)
         return 1;
     }
 
+    int json_flags = fcntl(json_sockfd, F_GETFL, 0);
+    int serv_flags = fcntl(serv_sockfd, F_GETFL, 0);
+    if (json_flags == -1 || serv_flags == -1)
+    {
+        syslog(LOG_DAEMON | LOG_ERR, "Error getting fd flags: %s", strerror(errno));
+        return 1;
+    }
+    if (fcntl(json_sockfd, F_SETFL, json_flags | O_NONBLOCK) == -1 ||
+        fcntl(serv_sockfd, F_SETFL, serv_flags | O_NONBLOCK) == -1)
+    {
+        syslog(LOG_DAEMON | LOG_ERR, "Error setting fd flags: %s", strerror(errno));
+        return 1;
+    }
+
     return 0;
 }
 
@@ -87,7 +118,67 @@ int main(void)
         return 1;
     }
 
-    getchar();
+    int epollfd = epoll_create1(0);
+    if (epollfd < 0)
+    {
+        syslog(LOG_DAEMON | LOG_ERR, "Error creating epoll: %s", strerror(errno));
+        return 1;
+    }
+
+    struct epoll_event accept_event;
+    accept_event.data.fd = json_sockfd;
+    accept_event.events = EPOLLIN;
+    if (epoll_ctl(epollfd, EPOLL_CTL_ADD, json_sockfd, &accept_event) < 0)
+    {
+        syslog(LOG_DAEMON | LOG_ERR, "Error adding JSON fd to epoll: %s", strerror(errno));
+        return 1;
+    }
+    accept_event.data.fd = serv_sockfd;
+    accept_event.events = EPOLLIN;
+    if (epoll_ctl(epollfd, EPOLL_CTL_ADD, serv_sockfd, &accept_event) < 0)
+    {
+        syslog(LOG_DAEMON | LOG_ERR, "Error adding INET fd to epoll: %s", strerror(errno));
+        return 1;
+    }
+
+    struct epoll_event events[32];
+    size_t const events_size = sizeof(events) / sizeof(events[0]);
+    struct event remotes[64];
+    size_t const remotes_size = sizeof(remotes) / sizeof(remotes[0]);
+    size_t remotes_used = 0;
+    struct event * remote_curr;
+    while (1)
+    {
+        int nready = epoll_wait(epollfd, events, events_size, -1);
+
+        for (int i = 0; i < nready; i++)
+        {
+            if (events[i].events & EPOLLERR)
+            {
+                syslog(LOG_DAEMON | LOG_ERR, "Epoll event error: %s", strerror(errno));
+                return 1;
+            }
+
+            if (events[i].data.fd == json_sockfd ||
+                events[i].data.fd == serv_sockfd)
+            {
+                if (remotes_used == remotes_size) {
+                    syslog(LOG_DAEMON | LOG_ERR, "Max number of connections reached: %zu", remotes_used);
+                    continue;
+                }
+                remote_curr = &remotes[remotes_used++];
+
+                enum ev_type type = (events[i].data.fd == json_sockfd ? JSON_SOCK : SERV_SOCK);
+                int sockfd = (events[i].data.fd == json_sockfd ? json_sockfd : serv_sockfd);
+                socklen_t peer_addr_len;
+
+                int newsockfd = accept(sockfd, (type == JSON_SOCK ? (struct sockaddr *)&remote_curr->event_json.peer
+                                                                  : (struct sockaddr *)&remote_curr->event_serv.peer),
+                                       &peer_addr_len);
+                syslog(LOG_DAEMON, "New connection");
+            }
+        }
+    }
 
     close(json_sockfd);
     close(serv_sockfd);
