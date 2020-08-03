@@ -16,6 +16,8 @@
 #include <syslog.h>
 #include <unistd.h>
 
+#include "config.h"
+
 #if (NDPI_MAJOR == 3 && NDPI_MINOR < 3) || NDPI_MAJOR < 3
 #error "nDPI >= 3.3.0 requiired"
 #endif
@@ -206,7 +208,7 @@ static uint32_t global_flow_id = 0;
 
 static char * pcap_file_or_interface = NULL;
 static int log_to_stderr = 0;
-static char json_sockpath[UNIX_PATH_MAX] = "/tmp/ndpid-collector.sock";
+static char json_sockpath[UNIX_PATH_MAX] = COLLECTOR_UNIX_SOCKET;
 
 static void free_workflow(struct nDPId_workflow ** const workflow);
 static void serialize_and_send(struct nDPId_reader_thread * const reader_thread);

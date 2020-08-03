@@ -13,6 +13,8 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+#include "config.h"
+
 enum ev_type { JSON_SOCK, SERV_SOCK };
 
 struct remote_desc {
@@ -36,9 +38,9 @@ static struct remotes {
     size_t desc_used;
 } remotes = {NULL, 0, 0};
 
-static char json_sockpath[UNIX_PATH_MAX] = "/tmp/ndpid-collector.sock";
-static char serv_listen_addr[INET6_ADDRSTRLEN] = "127.0.0.1";
-static uint16_t serv_listen_port = 7000;
+static char json_sockpath[UNIX_PATH_MAX] = COLLECTOR_UNIX_SOCKET;
+static char serv_listen_addr[INET6_ADDRSTRLEN] = DISTRIBUTOR_HOST;
+static uint16_t serv_listen_port = DISTRIBUTOR_PORT;
 static int json_sockfd;
 static int serv_sockfd;
 
