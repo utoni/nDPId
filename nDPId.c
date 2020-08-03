@@ -22,15 +22,6 @@
 #error "nDPI >= 3.3.0 requiired"
 #endif
 
-#define MAX_FLOW_ROOTS_PER_THREAD 2048
-#define MAX_IDLE_FLOWS_PER_THREAD 64
-#define TICK_RESOLUTION 1000
-#define MAX_READER_THREADS 4
-#define IDLE_SCAN_PERIOD 10000 /* msec */
-#define MAX_IDLE_TIME 300000   /* msec */
-#define INITIAL_THREAD_HASH 0x03dd018b
-#define MAX_PACKETS_PER_FLOW_TO_SEND 15
-
 enum nDPId_l3_type
 {
     L3_IP,
@@ -201,8 +192,8 @@ static char const * const basic_event_name_table[BASIC_EVENT_COUNT] = {
     [NDPI_FLOW_MEMORY_ALLOCATION_FAILED] = "nDPI Flow memory allocation failed",
     [NDPI_ID_MEMORY_ALLOCATION_FAILED] = "Not enough memory for src id struct",
 };
-static struct nDPId_reader_thread reader_threads[MAX_READER_THREADS] = {};
-static int reader_thread_count = MAX_READER_THREADS;
+static struct nDPId_reader_thread reader_threads[nDPId_MAX_READER_THREADS] = {};
+static int reader_thread_count = nDPId_MAX_READER_THREADS;
 static int main_thread_shutdown = 0;
 static uint32_t global_flow_id = 0;
 
@@ -254,7 +245,7 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     }
 
     workflow->total_active_flows = 0;
-    workflow->max_active_flows = MAX_FLOW_ROOTS_PER_THREAD;
+    workflow->max_active_flows = nDPId_MAX_FLOW_ROOTS_PER_THREAD;
     workflow->ndpi_flows_active = (void **)ndpi_calloc(workflow->max_active_flows, sizeof(void *));
     if (workflow->ndpi_flows_active == NULL)
     {
@@ -263,7 +254,7 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     }
 
     workflow->total_idle_flows = 0;
-    workflow->max_idle_flows = MAX_IDLE_FLOWS_PER_THREAD;
+    workflow->max_idle_flows = nDPId_MAX_IDLE_FLOWS_PER_THREAD;
     workflow->ndpi_flows_idle = (void **)ndpi_calloc(workflow->max_idle_flows, sizeof(void *));
     if (workflow->ndpi_flows_idle == NULL)
     {
@@ -329,7 +320,7 @@ static int setup_reader_threads(char const * const file_or_device)
     char const * file_or_default_device;
     char pcap_error_buffer[PCAP_ERRBUF_SIZE];
 
-    if (reader_thread_count > MAX_READER_THREADS)
+    if (reader_thread_count > nDPId_MAX_READER_THREADS)
     {
         return 1;
     }
@@ -459,7 +450,7 @@ static void ndpi_idle_scan_walker(void const * const A, ndpi_VISIT which, int de
         return;
     }
 
-    if (workflow->cur_idle_flows == MAX_IDLE_FLOWS_PER_THREAD)
+    if (workflow->cur_idle_flows == nDPId_MAX_IDLE_FLOWS_PER_THREAD)
     {
         return;
     }
@@ -467,7 +458,7 @@ static void ndpi_idle_scan_walker(void const * const A, ndpi_VISIT which, int de
     if (which == ndpi_preorder || which == ndpi_leaf)
     {
         if ((flow->flow_fin_ack_seen == 1 && flow->flow_ack_seen == 1) ||
-            flow->last_seen + MAX_IDLE_TIME < workflow->last_time)
+            flow->last_seen + nDPId_MAX_IDLE_TIME < workflow->last_time)
         {
             char src_addr_str[INET6_ADDRSTRLEN + 1];
             char dst_addr_str[INET6_ADDRSTRLEN + 1];
@@ -515,7 +506,7 @@ static void check_for_idle_flows(struct nDPId_reader_thread * const reader_threa
 {
     struct nDPId_workflow * const workflow = reader_thread->workflow;
 
-    if (workflow->last_idle_scan_time + IDLE_SCAN_PERIOD < workflow->last_time)
+    if (workflow->last_idle_scan_time + nDPId_IDLE_SCAN_PERIOD < workflow->last_time)
     {
         for (size_t idle_scan_index = 0; idle_scan_index < workflow->max_active_flows; ++idle_scan_index)
         {
@@ -831,13 +822,13 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
                    reader_thread->array_index);
             return;
         }
-        if (flow->packets_processed > MAX_PACKETS_PER_FLOW_TO_SEND)
+        if (flow->packets_processed > nDPId_MAX_PACKETS_PER_FLOW_TO_SEND)
         {
             return;
         }
         ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "flow_id", flow->flow_id);
         ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_packet_id", flow->packets_processed);
-        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "max_packets", MAX_PACKETS_PER_FLOW_TO_SEND);
+        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "max_packets", nDPId_MAX_PACKETS_PER_FLOW_TO_SEND);
     }
 
     ndpi_serialize_string_int32(&workflow->ndpi_serializer, "packet_event_id", event);
@@ -1099,7 +1090,7 @@ static void ndpi_process_packet(uint8_t * const args,
     uint16_t l4_len = 0;
 
     uint16_t type;
-    int thread_index = INITIAL_THREAD_HASH; // generated with `dd if=/dev/random bs=1024 count=1 |& hd'
+    int thread_index = nDPId_INITIAL_THREAD_HASH; // generated with `dd if=/dev/random bs=1024 count=1 |& hd'
 
     if (reader_thread == NULL)
     {
@@ -1113,7 +1104,7 @@ static void ndpi_process_packet(uint8_t * const args,
     }
 
     workflow->packets_captured++;
-    time_ms = ((uint64_t)header->ts.tv_sec) * TICK_RESOLUTION + header->ts.tv_usec / (1000000 / TICK_RESOLUTION);
+    time_ms = ((uint64_t)header->ts.tv_sec) * nDPId_TICK_RESOLUTION + header->ts.tv_usec / (1000000 / nDPId_TICK_RESOLUTION);
     workflow->last_time = time_ms;
 
     check_for_idle_flows(reader_thread);
