@@ -678,9 +678,8 @@ static void send_to_json_sink(struct nDPId_reader_thread * const reader_thread,
     if (s_ret < 0 || s_ret > (int)sizeof(newline_json_str))
     {
         syslog(LOG_DAEMON | LOG_ERR,
-               "[%8llu, %d] JSON buffer prepare failed",
-               workflow->packets_captured,
-               reader_thread->array_index);
+               "[%8llu, %d] JSON buffer prepare failed: snprintf returned %d, buffer size %zu",
+               workflow->packets_captured, reader_thread->array_index, s_ret, sizeof(newline_json_str));
         return;
     }
 
