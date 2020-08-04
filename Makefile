@@ -33,6 +33,10 @@ else
 ENABLE_SANITIZER_THREAD = no
 endif
 
+ifneq ($(DISABLE_JSMN),yes)
+DISABLE_JSMN = no
+endif
+
 RM = rm -f
 
 all: nDPId nDPIsrvd
@@ -46,7 +50,11 @@ nDPIsrvd: nDPIsrvd.c
 	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $@.c -o $@ $(LDFLAGS) $(LIBS)
 
 examples/c-json-stdout/c-json-stdout:
+ifneq ($(DISABLE_JSMN),yes)
+	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) -DJSMN_STATIC=1 -DJSMN_STRICT=1 -DUSE_JSON=1 $@.c -o $@ $(LDFLAGS) $(LIBS)
+else
 	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $@.c -o $@ $(LDFLAGS) $(LIBS)
+endif
 
 clean:
 	$(RM) -f nDPId nDPIsrvd examples/c-json-stdout/c-json-stdout
@@ -60,5 +68,6 @@ help:
 	@echo 'ENABLE_DEBUG     = $(ENABLE_DEBUG)'
 	@echo 'ENABLE_SANITIZER = $(ENABLE_SANITIZER)'
 	@echo 'ENABLE_SANITIZER_THREAD = $(ENABLE_SANITIZER_THREAD)'
+	@echo 'DISABLE_JSMN     = $(DISABLE_JSMN)'
 
 .PHONY: all clean help
