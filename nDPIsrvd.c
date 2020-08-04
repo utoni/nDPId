@@ -85,13 +85,11 @@ static int create_listen_sockets(void)
     struct sockaddr_in serv_addr;
     memset(&serv_addr, 0, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
-    serv_addr.sin_addr.s_addr = INADDR_ANY;
-    serv_addr.sin_port = htons(serv_listen_port);
-    if (inet_ntop(AF_INET, &serv_addr.sin_addr, &serv_listen_addr[0], sizeof(serv_listen_addr)) == NULL)
-    {
+    if (inet_pton(AF_INET, &serv_listen_addr[0], &serv_addr.sin_addr) != 1) {
         syslog(LOG_DAEMON | LOG_ERR, "Error converting an internet address: %s", strerror(errno));
         return 1;
     }
+    serv_addr.sin_port = htons(serv_listen_port);
 
     if (bind(json_sockfd, (struct sockaddr *)&json_addr, sizeof(json_addr)) < 0)
     {
@@ -227,7 +225,12 @@ int main(void)
         {
             if (events[i].events & EPOLLERR)
             {
-                syslog(LOG_DAEMON | LOG_ERR, "Epoll event error: %s", strerror(errno));
+                syslog(LOG_DAEMON | LOG_ERR, "Epoll event error: %s",
+                       (errno != 0 ? strerror(errno) : "Client disconnected"));
+                if (events[i].data.fd != json_sockfd && events[i].data.fd != serv_sockfd) {
+                    current = (struct remote_desc *)events[i].data.ptr;
+                    disconnect_client(epollfd, current);
+                }
                 continue;
             }
 
@@ -367,15 +370,15 @@ int main(void)
                                 current->buf_used = 0;
                                 current->buf_wanted = 0;
                                 syslog(LOG_DAEMON | LOG_ERR,
-                                       "Missing size before JSON string, got: '%c'",
-                                       current->buf[0]);
+                                       "Missing size before JSON string: %.*s",
+                                       (int) current->buf_wanted, current->buf);
                                 continue;
                             }
                             if (current->buf_wanted > BUFSIZ)
                             {
                                 current->buf_used = 0;
                                 current->buf_wanted = 0;
-                                syslog(LOG_DAEMON | LOG_ERR, "BUG: JSON string too big");
+                                syslog(LOG_DAEMON | LOG_ERR, "BUG: JSON string too big: %llu > %d", current->buf_wanted, BUFSIZ);
                                 continue;
                             }
                         }
@@ -389,7 +392,8 @@ int main(void)
                         {
                             current->buf_used = 0;
                             current->buf_wanted = 0;
-                            syslog(LOG_DAEMON | LOG_ERR, "Invalid JSON string");
+                            syslog(LOG_DAEMON | LOG_ERR, "Invalid JSON string: %.*s",
+                                   (int) current->buf_wanted, current->buf);
                             continue;
                         }
 
@@ -402,7 +406,7 @@ int main(void)
                             }
                             if (remotes.desc[i].type == SERV_SOCK)
                             {
-                                ssize_t bytes_written = write(remotes.desc[i].fd, current->buf, current->buf_used);
+                                ssize_t bytes_written = write(remotes.desc[i].fd, current->buf, current->buf_wanted);
                                 if (bytes_written < 0 || errno != 0)
                                 {
                                     syslog(LOG_DAEMON | LOG_ERR,
@@ -425,6 +429,7 @@ int main(void)
                             }
                         }
 
+                        memmove(current->buf, current->buf + current->buf_wanted, current->buf_used - current->buf_wanted);
                         current->buf_used = 0;
                         current->buf_wanted = 0;
                     }
