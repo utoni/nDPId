@@ -267,7 +267,7 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     ndpi_set_protocol_detection_bitmask2(workflow->ndpi_struct, &protos);
     ndpi_finalize_initalization(workflow->ndpi_struct);
 
-    if (ndpi_init_serializer_ll(&workflow->ndpi_serializer, ndpi_serialization_format_json, BUFSIZ) != 1)
+    if (ndpi_init_serializer_ll(&workflow->ndpi_serializer, ndpi_serialization_format_json, NETWORK_BUFFER_MAX_SIZE) != 1)
     {
         return NULL;
     }
@@ -671,10 +671,10 @@ static void send_to_json_sink(struct nDPId_reader_thread * const reader_thread,
     struct nDPId_workflow * const workflow = reader_thread->workflow;
     int saved_errno;
     int s_ret;
-    char newline_json_str[BUFSIZ];
+    char newline_json_str[NETWORK_BUFFER_MAX_SIZE];
 
     s_ret =
-        snprintf(newline_json_str, sizeof(newline_json_str), "%zu%.*s\n", json_str_len, (int)json_str_len, json_str);
+        snprintf(newline_json_str, sizeof(newline_json_str), "%zu%.*s", json_str_len, (int)json_str_len, json_str);
     if (s_ret < 0 || s_ret > (int)sizeof(newline_json_str))
     {
         syslog(LOG_DAEMON | LOG_ERR,
@@ -843,7 +843,7 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
     jsonize_basic(reader_thread);
 
     size_t base64_data_len = base64_out_len(header->caplen);
-    char base64_data[BUFSIZ];
+    char base64_data[NETWORK_BUFFER_MAX_SIZE];
     if (ndpi_serialize_string_boolean(&workflow->ndpi_serializer,
                                       "pkt_oversize",
                                       base64_data_len > sizeof(base64_data)) != 0 ||
@@ -894,7 +894,7 @@ static void vjsonize_basic_eventf(struct nDPId_reader_thread * const reader_thre
 {
     uint8_t got_jsonkey = 0;
     uint8_t is_long_long = 0;
-    char json_key[BUFSIZ];
+    char json_key[NETWORK_BUFFER_MAX_SIZE];
     uint32_t format_index = 0;
 
     while (*format)

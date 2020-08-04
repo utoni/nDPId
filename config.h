@@ -6,6 +6,8 @@
 #define DISTRIBUTOR_HOST "127.0.0.1"
 #define DISTRIBUTOR_PORT 7000
 
+#define NETWORK_BUFFER_MAX_SIZE 8192
+
 /* nDPId default config options */
 #define nDPId_MAX_FLOW_ROOTS_PER_THREAD 2048
 #define nDPId_MAX_IDLE_FLOWS_PER_THREAD 64

@@ -16,7 +16,7 @@ int main(void)
     int sockfd = socket(AF_INET, SOCK_STREAM, 0);
     struct sockaddr_in remote_addr = {};
     socklen_t remote_addrlen = sizeof(remote_addr);
-    uint8_t buf[BUFSIZ];
+    uint8_t buf[NETWORK_BUFFER_MAX_SIZE];
     //size_t buf_used = 0;
     //unsigned long long int buf_wanted = 0;
 
@@ -45,7 +45,7 @@ int main(void)
             break;
         }
 
-        printf("RECV[%zd]: '%.*s'\n", bytes_read, (int) bytes_read, buf);
+        printf("RECV[%zd]: '%.*s'\n\n", bytes_read, (int) bytes_read, buf);
     }
 
     return 0;

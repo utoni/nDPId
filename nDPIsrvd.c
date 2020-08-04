@@ -25,7 +25,7 @@ struct remote_desc
 {
     enum ev_type type;
     int fd;
-    uint8_t buf[BUFSIZ];
+    uint8_t buf[NETWORK_BUFFER_MAX_SIZE];
     size_t buf_used;
     unsigned long long int buf_wanted;
     union {
@@ -367,18 +367,19 @@ int main(void)
                             }
                             if ((uint8_t *)json_str_start == current->buf)
                             {
-                                current->buf_used = 0;
-                                current->buf_wanted = 0;
                                 syslog(LOG_DAEMON | LOG_ERR,
                                        "Missing size before JSON string: %.*s",
-                                       (int) current->buf_wanted, current->buf);
-                                continue;
-                            }
-                            if (current->buf_wanted > BUFSIZ)
-                            {
+                                       (int) current->buf_used, current->buf);
                                 current->buf_used = 0;
                                 current->buf_wanted = 0;
-                                syslog(LOG_DAEMON | LOG_ERR, "BUG: JSON string too big: %llu > %d", current->buf_wanted, BUFSIZ);
+                                continue;
+                            }
+                            if (current->buf_wanted > sizeof(current->buf))
+                            {
+                                syslog(LOG_DAEMON | LOG_ERR, "BUG: JSON string too big: %llu > %zu",
+                                       current->buf_wanted, sizeof(current->buf));
+                                current->buf_used = 0;
+                                current->buf_wanted = 0;
                                 continue;
                             }
                         }
@@ -390,10 +391,10 @@ int main(void)
                         /* after buffering complete, last character should always be a '}' (end of object) */
                         if (current->buf[current->buf_wanted - 1] != '}')
                         {
-                            current->buf_used = 0;
-                            current->buf_wanted = 0;
                             syslog(LOG_DAEMON | LOG_ERR, "Invalid JSON string: %.*s",
                                    (int) current->buf_wanted, current->buf);
+                            current->buf_used = 0;
+                            current->buf_wanted = 0;
                             continue;
                         }
 
@@ -430,7 +431,7 @@ int main(void)
                         }
 
                         memmove(current->buf, current->buf + current->buf_wanted, current->buf_used - current->buf_wanted);
-                        current->buf_used = 0;
+                        current->buf_used -= current->buf_wanted;
                         current->buf_wanted = 0;
                     }
                 }
