@@ -673,8 +673,8 @@ static void send_to_json_sink(struct nDPId_reader_thread * const reader_thread,
     int s_ret;
     char newline_json_str[BUFSIZ];
 
-    s_ret = snprintf(newline_json_str, sizeof(newline_json_str), "%zu%.*s\n",
-                     json_str_len, (int)json_str_len, json_str);
+    s_ret =
+        snprintf(newline_json_str, sizeof(newline_json_str), "%zu%.*s\n", json_str_len, (int)json_str_len, json_str);
     if (s_ret < 0 || s_ret > (int)sizeof(newline_json_str))
     {
         syslog(LOG_DAEMON | LOG_ERR,
@@ -1104,7 +1104,8 @@ static void ndpi_process_packet(uint8_t * const args,
     }
 
     workflow->packets_captured++;
-    time_ms = ((uint64_t)header->ts.tv_sec) * nDPId_TICK_RESOLUTION + header->ts.tv_usec / (1000000 / nDPId_TICK_RESOLUTION);
+    time_ms =
+        ((uint64_t)header->ts.tv_sec) * nDPId_TICK_RESOLUTION + header->ts.tv_usec / (1000000 / nDPId_TICK_RESOLUTION);
     workflow->last_time = time_ms;
 
     check_for_idle_flows(reader_thread);
