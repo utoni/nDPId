@@ -1,5 +1,5 @@
 CC = gcc
-PROJECT_CFLAGS += -Wall -Wextra $(EXTRA_CFLAGS)
+PROJECT_CFLAGS += -Wall -Wextra $(EXTRA_CFLAGS) -I.
 LIBS += -pthread -lpcap -lm
 
 ifneq ($(CUSTOM_LIBNDPI),)
@@ -37,14 +37,19 @@ RM = rm -f
 
 all: nDPId nDPIsrvd
 
+examples: examples/c-json-stdout/c-json-stdout
+
 nDPId: help nDPId.c
-	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) nDPId.c -o $@ $(LDFLAGS) $(LIBS)
+	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $@.c -o $@ $(LDFLAGS) $(LIBS)
 
 nDPIsrvd: nDPIsrvd.c
-	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) nDPIsrvd.c -o $@ $(LDFLAGS) $(LIBS)
+	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $@.c -o $@ $(LDFLAGS) $(LIBS)
+
+examples/c-json-stdout/c-json-stdout:
+	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $@.c -o $@ $(LDFLAGS) $(LIBS)
 
 clean:
-	$(RM) -f nDPId nDPIsrvd
+	$(RM) -f nDPId nDPIsrvd examples/c-json-stdout/c-json-stdout
 
 help:
 	@echo 'CC               = $(CC)'
