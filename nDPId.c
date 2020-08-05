@@ -17,6 +17,7 @@
 #include <unistd.h>
 
 #include "config.h"
+#include "utils.h"
 
 #if (NDPI_MAJOR == 3 && NDPI_MINOR < 3) || NDPI_MAJOR < 3
 #error "nDPI >= 3.3.0 requiired"
@@ -198,7 +199,6 @@ static int main_thread_shutdown = 0;
 static uint32_t global_flow_id = 0;
 
 static char * pcap_file_or_interface = NULL;
-static int daemonize = 0;
 static int log_to_stderr = 0;
 static char pidfile[UNIX_PATH_MAX] = nDPId_PIDFILE;
 static char json_sockpath[UNIX_PATH_MAX] = COLLECTOR_UNIX_SOCKET;
@@ -1647,28 +1647,6 @@ static int processing_threads_error_or_eof(void)
     return 1;
 }
 
-static int create_pidfile(char const * const pidfile)
-{
-    int pfd;
-
-    pfd = open(pidfile, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-
-    if (pfd < 0)
-    {
-        return 1;
-    }
-
-    if (dprintf(pfd, "%d", getpid()) <= 0)
-    {
-        close(pfd);
-        return 1;
-    }
-
-    close(pfd);
-
-    return 0;
-}
-
 static int start_reader_threads(void)
 {
     sigset_t thread_signal_set, old_signal_set;
@@ -1682,19 +1660,11 @@ static int start_reader_threads(void)
         return 1;
     }
 
-    if (daemonize != 0)
+    if (daemonize_with_pidfile(pidfile) != 0)
     {
-        if (daemon(0, 0) != 0)
-        {
-            syslog(LOG_DAEMON | LOG_ERR, "daemon: %s", strerror(errno));
-            return 1;
-        }
-    }
-    if (create_pidfile(pidfile) != 0)
-    {
-        syslog(LOG_DAEMON | LOG_ERR, "create pidfile: %s", strerror(errno));
         return 1;
     }
+    closelog();
     openlog("nDPId", LOG_CONS | (log_to_stderr != 0 ? LOG_PERROR : 0), LOG_DAEMON);
 
     for (int i = 0; i < reader_thread_count; ++i)
@@ -1736,10 +1706,7 @@ static int stop_reader_threads(void)
         break_pcap_loop(&reader_threads[i]);
     }
 
-    if (daemonize == 0)
-    {
-        printf("------------------------------------ Stopping reader threads\n");
-    }
+    printf("------------------------------------ Stopping reader threads\n");
     for (int i = 0; i < reader_thread_count; ++i)
     {
         if (reader_threads[i].workflow == NULL)
@@ -1753,10 +1720,7 @@ static int stop_reader_threads(void)
         }
     }
 
-    if (daemonize == 0)
-    {
-        printf("------------------------------------ Results\n");
-    }
+    printf("------------------------------------ Results\n");
     for (int i = 0; i < reader_thread_count; ++i)
     {
         if (reader_threads[i].workflow == NULL)
@@ -1770,29 +1734,23 @@ static int stop_reader_threads(void)
         total_flows_idle += reader_threads[i].workflow->total_idle_flows;
         total_flows_detected += reader_threads[i].workflow->detected_flow_protocols;
 
-        if (daemonize == 0)
-        {
-            printf(
-                "Stopping Thread %d, processed %10llu packets, %12llu bytes, total flows: %8llu, "
-                "idle flows: %8llu, detected flows: %8llu\n",
-                reader_threads[i].array_index,
-                reader_threads[i].workflow->packets_processed,
-                reader_threads[i].workflow->total_l4_data_len,
-                reader_threads[i].workflow->total_active_flows,
-                reader_threads[i].workflow->total_idle_flows,
-                reader_threads[i].workflow->detected_flow_protocols);
-        }
+        printf(
+            "Stopping Thread %d, processed %10llu packets, %12llu bytes, total flows: %8llu, "
+            "idle flows: %8llu, detected flows: %8llu\n",
+            reader_threads[i].array_index,
+            reader_threads[i].workflow->packets_processed,
+            reader_threads[i].workflow->total_l4_data_len,
+            reader_threads[i].workflow->total_active_flows,
+            reader_threads[i].workflow->total_idle_flows,
+            reader_threads[i].workflow->detected_flow_protocols);
     }
     /* total packets captured: same value for all threads as packet2thread distribution happens later */
-    if (daemonize == 0)
-    {
-        printf("Total packets captured.: %llu\n", reader_threads[0].workflow->packets_captured);
-        printf("Total packets processed: %llu\n", total_packets_processed);
-        printf("Total layer4 data size.: %llu\n", total_l4_data_len);
-        printf("Total flows captured...: %llu\n", total_flows_captured);
-        printf("Total flows timed out..: %llu\n", total_flows_idle);
-        printf("Total flows detected...: %llu\n", total_flows_detected);
-    }
+    printf("Total packets captured.: %llu\n", reader_threads[0].workflow->packets_captured);
+    printf("Total packets processed: %llu\n", total_packets_processed);
+    printf("Total layer4 data size.: %llu\n", total_l4_data_len);
+    printf("Total flows captured...: %llu\n", total_flows_captured);
+    printf("Total flows timed out..: %llu\n", total_flows_idle);
+    printf("Total flows detected...: %llu\n", total_flows_detected);
 
     return 0;
 }
@@ -1849,7 +1807,7 @@ static int parse_options(int argc, char ** argv)
                 json_sockpath[sizeof(json_sockpath) - 1] = '\0';
                 break;
             case 'd':
-                daemonize = 1;
+                daemonize_enable();
                 break;
             case 'p':
                 strncpy(pidfile, optarg, sizeof(pidfile) - 1);
@@ -1861,12 +1819,6 @@ static int parse_options(int argc, char ** argv)
                         argv[0]);
                 return 1;
         }
-    }
-
-    if (log_to_stderr != 0 && daemonize != 0)
-    {
-        fprintf(stderr, "%s: Using -l and -d does not make sense.\n", argv[0]);
-        return 1;
     }
 
     return 0;
@@ -1898,13 +1850,13 @@ int main(int argc, char ** argv)
 
     if (setup_reader_threads(pcap_file_or_interface) != 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "%s: setup_reader_threads failed", argv[0]);
+        syslog(LOG_DAEMON | LOG_ERR, "setup_reader_threads failed");
         return 1;
     }
 
     if (start_reader_threads() != 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "%s: start_reader_threads", argv[0]);
+        syslog(LOG_DAEMON | LOG_ERR, "start_reader_threads failed");
         return 1;
     }
 
@@ -1917,11 +1869,12 @@ int main(int argc, char ** argv)
 
     if (main_thread_shutdown == 0 && stop_reader_threads() != 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "%s: stop_reader_threads", argv[0]);
+        syslog(LOG_DAEMON | LOG_ERR, "stop_reader_threads");
         return 1;
     }
     free_reader_threads();
 
+    daemonize_shutdown(pidfile);
     syslog(LOG_DAEMON | LOG_NOTICE, "Bye.");
     closelog();
 

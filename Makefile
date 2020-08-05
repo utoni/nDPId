@@ -43,11 +43,11 @@ all: help nDPId nDPIsrvd
 
 examples: examples/c-json-stdout/c-json-stdout
 
-nDPId: nDPId.c
-	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $@.c -o $@ $(LDFLAGS) $(LIBS)
+nDPId: nDPId.c utils.c
+	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS)
 
-nDPIsrvd: nDPIsrvd.c
-	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $@.c -o $@ $(LDFLAGS) $(LIBS)
+nDPIsrvd: nDPIsrvd.c utils.c
+	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS)
 
 examples/c-json-stdout/c-json-stdout:
 ifneq ($(DISABLE_JSMN),yes)
