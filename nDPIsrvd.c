@@ -3,6 +3,7 @@
 #include <fcntl.h>
 #include <netdb.h>
 #include <linux/un.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -14,6 +15,7 @@
 #include <unistd.h>
 
 #include "config.h"
+#include "utils.h"
 
 enum ev_type
 {
@@ -50,6 +52,9 @@ static struct remotes
     size_t desc_used;
 } remotes = {NULL, 0, 0};
 
+static int main_thread_shutdown = 0;
+static int log_to_stderr = 0;
+static char pidfile[UNIX_PATH_MAX] = nDPIsrvd_PIDFILE;
 static char json_sockpath[UNIX_PATH_MAX] = COLLECTOR_UNIX_SOCKET;
 static char serv_listen_addr[INET_ADDRSTRLEN] = DISTRIBUTOR_HOST;
 static uint16_t serv_listen_port = DISTRIBUTOR_PORT;
@@ -85,7 +90,8 @@ static int create_listen_sockets(void)
     struct sockaddr_in serv_addr;
     memset(&serv_addr, 0, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
-    if (inet_pton(AF_INET, &serv_listen_addr[0], &serv_addr.sin_addr) != 1) {
+    if (inet_pton(AF_INET, &serv_listen_addr[0], &serv_addr.sin_addr) != 1)
+    {
         syslog(LOG_DAEMON | LOG_ERR, "Error converting an internet address: %s", strerror(errno));
         return 1;
     }
@@ -165,9 +171,78 @@ static void disconnect_client(int epollfd, struct remote_desc * const current)
     remotes.desc_used--;
 }
 
-int main(void)
+static void sighandler(int signum)
 {
+    syslog(LOG_DAEMON | LOG_NOTICE, "Received SIGNAL %d", signum);
+
+    if (main_thread_shutdown == 0)
+    {
+        syslog(LOG_DAEMON | LOG_NOTICE, "Shutting down ..");
+        main_thread_shutdown = 1;
+    }
+    else
+    {
+        syslog(LOG_DAEMON | LOG_NOTICE, "Reader threads are already shutting down, please be patient.");
+    }
+}
+
+static int parse_options(int argc, char ** argv)
+{
+    int opt;
+
+    while ((opt = getopt(argc, argv, "hlc:dp:")) != -1)
+    {
+        switch (opt)
+        {
+            case 'l':
+                log_to_stderr = 1;
+                break;
+            case 'c':
+                strncpy(json_sockpath, optarg, sizeof(json_sockpath) - 1);
+                json_sockpath[sizeof(json_sockpath) - 1] = '\0';
+                break;
+            case 'd':
+                daemonize_enable();
+                break;
+            case 'p':
+                strncpy(pidfile, optarg, sizeof(pidfile) - 1);
+                pidfile[sizeof(pidfile) - 1] = '\0';
+                break;
+            default:
+                fprintf(stderr, "Usage: %s [-l] [-c path-to-unix-sock] [-d] [-p pidfile]\n", argv[0]);
+                return 1;
+        }
+    }
+
+    return 0;
+}
+
+int main(int argc, char ** argv)
+{
+    if (argc == 0)
+    {
+        return 1;
+    }
+
+    if (parse_options(argc, argv) != 0)
+    {
+        return 1;
+    }
+
     openlog("nDPIsrvd", LOG_CONS | LOG_PERROR, LOG_DAEMON);
+
+    if (access(json_sockpath, F_OK) == 0) {
+        syslog(LOG_DAEMON | LOG_ERR, "UNIX socket %s exists; nDPIsrvd already running? "
+                                     "Please remove the socket manually or change socket path.", json_sockpath);
+        return 1;
+    }
+
+    if (daemonize_with_pidfile(pidfile) != 0)
+    {
+        return 1;
+    }
+    closelog();
+    openlog("nDPIsrvd", LOG_CONS | (log_to_stderr != 0 ? LOG_PERROR : 0), LOG_DAEMON);
 
     remotes.desc_used = 0;
     remotes.desc_size = 32;
@@ -181,8 +256,6 @@ int main(void)
         remotes.desc[i].fd = -1;
     }
 
-    unlink(json_sockpath);
-
     if (create_listen_sockets() != 0)
     {
         return 1;
@@ -190,6 +263,9 @@ int main(void)
     syslog(LOG_DAEMON, "collector listen on %s", json_sockpath);
     syslog(
         LOG_DAEMON, "distributor listen on %.*s:%u", (int)sizeof(serv_listen_addr), serv_listen_addr, serv_listen_port);
+
+    signal(SIGINT, sighandler);
+    signal(SIGTERM, sighandler);
 
     int epollfd = epoll_create1(0);
     if (epollfd < 0)
@@ -216,7 +292,7 @@ int main(void)
 
     struct epoll_event events[32];
     size_t const events_size = sizeof(events) / sizeof(events[0]);
-    while (1)
+    while (main_thread_shutdown == 0)
     {
         struct remote_desc * current = NULL;
         int nready = epoll_wait(epollfd, events, events_size, -1);
@@ -225,9 +301,11 @@ int main(void)
         {
             if (events[i].events & EPOLLERR)
             {
-                syslog(LOG_DAEMON | LOG_ERR, "Epoll event error: %s",
+                syslog(LOG_DAEMON | LOG_ERR,
+                       "Epoll event error: %s",
                        (errno != 0 ? strerror(errno) : "Client disconnected"));
-                if (events[i].data.fd != json_sockfd && events[i].data.fd != serv_sockfd) {
+                if (events[i].data.fd != json_sockfd && events[i].data.fd != serv_sockfd)
+                {
                     current = (struct remote_desc *)events[i].data.ptr;
                     disconnect_client(epollfd, current);
                 }
@@ -369,15 +447,18 @@ int main(void)
                             {
                                 syslog(LOG_DAEMON | LOG_ERR,
                                        "Missing size before JSON string: %.*s",
-                                       (int) current->buf_used, current->buf);
+                                       (int)current->buf_used,
+                                       current->buf);
                                 current->buf_used = 0;
                                 current->buf_wanted = 0;
                                 continue;
                             }
                             if (current->buf_wanted > sizeof(current->buf))
                             {
-                                syslog(LOG_DAEMON | LOG_ERR, "BUG: JSON string too big: %llu > %zu",
-                                       current->buf_wanted, sizeof(current->buf));
+                                syslog(LOG_DAEMON | LOG_ERR,
+                                       "BUG: JSON string too big: %llu > %zu",
+                                       current->buf_wanted,
+                                       sizeof(current->buf));
                                 current->buf_used = 0;
                                 current->buf_wanted = 0;
                                 continue;
@@ -391,8 +472,10 @@ int main(void)
                         /* after buffering complete, last character should always be a '}' (end of object) */
                         if (current->buf[current->buf_wanted - 1] != '}')
                         {
-                            syslog(LOG_DAEMON | LOG_ERR, "Invalid JSON string: %.*s",
-                                   (int) current->buf_wanted, current->buf);
+                            syslog(LOG_DAEMON | LOG_ERR,
+                                   "Invalid JSON string: %.*s",
+                                   (int)current->buf_wanted,
+                                   current->buf);
                             current->buf_used = 0;
                             current->buf_wanted = 0;
                             continue;
@@ -411,10 +494,7 @@ int main(void)
                                 if (bytes_written < 0 || errno != 0)
                                 {
                                     syslog(LOG_DAEMON | LOG_ERR,
-                                           "Written %zd of %zu bytes to fd %d: %s",
-                                           bytes_written,
-                                           current->buf_used,
-                                           remotes.desc[i].fd,
+                                           "Collector connection closed, send failed: %s",
                                            strerror(errno));
                                     disconnect_client(epollfd, &remotes.desc[i]);
                                     continue;
@@ -422,15 +502,16 @@ int main(void)
                                 if (bytes_written == 0)
                                 {
                                     syslog(LOG_DAEMON,
-                                           "%s connection closed during write",
-                                           (current->type == JSON_SOCK ? "collector" : "distributor"));
+                                           "Collector connection closed during write");
                                     disconnect_client(epollfd, &remotes.desc[i]);
                                     continue;
                                 }
                             }
                         }
 
-                        memmove(current->buf, current->buf + current->buf_wanted, current->buf_used - current->buf_wanted);
+                        memmove(current->buf,
+                                current->buf + current->buf_wanted,
+                                current->buf_used - current->buf_wanted);
                         current->buf_used -= current->buf_wanted;
                         current->buf_wanted = 0;
                     }
@@ -441,6 +522,12 @@ int main(void)
 
     close(json_sockfd);
     close(serv_sockfd);
+
+    daemonize_shutdown(pidfile);
+    syslog(LOG_DAEMON | LOG_NOTICE, "Bye.");
+    closelog();
+
+    unlink(json_sockpath);
 
     return 0;
 }

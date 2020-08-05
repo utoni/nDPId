@@ -28,6 +28,7 @@ static int is_daemon_running(char const * const pidfile, pid_str ps)
 
     if (read(pfd, ps, sizeof(pid_str)) <= 0)
     {
+        close(pfd);
         return 1;
     }
 
@@ -71,7 +72,7 @@ static int create_pidfile(char const * const pidfile)
 
 int daemonize_with_pidfile(char const * const pidfile)
 {
-    pid_str ps;
+    pid_str ps = {};
 
     if (daemonize != 0)
     {

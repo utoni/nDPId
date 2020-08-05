@@ -19,4 +19,7 @@
 #define nDPId_INITIAL_THREAD_HASH 0x03dd018b
 #define nDPId_MAX_PACKETS_PER_FLOW_TO_SEND 15
 
+/* nDPIsrvd default config options */
+#define nDPIsrvd_PIDFILE "/tmp/ndpisrvd.pid"
+
 #endif
