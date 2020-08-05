@@ -39,11 +39,11 @@ endif
 
 RM = rm -f
 
-all: nDPId nDPIsrvd
+all: help nDPId nDPIsrvd
 
 examples: examples/c-json-stdout/c-json-stdout
 
-nDPId: help nDPId.c
+nDPId: nDPId.c
 	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $@.c -o $@ $(LDFLAGS) $(LIBS)
 
 nDPIsrvd: nDPIsrvd.c
@@ -60,8 +60,10 @@ clean:
 	$(RM) -f nDPId nDPIsrvd examples/c-json-stdout/c-json-stdout
 
 help:
+	@echo '------------------------------------'
 	@echo 'CC               = $(CC)'
 	@echo 'CFLAGS           = $(CFLAGS)'
+	@echo 'LDFLAGS          = $(LDFLAGS)'
 	@echo 'PROJECT_CFLAGS	= $(PROJECT_CFLAGS)'
 	@echo 'LIBS             = $(LIBS)'
 	@echo 'CUSTOM_LIBNDPI   = $(CUSTOM_LIBNDPI)'
@@ -69,5 +71,6 @@ help:
 	@echo 'ENABLE_SANITIZER = $(ENABLE_SANITIZER)'
 	@echo 'ENABLE_SANITIZER_THREAD = $(ENABLE_SANITIZER_THREAD)'
 	@echo 'DISABLE_JSMN     = $(DISABLE_JSMN)'
+	@echo '------------------------------------'
 
 .PHONY: all clean help
