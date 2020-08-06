@@ -531,20 +531,29 @@ static void check_for_idle_flows(struct nDPId_reader_thread * const reader_threa
 static int jsonize_l3_l4_dpi(struct nDPId_workflow * const workflow, struct nDPId_flow_info const * const flow)
 {
     ndpi_serializer * const serializer = &workflow->ndpi_serializer;
-    char src_name[32] = {};
-    char dst_name[32] = {};
+    char src_name[48] = {};
+    char dst_name[48] = {};
 
     switch (flow->l3_type)
     {
         case L3_IP:
             ndpi_serialize_string_string(serializer, "l3_proto", "ip4");
-            inet_ntop(AF_INET, &flow->ip_tuple.v4.src, src_name, sizeof(src_name));
-            inet_ntop(AF_INET, &flow->ip_tuple.v4.dst, dst_name, sizeof(dst_name));
+            if (inet_ntop(AF_INET, &flow->ip_tuple.v4.src, src_name, sizeof(src_name)) == NULL) {
+                syslog(LOG_DAEMON | LOG_ERR, "Could not convert IPv4 source ip to string: %s", strerror(errno));
+            }
+            if (inet_ntop(AF_INET, &flow->ip_tuple.v4.dst, dst_name, sizeof(dst_name)) == NULL) {
+                syslog(LOG_DAEMON | LOG_ERR, "Could not convert IPv4 destination ip to string: %s", strerror(errno));
+            }
             break;
         case L3_IP6:
             ndpi_serialize_string_string(serializer, "l3_proto", "ip6");
-            inet_ntop(AF_INET6, &flow->ip_tuple.v6.src[0], src_name, sizeof(src_name));
-            inet_ntop(AF_INET6, &flow->ip_tuple.v6.dst[0], dst_name, sizeof(dst_name));
+            if (inet_ntop(AF_INET6, &flow->ip_tuple.v6.src[0], src_name, sizeof(src_name)) == NULL) {
+                syslog(LOG_DAEMON | LOG_ERR, "Could not convert IPv6 source ip to string: %s", strerror(errno));
+            }
+            if (inet_ntop(AF_INET6, &flow->ip_tuple.v6.dst[0], dst_name, sizeof(dst_name)) == NULL) {
+                syslog(LOG_DAEMON | LOG_ERR, "Could not convert IPv6 destination ip to string: %s", strerror(errno));
+            }
+
             /* For consistency across platforms replace :0: with :: */
             ndpi_patchIPv6Address(src_name), ndpi_patchIPv6Address(dst_name);
             break;
@@ -553,7 +562,7 @@ static int jsonize_l3_l4_dpi(struct nDPId_workflow * const workflow, struct nDPI
     }
 
     ndpi_serialize_string_string(serializer, "src_ip", src_name);
-    ndpi_serialize_string_string(serializer, "dest_ip", dst_name);
+    ndpi_serialize_string_string(serializer, "dst_ip", dst_name);
     if (flow->src_port)
     {
         ndpi_serialize_string_uint32(serializer, "src_port", flow->src_port);
