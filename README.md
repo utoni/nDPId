@@ -11,7 +11,7 @@ This value serves as unique identifier for the processing thread. Multithreaded 
 nDPId uses libnDPI's JSON serialization to produce meaningful JSON output which it then sends to the nDPIsrvd for distribution.
 High level applications can connect to nDPIsrvd to get the latest flow/packet events from nDPId.
 
-TODO: Provide some sort of authentication for connecting distributor clients (somehow very critical).
+TODO: Provide some sort of AEAD for connecting distributor clients via TCP (somehow very critical).
 
 # architecture
 
@@ -24,7 +24,7 @@ _______________________                                         ________________
 |                     |      |        nDPIsrvd           |      |                        |
 | nDPId --- Thread 1 >| ---> |>           |             <| <--- |< example/c-json-stdout |
 |        `- Thread 2 >| ---> |> collector | distributor <| <--- |< example/py-flow-info  |
-|        `- Thread N >| ---> |>           |             <| <--- |                        |
+|        `- Thread N >| ---> |>           |             <| <--- |          ...           |
 |_____________________|  ^   |____________|______________|   ^  |________________________|
                          |                                   |                            
                          `- connect to UNIX socket           `- connect to TCP socket     
@@ -64,13 +64,13 @@ make all examples
 
 # run
 
-Daemon mode:
+Daemons:
 ```shell
 ./nDPIsrvd -d
 ./nDPId -d
 ```
 
-And why not a simple flow-info example:
+And why not a flow-info example?
 ```shell
 ./examples/py-flow-info/flow-info.py
 ```

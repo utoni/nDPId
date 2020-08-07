@@ -20,7 +20,12 @@ class nDPIsrvdSocket:
         self.digitlen = 0
 
     def receive(self):
-        recvd = self.sock.recv(NETWORK_BUFFER_MAX_SIZE - len(self.buffer)).decode(errors='strict')
+        try:
+            recvd_buf = self.sock.recv(NETWORK_BUFFER_MAX_SIZE - len(self.buffer))
+            recvd = recvd_buf.decode(errors='strict')
+        except UnicodeDecodeError as exc:
+            raise RuntimeError('Unicode Exception: {}\n\nReceived String: {}'.format(str(exc), str(recvd_buf)))
+
         if recvd == '':
             raise RuntimeError('socket connection broken')
         self.buffer += recvd
@@ -38,15 +43,26 @@ class nDPIsrvdSocket:
             if len(self.buffer) >= self.msglen + self.digitlen:
                 recvd = self.buffer[self.digitlen:self.msglen + self.digitlen]
                 self.buffer = self.buffer[self.msglen + self.digitlen:]
+                retval += [(recvd,self.msglen,self.digitlen)]
+
                 self.msglen = 0
                 self.digitlen = 0
-                retval += [recvd]
 
         return retval
 
+class TermColor:
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    BOLD = '\033[1m'
+    END = '\033[0m'
+    BLINK = "\x1b[5m"
+
 def parse_json_str(json_str):
 
-    j = json.loads(json_str)
+    try:
+        j = json.loads(json_str[0])
+    except json.decoder.JSONDecodeError as exc:
+        raise RuntimeError('JSON Exception: {}\n\nJSON String: {}\n'.format(str(exc), str(json_str)))
 
     if 'flow_event_name' in j:
         event = j['flow_event_name'].lower()
@@ -65,22 +81,47 @@ def parse_json_str(json_str):
         else:
             raise RuntimeError('unknown flow event name: {}'.format(event))
 
+        ndpi_proto_categ = ''
+        ndpi_frisk = ''
+
+        if 'ndpi' in j:
+            if 'proto' in j['ndpi']:
+                ndpi_proto_categ += '[' + str(j['ndpi']['proto']) + ']'
+
+            if 'category' in j['ndpi']:
+                ndpi_proto_categ += '[' + str(j['ndpi']['category']) + ']'
+
+            if 'flow_risk' in j['ndpi']:
+                cnt = 0
+                for key in j['ndpi']['flow_risk']:
+                    ndpi_frisk += str(j['ndpi']['flow_risk'][key]) + ', '
+                    cnt += 1
+                ndpi_frisk = '{}: {}'.format(
+                    TermColor.WARNING + TermColor.BOLD + 'RISK' + TermColor.END if cnt < 2
+                    else TermColor.FAIL + TermColor.BOLD + TermColor.BLINK + 'RISK' + TermColor.END,
+                    ndpi_frisk[:-2])
+
         if j['l3_proto'] == 'ip4':
-            print('{:>14}: [{:>8}] [{}][{:>5}] [{:>15}][{:>5}] -> [{:>15}][{:>5}]'.format(event_str,
+            print('{:>14}: [{:.>8}] [{}][{:.>5}] [{:.>15}]{} -> [{:.>15}]{} {}'.format(event_str,
                   j['flow_id'], j['l3_proto'], j['l4_proto'],
                   j['src_ip'].lower(),
-                  j['src_port'] if 'src_port' in j else '',
+                  '[{:.>5}]'.format(j['src_port']) if 'src_port' in j else '',
                   j['dst_ip'].lower(),
-                  j['dst_port'] if 'dst_port' in j else ''))
+                  '[{:.>5}]'.format(j['dst_port']) if 'dst_port' in j else '',
+                  ndpi_proto_categ))
         elif j['l3_proto'] == 'ip6':
-            print('{:>14}: [{:>8}] [{}][{:>5}] [{:>39}][{:>5}] -> [{:>39}][{:>5}]'.format(event_str,
+            print('{:>14}: [{:.>8}] [{}][{:.>5}] [{:.>39}]{} -> [{:.>39}]{} {}'.format(event_str,
                   j['flow_id'], j['l3_proto'], j['l4_proto'],
                   j['src_ip'].lower(),
-                  j['src_port'] if 'src_port' in j else '',
+                  '[{:.>5}]'.format(j['src_port']) if 'src_port' in j else '',
                   j['dst_ip'].lower(),
-                  j['dst_port'] if 'dst_port' in j else ''))
+                  '[{:.>5}]'.format(j['dst_port']) if 'dst_port' in j else '',
+                  ndpi_proto_categ))
         else:
             raise RuntimeError('unsupported l3 protocol: {}'.format(j['l3_proto']))
+
+        if len(ndpi_frisk) > 0:
+            print('{:>16}{}'.format('', ndpi_frisk))
 
 
 if __name__ == '__main__':
@@ -102,7 +143,6 @@ if __name__ == '__main__':
 
     while True:
         received = nsock.receive()
-        for line in received:
-            #print(line)
-            parse_json_str(line)
+        for received_json_pkt in received:
+            parse_json_str(received_json_pkt)
 
