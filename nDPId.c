@@ -615,7 +615,6 @@ static void jsonize_flow(struct nDPId_workflow * const workflow, struct nDPId_fl
                                  "flow_avg_l4_data_len",
                                  (flow->packets_processed > 0 ? flow->total_l4_data_len / flow->packets_processed : 0));
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "midstream", flow->is_midstream_flow);
-    ndpi_serialize_risk(&workflow->ndpi_serializer, flow->ndpi_flow);
 
     if (jsonize_l3_l4_dpi(workflow, flow) != 0)
     {
