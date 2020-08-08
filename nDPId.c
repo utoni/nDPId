@@ -129,6 +129,7 @@ enum flow_event
     FLOW_EVENT_NEW,
     FLOW_EVENT_END,
     FLOW_EVENT_IDLE,
+
     FLOW_EVENT_GUESSED,
     FLOW_EVENT_DETECTED,
     FLOW_EVENT_NOT_DETECTED,
@@ -517,6 +518,13 @@ static void check_for_idle_flows(struct nDPId_reader_thread * const reader_threa
             {
                 struct nDPId_flow_info * const f =
                     (struct nDPId_flow_info *)workflow->ndpi_flows_idle[--workflow->cur_idle_flows];
+                if (f->detection_completed == 0) {
+                    if (ndpi_is_protocol_detected(workflow->ndpi_struct, f->guessed_protocol) != 0) {
+                        jsonize_flow_event(reader_thread, f, FLOW_EVENT_GUESSED);
+                    } else {
+                        jsonize_flow_event(reader_thread, f, FLOW_EVENT_NOT_DETECTED);
+                    }
+                }
                 jsonize_flow_event(reader_thread, f, FLOW_EVENT_IDLE);
                 ndpi_tdelete(f, &workflow->ndpi_flows_active[idle_scan_index], ndpi_workflow_node_cmp);
                 ndpi_flow_info_freer(f);
@@ -528,7 +536,7 @@ static void check_for_idle_flows(struct nDPId_reader_thread * const reader_threa
     }
 }
 
-static int jsonize_l3_l4_dpi(struct nDPId_workflow * const workflow, struct nDPId_flow_info const * const flow)
+static void jsonize_l3_l4(struct nDPId_workflow * const workflow, struct nDPId_flow_info const * const flow)
 {
     ndpi_serializer * const serializer = &workflow->ndpi_serializer;
     char src_name[48] = {};
@@ -590,8 +598,6 @@ static int jsonize_l3_l4_dpi(struct nDPId_workflow * const workflow, struct nDPI
             ndpi_serialize_string_uint32(serializer, "l4_proto", flow->l4_protocol);
             break;
     }
-
-    return ndpi_dpi2json(workflow->ndpi_struct, flow->ndpi_flow, flow->detected_l7_protocol, serializer);
 }
 
 static void jsonize_basic(struct nDPId_reader_thread * const reader_thread)
@@ -615,14 +621,6 @@ static void jsonize_flow(struct nDPId_workflow * const workflow, struct nDPId_fl
                                  "flow_avg_l4_data_len",
                                  (flow->packets_processed > 0 ? flow->total_l4_data_len / flow->packets_processed : 0));
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "midstream", flow->is_midstream_flow);
-
-    if (jsonize_l3_l4_dpi(workflow, flow) != 0)
-    {
-        syslog(LOG_DAEMON | LOG_ERR,
-               "[%8llu, %4u] flow2json/dpi2json failed",
-               workflow->packets_captured,
-               flow->flow_id);
-    }
 }
 
 static int connect_to_json_socket(struct nDPId_reader_thread * const reader_thread)
@@ -891,6 +889,30 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
     }
     jsonize_basic(reader_thread);
     jsonize_flow(workflow, flow);
+    jsonize_l3_l4(workflow, flow);
+
+    switch (event) {
+        case FLOW_EVENT_INVALID:
+        case FLOW_EVENT_COUNT:
+        case FLOW_EVENT_NEW:
+        case FLOW_EVENT_END:
+        case FLOW_EVENT_IDLE:
+            break;
+
+        case FLOW_EVENT_GUESSED:
+        case FLOW_EVENT_DETECTED:
+        case FLOW_EVENT_NOT_DETECTED:
+            if (ndpi_dpi2json(workflow->ndpi_struct, flow->ndpi_flow, flow->detected_l7_protocol,
+                              &workflow->ndpi_serializer) != 0)
+            {
+                syslog(LOG_DAEMON | LOG_ERR,
+                       "[%8llu, %4u] ndpi_dpi2json failed",
+                       workflow->packets_captured,
+                       flow->flow_id);
+            }
+            break;
+    }
+
     serialize_and_send(reader_thread);
 }
 
@@ -1549,6 +1571,13 @@ static void ndpi_process_packet(uint8_t * const args,
     if (flow.flow_fin_ack_seen != 0 && flow_to_process->flow_fin_ack_seen == 0)
     {
         flow_to_process->flow_fin_ack_seen = 1;
+        if (flow_to_process->detection_completed == 0) {
+            if (ndpi_is_protocol_detected(workflow->ndpi_struct, flow_to_process->guessed_protocol) != 0) {
+                jsonize_flow_event(reader_thread, flow_to_process, FLOW_EVENT_GUESSED);
+            } else {
+                jsonize_flow_event(reader_thread, flow_to_process, FLOW_EVENT_NOT_DETECTED);
+            }
+        }
         jsonize_flow_event(reader_thread, flow_to_process, FLOW_EVENT_END);
         return;
     }
