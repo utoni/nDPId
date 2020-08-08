@@ -7,6 +7,7 @@ import socket
 
 HOST = '127.0.0.1'
 PORT = 7000
+NETWORK_BUFFER_MIN_SIZE = 5
 NETWORK_BUFFER_MAX_SIZE = 8192
 
 class nDPIsrvdSocket:
@@ -15,16 +16,12 @@ class nDPIsrvdSocket:
 
     def connect(self, host, port):
         self.sock.connect((host, port))
-        self.buffer = str()
+        self.buffer = bytes()
         self.msglen = 0
         self.digitlen = 0
 
     def receive(self):
-        try:
-            recvd_buf = self.sock.recv(NETWORK_BUFFER_MAX_SIZE - len(self.buffer))
-            recvd = recvd_buf.decode(errors='strict')
-        except UnicodeDecodeError as exc:
-            raise RuntimeError('Unicode Exception: {}\n\nReceived String: {}'.format(str(exc), str(recvd_buf)))
+        recvd = self.sock.recv(NETWORK_BUFFER_MAX_SIZE - len(self.buffer))
 
         if recvd == '':
             raise RuntimeError('socket connection broken')
@@ -34,9 +31,11 @@ class nDPIsrvdSocket:
         while self.msglen + self.digitlen < len(self.buffer):
 
             if self.msglen == 0:
-                starts_with_digits = re.match(r'(^\d+){', self.buffer)
+                starts_with_digits = re.match(r'(^\d+){', self.buffer[:NETWORK_BUFFER_MIN_SIZE].decode(errors='strict'))
                 if starts_with_digits is None:
-                    break
+                    if len(self.buffer) < NETWORK_BUFFER_MIN_SIZE:
+                        break
+                    raise RuntimeError('Invalid packet received: {}'.format(self.buffer))
                 self.msglen = int(starts_with_digits[1])
                 self.digitlen = len(starts_with_digits[1])
 
@@ -73,7 +72,7 @@ def parse_json_str(json_str):
         elif event == 'idle':
             event_str = 'Idle flow'
         elif event == 'detected':
-            event_str = 'Detected flow'
+            event_str = 'Detected'
         elif event == 'guessed':
             event_str = 'Guessed'
         elif event == 'not-detected':
