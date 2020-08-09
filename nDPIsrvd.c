@@ -491,10 +491,15 @@ int main(int argc, char ** argv)
                             if (remotes.desc[i].type == SERV_SOCK)
                             {
                                 ssize_t bytes_written = write(remotes.desc[i].fd, current->buf, current->buf_wanted);
+                                if (errno == EAGAIN) {
+                                    /* TODO: Prevent data loss */
+                                    syslog(LOG_DAEMON | LOG_ERR, "Distributor write buffer bloat; Data loss!");
+                                    continue;
+                                }
                                 if (bytes_written < 0 || errno != 0)
                                 {
                                     syslog(LOG_DAEMON | LOG_ERR,
-                                           "Collector connection closed, send failed: %s",
+                                           "Distributor connection closed, send failed: %s",
                                            strerror(errno));
                                     disconnect_client(epollfd, &remotes.desc[i]);
                                     continue;
@@ -502,7 +507,7 @@ int main(int argc, char ** argv)
                                 if (bytes_written == 0)
                                 {
                                     syslog(LOG_DAEMON,
-                                           "Collector connection closed during write");
+                                           "Distributor connection closed during write");
                                     disconnect_client(epollfd, &remotes.desc[i]);
                                     continue;
                                 }
