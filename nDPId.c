@@ -1558,14 +1558,14 @@ static void ndpi_process_packet(uint8_t * const args,
         flow_to_process->min_l4_data_len = l4_len;
     }
 
-    jsonize_packet_event(reader_thread, header, packet, flow_to_process, PACKET_EVENT_PAYLOAD_FLOW);
-
     if (is_new_flow != 0)
     {
         flow_to_process->max_l4_data_len = l4_len;
         flow_to_process->min_l4_data_len = l4_len;
         jsonize_flow_event(reader_thread, flow_to_process, FLOW_EVENT_NEW);
     }
+
+    jsonize_packet_event(reader_thread, header, packet, flow_to_process, PACKET_EVENT_PAYLOAD_FLOW);
 
     /* TCP-FIN: indicates that at least one side wants to end the connection */
     if (flow.flow_fin_ack_seen != 0 && flow_to_process->flow_fin_ack_seen == 0)
