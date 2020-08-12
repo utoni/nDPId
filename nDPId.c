@@ -232,7 +232,8 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
 
     if (workflow->pcap_handle == NULL)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "pcap_open_live / pcap_open_offline_with_tstamp_precision: %s", pcap_error_buffer);
+        syslog(LOG_DAEMON | LOG_ERR, "pcap_open_live / pcap_open_offline_with_tstamp_precision: %.*s",
+               (int)PCAP_ERRBUF_SIZE, pcap_error_buffer);
         free_workflow(&workflow);
         return NULL;
     }
@@ -317,9 +318,25 @@ static void free_workflow(struct nDPId_workflow ** const workflow)
     *workflow = NULL;
 }
 
+static char * get_default_pcapdev(char *errbuf)
+{
+    char * ifname;
+    pcap_if_t * all_devices = NULL;
+
+    if (pcap_findalldevs(&all_devices, errbuf) != 0)
+    {
+        return NULL;
+    }
+
+    ifname = strdup(all_devices[0].name);
+    pcap_freealldevs(all_devices);
+
+    return ifname;
+}
+
 static int setup_reader_threads(char const * const file_or_device)
 {
-    char const * file_or_default_device;
+    char * file_or_default_device;
     char pcap_error_buffer[PCAP_ERRBUF_SIZE];
 
     if (reader_thread_count > nDPId_MAX_READER_THREADS)
@@ -329,16 +346,20 @@ static int setup_reader_threads(char const * const file_or_device)
 
     if (file_or_device == NULL)
     {
-        file_or_default_device = pcap_lookupdev(pcap_error_buffer);
+        file_or_default_device = get_default_pcapdev(pcap_error_buffer);
         if (file_or_default_device == NULL)
         {
-            syslog(LOG_DAEMON | LOG_ERR, "pcap_lookupdev: %s", pcap_error_buffer);
+            syslog(LOG_DAEMON | LOG_ERR, "pcap_lookupdev: %.*s",
+                   (int) PCAP_ERRBUF_SIZE, pcap_error_buffer);
             return 1;
         }
     }
     else
     {
-        file_or_default_device = file_or_device;
+        file_or_default_device = strdup(file_or_device);
+        if (file_or_default_device == NULL) {
+            return 1;
+        }
     }
 
     for (int i = 0; i < reader_thread_count; ++i)
@@ -346,10 +367,12 @@ static int setup_reader_threads(char const * const file_or_device)
         reader_threads[i].workflow = init_workflow(file_or_default_device);
         if (reader_threads[i].workflow == NULL)
         {
+            free(file_or_default_device);
             return 1;
         }
     }
 
+    free(file_or_default_device);
     return 0;
 }
 
