@@ -27,7 +27,7 @@ class nDPIsrvdSocket:
     def receive(self):
         recvd = self.sock.recv(NETWORK_BUFFER_MAX_SIZE - len(self.buffer))
 
-        if recvd == '':
+        if len(recvd) == 0:
             raise RuntimeError('socket connection broken')
         self.buffer += recvd
 
