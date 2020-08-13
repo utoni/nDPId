@@ -58,10 +58,9 @@ struct nDPId_flow_info
     uint16_t dst_port;
 
     uint8_t is_midstream_flow : 1;
-    uint8_t flow_fin_ack_seen : 1;
-    uint8_t flow_ack_seen : 1;
+    uint8_t flow_fin_rst_seen : 1;
     uint8_t detection_completed : 1;
-    uint8_t reserved_00 : 4;
+    uint8_t reserved_00 : 5;
     uint8_t reserved_01[3];
     uint8_t l4_protocol;
 
@@ -482,7 +481,7 @@ static void ndpi_idle_scan_walker(void const * const A, ndpi_VISIT which, int de
 
     if (which == ndpi_preorder || which == ndpi_leaf)
     {
-        if ((flow->flow_fin_ack_seen == 1 && flow->flow_ack_seen == 1) ||
+        if ((flow->flow_fin_rst_seen == 1 && flow->last_seen + nDPId_MAX_POST_END_FLOW_TIME < workflow->last_time) ||
             flow->last_seen + nDPId_MAX_IDLE_TIME < workflow->last_time)
         {
             char src_addr_str[INET6_ADDRSTRLEN + 1];
@@ -548,7 +547,11 @@ static void check_for_idle_flows(struct nDPId_reader_thread * const reader_threa
                         jsonize_flow_event(reader_thread, f, FLOW_EVENT_NOT_DETECTED);
                     }
                 }
-                jsonize_flow_event(reader_thread, f, FLOW_EVENT_IDLE);
+                if (f->flow_fin_rst_seen != 0) {
+                    jsonize_flow_event(reader_thread, f, FLOW_EVENT_END);
+                } else {
+                    jsonize_flow_event(reader_thread, f, FLOW_EVENT_IDLE);
+                }
                 ndpi_tdelete(f, &workflow->ndpi_flows_active[idle_scan_index], ndpi_workflow_node_cmp);
                 ndpi_flow_info_freer(f);
                 workflow->cur_active_flows--;
@@ -1349,8 +1352,7 @@ static void ndpi_process_packet(uint8_t * const args,
         }
         tcp = (struct ndpi_tcphdr *)l4_ptr;
         flow.is_midstream_flow = (tcp->syn == 0 ? 1 : 0);
-        flow.flow_fin_ack_seen = (tcp->fin == 1 && tcp->ack == 1 ? 1 : 0);
-        flow.flow_ack_seen = tcp->ack;
+        flow.flow_fin_rst_seen = (tcp->fin == 1 || tcp->rst == 1 ? 1 : 0);
         flow.src_port = ntohs(tcp->source);
         flow.dst_port = ntohs(tcp->dest);
     }
@@ -1569,8 +1571,6 @@ static void ndpi_process_packet(uint8_t * const args,
         flow_to_process->first_seen = time_ms;
     }
     flow_to_process->last_seen = time_ms;
-    /* current packet is an TCP-ACK? */
-    flow_to_process->flow_ack_seen = flow.flow_ack_seen;
 
     if (l4_len > flow_to_process->max_l4_data_len)
     {
@@ -1591,17 +1591,9 @@ static void ndpi_process_packet(uint8_t * const args,
     jsonize_packet_event(reader_thread, header, packet, flow_to_process, PACKET_EVENT_PAYLOAD_FLOW);
 
     /* TCP-FIN: indicates that at least one side wants to end the connection */
-    if (flow.flow_fin_ack_seen != 0 && flow_to_process->flow_fin_ack_seen == 0)
+    if (flow.flow_fin_rst_seen != 0)
     {
-        flow_to_process->flow_fin_ack_seen = 1;
-        if (flow_to_process->detection_completed == 0) {
-            if (ndpi_is_protocol_detected(workflow->ndpi_struct, flow_to_process->guessed_protocol) != 0) {
-                jsonize_flow_event(reader_thread, flow_to_process, FLOW_EVENT_GUESSED);
-            } else {
-                jsonize_flow_event(reader_thread, flow_to_process, FLOW_EVENT_NOT_DETECTED);
-            }
-        }
-        jsonize_flow_event(reader_thread, flow_to_process, FLOW_EVENT_END);
+        flow_to_process->flow_fin_rst_seen = 1;
         return;
     }
 
