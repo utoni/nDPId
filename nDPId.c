@@ -1594,7 +1594,6 @@ static void ndpi_process_packet(uint8_t * const args,
     if (flow.flow_fin_rst_seen != 0)
     {
         flow_to_process->flow_fin_rst_seen = 1;
-        return;
     }
 
     if (flow_to_process->ndpi_flow->num_processed_pkts == 0xFF)
@@ -1621,6 +1620,7 @@ static void ndpi_process_packet(uint8_t * const args,
             {
                 jsonize_flow_event(reader_thread, flow_to_process, FLOW_EVENT_NOT_DETECTED);
             }
+            flow_to_process->detection_completed = 1;
         }
     }
 
