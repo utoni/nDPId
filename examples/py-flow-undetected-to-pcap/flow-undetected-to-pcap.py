@@ -56,6 +56,7 @@ class nDPIsrvdSocket:
 class Flow:
     def __init__(self, flow_id=-1):
         self.pktdump = None
+        self.was_dumped = False
         self.was_detected = False
         self.flow_id = flow_id
         self.packets = []
@@ -67,6 +68,8 @@ class Flow:
         self.was_detected = True
 
     def fin(self):
+        if self.was_dumped is True:
+            return
         if self.was_detected is True:
             return
 
@@ -80,6 +83,7 @@ class Flow:
             self.pktdump.write(scapy.all.Raw(packet))
 
         self.pktdump.close()
+        self.was_dumped = True
 
 def parse_json_str(json_str):
 
@@ -94,6 +98,9 @@ def parse_json_str(json_str):
 
         event = j['flow_event_name'].lower()
         flow_id = j['flow_id']
+
+        if 'midstream' in j and j['midstream'] == 1:
+            return
 
         if event == 'new':
             print('New flow with id {}.'.format(flow_id))
@@ -115,6 +122,7 @@ def parse_json_str(json_str):
                 print('Guessed flow with id {}.'.format(flow_id))
             else:
                 print('Not-detected flow with id {}.'.format(flow_id))
+            FLOWS[flow_id].fin()
         else:
             raise RuntimeError('unknown flow event name: {}'.format(event))
 
@@ -125,8 +133,8 @@ def parse_json_str(json_str):
         if j['packet_event_name'] == 'packet-flow':
 
             flow_id = j['flow_id']
+
             if flow_id not in FLOWS:
-                print('Ignore packet-flow event with id {} as we did not get any flow-new event.'.format(flow_id))
                 return
 
             FLOWS[flow_id].addPacket(buffer_decoded)
