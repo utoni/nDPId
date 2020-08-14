@@ -67,7 +67,7 @@ class Flow:
     def detected(self):
         self.was_detected = True
 
-    def fin(self):
+    def fin(self, filename_suffix):
         if self.was_dumped is True:
             return
         if self.was_detected is True:
@@ -75,9 +75,11 @@ class Flow:
 
         if self.pktdump is None:
             if self.flow_id == -1:
-                self.pktdump = scapy.all.PcapWriter('packet-undetected.pcap', append=True, sync=True)
+                self.pktdump = scapy.all.PcapWriter('packet-{}.pcap'.format(filename_suffix),
+                                                    append=True, sync=True)
             else:
-                self.pktdump = scapy.all.PcapWriter('flow-undetected-{}.pcap'.format(self.flow_id), append=False, sync=True)
+                self.pktdump = scapy.all.PcapWriter('flow-{}-{}.pcap'.format(filename_suffix, self.flow_id),
+                                                    append=False, sync=True)
 
         for packet in self.packets:
             self.pktdump.write(scapy.all.Raw(packet))
@@ -113,16 +115,16 @@ def parse_json_str(json_str):
                 print('End flow with id {}.'.format(flow_id))
             elif event == 'idle':
                 print('Idle flow with id {}.'.format(flow_id))
-            FLOWS[flow_id].fin()
             del FLOWS[flow_id]
         elif event == 'detected':
             FLOWS[flow_id].detected()
         elif event == 'guessed' or event == 'not-detected':
             if event == 'guessed':
                 print('Guessed flow with id {}.'.format(flow_id))
+                FLOWS[flow_id].fin('guessed')
             else:
                 print('Not-detected flow with id {}.'.format(flow_id))
-            FLOWS[flow_id].fin()
+                FLOWS[flow_id].fin('undetected')
         else:
             raise RuntimeError('unknown flow event name: {}'.format(event))
 
