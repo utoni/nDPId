@@ -219,6 +219,7 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
         return NULL;
     }
 
+    errno = 0;
     if (access(file_or_device, R_OK) != 0 && errno == ENOENT)
     {
         workflow->pcap_handle = pcap_open_live(file_or_device, 65535, 1, 250, pcap_error_buffer);
@@ -703,8 +704,8 @@ static void send_to_json_sink(struct nDPId_reader_thread * const reader_thread,
 #if nDPIsrvd_JSON_BYTES != 4
 #error "Please do not forget to change the format string if you've changed the value of nDPIsrvd_JSON_BYTES."
 #endif
-    s_ret = snprintf(newline_json_str, sizeof(newline_json_str),
-                     "%04zu%.*s", json_str_len, (int)json_str_len, json_str);
+    s_ret =
+        snprintf(newline_json_str, sizeof(newline_json_str), "%04zu%.*s", json_str_len, (int)json_str_len, json_str);
     if (s_ret < 0 || s_ret > (int)sizeof(newline_json_str))
     {
         syslog(LOG_DAEMON | LOG_ERR,
@@ -727,8 +728,8 @@ static void send_to_json_sink(struct nDPId_reader_thread * const reader_thread,
         }
     }
 
-    if (reader_thread->json_sock_reconnect == 0 &&
-        write(reader_thread->json_sockfd, newline_json_str, s_ret) <= 0)
+    errno = 0;
+    if (reader_thread->json_sock_reconnect == 0 && write(reader_thread->json_sockfd, newline_json_str, s_ret) <= 0)
     {
         saved_errno = errno;
         syslog(LOG_DAEMON | LOG_ERR,
@@ -743,7 +744,17 @@ static void send_to_json_sink(struct nDPId_reader_thread * const reader_thread,
                    workflow->packets_captured,
                    reader_thread->array_index);
         }
-        reader_thread->json_sock_reconnect = 1;
+        if (saved_errno != EAGAIN)
+        {
+            reader_thread->json_sock_reconnect = 1;
+        }
+        else
+        {
+            syslog(LOG_DAEMON | LOG_ERR,
+                   "[%8llu, %d] Possible data loss detected",
+                   workflow->packets_captured,
+                   reader_thread->array_index);
+        }
     }
 }
 
@@ -1679,7 +1690,8 @@ static void * processing_thread(void * const ndpi_thread_arg)
     {
         syslog(LOG_DAEMON | LOG_ERR,
                "Thread %u: Could not connect to JSON sink %s, will try again later",
-               reader_thread->array_index, json_sockpath);
+               reader_thread->array_index,
+               json_sockpath);
     }
     run_pcap_loop(reader_thread);
     reader_thread->workflow->error_or_eof = 1;
@@ -1953,6 +1965,8 @@ int main(int argc, char ** argv)
 
     signal(SIGINT, sighandler);
     signal(SIGTERM, sighandler);
+    signal(SIGPIPE, SIG_IGN);
+
     while (main_thread_shutdown == 0 && processing_threads_error_or_eof() == 0)
     {
         sleep(1);

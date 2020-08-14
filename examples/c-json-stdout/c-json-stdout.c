@@ -61,7 +61,7 @@ int main(void)
         }
 
         buf_used += bytes_read;
-        while (json_bytes == 0 && buf_used >= nDPIsrvd_JSON_BYTES + 1)
+        while (buf_used >= nDPIsrvd_JSON_BYTES + 1)
         {
             if (buf[nDPIsrvd_JSON_BYTES] != '{')
             {

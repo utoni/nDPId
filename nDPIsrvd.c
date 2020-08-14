@@ -23,7 +23,8 @@ enum ev_type
     SERV_SOCK
 };
 
-struct io_buffer {
+struct io_buffer
+{
     uint8_t * ptr;
     size_t used;
     size_t max;
@@ -149,7 +150,7 @@ static struct remote_desc * get_unused_remote_descriptor(void)
         if (remotes.desc[i].fd == -1)
         {
             remotes.desc_used++;
-            remotes.desc[i].buf.ptr = (uint8_t *) malloc(NETWORK_BUFFER_MAX_SIZE);
+            remotes.desc[i].buf.ptr = (uint8_t *)malloc(NETWORK_BUFFER_MAX_SIZE);
             remotes.desc[i].buf.max = NETWORK_BUFFER_MAX_SIZE;
             remotes.desc[i].buf.used = 0;
             return &remotes.desc[i];
@@ -238,9 +239,12 @@ int main(int argc, char ** argv)
 
     openlog("nDPIsrvd", LOG_CONS | LOG_PERROR, LOG_DAEMON);
 
-    if (access(json_sockpath, F_OK) == 0) {
-        syslog(LOG_DAEMON | LOG_ERR, "UNIX socket %s exists; nDPIsrvd already running? "
-                                     "Please remove the socket manually or change socket path.", json_sockpath);
+    if (access(json_sockpath, F_OK) == 0)
+    {
+        syslog(LOG_DAEMON | LOG_ERR,
+               "UNIX socket %s exists; nDPIsrvd already running? "
+               "Please remove the socket manually or change socket path.",
+               json_sockpath);
         return 1;
     }
 
@@ -275,6 +279,7 @@ int main(int argc, char ** argv)
 
     signal(SIGINT, sighandler);
     signal(SIGTERM, sighandler);
+    signal(SIGPIPE, SIG_IGN);
 
     int epollfd = epoll_create1(0);
     if (epollfd < 0)
@@ -333,8 +338,8 @@ int main(int argc, char ** argv)
                 current->type = (events[i].data.fd == json_sockfd ? JSON_SOCK : SERV_SOCK);
 
                 int sockfd = (current->type == JSON_SOCK ? json_sockfd : serv_sockfd);
-                socklen_t peer_addr_len = (current->type == JSON_SOCK ? sizeof(current->event_json.peer)
-                                                                      : sizeof(current->event_serv.peer));
+                socklen_t peer_addr_len =
+                    (current->type == JSON_SOCK ? sizeof(current->event_json.peer) : sizeof(current->event_serv.peer));
 
                 current->fd = accept(sockfd,
                                      (current->type == JSON_SOCK ? (struct sockaddr *)&current->event_json.peer
@@ -383,7 +388,9 @@ int main(int argc, char ** argv)
                 if (current->type == JSON_SOCK)
                 {
                     shutdown(current->fd, SHUT_WR); // collector
-                } else {
+                }
+                else
+                {
                     shutdown(current->fd, SHUT_RD); // distributor
                 }
 
@@ -419,10 +426,18 @@ int main(int argc, char ** argv)
                 if (events[i].events & EPOLLIN && current->type == JSON_SOCK)
                 {
                     /* read JSON strings (or parts) from the UNIX socket (collecting) */
+                    if (current->buf.used == current->buf.max)
+                    {
+                        syslog(LOG_DAEMON, "Collector read buffer full. No more read possible.");
+                        disconnect_client(epollfd, current);
+                        continue;
+                    }
+
                     errno = 0;
                     ssize_t bytes_read =
                         read(current->fd, current->buf.ptr + current->buf.used, current->buf.max - current->buf.used);
-                    if (errno == EAGAIN) {
+                    if (errno == EAGAIN)
+                    {
                         continue;
                     }
                     if (bytes_read < 0 || errno != 0)
@@ -439,17 +454,19 @@ int main(int argc, char ** argv)
                         continue;
                     }
                     current->buf.used += bytes_read;
-                    while (current->event_json.json_bytes == 0 &&
-                           current->buf.used >= nDPIsrvd_JSON_BYTES + 1)
+
+                    while (current->buf.used >= nDPIsrvd_JSON_BYTES + 1)
                     {
                         if (current->buf.ptr[nDPIsrvd_JSON_BYTES] != '{')
                         {
-                            syslog(LOG_DAEMON | LOG_ERR, "BUG: JSON invalid opening character: '%c'",
+                            syslog(LOG_DAEMON | LOG_ERR,
+                                   "BUG: JSON invalid opening character: '%c'",
                                    current->buf.ptr[nDPIsrvd_JSON_BYTES]);
                             disconnect_client(epollfd, current);
                             break;
                         }
 
+                        errno = 0;
                         char * json_str_start = NULL;
                         current->event_json.json_bytes = strtoull((char *)current->buf.ptr, &json_str_start, 10);
                         current->event_json.json_bytes += (uint8_t *)json_str_start - current->buf.ptr;
@@ -464,7 +481,8 @@ int main(int argc, char ** argv)
                         {
                             syslog(LOG_DAEMON | LOG_ERR,
                                    "BUG: Missing size before JSON string: \"%.*s\"",
-                                   nDPIsrvd_JSON_BYTES, current->buf.ptr);
+                                   nDPIsrvd_JSON_BYTES,
+                                   current->buf.ptr);
                             disconnect_client(epollfd, current);
                             break;
                         }
@@ -508,12 +526,15 @@ int main(int argc, char ** argv)
                             }
 
                             memcpy(remotes.desc[i].buf.ptr + remotes.desc[i].buf.used,
-                                   current->buf.ptr, current->event_json.json_bytes);
+                                   current->buf.ptr,
+                                   current->event_json.json_bytes);
                             remotes.desc[i].buf.used += current->event_json.json_bytes;
 
-                            ssize_t bytes_written = write(remotes.desc[i].fd, remotes.desc[i].buf.ptr,
-                                                          remotes.desc[i].buf.used);
-                            if (errno == EAGAIN) {
+                            errno = 0;
+                            ssize_t bytes_written =
+                                write(remotes.desc[i].fd, remotes.desc[i].buf.ptr, remotes.desc[i].buf.used);
+                            if (errno == EAGAIN)
+                            {
                                 continue;
                             }
                             if (bytes_written < 0 || errno != 0)
@@ -526,8 +547,7 @@ int main(int argc, char ** argv)
                             }
                             if (bytes_written == 0)
                             {
-                                syslog(LOG_DAEMON,
-                                       "Distributor connection closed during write");
+                                syslog(LOG_DAEMON, "Distributor connection closed during write");
                                 disconnect_client(epollfd, &remotes.desc[i]);
                                 continue;
                             }
@@ -535,7 +555,8 @@ int main(int argc, char ** argv)
                             {
                                 syslog(LOG_DAEMON,
                                        "Distributor connection wrote less bytes than expected: %zd < %zu",
-                                       bytes_written, remotes.desc[i].buf.used);
+                                       bytes_written,
+                                       remotes.desc[i].buf.used);
                                 disconnect_client(epollfd, &remotes.desc[i]);
                                 continue;
                             }
