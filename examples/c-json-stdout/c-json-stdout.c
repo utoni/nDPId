@@ -56,6 +56,7 @@ int main(void)
 
         if (bytes_read <= 0 || errno != 0)
         {
+            fprintf(stderr, "Remote end disconnected.\n");
             break;
         }
 
@@ -64,7 +65,7 @@ int main(void)
         {
             if (buf[nDPIsrvd_JSON_BYTES] != '{')
             {
-                fprintf(stderr, "BUG: JSON invalid opening character: '%c'", buf[nDPIsrvd_JSON_BYTES]);
+                fprintf(stderr, "BUG: JSON invalid opening character: '%c'\n", buf[nDPIsrvd_JSON_BYTES]);
                 exit(1);
             }
 
@@ -75,17 +76,17 @@ int main(void)
 
             if (errno == ERANGE)
             {
-                fprintf(stderr, "BUG: Size of JSON exceeds limit");
+                fprintf(stderr, "BUG: Size of JSON exceeds limit\n");
                 exit(1);
             }
             if ((uint8_t *)json_str_start == buf)
             {
-                fprintf(stderr, "BUG: Missing size before JSON string: \"%.*s\"", nDPIsrvd_JSON_BYTES, buf);
+                fprintf(stderr, "BUG: Missing size before JSON string: \"%.*s\"\n", nDPIsrvd_JSON_BYTES, buf);
                 exit(1);
             }
             if (json_bytes > sizeof(buf))
             {
-                fprintf(stderr, "BUG: JSON string too big: %llu > %zu", json_bytes, sizeof(buf));
+                fprintf(stderr, "BUG: JSON string too big: %llu > %zu\n", json_bytes, sizeof(buf));
                 exit(1);
             }
             if (json_bytes > buf_used)
@@ -95,7 +96,7 @@ int main(void)
 
             if (buf[json_bytes - 1] != '}')
             {
-                fprintf(stderr, "BUG: Invalid JSON string: %.*s", (int)json_bytes, buf);
+                fprintf(stderr, "BUG: Invalid JSON string: %.*s\n", (int)json_bytes, buf);
                 exit(1);
             }
 

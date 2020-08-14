@@ -384,7 +384,7 @@ int main(int argc, char ** argv)
                 {
                     shutdown(current->fd, SHUT_WR); // collector
                 } else {
-                    shutdown(current->fd, SHUT_RD); // descriptor
+                    shutdown(current->fd, SHUT_RD); // distributor
                 }
 
                 /* setup epoll event */
@@ -422,6 +422,9 @@ int main(int argc, char ** argv)
                     errno = 0;
                     ssize_t bytes_read =
                         read(current->fd, current->buf.ptr + current->buf.used, current->buf.max - current->buf.used);
+                    if (errno == EAGAIN) {
+                        continue;
+                    }
                     if (bytes_read < 0 || errno != 0)
                     {
                         disconnect_client(epollfd, current);
@@ -435,7 +438,6 @@ int main(int argc, char ** argv)
                         disconnect_client(epollfd, current);
                         continue;
                     }
-
                     current->buf.used += bytes_read;
                     while (current->event_json.json_bytes == 0 &&
                            current->buf.used >= nDPIsrvd_JSON_BYTES + 1)
