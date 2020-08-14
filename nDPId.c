@@ -231,8 +231,10 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
 
     if (workflow->pcap_handle == NULL)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "pcap_open_live / pcap_open_offline_with_tstamp_precision: %.*s",
-               (int)PCAP_ERRBUF_SIZE, pcap_error_buffer);
+        syslog(LOG_DAEMON | LOG_ERR,
+               "pcap_open_live / pcap_open_offline_with_tstamp_precision: %.*s",
+               (int)PCAP_ERRBUF_SIZE,
+               pcap_error_buffer);
         free_workflow(&workflow);
         return NULL;
     }
@@ -317,7 +319,7 @@ static void free_workflow(struct nDPId_workflow ** const workflow)
     *workflow = NULL;
 }
 
-static char * get_default_pcapdev(char *errbuf)
+static char * get_default_pcapdev(char * errbuf)
 {
     char * ifname;
     pcap_if_t * all_devices = NULL;
@@ -348,15 +350,15 @@ static int setup_reader_threads(char const * const file_or_device)
         file_or_default_device = get_default_pcapdev(pcap_error_buffer);
         if (file_or_default_device == NULL)
         {
-            syslog(LOG_DAEMON | LOG_ERR, "pcap_lookupdev: %.*s",
-                   (int) PCAP_ERRBUF_SIZE, pcap_error_buffer);
+            syslog(LOG_DAEMON | LOG_ERR, "pcap_lookupdev: %.*s", (int)PCAP_ERRBUF_SIZE, pcap_error_buffer);
             return 1;
         }
     }
     else
     {
         file_or_default_device = strdup(file_or_device);
-        if (file_or_default_device == NULL) {
+        if (file_or_default_device == NULL)
+        {
             return 1;
         }
     }
@@ -372,28 +374,6 @@ static int setup_reader_threads(char const * const file_or_device)
     }
 
     free(file_or_default_device);
-    return 0;
-}
-
-static int ip_tuple_to_string(struct nDPId_flow_info const * const flow,
-                              char * const src_addr_str,
-                              size_t src_addr_len,
-                              char * const dst_addr_str,
-                              size_t dst_addr_len)
-{
-    switch (flow->l3_type)
-    {
-        case L3_IP:
-            return inet_ntop(AF_INET, (struct sockaddr_in *)&flow->ip_tuple.v4.src, src_addr_str, src_addr_len) !=
-                       NULL &&
-                   inet_ntop(AF_INET, (struct sockaddr_in *)&flow->ip_tuple.v4.dst, dst_addr_str, dst_addr_len) != NULL;
-        case L3_IP6:
-            return inet_ntop(AF_INET6, (struct sockaddr_in6 *)&flow->ip_tuple.v6.src[0], src_addr_str, src_addr_len) !=
-                       NULL &&
-                   inet_ntop(AF_INET6, (struct sockaddr_in6 *)&flow->ip_tuple.v6.dst[0], dst_addr_str, dst_addr_len) !=
-                       NULL;
-    }
-
     return 0;
 }
 
@@ -484,9 +464,6 @@ static void ndpi_idle_scan_walker(void const * const A, ndpi_VISIT which, int de
         if ((flow->flow_fin_rst_seen == 1 && flow->last_seen + nDPId_MAX_POST_END_FLOW_TIME < workflow->last_time) ||
             flow->last_seen + nDPId_MAX_IDLE_TIME < workflow->last_time)
         {
-            char src_addr_str[INET6_ADDRSTRLEN + 1];
-            char dst_addr_str[INET6_ADDRSTRLEN + 1];
-            ip_tuple_to_string(flow, src_addr_str, sizeof(src_addr_str), dst_addr_str, sizeof(dst_addr_str));
             workflow->ndpi_flows_idle[workflow->cur_idle_flows++] = flow;
             workflow->total_idle_flows++;
         }
@@ -526,6 +503,39 @@ static int ndpi_workflow_node_cmp(void const * const A, void const * const B)
     return ip_tuples_compare(flow_info_a, flow_info_b);
 }
 
+static void process_idle_flow(struct nDPId_reader_thread * const reader_thread, size_t idle_scan_index)
+{
+    struct nDPId_workflow * const workflow = reader_thread->workflow;
+
+    while (workflow->cur_idle_flows > 0)
+    {
+        struct nDPId_flow_info * const f =
+            (struct nDPId_flow_info *)workflow->ndpi_flows_idle[--workflow->cur_idle_flows];
+        if (f->detection_completed == 0)
+        {
+            if (ndpi_is_protocol_detected(workflow->ndpi_struct, f->guessed_protocol) != 0)
+            {
+                jsonize_flow_event(reader_thread, f, FLOW_EVENT_GUESSED);
+            }
+            else
+            {
+                jsonize_flow_event(reader_thread, f, FLOW_EVENT_NOT_DETECTED);
+            }
+        }
+        if (f->flow_fin_rst_seen != 0)
+        {
+            jsonize_flow_event(reader_thread, f, FLOW_EVENT_END);
+        }
+        else
+        {
+            jsonize_flow_event(reader_thread, f, FLOW_EVENT_IDLE);
+        }
+        ndpi_tdelete(f, &workflow->ndpi_flows_active[idle_scan_index], ndpi_workflow_node_cmp);
+        ndpi_flow_info_freer(f);
+        workflow->cur_active_flows--;
+    }
+}
+
 static void check_for_idle_flows(struct nDPId_reader_thread * const reader_thread)
 {
     struct nDPId_workflow * const workflow = reader_thread->workflow;
@@ -535,27 +545,7 @@ static void check_for_idle_flows(struct nDPId_reader_thread * const reader_threa
         for (size_t idle_scan_index = 0; idle_scan_index < workflow->max_active_flows; ++idle_scan_index)
         {
             ndpi_twalk(workflow->ndpi_flows_active[idle_scan_index], ndpi_idle_scan_walker, workflow);
-
-            while (workflow->cur_idle_flows > 0)
-            {
-                struct nDPId_flow_info * const f =
-                    (struct nDPId_flow_info *)workflow->ndpi_flows_idle[--workflow->cur_idle_flows];
-                if (f->detection_completed == 0) {
-                    if (ndpi_is_protocol_detected(workflow->ndpi_struct, f->guessed_protocol) != 0) {
-                        jsonize_flow_event(reader_thread, f, FLOW_EVENT_GUESSED);
-                    } else {
-                        jsonize_flow_event(reader_thread, f, FLOW_EVENT_NOT_DETECTED);
-                    }
-                }
-                if (f->flow_fin_rst_seen != 0) {
-                    jsonize_flow_event(reader_thread, f, FLOW_EVENT_END);
-                } else {
-                    jsonize_flow_event(reader_thread, f, FLOW_EVENT_IDLE);
-                }
-                ndpi_tdelete(f, &workflow->ndpi_flows_active[idle_scan_index], ndpi_workflow_node_cmp);
-                ndpi_flow_info_freer(f);
-                workflow->cur_active_flows--;
-            }
+            process_idle_flow(reader_thread, idle_scan_index);
         }
 
         workflow->last_idle_scan_time = workflow->last_time;
@@ -572,19 +562,23 @@ static void jsonize_l3_l4(struct nDPId_workflow * const workflow, struct nDPId_f
     {
         case L3_IP:
             ndpi_serialize_string_string(serializer, "l3_proto", "ip4");
-            if (inet_ntop(AF_INET, &flow->ip_tuple.v4.src, src_name, sizeof(src_name)) == NULL) {
+            if (inet_ntop(AF_INET, &flow->ip_tuple.v4.src, src_name, sizeof(src_name)) == NULL)
+            {
                 syslog(LOG_DAEMON | LOG_ERR, "Could not convert IPv4 source ip to string: %s", strerror(errno));
             }
-            if (inet_ntop(AF_INET, &flow->ip_tuple.v4.dst, dst_name, sizeof(dst_name)) == NULL) {
+            if (inet_ntop(AF_INET, &flow->ip_tuple.v4.dst, dst_name, sizeof(dst_name)) == NULL)
+            {
                 syslog(LOG_DAEMON | LOG_ERR, "Could not convert IPv4 destination ip to string: %s", strerror(errno));
             }
             break;
         case L3_IP6:
             ndpi_serialize_string_string(serializer, "l3_proto", "ip6");
-            if (inet_ntop(AF_INET6, &flow->ip_tuple.v6.src[0], src_name, sizeof(src_name)) == NULL) {
+            if (inet_ntop(AF_INET6, &flow->ip_tuple.v6.src[0], src_name, sizeof(src_name)) == NULL)
+            {
                 syslog(LOG_DAEMON | LOG_ERR, "Could not convert IPv6 source ip to string: %s", strerror(errno));
             }
-            if (inet_ntop(AF_INET6, &flow->ip_tuple.v6.dst[0], dst_name, sizeof(dst_name)) == NULL) {
+            if (inet_ntop(AF_INET6, &flow->ip_tuple.v6.dst[0], dst_name, sizeof(dst_name)) == NULL)
+            {
                 syslog(LOG_DAEMON | LOG_ERR, "Could not convert IPv6 destination ip to string: %s", strerror(errno));
             }
 
@@ -706,7 +700,11 @@ static void send_to_json_sink(struct nDPId_reader_thread * const reader_thread,
     int s_ret;
     char newline_json_str[NETWORK_BUFFER_MAX_SIZE];
 
-    s_ret = snprintf(newline_json_str, sizeof(newline_json_str), "%zu%.*s", json_str_len, (int)json_str_len, json_str);
+#if nDPIsrvd_JSON_BYTES != 4
+#error "Please do not forget to change the format string if you've changed the value of nDPIsrvd_JSON_BYTES."
+#endif
+    s_ret = snprintf(newline_json_str, sizeof(newline_json_str),
+                     "%04zu%.*s", json_str_len, (int)json_str_len, json_str);
     if (s_ret < 0 || s_ret > (int)sizeof(newline_json_str))
     {
         syslog(LOG_DAEMON | LOG_ERR,
@@ -730,7 +728,7 @@ static void send_to_json_sink(struct nDPId_reader_thread * const reader_thread,
     }
 
     if (reader_thread->json_sock_reconnect == 0 &&
-        send(reader_thread->json_sockfd, newline_json_str, s_ret, MSG_NOSIGNAL) < 0)
+        write(reader_thread->json_sockfd, newline_json_str, s_ret) <= 0)
     {
         saved_errno = errno;
         syslog(LOG_DAEMON | LOG_ERR,
@@ -757,7 +755,6 @@ static void serialize_and_send(struct nDPId_reader_thread * const reader_thread)
     json_str = ndpi_serializer_get_buffer(&reader_thread->workflow->ndpi_serializer, &json_str_len);
     if (json_str == NULL || json_str_len == 0)
     {
-
         syslog(LOG_DAEMON | LOG_ERR,
                "[%8llu, %d] jsonize failed, buffer length: %u",
                reader_thread->workflow->packets_captured,
@@ -766,7 +763,6 @@ static void serialize_and_send(struct nDPId_reader_thread * const reader_thread)
     }
     else
     {
-
         send_to_json_sink(reader_thread, json_str, json_str_len);
     }
     ndpi_reset_serializer(&reader_thread->workflow->ndpi_serializer);
@@ -917,7 +913,8 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
     jsonize_flow(workflow, flow);
     jsonize_l3_l4(workflow, flow);
 
-    switch (event) {
+    switch (event)
+    {
         case FLOW_EVENT_INVALID:
         case FLOW_EVENT_COUNT:
         case FLOW_EVENT_NEW:
@@ -928,7 +925,9 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
         case FLOW_EVENT_GUESSED:
         case FLOW_EVENT_DETECTED:
         case FLOW_EVENT_NOT_DETECTED:
-            if (ndpi_dpi2json(workflow->ndpi_struct, flow->ndpi_flow, flow->detected_l7_protocol,
+            if (ndpi_dpi2json(workflow->ndpi_struct,
+                              flow->ndpi_flow,
+                              flow->detected_l7_protocol,
                               &workflow->ndpi_serializer) != 0)
             {
                 syslog(LOG_DAEMON | LOG_ERR,
@@ -1679,8 +1678,8 @@ static void * processing_thread(void * const ndpi_thread_arg)
     if (connect_to_json_socket(reader_thread) != 0)
     {
         syslog(LOG_DAEMON | LOG_ERR,
-               "Thread %u: Could not connect to JSON sink, will try again later",
-               reader_thread->array_index);
+               "Thread %u: Could not connect to JSON sink %s, will try again later",
+               reader_thread->array_index, json_sockpath);
     }
     run_pcap_loop(reader_thread);
     reader_thread->workflow->error_or_eof = 1;
@@ -1745,6 +1744,30 @@ static int start_reader_threads(void)
     return 0;
 }
 
+static void ndpi_shutdown_walker(void const * const A, ndpi_VISIT which, int depth, void * const user_data)
+{
+    struct nDPId_workflow * const workflow = (struct nDPId_workflow *)user_data;
+    struct nDPId_flow_info * const flow = *(struct nDPId_flow_info **)A;
+
+    (void)depth;
+
+    if (workflow == NULL || flow == NULL)
+    {
+        return;
+    }
+
+    if (workflow->cur_idle_flows == nDPId_MAX_IDLE_FLOWS_PER_THREAD)
+    {
+        return;
+    }
+
+    if (which == ndpi_preorder || which == ndpi_leaf)
+    {
+        workflow->ndpi_flows_idle[workflow->cur_idle_flows++] = flow;
+        workflow->total_idle_flows++;
+    }
+}
+
 static int stop_reader_threads(void)
 {
     unsigned long long int total_packets_processed = 0;
@@ -1770,6 +1793,22 @@ static int stop_reader_threads(void)
         {
             syslog(LOG_DAEMON | LOG_ERR, "pthread_join: %s", strerror(errno));
         }
+    }
+
+    printf("------------------------------------ Processing remaining flows\n");
+    for (int i = 0; i < reader_thread_count; ++i)
+    {
+        for (size_t idle_scan_index = 0; idle_scan_index < reader_threads[i].workflow->max_active_flows;
+             ++idle_scan_index)
+        {
+            ndpi_twalk(reader_threads[i].workflow->ndpi_flows_active[idle_scan_index],
+                       ndpi_shutdown_walker,
+                       reader_threads[i].workflow);
+            process_idle_flow(&reader_threads[i], idle_scan_index);
+        }
+
+        close(reader_threads[i].json_sockfd);
+        reader_threads[i].json_sockfd = -1;
     }
 
     printf("------------------------------------ Results\n");

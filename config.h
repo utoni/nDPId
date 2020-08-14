@@ -22,5 +22,6 @@
 
 /* nDPIsrvd default config options */
 #define nDPIsrvd_PIDFILE "/tmp/ndpisrvd.pid"
+#define nDPIsrvd_JSON_BYTES 4
 
 #endif
