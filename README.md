@@ -1,9 +1,9 @@
 # abstract
 
 nDPId is a set of daemons and tools to capture, process and classify network flows.
-It's only dependencies (besides a half-way modern c library and POSIX threads) are libnDPI and libpcap.
+It's only dependencies (besides a half-way modern c library and POSIX threads) are libnDPI (>= 3.3.0) and libpcap.
 
-The core daemon nDPId uses `pthread` but does use slow mutexes.
+The core daemon nDPId uses pthread but does use mutexes for performance reasons.
 Instead synchronization is achieved by a packet distribution mechanism.
 To balance all workload to all threads (more or less) equally a hash value is calculated using the 5-tuple.
 This value serves as unique identifier for the processing thread. Multithreaded packet processing has to be flow-stable.
@@ -11,6 +11,7 @@ This value serves as unique identifier for the processing thread. Multithreaded 
 nDPId uses libnDPI's JSON serialization to produce meaningful JSON output which it then sends to the nDPIsrvd for distribution.
 High level applications can connect to nDPIsrvd to get the latest flow/packet events from nDPId.
 
+Unfortunately nDPIsrvd does currently not support any encryption/authentication for TCP connections.
 TODO: Provide some sort of AEAD for connecting distributor clients via TCP (somehow very critical).
 
 # architecture
@@ -24,19 +25,26 @@ _______________________                                         ________________
 |                     |      |        nDPIsrvd           |      |                        |
 | nDPId --- Thread 1 >| ---> |>           |             <| <--- |< example/c-json-stdout |
 |        `- Thread 2 >| ---> |> collector | distributor <| <--- |< example/py-flow-info  |
-|        `- Thread N >| ---> |>           |             <| <--- |          ...           |
+|        `- Thread N >| ---> |>    >>> forward >>>      <| <--- |          ...           |
 |_____________________|  ^   |____________|______________|   ^  |________________________|
                          |                                   |                            
                          `- connect to UNIX socket           `- connect to TCP socket     
+                         `- sends serialized data            `- receives serialized data  
 ```
 
 # JSON TCP protocol
 
 All JSON strings sent need to be in the following format:
 ```text
-15{"key":"value"}
+[4-digit-number][JSON string]
 ```
-where `15` describes the length of a **complete** JSON string.
+
+## Example:
+
+```text
+0015{"key":"value"}
+```
+where `0015` describes the length of a **complete** JSON string.
 
 TODO: Describe data format via JSON schema.
 
