@@ -75,10 +75,24 @@ make all examples
 Daemons:
 ```shell
 ./nDPIsrvd -d
-./nDPId -d
+sudo ./nDPId -d
+```
+
+or for a usage printout:
+```shell
+./nDPIsrvd -h
+./nDPId -h
 ```
 
 And why not a flow-info example?
+Run
 ```shell
 ./examples/py-flow-info/flow-info.py
 ```
+
+or
+```shell
+./examples/c-json-stdout/c-json-stdout
+```
+
+or anything below `./examples`.
