@@ -512,9 +512,20 @@ static void process_idle_flow(struct nDPId_reader_thread * const reader_thread, 
     {
         struct nDPId_flow_info * const f =
             (struct nDPId_flow_info *)workflow->ndpi_flows_idle[--workflow->cur_idle_flows];
+
         if (f->detection_completed == 0)
         {
-            if (ndpi_is_protocol_detected(workflow->ndpi_struct, f->guessed_protocol) != 0)
+            uint8_t protocol_was_guessed = 0;
+
+            if (ndpi_is_protocol_detected(workflow->ndpi_struct, f->guessed_protocol) == 0)
+            {
+                f->guessed_protocol =
+                    ndpi_detection_giveup(workflow->ndpi_struct, f->ndpi_flow, 1, &protocol_was_guessed);
+            } else {
+                protocol_was_guessed = 1;
+            }
+
+            if (protocol_was_guessed != 0)
             {
                 jsonize_flow_event(reader_thread, f, FLOW_EVENT_GUESSED);
             }
@@ -1645,13 +1656,9 @@ static void ndpi_process_packet(uint8_t * const args,
     if (ndpi_is_protocol_detected(workflow->ndpi_struct, flow_to_process->detected_l7_protocol) != 0 &&
         flow_to_process->detection_completed == 0)
     {
-        if (flow_to_process->detected_l7_protocol.master_protocol != NDPI_PROTOCOL_UNKNOWN ||
-            flow_to_process->detected_l7_protocol.app_protocol != NDPI_PROTOCOL_UNKNOWN)
-        {
-            flow_to_process->detection_completed = 1;
-            workflow->detected_flow_protocols++;
-            jsonize_flow_event(reader_thread, flow_to_process, FLOW_EVENT_DETECTED);
-        }
+        flow_to_process->detection_completed = 1;
+        workflow->detected_flow_protocols++;
+        jsonize_flow_event(reader_thread, flow_to_process, FLOW_EVENT_DETECTED);
     }
 }
 

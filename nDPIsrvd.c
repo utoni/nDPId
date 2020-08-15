@@ -105,18 +105,21 @@ static int create_listen_sockets(void)
 
     if (bind(json_sockfd, (struct sockaddr *)&json_addr, sizeof(json_addr)) < 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "Error on binding a JSON socket: %s", strerror(errno));
+        unlink(json_sockpath);
+        syslog(LOG_DAEMON | LOG_ERR, "Error on binding the UNIX socket: %s", strerror(errno));
         return 1;
     }
 
     if (bind(serv_sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
     {
+        unlink(json_sockpath);
         syslog(LOG_DAEMON | LOG_ERR, "Error on binding the INET socket: %s", strerror(errno));
         return 1;
     }
 
     if (listen(json_sockfd, 16) < 0 || listen(serv_sockfd, 16) < 0)
     {
+        unlink(json_sockpath);
         syslog(LOG_DAEMON | LOG_ERR, "Error on listen: %s", strerror(errno));
         return 1;
     }
@@ -125,12 +128,14 @@ static int create_listen_sockets(void)
     int serv_flags = fcntl(serv_sockfd, F_GETFL, 0);
     if (json_flags == -1 || serv_flags == -1)
     {
+        unlink(json_sockpath);
         syslog(LOG_DAEMON | LOG_ERR, "Error getting fd flags: %s", strerror(errno));
         return 1;
     }
     if (fcntl(json_sockfd, F_SETFL, json_flags | O_NONBLOCK) == -1 ||
         fcntl(serv_sockfd, F_SETFL, serv_flags | O_NONBLOCK) == -1)
     {
+        unlink(json_sockpath);
         syslog(LOG_DAEMON | LOG_ERR, "Error setting fd flags: %s", strerror(errno));
         return 1;
     }
@@ -164,11 +169,7 @@ static void disconnect_client(int epollfd, struct remote_desc * const current)
 {
     if (current->fd > -1)
     {
-        if (epoll_ctl(epollfd, EPOLL_CTL_DEL, current->fd, NULL) < 0)
-        {
-            syslog(LOG_DAEMON | LOG_ERR, "Error deleting fd %d from epollq %d: %s",
-                   current->fd, epollfd, strerror(errno));
-        }
+        epoll_ctl(epollfd, EPOLL_CTL_DEL, current->fd, NULL);
         if (close(current->fd) != 0)
         {
             syslog(LOG_DAEMON | LOG_ERR, "Error closing fd: %s", strerror(errno));
