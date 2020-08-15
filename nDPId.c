@@ -729,7 +729,7 @@ static void send_to_json_sink(struct nDPId_reader_thread * const reader_thread,
     }
 
     errno = 0;
-    if (reader_thread->json_sock_reconnect == 0 && write(reader_thread->json_sockfd, newline_json_str, s_ret) <= 0)
+    if (reader_thread->json_sock_reconnect == 0 && write(reader_thread->json_sockfd, newline_json_str, s_ret) != s_ret)
     {
         saved_errno = errno;
         syslog(LOG_DAEMON | LOG_ERR,

@@ -166,7 +166,8 @@ static void disconnect_client(int epollfd, struct remote_desc * const current)
     {
         if (epoll_ctl(epollfd, EPOLL_CTL_DEL, current->fd, NULL) < 0)
         {
-            syslog(LOG_DAEMON | LOG_ERR, "Error deleting fd from epollq: %s", strerror(errno));
+            syslog(LOG_DAEMON | LOG_ERR, "Error deleting fd %d from epollq %d: %s",
+                   current->fd, epollfd, strerror(errno));
         }
         if (close(current->fd) != 0)
         {
@@ -446,9 +447,7 @@ int main(int argc, char ** argv)
                     }
                     if (bytes_read == 0)
                     {
-                        syslog(LOG_DAEMON,
-                               "%s connection closed during read",
-                               (current->type == JSON_SOCK ? "collector" : "distributor"));
+                        syslog(LOG_DAEMON, "collector connection closed during read");
                         disconnect_client(epollfd, current);
                         continue;
                     }

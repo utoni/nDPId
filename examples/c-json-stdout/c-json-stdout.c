@@ -112,6 +112,7 @@ int main(void)
             {
                 fprintf(stderr, "JSON parsing failed with return value %d at position %u\n", r, parser.pos);
                 fprintf(stderr, "JSON string: '%.*s'\n", (int)(json_bytes - json_start), (char *)(buf + json_start));
+                exit(1);
             }
 
             for (int i = 1; i < r; i++)
