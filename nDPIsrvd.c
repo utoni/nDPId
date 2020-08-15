@@ -388,20 +388,19 @@ int main(int argc, char ** argv)
                 if (current->type == JSON_SOCK)
                 {
                     shutdown(current->fd, SHUT_WR); // collector
+                    /* setup epoll event */
+                    struct epoll_event accept_event = {};
+                    accept_event.data.ptr = current;
+                    accept_event.events = EPOLLIN;
+                    if (epoll_ctl(epollfd, EPOLL_CTL_ADD, current->fd, &accept_event) < 0)
+                    {
+                        disconnect_client(epollfd, current);
+                        continue;
+                    }
                 }
                 else
                 {
                     shutdown(current->fd, SHUT_RD); // distributor
-                }
-
-                /* setup epoll event */
-                struct epoll_event accept_event = {};
-                accept_event.data.ptr = current;
-                accept_event.events = EPOLLIN;
-                if (epoll_ctl(epollfd, EPOLL_CTL_ADD, current->fd, &accept_event) < 0)
-                {
-                    disconnect_client(epollfd, current);
-                    continue;
                 }
             }
             else
@@ -551,13 +550,16 @@ int main(int argc, char ** argv)
                                 disconnect_client(epollfd, &remotes.desc[i]);
                                 continue;
                             }
-                            if ((size_t)bytes_written != remotes.desc[i].buf.used)
+                            if ((size_t)bytes_written < remotes.desc[i].buf.used)
                             {
                                 syslog(LOG_DAEMON,
-                                       "Distributor connection wrote less bytes than expected: %zd < %zu",
+                                       "Distributor write less than expected: %zd < %zu",
                                        bytes_written,
                                        remotes.desc[i].buf.used);
-                                disconnect_client(epollfd, &remotes.desc[i]);
+                                memmove(remotes.desc[i].buf.ptr,
+                                        remotes.desc[i].buf.ptr + bytes_written,
+                                        remotes.desc[i].buf.used - bytes_written);
+                                remotes.desc[i].buf.used -= bytes_written;
                                 continue;
                             }
 
