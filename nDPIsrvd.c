@@ -35,7 +35,8 @@ struct remote_desc
     enum ev_type type;
     int fd;
     struct io_buffer buf;
-    union {
+    union
+    {
         struct
         {
             int json_sockfd;
@@ -539,21 +540,31 @@ int main(int argc, char ** argv)
                             if (bytes_written < 0 || errno != 0)
                             {
                                 syslog(LOG_DAEMON | LOG_ERR,
-                                       "Distributor connection closed, send failed: %s",
+                                       "Distributor connection to %.*s:%u closed, send failed: %s",
+                                       (int)sizeof(remotes.desc[i].event_serv.peer_addr),
+                                       remotes.desc[i].event_serv.peer_addr,
+                                       ntohs(remotes.desc[i].event_serv.peer.sin_port),
                                        strerror(errno));
                                 disconnect_client(epollfd, &remotes.desc[i]);
                                 continue;
                             }
                             if (bytes_written == 0)
                             {
-                                syslog(LOG_DAEMON, "Distributor connection closed during write");
+                                syslog(LOG_DAEMON,
+                                       "Distributor connection to %.*s:%u closed during write",
+                                       (int)sizeof(remotes.desc[i].event_serv.peer_addr),
+                                       remotes.desc[i].event_serv.peer_addr,
+                                       ntohs(remotes.desc[i].event_serv.peer.sin_port));
                                 disconnect_client(epollfd, &remotes.desc[i]);
                                 continue;
                             }
                             if ((size_t)bytes_written < remotes.desc[i].buf.used)
                             {
                                 syslog(LOG_DAEMON,
-                                       "Distributor write less than expected: %zd < %zu",
+                                       "Distributor wrote less than expected to %.*s:%u: %zd < %zu",
+                                       (int)sizeof(remotes.desc[i].event_serv.peer_addr),
+                                       remotes.desc[i].event_serv.peer_addr,
+                                       ntohs(remotes.desc[i].event_serv.peer.sin_port),
                                        bytes_written,
                                        remotes.desc[i].buf.used);
                                 memmove(remotes.desc[i].buf.ptr,
