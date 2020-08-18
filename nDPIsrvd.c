@@ -35,8 +35,7 @@ struct remote_desc
     enum ev_type type;
     int fd;
     struct io_buffer buf;
-    union
-    {
+    union {
         struct
         {
             int json_sockfd;
@@ -201,7 +200,7 @@ static int parse_options(int argc, char ** argv)
 {
     int opt;
 
-    while ((opt = getopt(argc, argv, "hlc:dp:")) != -1)
+    while ((opt = getopt(argc, argv, "hlc:dp:s:")) != -1)
     {
         switch (opt)
         {
@@ -219,8 +218,28 @@ static int parse_options(int argc, char ** argv)
                 strncpy(pidfile, optarg, sizeof(pidfile) - 1);
                 pidfile[sizeof(pidfile) - 1] = '\0';
                 break;
+            case 's':
+            {
+                char * delim = strchr(optarg, ':');
+                if (delim != NULL)
+                {
+                    char * endptr = NULL;
+                    errno = 0;
+                    serv_listen_port = strtoul(delim + 1, &endptr, 10);
+                    if (endptr == delim + 1 || errno != 0)
+                    {
+                        fprintf(stderr, "%s: invalid port number \"%s\"\n", argv[0], delim + 1);
+                        return 1;
+                    }
+                }
+                size_t len = (delim != NULL ? (size_t)(delim - optarg) : strlen(optarg));
+                strncpy(serv_listen_addr, optarg, (len < sizeof(serv_listen_addr) ? len : sizeof(serv_listen_addr)));
+                break;
+            }
             default:
-                fprintf(stderr, "Usage: %s [-l] [-c path-to-unix-sock] [-d] [-p pidfile]\n", argv[0]);
+                fprintf(stderr,
+                        "Usage: %s [-l] [-c path-to-unix-sock] [-d] [-p pidfile] -s [distributor-host:port]\n",
+                        argv[0]);
                 return 1;
         }
     }
