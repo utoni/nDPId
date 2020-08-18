@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
+import json
 import re
+import scapy.all
 import socket
 
 DEFAULT_HOST = '127.0.0.1'
@@ -53,3 +55,40 @@ class nDPIsrvdSocket:
                 self.digitlen = 0
 
         return retval
+
+class PcapPacket:
+    def __init__(self, flow_id=-1):
+        self.pktdump = None
+        self.was_dumped = False
+        self.was_detected = False
+        self.flow_id = flow_id
+        self.packets = []
+
+    def addPacket(self, pkt):
+        self.packets += [pkt]
+
+    def detected(self):
+        self.was_detected = True
+
+    def fin(self, filename_suffix):
+        if self.was_dumped is True:
+            return
+        if self.was_detected is True:
+            return
+
+        if self.pktdump is None:
+            if self.flow_id == -1:
+                self.pktdump = scapy.all.PcapWriter('packet-{}.pcap'.format(filename_suffix),
+                                                    append=True, sync=True)
+            else:
+                self.pktdump = scapy.all.PcapWriter('flow-{}-{}.pcap'.format(filename_suffix, self.flow_id),
+                                                    append=False, sync=True)
+
+        for packet in self.packets:
+            self.pktdump.write(scapy.all.Raw(packet))
+
+        self.pktdump.close()
+        self.was_dumped = True
+
+def JsonParseBytes(json_bytes):
+    return json.loads(json_bytes.decode('ascii', errors='replace'), strict=False)
