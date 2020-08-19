@@ -10,6 +10,9 @@ DEFAULT_PORT = 7000
 NETWORK_BUFFER_MIN_SIZE = 5
 NETWORK_BUFFER_MAX_SIZE = 8448
 
+PKT_TYPE_ETH_IP4 = 0x0800
+PKT_TYPE_ETH_IP6 = 0x86DD
+
 class TermColor:
     WARNING = '\033[93m'
     FAIL = '\033[91m'
@@ -64,17 +67,48 @@ class PcapPacket:
         self.flow_id = flow_id
         self.packets = []
 
-    def addPacket(self, pkt):
-        self.packets += [pkt]
+    def addPacket(self, pkt, pkt_type, pkt_ipoffset):
+        self.packets += [ ( pkt, pkt_type, pkt_ipoffset ) ]
+
+    @staticmethod
+    def getIp(packet):
+        if packet[1] == PKT_TYPE_ETH_IP4:
+            return scapy.all.IP(packet[0][packet[2]:])
+        elif packet[1] == PKT_TYPE_ETH_IP6:
+            return scapy.all.IPv6(packet[0][packet[2]:])
+        else:
+            raise RuntimeError('packet type unknown: {}'.format(packet[1]))
+
+    @staticmethod
+    def getTCPorUDP(packet):
+        p = PcapPacket.getIp(packet)
+        if p.haslayer(scapy.all.TCP):
+            return p.getlayer(scapy.all.TCP)
+        elif p.haslayer(scapy.all.UDP):
+            return p.getlayer(scapy.all.UDP)
+        else:
+            return None
 
     def detected(self):
         self.was_detected = True
 
     def fin(self, filename_suffix):
         if self.was_dumped is True:
-            return
+            return 'Flow already dumped.'
         if self.was_detected is True:
-            return
+            return 'Flow detected.'
+
+        emptyTCPorUDPcount = 0;
+        for packet in self.packets:
+            p = PcapPacket.getTCPorUDP(packet)
+            if p is not None:
+                if p.haslayer(scapy.all.Padding) and len(p.payload) - len(p[scapy.all.Padding]) == 0:
+                    emptyTCPorUDPcount += 1
+                if len(p.payload) == 0:
+                    emptyTCPorUDPcount += 1
+
+        if emptyTCPorUDPcount == len(self.packets):
+            return 'Flow does not contain any packets with non-empty layer4 payload.'
 
         if self.pktdump is None:
             if self.flow_id == -1:
@@ -85,10 +119,12 @@ class PcapPacket:
                                                     append=False, sync=True)
 
         for packet in self.packets:
-            self.pktdump.write(scapy.all.Raw(packet))
+            self.pktdump.write(PcapPacket.getIp(packet))
 
         self.pktdump.close()
         self.was_dumped = True
+
+        return 'Success.'
 
 def JsonParseBytes(json_bytes):
     return json.loads(json_bytes.decode('ascii', errors='replace'), strict=False)

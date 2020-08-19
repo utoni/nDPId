@@ -25,26 +25,18 @@ def parse_json_str(json_str):
             return
 
         if event == 'new':
-            print('New flow with id {}.'.format(flow_id))
             FLOWS[flow_id] = PcapPacket(flow_id)
         elif flow_id not in FLOWS:
-            print('Ignore flow event with id {} as we did not get any flow-new event.'.format(flow_id))
             return
         elif event == 'end' or event == 'idle':
-            if event == 'end':
-                print('End flow with id {}.'.format(flow_id))
-            elif event == 'idle':
-                print('Idle flow with id {}.'.format(flow_id))
             del FLOWS[flow_id]
         elif event == 'detected':
             FLOWS[flow_id].detected()
         elif event == 'guessed' or event == 'not-detected':
             if event == 'guessed':
-                print('Guessed flow with id {}.'.format(flow_id))
-                FLOWS[flow_id].fin('guessed')
+                print('Guessed flow with id {}, PCAP dump returned: {}'.format(flow_id, FLOWS[flow_id].fin('guessed')))
             else:
-                print('Not-detected flow with id {}.'.format(flow_id))
-                FLOWS[flow_id].fin('undetected')
+                print('Not-detected flow with id {}: PCAP dump returned {}'.format(flow_id, FLOWS[flow_id].fin('undetected')))
         else:
             raise RuntimeError('unknown flow event name: {}'.format(event))
 
@@ -59,12 +51,12 @@ def parse_json_str(json_str):
             if flow_id not in FLOWS:
                 return
 
-            FLOWS[flow_id].addPacket(buffer_decoded)
+            FLOWS[flow_id].addPacket(buffer_decoded, j['pkt_type'], j['pkt_ipoffset'])
 
         if j['packet_event_name'] == 'packet':
 
             flow = PcapPacket()
-            flow.addPacket(buffer_decoded)
+            flow.addPacket(buffer_decoded, j['pkt_type'], j['pkt_ipoffset'])
 
 
 if __name__ == '__main__':
