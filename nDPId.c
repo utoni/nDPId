@@ -1911,7 +1911,13 @@ static int parse_options(int argc, char ** argv)
 {
     int opt;
 
-    while ((opt = getopt(argc, argv, "hi:lc:dp:")) != -1)
+    static char const usage[] =
+        "Usage: %s "
+        "[-i pcap-file/interface ] "
+        "[-l] [-c path-to-unix-sock] "
+        "[-d] [-p pidfile] [-o subopt=value]\n";
+
+    while ((opt = getopt(argc, argv, "hi:lc:dp:o:")) != -1)
     {
         switch (opt)
         {
@@ -1932,10 +1938,34 @@ static int parse_options(int argc, char ** argv)
                 strncpy(pidfile, optarg, sizeof(pidfile) - 1);
                 pidfile[sizeof(pidfile) - 1] = '\0';
                 break;
+            case 'o':
+            {
+                int errfnd = 0;
+                char * subopts = optarg;
+                char * value;
+                enum
+                {
+                    OPT = 0,
+                };
+                static char * const token[] = {[OPT] = "opt", NULL};
+
+                while (*subopts != '\0' && !errfnd)
+                {
+                    switch (getsubopt(&subopts, token, &value))
+                    {
+                        case OPT:
+                            printf("%s = %s\n", token[OPT], value);
+                            break;
+                        default:
+                            fprintf(stderr, "Invalid subopt: %s\n\n", value);
+                            fprintf(stderr, usage, argv[0]);
+                            return 1;
+                    }
+                }
+                break;
+            }
             default:
-                fprintf(stderr,
-                        "Usage: %s [-i pcap-file/interface ] [-l] [-c path-to-unix-sock] [-d] [-p pidfile]\n",
-                        argv[0]);
+                fprintf(stderr, usage, argv[0]);
                 return 1;
         }
     }
