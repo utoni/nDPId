@@ -4,9 +4,9 @@
 #include <linux/if_ether.h>
 #include <linux/un.h>
 #include <netinet/in.h>
-#include <ndpi/ndpi_api.h>
-#include <ndpi/ndpi_main.h>
-#include <ndpi/ndpi_typedefs.h>
+#include <ndpi_api.h>
+#include <ndpi_main.h>
+#include <ndpi_typedefs.h>
 #include <pcap/pcap.h>
 #include <pthread.h>
 #include <signal.h>
@@ -195,14 +195,44 @@ static char const * const basic_event_name_table[BASIC_EVENT_COUNT] = {
     [NDPI_ID_MEMORY_ALLOCATION_FAILED] = "Not enough memory for src id struct",
 };
 static struct nDPId_reader_thread reader_threads[nDPId_MAX_READER_THREADS] = {};
-static int reader_thread_count = nDPId_MAX_READER_THREADS;
-static int main_thread_shutdown = 0;
+int main_thread_shutdown = 0;
 static uint32_t global_flow_id = 0;
 
 static char * pcap_file_or_interface = NULL;
 static int log_to_stderr = 0;
 static char pidfile[UNIX_PATH_MAX] = nDPId_PIDFILE;
 static char json_sockpath[UNIX_PATH_MAX] = COLLECTOR_UNIX_SOCKET;
+
+/* subopts */
+static unsigned long long int max_flows_per_thread = nDPId_MAX_FLOWS_PER_THREAD / 2;
+static unsigned long long int max_idle_flows_per_thread = nDPId_MAX_IDLE_FLOWS_PER_THREAD / 2;
+static unsigned long long int tick_resolution = nDPId_TICK_RESOLUTION;
+static unsigned long long int reader_thread_count = nDPId_MAX_READER_THREADS / 2;
+static unsigned long long int idle_scan_period = nDPId_IDLE_SCAN_PERIOD;
+static unsigned long long int max_idle_time = nDPId_IDLE_TIME;
+static unsigned long long int max_post_end_flow_time = nDPId_POST_END_FLOW_TIME;
+static unsigned long long int max_packets_per_flow_to_send = nDPId_PACKETS_PER_FLOW_TO_SEND;
+
+enum nDPId_subopts
+{
+    MAX_FLOWS_PER_THREAD = 0,
+    MAX_IDLE_FLOWS_PER_THREAD,
+    TICK_RESOLUTION,
+    MAX_READER_THREADS,
+    IDLE_SCAN_PERIOD,
+    MAX_IDLE_TIME,
+    MAX_POST_END_FLOW_TIME,
+    MAX_PACKETS_PER_FLOW_TO_SEND,
+};
+static char * const subopt_token[] = {[MAX_FLOWS_PER_THREAD] = "max-flows-per-thread",
+                                      [MAX_IDLE_FLOWS_PER_THREAD] = "max-idle-flows-per-thread",
+                                      [TICK_RESOLUTION] = "tick-resolution",
+                                      [MAX_READER_THREADS] = "max-reader-threads",
+                                      [IDLE_SCAN_PERIOD] = "idle-scan-period",
+                                      [MAX_IDLE_TIME] = "max-idle-time",
+                                      [MAX_POST_END_FLOW_TIME] = "max-post-end-flow-time",
+                                      [MAX_PACKETS_PER_FLOW_TO_SEND] = "max-packets-per-flow-to-send",
+                                      NULL};
 
 static void free_workflow(struct nDPId_workflow ** const workflow);
 static void serialize_and_send(struct nDPId_reader_thread * const reader_thread);
@@ -250,7 +280,7 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     }
 
     workflow->total_active_flows = 0;
-    workflow->max_active_flows = nDPId_MAX_FLOW_ROOTS_PER_THREAD;
+    workflow->max_active_flows = max_flows_per_thread;
     workflow->ndpi_flows_active = (void **)ndpi_calloc(workflow->max_active_flows, sizeof(void *));
     if (workflow->ndpi_flows_active == NULL)
     {
@@ -259,7 +289,7 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     }
 
     workflow->total_idle_flows = 0;
-    workflow->max_idle_flows = nDPId_MAX_IDLE_FLOWS_PER_THREAD;
+    workflow->max_idle_flows = max_idle_flows_per_thread;
     workflow->ndpi_flows_idle = (void **)ndpi_calloc(workflow->max_idle_flows, sizeof(void *));
     if (workflow->ndpi_flows_idle == NULL)
     {
@@ -365,7 +395,7 @@ static int setup_reader_threads(char const * const file_or_device)
         }
     }
 
-    for (int i = 0; i < reader_thread_count; ++i)
+    for (unsigned long long int i = 0; i < reader_thread_count; ++i)
     {
         reader_threads[i].workflow = init_workflow(file_or_default_device);
         if (reader_threads[i].workflow == NULL)
@@ -456,15 +486,15 @@ static void ndpi_idle_scan_walker(void const * const A, ndpi_VISIT which, int de
         return;
     }
 
-    if (workflow->cur_idle_flows == nDPId_MAX_IDLE_FLOWS_PER_THREAD)
+    if (workflow->cur_idle_flows == max_idle_flows_per_thread)
     {
         return;
     }
 
     if (which == ndpi_preorder || which == ndpi_leaf)
     {
-        if ((flow->flow_fin_rst_seen == 1 && flow->last_seen + nDPId_MAX_POST_END_FLOW_TIME < workflow->last_time) ||
-            flow->last_seen + nDPId_MAX_IDLE_TIME < workflow->last_time)
+        if ((flow->flow_fin_rst_seen == 1 && flow->last_seen + max_post_end_flow_time < workflow->last_time) ||
+            flow->last_seen + max_idle_time < workflow->last_time)
         {
             workflow->ndpi_flows_idle[workflow->cur_idle_flows++] = flow;
             workflow->total_idle_flows++;
@@ -555,7 +585,7 @@ static void check_for_idle_flows(struct nDPId_reader_thread * const reader_threa
 {
     struct nDPId_workflow * const workflow = reader_thread->workflow;
 
-    if (workflow->last_idle_scan_time + nDPId_IDLE_SCAN_PERIOD < workflow->last_time)
+    if (workflow->last_idle_scan_time + idle_scan_period < workflow->last_time)
     {
         for (size_t idle_scan_index = 0; idle_scan_index < workflow->max_active_flows; ++idle_scan_index)
         {
@@ -879,13 +909,13 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
                    reader_thread->array_index);
             return;
         }
-        if (flow->packets_processed > nDPId_MAX_PACKETS_PER_FLOW_TO_SEND)
+        if (flow->packets_processed > max_packets_per_flow_to_send)
         {
             return;
         }
         ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "flow_id", flow->flow_id);
         ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_packet_id", flow->packets_processed);
-        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "max_packets", nDPId_MAX_PACKETS_PER_FLOW_TO_SEND);
+        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "max_packets", max_packets_per_flow_to_send);
     }
 
     ndpi_serialize_string_int32(&workflow->ndpi_serializer, "packet_event_id", event);
@@ -1191,7 +1221,7 @@ static void ndpi_process_packet(uint8_t * const args,
 
     workflow->packets_captured++;
     time_ms =
-        ((uint64_t)header->ts.tv_sec) * nDPId_TICK_RESOLUTION + header->ts.tv_usec / (1000000 / nDPId_TICK_RESOLUTION);
+        ((uint64_t)header->ts.tv_sec) * tick_resolution + header->ts.tv_usec / (1000000 / tick_resolution);
     workflow->last_time = time_ms;
 
     check_for_idle_flows(reader_thread);
@@ -1716,7 +1746,7 @@ static void * processing_thread(void * const ndpi_thread_arg)
 
 static int processing_threads_error_or_eof(void)
 {
-    for (int i = 0; i < reader_thread_count; ++i)
+    for (unsigned long long int i = 0; i < reader_thread_count; ++i)
     {
         if (reader_threads[i].workflow->error_or_eof == 0)
         {
@@ -1746,7 +1776,7 @@ static int start_reader_threads(void)
     closelog();
     openlog("nDPId", LOG_CONS | (log_to_stderr != 0 ? LOG_PERROR : 0), LOG_DAEMON);
 
-    for (int i = 0; i < reader_thread_count; ++i)
+    for (unsigned long long int i = 0; i < reader_thread_count; ++i)
     {
         reader_threads[i].array_index = i;
 
@@ -1784,7 +1814,7 @@ static void ndpi_shutdown_walker(void const * const A, ndpi_VISIT which, int dep
         return;
     }
 
-    if (workflow->cur_idle_flows == nDPId_MAX_IDLE_FLOWS_PER_THREAD)
+    if (workflow->cur_idle_flows == max_idle_flows_per_thread)
     {
         return;
     }
@@ -1804,13 +1834,13 @@ static int stop_reader_threads(void)
     unsigned long long int total_flows_idle = 0;
     unsigned long long int total_flows_detected = 0;
 
-    for (int i = 0; i < reader_thread_count; ++i)
+    for (unsigned long long int i = 0; i < reader_thread_count; ++i)
     {
         break_pcap_loop(&reader_threads[i]);
     }
 
     printf("------------------------------------ Stopping reader threads\n");
-    for (int i = 0; i < reader_thread_count; ++i)
+    for (unsigned long long int i = 0; i < reader_thread_count; ++i)
     {
         if (reader_threads[i].workflow == NULL)
         {
@@ -1824,7 +1854,7 @@ static int stop_reader_threads(void)
     }
 
     printf("------------------------------------ Processing remaining flows\n");
-    for (int i = 0; i < reader_thread_count; ++i)
+    for (unsigned long long int i = 0; i < reader_thread_count; ++i)
     {
         for (size_t idle_scan_index = 0; idle_scan_index < reader_threads[i].workflow->max_active_flows;
              ++idle_scan_index)
@@ -1840,7 +1870,7 @@ static int stop_reader_threads(void)
     }
 
     printf("------------------------------------ Results\n");
-    for (int i = 0; i < reader_thread_count; ++i)
+    for (unsigned long long int i = 0; i < reader_thread_count; ++i)
     {
         if (reader_threads[i].workflow == NULL)
         {
@@ -1876,7 +1906,7 @@ static int stop_reader_threads(void)
 
 static void free_reader_threads(void)
 {
-    for (int i = 0; i < reader_thread_count; ++i)
+    for (unsigned long long int i = 0; i < reader_thread_count; ++i)
     {
         if (reader_threads[i].workflow == NULL)
         {
@@ -1907,6 +1937,55 @@ static void sighandler(int signum)
     }
 }
 
+static void print_subopt_usage(void)
+{
+    enum nDPId_subopts index = 0;
+    char * const * token = &subopt_token[0];
+
+    fprintf(stderr, "\tsubopts:\n");
+    do
+    {
+        if (*token != NULL)
+        {
+            fprintf(stderr, "\t\t%s = ", *token);
+            switch (index++)
+            {
+                case MAX_FLOWS_PER_THREAD:
+                    fprintf(stderr, "%llu\n", max_flows_per_thread);
+                    break;
+                case MAX_IDLE_FLOWS_PER_THREAD:
+                    fprintf(stderr, "%llu\n", max_idle_flows_per_thread);
+                    break;
+                case TICK_RESOLUTION:
+                    fprintf(stderr, "%llu\n", tick_resolution);
+                    break;
+                case MAX_READER_THREADS:
+                    fprintf(stderr, "%llu\n", reader_thread_count);
+                    break;
+                case IDLE_SCAN_PERIOD:
+                    fprintf(stderr, "%llu\n", idle_scan_period);
+                    break;
+                case MAX_IDLE_TIME:
+                    fprintf(stderr, "%llu\n", max_idle_time);
+                    break;
+                case MAX_POST_END_FLOW_TIME:
+                    fprintf(stderr, "%llu\n", max_post_end_flow_time);
+                    break;
+                case MAX_PACKETS_PER_FLOW_TO_SEND:
+                    fprintf(stderr, "%llu\n", max_packets_per_flow_to_send);
+                    break;
+                default:
+                    break;
+            }
+        }
+        else
+        {
+            break;
+        }
+        token++;
+    } while (1);
+}
+
 static int parse_options(int argc, char ** argv)
 {
     int opt;
@@ -1915,7 +1994,13 @@ static int parse_options(int argc, char ** argv)
         "Usage: %s "
         "[-i pcap-file/interface ] "
         "[-l] [-c path-to-unix-sock] "
-        "[-d] [-p pidfile] [-o subopt=value]\n";
+        "[-d] [-p pidfile] [-o subopt=value]\n\n"
+        "\t-i\tInterface or file from where to read packets from.\n"
+        "\t-l\tLog all messages to stderr as well.\n"
+        "\t-c\tPath to the Collector UNIX socket which acts as the JSON sink.\n"
+        "\t-d\tForking into background after initialization.\n"
+        "\t-p\tWrite the daemon PID to the given file path.\n"
+        "\t-o\t(Carefully) Tune some daemon options. See subopts below.\n\n";
 
     while ((opt = getopt(argc, argv, "hi:lc:dp:o:")) != -1)
     {
@@ -1943,34 +2028,116 @@ static int parse_options(int argc, char ** argv)
                 int errfnd = 0;
                 char * subopts = optarg;
                 char * value;
-                enum
-                {
-                    OPT = 0,
-                };
-                static char * const token[] = {[OPT] = "opt", NULL};
 
                 while (*subopts != '\0' && !errfnd)
                 {
-                    switch (getsubopt(&subopts, token, &value))
+                    char * endptr;
+                    int subopt = getsubopt(&subopts, subopt_token, &value);
+                    if (subopt == -1) {
+                        fprintf(stderr, "Invalid subopt: %s\n\n", value);
+                        fprintf(stderr, usage, argv[0]);
+                        print_subopt_usage();
+                        return 1;
+                    }
+
+                    long int value_llu = strtoull(value, &endptr, 10);
+                    if (value == endptr) {
+                        fprintf(stderr, "Subopt `%s': Value `%s' is not a valid number.\n",
+                                subopt_token[subopt], value);
+                        return 1;
+                    }
+                    if (errno == ERANGE) {
+                        fprintf(stderr, "Subopt `%s': Number too large.\n",
+                                subopt_token[subopt]);
+                        return 1;
+                    }
+
+                    switch ((enum nDPId_subopts)subopt)
                     {
-                        case OPT:
-                            printf("%s = %s\n", token[OPT], value);
+                        case MAX_FLOWS_PER_THREAD:
+                            max_flows_per_thread = value_llu;
                             break;
-                        default:
-                            fprintf(stderr, "Invalid subopt: %s\n\n", value);
-                            fprintf(stderr, usage, argv[0]);
-                            return 1;
+                        case MAX_IDLE_FLOWS_PER_THREAD:
+                            max_idle_flows_per_thread = value_llu;
+                            break;
+                        case TICK_RESOLUTION:
+                            tick_resolution = value_llu;
+                            break;
+                        case MAX_READER_THREADS:
+                            reader_thread_count = value_llu;
+                            break;
+                        case IDLE_SCAN_PERIOD:
+                            idle_scan_period = value_llu;
+                            break;
+                        case MAX_IDLE_TIME:
+                            max_idle_time = value_llu;
+                            break;
+                        case MAX_POST_END_FLOW_TIME:
+                            max_post_end_flow_time = value_llu;
+                            break;
+                        case MAX_PACKETS_PER_FLOW_TO_SEND:
+                            max_packets_per_flow_to_send = value_llu;
+                            break;
+                    }
+
+                    if (errno == ERANGE) {
+                    }
+                    if (value == endptr) {
                     }
                 }
                 break;
             }
             default:
                 fprintf(stderr, usage, argv[0]);
+                print_subopt_usage();
                 return 1;
         }
     }
 
+    if (optind < argc) {
+        fprintf(stderr, "Unexpected argument after options\n\n");
+        fprintf(stderr, usage, argv[0]);
+        print_subopt_usage();
+        return 1;
+    }
+
     return 0;
+}
+
+static int validate_options(char const * const arg0)
+{
+    int retval = 0;
+
+    if (max_flows_per_thread < 128 || max_flows_per_thread > nDPId_MAX_FLOWS_PER_THREAD) {
+        fprintf(stderr, "%s: 128 < max-flows-per-thread < %d\n", arg0, nDPId_MAX_FLOWS_PER_THREAD);
+        retval = 1;
+    }
+    if (max_idle_flows_per_thread < 64 || max_idle_flows_per_thread > nDPId_MAX_IDLE_FLOWS_PER_THREAD) {
+        fprintf(stderr, "%s: 64 < max-idle-flows-per-thread < %d\n", arg0, nDPId_MAX_IDLE_FLOWS_PER_THREAD);
+        retval = 1;
+    }
+    if (tick_resolution < 100) {
+        fprintf(stderr, "%s: tick-resolution > 100\n", arg0);
+        retval = 1;
+    }
+    if (reader_thread_count < 1 || reader_thread_count > nDPId_MAX_READER_THREADS) {
+        fprintf(stderr, "%s: 1 < reader-thread-count < %d\n", arg0, nDPId_MAX_READER_THREADS);
+        retval = 1;
+    }
+    if (idle_scan_period < 1000) {
+        fprintf(stderr, "%s: idle-scan-period > 1000\n", arg0);
+        retval = 1;
+    }
+    if (max_idle_time < 60) {
+        fprintf(stderr, "%s: max-idle-time > 60\n", arg0);
+        retval = 1;
+    }
+    if (max_post_end_flow_time > max_idle_time) {
+        fprintf(stderr, "%s: max-post-end-flow-time < max_idle_time\n", arg0);
+        retval = 1;
+    }
+
+    return retval;
 }
 
 int main(int argc, char ** argv)
@@ -1982,6 +2149,11 @@ int main(int argc, char ** argv)
 
     if (parse_options(argc, argv) != 0)
     {
+        return 1;
+    }
+    if (validate_options(argv[0]) != 0)
+    {
+        fprintf(stderr, "%s: Option validation failed.\n", argv[0]);
         return 1;
     }
 
