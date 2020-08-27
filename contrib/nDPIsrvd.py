@@ -8,7 +8,7 @@ import socket
 DEFAULT_HOST = '127.0.0.1'
 DEFAULT_PORT = 7000
 NETWORK_BUFFER_MIN_SIZE = 5
-NETWORK_BUFFER_MAX_SIZE = 8448
+NETWORK_BUFFER_MAX_SIZE = 9216 # Please keep this value in sync with the one in config.h
 
 PKT_TYPE_ETH_IP4 = 0x0800
 PKT_TYPE_ETH_IP6 = 0x86DD

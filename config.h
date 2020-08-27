@@ -6,7 +6,7 @@
 #define DISTRIBUTOR_HOST "127.0.0.1"
 #define DISTRIBUTOR_PORT 7000
 
-#define NETWORK_BUFFER_MAX_SIZE 8448 /* 8192 + 256 */
+#define NETWORK_BUFFER_MAX_SIZE 9216 /* 8192 + 1024 */
 
 /* nDPId default config options */
 #define nDPId_PIDFILE "/tmp/ndpid.pid"
