@@ -2,6 +2,9 @@ CC = gcc
 PROJECT_CFLAGS += -Wall -Wextra $(EXTRA_CFLAGS) -I.
 LIBS += -pthread -lpcap -lm
 
+GOCC = go
+GOFLAGS = -ldflags='-s -w'
+
 ifneq ($(PKG_CONFIG_BIN),)
 ifneq ($(PKG_CONFIG_PREFIX),)
 PC_CFLAGS=$(shell PKG_CONFIG_PATH=$(shell realpath $(PKG_CONFIG_PREFIX)) $(PKG_CONFIG_BIN) --define-prefix=$(shell realpath $(PKG_CONFIG_PREFIX)) --cflags libndpi)
@@ -67,7 +70,7 @@ RM = rm -f
 
 all: help nDPId nDPIsrvd
 
-examples: examples/c-json-stdout/c-json-stdout
+examples: examples/c-json-stdout/c-json-stdout examples/go-dashboard/go-dashboard
 
 nDPId: nDPId.c utils.c
 	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $(PC_CFLAGS) $^ -o $@ $(LDFLAGS) $(PC_LDFLAGS) $(LIBS)
@@ -75,15 +78,20 @@ nDPId: nDPId.c utils.c
 nDPIsrvd: nDPIsrvd.c utils.c
 	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS)
 
-examples/c-json-stdout/c-json-stdout:
+examples/c-json-stdout/c-json-stdout: examples/c-json-stdout/c-json-stdout.c
 ifneq ($(DISABLE_JSMN),yes)
 	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) -DJSMN_STATIC=1 -DJSMN_STRICT=1 -DUSE_JSON=1 $@.c -o $@ $(LDFLAGS) $(LIBS)
 else
 	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $@.c -o $@ $(LDFLAGS) $(LIBS)
 endif
 
+examples/go-dashboard/go-dashboard: examples/go-dashboard/main.go
+ifneq ($(GOCC),)
+	$(GOCC) build -o examples/go-dashboard/go-dashboard $(GOFLAGS) examples/go-dashboard/main.go
+endif
+
 clean:
-	$(RM) -f nDPId nDPIsrvd examples/c-json-stdout/c-json-stdout
+	$(RM) -f nDPId nDPIsrvd examples/c-json-stdout/c-json-stdout examples/go-dashboard/go-dashboard
 
 help:
 	@echo '------------------------------------'
@@ -96,6 +104,8 @@ help:
 	@echo 'LDFLAGS          = $(LDFLAGS)'
 	@echo 'PROJECT_CFLAGS	= $(PROJECT_CFLAGS)'
 	@echo 'LIBS             = $(LIBS)'
+	@echo 'GOCC             = $(GOCC)'
+	@echo 'GOFLAGS          = $(GOFLAGS)'
 	@echo 'CUSTOM_LIBNDPI   = $(CUSTOM_LIBNDPI)'
 	@echo 'NDPI_WITH_GCRYPT = $(NDPI_WITH_GCRYPT)'
 	@echo 'NDPI_WITH_PCRE   = $(NDPI_WITH_PCRE)'
