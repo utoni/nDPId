@@ -2166,6 +2166,12 @@ int main(int argc, char ** argv)
         ndpi_revision(),
         ndpi_get_api_version(),
         pcap_lib_version() + strlen("libpcap version "));
+    if (ndpi_get_gcrypt_version() != NULL)
+    {
+        printf("gcrypt version: %s\n"
+               "----------------------------------\n",
+               ndpi_get_gcrypt_version());
+    }
 
     openlog("nDPId", LOG_CONS | LOG_PERROR, LOG_DAEMON);
 
