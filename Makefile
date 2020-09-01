@@ -87,7 +87,8 @@ endif
 
 examples/go-dashboard/go-dashboard: examples/go-dashboard/main.go
 ifneq ($(GOCC),)
-	$(GOCC) build -o examples/go-dashboard/go-dashboard $(GOFLAGS) examples/go-dashboard/main.go
+	cd examples/go-dashboard && GO111MODULE=on $(GOCC) mod vendor
+	cd examples/go-dashboard && GO111MODULE=on $(GOCC) build $(GOFLAGS) .
 endif
 
 clean:
