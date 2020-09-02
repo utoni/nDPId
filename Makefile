@@ -7,13 +7,12 @@ GOFLAGS = -ldflags='-s -w'
 
 ifneq ($(PKG_CONFIG_BIN),)
 ifneq ($(PKG_CONFIG_PREFIX),)
-PC_CFLAGS=$(shell PKG_CONFIG_PATH=$(shell realpath $(PKG_CONFIG_PREFIX)) $(PKG_CONFIG_BIN) --define-prefix=$(shell realpath $(PKG_CONFIG_PREFIX)) --cflags libndpi)
-PC_LDFLAGS=$(shell PKG_CONFIG_PATH=$(shell realpath $(PKG_CONFIG_PREFIX)) $(PKG_CONFIG_BIN) --define-prefix=$(shell realpath $(PKG_CONFIG_PREFIX)) --libs libndpi)
-PROJECT_CFLAGS += -Wl,-rpath='$(shell realpath $(PKG_CONFIG_PREFIX)/..)'
+PC_CFLAGS=$(shell PKG_CONFIG_PATH=$(shell realpath $(PKG_CONFIG_PREFIX))/lib/pkgconfig $(PKG_CONFIG_BIN) --define-variable=prefix=$(shell realpath $(PKG_CONFIG_PREFIX)) --cflags libndpi)
+PC_LDFLAGS=$(shell PKG_CONFIG_PATH=$(shell realpath $(PKG_CONFIG_PREFIX))/lib/pkgconfig $(PKG_CONFIG_BIN) --define-variable=prefix=$(shell realpath $(PKG_CONFIG_PREFIX)) --libs libndpi)
+PROJECT_CFLAGS += -Wl,-rpath='$(shell realpath $(PKG_CONFIG_PREFIX)/lib)'
 else
 PC_CFLAGS=$(shell $(PKG_CONFIG_BIN) --cflags libndpi)
 PC_LDFLAGS=$(shell $(PKG_CONFIG_BIN) --libs libndpi)
-PROJECT_CFLAGS += -Wl,-rpath='$(shell realpath $(PKG_CONFIG_PREFIX)/..)'
 endif
 
 else
@@ -66,6 +65,8 @@ ifneq ($(DISABLE_JSMN),yes)
 DISABLE_JSMN = no
 endif
 
+GO_DASHBOARD_SRCS := examples/go-dashboard/main.go examples/go-dashboard/ui/ui.go
+
 RM = rm -f
 
 all: help nDPId nDPIsrvd
@@ -85,7 +86,7 @@ else
 	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $@.c -o $@ $(LDFLAGS) $(LIBS)
 endif
 
-examples/go-dashboard/go-dashboard: examples/go-dashboard/main.go
+examples/go-dashboard/go-dashboard: $(GO_DASHBOARD_SRCS)
 ifneq ($(GOCC),)
 	cd examples/go-dashboard && GO111MODULE=on $(GOCC) mod vendor
 	cd examples/go-dashboard && GO111MODULE=on $(GOCC) build $(GOFLAGS) .
