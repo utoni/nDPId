@@ -16,48 +16,66 @@ import (
 const rootID = "root"
 const redrawInterval = 250 * time.Millisecond
 
-type widgets struct {
-	menu *text.Text
+type Tui struct {
+	Term       terminalapi.Terminal
+	Context    context.Context
+	Cancel     context.CancelFunc
+	Container  *container.Container
+	MainTicker *time.Ticker
 }
 
-func newWidgets(ctx context.Context) (*widgets, error) {
-	menu, err := text.New(text.RollContent(), text.WrapAtWords())
+type Widgets struct {
+	Menu    *text.Text
+	RawJson *text.Text
+}
+
+func newWidgets(ctx context.Context) (*Widgets, error) {
+	menu, err := text.New()
 	if err != nil {
 		panic(err)
 	}
 
-	return &widgets{
-		menu: menu,
+	rawJson, err := text.New(text.RollContent(), text.WrapAtWords())
+	if err != nil {
+		panic(err)
+	}
+
+	return &Widgets{
+		Menu:    menu,
+		RawJson: rawJson,
 	}, nil
 }
 
-func Init() {
-	term, err := termbox.New(termbox.ColorMode(terminalapi.ColorMode256))
+func Init() (*Tui, *Widgets) {
+	var err error
 
-	if err != nil {
-		panic(err)
-	}
-	defer term.Close()
+	ui := Tui{}
 
-	ctx, cancel := context.WithCancel(context.Background())
-	wdgts, err := newWidgets(ctx)
+	ui.Term, err = termbox.New(termbox.ColorMode(terminalapi.ColorMode256))
 	if err != nil {
 		panic(err)
 	}
 
-	cnt, err := container.New(term,
+	ui.Context, ui.Cancel = context.WithCancel(context.Background())
+
+	wdgts, err := newWidgets(ui.Context)
+	if err != nil {
+		panic(err)
+	}
+
+	ui.Container, err = container.New(ui.Term,
 		container.Border(linestyle.None),
 		container.BorderTitle("[ESC to Quit]"),
 		container.SplitHorizontal(
 			container.Top(
 				container.Border(linestyle.Light),
 				container.BorderTitle("Go nDPId Dashboard"),
-				container.PlaceWidget(wdgts.menu),
+				container.PlaceWidget(wdgts.Menu),
 			),
 			container.Bottom(
 				container.Border(linestyle.Light),
 				container.BorderTitle("Raw JSON"),
-				container.PlaceWidget(wdgts.menu),
+				container.PlaceWidget(wdgts.RawJson),
 			),
 			container.SplitFixed(3),
 		),
@@ -66,12 +84,21 @@ func Init() {
 		panic(err)
 	}
 
+	ui.MainTicker = time.NewTicker(1 * time.Second)
+
+	return &ui, wdgts
+}
+
+func Run(ui *Tui) {
+	defer ui.Term.Close()
+
 	quitter := func(k *terminalapi.Keyboard) {
 		if k.Key == keyboard.KeyEsc || k.Key == keyboard.KeyCtrlC {
-			cancel()
+			ui.Cancel()
 		}
 	}
-	if err := termdash.Run(ctx, term, cnt, termdash.KeyboardSubscriber(quitter), termdash.RedrawInterval(redrawInterval)); err != nil {
+
+	if err := termdash.Run(ui.Context, ui.Term, ui.Container, termdash.KeyboardSubscriber(quitter), termdash.RedrawInterval(redrawInterval)); err != nil {
 		panic(err)
 	}
 }
