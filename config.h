@@ -3,6 +3,7 @@
 
 /* macros shared across multiple executables */
 #define COLLECTOR_UNIX_SOCKET "/tmp/ndpid-collector.sock"
+#define DISTRIBUTOR_UNIX_SOCKET "/tmp/npid-distributor.sock"
 #define DISTRIBUTOR_HOST "127.0.0.1"
 #define DISTRIBUTOR_PORT 7000
 

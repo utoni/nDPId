@@ -62,15 +62,19 @@ static int main_thread_shutdown = 0;
 static int log_to_stderr = 0;
 static char pidfile[UNIX_PATH_MAX] = nDPIsrvd_PIDFILE;
 static char json_sockpath[UNIX_PATH_MAX] = COLLECTOR_UNIX_SOCKET;
+static enum { SERV_LISTEN_NONE, SERV_LISTEN_TCP, SERV_LISTEN_UNIX } serv_type = SERV_LISTEN_NONE;
 static char serv_listen_addr[INET_ADDRSTRLEN] = DISTRIBUTOR_HOST;
+static char serv_listen_path[UNIX_PATH_MAX] = DISTRIBUTOR_UNIX_SOCKET;
 static uint16_t serv_listen_port = DISTRIBUTOR_PORT;
 static int json_sockfd;
 static int serv_sockfd;
+static char * user = NULL;
+static char * group = NULL;
 
 static int create_listen_sockets(void)
 {
     json_sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
-    serv_sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    serv_sockfd = socket((serv_type == SERV_LISTEN_UNIX ? AF_UNIX : AF_INET), SOCK_STREAM, 0);
     if (json_sockfd < 0 || serv_sockfd < 0)
     {
         syslog(LOG_DAEMON | LOG_ERR, "Error opening socket: %s", strerror(errno));
@@ -93,27 +97,66 @@ static int create_listen_sockets(void)
         return 1;
     }
 
-    struct sockaddr_in serv_addr;
-    memset(&serv_addr, 0, sizeof(serv_addr));
-    serv_addr.sin_family = AF_INET;
-    if (inet_pton(AF_INET, &serv_listen_addr[0], &serv_addr.sin_addr) != 1)
+    struct sockaddr * addr;
+    socklen_t addrlen;
+    struct sockaddr_in serv_addr_in;
+    struct sockaddr_un serv_addr_un;
+
+    switch (serv_type)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "Error converting an internet address: %s", strerror(errno));
-        return 1;
+        case SERV_LISTEN_NONE:
+        case SERV_LISTEN_TCP:
+            memset(&serv_addr_in, 0, sizeof(serv_addr_in));
+            serv_addr_in.sin_family = AF_INET;
+            if (inet_pton(AF_INET, &serv_listen_addr[0], &serv_addr_in.sin_addr) != 1)
+            {
+                syslog(LOG_DAEMON | LOG_ERR, "Error converting an internet address: %s", strerror(errno));
+                return 1;
+            }
+            serv_addr_in.sin_port = htons(serv_listen_port);
+            addr = (struct sockaddr *)&serv_addr_in;
+            addrlen = sizeof(serv_addr_in);
+            break;
+        case SERV_LISTEN_UNIX:
+            memset(&serv_addr_un, 0, sizeof(serv_addr_un));
+            serv_addr_un.sun_family = AF_UNIX;
+            if (snprintf(serv_addr_un.sun_path, sizeof(serv_addr_un.sun_path), "%s", serv_listen_path) <= 0)
+            {
+                syslog(LOG_DAEMON | LOG_ERR, "snprintf failed: %s", strerror(errno));
+                return 1;
+            }
+            addr = (struct sockaddr *)&serv_addr_un;
+            addrlen = sizeof(serv_addr_un);
+            break;
     }
-    serv_addr.sin_port = htons(serv_listen_port);
 
     if (bind(json_sockfd, (struct sockaddr *)&json_addr, sizeof(json_addr)) < 0)
     {
         unlink(json_sockpath);
-        syslog(LOG_DAEMON | LOG_ERR, "Error on binding the UNIX socket: %s", strerror(errno));
+        syslog(LOG_DAEMON | LOG_ERR, "Error on binding the UNIX socket to %s: %s", json_sockpath, strerror(errno));
         return 1;
     }
 
-    if (bind(serv_sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
+    if (bind(serv_sockfd, addr, addrlen) < 0)
     {
         unlink(json_sockpath);
-        syslog(LOG_DAEMON | LOG_ERR, "Error on binding the INET socket: %s", strerror(errno));
+        switch (serv_type)
+        {
+            case SERV_LISTEN_NONE:
+            case SERV_LISTEN_TCP:
+                syslog(LOG_DAEMON | LOG_ERR,
+                       "Error on binding the INET socket to %s:%u: %s",
+                       serv_listen_addr,
+                       serv_listen_port,
+                       strerror(errno));
+                break;
+            case SERV_LISTEN_UNIX:
+                syslog(LOG_DAEMON | LOG_ERR,
+                       "Error on binding the UNIX socket to %s: %s",
+                       serv_listen_path,
+                       strerror(errno));
+                break;
+        }
         return 1;
     }
 
@@ -200,7 +243,7 @@ static int parse_options(int argc, char ** argv)
 {
     int opt;
 
-    while ((opt = getopt(argc, argv, "hlc:dp:s:")) != -1)
+    while ((opt = getopt(argc, argv, "hlc:dp:s:S:u:g:")) != -1)
     {
         switch (opt)
         {
@@ -208,18 +251,22 @@ static int parse_options(int argc, char ** argv)
                 log_to_stderr = 1;
                 break;
             case 'c':
-                strncpy(json_sockpath, optarg, sizeof(json_sockpath) - 1);
-                json_sockpath[sizeof(json_sockpath) - 1] = '\0';
+                snprintf(json_sockpath, sizeof(json_sockpath), "%s", optarg);
                 break;
             case 'd':
                 daemonize_enable();
                 break;
             case 'p':
-                strncpy(pidfile, optarg, sizeof(pidfile) - 1);
-                pidfile[sizeof(pidfile) - 1] = '\0';
+                snprintf(pidfile, sizeof(pidfile), "%s", optarg);
                 break;
             case 's':
             {
+                if (serv_type != SERV_LISTEN_NONE)
+                {
+                    fprintf(stderr, "%s: -s / -S already set\n", argv[0]);
+                    return 1;
+                }
+
                 char * delim = strchr(optarg, ':');
                 if (delim != NULL)
                 {
@@ -232,13 +279,36 @@ static int parse_options(int argc, char ** argv)
                         return 1;
                     }
                 }
-                size_t len = (delim != NULL ? (size_t)(delim - optarg) : strlen(optarg));
-                strncpy(serv_listen_addr, optarg, (len < sizeof(serv_listen_addr) ? len : sizeof(serv_listen_addr)));
+                size_t len = (delim != NULL ? (size_t)(delim - optarg) : strlen(optarg)) + 1;
+                snprintf(serv_listen_addr, (len < sizeof(serv_listen_addr) ? len : sizeof(serv_listen_addr)),
+                         "%s", optarg);
+                serv_type = SERV_LISTEN_TCP;
                 break;
             }
+            case 'S':
+            {
+                if (serv_type != SERV_LISTEN_NONE)
+                {
+                    fprintf(stderr, "%s: -s / -S already set\n", argv[0]);
+                    return 1;
+                }
+
+                size_t len = strlen(optarg) + 1;
+                snprintf(serv_listen_path, (len < sizeof(serv_listen_path) ? len : sizeof(serv_listen_path)),
+                         "%s", optarg);
+                serv_type = SERV_LISTEN_UNIX;
+                break;
+            }
+            case 'u':
+                user = strdup(optarg);
+                break;
+            case 'g':
+                group = strdup(optarg);
+                break;
             default:
                 fprintf(stderr,
-                        "Usage: %s [-l] [-c path-to-unix-sock] [-d] [-p pidfile] -s [distributor-host:port]\n",
+                        "Usage: %s [-l] [-c path-to-unix-sock] [-d] [-p pidfile] [-s distributor-host:port] "
+                        "[-S path-to-unix-socket] [-u user] [-g group]\n",
                         argv[0]);
                 return 1;
         }
@@ -296,8 +366,30 @@ int main(int argc, char ** argv)
         return 1;
     }
     syslog(LOG_DAEMON, "collector listen on %s", json_sockpath);
-    syslog(
-        LOG_DAEMON, "distributor listen on %.*s:%u", (int)sizeof(serv_listen_addr), serv_listen_addr, serv_listen_port);
+    switch (serv_type) {
+        case SERV_LISTEN_NONE:
+        case SERV_LISTEN_TCP:
+            syslog(LOG_DAEMON, "distributor listen on %.*s:%u", (int)sizeof(serv_listen_addr),
+                   serv_listen_addr, serv_listen_port);
+            break;
+        case SERV_LISTEN_UNIX:
+            syslog(LOG_DAEMON, "distributor listen on %s", serv_listen_path);
+            break;
+    }
+
+    errno = 0;
+    if (change_user_group(user, group) != 0)
+    {
+        if (errno != 0)
+        {
+            syslog(LOG_DAEMON | LOG_ERR, "Change user/group failed: %s", strerror(errno));
+        }
+        else
+        {
+            syslog(LOG_DAEMON | LOG_ERR, "Change user/group failed.");
+        }
+        return 1;
+    }
 
     signal(SIGINT, sighandler);
     signal(SIGTERM, sighandler);

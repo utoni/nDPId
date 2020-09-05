@@ -1,8 +1,11 @@
 #include <errno.h>
 #include <fcntl.h>
+#include <grp.h>
+#include <pwd.h>
 #include <stdio.h>
 #include <string.h>
 #include <syslog.h>
+#include <sys/types.h>
 #include <unistd.h>
 
 #include "utils.h"
@@ -109,4 +112,36 @@ int daemonize_shutdown(char const * const pidfile)
     }
 
     return 0;
+}
+
+int change_user_group(char const * const user, char const * const group)
+{
+    struct passwd * pwd;
+    struct group * grp;
+    gid_t gid;
+
+    if (getuid() != 0) {
+        return 0;
+    }
+
+    if (user == NULL) {
+        return 1;
+    }
+
+    pwd = getpwnam(user);
+    if (pwd == NULL) {
+        return 1;
+    }
+
+    if (group != NULL) {
+        grp = getgrnam(group);
+        if (grp == NULL)  {
+            return 1;
+        }
+        gid = grp->gr_gid;
+    } else {
+        gid = pwd->pw_gid;
+    }
+
+    return setregid(gid, gid) != 0 || setreuid(pwd->pw_uid, pwd->pw_uid);
 }
