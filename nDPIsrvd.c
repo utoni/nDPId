@@ -17,12 +17,6 @@
 #include "config.h"
 #include "utils.h"
 
-enum ev_type
-{
-    JSON_SOCK,
-    SERV_SOCK
-};
-
 struct io_buffer
 {
     uint8_t * ptr;
@@ -32,7 +26,7 @@ struct io_buffer
 
 struct remote_desc
 {
-    enum ev_type type;
+    enum { JSON_SOCK, SERV_SOCK } type;
     int fd;
     struct io_buffer buf;
     union {
