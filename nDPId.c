@@ -201,6 +201,8 @@ static uint32_t global_flow_id = 0;
 static char * pcap_file_or_interface = NULL;
 static int log_to_stderr = 0;
 static char pidfile[UNIX_PATH_MAX] = nDPId_PIDFILE;
+static char * user = NULL;
+static char * group = NULL;
 static char json_sockpath[UNIX_PATH_MAX] = COLLECTOR_UNIX_SOCKET;
 
 /* subopts */
@@ -242,6 +244,7 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
 
 static struct nDPId_workflow * init_workflow(char const * const file_or_device)
 {
+    int pcap_argument_is_file = 0;
     char pcap_error_buffer[PCAP_ERRBUF_SIZE];
     struct nDPId_workflow * workflow = (struct nDPId_workflow *)ndpi_calloc(1, sizeof(*workflow));
 
@@ -259,12 +262,15 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     {
         workflow->pcap_handle =
             pcap_open_offline_with_tstamp_precision(file_or_device, PCAP_TSTAMP_PRECISION_MICRO, pcap_error_buffer);
+        pcap_argument_is_file = 1;
     }
 
     if (workflow->pcap_handle == NULL)
     {
         syslog(LOG_DAEMON | LOG_ERR,
-               "pcap_open_live / pcap_open_offline_with_tstamp_precision: %.*s",
+               (pcap_argument_is_file == 0 ?
+                "pcap_open_live: %.*s" :
+                "pcap_open_offline_with_tstamp_precision: %.*s"),
                (int)PCAP_ERRBUF_SIZE,
                pcap_error_buffer);
         free_workflow(&workflow);
@@ -1732,13 +1738,17 @@ static void * processing_thread(void * const ndpi_thread_arg)
 
     reader_thread->json_sockfd = -1;
     reader_thread->json_sock_reconnect = 1;
+
+    errno = 0;
     if (connect_to_json_socket(reader_thread) != 0)
     {
         syslog(LOG_DAEMON | LOG_ERR,
-               "Thread %u: Could not connect to JSON sink %s, will try again later",
+               "Thread %u: Could not connect to JSON sink %s, will try again later. Error: %s",
                reader_thread->array_index,
-               json_sockpath);
+               json_sockpath,
+               (errno != 0 ? strerror(errno) : "Internal Error."));
     }
+
     run_pcap_loop(reader_thread);
     reader_thread->workflow->error_or_eof = 1;
     return NULL;
@@ -1775,6 +1785,20 @@ static int start_reader_threads(void)
     }
     closelog();
     openlog("nDPId", LOG_CONS | (log_to_stderr != 0 ? LOG_PERROR : 0), LOG_DAEMON);
+
+    errno = 0;
+    if (change_user_group(user, group) != 0)
+    {
+        if (errno != 0)
+        {
+            syslog(LOG_DAEMON | LOG_ERR, "Change user/group failed: %s", strerror(errno));
+        }
+        else
+        {
+            syslog(LOG_DAEMON | LOG_ERR, "Change user/group failed.");
+        }
+        return 1;
+    }
 
     for (unsigned long long int i = 0; i < reader_thread_count; ++i)
     {
@@ -1994,15 +2018,19 @@ static int parse_options(int argc, char ** argv)
         "Usage: %s "
         "[-i pcap-file/interface ] "
         "[-l] [-c path-to-unix-sock] "
-        "[-d] [-p pidfile] [-o subopt=value]\n\n"
+        "[-d] [-p pidfile] "
+        "[-u user] [-g group] "
+        "[-o subopt=value]\n\n"
         "\t-i\tInterface or file from where to read packets from.\n"
         "\t-l\tLog all messages to stderr as well.\n"
         "\t-c\tPath to the Collector UNIX socket which acts as the JSON sink.\n"
         "\t-d\tForking into background after initialization.\n"
         "\t-p\tWrite the daemon PID to the given file path.\n"
+        "\t-u\tChange UID to the numeric value of user.\n"
+        "\t-g\tChange GID to the numeric value of group.\n"
         "\t-o\t(Carefully) Tune some daemon options. See subopts below.\n\n";
 
-    while ((opt = getopt(argc, argv, "hi:lc:dp:o:")) != -1)
+    while ((opt = getopt(argc, argv, "hi:lc:dp:u:g:o:")) != -1)
     {
         switch (opt)
         {
@@ -2011,6 +2039,11 @@ static int parse_options(int argc, char ** argv)
                 break;
             case 'l':
                 log_to_stderr = 1;
+                if (setvbuf(stderr, NULL, _IOLBF, 0) != 0)
+                {
+                    fprintf(stderr, "%s: Could not set stderr line-buffered, "
+                                    "console syslog() messages may appear weird.\n", argv[0]);
+                }
                 break;
             case 'c':
                 strncpy(json_sockpath, optarg, sizeof(json_sockpath) - 1);
@@ -2022,6 +2055,12 @@ static int parse_options(int argc, char ** argv)
             case 'p':
                 strncpy(pidfile, optarg, sizeof(pidfile) - 1);
                 pidfile[sizeof(pidfile) - 1] = '\0';
+                break;
+            case 'u':
+                user = strdup(optarg);
+                break;
+            case 'g':
+                group = strdup(optarg);
                 break;
             case 'o':
             {
