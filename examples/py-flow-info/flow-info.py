@@ -22,6 +22,8 @@ def parse_json_str(json_str):
             event_str = 'Idle flow'
         elif event == 'detected':
             event_str = 'Detected'
+        elif event == 'detected-extra':
+            event_str = 'Detected Extra'
         elif event == 'guessed':
             event_str = 'Guessed'
         elif event == 'not-detected':

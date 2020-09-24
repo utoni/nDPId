@@ -132,6 +132,7 @@ enum flow_event
 
     FLOW_EVENT_GUESSED,
     FLOW_EVENT_DETECTED,
+    FLOW_EVENT_DETECTED_EXTRA,
     FLOW_EVENT_NOT_DETECTED,
 
     FLOW_EVENT_COUNT
@@ -172,6 +173,7 @@ static char const * const flow_event_name_table[FLOW_EVENT_COUNT] = {[FLOW_EVENT
                                                                      [FLOW_EVENT_IDLE] = "idle",
                                                                      [FLOW_EVENT_GUESSED] = "guessed",
                                                                      [FLOW_EVENT_DETECTED] = "detected",
+                                                                     [FLOW_EVENT_DETECTED_EXTRA] = "detected-extra",
                                                                      [FLOW_EVENT_NOT_DETECTED] = "not-detected"};
 static char const * const basic_event_name_table[BASIC_EVENT_COUNT] = {
     [BASIC_EVENT_INVALID] = "invalid",
@@ -201,7 +203,7 @@ static uint32_t global_flow_id = 0;
 static char * pcap_file_or_interface = NULL;
 static int log_to_stderr = 0;
 static char pidfile[UNIX_PATH_MAX] = nDPId_PIDFILE;
-static char * user = NULL;
+static char * user = "nobody";
 static char * group = NULL;
 static char json_sockpath[UNIX_PATH_MAX] = COLLECTOR_UNIX_SOCKET;
 
@@ -989,6 +991,7 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
 
         case FLOW_EVENT_GUESSED:
         case FLOW_EVENT_DETECTED:
+        case FLOW_EVENT_DETECTED_EXTRA:
         case FLOW_EVENT_NOT_DETECTED:
             if (ndpi_dpi2json(workflow->ndpi_struct,
                               flow->ndpi_flow,
@@ -1662,6 +1665,7 @@ static void ndpi_process_packet(uint8_t * const args,
         flow_to_process->flow_fin_rst_seen = 1;
     }
 
+    /* We currently process max. 254 packets per flow. TODO: The user should decide this! */
     if (flow_to_process->ndpi_flow->num_processed_pkts == 0xFF)
     {
         return;
@@ -1686,7 +1690,6 @@ static void ndpi_process_packet(uint8_t * const args,
             {
                 jsonize_flow_event(reader_thread, flow_to_process, FLOW_EVENT_NOT_DETECTED);
             }
-            flow_to_process->detection_completed = 1;
         }
     }
 
@@ -1704,6 +1707,11 @@ static void ndpi_process_packet(uint8_t * const args,
         flow_to_process->detection_completed = 1;
         workflow->detected_flow_protocols++;
         jsonize_flow_event(reader_thread, flow_to_process, FLOW_EVENT_DETECTED);
+    } else if (flow_to_process->detection_completed == 1 &&
+               flow_to_process->ndpi_flow->check_extra_packets)
+    {
+        /* TODO: Throw only FLOW_EVENT_DETECTED_EXTRA if the JSON string changes. */
+        jsonize_flow_event(reader_thread, flow_to_process, FLOW_EVENT_DETECTED_EXTRA);
     }
 }
 
