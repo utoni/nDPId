@@ -128,3 +128,30 @@ class PcapPacket:
 
 def JsonParseBytes(json_bytes):
     return json.loads(json_bytes.decode('ascii', errors='replace'), strict=False)
+
+def validateEventName(json_dict):
+    if type(json_dict) is not dict:
+        raise RuntimeError('Argument is not a dictionary!')
+
+    event_str = None
+
+    if 'flow_event_name' in json_dict:
+        event = j['flow_event_name'].lower()
+        if event == 'new':
+            event_str = 'New flow'
+        elif event == 'end':
+            event_str = 'End flow'
+        elif event == 'idle':
+            event_str = 'Idle flow'
+        elif event == 'detected':
+            event_str = 'Detected'
+        elif event == 'detection-update':
+            event_str = 'Update'
+        elif event == 'guessed':
+            event_str = 'Guessed'
+        elif event == 'not-detected':
+            event_str = 'Not detected'
+        else:
+            return None
+
+    return event_str
