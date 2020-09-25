@@ -18,8 +18,9 @@
 #define nDPId_IDLE_SCAN_PERIOD 10000 /* 10 sec */
 #define nDPId_IDLE_TIME 600000 /* 600 sec */
 #define nDPId_POST_END_FLOW_TIME 60000 /* 60 sec */
-#define nDPId_INITIAL_THREAD_HASH 0x03dd018b
+#define nDPId_THREAD_DISTRIBUTION_SEED 0x03dd018b
 #define nDPId_PACKETS_PER_FLOW_TO_SEND 15
+#define nDPId_FLOW_STRUCT_SEED 0x5defc104
 
 /* nDPIsrvd default config options */
 #define nDPIsrvd_PIDFILE "/tmp/ndpisrvd.pid"
