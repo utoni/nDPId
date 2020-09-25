@@ -1252,6 +1252,8 @@ static uint32_t calculate_ndpi_flow_struct_hash(struct ndpi_flow_struct const * 
         hash += ndpi_flow->src->detected_protocol_bitmask.fds_bits[i];
         hash += ndpi_flow->dst->detected_protocol_bitmask.fds_bits[i];
     }
+    hash += strnlen((const char *)ndpi_flow->host_server_name, sizeof(ndpi_flow->host_server_name)); // ugly
+
     return hash;
 }
 
