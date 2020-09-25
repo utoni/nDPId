@@ -8,9 +8,7 @@
 #include <unistd.h>
 
 #include "config.h"
-#ifdef USE_JSON
-#include "jsmn/jsmn.h"
-#endif
+#include "jsmn.h"
 
 static char serv_listen_addr[INET_ADDRSTRLEN] = DISTRIBUTOR_HOST;
 static uint16_t serv_listen_port = DISTRIBUTOR_PORT;
@@ -24,10 +22,8 @@ int main(void)
     size_t buf_used = 0;
     size_t json_start = 0;
     unsigned long long int json_bytes = 0;
-#ifdef USE_JSON
     jsmn_parser parser;
     jsmntok_t tokens[128];
-#endif
 
     if (sockfd < 0)
     {
@@ -100,7 +96,6 @@ int main(void)
                 exit(1);
             }
 
-#ifdef USE_JSON
             int r;
             jsmn_init(&parser);
             r = jsmn_parse(&parser,
@@ -127,9 +122,6 @@ int main(void)
                 }
             }
             printf("EoF\n");
-#else
-            printf("RECV[%llu,%zd]: '%.*s'\n\n", buf_wanted, bytes_read, (int)buf_wanted, buf);
-#endif
 
             memmove(buf, buf + json_bytes, buf_used - json_bytes);
             buf_used -= json_bytes;

@@ -1,5 +1,6 @@
 CC = gcc
 PROJECT_CFLAGS += -Wall -Wextra $(EXTRA_CFLAGS) -I.
+JSMN_CFLAGS := -DJSMN_STATIC=1 -DJSMN_STRICT=1 -Icontrib/jsmn
 LIBS += -pthread -lpcap -lm
 
 GOCC = go
@@ -61,10 +62,6 @@ else
 ENABLE_SANITIZER_THREAD = no
 endif
 
-ifneq ($(DISABLE_JSMN),yes)
-DISABLE_JSMN = no
-endif
-
 GO_DASHBOARD_SRCS := examples/go-dashboard/main.go examples/go-dashboard/ui/ui.go
 
 RM = rm -f
@@ -80,11 +77,7 @@ nDPIsrvd: nDPIsrvd.c utils.c
 	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS)
 
 examples/c-json-stdout/c-json-stdout: examples/c-json-stdout/c-json-stdout.c
-ifneq ($(DISABLE_JSMN),yes)
-	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) -DJSMN_STATIC=1 -DJSMN_STRICT=1 -DUSE_JSON=1 $@.c -o $@ $(LDFLAGS) $(LIBS)
-else
-	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $@.c -o $@ $(LDFLAGS) $(LIBS)
-endif
+	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $(JSMN_CFLAGS) $@.c -o $@ $(LDFLAGS) $(LIBS)
 
 examples/go-dashboard/go-dashboard: $(GO_DASHBOARD_SRCS)
 ifneq ($(GOCC),)
@@ -97,24 +90,23 @@ clean:
 
 help:
 	@echo '------------------------------------'
-	@echo 'PKG_CONFIG_BIN   = $(PKG_CONFIG_BIN)'
+	@echo 'PKG_CONFIG_BIN    = $(PKG_CONFIG_BIN)'
 	@echo 'PKG_CONFIG_PREFIX = $(PKG_CONFIG_PREFIX)'
-	@echo 'PC_CFLAGS        = $(PC_CFLAGS)'
-	@echo 'PC_LDFLAGS       = $(PC_LDFLAGS)'
-	@echo 'CC               = $(CC)'
-	@echo 'CFLAGS           = $(CFLAGS)'
-	@echo 'LDFLAGS          = $(LDFLAGS)'
-	@echo 'PROJECT_CFLAGS	= $(PROJECT_CFLAGS)'
-	@echo 'LIBS             = $(LIBS)'
-	@echo 'GOCC             = $(GOCC)'
-	@echo 'GOFLAGS          = $(GOFLAGS)'
-	@echo 'CUSTOM_LIBNDPI   = $(CUSTOM_LIBNDPI)'
-	@echo 'NDPI_WITH_GCRYPT = $(NDPI_WITH_GCRYPT)'
-	@echo 'NDPI_WITH_PCRE   = $(NDPI_WITH_PCRE)'
-	@echo 'ENABLE_DEBUG     = $(ENABLE_DEBUG)'
-	@echo 'ENABLE_SANITIZER = $(ENABLE_SANITIZER)'
+	@echo 'PC_CFLAGS         = $(PC_CFLAGS)'
+	@echo 'PC_LDFLAGS        = $(PC_LDFLAGS)'
+	@echo 'CC                = $(CC)'
+	@echo 'CFLAGS            = $(CFLAGS)'
+	@echo 'LDFLAGS           = $(LDFLAGS)'
+	@echo 'PROJECT_CFLAGS    = $(PROJECT_CFLAGS)'
+	@echo 'LIBS              = $(LIBS)'
+	@echo 'GOCC              = $(GOCC)'
+	@echo 'GOFLAGS           = $(GOFLAGS)'
+	@echo 'CUSTOM_LIBNDPI    = $(CUSTOM_LIBNDPI)'
+	@echo 'NDPI_WITH_GCRYPT  = $(NDPI_WITH_GCRYPT)'
+	@echo 'NDPI_WITH_PCRE    = $(NDPI_WITH_PCRE)'
+	@echo 'ENABLE_DEBUG      = $(ENABLE_DEBUG)'
+	@echo 'ENABLE_SANITIZER  = $(ENABLE_SANITIZER)'
 	@echo 'ENABLE_SANITIZER_THREAD = $(ENABLE_SANITIZER_THREAD)'
-	@echo 'DISABLE_JSMN     = $(DISABLE_JSMN)'
 	@echo '------------------------------------'
 
 .PHONY: all clean help
