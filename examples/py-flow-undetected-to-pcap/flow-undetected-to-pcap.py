@@ -30,7 +30,7 @@ def parse_json_str(json_str):
             return
         elif event == 'end' or event == 'idle':
             del FLOWS[flow_id]
-        elif event == 'detected':
+        elif event == 'detected' or event == 'detection-update':
             FLOWS[flow_id].detected()
         elif event == 'guessed' or event == 'not-detected':
             if event == 'guessed':

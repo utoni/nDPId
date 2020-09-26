@@ -129,14 +129,14 @@ class PcapPacket:
 def JsonParseBytes(json_bytes):
     return json.loads(json_bytes.decode('ascii', errors='replace'), strict=False)
 
-def validateEventName(json_dict):
+def validateFlowEventName(json_dict):
     if type(json_dict) is not dict:
         raise RuntimeError('Argument is not a dictionary!')
 
-    event_str = None
+    event_str = 'Unknown'
 
     if 'flow_event_name' in json_dict:
-        event = j['flow_event_name'].lower()
+        event = json_dict['flow_event_name'].lower()
         if event == 'new':
             event_str = 'New flow'
         elif event == 'end':
@@ -152,6 +152,25 @@ def validateEventName(json_dict):
         elif event == 'not-detected':
             event_str = 'Not detected'
         else:
-            return None
+            raise RuntimeError('Unknown flow event name: `{}\'.'.format(event))
+
+    return event_str
+
+def validatePacketEventName(json_dict):
+    if type(json_dict) is not dict:
+        raise RuntimeError('Argument is not a dictionary!')
+
+    event_str = 'Unknown'
+
+    if 'packet_event_name' in json_dict:
+        event = json_dict['packet_event_name'].lower()
+        if event == 'invalid':
+            event_str = 'Invalid'
+        elif event == 'packet':
+            event_str = 'Packet'
+        elif event == 'packet-flow':
+            event_str = 'Packet Flow'
+        else:
+            raise RuntimeError('Unknown packet event name: `{}\'.'.format(event))
 
     return event_str

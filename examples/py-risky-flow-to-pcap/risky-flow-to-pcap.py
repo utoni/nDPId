@@ -30,7 +30,7 @@ def parse_json_str(json_str):
             return
         elif event == 'end' or event == 'idle':
             del FLOWS[flow_id]
-        elif event == 'detected' or event == 'guessed' or event == 'not-detected':
+        elif event == 'detected' or event == 'detection-update' or event == 'guessed' or event == 'not-detected':
             if 'ndpi' in j and 'flow_risk' in j['ndpi']:
                 print('Risky flow with id {}, PCAP dump returned: {}'.format(flow_id, FLOWS[flow_id].fin('risky')))
 

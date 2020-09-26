@@ -11,10 +11,12 @@ from nDPIsrvd import nDPIsrvdSocket, TermColor
 def parse_json_str(json_str):
 
     j = nDPIsrvd.JsonParseBytes(json_str[0])
-
-    event_str = validateEventName(j)
-    if event_str is None:
-        raise RuntimeError('unknown flow event name: {}'.format(event))
+    event_str = nDPIsrvd.validateFlowEventName(j)
+    if event_str is 'Unknown':
+        if nDPIsrvd.validatePacketEventName(j) is 'Unknown':
+            raise RuntimeError('Missing flow_event_name in the JSON string.')
+        else:
+            return
 
     ndpi_proto_categ = ''
     ndpi_frisk = ''
