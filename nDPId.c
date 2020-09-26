@@ -229,6 +229,7 @@ static char * group = NULL;
 static char json_sockpath[UNIX_PATH_MAX] = COLLECTOR_UNIX_SOCKET;
 
 /* subopts */
+static char * instance_alias = NULL;
 static unsigned long long int max_flows_per_thread = nDPId_MAX_FLOWS_PER_THREAD / 2;
 static unsigned long long int max_idle_flows_per_thread = nDPId_MAX_IDLE_FLOWS_PER_THREAD / 2;
 static unsigned long long int tick_resolution = nDPId_TICK_RESOLUTION;
@@ -699,6 +700,10 @@ static void jsonize_basic(struct nDPId_reader_thread * const reader_thread)
     ndpi_serialize_string_int32(&workflow->ndpi_serializer, "thread_id", reader_thread->array_index);
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "packet_id", workflow->packets_captured);
     ndpi_serialize_string_string(&workflow->ndpi_serializer, "source", pcap_file_or_interface);
+    if (instance_alias != NULL)
+    {
+        ndpi_serialize_string_string(&workflow->ndpi_serializer, "alias", instance_alias);
+    }
 }
 
 static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enum daemon_event event)
@@ -2156,6 +2161,7 @@ static int parse_options(int argc, char ** argv)
         "[-l] [-c path-to-unix-sock] "
         "[-d] [-p pidfile] "
         "[-u user] [-g group] "
+        "[-a instance-alias] "
         "[-o subopt=value]\n\n"
         "\t-i\tInterface or file from where to read packets from.\n"
         "\t-l\tLog all messages to stderr as well.\n"
@@ -2164,9 +2170,10 @@ static int parse_options(int argc, char ** argv)
         "\t-p\tWrite the daemon PID to the given file path.\n"
         "\t-u\tChange UID to the numeric value of user.\n"
         "\t-g\tChange GID to the numeric value of group.\n"
+        "\t-a\tSet an optional name of this daemon instance which will be part of every JSON message.\n"
         "\t-o\t(Carefully) Tune some daemon options. See subopts below.\n\n";
 
-    while ((opt = getopt(argc, argv, "hi:lc:dp:u:g:o:")) != -1)
+    while ((opt = getopt(argc, argv, "hi:lc:dp:u:g:a:o:")) != -1)
     {
         switch (opt)
         {
@@ -2199,6 +2206,9 @@ static int parse_options(int argc, char ** argv)
                 break;
             case 'g':
                 group = strdup(optarg);
+                break;
+            case 'a':
+                instance_alias = strdup(optarg);
                 break;
             case 'o':
             {
