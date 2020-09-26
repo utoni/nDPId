@@ -13,6 +13,16 @@ NETWORK_BUFFER_MAX_SIZE = 9216 # Please keep this value in sync with the one in 
 PKT_TYPE_ETH_IP4 = 0x0800
 PKT_TYPE_ETH_IP6 = 0x86DD
 
+BASIC_EVENTS = ['Invalid', 'Unknown-Datalink-Layer', 'Unknown-Layer3-Protocol', 'Non-IP-Packet',
+                'Ethernet-Packet-Too-Short', 'Ethernet-Packet-Unknown', 'IP4-Packet-Too-Short',
+                'IP4-Size-Smaller-Than-Header', 'IP4-Layer4-Payload-Detection-Failed', 'IP6-Packet-Too-Short',
+                'IP6-Size-Smaller-Than-Header', 'IP6-Layer4-Payload-Detection-Failed', 'TCP-Packet-Too-Short',
+                'UDP-Packet-Too-Short', 'Capture-Size-Smaller-Than-Packet-Size', 'Max-Flow-To-Track',
+                'Flow-Memory-Allocation-Failed', 'NDPI-Flow-Memory-Allocation-Failed',
+                'NDPI-ID-Memory-Allocation-Failed']
+PACKET_EVENTS = ['Invalid', 'Packet', 'Packet-Flow']
+FLOW_EVENTS = ['Invalid', 'New', 'End', 'Idle', 'Guessed', 'Detected', 'Detection-Update', 'Not-Detected']
+
 class TermColor:
     WARNING = '\033[93m'
     FAIL = '\033[91m'
@@ -129,48 +139,65 @@ class PcapPacket:
 def JsonParseBytes(json_bytes):
     return json.loads(json_bytes.decode('ascii', errors='replace'), strict=False)
 
-def validateFlowEventName(json_dict):
-    if type(json_dict) is not dict:
-        raise RuntimeError('Argument is not a dictionary!')
+class nDPIdEvent:
+    isValid = False
+    BasicEventID = -1
+    BasicEventName = 'Unknown'
+    PacketEventID = -1
+    PacketEventName = 'Unknown'
+    FlowEventID = -1
+    FlowEventName = 'Unknown'
 
-    event_str = 'Unknown'
+def validateFlowEventID(event_id):
+    if type(event_id) is not int:
+        raise RuntimeError('Argument is not an Integer/EventID!')
 
-    if 'flow_event_name' in json_dict:
-        event = json_dict['flow_event_name'].lower()
-        if event == 'new':
-            event_str = 'New flow'
-        elif event == 'end':
-            event_str = 'End flow'
-        elif event == 'idle':
-            event_str = 'Idle flow'
-        elif event == 'detected':
-            event_str = 'Detected'
-        elif event == 'detection-update':
-            event_str = 'Update'
-        elif event == 'guessed':
-            event_str = 'Guessed'
-        elif event == 'not-detected':
-            event_str = 'Not detected'
-        else:
-            raise RuntimeError('Unknown flow event name: `{}\'.'.format(event))
+    if event_id < 0 or event_id > len(FLOW_EVENTS):
+        raise RuntimeError('Unknown flow event id: {}.'.format(event_id))
+    else:
+        event_str = FLOW_EVENTS[event_id]
 
     return event_str
 
-def validatePacketEventName(json_dict):
+def validatePacketEventID(event_id):
+    if type(event_id) is not int:
+        raise RuntimeError('Argument is not an Integer/EventID!')
+
+    if event_id < 0 or event_id > len(PACKET_EVENTS):
+        raise RuntimeError('Unknown packet event id: {}.'.format(event_id))
+    else:
+        event_str = PACKET_EVENTS[event_id]
+
+    return event_str
+
+def validateBasicEventID(event_id):
+    if type(event_id) is not int:
+        raise RuntimeError('Argument is not an Integer/EventID!')
+
+    if event_id < 0 or event_id > len(BASIC_EVENTS):
+        raise RuntimeError('Unknown basic event id: {}.'.format(event_id))
+    else:
+        event_str = BASIC_EVENTS[event_id]
+
+    return event_str
+
+def validateJsonEventTypes(json_dict):
     if type(json_dict) is not dict:
         raise RuntimeError('Argument is not a dictionary!')
 
-    event_str = 'Unknown'
+    nev = nDPIdEvent()
 
-    if 'packet_event_name' in json_dict:
-        event = json_dict['packet_event_name'].lower()
-        if event == 'invalid':
-            event_str = 'Invalid'
-        elif event == 'packet':
-            event_str = 'Packet'
-        elif event == 'packet-flow':
-            event_str = 'Packet Flow'
-        else:
-            raise RuntimeError('Unknown packet event name: `{}\'.'.format(event))
+    if 'basic_event_id' in json_dict:
+        nev.BasicEventID = json_dict['basic_event_id']
+        nev.BasicEventName = validateBasicEventID(nev.BasicEventID)
+        nev.isValid = True
+    if 'packet_event_id' in json_dict:
+        nev.PacketEventID = json_dict['packet_event_id']
+        nev.PacketEventName = validatePacketEventID(nev.PacketEventID)
+        nev.isValid = True
+    if 'flow_event_id' in json_dict:
+        nev.FlowEventID = json_dict['flow_event_id']
+        nev.FlowEventName = validateFlowEventID(nev.FlowEventID)
+        nev.isValid = True
 
-    return event_str
+    return nev

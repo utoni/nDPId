@@ -11,12 +11,11 @@ from nDPIsrvd import nDPIsrvdSocket, TermColor
 def parse_json_str(json_str):
 
     j = nDPIsrvd.JsonParseBytes(json_str[0])
-    event_str = nDPIsrvd.validateFlowEventName(j)
-    if event_str is 'Unknown':
-        if nDPIsrvd.validatePacketEventName(j) is 'Unknown':
-            raise RuntimeError('Missing flow_event_name in the JSON string.')
-        else:
-            return
+    nDPIdEvent = nDPIsrvd.validateJsonEventTypes(j)
+    if nDPIdEvent.isValid is False:
+        raise RuntimeError('Missing flow_event_name in the JSON string: {}'.format(j))
+    if nDPIdEvent.FlowEventID == -1:
+        return
 
     ndpi_proto_categ = ''
     ndpi_frisk = ''
@@ -39,7 +38,7 @@ def parse_json_str(json_str):
                 ndpi_frisk[:-2])
 
     if j['l3_proto'] == 'ip4':
-        print('{:>14}: [{:.>6}] [{}][{:.>5}] [{:.>15}]{} -> [{:.>15}]{} {}'.format(event_str,
+        print('{:>16}: [{:.>6}] [{}][{:.>5}] [{:.>15}]{} -> [{:.>15}]{} {}'.format(nDPIdEvent.FlowEventName,
               j['flow_id'], j['l3_proto'], j['l4_proto'],
               j['src_ip'].lower(),
               '[{:.>5}]'.format(j['src_port']) if 'src_port' in j else '',
@@ -47,7 +46,7 @@ def parse_json_str(json_str):
               '[{:.>5}]'.format(j['dst_port']) if 'dst_port' in j else '',
               ndpi_proto_categ))
     elif j['l3_proto'] == 'ip6':
-        print('{:>14}: [{:.>6}] [{}][{:.>5}] [{:.>39}]{} -> [{:.>39}]{} {}'.format(event_str,
+        print('{:>16}: [{:.>6}] [{}][{:.>5}] [{:.>39}]{} -> [{:.>39}]{} {}'.format(nDPIdEvent.FlowEventName,
               j['flow_id'], j['l3_proto'], j['l4_proto'],
               j['src_ip'].lower(),
               '[{:.>5}]'.format(j['src_port']) if 'src_port' in j else '',
@@ -58,7 +57,7 @@ def parse_json_str(json_str):
         raise RuntimeError('unsupported l3 protocol: {}'.format(j['l3_proto']))
 
     if len(ndpi_frisk) > 0:
-        print('{:>16}{}'.format('', ndpi_frisk))
+        print('{:>18}{}'.format('', ndpi_frisk))
 
 
 if __name__ == '__main__':
