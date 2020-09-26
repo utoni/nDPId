@@ -138,6 +138,7 @@ enum flow_event
 
     FLOW_EVENT_COUNT
 };
+
 enum basic_event
 {
     BASIC_EVENT_INVALID = 0,
@@ -162,6 +163,17 @@ enum basic_event
     NDPI_ID_MEMORY_ALLOCATION_FAILED,
 
     BASIC_EVENT_COUNT
+};
+
+enum daemon_event
+{
+    DAEMON_EVENT_INVALID = 0,
+
+    DAEMON_EVENT_INIT,
+    DAEMON_EVENT_RECONNECT,
+    DAEMON_EVENT_SHUTDOWN,
+
+    DAEMON_EVENT_COUNT
 };
 
 static char const * const packet_event_name_table[PACKET_EVENT_COUNT] = {[PACKET_EVENT_INVALID] = "invalid",
@@ -197,6 +209,14 @@ static char const * const basic_event_name_table[BASIC_EVENT_COUNT] = {
     [NDPI_FLOW_MEMORY_ALLOCATION_FAILED] = "nDPI Flow memory allocation failed",
     [NDPI_ID_MEMORY_ALLOCATION_FAILED] = "Not enough memory for src id struct",
 };
+
+static char const * const daemon_event_name_table[DAEMON_EVENT_COUNT] = {
+    [DAEMON_EVENT_INVALID] = "invalid",
+    [DAEMON_EVENT_INIT] = "init",
+    [DAEMON_EVENT_RECONNECT] = "reconnect",
+    [DAEMON_EVENT_SHUTDOWN] = "shutdown",
+};
+
 static struct nDPId_reader_thread reader_threads[nDPId_MAX_READER_THREADS] = {};
 int main_thread_shutdown = 0;
 static uint32_t global_flow_id = 0;
@@ -678,6 +698,37 @@ static void jsonize_basic(struct nDPId_reader_thread * const reader_thread)
 
     ndpi_serialize_string_int32(&workflow->ndpi_serializer, "thread_id", reader_thread->array_index);
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "packet_id", workflow->packets_captured);
+    ndpi_serialize_string_string(&workflow->ndpi_serializer, "source", pcap_file_or_interface);
+}
+
+static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enum daemon_event event)
+{
+    char const ev[] = "daemon_event_name";
+    struct nDPId_workflow * const workflow = reader_thread->workflow;
+
+    ndpi_serialize_string_int32(&workflow->ndpi_serializer, "daemon_event_id", event);
+    if (event > DAEMON_EVENT_INVALID && event < DAEMON_EVENT_COUNT)
+    {
+        ndpi_serialize_string_string(&workflow->ndpi_serializer, ev, daemon_event_name_table[event]);
+    }
+    else
+    {
+        ndpi_serialize_string_string(&workflow->ndpi_serializer, ev, daemon_event_name_table[DAEMON_EVENT_INVALID]);
+    }
+
+    jsonize_basic(reader_thread);
+
+    if (event == DAEMON_EVENT_INIT)
+    {
+        ndpi_serialize_string_int64(&workflow->ndpi_serializer, "max-flows-per-thread", max_flows_per_thread);
+        ndpi_serialize_string_int64(&workflow->ndpi_serializer, "max-idle-flows-per-thread", max_idle_flows_per_thread);
+        ndpi_serialize_string_int64(&workflow->ndpi_serializer, "tick-resolution", tick_resolution);
+        ndpi_serialize_string_int64(&workflow->ndpi_serializer, "reader-thread-count", reader_thread_count);
+        ndpi_serialize_string_int64(&workflow->ndpi_serializer, "idle-scan-period", idle_scan_period);
+        ndpi_serialize_string_int64(&workflow->ndpi_serializer, "max-idle-time", max_idle_time);
+        ndpi_serialize_string_int64(&workflow->ndpi_serializer, "max-post-end-flow-time", max_post_end_flow_time);
+        ndpi_serialize_string_int64(&workflow->ndpi_serializer, "max-packets-per-flow-to-send", max_packets_per_flow_to_send);
+    }
 }
 
 static void jsonize_flow(struct nDPId_workflow * const workflow, struct nDPId_flow_info const * const flow)
@@ -697,7 +748,6 @@ static void jsonize_flow(struct nDPId_workflow * const workflow, struct nDPId_fl
 
 static int connect_to_json_socket(struct nDPId_reader_thread * const reader_thread)
 {
-    struct nDPId_workflow * const workflow = reader_thread->workflow;
     struct sockaddr_un saddr;
 
     close(reader_thread->json_sockfd);
@@ -729,16 +779,6 @@ static int connect_to_json_socket(struct nDPId_reader_thread * const reader_thre
     }
 
     reader_thread->json_sock_reconnect = 0;
-
-    if (ndpi_serialize_string_int32(&workflow->ndpi_serializer, "thread_id", reader_thread->array_index) != 0 ||
-        ndpi_serialize_string_boolean(&workflow->ndpi_serializer, "init_complete", 1) != 0)
-    {
-        syslog(LOG_DAEMON | LOG_ERR,
-               "[%8llu, %d] JSON serialize buffer failed",
-               reader_thread->workflow->packets_captured,
-               reader_thread->array_index);
-    }
-    serialize_and_send(reader_thread);
 
     return 0;
 }
@@ -1358,6 +1398,14 @@ static void ndpi_process_packet(uint8_t * const args,
                     return;
             }
             break;
+        case DLT_IPV4:
+            type = ETH_P_IP;
+            ip_offset = 0;
+            break;
+        case DLT_IPV6:
+            type = ETH_P_IPV6;
+            ip_offset = 0;
+            break;
         default:
             jsonize_packet_event(reader_thread, header, packet, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
             jsonize_basic_eventf(
@@ -1831,9 +1879,13 @@ static void * processing_thread(void * const ndpi_thread_arg)
                reader_thread->array_index,
                json_sockpath,
                (errno != 0 ? strerror(errno) : "Internal Error."));
+    } else {
+        jsonize_daemon(reader_thread, DAEMON_EVENT_INIT);
     }
 
     run_pcap_loop(reader_thread);
+    fcntl(reader_thread->json_sockfd, F_SETFL, fcntl(reader_thread->json_sockfd, F_GETFL, 0) & ~O_NONBLOCK);
+    jsonize_daemon(reader_thread, DAEMON_EVENT_SHUTDOWN);
     reader_thread->workflow->error_or_eof = 1;
     return NULL;
 }

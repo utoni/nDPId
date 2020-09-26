@@ -13,6 +13,7 @@ NETWORK_BUFFER_MAX_SIZE = 9216 # Please keep this value in sync with the one in 
 PKT_TYPE_ETH_IP4 = 0x0800
 PKT_TYPE_ETH_IP6 = 0x86DD
 
+DAEMON_EVENTS = ['Invalid', 'Init', 'Reconnect', 'Shutdown']
 BASIC_EVENTS = ['Invalid', 'Unknown-Datalink-Layer', 'Unknown-Layer3-Protocol', 'Non-IP-Packet',
                 'Ethernet-Packet-Too-Short', 'Ethernet-Packet-Unknown', 'IP4-Packet-Too-Short',
                 'IP4-Size-Smaller-Than-Header', 'IP4-Layer4-Payload-Detection-Failed', 'IP6-Packet-Too-Short',
@@ -141,6 +142,8 @@ def JsonParseBytes(json_bytes):
 
 class nDPIdEvent:
     isValid = False
+    DaemonEventID = -1
+    DaemonEventName = 'Unknown'
     BasicEventID = -1
     BasicEventName = 'Unknown'
     PacketEventID = -1
@@ -181,12 +184,27 @@ def validateBasicEventID(event_id):
 
     return event_str
 
+def validateDaemonEventID(event_id):
+    if type(event_id) is not int:
+        raise RuntimeError('Argument is not an Integer/EventID!')
+
+    if event_id < 0 or event_id > len(DAEMON_EVENTS):
+        raise RuntimeError('Unknown daemon event id: {}.'.format(event_id))
+    else:
+        event_str = DAEMON_EVENTS[event_id]
+
+    return event_str
+
 def validateJsonEventTypes(json_dict):
     if type(json_dict) is not dict:
         raise RuntimeError('Argument is not a dictionary!')
 
     nev = nDPIdEvent()
 
+    if 'daemon_event_id' in json_dict:
+        nev.DaemonEventID = json_dict['daemon_event_id']
+        nev.DaemonEventName = validateDaemonEventID(nev.DaemonEventID)
+        nev.isValid = True
     if 'basic_event_id' in json_dict:
         nev.BasicEventID = json_dict['basic_event_id']
         nev.BasicEventName = validateBasicEventID(nev.BasicEventID)
