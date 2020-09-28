@@ -732,7 +732,9 @@ static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enu
         ndpi_serialize_string_int64(&workflow->ndpi_serializer, "idle-scan-period", idle_scan_period);
         ndpi_serialize_string_int64(&workflow->ndpi_serializer, "max-idle-time", max_idle_time);
         ndpi_serialize_string_int64(&workflow->ndpi_serializer, "max-post-end-flow-time", max_post_end_flow_time);
-        ndpi_serialize_string_int64(&workflow->ndpi_serializer, "max-packets-per-flow-to-send", max_packets_per_flow_to_send);
+        ndpi_serialize_string_int64(&workflow->ndpi_serializer,
+                                    "max-packets-per-flow-to-send",
+                                    max_packets_per_flow_to_send);
     }
 }
 
@@ -1284,9 +1286,7 @@ static uint32_t calculate_ndpi_flow_struct_hash(struct ndpi_flow_struct const * 
      * At the time of writing, nDPI has no API function to check if the detection changed
      * or has some new information available. This is far from perfect.
      */
-    uint32_t hash = murmur3_32((uint8_t const *)&ndpi_flow->protos,
-                               sizeof(ndpi_flow->protos),
-                               nDPId_FLOW_STRUCT_SEED);
+    uint32_t hash = murmur3_32((uint8_t const *)&ndpi_flow->protos, sizeof(ndpi_flow->protos), nDPId_FLOW_STRUCT_SEED);
     hash += ndpi_flow->category;
     hash += ndpi_flow->risk;
 
@@ -1354,17 +1354,32 @@ static void ndpi_process_packet(uint8_t * const args,
     /* process datalink layer */
     switch (pcap_datalink(workflow->pcap_handle))
     {
-        case DLT_NULL:
-            if (ntohl(*((uint32_t *)&packet[eth_offset])) == 0x00000002)
+        case DLT_NULL: {
+            uint32_t dlt_hdr = ntohl(*((uint32_t *)&packet[eth_offset]));
+
+            if (dlt_hdr == 0x00000002)
             {
                 type = ETH_P_IP;
             }
-            else
+            else if (dlt_hdr == 0x00000024 || dlt_hdr == 0x00000028 || dlt_hdr == 0x00000030)
             {
                 type = ETH_P_IPV6;
             }
+            else
+            {
+                jsonize_packet_event(reader_thread, header, packet, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
+                jsonize_basic_eventf(reader_thread,
+                                     UNKNOWN_DATALINK_LAYER,
+                                     "%s%u%s%u",
+                                     "datalink",
+                                     pcap_datalink(workflow->pcap_handle),
+                                     "header",
+                                     ntohl(*((uint32_t *)&packet[eth_offset])));
+                return;
+            }
             ip_offset = 4 + eth_offset;
             break;
+        }
         case DLT_EN10MB:
             if (header->len < sizeof(struct ndpi_ethhdr))
             {
@@ -1884,7 +1899,9 @@ static void * processing_thread(void * const ndpi_thread_arg)
                reader_thread->array_index,
                json_sockpath,
                (errno != 0 ? strerror(errno) : "Internal Error."));
-    } else {
+    }
+    else
+    {
         jsonize_daemon(reader_thread, DAEMON_EVENT_INIT);
     }
 
@@ -2270,9 +2287,6 @@ static int parse_options(int argc, char ** argv)
                             max_packets_per_flow_to_send = value_llu;
                             break;
                     }
-
-                    if (errno == ERANGE) {}
-                    if (value == endptr) {}
                 }
                 break;
             }
