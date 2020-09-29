@@ -56,21 +56,15 @@ def parse_json_str(json_str):
 
 
 if __name__ == '__main__':
-    host = nDPIsrvd.DEFAULT_HOST
-    port = nDPIsrvd.DEFAULT_PORT
-
-    if len(sys.argv) == 1:
-        sys.stderr.write('usage: {} [host] [port]\n'.format(sys.argv[0]))
-    if len(sys.argv) > 1:
-        host = sys.argv[1]
-    if len(sys.argv) > 2:
-        port = int(sys.argv[2])
+    argparser = nDPIsrvd.defaultArgumentParser()
+    args = argparser.parse_args()
+    address = nDPIsrvd.validateAddress(args)
 
     sys.stderr.write('Recv buffer size: {}\n'.format(nDPIsrvd.NETWORK_BUFFER_MAX_SIZE))
-    sys.stderr.write('Connecting to {}:{} ..\n'.format(host, port))
+    sys.stderr.write('Connecting to {} ..\n'.format(address[0]+':'+str(address[1]) if type(address) is tuple else address))
 
     nsock = nDPIsrvdSocket()
-    nsock.connect(host, port)
+    nsock.connect(address)
 
     while True:
         received = nsock.receive()

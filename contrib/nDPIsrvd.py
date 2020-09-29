@@ -1,18 +1,24 @@
 #!/usr/bin/env python3
 
+import argparse
 import json
 import re
+import os
 import scapy.all
+import stat
 import socket
 
 DEFAULT_HOST = '127.0.0.1'
 DEFAULT_PORT = 7000
+DEFAULT_UNIX = '/tmp/ndpid-distributor.sock'
+
 NETWORK_BUFFER_MIN_SIZE = 5
 NETWORK_BUFFER_MAX_SIZE = 9216 # Please keep this value in sync with the one in config.h
 
 PKT_TYPE_ETH_IP4 = 0x0800
 PKT_TYPE_ETH_IP6 = 0x86DD
 
+EVENT_UNKNOWN = 'Unknown'
 DAEMON_EVENTS = ['Invalid', 'Init', 'Reconnect', 'Shutdown']
 BASIC_EVENTS = ['Invalid', 'Unknown-Datalink-Layer', 'Unknown-Layer3-Protocol', 'Non-IP-Packet',
                 'Ethernet-Packet-Too-Short', 'Ethernet-Packet-Unknown', 'IP4-Packet-Too-Short',
@@ -32,11 +38,19 @@ class TermColor:
     BLINK = "\x1b[5m"
 
 class nDPIsrvdSocket:
-    def __init__(self, sock=None):
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    def __init__(self):
+        self.sock_family = None
 
-    def connect(self, host, port):
-        self.sock.connect((host, port))
+    def connect(self, addr):
+        if type(addr) is tuple:
+            self.sock_family = socket.AF_INET
+        elif type(addr) is str:
+            self.sock_family = socket.AF_UNIX
+        else:
+            raise RuntimeError('Unsupported address type:: {}'.format(str(addr)))
+
+        self.sock = socket.socket(self.sock_family, socket.SOCK_STREAM)
+        self.sock.connect(addr)
         self.buffer = bytes()
         self.msglen = 0
         self.digitlen = 0
@@ -143,13 +157,13 @@ def JsonParseBytes(json_bytes):
 class nDPIdEvent:
     isValid = False
     DaemonEventID = -1
-    DaemonEventName = 'Unknown'
+    DaemonEventName = EVENT_UNKNOWN
     BasicEventID = -1
-    BasicEventName = 'Unknown'
+    BasicEventName = EVENT_UNKNOWN
     PacketEventID = -1
-    PacketEventName = 'Unknown'
+    PacketEventName = EVENT_UNKNOWN
     FlowEventID = -1
-    FlowEventName = 'Unknown'
+    FlowEventName = EVENT_UNKNOWN
 
 def validateFlowEventID(event_id):
     if type(event_id) is not int:
@@ -219,3 +233,35 @@ def validateJsonEventTypes(json_dict):
         nev.isValid = True
 
     return nev
+
+def defaultArgumentParser():
+    parser = argparse.ArgumentParser(description='nDPIsrvd options', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument('--host', type=str, help='nDPIsrvd host IP')
+    parser.add_argument('--port', type=int, default=DEFAULT_PORT, help='nDPIsrvd TCP port')
+    parser.add_argument('--unix', type=str, help='nDPIsrvd unix socket path')
+    return parser
+
+def validateAddress(args):
+    address = None
+
+    if args.host is None:
+        address_tcpip = (DEFAULT_HOST, DEFAULT_PORT)
+    else:
+        address_tcpip = (args.host, args.port)
+
+    if args.unix is None:
+        address_unix = DEFAULT_UNIX
+    else:
+        address_unix = args.unix
+
+    possible_sock_mode = 0
+    try:
+        possible_sock_mode = os.stat(address_unix).st_mode
+    except:
+        pass
+    if stat.S_ISSOCK(possible_sock_mode):
+        address = address_unix
+    else:
+        address = address_tcpip
+
+    return address
