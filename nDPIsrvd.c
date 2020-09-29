@@ -72,7 +72,7 @@ static char * group = NULL;
 static int create_listen_sockets(void)
 {
     json_sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
-    serv_sockfd = socket((serv_type == SERV_LISTEN_UNIX ? AF_UNIX : AF_INET), SOCK_STREAM, 0);
+    serv_sockfd = socket((serv_type == SERV_LISTEN_TCP ? AF_INET : AF_UNIX), SOCK_STREAM, 0);
     if (json_sockfd < 0 || serv_sockfd < 0)
     {
         syslog(LOG_DAEMON | LOG_ERR, "Error opening socket: %s", strerror(errno));
@@ -102,7 +102,6 @@ static int create_listen_sockets(void)
 
     switch (serv_type)
     {
-        case SERV_LISTEN_NONE:
         case SERV_LISTEN_TCP:
             memset(&serv_addr_in, 0, sizeof(serv_addr_in));
             serv_addr_in.sin_family = AF_INET;
@@ -115,6 +114,7 @@ static int create_listen_sockets(void)
             addr = (struct sockaddr *)&serv_addr_in;
             addrlen = sizeof(serv_addr_in);
             break;
+        case SERV_LISTEN_NONE:
         case SERV_LISTEN_UNIX:
             memset(&serv_addr_un, 0, sizeof(serv_addr_un));
             serv_addr_un.sun_family = AF_UNIX;
@@ -140,7 +140,6 @@ static int create_listen_sockets(void)
         unlink(json_sockpath);
         switch (serv_type)
         {
-            case SERV_LISTEN_NONE:
             case SERV_LISTEN_TCP:
                 syslog(LOG_DAEMON | LOG_ERR,
                        "Error on binding the INET socket to %s:%u: %s",
@@ -148,6 +147,7 @@ static int create_listen_sockets(void)
                        serv_listen_port,
                        strerror(errno));
                 break;
+            case SERV_LISTEN_NONE:
             case SERV_LISTEN_UNIX:
                 syslog(LOG_DAEMON | LOG_ERR,
                        "Error on binding the UNIX socket to %s: %s",
@@ -370,14 +370,17 @@ int main(int argc, char ** argv)
     syslog(LOG_DAEMON, "collector listen on %s", json_sockpath);
     switch (serv_type)
     {
-        case SERV_LISTEN_NONE:
         case SERV_LISTEN_TCP:
             syslog(LOG_DAEMON,
                    "distributor listen on %.*s:%u",
                    (int)sizeof(serv_listen_addr),
                    serv_listen_addr,
                    serv_listen_port);
+            syslog(LOG_DAEMON | LOG_ERR,
+                   "Please keep in mind that using a TCP Socket may leak sensitive information to "
+                   "everyone with access to the device/network. You've been warned!");
             break;
+        case SERV_LISTEN_NONE:
         case SERV_LISTEN_UNIX:
             syslog(LOG_DAEMON, "distributor listen on %s", serv_listen_path);
             break;
