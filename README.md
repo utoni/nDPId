@@ -20,17 +20,23 @@ This project uses some kind of microservice architecture.
 
 ```text
 _______________________                                         __________________________
-|      producer       |                                         |        consumer        |
+|     "producer"      |                                         |       "consumer"       |
 |---------------------|      _____________________________      |------------------------|
 |                     |      |        nDPIsrvd           |      |                        |
 | nDPId --- Thread 1 >| ---> |>           |             <| <--- |< example/c-json-stdout |
-|        `- Thread 2 >| ---> |> collector | distributor <| <--- |< example/py-flow-info  |
-|        `- Thread N >| ---> |>    >>> forward >>>      <| <--- |          ...           |
-|_____________________|  ^   |____________|______________|   ^  |________________________|
-                         |                                   |                            
-                         `- connect to UNIX socket           `- connect to TCP socket     
-                         `- sends serialized data            `- receives serialized data  
+| (eth0) `- Thread 2 >| ---> |> collector | distributor <| <--- |________________________|
+|        `- Thread N >| ---> |>    >>> forward >>>      <| <--- |                        |
+|_____________________|  ^   |____________|______________|   ^  |< example/py-flow-info  |
+|                     |  |                                   |  |________________________|
+| nDPId --- Thread 1 >|  `- connect to UNIX socket           |  |                        |
+| (eth1) `- Thread 2 >|  `- sends serialized data            |  |< example/...           |
+|        `- Thread N >|                                      |  |________________________|
+|_____________________|                                      |                            
+                                                             `- connect to UNIX/TCP socket
+                                                             `- receives serialized data  
 ```
+
+It doesn't use a producer/consumer design pattern, so the wording is not precise.
 
 # JSON TCP protocol
 
