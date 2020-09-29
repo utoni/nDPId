@@ -26,7 +26,11 @@ struct io_buffer
 
 struct remote_desc
 {
-    enum { JSON_SOCK, SERV_SOCK } type;
+    enum
+    {
+        JSON_SOCK,
+        SERV_SOCK
+    } type;
     int fd;
     struct io_buffer buf;
     union {
@@ -274,8 +278,10 @@ static int parse_options(int argc, char ** argv)
                     }
                 }
                 size_t len = (delim != NULL ? (size_t)(delim - optarg) : strlen(optarg)) + 1;
-                snprintf(serv_listen_addr, (len < sizeof(serv_listen_addr) ? len : sizeof(serv_listen_addr)),
-                         "%s", optarg);
+                snprintf(serv_listen_addr,
+                         (len < sizeof(serv_listen_addr) ? len : sizeof(serv_listen_addr)),
+                         "%s",
+                         optarg);
                 serv_type = SERV_LISTEN_TCP;
                 break;
             }
@@ -288,8 +294,10 @@ static int parse_options(int argc, char ** argv)
                 }
 
                 size_t len = strlen(optarg) + 1;
-                snprintf(serv_listen_path, (len < sizeof(serv_listen_path) ? len : sizeof(serv_listen_path)),
-                         "%s", optarg);
+                snprintf(serv_listen_path,
+                         (len < sizeof(serv_listen_path) ? len : sizeof(serv_listen_path)),
+                         "%s",
+                         optarg);
                 serv_type = SERV_LISTEN_UNIX;
                 break;
             }
@@ -360,11 +368,15 @@ int main(int argc, char ** argv)
         return 1;
     }
     syslog(LOG_DAEMON, "collector listen on %s", json_sockpath);
-    switch (serv_type) {
+    switch (serv_type)
+    {
         case SERV_LISTEN_NONE:
         case SERV_LISTEN_TCP:
-            syslog(LOG_DAEMON, "distributor listen on %.*s:%u", (int)sizeof(serv_listen_addr),
-                   serv_listen_addr, serv_listen_port);
+            syslog(LOG_DAEMON,
+                   "distributor listen on %.*s:%u",
+                   (int)sizeof(serv_listen_addr),
+                   serv_listen_addr,
+                   serv_listen_port);
             break;
         case SERV_LISTEN_UNIX:
             syslog(LOG_DAEMON, "distributor listen on %s", serv_listen_path);
@@ -472,14 +484,26 @@ int main(int argc, char ** argv)
                                       &current->event_serv.peer_addr[0],
                                       sizeof(current->event_serv.peer_addr)) == NULL)
                         {
-                            syslog(LOG_DAEMON | LOG_ERR, "Error converting an internet address: %s", strerror(errno));
+                            if (errno == EAFNOSUPPORT)
+                            {
+                                syslog(LOG_DAEMON | LOG_ERR, "New distributor connection.");
+                            }
+                            else
+                            {
+                                syslog(LOG_DAEMON | LOG_ERR,
+                                       "Error converting an internet address: %s",
+                                       strerror(errno));
+                            }
                             current->event_serv.peer_addr[0] = '\0';
                         }
-                        syslog(LOG_DAEMON,
-                               "New distributor connection from %.*s:%u",
-                               (int)sizeof(current->event_serv.peer_addr),
-                               current->event_serv.peer_addr,
-                               ntohs(current->event_serv.peer.sin_port));
+                        else
+                        {
+                            syslog(LOG_DAEMON,
+                                   "New distributor connection from %.*s:%u",
+                                   (int)sizeof(current->event_serv.peer_addr),
+                                   current->event_serv.peer_addr,
+                                   ntohs(current->event_serv.peer.sin_port));
+                        }
                         break;
                 }
 
@@ -644,12 +668,21 @@ int main(int argc, char ** argv)
                             }
                             if (bytes_written < 0 || errno != 0)
                             {
-                                syslog(LOG_DAEMON | LOG_ERR,
-                                       "Distributor connection to %.*s:%u closed, send failed: %s",
-                                       (int)sizeof(remotes.desc[i].event_serv.peer_addr),
-                                       remotes.desc[i].event_serv.peer_addr,
-                                       ntohs(remotes.desc[i].event_serv.peer.sin_port),
-                                       strerror(errno));
+                                if (remotes.desc[i].event_serv.peer_addr[0] == '\0')
+                                {
+                                    syslog(LOG_DAEMON | LOG_ERR,
+                                           "Distributor connection closed, send failed: %s",
+                                           strerror(errno));
+                                }
+                                else
+                                {
+                                    syslog(LOG_DAEMON | LOG_ERR,
+                                           "Distributor connection to %.*s:%u closed, send failed: %s",
+                                           (int)sizeof(remotes.desc[i].event_serv.peer_addr),
+                                           remotes.desc[i].event_serv.peer_addr,
+                                           ntohs(remotes.desc[i].event_serv.peer.sin_port),
+                                           strerror(errno));
+                                }
                                 disconnect_client(epollfd, &remotes.desc[i]);
                                 continue;
                             }
@@ -701,6 +734,7 @@ int main(int argc, char ** argv)
     closelog();
 
     unlink(json_sockpath);
+    unlink(serv_listen_path);
 
     return 0;
 }
