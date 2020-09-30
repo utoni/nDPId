@@ -11,7 +11,7 @@ from nDPIsrvd import nDPIsrvdSocket, TermColor
 def parse_json_str(json_str):
 
     j = nDPIsrvd.JsonParseBytes(json_str[0])
-    nDPIdEvent = nDPIsrvd.validateJsonEventTypes(j)
+    nDPIdEvent = nDPIsrvd.nDPIdEvent.validateJsonEventTypes(j)
     if nDPIdEvent.isValid is False:
         raise RuntimeError('Missing flow_event_name in the JSON string: {}'.format(j))
     if nDPIdEvent.FlowEventID == -1:
@@ -38,7 +38,8 @@ def parse_json_str(json_str):
                 ndpi_frisk[:-2])
 
     if j['l3_proto'] == 'ip4':
-        print('{:>16}: [{:.>6}] [{}][{:.>5}] [{:.>15}]{} -> [{:.>15}]{} {}'.format(nDPIdEvent.FlowEventName,
+        print('{:>16}: [{:.>6}] [{}][{:.>5}] [{:.>15}]{} -> [{:.>15}]{} {}' \
+              ''.format(nDPIdEvent.FlowEventPrettyName,
               j['flow_id'], j['l3_proto'], j['l4_proto'],
               j['src_ip'].lower(),
               '[{:.>5}]'.format(j['src_port']) if 'src_port' in j else '',
@@ -46,7 +47,8 @@ def parse_json_str(json_str):
               '[{:.>5}]'.format(j['dst_port']) if 'dst_port' in j else '',
               ndpi_proto_categ))
     elif j['l3_proto'] == 'ip6':
-        print('{:>16}: [{:.>6}] [{}][{:.>5}] [{:.>39}]{} -> [{:.>39}]{} {}'.format(nDPIdEvent.FlowEventName,
+        print('{:>16}: [{:.>6}] [{}][{:.>5}] [{:.>39}]{} -> [{:.>39}]{} {}' \
+              ''.format(nDPIdEvent.FlowEventPrettyName,
               j['flow_id'], j['l3_proto'], j['l4_proto'],
               j['src_ip'].lower(),
               '[{:.>5}]'.format(j['src_port']) if 'src_port' in j else '',
