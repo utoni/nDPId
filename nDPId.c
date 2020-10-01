@@ -67,7 +67,7 @@ struct nDPId_flow_info
     uint32_t last_ndpi_flow_struct_hash;
 
     struct ndpi_proto detected_l7_protocol;
-    struct ndpi_proto guessed_protocol;
+    struct ndpi_proto guessed_l7_protocol;
 
     struct ndpi_flow_struct * ndpi_flow;
     struct ndpi_id_struct * ndpi_src;
@@ -576,9 +576,9 @@ static void process_idle_flow(struct nDPId_reader_thread * const reader_thread, 
         {
             uint8_t protocol_was_guessed = 0;
 
-            if (ndpi_is_protocol_detected(workflow->ndpi_struct, f->guessed_protocol) == 0)
+            if (ndpi_is_protocol_detected(workflow->ndpi_struct, f->guessed_l7_protocol) == 0)
             {
-                f->guessed_protocol =
+                f->guessed_l7_protocol =
                     ndpi_detection_giveup(workflow->ndpi_struct, f->ndpi_flow, 1, &protocol_was_guessed);
             }
             else
@@ -1036,17 +1036,29 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
         case FLOW_EVENT_IDLE:
             break;
 
+        case FLOW_EVENT_NOT_DETECTED:
         case FLOW_EVENT_GUESSED:
+            if (ndpi_dpi2json(workflow->ndpi_struct,
+                              flow->ndpi_flow,
+                              flow->guessed_l7_protocol,
+                              &workflow->ndpi_serializer) != 0)
+            {
+                syslog(LOG_DAEMON | LOG_ERR,
+                       "[%8llu, %4u] ndpi_dpi2json failed for not-detected/guessed flow",
+                       workflow->packets_captured,
+                       flow->flow_id);
+            }
+            break;
+
         case FLOW_EVENT_DETECTED:
         case FLOW_EVENT_DETECTION_UPDATE:
-        case FLOW_EVENT_NOT_DETECTED:
             if (ndpi_dpi2json(workflow->ndpi_struct,
                               flow->ndpi_flow,
                               flow->detected_l7_protocol,
                               &workflow->ndpi_serializer) != 0)
             {
                 syslog(LOG_DAEMON | LOG_ERR,
-                       "[%8llu, %4u] ndpi_dpi2json failed",
+                       "[%8llu, %4u] ndpi_dpi2json failed for detected/detection-update flow",
                        workflow->packets_captured,
                        flow->flow_id);
             }
@@ -1819,7 +1831,7 @@ static void ndpi_process_packet(uint8_t * const args,
         {
             /* last chance to guess something, better then nothing */
             uint8_t protocol_was_guessed = 0;
-            flow_to_process->guessed_protocol =
+            flow_to_process->guessed_l7_protocol =
                 ndpi_detection_giveup(workflow->ndpi_struct, flow_to_process->ndpi_flow, 1, &protocol_was_guessed);
             if (protocol_was_guessed != 0)
             {
