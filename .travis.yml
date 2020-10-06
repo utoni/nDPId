@@ -1,0 +1,10 @@
+language: c
+before_install:
+- sudo apt-get -qq update
+- sudo apt-get install -y build-essential make binutils gcc autoconf automake libtool pkg-config git libpcap-dev libgcrypt-dev libgpg-error-dev
+script:
+- git clone https://github.com/ntop/nDPI.git
+- cd nDPI && ./autogen.sh --with-sanitizer --with-only-libndpi && make install DESTDIR="$(realpath ./_install)" && cd ..
+- make NDPI_WITH_GCRYPT=yes CUSTOM_LIBNDPI=./nDPI/_install/usr/local/lib/libndpi.a ENABLE_DEBUG=yes ENABLE_SANITIZER=yes all
+- make clean
+- make NDPI_WITH_GCRYPT=yes PKG_CONFIG_BIN=pkg-config PKG_CONFIG_PREFIX=./nDPI/_install/usr/local ENABLE_DEBUG=yes ENABLE_SANITIZER=yes all

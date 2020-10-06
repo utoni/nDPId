@@ -19,7 +19,7 @@ endif
 else
 
 ifeq ($(NDPI_WITH_GCRYPT),yes)
-LIBS += -lgcrypt
+LIBS += -lgcrypt -lgpg-error
 else
 NDPI_WITH_GCRYPT = no
 endif
@@ -30,12 +30,13 @@ NDPI_WITH_PCRE = no
 endif
 
 ifneq ($(CUSTOM_LIBNDPI),)
-LIBS += '$(CUSTOM_LIBNDPI)'
+STATIC_NDPI_LIB += '$(CUSTOM_LIBNDPI)'
 PROJECT_CFLAGS += '-I$(shell dirname $(CUSTOM_LIBNDPI))/../include/ndpi'
 ifeq ($(findstring $*.so, $(CUSTOM_LIBNDPI)),.so)
 PROJECT_CFLAGS += -Wl,-rpath='$(shell dirname $(CUSTOM_LIBNDPI))'
 endif
 else
+STATIC_NDPI_LIB =
 CUSTOM_LIBNDPI = no
 LIBS += -lndpi
 endif
@@ -71,10 +72,10 @@ all: help nDPId nDPIsrvd
 examples: examples/c-json-stdout/c-json-stdout examples/go-dashboard/go-dashboard
 
 nDPId: nDPId.c utils.c
-	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $(PC_CFLAGS) $^ -o $@ $(LDFLAGS) $(PC_LDFLAGS) $(LIBS)
+	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $(PC_CFLAGS) $^ -o $@ $(LDFLAGS) $(PC_LDFLAGS) $(STATIC_NDPI_LIB) $(LIBS)
 
 nDPIsrvd: nDPIsrvd.c utils.c
-	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS)
+	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(STATIC_NDPI_LIB) $(LIBS)
 
 examples/c-json-stdout/c-json-stdout: examples/c-json-stdout/c-json-stdout.c
 	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $(JSMN_CFLAGS) $@.c -o $@ $(LDFLAGS) $(LIBS)
