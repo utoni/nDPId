@@ -1957,7 +1957,7 @@ static int start_reader_threads(void)
     openlog("nDPId", LOG_CONS | (log_to_stderr != 0 ? LOG_PERROR : 0), LOG_DAEMON);
 
     errno = 0;
-    if (change_user_group(user, group) != 0)
+    if (change_user_group(user, group, pidfile, NULL, NULL) != 0)
     {
         if (errno != 0)
         {

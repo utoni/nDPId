@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <syslog.h>
+#include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
 
@@ -114,7 +115,10 @@ int daemonize_shutdown(char const * const pidfile)
     return 0;
 }
 
-int change_user_group(char const * const user, char const * const group)
+int change_user_group(char const * const user, char const * const group,
+                      char const * const pidfile,
+                      char const * const uds_collector_path,
+                      char const * const uds_distributor_path)
 {
     struct passwd * pwd;
     struct group * grp;
@@ -143,5 +147,16 @@ int change_user_group(char const * const user, char const * const group)
         gid = pwd->pw_gid;
     }
 
+    if (uds_collector_path != NULL) {
+        chmod(uds_collector_path, S_IRUSR | S_IWUSR);
+        chown(uds_collector_path, pwd->pw_uid, gid);
+    }
+    if (uds_distributor_path != NULL) {
+        chmod(uds_distributor_path, S_IRUSR | S_IWUSR | S_IRGRP);
+        chown(uds_distributor_path, pwd->pw_uid, gid);
+    }
+    if (pidfile != NULL) {
+        chown(pidfile, pwd->pw_uid, gid);
+    }
     return setregid(gid, gid) != 0 || setreuid(pwd->pw_uid, pwd->pw_uid);
 }

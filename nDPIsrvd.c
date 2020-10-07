@@ -344,7 +344,7 @@ int main(int argc, char ** argv)
 
     if (daemonize_with_pidfile(pidfile) != 0)
     {
-        return 1;
+        goto error;
     }
     closelog();
     openlog("nDPIsrvd", LOG_CONS | (log_to_stderr != 0 ? LOG_PERROR : 0), LOG_DAEMON);
@@ -354,7 +354,7 @@ int main(int argc, char ** argv)
     remotes.desc = (struct remote_desc *)malloc(remotes.desc_size * sizeof(*remotes.desc));
     if (remotes.desc == NULL)
     {
-        return 1;
+        goto error;
     }
     for (size_t i = 0; i < remotes.desc_size; ++i)
     {
@@ -365,7 +365,7 @@ int main(int argc, char ** argv)
 
     if (create_listen_sockets() != 0)
     {
-        return 1;
+        goto error;
     }
     syslog(LOG_DAEMON, "collector listen on %s", json_sockpath);
     switch (serv_type)
@@ -387,7 +387,7 @@ int main(int argc, char ** argv)
     }
 
     errno = 0;
-    if (change_user_group(user, group) != 0)
+    if (change_user_group(user, group, pidfile, json_sockpath, serv_listen_path) != 0)
     {
         if (errno != 0)
         {
@@ -397,7 +397,7 @@ int main(int argc, char ** argv)
         {
             syslog(LOG_DAEMON | LOG_ERR, "Change user/group failed.");
         }
-        return 1;
+        goto error;
     }
 
     signal(SIGINT, sighandler);
@@ -408,7 +408,7 @@ int main(int argc, char ** argv)
     if (epollfd < 0)
     {
         syslog(LOG_DAEMON | LOG_ERR, "Error creating epoll: %s", strerror(errno));
-        return 1;
+        goto error;
     }
 
     struct epoll_event accept_event = {};
@@ -417,14 +417,14 @@ int main(int argc, char ** argv)
     if (epoll_ctl(epollfd, EPOLL_CTL_ADD, json_sockfd, &accept_event) < 0)
     {
         syslog(LOG_DAEMON | LOG_ERR, "Error adding JSON fd to epoll: %s", strerror(errno));
-        return 1;
+        goto error;
     }
     accept_event.data.fd = serv_sockfd;
     accept_event.events = EPOLLIN;
     if (epoll_ctl(epollfd, EPOLL_CTL_ADD, serv_sockfd, &accept_event) < 0)
     {
         syslog(LOG_DAEMON | LOG_ERR, "Error adding INET fd to epoll: %s", strerror(errno));
-        return 1;
+        goto error;
     }
 
     struct epoll_event events[32];
@@ -729,6 +729,7 @@ int main(int argc, char ** argv)
         }
     }
 
+error:
     close(json_sockfd);
     close(serv_sockfd);
 
