@@ -13,8 +13,13 @@ def parse_json_str(json_str):
     j = nDPIsrvd.JsonParseBytes(json_str[0])
     nDPIdEvent = nDPIsrvd.nDPIdEvent.validateJsonEventTypes(j)
     if nDPIdEvent.isValid is False:
-        raise RuntimeError('Missing flow_event_name in the JSON string: {}'.format(j))
-    if nDPIdEvent.FlowEventID == -1:
+        raise RuntimeError('Missing event id or event name invalid in the JSON string: {}'.format(j))
+    if nDPIdEvent.BasicEventID != -1:
+        be = '{}: {}'.format(TermColor.WARNING + TermColor.BLINK + 'BASIC-EVENT' + TermColor.END,
+                             nDPIdEvent.BasicEventPrettyName)
+        print('{:>18}'.format(be))
+        return
+    elif nDPIdEvent.FlowEventID == -1:
         return
 
     ndpi_proto_categ = ''
