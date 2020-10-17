@@ -3,7 +3,7 @@ PROJECT_CFLAGS += -Wall -Wextra $(EXTRA_CFLAGS) -I.
 JSMN_CFLAGS := -DJSMN_STATIC=1 -DJSMN_STRICT=1 -Icontrib/jsmn
 LIBS += -pthread -lpcap -lm
 
-GOCC = go
+GOCC =
 GOFLAGS = -ldflags='-s -w'
 
 ifneq ($(PKG_CONFIG_BIN),)
