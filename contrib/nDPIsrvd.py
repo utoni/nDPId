@@ -175,7 +175,15 @@ class nDPIdEvent:
 
     def validateEvent(self, event_id, event_name, list_of_event_tuples):
         if self.isValid is True:
-            raise RuntimeError('nDPId event already validated. Multiple Events in one JSON strings are not allowed.')
+            raise RuntimeError('nDPId event already validated. Multiple Events in one JSON strings are not allowed.\n' \
+                               '[EVENTS]\n'
+                               'current: {}\n' \
+                               'daemon.: {}\n' \
+                               'basic..: {}\n' \
+                               'packet.: {}\n' \
+                               'flow...: {}\n'.format(event_name,
+                                                      self.DaemonEventName, self.BasicEventName, \
+                                                      self.PacketEventName, self.FlowEventName))
 
         if type(event_id) is not int:
             raise RuntimeError('Argument is not an Integer/EventID!')

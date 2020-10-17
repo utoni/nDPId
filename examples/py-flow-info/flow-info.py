@@ -15,9 +15,8 @@ def parse_json_str(json_str):
     if nDPIdEvent.isValid is False:
         raise RuntimeError('Missing event id or event name invalid in the JSON string: {}'.format(j))
     if nDPIdEvent.BasicEventID != -1:
-        be = '{}: {}'.format(TermColor.WARNING + TermColor.BLINK + 'BASIC-EVENT' + TermColor.END,
-                             nDPIdEvent.BasicEventPrettyName)
-        print('{:>18}'.format(be))
+        print('{:>21}: {}'.format(TermColor.WARNING + TermColor.BLINK + 'BASIC-EVENT' + TermColor.END,
+                                  nDPIdEvent.BasicEventPrettyName))
         return
     elif nDPIdEvent.FlowEventID == -1:
         return
