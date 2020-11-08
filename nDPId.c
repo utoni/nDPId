@@ -395,9 +395,8 @@ static char * get_default_pcapdev(char * errbuf)
     return ifname;
 }
 
-static int setup_reader_threads(char const * const file_or_device)
+static int setup_reader_threads(void)
 {
-    char * file_or_default_device;
     char pcap_error_buffer[PCAP_ERRBUF_SIZE];
 
     if (reader_thread_count > nDPId_MAX_READER_THREADS)
@@ -405,35 +404,26 @@ static int setup_reader_threads(char const * const file_or_device)
         return 1;
     }
 
-    if (file_or_device == NULL)
+    if (pcap_file_or_interface == NULL)
     {
-        file_or_default_device = get_default_pcapdev(pcap_error_buffer);
-        if (file_or_default_device == NULL)
+        pcap_file_or_interface = get_default_pcapdev(pcap_error_buffer);
+        if (pcap_file_or_interface == NULL)
         {
             syslog(LOG_DAEMON | LOG_ERR, "pcap_lookupdev: %.*s", (int)PCAP_ERRBUF_SIZE, pcap_error_buffer);
             return 1;
         }
-    }
-    else
-    {
-        file_or_default_device = strdup(file_or_device);
-        if (file_or_default_device == NULL)
-        {
-            return 1;
-        }
+        syslog(LOG_DAEMON, "Capturing packets from default device: %s", pcap_file_or_interface);
     }
 
     for (unsigned long long int i = 0; i < reader_thread_count; ++i)
     {
-        reader_threads[i].workflow = init_workflow(file_or_default_device);
+        reader_threads[i].workflow = init_workflow(pcap_file_or_interface);
         if (reader_threads[i].workflow == NULL)
         {
-            free(file_or_default_device);
             return 1;
         }
     }
 
-    free(file_or_default_device);
     return 0;
 }
 
@@ -2403,7 +2393,7 @@ int main(int argc, char ** argv)
 
     openlog("nDPId", LOG_CONS | LOG_PERROR, LOG_DAEMON);
 
-    if (setup_reader_threads(pcap_file_or_interface) != 0)
+    if (setup_reader_threads() != 0)
     {
         syslog(LOG_DAEMON | LOG_ERR, "setup_reader_threads failed");
         return 1;
