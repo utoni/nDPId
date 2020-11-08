@@ -736,6 +736,7 @@ static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enu
                                     "max-packets-per-flow-to-send",
                                     max_packets_per_flow_to_send);
     }
+    serialize_and_send(reader_thread);
 }
 
 static void jsonize_flow(struct nDPId_workflow * const workflow, struct nDPId_flow_info const * const flow)
@@ -1038,10 +1039,8 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
 
         case FLOW_EVENT_NOT_DETECTED:
         case FLOW_EVENT_GUESSED:
-            if (ndpi_dpi2json(workflow->ndpi_struct,
-                              flow->ndpi_flow,
-                              flow->guessed_l7_protocol,
-                              &workflow->ndpi_serializer) != 0)
+            if (ndpi_dpi2json(
+                    workflow->ndpi_struct, flow->ndpi_flow, flow->guessed_l7_protocol, &workflow->ndpi_serializer) != 0)
             {
                 syslog(LOG_DAEMON | LOG_ERR,
                        "[%8llu, %4u] ndpi_dpi2json failed for not-detected/guessed flow",
@@ -1366,7 +1365,8 @@ static void ndpi_process_packet(uint8_t * const args,
     /* process datalink layer */
     switch (pcap_datalink(workflow->pcap_handle))
     {
-        case DLT_NULL: {
+        case DLT_NULL:
+        {
             uint32_t dlt_hdr = ntohl(*((uint32_t *)&packet[eth_offset]));
 
             if (dlt_hdr == 0x00000002)
@@ -1919,7 +1919,6 @@ static void * processing_thread(void * const ndpi_thread_arg)
 
     run_pcap_loop(reader_thread);
     fcntl(reader_thread->json_sockfd, F_SETFL, fcntl(reader_thread->json_sockfd, F_GETFL, 0) & ~O_NONBLOCK);
-    jsonize_daemon(reader_thread, DAEMON_EVENT_SHUTDOWN);
     reader_thread->workflow->error_or_eof = 1;
     return NULL;
 }
@@ -2058,6 +2057,11 @@ static int stop_reader_threads(void)
                        reader_threads[i].workflow);
             process_idle_flow(&reader_threads[i], idle_scan_index);
         }
+
+        jsonize_daemon(&reader_threads[i], DAEMON_EVENT_SHUTDOWN);
+        fsync(reader_threads[i].json_sockfd);
+        struct timespec ts = {.tv_sec = 0, .tv_nsec = 50000};
+        nanosleep(&ts, NULL); // ugly; make sure that DAEMON_EVENT_SHUTDOWN gets transmitted before close()
 
         close(reader_threads[i].json_sockfd);
         reader_threads[i].json_sockfd = -1;

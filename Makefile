@@ -69,13 +69,16 @@ RM = rm -f
 
 all: help nDPId nDPIsrvd
 
-examples: examples/c-json-stdout/c-json-stdout examples/go-dashboard/go-dashboard
+examples: examples/c-captured/c-captured examples/c-json-stdout/c-json-stdout examples/go-dashboard/go-dashboard
 
 nDPId: nDPId.c utils.c
 	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $(PC_CFLAGS) $^ -o $@ $(LDFLAGS) $(PC_LDFLAGS) $(STATIC_NDPI_LIB) $(LIBS)
 
 nDPIsrvd: nDPIsrvd.c utils.c
 	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(STATIC_NDPI_LIB) $(LIBS)
+
+examples/c-captured/c-captured: examples/c-captured/c-captured.c
+	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $(JSMN_CFLAGS) $@.c -o $@ $(LDFLAGS) $(LIBS)
 
 examples/c-json-stdout/c-json-stdout: examples/c-json-stdout/c-json-stdout.c
 	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $(JSMN_CFLAGS) $@.c -o $@ $(LDFLAGS) $(LIBS)
