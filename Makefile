@@ -1,6 +1,6 @@
 CC = gcc
 PROJECT_CFLAGS += -Wall -Wextra $(EXTRA_CFLAGS) -I.
-JSMN_CFLAGS := -DJSMN_STATIC=1 -DJSMN_STRICT=1 -Icontrib/jsmn
+JSMN_CFLAGS := -DJSMN_STATIC=1 -DJSMN_STRICT=1 -Icontrib -Icontrib/jsmn
 LIBS += -pthread -lpcap -lm
 
 GOCC =
@@ -20,13 +20,9 @@ else
 
 ifeq ($(NDPI_WITH_GCRYPT),yes)
 LIBS += -lgcrypt -lgpg-error
-else
-NDPI_WITH_GCRYPT = no
 endif
 ifeq ($(NDPI_WITH_PCRE),yes)
 LIBS += -lpcre
-else
-NDPI_WITH_PCRE = no
 endif
 
 ifneq ($(CUSTOM_LIBNDPI),)
@@ -37,7 +33,6 @@ PROJECT_CFLAGS += -Wl,-rpath='$(shell dirname $(CUSTOM_LIBNDPI))'
 endif
 else
 STATIC_NDPI_LIB =
-CUSTOM_LIBNDPI = no
 LIBS += -lndpi
 endif
 
@@ -45,22 +40,16 @@ endif
 
 ifeq ($(ENABLE_DEBUG),yes)
 PROJECT_CFLAGS += -O0 -g3 -fno-omit-frame-pointer -fno-inline
-else
-ENABLE_DEBUG = no
 endif
 
 ifeq ($(ENABLE_SANITIZER),yes)
 PROJECT_CFLAGS += -fsanitize=address -fsanitize=undefined -fsanitize=enum -fsanitize=leak
 LIBS += -lasan -lubsan
-else
-ENABLE_SANITIZER = no
 endif
 
 ifeq ($(ENABLE_SANITIZER_THREAD),yes)
 PROJECT_CFLAGS += -fsanitize=undefined -fsanitize=enum -fsanitize=thread
 LIBS += -lubsan
-else
-ENABLE_SANITIZER_THREAD = no
 endif
 
 GO_DASHBOARD_SRCS := examples/go-dashboard/main.go examples/go-dashboard/ui/ui.go
@@ -90,7 +79,7 @@ ifneq ($(GOCC),)
 endif
 
 clean:
-	$(RM) -f nDPId nDPIsrvd examples/c-json-stdout/c-json-stdout examples/go-dashboard/go-dashboard
+	$(RM) -f nDPId nDPIsrvd examples/c-captured/c-captured examples/c-json-stdout/c-json-stdout examples/go-dashboard/go-dashboard
 
 help:
 	@echo '------------------------------------'
@@ -106,11 +95,31 @@ help:
 	@echo 'GOCC              = $(GOCC)'
 	@echo 'GOFLAGS           = $(GOFLAGS)'
 	@echo 'CUSTOM_LIBNDPI    = $(CUSTOM_LIBNDPI)'
-	@echo 'NDPI_WITH_GCRYPT  = $(NDPI_WITH_GCRYPT)'
-	@echo 'NDPI_WITH_PCRE    = $(NDPI_WITH_PCRE)'
-	@echo 'ENABLE_DEBUG      = $(ENABLE_DEBUG)'
-	@echo 'ENABLE_SANITIZER  = $(ENABLE_SANITIZER)'
-	@echo 'ENABLE_SANITIZER_THREAD = $(ENABLE_SANITIZER_THREAD)'
+ifeq ($(NDPI_WITH_GCRYPT),yes)
+	@echo 'NDPI_WITH_GCRYPT  = yes'
+else
+	@echo 'NDPI_WITH_GCRYPT  = no'
+endif
+ifeq ($(NDPI_WITH_PCRE),yes)
+	@echo 'NDPI_WITH_PCRE    = yes'
+else
+	@echo 'NDPI_WITH_PCRE    = no'
+endif
+ifeq ($(ENABLE_DEBUG),yes)
+	@echo 'ENABLE_DEBUG      = yes'
+else
+	@echo 'ENABLE_DEBUG      = no'
+endif
+ifeq ($(ENABLE_SANITIZER),yes)
+	@echo 'ENABLE_SANITIZER  = yes'
+else
+	@echo 'ENABLE_SANITIZER  = no'
+endif
+ifeq ($(ENABLE_SANITIZER_THREAD),yes)
+	@echo 'ENABLE_SANITIZER_THREAD = yes'
+else
+	@echo 'ENABLE_SANITIZER_THREAD = no'
+endif
 	@echo '------------------------------------'
 
 .PHONY: all clean help
