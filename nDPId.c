@@ -2049,9 +2049,14 @@ static int stop_reader_threads(void)
         }
 
         jsonize_daemon(&reader_threads[i], DAEMON_EVENT_SHUTDOWN);
+        /*
+         * The following 3 lines try to make sure that DAEMON_EVENT_SHUTDOWN gets transmitted before close().
+         * This is ugly but there is an socket option for SOCK_STREAM named SO_LINGER.
+         * Unfortunately it is not portable and does not even work for all Linux derivates.
+         */
         fsync(reader_threads[i].json_sockfd);
         struct timespec ts = {.tv_sec = 0, .tv_nsec = 50000};
-        nanosleep(&ts, NULL); // ugly; make sure that DAEMON_EVENT_SHUTDOWN gets transmitted before close()
+        nanosleep(&ts, NULL);
 
         close(reader_threads[i].json_sockfd);
         reader_threads[i].json_sockfd = -1;
