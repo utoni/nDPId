@@ -1,6 +1,6 @@
 CC = gcc
 PROJECT_CFLAGS += -Wall -Wextra $(EXTRA_CFLAGS) -I.
-JSMN_CFLAGS := -DJSMN_STATIC=1 -DJSMN_STRICT=1 -Icontrib -Icontrib/jsmn
+JSMN_CFLAGS := -DJSMN_STATIC=1 -DJSMN_STRICT=1 -Idependencies
 LIBS += -pthread -lpcap -lm
 
 GOCC =

@@ -8,7 +8,7 @@
 #include <unistd.h>
 
 #include "config.h"
-#include "jsmn.h"
+#include "jsmn/jsmn.h"
 
 static char serv_listen_addr[INET_ADDRSTRLEN] = DISTRIBUTOR_HOST;
 static uint16_t serv_listen_port = DISTRIBUTOR_PORT;
