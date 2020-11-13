@@ -74,6 +74,7 @@ enum nDPIsrvd_parse_return
     PARSE_STRING_TOO_BIG,
     PARSE_INVALID_CLOSING_CHAR,
     PARSE_JSMN_ERROR,
+    PARSE_CALLBACK_ERROR,
     PARSE_LAST_ENUM_VALUE
 };
 
@@ -203,10 +204,24 @@ static inline enum nDPIsrvd_parse_return nDPIsrvd_parse(struct nDPIsrvd_socket *
             return PARSE_JSMN_ERROR;
         }
 
+        sock->jsmn.current_token = 0;
+        if (cb(sock, user_data) != CALLBACK_OK)
+        {
+            return PARSE_CALLBACK_ERROR;
+        }
+
         for (sock->jsmn.current_token = 1; sock->jsmn.current_token < sock->jsmn.tokens_found;
              sock->jsmn.current_token++)
         {
-            cb(sock, user_data);
+            if (cb(sock, user_data) != CALLBACK_OK)
+            {
+                return PARSE_CALLBACK_ERROR;
+            }
+        }
+
+        if (cb(sock, user_data) != CALLBACK_OK)
+        {
+            return PARSE_CALLBACK_ERROR;
         }
 
         memmove(sock->buffer.raw,

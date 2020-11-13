@@ -17,7 +17,16 @@ static enum nDPIsrvd_callback_return nDPIsrvd_json_callback(struct nDPIsrvd_sock
 {
     (void)user_data;
 
-    if (sock->jsmn.current_token % 2 == 1)
+    if (sock->jsmn.current_token == 0) {
+        /* Start of a JSON string. */
+        printf("JSON ");
+    }
+    else if (sock->jsmn.current_token == sock->jsmn.tokens_found)
+    {
+        /* End of a JSON string. */
+        printf(" EoF\n");
+    }
+    else if (sock->jsmn.current_token % 2 == 1)
     {
         printf("[%.*s : ",
                sock->jsmn.tokens[sock->jsmn.current_token].end - sock->jsmn.tokens[sock->jsmn.current_token].start,
@@ -68,7 +77,6 @@ int main(int argc, char ** argv)
             default:
                 break;
         }
-        printf("EoF\n");
     }
 
     return 0;
