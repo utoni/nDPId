@@ -10,6 +10,8 @@
 #include "nDPIsrvd.h"
 #include "jsmn/jsmn.h"
 
+//#define VERBOSE 1
+
 static char serv_listen_addr[INET_ADDRSTRLEN] = DISTRIBUTOR_HOST;
 static uint16_t serv_listen_port = DISTRIBUTOR_PORT;
 
@@ -17,26 +19,45 @@ static enum nDPIsrvd_callback_return nDPIsrvd_json_callback(struct nDPIsrvd_sock
 {
     (void)user_data;
 
-    if (sock->jsmn.current_token == 0) {
+    if (token_is_start(sock) == 1)
+    {
+#ifdef VERBOSE
         /* Start of a JSON string. */
         printf("JSON ");
+#endif
     }
-    else if (sock->jsmn.current_token == sock->jsmn.tokens_found)
+    else if (token_is_end(sock) == 1)
     {
+#ifdef VERBOSE
         /* End of a JSON string. */
-        printf(" EoF\n");
+        printf("EoF\n");
+#endif
     }
-    else if (sock->jsmn.current_token % 2 == 1)
+    else if (token_is_key_value_pair(sock) == 1)
     {
-        printf("[%.*s : ",
-               sock->jsmn.tokens[sock->jsmn.current_token].end - sock->jsmn.tokens[sock->jsmn.current_token].start,
-               sock->buffer.json_string + sock->jsmn.tokens[sock->jsmn.current_token].start);
+        if (key_equals(sock, "flow_event_name") == 1)
+        {
+            if (value_equals(sock, "guessed") == 1)
+            {
+                printf("Guessed flow.\n");
+            }
+            else if (value_equals(sock, "not-detected") == 1)
+            {
+                printf("Not detected flow.\n");
+            }
+        }
+#ifdef VERBOSE
+        printf("[%.*s : %.*s] ",
+               sock->jsmn.key_value.key_length,
+               sock->jsmn.key_value.key,
+               sock->jsmn.key_value.value_length,
+               sock->jsmn.key_value.value);
+#endif
     }
     else
     {
-        printf("%.*s] ",
-               sock->jsmn.tokens[sock->jsmn.current_token].end - sock->jsmn.tokens[sock->jsmn.current_token].start,
-               sock->buffer.json_string + sock->jsmn.tokens[sock->jsmn.current_token].start);
+        fprintf(stderr, "%s\n", "Internal error, exit ..");
+        return CALLBACK_ERROR;
     }
 
     return CALLBACK_OK;

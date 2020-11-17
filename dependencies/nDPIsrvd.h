@@ -43,6 +43,13 @@ struct nDPIsrvd_socket
         jsmntok_t tokens[128];
         int current_token;
         int tokens_found;
+        struct
+        {
+            char const * key;
+            int key_length;
+            char const * value;
+            int value_length;
+        } key_value;
     } jsmn;
 };
 
@@ -155,6 +162,68 @@ static inline enum nDPIsrvd_read_return nDPIsrvd_read(struct nDPIsrvd_socket * c
     return READ_OK;
 }
 
+static inline int token_is_key(struct nDPIsrvd_socket const * const sock)
+{
+    return sock->jsmn.current_token % 2;
+}
+
+static inline char const * token_get(struct nDPIsrvd_socket const * const sock)
+{
+    return sock->buffer.json_string + sock->jsmn.tokens[sock->jsmn.current_token].start;
+}
+
+static inline int token_size(struct nDPIsrvd_socket const * const sock)
+{
+    return sock->jsmn.tokens[sock->jsmn.current_token].end - sock->jsmn.tokens[sock->jsmn.current_token].start;
+}
+
+static inline int token_is_start(struct nDPIsrvd_socket const * const sock)
+{
+    return sock->jsmn.current_token == 0;
+}
+
+static inline int token_is_end(struct nDPIsrvd_socket const * const sock)
+{
+    return sock->jsmn.current_token == sock->jsmn.tokens_found;
+}
+
+static inline int token_is_key_value_pair(struct nDPIsrvd_socket const * const sock)
+{
+    return sock->jsmn.current_token > 0 && sock->jsmn.current_token < sock->jsmn.tokens_found;
+}
+
+static inline int token_is_jsmn_type(struct nDPIsrvd_socket const * const sock, jsmntype_t type_to_check)
+{
+    if (token_is_key_value_pair(sock) == 0)
+    {
+        return 0;
+    }
+
+    return sock->jsmn.tokens[sock->jsmn.current_token].type == type_to_check;
+}
+
+static inline int key_equals(struct nDPIsrvd_socket const * const sock, char const * const name)
+{
+    if (sock->jsmn.key_value.key == NULL || sock->jsmn.key_value.key_length == 0)
+    {
+        return 0;
+    }
+
+    return (int)strlen(name) == sock->jsmn.key_value.key_length &&
+           strncmp(name, sock->jsmn.key_value.key, sock->jsmn.key_value.key_length) == 0;
+}
+
+static inline int value_equals(struct nDPIsrvd_socket const * const sock, char const * const name)
+{
+    if (sock->jsmn.key_value.value == NULL || sock->jsmn.key_value.value_length == 0)
+    {
+        return 0;
+    }
+
+    return (int)strlen(name) == sock->jsmn.key_value.value_length &&
+           strncmp(name, sock->jsmn.key_value.value, sock->jsmn.key_value.value_length) == 0;
+}
+
 static inline enum nDPIsrvd_parse_return nDPIsrvd_parse(struct nDPIsrvd_socket * const sock,
                                                         json_callback cb,
                                                         void * user_data)
@@ -204,6 +273,10 @@ static inline enum nDPIsrvd_parse_return nDPIsrvd_parse(struct nDPIsrvd_socket *
             return PARSE_JSMN_ERROR;
         }
 
+        sock->jsmn.key_value.key = NULL;
+        sock->jsmn.key_value.key_length = 0;
+        sock->jsmn.key_value.value = NULL;
+        sock->jsmn.key_value.value_length = 0;
         sock->jsmn.current_token = 0;
         if (cb(sock, user_data) != CALLBACK_OK)
         {
@@ -213,9 +286,34 @@ static inline enum nDPIsrvd_parse_return nDPIsrvd_parse(struct nDPIsrvd_socket *
         for (sock->jsmn.current_token = 1; sock->jsmn.current_token < sock->jsmn.tokens_found;
              sock->jsmn.current_token++)
         {
-            if (cb(sock, user_data) != CALLBACK_OK)
+            if (token_is_key(sock) == 1)
             {
-                return PARSE_CALLBACK_ERROR;
+                sock->jsmn.key_value.key = token_get(sock);
+                sock->jsmn.key_value.key_length = token_size(sock);
+
+                if (sock->jsmn.key_value.key == NULL || sock->jsmn.key_value.value != NULL)
+                {
+                    return PARSE_JSMN_ERROR;
+                }
+            }
+            else
+            {
+                sock->jsmn.key_value.value = token_get(sock);
+                sock->jsmn.key_value.value_length = token_size(sock);
+
+                if (sock->jsmn.key_value.key == NULL || sock->jsmn.key_value.value == NULL)
+                {
+                    return PARSE_JSMN_ERROR;
+                }
+                if (cb(sock, user_data) != CALLBACK_OK)
+                {
+                    return PARSE_CALLBACK_ERROR;
+                }
+
+                sock->jsmn.key_value.key = NULL;
+                sock->jsmn.key_value.key_length = 0;
+                sock->jsmn.key_value.value = NULL;
+                sock->jsmn.key_value.value_length = 0;
             }
         }
 
@@ -223,6 +321,9 @@ static inline enum nDPIsrvd_parse_return nDPIsrvd_parse(struct nDPIsrvd_socket *
         {
             return PARSE_CALLBACK_ERROR;
         }
+
+        sock->jsmn.current_token = -1;
+        sock->jsmn.tokens_found = 0;
 
         memmove(sock->buffer.raw,
                 sock->buffer.raw + sock->buffer.json_string_length,
