@@ -1303,6 +1303,101 @@ static uint32_t calculate_ndpi_flow_struct_hash(struct ndpi_flow_struct const * 
     return hash;
 }
 
+static int process_datalink_layer(struct nDPId_reader_thread * const reader_thread,
+                                  struct pcap_pkthdr const * const header,
+                                  uint8_t const * const packet,
+                                  uint16_t * ip_offset,
+                                  uint16_t * layer3_type)
+{
+    const uint16_t eth_offset = 0;
+    const int datalink_type = pcap_datalink(reader_thread->workflow->pcap_handle);
+    const struct ndpi_ethhdr * ethernet;
+
+    switch (datalink_type)
+    {
+        case DLT_NULL:
+        {
+            uint32_t dlt_hdr = ntohl(*((uint32_t *)&packet[eth_offset]));
+
+            if (dlt_hdr == 0x00000002)
+            {
+                *layer3_type = ETH_P_IP;
+            }
+            else if (dlt_hdr == 0x00000024 || dlt_hdr == 0x00000028 || dlt_hdr == 0x00000030)
+            {
+                *layer3_type = ETH_P_IPV6;
+            }
+            else
+            {
+                jsonize_packet_event(reader_thread, header, packet, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
+                jsonize_basic_eventf(reader_thread,
+                                     UNKNOWN_DATALINK_LAYER,
+                                     "%s%u%s%u",
+                                     "datalink",
+                                     datalink_type,
+                                     "header",
+                                     ntohl(*((uint32_t *)&packet[eth_offset])));
+                return 1;
+            }
+            *ip_offset = 4 + eth_offset;
+            break;
+        }
+        case DLT_EN10MB:
+            if (header->len < sizeof(struct ndpi_ethhdr))
+            {
+                jsonize_packet_event(reader_thread, header, packet, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
+                jsonize_basic_eventf(reader_thread, ETHERNET_PACKET_TOO_SHORT, NULL);
+                return 1;
+            }
+            ethernet = (struct ndpi_ethhdr *)&packet[eth_offset];
+            *ip_offset = sizeof(struct ndpi_ethhdr) + eth_offset;
+            *layer3_type = ntohs(ethernet->h_proto);
+            switch (*layer3_type)
+            {
+                case ETH_P_IP: /* IPv4 */
+                    if (header->len < sizeof(struct ndpi_ethhdr) + sizeof(struct ndpi_iphdr))
+                    {
+                        jsonize_packet_event(
+                            reader_thread, header, packet, *layer3_type, *ip_offset, NULL, PACKET_EVENT_PAYLOAD);
+                        jsonize_basic_eventf(reader_thread, IP4_PACKET_TOO_SHORT, NULL);
+                        return 1;
+                    }
+                    break;
+                case ETH_P_IPV6: /* IPV6 */
+                    if (header->len < sizeof(struct ndpi_ethhdr) + sizeof(struct ndpi_ipv6hdr))
+                    {
+                        jsonize_packet_event(
+                            reader_thread, header, packet, *layer3_type, *ip_offset, NULL, PACKET_EVENT_PAYLOAD);
+                        jsonize_basic_eventf(reader_thread, IP6_PACKET_TOO_SHORT, NULL);
+                        return 1;
+                    }
+                    break;
+                case ETH_P_ARP: /* ARP */
+                    return 1;
+                default:
+                    jsonize_packet_event(
+                        reader_thread, header, packet, *layer3_type, *ip_offset, NULL, PACKET_EVENT_PAYLOAD);
+                    jsonize_basic_eventf(reader_thread, ETHERNET_PACKET_UNKNOWN, "%s%u", "type", *layer3_type);
+                    return 1;
+            }
+            break;
+        case DLT_IPV4:
+            *layer3_type = ETH_P_IP;
+            *ip_offset = 0;
+            break;
+        case DLT_IPV6:
+            *layer3_type = ETH_P_IPV6;
+            *ip_offset = 0;
+            break;
+        default:
+            jsonize_packet_event(reader_thread, header, packet, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
+            jsonize_basic_eventf(reader_thread, UNKNOWN_DATALINK_LAYER, "%s%u", "datalink", datalink_type);
+            return 1;
+    }
+
+    return 0;
+}
+
 static void ndpi_process_packet(uint8_t * const args,
                                 struct pcap_pkthdr const * const header,
                                 uint8_t const * const packet)
@@ -1320,12 +1415,10 @@ static void ndpi_process_packet(uint8_t * const args,
     struct ndpi_id_struct * ndpi_src;
     struct ndpi_id_struct * ndpi_dst;
 
-    const struct ndpi_ethhdr * ethernet;
     const struct ndpi_iphdr * ip;
     struct ndpi_ipv6hdr * ip6;
 
     uint64_t time_ms;
-    const uint16_t eth_offset = 0;
     uint16_t ip_offset;
     uint16_t ip_size;
 
@@ -1352,87 +1445,9 @@ static void ndpi_process_packet(uint8_t * const args,
 
     check_for_idle_flows(reader_thread);
 
-    /* process datalink layer */
-    switch (pcap_datalink(workflow->pcap_handle))
+    if (process_datalink_layer(reader_thread, header, packet, &ip_offset, &type) != 0)
     {
-        case DLT_NULL:
-        {
-            uint32_t dlt_hdr = ntohl(*((uint32_t *)&packet[eth_offset]));
-
-            if (dlt_hdr == 0x00000002)
-            {
-                type = ETH_P_IP;
-            }
-            else if (dlt_hdr == 0x00000024 || dlt_hdr == 0x00000028 || dlt_hdr == 0x00000030)
-            {
-                type = ETH_P_IPV6;
-            }
-            else
-            {
-                jsonize_packet_event(reader_thread, header, packet, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
-                jsonize_basic_eventf(reader_thread,
-                                     UNKNOWN_DATALINK_LAYER,
-                                     "%s%u%s%u",
-                                     "datalink",
-                                     pcap_datalink(workflow->pcap_handle),
-                                     "header",
-                                     ntohl(*((uint32_t *)&packet[eth_offset])));
-                return;
-            }
-            ip_offset = 4 + eth_offset;
-            break;
-        }
-        case DLT_EN10MB:
-            if (header->len < sizeof(struct ndpi_ethhdr))
-            {
-                jsonize_packet_event(reader_thread, header, packet, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
-                jsonize_basic_eventf(reader_thread, ETHERNET_PACKET_TOO_SHORT, NULL);
-                return;
-            }
-            ethernet = (struct ndpi_ethhdr *)&packet[eth_offset];
-            ip_offset = sizeof(struct ndpi_ethhdr) + eth_offset;
-            type = ntohs(ethernet->h_proto);
-            switch (type)
-            {
-                case ETH_P_IP: /* IPv4 */
-                    if (header->len < sizeof(struct ndpi_ethhdr) + sizeof(struct ndpi_iphdr))
-                    {
-                        jsonize_packet_event(
-                            reader_thread, header, packet, type, ip_offset, NULL, PACKET_EVENT_PAYLOAD);
-                        jsonize_basic_eventf(reader_thread, IP4_PACKET_TOO_SHORT, NULL);
-                        return;
-                    }
-                    break;
-                case ETH_P_IPV6: /* IPV6 */
-                    if (header->len < sizeof(struct ndpi_ethhdr) + sizeof(struct ndpi_ipv6hdr))
-                    {
-                        jsonize_packet_event(
-                            reader_thread, header, packet, type, ip_offset, NULL, PACKET_EVENT_PAYLOAD);
-                        jsonize_basic_eventf(reader_thread, IP6_PACKET_TOO_SHORT, NULL);
-                        return;
-                    }
-                    break;
-                case ETH_P_ARP: /* ARP */
-                    return;
-                default:
-                    jsonize_packet_event(reader_thread, header, packet, type, ip_offset, NULL, PACKET_EVENT_PAYLOAD);
-                    jsonize_basic_eventf(reader_thread, ETHERNET_PACKET_UNKNOWN, "%s%u", "type", type);
-                    return;
-            }
-            break;
-        case DLT_IPV4:
-            type = ETH_P_IP;
-            ip_offset = 0;
-            break;
-        case DLT_IPV6:
-            type = ETH_P_IPV6;
-            ip_offset = 0;
-            break;
-        default:
-            jsonize_packet_event(reader_thread, header, packet, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
-            jsonize_basic_eventf(
-                reader_thread, UNKNOWN_DATALINK_LAYER, "%s%u", "datalink", pcap_datalink(workflow->pcap_handle));
-            return;
+        return;
     }
 
     if (type == ETH_P_IP)
