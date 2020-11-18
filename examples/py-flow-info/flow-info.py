@@ -3,7 +3,7 @@
 import os
 import sys
 
-sys.path.append(os.path.dirname(sys.argv[0]) + '/../../contrib')
+sys.path.append(os.path.dirname(sys.argv[0]) + '/../../dependencies')
 import nDPIsrvd
 from nDPIsrvd import nDPIsrvdSocket, TermColor
 
