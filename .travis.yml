@@ -1,10 +1,10 @@
 language: c
 before_install:
 - sudo apt-get -qq update
-- sudo apt-get install -y build-essential make binutils gcc autoconf automake libtool pkg-config git libpcap-dev libgcrypt-dev libgpg-error-dev libjson-c-dev
+- sudo apt-get install -y build-essential make binutils gcc autoconf automake libtool pkg-config git libpcap-dev libgcrypt-dev libgpg-error-dev libjson-c-dev liblua5.1.0-dev
 script:
 - git clone https://github.com/ntop/nDPI.git
-- cd nDPI && ./autogen.sh --prefix=/usr --with-sanitizer --with-only-libndpi && make install DESTDIR="$(realpath ./_install)" && cd ..
-- make NDPI_WITH_GCRYPT=yes CUSTOM_LIBNDPI=./nDPI/_install/usr/lib/libndpi.a ENABLE_DEBUG=yes ENABLE_SANITIZER=yes all
+- cd nDPI && ./autogen.sh --prefix=$(realpath ./_install) --with-sanitizer --with-only-libndpi && make install -j4 && cd ..
+- make NDPI_WITH_GCRYPT=yes CUSTOM_LIBNDPI=./nDPI/_install/lib/libndpi.a ENABLE_LUA=yes ENABLE_DEBUG=yes ENABLE_SANITIZER=yes LUA_LIBNAME=lua5.1 all examples
 - make clean
-- make NDPI_WITH_GCRYPT=yes PKG_CONFIG_BIN=pkg-config PKG_CONFIG_PREFIX=./nDPI/_install/usr ENABLE_DEBUG=yes ENABLE_SANITIZER=yes all
+- PKG_CONFIG_PATH="$(realpath ./nDPI/_install/lib/pkgconfig)" make PKG_CONFIG_BIN=pkg-config ENABLE_LUA=yes ENABLE_DEBUG=yes ENABLE_SANITIZER=yes LUA_LIBNAME=lua5.1 all examples

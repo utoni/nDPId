@@ -7,16 +7,16 @@ GOCC =
 GOFLAGS = -ldflags='-s -w'
 
 ifneq ($(PKG_CONFIG_BIN),)
-ifneq ($(PKG_CONFIG_PREFIX),)
-PC_CFLAGS=$(shell PKG_CONFIG_PATH=$(shell realpath $(PKG_CONFIG_PREFIX))/lib/pkgconfig $(PKG_CONFIG_BIN) --define-variable=prefix=$(shell realpath $(PKG_CONFIG_PREFIX)) --cflags libndpi)
-PC_LDFLAGS=$(shell PKG_CONFIG_PATH=$(shell realpath $(PKG_CONFIG_PREFIX))/lib/pkgconfig $(PKG_CONFIG_BIN) --define-variable=prefix=$(shell realpath $(PKG_CONFIG_PREFIX)) --libs libndpi)
-PROJECT_CFLAGS += -Wl,-rpath='$(shell realpath $(PKG_CONFIG_PREFIX)/lib)'
-else
 PC_CFLAGS=$(shell $(PKG_CONFIG_BIN) --cflags libndpi)
 PC_LDFLAGS=$(shell $(PKG_CONFIG_BIN) --libs libndpi)
+
+ifeq ($(ENABLE_LUA),yes)
+LUA_LIBNAME=lua
+LUA_CFLAGS=$(shell $(PKG_CONFIG_BIN) --cflags $(LUA_LIBNAME))
+LUA_LIBS=$(shell $(PKG_CONFIG_BIN) --libs $(LUA_LIBNAME))
 endif
 
-else
+else # PKG_CONFIG_BIN
 
 ifeq ($(NDPI_WITH_GCRYPT),yes)
 LIBS += -lgcrypt -lgpg-error
@@ -36,7 +36,7 @@ STATIC_NDPI_LIB =
 LIBS += -lndpi
 endif
 
-endif
+endif # PKG_CONFIG_BIN
 
 ifeq ($(ENABLE_DEBUG),yes)
 PROJECT_CFLAGS += -O0 -g3 -fno-omit-frame-pointer -fno-inline
@@ -67,7 +67,15 @@ nDPIsrvd: nDPIsrvd.c utils.c
 	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(STATIC_NDPI_LIB) $(LIBS)
 
 examples/c-captured/c-captured: examples/c-captured/c-captured.c
-	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $(JSMN_CFLAGS) $@.c -o $@ $(LDFLAGS) $(LIBS)
+ifneq ($(PKG_CONFIG_BIN),)
+ifeq ($(ENABLE_LUA),yes)
+	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $(JSMN_CFLAGS) $(LUA_CFLAGS) $@.c -o $@ $(LDFLAGS) $(LIBS) $(LUA_LIBS)
+else
+	@echo '*** Not building examples/c-captured/c-captured as it requires ENABLE_LUA=yes ***'
+endif
+else
+	@echo '*** Not building examples/c-captured/c-captured as it requires PKG_CONFIG_BIN to be set to your target pkg-config executable ***'
+endif
 
 examples/c-json-stdout/c-json-stdout: examples/c-json-stdout/c-json-stdout.c
 	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $(JSMN_CFLAGS) $@.c -o $@ $(LDFLAGS) $(LIBS)
@@ -76,6 +84,8 @@ examples/go-dashboard/go-dashboard: $(GO_DASHBOARD_SRCS)
 ifneq ($(GOCC),)
 	cd examples/go-dashboard && GO111MODULE=on $(GOCC) mod vendor
 	cd examples/go-dashboard && GO111MODULE=on $(GOCC) build $(GOFLAGS) .
+else
+	@echo '*** Not building examples/c-captured/c-captured as it requires GOCC to be set ***'
 endif
 
 clean:
@@ -84,7 +94,7 @@ clean:
 help:
 	@echo '------------------------------------'
 	@echo 'PKG_CONFIG_BIN    = $(PKG_CONFIG_BIN)'
-	@echo 'PKG_CONFIG_PREFIX = $(PKG_CONFIG_PREFIX)'
+	@echo 'PKG_CONFIG_PATH   = $(PKG_CONFIG_PATH)'
 	@echo 'PC_CFLAGS         = $(PC_CFLAGS)'
 	@echo 'PC_LDFLAGS        = $(PC_LDFLAGS)'
 	@echo 'CC                = $(CC)'
@@ -94,6 +104,7 @@ help:
 	@echo 'LIBS              = $(LIBS)'
 	@echo 'GOCC              = $(GOCC)'
 	@echo 'GOFLAGS           = $(GOFLAGS)'
+ifeq ($(PKG_CONFIG_BIN),)
 	@echo 'CUSTOM_LIBNDPI    = $(CUSTOM_LIBNDPI)'
 ifeq ($(NDPI_WITH_GCRYPT),yes)
 	@echo 'NDPI_WITH_GCRYPT  = yes'
@@ -104,6 +115,12 @@ ifeq ($(NDPI_WITH_PCRE),yes)
 	@echo 'NDPI_WITH_PCRE    = yes'
 else
 	@echo 'NDPI_WITH_PCRE    = no'
+endif
+endif # PKG_CONFIG_BIN
+ifeq ($(ENABLE_LUA),yes)
+	@echo 'ENABLE_LUA        = yes'
+else
+	@echo 'ENABLE_LUA        = no'
 endif
 ifeq ($(ENABLE_DEBUG),yes)
 	@echo 'ENABLE_DEBUG      = yes'
