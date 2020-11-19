@@ -1,0 +1,6 @@
+Total packets captured.: 703
+Total packets processed: 703
+Total layer4 data size.: 693561
+Total flows captured...: 1
+Total flows timed out..: 1
+Total flows detected...: 1

@@ -1,10 +1,13 @@
 language: c
 before_install:
 - sudo apt-get -qq update
-- sudo apt-get install -y build-essential make binutils gcc autoconf automake libtool pkg-config git libpcap-dev libgcrypt-dev libgpg-error-dev libjson-c-dev liblua5.1.0-dev
+- sudo apt-get install -y build-essential make binutils gcc autoconf automake libtool pkg-config git libpcap-dev libgcrypt-dev libgpg-error-dev libjson-c-dev liblua5.1.0-dev netcat-openbsd
 script:
 - git clone https://github.com/ntop/nDPI.git
 - cd nDPI && ./autogen.sh --prefix=$(realpath ./_install) --with-sanitizer --with-only-libndpi && make install -j4 && cd ..
 - make NDPI_WITH_GCRYPT=yes CUSTOM_LIBNDPI=./nDPI/_install/lib/libndpi.a ENABLE_LUA=yes ENABLE_DEBUG=yes ENABLE_SANITIZER=yes LUA_LIBNAME=lua5.1 all examples
+# RUNTIME TESTS (disabled, needs further testing..)
+#- ./tests/do.sh ./nDPI
+# EoF RUNTIME TESTS
 - make clean
 - PKG_CONFIG_PATH="$(realpath ./nDPI/_install/lib/pkgconfig)" make PKG_CONFIG_BIN=pkg-config ENABLE_LUA=yes ENABLE_DEBUG=yes ENABLE_SANITIZER=yes LUA_LIBNAME=lua5.1 all examples

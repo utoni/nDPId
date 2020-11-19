@@ -548,44 +548,32 @@ int main(int argc, char ** argv)
                     continue;
                 }
 
-                if (events[i].events & EPOLLHUP)
-                {
-                    syslog(LOG_DAEMON,
-                           "%s connection closed",
-                           (current->type == JSON_SOCK ? "collector" : "distributor"));
-                    disconnect_client(epollfd, current);
-                    continue;
-                }
-
                 if (events[i].events & EPOLLIN && current->type == JSON_SOCK)
                 {
                     /* read JSON strings (or parts) from the UNIX socket (collecting) */
                     if (current->buf.used == current->buf.max)
                     {
                         syslog(LOG_DAEMON, "Collector read buffer full. No more read possible.");
-                        disconnect_client(epollfd, current);
-                        continue;
                     }
-
-                    errno = 0;
-                    ssize_t bytes_read =
-                        read(current->fd, current->buf.ptr + current->buf.used, current->buf.max - current->buf.used);
-                    if (errno == EAGAIN)
+                    else
                     {
-                        continue;
+                        errno = 0;
+                        ssize_t bytes_read = read(current->fd,
+                                                  current->buf.ptr + current->buf.used,
+                                                  current->buf.max - current->buf.used);
+                        if (bytes_read < 0 || errno != 0)
+                        {
+                            disconnect_client(epollfd, current);
+                            continue;
+                        }
+                        if (bytes_read == 0)
+                        {
+                            syslog(LOG_DAEMON, "Collector connection closed during read");
+                            disconnect_client(epollfd, current);
+                            continue;
+                        }
+                        current->buf.used += bytes_read;
                     }
-                    if (bytes_read < 0 || errno != 0)
-                    {
-                        disconnect_client(epollfd, current);
-                        continue;
-                    }
-                    if (bytes_read == 0)
-                    {
-                        syslog(LOG_DAEMON, "collector connection closed during read");
-                        disconnect_client(epollfd, current);
-                        continue;
-                    }
-                    current->buf.used += bytes_read;
 
                     while (current->buf.used >= nDPIsrvd_JSON_BYTES + 1)
                     {
@@ -632,7 +620,8 @@ int main(int argc, char ** argv)
                             break;
                         }
 
-                        if (current->buf.ptr[current->event_json.json_bytes - 1] != '}')
+                        if (current->buf.ptr[current->event_json.json_bytes - 2] != '}' ||
+                            current->buf.ptr[current->event_json.json_bytes - 1] != '\n')
                         {
                             syslog(LOG_DAEMON | LOG_ERR,
                                    "BUG: Invalid JSON string: %.*s",

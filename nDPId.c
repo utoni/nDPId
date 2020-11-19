@@ -794,7 +794,7 @@ static void send_to_json_sink(struct nDPId_reader_thread * const reader_thread,
 #error "Please do not forget to change the format string if you've changed the value of nDPIsrvd_JSON_BYTES."
 #endif
     s_ret =
-        snprintf(newline_json_str, sizeof(newline_json_str), "%04zu%.*s", json_str_len, (int)json_str_len, json_str);
+        snprintf(newline_json_str, sizeof(newline_json_str), "%04zu%.*s\n", json_str_len + 1, (int)json_str_len, json_str);
     if (s_ret < 0 || s_ret > (int)sizeof(newline_json_str))
     {
         syslog(LOG_DAEMON | LOG_ERR,
@@ -1298,7 +1298,10 @@ static uint32_t calculate_ndpi_flow_struct_hash(struct ndpi_flow_struct const * 
         hash += ndpi_flow->src->detected_protocol_bitmask.fds_bits[i];
         hash += ndpi_flow->dst->detected_protocol_bitmask.fds_bits[i];
     }
-    hash += strnlen((const char *)ndpi_flow->host_server_name, sizeof(ndpi_flow->host_server_name)); // ugly
+
+    /* FIXME: Adding the first character and the length of the host/server name is not stable, but seems to work. */
+    hash += ndpi_flow->host_server_name[0];
+    hash += strnlen((const char *)ndpi_flow->host_server_name, sizeof(ndpi_flow->host_server_name));
 
     return hash;
 }
@@ -2064,15 +2067,6 @@ static int stop_reader_threads(void)
         }
 
         jsonize_daemon(&reader_threads[i], DAEMON_EVENT_SHUTDOWN);
-        /*
-         * The following 3 lines try to make sure that DAEMON_EVENT_SHUTDOWN gets transmitted before close().
-         * This is ugly but there is an socket option for SOCK_STREAM named SO_LINGER.
-         * Unfortunately it is not portable and does not even work for all Linux derivates.
-         */
-        fsync(reader_threads[i].json_sockfd);
-        struct timespec ts = {.tv_sec = 0, .tv_nsec = 50000};
-        nanosleep(&ts, NULL);
-
         close(reader_threads[i].json_sockfd);
         reader_threads[i].json_sockfd = -1;
     }

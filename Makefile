@@ -32,7 +32,6 @@ ifeq ($(findstring $*.so, $(CUSTOM_LIBNDPI)),.so)
 PROJECT_CFLAGS += -Wl,-rpath='$(shell dirname $(CUSTOM_LIBNDPI))'
 endif
 else
-STATIC_NDPI_LIB =
 LIBS += -lndpi
 endif
 
@@ -55,8 +54,13 @@ endif
 GO_DASHBOARD_SRCS := examples/go-dashboard/main.go examples/go-dashboard/ui/ui.go
 
 RM = rm -f
+INSTALL = install
 
-all: help nDPId nDPIsrvd
+ifeq ($(ENABLE_DEBUG),yes)
+INSTALL_ARGS = -s
+endif
+
+all: help nDPId nDPIsrvd examples
 
 examples: examples/c-captured/c-captured examples/c-json-stdout/c-json-stdout examples/go-dashboard/go-dashboard
 
@@ -85,8 +89,13 @@ ifneq ($(GOCC),)
 	cd examples/go-dashboard && GO111MODULE=on $(GOCC) mod vendor
 	cd examples/go-dashboard && GO111MODULE=on $(GOCC) build $(GOFLAGS) .
 else
-	@echo '*** Not building examples/c-captured/c-captured as it requires GOCC to be set ***'
+	@echo '*** Not building examples/go-dashboard/go-dashboard as it requires GOCC to be set ***'
 endif
+
+install: all
+	$(INSTALL) -d '$(DESTDIR)$(PREFIX)/bin' '$(DESTDIR)$(PREFIX)/sbin'
+	$(INSTALL) $(INSTALL_ARGS) -t '$(DESTDIR)$(PREFIX)/bin' nDPIsrvd
+	$(INSTALL) $(INSTALL_ARGS) -t '$(DESTDIR)$(PREFIX)/sbin' nDPId
 
 clean:
 	$(RM) -f nDPId nDPIsrvd examples/c-captured/c-captured examples/c-json-stdout/c-json-stdout examples/go-dashboard/go-dashboard
@@ -139,4 +148,4 @@ else
 endif
 	@echo '------------------------------------'
 
-.PHONY: all clean help
+.PHONY: all examples install clean help
