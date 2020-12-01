@@ -16,6 +16,10 @@ LUA_CFLAGS=$(shell $(PKG_CONFIG_BIN) --cflags $(LUA_LIBNAME))
 LUA_LIBS=$(shell $(PKG_CONFIG_BIN) --libs $(LUA_LIBNAME))
 endif
 
+ifneq ($(PKG_CONFIG_PATH),)
+PROJECT_CFLAGS += -Wl,-rpath='$(shell dirname $(PKG_CONFIG_PATH))'
+endif
+
 else # PKG_CONFIG_BIN
 
 ifeq ($(NDPI_WITH_GCRYPT),yes)
@@ -148,4 +152,7 @@ else
 endif
 	@echo '------------------------------------'
 
-.PHONY: all examples install clean help
+mocksrvd:
+	nc -k -l -U /tmp/ndpid-collector.sock
+
+.PHONY: all examples install clean help mocksrvd
