@@ -10,12 +10,6 @@ ifneq ($(PKG_CONFIG_BIN),)
 PC_CFLAGS=$(shell $(PKG_CONFIG_BIN) --cflags libndpi)
 PC_LDFLAGS=$(shell $(PKG_CONFIG_BIN) --libs libndpi)
 
-ifeq ($(ENABLE_LUA),yes)
-LUA_LIBNAME=lua
-LUA_CFLAGS=$(shell $(PKG_CONFIG_BIN) --cflags $(LUA_LIBNAME))
-LUA_LIBS=$(shell $(PKG_CONFIG_BIN) --libs $(LUA_LIBNAME))
-endif
-
 ifneq ($(PKG_CONFIG_PATH),)
 PROJECT_CFLAGS += -Wl,-rpath='$(shell dirname $(PKG_CONFIG_PATH))'
 endif
@@ -75,15 +69,7 @@ nDPIsrvd: nDPIsrvd.c utils.c
 	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(STATIC_NDPI_LIB) $(LIBS)
 
 examples/c-captured/c-captured: examples/c-captured/c-captured.c
-ifneq ($(PKG_CONFIG_BIN),)
-ifeq ($(ENABLE_LUA),yes)
-	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $(JSMN_CFLAGS) $(LUA_CFLAGS) $@.c -o $@ $(LDFLAGS) $(LIBS) $(LUA_LIBS)
-else
-	@echo '*** Not building examples/c-captured/c-captured as it requires ENABLE_LUA=yes ***'
-endif
-else
-	@echo '*** Not building examples/c-captured/c-captured as it requires PKG_CONFIG_BIN to be set to your target pkg-config executable ***'
-endif
+	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $(JSMN_CFLAGS) $@.c -o $@ $(LDFLAGS) $(LIBS)
 
 examples/c-json-stdout/c-json-stdout: examples/c-json-stdout/c-json-stdout.c
 	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $(JSMN_CFLAGS) $@.c -o $@ $(LDFLAGS) $(LIBS)
@@ -130,11 +116,6 @@ else
 	@echo 'NDPI_WITH_PCRE    = no'
 endif
 endif # PKG_CONFIG_BIN
-ifeq ($(ENABLE_LUA),yes)
-	@echo 'ENABLE_LUA        = yes'
-else
-	@echo 'ENABLE_LUA        = no'
-endif
 ifeq ($(ENABLE_DEBUG),yes)
 	@echo 'ENABLE_DEBUG      = yes'
 else
@@ -155,4 +136,10 @@ endif
 mocksrvd:
 	nc -k -l -U /tmp/ndpid-collector.sock
 
-.PHONY: all examples install clean help mocksrvd
+run-nDPIsrvd: nDPIsrvd
+	./nDPIsrvd -l
+
+run-nDPId: nDPId
+	sudo ./nDPId -l -a run-test -u $(shell id -u -n)
+
+.PHONY: all examples install clean help mocksrvd run

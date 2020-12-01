@@ -1,5 +1,6 @@
 #include <arpa/inet.h>
 #include <errno.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -12,10 +13,13 @@
 
 //#define VERBOSE 1
 
-static char serv_listen_addr[INET_ADDRSTRLEN] = DISTRIBUTOR_HOST;
-static uint16_t serv_listen_port = DISTRIBUTOR_PORT;
+struct nDPIsrvd_socket * sock = NULL;
+static int main_thread_shutdown = 0;
+static char const serv_listen_path[] = DISTRIBUTOR_UNIX_SOCKET;
+static char const serv_listen_addr[INET_ADDRSTRLEN] = DISTRIBUTOR_HOST;
+static uint16_t const serv_listen_port = DISTRIBUTOR_PORT;
 
-static enum nDPIsrvd_callback_return nDPIsrvd_json_callback(struct nDPIsrvd_socket * const sock, void * user_data)
+enum nDPIsrvd_callback_return nDPIsrvd_json_callback(struct nDPIsrvd_socket * const sock, void * user_data)
 {
     (void)user_data;
 
@@ -45,6 +49,10 @@ static enum nDPIsrvd_callback_return nDPIsrvd_json_callback(struct nDPIsrvd_sock
             {
                 printf("Not detected flow.\n");
             }
+            else if (value_equals(sock, "detected") == 1)
+            {
+                printf("Detected flow.\n");
+            }
         }
 #ifdef VERBOSE
         printf("[%.*s : %.*s] ",
@@ -63,27 +71,54 @@ static enum nDPIsrvd_callback_return nDPIsrvd_json_callback(struct nDPIsrvd_sock
     return CALLBACK_OK;
 }
 
+static void sighandler(int signum)
+{
+    (void)signum;
+
+    if (main_thread_shutdown == 0)
+    {
+        main_thread_shutdown = 1;
+    }
+}
+
 int main(int argc, char ** argv)
 {
-    struct nDPIsrvd_socket * sock = nDPIsrvd_init();
-
-    (void)argc;
-
+    sock = nDPIsrvd_init();
     if (sock == NULL)
     {
         fprintf(stderr, "%s: nDPIsrvd socket memory allocation failed!\n", argv[0]);
         return 1;
     }
 
-    printf("Connecting to %s:%u\n", serv_listen_addr, serv_listen_port);
-    enum nDPIsrvd_connect_return connect_ret = nDPIsrvd_connect_ip(sock, serv_listen_addr, serv_listen_port);
+    signal(SIGINT, sighandler);
+    signal(SIGTERM, sighandler);
+    signal(SIGPIPE, sighandler);
+
+    enum nDPIsrvd_connect_return connect_ret;
+
+    if (argc == 2)
+    {
+        printf("Connecting to UNIX socket: %s\n", argv[1]);
+        connect_ret = nDPIsrvd_connect_unix(sock, argv[1]);
+    } else if (argc == 1) {
+        if (access(serv_listen_path, R_OK) == 0)
+        {
+            printf("Connecting to %s\n", serv_listen_path);
+            connect_ret = nDPIsrvd_connect_unix(sock, serv_listen_path);
+        } else {
+            printf("Connecting to %s:%u\n", serv_listen_addr, serv_listen_port);
+            connect_ret = nDPIsrvd_connect_ip(sock, serv_listen_addr, serv_listen_port);
+        }
+    }
+
     if (connect_ret != CONNECT_OK)
     {
         fprintf(stderr, "%s: nDPIsrvd socket connect failed!\n", argv[0]);
+        nDPIsrvd_free(&sock);
         return 1;
     }
 
-    while (1)
+    while (main_thread_shutdown == 0)
     {
         errno = 0;
         enum nDPIsrvd_read_return read_ret = nDPIsrvd_read(sock);
@@ -99,6 +134,8 @@ int main(int argc, char ** argv)
                 break;
         }
     }
+
+    nDPIsrvd_free(&sock);
 
     return 0;
 }

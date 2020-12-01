@@ -3,9 +3,11 @@
 
 #include <arpa/inet.h>
 #include <errno.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/socket.h>
+#include <sys/un.h>
 #include <unistd.h>
 
 #include "config.h"
@@ -103,7 +105,15 @@ static inline struct nDPIsrvd_socket * nDPIsrvd_init(void)
         sock->fd = -1;
         sock->socket_family = -1;
     }
+
     return sock;
+}
+
+static inline void nDPIsrvd_free(struct nDPIsrvd_socket ** const sock)
+{
+    free(*sock);
+
+    *sock = NULL;
 }
 
 static inline enum nDPIsrvd_connect_return nDPIsrvd_connect_ip(struct nDPIsrvd_socket * const sock,
@@ -137,8 +147,25 @@ static inline enum nDPIsrvd_connect_return nDPIsrvd_connect_ip(struct nDPIsrvd_s
 static inline enum nDPIsrvd_connect_return nDPIsrvd_connect_unix(struct nDPIsrvd_socket * const sock,
                                                                  char const * const path)
 {
-    (void)sock;
-    (void)path;
+    struct sockaddr_un remote_addr = {};
+
+    sock->socket_family = remote_addr.sun_family = AF_UNIX;
+    sock->fd = socket(sock->socket_family, SOCK_STREAM, 0);
+
+    if (sock->fd < 0)
+    {
+        return CONNECT_ERROR_SOCKET;
+    }
+
+    if (snprintf(remote_addr.sun_path, sizeof(remote_addr.sun_path), "%s", path) <= 0)
+    {
+        return CONNECT_ERROR_SOCKET;
+    }
+
+    if (connect(sock->fd, (struct sockaddr *)&remote_addr, sizeof(remote_addr)) != 0)
+    {
+        return CONNECT_ERROR;
+    }
 
     return CONNECT_OK;
 }
@@ -257,7 +284,8 @@ static inline enum nDPIsrvd_parse_return nDPIsrvd_parse(struct nDPIsrvd_socket *
             break;
         }
 
-        if (sock->buffer.raw[sock->buffer.json_string_length - 1] != '}')
+        if (sock->buffer.raw[sock->buffer.json_string_length - 2] != '}' ||
+            sock->buffer.raw[sock->buffer.json_string_length - 1] != '\n')
         {
             return PARSE_INVALID_CLOSING_CHAR;
         }
