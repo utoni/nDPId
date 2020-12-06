@@ -3,6 +3,7 @@
 
 #include <arpa/inet.h>
 #include <errno.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -12,6 +13,23 @@
 
 #include "config.h"
 #include "jsmn/jsmn.h"
+#include "uthash.h"
+
+// FIXME: Unify with event enums in nDPId.c
+enum nDPIsrvd_event
+{
+    EVENT_INVALID = 0,
+    EVENT_FLOW,
+    EVENT_PACKET,
+    EVENT_COUNT
+};
+
+struct nDPIsrvd_flow
+{
+    char id[20];
+    void * user_data;
+    UT_hash_handle hh;
+};
 
 struct nDPIsrvd_socket
 {
@@ -53,9 +71,23 @@ struct nDPIsrvd_socket
             int value_length;
         } key_value;
     } jsmn;
+
+    struct
+    {
+        enum nDPIsrvd_event event;
+        char const * event_name;
+        int event_name_len;
+        char const * flow_id;
+        int flow_id_len;
+    } current;
+
+    struct nDPIsrvd_flow * flows;
+
+    void * user_data;
 };
 
 #define FIRST_ENUM_VALUE 1
+#define LAST_ENUM_VALUE CALLBACK_LAST_ENUM_VALUE
 
 enum nDPIsrvd_connect_return
 {
@@ -96,6 +128,32 @@ enum nDPIsrvd_callback_return
 
 typedef enum nDPIsrvd_callback_return (*json_callback)(struct nDPIsrvd_socket * const sock, void * user_data);
 
+static inline char const * nDPIsrvd_enum_to_string(int enum_value)
+{
+    static char const * const enum_str[] = {"CONNECT_OK",
+                                            "CONNECT_ERROR_SOCKET",
+                                            "CONNECT_ERROR_PTON",
+                                            "CONNECT_ERROR",
+                                            "READ_OK",
+                                            "READ_PEER_DISCONNECT",
+                                            "READ_ERROR",
+                                            "PARSE_OK",
+                                            "PARSE_INVALID_OPENING_CHAR",
+                                            "PARSE_SIZE_EXCEEDS_CONVERSION_LIMIT",
+                                            "PARSE_SIZE_MISSING",
+                                            "PARSE_STRING_TOO_BIG",
+                                            "PARSE_INVALID_CLOSING_CHAR",
+                                            "PARSE_JSMN_ERROR",
+                                            "PARSE_CALLBACK_ERROR"};
+
+    if (enum_value < FIRST_ENUM_VALUE || enum_value >= LAST_ENUM_VALUE)
+    {
+        return NULL;
+    }
+
+    return enum_str[enum_value - FIRST_ENUM_VALUE];
+}
+
 static inline struct nDPIsrvd_socket * nDPIsrvd_init(void)
 {
     struct nDPIsrvd_socket * sock = (struct nDPIsrvd_socket *)malloc(sizeof(*sock));
@@ -111,6 +169,15 @@ static inline struct nDPIsrvd_socket * nDPIsrvd_init(void)
 
 static inline void nDPIsrvd_free(struct nDPIsrvd_socket ** const sock)
 {
+    struct nDPIsrvd_flow * current_flow;
+    struct nDPIsrvd_flow * tmp;
+
+    HASH_ITER(hh, (*sock)->flows, current_flow, tmp)
+    {
+        HASH_DEL((*sock)->flows, current_flow);
+        free(current_flow);
+    }
+
     free(*sock);
 
     *sock = NULL;
@@ -251,6 +318,53 @@ static inline int value_equals(struct nDPIsrvd_socket const * const sock, char c
            strncmp(name, sock->jsmn.key_value.value, sock->jsmn.key_value.value_length) == 0;
 }
 
+static inline void nDPIsrvd_handle_flow(struct nDPIsrvd_socket * const sock)
+{
+    if (token_is_start(sock) == 1)
+    {
+        memset(&sock->current, 0, sizeof(sock->current));
+    }
+    else if (token_is_end(sock) == 1)
+    {
+        if (sock->current.event_name != NULL && sock->current.flow_id != NULL)
+        {
+            if (strncmp(sock->current.event_name, "new", sock->current.event_name_len) == 0)
+            {
+                struct nDPIsrvd_flow * f = (struct nDPIsrvd_flow *)malloc(sizeof(*f));
+                snprintf(f->id, sizeof(f->id), "%.*s", sock->current.flow_id_len, sock->current.flow_id);
+                f->user_data = NULL;
+                HASH_ADD(hh, sock->flows, id, sizeof(f->id), f);
+            }
+            else if (strncmp(sock->current.event_name, "end", sock->current.event_name_len) == 0 ||
+                     strncmp(sock->current.event_name, "idle", sock->current.event_name_len) == 0)
+            {
+                struct nDPIsrvd_flow * f = NULL;
+                HASH_FIND(hh, sock->flows, sock->current.flow_id, (size_t)sock->current.flow_id_len, f);
+            }
+        }
+    }
+    else if (token_is_key_value_pair(sock) == 1)
+    {
+        if (key_equals(sock, "packet_event_name") == 1)
+        {
+            sock->current.event = EVENT_PACKET;
+            sock->current.event_name = sock->jsmn.key_value.value;
+            sock->current.event_name_len = sock->jsmn.key_value.value_length;
+        }
+        else if (key_equals(sock, "flow_event_name") == 1)
+        {
+            sock->current.event = EVENT_FLOW;
+            sock->current.event_name = sock->jsmn.key_value.value;
+            sock->current.event_name_len = sock->jsmn.key_value.value_length;
+        }
+        else if (key_equals(sock, "flow_id") == 1)
+        {
+            sock->current.flow_id = sock->jsmn.key_value.value;
+            sock->current.flow_id_len = sock->jsmn.key_value.value_length;
+        }
+    }
+}
+
 static inline enum nDPIsrvd_parse_return nDPIsrvd_parse(struct nDPIsrvd_socket * const sock,
                                                         json_callback cb,
                                                         void * user_data)
@@ -306,6 +420,7 @@ static inline enum nDPIsrvd_parse_return nDPIsrvd_parse(struct nDPIsrvd_socket *
         sock->jsmn.key_value.value = NULL;
         sock->jsmn.key_value.value_length = 0;
         sock->jsmn.current_token = 0;
+        nDPIsrvd_handle_flow(sock);
         if (cb(sock, user_data) != CALLBACK_OK)
         {
             return PARSE_CALLBACK_ERROR;
@@ -333,6 +448,7 @@ static inline enum nDPIsrvd_parse_return nDPIsrvd_parse(struct nDPIsrvd_socket *
                 {
                     return PARSE_JSMN_ERROR;
                 }
+                nDPIsrvd_handle_flow(sock);
                 if (cb(sock, user_data) != CALLBACK_OK)
                 {
                     return PARSE_CALLBACK_ERROR;
@@ -349,6 +465,7 @@ static inline enum nDPIsrvd_parse_return nDPIsrvd_parse(struct nDPIsrvd_socket *
         {
             return PARSE_CALLBACK_ERROR;
         }
+        nDPIsrvd_handle_flow(sock);
 
         sock->jsmn.current_token = -1;
         sock->jsmn.tokens_found = 0;

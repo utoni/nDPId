@@ -1,6 +1,7 @@
 CC = gcc
 PROJECT_CFLAGS += -Wall -Wextra $(EXTRA_CFLAGS) -I.
 JSMN_CFLAGS := -DJSMN_STATIC=1 -DJSMN_STRICT=1 -Idependencies
+UTHASH_CFLAGS := -Idependencies/uthash/src
 LIBS += -pthread -lpcap -lm
 
 GOCC =
@@ -69,7 +70,7 @@ nDPIsrvd: nDPIsrvd.c utils.c
 	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(STATIC_NDPI_LIB) $(LIBS)
 
 examples/c-captured/c-captured: examples/c-captured/c-captured.c
-	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $(JSMN_CFLAGS) $@.c -o $@ $(LDFLAGS) $(LIBS)
+	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $(JSMN_CFLAGS) $(UTHASH_CFLAGS) $@.c -o $@ $(LDFLAGS) $(LIBS)
 
 examples/c-json-stdout/c-json-stdout: examples/c-json-stdout/c-json-stdout.c
 	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $(JSMN_CFLAGS) $@.c -o $@ $(LDFLAGS) $(LIBS)

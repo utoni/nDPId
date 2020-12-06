@@ -156,7 +156,7 @@ class PcapPacket:
         return 'Success.'
 
 def JsonParseBytes(json_bytes):
-    return json.loads(json_bytes.decode('ascii', errors='replace'), strict=False)
+    return json.loads(json_bytes.decode('ascii', errors='replace'), strict=True)
 
 class nDPIdEvent:
     isValid = False
