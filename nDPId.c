@@ -868,12 +868,12 @@ static void serialize_and_send(struct nDPId_reader_thread * const reader_thread)
     ndpi_reset_serializer(&reader_thread->workflow->ndpi_serializer);
 }
 
-size_t base64_out_len(size_t in_len)
+static size_t base64_out_len(size_t in_len)
 {
     return ((in_len + 2) / 3) * 4;
 }
 
-char * base64_encode(uint8_t const * in, size_t in_len, char * const out, size_t const out_len)
+static char * base64_encode(uint8_t const * in, size_t in_len, char * const out, size_t const out_len)
 {
     static const unsigned char base64_table[65] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
     size_t len = 0, ret_size;
@@ -2334,37 +2334,37 @@ static int validate_options(char const * const arg0)
 
     if (max_flows_per_thread < 128 || max_flows_per_thread > nDPId_MAX_FLOWS_PER_THREAD)
     {
-        fprintf(stderr, "%s: 128 < max-flows-per-thread < %d\n", arg0, nDPId_MAX_FLOWS_PER_THREAD);
+        fprintf(stderr, "%s: Value not in range: 128 < max-flows-per-thread[%llu] < %d\n", arg0, max_flows_per_thread, nDPId_MAX_FLOWS_PER_THREAD);
         retval = 1;
     }
     if (max_idle_flows_per_thread < 64 || max_idle_flows_per_thread > nDPId_MAX_IDLE_FLOWS_PER_THREAD)
     {
-        fprintf(stderr, "%s: 64 < max-idle-flows-per-thread < %d\n", arg0, nDPId_MAX_IDLE_FLOWS_PER_THREAD);
+        fprintf(stderr, "%s: Value not in range: 64 < max-idle-flows-per-thread[%llu] < %d\n", arg0, max_idle_flows_per_thread, nDPId_MAX_IDLE_FLOWS_PER_THREAD);
         retval = 1;
     }
-    if (tick_resolution < 100)
+    if (tick_resolution < 1)
     {
-        fprintf(stderr, "%s: tick-resolution > 100\n", arg0);
+        fprintf(stderr, "%s: Value not in range: tick-resolution[%llu] > 1\n", arg0, tick_resolution);
         retval = 1;
     }
     if (reader_thread_count < 1 || reader_thread_count > nDPId_MAX_READER_THREADS)
     {
-        fprintf(stderr, "%s: 1 < reader-thread-count < %d\n", arg0, nDPId_MAX_READER_THREADS);
+        fprintf(stderr, "%s: Value not in range: 1 < reader-thread-count[%llu] < %d\n", arg0, reader_thread_count, nDPId_MAX_READER_THREADS);
         retval = 1;
     }
     if (idle_scan_period < 1000)
     {
-        fprintf(stderr, "%s: idle-scan-period > 1000\n", arg0);
+        fprintf(stderr, "%s: Value not in range: idle-scan-period[%llu] > 1000\n", arg0, idle_scan_period);
         retval = 1;
     }
     if (max_idle_time < 60)
     {
-        fprintf(stderr, "%s: max-idle-time > 60\n", arg0);
+        fprintf(stderr, "%s: Value not in range: max-idle-time[%llu] > 60\n", arg0, max_idle_time);
         retval = 1;
     }
     if (max_post_end_flow_time > max_idle_time)
     {
-        fprintf(stderr, "%s: max-post-end-flow-time < max_idle_time\n", arg0);
+        fprintf(stderr, "%s: Value not in range: max-post-end-flow-time[%llu] < max_idle_time[%llu]\n", arg0, max_post_end_flow_time, max_idle_time);
         retval = 1;
     }
 
