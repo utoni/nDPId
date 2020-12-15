@@ -7,6 +7,9 @@ LIBS += -pthread -lpcap -lm
 GOCC =
 GOFLAGS = -ldflags='-s -w'
 
+UNIX_SOCK_DISTRIBUTOR = /tmp/ndpid-distributor.sock
+UNIX_SOCK_COLLECTOR = /tmp/ndpid-collector.sock
+
 ifneq ($(PKG_CONFIG_BIN),)
 PC_CFLAGS=$(shell $(PKG_CONFIG_BIN) --cflags libndpi)
 PC_LDFLAGS=$(shell $(PKG_CONFIG_BIN) --libs libndpi)
@@ -134,13 +137,16 @@ else
 endif
 	@echo '------------------------------------'
 
-mocksrvd:
-	nc -k -l -U /tmp/ndpid-collector.sock
+run-mocksrvd:
+	nc -k -l -U $(UNIX_SOCK_COLLECTOR)
+
+run-raw-out:
+	nc -U $(UNIX_SOCK_DISTRIBUTOR)
 
 run-nDPIsrvd: nDPIsrvd
-	./nDPIsrvd -l
+	./nDPIsrvd -l -c $(UNIX_SOCK_COLLECTOR) -S $(UNIX_SOCK_DISTRIBUTOR)
 
 run-nDPId: nDPId
-	sudo ./nDPId -l -a run-test -u $(shell id -u -n)
+	sudo ./nDPId -l -c $(UNIX_SOCK_COLLECTOR) -a run-test -u $(shell id -u -n)
 
-.PHONY: all examples install clean help mocksrvd run
+.PHONY: all examples install clean help run-mocksrvd run-raw-out run-nDPIsrvd run-nDPId
