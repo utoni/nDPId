@@ -793,8 +793,8 @@ static void send_to_json_sink(struct nDPId_reader_thread * const reader_thread,
 #if nDPIsrvd_JSON_BYTES != 4
 #error "Please do not forget to change the format string if you've changed the value of nDPIsrvd_JSON_BYTES."
 #endif
-    s_ret =
-        snprintf(newline_json_str, sizeof(newline_json_str), "%04zu%.*s\n", json_str_len + 1, (int)json_str_len, json_str);
+    s_ret = snprintf(
+        newline_json_str, sizeof(newline_json_str), "%04zu%.*s\n", json_str_len + 1, (int)json_str_len, json_str);
     if (s_ret < 0 || s_ret > (int)sizeof(newline_json_str))
     {
         syslog(LOG_DAEMON | LOG_ERR,
@@ -2334,12 +2334,20 @@ static int validate_options(char const * const arg0)
 
     if (max_flows_per_thread < 128 || max_flows_per_thread > nDPId_MAX_FLOWS_PER_THREAD)
     {
-        fprintf(stderr, "%s: Value not in range: 128 < max-flows-per-thread[%llu] < %d\n", arg0, max_flows_per_thread, nDPId_MAX_FLOWS_PER_THREAD);
+        fprintf(stderr,
+                "%s: Value not in range: 128 < max-flows-per-thread[%llu] < %d\n",
+                arg0,
+                max_flows_per_thread,
+                nDPId_MAX_FLOWS_PER_THREAD);
         retval = 1;
     }
     if (max_idle_flows_per_thread < 64 || max_idle_flows_per_thread > nDPId_MAX_IDLE_FLOWS_PER_THREAD)
     {
-        fprintf(stderr, "%s: Value not in range: 64 < max-idle-flows-per-thread[%llu] < %d\n", arg0, max_idle_flows_per_thread, nDPId_MAX_IDLE_FLOWS_PER_THREAD);
+        fprintf(stderr,
+                "%s: Value not in range: 64 < max-idle-flows-per-thread[%llu] < %d\n",
+                arg0,
+                max_idle_flows_per_thread,
+                nDPId_MAX_IDLE_FLOWS_PER_THREAD);
         retval = 1;
     }
     if (tick_resolution < 1)
@@ -2349,7 +2357,11 @@ static int validate_options(char const * const arg0)
     }
     if (reader_thread_count < 1 || reader_thread_count > nDPId_MAX_READER_THREADS)
     {
-        fprintf(stderr, "%s: Value not in range: 1 < reader-thread-count[%llu] < %d\n", arg0, reader_thread_count, nDPId_MAX_READER_THREADS);
+        fprintf(stderr,
+                "%s: Value not in range: 1 < reader-thread-count[%llu] < %d\n",
+                arg0,
+                reader_thread_count,
+                nDPId_MAX_READER_THREADS);
         retval = 1;
     }
     if (idle_scan_period < 1000)
@@ -2364,7 +2376,11 @@ static int validate_options(char const * const arg0)
     }
     if (max_post_end_flow_time > max_idle_time)
     {
-        fprintf(stderr, "%s: Value not in range: max-post-end-flow-time[%llu] < max_idle_time[%llu]\n", arg0, max_post_end_flow_time, max_idle_time);
+        fprintf(stderr,
+                "%s: Value not in range: max-post-end-flow-time[%llu] < max_idle_time[%llu]\n",
+                arg0,
+                max_post_end_flow_time,
+                max_idle_time);
         retval = 1;
     }
 
