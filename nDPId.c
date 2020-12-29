@@ -222,6 +222,7 @@ int main_thread_shutdown = 0;
 static uint32_t global_flow_id = 0;
 
 static char * pcap_file_or_interface = NULL;
+static char * bpf_str = NULL;
 static int log_to_stderr = 0;
 static char pidfile[UNIX_PATH_MAX] = nDPId_PIDFILE;
 static char * user = "nobody";
@@ -297,6 +298,26 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
                pcap_error_buffer);
         free_workflow(&workflow);
         return NULL;
+    }
+
+    if (bpf_str != NULL)
+    {
+        struct bpf_program fp;
+        if (pcap_compile(workflow->pcap_handle, &fp, bpf_str, 1, PCAP_NETMASK_UNKNOWN) != 0)
+        {
+            syslog(LOG_DAEMON | LOG_ERR,
+                   "pcap_compile: %s", pcap_geterr(workflow->pcap_handle));
+            free_workflow(&workflow);
+            return NULL;
+        }
+        if (pcap_setfilter(workflow->pcap_handle, &fp) != 0)
+        {
+            syslog(LOG_DAEMON | LOG_ERR,
+                   "pcap_setfilter: %s", pcap_geterr(workflow->pcap_handle));
+            free_workflow(&workflow);
+            return NULL;
+        }
+        pcap_freecode(&fp);
     }
 
     ndpi_init_prefs init_prefs = ndpi_no_prefs;
@@ -987,7 +1008,10 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
                                      base64_encode(packet, header->caplen, base64_data, sizeof(base64_data))) != 0 ||
         ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_caplen", header->caplen) != 0 ||
         ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_type", pkt_type) != 0 ||
-        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_ipoffset", pkt_ipoffset) != 0)
+        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_ipoffset", pkt_ipoffset) != 0 ||
+        ndpi_serialize_string_int32(&workflow->ndpi_serializer,
+                                    "pkt_datalink",
+                                    pcap_datalink(reader_thread->workflow->pcap_handle)) != 0)
     {
         syslog(LOG_DAEMON | LOG_ERR,
                "[%8llu, %d] JSON serialize buffer failed",
@@ -2194,13 +2218,14 @@ static int parse_options(int argc, char ** argv)
 
     static char const usage[] =
         "Usage: %s "
-        "[-i pcap-file/interface ] "
+        "[-i pcap-file/interface] [-P bpf-filter]"
         "[-l] [-c path-to-unix-sock] "
         "[-d] [-p pidfile] "
         "[-u user] [-g group] "
         "[-a instance-alias] "
         "[-o subopt=value]\n\n"
         "\t-i\tInterface or file from where to read packets from.\n"
+        "\t-P\tSet an optional berkeley packet filter.\n"
         "\t-l\tLog all messages to stderr as well.\n"
         "\t-c\tPath to the Collector UNIX socket which acts as the JSON sink.\n"
         "\t-d\tForking into background after initialization.\n"
@@ -2210,12 +2235,15 @@ static int parse_options(int argc, char ** argv)
         "\t-a\tSet an optional name of this daemon instance which will be part of every JSON message.\n"
         "\t-o\t(Carefully) Tune some daemon options. See subopts below.\n\n";
 
-    while ((opt = getopt(argc, argv, "hi:lc:dp:u:g:a:o:")) != -1)
+    while ((opt = getopt(argc, argv, "hi:P:lc:dp:u:g:a:o:")) != -1)
     {
         switch (opt)
         {
             case 'i':
                 pcap_file_or_interface = strdup(optarg);
+                break;
+            case 'P':
+                bpf_str = strdup(optarg);
                 break;
             case 'l':
                 log_to_stderr = 1;
