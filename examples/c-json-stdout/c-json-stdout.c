@@ -93,7 +93,7 @@ int main(void)
             if (buf[json_bytes - 2] != '}' ||
                 buf[json_bytes - 1] != '\n')
             {
-                fprintf(stderr, "BUG: Invalid JSON string: %.*s\n", (int)json_bytes, buf);
+                fprintf(stderr, "BUG: Invalid JSON string: \"%.*s\"\n", (int)json_bytes, buf);
                 exit(1);
             }
 

@@ -28,8 +28,7 @@ BASIC_EVENTS = ['Invalid', 'Unknown-Datalink-Layer', 'Unknown-Layer3-Protocol', 
                 'IP4-Size-Smaller-Than-Header', 'IP4-Layer4-Payload-Detection-Failed', 'IP6-Packet-Too-Short',
                 'IP6-Size-Smaller-Than-Header', 'IP6-Layer4-Payload-Detection-Failed', 'TCP-Packet-Too-Short',
                 'UDP-Packet-Too-Short', 'Capture-Size-Smaller-Than-Packet-Size', 'Max-Flow-To-Track',
-                'Flow-Memory-Allocation-Failed', 'NDPI-Flow-Memory-Allocation-Failed',
-                'NDPI-ID-Memory-Allocation-Failed']
+                'Flow-Memory-Allocation-Failed']
 PACKET_EVENTS = [ ('Invalid','invalid'), ('Packet','packet'), ('Packet-Flow','packet-flow') ]
 FLOW_EVENTS = [ ('Invalid','invalid'), ('New','new'), ('End','end'), ('Idle','idle'), ('Guessed','guessed'), \
                 ('Detected','detected'), ('Detection-Update','detection-update'), ('Not-Detected','not-detected') ]

@@ -69,9 +69,20 @@ struct nDPId_flow_info
     struct ndpi_proto detected_l7_protocol;
     struct ndpi_proto guessed_l7_protocol;
 
-    struct ndpi_flow_struct * ndpi_flow;
-    struct ndpi_id_struct * ndpi_src;
-    struct ndpi_id_struct * ndpi_dst;
+    union {
+        uint8_t ndpi_flow_raw[SIZEOF_FLOW_STRUCT];
+        struct ndpi_flow_struct ndpi_flow;
+    };
+
+    union {
+        uint8_t ndpi_src_raw[SIZEOF_ID_STRUCT];
+        struct ndpi_id_struct ndpi_src;
+    };
+
+    union {
+        uint8_t ndpi_dst_raw[SIZEOF_ID_STRUCT];
+        struct ndpi_id_struct ndpi_dst;
+    };
 };
 
 struct nDPId_workflow
@@ -159,8 +170,6 @@ enum basic_event
     CAPTURE_SIZE_SMALLER_THAN_PACKET_SIZE,
     MAX_FLOW_TO_TRACK,
     FLOW_MEMORY_ALLOCATION_FAILED,
-    NDPI_FLOW_MEMORY_ALLOCATION_FAILED,
-    NDPI_ID_MEMORY_ALLOCATION_FAILED,
 
     BASIC_EVENT_COUNT
 };
@@ -206,8 +215,6 @@ static char const * const basic_event_name_table[BASIC_EVENT_COUNT] = {
     [CAPTURE_SIZE_SMALLER_THAN_PACKET_SIZE] = "Captured packet size is smaller than packet size",
     [MAX_FLOW_TO_TRACK] = "Max flows to track reached",
     [FLOW_MEMORY_ALLOCATION_FAILED] = "Flow memory allocation failed",
-    [NDPI_FLOW_MEMORY_ALLOCATION_FAILED] = "nDPI Flow memory allocation failed",
-    [NDPI_ID_MEMORY_ALLOCATION_FAILED] = "Not enough memory for src id struct",
 };
 
 static char const * const daemon_event_name_table[DAEMON_EVENT_COUNT] = {
@@ -264,7 +271,7 @@ static char * const subopt_token[] = {[MAX_FLOWS_PER_THREAD] = "max-flows-per-th
 static void free_workflow(struct nDPId_workflow ** const workflow);
 static void serialize_and_send(struct nDPId_reader_thread * const reader_thread);
 static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
-                               struct nDPId_flow_info const * const flow,
+                               struct nDPId_flow_info * const flow,
                                enum flow_event event);
 
 static struct nDPId_workflow * init_workflow(char const * const file_or_device)
@@ -364,9 +371,6 @@ static void ndpi_flow_info_freer(void * const node)
 {
     struct nDPId_flow_info * const flow = (struct nDPId_flow_info *)node;
 
-    ndpi_free(flow->ndpi_dst);
-    ndpi_free(flow->ndpi_src);
-    ndpi_flow_free(flow->ndpi_flow);
     ndpi_free(flow);
 }
 
@@ -590,7 +594,7 @@ static void process_idle_flow(struct nDPId_reader_thread * const reader_thread, 
             if (ndpi_is_protocol_detected(workflow->ndpi_struct, f->guessed_l7_protocol) == 0)
             {
                 f->guessed_l7_protocol =
-                    ndpi_detection_giveup(workflow->ndpi_struct, f->ndpi_flow, 1, &protocol_was_guessed);
+                    ndpi_detection_giveup(workflow->ndpi_struct, &f->ndpi_flow, 1, &protocol_was_guessed);
             }
             else
             {
@@ -1023,7 +1027,7 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
 
 /* I decided against ndpi_flow2json as does not fulfill my needs. */
 static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
-                               struct nDPId_flow_info const * const flow,
+                               struct nDPId_flow_info * const flow,
                                enum flow_event event)
 {
     struct nDPId_workflow * const workflow = reader_thread->workflow;
@@ -1054,7 +1058,7 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
         case FLOW_EVENT_NOT_DETECTED:
         case FLOW_EVENT_GUESSED:
             if (ndpi_dpi2json(
-                    workflow->ndpi_struct, flow->ndpi_flow, flow->guessed_l7_protocol, &workflow->ndpi_serializer) != 0)
+                    workflow->ndpi_struct, &flow->ndpi_flow, flow->guessed_l7_protocol, &workflow->ndpi_serializer) != 0)
             {
                 syslog(LOG_DAEMON | LOG_ERR,
                        "[%8llu, %4u] ndpi_dpi2json failed for not-detected/guessed flow",
@@ -1066,7 +1070,7 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
         case FLOW_EVENT_DETECTED:
         case FLOW_EVENT_DETECTION_UPDATE:
             if (ndpi_dpi2json(workflow->ndpi_struct,
-                              flow->ndpi_flow,
+                              &flow->ndpi_flow,
                               flow->detected_l7_protocol,
                               &workflow->ndpi_serializer) != 0)
             {
@@ -1742,60 +1746,21 @@ static void ndpi_process_packet(uint8_t * const args,
         flow_to_process->flow_id = global_flow_id++;
 #endif
 
-        flow_to_process->ndpi_flow = (struct ndpi_flow_struct *)ndpi_flow_malloc(SIZEOF_FLOW_STRUCT);
-        if (flow_to_process->ndpi_flow == NULL)
-        {
-            jsonize_packet_event(reader_thread, header, packet, type, ip_offset, NULL, PACKET_EVENT_PAYLOAD);
-            jsonize_basic_eventf(reader_thread,
-                                 NDPI_FLOW_MEMORY_ALLOCATION_FAILED,
-                                 "%s%u %s%zu",
-                                 "flow_id",
-                                 flow_to_process->flow_id,
-                                 "size",
-                                 SIZEOF_FLOW_STRUCT);
-            return;
-        }
-        memset(flow_to_process->ndpi_flow, 0, SIZEOF_FLOW_STRUCT);
+        memset(&flow_to_process->ndpi_flow, 0, (SIZEOF_FLOW_STRUCT > sizeof(struct ndpi_flow_struct) ?
+                                                SIZEOF_FLOW_STRUCT : sizeof(struct ndpi_flow_struct)));
+        memset(&flow_to_process->ndpi_src, 0, (SIZEOF_ID_STRUCT > sizeof(struct ndpi_id_struct) ?
+                                               SIZEOF_ID_STRUCT : sizeof(struct ndpi_id_struct)));
+        memset(&flow_to_process->ndpi_dst, 0, (SIZEOF_ID_STRUCT > sizeof(struct ndpi_id_struct) ?
+                                               SIZEOF_ID_STRUCT : sizeof(struct ndpi_id_struct)));
 
-        flow_to_process->ndpi_src = (struct ndpi_id_struct *)ndpi_calloc(1, SIZEOF_ID_STRUCT);
-        if (flow_to_process->ndpi_src == NULL)
-        {
-            jsonize_packet_event(reader_thread, header, packet, type, ip_offset, NULL, PACKET_EVENT_PAYLOAD);
-            jsonize_basic_eventf(reader_thread,
-                                 NDPI_ID_MEMORY_ALLOCATION_FAILED,
-                                 "%s%u %s%zu %s%s",
-                                 "flow_id",
-                                 flow_to_process->flow_id,
-                                 "size",
-                                 SIZEOF_ID_STRUCT,
-                                 "direction",
-                                 "src");
-            return;
-        }
-
-        flow_to_process->ndpi_dst = (struct ndpi_id_struct *)ndpi_calloc(1, SIZEOF_ID_STRUCT);
-        if (flow_to_process->ndpi_dst == NULL)
-        {
-            jsonize_packet_event(reader_thread, header, packet, type, ip_offset, NULL, PACKET_EVENT_PAYLOAD);
-            jsonize_basic_eventf(reader_thread,
-                                 NDPI_ID_MEMORY_ALLOCATION_FAILED,
-                                 "%s%u %s%zu %s%s",
-                                 "flow_id",
-                                 flow_to_process->flow_id,
-                                 "size",
-                                 SIZEOF_ID_STRUCT,
-                                 "direction",
-                                 "dst");
-            return;
-        }
         if (ndpi_tsearch(flow_to_process, &workflow->ndpi_flows_active[hashed_index], ndpi_workflow_node_cmp) == NULL)
         {
             /* Possible Leak, but should not happen as we'd abort earlier. */
             return;
         }
 
-        ndpi_src = flow_to_process->ndpi_src;
-        ndpi_dst = flow_to_process->ndpi_dst;
+        ndpi_src = &flow_to_process->ndpi_src;
+        ndpi_dst = &flow_to_process->ndpi_dst;
 
         is_new_flow = 1;
     }
@@ -1805,13 +1770,13 @@ static void ndpi_process_packet(uint8_t * const args,
 
         if (direction_changed != 0)
         {
-            ndpi_src = flow_to_process->ndpi_dst;
-            ndpi_dst = flow_to_process->ndpi_src;
+            ndpi_src = &flow_to_process->ndpi_dst;
+            ndpi_dst = &flow_to_process->ndpi_src;
         }
         else
         {
-            ndpi_src = flow_to_process->ndpi_src;
-            ndpi_dst = flow_to_process->ndpi_dst;
+            ndpi_src = &flow_to_process->ndpi_src;
+            ndpi_dst = &flow_to_process->ndpi_dst;
         }
     }
 
@@ -1849,11 +1814,11 @@ static void ndpi_process_packet(uint8_t * const args,
     }
 
     /* We currently process max. 254 packets per flow. TODO: The user should decide this! */
-    if (flow_to_process->ndpi_flow->num_processed_pkts == 0xFF)
+    if (flow_to_process->ndpi_flow.num_processed_pkts == 0xFF)
     {
         return;
     }
-    else if (flow_to_process->ndpi_flow->num_processed_pkts == 0xFE)
+    else if (flow_to_process->ndpi_flow.num_processed_pkts == 0xFE)
     {
         if (flow_to_process->detection_completed != 0)
         {
@@ -1864,7 +1829,7 @@ static void ndpi_process_packet(uint8_t * const args,
             /* last chance to guess something, better then nothing */
             uint8_t protocol_was_guessed = 0;
             flow_to_process->guessed_l7_protocol =
-                ndpi_detection_giveup(workflow->ndpi_struct, flow_to_process->ndpi_flow, 1, &protocol_was_guessed);
+                ndpi_detection_giveup(workflow->ndpi_struct, &flow_to_process->ndpi_flow, 1, &protocol_was_guessed);
             if (protocol_was_guessed != 0)
             {
                 jsonize_flow_event(reader_thread, flow_to_process, FLOW_EVENT_GUESSED);
@@ -1877,7 +1842,7 @@ static void ndpi_process_packet(uint8_t * const args,
     }
 
     flow_to_process->detected_l7_protocol = ndpi_detection_process_packet(workflow->ndpi_struct,
-                                                                          flow_to_process->ndpi_flow,
+                                                                          &flow_to_process->ndpi_flow,
                                                                           ip != NULL ? (uint8_t *)ip : (uint8_t *)ip6,
                                                                           ip_size,
                                                                           time_ms,
@@ -1890,11 +1855,11 @@ static void ndpi_process_packet(uint8_t * const args,
         flow_to_process->detection_completed = 1;
         workflow->detected_flow_protocols++;
         jsonize_flow_event(reader_thread, flow_to_process, FLOW_EVENT_DETECTED);
-        flow_to_process->last_ndpi_flow_struct_hash = calculate_ndpi_flow_struct_hash(flow_to_process->ndpi_flow);
+        flow_to_process->last_ndpi_flow_struct_hash = calculate_ndpi_flow_struct_hash(&flow_to_process->ndpi_flow);
     }
     else if (flow_to_process->detection_completed == 1)
     {
-        uint32_t hash = calculate_ndpi_flow_struct_hash(flow_to_process->ndpi_flow);
+        uint32_t hash = calculate_ndpi_flow_struct_hash(&flow_to_process->ndpi_flow);
         if (hash != flow_to_process->last_ndpi_flow_struct_hash)
         {
             jsonize_flow_event(reader_thread, flow_to_process, FLOW_EVENT_DETECTION_UPDATE);
