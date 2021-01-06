@@ -1,8 +1,10 @@
 #include <arpa/inet.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <ifaddrs.h>
 #include <linux/if_ether.h>
 #include <linux/un.h>
+#include <net/if.h>
 #include <netinet/in.h>
 #include <ndpi_api.h>
 #include <ndpi_main.h>
@@ -13,6 +15,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/ioctl.h>
 #include <syslog.h>
 #include <unistd.h>
 
@@ -29,6 +32,17 @@ enum nDPId_l3_type
     L3_IP6
 };
 
+union nDPId_ip {
+    struct
+    {
+        uint32_t ip;
+    } v4;
+    struct
+    {
+        uint64_t ip6[2];
+    } v6;
+};
+
 struct nDPId_flow_info
 {
     uint32_t flow_id;
@@ -39,18 +53,8 @@ struct nDPId_flow_info
 
     enum nDPId_l3_type l3_type;
 
-    union {
-        struct
-        {
-            uint32_t src;
-            uint32_t dst;
-        } v4;
-        struct
-        {
-            uint64_t src[2];
-            uint64_t dst[2];
-        } v6;
-    } ip_tuple;
+    union nDPId_ip src;
+    union nDPId_ip dst;
 
     uint16_t min_l4_data_len;
     uint16_t max_l4_data_len;
@@ -229,6 +233,11 @@ int main_thread_shutdown = 0;
 static uint32_t global_flow_id = 0;
 
 static char * pcap_file_or_interface = NULL;
+static union nDPId_ip pcap_dev_ip = {};
+static union nDPId_ip pcap_dev_netmask = {};
+static union nDPId_ip pcap_dev_subnet = {};
+static uint8_t process_internal_initial_direction = 0;
+static uint8_t process_external_initial_direction = 0;
 static char * bpf_str = NULL;
 static int log_to_stderr = 0;
 static char pidfile[UNIX_PATH_MAX] = nDPId_PIDFILE;
@@ -274,6 +283,162 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
                                struct nDPId_flow_info * const flow,
                                enum flow_event event);
 
+static void ip_netmask_to_subnet(union nDPId_ip * ip,
+                                 union nDPId_ip * netmask,
+                                 union nDPId_ip * subnet,
+                                 enum nDPId_l3_type type)
+{
+    switch (type)
+    {
+        case L3_IP:
+            subnet->v4.ip = ip->v4.ip & netmask->v4.ip;
+            break;
+        case L3_IP6:
+            subnet->v6.ip6[0] = ip->v6.ip6[0] & netmask->v6.ip6[0];
+            subnet->v6.ip6[1] = ip->v6.ip6[1] & netmask->v6.ip6[1];
+            break;
+    }
+}
+
+static int is_ip_in_subnet(union nDPId_ip * cmp_ip,
+                           union nDPId_ip * netmask,
+                           union nDPId_ip * cmp_subnet,
+                           enum nDPId_l3_type type)
+{
+    switch (type)
+    {
+        case L3_IP:
+            return (cmp_ip->v4.ip & netmask->v4.ip) == cmp_subnet->v4.ip;
+        case L3_IP6:
+            return (cmp_ip->v6.ip6[0] & netmask->v6.ip6[0]) == cmp_subnet->v6.ip6[0] &&
+                   (cmp_ip->v6.ip6[1] & netmask->v6.ip6[1]) == cmp_subnet->v6.ip6[1];
+    }
+
+    return 0;
+}
+
+static void get_v4_ip_from_sockaddr(struct sockaddr_in * saddr, union nDPId_ip * dest)
+{
+    dest->v4.ip = saddr->sin_addr.s_addr;
+}
+
+static void get_v6_ip_from_sockaddr(struct sockaddr_in6 * saddr, union nDPId_ip * dest)
+{
+    dest->v6.ip6[0] = *(uint64_t *)&saddr->sin6_addr.s6_addr[0];
+    dest->v6.ip6[0] = *(uint64_t *)&saddr->sin6_addr.s6_addr[7];
+}
+
+/*
+ * Only IPv4 supported for now!
+ * IPv6 support planned via /proc/net/if_inet6
+ */
+static int get_ip_netmask_from_pcap_dev(char const * const pcap_dev)
+{
+    struct ifaddrs * ifaddrs = NULL;
+    struct ifaddrs * ifa;
+
+    if (getifaddrs(&ifaddrs) != 0 || ifaddrs == NULL)
+    {
+        return 1;
+    }
+
+    for (ifa = ifaddrs; ifa != NULL; ifa = ifa->ifa_next)
+    {
+        if (ifa->ifa_addr == NULL || (ifa->ifa_flags & IFF_RUNNING) == 0)
+        {
+            continue;
+        }
+
+        size_t ifnamelen = strlen(ifa->ifa_name);
+        enum nDPId_l3_type type;
+
+        switch (ifa->ifa_addr->sa_family)
+        {
+            case AF_INET:
+                type = L3_IP;
+                break;
+            case AF_INET6:
+                type = L3_IP6;
+                break;
+            default:
+                continue;
+        }
+
+        if (strcmp(ifa->ifa_name, pcap_dev) == 0 && ifnamelen == strlen(pcap_dev))
+        {
+            int const sock = socket(ifa->ifa_addr->sa_family, SOCK_DGRAM, IPPROTO_IP);
+            struct ifreq ifr;
+
+            if (sock < 0)
+            {
+                break;
+            }
+            if (ifnamelen >= sizeof(ifr.ifr_name))
+            {
+                break;
+            }
+
+            memset(&ifr, 0, sizeof(ifr));
+            memcpy(ifr.ifr_name, ifa->ifa_name, ifnamelen);
+            ifr.ifr_name[ifnamelen] = '\0';
+            ifr.ifr_netmask.sa_family = ifa->ifa_addr->sa_family;
+            if (ioctl(sock, SIOCGIFNETMASK, &ifr) == -1)
+            {
+                break;
+            }
+            if (ifa->ifa_addr->sa_family == AF_INET)
+            {
+                get_v4_ip_from_sockaddr((struct sockaddr_in *)&ifr.ifr_netmask, &pcap_dev_netmask);
+            }
+            else
+            {
+                get_v6_ip_from_sockaddr((struct sockaddr_in6 *)&ifr.ifr_netmask, &pcap_dev_netmask);
+            }
+
+            memset(&ifr, 0, sizeof(ifr));
+            memcpy(ifr.ifr_name, ifa->ifa_name, ifnamelen);
+            ifr.ifr_name[ifnamelen] = '\0';
+            ifr.ifr_addr.sa_family = ifa->ifa_addr->sa_family;
+            if (ioctl(sock, SIOCGIFADDR, &ifr) == -1)
+            {
+                break;
+            }
+            if (ifa->ifa_addr->sa_family == AF_INET)
+            {
+                get_v4_ip_from_sockaddr((struct sockaddr_in *)&ifr.ifr_netmask, &pcap_dev_ip);
+            }
+            else
+            {
+                get_v6_ip_from_sockaddr((struct sockaddr_in6 *)&ifr.ifr_netmask, &pcap_dev_ip);
+            }
+
+            ip_netmask_to_subnet(&pcap_dev_ip, &pcap_dev_netmask, &pcap_dev_subnet, type);
+
+            char addr[INET6_ADDRSTRLEN];
+            char netm[INET6_ADDRSTRLEN];
+            char subn[INET6_ADDRSTRLEN];
+            void * saddr =
+                (ifa->ifa_addr->sa_family == AF_INET ? (void *)&pcap_dev_ip.v4.ip : (void *)&pcap_dev_ip.v6.ip6);
+            void * snetm = (ifa->ifa_addr->sa_family == AF_INET ? (void *)&pcap_dev_netmask.v4.ip
+                                                                : (void *)&pcap_dev_netmask.v6.ip6);
+            void * ssubn = (ifa->ifa_addr->sa_family == AF_INET ? (void *)&pcap_dev_subnet.v4.ip
+                                                                : (void *)&pcap_dev_subnet.v6.ip6);
+            syslog(LOG_DAEMON,
+                   "%s address/netmask/subnet: %s/%s/%s",
+                   pcap_file_or_interface,
+                   inet_ntop(ifa->ifa_addr->sa_family, saddr, addr, sizeof(addr)),
+                   inet_ntop(ifa->ifa_addr->sa_family, snetm, netm, sizeof(netm)),
+                   inet_ntop(ifa->ifa_addr->sa_family, ssubn, subn, sizeof(subn)));
+
+            freeifaddrs(ifaddrs);
+            return 0;
+        }
+    }
+
+    freeifaddrs(ifaddrs);
+    return 1;
+}
+
 static struct nDPId_workflow * init_workflow(char const * const file_or_device)
 {
     int pcap_argument_is_file = 0;
@@ -312,16 +477,15 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
         struct bpf_program fp;
         if (pcap_compile(workflow->pcap_handle, &fp, bpf_str, 1, PCAP_NETMASK_UNKNOWN) != 0)
         {
-            syslog(LOG_DAEMON | LOG_ERR,
-                   "pcap_compile: %s", pcap_geterr(workflow->pcap_handle));
+            syslog(LOG_DAEMON | LOG_ERR, "pcap_compile: %s", pcap_geterr(workflow->pcap_handle));
             free_workflow(&workflow);
             return NULL;
         }
         if (pcap_setfilter(workflow->pcap_handle, &fp) != 0)
         {
-            syslog(LOG_DAEMON | LOG_ERR,
-                   "pcap_setfilter: %s", pcap_geterr(workflow->pcap_handle));
+            syslog(LOG_DAEMON | LOG_ERR, "pcap_setfilter: %s", pcap_geterr(workflow->pcap_handle));
             free_workflow(&workflow);
+            pcap_freecode(&fp);
             return NULL;
         }
         pcap_freecode(&fp);
@@ -371,6 +535,7 @@ static void ndpi_flow_info_freer(void * const node)
 {
     struct nDPId_flow_info * const flow = (struct nDPId_flow_info *)node;
 
+    ndpi_free_flow_data(&flow->ndpi_flow);
     ndpi_free(flow);
 }
 
@@ -440,6 +605,33 @@ static int setup_reader_threads(void)
         syslog(LOG_DAEMON, "Capturing packets from default device: %s", pcap_file_or_interface);
     }
 
+    errno = 0;
+    if (access(pcap_file_or_interface, R_OK) != 0 && errno == ENOENT)
+    {
+        errno = 0;
+        if (get_ip_netmask_from_pcap_dev(pcap_file_or_interface) != 0)
+        {
+            syslog(LOG_DAEMON | LOG_ERR,
+                   "Could not get netmask for pcap device %s: %s",
+                   pcap_file_or_interface,
+                   strerror(errno));
+            return 1;
+        }
+    }
+    else
+    {
+        if (process_internal_initial_direction != 0)
+        {
+            syslog(LOG_DAEMON | LOG_ERR, "You are processing a PCAP file, `-I' ignored");
+            process_internal_initial_direction = 0;
+        }
+        if (process_external_initial_direction != 0)
+        {
+            syslog(LOG_DAEMON | LOG_ERR, "You are processing a PCAP file, `-E' ignored");
+            process_external_initial_direction = 0;
+        }
+    }
+
     for (unsigned long long int i = 0; i < reader_thread_count; ++i)
     {
         reader_threads[i].workflow = init_workflow(pcap_file_or_interface);
@@ -463,12 +655,12 @@ static int ip_tuples_equal(struct nDPId_flow_info const * const A, struct nDPId_
     }
     if (A->l3_type == L3_IP && B->l3_type == L3_IP6)
     {
-        return A->ip_tuple.v4.src == B->ip_tuple.v4.src && A->ip_tuple.v4.dst == B->ip_tuple.v4.dst;
+        return A->src.v4.ip == B->src.v4.ip && A->dst.v4.ip == B->dst.v4.ip;
     }
     else if (A->l3_type == L3_IP6 && B->l3_type == L3_IP6)
     {
-        return A->ip_tuple.v6.src[0] == B->ip_tuple.v6.src[0] && A->ip_tuple.v6.src[1] == B->ip_tuple.v6.src[1] &&
-               A->ip_tuple.v6.dst[0] == B->ip_tuple.v6.dst[0] && A->ip_tuple.v6.dst[1] == B->ip_tuple.v6.dst[1];
+        return A->src.v6.ip6[0] == B->src.v6.ip6[0] && A->src.v6.ip6[1] == B->src.v6.ip6[1] &&
+               A->dst.v6.ip6[0] == B->dst.v6.ip6[0] && A->dst.v6.ip6[1] == B->dst.v6.ip6[1];
     }
     return 0;
 }
@@ -484,24 +676,24 @@ static int ip_tuples_compare(struct nDPId_flow_info const * const A, struct nDPI
     }
     if (A->l3_type == L3_IP && B->l3_type == L3_IP6)
     {
-        if (A->ip_tuple.v4.src < B->ip_tuple.v4.src || A->ip_tuple.v4.dst < B->ip_tuple.v4.dst)
+        if (A->src.v4.ip < B->src.v4.ip || A->dst.v4.ip < B->dst.v4.ip)
         {
             return -1;
         }
-        if (A->ip_tuple.v4.src > B->ip_tuple.v4.src || A->ip_tuple.v4.dst > B->ip_tuple.v4.dst)
+        if (A->src.v4.ip > B->src.v4.ip || A->dst.v4.ip > B->dst.v4.ip)
         {
             return 1;
         }
     }
     else if (A->l3_type == L3_IP6 && B->l3_type == L3_IP6)
     {
-        if ((A->ip_tuple.v6.src[0] < B->ip_tuple.v6.src[0] && A->ip_tuple.v6.src[1] < B->ip_tuple.v6.src[1]) ||
-            (A->ip_tuple.v6.dst[0] < B->ip_tuple.v6.dst[0] && A->ip_tuple.v6.dst[1] < B->ip_tuple.v6.dst[1]))
+        if ((A->src.v6.ip6[0] < B->src.v6.ip6[0] && A->src.v6.ip6[1] < B->src.v6.ip6[1]) ||
+            (A->dst.v6.ip6[0] < B->dst.v6.ip6[0] && A->dst.v6.ip6[1] < B->dst.v6.ip6[1]))
         {
             return -1;
         }
-        if ((A->ip_tuple.v6.src[0] > B->ip_tuple.v6.src[0] && A->ip_tuple.v6.src[1] > B->ip_tuple.v6.src[1]) ||
-            (A->ip_tuple.v6.dst[0] > B->ip_tuple.v6.dst[0] && A->ip_tuple.v6.dst[1] > B->ip_tuple.v6.dst[1]))
+        if ((A->src.v6.ip6[0] > B->src.v6.ip6[0] && A->src.v6.ip6[1] > B->src.v6.ip6[1]) ||
+            (A->dst.v6.ip6[0] > B->dst.v6.ip6[0] && A->dst.v6.ip6[1] > B->dst.v6.ip6[1]))
         {
             return 1;
         }
@@ -650,22 +842,22 @@ static void jsonize_l3_l4(struct nDPId_workflow * const workflow, struct nDPId_f
     {
         case L3_IP:
             ndpi_serialize_string_string(serializer, "l3_proto", "ip4");
-            if (inet_ntop(AF_INET, &flow->ip_tuple.v4.src, src_name, sizeof(src_name)) == NULL)
+            if (inet_ntop(AF_INET, &flow->src.v4.ip, src_name, sizeof(src_name)) == NULL)
             {
                 syslog(LOG_DAEMON | LOG_ERR, "Could not convert IPv4 source ip to string: %s", strerror(errno));
             }
-            if (inet_ntop(AF_INET, &flow->ip_tuple.v4.dst, dst_name, sizeof(dst_name)) == NULL)
+            if (inet_ntop(AF_INET, &flow->dst.v4.ip, dst_name, sizeof(dst_name)) == NULL)
             {
                 syslog(LOG_DAEMON | LOG_ERR, "Could not convert IPv4 destination ip to string: %s", strerror(errno));
             }
             break;
         case L3_IP6:
             ndpi_serialize_string_string(serializer, "l3_proto", "ip6");
-            if (inet_ntop(AF_INET6, &flow->ip_tuple.v6.src[0], src_name, sizeof(src_name)) == NULL)
+            if (inet_ntop(AF_INET6, &flow->src.v6.ip6[0], src_name, sizeof(src_name)) == NULL)
             {
                 syslog(LOG_DAEMON | LOG_ERR, "Could not convert IPv6 source ip to string: %s", strerror(errno));
             }
-            if (inet_ntop(AF_INET6, &flow->ip_tuple.v6.dst[0], dst_name, sizeof(dst_name)) == NULL)
+            if (inet_ntop(AF_INET6, &flow->dst.v6.ip6[0], dst_name, sizeof(dst_name)) == NULL)
             {
                 syslog(LOG_DAEMON | LOG_ERR, "Could not convert IPv6 destination ip to string: %s", strerror(errno));
             }
@@ -1057,8 +1249,10 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
 
         case FLOW_EVENT_NOT_DETECTED:
         case FLOW_EVENT_GUESSED:
-            if (ndpi_dpi2json(
-                    workflow->ndpi_struct, &flow->ndpi_flow, flow->guessed_l7_protocol, &workflow->ndpi_serializer) != 0)
+            if (ndpi_dpi2json(workflow->ndpi_struct,
+                              &flow->ndpi_flow,
+                              flow->guessed_l7_protocol,
+                              &workflow->ndpi_serializer) != 0)
             {
                 syslog(LOG_DAEMON | LOG_ERR,
                        "[%8llu, %4u] ndpi_dpi2json failed for not-detected/guessed flow",
@@ -1370,7 +1564,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
                                      ntohl(*((uint32_t *)&packet[eth_offset])));
                 return 1;
             }
-            *ip_offset = 4 + eth_offset;
+            *ip_offset = sizeof(dlt_hdr) + eth_offset;
             break;
         }
         case DLT_EN10MB:
@@ -1526,6 +1720,7 @@ static void ndpi_process_packet(uint8_t * const args,
         }
 
         flow.l3_type = L3_IP;
+
         if (ndpi_detection_get_l4(
                 (uint8_t *)ip, ip_size, &l4_ptr, &l4_len, &flow.l4_protocol, NDPI_DETECTION_ONLY_IPV4) != 0)
         {
@@ -1535,9 +1730,9 @@ static void ndpi_process_packet(uint8_t * const args,
             return;
         }
 
-        flow.ip_tuple.v4.src = ip->saddr;
-        flow.ip_tuple.v4.dst = ip->daddr;
-        uint32_t min_addr = (flow.ip_tuple.v4.src > flow.ip_tuple.v4.dst ? flow.ip_tuple.v4.dst : flow.ip_tuple.v4.src);
+        flow.src.v4.ip = ip->saddr;
+        flow.dst.v4.ip = ip->daddr;
+        uint32_t min_addr = (flow.src.v4.ip > flow.dst.v4.ip ? flow.dst.v4.ip : flow.src.v4.ip);
         thread_index = min_addr + ip->protocol;
     }
     else if (ip6 != NULL)
@@ -1565,20 +1760,20 @@ static void ndpi_process_packet(uint8_t * const args,
             return;
         }
 
-        flow.ip_tuple.v6.src[0] = ip6->ip6_src.u6_addr.u6_addr64[0];
-        flow.ip_tuple.v6.src[1] = ip6->ip6_src.u6_addr.u6_addr64[1];
-        flow.ip_tuple.v6.dst[0] = ip6->ip6_dst.u6_addr.u6_addr64[0];
-        flow.ip_tuple.v6.dst[1] = ip6->ip6_dst.u6_addr.u6_addr64[1];
+        flow.src.v6.ip6[0] = ip6->ip6_src.u6_addr.u6_addr64[0];
+        flow.src.v6.ip6[1] = ip6->ip6_src.u6_addr.u6_addr64[1];
+        flow.dst.v6.ip6[0] = ip6->ip6_dst.u6_addr.u6_addr64[0];
+        flow.dst.v6.ip6[1] = ip6->ip6_dst.u6_addr.u6_addr64[1];
         uint64_t min_addr[2];
-        if (flow.ip_tuple.v6.src[0] > flow.ip_tuple.v6.dst[0] && flow.ip_tuple.v6.src[1] > flow.ip_tuple.v6.dst[1])
+        if (flow.src.v6.ip6[0] > flow.dst.v6.ip6[0] && flow.src.v6.ip6[1] > flow.dst.v6.ip6[1])
         {
-            min_addr[0] = flow.ip_tuple.v6.dst[0];
-            min_addr[1] = flow.ip_tuple.v6.dst[0];
+            min_addr[0] = flow.dst.v6.ip6[0];
+            min_addr[1] = flow.dst.v6.ip6[0];
         }
         else
         {
-            min_addr[0] = flow.ip_tuple.v6.src[0];
-            min_addr[1] = flow.ip_tuple.v6.src[0];
+            min_addr[0] = flow.src.v6.ip6[0];
+            min_addr[1] = flow.src.v6.ip6[0];
         }
         thread_index = min_addr[0] + min_addr[1] + ip6->ip6_hdr.ip6_un1_nxt;
     }
@@ -1648,8 +1843,8 @@ static void ndpi_process_packet(uint8_t * const args,
     {
         case L3_IP:
             if (ndpi_flowv4_flow_hash(flow.l4_protocol,
-                                      flow.ip_tuple.v4.src,
-                                      flow.ip_tuple.v4.dst,
+                                      flow.src.v4.ip,
+                                      flow.dst.v4.ip,
                                       flow.src_port,
                                       flow.dst_port,
                                       0,
@@ -1657,7 +1852,7 @@ static void ndpi_process_packet(uint8_t * const args,
                                       (uint8_t *)&flow.hashval,
                                       sizeof(flow.hashval)) != 0)
             {
-                flow.hashval = flow.ip_tuple.v4.src + flow.ip_tuple.v4.dst; // fallback
+                flow.hashval = flow.src.v4.ip + flow.dst.v4.ip; // fallback
             }
             break;
         case L3_IP6:
@@ -1671,8 +1866,8 @@ static void ndpi_process_packet(uint8_t * const args,
                                       (uint8_t *)&flow.hashval,
                                       sizeof(flow.hashval)) != 0)
             {
-                flow.hashval = flow.ip_tuple.v6.src[0] + flow.ip_tuple.v6.src[1];
-                flow.hashval += flow.ip_tuple.v6.dst[0] + flow.ip_tuple.v6.dst[1];
+                flow.hashval = flow.src.v6.ip6[0] + flow.src.v6.ip6[1];
+                flow.hashval += flow.dst.v6.ip6[0] + flow.dst.v6.ip6[1];
             }
             break;
     }
@@ -1683,15 +1878,15 @@ static void ndpi_process_packet(uint8_t * const args,
     if (tree_result == NULL)
     {
         /* flow not found in btree: switch src <-> dst and try to find it again */
-        uint64_t orig_src_ip[2] = {flow.ip_tuple.v6.src[0], flow.ip_tuple.v6.src[1]};
-        uint64_t orig_dst_ip[2] = {flow.ip_tuple.v6.dst[0], flow.ip_tuple.v6.dst[1]};
+        uint64_t orig_src_ip[2] = {flow.src.v6.ip6[0], flow.src.v6.ip6[1]};
+        uint64_t orig_dst_ip[2] = {flow.dst.v6.ip6[0], flow.dst.v6.ip6[1]};
         uint16_t orig_src_port = flow.src_port;
         uint16_t orig_dst_port = flow.dst_port;
 
-        flow.ip_tuple.v6.src[0] = orig_dst_ip[0];
-        flow.ip_tuple.v6.src[1] = orig_dst_ip[1];
-        flow.ip_tuple.v6.dst[0] = orig_src_ip[0];
-        flow.ip_tuple.v6.dst[1] = orig_src_ip[1];
+        flow.src.v6.ip6[0] = orig_dst_ip[0];
+        flow.src.v6.ip6[1] = orig_dst_ip[1];
+        flow.dst.v6.ip6[0] = orig_src_ip[0];
+        flow.dst.v6.ip6[1] = orig_src_ip[1];
         flow.src_port = orig_dst_port;
         flow.dst_port = orig_src_port;
 
@@ -1701,10 +1896,10 @@ static void ndpi_process_packet(uint8_t * const args,
             direction_changed = 1;
         }
 
-        flow.ip_tuple.v6.src[0] = orig_src_ip[0];
-        flow.ip_tuple.v6.src[1] = orig_src_ip[1];
-        flow.ip_tuple.v6.dst[0] = orig_dst_ip[0];
-        flow.ip_tuple.v6.dst[1] = orig_dst_ip[1];
+        flow.src.v6.ip6[0] = orig_src_ip[0];
+        flow.src.v6.ip6[1] = orig_src_ip[1];
+        flow.dst.v6.ip6[0] = orig_dst_ip[0];
+        flow.dst.v6.ip6[1] = orig_dst_ip[1];
         flow.src_port = orig_src_port;
         flow.dst_port = orig_dst_port;
     }
@@ -1712,6 +1907,22 @@ static void ndpi_process_packet(uint8_t * const args,
     if (tree_result == NULL)
     {
         /* flow still not found, must be new */
+
+        if (process_internal_initial_direction != 0)
+        {
+            if (is_ip_in_subnet(&flow.src, &pcap_dev_netmask, &pcap_dev_subnet, flow.l3_type) == 0)
+            {
+                return;
+            }
+        }
+        else if (process_external_initial_direction != 0)
+        {
+            if (is_ip_in_subnet(&flow.src, &pcap_dev_netmask, &pcap_dev_subnet, flow.l3_type) != 0)
+            {
+                return;
+            }
+        }
+
         if (workflow->cur_active_flows == workflow->max_active_flows)
         {
             jsonize_packet_event(reader_thread, header, packet, type, ip_offset, NULL, PACKET_EVENT_PAYLOAD);
@@ -1746,12 +1957,16 @@ static void ndpi_process_packet(uint8_t * const args,
         flow_to_process->flow_id = global_flow_id++;
 #endif
 
-        memset(&flow_to_process->ndpi_flow, 0, (SIZEOF_FLOW_STRUCT > sizeof(struct ndpi_flow_struct) ?
-                                                SIZEOF_FLOW_STRUCT : sizeof(struct ndpi_flow_struct)));
-        memset(&flow_to_process->ndpi_src, 0, (SIZEOF_ID_STRUCT > sizeof(struct ndpi_id_struct) ?
-                                               SIZEOF_ID_STRUCT : sizeof(struct ndpi_id_struct)));
-        memset(&flow_to_process->ndpi_dst, 0, (SIZEOF_ID_STRUCT > sizeof(struct ndpi_id_struct) ?
-                                               SIZEOF_ID_STRUCT : sizeof(struct ndpi_id_struct)));
+        memset(&flow_to_process->ndpi_flow,
+               0,
+               (SIZEOF_FLOW_STRUCT > sizeof(struct ndpi_flow_struct) ? SIZEOF_FLOW_STRUCT
+                                                                     : sizeof(struct ndpi_flow_struct)));
+        memset(&flow_to_process->ndpi_src,
+               0,
+               (SIZEOF_ID_STRUCT > sizeof(struct ndpi_id_struct) ? SIZEOF_ID_STRUCT : sizeof(struct ndpi_id_struct)));
+        memset(&flow_to_process->ndpi_dst,
+               0,
+               (SIZEOF_ID_STRUCT > sizeof(struct ndpi_id_struct) ? SIZEOF_ID_STRUCT : sizeof(struct ndpi_id_struct)));
 
         if (ndpi_tsearch(flow_to_process, &workflow->ndpi_flows_active[hashed_index], ndpi_workflow_node_cmp) == NULL)
         {
@@ -2130,7 +2345,7 @@ static void sighandler(int signum)
 
 static void print_subopt_usage(void)
 {
-    enum nDPId_subopts index = 0;
+    int index = MAX_FLOWS_PER_THREAD;
     char * const * token = &subopt_token[0];
 
     fprintf(stderr, "\tsubopts:\n");
@@ -2183,13 +2398,17 @@ static int parse_options(int argc, char ** argv)
 
     static char const usage[] =
         "Usage: %s "
-        "[-i pcap-file/interface] [-P bpf-filter]"
+        "[-i pcap-file/interface] [-I] [-E] [-P bpf-filter]"
         "[-l] [-c path-to-unix-sock] "
         "[-d] [-p pidfile] "
         "[-u user] [-g group] "
         "[-a instance-alias] "
         "[-o subopt=value]\n\n"
         "\t-i\tInterface or file from where to read packets from.\n"
+        "\t-I\tProcess only packets where the source address of the first packet\n"
+        "\t  \tis part of the interface subnet. (Internal mode)\n"
+        "\t-E\tProcess only packets where the source address of the first packet\n"
+        "\t  \tis *NOT* part of the interface subnet. (External mode)\n"
         "\t-P\tSet an optional berkeley packet filter.\n"
         "\t-l\tLog all messages to stderr as well.\n"
         "\t-c\tPath to the Collector UNIX socket which acts as the JSON sink.\n"
@@ -2200,12 +2419,18 @@ static int parse_options(int argc, char ** argv)
         "\t-a\tSet an optional name of this daemon instance which will be part of every JSON message.\n"
         "\t-o\t(Carefully) Tune some daemon options. See subopts below.\n\n";
 
-    while ((opt = getopt(argc, argv, "hi:P:lc:dp:u:g:a:o:")) != -1)
+    while ((opt = getopt(argc, argv, "hi:IEP:lc:dp:u:g:a:o:")) != -1)
     {
         switch (opt)
         {
             case 'i':
                 pcap_file_or_interface = strdup(optarg);
+                break;
+            case 'I':
+                process_internal_initial_direction = 1;
+                break;
+            case 'E':
+                process_external_initial_direction = 1;
                 break;
             case 'P':
                 bpf_str = strdup(optarg);
@@ -2374,6 +2599,13 @@ static int validate_options(char const * const arg0)
                 arg0,
                 max_post_end_flow_time,
                 max_idle_time);
+        retval = 1;
+    }
+    if (process_internal_initial_direction != 0 && process_external_initial_direction != 0)
+    {
+        fprintf(stderr,
+                "%s: Internal and External packet processing does not make sense as this is the default.\n",
+                arg0);
         retval = 1;
     }
 
