@@ -7,6 +7,10 @@
 #define DISTRIBUTOR_HOST "127.0.0.1"
 #define DISTRIBUTOR_PORT 7000
 
+/*
+ * NOTE: Buffer size needs to keep in sync with other implementations
+ *       e.g. dependencies/nDPIsrvd.py
+ */
 #define NETWORK_BUFFER_MAX_SIZE 9728 /* 8192 + 1024 + 512 */
 
 /* nDPId default config options */

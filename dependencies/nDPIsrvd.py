@@ -14,7 +14,7 @@ DEFAULT_PORT = 7000
 DEFAULT_UNIX = '/tmp/ndpid-distributor.sock'
 
 NETWORK_BUFFER_MIN_SIZE = 5
-NETWORK_BUFFER_MAX_SIZE = 9216 # Please keep this value in sync with the one in config.h
+NETWORK_BUFFER_MAX_SIZE = 9728 # Please keep this value in sync with the one in config.h
 
 PKT_TYPE_ETH_IP4 = 0x0800
 PKT_TYPE_ETH_IP6 = 0x86DD
@@ -59,6 +59,9 @@ class nDPIsrvdSocket:
         self.digitlen = 0
 
     def receive(self):
+        if len(self.buffer) == NETWORK_BUFFER_MAX_SIZE:
+            raise RuntimeError('buffer capacity reached ({} bytes), check if it is in sync with nDPId\'s NETWORK_BUFFER_MAX_SIZE'.format(NETWORK_BUFFER_MAX_SIZE))
+
         recvd = self.sock.recv(NETWORK_BUFFER_MAX_SIZE - len(self.buffer))
 
         if len(recvd) == 0:
