@@ -1123,69 +1123,109 @@ static void serialize_and_send(struct nDPId_reader_thread * const reader_thread)
     ndpi_reset_serializer(&reader_thread->workflow->ndpi_serializer);
 }
 
-static size_t base64_out_len(size_t in_len)
+/* Slightly modified code from: https://en.wikibooks.org/wiki/Algorithm_Implementation/Miscellaneous/Base64 */
+static int base64encode(uint8_t const * const data_buf,
+                        size_t dataLength,
+                        char * const result,
+                        size_t * const resultSize)
 {
-    return ((in_len + 2) / 3) * 4;
-}
+    const char base64chars[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    const uint8_t * data = (const uint8_t *)data_buf;
+    size_t resultIndex = 0;
+    size_t x;
+    uint32_t n = 0;
+    int padCount = dataLength % 3;
+    uint8_t n0, n1, n2, n3;
 
-static char * base64_encode(uint8_t const * in, size_t in_len, char * const out, size_t const out_len)
-{
-    static const unsigned char base64_table[65] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-    size_t len = 0, ret_size;
-    int i = 0;
-    unsigned char char_array_3[3];
-    unsigned char char_array_4[4];
-
-    ret_size = base64_out_len(in_len);
-    if (out_len < ret_size)
+    /* increment over the length of the string, three characters at a time */
+    for (x = 0; x < dataLength; x += 3)
     {
-        return NULL;
-    }
+        /* these three 8-bit (ASCII) characters become one 24-bit number */
+        n = ((uint32_t)data[x]) << 16; // parenthesis needed, compiler depending on flags can do the shifting before
+                                       // conversion to uint32_t, resulting to 0
 
-    while (in_len-- != 0)
-    {
-        char_array_3[i++] = *(in++);
-        if (i == 3)
+        if ((x + 1) < dataLength)
         {
-            char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
-            char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
-            char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
-            char_array_4[3] = char_array_3[2] & 0x3f;
+            n += ((uint32_t)data[x + 1]) << 8; // parenthesis needed, compiler depending on flags can do the shifting
+                                               // before conversion to uint32_t, resulting to 0
+        }
 
-            for (i = 0; i < 4; i++)
+        if ((x + 2) < dataLength)
+        {
+            n += data[x + 2];
+        }
+
+        /* this 24-bit number gets separated into four 6-bit numbers */
+        n0 = (uint8_t)(n >> 18) & 63;
+        n1 = (uint8_t)(n >> 12) & 63;
+        n2 = (uint8_t)(n >> 6) & 63;
+        n3 = (uint8_t)n & 63;
+
+        /*
+         * if we have one byte available, then its encoding is spread
+         * out over two characters
+         */
+        if (resultIndex >= *resultSize)
+        {
+            return 1; /* indicate failure: buffer too small */
+        }
+        result[resultIndex++] = base64chars[n0];
+        if (resultIndex >= *resultSize)
+        {
+            return 1; /* indicate failure: buffer too small */
+        }
+        result[resultIndex++] = base64chars[n1];
+
+        /*
+         * if we have only two bytes available, then their encoding is
+         * spread out over three chars
+         */
+        if ((x + 1) < dataLength)
+        {
+            if (resultIndex >= *resultSize)
             {
-                out[len++] = base64_table[char_array_4[i]];
+                return 1; /* indicate failure: buffer too small */
             }
-            i = 0;
+            result[resultIndex++] = base64chars[n2];
+        }
+
+        /*
+         * if we have all three bytes available, then their encoding is spread
+         * out over four characters
+         */
+        if ((x + 2) < dataLength)
+        {
+            if (resultIndex >= *resultSize)
+            {
+                return 1; /* indicate failure: buffer too small */
+            }
+            result[resultIndex++] = base64chars[n3];
         }
     }
 
-    if (i != 0)
+    /*
+     * create and add padding that is required if we did not have a multiple of 3
+     * number of characters available
+     */
+    if (padCount > 0)
     {
-        for (int j = i; j < 3; j++)
+        for (; padCount < 3; padCount++)
         {
-            char_array_3[j] = '\0';
-        }
-
-        char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
-        char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
-        char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
-        char_array_4[3] = char_array_3[2] & 0x3f;
-
-        for (int j = 0; (j < i + 1); j++)
-        {
-            out[len++] = base64_table[char_array_4[j]];
-        }
-
-        while ((i++ < 3))
-        {
-            out[len++] = '=';
+            if (resultIndex >= *resultSize)
+            {
+                return 1; /* indicate failure: buffer too small */
+            }
+            result[resultIndex++] = '=';
         }
     }
+    if (resultIndex >= *resultSize)
+    {
+        return 1; /* indicate failure: buffer too small */
+    }
 
-    out[len++] = '\0';
-
-    return out;
+    result[resultIndex] = 0;
+    *resultSize = resultIndex;
+    return 0; /* indicate success */
 }
 
 static void jsonize_packet_event(struct nDPId_reader_thread * const reader_thread,
@@ -1230,16 +1270,17 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
 
     jsonize_basic(reader_thread);
 
-    size_t base64_data_len = base64_out_len(header->caplen);
     char base64_data[NETWORK_BUFFER_MAX_SIZE];
+    size_t base64_data_len = sizeof(base64_data);
+    int base64_retval = base64encode(packet, header->caplen, base64_data, &base64_data_len);
+
     if (ndpi_serialize_string_boolean(&workflow->ndpi_serializer,
                                       "pkt_oversize",
                                       base64_data_len > sizeof(base64_data)) != 0 ||
         ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "pkt_ts", header->ts.tv_sec) != 0 ||
         ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_len", header->len) != 0 ||
-        ndpi_serialize_string_string(&workflow->ndpi_serializer,
-                                     "pkt",
-                                     base64_encode(packet, header->caplen, base64_data, sizeof(base64_data))) != 0 ||
+        (base64_retval == 0 && base64_data_len > 0 &&
+         ndpi_serialize_string_binary(&workflow->ndpi_serializer, "pkt", base64_data, base64_data_len) != 0) ||
         ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_caplen", header->caplen) != 0 ||
         ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_type", pkt_type) != 0 ||
         ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_ipoffset", pkt_ipoffset) != 0 ||
@@ -2708,7 +2749,8 @@ static int validate_options(char const * const arg0)
     if (process_internal_initial_direction != 0 || process_external_initial_direction != 0)
     {
         fprintf(stderr,
-                "%s: Internal and External packet processing may lead to incorrect results for flows that were active before the daemon started.\n",
+                "%s: Internal and External packet processing may lead to incorrect results for flows that were active "
+                "before the daemon started.\n",
                 arg0);
     }
 
