@@ -183,7 +183,7 @@ func main() {
 					break
 				}
 
-				if jsonStr[jsonLen+nDPIsrvd_JSON_BYTES-1] != '}' {
+				if jsonStr[jsonLen+nDPIsrvd_JSON_BYTES-2] != '}' || jsonStr[jsonLen+nDPIsrvd_JSON_BYTES-1] != '\n' {
 					ErrorLogger.Printf("BUG: JSON invalid closing character at position %d: '%s'\n",
 						jsonLen+nDPIsrvd_JSON_BYTES,
 						string(jsonStr[jsonLen+nDPIsrvd_JSON_BYTES-1]))

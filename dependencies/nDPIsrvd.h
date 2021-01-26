@@ -2,6 +2,7 @@
 #define NDPISRVD_H 1
 
 #include <arpa/inet.h>
+#include <ctype.h>
 #include <errno.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -15,20 +16,11 @@
 #include "jsmn/jsmn.h"
 #include "uthash.h"
 
-// FIXME: Unify with event enums in nDPId.c
-enum nDPIsrvd_event
-{
-    EVENT_INVALID = 0,
-    EVENT_FLOW,
-    EVENT_PACKET,
-    EVENT_COUNT
-};
-
 struct nDPIsrvd_flow
 {
-    char id[20];
-    void * user_data;
+    char id[24];
     UT_hash_handle hh;
+    uint8_t user_data[0];
 };
 
 struct nDPIsrvd_socket
@@ -74,16 +66,11 @@ struct nDPIsrvd_socket
 
     struct
     {
-        enum nDPIsrvd_event event;
         char const * event_name;
         int event_name_len;
         char const * flow_id;
         int flow_id_len;
     } current;
-
-    struct nDPIsrvd_flow * flows;
-
-    void * user_data;
 };
 
 #define FIRST_ENUM_VALUE 1
@@ -126,7 +113,81 @@ enum nDPIsrvd_callback_return
     CALLBACK_LAST_ENUM_VALUE
 };
 
-typedef enum nDPIsrvd_callback_return (*json_callback)(struct nDPIsrvd_socket * const sock, void * user_data);
+typedef enum nDPIsrvd_callback_return (*json_callback)(struct nDPIsrvd_socket * const sock, void * const user_data);
+
+/* Slightly modified code: https://en.wikibooks.org/wiki/Algorithm_Implementation/Miscellaneous/Base64 */
+#define WHITESPACE 64
+#define EQUALS 65
+#define INVALID 66
+int nDPIsrvd_base64decode(char * in, size_t inLen, unsigned char * out, size_t * outLen)
+{
+    char * end = in + inLen;
+    char iter = 0;
+    uint32_t buf = 0;
+    size_t len = 0;
+
+    /* treat ASCII char 92 '\\' as whitespace because libnDPI escapes all strings by prepending '/' with a '\\' */
+    static const unsigned char d[] = {66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 64, 66, 66, 66, 66, 66, 66, 66, 66, 66,
+                                      66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66,
+                                      66, 66, 66, 62, 66, 66, 66, 63, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 66, 66,
+                                      66, 65, 66, 66, 66, 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14,
+                                      15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 66, 64, 66, 66, 66, 66, 26, 27, 28,
+                                      29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
+                                      49, 50, 51, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66,
+                                      66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66,
+                                      66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66,
+                                      66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66,
+                                      66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66,
+                                      66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66,
+                                      66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66};
+
+    while (in < end)
+    {
+        unsigned char c = d[*(unsigned char *)in++];
+
+        switch (c)
+        {
+            case WHITESPACE:
+                continue; /* skip whitespace */
+            case INVALID:
+                return 1; /* invalid input, return error */
+            case EQUALS:  /* pad character, end of data */
+                in = end;
+                continue;
+            default:
+                buf = buf << 6 | c;
+                iter++; // increment the number of iteration
+                /* If the buffer is full, split it into bytes */
+                if (iter == 4)
+                {
+                    if ((len += 3) > *outLen)
+                        return 1; /* buffer overflow */
+                    *(out++) = (buf >> 16) & 255;
+                    *(out++) = (buf >> 8) & 255;
+                    *(out++) = buf & 255;
+                    buf = 0;
+                    iter = 0;
+                }
+        }
+    }
+
+    if (iter == 3)
+    {
+        if ((len += 2) > *outLen)
+            return 1; /* buffer overflow */
+        *(out++) = (buf >> 10) & 255;
+        *(out++) = (buf >> 2) & 255;
+    }
+    else if (iter == 2)
+    {
+        if (++len > *outLen)
+            return 1; /* buffer overflow */
+        *(out++) = (buf >> 4) & 255;
+    }
+
+    *outLen = len; /* modify to reflect the actual output size */
+    return 0;
+}
 
 static inline char const * nDPIsrvd_enum_to_string(int enum_value)
 {
@@ -167,15 +228,19 @@ static inline struct nDPIsrvd_socket * nDPIsrvd_init(void)
     return sock;
 }
 
-static inline void nDPIsrvd_free(struct nDPIsrvd_socket ** const sock)
+static inline void nDPIsrvd_free(struct nDPIsrvd_socket ** const sock, struct nDPIsrvd_flow ** const flow_table)
 {
     struct nDPIsrvd_flow * current_flow;
     struct nDPIsrvd_flow * tmp;
 
-    HASH_ITER(hh, (*sock)->flows, current_flow, tmp)
+    if (flow_table != NULL)
     {
-        HASH_DEL((*sock)->flows, current_flow);
-        free(current_flow);
+        HASH_ITER(hh, *flow_table, current_flow, tmp)
+        {
+            HASH_DEL(*flow_table, current_flow);
+            free(current_flow);
+        }
+        *flow_table = NULL;
     }
 
     free(*sock);
@@ -256,6 +321,13 @@ static inline enum nDPIsrvd_read_return nDPIsrvd_read(struct nDPIsrvd_socket * c
     return READ_OK;
 }
 
+static inline int token_event_equals(struct nDPIsrvd_socket const * const sock, char const * const event_value)
+{
+    return sock->current.event_name != NULL && sock->current.event_name_len > 0 &&
+           (int)strlen(event_value) == sock->current.event_name_len &&
+           strncmp(sock->current.event_name, event_value, sock->current.event_name_len) == 0;
+}
+
 static inline int token_is_key(struct nDPIsrvd_socket const * const sock)
 {
     return sock->jsmn.current_token % 2;
@@ -318,7 +390,9 @@ static inline int value_equals(struct nDPIsrvd_socket const * const sock, char c
            strncmp(name, sock->jsmn.key_value.value, sock->jsmn.key_value.value_length) == 0;
 }
 
-static inline void nDPIsrvd_handle_flow(struct nDPIsrvd_socket * const sock)
+static inline struct nDPIsrvd_flow * nDPIsrvd_get_flow(struct nDPIsrvd_socket * const sock,
+                                                       struct nDPIsrvd_flow ** const flow_table,
+                                                       size_t user_data_size)
 {
     if (token_is_start(sock) == 1)
     {
@@ -330,16 +404,20 @@ static inline void nDPIsrvd_handle_flow(struct nDPIsrvd_socket * const sock)
         {
             if (strncmp(sock->current.event_name, "new", sock->current.event_name_len) == 0)
             {
-                struct nDPIsrvd_flow * f = (struct nDPIsrvd_flow *)malloc(sizeof(*f));
+                struct nDPIsrvd_flow * f = (struct nDPIsrvd_flow *)calloc(1, sizeof(*f) + user_data_size);
+                if (f == NULL)
+                {
+                    return NULL;
+                }
                 snprintf(f->id, sizeof(f->id), "%.*s", sock->current.flow_id_len, sock->current.flow_id);
-                f->user_data = NULL;
-                HASH_ADD(hh, sock->flows, id, sizeof(f->id), f);
+                HASH_ADD(hh, *flow_table, id, (size_t)sock->current.flow_id_len, f);
+                return f;
             }
-            else if (strncmp(sock->current.event_name, "end", sock->current.event_name_len) == 0 ||
-                     strncmp(sock->current.event_name, "idle", sock->current.event_name_len) == 0)
+            else
             {
                 struct nDPIsrvd_flow * f = NULL;
-                HASH_FIND(hh, sock->flows, sock->current.flow_id, (size_t)sock->current.flow_id_len, f);
+                HASH_FIND(hh, *flow_table, sock->current.flow_id, (size_t)sock->current.flow_id_len, f);
+                return f;
             }
         }
     }
@@ -347,13 +425,11 @@ static inline void nDPIsrvd_handle_flow(struct nDPIsrvd_socket * const sock)
     {
         if (key_equals(sock, "packet_event_name") == 1)
         {
-            sock->current.event = EVENT_PACKET;
             sock->current.event_name = sock->jsmn.key_value.value;
             sock->current.event_name_len = sock->jsmn.key_value.value_length;
         }
         else if (key_equals(sock, "flow_event_name") == 1)
         {
-            sock->current.event = EVENT_FLOW;
             sock->current.event_name = sock->jsmn.key_value.value;
             sock->current.event_name_len = sock->jsmn.key_value.value_length;
         }
@@ -363,6 +439,8 @@ static inline void nDPIsrvd_handle_flow(struct nDPIsrvd_socket * const sock)
             sock->current.flow_id_len = sock->jsmn.key_value.value_length;
         }
     }
+
+    return NULL;
 }
 
 static inline enum nDPIsrvd_parse_return nDPIsrvd_parse(struct nDPIsrvd_socket * const sock,
@@ -420,7 +498,7 @@ static inline enum nDPIsrvd_parse_return nDPIsrvd_parse(struct nDPIsrvd_socket *
         sock->jsmn.key_value.value = NULL;
         sock->jsmn.key_value.value_length = 0;
         sock->jsmn.current_token = 0;
-        nDPIsrvd_handle_flow(sock);
+
         if (cb(sock, user_data) != CALLBACK_OK)
         {
             return PARSE_CALLBACK_ERROR;
@@ -448,7 +526,6 @@ static inline enum nDPIsrvd_parse_return nDPIsrvd_parse(struct nDPIsrvd_socket *
                 {
                     return PARSE_JSMN_ERROR;
                 }
-                nDPIsrvd_handle_flow(sock);
                 if (cb(sock, user_data) != CALLBACK_OK)
                 {
                     return PARSE_CALLBACK_ERROR;
@@ -465,7 +542,6 @@ static inline enum nDPIsrvd_parse_return nDPIsrvd_parse(struct nDPIsrvd_socket *
         {
             return PARSE_CALLBACK_ERROR;
         }
-        nDPIsrvd_handle_flow(sock);
 
         sock->jsmn.current_token = -1;
         sock->jsmn.tokens_found = 0;
