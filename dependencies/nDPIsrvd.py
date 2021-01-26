@@ -8,6 +8,12 @@ import os
 import scapy.all
 import stat
 import socket
+try:
+    from colorama import Back, Fore, Style
+    USE_COLORAMA=True
+except ModuleNotFoundError:
+    print('Python module colorama not found, using fallback.')
+    USE_COLORAMA=False
 
 DEFAULT_HOST = '127.0.0.1'
 DEFAULT_PORT = 7000
@@ -34,11 +40,52 @@ FLOW_EVENTS = [ ('Invalid','invalid'), ('New','new'), ('End','end'), ('Idle','id
                 ('Detected','detected'), ('Detection-Update','detection-update'), ('Not-Detected','not-detected') ]
 
 class TermColor:
+    HINT = '\033[33m'
     WARNING = '\033[93m'
     FAIL = '\033[91m'
     BOLD = '\033[1m'
     END = '\033[0m'
-    BLINK = "\x1b[5m"
+    BLINK = '\x1b[5m'
+
+    if USE_COLORAMA is True:
+        COLOR_TUPLES = [ (Fore.BLUE, [Back.RED, Back.MAGENTA, Back.WHITE]),
+                         (Fore.CYAN, [Back.MAGENTA, Back.RED, Back.WHITE]),
+                         (Fore.GREEN, [Back.YELLOW, Back.RED, Back.MAGENTA, Back.WHITE]),
+                         (Fore.MAGENTA, [Back.CYAN, Back.BLUE, Back.WHITE]),
+                         (Fore.RED, [Back.GREEN, Back.BLUE, Back.WHITE]),
+                         (Fore.WHITE, [Back.BLACK, Back.MAGENTA, Back.RED, Back.BLUE]),
+                         (Fore.YELLOW, [Back.RED, Back.CYAN, Back.BLUE, Back.WHITE]),
+                         (Fore.LIGHTBLUE_EX, [Back.LIGHTRED_EX, Back.RED]),
+                         (Fore.LIGHTCYAN_EX, [Back.LIGHTMAGENTA_EX, Back.MAGENTA]),
+                         (Fore.LIGHTGREEN_EX, [Back.LIGHTYELLOW_EX, Back.YELLOW]),
+                         (Fore.LIGHTMAGENTA_EX, [Back.LIGHTCYAN_EX, Back.CYAN]),
+                         (Fore.LIGHTRED_EX, [Back.LIGHTGREEN_EX, Back.GREEN]),
+                         (Fore.LIGHTWHITE_EX, [Back.LIGHTBLACK_EX, Back.BLACK]),
+                         (Fore.LIGHTYELLOW_EX, [Back.LIGHTRED_EX, Back.RED]) ]
+
+    @staticmethod
+    def calcColorHash(string):
+        h = 0
+        for char in string:
+            h += ord(char)
+        return h
+
+    @staticmethod
+    def getColorsByHash(string):
+        h = TermColor.calcColorHash(string)
+        tuple_index = h % len(TermColor.COLOR_TUPLES)
+        bg_tuple_index = h % len(TermColor.COLOR_TUPLES[tuple_index][1])
+        return (TermColor.COLOR_TUPLES[tuple_index][0],
+                TermColor.COLOR_TUPLES[tuple_index][1][bg_tuple_index])
+
+    @staticmethod
+    def setColorByString(string):
+        if USE_COLORAMA is True:
+            fg_color, bg_color = TermColor.getColorsByHash(string)
+            color_hash = TermColor.calcColorHash(string)
+            return '{}{}{}{}{}'.format(Style.BRIGHT, fg_color, bg_color, string, Style.RESET_ALL)
+        else:
+            return '{}{}{}'.format(TermColor.BOLD, string, TermColor.END)
 
 class nDPIsrvdSocket:
     def __init__(self):

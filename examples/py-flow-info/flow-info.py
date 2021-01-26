@@ -41,9 +41,19 @@ def parse_json_str(json_str):
                 else TermColor.FAIL + TermColor.BOLD + TermColor.BLINK + 'RISK' + TermColor.END,
                 ndpi_frisk[:-2])
 
+    instance_and_source = ''
+    instance_and_source += '[{}]'.format(TermColor.setColorByString(j['alias']))
+    instance_and_source += '[{}]'.format(TermColor.setColorByString(j['source']))
+
+    flow_event_name = ''
+    if nDPIdEvent.FlowEventName == 'guessed' or nDPIdEvent.FlowEventName == 'undetected':
+        flow_event_name += '{}{:>16}{}'.format(TermColor.HINT, nDPIdEvent.FlowEventPrettyName, TermColor.END)
+    else:
+        flow_event_name += '{:>16}'.format(nDPIdEvent.FlowEventPrettyName)
+
     if j['l3_proto'] == 'ip4':
-        print('{:>16}: [{:.>6}] [{}][{:.>5}] [{:.>15}]{} -> [{:.>15}]{} {}' \
-              ''.format(nDPIdEvent.FlowEventPrettyName,
+        print('{} {}: [{:.>6}] [{}][{:.>5}] [{:.>15}]{} -> [{:.>15}]{} {}' \
+              ''.format(instance_and_source, flow_event_name, 
               j['flow_id'], j['l3_proto'], j['l4_proto'],
               j['src_ip'].lower(),
               '[{:.>5}]'.format(j['src_port']) if 'src_port' in j else '',
@@ -51,8 +61,8 @@ def parse_json_str(json_str):
               '[{:.>5}]'.format(j['dst_port']) if 'dst_port' in j else '',
               ndpi_proto_categ))
     elif j['l3_proto'] == 'ip6':
-        print('{:>16}: [{:.>6}] [{}][{:.>5}] [{:.>39}]{} -> [{:.>39}]{} {}' \
-              ''.format(nDPIdEvent.FlowEventPrettyName,
+        print('{} {}: [{:.>6}] [{}][{:.>5}] [{:.>39}]{} -> [{:.>39}]{} {}' \
+                ''.format(instance_and_source, flow_event_name,
               j['flow_id'], j['l3_proto'], j['l4_proto'],
               j['src_ip'].lower(),
               '[{:.>5}]'.format(j['src_port']) if 'src_port' in j else '',
@@ -63,7 +73,7 @@ def parse_json_str(json_str):
         raise RuntimeError('unsupported l3 protocol: {}'.format(j['l3_proto']))
 
     if len(ndpi_frisk) > 0:
-        print('{:>18}{}'.format('', ndpi_frisk))
+        print('{} {:>18}{}'.format(instance_and_source, '', ndpi_frisk))
 
 
 if __name__ == '__main__':

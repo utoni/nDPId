@@ -940,10 +940,7 @@ static void jsonize_basic(struct nDPId_reader_thread * const reader_thread)
     ndpi_serialize_string_int32(&workflow->ndpi_serializer, "thread_id", reader_thread->array_index);
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "packet_id", workflow->packets_captured);
     ndpi_serialize_string_string(&workflow->ndpi_serializer, "source", pcap_file_or_interface);
-    if (instance_alias != NULL)
-    {
-        ndpi_serialize_string_string(&workflow->ndpi_serializer, "alias", instance_alias);
-    }
+    ndpi_serialize_string_string(&workflow->ndpi_serializer, "alias", instance_alias);
 }
 
 static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enum daemon_event event)
@@ -2554,7 +2551,9 @@ static int parse_options(int argc, char ** argv)
         "\t-p\tWrite the daemon PID to the given file path.\n"
         "\t-u\tChange UID to the numeric value of user.\n"
         "\t-g\tChange GID to the numeric value of group.\n"
-        "\t-a\tSet an optional name of this daemon instance which will be part of every JSON message.\n"
+        "\t-a\tSet an alias name of this daemon instance which will be part of every JSON message.\n"
+        "\t  \tThis value is required for correct flow handling of multiple instances and should be unique.\n"
+        "\t  \tDefaults to your hostname.\n"
         "\t-o\t(Carefully) Tune some daemon options. See subopts below.\n\n";
 
     while ((opt = getopt(argc, argv, "hi:IEP:lc:dp:u:g:a:o:")) != -1)
@@ -2688,6 +2687,22 @@ static int validate_options(char const * const arg0)
 {
     int retval = 0;
 
+    if (instance_alias == NULL) {
+        char hname[256];
+
+        errno = 0;
+        if (gethostname(hname, sizeof(hname)) != 0) {
+            fprintf(stderr, "%s: Could not retrieve your hostname: %s\n", arg0, strerror(errno));
+            retval = 1;
+        } else {
+            instance_alias = strdup(hname);
+            fprintf(stderr,
+                    "%s: No instance alias given, using your hostname '%s'\n", arg0, instance_alias);
+            if (instance_alias == NULL) {
+                retval = 1;
+            }
+        }
+    }
     if (max_flows_per_thread < 128 || max_flows_per_thread > nDPId_MAX_FLOWS_PER_THREAD)
     {
         fprintf(stderr,
