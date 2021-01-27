@@ -93,7 +93,8 @@ static char * generate_pcap_filename(struct nDPIsrvd_flow const * const flow,
 {
     if (flow_user->guessed != 0 || flow_user->detected == 0)
     {
-        int ret = snprintf(dest, size, "flow-%s-%s.pcap", (flow_user->guessed != 0 ? "guessed" : "undetected"), flow->id);
+        int ret =
+            snprintf(dest, size, "flow-%s-%s.pcap", (flow_user->guessed != 0 ? "guessed" : "undetected"), flow->id);
         if (ret <= 0 || (size_t)ret > size)
         {
             return NULL;
@@ -220,16 +221,19 @@ enum nDPIsrvd_callback_return nDPIsrvd_json_callback(struct nDPIsrvd_socket * co
                     utarray_push_back(flow_user->packets, &cb_user_data->tmp.pkt);
                 }
                 flow_user->pkt_datalink = cb_user_data->tmp.pkt_datalink;
-            } else {
-                if (cb_user_data->tmp.guessed != 0) {
+            }
+            else
+            {
+                if (cb_user_data->tmp.guessed != 0)
+                {
                     flow_user->guessed = cb_user_data->tmp.guessed;
                 }
-                if (cb_user_data->tmp.detected != 0) {
+                if (cb_user_data->tmp.detected != 0)
+                {
                     flow_user->detected = cb_user_data->tmp.detected;
                 }
             }
-            if (cb_user_data->tmp.flow_end_or_idle == 1 &&
-                (flow_user->guessed != 0 || flow_user->detected == 0))
+            if (cb_user_data->tmp.flow_end_or_idle == 1 && (flow_user->guessed != 0 || flow_user->detected == 0))
             {
                 if (flow_user->packets != NULL)
                 {

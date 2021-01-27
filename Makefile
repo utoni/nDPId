@@ -39,6 +39,10 @@ endif
 
 endif # PKG_CONFIG_BIN
 
+ifeq ($(ENABLE_MEMORY_PROFILING),yes)
+PROJECT_CFLAGS += -DENABLE_MEMORY_PROFILING=1
+endif
+
 ifeq ($(ENABLE_DEBUG),yes)
 PROJECT_CFLAGS += -O0 -g3 -fno-omit-frame-pointer -fno-inline
 endif
@@ -120,6 +124,11 @@ else
 	@echo 'NDPI_WITH_PCRE    = no'
 endif
 endif # PKG_CONFIG_BIN
+ifeq ($(ENABLE_MEMORY_PROFILING),yes)
+	@echo 'ENABLE_MEMORY_PROFILING = yes'
+else
+	@echo 'ENABLE_MEMORY_PROFILING = no'
+endif
 ifeq ($(ENABLE_DEBUG),yes)
 	@echo 'ENABLE_DEBUG      = yes'
 else

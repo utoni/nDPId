@@ -11,7 +11,7 @@
  * NOTE: Buffer size needs to keep in sync with other implementations
  *       e.g. dependencies/nDPIsrvd.py
  */
-#define NETWORK_BUFFER_MAX_SIZE 9728 /* 8192 + 1024 + 512 */
+#define NETWORK_BUFFER_MAX_SIZE 12288 /* 8192 + 4096 */
 
 /* nDPId default config options */
 #define nDPId_PIDFILE "/tmp/ndpid.pid"

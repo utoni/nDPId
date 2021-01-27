@@ -19,7 +19,7 @@ var (
 	InfoLogger    *log.Logger
 	ErrorLogger   *log.Logger
 
-	NETWORK_BUFFER_MAX_SIZE uint16 = 9216
+	NETWORK_BUFFER_MAX_SIZE uint16 = 12288
 	nDPIsrvd_JSON_BYTES     uint16 = 4
 )
 
