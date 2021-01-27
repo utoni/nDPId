@@ -42,7 +42,7 @@ It doesn't use a producer/consumer design pattern, so the wording is not precise
 
 All JSON strings sent need to be in the following format:
 ```text
-[4-digit-number][JSON string]
+[5-digit-number][JSON string]
 ```
 
 ## Example:

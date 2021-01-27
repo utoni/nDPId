@@ -575,13 +575,13 @@ int main(int argc, char ** argv)
                         current->buf.used += bytes_read;
                     }
 
-                    while (current->buf.used >= nDPIsrvd_JSON_BYTES + 1)
+                    while (current->buf.used >= NETWORK_BUFFER_LENGTH_DIGITS + 1)
                     {
-                        if (current->buf.ptr[nDPIsrvd_JSON_BYTES] != '{')
+                        if (current->buf.ptr[NETWORK_BUFFER_LENGTH_DIGITS] != '{')
                         {
                             syslog(LOG_DAEMON | LOG_ERR,
                                    "BUG: JSON invalid opening character: '%c'",
-                                   current->buf.ptr[nDPIsrvd_JSON_BYTES]);
+                                   current->buf.ptr[NETWORK_BUFFER_LENGTH_DIGITS]);
                             disconnect_client(epollfd, current);
                             break;
                         }
@@ -601,7 +601,7 @@ int main(int argc, char ** argv)
                         {
                             syslog(LOG_DAEMON | LOG_ERR,
                                    "BUG: Missing size before JSON string: \"%.*s\"",
-                                   nDPIsrvd_JSON_BYTES,
+                                   NETWORK_BUFFER_LENGTH_DIGITS,
                                    current->buf.ptr);
                             disconnect_client(epollfd, current);
                             break;

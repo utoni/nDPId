@@ -447,9 +447,9 @@ static inline enum nDPIsrvd_parse_return nDPIsrvd_parse(struct nDPIsrvd_socket *
                                                         json_callback cb,
                                                         void * user_data)
 {
-    while (sock->buffer.used >= nDPIsrvd_JSON_BYTES + 1)
+    while (sock->buffer.used >= NETWORK_BUFFER_LENGTH_DIGITS + 1)
     {
-        if (sock->buffer.raw[nDPIsrvd_JSON_BYTES] != '{')
+        if (sock->buffer.raw[NETWORK_BUFFER_LENGTH_DIGITS] != '{')
         {
             return PARSE_INVALID_OPENING_CHAR;
         }

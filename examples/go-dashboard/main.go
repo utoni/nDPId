@@ -20,7 +20,7 @@ var (
 	ErrorLogger   *log.Logger
 
 	NETWORK_BUFFER_MAX_SIZE uint16 = 12288
-	nDPIsrvd_JSON_BYTES     uint16 = 4
+	NETWORK_BUFFER_LENGTH_DIGITS uint16 = 5
 )
 
 type packet_event struct {
@@ -158,20 +158,20 @@ func main() {
 			jsonStrLen += uint16(nread)
 
 			for {
-				if jsonStrLen < nDPIsrvd_JSON_BYTES+1 {
+				if jsonStrLen < NETWORK_BUFFER_LENGTH_DIGITS+1 {
 					break
 				}
 
-				if jsonStr[nDPIsrvd_JSON_BYTES] != '{' {
+				if jsonStr[NETWORK_BUFFER_LENGTH_DIGITS] != '{' {
 					ErrorLogger.Printf("BUG: JSON invalid opening character at position %d: '%s' (%x)\n",
-						nDPIsrvd_JSON_BYTES,
-						string(jsonStr[:nDPIsrvd_JSON_BYTES]), jsonStr[nDPIsrvd_JSON_BYTES])
+						NETWORK_BUFFER_LENGTH_DIGITS,
+						string(jsonStr[:NETWORK_BUFFER_LENGTH_DIGITS]), jsonStr[NETWORK_BUFFER_LENGTH_DIGITS])
 					os.Exit(1)
 				}
 
 				if jsonLen == 0 {
 					var tmp uint64
-					if tmp, err = strconv.ParseUint(strings.TrimLeft(jsonStr[:4], "0"), 10, 16); err != nil {
+					if tmp, err = strconv.ParseUint(strings.TrimLeft(jsonStr[:NETWORK_BUFFER_LENGTH_DIGITS], "0"), 10, 16); err != nil {
 						ErrorLogger.Printf("BUG: Could not parse length of a JSON string: %v\n", err)
 						os.Exit(1)
 					} else {
@@ -179,21 +179,21 @@ func main() {
 					}
 				}
 
-				if jsonStrLen < jsonLen+nDPIsrvd_JSON_BYTES {
+				if jsonStrLen < jsonLen+NETWORK_BUFFER_LENGTH_DIGITS {
 					break
 				}
 
-				if jsonStr[jsonLen+nDPIsrvd_JSON_BYTES-2] != '}' || jsonStr[jsonLen+nDPIsrvd_JSON_BYTES-1] != '\n' {
+				if jsonStr[jsonLen+NETWORK_BUFFER_LENGTH_DIGITS-2] != '}' || jsonStr[jsonLen+NETWORK_BUFFER_LENGTH_DIGITS-1] != '\n' {
 					ErrorLogger.Printf("BUG: JSON invalid closing character at position %d: '%s'\n",
-						jsonLen+nDPIsrvd_JSON_BYTES,
-						string(jsonStr[jsonLen+nDPIsrvd_JSON_BYTES-1]))
+						jsonLen+NETWORK_BUFFER_LENGTH_DIGITS,
+						string(jsonStr[jsonLen+NETWORK_BUFFER_LENGTH_DIGITS-1]))
 					os.Exit(1)
 				}
 
-				writer <- jsonStr[nDPIsrvd_JSON_BYTES : nDPIsrvd_JSON_BYTES+jsonLen]
+				writer <- jsonStr[NETWORK_BUFFER_LENGTH_DIGITS : NETWORK_BUFFER_LENGTH_DIGITS+jsonLen]
 
-				jsonStr = jsonStr[jsonLen+nDPIsrvd_JSON_BYTES:]
-				jsonStrLen -= (jsonLen + nDPIsrvd_JSON_BYTES)
+				jsonStr = jsonStr[jsonLen+NETWORK_BUFFER_LENGTH_DIGITS:]
+				jsonStrLen -= (jsonLen + NETWORK_BUFFER_LENGTH_DIGITS)
 				jsonLen = 0
 			}
 		}

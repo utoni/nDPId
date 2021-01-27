@@ -26,7 +26,7 @@
 #error "nDPI >= 3.3.0 requiired"
 #endif
 
-#ifndef __GCC_HAVE_SYNC_COMPARE_AND_SWAP_8
+#if !defined(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4) || !defined(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_8)
 #error "Compare and Fetch aka __sync_fetch_and_add not available on your platform!"
 #endif
 
@@ -912,12 +912,12 @@ static void check_for_idle_flows(struct nDPId_reader_thread * const reader_threa
                    "MemoryProfiler: %llu allocs, %llu frees, %llu bytes allocated, %llu bytes freed, %llu blocks in "
                    "use, "
                    "%llu bytes in use",
-                   alloc_count,
-                   free_count,
-                   alloc_bytes,
-                   free_bytes,
-                   alloc_count - free_count,
-                   alloc_bytes - free_bytes);
+                   (long long unsigned int)alloc_count,
+                   (long long unsigned int)free_count,
+                   (long long unsigned int)alloc_bytes,
+                   (long long unsigned int)free_bytes,
+                   (long long unsigned int)(alloc_count - free_count),
+                   (long long unsigned int)(alloc_bytes - free_bytes));
         }
 #endif
 
@@ -1108,11 +1108,12 @@ static void send_to_json_sink(struct nDPId_reader_thread * const reader_thread,
     int s_ret;
     char newline_json_str[NETWORK_BUFFER_MAX_SIZE];
 
-#if nDPIsrvd_JSON_BYTES != 4
-#error "Please do not forget to change the format string if you've changed the value of nDPIsrvd_JSON_BYTES."
-#endif
-    s_ret = snprintf(
-        newline_json_str, sizeof(newline_json_str), "%04zu%.*s\n", json_str_len + 1, (int)json_str_len, json_str);
+    s_ret = snprintf(newline_json_str,
+                     sizeof(newline_json_str),
+                     "%0" NETWORK_BUFFER_LENGTH_DIGITS_STR "zu%.*s\n",
+                     json_str_len + 1,
+                     (int)json_str_len,
+                     json_str);
     if (s_ret < 0 || s_ret > (int)sizeof(newline_json_str))
     {
         syslog(LOG_DAEMON | LOG_ERR,

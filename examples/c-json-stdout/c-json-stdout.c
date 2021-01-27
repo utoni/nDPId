@@ -57,11 +57,11 @@ int main(void)
         }
 
         buf_used += bytes_read;
-        while (buf_used >= nDPIsrvd_JSON_BYTES + 1)
+        while (buf_used >= NETWORK_BUFFER_LENGTH_DIGITS + 1)
         {
-            if (buf[nDPIsrvd_JSON_BYTES] != '{')
+            if (buf[NETWORK_BUFFER_LENGTH_DIGITS] != '{')
             {
-                fprintf(stderr, "BUG: JSON invalid opening character: '%c'\n", buf[nDPIsrvd_JSON_BYTES]);
+                fprintf(stderr, "BUG: JSON invalid opening character: '%c'\n", buf[NETWORK_BUFFER_LENGTH_DIGITS]);
                 exit(1);
             }
 
@@ -77,7 +77,7 @@ int main(void)
             }
             if ((uint8_t *)json_str_start == buf)
             {
-                fprintf(stderr, "BUG: Missing size before JSON string: \"%.*s\"\n", nDPIsrvd_JSON_BYTES, buf);
+                fprintf(stderr, "BUG: Missing size before JSON string: \"%.*s\"\n", NETWORK_BUFFER_LENGTH_DIGITS, buf);
                 exit(1);
             }
             if (json_bytes > sizeof(buf))

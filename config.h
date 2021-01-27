@@ -12,6 +12,8 @@
  *       e.g. dependencies/nDPIsrvd.py
  */
 #define NETWORK_BUFFER_MAX_SIZE 12288 /* 8192 + 4096 */
+#define NETWORK_BUFFER_LENGTH_DIGITS 5
+#define NETWORK_BUFFER_LENGTH_DIGITS_STR "5"
 
 /* nDPId default config options */
 #define nDPId_PIDFILE "/tmp/ndpid.pid"
@@ -28,6 +30,5 @@
 
 /* nDPIsrvd default config options */
 #define nDPIsrvd_PIDFILE "/tmp/ndpisrvd.pid"
-#define nDPIsrvd_JSON_BYTES 4
 
 #endif
