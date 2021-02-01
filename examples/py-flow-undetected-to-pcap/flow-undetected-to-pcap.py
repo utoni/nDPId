@@ -51,12 +51,12 @@ def parse_json_str(json_str):
             if flow_id not in FLOWS:
                 return
 
-            FLOWS[flow_id].addPacket(buffer_decoded, j['pkt_type'], j['pkt_ipoffset'])
+            FLOWS[flow_id].addPacket(buffer_decoded, j['pkt_type'], j['pkt_l3_offset'])
 
         if j['packet_event_name'] == 'packet':
 
             flow = PcapPacket()
-            flow.addPacket(buffer_decoded, j['pkt_type'], j['pkt_ipoffset'])
+            flow.addPacket(buffer_decoded, j['pkt_type'], j['pkt_l3_offset'])
 
 
 if __name__ == '__main__':

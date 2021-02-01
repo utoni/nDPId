@@ -14,67 +14,21 @@
 
 #include "config.h"
 #include "jsmn/jsmn.h"
+#include "utarray.h"
 #include "uthash.h"
 
-struct nDPIsrvd_flow
-{
-    char id[24];
-    UT_hash_handle hh;
-    uint8_t user_data[0];
-};
+#define nDPIsrvd_MAX_JSON_TOKENS 128
+#define nDPIsrvd_FLOW_ID_STRLEN 24
+#define nDPIsrvd_JSON_KEY_STRLEN 32
 
-struct nDPIsrvd_socket
-{
-    int fd;
-    int socket_family;
-
-    union {
-        struct
-        {
-            char const * dst_ip;
-            unsigned short dst_port;
-        } ip_socket;
-        struct
-        {
-            char * path;
-        } unix_socket;
-    } address;
-
-    struct
-    {
-        char raw[NETWORK_BUFFER_MAX_SIZE];
-        size_t used;
-        char * json_string;
-        size_t json_string_start;
-        unsigned long long int json_string_length;
-    } buffer;
-
-    struct
-    {
-        jsmn_parser parser;
-        jsmntok_t tokens[128];
-        int current_token;
-        int tokens_found;
-        struct
-        {
-            char const * key;
-            int key_length;
-            char const * value;
-            int value_length;
-        } key_value;
-    } jsmn;
-
-    struct
-    {
-        char const * event_name;
-        int event_name_len;
-        char const * flow_id;
-        int flow_id_len;
-    } current;
-};
+#define nDPIsrvd_STRLEN_SZ(s) (sizeof(s)/sizeof(s[0]) - sizeof(s[0]))
+#define TOKEN_GET_SZ(sock, key) token_get(sock, (char const *)key, nDPIsrvd_STRLEN_SZ(key))
+#define TOKEN_GET_VALUE_SZ(sock, key, value_length) token_get_value(sock, (char const *)key, nDPIsrvd_STRLEN_SZ(key), value_length)
+#define TOKEN_VALUE_EQUALS_SZ(token, string_to_check) token_value_equals(token, string_to_check, nDPIsrvd_STRLEN_SZ(string_to_check))
+#define TOKEN_VALUE_TO_ULL(token, value) token_value_to_ull(token, value)
 
 #define FIRST_ENUM_VALUE 1
-#define LAST_ENUM_VALUE CALLBACK_LAST_ENUM_VALUE
+#define LAST_ENUM_VALUE CONVERSION_LAST_ENUM_VALUE
 
 enum nDPIsrvd_connect_return
 {
@@ -102,7 +56,9 @@ enum nDPIsrvd_parse_return
     PARSE_STRING_TOO_BIG,
     PARSE_INVALID_CLOSING_CHAR,
     PARSE_JSMN_ERROR,
-    PARSE_CALLBACK_ERROR,
+    PARSE_JSON_CALLBACK_ERROR,
+    PARSE_JSON_MGMT_ERROR,
+    PARSE_FLOW_MGMT_ERROR,
     PARSE_LAST_ENUM_VALUE
 };
 
@@ -113,7 +69,96 @@ enum nDPIsrvd_callback_return
     CALLBACK_LAST_ENUM_VALUE
 };
 
-typedef enum nDPIsrvd_callback_return (*json_callback)(struct nDPIsrvd_socket * const sock, void * const user_data);
+enum nDPIsrvd_conversion_return
+{
+    CONVERSION_OK = CALLBACK_LAST_ENUM_VALUE,
+    CONVERISON_KEY_NOT_FOUND,
+    CONVERSION_NOT_A_NUMBER,
+    CONVERSION_RANGE_EXCEEDED,
+    CONVERSION_LAST_ENUM_VALUE
+};
+
+typedef unsigned long long int nDPIsrvd_ull;
+typedef nDPIsrvd_ull * nDPIsrvd_ull_ptr;
+
+struct nDPIsrvd_flow
+{
+    char id[nDPIsrvd_FLOW_ID_STRLEN];
+    nDPIsrvd_ull id_as_ull;
+    UT_hash_handle hh;
+    uint8_t flow_user_data[0];
+};
+
+struct nDPIsrvd_json_token
+{
+    char key[nDPIsrvd_FLOW_ID_STRLEN];
+    int key_length;
+    UT_hash_handle hh;
+    char const * value;
+    int value_length;
+};
+
+struct nDPIsrvd_socket;
+#ifdef ENABLE_MEMORY_PROFILING
+static inline void * nDPIsrvd_uthash_malloc(size_t const size);
+static inline void nDPIsrvd_uthash_free(void * const freeable, size_t const size);
+#endif
+
+typedef enum nDPIsrvd_callback_return (*json_callback)(struct nDPIsrvd_socket * const sock,
+                                                       struct nDPIsrvd_flow * const flow);
+typedef void (*flow_end_callback)(struct nDPIsrvd_socket * const sock,
+                                  struct nDPIsrvd_flow * const flow);
+
+struct nDPIsrvd_socket
+{
+    int fd;
+    int socket_family;
+    size_t flow_user_data_size;
+    struct nDPIsrvd_flow * flow_table;
+    json_callback json_callback;
+    flow_end_callback flow_end_callback;
+
+    union {
+        struct
+        {
+            char const * dst_ip;
+            unsigned short dst_port;
+        } ip_socket;
+        struct
+        {
+            char * path;
+        } unix_socket;
+    } address;
+
+    struct
+    {
+        char raw[NETWORK_BUFFER_MAX_SIZE];
+        size_t used;
+        char * json_string;
+        size_t json_string_start;
+        nDPIsrvd_ull json_string_length;
+    } buffer;
+
+    /* jsmn JSON parser */
+    struct
+    {
+        jsmn_parser parser;
+        jsmntok_t tokens[nDPIsrvd_MAX_JSON_TOKENS];
+        int tokens_found;
+    } jsmn;
+
+    /* easy and fast JSON key/value access via hash table and a static array */
+    struct
+    {
+        UT_array * tokens;
+        struct nDPIsrvd_json_token * token_table;
+    } json;
+
+    size_t global_user_data_size;
+    uint8_t global_user_data[0];
+};
+
+static inline void nDPIsrvd_free(struct nDPIsrvd_socket ** const sock);
 
 /* Slightly modified code: https://en.wikibooks.org/wiki/Algorithm_Implementation/Miscellaneous/Base64 */
 #define WHITESPACE 64
@@ -205,7 +250,14 @@ static inline char const * nDPIsrvd_enum_to_string(int enum_value)
                                             "PARSE_STRING_TOO_BIG",
                                             "PARSE_INVALID_CLOSING_CHAR",
                                             "PARSE_JSMN_ERROR",
-                                            "PARSE_CALLBACK_ERROR"};
+                                            "PARSE_JSON_CALLBACK_ERROR",
+                                            "PARSE_JSON_MGMT_ERROR",
+                                            "PARSE_FLOW_MGMT_ERROR",
+                                            "CONVERSION_OK",
+                                            "CONVERISON_KEY_NOT_FOUND",
+                                            "CONVERSION_NOT_A_NUMBER",
+                                            "CONVERSION_RANGE_EXCEEDED",
+                                            [LAST_ENUM_VALUE] = "LAST_ENUM_VALUE"};
 
     if (enum_value < FIRST_ENUM_VALUE || enum_value >= LAST_ENUM_VALUE)
     {
@@ -215,32 +267,83 @@ static inline char const * nDPIsrvd_enum_to_string(int enum_value)
     return enum_str[enum_value - FIRST_ENUM_VALUE];
 }
 
-static inline struct nDPIsrvd_socket * nDPIsrvd_init(void)
+static inline struct nDPIsrvd_socket * nDPIsrvd_init(size_t global_user_data_size,
+                                                     size_t flow_user_data_size,
+                                                     json_callback json_cb,
+                                                     flow_end_callback flow_end_cb)
 {
-    struct nDPIsrvd_socket * sock = (struct nDPIsrvd_socket *)malloc(sizeof(*sock));
+    static const UT_icd packet_data_icd = {sizeof(struct nDPIsrvd_json_token), NULL, NULL, NULL};
+    struct nDPIsrvd_socket * sock = (struct nDPIsrvd_socket *)malloc(sizeof(*sock) + global_user_data_size);
+
+    if (json_cb == NULL)
+    {
+        goto error;
+    }
 
     if (sock != NULL)
     {
+        memset(sock, 0, sizeof(*sock));
+
         sock->fd = -1;
         sock->socket_family = -1;
+        sock->flow_user_data_size = flow_user_data_size;
+
+        sock->json_callback = json_cb;
+        sock->flow_end_callback = flow_end_cb;
+
+        utarray_new(sock->json.tokens, &packet_data_icd);
+        if (sock->json.tokens == NULL)
+        {
+            goto error;
+        }
+        utarray_reserve(sock->json.tokens, nDPIsrvd_MAX_JSON_TOKENS);
+
+        sock->global_user_data_size = global_user_data_size;
     }
 
     return sock;
+error:
+    nDPIsrvd_free(&sock);
+    return NULL;
 }
 
-static inline void nDPIsrvd_free(struct nDPIsrvd_socket ** const sock, struct nDPIsrvd_flow ** const flow_table)
+static inline void nDPIsrvd_free(struct nDPIsrvd_socket ** const sock)
 {
     struct nDPIsrvd_flow * current_flow;
-    struct nDPIsrvd_flow * tmp;
+    struct nDPIsrvd_flow * ftmp;
+    struct nDPIsrvd_json_token * current_json_token;
+    struct nDPIsrvd_json_token * jtmp;
 
-    if (flow_table != NULL)
+    if (sock == NULL || *sock == NULL)
     {
-        HASH_ITER(hh, *flow_table, current_flow, tmp)
+        return;
+    }
+
+    if ((*sock)->json.token_table != NULL)
+    {
+        HASH_ITER(hh, (*sock)->json.token_table, current_json_token, jtmp)
         {
-            HASH_DEL(*flow_table, current_flow);
+            HASH_DEL((*sock)->json.token_table, current_json_token);
+        }
+        (*sock)->json.token_table = NULL;
+    }
+
+    if ((*sock)->json.tokens != NULL)
+    {
+        utarray_free((*sock)->json.tokens);
+    }
+
+    if ((*sock)->flow_table != NULL)
+    {
+        HASH_ITER(hh, (*sock)->flow_table, current_flow, ftmp)
+        {
+            if ((*sock)->flow_end_callback != NULL) {
+                (*sock)->flow_end_callback(*sock, current_flow);
+            }
+            HASH_DEL((*sock)->flow_table, current_flow);
             free(current_flow);
         }
-        *flow_table = NULL;
+        (*sock)->flow_table = NULL;
     }
 
     free(*sock);
@@ -321,132 +424,145 @@ static inline enum nDPIsrvd_read_return nDPIsrvd_read(struct nDPIsrvd_socket * c
     return READ_OK;
 }
 
-static inline int token_event_equals(struct nDPIsrvd_socket const * const sock, char const * const event_value)
+static inline int jsmn_token_is_key(int current_token_index)
 {
-    return sock->current.event_name != NULL && sock->current.event_name_len > 0 &&
-           (int)strlen(event_value) == sock->current.event_name_len &&
-           strncmp(sock->current.event_name, event_value, sock->current.event_name_len) == 0;
+    return current_token_index % 2;
 }
 
-static inline int token_is_key(struct nDPIsrvd_socket const * const sock)
+static inline char const * jsmn_token_get(struct nDPIsrvd_socket const * const sock, int current_token_index)
 {
-    return sock->jsmn.current_token % 2;
+    return sock->buffer.json_string + sock->jsmn.tokens[current_token_index].start;
 }
 
-static inline char const * token_get(struct nDPIsrvd_socket const * const sock)
+static inline int jsmn_token_size(struct nDPIsrvd_socket const * const sock, int current_token_index)
 {
-    return sock->buffer.json_string + sock->jsmn.tokens[sock->jsmn.current_token].start;
+    return sock->jsmn.tokens[current_token_index].end - sock->jsmn.tokens[current_token_index].start;
 }
 
-static inline int token_size(struct nDPIsrvd_socket const * const sock)
+static inline int jsmn_token_is_jsmn_type(struct nDPIsrvd_socket const * const sock, int current_token_index, jsmntype_t type_to_check)
 {
-    return sock->jsmn.tokens[sock->jsmn.current_token].end - sock->jsmn.tokens[sock->jsmn.current_token].start;
+    return sock->jsmn.tokens[current_token_index].type == type_to_check;
 }
 
-static inline int token_is_start(struct nDPIsrvd_socket const * const sock)
+static inline struct nDPIsrvd_json_token const *
+token_get(struct nDPIsrvd_socket const * const sock, char const * const key, size_t key_length)
 {
-    return sock->jsmn.current_token == 0;
+    struct nDPIsrvd_json_token * token = NULL;
+    HASH_FIND(hh, sock->json.token_table, key, key_length, token);
+    return token;
 }
 
-static inline int token_is_end(struct nDPIsrvd_socket const * const sock)
+static inline char const *
+token_get_value(struct nDPIsrvd_socket const * const sock, char const * const key, size_t key_length, size_t * value_length)
 {
-    return sock->jsmn.current_token == sock->jsmn.tokens_found;
-}
-
-static inline int token_is_key_value_pair(struct nDPIsrvd_socket const * const sock)
-{
-    return sock->jsmn.current_token > 0 && sock->jsmn.current_token < sock->jsmn.tokens_found;
-}
-
-static inline int token_is_jsmn_type(struct nDPIsrvd_socket const * const sock, jsmntype_t type_to_check)
-{
-    if (token_is_key_value_pair(sock) == 0)
+    struct nDPIsrvd_json_token const * const token = token_get(sock, key, key_length);
+    if (token != NULL)
     {
-        return 0;
-    }
-
-    return sock->jsmn.tokens[sock->jsmn.current_token].type == type_to_check;
-}
-
-static inline int key_equals(struct nDPIsrvd_socket const * const sock, char const * const name)
-{
-    if (sock->jsmn.key_value.key == NULL || sock->jsmn.key_value.key_length == 0)
-    {
-        return 0;
-    }
-
-    return (int)strlen(name) == sock->jsmn.key_value.key_length &&
-           strncmp(name, sock->jsmn.key_value.key, sock->jsmn.key_value.key_length) == 0;
-}
-
-static inline int value_equals(struct nDPIsrvd_socket const * const sock, char const * const name)
-{
-    if (sock->jsmn.key_value.value == NULL || sock->jsmn.key_value.value_length == 0)
-    {
-        return 0;
-    }
-
-    return (int)strlen(name) == sock->jsmn.key_value.value_length &&
-           strncmp(name, sock->jsmn.key_value.value, sock->jsmn.key_value.value_length) == 0;
-}
-
-static inline struct nDPIsrvd_flow * nDPIsrvd_get_flow(struct nDPIsrvd_socket * const sock,
-                                                       struct nDPIsrvd_flow ** const flow_table,
-                                                       size_t user_data_size)
-{
-    if (token_is_start(sock) == 1)
-    {
-        memset(&sock->current, 0, sizeof(sock->current));
-    }
-    else if (token_is_end(sock) == 1)
-    {
-        if (sock->current.event_name != NULL && sock->current.flow_id != NULL)
+        if (value_length != NULL)
         {
-            if (strncmp(sock->current.event_name, "new", sock->current.event_name_len) == 0)
-            {
-                struct nDPIsrvd_flow * f = (struct nDPIsrvd_flow *)calloc(1, sizeof(*f) + user_data_size);
-                if (f == NULL)
-                {
-                    return NULL;
-                }
-                snprintf(f->id, sizeof(f->id), "%.*s", sock->current.flow_id_len, sock->current.flow_id);
-                HASH_ADD(hh, *flow_table, id, (size_t)sock->current.flow_id_len, f);
-                return f;
-            }
-            else
-            {
-                struct nDPIsrvd_flow * f = NULL;
-                HASH_FIND(hh, *flow_table, sock->current.flow_id, (size_t)sock->current.flow_id_len, f);
-                return f;
-            }
+            *value_length = token->value_length;
         }
-    }
-    else if (token_is_key_value_pair(sock) == 1)
-    {
-        if (key_equals(sock, "packet_event_name") == 1)
-        {
-            sock->current.event_name = sock->jsmn.key_value.value;
-            sock->current.event_name_len = sock->jsmn.key_value.value_length;
-        }
-        else if (key_equals(sock, "flow_event_name") == 1)
-        {
-            sock->current.event_name = sock->jsmn.key_value.value;
-            sock->current.event_name_len = sock->jsmn.key_value.value_length;
-        }
-        else if (key_equals(sock, "flow_id") == 1)
-        {
-            sock->current.flow_id = sock->jsmn.key_value.value;
-            sock->current.flow_id_len = sock->jsmn.key_value.value_length;
-        }
+        return token->value;
     }
 
     return NULL;
 }
 
-static inline enum nDPIsrvd_parse_return nDPIsrvd_parse(struct nDPIsrvd_socket * const sock,
-                                                        json_callback cb,
-                                                        void * user_data)
+static inline int token_value_equals(struct nDPIsrvd_json_token const * const token, char const * const value, size_t value_length)
 {
+    if (token == NULL || token->value == NULL)
+    {
+        return 0;
+    }
+
+    return strncmp(token->value, value, token->value_length) == 0 &&
+        token->value_length == (int)value_length;
+}
+
+static inline enum nDPIsrvd_conversion_return
+token_value_to_ull(struct nDPIsrvd_json_token const * const token, nDPIsrvd_ull_ptr const value)
+{
+    if (token == NULL || token->value == NULL || token->value_length == 0)
+    {
+        return CONVERISON_KEY_NOT_FOUND;
+    }
+
+    {
+        char const * const value_as_string = token->value;
+        char * endptr = NULL;
+        *value = strtoull(value_as_string, &endptr, 10);
+
+        if (value_as_string == endptr)
+        {
+            return CONVERSION_NOT_A_NUMBER;
+        }
+        if (errno == ERANGE)
+        {
+            return CONVERSION_RANGE_EXCEEDED;
+        }
+    }
+
+    return CONVERSION_OK;
+}
+
+static inline struct nDPIsrvd_flow * nDPIsrvd_get_flow(struct nDPIsrvd_socket * const sock)
+{
+    struct nDPIsrvd_json_token const * const flow_id = TOKEN_GET_SZ(sock, "flow_id");
+
+    if (flow_id != NULL)
+    {
+        if (flow_id->value_length > nDPIsrvd_FLOW_ID_STRLEN) {
+            return NULL;
+        }
+
+        struct nDPIsrvd_flow * flow = NULL;
+        HASH_FIND(hh, sock->flow_table, flow_id->value, (size_t)flow_id->value_length, flow);
+
+        if (flow == NULL)
+        {
+            flow = (struct nDPIsrvd_flow *)calloc(1, sizeof(*flow) + sock->flow_user_data_size);
+            if (flow == NULL)
+            {
+                return NULL;
+            }
+
+            TOKEN_VALUE_TO_ULL(flow_id, &flow->id_as_ull);
+            snprintf(flow->id, nDPIsrvd_FLOW_ID_STRLEN, "%.*s", flow_id->value_length, flow_id->value);
+            HASH_ADD(hh, sock->flow_table, id,flow_id->value_length, flow);
+        }
+
+        return flow;
+    }
+
+    return NULL;
+}
+
+static inline int nDPIsrvd_check_flow_end(struct nDPIsrvd_socket * const sock, struct nDPIsrvd_flow * const current_flow)
+{
+    if (current_flow == NULL)
+    {
+        return 1;
+    }
+
+    struct nDPIsrvd_json_token const * const flow_event_name = TOKEN_GET_SZ(sock, "flow_event_name");
+
+    if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "idle") != 0 &&
+        TOKEN_VALUE_EQUALS_SZ(flow_event_name, "end") != 0)
+    {
+        if (sock->flow_end_callback != NULL) {
+            sock->flow_end_callback(sock, current_flow);
+        }
+        HASH_DEL(sock->flow_table, current_flow);
+        free(current_flow);
+    }
+
+    return 0;
+}
+
+static inline enum nDPIsrvd_parse_return nDPIsrvd_parse(struct nDPIsrvd_socket * const sock)
+{
+    enum nDPIsrvd_parse_return ret = PARSE_OK;
+
     while (sock->buffer.used >= NETWORK_BUFFER_LENGTH_DIGITS + 1)
     {
         if (sock->buffer.raw[NETWORK_BUFFER_LENGTH_DIGITS] != '{')
@@ -486,65 +602,95 @@ static inline enum nDPIsrvd_parse_return nDPIsrvd_parse(struct nDPIsrvd_socket *
         sock->jsmn.tokens_found = jsmn_parse(&sock->jsmn.parser,
                                              (char *)(sock->buffer.raw + sock->buffer.json_string_start),
                                              sock->buffer.json_string_length - sock->buffer.json_string_start,
-                                             sock->jsmn.tokens,
-                                             sizeof(sock->jsmn.tokens) / sizeof(sock->jsmn.tokens[0]));
+                                             sock->jsmn.tokens, nDPIsrvd_MAX_JSON_TOKENS);
         if (sock->jsmn.tokens_found < 0 || sock->jsmn.tokens[0].type != JSMN_OBJECT)
         {
             return PARSE_JSMN_ERROR;
         }
 
-        sock->jsmn.key_value.key = NULL;
-        sock->jsmn.key_value.key_length = 0;
-        sock->jsmn.key_value.value = NULL;
-        sock->jsmn.key_value.value_length = 0;
-        sock->jsmn.current_token = 0;
-
-        if (cb(sock, user_data) != CALLBACK_OK)
+        char const * key = NULL;
+        int key_length = 0;
+        for (int current_token = 1; current_token < sock->jsmn.tokens_found; current_token++)
         {
-            return PARSE_CALLBACK_ERROR;
-        }
-
-        for (sock->jsmn.current_token = 1; sock->jsmn.current_token < sock->jsmn.tokens_found;
-             sock->jsmn.current_token++)
-        {
-            if (token_is_key(sock) == 1)
+            if (jsmn_token_is_key(current_token) == 1)
             {
-                sock->jsmn.key_value.key = token_get(sock);
-                sock->jsmn.key_value.key_length = token_size(sock);
-
-                if (sock->jsmn.key_value.key == NULL || sock->jsmn.key_value.value != NULL)
+                if (key != NULL)
                 {
-                    return PARSE_JSMN_ERROR;
+                    ret = PARSE_JSMN_ERROR;
+                    break;
+                }
+
+                key = jsmn_token_get(sock, current_token);
+                key_length = jsmn_token_size(sock, current_token);
+
+                if (key == NULL)
+                {
+                    ret = PARSE_JSMN_ERROR;
+                    break;
                 }
             }
             else
             {
-                sock->jsmn.key_value.value = token_get(sock);
-                sock->jsmn.key_value.value_length = token_size(sock);
+                struct nDPIsrvd_json_token * token = NULL;
+                HASH_FIND(hh, sock->json.token_table, key, (size_t)key_length, token);
 
-                if (sock->jsmn.key_value.key == NULL || sock->jsmn.key_value.value == NULL)
+                if (token != NULL)
                 {
-                    return PARSE_JSMN_ERROR;
-                }
-                if (cb(sock, user_data) != CALLBACK_OK)
-                {
-                    return PARSE_CALLBACK_ERROR;
+                    token->value = jsmn_token_get(sock, current_token);
+                    token->value_length = jsmn_token_size(sock, current_token);
+                } else {
+                    struct nDPIsrvd_json_token jt = {
+                        .value = jsmn_token_get(sock, current_token),
+                        .value_length = jsmn_token_size(sock, current_token),
+                        .hh = {}
+                    };
+
+                    if (key == NULL || key_length > nDPIsrvd_JSON_KEY_STRLEN ||
+                        utarray_len(sock->json.tokens) == nDPIsrvd_MAX_JSON_TOKENS)
+                    {
+                        ret = PARSE_JSON_MGMT_ERROR;
+                        break;
+                    }
+
+                    jt.key_length = key_length;
+                    snprintf(jt.key, nDPIsrvd_JSON_KEY_STRLEN, "%.*s",  key_length, key);
+                    utarray_push_back(sock->json.tokens, &jt);
+                    HASH_ADD_STR(sock->json.token_table, key,
+                                 (struct nDPIsrvd_json_token *)utarray_back(sock->json.tokens));
                 }
 
-                sock->jsmn.key_value.key = NULL;
-                sock->jsmn.key_value.key_length = 0;
-                sock->jsmn.key_value.value = NULL;
-                sock->jsmn.key_value.value_length = 0;
+                key = NULL;
+                key_length = 0;
             }
         }
 
-        if (cb(sock, user_data) != CALLBACK_OK)
+        struct nDPIsrvd_flow * flow = NULL;
+        flow = nDPIsrvd_get_flow(sock);
+        if (flow == NULL)
         {
-            return PARSE_CALLBACK_ERROR;
+            ret = PARSE_FLOW_MGMT_ERROR;
+        }
+        if (ret == PARSE_OK &&
+            sock->json_callback(sock, flow) != CALLBACK_OK)
+        {
+            ret = PARSE_JSON_CALLBACK_ERROR;
+        }
+        if (nDPIsrvd_check_flow_end(sock, flow) != 0)
+        {
+            ret = PARSE_FLOW_MGMT_ERROR;
         }
 
-        sock->jsmn.current_token = -1;
         sock->jsmn.tokens_found = 0;
+        {
+            struct nDPIsrvd_json_token * current_token = NULL;
+            struct nDPIsrvd_json_token * jtmp = NULL;
+
+            HASH_ITER(hh, sock->json.token_table, current_token, jtmp)
+            {
+                current_token->value = NULL;
+                current_token->value_length = 0;
+            }
+        }
 
         memmove(sock->buffer.raw,
                 sock->buffer.raw + sock->buffer.json_string_length,
@@ -554,7 +700,28 @@ static inline enum nDPIsrvd_parse_return nDPIsrvd_parse(struct nDPIsrvd_socket *
         sock->buffer.json_string_start = 0;
     }
 
-    return PARSE_OK;
+    return ret;
 }
+
+#ifdef ENABLE_MEMORY_PROFILING
+static inline void * nDPIsrvd_uthash_malloc(size_t const size)
+{
+    void * p = malloc(size);
+
+    if (p == NULL)
+    {
+        return NULL;
+    }
+    printf("malloc(%zu)\n", size);
+
+    return p;
+}
+
+static inline void nDPIsrvd_uthash_free(void * const freeable, size_t const size)
+{
+    printf("free(%zu)\n", size);
+    free(freeable);
+}
+#endif
 
 #endif

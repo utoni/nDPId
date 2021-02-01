@@ -1,5 +1,7 @@
 #include <arpa/inet.h>
 #include <errno.h>
+#include <ndpi_main.h>
+#include <ndpi_typedefs.h>
 #include <pcap/pcap.h>
 #include <signal.h>
 #include <stdio.h>
@@ -16,9 +18,10 @@
 
 struct packet_data
 {
-    uint64_t packet_ts;
-    size_t packet_len;
-    size_t base64_packet_size;
+    nDPIsrvd_ull packet_ts_sec;
+    nDPIsrvd_ull packet_ts_usec;
+    nDPIsrvd_ull packet_len;
+    int base64_packet_size;
     union {
         char * base64_packet;
         char const * base64_packet_const;
@@ -27,28 +30,15 @@ struct packet_data
 
 struct flow_user_data
 {
+    uint8_t flow_new_seen;
+    uint8_t detection_finished;
     uint8_t guessed;
     uint8_t detected;
-    int pkt_datalink;
+    nDPIsrvd_ull flow_datalink;
+    nDPIsrvd_ull flow_max_packets;
+    nDPIsrvd_ull flow_l4_header_len;
+    nDPIsrvd_ull flow_total_l4_payload_len;
     UT_array * packets;
-};
-
-struct callback_tmp_data
-{
-    uint8_t guessed;
-    uint8_t detected;
-    int pkt_datalink;
-
-    uint8_t flow_end_or_idle;
-    uint8_t is_packet_flow;
-
-    struct packet_data pkt;
-};
-
-struct callback_user_data
-{
-    struct nDPIsrvd_flow * flow_table;
-    struct callback_tmp_data tmp;
 };
 
 struct nDPIsrvd_socket * sock = NULL;
@@ -149,13 +139,13 @@ static int packet_write_pcap_file(UT_array const * const pd_array, int pkt_datal
         if (nDPIsrvd_base64decode(pd_elt->base64_packet, pd_elt->base64_packet_size, pkt_buf, &pkt_buf_len) != 0 ||
             pkt_buf_len == 0)
         {
-            printf("packet base64 decode failed (%zu bytes): %s\n", pd_elt->base64_packet_size, pd_elt->base64_packet);
+            printf("packet base64 decode failed (%d bytes): %s\n", pd_elt->base64_packet_size, pd_elt->base64_packet);
         }
         else
         {
             struct pcap_pkthdr phdr;
-            phdr.ts.tv_sec = 0;
-            phdr.ts.tv_usec = 0;
+            phdr.ts.tv_sec = pd_elt->packet_ts_sec;
+            phdr.ts.tv_usec = pd_elt->packet_ts_usec;
             phdr.caplen = pkt_buf_len;
             phdr.len = pkt_buf_len;
             pcap_dump((unsigned char *)pd, &phdr, pkt_buf);
@@ -184,198 +174,183 @@ static void packet_data_print(UT_array const * const pd_array)
         {
             break;
         }
-        printf("\tpacket-data base64 length: %zu\n", pd_elt->base64_packet_size);
+        printf("\tpacket-data base64 length: %d\n", pd_elt->base64_packet_size);
     } while ((pd_elt = (struct packet_data *)utarray_next(pd_array, pd_elt)) != NULL);
 }
 #else
 #define packet_data_print(pd_array)
 #endif
 
-enum nDPIsrvd_callback_return nDPIsrvd_json_callback(struct nDPIsrvd_socket * const sock, void * const user_data)
+static void perror_ull(enum nDPIsrvd_conversion_return retval, char const * const prefix)
 {
-    struct callback_user_data * const cb_user_data = (struct callback_user_data *)user_data;
-    struct nDPIsrvd_flow * flow = nDPIsrvd_get_flow(sock, &cb_user_data->flow_table, sizeof(struct flow_user_data));
-    struct flow_user_data * flow_user = (struct flow_user_data *)(flow != NULL ? flow->user_data : NULL);
+    switch (retval)
+    {
+        case CONVERSION_OK:
+            return;
 
-    if (token_is_start(sock) == 1) /* Start of a JSON string. */
-    {
-        memset(&cb_user_data->tmp, 0, sizeof(cb_user_data->tmp));
-        cb_user_data->tmp.pkt_datalink = -1;
-#ifdef VERBOSE
-        printf("JSON ");
-#endif
-        return CALLBACK_OK;
+        case CONVERISON_KEY_NOT_FOUND:
+            fprintf(stderr, "%s `: Key not found.\n", prefix);
+            break;
+        case CONVERSION_NOT_A_NUMBER:
+            fprintf(stderr, "%s: Not a valid number.\n", prefix);
+            break;
+        case CONVERSION_RANGE_EXCEEDED:
+            fprintf(stderr, "%s: Number too large.\n", prefix);
+            break;
+
+        default:
+            fprintf(stderr, "Internal error, invalid conversion return value.\n");
     }
-    else if (token_is_end(sock) == 1) /* End of a JSON string. */
+}
+
+static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_socket * const sock,
+                                                            struct nDPIsrvd_flow * const flow)
+{
+    struct flow_user_data * const flow_user = (struct flow_user_data *)flow->flow_user_data;
+
+#ifdef VERBOSE
+    struct nDPIsrvd_json_token * current_token = NULL;
+    struct nDPIsrvd_json_token * jtmp = NULL;
+
+    HASH_ITER(hh, sock->json.token_table, current_token, jtmp)
     {
-        if (flow != NULL)
+        if (current_token->value != NULL)
         {
-            if (cb_user_data->tmp.is_packet_flow == 1)
-            {
-                if (flow_user->packets == NULL)
-                {
-                    utarray_new(flow_user->packets, &packet_data_icd);
-                }
-                if (flow_user->packets != NULL)
-                {
-                    utarray_push_back(flow_user->packets, &cb_user_data->tmp.pkt);
-                }
-                flow_user->pkt_datalink = cb_user_data->tmp.pkt_datalink;
-            }
-            else
-            {
-                if (cb_user_data->tmp.guessed != 0)
-                {
-                    flow_user->guessed = cb_user_data->tmp.guessed;
-                }
-                if (cb_user_data->tmp.detected != 0)
-                {
-                    flow_user->detected = cb_user_data->tmp.detected;
-                }
-            }
-            if (cb_user_data->tmp.flow_end_or_idle == 1 && (flow_user->guessed != 0 || flow_user->detected == 0))
-            {
-                if (flow_user->packets != NULL)
-                {
-                    packet_data_print(flow_user->packets);
-                    char pcap_filename[64];
-                    if (generate_pcap_filename(flow, flow_user, pcap_filename, sizeof(pcap_filename)) == NULL)
-                    {
-                        fprintf(stderr, "%s\n", "Internal error, exit ..");
-                        return CALLBACK_ERROR;
-                    }
-                    printf("dump flow with id %s to %s\n", flow->id, pcap_filename);
-                    if (packet_write_pcap_file(flow_user->packets, flow_user->pkt_datalink, pcap_filename) != 0)
-                    {
-                        return CALLBACK_ERROR;
-                    }
-                    utarray_free(flow_user->packets);
-                    flow_user->packets = NULL;
-                }
-            }
-#ifdef VERBOSE
-            printf("GUESSED: %u, DETECTED: %u ", flow_user->guessed, flow_user->detected);
-#endif
+            printf("[%.*s : %.*s] ",
+                   current_token->key_length, current_token->key,
+                   current_token->value_length, current_token->value);
         }
-#ifdef VERBOSE
-        printf("EoF\n");
+    }
+    printf("EoF\n");
 #endif
+
+    if (flow_user == NULL || flow_user->detection_finished != 0)
+    {
         return CALLBACK_OK;
     }
 
-    if (token_is_key_value_pair(sock) != 1)
+    if (TOKEN_VALUE_EQUALS_SZ(TOKEN_GET_SZ(sock, "packet_event_name"), "packet-flow") != 0)
     {
-        fprintf(stderr, "%s\n", "Internal error, exit ..");
-        return CALLBACK_ERROR;
+        struct nDPIsrvd_json_token const * const pkt = TOKEN_GET_SZ(sock, "pkt");
+        if (pkt == NULL)
+        {
+            return CALLBACK_ERROR;
+        }
+        if (flow_user->packets == NULL)
+        {
+            utarray_new(flow_user->packets, &packet_data_icd);
+        }
+        if (flow_user->packets == NULL)
+        {
+            return CALLBACK_ERROR;
+        }
+
+        nDPIsrvd_ull pkt_ts_sec = 0ull;
+        perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "pkt_ts_sec"), &pkt_ts_sec), "pkt_ts_sec");
+
+        nDPIsrvd_ull pkt_ts_usec = 0ull;
+        perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "pkt_ts_usec"), &pkt_ts_usec), "pkt_ts_usec");
+
+        nDPIsrvd_ull pkt_len = 0ull;
+        perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "pkt_len"), &pkt_len), "pkt_len");
+
+        nDPIsrvd_ull pkt_l4_len = 0ull;
+        perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "pkt_l4_len"), &pkt_l4_len), "pkt_l4_len");
+
+        struct packet_data pd = {
+            .packet_ts_sec = pkt_ts_sec,
+            .packet_ts_usec = pkt_ts_usec,
+            .packet_len = pkt_len,
+            .base64_packet_size = pkt->value_length,
+            .base64_packet_const = pkt->value
+        };
+        utarray_push_back(flow_user->packets, &pd);
+        flow_user->flow_total_l4_payload_len += pkt_l4_len - flow_user->flow_l4_header_len;
     }
 
-    if (key_equals(sock, "packet_event_name") == 1)
     {
-        if (value_equals(sock, "packet-flow") == 1)
+        struct nDPIsrvd_json_token const * const flow_event_name = TOKEN_GET_SZ(sock, "flow_event_name");
+        if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "new") != 0)
         {
-            cb_user_data->tmp.is_packet_flow = 1;
-        }
-    }
-    else if (key_equals(sock, "pkt") == 1)
-    {
-        cb_user_data->tmp.pkt.base64_packet_const = sock->jsmn.key_value.value;
-        cb_user_data->tmp.pkt.base64_packet_size = sock->jsmn.key_value.value_length;
-    }
-    else if (key_equals(sock, "pkt_ts") == 1)
-    {
-        char * endptr = NULL;
-        unsigned long long int value = strtoull(sock->jsmn.key_value.value, &endptr, 10);
-        if (sock->jsmn.key_value.value == endptr)
-        {
-            fprintf(stderr,
-                    "pkt_ts `%.*s': Value `%.*s' is not a valid number.\n",
-                    sock->jsmn.key_value.key_length,
-                    sock->jsmn.key_value.key,
-                    sock->jsmn.key_value.value_length,
-                    sock->jsmn.key_value.value);
-            return CALLBACK_ERROR;
-        }
-        if (errno == ERANGE)
-        {
-            fprintf(stderr,
-                    "pkt_ts `%.*s': Number too large.\n",
-                    sock->jsmn.key_value.key_length,
-                    sock->jsmn.key_value.key);
-            return CALLBACK_ERROR;
-        }
-        cb_user_data->tmp.pkt.packet_ts = value;
-    }
-    else if (key_equals(sock, "pkt_len") == 1)
-    {
-        char * endptr = NULL;
-        unsigned long long int value = strtoull(sock->jsmn.key_value.value, &endptr, 10);
-        if (sock->jsmn.key_value.value == endptr)
-        {
-            fprintf(stderr,
-                    "pkt_len `%.*s': Value `%.*s' is not a valid number.\n",
-                    sock->jsmn.key_value.key_length,
-                    sock->jsmn.key_value.key,
-                    sock->jsmn.key_value.value_length,
-                    sock->jsmn.key_value.value);
-            return CALLBACK_ERROR;
-        }
-        if (errno == ERANGE)
-        {
-            fprintf(stderr,
-                    "pkt_len `%.*s': Number too large.\n",
-                    sock->jsmn.key_value.key_length,
-                    sock->jsmn.key_value.key);
-            return CALLBACK_ERROR;
-        }
-        cb_user_data->tmp.pkt.packet_len = value;
-    }
-    else if (key_equals(sock, "pkt_datalink") == 1)
-    {
-        char * endptr = NULL;
-        unsigned long long int value = strtoull(sock->jsmn.key_value.value, &endptr, 10);
-        if (sock->jsmn.key_value.value == endptr)
-        {
-            fprintf(stderr,
-                    "pkt_datalink `%.*s': Value `%.*s' is not a valid number.\n",
-                    sock->jsmn.key_value.key_length,
-                    sock->jsmn.key_value.key,
-                    sock->jsmn.key_value.value_length,
-                    sock->jsmn.key_value.value);
-            return CALLBACK_ERROR;
-        }
-        if (errno == ERANGE || value > (unsigned long long int)((uint32_t)-1))
-        {
-            fprintf(stderr,
-                    "pkt_datalink `%.*s': Number too large.\n",
-                    sock->jsmn.key_value.key_length,
-                    sock->jsmn.key_value.key);
-            return CALLBACK_ERROR;
-        }
-        cb_user_data->tmp.pkt_datalink = value;
-    }
-    else if (key_equals(sock, "flow_event_name") == 1)
-    {
-        if (value_equals(sock, "end") == 1 || value_equals(sock, "idle") == 1)
-        {
-            cb_user_data->tmp.flow_end_or_idle = 1;
-        }
-        else if (value_equals(sock, "guessed") == 1)
-        {
-            cb_user_data->tmp.guessed = 1;
-        }
-        else if (value_equals(sock, "detected") == 1)
-        {
-            cb_user_data->tmp.detected = 1;
-        }
-    }
+            perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_datalink"), &flow_user->flow_datalink), "flow_datalink");
+            perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_max_packets"), &flow_user->flow_max_packets), "flow_max_packets");
 
-#ifdef VERBOSE
-    printf("[%.*s : %.*s] ",
-           sock->jsmn.key_value.key_length,
-           sock->jsmn.key_value.key,
-           sock->jsmn.key_value.value_length,
-           sock->jsmn.key_value.value);
-#endif
+            struct nDPIsrvd_json_token const * const l4_proto = TOKEN_GET_SZ(sock, "l4_proto");
+            if (TOKEN_VALUE_EQUALS_SZ(l4_proto, "tcp") != 0)
+            {
+                flow_user->flow_l4_header_len = sizeof(struct ndpi_tcphdr);
+            } else if (TOKEN_VALUE_EQUALS_SZ(l4_proto, "udp") != 0)
+            {
+                flow_user->flow_l4_header_len = sizeof(struct ndpi_udphdr);
+            } else if (TOKEN_VALUE_EQUALS_SZ(l4_proto, "icmp") != 0)
+            {
+                flow_user->flow_l4_header_len = sizeof(struct ndpi_icmphdr);
+            } else if (TOKEN_VALUE_EQUALS_SZ(l4_proto, "icmp6") != 0)
+            {
+                flow_user->flow_l4_header_len = sizeof(struct ndpi_icmp6hdr);
+            }
+
+            flow_user->flow_new_seen = 1;
+
+            return CALLBACK_OK;
+        } else if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "guessed") != 0)
+        {
+            flow_user->guessed = 1;
+            flow_user->detection_finished = 1;
+        } else if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "not-detected") != 0)
+        {
+            flow_user->detected = 0;
+            flow_user->detection_finished = 1;
+        } else if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "detected") != 0)
+        {
+            flow_user->detected = 1;
+            flow_user->detection_finished = 1;
+            if (flow_user->packets != NULL)
+            {
+                utarray_free(flow_user->packets);
+                flow_user->packets = NULL;
+            }
+
+            return CALLBACK_OK;
+        }
+
+        if (flow_user->flow_new_seen == 0)
+        {
+            return CALLBACK_OK;
+        }
+
+        if (flow_user->packets == NULL || flow_user->flow_max_packets == 0 || utarray_len(flow_user->packets) == 0)
+        {
+            printf("flow %s: No packets captured.\n", flow->id);
+
+            return CALLBACK_OK;
+        }
+
+        if (flow_user->detection_finished != 0 &&
+            (flow_user->guessed != 0 || flow_user->detected == 0))
+        {
+            packet_data_print(flow_user->packets);
+            if (flow_user->flow_total_l4_payload_len > 0)
+            {
+                char pcap_filename[64];
+                if (generate_pcap_filename(flow, flow_user, pcap_filename, sizeof(pcap_filename)) == NULL)
+                {
+                    fprintf(stderr, "%s\n", "Internal error, exit ..");
+                    return CALLBACK_ERROR;
+                }
+                printf("flow %s: save to %s\n", flow->id, pcap_filename);
+                if (packet_write_pcap_file(flow_user->packets, flow_user->flow_datalink, pcap_filename) != 0)
+                {
+                    return CALLBACK_ERROR;
+                }
+            } else {
+                printf("flow %s: captured packets do not have any l4 payload\n", flow->id);
+            }
+
+            utarray_free(flow_user->packets);
+            flow_user->packets = NULL;
+        }
+    }
 
     return CALLBACK_OK;
 }
@@ -390,12 +365,21 @@ static void sighandler(int signum)
     }
 }
 
+static void captured_flow_end_callback(struct nDPIsrvd_socket * const sock, struct nDPIsrvd_flow * const flow)
+{
+    (void)sock;
+
+    struct flow_user_data * const ud = (struct flow_user_data *)flow->flow_user_data;
+    if (ud != NULL && ud->packets != NULL)
+    {
+        utarray_free(ud->packets);
+        ud->packets = NULL;
+    }
+}
+
 int main(int argc, char ** argv)
 {
-    struct callback_user_data cb_user_data;
-
-    memset(&cb_user_data, 0, sizeof(cb_user_data));
-    sock = nDPIsrvd_init();
+    sock = nDPIsrvd_init(0, sizeof(struct flow_user_data), captured_json_callback, captured_flow_end_callback);
     if (sock == NULL)
     {
         fprintf(stderr, "%s: nDPIsrvd socket memory allocation failed!\n", argv[0]);
@@ -406,8 +390,9 @@ int main(int argc, char ** argv)
     signal(SIGTERM, sighandler);
     signal(SIGPIPE, sighandler);
 
-    enum nDPIsrvd_connect_return connect_ret;
+    enum nDPIsrvd_connect_return connect_ret = CONNECT_ERROR;
 
+    printf("Recv buffer size: %u\n", NETWORK_BUFFER_MAX_SIZE);
     if (argc == 2)
     {
         printf("Connecting to UNIX socket: %s\n", argv[1]);
@@ -430,7 +415,7 @@ int main(int argc, char ** argv)
     if (connect_ret != CONNECT_OK)
     {
         fprintf(stderr, "%s: nDPIsrvd socket connect failed!\n", argv[0]);
-        nDPIsrvd_free(&sock, &cb_user_data.flow_table);
+        nDPIsrvd_free(&sock);
         return 1;
     }
 
@@ -444,7 +429,7 @@ int main(int argc, char ** argv)
             break;
         }
 
-        enum nDPIsrvd_parse_return parse_ret = nDPIsrvd_parse(sock, nDPIsrvd_json_callback, &cb_user_data);
+        enum nDPIsrvd_parse_return parse_ret = nDPIsrvd_parse(sock);
         if (parse_ret != PARSE_OK)
         {
             fprintf(stderr, "%s: nDPIsrvd parse failed with: %s\n", argv[0], nDPIsrvd_enum_to_string(parse_ret));
@@ -452,18 +437,7 @@ int main(int argc, char ** argv)
         }
     }
 
-    struct nDPIsrvd_flow * current_flow;
-    struct nDPIsrvd_flow * tmp;
-    HASH_ITER(hh, cb_user_data.flow_table, current_flow, tmp)
-    {
-        struct flow_user_data * const ud = (struct flow_user_data *)current_flow->user_data;
-        if (ud != NULL && ud->packets != NULL)
-        {
-            utarray_free(ud->packets);
-            ud->packets = NULL;
-        }
-    }
-    nDPIsrvd_free(&sock, &cb_user_data.flow_table);
+    nDPIsrvd_free(&sock);
 
     return 0;
 }

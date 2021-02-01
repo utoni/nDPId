@@ -41,6 +41,7 @@ endif # PKG_CONFIG_BIN
 
 ifeq ($(ENABLE_MEMORY_PROFILING),yes)
 PROJECT_CFLAGS += -DENABLE_MEMORY_PROFILING=1
+UTHASH_CFLAGS += -Duthash_malloc=nDPIsrvd_uthash_malloc -Duthash_free=nDPIsrvd_uthash_free
 endif
 
 ifeq ($(ENABLE_DEBUG),yes)

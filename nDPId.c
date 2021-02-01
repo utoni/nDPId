@@ -253,7 +253,7 @@ static char const * const daemon_event_name_table[DAEMON_EVENT_COUNT] = {
 
 static struct nDPId_reader_thread reader_threads[nDPId_MAX_READER_THREADS] = {};
 int main_thread_shutdown = 0;
-static uint64_t global_flow_id = 0;
+static uint64_t global_flow_id = 1;
 
 #ifdef ENABLE_MEMORY_PROFILING
 static uint64_t ndpi_memory_alloc_count = 0;
@@ -1296,7 +1296,9 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
                                  struct pcap_pkthdr const * const header,
                                  uint8_t const * const packet,
                                  uint16_t pkt_type,
-                                 uint16_t pkt_ipoffset,
+                                 uint16_t pkt_l3_offset,
+                                 uint16_t pkt_l4_offset,
+                                 uint16_t pkt_l4_len,
                                  struct nDPId_flow_info const * const flow,
                                  enum packet_event event)
 {
@@ -1319,7 +1321,6 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
         }
         ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "flow_id", flow->flow_id);
         ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_packet_id", flow->packets_processed);
-        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "max_packets", max_packets_per_flow_to_send);
     }
 
     ndpi_serialize_string_int32(&workflow->ndpi_serializer, "packet_event_id", event);
@@ -1338,22 +1339,21 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
     size_t base64_data_len = sizeof(base64_data);
     int base64_retval = base64encode(packet, header->caplen, base64_data, &base64_data_len);
 
-    if (ndpi_serialize_string_boolean(&workflow->ndpi_serializer,
-                                      "pkt_oversize",
-                                      base64_data_len > sizeof(base64_data)) != 0 ||
-        ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "pkt_ts", header->ts.tv_sec) != 0 ||
-        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_len", header->len) != 0 ||
-        (base64_retval == 0 && base64_data_len > 0 &&
-         ndpi_serialize_string_binary(&workflow->ndpi_serializer, "pkt", base64_data, base64_data_len) != 0) ||
-        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_caplen", header->caplen) != 0 ||
-        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_type", pkt_type) != 0 ||
-        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_ipoffset", pkt_ipoffset) != 0 ||
-        ndpi_serialize_string_int32(&workflow->ndpi_serializer,
-                                    "pkt_datalink",
-                                    pcap_datalink(reader_thread->workflow->pcap_handle)) != 0)
+    ndpi_serialize_string_boolean(&workflow->ndpi_serializer, "pkt_oversize", base64_data_len > sizeof(base64_data));
+    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "pkt_ts_sec", header->ts.tv_sec);
+    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "pkt_ts_usec", header->ts.tv_usec);
+    ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_caplen", header->caplen);
+    ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_type", pkt_type);
+    ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_l3_offset", pkt_l3_offset);
+    ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_l4_offset", pkt_l4_offset);
+    ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_len", header->len);
+    ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_l4_len", pkt_l4_len);
+
+    if (base64_retval == 0 && base64_data_len > 0 &&
+        ndpi_serialize_string_binary(&workflow->ndpi_serializer, "pkt", base64_data, base64_data_len) != 0)
     {
         syslog(LOG_DAEMON | LOG_ERR,
-               "[%8llu, %d] JSON serialize buffer failed",
+               "[%8llu, %d] JSON serializing base64 packet buffer failed",
                reader_thread->workflow->packets_captured,
                reader_thread->array_index);
     }
@@ -1385,9 +1385,15 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
     {
         case FLOW_EVENT_INVALID:
         case FLOW_EVENT_COUNT:
+            break;
+
         case FLOW_EVENT_NEW:
         case FLOW_EVENT_END:
         case FLOW_EVENT_IDLE:
+            ndpi_serialize_string_int32(&workflow->ndpi_serializer,
+                                        "flow_datalink",
+                                        pcap_datalink(reader_thread->workflow->pcap_handle));
+            ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "flow_max_packets", max_packets_per_flow_to_send);
             break;
 
         case FLOW_EVENT_NOT_DETECTED:
@@ -1697,7 +1703,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
             }
             else
             {
-                jsonize_packet_event(reader_thread, header, packet, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
+                jsonize_packet_event(reader_thread, header, packet, 0, 0, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
                 jsonize_basic_eventf(reader_thread,
                                      UNKNOWN_DATALINK_LAYER,
                                      "%s%u%s%u",
@@ -1713,7 +1719,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
         case DLT_EN10MB:
             if (header->len < sizeof(struct ndpi_ethhdr))
             {
-                jsonize_packet_event(reader_thread, header, packet, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
+                jsonize_packet_event(reader_thread, header, packet, 0, 0, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
                 jsonize_basic_eventf(reader_thread, ETHERNET_PACKET_TOO_SHORT, NULL);
                 return 1;
             }
@@ -1726,7 +1732,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
                     if (header->len < sizeof(struct ndpi_ethhdr) + sizeof(struct ndpi_iphdr))
                     {
                         jsonize_packet_event(
-                            reader_thread, header, packet, *layer3_type, *ip_offset, NULL, PACKET_EVENT_PAYLOAD);
+                            reader_thread, header, packet, *layer3_type, *ip_offset, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
                         jsonize_basic_eventf(reader_thread, IP4_PACKET_TOO_SHORT, NULL);
                         return 1;
                     }
@@ -1735,7 +1741,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
                     if (header->len < sizeof(struct ndpi_ethhdr) + sizeof(struct ndpi_ipv6hdr))
                     {
                         jsonize_packet_event(
-                            reader_thread, header, packet, *layer3_type, *ip_offset, NULL, PACKET_EVENT_PAYLOAD);
+                            reader_thread, header, packet, *layer3_type, *ip_offset, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
                         jsonize_basic_eventf(reader_thread, IP6_PACKET_TOO_SHORT, NULL);
                         return 1;
                     }
@@ -1744,7 +1750,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
                     return 1;
                 default:
                     jsonize_packet_event(
-                        reader_thread, header, packet, *layer3_type, *ip_offset, NULL, PACKET_EVENT_PAYLOAD);
+                        reader_thread, header, packet, *layer3_type, *ip_offset, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
                     jsonize_basic_eventf(reader_thread, ETHERNET_PACKET_UNKNOWN, "%s%u", "type", *layer3_type);
                     return 1;
             }
@@ -1758,7 +1764,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
             *ip_offset = 0;
             break;
         default:
-            jsonize_packet_event(reader_thread, header, packet, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
+            jsonize_packet_event(reader_thread, header, packet, 0, 0, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
             jsonize_basic_eventf(reader_thread, UNKNOWN_DATALINK_LAYER, "%s%u", "datalink", datalink_type);
             return 1;
     }
@@ -1867,7 +1873,7 @@ static void ndpi_process_packet(uint8_t * const args,
     }
     else
     {
-        jsonize_packet_event(reader_thread, header, packet, type, ip_offset, NULL, PACKET_EVENT_PAYLOAD);
+        jsonize_packet_event(reader_thread, header, packet, type, ip_offset, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
         jsonize_basic_eventf(reader_thread, UNKNOWN_L3_PROTOCOL, "%s%u", "protocol", type);
         return;
     }
@@ -1877,7 +1883,7 @@ static void ndpi_process_packet(uint8_t * const args,
     {
         if (header->caplen < header->len)
         {
-            jsonize_packet_event(reader_thread, header, packet, type, ip_offset, NULL, PACKET_EVENT_PAYLOAD);
+            jsonize_packet_event(reader_thread, header, packet, type, ip_offset, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
             jsonize_basic_eventf(reader_thread,
                                  CAPTURE_SIZE_SMALLER_THAN_PACKET_SIZE,
                                  "%s%u %s%u",
@@ -1893,7 +1899,7 @@ static void ndpi_process_packet(uint8_t * const args,
     {
         if (ip_size < sizeof(*ip))
         {
-            jsonize_packet_event(reader_thread, header, packet, type, ip_offset, NULL, PACKET_EVENT_PAYLOAD);
+            jsonize_packet_event(reader_thread, header, packet, type, ip_offset, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
             jsonize_basic_eventf(
                 reader_thread, IP4_SIZE_SMALLER_THAN_HEADER, "%s%u %s%zu", "ip_size", ip_size, "expected", sizeof(*ip));
             return;
@@ -1904,7 +1910,7 @@ static void ndpi_process_packet(uint8_t * const args,
         if (ndpi_detection_get_l4(
                 (uint8_t *)ip, ip_size, &l4_ptr, &l4_len, &flow_basic.l4_protocol, NDPI_DETECTION_ONLY_IPV4) != 0)
         {
-            jsonize_packet_event(reader_thread, header, packet, type, ip_offset, NULL, PACKET_EVENT_PAYLOAD);
+            jsonize_packet_event(reader_thread, header, packet, type, ip_offset, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
             jsonize_basic_eventf(
                 reader_thread, IP4_L4_PAYLOAD_DETECTION_FAILED, "%s%zu", "l4_data_len", ip_size - sizeof(*ip));
             return;
@@ -1919,7 +1925,7 @@ static void ndpi_process_packet(uint8_t * const args,
     {
         if (ip_size < sizeof(ip6->ip6_hdr))
         {
-            jsonize_packet_event(reader_thread, header, packet, type, ip_offset, NULL, PACKET_EVENT_PAYLOAD);
+            jsonize_packet_event(reader_thread, header, packet, type, ip_offset, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
             jsonize_basic_eventf(reader_thread,
                                  IP6_SIZE_SMALLER_THAN_HEADER,
                                  "%s%u %s%zu",
@@ -1934,7 +1940,7 @@ static void ndpi_process_packet(uint8_t * const args,
         if (ndpi_detection_get_l4(
                 (uint8_t *)ip6, ip_size, &l4_ptr, &l4_len, &flow_basic.l4_protocol, NDPI_DETECTION_ONLY_IPV6) != 0)
         {
-            jsonize_packet_event(reader_thread, header, packet, type, ip_offset, NULL, PACKET_EVENT_PAYLOAD);
+            jsonize_packet_event(reader_thread, header, packet, type, ip_offset, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
             jsonize_basic_eventf(
                 reader_thread, IP6_L4_PAYLOAD_DETECTION_FAILED, "%s%zu", "l4_data_len", ip_size - sizeof(*ip));
             return;
@@ -1959,7 +1965,7 @@ static void ndpi_process_packet(uint8_t * const args,
     }
     else
     {
-        jsonize_packet_event(reader_thread, header, packet, type, ip_offset, NULL, PACKET_EVENT_PAYLOAD);
+        jsonize_packet_event(reader_thread, header, packet, type, ip_offset, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
         jsonize_basic_eventf(reader_thread, UNKNOWN_L3_PROTOCOL, "%s%u", "protocol", type);
         return;
     }
@@ -1971,7 +1977,8 @@ static void ndpi_process_packet(uint8_t * const args,
 
         if (header->len < (l4_ptr - packet) + sizeof(struct ndpi_tcphdr))
         {
-            jsonize_packet_event(reader_thread, header, packet, type, ip_offset, NULL, PACKET_EVENT_PAYLOAD);
+            jsonize_packet_event(
+                reader_thread, header, packet, type, ip_offset, (l4_ptr - packet), l4_len, NULL, PACKET_EVENT_PAYLOAD);
             jsonize_basic_eventf(reader_thread,
                                  TCP_PACKET_TOO_SHORT,
                                  "%s%u %s%zu",
@@ -1993,7 +2000,8 @@ static void ndpi_process_packet(uint8_t * const args,
 
         if (header->len < (l4_ptr - packet) + sizeof(struct ndpi_udphdr))
         {
-            jsonize_packet_event(reader_thread, header, packet, type, ip_offset, NULL, PACKET_EVENT_PAYLOAD);
+            jsonize_packet_event(
+                reader_thread, header, packet, type, ip_offset, (l4_ptr - packet), l4_len, NULL, PACKET_EVENT_PAYLOAD);
             jsonize_basic_eventf(reader_thread,
                                  UDP_PACKET_TOO_SHORT,
                                  "%s%u %s%zu",
@@ -2094,7 +2102,15 @@ static void ndpi_process_packet(uint8_t * const args,
             {
                 if (add_new_flow(workflow, &flow_basic, FT_SKIPPED, hashed_index) == NULL)
                 {
-                    jsonize_packet_event(reader_thread, header, packet, type, ip_offset, NULL, PACKET_EVENT_PAYLOAD);
+                    jsonize_packet_event(reader_thread,
+                                         header,
+                                         packet,
+                                         type,
+                                         ip_offset,
+                                         (l4_ptr - packet),
+                                         l4_len,
+                                         NULL,
+                                         PACKET_EVENT_PAYLOAD);
                     jsonize_basic_eventf(reader_thread,
                                          FLOW_MEMORY_ALLOCATION_FAILED,
                                          "%s%zu",
@@ -2110,7 +2126,15 @@ static void ndpi_process_packet(uint8_t * const args,
             {
                 if (add_new_flow(workflow, &flow_basic, FT_SKIPPED, hashed_index) == NULL)
                 {
-                    jsonize_packet_event(reader_thread, header, packet, type, ip_offset, NULL, PACKET_EVENT_PAYLOAD);
+                    jsonize_packet_event(reader_thread,
+                                         header,
+                                         packet,
+                                         type,
+                                         ip_offset,
+                                         (l4_ptr - packet),
+                                         l4_len,
+                                         NULL,
+                                         PACKET_EVENT_PAYLOAD);
                     jsonize_basic_eventf(reader_thread,
                                          FLOW_MEMORY_ALLOCATION_FAILED,
                                          "%s%zu",
@@ -2123,7 +2147,8 @@ static void ndpi_process_packet(uint8_t * const args,
 
         if (workflow->cur_active_flows == workflow->max_active_flows)
         {
-            jsonize_packet_event(reader_thread, header, packet, type, ip_offset, NULL, PACKET_EVENT_PAYLOAD);
+            jsonize_packet_event(
+                reader_thread, header, packet, type, ip_offset, (l4_ptr - packet), l4_len, NULL, PACKET_EVENT_PAYLOAD);
             jsonize_basic_eventf(reader_thread,
                                  MAX_FLOW_TO_TRACK,
                                  "%s%llu %s%llu %s%llu",
@@ -2139,7 +2164,8 @@ static void ndpi_process_packet(uint8_t * const args,
         flow_to_process = (struct nDPId_flow_info *)add_new_flow(workflow, &flow_basic, FT_INFO, hashed_index);
         if (flow_to_process == NULL)
         {
-            jsonize_packet_event(reader_thread, header, packet, type, ip_offset, NULL, PACKET_EVENT_PAYLOAD);
+            jsonize_packet_event(
+                reader_thread, header, packet, type, ip_offset, (l4_ptr - packet), l4_len, NULL, PACKET_EVENT_PAYLOAD);
             jsonize_basic_eventf(
                 reader_thread, FLOW_MEMORY_ALLOCATION_FAILED, "%s%zu", "size", sizeof(*flow_to_process));
             return;
@@ -2216,7 +2242,15 @@ static void ndpi_process_packet(uint8_t * const args,
         jsonize_flow_event(reader_thread, flow_to_process, FLOW_EVENT_NEW);
     }
 
-    jsonize_packet_event(reader_thread, header, packet, type, ip_offset, flow_to_process, PACKET_EVENT_PAYLOAD_FLOW);
+    jsonize_packet_event(reader_thread,
+                         header,
+                         packet,
+                         type,
+                         ip_offset,
+                         (l4_ptr - packet),
+                         l4_len,
+                         flow_to_process,
+                         PACKET_EVENT_PAYLOAD_FLOW);
 
     /* We currently process max. 254 packets per flow. TODO: The user should decide this! */
     if (flow_to_process->ndpi_flow.num_processed_pkts == 0xFF)

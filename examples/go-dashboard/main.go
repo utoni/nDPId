@@ -29,17 +29,19 @@ type packet_event struct {
 
 	FlowID       uint32 `json:"flow_id"`
 	FlowPacketID uint64 `json:"flow_packet_id"`
-	MaxPackets   uint8  `json:"max_packets"`
 
 	PacketEventID       uint8  `json:"packet_event_id"`
 	PacketEventName     string `json:"packet_event_name"`
 	PacketOversize      bool   `json:"pkt_oversize"`
-	PacketTimestamp     uint64 `json:"pkt_ts"`
+	PacketTimestampS    uint64 `json:"pkt_ts_sec"`
+	PacketTimestampUs   uint64 `json:"pkt_ts_usec"`
 	PacketLength        uint32 `json:"pkt_len"`
+	PacketL4Length      uint32 `json:"pkt_l4_len"`
 	Packet              string `json:"pkt"`
 	PacketCaptureLength uint32 `json:"pkt_caplen"`
 	PacketType          uint32 `json:"pkt_type"`
-	PacketIpOffset      uint32 `json:"pkt_ipoffset"`
+	PacketL3Offset      uint32 `json:"pkt_l3_offset"`
+	PacketL4Offset      uint32 `json:"pkt_l4_offset"`
 }
 
 type flow_event struct {
@@ -54,6 +56,8 @@ type flow_event struct {
 	FlowMinLayer4DataLength   uint64 `json:"flow_min_l4_data_len"`
 	FlowMaxLayer4DataLength   uint64 `json:"flow_max_l4_data_len"`
 	FlowAvgLayer4DataLength   uint64 `json:"flow_avg_l4_data_len"`
+	FlowDatalinkLayer         uint8  `json:"flow_datalink"`
+	MaxPackets                uint8  `json:"flow_max_packets"`
 	IsMidstreamFlow           uint32 `json:"midstream"`
 }
 
