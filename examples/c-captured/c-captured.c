@@ -1,7 +1,8 @@
 #include <arpa/inet.h>
 #include <errno.h>
-#include <ndpi_main.h>
-#include <ndpi_typedefs.h>
+#include <netinet/ip_icmp.h>
+#include <netinet/tcp.h>
+#include <netinet/udp.h>
 #include <pcap/pcap.h>
 #include <signal.h>
 #include <stdio.h>
@@ -278,16 +279,14 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
             struct nDPIsrvd_json_token const * const l4_proto = TOKEN_GET_SZ(sock, "l4_proto");
             if (TOKEN_VALUE_EQUALS_SZ(l4_proto, "tcp") != 0)
             {
-                flow_user->flow_l4_header_len = sizeof(struct ndpi_tcphdr);
+                flow_user->flow_l4_header_len = sizeof(struct tcphdr);
             } else if (TOKEN_VALUE_EQUALS_SZ(l4_proto, "udp") != 0)
             {
-                flow_user->flow_l4_header_len = sizeof(struct ndpi_udphdr);
-            } else if (TOKEN_VALUE_EQUALS_SZ(l4_proto, "icmp") != 0)
+                flow_user->flow_l4_header_len = sizeof(struct udphdr);
+            } else if (TOKEN_VALUE_EQUALS_SZ(l4_proto, "icmp") != 0 ||
+                       TOKEN_VALUE_EQUALS_SZ(l4_proto, "icmp6") != 0)
             {
-                flow_user->flow_l4_header_len = sizeof(struct ndpi_icmphdr);
-            } else if (TOKEN_VALUE_EQUALS_SZ(l4_proto, "icmp6") != 0)
-            {
-                flow_user->flow_l4_header_len = sizeof(struct ndpi_icmp6hdr);
+                flow_user->flow_l4_header_len = sizeof(struct icmphdr);
             }
 
             flow_user->flow_new_seen = 1;
