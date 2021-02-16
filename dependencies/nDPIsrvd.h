@@ -83,7 +83,7 @@ typedef nDPIsrvd_ull * nDPIsrvd_ull_ptr;
 
 struct nDPIsrvd_flow
 {
-    char id[nDPIsrvd_FLOW_ID_STRLEN];
+    char id[nDPIsrvd_FLOW_ID_STRLEN]; // TODO: use alias and source for flow key as well
     nDPIsrvd_ull id_as_ull;
     UT_hash_handle hh;
     uint8_t flow_user_data[0];
@@ -528,7 +528,7 @@ static inline struct nDPIsrvd_flow * nDPIsrvd_get_flow(struct nDPIsrvd_socket * 
 
             TOKEN_VALUE_TO_ULL(flow_id, &flow->id_as_ull);
             snprintf(flow->id, nDPIsrvd_FLOW_ID_STRLEN, "%.*s", flow_id->value_length, flow_id->value);
-            HASH_ADD(hh, sock->flow_table, id,flow_id->value_length, flow);
+            HASH_ADD(hh, sock->flow_table, id, flow_id->value_length, flow);
         }
 
         return flow;

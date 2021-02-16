@@ -10,6 +10,7 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <sys/types.h>
+#include <time.h>
 #include <unistd.h>
 
 #include "nDPIsrvd.h"
@@ -37,8 +38,6 @@ struct flow_user_data
     uint8_t detected;
     nDPIsrvd_ull flow_datalink;
     nDPIsrvd_ull flow_max_packets;
-    nDPIsrvd_ull flow_l4_header_len;
-    nDPIsrvd_ull flow_total_l4_payload_len;
     UT_array * packets;
 };
 
@@ -47,6 +46,11 @@ static int main_thread_shutdown = 0;
 static char const serv_listen_path[] = DISTRIBUTOR_UNIX_SOCKET;
 static char const serv_listen_addr[INET_ADDRSTRLEN] = DISTRIBUTOR_HOST;
 static uint16_t const serv_listen_port = DISTRIBUTOR_PORT;
+#ifdef pcap_dump_open_append
+static time_t pcap_filename_rotation = 600;
+static time_t pcap_filename_last_rotation = 0;
+static struct tm pcap_filename_last_rotation_tm = {};
+#endif
 
 static void packet_data_copy(void * dst, const void * src)
 {
@@ -82,10 +86,41 @@ static char * generate_pcap_filename(struct nDPIsrvd_flow const * const flow,
                                      char * const dest,
                                      size_t size)
 {
+    char appendix[32] = {};
+
+#ifdef pcap_dump_open_append
+    if (pcap_filename_rotation > 0)
+    {
+        time_t current_time = time(NULL);
+
+        if (current_time >= pcap_filename_last_rotation + pcap_filename_rotation)
+        {
+            pcap_filename_last_rotation = current_time;
+            if (localtime_r(&pcap_filename_last_rotation, &pcap_filename_last_rotation_tm) == NULL)
+            {
+                return NULL;
+            }
+        }
+
+        if (strftime(appendix, sizeof(appendix), "%d_%m_%y-%H_%M_%S", &pcap_filename_last_rotation_tm) == 0)
+        {
+            return NULL;
+        }
+    } else
+#endif
+    {
+        if (snprintf(appendix, sizeof(appendix), "%s", flow->id) <= 0)
+        {
+            return NULL;
+        }
+    }
+
     if (flow_user->guessed != 0 || flow_user->detected == 0)
     {
         int ret =
-            snprintf(dest, size, "flow-%s-%s.pcap", (flow_user->guessed != 0 ? "guessed" : "undetected"), flow->id);
+            snprintf(dest, size, "flow-%s-%s.pcap",
+                     (flow_user->guessed != 0 ? "guessed" : "undetected"),
+                     appendix);
         if (ret <= 0 || (size_t)ret > size)
         {
             return NULL;
@@ -119,7 +154,12 @@ static int packet_write_pcap_file(UT_array const * const pd_array, int pkt_datal
     {
         return 1;
     }
+
+#ifdef pcap_dump_open_append
+    pcap_dumper_t * pd = pcap_dump_open_append(p, filename);
+#else
     pcap_dumper_t * pd = pcap_dump_open(p, filename);
+#endif
     if (pd == NULL)
     {
         fprintf(stderr, "pcap error %s\n", pcap_geterr(p));
@@ -258,6 +298,9 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
         nDPIsrvd_ull pkt_l4_len = 0ull;
         perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "pkt_l4_len"), &pkt_l4_len), "pkt_l4_len");
 
+        nDPIsrvd_ull pkt_l4_offset = 0ull;
+        perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "pkt_l4_offset"), &pkt_l4_offset), "pkt_l4_offset");
+
         struct packet_data pd = {
             .packet_ts_sec = pkt_ts_sec,
             .packet_ts_usec = pkt_ts_usec,
@@ -266,30 +309,15 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
             .base64_packet_const = pkt->value
         };
         utarray_push_back(flow_user->packets, &pd);
-        flow_user->flow_total_l4_payload_len += pkt_l4_len - flow_user->flow_l4_header_len;
     }
 
     {
         struct nDPIsrvd_json_token const * const flow_event_name = TOKEN_GET_SZ(sock, "flow_event_name");
         if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "new") != 0)
         {
+            flow_user->flow_new_seen = 1;
             perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_datalink"), &flow_user->flow_datalink), "flow_datalink");
             perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_max_packets"), &flow_user->flow_max_packets), "flow_max_packets");
-
-            struct nDPIsrvd_json_token const * const l4_proto = TOKEN_GET_SZ(sock, "l4_proto");
-            if (TOKEN_VALUE_EQUALS_SZ(l4_proto, "tcp") != 0)
-            {
-                flow_user->flow_l4_header_len = sizeof(struct tcphdr);
-            } else if (TOKEN_VALUE_EQUALS_SZ(l4_proto, "udp") != 0)
-            {
-                flow_user->flow_l4_header_len = sizeof(struct udphdr);
-            } else if (TOKEN_VALUE_EQUALS_SZ(l4_proto, "icmp") != 0 ||
-                       TOKEN_VALUE_EQUALS_SZ(l4_proto, "icmp6") != 0)
-            {
-                flow_user->flow_l4_header_len = sizeof(struct icmphdr);
-            }
-
-            flow_user->flow_new_seen = 1;
 
             return CALLBACK_OK;
         } else if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "guessed") != 0)
@@ -329,7 +357,6 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
             (flow_user->guessed != 0 || flow_user->detected == 0))
         {
             packet_data_print(flow_user->packets);
-            if (flow_user->flow_total_l4_payload_len > 0)
             {
                 char pcap_filename[64];
                 if (generate_pcap_filename(flow, flow_user, pcap_filename, sizeof(pcap_filename)) == NULL)
@@ -342,8 +369,6 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
                 {
                     return CALLBACK_ERROR;
                 }
-            } else {
-                printf("flow %s: captured packets do not have any l4 payload\n", flow->id);
             }
 
             utarray_free(flow_user->packets);
@@ -375,6 +400,31 @@ static void captured_flow_end_callback(struct nDPIsrvd_socket * const sock, stru
         ud->packets = NULL;
     }
 }
+
+// TODO: argv parsing
+#if 0
+static int parse_options(int argc, char ** argv)
+{
+    int opt;
+
+    static char const usage[] =
+        "Usage: %s "
+        "[-d] [-s host] [-R rotate-every-n-seconds] [-g] [-u]\n";
+
+    while ((opt = getopt(argc, argv, "hds:R:gu")) != -1)
+    {
+    }
+
+    if (optind < argc)
+    {
+        fprintf(stderr, "Unexpected argument after options\n\n");
+        fprintf(stderr, usage, argv[0]);
+        return 1;
+    }
+
+    return 0;
+}
+#endif
 
 int main(int argc, char ** argv)
 {

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import base64
 import os
 import sys
 
@@ -8,56 +7,44 @@ sys.path.append(os.path.dirname(sys.argv[0]) + '/../../dependencies')
 import nDPIsrvd
 from nDPIsrvd import TermColor, nDPIsrvdSocket, PcapPacket
 
-FLOWS = dict()
+def onJsonLineRecvd(json_dict, current_flow, global_user_data):
+    if current_flow is None:
 
-def parse_json_str(json_str):
+        if 'packet_event_name' in json_dict and json_dict['packet_event_name'] == 'packet':
+            fake_flow = Flow()
+            fake_flow.pkt = PcapPacket()
+            PcapPacket.handleJSON(json_dict, fake_flow)
+            fake_flow.pkt.doDump()
+            fake_flow.pkt.setSuffix('packet_undetected')
+            fake_flow.pkt.fin()
 
-    j = nDPIsrvd.JsonParseBytes(json_str[0])
+        return True
 
-    global FLOWS
+    PcapPacket.handleJSON(json_dict, current_flow)
 
-    if 'flow_event_name' in j:
+    if 'flow_event_name' in json_dict and PcapPacket.isInitialized(current_flow) and \
+        (json_dict['flow_event_name'] == 'guessed' or json_dict['flow_event_name'] == 'not-detected'):
 
-        event = j['flow_event_name'].lower()
-        flow_id = j['flow_id']
+        current_flow.pcap_packet.doDump()
+        if json_dict['flow_event_name'] == 'guessed':
+            current_flow.pcap_packet.setSuffix('guessed')
 
-        if 'midstream' in j and j['midstream'] == 1:
-            return
+            try:
+                if current_flow.pcap_packet.fin() is True:
+                    print('Guessed flow with id {}, dumped'.format(current_flow.flow_id))
+            except RuntimeError as err:
+                print('Guessed flow with id {} excepted: {}'.format(current_flow.flow_id, str(err)))
 
-        if event == 'new':
-            FLOWS[flow_id] = PcapPacket(flow_id)
-        elif flow_id not in FLOWS:
-            return
-        elif event == 'end' or event == 'idle':
-            del FLOWS[flow_id]
-        elif event == 'detected' or event == 'detection-update':
-            FLOWS[flow_id].detected()
-        elif event == 'guessed' or event == 'not-detected':
-            if event == 'guessed':
-                print('Guessed flow with id {}, PCAP dump returned: {}'.format(flow_id, FLOWS[flow_id].fin('guessed')))
-            else:
-                print('Not-detected flow with id {}: PCAP dump returned {}'.format(flow_id, FLOWS[flow_id].fin('undetected')))
         else:
-            raise RuntimeError('unknown flow event name: {}'.format(event))
+            current_flow.pcap_packet.setSuffix('undetected')
 
-    elif 'packet_event_name' in j:
+            try:
+                if current_flow.pcap_packet.fin() is True:
+                    print('Not-detected flow with id {}, dumped'.format(current_flow.flow_id))
+            except RuntimeError as err:
+                print('Not-detected flow with id {} excepted: {}'.format(current_flow.flow_id, str(err)))
 
-        buffer_decoded = base64.b64decode(j['pkt'], validate=True)
-
-        if j['packet_event_name'] == 'packet-flow':
-
-            flow_id = j['flow_id']
-
-            if flow_id not in FLOWS:
-                return
-
-            FLOWS[flow_id].addPacket(buffer_decoded, j['pkt_type'], j['pkt_l3_offset'])
-
-        if j['packet_event_name'] == 'packet':
-
-            flow = PcapPacket()
-            flow.addPacket(buffer_decoded, j['pkt_type'], j['pkt_l3_offset'])
-
+    return True
 
 if __name__ == '__main__':
     argparser = nDPIsrvd.defaultArgumentParser()
@@ -69,9 +56,4 @@ if __name__ == '__main__':
 
     nsock = nDPIsrvdSocket()
     nsock.connect(address)
-
-    while True:
-        received = nsock.receive()
-        for received_json_pkt in received:
-            parse_json_str(received_json_pkt)
-
+    nsock.loop(onJsonLineRecvd, None)

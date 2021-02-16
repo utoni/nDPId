@@ -8,13 +8,9 @@ import nDPIsrvd
 from nDPIsrvd import nDPIsrvdSocket, TermColor
 
 
-def parse_json_str(json_str):
-
-    j = nDPIsrvd.JsonParseBytes(json_str[0])
-    nDPIdEvent = nDPIsrvd.nDPIdEvent.validateJsonEventTypes(j)
-    if nDPIdEvent.isValid is False:
-        raise RuntimeError('Missing event id or event name invalid in the JSON string: {}'.format(j))
-    print(j)
+def onJsonLineRecvd(json_dict, current_flow, global_user_data):
+    print(json_dict)
+    return True
 
 if __name__ == '__main__':
     argparser = nDPIsrvd.defaultArgumentParser()
@@ -26,9 +22,4 @@ if __name__ == '__main__':
 
     nsock = nDPIsrvdSocket()
     nsock.connect(address)
-
-    while True:
-        received = nsock.receive()
-        for received_json_pkt in received:
-            parse_json_str(received_json_pkt)
-
+    nsock.loop(onJsonLineRecvd, None)

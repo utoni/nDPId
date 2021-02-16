@@ -7,34 +7,33 @@ sys.path.append(os.path.dirname(sys.argv[0]) + '/../../dependencies')
 import nDPIsrvd
 from nDPIsrvd import nDPIsrvdSocket, TermColor
 
+def prettifyEvent(color_list, whitespaces, text):
+    term_attrs = str()
+    for color in color_list:
+        term_attrs += str(color)
+    return '{}{:>' + str(whitespaces) + '}{}'.format(term_attrs, text, TermColor.END)
 
-def parse_json_str(json_str):
-
-    j = nDPIsrvd.JsonParseBytes(json_str[0])
-    nDPIdEvent = nDPIsrvd.nDPIdEvent.validateJsonEventTypes(j)
-    if nDPIdEvent.isValid is False:
-        raise RuntimeError('Missing event id or event name invalid in the JSON string: {}'.format(j))
-    if nDPIdEvent.BasicEventID != -1:
-        print('{:>21}: {}'.format(TermColor.WARNING + TermColor.BLINK + 'BASIC-EVENT' + TermColor.END,
-                                  nDPIdEvent.BasicEventPrettyName))
-        return
-    elif nDPIdEvent.FlowEventID == -1:
-        return
+def onJsonLineRecvd(json_dict, current_flow, global_user_data):
+    if 'basic_event_id' in json_dict:
+        print('{}: {}'.format(prettifyEvent([TermColor.WARNING, TermColor.BLINK], 16, 'BASIC-EVENT'), json_dict['basic_event_name']))
+        return True
+    elif 'flow_event_id' not in json_dict:
+        return True
 
     ndpi_proto_categ = ''
     ndpi_frisk = ''
 
-    if 'ndpi' in j:
-        if 'proto' in j['ndpi']:
-            ndpi_proto_categ += '[' + str(j['ndpi']['proto']) + ']'
+    if 'ndpi' in json_dict:
+        if 'proto' in json_dict['ndpi']:
+            ndpi_proto_categ += '[' + str(json_dict['ndpi']['proto']) + ']'
 
-        if 'category' in j['ndpi']:
-            ndpi_proto_categ += '[' + str(j['ndpi']['category']) + ']'
+        if 'category' in json_dict['ndpi']:
+            ndpi_proto_categ += '[' + str(json_dict['ndpi']['category']) + ']'
 
-        if 'flow_risk' in j['ndpi']:
+        if 'flow_risk' in json_dict['ndpi']:
             cnt = 0
-            for key in j['ndpi']['flow_risk']:
-                ndpi_frisk += str(j['ndpi']['flow_risk'][key]) + ', '
+            for key in json_dict['ndpi']['flow_risk']:
+                ndpi_frisk += str(json_dict['ndpi']['flow_risk'][key]) + ', '
                 cnt += 1
             ndpi_frisk = '{}: {}'.format(
                 TermColor.WARNING + TermColor.BOLD + 'RISK' + TermColor.END if cnt < 2
@@ -42,39 +41,43 @@ def parse_json_str(json_str):
                 ndpi_frisk[:-2])
 
     instance_and_source = ''
-    instance_and_source += '[{}]'.format(TermColor.setColorByString(j['alias']))
-    instance_and_source += '[{}]'.format(TermColor.setColorByString(j['source']))
+    instance_and_source += '[{}]'.format(TermColor.setColorByString(json_dict['alias']))
+    instance_and_source += '[{}]'.format(TermColor.setColorByString(json_dict['source']))
 
+    line_suffix = ''
     flow_event_name = ''
-    if nDPIdEvent.FlowEventName == 'guessed' or nDPIdEvent.FlowEventName == 'undetected':
-        flow_event_name += '{}{:>16}{}'.format(TermColor.HINT, nDPIdEvent.FlowEventPrettyName, TermColor.END)
+    if json_dict['flow_event_name'] == 'guessed' or json_dict['flow_event_name'] == 'not-detected':
+        flow_event_name += '{}{:>16}{}'.format(TermColor.HINT, json_dict['flow_event_name'], TermColor.END)
     else:
-        flow_event_name += '{:>16}'.format(nDPIdEvent.FlowEventPrettyName)
+        if json_dict['flow_event_name'] == 'new' and json_dict['midstream'] != 0:
+            line_suffix = '[{}]'.format(TermColor.WARNING + TermColor.BLINK + 'MIDSTREAM' + TermColor.END)
+        flow_event_name += '{:>16}'.format(json_dict['flow_event_name'])
 
-    if j['l3_proto'] == 'ip4':
-        print('{} {}: [{:.>6}] [{}][{:.>5}] [{:.>15}]{} -> [{:.>15}]{} {}' \
+    if json_dict['l3_proto'] == 'ip4':
+        print('{} {}: [{:.>6}] [{}][{:.>5}] [{:.>15}]{} -> [{:.>15}]{} {}{}' \
               ''.format(instance_and_source, flow_event_name, 
-              j['flow_id'], j['l3_proto'], j['l4_proto'],
-              j['src_ip'].lower(),
-              '[{:.>5}]'.format(j['src_port']) if 'src_port' in j else '',
-              j['dst_ip'].lower(),
-              '[{:.>5}]'.format(j['dst_port']) if 'dst_port' in j else '',
-              ndpi_proto_categ))
-    elif j['l3_proto'] == 'ip6':
-        print('{} {}: [{:.>6}] [{}][{:.>5}] [{:.>39}]{} -> [{:.>39}]{} {}' \
+              json_dict['flow_id'], json_dict['l3_proto'], json_dict['l4_proto'],
+              json_dict['src_ip'].lower(),
+              '[{:.>5}]'.format(json_dict['src_port']) if 'src_port' in json_dict else '',
+              json_dict['dst_ip'].lower(),
+              '[{:.>5}]'.format(json_dict['dst_port']) if 'dst_port' in json_dict else '',
+              ndpi_proto_categ, line_suffix))
+    elif json_dict['l3_proto'] == 'ip6':
+        print('{} {}: [{:.>6}] [{}][{:.>5}] [{:.>39}]{} -> [{:.>39}]{} {}{}' \
                 ''.format(instance_and_source, flow_event_name,
-              j['flow_id'], j['l3_proto'], j['l4_proto'],
-              j['src_ip'].lower(),
-              '[{:.>5}]'.format(j['src_port']) if 'src_port' in j else '',
-              j['dst_ip'].lower(),
-              '[{:.>5}]'.format(j['dst_port']) if 'dst_port' in j else '',
-              ndpi_proto_categ))
+              json_dict['flow_id'], json_dict['l3_proto'], json_dict['l4_proto'],
+              json_dict['src_ip'].lower(),
+              '[{:.>5}]'.format(json_dict['src_port']) if 'src_port' in json_dict else '',
+              json_dict['dst_ip'].lower(),
+              '[{:.>5}]'.format(json_dict['dst_port']) if 'dst_port' in json_dict else '',
+              ndpi_proto_categ, line_suffix))
     else:
-        raise RuntimeError('unsupported l3 protocol: {}'.format(j['l3_proto']))
+        raise RuntimeError('unsupported l3 protocol: {}'.format(json_dict['l3_proto']))
 
     if len(ndpi_frisk) > 0:
         print('{} {:>18}{}'.format(instance_and_source, '', ndpi_frisk))
 
+    return True
 
 if __name__ == '__main__':
     argparser = nDPIsrvd.defaultArgumentParser()
@@ -86,9 +89,4 @@ if __name__ == '__main__':
 
     nsock = nDPIsrvdSocket()
     nsock.connect(address)
-
-    while True:
-        received = nsock.receive()
-        for received_json_pkt in received:
-            parse_json_str(received_json_pkt)
-
+    nsock.loop(onJsonLineRecvd, None)

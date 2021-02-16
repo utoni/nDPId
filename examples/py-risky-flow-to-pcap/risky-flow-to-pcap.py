@@ -8,52 +8,32 @@ sys.path.append(os.path.dirname(sys.argv[0]) + '/../../dependencies')
 import nDPIsrvd
 from nDPIsrvd import TermColor, nDPIsrvdSocket, PcapPacket
 
-FLOWS = dict()
+def onJsonLineRecvd(json_dict, current_flow, global_user_data):
+    if current_flow is None:
+        return True
 
-def parse_json_str(json_str):
+    PcapPacket.handleJSON(json_dict, current_flow)
 
-    j = nDPIsrvd.JsonParseBytes(json_str[0])
+    if 'flow_event_name' in json_dict and PcapPacket.isInitialized(current_flow) and \
+        'ndpi' in json_dict and 'flow_risk' in json_dict['ndpi'] and not hasattr(current_flow, 'is_risky_flow'):
 
-    global FLOWS
+        current_flow.pcap_packet.doDump()
+        current_flow.pcap_packet.setSuffix('risky')
+        current_flow.is_risky_flow = True
+        print('Risky flow with id {} marked for dumping.'.format(current_flow.flow_id))
 
-    if 'flow_event_name' in j:
+    if hasattr(current_flow, 'is_risky_flow') and \
+        (current_flow.pcap_packet.current_packet < current_flow.pcap_packet.max_packets or \
+         ('flow_event_name' in json_dict and \
+          (json_dict['flow_event_name'] == 'end' or json_dict['flow_event_name'] == 'idle'))):
 
-        event = j['flow_event_name'].lower()
-        flow_id = j['flow_id']
+        try:
+            if current_flow.pcap_packet.fin() is True:
+                print('Risky flow with id {} dumped.'.format(current_flow.flow_id))
+        except RuntimeError as err:
+            pass
 
-        if 'midstream' in j and j['midstream'] == 1:
-            return
-
-        if event == 'new':
-            FLOWS[flow_id] = PcapPacket(flow_id)
-        elif flow_id not in FLOWS:
-            return
-        elif event == 'end' or event == 'idle':
-            del FLOWS[flow_id]
-        elif event == 'detected' or event == 'detection-update' or event == 'guessed' or event == 'not-detected':
-            if 'ndpi' in j and 'flow_risk' in j['ndpi']:
-                print('Risky flow with id {}, PCAP dump returned: {}'.format(flow_id, FLOWS[flow_id].fin('risky')))
-        else:
-            raise RuntimeError('unknown flow event name: {}'.format(event))
-
-    elif 'packet_event_name' in j:
-
-        buffer_decoded = base64.b64decode(j['pkt'], validate=True)
-
-        if j['packet_event_name'] == 'packet-flow':
-
-            flow_id = j['flow_id']
-
-            if flow_id not in FLOWS:
-                return
-
-            FLOWS[flow_id].addPacket(buffer_decoded, j['pkt_type'], j['pkt_l3_offset'])
-
-        if j['packet_event_name'] == 'packet':
-
-            flow = PcapPacket()
-            flow.addPacket(buffer_decoded, j['pkt_type'], j['pkt_l3_offset'])
-
+    return True
 
 if __name__ == '__main__':
     argparser = nDPIsrvd.defaultArgumentParser()
@@ -65,9 +45,4 @@ if __name__ == '__main__':
 
     nsock = nDPIsrvdSocket()
     nsock.connect(address)
-
-    while True:
-        received = nsock.receive()
-        for received_json_pkt in received:
-            parse_json_str(received_json_pkt)
-
+    nsock.loop(onJsonLineRecvd, None)
