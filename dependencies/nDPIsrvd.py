@@ -9,6 +9,7 @@ import os
 import scapy.all
 import stat
 import socket
+import sys
 try:
     from colorama import Back, Fore, Style
     USE_COLORAMA=True
@@ -178,7 +179,7 @@ class nDPIsrvdSocket:
         while True:
             if self.receive() > 0:
                 if self.parse(callback, global_user_data) is False:
-                    sys.stderr.write('Callback returned False, abort.\n')
+                    raise RuntimeError('Callback returned False, abort.')
                     break;
 
 class PcapPacket:
@@ -317,3 +318,29 @@ def validateAddress(args):
         address = address_tcpip
 
     return address
+
+global schema
+schema = {'packet_event_schema' : None, 'basic_event_schema' : None, 'daemon_event_schema' : None, 'flow_event_schema' : None}
+
+def initSchemaValidator(schema_dir='./schema'):
+    for key in schema:
+        with open(schema_dir + '/' + str(key) + '.json', 'r') as schema_file:
+            schema[key] = json.load(schema_file)
+
+def validateAgainstSchema(json_dict):
+    import jsonschema
+
+    if 'packet_event_id' in json_dict:
+        jsonschema.validate(instance=json_dict, schema=schema['packet_event_schema'])
+        return True
+    if 'basic_event_id' in json_dict:
+        jsonschema.validate(instance=json_dict, schema=schema['basic_event_schema'])
+        return True
+    if 'daemon_event_id' in json_dict:
+        jsonschema.validate(instance=json_dict, schema=schema['daemon_event_schema'])
+        return True
+    if 'flow_event_id' in json_dict:
+        jsonschema.validate(instance=json_dict, schema=schema['flow_event_schema'])
+        return True
+
+    return False

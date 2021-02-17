@@ -1,0 +1,82 @@
+{
+    "type": "object",
+    "required": [
+        "alias",
+        "source",
+        "thread_id",
+        "packet_id",
+        "basic_event_id",
+        "basic_event_name"
+    ],
+    "properties": {
+        "alias": {
+            "type": "string"
+        },
+        "source": {
+            "type": "string"
+        },
+        "thread_id": {
+            "type": "number"
+        },
+        "packet_id": {
+            "type": "number"
+        },
+        "basic_event_id": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 16
+        },
+        "basic_event_name": {
+            "type": "string"
+        },
+        "datalink": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 265
+        },
+        "header": {
+            "type": "number"
+        },
+        "type": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 65535
+        },
+        "protocol": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 65535
+        },
+        "caplen": {
+            "type": "number"
+        },
+        "len": {
+            "type": "number"
+        },
+        "ip_size": {
+            "type": "number"
+        },
+        "expected": {
+            "type": "number"
+        },
+        "l4_data_len": {
+            "type": "number"
+        },
+        "header_len": {
+            "type": "number"
+        },
+        "size": {
+            "type": "number"
+        },
+        "current_active": {
+            "type": "number"
+        },
+        "current_idle": {
+            "type": "number"
+        },
+        "max_active": {
+            "type": "number"
+        }
+    },
+    "additionalProperties": false
+}

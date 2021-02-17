@@ -1,0 +1,67 @@
+{
+    "type": "object",
+    "required": [
+        "alias",
+        "source",
+        "thread_id",
+        "packet_id",
+        "daemon_event_id",
+        "daemon_event_name"
+    ],
+    "properties": {
+        "alias": {
+            "type": "string"
+        },
+        "source": {
+            "type": "string"
+        },
+        "thread_id": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 31
+        },
+        "packet_id": {
+            "type": "number",
+            "minimum": 1
+        },
+        "daemon_event_id": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 3
+        },
+        "daemon_event_name": {
+            "type": "string",
+            "enum": [
+                "invalid",
+                "init",
+                "reconnect",
+                "shutdown"
+            ]
+        },
+        "max-flows-per-thread": {
+            "type": "number"
+        },
+        "max-idle-flows-per-thread": {
+            "type": "number"
+        },
+        "tick-resolution": {
+            "type": "number"
+        },
+        "reader-thread-count": {
+            "type": "number"
+        },
+        "idle-scan-period": {
+            "type": "number"
+        },
+        "max-idle-time": {
+            "type": "number"
+        },
+        "tcp-max-post-end-flow-time": {
+            "type": "number"
+        },
+        "max-packets-per-flow-to-send": {
+            "type": "number"
+        }
+    },
+    "additionalProperties": false
+}

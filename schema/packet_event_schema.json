@@ -1,0 +1,88 @@
+{
+    "type": "object",
+    "required": [
+        "alias",
+        "source",
+        "thread_id",
+        "packet_id",
+        "packet_event_id",
+        "packet_event_name"
+    ],
+    "properties": {
+        "alias": {
+            "type": "string"
+        },
+        "source": {
+            "type": "string"
+        },
+        "thread_id": {
+            "type": "number"
+        },
+        "packet_id": {
+            "type": "number"
+        },
+        "packet_event_id": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 2
+        },
+        "packet_event_name": {
+            "type": "string",
+            "enum": [
+                "invalid",
+                "packet",
+                "packet-flow"
+            ]
+        },
+        "flow_id": {
+            "type": "number",
+            "minimum": 1
+        },
+        "flow_packet_id": {
+            "type": "number"
+        },
+        "pkt_caplen": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 65535
+        },
+        "pkt_type": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 65535
+        },
+        "pkt_oversize": {
+            "type": "boolean"
+        },
+        "pkt_l3_offset": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 65535
+        },
+        "pkt_l4_len": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 65535
+        },
+        "pkt_l4_offset": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 65535
+        },
+        "pkt_len": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 65535
+        },
+        "pkt_ts_usec": {
+            "type": "number"
+        },
+        "pkt_ts_sec": {
+            "type": "number"
+        },
+        "pkt": {
+            "type": "string"
+        }
+    },
+    "additionalProperties": false
+}

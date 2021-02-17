@@ -1,0 +1,159 @@
+{
+    "type": "object",
+    "required": [
+        "alias",
+        "source",
+        "thread_id",
+        "packet_id",
+        "flow_event_id",
+        "flow_event_name",
+        "flow_id",
+        "flow_packet_id",
+        "flow_first_seen",
+        "flow_last_seen",
+        "flow_min_l4_data_len",
+        "flow_max_l4_data_len",
+        "flow_tot_l4_data_len",
+        "flow_avg_l4_data_len",
+        "l3_proto",
+        "l4_proto",
+        "midstream",
+        "src_ip",
+        "dst_ip"
+    ],
+    "properties": {
+        "alias": {
+            "type": "string"
+        },
+        "source": {
+            "type": "string"
+        },
+        "thread_id": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 31
+        },
+        "packet_id": {
+            "type": "number",
+            "minimum": 1
+        },
+        "flow_event_id": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 7
+        },
+        "flow_event_name": {
+            "type": "string",
+            "enum": [
+                "invalid",
+                "new",
+                "end",
+                "idle",
+                "guessed",
+                "detected",
+                "detection-update",
+                "not-detected"
+            ]
+        },
+        "flow_datalink": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 265
+        },
+        "flow_id": {
+            "type": "number",
+            "minimum": 1
+        },
+        "flow_packet_id": {
+            "type": "number"
+        },
+        "flow_first_seen": {
+            "type": "number"
+        },
+        "flow_last_seen": {
+            "type": "number"
+        },
+        "flow_max_packets": {
+            "type": "number"
+        },
+        "flow_min_l4_data_len": {
+            "type": "number"
+        },
+        "flow_max_l4_data_len": {
+            "type": "number"
+        },
+        "flow_tot_l4_data_len": {
+            "type": "number"
+        },
+        "flow_avg_l4_data_len": {
+            "type": "number"
+        },
+        "l3_proto": {
+            "type": "string",
+            "enum": [
+                "ip4",
+                "ip6",
+                "unknown"
+            ]
+        },
+        "l4_proto": {
+            "type": "string",
+            "oneOf": [
+                {
+                    "pattern": "[0-9]+"
+                },
+                {
+                    "enum": [
+                        "tcp",
+                        "udp",
+                        "icmp",
+                        "icmp6"
+                    ]
+                }
+            ]
+        },
+        "midstream": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+        },
+        "src_ip": {
+            "type": "string"
+        },
+        "dst_ip": {
+            "type": "string"
+        },
+        "src_port": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 65535
+        },
+        "dst_port": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 65535
+        },
+        "ndpi": {
+            "type": "object"
+        },
+        "tls": {
+            "type": "object"
+        },
+        "quic": {
+            "type": "object"
+        },
+        "http": {
+            "type": "object"
+        },
+        "smtp": {
+            "type": "object"
+        },
+        "dns": {
+            "type": "object"
+        },
+        "ssh": {
+            "type": "object"
+        }
+    },
+    "additionalProperties": false
+}
