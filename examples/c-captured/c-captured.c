@@ -41,6 +41,7 @@ struct flow_user_data
     UT_array * packets;
 };
 
+static int daemonize = 0;
 struct nDPIsrvd_socket * sock = NULL;
 static int main_thread_shutdown = 0;
 static char const serv_listen_path[] = DISTRIBUTOR_UNIX_SOCKET;
@@ -109,7 +110,7 @@ static char * generate_pcap_filename(struct nDPIsrvd_flow const * const flow,
     } else
 #endif
     {
-        if (snprintf(appendix, sizeof(appendix), "%s", flow->id) <= 0)
+        if (snprintf(appendix, sizeof(appendix), "%llu", flow->id_as_ull) <= 0)
         {
             return NULL;
         }
@@ -348,7 +349,7 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
 
         if (flow_user->packets == NULL || flow_user->flow_max_packets == 0 || utarray_len(flow_user->packets) == 0)
         {
-            printf("flow %s: No packets captured.\n", flow->id);
+            printf("flow %llu: No packets captured.\n", flow->id_as_ull);
 
             return CALLBACK_OK;
         }
@@ -364,7 +365,7 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
                     fprintf(stderr, "%s\n", "Internal error, exit ..");
                     return CALLBACK_ERROR;
                 }
-                printf("flow %s: save to %s\n", flow->id, pcap_filename);
+                printf("flow %llu: save to %s\n", flow->id_as_ull, pcap_filename);
                 if (packet_write_pcap_file(flow_user->packets, flow_user->flow_datalink, pcap_filename) != 0)
                 {
                     return CALLBACK_ERROR;
@@ -401,18 +402,35 @@ static void captured_flow_end_callback(struct nDPIsrvd_socket * const sock, stru
     }
 }
 
-// TODO: argv parsing
-#if 0
 static int parse_options(int argc, char ** argv)
 {
     int opt;
 
     static char const usage[] =
         "Usage: %s "
-        "[-d] [-s host] [-R rotate-every-n-seconds] [-g] [-u]\n";
+        "[-d] [-s host] [-S host] [-R rotate-every-n-seconds] [-g] [-u]\n";
 
     while ((opt = getopt(argc, argv, "hds:R:gu")) != -1)
     {
+        switch (opt)
+        {
+            case 'd':
+                daemonize = 1;
+                break;
+            case 's':
+                break;
+            case 'S':
+                break;
+            case 'R':
+                break;
+            case 'g':
+                break;
+            case 'u':
+                break;
+            default:
+                fprintf(stderr, usage, argv[0]);
+                return 1;
+        }
     }
 
     if (optind < argc)
@@ -424,7 +442,6 @@ static int parse_options(int argc, char ** argv)
 
     return 0;
 }
-#endif
 
 int main(int argc, char ** argv)
 {

@@ -18,7 +18,8 @@
 #include "uthash.h"
 
 #define nDPIsrvd_MAX_JSON_TOKENS 128
-#define nDPIsrvd_FLOW_ID_STRLEN 24
+#define nDPIsrvd_FLOW_KEY_TOKENS 3
+#define nDPIsrvd_FLOW_KEY_STRLEN 24
 #define nDPIsrvd_JSON_KEY_STRLEN 32
 
 #define nDPIsrvd_STRLEN_SZ(s) (sizeof(s)/sizeof(s[0]) - sizeof(s[0]))
@@ -81,9 +82,14 @@ enum nDPIsrvd_conversion_return
 typedef unsigned long long int nDPIsrvd_ull;
 typedef nDPIsrvd_ull * nDPIsrvd_ull_ptr;
 
+struct nDPIsrvd_flow_key
+{
+    char key[nDPIsrvd_FLOW_KEY_STRLEN];
+};
+
 struct nDPIsrvd_flow
 {
-    char id[nDPIsrvd_FLOW_ID_STRLEN]; // TODO: use alias and source for flow key as well
+    struct nDPIsrvd_flow_key flow_key;
     nDPIsrvd_ull id_as_ull;
     UT_hash_handle hh;
     uint8_t flow_user_data[0];
@@ -91,7 +97,7 @@ struct nDPIsrvd_flow
 
 struct nDPIsrvd_json_token
 {
-    char key[nDPIsrvd_FLOW_ID_STRLEN];
+    char key[nDPIsrvd_JSON_KEY_STRLEN];
     int key_length;
     UT_hash_handle hh;
     char const * value;
@@ -505,36 +511,56 @@ token_value_to_ull(struct nDPIsrvd_json_token const * const token, nDPIsrvd_ull_
     return CONVERSION_OK;
 }
 
+static inline int nDPIsrvd_build_flow_key(struct nDPIsrvd_flow_key * const key,
+                                          struct nDPIsrvd_json_token const * const tokens[nDPIsrvd_FLOW_KEY_TOKENS])
+{
+    if (tokens[0]->value == NULL || tokens[0]->value_length == 0 ||
+        tokens[1]->value == NULL || tokens[1]->value_length == 0 ||
+        tokens[2]->value == NULL || tokens[2]->value_length == 0)
+    {
+        return 1;
+    }
+
+    if (snprintf(key->key, nDPIsrvd_FLOW_KEY_STRLEN, "%.*s-%.*s-%.*s",
+                 tokens[0]->value_length, tokens[0]->value,
+                 tokens[1]->value_length, tokens[1]->value,
+                 tokens[2]->value_length, tokens[2]->value) <= 0)
+    {
+        return 1;
+    }
+
+    return 0;
+}
+
 static inline struct nDPIsrvd_flow * nDPIsrvd_get_flow(struct nDPIsrvd_socket * const sock)
 {
-    struct nDPIsrvd_json_token const * const flow_id = TOKEN_GET_SZ(sock, "flow_id");
+    struct nDPIsrvd_json_token const * const tokens[nDPIsrvd_FLOW_KEY_TOKENS] = {
+        TOKEN_GET_SZ(sock, "flow_id"), TOKEN_GET_SZ(sock, "alias"), TOKEN_GET_SZ(sock, "source"),
+    };
+    struct nDPIsrvd_flow_key key = {};
 
-    if (flow_id != NULL)
+    if (nDPIsrvd_build_flow_key(&key, tokens) != 0)
     {
-        if (flow_id->value_length > nDPIsrvd_FLOW_ID_STRLEN) {
+        return NULL;
+    }
+
+    struct nDPIsrvd_flow * flow = NULL;
+    HASH_FIND(hh, sock->flow_table, &key, sizeof(key), flow);
+
+    if (flow == NULL)
+    {
+        flow = (struct nDPIsrvd_flow *)calloc(1, sizeof(*flow) + sock->flow_user_data_size);
+        if (flow == NULL)
+        {
             return NULL;
         }
 
-        struct nDPIsrvd_flow * flow = NULL;
-        HASH_FIND(hh, sock->flow_table, flow_id->value, (size_t)flow_id->value_length, flow);
-
-        if (flow == NULL)
-        {
-            flow = (struct nDPIsrvd_flow *)calloc(1, sizeof(*flow) + sock->flow_user_data_size);
-            if (flow == NULL)
-            {
-                return NULL;
-            }
-
-            TOKEN_VALUE_TO_ULL(flow_id, &flow->id_as_ull);
-            snprintf(flow->id, nDPIsrvd_FLOW_ID_STRLEN, "%.*s", flow_id->value_length, flow_id->value);
-            HASH_ADD(hh, sock->flow_table, id, flow_id->value_length, flow);
-        }
-
-        return flow;
+        TOKEN_VALUE_TO_ULL(tokens[0], &flow->id_as_ull);
+        memcpy(flow->flow_key.key, key.key, nDPIsrvd_FLOW_KEY_STRLEN);
+        HASH_ADD(hh, sock->flow_table, flow_key, sizeof(flow->flow_key), flow);
     }
 
-    return NULL;
+    return flow;
 }
 
 static inline int nDPIsrvd_check_flow_end(struct nDPIsrvd_socket * const sock, struct nDPIsrvd_flow * const current_flow)
