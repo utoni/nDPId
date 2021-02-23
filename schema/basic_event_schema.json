@@ -19,7 +19,8 @@
             "type": "number"
         },
         "packet_id": {
-            "type": "number"
+            "type": "number",
+            "minimum": 0
         },
         "basic_event_id": {
             "type": "number",

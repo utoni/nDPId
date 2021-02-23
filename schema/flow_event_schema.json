@@ -35,7 +35,7 @@
         },
         "packet_id": {
             "type": "number",
-            "minimum": 1
+            "minimum": 0
         },
         "flow_event_id": {
             "type": "number",
@@ -100,7 +100,7 @@
             "type": "string",
             "oneOf": [
                 {
-                    "pattern": "[0-9]+"
+                    "pattern": "^[0-9]+$"
                 },
                 {
                     "enum": [
@@ -118,10 +118,18 @@
             "maximum": 1
         },
         "src_ip": {
-            "type": "string"
+            "type": "string",
+            "anyOf" : [
+                { "format": "ipv4" },
+                { "format": "ipv6" }
+            ]
         },
         "dst_ip": {
-            "type": "string"
+            "type": "string",
+            "anyOf" : [
+                { "format": "ipv4" },
+                { "format": "ipv6" }
+            ]
         },
         "src_port": {
             "type": "number",
@@ -136,19 +144,46 @@
         "ndpi": {
             "type": "object"
         },
+        "dhcp": {
+            "type": "object"
+        },
+        "bittorrent": {
+            "type": "object"
+        },
+        "mdns": {
+            "type": "object"
+        },
+        "ubntac2": {
+            "type": "object"
+        },
+        "kerberos": {
+            "type": "object"
+        },
+        "telnet": {
+            "type": "object"
+        },
         "tls": {
             "type": "object"
         },
         "quic": {
             "type": "object"
         },
+        "imap": {
+            "type": "object"
+        },
         "http": {
+            "type": "object"
+        },
+        "pop": {
             "type": "object"
         },
         "smtp": {
             "type": "object"
         },
         "dns": {
+            "type": "object"
+        },
+        "ftp": {
             "type": "object"
         },
         "ssh": {

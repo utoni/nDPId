@@ -11,11 +11,16 @@ def prettifyEvent(color_list, whitespaces, text):
     term_attrs = str()
     for color in color_list:
         term_attrs += str(color)
-    return '{}{:>' + str(whitespaces) + '}{}'.format(term_attrs, text, TermColor.END)
+    fmt = '{}{:>' + str(whitespaces) + '}{}'
+    return fmt.format(term_attrs, text, TermColor.END)
 
 def onJsonLineRecvd(json_dict, current_flow, global_user_data):
+    instance_and_source = ''
+    instance_and_source += '[{}]'.format(TermColor.setColorByString(json_dict['alias']))
+    instance_and_source += '[{}]'.format(TermColor.setColorByString(json_dict['source']))
+
     if 'basic_event_id' in json_dict:
-        print('{}: {}'.format(prettifyEvent([TermColor.WARNING, TermColor.BLINK], 16, 'BASIC-EVENT'), json_dict['basic_event_name']))
+        print('{} {}: {}'.format(instance_and_source, prettifyEvent([TermColor.WARNING, TermColor.BLINK], 16, 'BASIC-EVENT'), json_dict['basic_event_name']))
         return True
     elif 'flow_event_id' not in json_dict:
         return True
@@ -39,10 +44,6 @@ def onJsonLineRecvd(json_dict, current_flow, global_user_data):
                 TermColor.WARNING + TermColor.BOLD + 'RISK' + TermColor.END if cnt < 2
                 else TermColor.FAIL + TermColor.BOLD + TermColor.BLINK + 'RISK' + TermColor.END,
                 ndpi_frisk[:-2])
-
-    instance_and_source = ''
-    instance_and_source += '[{}]'.format(TermColor.setColorByString(json_dict['alias']))
-    instance_and_source += '[{}]'.format(TermColor.setColorByString(json_dict['source']))
 
     line_suffix = ''
     flow_event_name = ''

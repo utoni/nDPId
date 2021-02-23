@@ -13,6 +13,7 @@
 #include <time.h>
 #include <unistd.h>
 
+#include "config.h"
 #include "nDPIsrvd.h"
 #include "utarray.h"
 
@@ -41,12 +42,12 @@ struct flow_user_data
     UT_array * packets;
 };
 
-static int daemonize = 0;
 struct nDPIsrvd_socket * sock = NULL;
 static int main_thread_shutdown = 0;
-static char const serv_listen_path[] = DISTRIBUTOR_UNIX_SOCKET;
-static char const serv_listen_addr[INET_ADDRSTRLEN] = DISTRIBUTOR_HOST;
-static uint16_t const serv_listen_port = DISTRIBUTOR_PORT;
+
+static int daemonize = 0;
+static char * pidfile = NULL;
+static char * serv_optarg = NULL;
 #ifdef pcap_dump_open_append
 static time_t pcap_filename_rotation = 600;
 static time_t pcap_filename_last_rotation = 0;
@@ -408,18 +409,20 @@ static int parse_options(int argc, char ** argv)
 
     static char const usage[] =
         "Usage: %s "
-        "[-d] [-s host] [-S host] [-R rotate-every-n-seconds] [-g] [-u]\n";
+        "[-d] [-p pidfile] [-s host] [-R rotate-every-n-seconds] [-g] [-u]\n";
 
-    while ((opt = getopt(argc, argv, "hds:R:gu")) != -1)
+    while ((opt = getopt(argc, argv, "hdp:s:R:g:u:")) != -1)
     {
         switch (opt)
         {
             case 'd':
                 daemonize = 1;
                 break;
-            case 's':
+            case 'p':
                 break;
-            case 'S':
+            case 's':
+                free(serv_optarg);
+                serv_optarg = strdup(optarg);
                 break;
             case 'R':
                 break;
@@ -431,6 +434,17 @@ static int parse_options(int argc, char ** argv)
                 fprintf(stderr, usage, argv[0]);
                 return 1;
         }
+    }
+
+    if (serv_optarg == NULL)
+    {
+        serv_optarg = strdup(DISTRIBUTOR_UNIX_SOCKET);
+    }
+
+    if (nDPIsrvd_setup_address(&sock->address, serv_optarg) != 0)
+    {
+        fprintf(stderr, "%s: Could not parse address `%s'\n", argv[0], serv_optarg);
+        return 1;
     }
 
     if (optind < argc)
@@ -452,35 +466,23 @@ int main(int argc, char ** argv)
         return 1;
     }
 
+    if (parse_options(argc, argv) != 0)
+    {
+        fprintf(stderr, "%s: Could not parse command line arguments.\n", argv[0]);
+        return 1;
+    }
+
     signal(SIGINT, sighandler);
     signal(SIGTERM, sighandler);
     signal(SIGPIPE, sighandler);
 
-    enum nDPIsrvd_connect_return connect_ret = CONNECT_ERROR;
-
     printf("Recv buffer size: %u\n", NETWORK_BUFFER_MAX_SIZE);
-    if (argc == 2)
-    {
-        printf("Connecting to UNIX socket: %s\n", argv[1]);
-        connect_ret = nDPIsrvd_connect_unix(sock, argv[1]);
-    }
-    else if (argc == 1)
-    {
-        if (access(serv_listen_path, R_OK) == 0)
-        {
-            printf("Connecting to %s\n", serv_listen_path);
-            connect_ret = nDPIsrvd_connect_unix(sock, serv_listen_path);
-        }
-        else
-        {
-            printf("Connecting to %s:%u\n", serv_listen_addr, serv_listen_port);
-            connect_ret = nDPIsrvd_connect_ip(sock, serv_listen_addr, serv_listen_port);
-        }
-    }
+    printf("Connecting to `%s'..\n", serv_optarg);
+    enum nDPIsrvd_connect_return connect_ret = nDPIsrvd_connect(sock);
 
     if (connect_ret != CONNECT_OK)
     {
-        fprintf(stderr, "%s: nDPIsrvd socket connect failed!\n", argv[0]);
+        fprintf(stderr, "%s: nDPIsrvd socket connect to %s failed!\n", argv[0], serv_optarg);
         nDPIsrvd_free(&sock);
         return 1;
     }

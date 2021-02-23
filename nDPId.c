@@ -36,7 +36,8 @@ enum nDPId_l3_type
     L3_IP6
 };
 
-union nDPId_ip {
+union nDPId_ip
+{
     struct
     {
         uint32_t ip;
@@ -60,8 +61,8 @@ enum nDPId_flow_type
 struct nDPId_flow_basic
 {
     enum nDPId_flow_type type;
-    uint64_t hashval;
     enum nDPId_l3_type l3_type;
+    uint64_t hashval;
     union nDPId_ip src;
     union nDPId_ip dst;
     uint8_t l4_protocol;
@@ -97,17 +98,20 @@ struct nDPId_flow_info
     struct ndpi_proto detected_l7_protocol;
     struct ndpi_proto guessed_l7_protocol;
 
-    union {
+    union
+    {
         uint8_t ndpi_flow_raw[SIZEOF_FLOW_STRUCT];
         struct ndpi_flow_struct ndpi_flow;
     };
 
-    union {
+    union
+    {
         uint8_t ndpi_src_raw[SIZEOF_ID_STRUCT];
         struct ndpi_id_struct ndpi_src;
     };
 
-    union {
+    union
+    {
         uint8_t ndpi_dst_raw[SIZEOF_ID_STRUCT];
         struct ndpi_id_struct ndpi_dst;
     };
@@ -212,9 +216,8 @@ enum daemon_event
     DAEMON_EVENT_COUNT
 };
 
-static char const * const packet_event_name_table[PACKET_EVENT_COUNT] = {[PACKET_EVENT_INVALID] = "invalid",
-                                                                         [PACKET_EVENT_PAYLOAD] = "packet",
-                                                                         [PACKET_EVENT_PAYLOAD_FLOW] = "packet-flow"};
+static char const * const packet_event_name_table[PACKET_EVENT_COUNT] = {
+    [PACKET_EVENT_INVALID] = "invalid", [PACKET_EVENT_PAYLOAD] = "packet", [PACKET_EVENT_PAYLOAD_FLOW] = "packet-flow"};
 
 static char const * const flow_event_name_table[FLOW_EVENT_COUNT] = {[FLOW_EVENT_INVALID] = "invalid",
                                                                      [FLOW_EVENT_NEW] = "new",
@@ -273,6 +276,8 @@ static int log_to_stderr = 0;
 static char pidfile[UNIX_PATH_MAX] = nDPId_PIDFILE;
 static char * user = "nobody";
 static char * group = NULL;
+static char * custom_protocols_file = NULL;
+static char * custom_categories_file = NULL;
 static char json_sockpath[UNIX_PATH_MAX] = COLLECTOR_UNIX_SOCKET;
 
 /* subopts */
@@ -584,7 +589,17 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     NDPI_PROTOCOL_BITMASK protos;
     NDPI_BITMASK_SET_ALL(protos);
     ndpi_set_protocol_detection_bitmask2(workflow->ndpi_struct, &protos);
+    if (custom_protocols_file != NULL)
+    {
+        ndpi_load_protocols_file(workflow->ndpi_struct, custom_protocols_file);
+    }
+    if (custom_categories_file != NULL)
+    {
+        ndpi_load_categories_file(workflow->ndpi_struct, custom_categories_file);
+    }
     ndpi_finalize_initalization(workflow->ndpi_struct);
+
+    ndpi_set_detection_preferences(workflow->ndpi_struct, ndpi_pref_enable_tls_block_dissection, 1);
 
     if (ndpi_init_serializer_ll(&workflow->ndpi_serializer, ndpi_serialization_format_json, NETWORK_BUFFER_MAX_SIZE) !=
         1)
@@ -2618,11 +2633,16 @@ static int parse_options(int argc, char ** argv)
     int opt;
 
     static char const usage[] =
+        "(C) 2020-2021 Toni Uhlig\n"
+        "Please report any BUG to toni@impl.cc\n\n"
         "Usage: %s "
-        "[-i pcap-file/interface] [-I] [-E] [-P bpf-filter]"
+        "[-i pcap-file/interface] [-I] [-E] [-B bpf-filter]\n"
+        "\t  \t"
         "[-l] [-c path-to-unix-sock] "
-        "[-d] [-p pidfile] "
+        "[-d] [-p pidfile]\n"
+        "\t  \t"
         "[-u user] [-g group] "
+        "[-P path] [-C path] "
         "[-a instance-alias] "
         "[-o subopt=value]\n\n"
         "\t-i\tInterface or file from where to read packets from.\n"
@@ -2630,19 +2650,21 @@ static int parse_options(int argc, char ** argv)
         "\t  \tis part of the interface subnet. (Internal mode)\n"
         "\t-E\tProcess only packets where the source address of the first packet\n"
         "\t  \tis *NOT* part of the interface subnet. (External mode)\n"
-        "\t-P\tSet an optional berkeley packet filter.\n"
-        "\t-l\tLog all messages to stderr as well.\n"
+        "\t-B\tSet an optional PCAP filter string. (BPF format)\n"
+        "\t-l\tLog all messages to stderr as well. Logging via Syslog is always enabled.\n"
         "\t-c\tPath to the Collector UNIX socket which acts as the JSON sink.\n"
         "\t-d\tForking into background after initialization.\n"
         "\t-p\tWrite the daemon PID to the given file path.\n"
         "\t-u\tChange UID to the numeric value of user.\n"
         "\t-g\tChange GID to the numeric value of group.\n"
+        "\t-P\tLoad a nDPI custom protocols file.\n"
+        "\t-C\tLoad a nDPI custom categories file.\n"
         "\t-a\tSet an alias name of this daemon instance which will be part of every JSON message.\n"
         "\t  \tThis value is required for correct flow handling of multiple instances and should be unique.\n"
         "\t  \tDefaults to your hostname.\n"
         "\t-o\t(Carefully) Tune some daemon options. See subopts below.\n\n";
 
-    while ((opt = getopt(argc, argv, "hi:IEP:lc:dp:u:g:a:o:")) != -1)
+    while ((opt = getopt(argc, argv, "hi:IEB:lc:dp:u:g:P:C:a:o:")) != -1)
     {
         switch (opt)
         {
@@ -2655,7 +2677,7 @@ static int parse_options(int argc, char ** argv)
             case 'E':
                 process_external_initial_direction = 1;
                 break;
-            case 'P':
+            case 'B':
                 bpf_str = strdup(optarg);
                 break;
             case 'l':
@@ -2684,6 +2706,12 @@ static int parse_options(int argc, char ** argv)
                 break;
             case 'g':
                 group = strdup(optarg);
+                break;
+            case 'P':
+                custom_protocols_file = strdup(optarg);
+                break;
+            case 'C':
+                custom_categories_file = strdup(optarg);
                 break;
             case 'a':
                 instance_alias = strdup(optarg);
@@ -2903,13 +2931,11 @@ int main(int argc, char ** argv)
 
     if (setup_reader_threads() != 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "setup_reader_threads failed");
         return 1;
     }
 
     if (start_reader_threads() != 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "start_reader_threads failed");
         return 1;
     }
 
@@ -2924,7 +2950,6 @@ int main(int argc, char ** argv)
 
     if (main_thread_shutdown == 1 && stop_reader_threads() != 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "stop_reader_threads");
         return 1;
     }
     free_reader_threads();

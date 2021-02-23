@@ -2,7 +2,6 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <netdb.h>
-#include <linux/un.h>
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,6 +14,7 @@
 #include <unistd.h>
 
 #include "config.h"
+#include "nDPIsrvd.h"
 #include "utils.h"
 
 struct io_buffer
@@ -58,12 +58,10 @@ static struct remotes
 
 static int main_thread_shutdown = 0;
 static int log_to_stderr = 0;
-static char pidfile[UNIX_PATH_MAX] = nDPIsrvd_PIDFILE;
-static char json_sockpath[UNIX_PATH_MAX] = COLLECTOR_UNIX_SOCKET;
-static enum { SERV_LISTEN_NONE, SERV_LISTEN_TCP, SERV_LISTEN_UNIX } serv_type = SERV_LISTEN_NONE;
-static char serv_listen_addr[INET_ADDRSTRLEN] = DISTRIBUTOR_HOST;
-static char serv_listen_path[UNIX_PATH_MAX] = DISTRIBUTOR_UNIX_SOCKET;
-static uint16_t serv_listen_port = DISTRIBUTOR_PORT;
+static char * pidfile = NULL;
+static char * json_sockpath = NULL;
+static char * serv_optarg = NULL;
+static struct nDPIsrvd_address serv_address = { .raw.sa_family = 0xFFFF, };
 static int json_sockfd;
 static int serv_sockfd;
 static char * user = NULL;
@@ -72,7 +70,7 @@ static char * group = NULL;
 static int create_listen_sockets(void)
 {
     json_sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
-    serv_sockfd = socket((serv_type == SERV_LISTEN_TCP ? AF_INET : AF_UNIX), SOCK_STREAM, 0);
+    serv_sockfd = socket(serv_address.raw.sa_family, SOCK_STREAM, 0);
     if (json_sockfd < 0 || serv_sockfd < 0)
     {
         syslog(LOG_DAEMON | LOG_ERR, "Error opening socket: %s", strerror(errno));
@@ -95,66 +93,18 @@ static int create_listen_sockets(void)
         return 1;
     }
 
-    struct sockaddr * addr;
-    socklen_t addrlen;
-    struct sockaddr_in serv_addr_in;
-    struct sockaddr_un serv_addr_un;
-
-    switch (serv_type)
-    {
-        case SERV_LISTEN_TCP:
-            memset(&serv_addr_in, 0, sizeof(serv_addr_in));
-            serv_addr_in.sin_family = AF_INET;
-            if (inet_pton(AF_INET, &serv_listen_addr[0], &serv_addr_in.sin_addr) != 1)
-            {
-                syslog(LOG_DAEMON | LOG_ERR, "Error converting an internet address: %s", strerror(errno));
-                return 1;
-            }
-            serv_addr_in.sin_port = htons(serv_listen_port);
-            addr = (struct sockaddr *)&serv_addr_in;
-            addrlen = sizeof(serv_addr_in);
-            break;
-        case SERV_LISTEN_NONE:
-        case SERV_LISTEN_UNIX:
-            memset(&serv_addr_un, 0, sizeof(serv_addr_un));
-            serv_addr_un.sun_family = AF_UNIX;
-            if (snprintf(serv_addr_un.sun_path, sizeof(serv_addr_un.sun_path), "%s", serv_listen_path) <= 0)
-            {
-                syslog(LOG_DAEMON | LOG_ERR, "snprintf failed: %s", strerror(errno));
-                return 1;
-            }
-            addr = (struct sockaddr *)&serv_addr_un;
-            addrlen = sizeof(serv_addr_un);
-            break;
-    }
-
     if (bind(json_sockfd, (struct sockaddr *)&json_addr, sizeof(json_addr)) < 0)
     {
         unlink(json_sockpath);
-        syslog(LOG_DAEMON | LOG_ERR, "Error on binding the UNIX socket to %s: %s", json_sockpath, strerror(errno));
+        syslog(LOG_DAEMON | LOG_ERR, "Error on binding UNIX socket (collector) to %s: %s", json_sockpath, strerror(errno));
         return 1;
     }
 
-    if (bind(serv_sockfd, addr, addrlen) < 0)
+    if (bind(serv_sockfd, &serv_address.raw, serv_address.size) < 0)
     {
+        syslog(LOG_DAEMON | LOG_ERR,
+               "Error on binding socket (distributor) to %s: %s", serv_optarg, strerror(errno));
         unlink(json_sockpath);
-        switch (serv_type)
-        {
-            case SERV_LISTEN_TCP:
-                syslog(LOG_DAEMON | LOG_ERR,
-                       "Error on binding the INET socket to %s:%u: %s",
-                       serv_listen_addr,
-                       serv_listen_port,
-                       strerror(errno));
-                break;
-            case SERV_LISTEN_NONE:
-            case SERV_LISTEN_UNIX:
-                syslog(LOG_DAEMON | LOG_ERR,
-                       "Error on binding the UNIX socket to %s: %s",
-                       serv_listen_path,
-                       strerror(errno));
-                break;
-        }
         return 1;
     }
 
@@ -241,7 +191,7 @@ static int parse_options(int argc, char ** argv)
 {
     int opt;
 
-    while ((opt = getopt(argc, argv, "hlc:dp:s:S:u:g:")) != -1)
+    while ((opt = getopt(argc, argv, "hlc:dp:s:u:g:")) != -1)
     {
         switch (opt)
         {
@@ -249,71 +199,62 @@ static int parse_options(int argc, char ** argv)
                 log_to_stderr = 1;
                 break;
             case 'c':
-                snprintf(json_sockpath, sizeof(json_sockpath), "%s", optarg);
+                free(json_sockpath);
+                json_sockpath = strdup(optarg);
                 break;
             case 'd':
                 daemonize_enable();
                 break;
             case 'p':
-                snprintf(pidfile, sizeof(pidfile), "%s", optarg);
+                free(pidfile);
+                pidfile = strdup(optarg);
                 break;
             case 's':
-            {
-                if (serv_type != SERV_LISTEN_NONE)
-                {
-                    fprintf(stderr, "%s: -s / -S already set\n", argv[0]);
-                    return 1;
-                }
-
-                char * delim = strchr(optarg, ':');
-                if (delim != NULL)
-                {
-                    char * endptr = NULL;
-                    errno = 0;
-                    serv_listen_port = strtoul(delim + 1, &endptr, 10);
-                    if (endptr == delim + 1 || errno != 0)
-                    {
-                        fprintf(stderr, "%s: invalid port number \"%s\"\n", argv[0], delim + 1);
-                        return 1;
-                    }
-                }
-                size_t len = (delim != NULL ? (size_t)(delim - optarg) : strlen(optarg)) + 1;
-                snprintf(serv_listen_addr,
-                         (len < sizeof(serv_listen_addr) ? len : sizeof(serv_listen_addr)),
-                         "%s",
-                         optarg);
-                serv_type = SERV_LISTEN_TCP;
+                free(serv_optarg);
+                serv_optarg = strdup(optarg);
                 break;
-            }
-            case 'S':
-            {
-                if (serv_type != SERV_LISTEN_NONE)
-                {
-                    fprintf(stderr, "%s: -s / -S already set\n", argv[0]);
-                    return 1;
-                }
-
-                size_t len = strlen(optarg) + 1;
-                snprintf(serv_listen_path,
-                         (len < sizeof(serv_listen_path) ? len : sizeof(serv_listen_path)),
-                         "%s",
-                         optarg);
-                serv_type = SERV_LISTEN_UNIX;
-                break;
-            }
             case 'u':
+                free(user);
                 user = strdup(optarg);
                 break;
             case 'g':
+                free(group);
                 group = strdup(optarg);
                 break;
             default:
                 fprintf(stderr,
-                        "Usage: %s [-l] [-c path-to-unix-sock] [-d] [-p pidfile] [-s distributor-host:port] "
-                        "[-S path-to-unix-socket] [-u user] [-g group]\n",
+                        "Usage: %s [-l] [-c path-to-unix-sock] [-d] [-p pidfile] "
+                        "[-s path-to-unix-socket|distributor-host:port] [-u user] [-g group]\n",
                         argv[0]);
                 return 1;
         }
+    }
+
+    if (pidfile == NULL)
+    {
+        pidfile = strdup(nDPIsrvd_PIDFILE);
+    }
+
+    if (json_sockpath == NULL)
+    {
+        json_sockpath = strdup(COLLECTOR_UNIX_SOCKET);
+    }
+
+    if (serv_optarg == NULL)
+    {
+        serv_optarg = strdup(DISTRIBUTOR_UNIX_SOCKET);
+    }
+
+    if (nDPIsrvd_setup_address(&serv_address, serv_optarg) != 0)
+    {
+        fprintf(stderr, "%s: Could not parse address `%s'\n", argv[0], serv_optarg);
+        return 1;
+    }
+
+    if (optind < argc)
+    {
+        fprintf(stderr, "%s: Unexpected argument after options\n", argv[0]);
+        return 1;
     }
 
     return 0;
@@ -368,26 +309,24 @@ int main(int argc, char ** argv)
         goto error;
     }
     syslog(LOG_DAEMON, "collector listen on %s", json_sockpath);
-    switch (serv_type)
+    switch (serv_address.raw.sa_family)
     {
-        case SERV_LISTEN_TCP:
-            syslog(LOG_DAEMON,
-                   "distributor listen on %.*s:%u",
-                   (int)sizeof(serv_listen_addr),
-                   serv_listen_addr,
-                   serv_listen_port);
+        default:
+            goto error;
+        case AF_INET:
+        case AF_INET6:
+            syslog(LOG_DAEMON, "distributor listen on %s", serv_optarg);
             syslog(LOG_DAEMON | LOG_ERR,
                    "Please keep in mind that using a TCP Socket may leak sensitive information to "
                    "everyone with access to the device/network. You've been warned!");
             break;
-        case SERV_LISTEN_NONE:
-        case SERV_LISTEN_UNIX:
-            syslog(LOG_DAEMON, "distributor listen on %s", serv_listen_path);
+        case AF_UNIX:
+            syslog(LOG_DAEMON, "distributor listen on %s", json_sockpath);
             break;
     }
 
     errno = 0;
-    if (change_user_group(user, group, pidfile, json_sockpath, serv_listen_path) != 0)
+    if (change_user_group(user, group, pidfile, json_sockpath, (serv_address.raw.sa_family == AF_UNIX ? serv_optarg : NULL)) != 0)
     {
         if (errno != 0)
         {
@@ -761,7 +700,7 @@ error:
     closelog();
 
     unlink(json_sockpath);
-    unlink(serv_listen_path);
+    unlink(serv_optarg);
 
     return 0;
 }

@@ -10,7 +10,7 @@ from nDPIsrvd import nDPIsrvdSocket, TermColor
 class Stats:
     lines_processed = 0
     print_dot_every = 10
-    next_lines_print = print_dot_every
+    print_nmb_every = print_dot_every * 5
 
 def onJsonLineRecvd(json_dict, current_flow, global_user_data):
     validation_done = nDPIsrvd.validateAgainstSchema(json_dict)
@@ -19,8 +19,8 @@ def onJsonLineRecvd(json_dict, current_flow, global_user_data):
     if global_user_data.lines_processed % global_user_data.print_dot_every == 0:
         sys.stdout.write('.')
         sys.stdout.flush()
-    if global_user_data.lines_processed == global_user_data.next_lines_print:
-        global_user_data.next_lines_print *= 2
+    print_nmb_every = global_user_data.print_nmb_every + (len(str(global_user_data.lines_processed)) * global_user_data.print_dot_every)
+    if global_user_data.lines_processed % print_nmb_every == 0:
         sys.stdout.write(str(global_user_data.lines_processed))
         sys.stdout.flush()
 

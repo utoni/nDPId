@@ -35,7 +35,6 @@ enum nDPIsrvd_connect_return
 {
     CONNECT_OK = FIRST_ENUM_VALUE,
     CONNECT_ERROR_SOCKET,
-    CONNECT_ERROR_PTON,
     CONNECT_ERROR,
     CONNECT_LAST_ENUM_VALUE
 };
@@ -115,26 +114,26 @@ typedef enum nDPIsrvd_callback_return (*json_callback)(struct nDPIsrvd_socket * 
 typedef void (*flow_end_callback)(struct nDPIsrvd_socket * const sock,
                                   struct nDPIsrvd_flow * const flow);
 
+struct nDPIsrvd_address
+{
+    socklen_t size;
+    union {
+        struct sockaddr_in in;
+        struct sockaddr_in6 in6;
+        struct sockaddr_un un;
+        struct sockaddr raw;
+    };
+};
+
 struct nDPIsrvd_socket
 {
     int fd;
-    int socket_family;
+    struct nDPIsrvd_address address;
+
     size_t flow_user_data_size;
     struct nDPIsrvd_flow * flow_table;
     json_callback json_callback;
     flow_end_callback flow_end_callback;
-
-    union {
-        struct
-        {
-            char const * dst_ip;
-            unsigned short dst_port;
-        } ip_socket;
-        struct
-        {
-            char * path;
-        } unix_socket;
-    } address;
 
     struct
     {
@@ -244,7 +243,6 @@ static inline char const * nDPIsrvd_enum_to_string(int enum_value)
 {
     static char const * const enum_str[] = {"CONNECT_OK",
                                             "CONNECT_ERROR_SOCKET",
-                                            "CONNECT_ERROR_PTON",
                                             "CONNECT_ERROR",
                                             "READ_OK",
                                             "READ_PEER_DISCONNECT",
@@ -291,7 +289,7 @@ static inline struct nDPIsrvd_socket * nDPIsrvd_init(size_t global_user_data_siz
         memset(sock, 0, sizeof(*sock));
 
         sock->fd = -1;
-        sock->socket_family = -1;
+        sock->address.raw.sa_family = -1;
         sock->flow_user_data_size = flow_user_data_size;
 
         sock->json_callback = json_cb;
@@ -357,53 +355,82 @@ static inline void nDPIsrvd_free(struct nDPIsrvd_socket ** const sock)
     *sock = NULL;
 }
 
-static inline enum nDPIsrvd_connect_return nDPIsrvd_connect_ip(struct nDPIsrvd_socket * const sock,
-                                                               char const * dst_ip,
-                                                               unsigned short dst_port)
+static inline int nDPIsrvd_setup_address(struct nDPIsrvd_address * const address, char const * const destination)
 {
-    struct sockaddr_in remote_addr = {};
+    size_t len = strlen(destination);
+    char * first_colon = strchr(destination, ':');
+    char * last_colon = strrchr(destination, ':');
 
-    sock->socket_family = remote_addr.sin_family = AF_INET;
-    sock->fd = socket(sock->socket_family, SOCK_STREAM, 0);
+    memset(address, 0, sizeof(*address));
 
-    if (sock->fd < 0)
-    {
-        return CONNECT_ERROR_SOCKET;
+    if (last_colon == NULL) {
+        address->raw.sa_family = AF_UNIX;
+        address->size = sizeof(address->un);
+        if (snprintf(address->un.sun_path, sizeof(address->un.sun_path), "%s", destination) <= 0)
+        {
+            return 1;
+        }
+    } else {
+        char addr_buf[INET6_ADDRSTRLEN];
+        char const * address_start = destination;
+        char const * address_end = last_colon;
+        void * sock_addr;
+
+        if (first_colon == last_colon)
+        {
+            address->raw.sa_family = AF_INET;
+            address->size = sizeof(address->in);
+            address->in.sin_port = htons(atoi(last_colon + 1));
+            sock_addr = &address->in.sin_addr;
+
+            if (len < 7)
+            {
+                return 1;
+            }
+        } else {
+            address->raw.sa_family = AF_INET6;
+            address->size = sizeof(address->in6);
+            address->in6.sin6_port = htons(atoi(last_colon + 1));
+            sock_addr = &address->in6.sin6_addr;
+
+            if (len < 2)
+            {
+                return 1;
+            }
+            if (destination[0] == '[')
+            {
+                if (*(last_colon - 1) != ']')
+                {
+                    return 1;
+                }
+                address_start++;
+                address_end--;
+            }
+        }
+
+        if (snprintf(addr_buf, sizeof(addr_buf), "%.*s", (int)(address_end - address_start), address_start) <= 0)
+        {
+            return 1;
+        }
+        if (inet_pton(address->raw.sa_family, addr_buf, sock_addr) != 1)
+        {
+            return 1;
+        }
     }
 
-    if (inet_pton(sock->socket_family, &dst_ip[0], &remote_addr.sin_addr) != 1)
-    {
-        return CONNECT_ERROR_PTON;
-    }
-    remote_addr.sin_port = htons(dst_port);
-
-    if (connect(sock->fd, (struct sockaddr *)&remote_addr, sizeof(remote_addr)) != 0)
-    {
-        return CONNECT_ERROR;
-    }
-
-    return CONNECT_OK;
+    return 0;
 }
 
-static inline enum nDPIsrvd_connect_return nDPIsrvd_connect_unix(struct nDPIsrvd_socket * const sock,
-                                                                 char const * const path)
+static inline enum nDPIsrvd_connect_return nDPIsrvd_connect(struct nDPIsrvd_socket * const sock)
 {
-    struct sockaddr_un remote_addr = {};
-
-    sock->socket_family = remote_addr.sun_family = AF_UNIX;
-    sock->fd = socket(sock->socket_family, SOCK_STREAM, 0);
+    sock->fd = socket(sock->address.raw.sa_family, SOCK_STREAM, 0);
 
     if (sock->fd < 0)
     {
         return CONNECT_ERROR_SOCKET;
     }
 
-    if (snprintf(remote_addr.sun_path, sizeof(remote_addr.sun_path), "%s", path) <= 0)
-    {
-        return CONNECT_ERROR_SOCKET;
-    }
-
-    if (connect(sock->fd, (struct sockaddr *)&remote_addr, sizeof(remote_addr)) != 0)
+    if (connect(sock->fd, &sock->address.raw, sock->address.size) != 0)
     {
         return CONNECT_ERROR;
     }

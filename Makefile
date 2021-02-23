@@ -1,8 +1,7 @@
 CC = gcc
 PROJECT_CFLAGS += -Wall -Wextra $(EXTRA_CFLAGS) -I.
-JSMN_CFLAGS := -DJSMN_STATIC=1 -DJSMN_STRICT=1 -Idependencies
-UTHASH_CFLAGS := -Idependencies/uthash/src
-LIBS += -pthread -lpcap -lm
+DEPS_CFLAGS := -DJSMN_STATIC=1 -DJSMN_STRICT=1 -Idependencies -Idependencies/uthash/src
+LIBS += -pthread -lpcap -lm -lmaxminddb
 
 GOCC =
 GOFLAGS = -ldflags='-s -w'
@@ -41,7 +40,7 @@ endif # PKG_CONFIG_BIN
 
 ifeq ($(ENABLE_MEMORY_PROFILING),yes)
 PROJECT_CFLAGS += -DENABLE_MEMORY_PROFILING=1
-UTHASH_CFLAGS += -Duthash_malloc=nDPIsrvd_uthash_malloc -Duthash_free=nDPIsrvd_uthash_free
+DEPS_CFLAGS += -Duthash_malloc=nDPIsrvd_uthash_malloc -Duthash_free=nDPIsrvd_uthash_free
 endif
 
 ifeq ($(ENABLE_DEBUG),yes)
@@ -72,16 +71,16 @@ all: help nDPId nDPIsrvd examples
 examples: examples/c-captured/c-captured examples/c-json-stdout/c-json-stdout examples/go-dashboard/go-dashboard
 
 nDPId: nDPId.c utils.c
-	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $(PC_CFLAGS) $^ -o $@ $(LDFLAGS) $(PC_LDFLAGS) $(STATIC_NDPI_LIB) $(LIBS)
+	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $(PC_CFLAGS) $(UTHASH_CFLAGS) $^ -o $@ $(LDFLAGS) $(PC_LDFLAGS) $(STATIC_NDPI_LIB) $(LIBS)
 
 nDPIsrvd: nDPIsrvd.c utils.c
-	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(STATIC_NDPI_LIB) $(LIBS)
+	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $(DEPS_CFLAGS) $^ -o $@ $(LDFLAGS) $(STATIC_NDPI_LIB) $(LIBS)
 
 examples/c-captured/c-captured: examples/c-captured/c-captured.c
-	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $(JSMN_CFLAGS) $(UTHASH_CFLAGS) $@.c -o $@ $(LDFLAGS) $(LIBS)
+	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $(DEPS_CFLAGS) $@.c -o $@ $(LDFLAGS) $(LIBS)
 
 examples/c-json-stdout/c-json-stdout: examples/c-json-stdout/c-json-stdout.c
-	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $(JSMN_CFLAGS) $@.c -o $@ $(LDFLAGS) $(LIBS)
+	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $(DEPS_CFLAGS) $@.c -o $@ $(LDFLAGS) $(LIBS)
 
 examples/go-dashboard/go-dashboard: $(GO_DASHBOARD_SRCS)
 ifneq ($(GOCC),)
@@ -154,7 +153,7 @@ run-raw-out:
 	nc -U $(UNIX_SOCK_DISTRIBUTOR)
 
 run-nDPIsrvd: nDPIsrvd
-	./nDPIsrvd -l -c $(UNIX_SOCK_COLLECTOR) -S $(UNIX_SOCK_DISTRIBUTOR)
+	./nDPIsrvd -l -c $(UNIX_SOCK_COLLECTOR) -s $(UNIX_SOCK_DISTRIBUTOR)
 
 run-nDPId: nDPId
 	sudo ./nDPId -l -c $(UNIX_SOCK_COLLECTOR) -a run-test -u $(shell id -u -n)
