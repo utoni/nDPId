@@ -36,8 +36,7 @@ enum nDPId_l3_type
     L3_IP6
 };
 
-union nDPId_ip
-{
+union nDPId_ip {
     struct
     {
         uint32_t ip;
@@ -68,7 +67,8 @@ struct nDPId_flow_basic
     uint8_t l4_protocol;
     uint8_t tcp_fin_rst_seen : 1;
     uint8_t tcp_is_midstream_flow : 1;
-    uint8_t reserved_00[2];
+    uint8_t reserved_00 : 6;
+    uint8_t reserved_01[2];
     uint16_t src_port;
     uint16_t dst_port;
     uint64_t last_seen;
@@ -84,34 +84,34 @@ struct nDPId_flow_info
     struct nDPId_flow_basic flow_basic;
 
     uint32_t flow_id;
-    unsigned long long int packets_processed;
-    uint64_t first_seen;
 
     uint16_t min_l4_data_len;
     uint16_t max_l4_data_len;
+
+    unsigned long long int packets_processed;
+    uint64_t first_seen;
+
     unsigned long long int total_l4_data_len;
 
     uint8_t detection_completed : 1;
-    uint8_t reserved_00[3];
+    uint8_t reserved_00 : 7;
+    uint8_t reserved_01[3];
     uint32_t last_ndpi_flow_struct_hash;
 
     struct ndpi_proto detected_l7_protocol;
     struct ndpi_proto guessed_l7_protocol;
 
-    union
-    {
+    union {
         uint8_t ndpi_flow_raw[SIZEOF_FLOW_STRUCT];
         struct ndpi_flow_struct ndpi_flow;
     };
 
-    union
-    {
+    union {
         uint8_t ndpi_src_raw[SIZEOF_ID_STRUCT];
         struct ndpi_id_struct ndpi_src;
     };
 
-    union
-    {
+    union {
         uint8_t ndpi_dst_raw[SIZEOF_ID_STRUCT];
         struct ndpi_id_struct ndpi_dst;
     };
@@ -122,6 +122,7 @@ struct nDPId_workflow
     pcap_t * pcap_handle;
 
     int error_or_eof;
+    int reserved_00;
 
     unsigned long long int packets_captured;
     unsigned long long int packets_processed;
@@ -216,8 +217,9 @@ enum daemon_event
     DAEMON_EVENT_COUNT
 };
 
-static char const * const packet_event_name_table[PACKET_EVENT_COUNT] = {
-    [PACKET_EVENT_INVALID] = "invalid", [PACKET_EVENT_PAYLOAD] = "packet", [PACKET_EVENT_PAYLOAD_FLOW] = "packet-flow"};
+static char const * const packet_event_name_table[PACKET_EVENT_COUNT] = {[PACKET_EVENT_INVALID] = "invalid",
+                                                                         [PACKET_EVENT_PAYLOAD] = "packet",
+                                                                         [PACKET_EVENT_PAYLOAD_FLOW] = "packet-flow"};
 
 static char const * const flow_event_name_table[FLOW_EVENT_COUNT] = {[FLOW_EVENT_INVALID] = "invalid",
                                                                      [FLOW_EVENT_NEW] = "new",
@@ -597,7 +599,7 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     {
         ndpi_load_categories_file(workflow->ndpi_struct, custom_categories_file);
     }
-    ndpi_finalize_initalization(workflow->ndpi_struct);
+    ndpi_finalize_initialization(workflow->ndpi_struct);
 
     ndpi_set_detection_preferences(workflow->ndpi_struct, ndpi_pref_enable_tls_block_dissection, 1);
 

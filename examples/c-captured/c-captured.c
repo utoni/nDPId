@@ -8,7 +8,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <syslog.h>
 #include <sys/socket.h>
+#include <sys/stat.h>
 #include <sys/types.h>
 #include <time.h>
 #include <unistd.h>
@@ -16,8 +18,10 @@
 #include "config.h"
 #include "nDPIsrvd.h"
 #include "utarray.h"
+#include "utils.h"
 
 //#define VERBOSE
+#define DEFAULT_DATADIR "/tmp/nDPId-captured"
 
 struct packet_data
 {
@@ -37,6 +41,8 @@ struct flow_user_data
     uint8_t detection_finished;
     uint8_t guessed;
     uint8_t detected;
+    uint8_t risky;
+    uint8_t midstream;
     nDPIsrvd_ull flow_datalink;
     nDPIsrvd_ull flow_max_packets;
     UT_array * packets;
@@ -45,14 +51,18 @@ struct flow_user_data
 struct nDPIsrvd_socket * sock = NULL;
 static int main_thread_shutdown = 0;
 
-static int daemonize = 0;
 static char * pidfile = NULL;
 static char * serv_optarg = NULL;
-#ifdef pcap_dump_open_append
-static time_t pcap_filename_rotation = 600;
+static nDPIsrvd_ull pcap_filename_rotation = 0;
 static time_t pcap_filename_last_rotation = 0;
 static struct tm pcap_filename_last_rotation_tm = {};
-#endif
+static char * user = NULL;
+static char * group = NULL;
+static char * datadir = NULL;
+static uint8_t process_guessed = 0;
+static uint8_t process_undetected = 0;
+static uint8_t process_risky = 0;
+static uint8_t process_midstream = 0;
 
 static void packet_data_copy(void * dst, const void * src)
 {
@@ -90,12 +100,11 @@ static char * generate_pcap_filename(struct nDPIsrvd_flow const * const flow,
 {
     char appendix[32] = {};
 
-#ifdef pcap_dump_open_append
     if (pcap_filename_rotation > 0)
     {
         time_t current_time = time(NULL);
 
-        if (current_time >= pcap_filename_last_rotation + pcap_filename_rotation)
+        if (current_time >= pcap_filename_last_rotation + (time_t)pcap_filename_rotation)
         {
             pcap_filename_last_rotation = current_time;
             if (localtime_r(&pcap_filename_last_rotation, &pcap_filename_last_rotation_tm) == NULL)
@@ -108,8 +117,9 @@ static char * generate_pcap_filename(struct nDPIsrvd_flow const * const flow,
         {
             return NULL;
         }
-    } else
-#endif
+    }
+    else
+
     {
         if (snprintf(appendix, sizeof(appendix), "%llu", flow->id_as_ull) <= 0)
         {
@@ -117,12 +127,32 @@ static char * generate_pcap_filename(struct nDPIsrvd_flow const * const flow,
         }
     }
 
-    if (flow_user->guessed != 0 || flow_user->detected == 0)
+    if (flow_user->guessed != 0 || flow_user->detected == 0 || flow_user->risky != 0 || flow_user->midstream != 0)
     {
-        int ret =
-            snprintf(dest, size, "flow-%s-%s.pcap",
-                     (flow_user->guessed != 0 ? "guessed" : "undetected"),
-                     appendix);
+        char const * flow_type = NULL;
+
+        if (flow_user->guessed != 0)
+        {
+            flow_type = "guessed";
+        }
+        else if (flow_user->detected == 0)
+        {
+            flow_type = "undetected";
+        }
+        else if (flow_user->risky != 0)
+        {
+            flow_type = "risky";
+        }
+        else if (flow_user->midstream != 0)
+        {
+            flow_type = "midstream";
+        }
+        else
+        {
+            flow_type = "unknown-type";
+        }
+
+        int ret = snprintf(dest, size, "%s/flow-%s-%s.pcap", datadir, flow_type, appendix);
         if (ret <= 0 || (size_t)ret > size)
         {
             return NULL;
@@ -147,7 +177,7 @@ static int packet_write_pcap_file(UT_array const * const pd_array, int pkt_datal
 
     if (utarray_len(pd_array) == 0)
     {
-        printf("no packets received via json, can not dump anything to pcap\n");
+        syslog(LOG_DAEMON, "no packets received via json, can not dump anything to pcap");
         return 0;
     }
 
@@ -157,14 +187,19 @@ static int packet_write_pcap_file(UT_array const * const pd_array, int pkt_datal
         return 1;
     }
 
-#ifdef pcap_dump_open_append
-    pcap_dumper_t * pd = pcap_dump_open_append(p, filename);
-#else
-    pcap_dumper_t * pd = pcap_dump_open(p, filename);
-#endif
+    pcap_dumper_t * pd;
+    if (access(filename, F_OK) == 0)
+    {
+        pd = pcap_dump_open_append(p, filename);
+    }
+    else
+    {
+        pd = pcap_dump_open(p, filename);
+    }
+
     if (pd == NULL)
     {
-        fprintf(stderr, "pcap error %s\n", pcap_geterr(p));
+        syslog(LOG_DAEMON | LOG_ERR, "pcap error %s", pcap_geterr(p));
         pcap_close(p);
         return 1;
     }
@@ -182,7 +217,10 @@ static int packet_write_pcap_file(UT_array const * const pd_array, int pkt_datal
         if (nDPIsrvd_base64decode(pd_elt->base64_packet, pd_elt->base64_packet_size, pkt_buf, &pkt_buf_len) != 0 ||
             pkt_buf_len == 0)
         {
-            printf("packet base64 decode failed (%d bytes): %s\n", pd_elt->base64_packet_size, pd_elt->base64_packet);
+            syslog(LOG_DAEMON | LOG_ERR,
+                   "packet base64 decode failed (%d bytes): %s",
+                   pd_elt->base64_packet_size,
+                   pd_elt->base64_packet);
         }
         else
         {
@@ -224,26 +262,29 @@ static void packet_data_print(UT_array const * const pd_array)
 #define packet_data_print(pd_array)
 #endif
 
-static void perror_ull(enum nDPIsrvd_conversion_return retval, char const * const prefix)
+static enum nDPIsrvd_conversion_return perror_ull(enum nDPIsrvd_conversion_return retval, char const * const prefix)
 {
     switch (retval)
     {
         case CONVERSION_OK:
-            return;
+            break;
 
         case CONVERISON_KEY_NOT_FOUND:
-            fprintf(stderr, "%s `: Key not found.\n", prefix);
+            syslog(LOG_DAEMON | LOG_ERR, "%s: Key not found.", prefix);
             break;
         case CONVERSION_NOT_A_NUMBER:
-            fprintf(stderr, "%s: Not a valid number.\n", prefix);
+            syslog(LOG_DAEMON | LOG_ERR, "%s: Not a valid number.", prefix);
             break;
         case CONVERSION_RANGE_EXCEEDED:
-            fprintf(stderr, "%s: Number too large.\n", prefix);
+            syslog(LOG_DAEMON | LOG_ERR, "%s: Number too large.", prefix);
             break;
 
         default:
-            fprintf(stderr, "Internal error, invalid conversion return value.\n");
+            syslog(LOG_DAEMON | LOG_ERR, "Internal error, invalid conversion return value.");
+            break;
     }
+
+    return retval;
 }
 
 static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_socket * const sock,
@@ -260,8 +301,10 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
         if (current_token->value != NULL)
         {
             printf("[%.*s : %.*s] ",
-                   current_token->key_length, current_token->key,
-                   current_token->value_length, current_token->value);
+                   current_token->key_length,
+                   current_token->key,
+                   current_token->value_length,
+                   current_token->value);
         }
     }
     printf("EoF\n");
@@ -303,13 +346,11 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
         nDPIsrvd_ull pkt_l4_offset = 0ull;
         perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "pkt_l4_offset"), &pkt_l4_offset), "pkt_l4_offset");
 
-        struct packet_data pd = {
-            .packet_ts_sec = pkt_ts_sec,
-            .packet_ts_usec = pkt_ts_usec,
-            .packet_len = pkt_len,
-            .base64_packet_size = pkt->value_length,
-            .base64_packet_const = pkt->value
-        };
+        struct packet_data pd = {.packet_ts_sec = pkt_ts_sec,
+                                 .packet_ts_usec = pkt_ts_usec,
+                                 .packet_len = pkt_len,
+                                 .base64_packet_size = pkt->value_length,
+                                 .base64_packet_const = pkt->value};
         utarray_push_back(flow_user->packets, &pd);
     }
 
@@ -318,29 +359,35 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
         if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "new") != 0)
         {
             flow_user->flow_new_seen = 1;
-            perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_datalink"), &flow_user->flow_datalink), "flow_datalink");
-            perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_max_packets"), &flow_user->flow_max_packets), "flow_max_packets");
-
-            return CALLBACK_OK;
-        } else if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "guessed") != 0)
-        {
-            flow_user->guessed = 1;
-            flow_user->detection_finished = 1;
-        } else if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "not-detected") != 0)
-        {
-            flow_user->detected = 0;
-            flow_user->detection_finished = 1;
-        } else if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "detected") != 0)
-        {
-            flow_user->detected = 1;
-            flow_user->detection_finished = 1;
-            if (flow_user->packets != NULL)
+            perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_datalink"), &flow_user->flow_datalink),
+                       "flow_datalink");
+            perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_max_packets"), &flow_user->flow_max_packets),
+                       "flow_max_packets");
+            if (TOKEN_VALUE_EQUALS_SZ(TOKEN_GET_SZ(sock, "midstream"), "1") != 0)
             {
-                utarray_free(flow_user->packets);
-                flow_user->packets = NULL;
+                flow_user->midstream = 1;
             }
 
             return CALLBACK_OK;
+        }
+        else if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "guessed") != 0)
+        {
+            flow_user->guessed = 1;
+            flow_user->detection_finished = 1;
+        }
+        else if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "not-detected") != 0)
+        {
+            flow_user->detected = 0;
+            flow_user->detection_finished = 1;
+        }
+        else if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "detected") != 0)
+        {
+            flow_user->detected = 1;
+            flow_user->detection_finished = 1;
+            if (TOKEN_GET_SZ(sock, "flow_risk") != NULL)
+            {
+                flow_user->risky = 1;
+            }
         }
 
         if (flow_user->flow_new_seen == 0)
@@ -350,23 +397,26 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
 
         if (flow_user->packets == NULL || flow_user->flow_max_packets == 0 || utarray_len(flow_user->packets) == 0)
         {
-            printf("flow %llu: No packets captured.\n", flow->id_as_ull);
-
+            syslog(LOG_DAEMON | LOG_ERR, "flow %llu: No packets captured.", flow->id_as_ull);
             return CALLBACK_OK;
         }
 
         if (flow_user->detection_finished != 0 &&
-            (flow_user->guessed != 0 || flow_user->detected == 0))
+            ((flow_user->guessed != 0 && process_guessed != 0) ||
+             (flow_user->detected == 0 && process_undetected != 0) || (flow_user->risky != 0 && process_risky != 0) ||
+             (flow_user->midstream != 0 && process_midstream != 0)))
         {
             packet_data_print(flow_user->packets);
             {
                 char pcap_filename[64];
                 if (generate_pcap_filename(flow, flow_user, pcap_filename, sizeof(pcap_filename)) == NULL)
                 {
-                    fprintf(stderr, "%s\n", "Internal error, exit ..");
+                    syslog(LOG_DAEMON | LOG_ERR, "%s", "Internal error, exit ..");
                     return CALLBACK_ERROR;
                 }
-                printf("flow %llu: save to %s\n", flow->id_as_ull, pcap_filename);
+#ifdef VERBOSE
+                printf("flow %llu saved to %s\n", flow->id_as_ull, pcap_filename);
+#endif
                 if (packet_write_pcap_file(flow_user->packets, flow_user->flow_datalink, pcap_filename) != 0)
                 {
                     return CALLBACK_ERROR;
@@ -409,26 +459,65 @@ static int parse_options(int argc, char ** argv)
 
     static char const usage[] =
         "Usage: %s "
-        "[-d] [-p pidfile] [-s host] [-R rotate-every-n-seconds] [-g] [-u]\n";
+        "[-d] [-p pidfile] [-s host] [-r rotate-every-n-seconds] [-u user] [-g group] [-D dir] [-G] [-U] [-R] [-M]\n\n"
+        "\t-d\tForking into background after initialization.\n"
+        "\t-p\tWrite the daemon PID to the given file path.\n"
+        "\t-s\tDestination where nDPIsrvd is listening on.\n"
+        "\t  \tCan be either a path to UNIX socket or an IPv4/TCP-Port IPv6/TCP-Port tuple.\n"
+        "\t-r\tRotate PCAP files every n seconds\n"
+        "\t-u\tChange user.\n"
+        "\t-g\tChange group.\n"
+        "\t-D\tDatadir - Where to store PCAP files.\n"
+        "\t-G\tGuessed - Dump guessed flows to a PCAP file.\n"
+        "\t-U\tUndetected - Dump undetected flows to a PCAP file.\n"
+        "\t-R\tRisky - Dump risky flows to a PCAP file.\n"
+        "\t-M\tMidstream - Dump midstream flows to a PCAP file.\n";
 
-    while ((opt = getopt(argc, argv, "hdp:s:R:g:u:")) != -1)
+    while ((opt = getopt(argc, argv, "hdp:s:r:u:g:D:GURM")) != -1)
     {
         switch (opt)
         {
             case 'd':
-                daemonize = 1;
+                daemonize_enable();
                 break;
             case 'p':
+                free(pidfile);
+                pidfile = strdup(optarg);
                 break;
             case 's':
                 free(serv_optarg);
                 serv_optarg = strdup(optarg);
                 break;
-            case 'R':
-                break;
-            case 'g':
+            case 'r':
+                if (perror_ull(str_value_to_ull(optarg, &pcap_filename_rotation), "pcap_filename_rotation") !=
+                    CONVERSION_OK)
+                {
+                    return 1;
+                }
                 break;
             case 'u':
+                free(user);
+                user = strdup(optarg);
+                break;
+            case 'g':
+                free(group);
+                group = strdup(optarg);
+                break;
+            case 'D':
+                free(datadir);
+                datadir = strdup(optarg);
+                break;
+            case 'G':
+                process_guessed = 1;
+                break;
+            case 'U':
+                process_undetected = 1;
+                break;
+            case 'R':
+                process_risky = 1;
+                break;
+            case 'M':
+                process_midstream = 1;
                 break;
             default:
                 fprintf(stderr, usage, argv[0]);
@@ -447,10 +536,28 @@ static int parse_options(int argc, char ** argv)
         return 1;
     }
 
+    if (datadir == NULL)
+    {
+        datadir = strdup(DEFAULT_DATADIR);
+    }
+
+    if (process_guessed == 0 && process_undetected == 0 && process_risky == 0 && process_midstream == 0)
+    {
+        fprintf(stderr, "%s: Nothing to capture. Use at least one of -G / -U / -R / -M flags.\n", argv[0]);
+        return 1;
+    }
+
     if (optind < argc)
     {
         fprintf(stderr, "Unexpected argument after options\n\n");
         fprintf(stderr, usage, argv[0]);
+        return 1;
+    }
+
+    errno = 0;
+    if (mkdir(datadir, S_IRWXU) != 0 && errno != EEXIST)
+    {
+        fprintf(stderr, "%s: Could not create directory %s: %s\n", argv[0], datadir, strerror(errno));
         return 1;
     }
 
@@ -468,21 +575,40 @@ int main(int argc, char ** argv)
 
     if (parse_options(argc, argv) != 0)
     {
-        fprintf(stderr, "%s: Could not parse command line arguments.\n", argv[0]);
         return 1;
     }
+
+    printf("Recv buffer size: %u\n", NETWORK_BUFFER_MAX_SIZE);
+    printf("Connecting to `%s'..\n", serv_optarg);
 
     signal(SIGINT, sighandler);
     signal(SIGTERM, sighandler);
     signal(SIGPIPE, sighandler);
 
-    printf("Recv buffer size: %u\n", NETWORK_BUFFER_MAX_SIZE);
-    printf("Connecting to `%s'..\n", serv_optarg);
-    enum nDPIsrvd_connect_return connect_ret = nDPIsrvd_connect(sock);
+    if (daemonize_with_pidfile(pidfile) != 0)
+    {
+        return 1;
+    }
+    openlog("c-captured", LOG_CONS, LOG_DAEMON);
 
+    errno = 0;
+    if (user != NULL && change_user_group(user, group, pidfile, NULL, NULL) != 0)
+    {
+        if (errno != 0)
+        {
+            syslog(LOG_DAEMON | LOG_ERR, "Change user/group failed: %s", strerror(errno));
+        }
+        else
+        {
+            syslog(LOG_DAEMON | LOG_ERR, "Change user/group failed.");
+        }
+        return 1;
+    }
+
+    enum nDPIsrvd_connect_return connect_ret = nDPIsrvd_connect(sock);
     if (connect_ret != CONNECT_OK)
     {
-        fprintf(stderr, "%s: nDPIsrvd socket connect to %s failed!\n", argv[0], serv_optarg);
+        syslog(LOG_DAEMON | LOG_ERR, "%s: nDPIsrvd socket connect to %s failed!", argv[0], serv_optarg);
         nDPIsrvd_free(&sock);
         return 1;
     }
@@ -493,19 +619,26 @@ int main(int argc, char ** argv)
         enum nDPIsrvd_read_return read_ret = nDPIsrvd_read(sock);
         if (read_ret != READ_OK)
         {
-            fprintf(stderr, "%s: nDPIsrvd read failed with: %s\n", argv[0], nDPIsrvd_enum_to_string(read_ret));
+            syslog(LOG_DAEMON | LOG_ERR,
+                   "%s: nDPIsrvd read failed with: %s",
+                   argv[0],
+                   nDPIsrvd_enum_to_string(read_ret));
             break;
         }
 
         enum nDPIsrvd_parse_return parse_ret = nDPIsrvd_parse(sock);
         if (parse_ret != PARSE_OK)
         {
-            fprintf(stderr, "%s: nDPIsrvd parse failed with: %s\n", argv[0], nDPIsrvd_enum_to_string(parse_ret));
+            syslog(LOG_DAEMON | LOG_ERR,
+                   "%s: nDPIsrvd parse failed with: %s",
+                   argv[0],
+                   nDPIsrvd_enum_to_string(parse_ret));
             break;
         }
     }
 
     nDPIsrvd_free(&sock);
+    closelog();
 
     return 0;
 }

@@ -61,7 +61,9 @@ static int log_to_stderr = 0;
 static char * pidfile = NULL;
 static char * json_sockpath = NULL;
 static char * serv_optarg = NULL;
-static struct nDPIsrvd_address serv_address = { .raw.sa_family = 0xFFFF, };
+static struct nDPIsrvd_address serv_address = {
+    .raw.sa_family = 0xFFFF,
+};
 static int json_sockfd;
 static int serv_sockfd;
 static char * user = NULL;
@@ -96,14 +98,16 @@ static int create_listen_sockets(void)
     if (bind(json_sockfd, (struct sockaddr *)&json_addr, sizeof(json_addr)) < 0)
     {
         unlink(json_sockpath);
-        syslog(LOG_DAEMON | LOG_ERR, "Error on binding UNIX socket (collector) to %s: %s", json_sockpath, strerror(errno));
+        syslog(LOG_DAEMON | LOG_ERR,
+               "Error on binding UNIX socket (collector) to %s: %s",
+               json_sockpath,
+               strerror(errno));
         return 1;
     }
 
     if (bind(serv_sockfd, &serv_address.raw, serv_address.size) < 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR,
-               "Error on binding socket (distributor) to %s: %s", serv_optarg, strerror(errno));
+        syslog(LOG_DAEMON | LOG_ERR, "Error on binding socket (distributor) to %s: %s", serv_optarg, strerror(errno));
         unlink(json_sockpath);
         return 1;
     }
@@ -326,7 +330,8 @@ int main(int argc, char ** argv)
     }
 
     errno = 0;
-    if (change_user_group(user, group, pidfile, json_sockpath, (serv_address.raw.sa_family == AF_UNIX ? serv_optarg : NULL)) != 0)
+    if (change_user_group(
+            user, group, pidfile, json_sockpath, (serv_address.raw.sa_family == AF_UNIX ? serv_optarg : NULL)) != 0)
     {
         if (errno != 0)
         {

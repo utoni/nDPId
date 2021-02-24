@@ -513,6 +513,24 @@ static inline int token_value_equals(struct nDPIsrvd_json_token const * const to
 }
 
 static inline enum nDPIsrvd_conversion_return
+str_value_to_ull(char const * const value_as_string, nDPIsrvd_ull_ptr const value)
+{
+    char * endptr = NULL;
+    *value = strtoull(value_as_string, &endptr, 10);
+
+    if (value_as_string == endptr)
+    {
+        return CONVERSION_NOT_A_NUMBER;
+    }
+    if (errno == ERANGE)
+    {
+        return CONVERSION_RANGE_EXCEEDED;
+    }
+
+    return CONVERSION_OK;
+}
+
+static inline enum nDPIsrvd_conversion_return
 token_value_to_ull(struct nDPIsrvd_json_token const * const token, nDPIsrvd_ull_ptr const value)
 {
     if (token == NULL || token->value == NULL || token->value_length == 0)
@@ -520,22 +538,7 @@ token_value_to_ull(struct nDPIsrvd_json_token const * const token, nDPIsrvd_ull_
         return CONVERISON_KEY_NOT_FOUND;
     }
 
-    {
-        char const * const value_as_string = token->value;
-        char * endptr = NULL;
-        *value = strtoull(value_as_string, &endptr, 10);
-
-        if (value_as_string == endptr)
-        {
-            return CONVERSION_NOT_A_NUMBER;
-        }
-        if (errno == ERANGE)
-        {
-            return CONVERSION_RANGE_EXCEEDED;
-        }
-    }
-
-    return CONVERSION_OK;
+    return str_value_to_ull(token->value, value);
 }
 
 static inline int nDPIsrvd_build_flow_key(struct nDPIsrvd_flow_key * const key,
