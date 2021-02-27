@@ -22,8 +22,8 @@
 #include "config.h"
 #include "utils.h"
 
-#if (NDPI_MAJOR == 3 && NDPI_MINOR < 3) || NDPI_MAJOR < 3
-#error "nDPI >= 3.3.0 requiired"
+#if ((NDPI_MAJOR == 3 && NDPI_MINOR < 6) || NDPI_MAJOR < 3) && NDPI_API_VERSION < 4087
+#error "nDPI >= 3.6.0 or API version >= 4087 required"
 #endif
 
 #if !defined(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4) || !defined(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_8)
@@ -280,6 +280,8 @@ static char * user = "nobody";
 static char * group = NULL;
 static char * custom_protocols_file = NULL;
 static char * custom_categories_file = NULL;
+static char * custom_ja3_file = NULL;
+static char * custom_sha1_file = NULL;
 static char json_sockpath[UNIX_PATH_MAX] = COLLECTOR_UNIX_SOCKET;
 
 /* subopts */
@@ -598,6 +600,14 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     if (custom_categories_file != NULL)
     {
         ndpi_load_categories_file(workflow->ndpi_struct, custom_categories_file);
+    }
+    if (custom_ja3_file != NULL)
+    {
+        ndpi_load_malicious_ja3_file(workflow->ndpi_struct, custom_ja3_file);
+    }
+    if (custom_sha1_file != NULL)
+    {
+        ndpi_load_malicious_sha1_file(workflow->ndpi_struct, custom_sha1_file);
     }
     ndpi_finalize_initialization(workflow->ndpi_struct);
 
@@ -2661,12 +2671,16 @@ static int parse_options(int argc, char ** argv)
         "\t-g\tChange GID to the numeric value of group.\n"
         "\t-P\tLoad a nDPI custom protocols file.\n"
         "\t-C\tLoad a nDPI custom categories file.\n"
+        "\t-J\tLoad a nDPI JA3 hash blacklist file.\n"
+        "\t  \tSee: https://sslbl.abuse.ch/blacklist/ja3_fingerprints.csv\n"
+        "\t-S\tLoad a nDPI SSL SHA1 hash blacklist file.\n"
+        "\t  \tSee: https://sslbl.abuse.ch/blacklist/sslblacklist.csv\n"
         "\t-a\tSet an alias name of this daemon instance which will be part of every JSON message.\n"
         "\t  \tThis value is required for correct flow handling of multiple instances and should be unique.\n"
         "\t  \tDefaults to your hostname.\n"
         "\t-o\t(Carefully) Tune some daemon options. See subopts below.\n\n";
 
-    while ((opt = getopt(argc, argv, "hi:IEB:lc:dp:u:g:P:C:a:o:")) != -1)
+    while ((opt = getopt(argc, argv, "hi:IEB:lc:dp:u:g:P:C:J:S:a:o:")) != -1)
     {
         switch (opt)
         {
@@ -2714,6 +2728,12 @@ static int parse_options(int argc, char ** argv)
                 break;
             case 'C':
                 custom_categories_file = strdup(optarg);
+                break;
+            case 'J':
+                custom_ja3_file = strdup(optarg);
+                break;
+            case 'S':
+                custom_sha1_file = strdup(optarg);
                 break;
             case 'a':
                 instance_alias = strdup(optarg);

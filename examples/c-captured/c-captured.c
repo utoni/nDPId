@@ -131,7 +131,11 @@ static char * generate_pcap_filename(struct nDPIsrvd_flow const * const flow,
     {
         char const * flow_type = NULL;
 
-        if (flow_user->guessed != 0)
+        if (flow_user->midstream != 0)
+        {
+            flow_type = "midstream";
+        }
+        else if (flow_user->guessed != 0)
         {
             flow_type = "guessed";
         }
@@ -142,10 +146,6 @@ static char * generate_pcap_filename(struct nDPIsrvd_flow const * const flow,
         else if (flow_user->risky != 0)
         {
             flow_type = "risky";
-        }
-        else if (flow_user->midstream != 0)
-        {
-            flow_type = "midstream";
         }
         else
         {
@@ -592,7 +592,7 @@ int main(int argc, char ** argv)
     openlog("c-captured", LOG_CONS, LOG_DAEMON);
 
     errno = 0;
-    if (user != NULL && change_user_group(user, group, pidfile, NULL, NULL) != 0)
+    if (user != NULL && change_user_group(user, group, pidfile, datadir /* :D */, NULL) != 0)
     {
         if (errno != 0)
         {
@@ -604,6 +604,7 @@ int main(int argc, char ** argv)
         }
         return 1;
     }
+    chmod(datadir, S_IRWXU);
 
     enum nDPIsrvd_connect_return connect_ret = nDPIsrvd_connect(sock);
     if (connect_ret != CONNECT_OK)
