@@ -1,5 +1,6 @@
 #include <arpa/inet.h>
 #include <errno.h>
+#include <linux/limits.h>
 #include <netinet/ip_icmp.h>
 #include <netinet/tcp.h>
 #include <netinet/udp.h>
@@ -290,6 +291,11 @@ static enum nDPIsrvd_conversion_return perror_ull(enum nDPIsrvd_conversion_retur
 static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_socket * const sock,
                                                             struct nDPIsrvd_flow * const flow)
 {
+    if (flow == NULL)
+    {
+        return CALLBACK_OK; // We do not care for non flow/packet-flow events for NOW.
+    }
+
     struct flow_user_data * const flow_user = (struct flow_user_data *)flow->flow_user_data;
 
 #ifdef VERBOSE
@@ -408,10 +414,10 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
         {
             packet_data_print(flow_user->packets);
             {
-                char pcap_filename[64];
+                char pcap_filename[PATH_MAX];
                 if (generate_pcap_filename(flow, flow_user, pcap_filename, sizeof(pcap_filename)) == NULL)
                 {
-                    syslog(LOG_DAEMON | LOG_ERR, "%s", "Internal error, exit ..");
+                    syslog(LOG_DAEMON | LOG_ERR, "%s", "Internal error. Could not generate PCAP filename, exit ..");
                     return CALLBACK_ERROR;
                 }
 #ifdef VERBOSE

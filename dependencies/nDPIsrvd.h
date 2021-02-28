@@ -501,9 +501,14 @@ token_get_value(struct nDPIsrvd_socket const * const sock, char const * const ke
     return NULL;
 }
 
+static inline int is_token_valid(struct nDPIsrvd_json_token const * const token)
+{
+    return token != NULL && token->value_length > 0 && token->value != NULL;
+}
+
 static inline int token_value_equals(struct nDPIsrvd_json_token const * const token, char const * const value, size_t value_length)
 {
-    if (token == NULL || token->value == NULL)
+    if (is_token_valid(token) == 0)
     {
         return 0;
     }
@@ -533,7 +538,7 @@ str_value_to_ull(char const * const value_as_string, nDPIsrvd_ull_ptr const valu
 static inline enum nDPIsrvd_conversion_return
 token_value_to_ull(struct nDPIsrvd_json_token const * const token, nDPIsrvd_ull_ptr const value)
 {
-    if (token == NULL || token->value == NULL || token->value_length == 0)
+    if (is_token_valid(token) == 0)
     {
         return CONVERISON_KEY_NOT_FOUND;
     }
@@ -544,9 +549,8 @@ token_value_to_ull(struct nDPIsrvd_json_token const * const token, nDPIsrvd_ull_
 static inline int nDPIsrvd_build_flow_key(struct nDPIsrvd_flow_key * const key,
                                           struct nDPIsrvd_json_token const * const tokens[nDPIsrvd_FLOW_KEY_TOKENS])
 {
-    if (tokens[0]->value == NULL || tokens[0]->value_length == 0 ||
-        tokens[1]->value == NULL || tokens[1]->value_length == 0 ||
-        tokens[2]->value == NULL || tokens[2]->value_length == 0)
+    if (is_token_valid(tokens[0]) == 0 || is_token_valid(tokens[1]) == 0 ||
+        is_token_valid(tokens[2]) == 0)
     {
         return 1;
     }
@@ -562,10 +566,11 @@ static inline int nDPIsrvd_build_flow_key(struct nDPIsrvd_flow_key * const key,
     return 0;
 }
 
-static inline struct nDPIsrvd_flow * nDPIsrvd_get_flow(struct nDPIsrvd_socket * const sock)
+static inline struct nDPIsrvd_flow * nDPIsrvd_get_flow(struct nDPIsrvd_socket * const sock,
+                                                       struct nDPIsrvd_json_token const * const flow_id)
 {
     struct nDPIsrvd_json_token const * const tokens[nDPIsrvd_FLOW_KEY_TOKENS] = {
-        TOKEN_GET_SZ(sock, "flow_id"), TOKEN_GET_SZ(sock, "alias"), TOKEN_GET_SZ(sock, "source"),
+        flow_id, TOKEN_GET_SZ(sock, "alias"), TOKEN_GET_SZ(sock, "source"),
     };
     struct nDPIsrvd_flow_key key = {};
 
@@ -720,18 +725,22 @@ static inline enum nDPIsrvd_parse_return nDPIsrvd_parse(struct nDPIsrvd_socket *
             }
         }
 
+        struct nDPIsrvd_json_token const * const flow_id = TOKEN_GET_SZ(sock, "flow_id");
         struct nDPIsrvd_flow * flow = NULL;
-        flow = nDPIsrvd_get_flow(sock);
-        if (flow == NULL)
+        if (is_token_valid(flow_id) != 0)
         {
-            ret = PARSE_FLOW_MGMT_ERROR;
+            flow = nDPIsrvd_get_flow(sock, flow_id);
+            if (flow == NULL)
+            {
+                ret = PARSE_FLOW_MGMT_ERROR;
+            }
         }
         if (ret == PARSE_OK &&
             sock->json_callback(sock, flow) != CALLBACK_OK)
         {
             ret = PARSE_JSON_CALLBACK_ERROR;
         }
-        if (nDPIsrvd_check_flow_end(sock, flow) != 0)
+        if (is_token_valid(flow_id) != 0 && nDPIsrvd_check_flow_end(sock, flow) != 0)
         {
             ret = PARSE_FLOW_MGMT_ERROR;
         }

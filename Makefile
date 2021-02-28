@@ -94,6 +94,11 @@ install: all
 	$(INSTALL) -d '$(DESTDIR)$(PREFIX)/bin' '$(DESTDIR)$(PREFIX)/sbin'
 	$(INSTALL) $(INSTALL_ARGS) -t '$(DESTDIR)$(PREFIX)/bin' nDPIsrvd
 	$(INSTALL) $(INSTALL_ARGS) -t '$(DESTDIR)$(PREFIX)/sbin' nDPId
+	$(INSTALL) $(INSTALL_ARGS) -t '$(DESTDIR)$(PREFIX)/bin' examples/c-captured/c-captured
+	$(INSTALL) $(INSTALL_ARGS) -t '$(DESTDIR)$(PREFIX)/bin' examples/c-json-stdout/c-json-stdout
+ifneq ($(GOCC),)
+	$(INSTALL) $(INSTALL_ARGS) -t '$(DESTDIR)$(PREFIX)/bin' examples/go-dashboard/go-dashboard
+endif
 
 clean:
 	$(RM) -f nDPId nDPIsrvd examples/c-captured/c-captured examples/c-json-stdout/c-json-stdout examples/go-dashboard/go-dashboard
