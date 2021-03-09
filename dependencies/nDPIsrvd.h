@@ -36,6 +36,7 @@ enum nDPIsrvd_connect_return
     CONNECT_OK = FIRST_ENUM_VALUE,
     CONNECT_ERROR_SOCKET,
     CONNECT_ERROR,
+
     CONNECT_LAST_ENUM_VALUE
 };
 
@@ -44,6 +45,7 @@ enum nDPIsrvd_read_return
     READ_OK = CONNECT_LAST_ENUM_VALUE,
     READ_PEER_DISCONNECT,
     READ_ERROR,
+
     READ_LAST_ENUM_VALUE
 };
 
@@ -59,6 +61,7 @@ enum nDPIsrvd_parse_return
     PARSE_JSON_CALLBACK_ERROR,
     PARSE_JSON_MGMT_ERROR,
     PARSE_FLOW_MGMT_ERROR,
+
     PARSE_LAST_ENUM_VALUE
 };
 
@@ -66,6 +69,7 @@ enum nDPIsrvd_callback_return
 {
     CALLBACK_OK = PARSE_LAST_ENUM_VALUE,
     CALLBACK_ERROR,
+
     CALLBACK_LAST_ENUM_VALUE
 };
 
@@ -75,6 +79,7 @@ enum nDPIsrvd_conversion_return
     CONVERISON_KEY_NOT_FOUND,
     CONVERSION_NOT_A_NUMBER,
     CONVERSION_RANGE_EXCEEDED,
+
     CONVERSION_LAST_ENUM_VALUE
 };
 
@@ -241,12 +246,15 @@ int nDPIsrvd_base64decode(char * in, size_t inLen, unsigned char * out, size_t *
 
 static inline char const * nDPIsrvd_enum_to_string(int enum_value)
 {
-    static char const * const enum_str[] = {"CONNECT_OK",
+    static char const * const enum_str[LAST_ENUM_VALUE + 1] = {
+                                            "CONNECT_OK",
                                             "CONNECT_ERROR_SOCKET",
                                             "CONNECT_ERROR",
+
                                             "READ_OK",
                                             "READ_PEER_DISCONNECT",
                                             "READ_ERROR",
+
                                             "PARSE_OK",
                                             "PARSE_INVALID_OPENING_CHAR",
                                             "PARSE_SIZE_EXCEEDS_CONVERSION_LIMIT",
@@ -257,11 +265,17 @@ static inline char const * nDPIsrvd_enum_to_string(int enum_value)
                                             "PARSE_JSON_CALLBACK_ERROR",
                                             "PARSE_JSON_MGMT_ERROR",
                                             "PARSE_FLOW_MGMT_ERROR",
+
+                                            "CALLBACK_OK",
+                                            "CALLBACK_ERROR",
+
                                             "CONVERSION_OK",
                                             "CONVERISON_KEY_NOT_FOUND",
                                             "CONVERSION_NOT_A_NUMBER",
                                             "CONVERSION_RANGE_EXCEEDED",
-                                            [LAST_ENUM_VALUE] = "LAST_ENUM_VALUE"};
+
+                                            [LAST_ENUM_VALUE] = "LAST_ENUM_VALUE"
+    };
 
     if (enum_value < FIRST_ENUM_VALUE || enum_value >= LAST_ENUM_VALUE)
     {
