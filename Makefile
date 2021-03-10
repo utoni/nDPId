@@ -68,13 +68,16 @@ endif
 
 all: help nDPId nDPIsrvd examples
 
-examples: examples/c-captured/c-captured examples/c-json-stdout/c-json-stdout examples/go-dashboard/go-dashboard
+examples: examples/c-collectd/c-collectd examples/c-captured/c-captured examples/c-json-stdout/c-json-stdout examples/go-dashboard/go-dashboard
 
 nDPId: nDPId.c utils.c
 	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $(PC_CFLAGS) $^ -o $@ $(LDFLAGS) $(PC_LDFLAGS) $(STATIC_NDPI_LIB) $(LIBS)
 
 nDPIsrvd: nDPIsrvd.c utils.c
 	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $(DEPS_CFLAGS) $^ -o $@ $(LDFLAGS) $(STATIC_NDPI_LIB) $(LIBS)
+
+examples/c-collectd/c-collectd: examples/c-collectd/c-collectd.c
+	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $(DEPS_CFLAGS) $@.c -o $@ $(LDFLAGS) $(LIBS)
 
 examples/c-captured/c-captured: examples/c-captured/c-captured.c utils.c
 	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $(DEPS_CFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS)
@@ -101,7 +104,7 @@ ifneq ($(GOCC),)
 endif
 
 clean:
-	$(RM) -f nDPId nDPIsrvd examples/c-captured/c-captured examples/c-json-stdout/c-json-stdout examples/go-dashboard/go-dashboard
+	$(RM) -f nDPId nDPIsrvd examples/c-collectd/c-collectd examples/c-captured/c-captured examples/c-json-stdout/c-json-stdout examples/go-dashboard/go-dashboard
 
 help:
 	@echo '------------------------------------'

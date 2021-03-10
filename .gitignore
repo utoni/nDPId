@@ -1,6 +1,7 @@
 # c executables
 /nDPId
 /nDPIsrvd
+/examples/c-collectd/c-collectd
 /examples/c-captured/c-captured
 /examples/c-json-stdout/c-json-stdout
 
