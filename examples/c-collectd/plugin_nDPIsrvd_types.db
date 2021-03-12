@@ -1,0 +1,8 @@
+# Add those types to collectd types.db
+flow_new_count              value:GAUGE:0:U
+flow_end_count              value:GAUGE:0:U
+flow_idle_count             value:GAUGE:0:U
+flow_guessed_count          value:GAUGE:0:U
+flow_detected_count         value:GAUGE:0:U
+flow_detection_update_count value:GAUGE:0:U
+flow_not_detected_count     value:GAUGE:0:U
