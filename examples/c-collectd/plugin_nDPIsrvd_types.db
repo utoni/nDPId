@@ -1,4 +1,7 @@
 # Add those types to collectd types.db
+# e.g. `cat plugin_nDPIsrvd_types.db >>/usr/share/collectd/types.db'
+
+# flow event counters
 flow_new_count              value:GAUGE:0:U
 flow_end_count              value:GAUGE:0:U
 flow_idle_count             value:GAUGE:0:U
@@ -6,3 +9,57 @@ flow_guessed_count          value:GAUGE:0:U
 flow_detected_count         value:GAUGE:0:U
 flow_detection_update_count value:GAUGE:0:U
 flow_not_detected_count     value:GAUGE:0:U
+
+# flow additional counters
+flow_packet_count           value:GAUGE:0:U
+flow_total_bytes            value:GAUGE:0:U
+flow_risky_count            value:GAUGE:0:U
+
+# flow breed counters
+flow_breed_safe_count                   value:GAUGE:0:U
+flow_breed_acceptable_count             value:GAUGE:0:U
+flow_breed_fun_count                    value:GAUGE:0:U
+flow_breed_unsafe_count                 value:GAUGE:0:U
+flow_breed_potentially_dangerous_count  value:GAUGE:0:U
+flow_breed_dangerous_count              value:GAUGE:0:U
+flow_breed_unrated_count                value:GAUGE:0:U
+flow_breed_unknown_count                value:GAUGE:0:U
+
+# flow category counters
+flow_category_media_count               value:GAUGE:0:U
+flow_category_vpn_count                 value:GAUGE:0:U
+flow_category_email_count               value:GAUGE:0:U
+flow_category_data_transfer_count       value:GAUGE:0:U
+flow_category_web_count                 value:GAUGE:0:U
+flow_category_social_network_count      value:GAUGE:0:U
+flow_category_download_count            value:GAUGE:0:U
+flow_category_game_count                value:GAUGE:0:U
+flow_category_chat_count                value:GAUGE:0:U
+flow_category_voip_count                value:GAUGE:0:U
+flow_category_database_count            value:GAUGE:0:U
+flow_category_remote_access_count       value:GAUGE:0:U
+flow_category_cloud_count               value:GAUGE:0:U
+flow_category_network_count             value:GAUGE:0:U
+flow_category_collaborative_count       value:GAUGE:0:U
+flow_category_rpc_count                 value:GAUGE:0:U
+flow_category_streaming_count           value:GAUGE:0:U
+flow_category_system_count              value:GAUGE:0:U
+flow_category_software_update_count     value:GAUGE:0:U
+flow_category_music_count               value:GAUGE:0:U
+flow_category_video_count               value:GAUGE:0:U
+flow_category_shopping_count            value:GAUGE:0:U
+flow_category_productivity_count        value:GAUGE:0:U
+flow_category_file_sharing_count        value:GAUGE:0:U
+flow_category_mining_count              value:GAUGE:0:U
+flow_category_malware_count             value:GAUGE:0:U
+flow_category_advertisment_count        value:GAUGE:0:U
+flow_category_other_count               value:GAUGE:0:U
+flow_category_unknown_count             value:GAUGE:0:U
+
+# flow l3 / l4 counters
+flow_l3_ip4_count       value:GAUGE:0:U
+flow_l3_ip6_count       value:GAUGE:0:U
+flow_l3_other_count     value:GAUGE:0:U
+flow_l4_tcp_count       value:GAUGE:0:U
+flow_l4_udp_count       value:GAUGE:0:U
+flow_l4_other_count     value:GAUGE:0:U

@@ -495,8 +495,14 @@ static inline struct nDPIsrvd_json_token const *
 token_get(struct nDPIsrvd_socket const * const sock, char const * const key, size_t key_length)
 {
     struct nDPIsrvd_json_token * token = NULL;
+
     HASH_FIND(hh, sock->json.token_table, key, key_length, token);
-    return token;
+    if (token != NULL && token->value_length > 0 && token->value != NULL)
+    {
+        return token;
+    }
+
+    return NULL;
 }
 
 static inline char const *
@@ -515,14 +521,9 @@ token_get_value(struct nDPIsrvd_socket const * const sock, char const * const ke
     return NULL;
 }
 
-static inline int is_token_valid(struct nDPIsrvd_json_token const * const token)
-{
-    return token != NULL && token->value_length > 0 && token->value != NULL;
-}
-
 static inline int token_value_equals(struct nDPIsrvd_json_token const * const token, char const * const value, size_t value_length)
 {
-    if (is_token_valid(token) == 0)
+    if (token == NULL)
     {
         return 0;
     }
@@ -552,7 +553,7 @@ str_value_to_ull(char const * const value_as_string, nDPIsrvd_ull_ptr const valu
 static inline enum nDPIsrvd_conversion_return
 token_value_to_ull(struct nDPIsrvd_json_token const * const token, nDPIsrvd_ull_ptr const value)
 {
-    if (is_token_valid(token) == 0)
+    if (token == NULL)
     {
         return CONVERISON_KEY_NOT_FOUND;
     }
@@ -563,8 +564,7 @@ token_value_to_ull(struct nDPIsrvd_json_token const * const token, nDPIsrvd_ull_
 static inline int nDPIsrvd_build_flow_key(struct nDPIsrvd_flow_key * const key,
                                           struct nDPIsrvd_json_token const * const tokens[nDPIsrvd_FLOW_KEY_TOKENS])
 {
-    if (is_token_valid(tokens[0]) == 0 || is_token_valid(tokens[1]) == 0 ||
-        is_token_valid(tokens[2]) == 0)
+    if (tokens[0] == NULL || tokens[1] == NULL || tokens[2] == NULL)
     {
         return 1;
     }
@@ -741,7 +741,7 @@ static inline enum nDPIsrvd_parse_return nDPIsrvd_parse(struct nDPIsrvd_socket *
 
         struct nDPIsrvd_json_token const * const flow_id = TOKEN_GET_SZ(sock, "flow_id");
         struct nDPIsrvd_flow * flow = NULL;
-        if (is_token_valid(flow_id) != 0)
+        if (flow_id != NULL)
         {
             flow = nDPIsrvd_get_flow(sock, flow_id);
             if (flow == NULL)
@@ -754,7 +754,7 @@ static inline enum nDPIsrvd_parse_return nDPIsrvd_parse(struct nDPIsrvd_socket *
         {
             ret = PARSE_JSON_CALLBACK_ERROR;
         }
-        if (is_token_valid(flow_id) != 0 && nDPIsrvd_check_flow_end(sock, flow) != 0)
+        if (flow_id != NULL && nDPIsrvd_check_flow_end(sock, flow) != 0)
         {
             ret = PARSE_FLOW_MGMT_ERROR;
         }

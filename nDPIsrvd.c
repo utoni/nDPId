@@ -719,20 +719,22 @@ int main(int argc, char ** argv)
         goto error;
     }
 
-    struct epoll_event accept_event = {};
-    accept_event.data.fd = json_sockfd;
-    accept_event.events = EPOLLIN;
-    if (epoll_ctl(epollfd, EPOLL_CTL_ADD, json_sockfd, &accept_event) < 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "Error adding JSON fd to epoll: %s", strerror(errno));
-        goto error;
+        struct epoll_event accept_event = {.data.fd = json_sockfd, .events = EPOLLIN};
+        if (epoll_ctl(epollfd, EPOLL_CTL_ADD, json_sockfd, &accept_event) < 0)
+        {
+            syslog(LOG_DAEMON | LOG_ERR, "Error adding JSON fd to epoll: %s", strerror(errno));
+            goto error;
+        }
     }
-    accept_event.data.fd = serv_sockfd;
-    accept_event.events = EPOLLIN;
-    if (epoll_ctl(epollfd, EPOLL_CTL_ADD, serv_sockfd, &accept_event) < 0)
+
     {
-        syslog(LOG_DAEMON | LOG_ERR, "Error adding INET fd to epoll: %s", strerror(errno));
-        goto error;
+        struct epoll_event accept_event = {.data.fd = serv_sockfd, .events = EPOLLIN};
+        if (epoll_ctl(epollfd, EPOLL_CTL_ADD, serv_sockfd, &accept_event) < 0)
+        {
+            syslog(LOG_DAEMON | LOG_ERR, "Error adding INET fd to epoll: %s", strerror(errno));
+            goto error;
+        }
     }
 
     retval = mainloop(epollfd);

@@ -95,10 +95,12 @@ endif
 
 install: all
 	$(INSTALL) -d '$(DESTDIR)$(PREFIX)/bin' '$(DESTDIR)$(PREFIX)/sbin'
-	$(INSTALL) $(INSTALL_ARGS) -t '$(DESTDIR)$(PREFIX)/bin' nDPIsrvd
-	$(INSTALL) $(INSTALL_ARGS) -t '$(DESTDIR)$(PREFIX)/sbin' nDPId
-	$(INSTALL) $(INSTALL_ARGS) -t '$(DESTDIR)$(PREFIX)/bin' examples/c-captured/c-captured
-	$(INSTALL) $(INSTALL_ARGS) -t '$(DESTDIR)$(PREFIX)/bin' examples/c-json-stdout/c-json-stdout
+	$(INSTALL) $(INSTALL_ARGS) ./nDPIsrvd '$(DESTDIR)$(PREFIX)/bin'
+	$(INSTALL) $(INSTALL_ARGS) ./nDPId '$(DESTDIR)$(PREFIX)/sbin'
+	$(INSTALL) $(INSTALL_ARGS) ./examples/c-captured/c-captured '$(DESTDIR)$(PREFIX)/bin/nDPIsrvd-captured'
+	$(INSTALL) $(INSTALL_ARGS) ./examples/c-json-stdout/c-json-stdout '$(DESTDIR)$(PREFIX)/bin/nDPIsrvd-json-dump'
+	$(INSTALL) $(INSTALL_ARGS) ./examples/c-collectd/c-collectd '$(DESTDIR)$(PREFIX)/bin/nDPIsrvd-collectd'
+	$(INSTALL) $(INSTALL_ARGS) ./examples/py-flow-info/flow-info.py '$(DESTDIR)$(PREFIX)/bin/nDPIsrvd-flow-info.py'
 ifneq ($(GOCC),)
 	$(INSTALL) $(INSTALL_ARGS) -t '$(DESTDIR)$(PREFIX)/bin' examples/go-dashboard/go-dashboard
 endif

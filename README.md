@@ -1,7 +1,7 @@
 # abstract
 
 nDPId is a set of daemons and tools to capture, process and classify network flows.
-It's only dependencies (besides a half-way modern c library and POSIX threads) are libnDPI (>= 3.3.0) and libpcap.
+It's only dependencies (besides a half-way modern c library and POSIX threads) are libnDPI (>= 3.4.0, current github dev branch) and libpcap.
 
 The core daemon nDPId uses pthread but does use mutexes for performance reasons.
 Instead synchronization is achieved by a packet distribution mechanism.

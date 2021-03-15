@@ -16,7 +16,6 @@
 #include <time.h>
 #include <unistd.h>
 
-#include "config.h"
 #include "nDPIsrvd.h"
 #include "utarray.h"
 #include "utils.h"
@@ -49,7 +48,7 @@ struct flow_user_data
     UT_array * packets;
 };
 
-struct nDPIsrvd_socket * sock = NULL;
+static struct nDPIsrvd_socket * sock = NULL;
 static int main_thread_shutdown = 0;
 
 static char * pidfile = NULL;
@@ -570,6 +569,29 @@ static int parse_options(int argc, char ** argv)
     return 0;
 }
 
+static int mainloop(void)
+{
+    while (main_thread_shutdown == 0)
+    {
+        errno = 0;
+        enum nDPIsrvd_read_return read_ret = nDPIsrvd_read(sock);
+        if (read_ret != READ_OK)
+        {
+            syslog(LOG_DAEMON | LOG_ERR, "nDPIsrvd read failed with: %s", nDPIsrvd_enum_to_string(read_ret));
+            return 1;
+        }
+
+        enum nDPIsrvd_parse_return parse_ret = nDPIsrvd_parse(sock);
+        if (parse_ret != PARSE_OK)
+        {
+            syslog(LOG_DAEMON | LOG_ERR, "nDPIsrvd parse failed with: %s", nDPIsrvd_enum_to_string(parse_ret));
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
 int main(int argc, char ** argv)
 {
     sock = nDPIsrvd_init(0, sizeof(struct flow_user_data), captured_json_callback, captured_flow_end_callback);
@@ -586,6 +608,14 @@ int main(int argc, char ** argv)
 
     printf("Recv buffer size: %u\n", NETWORK_BUFFER_MAX_SIZE);
     printf("Connecting to `%s'..\n", serv_optarg);
+
+    enum nDPIsrvd_connect_return connect_ret = nDPIsrvd_connect(sock);
+    if (connect_ret != CONNECT_OK)
+    {
+        fprintf(stderr, "%s: nDPIsrvd socket connect to %s failed!\n", argv[0], serv_optarg);
+        nDPIsrvd_free(&sock);
+        return 1;
+    }
 
     signal(SIGINT, sighandler);
     signal(SIGTERM, sighandler);
@@ -612,40 +642,10 @@ int main(int argc, char ** argv)
     }
     chmod(datadir, S_IRWXU);
 
-    enum nDPIsrvd_connect_return connect_ret = nDPIsrvd_connect(sock);
-    if (connect_ret != CONNECT_OK)
-    {
-        syslog(LOG_DAEMON | LOG_ERR, "%s: nDPIsrvd socket connect to %s failed!", argv[0], serv_optarg);
-        nDPIsrvd_free(&sock);
-        return 1;
-    }
-
-    while (main_thread_shutdown == 0)
-    {
-        errno = 0;
-        enum nDPIsrvd_read_return read_ret = nDPIsrvd_read(sock);
-        if (read_ret != READ_OK)
-        {
-            syslog(LOG_DAEMON | LOG_ERR,
-                   "%s: nDPIsrvd read failed with: %s",
-                   argv[0],
-                   nDPIsrvd_enum_to_string(read_ret));
-            break;
-        }
-
-        enum nDPIsrvd_parse_return parse_ret = nDPIsrvd_parse(sock);
-        if (parse_ret != PARSE_OK)
-        {
-            syslog(LOG_DAEMON | LOG_ERR,
-                   "%s: nDPIsrvd parse failed with: %s",
-                   argv[0],
-                   nDPIsrvd_enum_to_string(parse_ret));
-            break;
-        }
-    }
+    int retval = mainloop();
 
     nDPIsrvd_free(&sock);
     closelog();
 
-    return 0;
+    return retval;
 }
