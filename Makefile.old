@@ -1,6 +1,6 @@
 CC = gcc
 PROJECT_CFLAGS += -Wall -Wextra $(EXTRA_CFLAGS) -I.
-DEPS_CFLAGS := -DJSMN_STATIC=1 -DJSMN_STRICT=1 -Idependencies -Idependencies/uthash/src
+DEPS_CFLAGS := -DJSMN_STATIC=1 -DJSMN_STRICT=1 -Idependencies -Idependencies/jsmn -Idependencies/uthash/src
 LIBS += -pthread -lpcap -lm -lmaxminddb
 
 GOCC =
@@ -156,6 +156,10 @@ else
 	@echo 'ENABLE_SANITIZER_THREAD = no'
 endif
 	@echo '------------------------------------'
+	@echo 'Example:'
+	@echo '  make ENABLE_DEBUG=yes ENABLE_SANITIZER=yes GOCC=go-1.14.1 \\'
+	@echo '       CUSTOM_LIBNDPI="~/git/libnDPI/_install/lib/libndpi.a)" \\'
+	@echo '       NDPI_WITH_GCRYPT=yes ENABLE_MEMORY_PROFILING=no all'
 
 run-mocksrvd:
 	nc -k -l -U $(UNIX_SOCK_COLLECTOR)

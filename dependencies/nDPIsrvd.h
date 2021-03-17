@@ -13,7 +13,7 @@
 #include <unistd.h>
 
 #include "config.h"
-#include "jsmn/jsmn.h"
+#include "jsmn.h"
 #include "utarray.h"
 #include "uthash.h"
 
