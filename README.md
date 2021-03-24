@@ -1,7 +1,7 @@
 # abstract
 
 nDPId is a set of daemons and tools to capture, process and classify network flows.
-It's only dependencies (besides a half-way modern c library and POSIX threads) are libnDPI (>= 3.4.0, current github dev branch) and libpcap.
+It's only dependencies (besides a half-way modern c library and POSIX threads) are libnDPI (>= 3.6.0 or current github dev branch) and libpcap.
 
 The core daemon nDPId uses pthread but does use mutexes for performance reasons.
 Instead synchronization is achieved by a packet distribution mechanism.
@@ -12,7 +12,6 @@ nDPId uses libnDPI's JSON serialization to produce meaningful JSON output which 
 High level applications can connect to nDPIsrvd to get the latest flow/packet events from nDPId.
 
 Unfortunately nDPIsrvd does currently not support any encryption/authentication for TCP connections.
-TODO: Provide some sort of AEAD for connecting distributor clients via TCP (somehow very critical).
 
 # architecture
 
@@ -48,35 +47,70 @@ All JSON strings sent need to be in the following format:
 ## Example:
 
 ```text
-0015{"key":"value"}
+00015{"key":"value"}
 ```
-where `0015` describes the length of a **complete** JSON string.
+where `00015` describes the length of a **complete** JSON string.
 
 TODO: Describe data format via JSON schema.
 
-# build
+# build (CMake)
+
+```shell
+mkdir build
+cd build
+cmake ..
+```
+
+or
+
+```shell
+mkdir build
+cd build
+ccmake ..
+```
+
+# build (old style GNU Make)
 
 To get an overview over all build options, run:
 ```shell
-make help
+make -f Makefile.old help
 ```
 
 To build nDPId and nDPIsrvd, run:
 ```shell
-make all
+make -f Makefile.old all
 ```
 
 To build nDPId and nDPIsrvd with sanitizer, debug mode enabled and a custom/not-your-distro libnDPI, run:
 ```shell
-make ENABLE_DEBUG=yes ENABLE_SANITIZER=yes CUSTOM_LIBNDPI=[path-to-libndpi].[a|so] all
+make -f Makefile.old ENABLE_DEBUG=yes ENABLE_SANITIZER=yes CUSTOM_LIBNDPI=[path-to-libndpi].[a|so] all
+```
+
+If you get any linker errors, try one of the
+```shell
+make -f Makefile.old | grep '^NDPI_WITH_'
+```
+e.g.
+```shell
+make -f Makefile.old NDPI_WITH_GCRYPT=yes ENABLE_DEBUG=yes ENABLE_SANITIZER=yes CUSTOM_LIBNDPI=[path-to-libndpi].[a|so] all
+```
+
+or let pkg-config do the job for you:
+```shell
+PKG_CONFIG_PATH="[path-to-optional-nDPI-pkg-config-dir]" make -f Makefile.old PKG_CONFIG_BIN=pkg-config ENABLE_DEBUG=yes ENABLE_SANITIZER=yes all
 ```
 
 To build nDPId and nDPIsrvd and examples, run:
 ```shell
-make all examples
+make -f Makefile.old all examples
 ```
 
 # run
+
+Generate a nDPId compatible JSON dump:
+```shell
+./nDPId-test [path-to-a-PCAP-file]
+```
 
 Daemons:
 ```shell
@@ -91,7 +125,6 @@ or for a usage printout:
 ```
 
 And why not a flow-info example?
-Run
 ```shell
 ./examples/py-flow-info/flow-info.py
 ```
