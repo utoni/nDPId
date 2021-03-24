@@ -97,12 +97,12 @@
             ]
         },
         "l4_proto": {
-            "type": "string",
             "oneOf": [
                 {
-                    "pattern": "^[0-9]+$"
+                    "type": "number"
                 },
                 {
+                    "type": "string",
                     "enum": [
                         "tcp",
                         "udp",

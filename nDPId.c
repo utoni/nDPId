@@ -3,7 +3,6 @@
 #include <fcntl.h>
 #include <ifaddrs.h>
 #include <linux/if_ether.h>
-#include <linux/un.h>
 #include <net/if.h>
 #include <netinet/in.h>
 #include <ndpi_api.h>
@@ -16,11 +15,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/ioctl.h>
+#include <sys/un.h>
 #include <syslog.h>
 #include <unistd.h>
 
 #include "config.h"
 #include "utils.h"
+
+#ifndef UNIX_PATH_MAX
+#define UNIX_PATH_MAX 108
+#endif
 
 #if ((NDPI_MAJOR == 3 && NDPI_MINOR < 6) || NDPI_MAJOR < 3) && NDPI_API_VERSION < 4087
 #error "nDPI >= 3.6.0 or API version >= 4087 required"
@@ -257,7 +261,7 @@ static char const * const daemon_event_name_table[DAEMON_EVENT_COUNT] = {
 };
 
 static struct nDPId_reader_thread reader_threads[nDPId_MAX_READER_THREADS] = {};
-int main_thread_shutdown = 0;
+static int nDPId_main_thread_shutdown = 0;
 static uint64_t global_flow_id = 1;
 
 #ifdef ENABLE_MEMORY_PROFILING
@@ -267,33 +271,46 @@ static uint64_t ndpi_memory_free_count = 0;
 static uint64_t ndpi_memory_free_bytes = 0;
 #endif
 
-static char * pcap_file_or_interface = NULL;
-static union nDPId_ip pcap_dev_ip = {};
-static union nDPId_ip pcap_dev_netmask = {};
-static union nDPId_ip pcap_dev_subnet = {};
-static uint8_t process_internal_initial_direction = 0;
-static uint8_t process_external_initial_direction = 0;
-static char * bpf_str = NULL;
-static int log_to_stderr = 0;
-static char pidfile[UNIX_PATH_MAX] = nDPId_PIDFILE;
-static char * user = "nobody";
-static char * group = NULL;
-static char * custom_protocols_file = NULL;
-static char * custom_categories_file = NULL;
-static char * custom_ja3_file = NULL;
-static char * custom_sha1_file = NULL;
-static char json_sockpath[UNIX_PATH_MAX] = COLLECTOR_UNIX_SOCKET;
-
-/* subopts */
-static char * instance_alias = NULL;
-static unsigned long long int max_flows_per_thread = nDPId_MAX_FLOWS_PER_THREAD / 2;
-static unsigned long long int max_idle_flows_per_thread = nDPId_MAX_IDLE_FLOWS_PER_THREAD / 2;
-static unsigned long long int tick_resolution = nDPId_TICK_RESOLUTION;
-static unsigned long long int reader_thread_count = nDPId_MAX_READER_THREADS / 2;
-static unsigned long long int idle_scan_period = nDPId_IDLE_SCAN_PERIOD;
-static unsigned long long int max_idle_time = nDPId_IDLE_TIME;
-static unsigned long long int tcp_max_post_end_flow_time = nDPId_TCP_POST_END_FLOW_TIME;
-static unsigned long long int max_packets_per_flow_to_send = nDPId_PACKETS_PER_FLOW_TO_SEND;
+static struct
+{
+    /* opts */
+    char * pcap_file_or_interface;
+    union nDPId_ip pcap_dev_ip;
+    union nDPId_ip pcap_dev_netmask;
+    union nDPId_ip pcap_dev_subnet;
+    uint8_t process_internal_initial_direction;
+    uint8_t process_external_initial_direction;
+    char * bpf_str;
+    int log_to_stderr;
+    char pidfile[UNIX_PATH_MAX];
+    char * user;
+    char * group;
+    char * custom_protocols_file;
+    char * custom_categories_file;
+    char * custom_ja3_file;
+    char * custom_sha1_file;
+    char json_sockpath[UNIX_PATH_MAX];
+    /* subopts */
+    char * instance_alias;
+    unsigned long long int max_flows_per_thread;
+    unsigned long long int max_idle_flows_per_thread;
+    unsigned long long int tick_resolution;
+    unsigned long long int reader_thread_count;
+    unsigned long long int idle_scan_period;
+    unsigned long long int max_idle_time;
+    unsigned long long int tcp_max_post_end_flow_time;
+    unsigned long long int max_packets_per_flow_to_send;
+} nDPId_options = {.pidfile = nDPId_PIDFILE,
+                   .user = "nobody",
+                   .json_sockpath = COLLECTOR_UNIX_SOCKET,
+                   .max_flows_per_thread = nDPId_MAX_FLOWS_PER_THREAD / 2,
+                   .max_idle_flows_per_thread = nDPId_MAX_IDLE_FLOWS_PER_THREAD / 2,
+                   .tick_resolution = nDPId_TICK_RESOLUTION,
+                   .reader_thread_count = nDPId_MAX_READER_THREADS / 2,
+                   .idle_scan_period = nDPId_IDLE_SCAN_PERIOD,
+                   .max_idle_time = nDPId_IDLE_TIME,
+                   .tcp_max_post_end_flow_time = nDPId_TCP_POST_END_FLOW_TIME,
+                   .max_packets_per_flow_to_send = nDPId_PACKETS_PER_FLOW_TO_SEND};
 
 enum nDPId_subopts
 {
@@ -434,7 +451,7 @@ static int get_ip_netmask_from_pcap_dev(char const * const pcap_dev)
             {
                 break;
             }
-            get_v4_ip_from_sockaddr((struct sockaddr_in *)&ifr.ifr_netmask, &pcap_dev_netmask);
+            get_v4_ip_from_sockaddr((struct sockaddr_in *)&ifr.ifr_netmask, &nDPId_options.pcap_dev_netmask);
 
             memset(&ifr, 0, sizeof(ifr));
             memcpy(ifr.ifr_name, ifa->ifa_name, ifnamelen);
@@ -444,19 +461,22 @@ static int get_ip_netmask_from_pcap_dev(char const * const pcap_dev)
             {
                 break;
             }
-            get_v4_ip_from_sockaddr((struct sockaddr_in *)&ifr.ifr_netmask, &pcap_dev_ip);
+            get_v4_ip_from_sockaddr((struct sockaddr_in *)&ifr.ifr_netmask, &nDPId_options.pcap_dev_ip);
 
-            ip_netmask_to_subnet(&pcap_dev_ip, &pcap_dev_netmask, &pcap_dev_subnet, type);
+            ip_netmask_to_subnet(&nDPId_options.pcap_dev_ip,
+                                 &nDPId_options.pcap_dev_netmask,
+                                 &nDPId_options.pcap_dev_subnet,
+                                 type);
 
             char addr[INET_ADDRSTRLEN];
             char netm[INET_ADDRSTRLEN];
             char subn[INET_ADDRSTRLEN];
-            void * saddr = &pcap_dev_ip.v4.ip;
-            void * snetm = &pcap_dev_netmask.v4.ip;
-            void * ssubn = &pcap_dev_subnet.v4.ip;
+            void * saddr = &nDPId_options.pcap_dev_ip.v4.ip;
+            void * snetm = &nDPId_options.pcap_dev_netmask.v4.ip;
+            void * ssubn = &nDPId_options.pcap_dev_subnet.v4.ip;
             syslog(LOG_DAEMON,
                    "%s address/netmask/subnet: %s/%s/%s",
-                   pcap_file_or_interface,
+                   nDPId_options.pcap_file_or_interface,
                    inet_ntop(ifa->ifa_addr->sa_family, saddr, addr, sizeof(addr)),
                    inet_ntop(ifa->ifa_addr->sa_family, snetm, netm, sizeof(netm)),
                    inet_ntop(ifa->ifa_addr->sa_family, ssubn, subn, sizeof(subn)));
@@ -544,10 +564,10 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
         return NULL;
     }
 
-    if (bpf_str != NULL)
+    if (nDPId_options.bpf_str != NULL)
     {
         struct bpf_program fp;
-        if (pcap_compile(workflow->pcap_handle, &fp, bpf_str, 1, PCAP_NETMASK_UNKNOWN) != 0)
+        if (pcap_compile(workflow->pcap_handle, &fp, nDPId_options.bpf_str, 1, PCAP_NETMASK_UNKNOWN) != 0)
         {
             syslog(LOG_DAEMON | LOG_ERR, "pcap_compile: %s", pcap_geterr(workflow->pcap_handle));
             free_workflow(&workflow);
@@ -573,7 +593,7 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
 
     workflow->total_skipped_flows = 0;
     workflow->total_active_flows = 0;
-    workflow->max_active_flows = max_flows_per_thread;
+    workflow->max_active_flows = nDPId_options.max_flows_per_thread;
     workflow->ndpi_flows_active = (void **)ndpi_calloc(workflow->max_active_flows, sizeof(void *));
     if (workflow->ndpi_flows_active == NULL)
     {
@@ -582,7 +602,7 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     }
 
     workflow->total_idle_flows = 0;
-    workflow->max_idle_flows = max_idle_flows_per_thread;
+    workflow->max_idle_flows = nDPId_options.max_idle_flows_per_thread;
     workflow->ndpi_flows_idle = (void **)ndpi_calloc(workflow->max_idle_flows, sizeof(void *));
     if (workflow->ndpi_flows_idle == NULL)
     {
@@ -593,21 +613,21 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     NDPI_PROTOCOL_BITMASK protos;
     NDPI_BITMASK_SET_ALL(protos);
     ndpi_set_protocol_detection_bitmask2(workflow->ndpi_struct, &protos);
-    if (custom_protocols_file != NULL)
+    if (nDPId_options.custom_protocols_file != NULL)
     {
-        ndpi_load_protocols_file(workflow->ndpi_struct, custom_protocols_file);
+        ndpi_load_protocols_file(workflow->ndpi_struct, nDPId_options.custom_protocols_file);
     }
-    if (custom_categories_file != NULL)
+    if (nDPId_options.custom_categories_file != NULL)
     {
-        ndpi_load_categories_file(workflow->ndpi_struct, custom_categories_file);
+        ndpi_load_categories_file(workflow->ndpi_struct, nDPId_options.custom_categories_file);
     }
-    if (custom_ja3_file != NULL)
+    if (nDPId_options.custom_ja3_file != NULL)
     {
-        ndpi_load_malicious_ja3_file(workflow->ndpi_struct, custom_ja3_file);
+        ndpi_load_malicious_ja3_file(workflow->ndpi_struct, nDPId_options.custom_ja3_file);
     }
-    if (custom_sha1_file != NULL)
+    if (nDPId_options.custom_sha1_file != NULL)
     {
-        ndpi_load_malicious_sha1_file(workflow->ndpi_struct, custom_sha1_file);
+        ndpi_load_malicious_sha1_file(workflow->ndpi_struct, nDPId_options.custom_sha1_file);
     }
     ndpi_finalize_initialization(workflow->ndpi_struct);
 
@@ -684,52 +704,52 @@ static int setup_reader_threads(void)
 {
     char pcap_error_buffer[PCAP_ERRBUF_SIZE];
 
-    if (reader_thread_count > nDPId_MAX_READER_THREADS)
+    if (nDPId_options.reader_thread_count > nDPId_MAX_READER_THREADS)
     {
         return 1;
     }
 
-    if (pcap_file_or_interface == NULL)
+    if (nDPId_options.pcap_file_or_interface == NULL)
     {
-        pcap_file_or_interface = get_default_pcapdev(pcap_error_buffer);
-        if (pcap_file_or_interface == NULL)
+        nDPId_options.pcap_file_or_interface = get_default_pcapdev(pcap_error_buffer);
+        if (nDPId_options.pcap_file_or_interface == NULL)
         {
             syslog(LOG_DAEMON | LOG_ERR, "pcap_lookupdev: %.*s", (int)PCAP_ERRBUF_SIZE, pcap_error_buffer);
             return 1;
         }
-        syslog(LOG_DAEMON, "Capturing packets from default device: %s", pcap_file_or_interface);
+        syslog(LOG_DAEMON, "Capturing packets from default device: %s", nDPId_options.pcap_file_or_interface);
     }
 
     errno = 0;
-    if (access(pcap_file_or_interface, R_OK) != 0 && errno == ENOENT)
+    if (access(nDPId_options.pcap_file_or_interface, R_OK) != 0 && errno == ENOENT)
     {
         errno = 0;
-        if (get_ip_netmask_from_pcap_dev(pcap_file_or_interface) != 0)
+        if (get_ip_netmask_from_pcap_dev(nDPId_options.pcap_file_or_interface) != 0)
         {
             syslog(LOG_DAEMON | LOG_ERR,
                    "Could not get netmask for pcap device %s: %s",
-                   pcap_file_or_interface,
+                   nDPId_options.pcap_file_or_interface,
                    strerror(errno));
             return 1;
         }
     }
     else
     {
-        if (process_internal_initial_direction != 0)
+        if (nDPId_options.process_internal_initial_direction != 0)
         {
             syslog(LOG_DAEMON | LOG_ERR, "You are processing a PCAP file, `-I' ignored");
-            process_internal_initial_direction = 0;
+            nDPId_options.process_internal_initial_direction = 0;
         }
-        if (process_external_initial_direction != 0)
+        if (nDPId_options.process_external_initial_direction != 0)
         {
             syslog(LOG_DAEMON | LOG_ERR, "You are processing a PCAP file, `-E' ignored");
-            process_external_initial_direction = 0;
+            nDPId_options.process_external_initial_direction = 0;
         }
     }
 
-    for (unsigned long long int i = 0; i < reader_thread_count; ++i)
+    for (unsigned long long int i = 0; i < nDPId_options.reader_thread_count; ++i)
     {
-        reader_threads[i].workflow = init_workflow(pcap_file_or_interface);
+        reader_threads[i].workflow = init_workflow(nDPId_options.pcap_file_or_interface);
         if (reader_threads[i].workflow == NULL)
         {
             return 1;
@@ -816,16 +836,16 @@ static void ndpi_idle_scan_walker(void const * const A, ndpi_VISIT which, int de
         return;
     }
 
-    if (workflow->cur_idle_flows == max_idle_flows_per_thread)
+    if (workflow->cur_idle_flows == nDPId_options.max_idle_flows_per_thread)
     {
         return;
     }
 
     if (which == ndpi_preorder || which == ndpi_leaf)
     {
-        if (flow_basic->last_seen + max_idle_time < workflow->last_time ||
+        if (flow_basic->last_seen + nDPId_options.max_idle_time < workflow->last_time ||
             (flow_basic->tcp_fin_rst_seen == 1 &&
-             flow_basic->last_seen + tcp_max_post_end_flow_time < workflow->last_time))
+             flow_basic->last_seen + nDPId_options.tcp_max_post_end_flow_time < workflow->last_time))
         {
             workflow->ndpi_flows_idle[workflow->cur_idle_flows++] = flow_basic;
             if (flow_basic->type == FT_INFO)
@@ -925,7 +945,7 @@ static void check_for_idle_flows(struct nDPId_reader_thread * const reader_threa
 {
     struct nDPId_workflow * const workflow = reader_thread->workflow;
 
-    if (workflow->last_idle_scan_time + idle_scan_period < workflow->last_time)
+    if (workflow->last_idle_scan_time + nDPId_options.idle_scan_period < workflow->last_time)
     {
 #ifdef ENABLE_MEMORY_PROFILING
         if (reader_thread->array_index == 0)
@@ -1032,8 +1052,8 @@ static void jsonize_basic(struct nDPId_reader_thread * const reader_thread)
 
     ndpi_serialize_string_int32(&workflow->ndpi_serializer, "thread_id", reader_thread->array_index);
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "packet_id", workflow->packets_captured);
-    ndpi_serialize_string_string(&workflow->ndpi_serializer, "source", pcap_file_or_interface);
-    ndpi_serialize_string_string(&workflow->ndpi_serializer, "alias", instance_alias);
+    ndpi_serialize_string_string(&workflow->ndpi_serializer, "source", nDPId_options.pcap_file_or_interface);
+    ndpi_serialize_string_string(&workflow->ndpi_serializer, "alias", nDPId_options.instance_alias);
 }
 
 static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enum daemon_event event)
@@ -1055,18 +1075,24 @@ static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enu
 
     if (event == DAEMON_EVENT_INIT)
     {
-        ndpi_serialize_string_int64(&workflow->ndpi_serializer, "max-flows-per-thread", max_flows_per_thread);
-        ndpi_serialize_string_int64(&workflow->ndpi_serializer, "max-idle-flows-per-thread", max_idle_flows_per_thread);
-        ndpi_serialize_string_int64(&workflow->ndpi_serializer, "tick-resolution", tick_resolution);
-        ndpi_serialize_string_int64(&workflow->ndpi_serializer, "reader-thread-count", reader_thread_count);
-        ndpi_serialize_string_int64(&workflow->ndpi_serializer, "idle-scan-period", idle_scan_period);
-        ndpi_serialize_string_int64(&workflow->ndpi_serializer, "max-idle-time", max_idle_time);
+        ndpi_serialize_string_int64(&workflow->ndpi_serializer,
+                                    "max-flows-per-thread",
+                                    nDPId_options.max_flows_per_thread);
+        ndpi_serialize_string_int64(&workflow->ndpi_serializer,
+                                    "max-idle-flows-per-thread",
+                                    nDPId_options.max_idle_flows_per_thread);
+        ndpi_serialize_string_int64(&workflow->ndpi_serializer, "tick-resolution", nDPId_options.tick_resolution);
+        ndpi_serialize_string_int64(&workflow->ndpi_serializer,
+                                    "reader-thread-count",
+                                    nDPId_options.reader_thread_count);
+        ndpi_serialize_string_int64(&workflow->ndpi_serializer, "idle-scan-period", nDPId_options.idle_scan_period);
+        ndpi_serialize_string_int64(&workflow->ndpi_serializer, "max-idle-time", nDPId_options.max_idle_time);
         ndpi_serialize_string_int64(&workflow->ndpi_serializer,
                                     "tcp-max-post-end-flow-time",
-                                    tcp_max_post_end_flow_time);
+                                    nDPId_options.tcp_max_post_end_flow_time);
         ndpi_serialize_string_int64(&workflow->ndpi_serializer,
                                     "max-packets-per-flow-to-send",
-                                    max_packets_per_flow_to_send);
+                                    nDPId_options.max_packets_per_flow_to_send);
     }
     serialize_and_send(reader_thread);
 }
@@ -1103,7 +1129,7 @@ static int connect_to_json_socket(struct nDPId_reader_thread * const reader_thre
     }
 
     saddr.sun_family = AF_UNIX;
-    if (snprintf(saddr.sun_path, sizeof(saddr.sun_path), "%s", json_sockpath) < 0 ||
+    if (snprintf(saddr.sun_path, sizeof(saddr.sun_path), "%s", nDPId_options.json_sockpath) < 0 ||
         connect(reader_thread->json_sockfd, (struct sockaddr *)&saddr, sizeof(saddr)) < 0)
     {
         reader_thread->json_sock_reconnect = 1;
@@ -1342,7 +1368,7 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
                    reader_thread->array_index);
             return;
         }
-        if (flow->packets_processed > max_packets_per_flow_to_send)
+        if (flow->packets_processed > nDPId_options.max_packets_per_flow_to_send)
         {
             return;
         }
@@ -1420,7 +1446,9 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
             ndpi_serialize_string_int32(&workflow->ndpi_serializer,
                                         "flow_datalink",
                                         pcap_datalink(reader_thread->workflow->pcap_handle));
-            ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "flow_max_packets", max_packets_per_flow_to_send);
+            ndpi_serialize_string_uint32(&workflow->ndpi_serializer,
+                                         "flow_max_packets",
+                                         nDPId_options.max_packets_per_flow_to_send);
             break;
 
         case FLOW_EVENT_NOT_DETECTED:
@@ -1878,7 +1906,8 @@ static void ndpi_process_packet(uint8_t * const args,
     }
 
     workflow->packets_captured++;
-    time_ms = ((uint64_t)header->ts.tv_sec) * tick_resolution + header->ts.tv_usec / (1000000 / tick_resolution);
+    time_ms = ((uint64_t)header->ts.tv_sec) * nDPId_options.tick_resolution +
+              header->ts.tv_usec / (1000000 / nDPId_options.tick_resolution);
     workflow->last_time = time_ms;
 
     check_for_idle_flows(reader_thread);
@@ -2045,7 +2074,7 @@ static void ndpi_process_packet(uint8_t * const args,
 
     /* distribute flows to threads while keeping stability (same flow goes always to same thread) */
     thread_index += (flow_basic.src_port < flow_basic.dst_port ? flow_basic.dst_port : flow_basic.src_port);
-    thread_index %= reader_thread_count;
+    thread_index %= nDPId_options.reader_thread_count;
     if (thread_index != reader_thread->array_index)
     {
         return;
@@ -2123,9 +2152,12 @@ static void ndpi_process_packet(uint8_t * const args,
     {
         /* flow still not found, must be new */
 
-        if (process_internal_initial_direction != 0)
+        if (nDPId_options.process_internal_initial_direction != 0)
         {
-            if (is_ip_in_subnet(&flow_basic.src, &pcap_dev_netmask, &pcap_dev_subnet, flow_basic.l3_type) == 0)
+            if (is_ip_in_subnet(&flow_basic.src,
+                                &nDPId_options.pcap_dev_netmask,
+                                &nDPId_options.pcap_dev_subnet,
+                                flow_basic.l3_type) == 0)
             {
                 if (add_new_flow(workflow, &flow_basic, FT_SKIPPED, hashed_index) == NULL)
                 {
@@ -2147,9 +2179,12 @@ static void ndpi_process_packet(uint8_t * const args,
                 return;
             }
         }
-        else if (process_external_initial_direction != 0)
+        else if (nDPId_options.process_external_initial_direction != 0)
         {
-            if (is_ip_in_subnet(&flow_basic.src, &pcap_dev_netmask, &pcap_dev_subnet, flow_basic.l3_type) != 0)
+            if (is_ip_in_subnet(&flow_basic.src,
+                                &nDPId_options.pcap_dev_netmask,
+                                &nDPId_options.pcap_dev_subnet,
+                                flow_basic.l3_type) != 0)
             {
                 if (add_new_flow(workflow, &flow_basic, FT_SKIPPED, hashed_index) == NULL)
                 {
@@ -2372,7 +2407,7 @@ static void * processing_thread(void * const ndpi_thread_arg)
         syslog(LOG_DAEMON | LOG_ERR,
                "Thread %u: Could not connect to JSON sink %s, will try again later. Error: %s",
                reader_thread->array_index,
-               json_sockpath,
+               nDPId_options.json_sockpath,
                (errno != 0 ? strerror(errno) : "Internal Error."));
     }
     else
@@ -2388,7 +2423,7 @@ static void * processing_thread(void * const ndpi_thread_arg)
 
 static int processing_threads_error_or_eof(void)
 {
-    for (unsigned long long int i = 0; i < reader_thread_count; ++i)
+    for (unsigned long long int i = 0; i < nDPId_options.reader_thread_count; ++i)
     {
         if (__sync_fetch_and_add(&reader_threads[i].workflow->error_or_eof, 0) == 0)
         {
@@ -2411,15 +2446,15 @@ static int start_reader_threads(void)
         return 1;
     }
 
-    if (daemonize_with_pidfile(pidfile) != 0)
+    if (daemonize_with_pidfile(nDPId_options.pidfile) != 0)
     {
         return 1;
     }
     closelog();
-    openlog("nDPId", LOG_CONS | (log_to_stderr != 0 ? LOG_PERROR : 0), LOG_DAEMON);
+    openlog("nDPId", LOG_CONS | (nDPId_options.log_to_stderr != 0 ? LOG_PERROR : 0), LOG_DAEMON);
 
     errno = 0;
-    if (change_user_group(user, group, pidfile, NULL, NULL) != 0)
+    if (change_user_group(nDPId_options.user, nDPId_options.group, nDPId_options.pidfile, NULL, NULL) != 0)
     {
         if (errno != 0)
         {
@@ -2432,7 +2467,7 @@ static int start_reader_threads(void)
         return 1;
     }
 
-    for (unsigned long long int i = 0; i < reader_thread_count; ++i)
+    for (unsigned long long int i = 0; i < nDPId_options.reader_thread_count; ++i)
     {
         reader_threads[i].array_index = i;
 
@@ -2470,7 +2505,7 @@ static void ndpi_shutdown_walker(void const * const A, ndpi_VISIT which, int dep
         return;
     }
 
-    if (workflow->cur_idle_flows == max_idle_flows_per_thread)
+    if (workflow->cur_idle_flows == nDPId_options.max_idle_flows_per_thread)
     {
         return;
     }
@@ -2494,13 +2529,13 @@ static int stop_reader_threads(void)
     unsigned long long int total_flows_idle = 0;
     unsigned long long int total_flows_detected = 0;
 
-    for (unsigned long long int i = 0; i < reader_thread_count; ++i)
+    for (unsigned long long int i = 0; i < nDPId_options.reader_thread_count; ++i)
     {
         break_pcap_loop(&reader_threads[i]);
     }
 
     printf("------------------------------------ Stopping reader threads\n");
-    for (unsigned long long int i = 0; i < reader_thread_count; ++i)
+    for (unsigned long long int i = 0; i < nDPId_options.reader_thread_count; ++i)
     {
         if (reader_threads[i].workflow == NULL)
         {
@@ -2514,7 +2549,7 @@ static int stop_reader_threads(void)
     }
 
     printf("------------------------------------ Processing remaining flows\n");
-    for (unsigned long long int i = 0; i < reader_thread_count; ++i)
+    for (unsigned long long int i = 0; i < nDPId_options.reader_thread_count; ++i)
     {
         for (size_t idle_scan_index = 0; idle_scan_index < reader_threads[i].workflow->max_active_flows;
              ++idle_scan_index)
@@ -2531,7 +2566,7 @@ static int stop_reader_threads(void)
     }
 
     printf("------------------------------------ Results\n");
-    for (unsigned long long int i = 0; i < reader_thread_count; ++i)
+    for (unsigned long long int i = 0; i < nDPId_options.reader_thread_count; ++i)
     {
         if (reader_threads[i].workflow == NULL)
         {
@@ -2570,7 +2605,7 @@ static int stop_reader_threads(void)
 
 static void free_reader_threads(void)
 {
-    for (unsigned long long int i = 0; i < reader_thread_count; ++i)
+    for (unsigned long long int i = 0; i < nDPId_options.reader_thread_count; ++i)
     {
         if (reader_threads[i].workflow == NULL)
         {
@@ -2585,9 +2620,9 @@ static void sighandler(int signum)
 {
     (void)signum;
 
-    if (__sync_fetch_and_add(&main_thread_shutdown, 0) == 0)
+    if (__sync_fetch_and_add(&nDPId_main_thread_shutdown, 0) == 0)
     {
-        __sync_fetch_and_add(&main_thread_shutdown, 1);
+        __sync_fetch_and_add(&nDPId_main_thread_shutdown, 1);
     }
 }
 
@@ -2605,28 +2640,28 @@ static void print_subopt_usage(void)
             switch (index++)
             {
                 case MAX_FLOWS_PER_THREAD:
-                    fprintf(stderr, "%llu\n", max_flows_per_thread);
+                    fprintf(stderr, "%llu\n", nDPId_options.max_flows_per_thread);
                     break;
                 case MAX_IDLE_FLOWS_PER_THREAD:
-                    fprintf(stderr, "%llu\n", max_idle_flows_per_thread);
+                    fprintf(stderr, "%llu\n", nDPId_options.max_idle_flows_per_thread);
                     break;
                 case TICK_RESOLUTION:
-                    fprintf(stderr, "%llu\n", tick_resolution);
+                    fprintf(stderr, "%llu\n", nDPId_options.tick_resolution);
                     break;
                 case MAX_READER_THREADS:
-                    fprintf(stderr, "%llu\n", reader_thread_count);
+                    fprintf(stderr, "%llu\n", nDPId_options.reader_thread_count);
                     break;
                 case IDLE_SCAN_PERIOD:
-                    fprintf(stderr, "%llu\n", idle_scan_period);
+                    fprintf(stderr, "%llu\n", nDPId_options.idle_scan_period);
                     break;
                 case MAX_IDLE_TIME:
-                    fprintf(stderr, "%llu\n", max_idle_time);
+                    fprintf(stderr, "%llu\n", nDPId_options.max_idle_time);
                     break;
                 case TCP_MAX_POST_END_FLOW_TIME:
-                    fprintf(stderr, "%llu\n", tcp_max_post_end_flow_time);
+                    fprintf(stderr, "%llu\n", nDPId_options.tcp_max_post_end_flow_time);
                     break;
                 case MAX_PACKETS_PER_FLOW_TO_SEND:
-                    fprintf(stderr, "%llu\n", max_packets_per_flow_to_send);
+                    fprintf(stderr, "%llu\n", nDPId_options.max_packets_per_flow_to_send);
                     break;
                 default:
                     break;
@@ -2640,7 +2675,7 @@ static void print_subopt_usage(void)
     } while (1);
 }
 
-static int parse_options(int argc, char ** argv)
+static int nDPId_parse_options(int argc, char ** argv)
 {
     int opt;
 
@@ -2685,19 +2720,19 @@ static int parse_options(int argc, char ** argv)
         switch (opt)
         {
             case 'i':
-                pcap_file_or_interface = strdup(optarg);
+                nDPId_options.pcap_file_or_interface = strdup(optarg);
                 break;
             case 'I':
-                process_internal_initial_direction = 1;
+                nDPId_options.process_internal_initial_direction = 1;
                 break;
             case 'E':
-                process_external_initial_direction = 1;
+                nDPId_options.process_external_initial_direction = 1;
                 break;
             case 'B':
-                bpf_str = strdup(optarg);
+                nDPId_options.bpf_str = strdup(optarg);
                 break;
             case 'l':
-                log_to_stderr = 1;
+                nDPId_options.log_to_stderr = 1;
                 if (setvbuf(stderr, NULL, _IOLBF, 0) != 0)
                 {
                     fprintf(stderr,
@@ -2707,36 +2742,36 @@ static int parse_options(int argc, char ** argv)
                 }
                 break;
             case 'c':
-                strncpy(json_sockpath, optarg, sizeof(json_sockpath) - 1);
-                json_sockpath[sizeof(json_sockpath) - 1] = '\0';
+                strncpy(nDPId_options.json_sockpath, optarg, sizeof(nDPId_options.json_sockpath) - 1);
+                nDPId_options.json_sockpath[sizeof(nDPId_options.json_sockpath) - 1] = '\0';
                 break;
             case 'd':
                 daemonize_enable();
                 break;
             case 'p':
-                strncpy(pidfile, optarg, sizeof(pidfile) - 1);
-                pidfile[sizeof(pidfile) - 1] = '\0';
+                strncpy(nDPId_options.pidfile, optarg, sizeof(nDPId_options.pidfile) - 1);
+                nDPId_options.pidfile[sizeof(nDPId_options.pidfile) - 1] = '\0';
                 break;
             case 'u':
-                user = strdup(optarg);
+                nDPId_options.user = strdup(optarg);
                 break;
             case 'g':
-                group = strdup(optarg);
+                nDPId_options.group = strdup(optarg);
                 break;
             case 'P':
-                custom_protocols_file = strdup(optarg);
+                nDPId_options.custom_protocols_file = strdup(optarg);
                 break;
             case 'C':
-                custom_categories_file = strdup(optarg);
+                nDPId_options.custom_categories_file = strdup(optarg);
                 break;
             case 'J':
-                custom_ja3_file = strdup(optarg);
+                nDPId_options.custom_ja3_file = strdup(optarg);
                 break;
             case 'S':
-                custom_sha1_file = strdup(optarg);
+                nDPId_options.custom_sha1_file = strdup(optarg);
                 break;
             case 'a':
-                instance_alias = strdup(optarg);
+                nDPId_options.instance_alias = strdup(optarg);
                 break;
             case 'o':
             {
@@ -2774,28 +2809,28 @@ static int parse_options(int argc, char ** argv)
                     switch ((enum nDPId_subopts)subopt)
                     {
                         case MAX_FLOWS_PER_THREAD:
-                            max_flows_per_thread = value_llu;
+                            nDPId_options.max_flows_per_thread = value_llu;
                             break;
                         case MAX_IDLE_FLOWS_PER_THREAD:
-                            max_idle_flows_per_thread = value_llu;
+                            nDPId_options.max_idle_flows_per_thread = value_llu;
                             break;
                         case TICK_RESOLUTION:
-                            tick_resolution = value_llu;
+                            nDPId_options.tick_resolution = value_llu;
                             break;
                         case MAX_READER_THREADS:
-                            reader_thread_count = value_llu;
+                            nDPId_options.reader_thread_count = value_llu;
                             break;
                         case IDLE_SCAN_PERIOD:
-                            idle_scan_period = value_llu;
+                            nDPId_options.idle_scan_period = value_llu;
                             break;
                         case MAX_IDLE_TIME:
-                            max_idle_time = value_llu;
+                            nDPId_options.max_idle_time = value_llu;
                             break;
                         case TCP_MAX_POST_END_FLOW_TIME:
-                            tcp_max_post_end_flow_time = value_llu;
+                            nDPId_options.tcp_max_post_end_flow_time = value_llu;
                             break;
                         case MAX_PACKETS_PER_FLOW_TO_SEND:
-                            max_packets_per_flow_to_send = value_llu;
+                            nDPId_options.max_packets_per_flow_to_send = value_llu;
                             break;
                     }
                 }
@@ -2823,7 +2858,7 @@ static int validate_options(char const * const arg0)
 {
     int retval = 0;
 
-    if (instance_alias == NULL)
+    if (nDPId_options.instance_alias == NULL)
     {
         char hname[256];
 
@@ -2835,73 +2870,80 @@ static int validate_options(char const * const arg0)
         }
         else
         {
-            instance_alias = strdup(hname);
-            fprintf(stderr, "%s: No instance alias given, using your hostname '%s'\n", arg0, instance_alias);
-            if (instance_alias == NULL)
+            nDPId_options.instance_alias = strdup(hname);
+            fprintf(stderr,
+                    "%s: No instance alias given, using your hostname '%s'\n",
+                    arg0,
+                    nDPId_options.instance_alias);
+            if (nDPId_options.instance_alias == NULL)
             {
                 retval = 1;
             }
         }
     }
-    if (max_flows_per_thread < 128 || max_flows_per_thread > nDPId_MAX_FLOWS_PER_THREAD)
+    if (nDPId_options.max_flows_per_thread < 128 || nDPId_options.max_flows_per_thread > nDPId_MAX_FLOWS_PER_THREAD)
     {
         fprintf(stderr,
                 "%s: Value not in range: 128 < max-flows-per-thread[%llu] < %d\n",
                 arg0,
-                max_flows_per_thread,
+                nDPId_options.max_flows_per_thread,
                 nDPId_MAX_FLOWS_PER_THREAD);
         retval = 1;
     }
-    if (max_idle_flows_per_thread < 64 || max_idle_flows_per_thread > nDPId_MAX_IDLE_FLOWS_PER_THREAD)
+    if (nDPId_options.max_idle_flows_per_thread < 64 ||
+        nDPId_options.max_idle_flows_per_thread > nDPId_MAX_IDLE_FLOWS_PER_THREAD)
     {
         fprintf(stderr,
                 "%s: Value not in range: 64 < max-idle-flows-per-thread[%llu] < %d\n",
                 arg0,
-                max_idle_flows_per_thread,
+                nDPId_options.max_idle_flows_per_thread,
                 nDPId_MAX_IDLE_FLOWS_PER_THREAD);
         retval = 1;
     }
-    if (tick_resolution < 1)
+    if (nDPId_options.tick_resolution < 1)
     {
-        fprintf(stderr, "%s: Value not in range: tick-resolution[%llu] > 1\n", arg0, tick_resolution);
+        fprintf(stderr, "%s: Value not in range: tick-resolution[%llu] > 1\n", arg0, nDPId_options.tick_resolution);
         retval = 1;
     }
-    if (reader_thread_count < 1 || reader_thread_count > nDPId_MAX_READER_THREADS)
+    if (nDPId_options.reader_thread_count < 1 || nDPId_options.reader_thread_count > nDPId_MAX_READER_THREADS)
     {
         fprintf(stderr,
                 "%s: Value not in range: 1 < reader-thread-count[%llu] < %d\n",
                 arg0,
-                reader_thread_count,
+                nDPId_options.reader_thread_count,
                 nDPId_MAX_READER_THREADS);
         retval = 1;
     }
-    if (idle_scan_period < 1000)
+    if (nDPId_options.idle_scan_period < 1000)
     {
-        fprintf(stderr, "%s: Value not in range: idle-scan-period[%llu] > 1000\n", arg0, idle_scan_period);
+        fprintf(stderr,
+                "%s: Value not in range: idle-scan-period[%llu] > 1000\n",
+                arg0,
+                nDPId_options.idle_scan_period);
         retval = 1;
     }
-    if (max_idle_time < 60)
+    if (nDPId_options.max_idle_time < 60)
     {
-        fprintf(stderr, "%s: Value not in range: max-idle-time[%llu] > 60\n", arg0, max_idle_time);
+        fprintf(stderr, "%s: Value not in range: max-idle-time[%llu] > 60\n", arg0, nDPId_options.max_idle_time);
         retval = 1;
     }
-    if (tcp_max_post_end_flow_time > max_idle_time)
+    if (nDPId_options.tcp_max_post_end_flow_time > nDPId_options.max_idle_time)
     {
         fprintf(stderr,
                 "%s: Value not in range: max-post-end-flow-time[%llu] < max_idle_time[%llu]\n",
                 arg0,
-                tcp_max_post_end_flow_time,
-                max_idle_time);
+                nDPId_options.tcp_max_post_end_flow_time,
+                nDPId_options.max_idle_time);
         retval = 1;
     }
-    if (process_internal_initial_direction != 0 && process_external_initial_direction != 0)
+    if (nDPId_options.process_internal_initial_direction != 0 && nDPId_options.process_external_initial_direction != 0)
     {
         fprintf(stderr,
                 "%s: Internal and External packet processing does not make sense as this is the default.\n",
                 arg0);
         retval = 1;
     }
-    if (process_internal_initial_direction != 0 || process_external_initial_direction != 0)
+    if (nDPId_options.process_internal_initial_direction != 0 || nDPId_options.process_external_initial_direction != 0)
     {
         fprintf(stderr,
                 "%s: Internal and External packet processing may lead to incorrect results for flows that were active "
@@ -2912,6 +2954,7 @@ static int validate_options(char const * const arg0)
     return retval;
 }
 
+#ifndef NO_MAIN
 int main(int argc, char ** argv)
 {
     if (argc == 0)
@@ -2919,7 +2962,7 @@ int main(int argc, char ** argv)
         return 1;
     }
 
-    if (parse_options(argc, argv) != 0)
+    if (nDPId_parse_options(argc, argv) != 0)
     {
         return 1;
     }
@@ -2965,20 +3008,21 @@ int main(int argc, char ** argv)
     signal(SIGTERM, sighandler);
     signal(SIGPIPE, SIG_IGN);
 
-    while (main_thread_shutdown == 0 && processing_threads_error_or_eof() == 0)
+    while (nDPId_main_thread_shutdown == 0 && processing_threads_error_or_eof() == 0)
     {
         sleep(1);
     }
 
-    if (main_thread_shutdown == 1 && stop_reader_threads() != 0)
+    if (nDPId_main_thread_shutdown == 1 && stop_reader_threads() != 0)
     {
         return 1;
     }
     free_reader_threads();
 
-    daemonize_shutdown(pidfile);
+    daemonize_shutdown(nDPId_options.pidfile);
     syslog(LOG_DAEMON | LOG_NOTICE, "Bye.");
     closelog();
 
     return 0;
 }
+#endif

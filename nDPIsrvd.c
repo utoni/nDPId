@@ -59,18 +59,22 @@ static struct remotes
     size_t desc_used;
 } remotes = {NULL, 0, 0};
 
-static int main_thread_shutdown = 0;
-static int log_to_stderr = 0;
-static char * pidfile = NULL;
-static char * json_sockpath = NULL;
-static char * serv_optarg = NULL;
+static int nDPIsrvd_main_thread_shutdown = 0;
+static int json_sockfd;
+static int serv_sockfd;
 static struct nDPIsrvd_address serv_address = {
     .raw.sa_family = 0xFFFF,
 };
-static int json_sockfd;
-static int serv_sockfd;
-static char * user = NULL;
-static char * group = NULL;
+
+static struct
+{
+    int log_to_stderr;
+    char * pidfile;
+    char * json_sockpath;
+    char * serv_optarg;
+    char * user;
+    char * group;
+} nDPIsrvd_options = {};
 
 static int fcntl_add_flags(int fd, int flags)
 {
@@ -116,7 +120,7 @@ static int create_listen_sockets(void)
 
     struct sockaddr_un json_addr;
     json_addr.sun_family = AF_UNIX;
-    if (snprintf(json_addr.sun_path, sizeof(json_addr.sun_path), "%s", json_sockpath) <= 0)
+    if (snprintf(json_addr.sun_path, sizeof(json_addr.sun_path), "%s", nDPIsrvd_options.json_sockpath) <= 0)
     {
         syslog(LOG_DAEMON | LOG_ERR, "snprintf failed: %s", strerror(errno));
         return 1;
@@ -124,31 +128,34 @@ static int create_listen_sockets(void)
 
     if (bind(json_sockfd, (struct sockaddr *)&json_addr, sizeof(json_addr)) < 0)
     {
-        unlink(json_sockpath);
+        unlink(nDPIsrvd_options.json_sockpath);
         syslog(LOG_DAEMON | LOG_ERR,
                "Error on binding UNIX socket (collector) to %s: %s",
-               json_sockpath,
+               nDPIsrvd_options.json_sockpath,
                strerror(errno));
         return 1;
     }
 
     if (bind(serv_sockfd, &serv_address.raw, serv_address.size) < 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "Error on binding socket (distributor) to %s: %s", serv_optarg, strerror(errno));
-        unlink(json_sockpath);
+        syslog(LOG_DAEMON | LOG_ERR,
+               "Error on binding socket (distributor) to %s: %s",
+               nDPIsrvd_options.serv_optarg,
+               strerror(errno));
+        unlink(nDPIsrvd_options.json_sockpath);
         return 1;
     }
 
     if (listen(json_sockfd, 16) < 0 || listen(serv_sockfd, 16) < 0)
     {
-        unlink(json_sockpath);
+        unlink(nDPIsrvd_options.json_sockpath);
         syslog(LOG_DAEMON | LOG_ERR, "Error on listen: %s", strerror(errno));
         return 1;
     }
 
     if (fcntl_add_flags(json_sockfd, O_NONBLOCK) != 0)
     {
-        unlink(json_sockpath);
+        unlink(nDPIsrvd_options.json_sockpath);
         syslog(LOG_DAEMON | LOG_ERR, "Error setting fd flags for the collector socket: %s", strerror(errno));
         return 1;
     }
@@ -223,7 +230,7 @@ static void disconnect_client(int epollfd, struct remote_desc * const current)
     current->buf.ptr = NULL;
 }
 
-static int parse_options(int argc, char ** argv)
+static int nDPIsrvd_parse_options(int argc, char ** argv)
 {
     int opt;
 
@@ -232,30 +239,30 @@ static int parse_options(int argc, char ** argv)
         switch (opt)
         {
             case 'l':
-                log_to_stderr = 1;
+                nDPIsrvd_options.log_to_stderr = 1;
                 break;
             case 'c':
-                free(json_sockpath);
-                json_sockpath = strdup(optarg);
+                free(nDPIsrvd_options.json_sockpath);
+                nDPIsrvd_options.json_sockpath = strdup(optarg);
                 break;
             case 'd':
                 daemonize_enable();
                 break;
             case 'p':
-                free(pidfile);
-                pidfile = strdup(optarg);
+                free(nDPIsrvd_options.pidfile);
+                nDPIsrvd_options.pidfile = strdup(optarg);
                 break;
             case 's':
-                free(serv_optarg);
-                serv_optarg = strdup(optarg);
+                free(nDPIsrvd_options.serv_optarg);
+                nDPIsrvd_options.serv_optarg = strdup(optarg);
                 break;
             case 'u':
-                free(user);
-                user = strdup(optarg);
+                free(nDPIsrvd_options.user);
+                nDPIsrvd_options.user = strdup(optarg);
                 break;
             case 'g':
-                free(group);
-                group = strdup(optarg);
+                free(nDPIsrvd_options.group);
+                nDPIsrvd_options.group = strdup(optarg);
                 break;
             default:
                 fprintf(stderr,
@@ -266,24 +273,24 @@ static int parse_options(int argc, char ** argv)
         }
     }
 
-    if (pidfile == NULL)
+    if (nDPIsrvd_options.pidfile == NULL)
     {
-        pidfile = strdup(nDPIsrvd_PIDFILE);
+        nDPIsrvd_options.pidfile = strdup(nDPIsrvd_PIDFILE);
     }
 
-    if (json_sockpath == NULL)
+    if (nDPIsrvd_options.json_sockpath == NULL)
     {
-        json_sockpath = strdup(COLLECTOR_UNIX_SOCKET);
+        nDPIsrvd_options.json_sockpath = strdup(COLLECTOR_UNIX_SOCKET);
     }
 
-    if (serv_optarg == NULL)
+    if (nDPIsrvd_options.serv_optarg == NULL)
     {
-        serv_optarg = strdup(DISTRIBUTOR_UNIX_SOCKET);
+        nDPIsrvd_options.serv_optarg = strdup(DISTRIBUTOR_UNIX_SOCKET);
     }
 
-    if (nDPIsrvd_setup_address(&serv_address, serv_optarg) != 0)
+    if (nDPIsrvd_setup_address(&serv_address, nDPIsrvd_options.serv_optarg) != 0)
     {
-        fprintf(stderr, "%s: Could not parse address `%s'\n", argv[0], serv_optarg);
+        fprintf(stderr, "%s: Could not parse address `%s'\n", argv[0], nDPIsrvd_options.serv_optarg);
         return 1;
     }
 
@@ -680,7 +687,7 @@ static int mainloop(int epollfd)
     size_t const events_size = sizeof(events) / sizeof(events[0]);
     int signalfd = setup_signalfd(epollfd);
 
-    while (main_thread_shutdown == 0)
+    while (nDPIsrvd_main_thread_shutdown == 0)
     {
         int nready = epoll_wait(epollfd, events, events_size, -1);
 
@@ -724,7 +731,7 @@ static int mainloop(int epollfd)
 
                 if (fdsi.ssi_signo == SIGINT || fdsi.ssi_signo == SIGTERM || fdsi.ssi_signo == SIGQUIT)
                 {
-                    main_thread_shutdown = 1;
+                    nDPIsrvd_main_thread_shutdown = 1;
                     break;
                 }
             }
@@ -805,34 +812,35 @@ static int setup_remote_descriptors(size_t max_descriptors)
 int main(int argc, char ** argv)
 {
     int retval = 1;
+    int epollfd;
 
     if (argc == 0)
     {
         return 1;
     }
 
-    if (parse_options(argc, argv) != 0)
+    if (nDPIsrvd_parse_options(argc, argv) != 0)
     {
         return 1;
     }
 
     openlog("nDPIsrvd", LOG_CONS | LOG_PERROR, LOG_DAEMON);
 
-    if (access(json_sockpath, F_OK) == 0)
+    if (access(nDPIsrvd_options.json_sockpath, F_OK) == 0)
     {
         syslog(LOG_DAEMON | LOG_ERR,
                "UNIX socket %s exists; nDPIsrvd already running? "
                "Please remove the socket manually or change socket path.",
-               json_sockpath);
+               nDPIsrvd_options.json_sockpath);
         return 1;
     }
 
-    if (daemonize_with_pidfile(pidfile) != 0)
+    if (daemonize_with_pidfile(nDPIsrvd_options.pidfile) != 0)
     {
         goto error;
     }
     closelog();
-    openlog("nDPIsrvd", LOG_CONS | (log_to_stderr != 0 ? LOG_PERROR : 0), LOG_DAEMON);
+    openlog("nDPIsrvd", LOG_CONS | (nDPIsrvd_options.log_to_stderr != 0 ? LOG_PERROR : 0), LOG_DAEMON);
 
     if (setup_remote_descriptors(32) != 0)
     {
@@ -843,26 +851,30 @@ int main(int argc, char ** argv)
     {
         goto error;
     }
-    syslog(LOG_DAEMON, "collector listen on %s", json_sockpath);
+
+    syslog(LOG_DAEMON, "collector listen on %s", nDPIsrvd_options.json_sockpath);
     switch (serv_address.raw.sa_family)
     {
         default:
             goto error;
         case AF_INET:
         case AF_INET6:
-            syslog(LOG_DAEMON, "distributor listen on %s", serv_optarg);
+            syslog(LOG_DAEMON, "distributor listen on %s", nDPIsrvd_options.serv_optarg);
             syslog(LOG_DAEMON | LOG_ERR,
                    "Please keep in mind that using a TCP Socket may leak sensitive information to "
                    "everyone with access to the device/network. You've been warned!");
             break;
         case AF_UNIX:
-            syslog(LOG_DAEMON, "distributor listen on %s", json_sockpath);
+            syslog(LOG_DAEMON, "distributor listen on %s", nDPIsrvd_options.json_sockpath);
             break;
     }
 
     errno = 0;
-    if (change_user_group(
-            user, group, pidfile, json_sockpath, (serv_address.raw.sa_family == AF_UNIX ? serv_optarg : NULL)) != 0)
+    if (change_user_group(nDPIsrvd_options.user,
+                          nDPIsrvd_options.group,
+                          nDPIsrvd_options.pidfile,
+                          nDPIsrvd_options.json_sockpath,
+                          (serv_address.raw.sa_family == AF_UNIX ? nDPIsrvd_options.serv_optarg : NULL)) != 0)
     {
         if (errno != 0)
         {
@@ -877,7 +889,7 @@ int main(int argc, char ** argv)
 
     signal(SIGPIPE, SIG_IGN);
 
-    int epollfd = setup_event_queue();
+    epollfd = setup_event_queue();
     if (epollfd < 0)
     {
         goto error;
@@ -889,12 +901,12 @@ error:
     close(json_sockfd);
     close(serv_sockfd);
 
-    daemonize_shutdown(pidfile);
+    daemonize_shutdown(nDPIsrvd_options.pidfile);
     syslog(LOG_DAEMON | LOG_NOTICE, "Bye.");
     closelog();
 
-    unlink(json_sockpath);
-    unlink(serv_optarg);
+    unlink(nDPIsrvd_options.json_sockpath);
+    unlink(nDPIsrvd_options.serv_optarg);
 
     return retval;
 }
