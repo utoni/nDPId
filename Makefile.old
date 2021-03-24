@@ -79,7 +79,7 @@ nDPIsrvd: nDPIsrvd.c utils.c
 	$(CC) $(PROJECT_CFLAGS) $(MEMORY_PROFILING_CFLAGS) $(CFLAGS) $(DEPS_CFLAGS) $^ -o $@ $(LDFLAGS)
 
 nDPId-test: nDPId-test.c utils.c
-	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $(DEPS_CFLAGS) -D_GNU_SOURCE=1 -DNO_MAIN=1 -Dsyslog=mock_syslog_stderr -Wno-unused-function $^ -o $@ $(LDFLAGS) $(STATIC_NDPI_LIB) $(LIBS)
+	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $(DEPS_CFLAGS) $(PC_CFLAGS) -D_GNU_SOURCE=1 -DNO_MAIN=1 -Dsyslog=mock_syslog_stderr -Wno-unused-function $^ -o $@ $(LDFLAGS) $(PC_LDFLAGS) $(STATIC_NDPI_LIB) $(LIBS)
 
 examples/c-collectd/c-collectd: examples/c-collectd/c-collectd.c
 	$(CC) $(PROJECT_CFLAGS) $(MEMORY_PROFILING_CFLAGS) $(CFLAGS) $(DEPS_CFLAGS) $@.c -o $@ $(LDFLAGS)
