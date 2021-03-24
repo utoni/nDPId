@@ -25,6 +25,7 @@ EOF
 cd "${nDPI_TEST_DIR}"
 mkdir -p /tmp/nDPId-test-stderr
 set +e
+RETVAL=0
 for pcap_file in $(ls *.pcap*); do
     printf '%s' "${pcap_file}"
 
@@ -42,10 +43,14 @@ for pcap_file in $(ls *.pcap*); do
                      "${MYDIR}/results/${pcap_file}.out.new"
             mv -v "${MYDIR}/results/${pcap_file}.out.new" \
                   "${MYDIR}/results/${pcap_file}.out"
+            RETVAL=1
         fi
     else
         printf ' [%s]\n' 'FAIL'
+        RETVAL=1
     fi
 
     rm -f "${MYDIR}/results/${pcap_file}.out.new"
 done
+
+exit ${RETVAL}

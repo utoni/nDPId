@@ -6,8 +6,6 @@ script:
 - git clone https://github.com/ntop/nDPI.git
 - cd nDPI && ./autogen.sh --prefix=$(realpath ./_install) --with-sanitizer --with-only-libndpi && make install -j4 && cd ..
 - make -f Makefile.old NDPI_WITH_GCRYPT=yes CUSTOM_LIBNDPI=./nDPI/_install/lib/libndpi.a ENABLE_DEBUG=yes ENABLE_SANITIZER=yes all examples
-# RUNTIME TESTS (disabled, needs further testing..)
-#- ./tests/do.sh ./nDPI
-# EoF RUNTIME TESTS
+- test/run_tests.sh nDPI
 - make -f Makefile.old clean
 - PKG_CONFIG_PATH="$(realpath ./nDPI/_install/lib/pkgconfig)" make -f Makefile.old PKG_CONFIG_BIN=pkg-config ENABLE_DEBUG=yes ENABLE_SANITIZER=yes all examples
