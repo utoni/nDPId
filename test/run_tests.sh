@@ -16,6 +16,13 @@ EOF
 exit 1
 fi
 
+if [ ! -x "${nDPId_test_EXEC}" ]; then
+cat <<EOF
+Required nDPId-test executable does not exist; ${nDPId_test_EXEC}
+EOF
+exit 1
+fi
+
 nDPI_TEST_DIR="${nDPI_SOURCE_ROOT}/tests/pcap"
 
 cat <<EOF
@@ -47,6 +54,9 @@ for pcap_file in $(ls *.pcap*); do
         fi
     else
         printf "%-${LINE_SPACES}s\t%s\n" "${pcap_file}" '[FAIL]'
+        printf '%s\n' '----------------------------------------'
+        printf '%s\n' "-- STDERR of ${pcap_file}"
+        cat "/tmp/nDPId-test-stderr/${pcap_file}.out"
         RETVAL=1
     fi
 
