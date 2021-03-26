@@ -206,7 +206,7 @@ static void usage(char const * const arg0)
     printf("usage: %s [path-to-pcap-file]\n", arg0);
 }
 
-int main(int argc, char **argv)
+int main(int argc, char ** argv)
 {
     if (argc != 2)
     {
@@ -214,7 +214,8 @@ int main(int argc, char **argv)
         return -1;
     }
 
-    nDPId_options.reader_thread_count = 1; /* Please do not change this! Generating meaningful pcap diff's relies on a single reader thread! */
+    nDPId_options.reader_thread_count = 1; /* Please do not change this! Generating meaningful pcap diff's relies on a
+                                              single reader thread! */
     nDPId_options.instance_alias = strdup("nDPId-test");
     nDPId_options.pcap_file_or_interface = strdup(argv[1]);
     if (validate_options(argv[0]) != 0)

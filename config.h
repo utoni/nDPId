@@ -26,6 +26,7 @@
 #define nDPId_TCP_POST_END_FLOW_TIME 60000u /* 60 sec */
 #define nDPId_THREAD_DISTRIBUTION_SEED 0x03dd018b
 #define nDPId_PACKETS_PER_FLOW_TO_SEND 15u
+#define nDPId_PACKETS_PER_FLOW_TO_PROCESS 255u
 #define nDPId_FLOW_STRUCT_SEED 0x5defc104
 
 /* nDPIsrvd default config options */

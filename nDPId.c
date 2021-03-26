@@ -55,6 +55,7 @@ enum nDPId_flow_type
 {
     FT_UNKNOWN = 0,
     FT_SKIPPED,
+    FT_FINISHED,
     FT_INFO
 };
 
@@ -105,20 +106,9 @@ struct nDPId_flow_info
     struct ndpi_proto detected_l7_protocol;
     struct ndpi_proto guessed_l7_protocol;
 
-    union {
-        uint8_t ndpi_flow_raw[SIZEOF_FLOW_STRUCT];
-        struct ndpi_flow_struct ndpi_flow;
-    };
-
-    union {
-        uint8_t ndpi_src_raw[SIZEOF_ID_STRUCT];
-        struct ndpi_id_struct ndpi_src;
-    };
-
-    union {
-        uint8_t ndpi_dst_raw[SIZEOF_ID_STRUCT];
-        struct ndpi_id_struct ndpi_dst;
-    };
+    struct ndpi_flow_struct * ndpi_flow;
+    struct ndpi_id_struct * ndpi_src;
+    struct ndpi_id_struct * ndpi_dst;
 };
 
 struct nDPId_workflow
@@ -300,6 +290,7 @@ static struct
     unsigned long long int max_idle_time;
     unsigned long long int tcp_max_post_end_flow_time;
     unsigned long long int max_packets_per_flow_to_send;
+    unsigned long long int max_packets_per_flow_to_process;
 } nDPId_options = {.pidfile = nDPId_PIDFILE,
                    .user = "nobody",
                    .json_sockpath = COLLECTOR_UNIX_SOCKET,
@@ -310,7 +301,8 @@ static struct
                    .idle_scan_period = nDPId_IDLE_SCAN_PERIOD,
                    .max_idle_time = nDPId_IDLE_TIME,
                    .tcp_max_post_end_flow_time = nDPId_TCP_POST_END_FLOW_TIME,
-                   .max_packets_per_flow_to_send = nDPId_PACKETS_PER_FLOW_TO_SEND};
+                   .max_packets_per_flow_to_send = nDPId_PACKETS_PER_FLOW_TO_SEND,
+                   .max_packets_per_flow_to_process = nDPId_PACKETS_PER_FLOW_TO_PROCESS};
 
 enum nDPId_subopts
 {
@@ -322,6 +314,7 @@ enum nDPId_subopts
     MAX_IDLE_TIME,
     TCP_MAX_POST_END_FLOW_TIME,
     MAX_PACKETS_PER_FLOW_TO_SEND,
+    MAX_PACKETS_PER_FLOW_TO_PROCESS,
 };
 static char * const subopt_token[] = {[MAX_FLOWS_PER_THREAD] = "max-flows-per-thread",
                                       [MAX_IDLE_FLOWS_PER_THREAD] = "max-idle-flows-per-thread",
@@ -331,6 +324,7 @@ static char * const subopt_token[] = {[MAX_FLOWS_PER_THREAD] = "max-flows-per-th
                                       [MAX_IDLE_TIME] = "max-idle-time",
                                       [TCP_MAX_POST_END_FLOW_TIME] = "tcp-max-post-end-flow-time",
                                       [MAX_PACKETS_PER_FLOW_TO_SEND] = "max-packets-per-flow-to-send",
+                                      [MAX_PACKETS_PER_FLOW_TO_PROCESS] = "max-packets-per-flow-to-process",
                                       NULL};
 
 static void free_workflow(struct nDPId_workflow ** const workflow);
@@ -642,14 +636,50 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     return workflow;
 }
 
+static void free_ndpi_structs(struct nDPId_flow_info * const flow_info)
+{
+    ndpi_free(flow_info->ndpi_dst);
+    flow_info->ndpi_dst = NULL;
+    ndpi_free(flow_info->ndpi_src);
+    flow_info->ndpi_src = NULL;
+    ndpi_free_flow(flow_info->ndpi_flow);
+    flow_info->ndpi_flow = NULL;
+}
+
+static int alloc_ndpi_structs(struct nDPId_flow_info * const flow_info)
+{
+    flow_info->ndpi_dst = (struct ndpi_id_struct *)ndpi_calloc(1, SIZEOF_ID_STRUCT);
+    flow_info->ndpi_src = (struct ndpi_id_struct *)ndpi_calloc(1, SIZEOF_ID_STRUCT);
+    flow_info->ndpi_flow = (struct ndpi_flow_struct *)ndpi_flow_malloc(SIZEOF_FLOW_STRUCT);
+
+    if (flow_info->ndpi_dst == NULL || flow_info->ndpi_src == NULL || flow_info->ndpi_flow == NULL)
+    {
+        goto error;
+    }
+
+    return 0;
+error:
+    free_ndpi_structs(flow_info);
+    return 1;
+}
+
 static void ndpi_flow_info_freer(void * const node)
 {
     struct nDPId_flow_basic * const flow_basic = (struct nDPId_flow_basic *)node;
 
-    if (flow_basic->type == FT_INFO)
+    switch (flow_basic->type)
     {
-        struct nDPId_flow_info * const flow_info = (struct nDPId_flow_info *)flow_basic;
-        ndpi_free_flow_data(&flow_info->ndpi_flow);
+        case FT_UNKNOWN:
+        case FT_SKIPPED:
+        case FT_FINISHED:
+            break;
+
+        case FT_INFO:
+        {
+            struct nDPId_flow_info * const flow_info = (struct nDPId_flow_info *)flow_basic;
+            free_ndpi_structs(flow_info);
+            break;
+        }
     }
     ndpi_free(flow_basic);
 }
@@ -848,9 +878,16 @@ static void ndpi_idle_scan_walker(void const * const A, ndpi_VISIT which, int de
              flow_basic->last_seen + nDPId_options.tcp_max_post_end_flow_time < workflow->last_time))
         {
             workflow->ndpi_flows_idle[workflow->cur_idle_flows++] = flow_basic;
-            if (flow_basic->type == FT_INFO)
+            switch (flow_basic->type)
             {
-                workflow->total_idle_flows++;
+                case FT_UNKNOWN:
+                case FT_SKIPPED:
+                    break;
+
+                case FT_FINISHED:
+                case FT_INFO:
+                    workflow->total_idle_flows++;
+                    break;
             }
         }
     }
@@ -898,40 +935,51 @@ static void process_idle_flow(struct nDPId_reader_thread * const reader_thread, 
         struct nDPId_flow_basic * const flow_basic =
             (struct nDPId_flow_basic *)workflow->ndpi_flows_idle[--workflow->cur_idle_flows];
 
-        if (flow_basic->type == FT_INFO)
+        switch (flow_basic->type)
         {
-            struct nDPId_flow_info * const flow_info = (struct nDPId_flow_info *)flow_basic;
+            case FT_UNKNOWN:
+            case FT_SKIPPED:
+            case FT_FINISHED:
+                break;
 
-            if (flow_info->detection_completed == 0)
+            case FT_INFO:
             {
-                uint8_t protocol_was_guessed = 0;
+                struct nDPId_flow_info * const flow_info = (struct nDPId_flow_info *)flow_basic;
 
-                if (ndpi_is_protocol_detected(workflow->ndpi_struct, flow_info->guessed_l7_protocol) == 0)
+                if (flow_info->detection_completed == 0)
                 {
-                    flow_info->guessed_l7_protocol =
-                        ndpi_detection_giveup(workflow->ndpi_struct, &flow_info->ndpi_flow, 1, &protocol_was_guessed);
+                    uint8_t protocol_was_guessed = 0;
+
+                    if (ndpi_is_protocol_detected(workflow->ndpi_struct, flow_info->guessed_l7_protocol) == 0)
+                    {
+                        flow_info->guessed_l7_protocol = ndpi_detection_giveup(workflow->ndpi_struct,
+                                                                               flow_info->ndpi_flow,
+                                                                               1,
+                                                                               &protocol_was_guessed);
+                    }
+                    else
+                    {
+                        protocol_was_guessed = 1;
+                    }
+
+                    if (protocol_was_guessed != 0)
+                    {
+                        jsonize_flow_event(reader_thread, flow_info, FLOW_EVENT_GUESSED);
+                    }
+                    else
+                    {
+                        jsonize_flow_event(reader_thread, flow_info, FLOW_EVENT_NOT_DETECTED);
+                    }
+                }
+                if (flow_basic->tcp_fin_rst_seen != 0)
+                {
+                    jsonize_flow_event(reader_thread, flow_info, FLOW_EVENT_END);
                 }
                 else
                 {
-                    protocol_was_guessed = 1;
+                    jsonize_flow_event(reader_thread, flow_info, FLOW_EVENT_IDLE);
                 }
-
-                if (protocol_was_guessed != 0)
-                {
-                    jsonize_flow_event(reader_thread, flow_info, FLOW_EVENT_GUESSED);
-                }
-                else
-                {
-                    jsonize_flow_event(reader_thread, flow_info, FLOW_EVENT_NOT_DETECTED);
-                }
-            }
-            if (flow_basic->tcp_fin_rst_seen != 0)
-            {
-                jsonize_flow_event(reader_thread, flow_info, FLOW_EVENT_END);
-            }
-            else
-            {
-                jsonize_flow_event(reader_thread, flow_info, FLOW_EVENT_IDLE);
+                break;
             }
         }
 
@@ -1093,6 +1141,9 @@ static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enu
         ndpi_serialize_string_int64(&workflow->ndpi_serializer,
                                     "max-packets-per-flow-to-send",
                                     nDPId_options.max_packets_per_flow_to_send);
+        ndpi_serialize_string_int64(&workflow->ndpi_serializer,
+                                    "max-packets-per-flow-to-process",
+                                    nDPId_options.max_packets_per_flow_to_process);
     }
     serialize_and_send(reader_thread);
 }
@@ -1453,10 +1504,8 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
 
         case FLOW_EVENT_NOT_DETECTED:
         case FLOW_EVENT_GUESSED:
-            if (ndpi_dpi2json(workflow->ndpi_struct,
-                              &flow->ndpi_flow,
-                              flow->guessed_l7_protocol,
-                              &workflow->ndpi_serializer) != 0)
+            if (ndpi_dpi2json(
+                    workflow->ndpi_struct, flow->ndpi_flow, flow->guessed_l7_protocol, &workflow->ndpi_serializer) != 0)
             {
                 syslog(LOG_DAEMON | LOG_ERR,
                        "[%8llu, %4u] ndpi_dpi2json failed for not-detected/guessed flow",
@@ -1468,7 +1517,7 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
         case FLOW_EVENT_DETECTED:
         case FLOW_EVENT_DETECTION_UPDATE:
             if (ndpi_dpi2json(workflow->ndpi_struct,
-                              &flow->ndpi_flow,
+                              flow->ndpi_flow,
                               flow->detected_l7_protocol,
                               &workflow->ndpi_serializer) != 0)
             {
@@ -1837,11 +1886,14 @@ static struct nDPId_flow_basic * add_new_flow(struct nDPId_workflow * const work
     switch (type)
     {
         case FT_UNKNOWN:
+        case FT_FINISHED:
             return NULL;
+
         case FT_SKIPPED:
             workflow->total_skipped_flows++;
             s = sizeof(struct nDPId_flow_skipped);
             break;
+
         case FT_INFO:
             s = sizeof(struct nDPId_flow_info);
             break;
@@ -2237,19 +2289,22 @@ static void ndpi_process_packet(uint8_t * const args,
         workflow->total_active_flows++;
         flow_to_process->flow_id = __sync_fetch_and_add(&global_flow_id, 1);
 
-        memset(&flow_to_process->ndpi_flow,
+        if (alloc_ndpi_structs(flow_to_process) != 0)
+        {
+            jsonize_packet_event(
+                reader_thread, header, packet, type, ip_offset, (l4_ptr - packet), l4_len, NULL, PACKET_EVENT_PAYLOAD);
+            jsonize_basic_eventf(
+                reader_thread, FLOW_MEMORY_ALLOCATION_FAILED, "%s%zu", "size", sizeof(*flow_to_process));
+            return;
+        }
+
+        memset(flow_to_process->ndpi_flow,
                0,
                (SIZEOF_FLOW_STRUCT > sizeof(struct ndpi_flow_struct) ? SIZEOF_FLOW_STRUCT
                                                                      : sizeof(struct ndpi_flow_struct)));
-        memset(&flow_to_process->ndpi_src,
-               0,
-               (SIZEOF_ID_STRUCT > sizeof(struct ndpi_id_struct) ? SIZEOF_ID_STRUCT : sizeof(struct ndpi_id_struct)));
-        memset(&flow_to_process->ndpi_dst,
-               0,
-               (SIZEOF_ID_STRUCT > sizeof(struct ndpi_id_struct) ? SIZEOF_ID_STRUCT : sizeof(struct ndpi_id_struct)));
 
-        ndpi_src = &flow_to_process->ndpi_src;
-        ndpi_dst = &flow_to_process->ndpi_dst;
+        ndpi_src = flow_to_process->ndpi_src;
+        ndpi_dst = flow_to_process->ndpi_dst;
 
         is_new_flow = 1;
     }
@@ -2264,21 +2319,28 @@ static void ndpi_process_packet(uint8_t * const args,
             flow_basic_to_process->tcp_fin_rst_seen = 1;
         }
 
-        if (flow_basic_to_process->type != FT_INFO)
+        switch (flow_basic_to_process->type)
         {
-            return;
+            case FT_UNKNOWN:
+                return;
+            case FT_SKIPPED:
+                return;
+            case FT_FINISHED:
+                return;
+            case FT_INFO:
+                break;
         }
         flow_to_process = (struct nDPId_flow_info *)flow_basic_to_process;
 
         if (direction_changed != 0)
         {
-            ndpi_src = &flow_to_process->ndpi_dst;
-            ndpi_dst = &flow_to_process->ndpi_src;
+            ndpi_src = flow_to_process->ndpi_dst;
+            ndpi_dst = flow_to_process->ndpi_src;
         }
         else
         {
-            ndpi_src = &flow_to_process->ndpi_src;
-            ndpi_dst = &flow_to_process->ndpi_dst;
+            ndpi_src = flow_to_process->ndpi_src;
+            ndpi_dst = flow_to_process->ndpi_dst;
         }
     }
 
@@ -2314,12 +2376,7 @@ static void ndpi_process_packet(uint8_t * const args,
                          flow_to_process,
                          PACKET_EVENT_PAYLOAD_FLOW);
 
-    /* We currently process max. 254 packets per flow. TODO: The user should decide this! */
-    if (flow_to_process->ndpi_flow.num_processed_pkts == 0xFF)
-    {
-        return;
-    }
-    else if (flow_to_process->ndpi_flow.num_processed_pkts == 0xFE)
+    if (flow_to_process->ndpi_flow->num_processed_pkts == nDPId_options.max_packets_per_flow_to_process - 1)
     {
         if (flow_to_process->detection_completed != 0)
         {
@@ -2330,7 +2387,7 @@ static void ndpi_process_packet(uint8_t * const args,
             /* last chance to guess something, better then nothing */
             uint8_t protocol_was_guessed = 0;
             flow_to_process->guessed_l7_protocol =
-                ndpi_detection_giveup(workflow->ndpi_struct, &flow_to_process->ndpi_flow, 1, &protocol_was_guessed);
+                ndpi_detection_giveup(workflow->ndpi_struct, flow_to_process->ndpi_flow, 1, &protocol_was_guessed);
             if (protocol_was_guessed != 0)
             {
                 jsonize_flow_event(reader_thread, flow_to_process, FLOW_EVENT_GUESSED);
@@ -2343,7 +2400,7 @@ static void ndpi_process_packet(uint8_t * const args,
     }
 
     flow_to_process->detected_l7_protocol = ndpi_detection_process_packet(workflow->ndpi_struct,
-                                                                          &flow_to_process->ndpi_flow,
+                                                                          flow_to_process->ndpi_flow,
                                                                           ip != NULL ? (uint8_t *)ip : (uint8_t *)ip6,
                                                                           ip_size,
                                                                           time_ms,
@@ -2356,16 +2413,22 @@ static void ndpi_process_packet(uint8_t * const args,
         flow_to_process->detection_completed = 1;
         workflow->detected_flow_protocols++;
         jsonize_flow_event(reader_thread, flow_to_process, FLOW_EVENT_DETECTED);
-        flow_to_process->last_ndpi_flow_struct_hash = calculate_ndpi_flow_struct_hash(&flow_to_process->ndpi_flow);
+        flow_to_process->last_ndpi_flow_struct_hash = calculate_ndpi_flow_struct_hash(flow_to_process->ndpi_flow);
     }
     else if (flow_to_process->detection_completed == 1)
     {
-        uint32_t hash = calculate_ndpi_flow_struct_hash(&flow_to_process->ndpi_flow);
+        uint32_t hash = calculate_ndpi_flow_struct_hash(flow_to_process->ndpi_flow);
         if (hash != flow_to_process->last_ndpi_flow_struct_hash)
         {
             jsonize_flow_event(reader_thread, flow_to_process, FLOW_EVENT_DETECTION_UPDATE);
             flow_to_process->last_ndpi_flow_struct_hash = hash;
         }
+    }
+
+    if (flow_to_process->ndpi_flow->num_processed_pkts == nDPId_options.max_packets_per_flow_to_process)
+    {
+        free_ndpi_structs(flow_to_process);
+        flow_to_process->flow_basic.type = FT_FINISHED;
     }
 }
 
@@ -2513,9 +2576,15 @@ static void ndpi_shutdown_walker(void const * const A, ndpi_VISIT which, int dep
     if (which == ndpi_preorder || which == ndpi_leaf)
     {
         workflow->ndpi_flows_idle[workflow->cur_idle_flows++] = flow_basic;
-        if (flow_basic->type == FT_INFO)
+        switch (flow_basic->type)
         {
-            workflow->total_idle_flows++;
+            case FT_UNKNOWN:
+            case FT_SKIPPED:
+                break;
+            case FT_INFO:
+            case FT_FINISHED:
+                workflow->total_idle_flows++;
+                break;
         }
     }
 }
@@ -2662,6 +2731,9 @@ static void print_subopt_usage(void)
                     break;
                 case MAX_PACKETS_PER_FLOW_TO_SEND:
                     fprintf(stderr, "%llu\n", nDPId_options.max_packets_per_flow_to_send);
+                    break;
+                case MAX_PACKETS_PER_FLOW_TO_PROCESS:
+                    fprintf(stderr, "%llu\n", nDPId_options.max_packets_per_flow_to_process);
                     break;
                 default:
                     break;
@@ -2832,6 +2904,8 @@ static int nDPId_parse_options(int argc, char ** argv)
                         case MAX_PACKETS_PER_FLOW_TO_SEND:
                             nDPId_options.max_packets_per_flow_to_send = value_llu;
                             break;
+                        case MAX_PACKETS_PER_FLOW_TO_PROCESS:
+                            nDPId_options.max_packets_per_flow_to_process = value_llu;
                     }
                 }
                 break;
@@ -2949,6 +3023,14 @@ static int validate_options(char const * const arg0)
                 "%s: Internal and External packet processing may lead to incorrect results for flows that were active "
                 "before the daemon started.\n",
                 arg0);
+    }
+    if (nDPId_options.max_packets_per_flow_to_process < 1 || nDPId_options.max_packets_per_flow_to_process > 65535)
+    {
+        fprintf(stderr,
+                "%s: Value not in range: 1 =< max_packets_per_flow_to_process[%llu] =< 65535\n",
+                arg0,
+                nDPId_options.max_packets_per_flow_to_process);
+        retval = 1;
     }
 
     return retval;
