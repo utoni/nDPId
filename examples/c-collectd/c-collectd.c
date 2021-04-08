@@ -89,6 +89,7 @@ static struct
     uint64_t flow_l3_other_count;
     uint64_t flow_l4_tcp_count;
     uint64_t flow_l4_udp_count;
+    uint64_t flow_l4_icmp_count;
     uint64_t flow_l4_other_count;
 } collectd_statistics = {};
 
@@ -313,13 +314,15 @@ static void print_collectd_exec_output(void)
 
     printf(COLLECTD_PUTVAL_N_FORMAT(flow_l3_ip4_count) COLLECTD_PUTVAL_N_FORMAT(flow_l3_ip6_count)
                COLLECTD_PUTVAL_N_FORMAT(flow_l3_other_count) COLLECTD_PUTVAL_N_FORMAT(flow_l4_tcp_count)
-                   COLLECTD_PUTVAL_N_FORMAT(flow_l4_udp_count) COLLECTD_PUTVAL_N_FORMAT(flow_l4_other_count),
+                   COLLECTD_PUTVAL_N_FORMAT(flow_l4_udp_count) COLLECTD_PUTVAL_N_FORMAT(flow_l4_icmp_count)
+                       COLLECTD_PUTVAL_N_FORMAT(flow_l4_other_count),
 
            COLLECTD_PUTVAL_N(flow_l3_ip4_count),
            COLLECTD_PUTVAL_N(flow_l3_ip6_count),
            COLLECTD_PUTVAL_N(flow_l3_other_count),
            COLLECTD_PUTVAL_N(flow_l4_tcp_count),
            COLLECTD_PUTVAL_N(flow_l4_udp_count),
+           COLLECTD_PUTVAL_N(flow_l4_icmp_count),
            COLLECTD_PUTVAL_N(flow_l4_other_count));
 
     memset(&collectd_statistics, 0, sizeof(collectd_statistics));
@@ -370,8 +373,8 @@ static int mainloop(int epollfd)
                     return 1;
                 }
 
-                enum nDPIsrvd_parse_return parse_ret = nDPIsrvd_parse(sock);
-                if (parse_ret != PARSE_OK)
+                enum nDPIsrvd_parse_return parse_ret = nDPIsrvd_parse_all(sock);
+                if (parse_ret != PARSE_NEED_MORE_DATA)
                 {
                     LOG(LOG_DAEMON | LOG_ERR, "nDPIsrvd parse failed with: %s", nDPIsrvd_enum_to_string(parse_ret));
                     return 1;
@@ -424,13 +427,17 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
         }
 
         struct nDPIsrvd_json_token const * const l4_proto = TOKEN_GET_SZ(sock, "l4_proto");
-        if (TOKEN_VALUE_EQUALS_SZ(l3_proto, "tcp") != 0)
+        if (TOKEN_VALUE_EQUALS_SZ(l4_proto, "tcp") != 0)
         {
             collectd_statistics.flow_l4_tcp_count++;
         }
-        else if (TOKEN_VALUE_EQUALS_SZ(l3_proto, "tcp") != 0)
+        else if (TOKEN_VALUE_EQUALS_SZ(l4_proto, "udp") != 0)
         {
             collectd_statistics.flow_l4_udp_count++;
+        }
+        else if (TOKEN_VALUE_EQUALS_SZ(l4_proto, "icmp") != 0)
+        {
+            collectd_statistics.flow_l4_icmp_count++;
         }
         else if (l4_proto != NULL)
         {

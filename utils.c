@@ -55,6 +55,11 @@ static int create_pidfile(char const * const pidfile)
 {
     int pfd;
 
+    if (is_path_absolute("Pidfile", pidfile) != 0)
+    {
+        return 1;
+    }
+
     pfd = open(pidfile, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 
     if (pfd < 0)
@@ -70,6 +75,20 @@ static int create_pidfile(char const * const pidfile)
     }
 
     close(pfd);
+
+    return 0;
+}
+
+int is_path_absolute(char const * const prefix,
+                     char const * const path)
+{
+    if (path[0] != '/')
+    {
+        syslog(LOG_DAEMON | LOG_ERR,
+               "%s path must be absolut i.e. starting with a `/', path given: `%s'",
+               prefix, path);
+        return 1;
+    }
 
     return 0;
 }

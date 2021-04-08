@@ -1,6 +1,9 @@
 #ifndef UTILS_H
 #define UTILS_H 1
 
+int is_path_absolute(char const * const prefix,
+                     char const * const path);
+
 void daemonize_enable(void);
 
 int daemonize_with_pidfile(char const * const pidfile);

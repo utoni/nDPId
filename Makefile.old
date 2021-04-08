@@ -65,7 +65,7 @@ RM = rm -f
 INSTALL = install
 
 ifeq ($(ENABLE_DEBUG),yes)
-INSTALL_ARGS = -s
+INSTALL_ARGS_STRIP = -s
 endif
 
 all: help nDPId nDPIsrvd nDPId-test examples
@@ -99,16 +99,20 @@ else
 endif
 
 install: all
-	$(INSTALL) -d '$(DESTDIR)$(PREFIX)/bin' '$(DESTDIR)$(PREFIX)/sbin'
-	$(INSTALL) $(INSTALL_ARGS) ./nDPId-test '$(DESTDIR)$(PREFIX)/bin'
-	$(INSTALL) $(INSTALL_ARGS) ./nDPIsrvd '$(DESTDIR)$(PREFIX)/bin'
-	$(INSTALL) $(INSTALL_ARGS) ./nDPId '$(DESTDIR)$(PREFIX)/sbin'
-	$(INSTALL) $(INSTALL_ARGS) ./examples/c-captured/c-captured '$(DESTDIR)$(PREFIX)/bin/nDPIsrvd-captured'
-	$(INSTALL) $(INSTALL_ARGS) ./examples/c-json-stdout/c-json-stdout '$(DESTDIR)$(PREFIX)/bin/nDPIsrvd-json-dump'
-	$(INSTALL) $(INSTALL_ARGS) ./examples/c-collectd/c-collectd '$(DESTDIR)$(PREFIX)/bin/nDPIsrvd-collectd'
-	$(INSTALL) $(INSTALL_ARGS) ./examples/py-flow-info/flow-info.py '$(DESTDIR)$(PREFIX)/bin/nDPIsrvd-flow-info.py'
+	$(INSTALL) -d \
+		'$(DESTDIR)$(PREFIX)/bin' \
+		'$(DESTDIR)$(PREFIX)/sbin' \
+		'$(DESTDIR)$(PREFIX)/share/nDPId'
+	$(INSTALL) $(INSTALL_ARGS_STRIP) ./nDPId-test '$(DESTDIR)$(PREFIX)/bin'
+	$(INSTALL) $(INSTALL_ARGS_STRIP) ./nDPIsrvd '$(DESTDIR)$(PREFIX)/bin'
+	$(INSTALL) $(INSTALL_ARGS_STRIP) ./nDPId '$(DESTDIR)$(PREFIX)/sbin'
+	$(INSTALL) $(INSTALL_ARGS_STRIP) ./examples/c-captured/c-captured '$(DESTDIR)$(PREFIX)/bin/nDPIsrvd-captured'
+	$(INSTALL) $(INSTALL_ARGS_STRIP) ./examples/c-json-stdout/c-json-stdout '$(DESTDIR)$(PREFIX)/bin/nDPIsrvd-json-dump'
+	$(INSTALL) $(INSTALL_ARGS_STRIP) ./examples/c-collectd/c-collectd '$(DESTDIR)$(PREFIX)/bin/nDPIsrvd-collectd'
+	$(INSTALL) ./dependencies/nDPIsrvd.py '$(DESTDIR)$(PREFIX)/share/nDPId/nDPIsrvd.py'
+	$(INSTALL) ./examples/py-flow-info/flow-info.py '$(DESTDIR)$(PREFIX)/bin/nDPIsrvd-flow-info.py'
 ifneq ($(GOCC),)
-	$(INSTALL) $(INSTALL_ARGS) -t '$(DESTDIR)$(PREFIX)/bin' examples/go-dashboard/go-dashboard
+	$(INSTALL) $(INSTALL_ARGS_STRIP) -t '$(DESTDIR)$(PREFIX)/bin' examples/go-dashboard/go-dashboard
 endif
 
 clean:

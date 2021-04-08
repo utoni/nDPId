@@ -560,6 +560,14 @@ static int parse_options(int argc, char ** argv)
     }
 
     errno = 0;
+    if (datadir[0] != '/')
+    {
+        fprintf(stderr,
+                "%s: PCAP capture directory must be absolut i.e. starting with `/', path given: `%s'\n",
+                argv[0],
+                datadir);
+        return 1;
+    }
     if (mkdir(datadir, S_IRWXU) != 0 && errno != EEXIST)
     {
         fprintf(stderr, "%s: Could not create directory %s: %s\n", argv[0], datadir, strerror(errno));
@@ -581,8 +589,8 @@ static int mainloop(void)
             return 1;
         }
 
-        enum nDPIsrvd_parse_return parse_ret = nDPIsrvd_parse(sock);
-        if (parse_ret != PARSE_OK)
+        enum nDPIsrvd_parse_return parse_ret = nDPIsrvd_parse_all(sock);
+        if (parse_ret != PARSE_NEED_MORE_DATA)
         {
             syslog(LOG_DAEMON | LOG_ERR, "nDPIsrvd parse failed with: %s", nDPIsrvd_enum_to_string(parse_ret));
             return 1;
@@ -645,6 +653,7 @@ int main(int argc, char ** argv)
     int retval = mainloop();
 
     nDPIsrvd_free(&sock);
+    daemonize_shutdown(pidfile);
     closelog();
 
     return retval;

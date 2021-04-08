@@ -1532,11 +1532,13 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
     serialize_and_send(reader_thread);
 }
 
-static void jsonize_format_error(struct nDPId_reader_thread * const reader_thread, uint32_t format_index)
+static void internal_format_error(ndpi_serializer * const serializer, char const * const format, uint32_t format_index)
 {
-    ndpi_serialize_string_string(&reader_thread->workflow->ndpi_serializer, "serializer-error", "format");
-    ndpi_serialize_string_uint32(&reader_thread->workflow->ndpi_serializer, "serializer-format-index", format_index);
-    serialize_and_send(reader_thread);
+    syslog(LOG_DAEMON | LOG_ERR,
+           "BUG: Internal error detected for format string `%s' at format index %u",
+           format,
+           format_index);
+    ndpi_reset_serializer(serializer);
 }
 
 static void vjsonize_basic_eventf(struct nDPId_reader_thread * const reader_thread, char const * format, va_list ap)
@@ -1582,7 +1584,7 @@ static void vjsonize_basic_eventf(struct nDPId_reader_thread * const reader_thre
                 }
                 else
                 {
-                    jsonize_format_error(reader_thread, format_index);
+                    internal_format_error(&reader_thread->workflow->ndpi_serializer, format, format_index);
                     return;
                 }
                 break;
@@ -1592,7 +1594,7 @@ static void vjsonize_basic_eventf(struct nDPId_reader_thread * const reader_thre
                 format_index++;
                 if (got_jsonkey != 1)
                 {
-                    jsonize_format_error(reader_thread, format_index);
+                    internal_format_error(&reader_thread->workflow->ndpi_serializer, format, format_index);
                     return;
                 }
                 if (*format == 'l')
@@ -1634,7 +1636,7 @@ static void vjsonize_basic_eventf(struct nDPId_reader_thread * const reader_thre
                 }
                 else
                 {
-                    jsonize_format_error(reader_thread, format_index);
+                    internal_format_error(&reader_thread->workflow->ndpi_serializer, format, format_index);
                     return;
                 }
                 format++;
@@ -1649,7 +1651,7 @@ static void vjsonize_basic_eventf(struct nDPId_reader_thread * const reader_thre
                 }
                 else
                 {
-                    jsonize_format_error(reader_thread, format_index);
+                    internal_format_error(&reader_thread->workflow->ndpi_serializer, format, format_index);
                     return;
                 }
                 break;
@@ -1663,16 +1665,17 @@ static void vjsonize_basic_eventf(struct nDPId_reader_thread * const reader_thre
                 }
                 else
                 {
-                    jsonize_format_error(reader_thread, format_index);
+                    internal_format_error(&reader_thread->workflow->ndpi_serializer, format, format_index);
                     return;
                 }
                 break;
+            /* format string separators */
             case ' ':
             case ',':
             case '%':
                 break;
             default:
-                jsonize_format_error(reader_thread, format_index);
+                internal_format_error(&reader_thread->workflow->ndpi_serializer, format, format_index);
                 return;
         }
     }
@@ -2202,9 +2205,9 @@ static void ndpi_process_packet(uint8_t * const args,
 
     if (tree_result == NULL)
     {
-        /* flow still not found, must be new */
+        /* flow still not found, must be new or midstream */
 
-        if (nDPId_options.process_internal_initial_direction != 0)
+        if (nDPId_options.process_internal_initial_direction != 0 && flow_basic.tcp_is_midstream_flow == 0)
         {
             if (is_ip_in_subnet(&flow_basic.src,
                                 &nDPId_options.pcap_dev_netmask,
@@ -2231,7 +2234,7 @@ static void ndpi_process_packet(uint8_t * const args,
                 return;
             }
         }
-        else if (nDPId_options.process_external_initial_direction != 0)
+        else if (nDPId_options.process_external_initial_direction != 0 && flow_basic.tcp_is_midstream_flow == 0)
         {
             if (is_ip_in_subnet(&flow_basic.src,
                                 &nDPId_options.pcap_dev_netmask,
@@ -2761,7 +2764,7 @@ static int nDPId_parse_options(int argc, char ** argv)
         "[-d] [-p pidfile]\n"
         "\t  \t"
         "[-u user] [-g group] "
-        "[-P path] [-C path] "
+        "[-P path] [-C path] [-J path] "
         "[-a instance-alias] "
         "[-o subopt=value]\n\n"
         "\t-i\tInterface or file from where to read packets from.\n"
@@ -2932,6 +2935,10 @@ static int validate_options(char const * const arg0)
 {
     int retval = 0;
 
+    if (is_path_absolute("JSON socket", nDPId_options.json_sockpath) != 0)
+    {
+        retval = 1;
+    }
     if (nDPId_options.instance_alias == NULL)
     {
         char hname[256];

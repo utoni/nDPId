@@ -3,10 +3,14 @@
 import os
 import sys
 
-sys.path.append(os.path.dirname(sys.argv[0]) + '/../../dependencies')
-import nDPIsrvd
-from nDPIsrvd import nDPIsrvdSocket, TermColor
-
+sys.path.append(os.path.dirname(sys.argv[0]) + '/../usr/share/nDPId')
+try:
+    import nDPIsrvd
+    from nDPIsrvd import nDPIsrvdSocket, TermColor
+except ModuleNotFoundError:
+    sys.path.append(os.path.dirname(sys.argv[0]) + '/../../dependencies')
+    import nDPIsrvd
+    from nDPIsrvd import nDPIsrvdSocket, TermColor
 
 def onJsonLineRecvd(json_dict, current_flow, global_user_data):
     print(json_dict)

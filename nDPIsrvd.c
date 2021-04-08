@@ -277,10 +277,18 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
     {
         nDPIsrvd_options.pidfile = strdup(nDPIsrvd_PIDFILE);
     }
+    if (is_path_absolute("Pidfile", nDPIsrvd_options.pidfile) != 0)
+    {
+        return 1;
+    }
 
     if (nDPIsrvd_options.json_sockpath == NULL)
     {
         nDPIsrvd_options.json_sockpath = strdup(COLLECTOR_UNIX_SOCKET);
+    }
+    if (is_path_absolute("JSON socket", nDPIsrvd_options.json_sockpath) != 0)
+    {
+        return 1;
     }
 
     if (nDPIsrvd_options.serv_optarg == NULL)
@@ -293,6 +301,10 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
         fprintf(stderr, "%s: Could not parse address `%s'\n", argv[0], nDPIsrvd_options.serv_optarg);
         return 1;
     }
+    if (serv_address.raw.sa_family == AF_UNIX && is_path_absolute("SERV socket", nDPIsrvd_options.serv_optarg) != 0)
+    {
+        return 1;
+    }
 
     if (optind < argc)
     {
@@ -301,6 +313,28 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
     }
 
     return 0;
+}
+
+static struct remote_desc * accept_remote(int server_fd,
+                                          enum sock_type socktype,
+                                          struct sockaddr * const sockaddr,
+                                          socklen_t * const addrlen)
+{
+    int client_fd = accept(server_fd, sockaddr, addrlen);
+    if (client_fd < 0)
+    {
+        syslog(LOG_DAEMON | LOG_ERR, "Accept failed: %s", strerror(errno));
+        return NULL;
+    }
+
+    struct remote_desc * current = get_unused_remote_descriptor(socktype, client_fd);
+    if (current == NULL)
+    {
+        syslog(LOG_DAEMON | LOG_ERR, "Max number of connections reached: %zu", remotes.desc_used);
+        return NULL;
+    }
+
+    return current;
 }
 
 static int new_connection(int epollfd, int eventfd)
@@ -330,17 +364,9 @@ static int new_connection(int epollfd, int eventfd)
         return 1;
     }
 
-    int client_fd = accept(server_fd, (struct sockaddr *)&sockaddr, &peer_addr_len);
-    if (client_fd < 0)
-    {
-        syslog(LOG_DAEMON | LOG_ERR, "Accept failed: %s", strerror(errno));
-        return 1;
-    }
-
-    struct remote_desc * current = get_unused_remote_descriptor(stype, client_fd);
+    struct remote_desc * current = accept_remote(server_fd, stype, (struct sockaddr *)&sockaddr, &peer_addr_len);
     if (current == NULL)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "Max number of connections reached: %zu", remotes.desc_used);
         return 1;
     }
 
@@ -628,6 +654,11 @@ static int handle_incoming_data_event(int epollfd, struct epoll_event * const ev
 {
     struct remote_desc * current = (struct remote_desc *)event->data.ptr;
 
+    if ((event->events & EPOLLIN) == 0)
+    {
+        return 1;
+    }
+
     if (current == NULL)
     {
         syslog(LOG_DAEMON | LOG_ERR, "%s", "remote descriptor got from event data invalid");
@@ -637,11 +668,6 @@ static int handle_incoming_data_event(int epollfd, struct epoll_event * const ev
     if (current->fd < 0)
     {
         syslog(LOG_DAEMON | LOG_ERR, "file descriptor `%d' got from event data invalid", current->fd);
-        return 1;
-    }
-
-    if ((event->events & EPOLLIN) == 0)
-    {
         return 1;
     }
 

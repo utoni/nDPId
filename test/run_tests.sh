@@ -1,11 +1,19 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 set -e
 
 LINE_SPACES=${LINE_SPACES:-48}
 MYDIR="$(realpath "$(dirname ${0})")"
 nDPId_test_EXEC="${2:-"$(realpath "${MYDIR}/../nDPId-test")"}"
-nDPI_SOURCE_ROOT="${1}"
+nDPI_SOURCE_ROOT="$(realpath "${1}")"
+LOCKFILE="$(realpath "${0}").lock"
+
+touch "${LOCKFILE}"
+exec 42< "${LOCKFILE}"
+flock -x -n 42 || {
+    printf '%s\n' "Could not aquire file lock for ${0}. Already running instance?";
+    exit 1;
+}
 
 if [ $# -ne 1 -a $# -ne 2 ]; then
 cat <<EOF
@@ -36,16 +44,24 @@ mkdir -p /tmp/nDPId-test-stderr
 set +e
 RETVAL=0
 for pcap_file in $(ls *.pcap*); do
+    printf '%s\n' "${nDPId_test_EXEC} ${pcap_file}" \
+        >"/tmp/nDPId-test-stderr/${pcap_file}.out"
+
     ${nDPId_test_EXEC} "${pcap_file}" \
         >"${MYDIR}/results/${pcap_file}.out.new" \
-        2>"/tmp/nDPId-test-stderr/${pcap_file}.out"
+        2>>"/tmp/nDPId-test-stderr/${pcap_file}.out"
+
+    printf "%-${LINE_SPACES}s\t" "${pcap_file}"
 
     if [ $? -eq 0 ]; then
-        if diff -u0 "${MYDIR}/results/${pcap_file}.out" \
-                    "${MYDIR}/results/${pcap_file}.out.new" >/dev/null; then
-            printf "%-${LINE_SPACES}s\t%s\n" "${pcap_file}" '[OK]'
+        if [ ! -r "${MYDIR}/results/${pcap_file}.out" ]; then
+            printf '%s\n' '[NEW]'
+            RETVAL=1
+        elif diff -u0 "${MYDIR}/results/${pcap_file}.out" \
+                      "${MYDIR}/results/${pcap_file}.out.new" >/dev/null; then
+            printf '%s\n' '[OK]'
         else
-            printf "%-${LINE_SPACES}s\t%s\n" "${pcap_file}" '[DIFF]'
+            printf '%s\n' '[DIFF]'
             diff -u0 "${MYDIR}/results/${pcap_file}.out" \
                      "${MYDIR}/results/${pcap_file}.out.new"
             mv -v "${MYDIR}/results/${pcap_file}.out.new" \
@@ -53,7 +69,7 @@ for pcap_file in $(ls *.pcap*); do
             RETVAL=1
         fi
     else
-        printf "%-${LINE_SPACES}s\t%s\n" "${pcap_file}" '[FAIL]'
+        printf '%s\n' '[FAIL]'
         printf '%s\n' '----------------------------------------'
         printf '%s\n' "-- STDERR of ${pcap_file}"
         cat "/tmp/nDPId-test-stderr/${pcap_file}.out"
@@ -61,6 +77,15 @@ for pcap_file in $(ls *.pcap*); do
     fi
 
     rm -f "${MYDIR}/results/${pcap_file}.out.new"
+done
+
+cd "${MYDIR}"
+for out_file in $(ls results/*.out); do
+    pcap_file="${nDPI_TEST_DIR}/$(basename ${out_file%.out})"
+    if [ ! -r "${pcap_file}" ]; then
+        printf "%-${LINE_SPACES}s\t%s\n" "$(basename ${pcap_file})" '[MISSING]'
+        RETVAL=1
+    fi
 done
 
 exit ${RETVAL}
