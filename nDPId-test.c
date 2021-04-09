@@ -264,7 +264,9 @@ static void * nDPId_mainloop_thread(void * const arg)
     reader_threads[0].json_sockfd = mock_pipefds[PIPE_nDPId];
     reader_threads[0].json_sock_reconnect = 0;
 
+    jsonize_daemon(&reader_threads[0], DAEMON_EVENT_INIT);
     run_pcap_loop(&reader_threads[0]);
+    process_remaining_flows();
     free_reader_threads();
 
     close(mock_pipefds[PIPE_nDPId]);

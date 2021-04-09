@@ -2592,6 +2592,25 @@ static void ndpi_shutdown_walker(void const * const A, ndpi_VISIT which, int dep
     }
 }
 
+static void process_remaining_flows(void)
+{
+    for (unsigned long long int i = 0; i < nDPId_options.reader_thread_count; ++i)
+    {
+        for (size_t idle_scan_index = 0; idle_scan_index < reader_threads[i].workflow->max_active_flows;
+             ++idle_scan_index)
+        {
+            ndpi_twalk(reader_threads[i].workflow->ndpi_flows_active[idle_scan_index],
+                       ndpi_shutdown_walker,
+                       reader_threads[i].workflow);
+            process_idle_flow(&reader_threads[i], idle_scan_index);
+        }
+
+        jsonize_daemon(&reader_threads[i], DAEMON_EVENT_SHUTDOWN);
+        close(reader_threads[i].json_sockfd);
+        reader_threads[i].json_sockfd = -1;
+    }
+}
+
 static int stop_reader_threads(void)
 {
     unsigned long long int total_packets_processed = 0;
@@ -2621,21 +2640,7 @@ static int stop_reader_threads(void)
     }
 
     printf("------------------------------------ Processing remaining flows\n");
-    for (unsigned long long int i = 0; i < nDPId_options.reader_thread_count; ++i)
-    {
-        for (size_t idle_scan_index = 0; idle_scan_index < reader_threads[i].workflow->max_active_flows;
-             ++idle_scan_index)
-        {
-            ndpi_twalk(reader_threads[i].workflow->ndpi_flows_active[idle_scan_index],
-                       ndpi_shutdown_walker,
-                       reader_threads[i].workflow);
-            process_idle_flow(&reader_threads[i], idle_scan_index);
-        }
-
-        jsonize_daemon(&reader_threads[i], DAEMON_EVENT_SHUTDOWN);
-        close(reader_threads[i].json_sockfd);
-        reader_threads[i].json_sockfd = -1;
-    }
+    process_remaining_flows();
 
     printf("------------------------------------ Results\n");
     for (unsigned long long int i = 0; i < nDPId_options.reader_thread_count; ++i)
