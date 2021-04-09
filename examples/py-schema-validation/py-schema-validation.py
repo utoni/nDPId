@@ -7,7 +7,7 @@ sys.path.append(os.path.dirname(sys.argv[0]) + '/../usr/share/nDPId')
 try:
     import nDPIsrvd
     from nDPIsrvd import nDPIsrvdSocket, TermColor
-except ModuleNotFoundError:
+except ImportError:
     sys.path.append(os.path.dirname(sys.argv[0]) + '/../../dependencies')
     import nDPIsrvd
     from nDPIsrvd import nDPIsrvdSocket, TermColor
@@ -43,4 +43,7 @@ if __name__ == '__main__':
 
     nsock = nDPIsrvdSocket()
     nsock.connect(address)
-    nsock.loop(onJsonLineRecvd, Stats())
+    try:
+        nsock.loop(onJsonLineRecvd, Stats())
+    except nDPIsrvd.SocketConnectionBroken as err:
+        sys.stderr.write('\n{}\n'.format(err))

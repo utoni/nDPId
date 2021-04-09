@@ -59,6 +59,9 @@
         "tcp-max-post-end-flow-time": {
             "type": "number"
         },
+        "max-packets-per-flow-to-process": {
+            "type": "number"
+        },
         "max-packets-per-flow-to-send": {
             "type": "number"
         }

@@ -6,16 +6,21 @@ import base64
 import json
 import re
 import os
-import scapy.all
 import stat
 import socket
 import sys
+
 try:
     from colorama import Back, Fore, Style
     USE_COLORAMA=True
-except ModuleNotFoundError:
-    print('Python module colorama not found, using fallback.')
+except ImportError:
+    sys.stderr.write('Python module colorama not found, using fallback.\n')
     USE_COLORAMA=False
+
+try:
+    import scapy.all
+except ImportError:
+    sys.stderr.write('Python module scapy not found, PCAP generation will fail!\n')
 
 DEFAULT_HOST = '127.0.0.1'
 DEFAULT_PORT = 7000
@@ -108,6 +113,52 @@ class FlowManager:
 
         return flow
 
+class nDPIsrvdException(Exception):
+    UNSUPPORTED_ADDRESS_TYPE = 1
+    BUFFER_CAPACITY_REACHED  = 2
+    SOCKET_CONNECTION_BROKEN = 3
+    INVALID_LINE_RECEIVED    = 4
+    CALLBACK_RETURNED_FALSE  = 5
+
+    def __init__(self, etype):
+        self.etype = etype
+    def __str__(self):
+        return 'nDPIsrvdException type {}'.format(self.etype)
+
+class UnsupportedAddressType(nDPIsrvdException):
+    def __init__(self, addr):
+        super().__init__(nDPIsrvdException.UNSUPPORTED_ADDRESS_TYPE)
+        self.addr = addr
+    def __str__(self):
+        return '{}'.format(str(self.addr))
+
+class BufferCapacityReached(nDPIsrvdException):
+    def __init__(self, current_length, max_length):
+        super().__init__(nDPIsrvdException.BUFFER_CAPACITY_REACHED)
+        self.current_length = current_length
+        self.max_length = max_length
+    def __str__(self):
+        return '{} of {} bytes'.format(self.current_length, self.max_length)
+
+class SocketConnectionBroken(nDPIsrvdException):
+    def __init__(self):
+        super().__init__(nDPIsrvdException.SOCKET_CONNECTION_BROKEN)
+    def __str__(self):
+        return 'Disconnected.'
+
+class InvalidLineReceived(nDPIsrvdException):
+    def __init__(self, packet_buffer):
+        super().__init__(nDPIsrvdException.INVALID_LINE_RECEIVED)
+        self.packet_buffer = packet_buffer
+    def __str__(self):
+        return 'Received JSON line is invalid.'
+
+class CallbackReturnedFalse(nDPIsrvdException):
+    def __init__(self):
+        super().__init__(nDPIsrvdException.CALLBACK_RETURNED_FALSE)
+    def __str__(self):
+        return 'Callback returned False, abort.'
+
 class nDPIsrvdSocket:
     def __init__(self):
         self.sock_family = None
@@ -119,7 +170,7 @@ class nDPIsrvdSocket:
         elif type(addr) is str:
             self.sock_family = socket.AF_UNIX
         else:
-            raise RuntimeError('Unsupported address type:: {}'.format(str(addr)))
+            raise UnsupportedAddressType(addr)
 
         self.sock = socket.socket(self.sock_family, socket.SOCK_STREAM)
         self.sock.connect(addr)
@@ -130,12 +181,15 @@ class nDPIsrvdSocket:
 
     def receive(self):
         if len(self.buffer) == NETWORK_BUFFER_MAX_SIZE:
-            raise RuntimeError('Buffer capacity reached ({} bytes), check if it is in sync with nDPId\'s NETWORK_BUFFER_MAX_SIZE.'.format(NETWORK_BUFFER_MAX_SIZE))
+            raise BufferCapacityReached(len(self.buffer), NETWORK_BUFFER_MAX_SIZE)
 
-        recvd = self.sock.recv(NETWORK_BUFFER_MAX_SIZE - len(self.buffer))
+        try:
+            recvd = self.sock.recv(NETWORK_BUFFER_MAX_SIZE - len(self.buffer))
+        except ConnectionResetError:
+            raise SocketConnectionBroken()
 
         if len(recvd) == 0:
-            raise RuntimeError('Socket connection broken.')
+            raise SocketConnectionBroken()
         self.buffer += recvd
 
         new_data_avail = False
@@ -146,9 +200,9 @@ class nDPIsrvdSocket:
                 if starts_with_digits is None:
                     if len(self.buffer) < NETWORK_BUFFER_MIN_SIZE:
                         break
-                    raise RuntimeError('Invalid packet received: {}'.format(self.buffer))
-                self.msglen = int(starts_with_digits[1])
-                self.digitlen = len(starts_with_digits[1])
+                    raise InvalidLineReceived(self.buffer)
+                self.msglen = int(starts_with_digits.group(1))
+                self.digitlen = len(starts_with_digits.group(1))
 
             if len(self.buffer) >= self.msglen + self.digitlen:
                 recvd = self.buffer[self.digitlen:self.msglen + self.digitlen]
@@ -179,7 +233,7 @@ class nDPIsrvdSocket:
         while True:
             if self.receive() > 0:
                 if self.parse(callback, global_user_data) is False:
-                    raise RuntimeError('Callback returned False, abort.')
+                    raise CallbackReturnedFalse()
                     break;
 
 class PcapPacket:
