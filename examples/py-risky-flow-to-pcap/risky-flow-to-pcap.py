@@ -4,6 +4,7 @@ import base64
 import os
 import sys
 
+sys.path.append(os.path.dirname(sys.argv[0]) + '/../share/nDPId')
 sys.path.append(os.path.dirname(sys.argv[0]) + '/../usr/share/nDPId')
 try:
     import nDPIsrvd

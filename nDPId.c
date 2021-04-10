@@ -26,8 +26,8 @@
 #define UNIX_PATH_MAX 108
 #endif
 
-#if ((NDPI_MAJOR == 3 && NDPI_MINOR < 6) || NDPI_MAJOR < 3) && NDPI_API_VERSION < 4087
-#error "nDPI >= 3.6.0 or API version >= 4087 required"
+#if ((NDPI_MAJOR == 3 && NDPI_MINOR < 5) || NDPI_MAJOR < 3) && NDPI_API_VERSION < 4087
+#error "nDPI >= 3.5.0 or API version >= 4087 required"
 #endif
 
 #if !defined(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4) || !defined(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_8)
@@ -47,7 +47,10 @@ union nDPId_ip {
     } v4;
     struct
     {
-        uint64_t ip6[2];
+        union {
+            uint64_t ip[2];
+            uint32_t ip_u32[4];
+        };
     } v6;
 };
 
@@ -253,6 +256,7 @@ static char const * const daemon_event_name_table[DAEMON_EVENT_COUNT] = {
 static struct nDPId_reader_thread reader_threads[nDPId_MAX_READER_THREADS] = {};
 static int nDPId_main_thread_shutdown = 0;
 static uint64_t global_flow_id = 1;
+static int ip4_interface_avail = 0, ip6_interface_avail = 0;
 
 #ifdef ENABLE_MEMORY_PROFILING
 static uint64_t ndpi_memory_alloc_count = 0;
@@ -265,9 +269,9 @@ static struct
 {
     /* opts */
     char * pcap_file_or_interface;
-    union nDPId_ip pcap_dev_ip;
-    union nDPId_ip pcap_dev_netmask;
-    union nDPId_ip pcap_dev_subnet;
+    union nDPId_ip pcap_dev_ip4, pcap_dev_ip6;
+    union nDPId_ip pcap_dev_netmask4, pcap_dev_netmask6;
+    union nDPId_ip pcap_dev_subnet4, pcap_dev_subnet6;
     uint8_t process_internal_initial_direction;
     uint8_t process_external_initial_direction;
     char * bpf_str;
@@ -333,9 +337,9 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
                                struct nDPId_flow_info * const flow,
                                enum flow_event event);
 
-static void ip_netmask_to_subnet(union nDPId_ip * ip,
-                                 union nDPId_ip * netmask,
-                                 union nDPId_ip * subnet,
+static void ip_netmask_to_subnet(union nDPId_ip const * const ip,
+                                 union nDPId_ip const * const netmask,
+                                 union nDPId_ip * const subnet,
                                  enum nDPId_l3_type type)
 {
     switch (type)
@@ -344,51 +348,199 @@ static void ip_netmask_to_subnet(union nDPId_ip * ip,
             subnet->v4.ip = ip->v4.ip & netmask->v4.ip;
             break;
         case L3_IP6:
-            subnet->v6.ip6[0] = ip->v6.ip6[0] & netmask->v6.ip6[0];
-            subnet->v6.ip6[1] = ip->v6.ip6[1] & netmask->v6.ip6[1];
+            subnet->v6.ip[0] = ip->v6.ip[0] & netmask->v6.ip[0];
+            subnet->v6.ip[1] = ip->v6.ip[1] & netmask->v6.ip[1];
             break;
     }
 }
 
-static int is_ip_in_subnet(union nDPId_ip * cmp_ip,
-                           union nDPId_ip * netmask,
-                           union nDPId_ip * cmp_subnet,
-                           enum nDPId_l3_type type)
+static int is_ip_in_subnet(union nDPId_ip const * const cmp_ip,
+                           union nDPId_ip const * const netmask,
+                           union nDPId_ip const * const cmp_subnet,
+                           enum nDPId_l3_type const type)
 {
     switch (type)
     {
         case L3_IP:
             return (cmp_ip->v4.ip & netmask->v4.ip) == cmp_subnet->v4.ip;
         case L3_IP6:
-            return (cmp_ip->v6.ip6[0] & netmask->v6.ip6[0]) == cmp_subnet->v6.ip6[0] &&
-                   (cmp_ip->v6.ip6[1] & netmask->v6.ip6[1]) == cmp_subnet->v6.ip6[1];
+            return (cmp_ip->v6.ip[0] & netmask->v6.ip[0]) == cmp_subnet->v6.ip[0] &&
+                   (cmp_ip->v6.ip[1] & netmask->v6.ip[1]) == cmp_subnet->v6.ip[1];
     }
 
     return 0;
 }
 
-static void get_v4_ip_from_sockaddr(struct sockaddr_in * saddr, union nDPId_ip * dest)
+static void get_ip_from_sockaddr(struct sockaddr const * const saddr, union nDPId_ip * dest)
 {
-    dest->v4.ip = saddr->sin_addr.s_addr;
+    switch (saddr->sa_family)
+    {
+        case AF_INET:
+            dest->v4.ip = ((struct sockaddr_in *)saddr)->sin_addr.s_addr;
+            break;
+        case AF_INET6:
+            dest->v6.ip_u32[0] = ((struct sockaddr_in6 *)saddr)->sin6_addr.s6_addr32[0];
+            dest->v6.ip_u32[1] = ((struct sockaddr_in6 *)saddr)->sin6_addr.s6_addr32[1];
+            dest->v6.ip_u32[2] = ((struct sockaddr_in6 *)saddr)->sin6_addr.s6_addr32[2];
+            dest->v6.ip_u32[3] = ((struct sockaddr_in6 *)saddr)->sin6_addr.s6_addr32[3];
+            break;
+    }
 }
 
-#if 0
-static void get_v6_ip_from_sockaddr(struct sockaddr_in6 * saddr, union nDPId_ip * dest)
+static int get_ip6_address_and_netmask(char const * const ifa_name, size_t ifnamelen)
 {
-    dest->v6.ip6[0] = *(uint64_t *)&saddr->sin6_addr.s6_addr[0];
-    dest->v6.ip6[0] = *(uint64_t *)&saddr->sin6_addr.s6_addr[7];
-}
-#endif
+    FILE * f;
+    char addr6[INET6_ADDRSTRLEN], netmask6[INET6_ADDRSTRLEN], subnet6[INET6_ADDRSTRLEN], devname[21];
+    struct sockaddr_in6 sap;
+    int plen, scope, dad_status, if_idx, retval = 0;
+    char addr6p[8][5];
 
-/*
- * Only IPv4 supported for now!
- * IPv6 support planned via /proc/net/if_inet6
- */
+    f = fopen("/proc/net/if_inet6", "r");
+    if (f == NULL)
+    {
+        return 1;
+    }
+
+    while (fscanf(f,
+                  "%4s%4s%4s%4s%4s%4s%4s%4s %08x %02x %02x %02x %20s\n",
+                  addr6p[0],
+                  addr6p[1],
+                  addr6p[2],
+                  addr6p[3],
+                  addr6p[4],
+                  addr6p[5],
+                  addr6p[6],
+                  addr6p[7],
+                  &if_idx,
+                  &plen,
+                  &scope,
+                  &dad_status,
+                  devname) != EOF)
+    {
+        if (strncmp(devname, ifa_name, ifnamelen) == 0)
+        {
+            sprintf(addr6,
+                    "%s:%s:%s:%s:%s:%s:%s:%s",
+                    addr6p[0],
+                    addr6p[1],
+                    addr6p[2],
+                    addr6p[3],
+                    addr6p[4],
+                    addr6p[5],
+                    addr6p[6],
+                    addr6p[7]);
+
+            memset(&sap, 0, sizeof(sap));
+            if (inet_pton(AF_INET6, addr6, (struct sockaddr *)&sap.sin6_addr) != 1)
+            {
+                retval = 1;
+                goto error;
+            }
+            inet_ntop(AF_INET6, &sap.sin6_addr, addr6, sizeof(addr6));
+            sap.sin6_family = AF_INET6;
+            get_ip_from_sockaddr((struct sockaddr *)&sap, &nDPId_options.pcap_dev_ip6);
+
+            memset(&sap, 0, sizeof(sap));
+            memset(&sap.sin6_addr.s6_addr, 0xFF, plen / 8);
+            if (plen < 128 && (plen % 32) != 0)
+            {
+                sap.sin6_addr.s6_addr32[plen / 32] = 0xFFFFFFFF << (32 - (plen % 32));
+            }
+            inet_ntop(AF_INET6, &sap.sin6_addr, netmask6, sizeof(netmask6));
+            sap.sin6_family = AF_INET6;
+            get_ip_from_sockaddr((struct sockaddr *)&sap, &nDPId_options.pcap_dev_netmask6);
+
+            ip_netmask_to_subnet(&nDPId_options.pcap_dev_ip6,
+                                 &nDPId_options.pcap_dev_netmask6,
+                                 &nDPId_options.pcap_dev_subnet6,
+                                 L3_IP6);
+            inet_ntop(AF_INET6, &nDPId_options.pcap_dev_subnet6.v6, subnet6, sizeof(subnet6));
+
+            syslog(LOG_DAEMON,
+                   "%s IPv6 address/prefix netmask subnet: %s/%u %s %s",
+                   nDPId_options.pcap_file_or_interface,
+                   addr6,
+                   plen,
+                   netmask6,
+                   subnet6);
+        }
+    }
+
+error:
+    fclose(f);
+
+    return retval;
+}
+
+static int get_ip4_address_and_netmask(char const * const ifa_name, size_t ifnamelen)
+{
+    int retval = 0;
+    int sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_IP);
+    struct ifreq ifr;
+
+    if (sock < 0)
+    {
+        retval = 1;
+        goto error;
+    }
+    if (ifnamelen >= sizeof(ifr.ifr_name))
+    {
+        retval = 1;
+        goto error;
+    }
+
+    memset(&ifr, 0, sizeof(ifr));
+    memcpy(ifr.ifr_name, ifa_name, ifnamelen);
+    ifr.ifr_name[ifnamelen] = '\0';
+    ifr.ifr_netmask.sa_family = AF_INET;
+    if (ioctl(sock, SIOCGIFNETMASK, &ifr) == -1)
+    {
+        retval = 1;
+        goto error;
+    }
+    get_ip_from_sockaddr(&ifr.ifr_netmask, &nDPId_options.pcap_dev_netmask4);
+
+    memset(&ifr, 0, sizeof(ifr));
+    memcpy(ifr.ifr_name, ifa_name, ifnamelen);
+    ifr.ifr_name[ifnamelen] = '\0';
+    ifr.ifr_addr.sa_family = AF_INET;
+    if (ioctl(sock, SIOCGIFADDR, &ifr) == -1)
+    {
+        retval = 1;
+        goto error;
+    }
+    get_ip_from_sockaddr(&ifr.ifr_netmask, &nDPId_options.pcap_dev_ip4);
+
+    ip_netmask_to_subnet(&nDPId_options.pcap_dev_ip4,
+                         &nDPId_options.pcap_dev_netmask4,
+                         &nDPId_options.pcap_dev_subnet4,
+                         L3_IP);
+
+    {
+        char addr[INET_ADDRSTRLEN];
+        char netm[INET_ADDRSTRLEN];
+        char subn[INET_ADDRSTRLEN];
+        void * saddr = &nDPId_options.pcap_dev_ip4.v4.ip;
+        void * snetm = &nDPId_options.pcap_dev_netmask4.v4.ip;
+        void * ssubn = &nDPId_options.pcap_dev_subnet4.v4.ip;
+        syslog(LOG_DAEMON,
+               "%s IPv4 address netmask subnet: %s %s %s",
+               nDPId_options.pcap_file_or_interface,
+               inet_ntop(AF_INET, saddr, addr, sizeof(addr)),
+               inet_ntop(AF_INET, snetm, netm, sizeof(netm)),
+               inet_ntop(AF_INET, ssubn, subn, sizeof(subn)));
+    }
+
+error:
+    close(sock);
+    return retval;
+}
+
 static int get_ip_netmask_from_pcap_dev(char const * const pcap_dev)
 {
+    int retval = 0, found_dev = 0;
     struct ifaddrs * ifaddrs = NULL;
     struct ifaddrs * ifa;
-    int sock = -1;
 
     if (getifaddrs(&ifaddrs) != 0 || ifaddrs == NULL)
     {
@@ -402,91 +554,45 @@ static int get_ip_netmask_from_pcap_dev(char const * const pcap_dev)
             continue;
         }
 
-        size_t ifnamelen = strlen(ifa->ifa_name);
-        enum nDPId_l3_type type;
-
-        switch (ifa->ifa_addr->sa_family)
+        size_t ifnamelen = strnlen(ifa->ifa_name, IFNAMSIZ);
+        if (strncmp(ifa->ifa_name, pcap_dev, IFNAMSIZ) == 0 && ifnamelen == strnlen(pcap_dev, IFNAMSIZ))
         {
-            case AF_INET:
-                type = L3_IP;
-                break;
-            case AF_INET6:
-                type = L3_IP6;
-                break;
-            default:
-                continue;
+            found_dev = 1;
+            switch (ifa->ifa_addr->sa_family)
+            {
+                case AF_INET:
+                    if (ip4_interface_avail == 0 && get_ip4_address_and_netmask(ifa->ifa_name, ifnamelen) != 0)
+                    {
+                        retval = 1;
+                    }
+                    ip4_interface_avail = 1;
+                    break;
+                case AF_INET6:
+                    if (ip6_interface_avail == 0 && get_ip6_address_and_netmask(ifa->ifa_name, ifnamelen) != 0)
+                    {
+                        retval = 1;
+                    }
+                    ip6_interface_avail = 1;
+                    break;
+                default:
+                    break;
+            }
         }
+    }
 
-        if (strcmp(ifa->ifa_name, pcap_dev) == 0 && ifnamelen == strlen(pcap_dev))
-        {
-            if (type == L3_IP6)
-            {
-                syslog(LOG_DAEMON, "IPv6 network interfaces in combination with -I / -E is not supported for now");
-                continue;
-            }
-
-            sock = socket(ifa->ifa_addr->sa_family, SOCK_DGRAM, IPPROTO_IP);
-            struct ifreq ifr;
-
-            if (sock < 0)
-            {
-                break;
-            }
-            if (ifnamelen >= sizeof(ifr.ifr_name))
-            {
-                break;
-            }
-
-            memset(&ifr, 0, sizeof(ifr));
-            memcpy(ifr.ifr_name, ifa->ifa_name, ifnamelen);
-            ifr.ifr_name[ifnamelen] = '\0';
-            ifr.ifr_netmask.sa_family = ifa->ifa_addr->sa_family;
-            if (ioctl(sock, SIOCGIFNETMASK, &ifr) == -1)
-            {
-                break;
-            }
-            get_v4_ip_from_sockaddr((struct sockaddr_in *)&ifr.ifr_netmask, &nDPId_options.pcap_dev_netmask);
-
-            memset(&ifr, 0, sizeof(ifr));
-            memcpy(ifr.ifr_name, ifa->ifa_name, ifnamelen);
-            ifr.ifr_name[ifnamelen] = '\0';
-            ifr.ifr_addr.sa_family = ifa->ifa_addr->sa_family;
-            if (ioctl(sock, SIOCGIFADDR, &ifr) == -1)
-            {
-                break;
-            }
-            get_v4_ip_from_sockaddr((struct sockaddr_in *)&ifr.ifr_netmask, &nDPId_options.pcap_dev_ip);
-
-            ip_netmask_to_subnet(&nDPId_options.pcap_dev_ip,
-                                 &nDPId_options.pcap_dev_netmask,
-                                 &nDPId_options.pcap_dev_subnet,
-                                 type);
-
-            char addr[INET_ADDRSTRLEN];
-            char netm[INET_ADDRSTRLEN];
-            char subn[INET_ADDRSTRLEN];
-            void * saddr = &nDPId_options.pcap_dev_ip.v4.ip;
-            void * snetm = &nDPId_options.pcap_dev_netmask.v4.ip;
-            void * ssubn = &nDPId_options.pcap_dev_subnet.v4.ip;
-            syslog(LOG_DAEMON,
-                   "%s address/netmask/subnet: %s/%s/%s",
-                   nDPId_options.pcap_file_or_interface,
-                   inet_ntop(ifa->ifa_addr->sa_family, saddr, addr, sizeof(addr)),
-                   inet_ntop(ifa->ifa_addr->sa_family, snetm, netm, sizeof(netm)),
-                   inet_ntop(ifa->ifa_addr->sa_family, ssubn, subn, sizeof(subn)));
-
-            freeifaddrs(ifaddrs);
-            close(sock);
-            return 0;
-        }
+    if (found_dev != 0 &&
+        (nDPId_options.process_internal_initial_direction != 0 ||
+         nDPId_options.process_external_initial_direction != 0) &&
+        ip4_interface_avail == 0 && ip6_interface_avail == 0)
+    {
+        syslog(LOG_DAEMON | LOG_ERR,
+               "Interface %s does not have any IPv4 / IPv6 address set, -I / -E won't work.",
+               pcap_dev);
+        retval = 1;
     }
 
     freeifaddrs(ifaddrs);
-    if (sock >= 0)
-    {
-        close(sock);
-    }
-    return 1;
+    return retval;
 }
 
 #ifdef ENABLE_MEMORY_PROFILING
@@ -756,10 +862,13 @@ static int setup_reader_threads(void)
         errno = 0;
         if (get_ip_netmask_from_pcap_dev(nDPId_options.pcap_file_or_interface) != 0)
         {
-            syslog(LOG_DAEMON | LOG_ERR,
-                   "Could not get netmask for pcap device %s: %s",
-                   nDPId_options.pcap_file_or_interface,
-                   strerror(errno));
+            if (errno != 0)
+            {
+                syslog(LOG_DAEMON | LOG_ERR,
+                       "Could not get netmask for pcap device %s: %s",
+                       nDPId_options.pcap_file_or_interface,
+                       strerror(errno));
+            }
             return 1;
         }
     }
@@ -804,8 +913,8 @@ static int ip_tuples_equal(struct nDPId_flow_basic const * const A, struct nDPId
     }
     else if (A->l3_type == L3_IP6 && B->l3_type == L3_IP6)
     {
-        return A->src.v6.ip6[0] == B->src.v6.ip6[0] && A->src.v6.ip6[1] == B->src.v6.ip6[1] &&
-               A->dst.v6.ip6[0] == B->dst.v6.ip6[0] && A->dst.v6.ip6[1] == B->dst.v6.ip6[1];
+        return A->src.v6.ip[0] == B->src.v6.ip[0] && A->src.v6.ip[1] == B->src.v6.ip[1] &&
+               A->dst.v6.ip[0] == B->dst.v6.ip[0] && A->dst.v6.ip[1] == B->dst.v6.ip[1];
     }
     return 0;
 }
@@ -832,13 +941,13 @@ static int ip_tuples_compare(struct nDPId_flow_basic const * const A, struct nDP
     }
     else if (A->l3_type == L3_IP6 && B->l3_type == L3_IP6)
     {
-        if ((A->src.v6.ip6[0] < B->src.v6.ip6[0] && A->src.v6.ip6[1] < B->src.v6.ip6[1]) ||
-            (A->dst.v6.ip6[0] < B->dst.v6.ip6[0] && A->dst.v6.ip6[1] < B->dst.v6.ip6[1]))
+        if ((A->src.v6.ip[0] < B->src.v6.ip[0] && A->src.v6.ip[1] < B->src.v6.ip[1]) ||
+            (A->dst.v6.ip[0] < B->dst.v6.ip[0] && A->dst.v6.ip[1] < B->dst.v6.ip[1]))
         {
             return -1;
         }
-        if ((A->src.v6.ip6[0] > B->src.v6.ip6[0] && A->src.v6.ip6[1] > B->src.v6.ip6[1]) ||
-            (A->dst.v6.ip6[0] > B->dst.v6.ip6[0] && A->dst.v6.ip6[1] > B->dst.v6.ip6[1]))
+        if ((A->src.v6.ip[0] > B->src.v6.ip[0] && A->src.v6.ip[1] > B->src.v6.ip[1]) ||
+            (A->dst.v6.ip[0] > B->dst.v6.ip[0] && A->dst.v6.ip[1] > B->dst.v6.ip[1]))
         {
             return 1;
         }
@@ -1047,11 +1156,11 @@ static void jsonize_l3_l4(struct nDPId_workflow * const workflow, struct nDPId_f
             break;
         case L3_IP6:
             ndpi_serialize_string_string(serializer, "l3_proto", "ip6");
-            if (inet_ntop(AF_INET6, &flow->flow_basic.src.v6.ip6[0], src_name, sizeof(src_name)) == NULL)
+            if (inet_ntop(AF_INET6, &flow->flow_basic.src.v6.ip[0], src_name, sizeof(src_name)) == NULL)
             {
                 syslog(LOG_DAEMON | LOG_ERR, "Could not convert IPv6 source ip to string: %s", strerror(errno));
             }
-            if (inet_ntop(AF_INET6, &flow->flow_basic.dst.v6.ip6[0], dst_name, sizeof(dst_name)) == NULL)
+            if (inet_ntop(AF_INET6, &flow->flow_basic.dst.v6.ip[0], dst_name, sizeof(dst_name)) == NULL)
             {
                 syslog(LOG_DAEMON | LOG_ERR, "Could not convert IPv6 destination ip to string: %s", strerror(errno));
             }
@@ -2057,20 +2166,20 @@ static void ndpi_process_packet(uint8_t * const args,
             return;
         }
 
-        flow_basic.src.v6.ip6[0] = ip6->ip6_src.u6_addr.u6_addr64[0];
-        flow_basic.src.v6.ip6[1] = ip6->ip6_src.u6_addr.u6_addr64[1];
-        flow_basic.dst.v6.ip6[0] = ip6->ip6_dst.u6_addr.u6_addr64[0];
-        flow_basic.dst.v6.ip6[1] = ip6->ip6_dst.u6_addr.u6_addr64[1];
+        flow_basic.src.v6.ip[0] = ip6->ip6_src.u6_addr.u6_addr64[0];
+        flow_basic.src.v6.ip[1] = ip6->ip6_src.u6_addr.u6_addr64[1];
+        flow_basic.dst.v6.ip[0] = ip6->ip6_dst.u6_addr.u6_addr64[0];
+        flow_basic.dst.v6.ip[1] = ip6->ip6_dst.u6_addr.u6_addr64[1];
         uint64_t min_addr[2];
-        if (flow_basic.src.v6.ip6[0] > flow_basic.dst.v6.ip6[0] && flow_basic.src.v6.ip6[1] > flow_basic.dst.v6.ip6[1])
+        if (flow_basic.src.v6.ip[0] > flow_basic.dst.v6.ip[0] && flow_basic.src.v6.ip[1] > flow_basic.dst.v6.ip[1])
         {
-            min_addr[0] = flow_basic.dst.v6.ip6[0];
-            min_addr[1] = flow_basic.dst.v6.ip6[0];
+            min_addr[0] = flow_basic.dst.v6.ip[0];
+            min_addr[1] = flow_basic.dst.v6.ip[0];
         }
         else
         {
-            min_addr[0] = flow_basic.src.v6.ip6[0];
-            min_addr[1] = flow_basic.src.v6.ip6[0];
+            min_addr[0] = flow_basic.src.v6.ip[0];
+            min_addr[1] = flow_basic.src.v6.ip[0];
         }
         thread_index = min_addr[0] + min_addr[1] + ip6->ip6_hdr.ip6_un1_nxt;
     }
@@ -2165,8 +2274,8 @@ static void ndpi_process_packet(uint8_t * const args,
                                       (uint8_t *)&flow_basic.hashval,
                                       sizeof(flow_basic.hashval)) != 0)
             {
-                flow_basic.hashval = flow_basic.src.v6.ip6[0] + flow_basic.src.v6.ip6[1];
-                flow_basic.hashval += flow_basic.dst.v6.ip6[0] + flow_basic.dst.v6.ip6[1];
+                flow_basic.hashval = flow_basic.src.v6.ip[0] + flow_basic.src.v6.ip[1];
+                flow_basic.hashval += flow_basic.dst.v6.ip[0] + flow_basic.dst.v6.ip[1];
             }
             break;
     }
@@ -2177,15 +2286,15 @@ static void ndpi_process_packet(uint8_t * const args,
     if (tree_result == NULL)
     {
         /* flow not found in btree: switch src <-> dst and try to find it again */
-        uint64_t orig_src_ip[2] = {flow_basic.src.v6.ip6[0], flow_basic.src.v6.ip6[1]};
-        uint64_t orig_dst_ip[2] = {flow_basic.dst.v6.ip6[0], flow_basic.dst.v6.ip6[1]};
+        uint64_t orig_src_ip[2] = {flow_basic.src.v6.ip[0], flow_basic.src.v6.ip[1]};
+        uint64_t orig_dst_ip[2] = {flow_basic.dst.v6.ip[0], flow_basic.dst.v6.ip[1]};
         uint16_t orig_src_port = flow_basic.src_port;
         uint16_t orig_dst_port = flow_basic.dst_port;
 
-        flow_basic.src.v6.ip6[0] = orig_dst_ip[0];
-        flow_basic.src.v6.ip6[1] = orig_dst_ip[1];
-        flow_basic.dst.v6.ip6[0] = orig_src_ip[0];
-        flow_basic.dst.v6.ip6[1] = orig_src_ip[1];
+        flow_basic.src.v6.ip[0] = orig_dst_ip[0];
+        flow_basic.src.v6.ip[1] = orig_dst_ip[1];
+        flow_basic.dst.v6.ip[0] = orig_src_ip[0];
+        flow_basic.dst.v6.ip[1] = orig_src_ip[1];
         flow_basic.src_port = orig_dst_port;
         flow_basic.dst_port = orig_src_port;
 
@@ -2195,10 +2304,10 @@ static void ndpi_process_packet(uint8_t * const args,
             direction_changed = 1;
         }
 
-        flow_basic.src.v6.ip6[0] = orig_src_ip[0];
-        flow_basic.src.v6.ip6[1] = orig_src_ip[1];
-        flow_basic.dst.v6.ip6[0] = orig_dst_ip[0];
-        flow_basic.dst.v6.ip6[1] = orig_dst_ip[1];
+        flow_basic.src.v6.ip[0] = orig_src_ip[0];
+        flow_basic.src.v6.ip[1] = orig_src_ip[1];
+        flow_basic.dst.v6.ip[0] = orig_dst_ip[0];
+        flow_basic.dst.v6.ip[1] = orig_dst_ip[1];
         flow_basic.src_port = orig_src_port;
         flow_basic.dst_port = orig_dst_port;
     }
@@ -2207,12 +2316,22 @@ static void ndpi_process_packet(uint8_t * const args,
     {
         /* flow still not found, must be new or midstream */
 
+        union nDPId_ip const * netmask;
+        union nDPId_ip const * subnet;
+        switch (flow_basic.l3_type)
+        {
+            case L3_IP:
+                netmask = &nDPId_options.pcap_dev_netmask4;
+                subnet = &nDPId_options.pcap_dev_subnet4;
+                break;
+            case L3_IP6:
+                netmask = &nDPId_options.pcap_dev_netmask6;
+                subnet = &nDPId_options.pcap_dev_subnet6;
+                break;
+        }
         if (nDPId_options.process_internal_initial_direction != 0 && flow_basic.tcp_is_midstream_flow == 0)
         {
-            if (is_ip_in_subnet(&flow_basic.src,
-                                &nDPId_options.pcap_dev_netmask,
-                                &nDPId_options.pcap_dev_subnet,
-                                flow_basic.l3_type) == 0)
+            if (is_ip_in_subnet(&flow_basic.src, netmask, subnet, flow_basic.l3_type) == 0)
             {
                 if (add_new_flow(workflow, &flow_basic, FT_SKIPPED, hashed_index) == NULL)
                 {
@@ -2236,10 +2355,7 @@ static void ndpi_process_packet(uint8_t * const args,
         }
         else if (nDPId_options.process_external_initial_direction != 0 && flow_basic.tcp_is_midstream_flow == 0)
         {
-            if (is_ip_in_subnet(&flow_basic.src,
-                                &nDPId_options.pcap_dev_netmask,
-                                &nDPId_options.pcap_dev_subnet,
-                                flow_basic.l3_type) != 0)
+            if (is_ip_in_subnet(&flow_basic.src, netmask, subnet, flow_basic.l3_type) != 0)
             {
                 if (add_new_flow(workflow, &flow_basic, FT_SKIPPED, hashed_index) == NULL)
                 {

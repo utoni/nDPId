@@ -5,12 +5,14 @@ set -e
 LINE_SPACES=${LINE_SPACES:-48}
 MYDIR="$(realpath "$(dirname ${0})")"
 nDPId_test_EXEC="${2:-"$(realpath "${MYDIR}/../nDPId-test")"}"
+JSON_VALIDATOR="${3:-"$(realpath "${MYDIR}/../examples/py-schema-validation/py-schema-validation.py")"}"
 
-if [ $# -ne 1 -a $# -ne 2 ]; then
+if [ $# -ne 1 -a $# -ne 2 -a $# -ne 3 ]; then
 cat <<EOF
-usage: ${0} [path-to-nDPI-source-root] [path-to-nDPId-test-exec]
+usage: ${0} [path-to-nDPI-source-root] [path-to-nDPId-test-exec] [path-to-nDPId-JSON-validator]
 
 	path-to-nDPId-test-exec defaults to ${nDPId_test_EXEC}
+	path-to-nDPId-JSON-validator defaults to ${JSON_VALIDATOR}
 EOF
 exit 2
 fi
@@ -21,22 +23,29 @@ LOCKFILE="$(realpath "${0}").lock"
 touch "${LOCKFILE}"
 exec 42< "${LOCKFILE}"
 flock -x -n 42 || {
-    printf '%s\n' "Could not aquire file lock for ${0}. Already running instance?";
+    printf '%s\n' "Could not aquire file lock for ${0}. Already running instance?" >&2;
     exit 3;
 }
 function sighandler()
 {
+    printf '%s\n' ' Received shutdown SIGNAL, bye' >&2
     rm -f "${LOCKFILE}"
     exit 4
 }
 trap sighandler SIGINT SIGTERM
 
 if [ ! -x "${nDPId_test_EXEC}" ]; then
-cat <<EOF
+cat >&2 <<EOF
 Required nDPId-test executable does not exist; ${nDPId_test_EXEC}
 EOF
 exit 5
 fi
+
+nc -h |& head -n1 | grep -qoE '^OpenBSD netcat' || {
+    printf '%s\n' "OpenBSD netcat (nc) version required!" >&2;
+    printf '%s\n' "Your version: $(nc -h |& head -n1)" >&2;
+    exit 6;
+}
 
 nDPI_TEST_DIR="${nDPI_SOURCE_ROOT}/tests/pcap"
 
@@ -117,7 +126,7 @@ for out_file in $(ls results/*.out); do
         fi
         cat "${out_file}" | nc -q 1 -l 127.0.0.1 9000 &
         nc_pid=$!
-        ${MYDIR}/../examples/py-schema-validation/py-schema-validation.py \
+        ${JSON_VALIDATOR} \
             --host 127.0.0.1 --port 9000 2>>"/tmp/nDPId-test-stderr/$(basename ${pcap_file}).out"
         if [ $? -eq 0 ]; then
             printf ' %s\n' '[OK]'

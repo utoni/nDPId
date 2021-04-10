@@ -349,12 +349,14 @@ def defaultArgumentParser():
     return parser
 
 def validateAddress(args):
+    tcp_addr_set = False
     address = None
 
     if args.host is None:
         address_tcpip = (DEFAULT_HOST, DEFAULT_PORT)
     else:
         address_tcpip = (args.host, args.port)
+        tcp_addr_set = True
 
     if args.unix is None:
         address_unix = DEFAULT_UNIX
@@ -366,7 +368,7 @@ def validateAddress(args):
         possible_sock_mode = os.stat(address_unix).st_mode
     except:
         pass
-    if stat.S_ISSOCK(possible_sock_mode):
+    if tcp_addr_set == False and stat.S_ISSOCK(possible_sock_mode):
         address = address_unix
     else:
         address = address_tcpip
