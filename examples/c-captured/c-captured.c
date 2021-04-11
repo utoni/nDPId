@@ -297,24 +297,6 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
 
     struct flow_user_data * const flow_user = (struct flow_user_data *)flow->flow_user_data;
 
-#ifdef VERBOSE
-    struct nDPIsrvd_json_token * current_token = NULL;
-    struct nDPIsrvd_json_token * jtmp = NULL;
-
-    HASH_ITER(hh, sock->json.token_table, current_token, jtmp)
-    {
-        if (current_token->value != NULL)
-        {
-            printf("[%.*s : %.*s] ",
-                   current_token->key_length,
-                   current_token->key,
-                   current_token->value_length,
-                   current_token->value);
-        }
-    }
-    printf("EoF\n");
-#endif
-
     if (flow_user == NULL || flow_user->detection_finished != 0)
     {
         return CALLBACK_OK;
@@ -450,6 +432,9 @@ static void captured_flow_end_callback(struct nDPIsrvd_socket * const sock, stru
 {
     (void)sock;
 
+#ifdef VERBOSE
+    printf("flow %llu end, remaining flows: %u\n", flow->id_as_ull, sock->flow_table->hh.tbl->num_items);
+#endif
     struct flow_user_data * const ud = (struct flow_user_data *)flow->flow_user_data;
     if (ud != NULL && ud->packets != NULL)
     {
@@ -633,7 +618,7 @@ int main(int argc, char ** argv)
     {
         return 1;
     }
-    openlog("c-captured", LOG_CONS, LOG_DAEMON);
+    openlog("nDPIsrvd-captured", LOG_CONS, LOG_DAEMON);
 
     errno = 0;
     if (user != NULL && change_user_group(user, group, pidfile, datadir /* :D */, NULL) != 0)

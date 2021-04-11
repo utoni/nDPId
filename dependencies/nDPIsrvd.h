@@ -644,7 +644,7 @@ static inline int nDPIsrvd_check_flow_end(struct nDPIsrvd_socket * const sock,
 
     struct nDPIsrvd_json_token const * const flow_event_name = TOKEN_GET_SZ(sock, "flow_event_name");
 
-    if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "idle") != 0 && TOKEN_VALUE_EQUALS_SZ(flow_event_name, "end") != 0)
+    if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "idle") != 0 || TOKEN_VALUE_EQUALS_SZ(flow_event_name, "end") != 0)
     {
         if (sock->flow_end_callback != NULL)
         {
