@@ -5,14 +5,18 @@ set -e
 LINE_SPACES=${LINE_SPACES:-48}
 MYDIR="$(realpath "$(dirname ${0})")"
 nDPId_test_EXEC="${2:-"$(realpath "${MYDIR}/../nDPId-test")"}"
+NETCAT_EXEC="nc -q 0 -l 127.0.0.1 9000"
 JSON_VALIDATOR="${3:-"$(realpath "${MYDIR}/../examples/py-schema-validation/py-schema-validation.py")"}"
+SEMN_VALIDATOR="${3:-"$(realpath "${MYDIR}/../examples/py-semantic-validation/py-semantic-validation.py")"}"
 
-if [ $# -ne 1 -a $# -ne 2 -a $# -ne 3 ]; then
+if [ $# -ne 1 -a $# -ne 2 -a $# -ne 3 -a $# -ne 4 ]; then
 cat <<EOF
-usage: ${0} [path-to-nDPI-source-root] [path-to-nDPId-test-exec] [path-to-nDPId-JSON-validator]
+usage: ${0} [path-to-nDPI-source-root] \\
+	[path-to-nDPId-test-exec] [path-to-nDPId-JSON-validator] [path-to-nDPId-SEMANTIC-validator]
 
-	path-to-nDPId-test-exec defaults to ${nDPId_test_EXEC}
-	path-to-nDPId-JSON-validator defaults to ${JSON_VALIDATOR}
+	path-to-nDPId-test-exec defaults to         ${nDPId_test_EXEC}
+	path-to-nDPId-JSON-validator defaults to    ${JSON_VALIDATOR}
+	path-to-nDPId-SEMANTIC-validator default to ${SEMN_VALIDATOR}
 EOF
 exit 2
 fi
@@ -64,9 +68,17 @@ mkdir -p /tmp/nDPId-test-stderr
 set +e
 TESTS_FAILED=0
 
-for pcap_file in $(ls *.pcap*); do
-    printf '%s\n' "${nDPId_test_EXEC} ${pcap_file}" \
+for pcap_file in $(ls *.pcap *.pcapng *.cap); do
+    if file "${pcap_file}" | grep -qoE ':\s(pcap|pcap-ng) capture file'; then
+        true # pass
+    else
+        continue
+    fi
+
+    printf '%s\n' "-- CMD: ${nDPId_test_EXEC} $(realpath "${pcap_file}")" \
         >"/tmp/nDPId-test-stderr/${pcap_file}.out"
+    printf '%s\n' "-- OUT: ${MYDIR}/results/${pcap_file}.out" \
+        >>"/tmp/nDPId-test-stderr/${pcap_file}.out"
 
     ${nDPId_test_EXEC} "${pcap_file}" \
         >"${MYDIR}/results/${pcap_file}.out.new" \
@@ -94,7 +106,7 @@ for pcap_file in $(ls *.pcap*); do
     else
         printf '%s\n' '[FAIL]'
         printf '%s\n' '----------------------------------------'
-        printf '%s\n' "-- STDERR of ${pcap_file}"
+        printf '%s\n' "-- STDERR of ${pcap_file}: /tmp/nDPId-test-stderr/${pcap_file}.out"
         cat "/tmp/nDPId-test-stderr/${pcap_file}.out"
         TESTS_FAILED=$((TESTS_FAILED + 1))
     fi
@@ -102,11 +114,47 @@ for pcap_file in $(ls *.pcap*); do
     rm -f "${MYDIR}/results/${pcap_file}.out.new"
 done
 
+function validate_results()
+{
+    prefix_str="${1}"
+    pcap_file="$(basename ${2})"
+    result_file="${3}"
+    validator_exec="${4}"
+
+    printf "${prefix_str} %-$((${LINE_SPACES} - ${#prefix_str}))s\t" "${pcap_file}"
+    printf '%s\n' "-- ${prefix_str}" >>"/tmp/nDPId-test-stderr/${pcap_file}.out"
+
+    if [ ! -r "${result_file}" ]; then
+        printf ' %s\n' '[MISSING]'
+        return 1
+    fi
+
+    cat "${result_file}" | ${NETCAT_EXEC} &
+    nc_pid=$!
+    printf '%s\n' "-- ${validator_exec}" >>"/tmp/nDPId-test-stderr/${pcap_file}.out"
+    ${validator_exec} 2>>"/tmp/nDPId-test-stderr/${pcap_file}.out"
+    if [ $? -eq 0 ]; then
+        printf ' %s\n' '[OK]'
+    else
+        printf ' %s\n' '[FAIL]'
+        printf '%s\n' '----------------------------------------'
+        printf '%s\n' "-- STDERR of ${pcap_file}: /tmp/nDPId-test-stderr/${pcap_file}.out"
+        cat "/tmp/nDPId-test-stderr/${pcap_file}.out"
+        return 1
+    fi
+    kill -SIGTERM ${nc_pid} 2>/dev/null
+    wait ${nc_pid} 2>/dev/null
+
+    return 0
+}
+
 cat <<EOF
 
-----------------------------
--- JSON schema validation --
-----------------------------
+--------------------------------
+-- SCHEMA/SEMANTIC Validation --
+--------------------------------
+
+netcat (OpenBSD) exec + args: ${NETCAT_EXEC}
 
 EOF
 
@@ -117,28 +165,19 @@ for out_file in $(ls results/*.out); do
         printf "%-${LINE_SPACES}s\t%s\n" "$(basename ${pcap_file})" '[MISSING]'
         TESTS_FAILED=$((TESTS_FAILED + 1))
     else
-        printf "SCHEMA %-${LINE_SPACES}s\t" "$(basename ${pcap_file})"
-        printf '%s\n' '*** JSON schema validation ***' >>"/tmp/nDPId-test-stderr/$(basename ${pcap_file}).out"
-        if [ ! -r "${out_file}" ]; then
-            printf ' %s\n' '[MISSING]'
+        validate_results "SCHEMA  " "${pcap_file}" "${out_file}" \
+            "${JSON_VALIDATOR} --host 127.0.0.1 --port 9000"
+        if [ $? -ne 0 ]; then
             TESTS_FAILED=$((TESTS_FAILED + 1))
             continue
         fi
-        cat "${out_file}" | nc -q 1 -l 127.0.0.1 9000 &
-        nc_pid=$!
-        ${JSON_VALIDATOR} \
-            --host 127.0.0.1 --port 9000 2>>"/tmp/nDPId-test-stderr/$(basename ${pcap_file}).out"
-        if [ $? -eq 0 ]; then
-            printf ' %s\n' '[OK]'
-        else
-            printf ' %s\n' '[FAIL]'
-            printf '%s\n' '----------------------------------------'
-            printf '%s\n' "-- STDERR of $(basename ${pcap_file})"
-            cat "/tmp/nDPId-test-stderr/$(basename ${pcap_file}).out"
+
+        validate_results "SEMANTIC" "${pcap_file}" "${out_file}" \
+            "${SEMN_VALIDATOR} --host 127.0.0.1 --port 9000 --strict"
+        if [ $? -ne 0 ]; then
             TESTS_FAILED=$((TESTS_FAILED + 1))
+            continue
         fi
-        kill -SIGTERM ${nc_pid} 2>/dev/null
-        wait ${nc_pid} 2>/dev/null
     fi
 done
 

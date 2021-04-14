@@ -82,12 +82,10 @@ struct nDPId_flow_basic
     uint64_t last_seen;
 };
 
-struct nDPId_flow_skipped
-{
-    struct nDPId_flow_basic flow_basic;
-};
-
-struct nDPId_flow_info
+/*
+ * Information required for a full detection cycle.
+ */
+struct nDPId_flow_extended
 {
     struct nDPId_flow_basic flow_basic;
 
@@ -100,6 +98,19 @@ struct nDPId_flow_info
     uint64_t first_seen;
 
     unsigned long long int total_l4_data_len;
+};
+
+/*
+ * Structures related to certain flow states.
+ */
+struct nDPId_flow_skipped
+{
+    struct nDPId_flow_basic flow_basic;
+};
+
+struct nDPId_flow_info
+{
+    struct nDPId_flow_extended flow_extended;
 
     uint8_t detection_completed : 1;
     uint8_t reserved_00 : 7;
@@ -112,6 +123,11 @@ struct nDPId_flow_info
     struct ndpi_flow_struct * ndpi_flow;
     struct ndpi_id_struct * ndpi_src;
     struct ndpi_id_struct * ndpi_dst;
+};
+
+struct nDPId_flow_finished
+{
+    struct nDPId_flow_info flow_info;
 };
 
 struct nDPId_workflow
@@ -1048,8 +1064,22 @@ static void process_idle_flow(struct nDPId_reader_thread * const reader_thread, 
         {
             case FT_UNKNOWN:
             case FT_SKIPPED:
-            case FT_FINISHED:
                 break;
+
+            case FT_FINISHED:
+            {
+                struct nDPId_flow_finished * const flow_finished = (struct nDPId_flow_finished *)flow_basic;
+
+                if (flow_basic->tcp_fin_rst_seen != 0)
+                {
+                    jsonize_flow_event(reader_thread, &flow_finished->flow_info, FLOW_EVENT_END);
+                }
+                else
+                {
+                    jsonize_flow_event(reader_thread, &flow_finished->flow_info, FLOW_EVENT_IDLE);
+                }
+                break;
+            }
 
             case FT_INFO:
             {
@@ -1135,32 +1165,32 @@ static void check_for_idle_flows(struct nDPId_reader_thread * const reader_threa
     }
 }
 
-static void jsonize_l3_l4(struct nDPId_workflow * const workflow, struct nDPId_flow_info const * const flow)
+static void jsonize_l3_l4(struct nDPId_workflow * const workflow, struct nDPId_flow_basic const * const flow_basic)
 {
     ndpi_serializer * const serializer = &workflow->ndpi_serializer;
     char src_name[48] = {};
     char dst_name[48] = {};
 
-    switch (flow->flow_basic.l3_type)
+    switch (flow_basic->l3_type)
     {
         case L3_IP:
             ndpi_serialize_string_string(serializer, "l3_proto", "ip4");
-            if (inet_ntop(AF_INET, &flow->flow_basic.src.v4.ip, src_name, sizeof(src_name)) == NULL)
+            if (inet_ntop(AF_INET, &flow_basic->src.v4.ip, src_name, sizeof(src_name)) == NULL)
             {
                 syslog(LOG_DAEMON | LOG_ERR, "Could not convert IPv4 source ip to string: %s", strerror(errno));
             }
-            if (inet_ntop(AF_INET, &flow->flow_basic.dst.v4.ip, dst_name, sizeof(dst_name)) == NULL)
+            if (inet_ntop(AF_INET, &flow_basic->dst.v4.ip, dst_name, sizeof(dst_name)) == NULL)
             {
                 syslog(LOG_DAEMON | LOG_ERR, "Could not convert IPv4 destination ip to string: %s", strerror(errno));
             }
             break;
         case L3_IP6:
             ndpi_serialize_string_string(serializer, "l3_proto", "ip6");
-            if (inet_ntop(AF_INET6, &flow->flow_basic.src.v6.ip[0], src_name, sizeof(src_name)) == NULL)
+            if (inet_ntop(AF_INET6, &flow_basic->src.v6.ip[0], src_name, sizeof(src_name)) == NULL)
             {
                 syslog(LOG_DAEMON | LOG_ERR, "Could not convert IPv6 source ip to string: %s", strerror(errno));
             }
-            if (inet_ntop(AF_INET6, &flow->flow_basic.dst.v6.ip[0], dst_name, sizeof(dst_name)) == NULL)
+            if (inet_ntop(AF_INET6, &flow_basic->dst.v6.ip[0], dst_name, sizeof(dst_name)) == NULL)
             {
                 syslog(LOG_DAEMON | LOG_ERR, "Could not convert IPv6 destination ip to string: %s", strerror(errno));
             }
@@ -1174,16 +1204,16 @@ static void jsonize_l3_l4(struct nDPId_workflow * const workflow, struct nDPId_f
 
     ndpi_serialize_string_string(serializer, "src_ip", src_name);
     ndpi_serialize_string_string(serializer, "dst_ip", dst_name);
-    if (flow->flow_basic.src_port)
+    if (flow_basic->src_port)
     {
-        ndpi_serialize_string_uint32(serializer, "src_port", flow->flow_basic.src_port);
+        ndpi_serialize_string_uint32(serializer, "src_port", flow_basic->src_port);
     }
-    if (flow->flow_basic.dst_port)
+    if (flow_basic->dst_port)
     {
-        ndpi_serialize_string_uint32(serializer, "dst_port", flow->flow_basic.dst_port);
+        ndpi_serialize_string_uint32(serializer, "dst_port", flow_basic->dst_port);
     }
 
-    switch (flow->flow_basic.l4_protocol)
+    switch (flow_basic->l4_protocol)
     {
         case IPPROTO_TCP:
             ndpi_serialize_string_string(serializer, "l4_proto", "tcp");
@@ -1198,7 +1228,7 @@ static void jsonize_l3_l4(struct nDPId_workflow * const workflow, struct nDPId_f
             ndpi_serialize_string_string(serializer, "l4_proto", "icmp6");
             break;
         default:
-            ndpi_serialize_string_uint32(serializer, "l4_proto", flow->flow_basic.l4_protocol);
+            ndpi_serialize_string_uint32(serializer, "l4_proto", flow_basic->l4_protocol);
             break;
     }
 }
@@ -1257,19 +1287,19 @@ static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enu
     serialize_and_send(reader_thread);
 }
 
-static void jsonize_flow(struct nDPId_workflow * const workflow, struct nDPId_flow_info const * const flow)
+static void jsonize_flow(struct nDPId_workflow * const workflow, struct nDPId_flow_extended const * const flow_ext)
 {
-    ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "flow_id", flow->flow_id);
-    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_packet_id", flow->packets_processed);
-    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_first_seen", flow->first_seen);
-    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_last_seen", flow->flow_basic.last_seen);
-    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_tot_l4_data_len", flow->total_l4_data_len);
-    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_min_l4_data_len", flow->min_l4_data_len);
-    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_max_l4_data_len", flow->max_l4_data_len);
+    ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "flow_id", flow_ext->flow_id);
+    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_packet_id", flow_ext->packets_processed);
+    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_first_seen", flow_ext->first_seen);
+    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_last_seen", flow_ext->flow_basic.last_seen);
+    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_tot_l4_data_len", flow_ext->total_l4_data_len);
+    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_min_l4_data_len", flow_ext->min_l4_data_len);
+    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_max_l4_data_len", flow_ext->max_l4_data_len);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
                                  "flow_avg_l4_data_len",
-                                 (flow->packets_processed > 0 ? flow->total_l4_data_len / flow->packets_processed : 0));
-    ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "midstream", flow->flow_basic.tcp_is_midstream_flow);
+                                 (flow_ext->packets_processed > 0 ? flow_ext->total_l4_data_len / flow_ext->packets_processed : 0));
+    ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "midstream", flow_ext->flow_basic.tcp_is_midstream_flow);
 }
 
 static int connect_to_json_socket(struct nDPId_reader_thread * const reader_thread)
@@ -1512,7 +1542,7 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
                                  uint16_t pkt_l3_offset,
                                  uint16_t pkt_l4_offset,
                                  uint16_t pkt_l4_len,
-                                 struct nDPId_flow_info const * const flow,
+                                 struct nDPId_flow_extended const * const flow_ext,
                                  enum packet_event event)
 {
     struct nDPId_workflow * const workflow = reader_thread->workflow;
@@ -1520,7 +1550,7 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
 
     if (event == PACKET_EVENT_PAYLOAD_FLOW)
     {
-        if (flow == NULL)
+        if (flow_ext == NULL)
         {
             syslog(LOG_DAEMON | LOG_ERR,
                    "[%8llu, %d] BUG: got a PACKET_EVENT_PAYLOAD_FLOW with a flow pointer equals NULL",
@@ -1528,12 +1558,12 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
                    reader_thread->array_index);
             return;
         }
-        if (flow->packets_processed > nDPId_options.max_packets_per_flow_to_send)
+        if (flow_ext->packets_processed > nDPId_options.max_packets_per_flow_to_send)
         {
             return;
         }
-        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "flow_id", flow->flow_id);
-        ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_packet_id", flow->packets_processed);
+        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "flow_id", flow_ext->flow_id);
+        ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_packet_id", flow_ext->packets_processed);
     }
 
     ndpi_serialize_string_int32(&workflow->ndpi_serializer, "packet_event_id", event);
@@ -1591,8 +1621,8 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
         ndpi_serialize_string_string(&workflow->ndpi_serializer, ev, flow_event_name_table[FLOW_EVENT_INVALID]);
     }
     jsonize_basic(reader_thread);
-    jsonize_flow(workflow, flow);
-    jsonize_l3_l4(workflow, flow);
+    jsonize_flow(workflow, &flow->flow_extended);
+    jsonize_l3_l4(workflow, &flow->flow_extended.flow_basic);
 
     switch (event)
     {
@@ -1619,7 +1649,7 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
                 syslog(LOG_DAEMON | LOG_ERR,
                        "[%8llu, %4u] ndpi_dpi2json failed for not-detected/guessed flow",
                        workflow->packets_captured,
-                       flow->flow_id);
+                       flow->flow_extended.flow_id);
             }
             break;
 
@@ -1633,7 +1663,7 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
                 syslog(LOG_DAEMON | LOG_ERR,
                        "[%8llu, %4u] ndpi_dpi2json failed for detected/detection-update flow",
                        workflow->packets_captured,
-                       flow->flow_id);
+                       flow->flow_extended.flow_id);
             }
             break;
     }
@@ -1998,7 +2028,7 @@ static struct nDPId_flow_basic * add_new_flow(struct nDPId_workflow * const work
     switch (type)
     {
         case FT_UNKNOWN:
-        case FT_FINISHED:
+        case FT_FINISHED: // do not allocate something for FT_FINISHED as we are re-using memory allocated by FT_INFO
             return NULL;
 
         case FT_SKIPPED:
@@ -2406,7 +2436,7 @@ static void ndpi_process_packet(uint8_t * const args,
 
         workflow->cur_active_flows++;
         workflow->total_active_flows++;
-        flow_to_process->flow_id = __sync_fetch_and_add(&global_flow_id, 1);
+        flow_to_process->flow_extended.flow_id = __sync_fetch_and_add(&global_flow_id, 1);
 
         if (alloc_ndpi_structs(flow_to_process) != 0)
         {
@@ -2463,25 +2493,25 @@ static void ndpi_process_packet(uint8_t * const args,
         }
     }
 
-    flow_to_process->packets_processed++;
-    flow_to_process->total_l4_data_len += l4_len;
-    if (flow_to_process->first_seen == 0)
+    flow_to_process->flow_extended.packets_processed++;
+    flow_to_process->flow_extended.total_l4_data_len += l4_len;
+    if (flow_to_process->flow_extended.first_seen == 0)
     {
-        flow_to_process->first_seen = time_ms;
+        flow_to_process->flow_extended.first_seen = time_ms;
     }
-    if (l4_len > flow_to_process->max_l4_data_len)
+    if (l4_len > flow_to_process->flow_extended.max_l4_data_len)
     {
-        flow_to_process->max_l4_data_len = l4_len;
+        flow_to_process->flow_extended.max_l4_data_len = l4_len;
     }
-    if (l4_len < flow_to_process->min_l4_data_len)
+    if (l4_len < flow_to_process->flow_extended.min_l4_data_len)
     {
-        flow_to_process->min_l4_data_len = l4_len;
+        flow_to_process->flow_extended.min_l4_data_len = l4_len;
     }
 
     if (is_new_flow != 0)
     {
-        flow_to_process->max_l4_data_len = l4_len;
-        flow_to_process->min_l4_data_len = l4_len;
+        flow_to_process->flow_extended.max_l4_data_len = l4_len;
+        flow_to_process->flow_extended.min_l4_data_len = l4_len;
         jsonize_flow_event(reader_thread, flow_to_process, FLOW_EVENT_NEW);
     }
 
@@ -2492,14 +2522,14 @@ static void ndpi_process_packet(uint8_t * const args,
                          ip_offset,
                          (l4_ptr - packet),
                          l4_len,
-                         flow_to_process,
+                         &flow_to_process->flow_extended,
                          PACKET_EVENT_PAYLOAD_FLOW);
 
     if (flow_to_process->ndpi_flow->num_processed_pkts == nDPId_options.max_packets_per_flow_to_process - 1)
     {
         if (flow_to_process->detection_completed != 0)
         {
-            jsonize_flow_event(reader_thread, flow_to_process, FLOW_EVENT_DETECTED);
+            jsonize_flow_event(reader_thread, flow_to_process, FLOW_EVENT_DETECTION_UPDATE);
         }
         else
         {
@@ -2547,7 +2577,7 @@ static void ndpi_process_packet(uint8_t * const args,
     if (flow_to_process->ndpi_flow->num_processed_pkts == nDPId_options.max_packets_per_flow_to_process)
     {
         free_ndpi_structs(flow_to_process);
-        flow_to_process->flow_basic.type = FT_FINISHED;
+        flow_to_process->flow_extended.flow_basic.type = FT_FINISHED;
     }
 }
 

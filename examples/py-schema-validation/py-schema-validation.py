@@ -48,3 +48,5 @@ if __name__ == '__main__':
         nsock.loop(onJsonLineRecvd, Stats())
     except nDPIsrvd.SocketConnectionBroken as err:
         sys.stderr.write('\n{}\n'.format(err))
+    except KeyboardInterrupt:
+        print()

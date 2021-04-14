@@ -19,7 +19,7 @@ Tiny nDPId json dumper. Does not provide any useful funcationality besides dumpi
 
 ## go-dashboard
 
-A discontinued tty/ncurses nDPId dashboard. I've figured out that Go + NCurses is a bad idea.
+A discontinued tty UI nDPId dashboard. I've figured out that Go + UI is a bad idea, in particular if performance is a concern.
 
 ## py-flow-info
 
@@ -41,3 +41,6 @@ Captures and saves risky flows to a PCAP file.
 
 Validate nDPId JSON strings against pre-defined JSON schema's.
 See `schema/`.
+
+## py-semantic-validation
+Validate nDPId JSON strings against internal event semantics.

@@ -183,17 +183,19 @@ class nDPIsrvdSocket:
         if len(self.buffer) == NETWORK_BUFFER_MAX_SIZE:
             raise BufferCapacityReached(len(self.buffer), NETWORK_BUFFER_MAX_SIZE)
 
+        connection_finished = False
         try:
             recvd = self.sock.recv(NETWORK_BUFFER_MAX_SIZE - len(self.buffer))
         except ConnectionResetError:
-            raise SocketConnectionBroken()
-
+            connection_finished = True
+            recvd = bytes()
         if len(recvd) == 0:
-            raise SocketConnectionBroken()
+            connection_finished = True
+
         self.buffer += recvd
 
         new_data_avail = False
-        while self.msglen + self.digitlen < len(self.buffer):
+        while self.msglen + self.digitlen <= len(self.buffer):
 
             if self.msglen == 0:
                 starts_with_digits = re.match(r'(^\d+){', self.buffer[:NETWORK_BUFFER_MIN_SIZE].decode(errors='strict'))
@@ -213,6 +215,9 @@ class nDPIsrvdSocket:
                 self.msglen = 0
                 self.digitlen = 0
 
+        if connection_finished is True:
+            raise SocketConnectionBroken()
+
         return new_data_avail
 
     def parse(self, callback, global_user_data):
@@ -230,11 +235,20 @@ class nDPIsrvdSocket:
         return retval
 
     def loop(self, callback, global_user_data):
+        throw_ex = None
+
         while True:
-            if self.receive() > 0:
-                if self.parse(callback, global_user_data) is False:
-                    raise CallbackReturnedFalse()
-                    break;
+            bytes_recv = 0
+            try:
+                bytes_recv = self.receive()
+            except Exception as err:
+                throw_ex = err
+
+            if self.parse(callback, global_user_data) is False:
+                raise CallbackReturnedFalse()
+
+            if throw_ex is not None:
+                raise throw_ex
 
 class PcapPacket:
     def __init__(self):
