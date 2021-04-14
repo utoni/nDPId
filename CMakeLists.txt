@@ -57,17 +57,18 @@ if(NOT STATIC_LIBNDPI_INSTALLDIR STREQUAL "")
     set(STATIC_LIBNDPI_INC "${STATIC_LIBNDPI_INSTALLDIR}/include/ndpi")
     set(STATIC_LIBNDPI_LIB "${STATIC_LIBNDPI_INSTALLDIR}/lib/libndpi.a")
 else()
-    pkg_check_modules(NDPI REQUIRED libndpi>=3.6.0)
+    pkg_check_modules(NDPI REQUIRED libndpi>=3.5.0)
     set(STATIC_LIBNDPI_INC "")
     set(STATIC_LIBNDPI_LIB "")
 endif()
 
 find_package(PCAP "1.8.1" REQUIRED)
 target_compile_options(nDPId PRIVATE ${MEMORY_PROFILING_CFLAGS} "-pthread")
-target_include_directories(nDPId PRIVATE "${STATIC_LIBNDPI_INC}")
-target_link_libraries(nDPId "${STATIC_LIBNDPI_LIB}"
+target_include_directories(nDPId PRIVATE "${STATIC_LIBNDPI_INC}" "${NDPI_INCLUDEDIR}" "${NDPI_INCLUDEDIR}/ndpi")
+target_link_libraries(nDPId "${STATIC_LIBNDPI_LIB}" "${pkgcfg_lib_NDPI_ndpi}"
+                            "${pkgcfg_lib_PCRE_pcre}" "${pkgcfg_lib_MAXMINDDB_maxminddb}"
                             "${GCRYPT_LIBRARY}" "${PCAP_LIBRARY}"
-                            "${pkgcfg_lib_MAXMINDDB_maxminddb}" "-pthread")
+                            "-pthread")
 
 target_compile_options(nDPId PRIVATE ${MEMORY_PROFILING_CFLAGS})
 target_include_directories(nDPIsrvd PRIVATE
@@ -81,12 +82,13 @@ target_include_directories(nDPId-test PRIVATE
                            "${CMAKE_SOURCE_DIR}/dependencies"
                            "${CMAKE_SOURCE_DIR}/dependencies/jsmn"
                            "${CMAKE_SOURCE_DIR}/dependencies/uthash/src")
-target_compile_options(nDPId-test PRIVATE "-Wno-unused-function" "-pthread")
-target_include_directories(nDPId-test PRIVATE "${STATIC_LIBNDPI_INC}")
+target_compile_options(nDPId-test PRIVATE ${MEMORY_PROFILING_CFLAGS} "-Wno-unused-function" "-pthread")
+target_include_directories(nDPId-test PRIVATE "${STATIC_LIBNDPI_INC}" "${NDPI_INCLUDEDIR}" "${NDPI_INCLUDEDIR}/ndpi")
 target_compile_definitions(nDPId-test PRIVATE "-D_GNU_SOURCE=1" "-DNO_MAIN=1" "-Dsyslog=mock_syslog_stderr")
-target_link_libraries(nDPId-test "${STATIC_LIBNDPI_LIB}"
+target_link_libraries(nDPId-test "${STATIC_LIBNDPI_LIB}" "${pkgcfg_lib_NDPI_ndpi}"
+                                 "${pkgcfg_lib_PCRE_pcre}" "${pkgcfg_lib_MAXMINDDB_maxminddb}"
                                  "${GCRYPT_LIBRARY}" "${PCAP_LIBRARY}"
-                                 "${pkgcfg_lib_MAXMINDDB_maxminddb}" "-pthread")
+                                 "-pthread")
 
 if(BUILD_EXAMPLES)
     add_executable(nDPIsrvd-collectd examples/c-collectd/c-collectd.c)
@@ -110,7 +112,14 @@ if(BUILD_EXAMPLES)
     target_include_directories(nDPIsrvd-json-dump PRIVATE
                                "${CMAKE_SOURCE_DIR}"
                                "${CMAKE_SOURCE_DIR}/dependencies/jsmn")
+
+    install(TARGETS nDPIsrvd-collectd nDPIsrvd-captured nDPIsrvd-json-dump DESTINATION bin)
 endif()
+
+install(TARGETS nDPId DESTINATION sbin)
+install(TARGETS nDPIsrvd nDPId-test DESTINATION bin)
+install(FILES dependencies/nDPIsrvd.py DESTINATION share/nDPId)
+install(FILES examples/py-flow-info/flow-info.py DESTINATION bin RENAME nDPIsrvd-flow-info.py)
 
 message(STATUS "--------------------------")
 message(STATUS "CMAKE_BUILD_TYPE.........: ${CMAKE_BUILD_TYPE}")
