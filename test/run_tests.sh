@@ -68,6 +68,12 @@ mkdir -p /tmp/nDPId-test-stderr
 set +e
 TESTS_FAILED=0
 
+${nDPId_test_EXEC} -h 2>/dev/null
+if [ $? -ne 1 ]; then
+    printf '%s\n' "nDPId-test: ${nDPId_test_EXEC} seems to be an invalid executable"
+    exit 7
+fi
+
 for pcap_file in $(ls *.pcap *.pcapng *.cap); do
     if file "${pcap_file}" | grep -qoE ':\s(pcap|pcap-ng) capture file'; then
         true # pass

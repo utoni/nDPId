@@ -879,19 +879,18 @@ int main(int argc, char ** argv)
     }
 
     syslog(LOG_DAEMON, "collector listen on %s", nDPIsrvd_options.json_sockpath);
+    syslog(LOG_DAEMON, "distributor listen on %s", nDPIsrvd_options.serv_optarg);
     switch (serv_address.raw.sa_family)
     {
         default:
             goto error;
         case AF_INET:
         case AF_INET6:
-            syslog(LOG_DAEMON, "distributor listen on %s", nDPIsrvd_options.serv_optarg);
             syslog(LOG_DAEMON | LOG_ERR,
                    "Please keep in mind that using a TCP Socket may leak sensitive information to "
                    "everyone with access to the device/network. You've been warned!");
             break;
         case AF_UNIX:
-            syslog(LOG_DAEMON, "distributor listen on %s", nDPIsrvd_options.json_sockpath);
             break;
     }
 

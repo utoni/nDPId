@@ -308,26 +308,31 @@ int main(int argc, char ** argv)
     if (argc != 2)
     {
         usage(argv[0]);
-        return -1;
+        return 1;
     }
 
     if (signal(SIGPIPE, SIG_IGN) == SIG_ERR)
     {
-        return -1;
+        return 1;
     }
 
     nDPId_options.reader_thread_count = 1; /* Please do not change this! Generating meaningful pcap diff's relies on a
                                               single reader thread! */
     nDPId_options.instance_alias = strdup("nDPId-test");
+    if (access(argv[1], R_OK) != 0)
+    {
+        fprintf(stderr, "%s: pcap file `%s' does not exist or is not readable\n", argv[0], argv[1]);
+        return 1;
+    }
     nDPId_options.pcap_file_or_interface = strdup(argv[1]);
     if (validate_options(argv[0]) != 0)
     {
-        return -1;
+        return 1;
     }
 
     if (setup_pipe(mock_pipefds) != 0 || setup_pipe(mock_servfds) != 0)
     {
-        return -1;
+        return 1;
     }
 
     /* We do not have any sockets, any socket operation must fail! */
@@ -336,28 +341,28 @@ int main(int argc, char ** argv)
 
     if (setup_remote_descriptors(MAX_REMOTE_DESCRIPTORS) != 0)
     {
-        return -1;
+        return 1;
     }
 
     pthread_t nDPId_thread;
     struct thread_return_value nDPId_return = {};
     if (pthread_create(&nDPId_thread, NULL, nDPId_mainloop_thread, &nDPId_return) != 0)
     {
-        return -1;
+        return 1;
     }
 
     pthread_t nDPIsrvd_thread;
     struct thread_return_value nDPIsrvd_return = {};
     if (pthread_create(&nDPIsrvd_thread, NULL, nDPIsrvd_mainloop_thread, &nDPIsrvd_return) != 0)
     {
-        return -1;
+        return 1;
     }
 
     pthread_t distributor_thread;
     struct thread_return_value distributor_return = {};
     if (pthread_create(&distributor_thread, NULL, distributor_client_mainloop_thread, &distributor_return) != 0)
     {
-        return -1;
+        return 1;
     }
 
     /* Try to gracefully shutdown all threads. */
@@ -366,7 +371,7 @@ int main(int argc, char ** argv)
     {
         if (THREADS_RETURNED_ERROR() != 0)
         {
-            return -1;
+            return 1;
         }
     }
 
@@ -374,7 +379,7 @@ int main(int argc, char ** argv)
     {
         if (THREADS_RETURNED_ERROR() != 0)
         {
-            return -1;
+            return 1;
         }
     }
 
@@ -382,7 +387,7 @@ int main(int argc, char ** argv)
     {
         if (THREADS_RETURNED_ERROR() != 0)
         {
-            return -1;
+            return 1;
         }
     }
 

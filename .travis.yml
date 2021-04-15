@@ -13,4 +13,11 @@ script:
 - env python3 --version
 - test/run_tests.sh nDPI
 - make -f Makefile.old clean
+# pkg-config build
 - PKG_CONFIG_PATH="$(realpath ./nDPI/_install/lib/pkgconfig)" make -f Makefile.old PKG_CONFIG_BIN=pkg-config ENABLE_DEBUG=yes ENABLE_SANITIZER=yes all examples
+- ./nDPId-test || test $? -eq 1
+- ./nDPId -h || test $? -eq 1
+# cmake/pkg-config build
+- mkdir -p build && cd build && PKG_CONFIG_PATH="$(realpath ../nDPI/_install/lib/pkgconfig)" cmake .. -DCMAKE_INSTALL_PREFIX=$(realpath ../_install) -DBUILD_EXAMPLES=ON -DENABLE_MEMORY_PROFILING=ON -DENABLE_SANITIZER=ON && make install
+- cd build && ./nDPId-test || test $? -eq 1
+- cd build && ./nDPId -h || test $? -eq 1
