@@ -1,15 +1,6 @@
-# c executables
-/nDPId
-/nDPIsrvd
-/nDPId-test
-/examples/c-collectd/c-collectd
-/examples/c-captured/c-captured
-/examples/c-json-stdout/c-json-stdout
-
 # python related
 *.pyc
 __pycache__
 
 # go related
 *.sum
-/examples/go-dashboard/go-dashboard

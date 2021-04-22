@@ -7,6 +7,7 @@ option(ENABLE_SANITIZER "Enable ASAN/LSAN/UBSAN." OFF)
 option(ENABLE_SANITIZER_THREAD "Enable TSAN (does not work together with ASAN)." OFF)
 option(ENABLE_MEMORY_PROFILING "Enable dynamic memory tracking." OFF)
 option(BUILD_EXAMPLES "Build C examples." ON)
+option(BUILD_NDPI "Clone and build nDPI from github." OFF)
 
 set(STATIC_LIBNDPI_INSTALLDIR "" CACHE STRING "Path to a installation directory of libnDPI e.g. /opt/libnDPI/usr")
 
@@ -15,9 +16,12 @@ add_executable(nDPIsrvd nDPIsrvd.c utils.c)
 add_executable(nDPId-test nDPId-test.c utils.c)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -DJSMN_STATIC=1 -DJSMN_STRICT=1")
+set(BUILD_NDPI_CONFIGURE_OPTS "")
 
 if(ENABLE_MEMORY_PROFILING)
-    set(MEMORY_PROFILING_CFLAGS "-DENABLE_MEMORY_PROFILING=1" "-Duthash_malloc=nDPIsrvd_uthash_malloc" "-Duthash_free=nDPIsrvd_uthash_free")
+    set(MEMORY_PROFILING_CFLAGS "-DENABLE_MEMORY_PROFILING=1"
+                                "-Duthash_malloc=nDPIsrvd_uthash_malloc"
+                                "-Duthash_free=nDPIsrvd_uthash_free")
 else()
     set(MEMORY_PROFILING_CFLAGS "")
 endif()
@@ -32,16 +36,33 @@ endif()
 
 if(ENABLE_SANITIZER)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address -fsanitize=undefined -fsanitize=enum -fsanitize=leak")
+    set(BUILD_NDPI_CONFIGURE_OPTS "${BUILD_NDPI_CONFIGURE_OPTS} --with-sanitizer")
 endif()
 
 if(ENABLE_SANITIZER_THREAD)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=undefined -fsanitize=enum -fsanitize=thread")
 endif()
 
-if(NOT STATIC_LIBNDPI_INSTALLDIR STREQUAL "")
+if(BUILD_NDPI)
+    include(ExternalProject)
+    ExternalProject_Add(
+        libnDPI
+        SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libnDPI
+        CONFIGURE_COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/libnDPI/autogen.sh
+                          --prefix=${CMAKE_CURRENT_BINARY_DIR}/libnDPI
+                          ${BUILD_NDPI_CONFIGURE_OPTS}
+        BUILD_COMMAND make
+        BUILD_IN_SOURCE 1)
+
+    set(STATIC_LIBNDPI_INSTALLDIR "${CMAKE_BINARY_DIR}/libnDPI")
+    add_dependencies(nDPId libnDPI)
+    add_dependencies(nDPId-test libnDPI)
+endif()
+
+if(NOT STATIC_LIBNDPI_INSTALLDIR STREQUAL "" OR BUILD_NDPI)
     option(NDPI_WITH_GCRYPT "Link static libndpi library against libgcrypt." ON)
     option(NDPI_WITH_PCRE "Link static libndpi library against libpcre." OFF)
-    option(NDPI_WITH_MAXMINDDB "Link static libndpi library against libmaxminddb." ON)
+    option(NDPI_WITH_MAXMINDDB "Link static libndpi library against libmaxminddb." OFF)
 
     if(NDPI_WITH_GCRYPT)
         find_package(GCRYPT "1.4.2" REQUIRED)
@@ -51,7 +72,7 @@ if(NOT STATIC_LIBNDPI_INSTALLDIR STREQUAL "")
         pkg_check_modules(PCRE REQUIRED libpcre>=8.39)
     endif()
     if(NDPI_WITH_MAXMINDDB)
-        pkg_check_modules(MAXMINDDB REQUIRED libmaxminddb>=1.3.2)
+        pkg_check_modules(MAXMINDDB REQUIRED libmaxminddb)
     endif()
 
     set(STATIC_LIBNDPI_INC "${STATIC_LIBNDPI_INSTALLDIR}/include/ndpi")
@@ -130,6 +151,7 @@ endif()
 message(STATUS "ENABLE_SANITIZER.........: ${ENABLE_SANITIZER}")
 message(STATUS "ENABLE_SANITIZER_THREAD..: ${ENABLE_SANITIZER_THREAD}")
 message(STATUS "ENABLE_MEMORY_PROFILING..: ${ENABLE_MEMORY_PROFILING}")
+if(NOT BUILD_NDPI)
 message(STATUS "STATIC_LIBNDPI_INSTALLDIR: ${STATIC_LIBNDPI_INSTALLDIR}")
 if(NOT STATIC_LIBNDPI_INSTALLDIR STREQUAL "")
 message(STATUS "`- STATIC_LIBNDPI_INC....: ${STATIC_LIBNDPI_INC}")
@@ -138,4 +160,6 @@ message(STATUS "`- NDPI_WITH_GCRYPT......: ${NDPI_WITH_GCRYPT}")
 message(STATUS "`- NDPI_WITH_PCRE........: ${NDPI_WITH_PCRE}")
 message(STATUS "`- NDPI_WITH_MAXMINDDB...: ${NDPI_WITH_MAXMINDDB}")
 endif()
+endif()
+message(STATUS "BUILD_NDPI...............: ${BUILD_NDPI}")
 message(STATUS "--------------------------")

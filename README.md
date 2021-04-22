@@ -135,3 +135,13 @@ or
 ```
 
 or anything below `./examples`.
+
+# test
+
+You may want to run some integration tests using pcap files from nDPI:
+
+`./test/run_tests.sh /path/to/libnDPI/root/directory`
+
+e.g.:
+
+`./test/run_tests.sh ${HOME}/git/nDPI`

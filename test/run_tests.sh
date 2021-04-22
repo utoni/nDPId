@@ -9,7 +9,9 @@ NETCAT_EXEC="nc -q 0 -l 127.0.0.1 9000"
 JSON_VALIDATOR="${3:-"$(realpath "${MYDIR}/../examples/py-schema-validation/py-schema-validation.py")"}"
 SEMN_VALIDATOR="${3:-"$(realpath "${MYDIR}/../examples/py-semantic-validation/py-semantic-validation.py")"}"
 
-if [ $# -ne 1 -a $# -ne 2 -a $# -ne 3 -a $# -ne 4 ]; then
+if [ $# -eq 0 -a -x "${MYDIR}/../libnDPI/tests/pcap" ]; then
+    nDPI_SOURCE_ROOT="${MYDIR}/../libnDPI"
+elif [ $# -ne 1 -a $# -ne 2 -a $# -ne 3 -a $# -ne 4 ]; then
 cat <<EOF
 usage: ${0} [path-to-nDPI-source-root] \\
 	[path-to-nDPId-test-exec] [path-to-nDPId-JSON-validator] [path-to-nDPId-SEMANTIC-validator]
@@ -19,9 +21,10 @@ usage: ${0} [path-to-nDPI-source-root] \\
 	path-to-nDPId-SEMANTIC-validator default to ${SEMN_VALIDATOR}
 EOF
 exit 2
+else
+    nDPI_SOURCE_ROOT="$(realpath "${1}")"
 fi
 
-nDPI_SOURCE_ROOT="$(realpath "${1}")"
 LOCKFILE="$(realpath "${0}").lock"
 
 touch "${LOCKFILE}"
@@ -51,11 +54,11 @@ nc -h |& head -n1 | grep -qoE '^OpenBSD netcat' || {
     exit 6;
 }
 
-nDPI_TEST_DIR="${nDPI_SOURCE_ROOT}/tests/pcap"
+nDPI_TEST_DIR="$(realpath "${nDPI_SOURCE_ROOT}/tests/pcap")"
 
 cat <<EOF
-nDPId-test......: ${nDPId_test_EXEC}
-nDPI source root: ${nDPI_TEST_DIR}
+nDPId-test: ${nDPId_test_EXEC}
+nDPI pcaps: ${nDPI_TEST_DIR}
 
 --------------------------
 -- nDPId PCAP diff tests --
@@ -127,12 +130,16 @@ function validate_results()
     result_file="${3}"
     validator_exec="${4}"
 
-    printf "${prefix_str} %-$((${LINE_SPACES} - ${#prefix_str}))s\t" "${pcap_file}"
+    printf "%s %-$((${LINE_SPACES} - ${#prefix_str}))s\t" "${prefix_str}" "${pcap_file}"
     printf '%s\n' "-- ${prefix_str}" >>"/tmp/nDPId-test-stderr/${pcap_file}.out"
 
     if [ ! -r "${result_file}" ]; then
         printf ' %s\n' '[MISSING]'
         return 1
+    fi
+    if [[ ${pcap_file} == fuzz-* ]]; then
+        printf ' %s\n' '[SKIPPED]'
+        return 0
     fi
 
     cat "${result_file}" | ${NETCAT_EXEC} &
