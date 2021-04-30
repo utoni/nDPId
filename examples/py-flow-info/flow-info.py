@@ -14,6 +14,7 @@ except ImportError:
     from nDPIsrvd import nDPIsrvdSocket, TermColor
 
 global args
+global whois_db
 
 def prettifyEvent(color_list, whitespaces, text):
     term_attrs = str()
@@ -23,6 +24,13 @@ def prettifyEvent(color_list, whitespaces, text):
     return fmt.format(term_attrs, text, TermColor.END)
 
 def checkEventFilter(json_dict):
+    if json_dict['flow_event_name'] == 'new':
+        if args.new is True:
+            return True
+    if json_dict['flow_event_name'] == 'detected' or \
+       json_dict['flow_event_name'] == 'detection-update':
+        if args.detection is True:
+            return True
     if json_dict['flow_event_name'] == 'guessed':
         if args.guessed is True:
             return True
@@ -36,11 +44,21 @@ def checkEventFilter(json_dict):
         if args.midstream is True:
             return True
 
-    if args.guessed is False and args.undetected is False and \
+    if args.new is False and args.detection is False and \
+        args.guessed is False and args.undetected is False and \
         args.risky is False and args.midstream is False:
         return True
 
     return False
+
+def whois(ip_str):
+    if ip_str not in whois_db:
+        try:
+            whois_json = ipwhois.ipwhois.IPWhois(ip_str).lookup_whois()
+            whois_db[ip_str] = whois_json['asn_description']
+        except (ipwhois.exceptions.IPDefinedError, dns.resolver.NoResolverConfiguration):
+            return None
+    return whois_db[ip_str]
 
 def onJsonLineRecvd(json_dict, current_flow, global_user_data):
     instance_and_source = ''
@@ -84,8 +102,23 @@ def onJsonLineRecvd(json_dict, current_flow, global_user_data):
     if json_dict['flow_event_name'] == 'guessed' or json_dict['flow_event_name'] == 'not-detected':
         flow_event_name += '{}{:>16}{}'.format(TermColor.HINT, json_dict['flow_event_name'], TermColor.END)
     else:
-        if json_dict['flow_event_name'] == 'new' and json_dict['midstream'] != 0:
-            line_suffix = '[{}]'.format(TermColor.WARNING + TermColor.BLINK + 'MIDSTREAM' + TermColor.END)
+        if json_dict['flow_event_name'] == 'new':
+            line_suffix = ''
+            if json_dict['midstream'] != 0:
+                line_suffix += '[{}] '.format(TermColor.WARNING + TermColor.BLINK + 'MIDSTREAM' + TermColor.END)
+            if args.ipwhois is True:
+                src_whois = whois(json_dict['src_ip'].lower())
+                dst_whois = whois(json_dict['dst_ip'].lower())
+                line_suffix += '['
+                if src_whois is not None:
+                    line_suffix += '{}'.format(src_whois)
+                if dst_whois is not None:
+                    if src_whois is not None:
+                        line_suffix += ' -> '
+                    line_suffix += '{}'.format(dst_whois)
+                if src_whois is None and dst_whois is None:
+                    line_suffix += TermColor.WARNING + 'WHOIS empty' + TermColor.END
+                line_suffix += ']'
         flow_event_name += '{:>16}'.format(json_dict['flow_event_name'])
 
     if json_dict['l3_proto'] == 'ip4':
@@ -120,7 +153,14 @@ if __name__ == '__main__':
     argparser.add_argument('--undetected', action='store_true', default=False, help='Print only undetected flow events.')
     argparser.add_argument('--risky',      action='store_true', default=False, help='Print only risky flow events.')
     argparser.add_argument('--midstream',  action='store_true', default=False, help='Print only midstream flow events.')
+    argparser.add_argument('--new',        action='store_true', default=False, help='Print only new flow events.')
+    argparser.add_argument('--detection',  action='store_true', default=False, help='Print only detected/detection-update flow events.')
+    argparser.add_argument('--ipwhois',    action='store_true', default=False, help='Use Python-IPWhois to print additional location information.')
     args = argparser.parse_args()
+
+    if args.ipwhois is True:
+        import dns, ipwhois
+        whois_db = dict()
 
     address = nDPIsrvd.validateAddress(args)
 
