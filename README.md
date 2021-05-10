@@ -69,40 +69,32 @@ cd build
 ccmake ..
 ```
 
-# build (old style GNU Make)
+or to build with a staticially linked libnDPI:
 
-To get an overview over all build options, run:
 ```shell
-make -f Makefile.old help
+mkdir build
+cd build
+cmake .. -DSTATIC_LIBNDPI_INSTALLDIR=[path/to/your/libnDPI/installdir]
 ```
 
-To build nDPId and nDPIsrvd, run:
+If you're using the latter one, make sure that you've configured libnDPI with `./configure --prefix=[path/to/your/libnDPI/installdir]`
+and do not forget to set the all necessary CMake variables to link against shared libraries used by your nDPI build.
+
+e.g.:
+
 ```shell
-make -f Makefile.old all
+mkdir build
+cd build
+cmake .. -DSTATIC_LIBNDPI_INSTALLDIR=[path/to/your/libnDPI/installdir] -DNDPI_WITH_GCRYPT=ON -DNDPI_WITH_PCRE=OFF -DNDPI_WITH_MAXMINDDB=OFF
 ```
 
-To build nDPId and nDPIsrvd with sanitizer, debug mode enabled and a custom/not-your-distro libnDPI, run:
-```shell
-make -f Makefile.old ENABLE_DEBUG=yes ENABLE_SANITIZER=yes CUSTOM_LIBNDPI=[path-to-libndpi].[a|so] all
-```
+Or if this is all too much for you, let CMake do it for you:
 
-If you get any linker errors, try one of the
 ```shell
-make -f Makefile.old | grep '^NDPI_WITH_'
-```
-e.g.
-```shell
-make -f Makefile.old NDPI_WITH_GCRYPT=yes ENABLE_DEBUG=yes ENABLE_SANITIZER=yes CUSTOM_LIBNDPI=[path-to-libndpi].[a|so] all
-```
-
-or let pkg-config do the job for you:
-```shell
-PKG_CONFIG_PATH="[path-to-optional-nDPI-pkg-config-dir]" make -f Makefile.old PKG_CONFIG_BIN=pkg-config ENABLE_DEBUG=yes ENABLE_SANITIZER=yes all
-```
-
-To build nDPId and nDPIsrvd and examples, run:
-```shell
-make -f Makefile.old all examples
+git submodule update --init
+mkdir build
+cd build
+cmake .. -DBUILD_NDPI=ON
 ```
 
 # run
@@ -131,7 +123,7 @@ And why not a flow-info example?
 
 or
 ```shell
-./examples/c-json-stdout/c-json-stdout
+./nDPIsrvd-json-dump
 ```
 
 or anything below `./examples`.
@@ -145,3 +137,12 @@ You may want to run some integration tests using pcap files from nDPI:
 e.g.:
 
 `./test/run_tests.sh ${HOME}/git/nDPI`
+
+
+For out-of-source builds, you'll need to specify a path to nDPId-test as well with:
+
+`/test/run_tests.sh /path/to/libnDPI/root/directory /path/to/nDPId-test-executable`
+
+For in-source builds and if CMake was configured with BUILD_NDPI=ON you can just type:
+
+`/test/run_tests.sh`

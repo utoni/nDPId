@@ -4,10 +4,10 @@ set -e
 
 LINE_SPACES=${LINE_SPACES:-48}
 MYDIR="$(realpath "$(dirname ${0})")"
-nDPId_test_EXEC="${2:-"$(realpath "${MYDIR}/../nDPId-test")"}"
+nDPId_test_EXEC="$(realpath "${2:-"${MYDIR}/../nDPId-test"}")"
 NETCAT_EXEC="nc -q 0 -l 127.0.0.1 9000"
-JSON_VALIDATOR="${3:-"$(realpath "${MYDIR}/../examples/py-schema-validation/py-schema-validation.py")"}"
-SEMN_VALIDATOR="${3:-"$(realpath "${MYDIR}/../examples/py-semantic-validation/py-semantic-validation.py")"}"
+JSON_VALIDATOR="$(realpath "${3:-"${MYDIR}/../examples/py-schema-validation/py-schema-validation.py"}")"
+SEMN_VALIDATOR="$(realpath "${4:-"${MYDIR}/../examples/py-semantic-validation/py-semantic-validation.py"}")"
 
 if [ $# -eq 0 -a -x "${MYDIR}/../libnDPI/tests/pcap" ]; then
     nDPI_SOURCE_ROOT="${MYDIR}/../libnDPI"
