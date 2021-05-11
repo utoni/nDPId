@@ -48,7 +48,8 @@ if(BUILD_NDPI)
     ExternalProject_Add(
         libnDPI
         SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libnDPI
-        CONFIGURE_COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/libnDPI/autogen.sh
+        CONFIGURE_COMMAND git submodule update --init &&
+                          ${CMAKE_CURRENT_SOURCE_DIR}/libnDPI/autogen.sh
                           --prefix=${CMAKE_CURRENT_BINARY_DIR}/libnDPI
                           ${BUILD_NDPI_CONFIGURE_OPTS}
         BUILD_COMMAND make

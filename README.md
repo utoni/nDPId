@@ -91,7 +91,6 @@ cmake .. -DSTATIC_LIBNDPI_INSTALLDIR=[path/to/your/libnDPI/installdir] -DNDPI_WI
 Or if this is all too much for you, let CMake do it for you:
 
 ```shell
-git submodule update --init
 mkdir build
 cd build
 cmake .. -DBUILD_NDPI=ON
