@@ -202,8 +202,9 @@ enum basic_event
     UNKNOWN_DATALINK_LAYER,
     UNKNOWN_L3_PROTOCOL,
     NON_IP_PACKET,
-    ETHERNET_PACKET_TOO_SHORT,
-    ETHERNET_PACKET_UNKNOWN,
+    PACKET_TOO_SHORT,
+    PACKET_TYPE_UNKNOWN,
+    PACKET_HEADER_INVALID,
     IP4_PACKET_TOO_SHORT,
     IP4_SIZE_SMALLER_THAN_HEADER,
     IP4_L4_PAYLOAD_DETECTION_FAILED,
@@ -247,8 +248,9 @@ static char const * const basic_event_name_table[BASIC_EVENT_COUNT] = {
     [UNKNOWN_DATALINK_LAYER] = "Unknown datalink layer packet",
     [UNKNOWN_L3_PROTOCOL] = "Unknown L3 protocol",
     [NON_IP_PACKET] = "Non IP packet",
-    [ETHERNET_PACKET_TOO_SHORT] = "Ethernet packet too short",
-    [ETHERNET_PACKET_UNKNOWN] = "Unknown Ethernet packet type",
+    [PACKET_TOO_SHORT] = "Packet too short",
+    [PACKET_TYPE_UNKNOWN] = "Unknown packet type",
+    [PACKET_HEADER_INVALID] = "Packet header invalid",
     [IP4_PACKET_TOO_SHORT] = "IP4 packet too short",
     [IP4_SIZE_SMALLER_THAN_HEADER] = "Packet smaller than IP4 header",
     [IP4_L4_PAYLOAD_DETECTION_FAILED] = "nDPI IPv4/L4 payload detection failed",
@@ -1923,6 +1925,14 @@ static uint32_t calculate_ndpi_flow_struct_hash(struct ndpi_flow_struct const * 
     return hash;
 }
 
+#define SNAP             0xaa
+/* mask for FCF */
+#define WIFI_DATA                        0x2    /* 0000 0010 */
+#define FCF_TYPE(fc)     (((fc) >> 2) & 0x3)    /* 0000 0011 = 0x3 */
+#define FCF_TO_DS(fc)    ((fc) & 0x0100)
+#define FCF_FROM_DS(fc)  ((fc) & 0x0200)
+/* mask for Bad FCF presence */
+#define BAD_FCS          0x50                   /* 0101 0000 */
 static int process_datalink_layer(struct nDPId_reader_thread * const reader_thread,
                                   struct pcap_pkthdr const * const header,
                                   uint8_t const * const packet,
@@ -1962,13 +1972,121 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
             *ip_offset = sizeof(dlt_hdr) + eth_offset;
             break;
         }
+        case DLT_PPP_SERIAL:
+            if (header->len < sizeof(struct ndpi_chdlc))
+            {
+                jsonize_packet_event(reader_thread, header, packet, 0, 0, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
+                jsonize_basic_eventf(reader_thread, PACKET_TOO_SHORT, NULL);
+                return 1;
+            }
+
+            struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const * const)&packet[eth_offset];
+            *ip_offset = sizeof(struct ndpi_chdlc);
+            *layer3_type = ntohs(chdlc->proto_code);
+            break;
+        case DLT_C_HDLC:
+        case DLT_PPP:
+            if (header->len < sizeof(struct ndpi_chdlc))
+            {
+                jsonize_packet_event(reader_thread, header, packet, 0, 0, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
+                jsonize_basic_eventf(reader_thread, PACKET_TOO_SHORT, NULL);
+                return 1;
+            }
+
+            if (packet[0] == 0x0f || packet[0] == 0x8f)
+            {
+                struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const * const)&packet[eth_offset];
+                *ip_offset = sizeof(struct ndpi_chdlc); /* CHDLC_OFF = 4 */
+                *layer3_type = ntohs(chdlc->proto_code);
+            } else {
+                *ip_offset = 2;
+                *layer3_type = ntohs(*((u_int16_t*)&packet[eth_offset]));
+            }
+            break;
+        case DLT_LINUX_SLL:
+            if (header->len < 16)
+            {
+                jsonize_packet_event(reader_thread, header, packet, 0, 0, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
+                jsonize_basic_eventf(reader_thread, PACKET_TOO_SHORT, NULL);
+                return 1;
+            }
+
+            *layer3_type = (packet[eth_offset+14] << 8) + packet[eth_offset+15];
+            *ip_offset = 16 + eth_offset;
+            break;
+        case DLT_IEEE802_11_RADIO:
+        {
+            if (header->len < sizeof(struct ndpi_radiotap_header))
+            {
+                jsonize_packet_event(reader_thread, header, packet, 0, 0, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
+                jsonize_basic_eventf(reader_thread, PACKET_TOO_SHORT, NULL);
+                return 1;
+            }
+
+            struct ndpi_radiotap_header const * const radiotap = (struct ndpi_radiotap_header const * const)&packet[eth_offset];
+            uint16_t radio_len = radiotap->len;
+
+            /* Check Bad FCS presence */
+            if ((radiotap->flags & BAD_FCS) == BAD_FCS)
+            {
+                jsonize_packet_event(reader_thread, header, packet, 0, 0, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
+                jsonize_basic_eventf(reader_thread, PACKET_HEADER_INVALID, NULL);
+                return 1;
+            }
+
+            if (header->caplen < (eth_offset + radio_len + sizeof(struct ndpi_wifi_header)))
+            {
+                jsonize_packet_event(reader_thread, header, packet, 0, 0, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
+                jsonize_basic_eventf(reader_thread, PACKET_TOO_SHORT, NULL);
+                return 1;
+            }
+
+            /* Calculate 802.11 header length (variable) */
+            struct ndpi_wifi_header const * const wifi = (struct ndpi_wifi_header const * const)(packet + eth_offset + radio_len);
+            uint16_t fc = wifi->fc;
+            int wifi_len = 0;
+
+            /* check wifi data presence */
+            if (FCF_TYPE(fc) == WIFI_DATA)
+            {
+                if ((FCF_TO_DS(fc) && FCF_FROM_DS(fc) == 0x0) ||
+                    (FCF_TO_DS(fc) == 0x0 && FCF_FROM_DS(fc)))
+                {
+                    wifi_len = 26; /* + 4 byte fcs */
+                }
+            } else {
+                /* no data frames */
+                break;
+            }
+
+            /* Check ether_type from LLC */
+            if (header->caplen < (eth_offset + wifi_len + radio_len + sizeof(struct ndpi_llc_header_snap)))
+            {
+                return 1;
+            }
+
+            struct ndpi_llc_header_snap const * const llc = (struct ndpi_llc_header_snap const * const)(packet + eth_offset + wifi_len + radio_len);
+            if (llc->dsap == SNAP)
+            {
+                *layer3_type = ntohs(llc->snap.proto_ID);
+            }
+
+            /* Set IP header offset */
+            *ip_offset = wifi_len + radio_len + sizeof(struct ndpi_llc_header_snap) + eth_offset;
+            break;
+        }
+        case DLT_RAW:
+            jsonize_packet_event(reader_thread, header, packet, 0, 0, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
+            jsonize_basic_eventf(reader_thread, PACKET_TYPE_UNKNOWN, "%s%u", "type", DLT_RAW);
+            return 1;
         case DLT_EN10MB:
             if (header->len < sizeof(struct ndpi_ethhdr))
             {
                 jsonize_packet_event(reader_thread, header, packet, 0, 0, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
-                jsonize_basic_eventf(reader_thread, ETHERNET_PACKET_TOO_SHORT, NULL);
+                jsonize_basic_eventf(reader_thread, PACKET_TOO_SHORT, NULL);
                 return 1;
             }
+
             ethernet = (struct ndpi_ethhdr *)&packet[eth_offset];
             *ip_offset = sizeof(struct ndpi_ethhdr) + eth_offset;
             *layer3_type = ntohs(ethernet->h_proto);
@@ -1997,7 +2115,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
                 default:
                     jsonize_packet_event(
                         reader_thread, header, packet, *layer3_type, *ip_offset, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
-                    jsonize_basic_eventf(reader_thread, ETHERNET_PACKET_UNKNOWN, "%s%u", "type", *layer3_type);
+                    jsonize_basic_eventf(reader_thread, PACKET_TYPE_UNKNOWN, "%s%u", "type", *layer3_type);
                     return 1;
             }
             break;
