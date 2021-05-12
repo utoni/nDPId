@@ -3,11 +3,13 @@ before_install:
 - sudo apt-get -qq update
 - sudo apt-get install -y build-essential make binutils gcc autoconf automake libtool pkg-config git libpcap-dev libgcrypt-dev libgpg-error-dev libjson-c-dev netcat-openbsd python3 python3-jsonschema
 script:
-- git submodule update --init
 # static linked build
-- mkdir build-cmake-submodule && cd build-cmake-submodule && cmake .. -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DENABLE_SANITIZER=ON && make && cd ..
+- mkdir build-cmake-submodule && cd build-cmake-submodule &&
+  cmake .. -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DENABLE_SANITIZER=ON && make && cd ..
+- ./test/run_tests.sh ./libnDPI ./build-cmake-submodule/nDPId-test
 # pkg-config dynamic linked build
-- PKG_CONFIG_PATH="$(realpath ./build-cmake-submodule/libnDPI/lib/pkgconfig)" cmake . -DBUILD_EXAMPLES=ON -DENABLE_SANITIZER=ON -DENABLE_MEMORY_PROFILING=ON && make
-- ./nDPId-test || test $? -eq 1
-- ./nDPId -h || test $? -eq 1
-- ./test/run_tests.sh
+- mkdir build && cd build &&
+  PKG_CONFIG_PATH="$(realpath ../build-cmake-submodule/libnDPI/lib/pkgconfig)"
+  cmake .. -DBUILD_EXAMPLES=ON -DENABLE_SANITIZER=ON -DENABLE_MEMORY_PROFILING=ON && make && cd ..
+- ./build/nDPId-test || test $? -eq 1
+- ./build/nDPId -h || test $? -eq 1

@@ -140,11 +140,11 @@ make nDPId-test test
 
 Alternatively you can run some integration tests manually:
 
-`./test/run_tests.sh /path/to/libnDPI/root/directory`
+`./test/run_tests.sh [/path/to/libnDPI/root/directory] [/path/to/nDPId-test]`
 
 e.g.:
 
-`./test/run_tests.sh ${HOME}/git/nDPI`
+`./test/run_tests.sh [${HOME}/git/nDPI] [${HOME}/git/nDPId/build/nDPId-test]`
 
 Remember that all test results are tied to a specific libnDPI commit hash
 as part of the `git submodule`. Using `test/run_tests.s` for other commit hashes
