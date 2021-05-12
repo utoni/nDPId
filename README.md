@@ -129,7 +129,16 @@ or anything below `./examples`.
 
 # test
 
-You may want to run some integration tests using pcap files from nDPI:
+The recommended way to run integration / diff tests:
+
+```shell
+mkdir build
+cd build
+cmake .. -DBUILD_NDPI=ON
+make nDPId-test test
+```
+
+Alternatively you can run some integration tests manually:
 
 `./test/run_tests.sh /path/to/libnDPI/root/directory`
 
@@ -137,11 +146,6 @@ e.g.:
 
 `./test/run_tests.sh ${HOME}/git/nDPI`
 
-
-For out-of-source builds, you'll need to specify a path to nDPId-test as well with:
-
-`/test/run_tests.sh /path/to/libnDPI/root/directory /path/to/nDPId-test-executable`
-
-For in-source builds and if CMake was configured with BUILD_NDPI=ON you can just type:
-
-`/test/run_tests.sh`
+Remember that all test results are tied to a specific libnDPI commit hash
+as part of the `git submodule`. Using `test/run_tests.s` for other commit hashes
+will most likely result in PCAP diff's.

@@ -9,18 +9,24 @@ NETCAT_EXEC="nc -q 0 -l 127.0.0.1 9000"
 JSON_VALIDATOR="$(realpath "${3:-"${MYDIR}/../examples/py-schema-validation/py-schema-validation.py"}")"
 SEMN_VALIDATOR="$(realpath "${4:-"${MYDIR}/../examples/py-semantic-validation/py-semantic-validation.py"}")"
 
+function usage()
+{
+cat <<EOF
+usage: ${0} [path-to-nDPI-source-root] \\
+    [path-to-nDPId-test-exec] [path-to-nDPId-JSON-validator] [path-to-nDPId-SEMANTIC-validator]
+
+    path-to-nDPId-test-exec defaults to         ${nDPId_test_EXEC}
+    path-to-nDPId-JSON-validator defaults to    ${JSON_VALIDATOR}
+    path-to-nDPId-SEMANTIC-validator default to ${SEMN_VALIDATOR}
+EOF
+return 0
+}
+
 if [ $# -eq 0 -a -x "${MYDIR}/../libnDPI/tests/pcap" ]; then
     nDPI_SOURCE_ROOT="${MYDIR}/../libnDPI"
 elif [ $# -ne 1 -a $# -ne 2 -a $# -ne 3 -a $# -ne 4 ]; then
-cat <<EOF
-usage: ${0} [path-to-nDPI-source-root] \\
-	[path-to-nDPId-test-exec] [path-to-nDPId-JSON-validator] [path-to-nDPId-SEMANTIC-validator]
-
-	path-to-nDPId-test-exec defaults to         ${nDPId_test_EXEC}
-	path-to-nDPId-JSON-validator defaults to    ${JSON_VALIDATOR}
-	path-to-nDPId-SEMANTIC-validator default to ${SEMN_VALIDATOR}
-EOF
-exit 2
+    usage
+    exit 2
 else
     nDPI_SOURCE_ROOT="$(realpath "${1}")"
 fi
@@ -42,10 +48,9 @@ function sighandler()
 trap sighandler SIGINT SIGTERM
 
 if [ ! -x "${nDPId_test_EXEC}" ]; then
-cat >&2 <<EOF
-Required nDPId-test executable does not exist; ${nDPId_test_EXEC}
-EOF
-exit 5
+    usage
+    printf '\n%s\n' "Required nDPId-test executable does not exist; ${nDPId_test_EXEC}"
+    exit 5
 fi
 
 nc -h |& head -n1 | grep -qoE '^OpenBSD netcat' || {

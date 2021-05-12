@@ -1,3 +1,5 @@
 [submodule "libnDPI"]
 	path = libnDPI
 	url = https://github.com/ntop/nDPI
+	branch = dev
+	update = rebase

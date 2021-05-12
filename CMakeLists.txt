@@ -3,6 +3,21 @@ project(nDPId C)
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 find_package(PkgConfig REQUIRED)
 
+function(initialize_submodule DIRECTORY)
+    if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${DIRECTORY}/.git)
+        find_package(Git QUIET REQUIRED)
+        message(STATUS "${CMAKE_CURRENT_SOURCE_DIR}/${DIRECTORY}/.git does not exist. "
+                       "Initializing ${DIRECTORY} submodule ...")
+        execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init ${DIRECTORY}
+                        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+                        RESULT_VARIABLE GIT_EXIT_CODE)
+        if(NOT GIT_EXIT_CODE EQUAL "0")
+            message(FATAL_ERROR "${GIT_EXECUTABLE} submodule update --init dependencies/${DIRECTORY} "
+                                "failed with exit code ${GIT_EXIT_CODE}, please checkout submodules")
+        endif()
+    endif()
+endfunction(initialize_submodule)
+
 option(ENABLE_SANITIZER "Enable ASAN/LSAN/UBSAN." OFF)
 option(ENABLE_SANITIZER_THREAD "Enable TSAN (does not work together with ASAN)." OFF)
 option(ENABLE_MEMORY_PROFILING "Enable dynamic memory tracking." OFF)
@@ -15,6 +30,14 @@ set(STATIC_LIBNDPI_INSTALLDIR "" CACHE STRING "Path to a installation directory 
 add_executable(nDPId nDPId.c utils.c)
 add_executable(nDPIsrvd nDPIsrvd.c utils.c)
 add_executable(nDPId-test nDPId-test.c utils.c)
+
+if(BUILD_NDPI)
+    enable_testing()
+    add_test(NAME run_tests
+             COMMAND "${CMAKE_SOURCE_DIR}/test/run_tests.sh"
+                     "${CMAKE_SOURCE_DIR}/libnDPI"
+                     "$<TARGET_FILE:nDPId-test>")
+endif()
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -DJSMN_STATIC=1 -DJSMN_STRICT=1")
 set(BUILD_NDPI_CONFIGURE_OPTS "")
@@ -45,12 +68,12 @@ if(ENABLE_SANITIZER_THREAD)
 endif()
 
 if(STATIC_LIBNDPI_INSTALLDIR STREQUAL "" AND BUILD_NDPI)
+    initialize_submodule(libnDPI)
     include(ExternalProject)
     ExternalProject_Add(
         libnDPI
         SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libnDPI
-        CONFIGURE_COMMAND git submodule update --init &&
-                          ${CMAKE_CURRENT_SOURCE_DIR}/libnDPI/autogen.sh
+        CONFIGURE_COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/libnDPI/autogen.sh
                           --prefix=${CMAKE_CURRENT_BINARY_DIR}/libnDPI
                           ${BUILD_NDPI_CONFIGURE_OPTS}
         BUILD_COMMAND make
