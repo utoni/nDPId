@@ -53,7 +53,16 @@
         "idle-scan-period": {
             "type": "number"
         },
-        "max-idle-time": {
+        "generic-max-idle-time": {
+            "type": "number"
+        },
+        "icmp-max-idle-time": {
+            "type": "number"
+        },
+        "udp-max-idle-time": {
+            "type": "number"
+        },
+        "tcp-max-idle-time": {
             "type": "number"
         },
         "tcp-max-post-end-flow-time": {

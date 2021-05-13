@@ -309,7 +309,10 @@ static struct
     unsigned long long int tick_resolution;
     unsigned long long int reader_thread_count;
     unsigned long long int idle_scan_period;
-    unsigned long long int max_idle_time;
+    unsigned long long int generic_max_idle_time;
+    unsigned long long int icmp_max_idle_time;
+    unsigned long long int udp_max_idle_time;
+    unsigned long long int tcp_max_idle_time;
     unsigned long long int tcp_max_post_end_flow_time;
     unsigned long long int max_packets_per_flow_to_send;
     unsigned long long int max_packets_per_flow_to_process;
@@ -321,7 +324,10 @@ static struct
                    .tick_resolution = nDPId_TICK_RESOLUTION,
                    .reader_thread_count = nDPId_MAX_READER_THREADS / 2,
                    .idle_scan_period = nDPId_IDLE_SCAN_PERIOD,
-                   .max_idle_time = nDPId_IDLE_TIME,
+                   .generic_max_idle_time = nDPId_GENERIC_IDLE_TIME,
+                   .icmp_max_idle_time = nDPId_ICMP_IDLE_TIME,
+                   .udp_max_idle_time = nDPId_UDP_IDLE_TIME,
+                   .tcp_max_idle_time = nDPId_TCP_IDLE_TIME,
                    .tcp_max_post_end_flow_time = nDPId_TCP_POST_END_FLOW_TIME,
                    .max_packets_per_flow_to_send = nDPId_PACKETS_PER_FLOW_TO_SEND,
                    .max_packets_per_flow_to_process = nDPId_PACKETS_PER_FLOW_TO_PROCESS};
@@ -333,7 +339,10 @@ enum nDPId_subopts
     TICK_RESOLUTION,
     MAX_READER_THREADS,
     IDLE_SCAN_PERIOD,
-    MAX_IDLE_TIME,
+    GENERIC_MAX_IDLE_TIME,
+    ICMP_MAX_IDLE_TIME,
+    UDP_MAX_IDLE_TIME,
+    TCP_MAX_IDLE_TIME,
     TCP_MAX_POST_END_FLOW_TIME,
     MAX_PACKETS_PER_FLOW_TO_SEND,
     MAX_PACKETS_PER_FLOW_TO_PROCESS,
@@ -343,7 +352,10 @@ static char * const subopt_token[] = {[MAX_FLOWS_PER_THREAD] = "max-flows-per-th
                                       [TICK_RESOLUTION] = "tick-resolution",
                                       [MAX_READER_THREADS] = "max-reader-threads",
                                       [IDLE_SCAN_PERIOD] = "idle-scan-period",
-                                      [MAX_IDLE_TIME] = "max-idle-time",
+                                      [GENERIC_MAX_IDLE_TIME] = "generic-max-idle-time",
+                                      [ICMP_MAX_IDLE_TIME] = "icmp-max-idle-time",
+                                      [UDP_MAX_IDLE_TIME] = "udp-max-idle-time",
+                                      [TCP_MAX_IDLE_TIME] = "tcp-max-idle-time",
                                       [TCP_MAX_POST_END_FLOW_TIME] = "tcp-max-post-end-flow-time",
                                       [MAX_PACKETS_PER_FLOW_TO_SEND] = "max-packets-per-flow-to-send",
                                       [MAX_PACKETS_PER_FLOW_TO_PROCESS] = "max-packets-per-flow-to-process",
@@ -981,6 +993,22 @@ static int ip_tuples_compare(struct nDPId_flow_basic const * const A, struct nDP
     return 0;
 }
 
+static uint64_t get_l4_protocol_idle_time(uint8_t l4_protocol)
+{
+    switch (l4_protocol)
+    {
+        case IPPROTO_ICMP:
+        case IPPROTO_ICMPV6:
+            return nDPId_options.icmp_max_idle_time;
+        case IPPROTO_TCP:
+            return nDPId_options.tcp_max_idle_time;
+        case IPPROTO_UDP:
+            return nDPId_options.udp_max_idle_time;
+        default:
+            return nDPId_options.generic_max_idle_time;
+    }
+}
+
 static void ndpi_idle_scan_walker(void const * const A, ndpi_VISIT which, int depth, void * const user_data)
 {
     struct nDPId_workflow * const workflow = (struct nDPId_workflow *)user_data;
@@ -1000,7 +1028,7 @@ static void ndpi_idle_scan_walker(void const * const A, ndpi_VISIT which, int de
 
     if (which == ndpi_preorder || which == ndpi_leaf)
     {
-        if (flow_basic->last_seen + nDPId_options.max_idle_time < workflow->last_time ||
+        if (flow_basic->last_seen + get_l4_protocol_idle_time(flow_basic->l4_protocol) < workflow->last_time ||
             (flow_basic->tcp_fin_rst_seen == 1 &&
              flow_basic->last_seen + nDPId_options.tcp_max_post_end_flow_time < workflow->last_time))
         {
@@ -1275,7 +1303,10 @@ static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enu
                                     "reader-thread-count",
                                     nDPId_options.reader_thread_count);
         ndpi_serialize_string_int64(&workflow->ndpi_serializer, "idle-scan-period", nDPId_options.idle_scan_period);
-        ndpi_serialize_string_int64(&workflow->ndpi_serializer, "max-idle-time", nDPId_options.max_idle_time);
+        ndpi_serialize_string_int64(&workflow->ndpi_serializer, "generic-max-idle-time", nDPId_options.generic_max_idle_time);
+        ndpi_serialize_string_int64(&workflow->ndpi_serializer, "icmp-max-idle-time", nDPId_options.icmp_max_idle_time);
+        ndpi_serialize_string_int64(&workflow->ndpi_serializer, "udp-max-idle-time", nDPId_options.udp_max_idle_time);
+        ndpi_serialize_string_int64(&workflow->ndpi_serializer, "tcp-max-idle-time", nDPId_options.tcp_max_idle_time);
         ndpi_serialize_string_int64(&workflow->ndpi_serializer,
                                     "tcp-max-post-end-flow-time",
                                     nDPId_options.tcp_max_post_end_flow_time);
@@ -2995,8 +3026,17 @@ static void print_subopt_usage(void)
                 case IDLE_SCAN_PERIOD:
                     fprintf(stderr, "%llu\n", nDPId_options.idle_scan_period);
                     break;
-                case MAX_IDLE_TIME:
-                    fprintf(stderr, "%llu\n", nDPId_options.max_idle_time);
+                case GENERIC_MAX_IDLE_TIME:
+                    fprintf(stderr, "%llu\n", nDPId_options.generic_max_idle_time);
+                    break;
+                case ICMP_MAX_IDLE_TIME:
+                    fprintf(stderr, "%llu\n", nDPId_options.icmp_max_idle_time);
+                    break;
+                case UDP_MAX_IDLE_TIME:
+                    fprintf(stderr, "%llu\n", nDPId_options.udp_max_idle_time);
+                    break;
+                case TCP_MAX_IDLE_TIME:
+                    fprintf(stderr, "%llu\n", nDPId_options.tcp_max_idle_time);
                     break;
                 case TCP_MAX_POST_END_FLOW_TIME:
                     fprintf(stderr, "%llu\n", nDPId_options.tcp_max_post_end_flow_time);
@@ -3167,8 +3207,17 @@ static int nDPId_parse_options(int argc, char ** argv)
                         case IDLE_SCAN_PERIOD:
                             nDPId_options.idle_scan_period = value_llu;
                             break;
-                        case MAX_IDLE_TIME:
-                            nDPId_options.max_idle_time = value_llu;
+                        case GENERIC_MAX_IDLE_TIME:
+                            nDPId_options.generic_max_idle_time = value_llu;
+                            break;
+                        case ICMP_MAX_IDLE_TIME:
+                            nDPId_options.icmp_max_idle_time = value_llu;
+                            break;
+                        case UDP_MAX_IDLE_TIME:
+                            nDPId_options.udp_max_idle_time = value_llu;
+                            break;
+                        case TCP_MAX_IDLE_TIME:
+                            nDPId_options.tcp_max_idle_time = value_llu;
                             break;
                         case TCP_MAX_POST_END_FLOW_TIME:
                             nDPId_options.tcp_max_post_end_flow_time = value_llu;
@@ -3272,18 +3321,13 @@ static int validate_options(char const * const arg0)
                 nDPId_options.idle_scan_period);
         retval = 1;
     }
-    if (nDPId_options.max_idle_time < 60)
-    {
-        fprintf(stderr, "%s: Value not in range: max-idle-time[%llu] > 60\n", arg0, nDPId_options.max_idle_time);
-        retval = 1;
-    }
-    if (nDPId_options.tcp_max_post_end_flow_time > nDPId_options.max_idle_time)
+    if (nDPId_options.tcp_max_post_end_flow_time > nDPId_options.tcp_max_idle_time)
     {
         fprintf(stderr,
-                "%s: Value not in range: max-post-end-flow-time[%llu] < max_idle_time[%llu]\n",
+                "%s: Value not in range: tcp-max-post-end-flow-time[%llu] < tcp-max-idle-time[%llu]\n",
                 arg0,
                 nDPId_options.tcp_max_post_end_flow_time,
-                nDPId_options.max_idle_time);
+                nDPId_options.tcp_max_idle_time);
         retval = 1;
     }
     if (nDPId_options.process_internal_initial_direction != 0 && nDPId_options.process_external_initial_direction != 0)
