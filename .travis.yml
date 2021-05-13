@@ -13,3 +13,6 @@ script:
   cmake .. -DBUILD_EXAMPLES=ON -DENABLE_SANITIZER=ON -DENABLE_MEMORY_PROFILING=ON && make && cd ..
 - ./build/nDPId-test || test $? -eq 1
 - ./build/nDPId -h || test $? -eq 1
+# dameon start/stop test
+- ./daemon.sh ./build/nDPId ./build/nDPIsrvd
+- ./daemon.sh ./build/nDPId ./build/nDPIsrvd

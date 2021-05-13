@@ -31,6 +31,13 @@ add_executable(nDPId nDPId.c utils.c)
 add_executable(nDPIsrvd nDPIsrvd.c utils.c)
 add_executable(nDPId-test nDPId-test.c utils.c)
 
+add_custom_target(daemon)
+add_custom_command(
+    TARGET  daemon
+    COMMAND "${CMAKE_SOURCE_DIR}/daemon.sh" "$<TARGET_FILE:nDPId>" "$<TARGET_FILE:nDPIsrvd>"
+    DEPENDS nDPId nDPIsrvd
+)
+
 if(BUILD_NDPI)
     enable_testing()
     add_test(NAME run_tests

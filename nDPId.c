@@ -1009,6 +1009,14 @@ static uint64_t get_l4_protocol_idle_time(uint8_t l4_protocol)
     }
 }
 
+static int is_l4_protocol_timed_out(struct nDPId_workflow const * const workflow,
+                                    struct nDPId_flow_basic const * const flow_basic)
+{
+    return flow_basic->last_seen + get_l4_protocol_idle_time(flow_basic->l4_protocol) < workflow->last_time ||
+           (flow_basic->tcp_fin_rst_seen == 1 &&
+            flow_basic->last_seen + nDPId_options.tcp_max_post_end_flow_time < workflow->last_time);
+}
+
 static void ndpi_idle_scan_walker(void const * const A, ndpi_VISIT which, int depth, void * const user_data)
 {
     struct nDPId_workflow * const workflow = (struct nDPId_workflow *)user_data;
@@ -1028,9 +1036,7 @@ static void ndpi_idle_scan_walker(void const * const A, ndpi_VISIT which, int de
 
     if (which == ndpi_preorder || which == ndpi_leaf)
     {
-        if (flow_basic->last_seen + get_l4_protocol_idle_time(flow_basic->l4_protocol) < workflow->last_time ||
-            (flow_basic->tcp_fin_rst_seen == 1 &&
-             flow_basic->last_seen + nDPId_options.tcp_max_post_end_flow_time < workflow->last_time))
+        if (is_l4_protocol_timed_out(workflow, flow_basic) != 0)
         {
             workflow->ndpi_flows_idle[workflow->cur_idle_flows++] = flow_basic;
             switch (flow_basic->type)
@@ -2004,6 +2010,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
             break;
         }
         case DLT_PPP_SERIAL:
+        {
             if (header->len < sizeof(struct ndpi_chdlc))
             {
                 jsonize_packet_event(reader_thread, header, packet, 0, 0, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
@@ -2015,6 +2022,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
             *ip_offset = sizeof(struct ndpi_chdlc);
             *layer3_type = ntohs(chdlc->proto_code);
             break;
+        }
         case DLT_C_HDLC:
         case DLT_PPP:
             if (header->len < sizeof(struct ndpi_chdlc))
