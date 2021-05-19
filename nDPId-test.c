@@ -371,7 +371,7 @@ int main(int argc, char ** argv)
     {
         if (THREADS_RETURNED_ERROR() != 0)
         {
-            return 1;
+            break;
         }
     }
 
@@ -379,7 +379,7 @@ int main(int argc, char ** argv)
     {
         if (THREADS_RETURNED_ERROR() != 0)
         {
-            return 1;
+            break;
         }
     }
 
@@ -387,7 +387,7 @@ int main(int argc, char ** argv)
     {
         if (THREADS_RETURNED_ERROR() != 0)
         {
-            return 1;
+            break;
         }
     }
 

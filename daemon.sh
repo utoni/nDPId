@@ -19,14 +19,12 @@ if [ -r "/tmp/nDPId-${NSUFFIX}.pid" -o -r "/tmp/nDPIsrvd-${NSUFFIX}.pid" ]; then
 
     if [ x"${nDPId_PID}" != x ]; then
         sudo kill "${nDPId_PID}"
-        wait "${nDPId_PID}"
     else
         printf '%s\n' "${1} not started .." >&2
     fi
 
     if [ x"${nDPIsrvd_PID}" != x ]; then
         kill "${nDPIsrvd_PID}"
-        wait "${nDPIsrvd_PID}"
     else
         printf '%s\n' "${2} not started .." >&2
     fi
@@ -35,10 +33,12 @@ if [ -r "/tmp/nDPId-${NSUFFIX}.pid" -o -r "/tmp/nDPIsrvd-${NSUFFIX}.pid" ]; then
     rm -f "/tmp/nDPIsrvd-${NSUFFIX}.pid"
     printf '%s\n' "daemons stopped" >&2
 else
+    set -x
     ${2} -p "/tmp/nDPIsrvd-${NSUFFIX}.pid" -c "/tmp/nDPIsrvd-${NSUFFIX}-collector.sock" -s "/tmp/nDPIsrvd-${NSUFFIX}-distributor.sock" -d
     sudo chgrp "$(id -n -g "${NUSER}")" "/tmp/nDPIsrvd-${NSUFFIX}-collector.sock"
     sudo chmod g+w "/tmp/nDPIsrvd-${NSUFFIX}-collector.sock"
     sudo ${1} -p "/tmp/nDPId-${NSUFFIX}.pid" -c "/tmp/nDPIsrvd-${NSUFFIX}-collector.sock" -d -u "${NUSER}"
+    set +x
     printf '%s\n' "daemons started" >&2
     printf '%s\n' "You may now run examples e.g.: ./examples/py-flow-info/flow-info.py --unix /tmp/nDPIsrvd-${NSUFFIX}-distributor.sock"
 fi

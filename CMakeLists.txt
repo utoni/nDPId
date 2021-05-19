@@ -12,7 +12,7 @@ function(initialize_submodule DIRECTORY)
                         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
                         RESULT_VARIABLE GIT_EXIT_CODE)
         if(NOT GIT_EXIT_CODE EQUAL "0")
-            message(FATAL_ERROR "${GIT_EXECUTABLE} submodule update --init dependencies/${DIRECTORY} "
+            message(FATAL_ERROR "${GIT_EXECUTABLE} submodule update --init ${DIRECTORY} "
                                 "failed with exit code ${GIT_EXIT_CODE}, please checkout submodules")
         endif()
     endif()
@@ -46,9 +46,8 @@ if(BUILD_NDPI)
                      "$<TARGET_FILE:nDPId-test>")
 endif()
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -DJSMN_STATIC=1 -DJSMN_STRICT=1")
-set(BUILD_NDPI_CONFIGURE_OPTS "")
-
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
+set(NDPID_C_FLAGS -DJSMN_STATIC=1 -DJSMN_STRICT=1)
 if(ENABLE_MEMORY_PROFILING)
     set(MEMORY_PROFILING_CFLAGS "-DENABLE_MEMORY_PROFILING=1"
                                 "-Duthash_malloc=nDPIsrvd_uthash_malloc"
@@ -66,12 +65,11 @@ if(ENABLE_SANITIZER AND ENABLE_SANITIZER_THREAD)
 endif()
 
 if(ENABLE_SANITIZER)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address -fsanitize=undefined -fsanitize=enum -fsanitize=leak")
-    set(BUILD_NDPI_CONFIGURE_OPTS "${BUILD_NDPI_CONFIGURE_OPTS} --with-sanitizer")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address -fsanitize=undefined -fno-sanitize=alignment -fsanitize=enum -fsanitize=leak")
 endif()
 
 if(ENABLE_SANITIZER_THREAD)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=undefined -fsanitize=enum -fsanitize=thread")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=undefined -fno-sanitize=alignment -fsanitize=enum -fsanitize=thread")
 endif()
 
 if(STATIC_LIBNDPI_INSTALLDIR STREQUAL "" AND BUILD_NDPI)
@@ -80,9 +78,9 @@ if(STATIC_LIBNDPI_INSTALLDIR STREQUAL "" AND BUILD_NDPI)
     ExternalProject_Add(
         libnDPI
         SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libnDPI
-        CONFIGURE_COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/libnDPI/autogen.sh
+        CONFIGURE_COMMAND env CC=${CMAKE_C_COMPILER} CFLAGS=${CMAKE_C_FLAGS} LDFLAGS=${CMAKE_EXE_LINKER_FLAGS} ${CMAKE_CURRENT_SOURCE_DIR}/libnDPI/autogen.sh
                           --prefix=${CMAKE_CURRENT_BINARY_DIR}/libnDPI
-                          ${BUILD_NDPI_CONFIGURE_OPTS}
+                          --with-only-libndpi
         BUILD_COMMAND make
         BUILD_IN_SOURCE 1)
 
@@ -128,14 +126,14 @@ else()
 endif()
 
 find_package(PCAP "1.8.1" REQUIRED)
-target_compile_options(nDPId PRIVATE ${MEMORY_PROFILING_CFLAGS} "-pthread")
+target_compile_options(nDPId PRIVATE ${NDPID_C_FLAGS} ${MEMORY_PROFILING_CFLAGS} "-pthread")
 target_include_directories(nDPId PRIVATE "${STATIC_LIBNDPI_INC}" "${NDPI_INCLUDEDIR}" "${NDPI_INCLUDEDIR}/ndpi")
 target_link_libraries(nDPId "${STATIC_LIBNDPI_LIB}" "${pkgcfg_lib_NDPI_ndpi}"
                             "${pkgcfg_lib_PCRE_pcre}" "${pkgcfg_lib_MAXMINDDB_maxminddb}"
                             "${GCRYPT_LIBRARY}" "${PCAP_LIBRARY}"
                             "-pthread")
 
-target_compile_options(nDPId PRIVATE ${MEMORY_PROFILING_CFLAGS})
+target_compile_options(nDPId PRIVATE ${NDPID_C_FLAGS} ${MEMORY_PROFILING_CFLAGS})
 target_include_directories(nDPIsrvd PRIVATE
                            "${CMAKE_SOURCE_DIR}"
                            "${CMAKE_SOURCE_DIR}/dependencies"
@@ -147,7 +145,7 @@ target_include_directories(nDPId-test PRIVATE
                            "${CMAKE_SOURCE_DIR}/dependencies"
                            "${CMAKE_SOURCE_DIR}/dependencies/jsmn"
                            "${CMAKE_SOURCE_DIR}/dependencies/uthash/src")
-target_compile_options(nDPId-test PRIVATE ${MEMORY_PROFILING_CFLAGS} "-Wno-unused-function" "-pthread")
+target_compile_options(nDPId-test PRIVATE ${NDPID_C_FLAGS} ${MEMORY_PROFILING_CFLAGS} "-Wno-unused-function" "-pthread")
 target_include_directories(nDPId-test PRIVATE "${STATIC_LIBNDPI_INC}" "${NDPI_INCLUDEDIR}" "${NDPI_INCLUDEDIR}/ndpi")
 target_compile_definitions(nDPId-test PRIVATE "-D_GNU_SOURCE=1" "-DNO_MAIN=1" "-Dsyslog=mock_syslog_stderr")
 target_link_libraries(nDPId-test "${STATIC_LIBNDPI_LIB}" "${pkgcfg_lib_NDPI_ndpi}"
@@ -157,7 +155,7 @@ target_link_libraries(nDPId-test "${STATIC_LIBNDPI_LIB}" "${pkgcfg_lib_NDPI_ndpi
 
 if(BUILD_EXAMPLES)
     add_executable(nDPIsrvd-collectd examples/c-collectd/c-collectd.c)
-    target_compile_options(nDPIsrvd-collectd PRIVATE ${MEMORY_PROFILING_CFLAGS})
+    target_compile_options(nDPIsrvd-collectd PRIVATE ${NDPID_C_FLAGS} ${MEMORY_PROFILING_CFLAGS})
     target_include_directories(nDPIsrvd-collectd PRIVATE
                                "${CMAKE_SOURCE_DIR}"
                                "${CMAKE_SOURCE_DIR}/dependencies"
@@ -165,7 +163,7 @@ if(BUILD_EXAMPLES)
                                "${CMAKE_SOURCE_DIR}/dependencies/uthash/src")
 
     add_executable(nDPIsrvd-captured examples/c-captured/c-captured.c utils.c)
-    target_compile_options(nDPIsrvd-captured PRIVATE ${MEMORY_PROFILING_CFLAGS})
+    target_compile_options(nDPIsrvd-captured PRIVATE ${NDPID_C_FLAGS} ${MEMORY_PROFILING_CFLAGS})
     target_include_directories(nDPIsrvd-captured PRIVATE
                                "${CMAKE_SOURCE_DIR}"
                                "${CMAKE_SOURCE_DIR}/dependencies"
@@ -189,6 +187,7 @@ install(FILES examples/py-flow-info/flow-info.py DESTINATION bin RENAME nDPIsrvd
 message(STATUS "--------------------------")
 message(STATUS "CMAKE_BUILD_TYPE.........: ${CMAKE_BUILD_TYPE}")
 message(STATUS "CMAKE_C_FLAGS............: ${CMAKE_C_FLAGS}")
+message(STATUS "NDPID_C_FLAGS............: ${NDPID_C_FLAGS}")
 if(ENABLE_MEMORY_PROFILING)
 message(STATUS "MEMORY_PROFILING_CFLAGS..: ${MEMORY_PROFILING_CFLAGS}")
 endif()

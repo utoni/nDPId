@@ -82,7 +82,7 @@ if [ $? -ne 1 ]; then
     exit 7
 fi
 
-for pcap_file in $(ls *.pcap *.pcapng *.cap); do
+find . -printf '%f\n' -iname '*.pcap' -o -iname '*.pcapng' -o -iname '*.cap' | while read pcap_file; do
     if file "${pcap_file}" | grep -qoE ':\s(pcap|pcap-ng) capture file'; then
         true # pass
     else
@@ -94,13 +94,27 @@ for pcap_file in $(ls *.pcap *.pcapng *.cap); do
     printf '%s\n' "-- OUT: ${MYDIR}/results/${pcap_file}.out" \
         >>"/tmp/nDPId-test-stderr/${pcap_file}.out"
 
+    printf "%-${LINE_SPACES}s\t" "${pcap_file}"
+
     ${nDPId_test_EXEC} "${pcap_file}" \
         >"${MYDIR}/results/${pcap_file}.out.new" \
         2>>"/tmp/nDPId-test-stderr/${pcap_file}.out"
+    nDPId_test_RETVAL=$?
 
-    printf "%-${LINE_SPACES}s\t" "${pcap_file}"
-
-    if [ $? -eq 0 ]; then
+    if [[ ${pcap_file} == fuzz-* ]]; then
+        if [ ${nDPId_test_RETVAL} -eq 0 ]; then
+            printf '%s\n' '[OK]'
+        elif [ ${nDPId_test_RETVAL} -eq 1 ]; then
+            # fuzzed PCAPs with a return value of 1 indicates that libpcap failed
+            printf '%s\n' '[FAIL][IGNORED]'
+        else
+            # may be a valid sanitizer/other failure
+            printf '%s\n' '[FAIL]'
+            printf '%s\n' '----------------------------------------'
+            printf '%s\n' "-- STDERR of ${pcap_file}: /tmp/nDPId-test-stderr/${pcap_file}.out"
+            cat "/tmp/nDPId-test-stderr/${pcap_file}.out"
+        fi
+    elif [ ${nDPId_test_RETVAL} -eq 0 ]; then
         if [ ! -r "${MYDIR}/results/${pcap_file}.out" ]; then
             printf '%s\n' '[NEW]'
             mv -v "${MYDIR}/results/${pcap_file}.out.new" \

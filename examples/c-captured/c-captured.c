@@ -63,6 +63,7 @@ static uint8_t process_guessed = 0;
 static uint8_t process_undetected = 0;
 static uint8_t process_risky = 0;
 static uint8_t process_midstream = 0;
+static uint8_t ignore_empty_flows = 0;
 
 static void packet_data_copy(void * dst, const void * src)
 {
@@ -388,7 +389,12 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
             return CALLBACK_OK;
         }
 
+        nDPIsrvd_ull total_l4_bytes = 0;
+        perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_tot_l4_data_len"), &total_l4_bytes),
+                                      "flow_tot_l4_data_len");
+
         if (flow_user->detection_finished != 0 &&
+            (total_l4_bytes > 0 || ignore_empty_flows == 0) &&
             ((flow_user->guessed != 0 && process_guessed != 0) ||
              (flow_user->detected == 0 && process_undetected != 0) || (flow_user->risky != 0 && process_risky != 0) ||
              (flow_user->midstream != 0 && process_midstream != 0)))
@@ -461,9 +467,10 @@ static int parse_options(int argc, char ** argv)
         "\t-G\tGuessed - Dump guessed flows to a PCAP file.\n"
         "\t-U\tUndetected - Dump undetected flows to a PCAP file.\n"
         "\t-R\tRisky - Dump risky flows to a PCAP file.\n"
-        "\t-M\tMidstream - Dump midstream flows to a PCAP file.\n";
+        "\t-M\tMidstream - Dump midstream flows to a PCAP file.\n"
+        "\t-E\tEmpty - Ignore flows w/o any layer 4 payload\n";
 
-    while ((opt = getopt(argc, argv, "hdp:s:r:u:g:D:GURM")) != -1)
+    while ((opt = getopt(argc, argv, "hdp:s:r:u:g:D:GURME")) != -1)
     {
         switch (opt)
         {
@@ -508,6 +515,9 @@ static int parse_options(int argc, char ** argv)
                 break;
             case 'M':
                 process_midstream = 1;
+                break;
+            case 'E':
+                ignore_empty_flows = 1;
                 break;
             default:
                 fprintf(stderr, usage, argv[0]);
