@@ -45,6 +45,7 @@ struct flow_user_data
     uint8_t midstream;
     nDPIsrvd_ull flow_datalink;
     nDPIsrvd_ull flow_max_packets;
+    nDPIsrvd_ull flow_tot_l4_payload_len;
     UT_array * packets;
 };
 
@@ -344,6 +345,13 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
 
     {
         struct nDPIsrvd_json_token const * const flow_event_name = TOKEN_GET_SZ(sock, "flow_event_name");
+
+        if (flow_event_name != NULL)
+        {
+            perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_tot_l4_payload_len"), &flow_user->flow_tot_l4_payload_len),
+                       "flow_tot_l4_payload_len");
+        }
+
         if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "new") != 0)
         {
             flow_user->flow_new_seen = 1;
@@ -389,17 +397,13 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
             return CALLBACK_OK;
         }
 
-        nDPIsrvd_ull total_l4_bytes = 0;
-        perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_tot_l4_payload_len"), &total_l4_bytes),
-                                      "flow_tot_l4_payload_len");
-
         if (flow_user->detection_finished != 0 &&
-            (total_l4_bytes > 0 || ignore_empty_flows == 0) &&
             ((flow_user->guessed != 0 && process_guessed != 0) ||
              (flow_user->detected == 0 && process_undetected != 0) || (flow_user->risky != 0 && process_risky != 0) ||
              (flow_user->midstream != 0 && process_midstream != 0)))
         {
             packet_data_print(flow_user->packets);
+            if (ignore_empty_flows == 0 || flow_user->flow_tot_l4_payload_len > 0)
             {
                 char pcap_filename[PATH_MAX];
                 if (generate_pcap_filename(flow, flow_user, pcap_filename, sizeof(pcap_filename)) == NULL)
