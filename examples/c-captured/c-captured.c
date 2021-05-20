@@ -390,8 +390,8 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
         }
 
         nDPIsrvd_ull total_l4_bytes = 0;
-        perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_tot_l4_data_len"), &total_l4_bytes),
-                                      "flow_tot_l4_data_len");
+        perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_tot_l4_payload_len"), &total_l4_bytes),
+                                      "flow_tot_l4_payload_len");
 
         if (flow_user->detection_finished != 0 &&
             (total_l4_bytes > 0 || ignore_empty_flows == 0) &&

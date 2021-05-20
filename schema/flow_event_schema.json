@@ -11,10 +11,10 @@
         "flow_packet_id",
         "flow_first_seen",
         "flow_last_seen",
-        "flow_min_l4_data_len",
-        "flow_max_l4_data_len",
-        "flow_tot_l4_data_len",
-        "flow_avg_l4_data_len",
+        "flow_min_l4_payload_len",
+        "flow_max_l4_payload_len",
+        "flow_tot_l4_payload_len",
+        "flow_avg_l4_payload_len",
         "l3_proto",
         "l4_proto",
         "midstream",
@@ -76,16 +76,16 @@
         "flow_max_packets": {
             "type": "number"
         },
-        "flow_min_l4_data_len": {
+        "flow_min_l4_payload_len": {
             "type": "number"
         },
-        "flow_max_l4_data_len": {
+        "flow_max_l4_payload_len": {
             "type": "number"
         },
-        "flow_tot_l4_data_len": {
+        "flow_tot_l4_payload_len": {
             "type": "number"
         },
-        "flow_avg_l4_data_len": {
+        "flow_avg_l4_payload_len": {
             "type": "number"
         },
         "l3_proto": {
