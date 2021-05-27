@@ -25,6 +25,10 @@ A discontinued tty UI nDPId dashboard. I've figured out that Go + UI is a bad id
 
 Prints prettyfied information about flow events.
 
+## py-flow-dash
+
+A realtime web based graph using Plotly/Dash.
+
 ## py-flow-multiprocess
 
 Simple Python Multiprocess example spawning two worker processes, one connecting to nDPIsrvd and one printing flow id's to STDOUT.
