@@ -35,7 +35,7 @@ global live_flow_count_Y
 live_flow_count_Y = deque(maxlen=FLOW_COUNT_DATAPOINTS)
 live_flow_count_Y.append(1)
 
-live_flow_bars = ['Is Flow Risky?', 'Is Midstream?']
+live_flow_bars = ['risky', 'midstream', 'detected', 'guessed', 'not-detected']
 fig = go.Figure()
 
 app = dash.Dash(__name__)
@@ -85,28 +85,35 @@ def update_graph_scatter(n):
     [Input('graph-update', 'n_intervals')]
 )
 def update_pie(n):
-    values_true = [0, 0]
-    values_false = [0, 0]
+    values = [0, 0, 0, 0, 0]
 
     for flow_id in shared_flow_dict.keys():
 
-        if shared_flow_dict[flow_id].is_risky is True:
-            values_true[0] += 1
-        else:
-            values_false[0] += 1
+        if shared_flow_dict[flow_id]['is_risky'] is True:
+            values[0] += 1
 
-        if shared_flow_dict[flow_id].is_midstream is True:
-            values_true[1] += 1
-        else:
-            values_false[1] += 1
+        if shared_flow_dict[flow_id]['is_midstream'] is True:
+            values[1] += 1
 
-    all_values = values_true + values_false
+        if shared_flow_dict[flow_id]['is_detected'] is True:
+            values[2] += 1
+
+        if shared_flow_dict[flow_id]['is_guessed'] is True:
+            values[3] += 1
+
+        if shared_flow_dict[flow_id]['is_not_detected'] is True:
+            values[4] += 1
+
+        if shared_flow_dict[flow_id]['remove_me'] is True:
+            del shared_flow_dict[flow_id]
+
+    # print(values)
+
     return {
             'data': [
-                        go.Bar(name='True', x=live_flow_bars, y=values_true),
-                        go.Bar(name='False', x=live_flow_bars, y=values_false)
+                        go.Bar(name='', x=live_flow_bars, y=values)
                     ],
-            'layout': go.Layout(yaxis=dict(range=[0, max(all_values)]))
+            'layout': go.Layout(yaxis=dict(range=[0, max(values)]))
            }
 
 
@@ -118,24 +125,33 @@ def nDPIsrvd_worker_onJsonLineRecvd(json_dict, current_flow, global_user_data):
     if 'flow_event_name' not in json_dict:
         return True
 
-    if 'midstream' in json_dict and json_dict['midstream'] != 0:
-        current_flow.is_midstream = True
-    else:
-        current_flow.is_midstream = False
-
-    if 'ndpi' in json_dict and 'flow_risk' in json_dict['ndpi']:
-        current_flow.is_risky = True
-    else:
-        current_flow.is_risky = False
-
     # print(json_dict)
 
+    if json_dict['flow_id'] not in shared_flow_dict:
+        shared_flow_dict[json_dict['flow_id']] = mgr.dict()
+        shared_flow_dict[json_dict['flow_id']]['is_detected'] = False
+        shared_flow_dict[json_dict['flow_id']]['is_guessed'] = False
+        shared_flow_dict[json_dict['flow_id']]['is_not_detected'] = False
+        shared_flow_dict[json_dict['flow_id']]['is_midstream'] = False
+        shared_flow_dict[json_dict['flow_id']]['is_risky'] = False
+        shared_flow_dict[json_dict['flow_id']]['remove_me'] = False
+
     if json_dict['flow_event_name'] == 'new':
-        shared_flow_dict[json_dict['flow_id']] = current_flow
+        if 'midstream' in json_dict and json_dict['midstream'] != 0:
+            shared_flow_dict[json_dict['flow_id']]['is_midstream'] = True
+    elif json_dict['flow_event_name'] == 'guessed':
+        shared_flow_dict[json_dict['flow_id']]['is_guessed'] = True
+    elif json_dict['flow_event_name'] == 'not-detected':
+        shared_flow_dict[json_dict['flow_id']]['is_not_detected'] = True
+    elif json_dict['flow_event_name'] == 'detected':
+        shared_flow_dict[json_dict['flow_id']]['is_detected'] = True
+        shared_flow_dict[json_dict['flow_id']]['is_guessed'] = False
+        shared_flow_dict[json_dict['flow_id']]['is_not_detected'] = False
+        if 'ndpi' in json_dict and 'flow_risk' in json_dict['ndpi']:
+            shared_flow_dict[json_dict['flow_id']]['is_risky'] = True
     elif json_dict['flow_event_name'] == 'idle' or \
             json_dict['flow_event_name'] == 'end':
-        if json_dict['flow_id'] in shared_flow_dict:
-            del shared_flow_dict[json_dict['flow_id']]
+        shared_flow_dict[json_dict['flow_id']]['remove_me'] = True
 
     return True
 
