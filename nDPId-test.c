@@ -135,47 +135,38 @@ error:
     return NULL;
 }
 
-static enum nDPIsrvd_parse_return parse_json_lines(struct io_buffer * const buffer)
+static enum nDPIsrvd_parse_return parse_json_lines(struct nDPIsrvd_buffer * const buffer)
 {
-    struct nDPIsrvd_buffer buf = {};
     struct nDPIsrvd_jsmn jsmn = {};
-    size_t const n = (buffer->used > sizeof(buf.raw) ? sizeof(buf.raw) : buffer->used);
+    size_t const n = (buffer->used > buffer->max ? buffer->max : buffer->used);
 
     if (n > NETWORK_BUFFER_MAX_SIZE)
     {
         return PARSE_STRING_TOO_BIG;
     }
 
-    memcpy(buf.raw, buffer->ptr, n);
-    buf.used = buffer->used;
-
     enum nDPIsrvd_parse_return ret;
-    while ((ret = nDPIsrvd_parse_line(&buf, &jsmn)) == PARSE_OK)
+    while ((ret = nDPIsrvd_parse_line(buffer, &jsmn)) == PARSE_OK)
     {
         if (jsmn.tokens_found == 0)
         {
             return PARSE_JSMN_ERROR;
         }
-        nDPIsrvd_drain_buffer(&buf);
+        nDPIsrvd_drain_buffer(buffer);
     }
-
-    memcpy(buffer->ptr, buf.raw, buf.used);
-    buffer->used = buf.used;
 
     return ret;
 }
 
 static void * distributor_client_mainloop_thread(void * const arg)
 {
-    struct io_buffer client_buffer = {.ptr = (uint8_t *)malloc(NETWORK_BUFFER_MAX_SIZE),
-                                      .max = NETWORK_BUFFER_MAX_SIZE,
-                                      .used = 0};
+    struct nDPIsrvd_buffer client_buffer = {};
     int dis_epollfd = create_evq();
     int signalfd = setup_signalfd(dis_epollfd);
     struct epoll_event events[32];
     size_t const events_size = sizeof(events) / sizeof(events[0]);
 
-    if (client_buffer.ptr == NULL || dis_epollfd < 0 || signalfd < 0)
+    if (nDPIsrvd_buffer_init(&client_buffer, NETWORK_BUFFER_MAX_SIZE) != 0 || dis_epollfd < 0 || signalfd < 0)
     {
         THREAD_ERROR_GOTO(arg);
     }
@@ -198,7 +189,7 @@ static void * distributor_client_mainloop_thread(void * const arg)
             if (events[i].data.fd == mock_servfds[PIPE_READ])
             {
                 ssize_t bytes_read = read(mock_servfds[PIPE_READ],
-                                          client_buffer.ptr + client_buffer.used,
+                                          client_buffer.ptr.raw + client_buffer.used,
                                           client_buffer.max - client_buffer.used);
                 if (bytes_read == 0)
                 {
@@ -208,7 +199,7 @@ static void * distributor_client_mainloop_thread(void * const arg)
                 {
                     THREAD_ERROR_GOTO(arg);
                 }
-                printf("%.*s", (int)bytes_read, client_buffer.ptr + client_buffer.used);
+                printf("%.*s", (int)bytes_read, client_buffer.ptr.text + client_buffer.used);
                 client_buffer.used += bytes_read;
 
                 enum nDPIsrvd_parse_return parse_ret = parse_json_lines(&client_buffer);
@@ -247,7 +238,7 @@ error:
     del_event(dis_epollfd, mock_servfds[PIPE_READ]);
     close(dis_epollfd);
     close(signalfd);
-    free(client_buffer.ptr);
+    nDPIsrvd_buffer_free(&client_buffer);
 
     return NULL;
 }

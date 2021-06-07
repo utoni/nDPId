@@ -1309,7 +1309,9 @@ static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enu
                                     "reader-thread-count",
                                     nDPId_options.reader_thread_count);
         ndpi_serialize_string_int64(&workflow->ndpi_serializer, "idle-scan-period", nDPId_options.idle_scan_period);
-        ndpi_serialize_string_int64(&workflow->ndpi_serializer, "generic-max-idle-time", nDPId_options.generic_max_idle_time);
+        ndpi_serialize_string_int64(&workflow->ndpi_serializer,
+                                    "generic-max-idle-time",
+                                    nDPId_options.generic_max_idle_time);
         ndpi_serialize_string_int64(&workflow->ndpi_serializer, "icmp-max-idle-time", nDPId_options.icmp_max_idle_time);
         ndpi_serialize_string_int64(&workflow->ndpi_serializer, "udp-max-idle-time", nDPId_options.udp_max_idle_time);
         ndpi_serialize_string_int64(&workflow->ndpi_serializer, "tcp-max-idle-time", nDPId_options.tcp_max_idle_time);
@@ -1337,7 +1339,9 @@ static void jsonize_flow(struct nDPId_workflow * const workflow, struct nDPId_fl
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_tot_l4_payload_len", flow_ext->total_l4_payload_len);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
                                  "flow_avg_l4_payload_len",
-                                 (flow_ext->packets_processed > 0 ? flow_ext->total_l4_payload_len / flow_ext->packets_processed : 0));
+                                 (flow_ext->packets_processed > 0
+                                      ? flow_ext->total_l4_payload_len / flow_ext->packets_processed
+                                      : 0));
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "midstream", flow_ext->flow_basic.tcp_is_midstream_flow);
 }
 
@@ -1962,14 +1966,14 @@ static uint32_t calculate_ndpi_flow_struct_hash(struct ndpi_flow_struct const * 
     return hash;
 }
 
-#define SNAP             0xaa
+#define SNAP 0xaa
 /* mask for FCF */
-#define WIFI_DATA                        0x2    /* 0000 0010 */
-#define FCF_TYPE(fc)     (((fc) >> 2) & 0x3)    /* 0000 0011 = 0x3 */
-#define FCF_TO_DS(fc)    ((fc) & 0x0100)
-#define FCF_FROM_DS(fc)  ((fc) & 0x0200)
+#define WIFI_DATA 0x2                    /* 0000 0010 */
+#define FCF_TYPE(fc) (((fc) >> 2) & 0x3) /* 0000 0011 = 0x3 */
+#define FCF_TO_DS(fc) ((fc)&0x0100)
+#define FCF_FROM_DS(fc) ((fc)&0x0200)
 /* mask for Bad FCF presence */
-#define BAD_FCS          0x50                   /* 0101 0000 */
+#define BAD_FCS 0x50 /* 0101 0000 */
 static int process_datalink_layer(struct nDPId_reader_thread * const reader_thread,
                                   struct pcap_pkthdr const * const header,
                                   uint8_t const * const packet,
@@ -2018,7 +2022,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
                 return 1;
             }
 
-            struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const * const)&packet[eth_offset];
+            struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const * const) & packet[eth_offset];
             *ip_offset = sizeof(struct ndpi_chdlc);
             *layer3_type = ntohs(chdlc->proto_code);
             break;
@@ -2034,12 +2038,14 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
 
             if (packet[0] == 0x0f || packet[0] == 0x8f)
             {
-                struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const * const)&packet[eth_offset];
+                struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const * const) & packet[eth_offset];
                 *ip_offset = sizeof(struct ndpi_chdlc); /* CHDLC_OFF = 4 */
                 *layer3_type = ntohs(chdlc->proto_code);
-            } else {
+            }
+            else
+            {
                 *ip_offset = 2;
-                *layer3_type = ntohs(*((u_int16_t*)&packet[eth_offset]));
+                *layer3_type = ntohs(*((u_int16_t *)&packet[eth_offset]));
             }
             break;
         case DLT_LINUX_SLL:
@@ -2050,7 +2056,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
                 return 1;
             }
 
-            *layer3_type = (packet[eth_offset+14] << 8) + packet[eth_offset+15];
+            *layer3_type = (packet[eth_offset + 14] << 8) + packet[eth_offset + 15];
             *ip_offset = 16 + eth_offset;
             break;
         case DLT_IEEE802_11_RADIO:
@@ -2062,7 +2068,8 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
                 return 1;
             }
 
-            struct ndpi_radiotap_header const * const radiotap = (struct ndpi_radiotap_header const * const)&packet[eth_offset];
+            struct ndpi_radiotap_header const * const radiotap =
+                (struct ndpi_radiotap_header const * const) & packet[eth_offset];
             uint16_t radio_len = radiotap->len;
 
             /* Check Bad FCS presence */
@@ -2081,19 +2088,21 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
             }
 
             /* Calculate 802.11 header length (variable) */
-            struct ndpi_wifi_header const * const wifi = (struct ndpi_wifi_header const * const)(packet + eth_offset + radio_len);
+            struct ndpi_wifi_header const * const wifi =
+                (struct ndpi_wifi_header const * const)(packet + eth_offset + radio_len);
             uint16_t fc = wifi->fc;
             int wifi_len = 0;
 
             /* check wifi data presence */
             if (FCF_TYPE(fc) == WIFI_DATA)
             {
-                if ((FCF_TO_DS(fc) && FCF_FROM_DS(fc) == 0x0) ||
-                    (FCF_TO_DS(fc) == 0x0 && FCF_FROM_DS(fc)))
+                if ((FCF_TO_DS(fc) && FCF_FROM_DS(fc) == 0x0) || (FCF_TO_DS(fc) == 0x0 && FCF_FROM_DS(fc)))
                 {
                     wifi_len = 26; /* + 4 byte fcs */
                 }
-            } else {
+            }
+            else
+            {
                 /* no data frames */
                 break;
             }
@@ -2104,7 +2113,8 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
                 return 1;
             }
 
-            struct ndpi_llc_header_snap const * const llc = (struct ndpi_llc_header_snap const * const)(packet + eth_offset + wifi_len + radio_len);
+            struct ndpi_llc_header_snap const * const llc =
+                (struct ndpi_llc_header_snap const * const)(packet + eth_offset + wifi_len + radio_len);
             if (llc->dsap == SNAP)
             {
                 *layer3_type = ntohs(llc->snap.proto_ID);
@@ -2397,7 +2407,7 @@ static void ndpi_process_packet(uint8_t * const args,
             return;
         }
         tcp = (struct ndpi_tcphdr *)l4_ptr;
-        l4_payload_len = ndpi_max(0, l4_len-4*tcp->doff);
+        l4_payload_len = ndpi_max(0, l4_len - 4 * tcp->doff);
         flow_basic.tcp_fin_rst_seen = (tcp->fin == 1 || tcp->rst == 1 ? 1 : 0);
         flow_basic.tcp_is_midstream_flow = (tcp->syn == 0 ? 1 : 0);
         flow_basic.src_port = ntohs(tcp->source);

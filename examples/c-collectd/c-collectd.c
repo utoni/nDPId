@@ -10,6 +10,8 @@
 
 #include "nDPIsrvd.h"
 
+#define DEFAULT_COLLECTD_EXEC_INST "exec-nDPIsrvd"
+
 #define LOG(flags, format, ...)                                                                                        \
     if (quiet == 0)                                                                                                    \
     {                                                                                                                  \
@@ -28,6 +30,7 @@ static int collectd_timerfd = -1;
 static char * serv_optarg = NULL;
 static char * collectd_hostname = NULL;
 static char * collectd_interval = NULL;
+static char * instance_name = NULL;
 static nDPIsrvd_ull collectd_interval_ull = 0uL;
 static int quiet = 0;
 
@@ -134,16 +137,19 @@ static int parse_options(int argc, char ** argv)
 
     static char const usage[] =
         "Usage: %s "
-        "[-s host] [-c hostname] [-i interval] [-q]\n\n"
+        "[-s host] [-c hostname] [-n collectd-instance-name] [-i interval] [-q]\n\n"
         "\t-s\tDestination where nDPIsrvd is listening on.\n"
         "\t-c\tCollectd hostname.\n"
         "\t  \tThis value defaults to the environment variable COLLECTD_HOSTNAME.\n"
+        "\t-n\tName of the collectd(-exec) instance.\n"
+        "\t  \tDefaults to: " DEFAULT_COLLECTD_EXEC_INST
+        "\n"
         "\t-i\tInterval between print statistics to stdout.\n"
         "\t  \tThis value defaults to the environment variable COLLECTD_INTERVAL.\n"
         "\t-q\tDo not print anything except collectd statistics.\n"
         "\t  \tAutomatically enabled if environment variables mentioned above are set.\n";
 
-    while ((opt = getopt(argc, argv, "hs:c:i:q")) != -1)
+    while ((opt = getopt(argc, argv, "hs:c:n:i:q")) != -1)
     {
         switch (opt)
         {
@@ -154,6 +160,10 @@ static int parse_options(int argc, char ** argv)
             case 'c':
                 free(collectd_hostname);
                 collectd_hostname = strdup(optarg);
+                break;
+            case 'n':
+                free(instance_name);
+                instance_name = strdup(optarg);
                 break;
             case 'i':
                 free(collectd_interval);
@@ -180,6 +190,11 @@ static int parse_options(int argc, char ** argv)
         {
             collectd_hostname = strdup("localhost");
         }
+    }
+
+    if (instance_name == NULL)
+    {
+        instance_name = strdup(DEFAULT_COLLECTD_EXEC_INST);
     }
 
     if (collectd_interval == NULL)
@@ -217,9 +232,9 @@ static int parse_options(int argc, char ** argv)
     return 0;
 }
 
-#define COLLECTD_PUTVAL_N_FORMAT(name) "PUTVAL %s/nDPId/" #name " interval=%llu %llu:%llu\n"
+#define COLLECTD_PUTVAL_N_FORMAT(name) "PUTVAL %s/%s/" #name " interval=%llu %llu:%llu\n"
 #define COLLECTD_PUTVAL_N(value)                                                                                       \
-    collectd_hostname, collectd_interval_ull, (unsigned long long int)now,                                             \
+    collectd_hostname, instance_name, collectd_interval_ull, (unsigned long long int)now,                              \
         (unsigned long long int)collectd_statistics.value
 static void print_collectd_exec_output(void)
 {

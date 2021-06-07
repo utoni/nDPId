@@ -18,13 +18,6 @@
 #include "nDPIsrvd.h"
 #include "utils.h"
 
-struct io_buffer
-{
-    uint8_t * ptr;
-    size_t used;
-    size_t max;
-};
-
 enum sock_type
 {
     JSON_SOCK,
@@ -35,7 +28,7 @@ struct remote_desc
 {
     enum sock_type sock_type;
     int fd;
-    struct io_buffer buf;
+    struct nDPIsrvd_buffer buf;
     union {
         struct
         {
@@ -52,7 +45,7 @@ struct remote_desc
     };
 };
 
-static struct remotes
+static struct
 {
     struct remote_desc * desc;
     size_t desc_size;
@@ -181,9 +174,10 @@ static struct remote_desc * get_unused_remote_descriptor(enum sock_type type, in
         if (remotes.desc[i].fd == -1)
         {
             remotes.desc_used++;
-            remotes.desc[i].buf.ptr = (uint8_t *)malloc(NETWORK_BUFFER_MAX_SIZE);
-            remotes.desc[i].buf.max = NETWORK_BUFFER_MAX_SIZE;
-            remotes.desc[i].buf.used = 0;
+            if (nDPIsrvd_buffer_init(&remotes.desc[i].buf, NETWORK_BUFFER_MAX_SIZE) != 0)
+            {
+                return NULL;
+            }
             remotes.desc[i].sock_type = type;
             remotes.desc[i].fd = remote_fd;
             return &remotes.desc[i];
@@ -226,8 +220,7 @@ static void disconnect_client(int epollfd, struct remote_desc * const current)
         current->fd = -1;
         remotes.desc_used--;
     }
-    free(current->buf.ptr);
-    current->buf.ptr = NULL;
+    nDPIsrvd_buffer_free(&current->buf);
 }
 
 static int nDPIsrvd_parse_options(int argc, char ** argv)
@@ -437,18 +430,18 @@ static int handle_collector_protocol(int epollfd, struct remote_desc * const cur
 {
     char * json_str_start = NULL;
 
-    if (current->buf.ptr[NETWORK_BUFFER_LENGTH_DIGITS] != '{')
+    if (current->buf.ptr.text[NETWORK_BUFFER_LENGTH_DIGITS] != '{')
     {
         syslog(LOG_DAEMON | LOG_ERR,
                "BUG: JSON invalid opening character: '%c'",
-               current->buf.ptr[NETWORK_BUFFER_LENGTH_DIGITS]);
+               current->buf.ptr.text[NETWORK_BUFFER_LENGTH_DIGITS]);
         disconnect_client(epollfd, current);
         return 1;
     }
 
     errno = 0;
-    current->event_json.json_bytes = strtoull((char *)current->buf.ptr, &json_str_start, 10);
-    current->event_json.json_bytes += (uint8_t *)json_str_start - current->buf.ptr;
+    current->event_json.json_bytes = strtoull((char *)current->buf.ptr.text, &json_str_start, 10);
+    current->event_json.json_bytes += json_str_start - current->buf.ptr.text;
 
     if (errno == ERANGE)
     {
@@ -457,12 +450,12 @@ static int handle_collector_protocol(int epollfd, struct remote_desc * const cur
         return 1;
     }
 
-    if ((uint8_t *)json_str_start == current->buf.ptr)
+    if (json_str_start == current->buf.ptr.text)
     {
         syslog(LOG_DAEMON | LOG_ERR,
                "BUG: Missing size before JSON string: \"%.*s\"",
                NETWORK_BUFFER_LENGTH_DIGITS,
-               current->buf.ptr);
+               current->buf.ptr.text);
         disconnect_client(epollfd, current);
         return 1;
     }
@@ -482,13 +475,13 @@ static int handle_collector_protocol(int epollfd, struct remote_desc * const cur
         return 1;
     }
 
-    if (current->buf.ptr[current->event_json.json_bytes - 2] != '}' ||
-        current->buf.ptr[current->event_json.json_bytes - 1] != '\n')
+    if (current->buf.ptr.text[current->event_json.json_bytes - 2] != '}' ||
+        current->buf.ptr.text[current->event_json.json_bytes - 1] != '\n')
     {
         syslog(LOG_DAEMON | LOG_ERR,
                "BUG: Invalid JSON string: %.*s",
                (int)current->event_json.json_bytes,
-               current->buf.ptr);
+               current->buf.ptr.text);
         disconnect_client(epollfd, current);
         return 1;
     }
@@ -512,7 +505,7 @@ static int handle_incoming_data(int epollfd, struct remote_desc * const current)
     {
         errno = 0;
         ssize_t bytes_read =
-            read(current->fd, current->buf.ptr + current->buf.used, current->buf.max - current->buf.used);
+            read(current->fd, current->buf.ptr.raw + current->buf.used, current->buf.max - current->buf.used);
         if (bytes_read < 0 || errno != 0)
         {
             disconnect_client(epollfd, current);
@@ -564,7 +557,7 @@ static int handle_incoming_data(int epollfd, struct remote_desc * const current)
                     disconnect_client(epollfd, &remotes.desc[i]);
                     continue;
                 }
-                if (write(remotes.desc[i].fd, remotes.desc[i].buf.ptr, remotes.desc[i].buf.used) !=
+                if (write(remotes.desc[i].fd, remotes.desc[i].buf.ptr.raw, remotes.desc[i].buf.used) !=
                     (ssize_t)remotes.desc[i].buf.used)
                 {
                     syslog(LOG_DAEMON | LOG_ERR,
@@ -582,13 +575,13 @@ static int handle_incoming_data(int epollfd, struct remote_desc * const current)
                 }
             }
 
-            memcpy(remotes.desc[i].buf.ptr + remotes.desc[i].buf.used,
-                   current->buf.ptr,
+            memcpy(remotes.desc[i].buf.ptr.raw + remotes.desc[i].buf.used,
+                   current->buf.ptr.raw,
                    current->event_json.json_bytes);
             remotes.desc[i].buf.used += current->event_json.json_bytes;
 
             errno = 0;
-            ssize_t bytes_written = write(remotes.desc[i].fd, remotes.desc[i].buf.ptr, remotes.desc[i].buf.used);
+            ssize_t bytes_written = write(remotes.desc[i].fd, remotes.desc[i].buf.ptr.raw, remotes.desc[i].buf.used);
             if (errno == EAGAIN)
             {
                 continue;
@@ -630,8 +623,8 @@ static int handle_incoming_data(int epollfd, struct remote_desc * const current)
                        ntohs(remotes.desc[i].event_serv.peer.sin_port),
                        bytes_written,
                        remotes.desc[i].buf.used);
-                memmove(remotes.desc[i].buf.ptr,
-                        remotes.desc[i].buf.ptr + bytes_written,
+                memmove(remotes.desc[i].buf.ptr.raw,
+                        remotes.desc[i].buf.ptr.raw + bytes_written,
                         remotes.desc[i].buf.used - bytes_written);
                 remotes.desc[i].buf.used -= bytes_written;
                 continue;
@@ -640,8 +633,8 @@ static int handle_incoming_data(int epollfd, struct remote_desc * const current)
             remotes.desc[i].buf.used = 0;
         }
 
-        memmove(current->buf.ptr,
-                current->buf.ptr + current->event_json.json_bytes,
+        memmove(current->buf.ptr.raw,
+                current->buf.ptr.raw + current->event_json.json_bytes,
                 current->buf.used - current->event_json.json_bytes);
         current->buf.used -= current->event_json.json_bytes;
         current->event_json.json_bytes = 0;
@@ -819,7 +812,7 @@ static int setup_remote_descriptors(size_t max_descriptors)
 {
     remotes.desc_used = 0;
     remotes.desc_size = max_descriptors;
-    remotes.desc = (struct remote_desc *)malloc(remotes.desc_size * sizeof(*remotes.desc));
+    remotes.desc = (struct remote_desc *)calloc(remotes.desc_size, sizeof(*remotes.desc));
     if (remotes.desc == NULL)
     {
         return -1;
@@ -827,8 +820,6 @@ static int setup_remote_descriptors(size_t max_descriptors)
     for (size_t i = 0; i < remotes.desc_size; ++i)
     {
         remotes.desc[i].fd = -1;
-        remotes.desc[i].buf.ptr = NULL;
-        remotes.desc[i].buf.max = 0;
     }
 
     return 0;

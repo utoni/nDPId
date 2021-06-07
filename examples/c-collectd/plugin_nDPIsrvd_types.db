@@ -60,6 +60,7 @@ flow_category_unknown_count             value:GAUGE:0:U
 flow_l3_ip4_count       value:GAUGE:0:U
 flow_l3_ip6_count       value:GAUGE:0:U
 flow_l3_other_count     value:GAUGE:0:U
+flow_l4_icmp_count      value:GAUGE:0:U
 flow_l4_tcp_count       value:GAUGE:0:U
 flow_l4_udp_count       value:GAUGE:0:U
 flow_l4_other_count     value:GAUGE:0:U
