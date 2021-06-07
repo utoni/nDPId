@@ -19,7 +19,7 @@ add_executable(nDPId-test nDPId-test.c utils.c)
 add_custom_target(daemon)
 add_custom_command(
     TARGET  daemon
-    COMMAND "${CMAKE_SOURCE_DIR}/daemon.sh" "$<TARGET_FILE:nDPId>" "$<TARGET_FILE:nDPIsrvd>"
+    COMMAND "${CMAKE_SOURCE_DIR}/scripts/daemon.sh" "$<TARGET_FILE:nDPId>" "$<TARGET_FILE:nDPIsrvd>"
     DEPENDS nDPId nDPIsrvd
 )
 
