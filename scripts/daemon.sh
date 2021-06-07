@@ -29,8 +29,6 @@ if [ -r "/tmp/nDPId-${NSUFFIX}.pid" -o -r "/tmp/nDPIsrvd-${NSUFFIX}.pid" ]; then
         printf '%s\n' "${2} not started .." >&2
     fi
 
-    sudo rm -f "/tmp/nDPId-${NSUFFIX}.pid"
-    rm -f "/tmp/nDPIsrvd-${NSUFFIX}.pid"
     printf '%s\n' "daemons stopped" >&2
 else
     set -x
@@ -40,5 +38,5 @@ else
     sudo ${1} -p "/tmp/nDPId-${NSUFFIX}.pid" -c "/tmp/nDPIsrvd-${NSUFFIX}-collector.sock" -d -u "${NUSER}"
     set +x
     printf '%s\n' "daemons started" >&2
-    printf '%s\n' "You may now run examples e.g.: ./examples/py-flow-info/flow-info.py --unix /tmp/nDPIsrvd-${NSUFFIX}-distributor.sock"
+    printf '%s\n' "You may now run examples e.g.: $(realpath --relative-to="$(pwd)" $(dirname "${0}")/../examples/py-flow-info/flow-info.py) --unix /tmp/nDPIsrvd-${NSUFFIX}-distributor.sock"
 fi

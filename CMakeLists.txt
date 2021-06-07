@@ -3,21 +3,6 @@ project(nDPId C)
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 find_package(PkgConfig REQUIRED)
 
-function(initialize_submodule DIRECTORY)
-    if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${DIRECTORY}/.git)
-        find_package(Git QUIET REQUIRED)
-        message(STATUS "${CMAKE_CURRENT_SOURCE_DIR}/${DIRECTORY}/.git does not exist. "
-                       "Initializing ${DIRECTORY} submodule ...")
-        execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init ${DIRECTORY}
-                        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-                        RESULT_VARIABLE GIT_EXIT_CODE)
-        if(NOT GIT_EXIT_CODE EQUAL "0")
-            message(FATAL_ERROR "${GIT_EXECUTABLE} submodule update --init ${DIRECTORY} "
-                                "failed with exit code ${GIT_EXIT_CODE}, please checkout submodules")
-        endif()
-    endif()
-endfunction(initialize_submodule)
-
 option(ENABLE_SANITIZER "Enable ASAN/LSAN/UBSAN." OFF)
 option(ENABLE_SANITIZER_THREAD "Enable TSAN (does not work together with ASAN)." OFF)
 option(ENABLE_MEMORY_PROFILING "Enable dynamic memory tracking." OFF)
@@ -73,16 +58,19 @@ if(ENABLE_SANITIZER_THREAD)
 endif()
 
 if(STATIC_LIBNDPI_INSTALLDIR STREQUAL "" AND BUILD_NDPI)
-    initialize_submodule(libnDPI)
     include(ExternalProject)
     ExternalProject_Add(
         libnDPI
         SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libnDPI
-        CONFIGURE_COMMAND env CC=${CMAKE_C_COMPILER} CFLAGS=${CMAKE_C_FLAGS} LDFLAGS=${CMAKE_EXE_LINKER_FLAGS} ${CMAKE_CURRENT_SOURCE_DIR}/libnDPI/autogen.sh
-                          --prefix=${CMAKE_CURRENT_BINARY_DIR}/libnDPI
-                          --with-only-libndpi
+        CONFIGURE_COMMAND env CC=${CMAKE_C_COMPILER} CFLAGS=${CMAKE_C_FLAGS} LDFLAGS=${CMAKE_EXE_LINKER_FLAGS}
+        MAKE_PROGRAM=${CMAKE_MAKE_PROGRAM} DEST_INSTALL=${CMAKE_BINARY_DIR}/libnDPI
+        ${CMAKE_CURRENT_SOURCE_DIR}/scripts/get-and-build-libndpi.sh
         BUILD_COMMAND make
         BUILD_IN_SOURCE 1)
+
+    add_custom_target(clean-libnDPI
+        COMMAND rm -rf ${CMAKE_BINARY_DIR}/libnDPI ${CMAKE_BINARY_DIR}/libnDPI-prefix
+    )
 
     set(STATIC_LIBNDPI_INSTALLDIR "${CMAKE_BINARY_DIR}/libnDPI")
     add_dependencies(nDPId libnDPI)
