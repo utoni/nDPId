@@ -7,6 +7,8 @@ script:
 - mkdir build-cmake-submodule && cd build-cmake-submodule &&
   cmake .. -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DENABLE_SANITIZER=ON && make && cd ..
 - ./test/run_tests.sh ./libnDPI ./build-cmake-submodule/nDPId-test
+- if ldd build/nDPId | grep -qoEi libndpi; then
+  echo 'nDPId linked against a static libnDPI should not contain a shared linked libnDPI.' >&2; false; fi
 # pkg-config dynamic linked build
 - mkdir build && cd build &&
   PKG_CONFIG_PATH="$(realpath ../build-cmake-submodule/libnDPI/lib/pkgconfig)"

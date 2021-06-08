@@ -69,9 +69,11 @@ if(STATIC_LIBNDPI_INSTALLDIR STREQUAL "" AND BUILD_NDPI)
         libnDPI
         SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libnDPI
         CONFIGURE_COMMAND env CC=${CMAKE_C_COMPILER} CFLAGS=${CMAKE_C_FLAGS} LDFLAGS=${CMAKE_EXE_LINKER_FLAGS}
-        MAKE_PROGRAM=${CMAKE_MAKE_PROGRAM} DEST_INSTALL=${CMAKE_BINARY_DIR}/libnDPI
-        ${CMAKE_CURRENT_SOURCE_DIR}/scripts/get-and-build-libndpi.sh
-        BUILD_COMMAND make
+            MAKE_PROGRAM=make DEST_INSTALL=${CMAKE_BINARY_DIR}/libnDPI
+            ${CMAKE_CURRENT_SOURCE_DIR}/scripts/get-and-build-libndpi.sh
+        BUILD_BYPRODUCTS ${CMAKE_BINARY_DIR}/libnDPI/lib/libndpi.a
+        BUILD_COMMAND ""
+        INSTALL_COMMAND ""
         BUILD_IN_SOURCE 1)
 
     add_custom_target(clean-libnDPI
