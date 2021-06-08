@@ -20,7 +20,12 @@ fi
 cd ./libnDPI
 DEST_INSTALL="${DEST_INSTALL:-$(realpath ./install)}"
 MAKE_PROGRAM="${MAKE_PROGRAM:-make -j4}"
-./autogen.sh --prefix="${DEST_INSTALL}" --with-only-libndpi
+if [ ! -z "${CROSS_COMPILE_TRIPLET}" ]; then
+    HOST_ARG="--host=${CROSS_COMPILE_TRIPLET}"
+else
+    HOST_ARG=""
+fi
+./autogen.sh --prefix="${DEST_INSTALL}" --with-only-libndpi ${HOST_ARG}
 ${MAKE_PROGRAM} install
 
 rm -f "${LOCKFILE}"

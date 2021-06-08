@@ -11,6 +11,7 @@ option(BUILD_NDPI "Clone and build nDPI from github." OFF)
 option(NDPI_NO_PKGCONFIG "Do not use pkgconfig to search for libnDPI." OFF)
 
 set(STATIC_LIBNDPI_INSTALLDIR "" CACHE STRING "Path to a installation directory of libnDPI e.g. /opt/libnDPI/usr")
+set(CROSS_COMPILE_TRIPLET "" CACHE STRING "Host triplet used to enable cross compiling.")
 
 add_executable(nDPId nDPId.c utils.c)
 add_executable(nDPIsrvd nDPIsrvd.c utils.c)
@@ -23,7 +24,18 @@ add_custom_command(
     DEPENDS nDPId nDPIsrvd
 )
 
+if(NOT CROSS_COMPILE_TRIPLET STREQUAL "")
+    set(CMAKE_C_COMPILER_TARGET ${CROSS_COMPILE_TRIPLET})
+    set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+    set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+    set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+    set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
+endif()
+
 if(BUILD_NDPI)
+    message(WARNING "Building nDPI from source is an experimental feature "
+                    "used for development/testing purposes.\n"
+                    "The build process may fail at any time.")
     enable_testing()
     add_test(NAME run_tests
              COMMAND "${CMAKE_SOURCE_DIR}/test/run_tests.sh"
@@ -36,7 +48,7 @@ execute_process(
     WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
     OUTPUT_VARIABLE GIT_VERSION ERROR_QUIET)
 string(STRIP "${GIT_VERSION}" GIT_VERSION)
-if(GIT_VERSION STREQUAL "")
+if(GIT_VERSION STREQUAL "" OR NOT IS_DIRECTORY "${CMAKE_SOURCE_DIR}/.git")
     if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "")
         set(GIT_VERSION "1.5-pre")
     else()
@@ -75,7 +87,9 @@ if(STATIC_LIBNDPI_INSTALLDIR STREQUAL "" AND BUILD_NDPI)
     ExternalProject_Add(
         libnDPI
         SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libnDPI
+        DOWNLOAD_COMMAND ""
         CONFIGURE_COMMAND env CC=${CMAKE_C_COMPILER} CFLAGS=${CMAKE_C_FLAGS} LDFLAGS=${CMAKE_EXE_LINKER_FLAGS}
+            CROSS_COMPILE_TRIPLET=${CROSS_COMPILE_TRIPLET}
             MAKE_PROGRAM=make DEST_INSTALL=${CMAKE_BINARY_DIR}/libnDPI
             ${CMAKE_CURRENT_SOURCE_DIR}/scripts/get-and-build-libndpi.sh
         BUILD_BYPRODUCTS ${CMAKE_BINARY_DIR}/libnDPI/lib/libndpi.a
@@ -133,7 +147,7 @@ target_compile_options(nDPId PRIVATE ${NDPID_C_FLAGS} -DGIT_VERSION=\"${GIT_VERS
 target_include_directories(nDPId PRIVATE "${STATIC_LIBNDPI_INC}" "${NDPI_INCLUDEDIR}" "${NDPI_INCLUDEDIR}/ndpi")
 target_link_libraries(nDPId "${STATIC_LIBNDPI_LIB}" "${pkgcfg_lib_NDPI_ndpi}"
                             "${pkgcfg_lib_PCRE_pcre}" "${pkgcfg_lib_MAXMINDDB_maxminddb}"
-                            "${GCRYPT_LIBRARY}" "${PCAP_LIBRARY}"
+                            "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}"
                             "-pthread")
 
 target_compile_options(nDPIsrvd PRIVATE ${NDPID_C_FLAGS} -DGIT_VERSION=\"${GIT_VERSION}\" ${MEMORY_PROFILING_CFLAGS})
@@ -153,7 +167,7 @@ target_include_directories(nDPId-test PRIVATE "${STATIC_LIBNDPI_INC}" "${NDPI_IN
 target_compile_definitions(nDPId-test PRIVATE "-D_GNU_SOURCE=1" "-DNO_MAIN=1" "-Dsyslog=mock_syslog_stderr")
 target_link_libraries(nDPId-test "${STATIC_LIBNDPI_LIB}" "${pkgcfg_lib_NDPI_ndpi}"
                                  "${pkgcfg_lib_PCRE_pcre}" "${pkgcfg_lib_MAXMINDDB_maxminddb}"
-                                 "${GCRYPT_LIBRARY}" "${PCAP_LIBRARY}"
+                                 "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}"
                                  "-pthread")
 
 if(BUILD_EXAMPLES)
@@ -189,6 +203,7 @@ install(FILES examples/py-flow-info/flow-info.py DESTINATION bin RENAME nDPIsrvd
 
 message(STATUS "--------------------------")
 message(STATUS "nDPId GIT_VERSION........: ${GIT_VERSION}")
+message(STATUS "CROSS_COMPILE_TRIPLET....: ${CROSS_COMPILE_TRIPLET}")
 message(STATUS "CMAKE_BUILD_TYPE.........: ${CMAKE_BUILD_TYPE}")
 message(STATUS "CMAKE_C_FLAGS............: ${CMAKE_C_FLAGS}")
 message(STATUS "NDPID_C_FLAGS............: ${NDPID_C_FLAGS}")
