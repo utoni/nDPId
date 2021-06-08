@@ -13,6 +13,7 @@ flock -x -n 42 || {
 cd "$(dirname "${0}")/.."
 if [ ! -d ./.git ]; then
     printf '%s\n' "This script can only by run from a nDPId git repository." >&2
+    exit 1;
 fi
 
 git submodule update --init ./libnDPI

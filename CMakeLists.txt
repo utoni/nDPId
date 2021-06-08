@@ -36,6 +36,13 @@ execute_process(
     WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
     OUTPUT_VARIABLE GIT_VERSION ERROR_QUIET)
 string(STRIP "${GIT_VERSION}" GIT_VERSION)
+if(GIT_VERSION STREQUAL "")
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "")
+        set(GIT_VERSION "1.5-pre")
+    else()
+        set(GIT_VERSION "1.5-release")
+    endif()
+endif()
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
 set(NDPID_C_FLAGS -DJSMN_STATIC=1 -DJSMN_STRICT=1)
