@@ -15,4 +15,6 @@ int change_user_group(char const * const user, char const * const group,
                       char const * const uds_collector_path,
                       char const * const uds_distributor_path);
 
+char const * get_nDPId_version();
+
 #endif

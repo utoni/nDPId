@@ -31,6 +31,12 @@ if(BUILD_NDPI)
                      "$<TARGET_FILE:nDPId-test>")
 endif()
 
+execute_process(
+    COMMAND git describe --tags
+    WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+    OUTPUT_VARIABLE GIT_VERSION ERROR_QUIET)
+string(STRIP "${GIT_VERSION}" GIT_VERSION)
+
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
 set(NDPID_C_FLAGS -DJSMN_STATIC=1 -DJSMN_STRICT=1)
 if(ENABLE_MEMORY_PROFILING)
@@ -114,14 +120,14 @@ else()
 endif()
 
 find_package(PCAP "1.8.1" REQUIRED)
-target_compile_options(nDPId PRIVATE ${NDPID_C_FLAGS} ${MEMORY_PROFILING_CFLAGS} "-pthread")
+target_compile_options(nDPId PRIVATE ${NDPID_C_FLAGS} -DGIT_VERSION=\"${GIT_VERSION}\" ${MEMORY_PROFILING_CFLAGS} "-pthread")
 target_include_directories(nDPId PRIVATE "${STATIC_LIBNDPI_INC}" "${NDPI_INCLUDEDIR}" "${NDPI_INCLUDEDIR}/ndpi")
 target_link_libraries(nDPId "${STATIC_LIBNDPI_LIB}" "${pkgcfg_lib_NDPI_ndpi}"
                             "${pkgcfg_lib_PCRE_pcre}" "${pkgcfg_lib_MAXMINDDB_maxminddb}"
                             "${GCRYPT_LIBRARY}" "${PCAP_LIBRARY}"
                             "-pthread")
 
-target_compile_options(nDPId PRIVATE ${NDPID_C_FLAGS} ${MEMORY_PROFILING_CFLAGS})
+target_compile_options(nDPIsrvd PRIVATE ${NDPID_C_FLAGS} -DGIT_VERSION=\"${GIT_VERSION}\" ${MEMORY_PROFILING_CFLAGS})
 target_include_directories(nDPIsrvd PRIVATE
                            "${CMAKE_SOURCE_DIR}"
                            "${CMAKE_SOURCE_DIR}/dependencies"
@@ -173,6 +179,7 @@ install(FILES dependencies/nDPIsrvd.py DESTINATION share/nDPId)
 install(FILES examples/py-flow-info/flow-info.py DESTINATION bin RENAME nDPIsrvd-flow-info.py)
 
 message(STATUS "--------------------------")
+message(STATUS "nDPId GIT_VERSION........: ${GIT_VERSION}")
 message(STATUS "CMAKE_BUILD_TYPE.........: ${CMAKE_BUILD_TYPE}")
 message(STATUS "CMAKE_C_FLAGS............: ${CMAKE_C_FLAGS}")
 message(STATUS "NDPID_C_FLAGS............: ${NDPID_C_FLAGS}")

@@ -82,7 +82,8 @@ if [ $? -ne 1 ]; then
     exit 7
 fi
 
-find . -printf '%f\n' -iname '*.pcap' -o -iname '*.pcapng' -o -iname '*.cap' | while read pcap_file; do
+printf 'Using PCAP files from: %s (%s total)\n\n' "$(pwd)" "$(ls -l *.pcap *.pcapng *.cap | wc -l)"
+for pcap_file in $(ls *.pcap *.pcapng *.cap); do
     if file "${pcap_file}" | grep -qoE ':\s(pcap|pcap-ng) capture file'; then
         true # pass
     else

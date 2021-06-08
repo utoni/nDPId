@@ -79,14 +79,14 @@ static int create_pidfile(char const * const pidfile)
     return 0;
 }
 
-int is_path_absolute(char const * const prefix,
-                     char const * const path)
+int is_path_absolute(char const * const prefix, char const * const path)
 {
     if (path[0] != '/')
     {
         syslog(LOG_DAEMON | LOG_ERR,
                "%s path must be absolut i.e. starting with a `/', path given: `%s'",
-               prefix, path);
+               prefix,
+               path);
         return 1;
     }
 
@@ -134,7 +134,8 @@ int daemonize_shutdown(char const * const pidfile)
     return 0;
 }
 
-int change_user_group(char const * const user, char const * const group,
+int change_user_group(char const * const user,
+                      char const * const group,
                       char const * const pidfile,
                       char const * const uds_collector_path,
                       char const * const uds_distributor_path)
@@ -143,39 +144,62 @@ int change_user_group(char const * const user, char const * const group,
     struct group * grp;
     gid_t gid;
 
-    if (getuid() != 0) {
+    if (getuid() != 0)
+    {
         return 0;
     }
 
-    if (user == NULL) {
+    if (user == NULL)
+    {
         return 1;
     }
 
     pwd = getpwnam(user);
-    if (pwd == NULL) {
+    if (pwd == NULL)
+    {
         return 1;
     }
 
-    if (group != NULL) {
+    if (group != NULL)
+    {
         grp = getgrnam(group);
-        if (grp == NULL)  {
+        if (grp == NULL)
+        {
             return 1;
         }
         gid = grp->gr_gid;
-    } else {
+    }
+    else
+    {
         gid = pwd->pw_gid;
     }
 
-    if (uds_collector_path != NULL) {
+    if (uds_collector_path != NULL)
+    {
         chmod(uds_collector_path, S_IRUSR | S_IWUSR);
         chown(uds_collector_path, pwd->pw_uid, gid);
     }
-    if (uds_distributor_path != NULL) {
+    if (uds_distributor_path != NULL)
+    {
         chmod(uds_distributor_path, S_IRUSR | S_IWUSR | S_IRGRP);
         chown(uds_distributor_path, pwd->pw_uid, gid);
     }
-    if (pidfile != NULL) {
+    if (pidfile != NULL)
+    {
         chown(pidfile, pwd->pw_uid, gid);
     }
     return setregid(gid, gid) != 0 || setreuid(pwd->pw_uid, pwd->pw_uid);
+}
+
+char const * get_nDPId_version()
+{
+    return "nDPId version "
+#ifdef GIT_VERSION
+        GIT_VERSION
+#else
+           "unknown"
+#endif
+           "\n"
+           "(C) 2020-2021 Toni Uhlig\n"
+           "Please report any BUGs to toni@impl.cc\n";
 }

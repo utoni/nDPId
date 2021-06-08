@@ -227,7 +227,7 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
 {
     int opt;
 
-    while ((opt = getopt(argc, argv, "hlc:dp:s:u:g:")) != -1)
+    while ((opt = getopt(argc, argv, "lc:dp:s:u:g:vh")) != -1)
     {
         switch (opt)
         {
@@ -257,10 +257,16 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
                 free(nDPIsrvd_options.group);
                 nDPIsrvd_options.group = strdup(optarg);
                 break;
+            case 'v':
+                fprintf(stderr, "%s", get_nDPId_version());
+                return 1;
+            case 'h':
             default:
+                fprintf(stderr, "%s\n", get_nDPId_version());
                 fprintf(stderr,
-                        "Usage: %s [-l] [-c path-to-unix-sock] [-d] [-p pidfile] "
-                        "[-s path-to-unix-socket|distributor-host:port] [-u user] [-g group]\n",
+                        "Usage: %s [-l] [-c path-to-unix-sock] [-d] [-p pidfile]\n"
+                        "\t[-s path-to-unix-socket|distributor-host:port] [-u user] [-g group]\n"
+                        "\t[-v] [-h]\n",
                         argv[0]);
                 return 1;
         }

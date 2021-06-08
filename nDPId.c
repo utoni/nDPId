@@ -3085,8 +3085,6 @@ static int nDPId_parse_options(int argc, char ** argv)
     int opt;
 
     static char const usage[] =
-        "(C) 2020-2021 Toni Uhlig\n"
-        "Please report any BUG to toni@impl.cc\n\n"
         "Usage: %s "
         "[-i pcap-file/interface] [-I] [-E] [-B bpf-filter]\n"
         "\t  \t"
@@ -3094,9 +3092,11 @@ static int nDPId_parse_options(int argc, char ** argv)
         "[-d] [-p pidfile]\n"
         "\t  \t"
         "[-u user] [-g group] "
-        "[-P path] [-C path] [-J path] "
-        "[-a instance-alias] "
-        "[-o subopt=value]\n\n"
+        "[-P path] [-C path] [-J path]\n"
+        "\t  \t"
+        "[-a instance-alias] [-o subopt=value]\n"
+        "\t  \t"
+        "[-v] [-h]\n\n"
         "\t-i\tInterface or file from where to read packets from.\n"
         "\t-I\tProcess only packets where the source address of the first packet\n"
         "\t  \tis part of the interface subnet. (Internal mode)\n"
@@ -3115,12 +3115,16 @@ static int nDPId_parse_options(int argc, char ** argv)
         "\t  \tSee: https://sslbl.abuse.ch/blacklist/ja3_fingerprints.csv\n"
         "\t-S\tLoad a nDPI SSL SHA1 hash blacklist file.\n"
         "\t  \tSee: https://sslbl.abuse.ch/blacklist/sslblacklist.csv\n"
-        "\t-a\tSet an alias name of this daemon instance which will be part of every JSON message.\n"
-        "\t  \tThis value is required for correct flow handling of multiple instances and should be unique.\n"
+        "\t-a\tSet an alias name of this daemon instance which will\n"
+        "\t  \tbe part of every JSON message.\n"
+        "\t  \tThis value is required for correct flow handling of\n"
+        "\t  \tmultiple instances and should be unique.\n"
         "\t  \tDefaults to your hostname.\n"
-        "\t-o\t(Carefully) Tune some daemon options. See subopts below.\n\n";
+        "\t-o\t(Carefully) Tune some daemon options. See subopts below.\n"
+        "\t-v\tversion\n"
+        "\t-h\tthis\n\n";
 
-    while ((opt = getopt(argc, argv, "hi:IEB:lc:dp:u:g:P:C:J:S:a:o:")) != -1)
+    while ((opt = getopt(argc, argv, "hi:IEB:lc:dp:u:g:P:C:J:S:a:o:vh")) != -1)
     {
         switch (opt)
         {
@@ -3252,7 +3256,12 @@ static int nDPId_parse_options(int argc, char ** argv)
                 }
                 break;
             }
+            case 'v':
+                fprintf(stderr, "%s", get_nDPId_version());
+                return 1;
+            case 'h':
             default:
+                fprintf(stderr, "%s\n", get_nDPId_version());
                 fprintf(stderr, usage, argv[0]);
                 print_subopt_usage();
                 return 1;
