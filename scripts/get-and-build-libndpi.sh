@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 set -e
-set -x
 
 LOCKFILE="$(realpath "${0}").lock"
 touch "${LOCKFILE}"
@@ -11,8 +10,12 @@ flock -x -n 42 || {
     exit 1;
 }
 
+set -x
+
 cd "$(dirname "${0}")/.."
-git submodule update --init ./libnDPI
+if [ -d ./.git ]; then
+    git submodule update --init ./libnDPI
+fi
 
 cd ./libnDPI
 DEST_INSTALL="${DEST_INSTALL:-$(realpath ./install)}"

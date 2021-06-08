@@ -60,10 +60,11 @@ nc -h |& head -n1 | grep -qoE '^OpenBSD netcat' || {
 }
 
 nDPI_TEST_DIR="$(realpath "${nDPI_SOURCE_ROOT}/tests/pcap")"
+cd "${nDPI_TEST_DIR}"
 
 cat <<EOF
 nDPId-test: ${nDPId_test_EXEC}
-nDPI pcaps: ${nDPI_TEST_DIR}
+nDPI pcaps: ${nDPI_TEST_DIR} ($(ls -l *.pcap *.pcapng *.cap | wc -l) total)
 
 --------------------------
 -- nDPId PCAP diff tests --
@@ -71,7 +72,6 @@ nDPI pcaps: ${nDPI_TEST_DIR}
 
 EOF
 
-cd "${nDPI_TEST_DIR}"
 mkdir -p /tmp/nDPId-test-stderr
 set +e
 TESTS_FAILED=0
@@ -82,14 +82,7 @@ if [ $? -ne 1 ]; then
     exit 7
 fi
 
-printf 'Using PCAP files from: %s (%s total)\n\n' "$(pwd)" "$(ls -l *.pcap *.pcapng *.cap | wc -l)"
-for pcap_file in $(ls *.pcap *.pcapng *.cap); do
-    if file "${pcap_file}" | grep -qoE ':\s(pcap|pcap-ng) capture file'; then
-        true # pass
-    else
-        continue
-    fi
-
+for pcap_file in *.pcap *.pcapng *.cap; do
     printf '%s\n' "-- CMD: ${nDPId_test_EXEC} $(realpath "${pcap_file}")" \
         >"/tmp/nDPId-test-stderr/${pcap_file}.out"
     printf '%s\n' "-- OUT: ${MYDIR}/results/${pcap_file}.out" \
@@ -192,7 +185,7 @@ netcat (OpenBSD) exec + args: ${NETCAT_EXEC}
 EOF
 
 cd "${MYDIR}"
-for out_file in $(ls results/*.out); do
+for out_file in results/*.out; do
     pcap_file="${nDPI_TEST_DIR}/$(basename ${out_file%.out})"
     if [ ! -r "${pcap_file}" ]; then
         printf "%-${LINE_SPACES}s\t%s\n" "$(basename ${pcap_file})" '[MISSING]'

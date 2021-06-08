@@ -14,5 +14,7 @@ script:
 - ./build/nDPId-test || test $? -eq 1
 - ./build/nDPId -h || test $? -eq 1
 # dameon start/stop test
-- ./scripts/daemon.sh ./build/nDPId ./build/nDPIsrvd
-- ./scripts/daemon.sh ./build/nDPId ./build/nDPIsrvd
+- make -C ./build daemon
+- make -C ./build daemon
+# make dist
+- ./scripts/make-dist.sh
