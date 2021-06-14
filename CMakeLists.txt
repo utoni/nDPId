@@ -6,6 +6,7 @@ find_package(PkgConfig REQUIRED)
 option(ENABLE_SANITIZER "Enable ASAN/LSAN/UBSAN." OFF)
 option(ENABLE_SANITIZER_THREAD "Enable TSAN (does not work together with ASAN)." OFF)
 option(ENABLE_MEMORY_PROFILING "Enable dynamic memory tracking." OFF)
+option(ENABLE_ZLIB "Enable zlib support for nDPId (experimental)." OFF)
 option(BUILD_EXAMPLES "Build C examples." ON)
 option(BUILD_NDPI "Clone and build nDPI from github." OFF)
 option(NDPI_NO_PKGCONFIG "Do not use pkgconfig to search for libnDPI." OFF)
@@ -57,16 +58,19 @@ if(GIT_VERSION STREQUAL "" OR NOT IS_DIRECTORY "${CMAKE_SOURCE_DIR}/.git")
 endif()
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
-set(NDPID_C_FLAGS -DJSMN_STATIC=1 -DJSMN_STRICT=1)
+set(NDPID_DEFS -DJSMN_STATIC=1 -DJSMN_STRICT=1)
 if(ENABLE_MEMORY_PROFILING)
-    set(MEMORY_PROFILING_CFLAGS "-DENABLE_MEMORY_PROFILING=1"
-                                "-Duthash_malloc=nDPIsrvd_uthash_malloc"
-                                "-Duthash_free=nDPIsrvd_uthash_free")
-else()
-    set(MEMORY_PROFILING_CFLAGS "")
+    add_definitions("-DENABLE_MEMORY_PROFILING=1"
+                    "-Duthash_malloc=nDPIsrvd_uthash_malloc"
+                    "-Duthash_free=nDPIsrvd_uthash_free")
 endif()
 
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+if(ENABLE_ZLIB)
+    set(ZLIB_DEFS "-DENABLE_ZLIB=1")
+    pkg_check_modules(ZLIB REQUIRED zlib)
+endif()
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0 -g3 -fno-omit-frame-pointer -fno-inline")
 endif()
 
@@ -88,8 +92,12 @@ if(STATIC_LIBNDPI_INSTALLDIR STREQUAL "" AND BUILD_NDPI)
         libnDPI
         SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libnDPI
         DOWNLOAD_COMMAND ""
-        CONFIGURE_COMMAND env CROSS_COMPILE_TRIPLET=${CROSS_COMPILE_TRIPLET}
-            MAKE_PROGRAM=make DEST_INSTALL=${CMAKE_BINARY_DIR}/libnDPI
+        CONFIGURE_COMMAND env
+            CFLAGS=${CMAKE_C_FLAGS}
+            LDFLAGS=${CMAKE_MODULE_LINKER_FLAGS}
+            CROSS_COMPILE_TRIPLET=${CROSS_COMPILE_TRIPLET}
+            MAKE_PROGRAM=make
+            DEST_INSTALL=${CMAKE_BINARY_DIR}/libnDPI
             ${CMAKE_CURRENT_SOURCE_DIR}/scripts/get-and-build-libndpi.sh
         BUILD_BYPRODUCTS ${CMAKE_BINARY_DIR}/libnDPI/lib/libndpi.a
         BUILD_COMMAND ""
@@ -142,14 +150,15 @@ else()
 endif()
 
 find_package(PCAP "1.8.1" REQUIRED)
-target_compile_options(nDPId PRIVATE ${NDPID_C_FLAGS} -DGIT_VERSION=\"${GIT_VERSION}\" ${MEMORY_PROFILING_CFLAGS} "-pthread")
+target_compile_options(nDPId PRIVATE "-pthread")
+target_compile_definitions(nDPId PRIVATE -DGIT_VERSION=\"${GIT_VERSION}\" ${NDPID_DEFS} ${ZLIB_DEFS})
 target_include_directories(nDPId PRIVATE "${STATIC_LIBNDPI_INC}" "${NDPI_INCLUDEDIR}" "${NDPI_INCLUDEDIR}/ndpi")
 target_link_libraries(nDPId "${STATIC_LIBNDPI_LIB}" "${pkgcfg_lib_NDPI_ndpi}"
-                            "${pkgcfg_lib_PCRE_pcre}" "${pkgcfg_lib_MAXMINDDB_maxminddb}"
+                            "${pkgcfg_lib_PCRE_pcre}" "${pkgcfg_lib_MAXMINDDB_maxminddb}" "${pkgcfg_lib_ZLIB_z}"
                             "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}"
                             "-pthread")
 
-target_compile_options(nDPIsrvd PRIVATE ${NDPID_C_FLAGS} -DGIT_VERSION=\"${GIT_VERSION}\" ${MEMORY_PROFILING_CFLAGS})
+target_compile_definitions(nDPIsrvd PRIVATE -DGIT_VERSION=\"${GIT_VERSION}\" ${NDPID_DEFS})
 target_include_directories(nDPIsrvd PRIVATE
                            "${CMAKE_SOURCE_DIR}"
                            "${CMAKE_SOURCE_DIR}/dependencies"
@@ -161,17 +170,18 @@ target_include_directories(nDPId-test PRIVATE
                            "${CMAKE_SOURCE_DIR}/dependencies"
                            "${CMAKE_SOURCE_DIR}/dependencies/jsmn"
                            "${CMAKE_SOURCE_DIR}/dependencies/uthash/src")
-target_compile_options(nDPId-test PRIVATE ${NDPID_C_FLAGS} ${MEMORY_PROFILING_CFLAGS} "-Wno-unused-function" "-pthread")
+target_compile_options(nDPId-test PRIVATE "-Wno-unused-function" "-pthread")
+target_compile_definitions(nDPId-test PRIVATE ${NDPID_DEFS} ${ZLIB_DEFS})
 target_include_directories(nDPId-test PRIVATE "${STATIC_LIBNDPI_INC}" "${NDPI_INCLUDEDIR}" "${NDPI_INCLUDEDIR}/ndpi")
 target_compile_definitions(nDPId-test PRIVATE "-D_GNU_SOURCE=1" "-DNO_MAIN=1" "-Dsyslog=mock_syslog_stderr")
 target_link_libraries(nDPId-test "${STATIC_LIBNDPI_LIB}" "${pkgcfg_lib_NDPI_ndpi}"
-                                 "${pkgcfg_lib_PCRE_pcre}" "${pkgcfg_lib_MAXMINDDB_maxminddb}"
+                                 "${pkgcfg_lib_PCRE_pcre}" "${pkgcfg_lib_MAXMINDDB_maxminddb}" "${pkgcfg_lib_ZLIB_z}"
                                  "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}"
                                  "-pthread")
 
 if(BUILD_EXAMPLES)
     add_executable(nDPIsrvd-collectd examples/c-collectd/c-collectd.c)
-    target_compile_options(nDPIsrvd-collectd PRIVATE ${NDPID_C_FLAGS} ${MEMORY_PROFILING_CFLAGS})
+    target_compile_definitions(nDPIsrvd-collectd PRIVATE ${NDPID_DEFS})
     target_include_directories(nDPIsrvd-collectd PRIVATE
                                "${CMAKE_SOURCE_DIR}"
                                "${CMAKE_SOURCE_DIR}/dependencies"
@@ -179,7 +189,7 @@ if(BUILD_EXAMPLES)
                                "${CMAKE_SOURCE_DIR}/dependencies/uthash/src")
 
     add_executable(nDPIsrvd-captured examples/c-captured/c-captured.c utils.c)
-    target_compile_options(nDPIsrvd-captured PRIVATE ${NDPID_C_FLAGS} ${MEMORY_PROFILING_CFLAGS})
+    target_compile_definitions(nDPIsrvd-captured PRIVATE ${NDPID_DEFS})
     target_include_directories(nDPIsrvd-captured PRIVATE
                                "${CMAKE_SOURCE_DIR}"
                                "${CMAKE_SOURCE_DIR}/dependencies"
@@ -205,13 +215,11 @@ message(STATUS "nDPId GIT_VERSION........: ${GIT_VERSION}")
 message(STATUS "CROSS_COMPILE_TRIPLET....: ${CROSS_COMPILE_TRIPLET}")
 message(STATUS "CMAKE_BUILD_TYPE.........: ${CMAKE_BUILD_TYPE}")
 message(STATUS "CMAKE_C_FLAGS............: ${CMAKE_C_FLAGS}")
-message(STATUS "NDPID_C_FLAGS............: ${NDPID_C_FLAGS}")
-if(ENABLE_MEMORY_PROFILING)
-message(STATUS "MEMORY_PROFILING_CFLAGS..: ${MEMORY_PROFILING_CFLAGS}")
-endif()
+message(STATUS "NDPID_DEFS...............: ${NDPID_DEFS}")
 message(STATUS "ENABLE_SANITIZER.........: ${ENABLE_SANITIZER}")
 message(STATUS "ENABLE_SANITIZER_THREAD..: ${ENABLE_SANITIZER_THREAD}")
 message(STATUS "ENABLE_MEMORY_PROFILING..: ${ENABLE_MEMORY_PROFILING}")
+message(STATUS "ENABLE_ZLIB..............: ${ENABLE_ZLIB}")
 if(NOT BUILD_NDPI AND NOT STATIC_LIBNDPI_INSTALLDIR STREQUAL "")
 message(STATUS "STATIC_LIBNDPI_INSTALLDIR: ${STATIC_LIBNDPI_INSTALLDIR}")
 endif()
