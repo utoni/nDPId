@@ -21,6 +21,19 @@ struct thread_return_value
     int val;
 };
 
+struct nDPId_return_value
+{
+    struct thread_return_value thread_return_value;
+
+    unsigned long long int packets_captured;
+    unsigned long long int packets_processed;
+    unsigned long long int total_skipped_flows;
+    unsigned long long int total_l4_data_len;
+    unsigned long long int detected_flow_protocols;
+    unsigned long long int total_active_flows;
+    unsigned long long int total_idle_flows;
+};
+
 static int mock_pipefds[PIPE_COUNT] = {};
 static int mock_servfds[PIPE_COUNT] = {};
 static pthread_mutex_t log_mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -245,9 +258,12 @@ error:
 
 static void * nDPId_mainloop_thread(void * const arg)
 {
+    struct nDPId_return_value * const nrv = (struct nDPId_return_value *)arg;
+    struct thread_return_value * const trr = &nrv->thread_return_value;
+
     if (setup_reader_threads() != 0)
     {
-        THREAD_ERROR(arg);
+        THREAD_ERROR(trr);
         return NULL;
     }
 
@@ -258,6 +274,16 @@ static void * nDPId_mainloop_thread(void * const arg)
     jsonize_daemon(&reader_threads[0], DAEMON_EVENT_INIT);
     run_pcap_loop(&reader_threads[0]);
     process_remaining_flows();
+    for (size_t i = 0; i < nDPId_options.reader_thread_count; ++i)
+    {
+        nrv->packets_captured = reader_threads[i].workflow->packets_captured;
+        nrv->packets_processed = reader_threads[i].workflow->packets_processed;
+        nrv->total_skipped_flows = reader_threads[i].workflow->total_skipped_flows;
+        nrv->total_l4_data_len = reader_threads[i].workflow->total_l4_data_len;
+        nrv->detected_flow_protocols = reader_threads[i].workflow->detected_flow_protocols;
+        nrv->total_active_flows = reader_threads[i].workflow->total_active_flows;
+        nrv->total_idle_flows = reader_threads[i].workflow->total_idle_flows;
+    }
     free_reader_threads();
 
     close(mock_pipefds[PIPE_nDPId]);
@@ -267,7 +293,11 @@ static void * nDPId_mainloop_thread(void * const arg)
 
 static void usage(char const * const arg0)
 {
-    fprintf(stderr, "usage: %s [path-to-pcap-file]\n", arg0);
+    fprintf(stderr,
+            "usage: %s [path-to-pcap-file]\n"
+            "\tinfluencial environment variable:\n"
+            "\t\tPRINT_SUMMARY - if set, print a summary after processing finished\n",
+            arg0);
 }
 
 static int thread_wait_for_termination(pthread_t thread, time_t wait_time_secs, struct thread_return_value * const trv)
@@ -293,7 +323,8 @@ static int thread_wait_for_termination(pthread_t thread, time_t wait_time_secs, 
     return 1;
 }
 
-#define THREADS_RETURNED_ERROR() (nDPId_return.val != 0 || nDPIsrvd_return.val != 0 || distributor_return.val != 0)
+#define THREADS_RETURNED_ERROR()                                                                                       \
+    (nDPId_return.thread_return_value.val != 0 || nDPIsrvd_return.val != 0 || distributor_return.val != 0)
 int main(int argc, char ** argv)
 {
     if (argc != 2)
@@ -307,6 +338,14 @@ int main(int argc, char ** argv)
         return 1;
     }
 
+#ifdef ENABLE_ZLIB
+    /*
+     * zLib compression is forced disabled for testing at the moment.
+     * That may change in the future.
+     */
+    nDPId_options.enable_zlib_compression = 0;
+#endif
+    nDPId_options.memory_profiling_print_every = (unsigned long long int)-1;
     nDPId_options.reader_thread_count = 1; /* Please do not change this! Generating meaningful pcap diff's relies on a
                                               single reader thread! */
     nDPId_options.instance_alias = strdup("nDPId-test");
@@ -336,7 +375,7 @@ int main(int argc, char ** argv)
     }
 
     pthread_t nDPId_thread;
-    struct thread_return_value nDPId_return = {};
+    struct nDPId_return_value nDPId_return = {};
     if (pthread_create(&nDPId_thread, NULL, nDPId_mainloop_thread, &nDPId_return) != 0)
     {
         return 1;
@@ -366,7 +405,7 @@ int main(int argc, char ** argv)
         }
     }
 
-    while (thread_wait_for_termination(nDPId_thread, 1, &nDPId_return) == 0)
+    while (thread_wait_for_termination(nDPId_thread, 1, &nDPId_return.thread_return_value) == 0)
     {
         if (THREADS_RETURNED_ERROR() != 0)
         {
@@ -380,6 +419,35 @@ int main(int argc, char ** argv)
         {
             break;
         }
+    }
+
+    if (getenv("PRINT_SUMMARY") != NULL)
+    {
+        printf(
+            "~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~\n"
+            "~~ packets captured/processed: %llu/%llu\n"
+            "~~ skipped flows.............: %llu\n"
+            "~~ total layer4 data length..: %llu bytes\n"
+            "~~ total detected protocols..: %llu\n"
+            "~~ total active/idle flows...: %llu/%llu\n"
+            "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n",
+            nDPId_return.packets_captured,
+            nDPId_return.packets_processed,
+            nDPId_return.total_skipped_flows,
+            nDPId_return.total_l4_data_len,
+            nDPId_return.detected_flow_protocols,
+            nDPId_return.total_active_flows,
+            nDPId_return.total_idle_flows);
+
+        printf(
+            "~~ total memory allocated....: %lu bytes\n"
+            "~~ total memory freed........: %lu bytes\n"
+            "~~ total allocations/frees...: %lu/%lu\n"
+            "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n",
+            ndpi_memory_alloc_bytes,
+            ndpi_memory_free_bytes,
+            ndpi_memory_alloc_count,
+            ndpi_memory_free_count);
     }
 
     return THREADS_RETURNED_ERROR();

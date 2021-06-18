@@ -54,3 +54,14 @@
 00367{"packet_event_id":1,"packet_event_name":"packet","thread_id":0,"packet_id":27,"source":"nats.pcap","alias":"nDPId-test","pkt_oversize":false,"pkt_ts_sec":1586288042,"pkt_ts_usec":776134,"pkt_caplen":56,"pkt_type":0,"pkt_l3_offset":0,"pkt_l4_offset":0,"pkt_len":56,"pkt_l4_len":0,"pkt":"AgAAAEUAADQAAEAAQAYAAH8AAAF\/AAABEH7WJfixMVfQ63fXgBAx0v4oAAABAQgKNpSm4zaUpuM="}
 00174{"basic_event_id":1,"basic_event_name":"Unknown datalink layer packet","thread_id":0,"packet_id":27,"source":"nats.pcap","alias":"nDPId-test","datalink":0,"header":33554432}
 00124{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":27,"source":"nats.pcap","alias":"nDPId-test"}
+~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~
+~~ packets captured/processed: 27/0
+~~ skipped flows.............: 0
+~~ total layer4 data length..: 0 bytes
+~~ total detected protocols..: 0
+~~ total active/idle flows...: 0/0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~ total memory allocated....: 4816931 bytes
+~~ total memory freed........: 4816931 bytes
+~~ total allocations/frees...: 58355/58355
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

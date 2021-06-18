@@ -18,3 +18,14 @@
 00873{"flow_id":1,"flow_packet_id":15,"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":15,"source":"quic-mvfst-exp.pcap","alias":"nDPId-test","pkt_oversize":false,"pkt_ts_sec":1600365863,"pkt_ts_usec":769593,"pkt_caplen":387,"pkt_type":34525,"pkt_l3_offset":14,"pkt_l4_offset":54,"pkt_len":387,"pkt_l4_len":333,"pkt":"AAAAAAAAAAoAaIxPht1gAAAAAU0ROz9l7On+cW4q+s6wDAAANY4qrM331QZ4B5CSB1+pY\/SrAbvg8wFNFVJOFV85r8TQp35z5Bmda\/4gy7xWTjcVk2PcyPeU7PEmDCCTibj8O5j2MvMx2t3Zehez\/Q3Fwkabqn9Gng6dHvuSrFzjTxmqbSrnm7HGyMZr14EARqqO3OBgQ9D7x6Cd8yQGx8hKBp36sWTXi3SZe5uNWzEWfSikvV6swcWlrw6nwXAvPX0Qqt\/w\/tDUQOWHkhJSWnzd7P74FlBdSqel46D1qWYZCbGLGiFV5T+xKzKbeFSteb8rShQFzCUYMT4dAAlP3Qu+J+6zcctNPFU0NHL9g29CiqeomGbPIDP1Gb28EN6h31bpk3Fll3IccI66k\/NpcqQv+o5E9MaEPy88n8cbnHVu0H4esytSKdg+tfpPJckbnlS\/DK\/erDDhRMsmLxBIKilQS\/lNJ2qyfsfNQviVS0sIFl\/F9Yyet8+l9Rf5Iah4Jd09"}
 00560{"flow_event_id":3,"flow_event_name":"idle","thread_id":0,"packet_id":30,"source":"quic-mvfst-exp.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":30,"flow_first_seen":1600365863681,"flow_last_seen":1600365863839,"flow_min_l4_payload_len":31,"flow_max_l4_payload_len":1232,"flow_tot_l4_payload_len":24449,"flow_avg_l4_payload_len":814,"midstream":0,"l3_proto":"ip6","src_ip":"2aac:cdf7:d506:7807:9092:75f:a963:f4ab","dst_ip":"3f65:ece9:fe71:6e2a:face:b00c::358e","src_port":57587,"dst_port":443,"l4_proto":"udp","flow_datalink":1,"flow_max_packets":15}
 00134{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":30,"source":"quic-mvfst-exp.pcap","alias":"nDPId-test"}
+~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~
+~~ packets captured/processed: 30/30
+~~ skipped flows.............: 0
+~~ total layer4 data length..: 24689 bytes
+~~ total detected protocols..: 1
+~~ total active/idle flows...: 1/1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~ total memory allocated....: 4826374 bytes
+~~ total memory freed........: 4826374 bytes
+~~ total allocations/frees...: 58400/58400
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

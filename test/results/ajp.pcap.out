@@ -76,3 +76,14 @@
 00390{"packet_event_id":1,"packet_event_name":"packet","thread_id":0,"packet_id":38,"source":"ajp.pcap","alias":"nDPId-test","pkt_oversize":false,"pkt_ts_sec":1505154584,"pkt_ts_usec":618218,"pkt_caplen":70,"pkt_type":33024,"pkt_l3_offset":14,"pkt_l4_offset":0,"pkt_len":70,"pkt_l4_len":0,"pkt":"AFBWg47zAFBWg11YgQAABwgARQAANLLOQABABhyWrB0JkqwdCZOXyB9KcsXfUJOgL6qAEAB7dmUAAAEBCApOnGqSHlfwgw=="}
 00145{"basic_event_id":5,"basic_event_name":"Unknown packet type","thread_id":0,"packet_id":38,"source":"ajp.pcap","alias":"nDPId-test","type":33024}
 00123{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":38,"source":"ajp.pcap","alias":"nDPId-test"}
+~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~
+~~ packets captured/processed: 38/0
+~~ skipped flows.............: 0
+~~ total layer4 data length..: 0 bytes
+~~ total detected protocols..: 0
+~~ total active/idle flows...: 0/0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~ total memory allocated....: 4816931 bytes
+~~ total memory freed........: 4816931 bytes
+~~ total allocations/frees...: 58355/58355
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

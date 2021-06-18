@@ -13,3 +13,14 @@
 00426{"flow_id":1,"flow_packet_id":10,"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":10,"source":"memcached.cap","alias":"nDPId-test","pkt_oversize":false,"pkt_ts_sec":1534343745,"pkt_ts_usec":954749,"pkt_caplen":66,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":66,"pkt_l4_len":32,"pkt":"AAAAAAAAAAAAAAAACABFAAA0pUNAAEAGl35\/AAABfwAAAejUK8sskd7ZyyaAgIAQAWb+KAAAAQEICikge+4pIHvu"}
 00498{"flow_event_id":2,"flow_event_name":"end","thread_id":0,"packet_id":10,"source":"memcached.cap","alias":"nDPId-test","flow_id":1,"flow_packet_id":10,"flow_first_seen":1534343745954,"flow_last_seen":1534343745954,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":1028,"flow_tot_l4_payload_len":1035,"flow_avg_l4_payload_len":103,"midstream":0,"l3_proto":"ip4","src_ip":"127.0.0.1","dst_ip":"127.0.0.1","src_port":59604,"dst_port":11211,"l4_proto":"tcp","flow_datalink":1,"flow_max_packets":15}
 00128{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":10,"source":"memcached.cap","alias":"nDPId-test"}
+~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~
+~~ packets captured/processed: 10/10
+~~ skipped flows.............: 0
+~~ total layer4 data length..: 1371 bytes
+~~ total detected protocols..: 1
+~~ total active/idle flows...: 1/1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~ total memory allocated....: 4822421 bytes
+~~ total memory freed........: 4822421 bytes
+~~ total allocations/frees...: 58369/58369
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

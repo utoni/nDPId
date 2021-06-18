@@ -54,3 +54,14 @@
 00498{"packet_event_id":1,"packet_event_name":"packet","thread_id":0,"packet_id":27,"source":"mongodb.pcap","alias":"nDPId-test","pkt_oversize":false,"pkt_ts_sec":1483814916,"pkt_ts_usec":108514,"pkt_caplen":143,"pkt_type":33024,"pkt_l3_offset":14,"pkt_l4_offset":0,"pkt_len":143,"pkt_l4_len":0,"pkt":"LGv11hfFABsXAAIwgQABLAgARQAAfYoRQAA\/BvKWCgoKEgoKChP8NnUwNO8EZBGWgSuAGBAgykwAAAEBCAoeHKgCUsc3tEkAAACHkQAA\/\/\/\/\/9QHAAAAAAAASW5hY3RpdmVVc2VySWRlbnRpdHkuJGNtZAAAAAAAAQAAABMAAAAQZ2V0bm9uY2UAAQAAAAA="}
 00149{"basic_event_id":5,"basic_event_name":"Unknown packet type","thread_id":0,"packet_id":27,"source":"mongodb.pcap","alias":"nDPId-test","type":33024}
 00127{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":27,"source":"mongodb.pcap","alias":"nDPId-test"}
+~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~
+~~ packets captured/processed: 27/0
+~~ skipped flows.............: 0
+~~ total layer4 data length..: 0 bytes
+~~ total detected protocols..: 0
+~~ total active/idle flows...: 0/0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~ total memory allocated....: 4816931 bytes
+~~ total memory freed........: 4816931 bytes
+~~ total allocations/frees...: 58355/58355
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

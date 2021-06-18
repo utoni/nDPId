@@ -6146,3 +6146,14 @@
 00500{"flow_event_id":3,"flow_event_name":"idle","thread_id":0,"packet_id":9374,"source":"WebattackXSS.pcap","alias":"nDPId-test","flow_id":661,"flow_packet_id":3,"flow_first_seen":1499348099359,"flow_last_seen":1499348099360,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":0,"flow_tot_l4_payload_len":0,"flow_avg_l4_payload_len":0,"midstream":0,"l3_proto":"ip4","src_ip":"172.16.0.1","dst_ip":"192.168.10.50","src_port":35950,"dst_port":80,"l4_proto":"tcp","flow_datalink":1,"flow_max_packets":15}
 00511{"flow_event_id":2,"flow_event_name":"end","thread_id":0,"packet_id":9374,"source":"WebattackXSS.pcap","alias":"nDPId-test","flow_id":569,"flow_packet_id":311,"flow_first_seen":1499347939286,"flow_last_seen":1499348006339,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":1870,"flow_tot_l4_payload_len":232672,"flow_avg_l4_payload_len":748,"midstream":0,"l3_proto":"ip4","src_ip":"172.16.0.1","dst_ip":"192.168.10.50","src_port":34278,"dst_port":80,"l4_proto":"tcp","flow_datalink":1,"flow_max_packets":15}
 00134{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":9374,"source":"WebattackXSS.pcap","alias":"nDPId-test"}
+~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~
+~~ packets captured/processed: 9374/9374
+~~ skipped flows.............: 0
+~~ total layer4 data length..: 4402432 bytes
+~~ total detected protocols..: 22
+~~ total active/idle flows...: 661/661
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~ total memory allocated....: 7176199 bytes
+~~ total memory freed........: 7176199 bytes
+~~ total allocations/frees...: 69778/69778
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

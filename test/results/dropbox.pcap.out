@@ -171,3 +171,14 @@
 00508{"flow_event_id":3,"flow_event_name":"idle","thread_id":0,"packet_id":848,"source":"dropbox.pcap","alias":"nDPId-test","flow_id":18,"flow_packet_id":3,"flow_first_seen":1535391651168,"flow_last_seen":1535391682513,"flow_min_l4_payload_len":163,"flow_max_l4_payload_len":163,"flow_tot_l4_payload_len":489,"flow_avg_l4_payload_len":163,"midstream":0,"l3_proto":"ip4","src_ip":"192.168.1.64","dst_ip":"255.255.255.255","src_port":17500,"dst_port":17500,"l4_proto":"udp","flow_datalink":1,"flow_max_packets":15}
 00506{"flow_event_id":3,"flow_event_name":"idle","thread_id":0,"packet_id":848,"source":"dropbox.pcap","alias":"nDPId-test","flow_id":19,"flow_packet_id":3,"flow_first_seen":1535391651170,"flow_last_seen":1535391682514,"flow_min_l4_payload_len":163,"flow_max_l4_payload_len":163,"flow_tot_l4_payload_len":489,"flow_avg_l4_payload_len":163,"midstream":0,"l3_proto":"ip4","src_ip":"192.168.1.64","dst_ip":"192.168.1.255","src_port":17500,"dst_port":17500,"l4_proto":"udp","flow_datalink":1,"flow_max_packets":15}
 00128{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":848,"source":"dropbox.pcap","alias":"nDPId-test"}
+~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~
+~~ packets captured/processed: 848/848
+~~ skipped flows.............: 0
+~~ total layer4 data length..: 61700 bytes
+~~ total detected protocols..: 19
+~~ total active/idle flows...: 19/19
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~ total memory allocated....: 4901411 bytes
+~~ total memory freed........: 4901411 bytes
+~~ total allocations/frees...: 59260/59260
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

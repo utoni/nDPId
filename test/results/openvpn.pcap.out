@@ -54,3 +54,14 @@
 00591{"flow_id":3,"flow_packet_id":15,"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":193,"source":"openvpn.pcap","alias":"nDPId-test","pkt_oversize":false,"pkt_ts_sec":1472334892,"pkt_ts_usec":875376,"pkt_caplen":184,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":184,"pkt_l4_len":150,"pkt":"MFLLbJwbmAyC0zx8CABFAACqgqFAADERuCKLO5eJwKgrEjVwNXAAloHZIDWQheTdAi5EGn+8Hpjn1EX+kGpde81XFbgwab0AAAAHV8IMLQAAAAAFXs16Z1Oqb5\/NXvcN\/JPmFRsB9Qn433GGYzVrij\/603Hf3x8+jZjnDWISqi+KCm7yOhv+vC+HduaYS8lkNp0MRD+iOTf9JQGGMbbarVk+UP2lQsnNAgMBAAGjIDAeMAkGA1UdEw=="}
 00511{"flow_event_id":3,"flow_event_name":"idle","thread_id":0,"packet_id":298,"source":"openvpn.pcap","alias":"nDPId-test","flow_id":3,"flow_packet_id":120,"flow_first_seen":1472334890224,"flow_last_seen":1472334909465,"flow_min_l4_payload_len":42,"flow_max_l4_payload_len":1245,"flow_tot_l4_payload_len":23132,"flow_avg_l4_payload_len":192,"midstream":0,"l3_proto":"ip4","src_ip":"192.168.43.18","dst_ip":"139.59.151.137","src_port":13680,"dst_port":13680,"l4_proto":"udp","flow_datalink":1,"flow_max_packets":15}
 00128{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":298,"source":"openvpn.pcap","alias":"nDPId-test"}
+~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~
+~~ packets captured/processed: 298/298
+~~ skipped flows.............: 0
+~~ total layer4 data length..: 46979 bytes
+~~ total detected protocols..: 3
+~~ total active/idle flows...: 3/3
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~ total memory allocated....: 4837077 bytes
+~~ total memory freed........: 4837077 bytes
+~~ total allocations/frees...: 58663/58663
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

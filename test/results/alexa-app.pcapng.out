@@ -2370,3 +2370,14 @@
 00510{"flow_event_id":2,"flow_event_name":"end","thread_id":0,"packet_id":3435,"source":"alexa-app.pcapng","alias":"nDPId-test","flow_id":78,"flow_packet_id":27,"flow_first_seen":1490976080485,"flow_last_seen":1490976081484,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":1448,"flow_tot_l4_payload_len":7640,"flow_avg_l4_payload_len":282,"midstream":0,"l3_proto":"ip4","src_ip":"172.16.42.216","dst_ip":"34.199.52.240","src_port":38404,"dst_port":443,"l4_proto":"tcp","flow_datalink":1,"flow_max_packets":15}
 00504{"flow_event_id":3,"flow_event_name":"idle","thread_id":0,"packet_id":3435,"source":"alexa-app.pcapng","alias":"nDPId-test","flow_id":17,"flow_packet_id":2,"flow_first_seen":1490976029669,"flow_last_seen":1490976029753,"flow_min_l4_payload_len":42,"flow_max_l4_payload_len":84,"flow_tot_l4_payload_len":126,"flow_avg_l4_payload_len":63,"midstream":0,"l3_proto":"ip4","src_ip":"172.16.42.216","dst_ip":"172.16.42.1","src_port":19967,"dst_port":53,"l4_proto":"udp","flow_datalink":1,"flow_max_packets":15}
 00133{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":3435,"source":"alexa-app.pcapng","alias":"nDPId-test"}
+~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~
+~~ packets captured/processed: 3435/3406
+~~ skipped flows.............: 0
+~~ total layer4 data length..: 1313763 bytes
+~~ total detected protocols..: 147
+~~ total active/idle flows...: 162/162
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~ total memory allocated....: 5945688 bytes
+~~ total memory freed........: 5945688 bytes
+~~ total allocations/frees...: 62907/62907
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

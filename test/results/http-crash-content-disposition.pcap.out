@@ -18,3 +18,14 @@
 01625{"packet_event_id":1,"packet_event_name":"packet","thread_id":0,"packet_id":9,"source":"http-crash-content-disposition.pcap","alias":"nDPId-test","pkt_oversize":false,"pkt_ts_sec":1492518365,"pkt_ts_usec":968183,"pkt_caplen":981,"pkt_type":0,"pkt_l3_offset":0,"pkt_l4_offset":0,"pkt_len":981,"pkt_l4_len":0,"pkt":"RQAD1UN3QAAtBpcRroEACsCoAGcAUMfjkVclC3tFq0qAGAB6wJEAAAEBCAoroVxpABR97jQ8L21heF9kaXNwbGF5X251bT4KCTwvbWVzc2FnZT4KCTxtZXNzYWdlPgoJCTxpZD4yMDwvaWQ+CgkJPHRpdGxlPkEgUGVwIFRhbGsgZnJvbSBLaWQgUHJlc2lkZW50ITwvdGl0bGU+CgkJPGRlc2NyaXB0aW9uPldhdGNoIHRoZSBuZXdlc3QgdmlkZW8gZnJvbSBUaGUgR3JlZ29yeSBCcm90aGVycywgYW5kIHBlcmZvcm0geW91ciBvd24gcmVuZGl0aW9uITwvZGVzY3JpcHRpb24+CgkJPHVybD5odHRwOi8vd3d3LnlvdXR1YmUuY29tL3dhdGNoP3Y9bkZHY3JZUGRySlU8L3VybD4KCQk8dHlwZT4wPC90eXBlPgoJCTxjYXRlZ29yeT4xPC9jYXRlZ29yeT4KCQk8bWF4X2Rpc3BsYXlfbnVtPjIxNDYzNTQyNDg8L21heF9kaXNwbGF5X251bT4KCTwvbWVzc2FnZT4KCTxtZXNzYWdlPgoJCTxpZD4yMTwvaWQ+CgkJPHRpdGxlPlJhcCBsaWtlIEVtaW5lbSE8L3RpdGxlPgoJCTxkZXNjcmlwdGlvbj5BdXRvUmFwIHR1cm5zIHNwZWVjaCBpbnRvIHJhcCAoYW5kIGNvcnJlY3RzIGJhZCByYXBwaW5nKS48L2Rlc2NyaXB0aW9uPgoJCTx1cmw+aHR0cDovL2FwaS5zbXVsZS5jb20vdjIvcmVkaXJlY3QvZXlKM1pXSlZjbXdpT2lKb2RIUndjem92TDNCc1lYa3VaMjl2WjJ4bExtTnZiUzl6ZEc5eVpTOWhjSEJ6TDJSbGRHRnBiSE0vYVdSY2RUQXdNMlJqYjIwdWMyMTFiR1V1WVhWMGIzSmhjQ0lzSW0xdlltbHNaVlZ5YkNJNkltMWhjbXRsZERvdkwyUmxkR0ZwYkhNL2FXUmNkVEF3TTJSamIyMHVjMjExYkdVdVlYVjBiM0poY0NJc0ltTmhiWEJoYVdkdVNXUWlPakUxTVRNc0ltRndjQ0k2SWtGVlZFOVNRVkJmUjA5UFJ5Sjk8L3VybD4KCQk8dHlwZT4wPC90eXBlPgoJCTxjYXRlZ29yeT4zPC9jYXRlZ29yeT4KCQk8bWF4X2Rpc3BsYXlfbnVtPjIxNDYwNzU0MDI8L21heF9kaXNwbGF5X251bT4KCTwvbWVzc2FnZT4KPC9tZXNzYWdlX2xpc3Q+CjwvaW1zZ3M+"}
 00168{"basic_event_id":5,"basic_event_name":"Unknown packet type","thread_id":0,"packet_id":9,"source":"http-crash-content-disposition.pcap","alias":"nDPId-test","type":12}
 00149{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":9,"source":"http-crash-content-disposition.pcap","alias":"nDPId-test"}
+~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~
+~~ packets captured/processed: 9/0
+~~ skipped flows.............: 0
+~~ total layer4 data length..: 0 bytes
+~~ total detected protocols..: 0
+~~ total active/idle flows...: 0/0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~ total memory allocated....: 4816931 bytes
+~~ total memory freed........: 4816931 bytes
+~~ total allocations/frees...: 58355/58355
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -70,3 +70,14 @@
 00507{"flow_event_id":3,"flow_event_name":"idle","thread_id":0,"packet_id":422,"source":"capwap.pcap","alias":"nDPId-test","flow_id":4,"flow_packet_id":217,"flow_first_seen":1422329005767,"flow_last_seen":1422329174862,"flow_min_l4_payload_len":64,"flow_max_l4_payload_len":1457,"flow_tot_l4_payload_len":54560,"flow_avg_l4_payload_len":251,"midstream":0,"l3_proto":"ip4","src_ip":"192.168.10.9","dst_ip":"192.168.10.10","src_port":5246,"dst_port":12380,"l4_proto":"udp","flow_datalink":1,"flow_max_packets":15}
 00506{"flow_event_id":3,"flow_event_name":"idle","thread_id":0,"packet_id":422,"source":"capwap.pcap","alias":"nDPId-test","flow_id":5,"flow_packet_id":173,"flow_first_seen":1422329017533,"flow_last_seen":1422329175528,"flow_min_l4_payload_len":51,"flow_max_l4_payload_len":428,"flow_tot_l4_payload_len":26636,"flow_avg_l4_payload_len":153,"midstream":0,"l3_proto":"ip4","src_ip":"192.168.10.10","dst_ip":"192.168.10.9","src_port":12380,"dst_port":5247,"l4_proto":"udp","flow_datalink":1,"flow_max_packets":15}
 00127{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":422,"source":"capwap.pcap","alias":"nDPId-test"}
+~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~
+~~ packets captured/processed: 422/397
+~~ skipped flows.............: 0
+~~ total layer4 data length..: 85011 bytes
+~~ total detected protocols..: 5
+~~ total active/idle flows...: 5/5
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~ total memory allocated....: 4844204 bytes
+~~ total memory freed........: 4844204 bytes
+~~ total allocations/frees...: 58767/58767
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

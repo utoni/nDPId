@@ -18,3 +18,14 @@
 00509{"flow_id":1,"flow_packet_id":15,"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":15,"source":"zcash.pcap","alias":"nDPId-test","pkt_oversize":false,"pkt_ts_sec":1514196116,"pkt_ts_usec":444796,"pkt_caplen":129,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":129,"pkt_l4_len":95,"pkt":"cIXCQA64fmgbW\/gUCABFAABzzTpAADMGQEyyIMTZwKgCXCNa15Yj5r7UgJ4CY4AYADmIgwAAAQEICuyFhZdPjtFDeyJpZCI6MSwianNvbnJwYyI6IjIuMCIsImVycm9yIjpudWxsLCJyZXN1bHQiOnsic3RhdHVzIjoiT0sifX0K"}
 00504{"flow_event_id":3,"flow_event_name":"idle","thread_id":0,"packet_id":145,"source":"zcash.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":145,"flow_first_seen":1514196094240,"flow_last_seen":1514197248783,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":303,"flow_tot_l4_payload_len":11022,"flow_avg_l4_payload_len":76,"midstream":0,"l3_proto":"ip4","src_ip":"192.168.2.92","dst_ip":"178.32.196.217","src_port":55190,"dst_port":9050,"l4_proto":"tcp","flow_datalink":1,"flow_max_packets":15}
 00126{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":145,"source":"zcash.pcap","alias":"nDPId-test"}
+~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~
+~~ packets captured/processed: 145/145
+~~ skipped flows.............: 0
+~~ total layer4 data length..: 15714 bytes
+~~ total detected protocols..: 1
+~~ total active/idle flows...: 1/1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~ total memory allocated....: 4834544 bytes
+~~ total memory freed........: 4834544 bytes
+~~ total allocations/frees...: 58506/58506
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

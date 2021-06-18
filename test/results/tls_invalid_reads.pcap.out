@@ -23,3 +23,14 @@
 00751{"packet_event_id":1,"packet_event_name":"packet","thread_id":0,"packet_id":12,"source":"tls_invalid_reads.pcap","alias":"nDPId-test","pkt_oversize":false,"pkt_ts_sec":1544035479,"pkt_ts_usec":768404,"pkt_caplen":324,"pkt_type":33024,"pkt_l3_offset":14,"pkt_l4_offset":0,"pkt_len":324,"pkt_l4_len":0,"pkt":"AAAAAAAFYAgQGhx\/gQBsn4EAYAIIAEVoAS7V9AAA\/xG2FAruJEAK7vQxCGgIaAEaAAAw\/wEKB+zklkUAAOux30AAQAbbUgq\/ixE23eAt5LgBu\/kVfJ8aWkgcgBgFWRb9AAABAQgKABTNax1e0BYWAwEAsgEAAK4DA+Jfj3VZ7Se+llOF2hoK\/0SOWa4JB8kGoFPipHXr6zI3AAAowCvALMAvwDAAngCfwAnACsATwBQAMwA5wAfAEQCcAJ0ALwA1AAUA\/wEAAF0AAAAWABQAABFlLmNyYXNobHl0aWNzLmNvbQAXAAAAIwAAAA0AFgAUBgEGAwUBBQMEAQQDAwEDAwIBAgMAEAALuImlL1Y1GeVflD5H40\/GlDV3w0Q4eHATzs15UMvq3bDFbT9WBxf4WY7WsXHZhuEm\/fgNJZccyFnwUKMb"}
 00159{"basic_event_id":5,"basic_event_name":"Unknown packet type","thread_id":0,"packet_id":12,"source":"tls_invalid_reads.pcap","alias":"nDPId-test","type":33024}
 00137{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":12,"source":"tls_invalid_reads.pcap","alias":"nDPId-test"}
+~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~
+~~ packets captured/processed: 12/8
+~~ skipped flows.............: 0
+~~ total layer4 data length..: 1613 bytes
+~~ total detected protocols..: 2
+~~ total active/idle flows...: 2/2
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~ total memory allocated....: 4827563 bytes
+~~ total memory freed........: 4827563 bytes
+~~ total allocations/frees...: 58371/58371
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

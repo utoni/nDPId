@@ -20,3 +20,14 @@
 00528{"flow_id":1,"flow_packet_id":15,"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":15,"source":"443-git.pcap","alias":"nDPId-test","pkt_oversize":false,"pkt_ts_sec":1581113658,"pkt_ts_usec":131250,"pkt_caplen":140,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":140,"pkt_l4_len":106,"pkt":"KDc3AG3IEBMx8Tl2CABFAAB+wP9AADIGx26MUnIEwKgBDQG72cCAzeBR9P6h0oAYAB7pmQAAAQEICg4LEHoeal0YFwMDAEWJm0EBvvRKLmX7drjPshGyaEJWmqcp1RQ+pyLs4CGONTV6yT1TRVDipzhBBC2J7XfD1QzS\/vH7qDNCq0AYEKrGNVvpC2I="}
 00502{"flow_event_id":2,"flow_event_name":"end","thread_id":0,"packet_id":70,"source":"443-git.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":70,"flow_first_seen":1581113657633,"flow_last_seen":1581113658456,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":1424,"flow_tot_l4_payload_len":32585,"flow_avg_l4_payload_len":465,"midstream":0,"l3_proto":"ip4","src_ip":"192.168.1.13","dst_ip":"140.82.114.4","src_port":55744,"dst_port":443,"l4_proto":"tcp","flow_datalink":1,"flow_max_packets":15}
 00127{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":70,"source":"443-git.pcap","alias":"nDPId-test"}
+~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~
+~~ packets captured/processed: 70/70
+~~ skipped flows.............: 0
+~~ total layer4 data length..: 34809 bytes
+~~ total detected protocols..: 1
+~~ total active/idle flows...: 1/1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~ total memory allocated....: 4830539 bytes
+~~ total memory freed........: 4830539 bytes
+~~ total allocations/frees...: 58436/58436
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

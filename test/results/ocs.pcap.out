@@ -1892,3 +1892,14 @@
 00378{"packet_event_id":1,"packet_event_name":"packet","thread_id":0,"packet_id":946,"source":"ocs.pcap","alias":"nDPId-test","pkt_oversize":false,"pkt_ts_sec":1449652846,"pkt_ts_usec":380718,"pkt_caplen":64,"pkt_type":0,"pkt_l3_offset":0,"pkt_l4_offset":0,"pkt_len":64,"pkt_l4_len":0,"pkt":"RQAAQD9rQABABgLXwKi0ArL40NKmXgBQrzComDk0Q6ywEAgki50AAAEBCAoANZnyGkFqZAEBBQo5NE6EOTRZXA=="}
 00143{"basic_event_id":5,"basic_event_name":"Unknown packet type","thread_id":0,"packet_id":946,"source":"ocs.pcap","alias":"nDPId-test","type":12}
 00124{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":946,"source":"ocs.pcap","alias":"nDPId-test"}
+~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~
+~~ packets captured/processed: 946/0
+~~ skipped flows.............: 0
+~~ total layer4 data length..: 0 bytes
+~~ total detected protocols..: 0
+~~ total active/idle flows...: 0/0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~ total memory allocated....: 4816931 bytes
+~~ total memory freed........: 4816931 bytes
+~~ total allocations/frees...: 58355/58355
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

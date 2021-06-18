@@ -21,3 +21,14 @@
 00617{"flow_id":1,"flow_packet_id":15,"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":15,"source":"ssh.pcap","alias":"nDPId-test","pkt_oversize":false,"pkt_ts_sec":1320435464,"pkt_ts_usec":774287,"pkt_caplen":210,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":210,"pkt_l4_len":176,"pkt":"AAwppUXgAFBWwAAICABFAADEyg1AAEAGO1usEO4BrBDuqOQbABY3XoNgQqJ59IAY\/\/+RQAAAAQEIChyVsAMAEyMEAAAAjAUgAAAAgQCKUG7tHgFITWPHoMxc4wuZ1BXy9n04qGBXJaOb+9wr70emYr8wHGq5ovMs7cviXyxxuF2Wdy30WLOfkouWkCplLGVZjdOTH0a5W2C9UmG80DhI+zr3en+DO3OfgxTtHr+gZJk6dXUbjvnH28419VgXWQUn69FtGg8SjApYMkgSUQAAAAAA"}
 00500{"flow_event_id":2,"flow_event_name":"end","thread_id":0,"packet_id":258,"source":"ssh.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":258,"flow_first_seen":1320435464760,"flow_last_seen":1320435713237,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":1280,"flow_tot_l4_payload_len":18498,"flow_avg_l4_payload_len":71,"midstream":0,"l3_proto":"ip4","src_ip":"172.16.238.1","dst_ip":"172.16.238.168","src_port":58395,"dst_port":22,"l4_proto":"tcp","flow_datalink":1,"flow_max_packets":15}
 00124{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":258,"source":"ssh.pcap","alias":"nDPId-test"}
+~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~
+~~ packets captured/processed: 258/258
+~~ skipped flows.............: 0
+~~ total layer4 data length..: 26774 bytes
+~~ total detected protocols..: 1
+~~ total active/idle flows...: 1/1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~ total memory allocated....: 4829569 bytes
+~~ total memory freed........: 4829569 bytes
+~~ total allocations/frees...: 58620/58620
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -44,3 +44,14 @@
 00214{"basic_event_id":15,"basic_event_name":"Captured packet size is smaller than packet size","thread_id":0,"packet_id":25,"source":"ja3_lots_of_cipher_suites_2_anon.pcap","alias":"nDPId-test","caplen":106,"len":110}
 00532{"flow_event_id":3,"flow_event_name":"idle","thread_id":0,"packet_id":27,"source":"ja3_lots_of_cipher_suites_2_anon.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":27,"flow_first_seen":1505724520744,"flow_last_seen":1505724526702,"flow_min_l4_payload_len":48,"flow_max_l4_payload_len":1448,"flow_tot_l4_payload_len":5832,"flow_avg_l4_payload_len":216,"midstream":0,"l3_proto":"ip4","src_ip":"132.190.244.12","dst_ip":"151.121.185.44","src_port":2152,"dst_port":2152,"l4_proto":"udp","flow_datalink":1,"flow_max_packets":15}
 00152{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":27,"source":"ja3_lots_of_cipher_suites_2_anon.pcap","alias":"nDPId-test"}
+~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~
+~~ packets captured/processed: 27/27
+~~ skipped flows.............: 0
+~~ total layer4 data length..: 6048 bytes
+~~ total detected protocols..: 1
+~~ total active/idle flows...: 1/1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~ total memory allocated....: 4820866 bytes
+~~ total memory freed........: 4820866 bytes
+~~ total allocations/frees...: 58385/58385
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

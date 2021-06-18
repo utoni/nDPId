@@ -706,3 +706,14 @@
 02054{"packet_event_id":1,"packet_event_name":"packet","thread_id":0,"packet_id":353,"source":"quic-mvfst-22_decryption_error.pcap","alias":"nDPId-test","pkt_oversize":false,"pkt_ts_sec":1593498297,"pkt_ts_usec":36000,"pkt_caplen":1280,"pkt_type":0,"pkt_l3_offset":0,"pkt_l4_offset":0,"pkt_len":1280,"pkt_l4_len":0,"pkt":"RQAFAAACQABZEalpXmHhkgrmKKgBu\/L0BOxzEVh\/\/F+FsvgskZSJEq72gHo10TdgNOHV3qtvLr34ysT4\/BQu08NXy68awukgm428CY+3uFIa\/SsYHOQWYv\/6hMCX46sHEfK3FsGd9B4aOMTDZmbct0Hi6B5hFbC0RysqpiuCGv72ybkRYMTkkmBSpKkaxMd628mXMhcYd517jH\/CS6rxLyjH721TKnNGFMFZJpKZW05u1pmo9F74UGjuzXEO89ZOXqanGwo8ZLmQTCj85x1E1RZX9aigKv5BEr63ws6yLhHIXtPDYscZDNmE2ULVjoz3kzJuZzMzTW64HxXlwsMaX6uzVAwAX\/DVkW2gqZT9R4oqnG1iUCq0cb0MR6letAQ\/fU12ToEri5STxN\/eLewgY07DxQqjTUjGstGtGCNM\/FfDTgRtPzwTJZih3hD1CfW1YEkB9tXv3wCFGUyLRPlE7MbrU8qTOcUAn41czqUHKXgJpSWqjRlqdsmuAgafgOGhqdjw1Dm38vteZONnaZ0QujAZ7ZN3UoLVU\/0h2yR1MEUH\/ATH25T5lgD9ffI\/fHDa86FcEH0enSe06V9t2jUIcvqLGVwSzjxtjTGJjrQ5mZ9ZuX\/RsW9eLUa5XcOl6q9p1sCAM956+nfVkS7tt1A7eldJbVXEI+ZcnDnBu\/HfhQghjRReyowO0uY88d1b6J5BW747Za2CrWV3An3xcrcgJ3r7Eegcow70EpRrR+5W8ayOPOR2SGTCLovooCpYeUYQ6T838f5KeN4CcXxx7FVrW0hCqLV+HJCGz2o\/AeBkwyRwIR35fIDm64HoUOpCMEB3l7n2WMd9lZS2DQtlFlThLuIymsnTAeZZCutQ7DJyF72B2wkJ9WAmyRaM7Nq+x0zpTQHmxR9xaamH9bBNq6ua2oCT5qfTkzoaG+IHmszzghAt5peXz7eqEaFqSW9OSi6Rt7nXeWpRnZS0xwrMxUtgUDclrW\/KBEJo0yZx1nkaOYHw9iwtzDJs2GBWmR94yQl7wvUuGIY6KjXTfn457StRyrcmSAcZVTUGxz7jG3KLfU2hiD2i+hGp67x8HUPue8RVimCp3M+CVhljP3AEXbJYiKYJq17hw\/NXXqU+vH3l4Ac+JioVTo5Q3+FwrWO7xRdRizXH89EUM4LwVRIVqhBY5DmxiNvI\/yxCgFw19mN2hP7yR4ixoyVHHevKc24iODyxhVIi2laJWFJ5DG5knu8grskOXH1flWjfxJBK\/\/3jC1BdMicLllb+efDa9SzMy\/3dPDg61ZXUXioRNvGC9lAdQLPrOxjvJhrN1U4tovGRi4vfa\/M+cLnYZdFxrakeiE5p5Ge8ewqhhgDnypGVxiKqOhWMtyl1pD7cCSKY+KDEUtztnzSKJJP5e5q2vmnfhsLtwxqp4YcMsGrDdwcy+whkFVB73zRViDcA8nfxNKx3ksom\/BzlnliiQ1AdXWXCf1pFpesZUDEc3UwYuqXdIonQnRDiCYrlhZ4tAO39+6nh8o7UbXxKCT7JVAC8TwzVqp8T9mo3m+mofsKgSIEYSKy38vRMDGMM9v4WJ+IK5iuL78dmEipzGMd1w89fuz3c5cxVfZRr1V7++wg3gzWDHZREzG0PMXkvJzh3OJ9rs93FmzU64537zWQLvOws8sCivE3d4H+qISlUIyJMOC5xzhRlbFKhIzWtB8ba5COlFqmJ\/NM="}
 00170{"basic_event_id":5,"basic_event_name":"Unknown packet type","thread_id":0,"packet_id":353,"source":"quic-mvfst-22_decryption_error.pcap","alias":"nDPId-test","type":12}
 00151{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":353,"source":"quic-mvfst-22_decryption_error.pcap","alias":"nDPId-test"}
+~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~
+~~ packets captured/processed: 353/0
+~~ skipped flows.............: 0
+~~ total layer4 data length..: 0 bytes
+~~ total detected protocols..: 0
+~~ total active/idle flows...: 0/0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~ total memory allocated....: 4816931 bytes
+~~ total memory freed........: 4816931 bytes
+~~ total allocations/frees...: 58355/58355
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

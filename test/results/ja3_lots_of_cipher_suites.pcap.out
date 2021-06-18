@@ -22,3 +22,14 @@
 00408{"packet_event_id":1,"packet_event_name":"packet","thread_id":0,"packet_id":11,"source":"ja3_lots_of_cipher_suites.pcap","alias":"nDPId-test","pkt_oversize":false,"pkt_ts_sec":1557818846,"pkt_ts_usec":965822,"pkt_caplen":68,"pkt_type":33024,"pkt_l3_offset":14,"pkt_l4_offset":0,"pkt_len":68,"pkt_l4_len":0,"pkt":"AAAAAAABsKp3tUhAgQAAXYEAAQIIAEUAACifbEAAPwbBvArOgxIKzkH55SEBu84u2SwAAAAAUAQAAEcBAAAAAAAAAAA="}
 00167{"basic_event_id":5,"basic_event_name":"Unknown packet type","thread_id":0,"packet_id":11,"source":"ja3_lots_of_cipher_suites.pcap","alias":"nDPId-test","type":33024}
 00145{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":11,"source":"ja3_lots_of_cipher_suites.pcap","alias":"nDPId-test"}
+~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~
+~~ packets captured/processed: 11/0
+~~ skipped flows.............: 0
+~~ total layer4 data length..: 0 bytes
+~~ total detected protocols..: 0
+~~ total active/idle flows...: 0/0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~ total memory allocated....: 4816931 bytes
+~~ total memory freed........: 4816931 bytes
+~~ total allocations/frees...: 58355/58355
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

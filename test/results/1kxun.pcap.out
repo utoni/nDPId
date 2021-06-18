@@ -1163,3 +1163,14 @@
 00510{"flow_event_id":3,"flow_event_name":"idle","thread_id":0,"packet_id":1439,"source":"1kxun.pcap","alias":"nDPId-test","flow_id":146,"flow_packet_id":2,"flow_first_seen":1470104432630,"flow_last_seen":1470104432728,"flow_min_l4_payload_len":27,"flow_max_l4_payload_len":27,"flow_tot_l4_payload_len":54,"flow_avg_l4_payload_len":27,"midstream":0,"l3_proto":"ip6","src_ip":"fe80::5d92:62a8:ebde:1319","dst_ip":"ff02::1:3","src_port":58468,"dst_port":5355,"l4_proto":"udp","flow_datalink":1,"flow_max_packets":15}
 00511{"flow_event_id":3,"flow_event_name":"idle","thread_id":0,"packet_id":1439,"source":"1kxun.pcap","alias":"nDPId-test","flow_id":92,"flow_packet_id":16,"flow_first_seen":1470104400162,"flow_last_seen":1470104408559,"flow_min_l4_payload_len":448,"flow_max_l4_payload_len":528,"flow_tot_l4_payload_len":7929,"flow_avg_l4_payload_len":495,"midstream":0,"l3_proto":"ip6","src_ip":"fe80::9bd:81dd:2fdc:5750","dst_ip":"ff02::c","src_port":1900,"dst_port":1900,"l4_proto":"udp","flow_datalink":1,"flow_max_packets":15}
 00127{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":1439,"source":"1kxun.pcap","alias":"nDPId-test"}
+~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~
+~~ packets captured/processed: 1439/1439
+~~ skipped flows.............: 0
+~~ total layer4 data length..: 579199 bytes
+~~ total detected protocols..: 113
+~~ total active/idle flows...: 148/148
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~ total memory allocated....: 5396869 bytes
+~~ total memory freed........: 5396869 bytes
+~~ total allocations/frees...: 60305/60305
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

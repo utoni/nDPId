@@ -63,6 +63,8 @@ if(ENABLE_MEMORY_PROFILING)
     add_definitions("-DENABLE_MEMORY_PROFILING=1"
                     "-Duthash_malloc=nDPIsrvd_uthash_malloc"
                     "-Duthash_free=nDPIsrvd_uthash_free")
+else()
+    set(NDPID_TEST_MPROF_DEFS "-DENABLE_MEMORY_PROFILING=1")
 endif()
 
 if(ENABLE_ZLIB)
@@ -173,7 +175,7 @@ target_include_directories(nDPId-test PRIVATE
 target_compile_options(nDPId-test PRIVATE "-Wno-unused-function" "-pthread")
 target_compile_definitions(nDPId-test PRIVATE ${NDPID_DEFS} ${ZLIB_DEFS})
 target_include_directories(nDPId-test PRIVATE "${STATIC_LIBNDPI_INC}" "${NDPI_INCLUDEDIR}" "${NDPI_INCLUDEDIR}/ndpi")
-target_compile_definitions(nDPId-test PRIVATE "-D_GNU_SOURCE=1" "-DNO_MAIN=1" "-Dsyslog=mock_syslog_stderr")
+target_compile_definitions(nDPId-test PRIVATE "-D_GNU_SOURCE=1" "-DNO_MAIN=1" "-Dsyslog=mock_syslog_stderr" ${NDPID_TEST_MPROF_DEFS})
 target_link_libraries(nDPId-test "${STATIC_LIBNDPI_LIB}" "${pkgcfg_lib_NDPI_ndpi}"
                                  "${pkgcfg_lib_PCRE_pcre}" "${pkgcfg_lib_MAXMINDDB_maxminddb}" "${pkgcfg_lib_ZLIB_z}"
                                  "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}"

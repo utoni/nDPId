@@ -382,3 +382,14 @@
 00516{"flow_event_id":3,"flow_event_name":"idle","thread_id":0,"packet_id":220,"source":"dos_win98_smb_netbeui.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":14,"flow_first_seen":1576409797553,"flow_last_seen":1576409928060,"flow_min_l4_payload_len":68,"flow_max_l4_payload_len":68,"flow_tot_l4_payload_len":952,"flow_avg_l4_payload_len":68,"midstream":0,"l3_proto":"ip4","src_ip":"192.168.239.129","dst_ip":"192.168.239.2","src_port":137,"dst_port":137,"l4_proto":"udp","flow_datalink":1,"flow_max_packets":15}
 00522{"flow_event_id":3,"flow_event_name":"idle","thread_id":0,"packet_id":220,"source":"dos_win98_smb_netbeui.pcap","alias":"nDPId-test","flow_id":7,"flow_packet_id":12,"flow_first_seen":1576409867606,"flow_last_seen":1576409923353,"flow_min_l4_payload_len":177,"flow_max_l4_payload_len":207,"flow_tot_l4_payload_len":2262,"flow_avg_l4_payload_len":188,"midstream":0,"l3_proto":"ip4","src_ip":"192.168.239.129","dst_ip":"192.168.239.255","src_port":138,"dst_port":138,"l4_proto":"udp","flow_datalink":1,"flow_max_packets":15}
 00142{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":220,"source":"dos_win98_smb_netbeui.pcap","alias":"nDPId-test"}
+~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~
+~~ packets captured/processed: 220/62
+~~ skipped flows.............: 0
+~~ total layer4 data length..: 6441 bytes
+~~ total detected protocols..: 7
+~~ total active/idle flows...: 7/7
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~ total memory allocated....: 4840793 bytes
+~~ total memory freed........: 4840793 bytes
+~~ total allocations/frees...: 58438/58438
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

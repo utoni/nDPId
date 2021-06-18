@@ -337,6 +337,9 @@ static struct
     unsigned long long int max_idle_flows_per_thread;
     unsigned long long int tick_resolution;
     unsigned long long int reader_thread_count;
+#ifdef ENABLE_MEMORY_PROFILING
+    unsigned long long int memory_profiling_print_every;
+#endif
 #ifdef ENABLE_ZLIB
     unsigned long long int compression_scan_period;
     unsigned long long int compression_flow_inactivity;
@@ -356,6 +359,9 @@ static struct
                    .max_idle_flows_per_thread = nDPId_MAX_IDLE_FLOWS_PER_THREAD / 2,
                    .tick_resolution = nDPId_TICK_RESOLUTION,
                    .reader_thread_count = nDPId_MAX_READER_THREADS / 2,
+#ifdef ENABLE_MEMORY_PROFILING
+                   .memory_profiling_print_every = nDPId_LOG_MEMORY_USAGE_EVERY,
+#endif
 #ifdef ENABLE_ZLIB
                    .compression_scan_period = nDPId_COMPRESSION_SCAN_PERIOD,
                    .compression_flow_inactivity = nDPId_COMPRESSION_FLOW_INACTIVITY,
@@ -376,6 +382,9 @@ enum nDPId_subopts
     TICK_RESOLUTION,
     MAX_READER_THREADS,
     IDLE_SCAN_PERIOD,
+#ifdef ENABLE_MEMORY_PROFILING
+    MEMORY_PROFILING_PRINT_EVERY,
+#endif
 #ifdef ENABLE_ZLIB
     COMPRESSION_SCAN_PERIOD,
     COMPRESSION_FLOW_INACTIVITY,
@@ -392,6 +401,9 @@ static char * const subopt_token[] = {[MAX_FLOWS_PER_THREAD] = "max-flows-per-th
                                       [MAX_IDLE_FLOWS_PER_THREAD] = "max-idle-flows-per-thread",
                                       [TICK_RESOLUTION] = "tick-resolution",
                                       [MAX_READER_THREADS] = "max-reader-threads",
+#ifdef ENABLE_MEMORY_PROFILING
+                                      [MEMORY_PROFILING_PRINT_EVERY] = "memory-profiling-print-every",
+#endif
 #ifdef ENABLE_ZLIB
                                       [COMPRESSION_SCAN_PERIOD] = "compression-scan-period",
                                       [COMPRESSION_FLOW_INACTIVITY] = "compression-flow-activity",
@@ -921,7 +933,7 @@ static void log_memory_usage(struct nDPId_reader_thread * const reader_thread)
 {
     struct nDPId_workflow * const workflow = reader_thread->workflow;
 
-    if (workflow->last_memory_usage_log_time + nDPId_LOG_MEMORY_USAGE_EVERY < workflow->last_time)
+    if (workflow->last_memory_usage_log_time + nDPId_options.memory_profiling_print_every < workflow->last_time)
     {
         if (reader_thread->array_index == 0)
         {
@@ -3369,6 +3381,11 @@ static void print_subopt_usage(void)
                 case IDLE_SCAN_PERIOD:
                     fprintf(stderr, "%llu\n", nDPId_options.idle_scan_period);
                     break;
+#ifdef ENABLE_MEMORY_PROFILING
+                case MEMORY_PROFILING_PRINT_EVERY:
+                    fprintf(stderr, "%llu\n", nDPId_options.memory_profiling_print_every);
+                    break;
+#endif
 #ifdef ENABLE_ZLIB
                 case COMPRESSION_SCAN_PERIOD:
                     fprintf(stderr, "%llu\n", nDPId_options.compression_scan_period);
@@ -3571,6 +3588,11 @@ static int nDPId_parse_options(int argc, char ** argv)
                         case IDLE_SCAN_PERIOD:
                             nDPId_options.idle_scan_period = value_llu;
                             break;
+#ifdef ENABLE_MEMORY_PROFILING
+                        case MEMORY_PROFILING_PRINT_EVERY:
+                            nDPId_options.memory_profiling_print_every = value_llu;
+                            break;
+#endif
 #ifdef ENABLE_ZLIB
                         case COMPRESSION_SCAN_PERIOD:
                             nDPId_options.compression_scan_period = value_llu;

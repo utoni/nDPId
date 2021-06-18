@@ -179,3 +179,14 @@
 00505{"flow_event_id":2,"flow_event_name":"end","thread_id":0,"packet_id":299,"source":"bittorrent.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":2,"flow_first_seen":1455469967246,"flow_last_seen":1455469967465,"flow_min_l4_payload_len":68,"flow_max_l4_payload_len":558,"flow_tot_l4_payload_len":626,"flow_avg_l4_payload_len":313,"midstream":1,"l3_proto":"ip4","src_ip":"192.168.1.3","dst_ip":"82.58.216.115","src_port":52888,"dst_port":38305,"l4_proto":"tcp","flow_datalink":1,"flow_max_packets":15}
 00508{"flow_event_id":3,"flow_event_name":"idle","thread_id":0,"packet_id":299,"source":"bittorrent.pcap","alias":"nDPId-test","flow_id":10,"flow_packet_id":4,"flow_first_seen":1455469974358,"flow_last_seen":1455469976244,"flow_min_l4_payload_len":47,"flow_max_l4_payload_len":639,"flow_tot_l4_payload_len":1137,"flow_avg_l4_payload_len":284,"midstream":1,"l3_proto":"ip4","src_ip":"192.168.1.3","dst_ip":"82.58.216.115","src_port":52907,"dst_port":38305,"l4_proto":"tcp","flow_datalink":1,"flow_max_packets":15}
 00131{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":299,"source":"bittorrent.pcap","alias":"nDPId-test"}
+~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~
+~~ packets captured/processed: 299/299
+~~ skipped flows.............: 0
+~~ total layer4 data length..: 295562 bytes
+~~ total detected protocols..: 25
+~~ total active/idle flows...: 25/25
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~ total memory allocated....: 4951506 bytes
+~~ total memory freed........: 4951506 bytes
+~~ total allocations/frees...: 58752/58752
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

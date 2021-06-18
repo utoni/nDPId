@@ -90,7 +90,7 @@ for pcap_file in *.pcap *.pcapng *.cap; do
 
     printf "%-${LINE_SPACES}s\t" "${pcap_file}"
 
-    ${nDPId_test_EXEC} "${pcap_file}" \
+    PRINT_SUMMARY=y ${nDPId_test_EXEC} "${pcap_file}" \
         >"${MYDIR}/results/${pcap_file}.out.new" \
         2>>"/tmp/nDPId-test-stderr/${pcap_file}.out"
     nDPId_test_RETVAL=$?
@@ -155,7 +155,8 @@ function validate_results()
         return 0
     fi
 
-    cat "${result_file}" | ${NETCAT_EXEC} &
+    # Note that the grep command is required as we generate a summary in the results file. (PRINT_SUMMARY=y)
+    cat "${result_file}" | grep -vE '^~~.*$' | ${NETCAT_EXEC} &
     nc_pid=$!
     printf '%s\n' "-- ${validator_exec}" >>"/tmp/nDPId-test-stderr/${pcap_file}.out"
     ${validator_exec} 2>>"/tmp/nDPId-test-stderr/${pcap_file}.out"
