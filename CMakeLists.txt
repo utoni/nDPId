@@ -77,7 +77,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "")
 endif()
 
 if(ENABLE_SANITIZER AND ENABLE_SANITIZER_THREAD)
-    message(STATUS_FATAL "ENABLE_SANITIZER and ENABLE_SANITIZER_THREAD can not be used together!")
+    message(FATAL_ERROR "ENABLE_SANITIZER and ENABLE_SANITIZER_THREAD can not be used together!")
 endif()
 
 if(ENABLE_SANITIZER)
@@ -119,6 +119,10 @@ if(NOT STATIC_LIBNDPI_INSTALLDIR STREQUAL "" OR BUILD_NDPI OR NDPI_NO_PKGCONFIG)
     option(NDPI_WITH_GCRYPT "Link static libndpi library against libgcrypt." ON)
     option(NDPI_WITH_PCRE "Link static libndpi library against libpcre." OFF)
     option(NDPI_WITH_MAXMINDDB "Link static libndpi library against libmaxminddb." OFF)
+
+    if(BUILD_NDPI AND NOT NDPI_WITH_GCRYPT)
+        message(FATAL_ERROR "BUILD_NDPI enabled, but NDPI_WITH_GCRYPT not. This will lead to unexpected test results.")
+    endif()
 
     if(NDPI_WITH_GCRYPT)
         find_package(GCRYPT "1.4.2" REQUIRED)
@@ -173,11 +177,11 @@ target_include_directories(nDPId-test PRIVATE
                            "${CMAKE_SOURCE_DIR}/dependencies/jsmn"
                            "${CMAKE_SOURCE_DIR}/dependencies/uthash/src")
 target_compile_options(nDPId-test PRIVATE "-Wno-unused-function" "-pthread")
-target_compile_definitions(nDPId-test PRIVATE ${NDPID_DEFS} ${ZLIB_DEFS})
+target_compile_definitions(nDPId-test PRIVATE ${NDPID_DEFS})
 target_include_directories(nDPId-test PRIVATE "${STATIC_LIBNDPI_INC}" "${NDPI_INCLUDEDIR}" "${NDPI_INCLUDEDIR}/ndpi")
 target_compile_definitions(nDPId-test PRIVATE "-D_GNU_SOURCE=1" "-DNO_MAIN=1" "-Dsyslog=mock_syslog_stderr" ${NDPID_TEST_MPROF_DEFS})
 target_link_libraries(nDPId-test "${STATIC_LIBNDPI_LIB}" "${pkgcfg_lib_NDPI_ndpi}"
-                                 "${pkgcfg_lib_PCRE_pcre}" "${pkgcfg_lib_MAXMINDDB_maxminddb}" "${pkgcfg_lib_ZLIB_z}"
+                                 "${pkgcfg_lib_PCRE_pcre}" "${pkgcfg_lib_MAXMINDDB_maxminddb}"
                                  "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}"
                                  "-pthread")
 
