@@ -42,6 +42,8 @@ flock -x -n 42 || {
 function sighandler()
 {
     printf '%s\n' ' Received shutdown SIGNAL, bye' >&2
+    pkill -P $$
+    wait
     rm -f "${LOCKFILE}"
     exit 4
 }
