@@ -58,7 +58,7 @@ if(GIT_VERSION STREQUAL "" OR NOT IS_DIRECTORY "${CMAKE_SOURCE_DIR}/.git")
 endif()
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
-set(NDPID_DEFS -DJSMN_STATIC=1 -DJSMN_STRICT=1)
+set(NDPID_DEFS -DJSMN_STATIC=1 -DJSMN_STRICT=1 -DJSMN_PARENT_LINKS=1)
 if(ENABLE_MEMORY_PROFILING)
     add_definitions("-DENABLE_MEMORY_PROFILING=1"
                     "-Duthash_malloc=nDPIsrvd_uthash_malloc"
@@ -138,6 +138,7 @@ if(NOT STATIC_LIBNDPI_INSTALLDIR STREQUAL "" OR BUILD_NDPI OR NDPI_NO_PKGCONFIG)
 endif()
 
 if(NOT STATIC_LIBNDPI_INSTALLDIR STREQUAL "" OR BUILD_NDPI)
+    add_definitions("-DLIBNDPI_STATIC=1")
     set(STATIC_LIBNDPI_INC "${STATIC_LIBNDPI_INSTALLDIR}/include/ndpi")
     set(STATIC_LIBNDPI_LIB "${STATIC_LIBNDPI_INSTALLDIR}/lib/libndpi.a")
 else()
@@ -197,13 +198,17 @@ if(BUILD_EXAMPLES)
     add_executable(nDPIsrvd-captured examples/c-captured/c-captured.c utils.c)
     target_compile_definitions(nDPIsrvd-captured PRIVATE ${NDPID_DEFS})
     target_include_directories(nDPIsrvd-captured PRIVATE
+                               "${STATIC_LIBNDPI_INC}" "${NDPI_INCLUDEDIR}" "${NDPI_INCLUDEDIR}/ndpi"
                                "${CMAKE_SOURCE_DIR}"
                                "${CMAKE_SOURCE_DIR}/dependencies"
                                "${CMAKE_SOURCE_DIR}/dependencies/jsmn"
                                "${CMAKE_SOURCE_DIR}/dependencies/uthash/src")
-    target_link_libraries(nDPIsrvd-captured "${PCAP_LIBRARY}")
+    target_link_libraries(nDPIsrvd-captured "${pkgcfg_lib_NDPI_ndpi}"
+                                            "${pkgcfg_lib_PCRE_pcre}" "${pkgcfg_lib_MAXMINDDB_maxminddb}"
+                                            "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}")
 
     add_executable(nDPIsrvd-json-dump examples/c-json-stdout/c-json-stdout.c)
+    target_compile_definitions(nDPIsrvd-json-dump PRIVATE ${NDPID_DEFS})
     target_include_directories(nDPIsrvd-json-dump PRIVATE
                                "${CMAKE_SOURCE_DIR}"
                                "${CMAKE_SOURCE_DIR}/dependencies/jsmn")

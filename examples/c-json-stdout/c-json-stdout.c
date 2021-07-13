@@ -115,6 +115,9 @@ int main(void)
             {
                 if (i % 2 == 1)
                 {
+#ifdef JSMN_PARENT_LINKS
+                    printf("[%d][%d]", i, tokens[i].parent);
+#endif
                     printf("[%.*s : ", tokens[i].end - tokens[i].start, (char *)(buf + json_start) + tokens[i].start);
                 }
                 else

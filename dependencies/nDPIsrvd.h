@@ -28,6 +28,7 @@
     token_get_value(sock, (char const *)key, nDPIsrvd_STRLEN_SZ(key), value_length)
 #define TOKEN_VALUE_EQUALS_SZ(token, string_to_check)                                                                  \
     token_value_equals(token, string_to_check, nDPIsrvd_STRLEN_SZ(string_to_check))
+#define TOKEN_KEY_TO_ULL(token, key) token_key_to_ull(token, key)
 #define TOKEN_VALUE_TO_ULL(token, value) token_value_to_ull(token, value)
 
 #define FIRST_ENUM_VALUE 1
@@ -105,10 +106,11 @@ struct nDPIsrvd_flow
 struct nDPIsrvd_json_token
 {
     char key[nDPIsrvd_JSON_KEY_STRLEN];
-    int key_length;
     UT_hash_handle hh;
     char const * value;
+    int key_length;
     int value_length;
+    int token_index;
 };
 
 struct nDPIsrvd_socket;
@@ -554,6 +556,38 @@ static inline struct nDPIsrvd_json_token const * token_get(struct nDPIsrvd_socke
     return NULL;
 }
 
+static inline struct nDPIsrvd_json_token const *
+token_get_next_child(struct nDPIsrvd_socket const * const sock,
+                     struct nDPIsrvd_json_token const * const start,
+                     int * next_index)
+{
+    struct nDPIsrvd_json_token const * result = NULL;
+
+    if (start == NULL || *next_index >= sock->jsmn.tokens_found)
+    {
+        return NULL;
+    }
+    if (*next_index < 0)
+    {
+        *next_index = start->token_index;
+    }
+
+    for (int i = *next_index + 2; i < sock->jsmn.tokens_found; i += 2)
+    {
+        if (sock->jsmn.tokens[i].parent != start->token_index + 1 ||
+            sock->jsmn.tokens[i].type != JSMN_STRING)
+        {
+            continue;
+        }
+
+        result = token_get(sock, jsmn_token_get(sock, i), jsmn_token_size(sock, i));
+        *next_index = i;
+        break;
+    }
+
+    return result;
+}
+
 static inline char const * token_get_value(struct nDPIsrvd_socket const * const sock,
                                            char const * const key,
                                            size_t key_length,
@@ -588,6 +622,7 @@ static inline enum nDPIsrvd_conversion_return str_value_to_ull(char const * cons
                                                                nDPIsrvd_ull_ptr const value)
 {
     char * endptr = NULL;
+    errno = 0;
     *value = strtoull(value_as_string, &endptr, 10);
 
     if (value_as_string == endptr)
@@ -598,8 +633,23 @@ static inline enum nDPIsrvd_conversion_return str_value_to_ull(char const * cons
     {
         return CONVERSION_RANGE_EXCEEDED;
     }
+    if (errno == EINVAL)
+    {
+        return CONVERSION_NOT_A_NUMBER;
+    }
 
     return CONVERSION_OK;
+}
+
+static inline enum nDPIsrvd_conversion_return token_key_to_ull(struct nDPIsrvd_json_token const * const token,
+                                                               nDPIsrvd_ull_ptr const key)
+{
+    if (token == NULL)
+    {
+        return CONVERISON_KEY_NOT_FOUND;
+    }
+
+    return str_value_to_ull(token->key, key);
 }
 
 static inline enum nDPIsrvd_conversion_return token_value_to_ull(struct nDPIsrvd_json_token const * const token,
@@ -795,7 +845,8 @@ static inline enum nDPIsrvd_parse_return nDPIsrvd_parse_all(struct nDPIsrvd_sock
                 {
                     struct nDPIsrvd_json_token jt = {.value = jsmn_token_get(sock, current_token),
                                                      .value_length = jsmn_token_size(sock, current_token),
-                                                     .hh = {}};
+                                                     .hh = {},
+                                                     .token_index = current_token - 1};
 
                     if (key == NULL || key_length > nDPIsrvd_JSON_KEY_STRLEN ||
                         utarray_len(sock->json.tokens) == nDPIsrvd_MAX_JSON_TOKENS)

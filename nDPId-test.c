@@ -450,5 +450,12 @@ int main(int argc, char ** argv)
             ndpi_memory_free_count);
     }
 
+    if (ndpi_memory_alloc_bytes != ndpi_memory_free_bytes || ndpi_memory_alloc_count != ndpi_memory_free_count ||
+        nDPId_return.total_active_flows != nDPId_return.total_idle_flows)
+    {
+        fprintf(stderr, "%s: %s\n", argv[0], "Memory / Flow leak detected.");
+        return 1;
+    }
+
     return THREADS_RETURNED_ERROR();
 }

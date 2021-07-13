@@ -1,6 +1,8 @@
 #include <arpa/inet.h>
 #include <errno.h>
 #include <linux/limits.h>
+#include <ndpi_api.h>
+#include <ndpi_typedefs.h>
 #include <netinet/ip_icmp.h>
 #include <netinet/tcp.h>
 #include <netinet/udp.h>
@@ -62,7 +64,7 @@ static char * group = NULL;
 static char * datadir = NULL;
 static uint8_t process_guessed = 0;
 static uint8_t process_undetected = 0;
-static uint8_t process_risky = 0;
+static ndpi_risk process_risky = NDPI_NO_RISK;
 static uint8_t process_midstream = 0;
 static uint8_t ignore_empty_flows = 0;
 
@@ -94,6 +96,35 @@ static void packet_data_dtor(void * elt)
 }
 
 static const UT_icd packet_data_icd = {sizeof(struct packet_data), NULL, packet_data_copy, packet_data_dtor};
+
+static void set_ndpi_risk(ndpi_risk * const risk, nDPIsrvd_ull risk_to_add)
+{
+    if (risk_to_add == 0)
+    {
+        *risk = (ndpi_risk)-1;
+    }
+    else
+    {
+        *risk |= 1ull << --risk_to_add;
+    }
+}
+
+static void unset_ndpi_risk(ndpi_risk * const risk, nDPIsrvd_ull risk_to_del)
+{
+    if (risk_to_del == 0)
+    {
+        *risk = 0;
+    }
+    else
+    {
+        *risk &= ~(1ull << --risk_to_del);
+    }
+}
+
+static int has_ndpi_risk(ndpi_risk * const risk, nDPIsrvd_ull risk_to_check)
+{
+    return (*risk & (1ull << --risk_to_check)) != 0;
+}
 
 static char * generate_pcap_filename(struct nDPIsrvd_flow const * const flow,
                                      struct flow_user_data const * const flow_user,
@@ -348,7 +379,8 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
 
         if (flow_event_name != NULL)
         {
-            perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_tot_l4_payload_len"), &flow_user->flow_tot_l4_payload_len),
+            perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_tot_l4_payload_len"),
+                                          &flow_user->flow_tot_l4_payload_len),
                        "flow_tot_l4_payload_len");
         }
 
@@ -378,11 +410,26 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
         }
         else if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "detected") != 0)
         {
+            struct nDPIsrvd_json_token const * const flow_risk = TOKEN_GET_SZ(sock, "flow_risk");
+            struct nDPIsrvd_json_token const * current = NULL;
+            int next_child_index = -1;
+
             flow_user->detected = 1;
             flow_user->detection_finished = 1;
-            if (TOKEN_GET_SZ(sock, "flow_risk") != NULL)
+
+            if (flow_risk != NULL)
             {
-                flow_user->risky = 1;
+                while ((current = token_get_next_child(sock, flow_risk, &next_child_index)) != NULL)
+                {
+                    nDPIsrvd_ull numeric_risk_value = 0ull;
+
+                    if (TOKEN_KEY_TO_ULL(current, &numeric_risk_value) == CONVERSION_OK &&
+                        numeric_risk_value < NDPI_MAX_RISK &&
+                        has_ndpi_risk(&process_risky, numeric_risk_value) != 0)
+                    {
+                        flow_user->risky = 1;
+                    }
+                }
             }
         }
 
@@ -453,13 +500,12 @@ static void captured_flow_end_callback(struct nDPIsrvd_socket * const sock, stru
     }
 }
 
-static int parse_options(int argc, char ** argv)
+static void print_usage(char const * const arg0)
 {
-    int opt;
-
     static char const usage[] =
         "Usage: %s "
-        "[-d] [-p pidfile] [-s host] [-r rotate-every-n-seconds] [-u user] [-g group] [-D dir] [-G] [-U] [-R] [-M]\n\n"
+        "[-d] [-p pidfile] [-s host] [-r rotate-every-n-seconds]\n"
+        "\t  \t[-u user] [-g group] [-D dir] [-G] [-U] [-R risk] [-M]\n\n"
         "\t-d\tForking into background after initialization.\n"
         "\t-p\tWrite the daemon PID to the given file path.\n"
         "\t-s\tDestination where nDPIsrvd is listening on.\n"
@@ -470,11 +516,33 @@ static int parse_options(int argc, char ** argv)
         "\t-D\tDatadir - Where to store PCAP files.\n"
         "\t-G\tGuessed - Dump guessed flows to a PCAP file.\n"
         "\t-U\tUndetected - Dump undetected flows to a PCAP file.\n"
-        "\t-R\tRisky - Dump risky flows to a PCAP file.\n"
+        "\t-R\tRisky - Dump risky flows to a PCAP file. See additional help below.\n"
         "\t-M\tMidstream - Dump midstream flows to a PCAP file.\n"
-        "\t-E\tEmpty - Ignore flows w/o any layer 4 payload\n";
+        "\t-E\tEmpty - Ignore flows w/o any layer 4 payload\n\n"
+        "\tPossible options for `-R' (can be specified multiple times, processed from left to right, ~ disables a risk):\n"
+        "\t  \tExample: -R0 -R~15 would enable all risks except risk with id 15\n";
 
-    while ((opt = getopt(argc, argv, "hdp:s:r:u:g:D:GURME")) != -1)
+    fprintf(stderr, usage, arg0);
+#ifndef LIBNDPI_STATIC
+    fprintf(stderr, "\t\t%d - %s\n", 0, "Capture all risks");
+#else
+    fprintf(stderr, "\t\t%d - %s\n\t\t", 0, "Capture all risks");
+#endif
+    for (int risk = NDPI_NO_RISK + 1; risk < NDPI_MAX_RISK; ++risk)
+    {
+#ifndef LIBNDPI_STATIC
+        fprintf(stderr, "\t\t%d - %s%s", risk, ndpi_risk2str(risk), (risk == NDPI_MAX_RISK - 1 ? "\n\n" : "\n"));
+#else
+        fprintf(stderr, "%d%s", risk, (risk == NDPI_MAX_RISK - 1 ? "\n" : ","));
+#endif
+    }
+}
+
+static int parse_options(int argc, char ** argv)
+{
+    int opt;
+
+    while ((opt = getopt(argc, argv, "hdp:s:r:u:g:D:GUR:ME")) != -1)
     {
         switch (opt)
         {
@@ -493,6 +561,7 @@ static int parse_options(int argc, char ** argv)
                 if (perror_ull(str_value_to_ull(optarg, &pcap_filename_rotation), "pcap_filename_rotation") !=
                     CONVERSION_OK)
                 {
+                    fprintf(stderr, "%s: Argument for `-r' is not a number: %s\n", argv[0], optarg);
                     return 1;
                 }
                 break;
@@ -515,8 +584,27 @@ static int parse_options(int argc, char ** argv)
                 process_undetected = 1;
                 break;
             case 'R':
-                process_risky = 1;
+            {
+                char * value = (optarg[0] == '~' ? optarg + 1 : optarg);
+                nDPIsrvd_ull risk;
+                if (perror_ull(str_value_to_ull(value, &risk), "process_risky") != CONVERSION_OK)
+                {
+                    fprintf(stderr, "%s: Argument for `-R' is not a number: %s\n", argv[0], optarg);
+                    return 1;
+                }
+                if (risk >= NDPI_MAX_RISK)
+                {
+                    fprintf(stderr, "%s: Invalid risk set: %s\n", argv[0], optarg);
+                    return 1;
+                }
+                if (optarg[0] == '~')
+                {
+                    unset_ndpi_risk(&process_risky, risk);
+                } else {
+                    set_ndpi_risk(&process_risky, risk);
+                }
                 break;
+            }
             case 'M':
                 process_midstream = 1;
                 break;
@@ -524,7 +612,7 @@ static int parse_options(int argc, char ** argv)
                 ignore_empty_flows = 1;
                 break;
             default:
-                fprintf(stderr, usage, argv[0]);
+                print_usage(argv[0]);
                 return 1;
         }
     }
@@ -554,7 +642,7 @@ static int parse_options(int argc, char ** argv)
     if (optind < argc)
     {
         fprintf(stderr, "Unexpected argument after options\n\n");
-        fprintf(stderr, usage, argv[0]);
+        print_usage(argv[0]);
         return 1;
     }
 
