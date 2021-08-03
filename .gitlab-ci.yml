@@ -1,0 +1,49 @@
+image: debian:stable
+
+stages:
+  - build_and_test
+
+before_script:
+  - export DEBIAN_FRONTEND=noninteractive
+  - apt-get update -qq
+  - >
+      apt-get install -y -qq \
+        coreutils \
+        build-essential make cmake binutils gcc autoconf automake \
+        libtool pkg-config git \
+        libpcap-dev libgcrypt-dev libgpg-error-dev libjson-c-dev zlib1g-dev \
+        netcat-openbsd python3 python3-jsonschema tree
+
+build_and_test:
+  script:
+    # static linked build
+    - mkdir build-cmake-submodule
+    - cd build-cmake-submodule
+    - cmake .. -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DENABLE_SANITIZER=ON -DENABLE_ZLIB=ON
+    - make libnDPI
+    - tree libnDPI
+    - make install VERBOSE=1 DESTDIR="$(realpath ../_install)"
+    - cd ..
+    - ./test/run_tests.sh ./libnDPI ./build-cmake-submodule/nDPId-test
+    - >
+      if ldd build/nDPId | grep -qoEi libndpi; then \
+      echo 'nDPId linked against a static libnDPI should not contain a shared linked libnDPI.' >&2; false; fi
+    # pkg-config dynamic linked build
+    - mkdir build
+    - cd build
+    - export PKG_CONFIG_PATH="$(realpath ../build-cmake-submodule/libnDPI/lib/pkgconfig)"
+    - cmake .. -DBUILD_EXAMPLES=ON -DENABLE_SANITIZER=ON -DENABLE_MEMORY_PROFILING=ON -DENABLE_ZLIB=ON
+    - make all VERBOSE=1
+    - cd ..
+    - ./build/nDPId-test || test $? -eq 1
+    - ./build/nDPId -h || test $? -eq 1
+    # dameon start/stop test
+    - make -C ./build daemon VERBOSE=1
+    - make -C ./build daemon VERBOSE=1
+    # make dist
+    - ./scripts/make-dist.sh
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - _install/
+  stage: build_and_test

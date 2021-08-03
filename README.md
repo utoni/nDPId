@@ -1,3 +1,6 @@
+![Travis-CI](https://www.travis-ci.com/lnslbrty/nDPId.svg?branch=master "Travis-CI: master branch")
+![Gitlab-CI](https://gitlab.com/lnslbrty/nDPId/badges/master/pipeline.svg "Gitlab-CI: master branch")
+
 # abstract
 
 nDPId is a set of daemons and tools to capture, process and classify network flows.
