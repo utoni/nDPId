@@ -264,7 +264,7 @@ static void * nDPId_mainloop_thread(void * const arg)
     if (setup_reader_threads() != 0)
     {
         THREAD_ERROR(trr);
-        return NULL;
+        goto error;
     }
 
     /* Replace nDPId JSON socket fd with the one in our pipe and hope that no socket specific code-path triggered. */
@@ -272,6 +272,11 @@ static void * nDPId_mainloop_thread(void * const arg)
     reader_threads[0].json_sock_reconnect = 0;
 
     jsonize_daemon(&reader_threads[0], DAEMON_EVENT_INIT);
+    /* restore SIGPIPE to the default handler (Termination) */
+    if (signal(SIGPIPE, SIG_DFL) == SIG_ERR)
+    {
+        goto error;
+    }
     run_pcap_loop(&reader_threads[0]);
     process_remaining_flows();
     for (size_t i = 0; i < nDPId_options.reader_thread_count; ++i)
@@ -284,8 +289,9 @@ static void * nDPId_mainloop_thread(void * const arg)
         nrv->total_active_flows = reader_threads[i].workflow->total_active_flows;
         nrv->total_idle_flows = reader_threads[i].workflow->total_idle_flows;
     }
-    free_reader_threads();
 
+error:
+    free_reader_threads();
     close(mock_pipefds[PIPE_nDPId]);
 
     return NULL;

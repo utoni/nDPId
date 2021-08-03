@@ -3,6 +3,28 @@ project(nDPId C)
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 find_package(PkgConfig REQUIRED)
 
+include(CheckFunctionExists)
+
+if(NOT MATH_FUNCTION_EXISTS AND NOT NEED_LINKING_AGAINST_LIBM)
+    CHECK_FUNCTION_EXISTS(log2f MATH_FUNCTION_EXISTS)
+    if(NOT MATH_FUNCTION_EXISTS)
+        unset(MATH_FUNCTION_EXISTS CACHE)
+      list(APPEND CMAKE_REQUIRED_LIBRARIES m)
+      CHECK_FUNCTION_EXISTS(log2f MATH_FUNCTION_EXISTS)
+      if(MATH_FUNCTION_EXISTS)
+          set(NEED_LINKING_AGAINST_LIBM True CACHE BOOL "" FORCE)
+      else()
+          message(FATAL_ERROR "Failed making the log2f() function available")
+      endif()
+  endif()
+endif()
+
+if(NEED_LINKING_AGAINST_LIBM)
+    set(LIBM_LIB "-lm")
+else()
+    set(LIBM_LIB "")
+endif()
+
 option(ENABLE_SANITIZER "Enable ASAN/LSAN/UBSAN." OFF)
 option(ENABLE_SANITIZER_THREAD "Enable TSAN (does not work together with ASAN)." OFF)
 option(ENABLE_MEMORY_PROFILING "Enable dynamic memory tracking." OFF)
@@ -162,7 +184,7 @@ target_compile_definitions(nDPId PRIVATE -DGIT_VERSION=\"${GIT_VERSION}\" ${NDPI
 target_include_directories(nDPId PRIVATE "${STATIC_LIBNDPI_INC}" "${NDPI_INCLUDEDIR}" "${NDPI_INCLUDEDIR}/ndpi")
 target_link_libraries(nDPId "${STATIC_LIBNDPI_LIB}" "${pkgcfg_lib_NDPI_ndpi}"
                             "${pkgcfg_lib_PCRE_pcre}" "${pkgcfg_lib_MAXMINDDB_maxminddb}" "${pkgcfg_lib_ZLIB_z}"
-                            "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}"
+                            "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}" "${LIBM_LIB}"
                             "-pthread")
 
 target_compile_definitions(nDPIsrvd PRIVATE -DGIT_VERSION=\"${GIT_VERSION}\" ${NDPID_DEFS})
@@ -183,7 +205,7 @@ target_include_directories(nDPId-test PRIVATE "${STATIC_LIBNDPI_INC}" "${NDPI_IN
 target_compile_definitions(nDPId-test PRIVATE "-D_GNU_SOURCE=1" "-DNO_MAIN=1" "-Dsyslog=mock_syslog_stderr" ${NDPID_TEST_MPROF_DEFS})
 target_link_libraries(nDPId-test "${STATIC_LIBNDPI_LIB}" "${pkgcfg_lib_NDPI_ndpi}"
                                  "${pkgcfg_lib_PCRE_pcre}" "${pkgcfg_lib_MAXMINDDB_maxminddb}"
-                                 "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}"
+                                 "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}" "${LIBM_LIB}"
                                  "-pthread")
 
 if(BUILD_EXAMPLES)

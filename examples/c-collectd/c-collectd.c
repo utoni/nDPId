@@ -26,6 +26,7 @@
 static struct nDPIsrvd_socket * sock = NULL;
 static int main_thread_shutdown = 0;
 static int collectd_timerfd = -1;
+static pid_t collectd_pid;
 
 static char * serv_optarg = NULL;
 static char * collectd_hostname = NULL;
@@ -364,6 +365,16 @@ static int mainloop(int epollfd)
             {
                 uint64_t expirations;
 
+                /*
+                 * Check if collectd parent process is still running.
+                 * May happen if collectd was killed with singals e.g. SIGKILL.
+                 */
+                if (getppid() != collectd_pid)
+                {
+                    LOG(LOG_DAEMON | LOG_ERR, "Parent process %d exited. Nothing left to do here, bye.", collectd_pid);
+                    return 1;
+                }
+
                 errno = 0;
                 if (read(collectd_timerfd, &expirations, sizeof(expirations)) != sizeof(expirations))
                 {
@@ -692,6 +703,8 @@ int main(int argc, char ** argv)
     signal(SIGINT, sighandler);
     signal(SIGTERM, sighandler);
     signal(SIGPIPE, SIG_IGN);
+
+    collectd_pid = getppid();
 
     int epollfd = epoll_create1(0);
     if (epollfd < 0)
