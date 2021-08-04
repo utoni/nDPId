@@ -103,12 +103,12 @@ static void * nDPIsrvd_mainloop_thread(void * const arg)
     strncpy(mock_serv_desc->event_serv.peer_addr, "0.0.0.0", sizeof(mock_serv_desc->event_serv.peer_addr));
     mock_serv_desc->event_serv.peer.sin_port = 0;
 
-    if (add_event(epollfd, mock_pipefds[PIPE_nDPIsrvd], mock_json_desc) != 0)
+    if (add_in_event(epollfd, mock_pipefds[PIPE_nDPIsrvd], mock_json_desc) != 0)
     {
         THREAD_ERROR_GOTO(arg);
     }
 
-    if (add_event(epollfd, mock_servfds[PIPE_WRITE], mock_serv_desc) != 0)
+    if (add_in_event(epollfd, mock_servfds[PIPE_WRITE], mock_serv_desc) != 0)
     {
         THREAD_ERROR_GOTO(arg);
     }
@@ -126,7 +126,7 @@ static void * nDPIsrvd_mainloop_thread(void * const arg)
         {
             if (events[i].data.ptr == mock_json_desc)
             {
-                if (handle_incoming_data_event(epollfd, &events[i]) != 0)
+                if (handle_data_event(epollfd, &events[i]) != 0)
                 {
                     goto error;
                 }
@@ -183,7 +183,7 @@ static void * distributor_client_mainloop_thread(void * const arg)
     {
         THREAD_ERROR_GOTO(arg);
     }
-    if (add_event(dis_epollfd, mock_servfds[PIPE_READ], NULL) != 0)
+    if (add_in_event(dis_epollfd, mock_servfds[PIPE_READ], NULL) != 0)
     {
         THREAD_ERROR_GOTO(arg);
     }

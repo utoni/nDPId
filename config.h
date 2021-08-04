@@ -37,5 +37,6 @@
 
 /* nDPIsrvd default config options */
 #define nDPIsrvd_PIDFILE "/tmp/ndpisrvd.pid"
+#define nDPIsrvd_CACHE_ARRAY_LENGTH 256
 
 #endif

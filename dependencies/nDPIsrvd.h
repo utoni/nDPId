@@ -319,6 +319,7 @@ static inline int nDPIsrvd_buffer_init(struct nDPIsrvd_buffer * const buffer, si
 static inline void nDPIsrvd_buffer_free(struct nDPIsrvd_buffer * const buffer)
 {
     free(buffer->ptr.raw);
+    buffer->ptr.raw = NULL;
 }
 
 static inline struct nDPIsrvd_socket * nDPIsrvd_init(size_t global_user_data_size,

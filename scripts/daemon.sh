@@ -18,13 +18,17 @@ if [ -r "/tmp/nDPId-${NSUFFIX}.pid" -o -r "/tmp/nDPIsrvd-${NSUFFIX}.pid" ]; then
     nDPIsrvd_PID="$(cat "/tmp/nDPIsrvd-${NSUFFIX}.pid" 2>/dev/null)"
 
     if [ x"${nDPId_PID}" != x ]; then
-        sudo kill "${nDPId_PID}"
+        sudo kill "${nDPId_PID}" 2>/dev/null || true
+        while ps -p "${nDPId_PID}" > /dev/null; do sleep 1; done
+        rm -f "/tmp/nDPId-${NSUFFIX}.pid"
     else
         printf '%s\n' "${1} not started .." >&2
     fi
 
     if [ x"${nDPIsrvd_PID}" != x ]; then
-        kill "${nDPIsrvd_PID}"
+        kill "${nDPIsrvd_PID}" 2>/dev/null || true
+        while ps -p "${nDPIsrvd_PID}" > /dev/null; do sleep 1; done
+        rm -f "/tmp/nDPIsrvd-${NSUFFIX}.pid" "/tmp/nDPIsrvd-${NSUFFIX}-collector.sock" "/tmp/nDPIsrvd-${NSUFFIX}-distributor.sock"
     else
         printf '%s\n' "${2} not started .." >&2
     fi
