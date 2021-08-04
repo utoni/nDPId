@@ -201,5 +201,5 @@ char const * get_nDPId_version()
 #endif
            "\n"
            "(C) 2020-2021 Toni Uhlig\n"
-           "Please report any BUGs to toni@impl.cc\n";
+           "Please report BUGs to toni@impl.cc\n";
 }
