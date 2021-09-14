@@ -21,21 +21,20 @@ Unfortunately nDPIsrvd does currently not support any encryption/authentication 
 This project uses some kind of microservice architecture.
 
 ```text
-_______________________                                         __________________________
-|     "producer"      |                                         |       "consumer"       |
+                connect to UNIX socket          connect to UNIX/TCP socket                
+_______________________   |                                 |   __________________________
+|     "producer"      |___|                                 |___|       "consumer"       |
 |---------------------|      _____________________________      |------------------------|
 |                     |      |        nDPIsrvd           |      |                        |
-| nDPId --- Thread 1 >| ---> |>           |             <| <--- |< example/c-json-stdout |
-| (eth0) `- Thread 2 >| ---> |> collector | distributor <| <--- |________________________|
-|        `- Thread N >| ---> |>    >>> forward >>>      <| <--- |                        |
+| nDPId --- Thread 1 >| ---> |>           |             <| ---> |< example/c-json-stdout |
+| (eth0) `- Thread 2 >| ---> |> collector | distributor <| ---> |________________________|
+|        `- Thread N >| ---> |>    >>> forward >>>      <| ---> |                        |
 |_____________________|  ^   |____________|______________|   ^  |< example/py-flow-info  |
 |                     |  |                                   |  |________________________|
-| nDPId --- Thread 1 >|  `- connect to UNIX socket           |  |                        |
-| (eth1) `- Thread 2 >|  `- sends serialized data            |  |< example/...           |
-|        `- Thread N >|                                      |  |________________________|
-|_____________________|                                      |                            
-                                                             `- connect to UNIX/TCP socket
-                                                             `- receives serialized data  
+| nDPId --- Thread 1 >|  `- send serialized data             |  |                        |
+| (eth1) `- Thread 2 >|                                      |  |< example/...           |
+|        `- Thread N >|             receive serialized data -'  |________________________|
+|_____________________|                                                                   
 ```
 
 It doesn't use a producer/consumer design pattern, so the wording is not precise.
@@ -53,8 +52,6 @@ All JSON strings sent need to be in the following format:
 00015{"key":"value"}
 ```
 where `00015` describes the length of a **complete** JSON string.
-
-TODO: Describe data format via JSON schema.
 
 # build (CMake)
 
