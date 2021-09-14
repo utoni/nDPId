@@ -2562,14 +2562,14 @@ static void ndpi_process_packet(uint8_t * const args,
     struct ndpi_ipv6hdr * ip6;
 
     uint64_t time_ms;
-    uint16_t ip_offset;
+    uint16_t ip_offset = 0;
     uint16_t ip_size;
 
     const uint8_t * l4_ptr = NULL;
     uint16_t l4_len = 0;
     uint16_t l4_payload_len = 0;
 
-    uint16_t type;
+    uint16_t type = 0;
     int thread_index = nDPId_THREAD_DISTRIBUTION_SEED; // generated with `dd if=/dev/random bs=1024 count=1 |& hd'
 
     if (reader_thread == NULL)

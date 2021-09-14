@@ -222,6 +222,9 @@ if(BUILD_EXAMPLES)
                                "${CMAKE_SOURCE_DIR}/dependencies/uthash/src")
 
     add_executable(nDPIsrvd-captured examples/c-captured/c-captured.c utils.c)
+    if(STATIC_LIBNDPI_INSTALLDIR STREQUAL "" AND BUILD_NDPI)
+        add_dependencies(nDPIsrvd-captured libnDPI)
+    endif()
     target_compile_definitions(nDPIsrvd-captured PRIVATE ${NDPID_DEFS})
     target_include_directories(nDPIsrvd-captured PRIVATE
                                "${STATIC_LIBNDPI_INC}" "${NDPI_INCLUDEDIR}" "${NDPI_INCLUDEDIR}/ndpi"
