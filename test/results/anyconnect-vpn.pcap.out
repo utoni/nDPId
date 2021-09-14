@@ -623,7 +623,7 @@
 ~~ total detected protocols..: 60
 ~~ total active/idle flows...: 72/72
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~ total memory allocated....: 2302896 bytes
-~~ total memory freed........: 2302896 bytes
-~~ total allocations/frees...: 38582/38582
+~~ total memory allocated....: 2299602 bytes
+~~ total memory freed........: 2299602 bytes
+~~ total allocations/frees...: 38583/38583
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
