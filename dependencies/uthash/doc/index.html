@@ -14,7 +14,7 @@
 
   <div id="topnav">
   <a href="http://github.com/troydhanson/uthash">GitHub page</a> &gt;
-  uthash home <!-- http://troydhanson.github.com/uthash/ -->
+  uthash home <!-- http://troydhanson.github.io/uthash/ -->
 
 <a href="https://twitter.com/share" class="twitter-share-button" data-via="troydhanson">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
@@ -72,7 +72,7 @@ struct my_struct {
 struct my_struct *users = NULL;
 
 void add_user(struct my_struct *s) {
-    HASH_ADD_INT( users, id, s );
+    HASH_ADD_INT(users, id, s);
 }
 
 </pre>
@@ -86,7 +86,7 @@ Example 2. Looking up an item in a hash.
 struct my_struct *find_user(int user_id) {
     struct my_struct *s;
 
-    HASH_FIND_INT( users, &amp;user_id, s );
+    HASH_FIND_INT(users, &amp;user_id, s);
     return s;
 }
 
@@ -100,7 +100,7 @@ Example 3. Deleting an item from a hash.
 
 <pre>
 void delete_user(struct my_struct *user) {
-    HASH_DEL( users, user);
+    HASH_DEL(users, user);
 }
 
 </pre>

@@ -5,6 +5,21 @@ Click to return to the link:index.html[uthash home page].
 
 NOTE: This ChangeLog may be incomplete and/or incorrect. See the git commit log.
 
+Version 2.3.0 (2021-02-25)
+--------------------------
+* remove HASH_FCN; the HASH_FUNCTION and HASH_KEYCMP macros now behave similarly
+* remove uthash_memcmp (deprecated in v2.1.0) in favor of HASH_KEYCMP
+* silence -Wswitch-default warnings (thanks, Olaf Bergmann!)
+
+Version 2.2.0 (2020-12-17)
+--------------------------
+* add HASH_NO_STDINT for platforms without C99 <stdint.h>
+* silence many -Wcast-qual warnings (thanks, Olaf Bergmann!)
+* skip hash computation when finding in an empty hash (thanks, Huansong Fu!)
+* rename oom to utarray_oom, in utarray.h (thanks, Hong Xu!)
+* rename oom to utstring_oom, in utstring.h (thanks, Hong Xu!)
+* remove MurmurHash/HASH_MUR
+
 Version 2.1.0 (2018-12-20)
 --------------------------
 * silence some Clang static analysis warnings
@@ -56,7 +71,7 @@ Version 1.9.8 (2013-03-10)
 * `HASH_REPLACE` now in uthash (thanks, Nick Vatamaniuc!)
 * fixed clang warnings (thanks wynnw!)
 * fixed `utarray_insert` when inserting past array end (thanks Rob Willett!)
-* you can now find http://troydhanson.github.com/uthash/[uthash on GitHub]
+* you can now find http://troydhanson.github.io/uthash/[uthash on GitHub]
 * there's a https://groups.google.com/d/forum/uthash[uthash Google Group]
 * uthash has been downloaded 29,000+ times since 2006 on SourceForge
 
