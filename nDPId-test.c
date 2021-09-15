@@ -34,6 +34,15 @@ struct nDPId_return_value
     unsigned long long int total_idle_flows;
 };
 
+struct distributor_return_value
+{
+    struct thread_return_value thread_return_value;
+
+    unsigned long long int json_string_len_min;
+    unsigned long long int json_string_len_max;
+    double json_string_len_avg;
+};
+
 static int mock_pipefds[PIPE_COUNT] = {};
 static int mock_servfds[PIPE_COUNT] = {};
 static pthread_mutex_t log_mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -148,7 +157,8 @@ error:
     return NULL;
 }
 
-static enum nDPIsrvd_parse_return parse_json_lines(struct nDPIsrvd_buffer * const buffer)
+static enum nDPIsrvd_parse_return parse_json_lines(struct nDPIsrvd_buffer * const buffer,
+                                                   struct distributor_return_value * const drv)
 {
     struct nDPIsrvd_jsmn jsmn = {};
     size_t const n = (buffer->used > buffer->max ? buffer->max : buffer->used);
@@ -165,6 +175,18 @@ static enum nDPIsrvd_parse_return parse_json_lines(struct nDPIsrvd_buffer * cons
         {
             return PARSE_JSMN_ERROR;
         }
+
+        if (buffer->json_string_length < drv->json_string_len_min)
+        {
+            drv->json_string_len_min = buffer->json_string_length;
+        }
+        if (buffer->json_string_length > drv->json_string_len_max)
+        {
+            drv->json_string_len_max = buffer->json_string_length;
+        }
+        drv->json_string_len_avg =
+            (drv->json_string_len_avg + (drv->json_string_len_max + drv->json_string_len_min) / 2) / 2;
+
         nDPIsrvd_drain_buffer(buffer);
     }
 
@@ -178,15 +200,21 @@ static void * distributor_client_mainloop_thread(void * const arg)
     int signalfd = setup_signalfd(dis_epollfd);
     struct epoll_event events[32];
     size_t const events_size = sizeof(events) / sizeof(events[0]);
+    struct distributor_return_value * const drv = (struct distributor_return_value *)arg;
+    struct thread_return_value * const trv = &drv->thread_return_value;
 
     if (nDPIsrvd_buffer_init(&client_buffer, NETWORK_BUFFER_MAX_SIZE) != 0 || dis_epollfd < 0 || signalfd < 0)
     {
-        THREAD_ERROR_GOTO(arg);
+        THREAD_ERROR_GOTO(trv);
     }
     if (add_in_event(dis_epollfd, mock_servfds[PIPE_READ], NULL) != 0)
     {
-        THREAD_ERROR_GOTO(arg);
+        THREAD_ERROR_GOTO(trv);
     }
+
+    drv->json_string_len_min = (unsigned long long int)-1;
+    drv->json_string_len_max = 0;
+    drv->json_string_len_avg = 0.;
 
     while (1)
     {
@@ -196,7 +224,7 @@ static void * distributor_client_mainloop_thread(void * const arg)
         {
             if ((events[i].events & EPOLLIN) == 0 && (events[i].events & EPOLLHUP) == 0)
             {
-                THREAD_ERROR_GOTO(arg);
+                THREAD_ERROR_GOTO(trv);
             }
 
             if (events[i].data.fd == mock_servfds[PIPE_READ])
@@ -210,16 +238,16 @@ static void * distributor_client_mainloop_thread(void * const arg)
                 }
                 else if (bytes_read < 0)
                 {
-                    THREAD_ERROR_GOTO(arg);
+                    THREAD_ERROR_GOTO(trv);
                 }
                 printf("%.*s", (int)bytes_read, client_buffer.ptr.text + client_buffer.used);
                 client_buffer.used += bytes_read;
 
-                enum nDPIsrvd_parse_return parse_ret = parse_json_lines(&client_buffer);
+                enum nDPIsrvd_parse_return parse_ret = parse_json_lines(&client_buffer, drv);
                 if (parse_ret != PARSE_NEED_MORE_DATA)
                 {
                     fprintf(stderr, "JSON parsing failed: %s\n", nDPIsrvd_enum_to_string(parse_ret));
-                    THREAD_ERROR(arg);
+                    THREAD_ERROR(trv);
                 }
             }
             else if (events[i].data.fd == signalfd)
@@ -230,18 +258,18 @@ static void * distributor_client_mainloop_thread(void * const arg)
                 s = read(signalfd, &fdsi, sizeof(struct signalfd_siginfo));
                 if (s != sizeof(struct signalfd_siginfo))
                 {
-                    THREAD_ERROR(arg);
+                    THREAD_ERROR(trv);
                 }
 
                 if (fdsi.ssi_signo == SIGINT || fdsi.ssi_signo == SIGTERM || fdsi.ssi_signo == SIGQUIT)
                 {
                     fprintf(stderr, "Got signal %d, abort.\n", fdsi.ssi_signo);
-                    THREAD_ERROR(arg);
+                    THREAD_ERROR(trv);
                 }
             }
             else
             {
-                THREAD_ERROR(arg);
+                THREAD_ERROR(trv);
             }
         }
     }
@@ -330,7 +358,8 @@ static int thread_wait_for_termination(pthread_t thread, time_t wait_time_secs, 
 }
 
 #define THREADS_RETURNED_ERROR()                                                                                       \
-    (nDPId_return.thread_return_value.val != 0 || nDPIsrvd_return.val != 0 || distributor_return.val != 0)
+    (nDPId_return.thread_return_value.val != 0 || nDPIsrvd_return.val != 0 ||                                          \
+     distributor_return.thread_return_value.val != 0)
 int main(int argc, char ** argv)
 {
     if (argc != 2)
@@ -395,7 +424,7 @@ int main(int argc, char ** argv)
     }
 
     pthread_t distributor_thread;
-    struct thread_return_value distributor_return = {};
+    struct distributor_return_value distributor_return = {};
     if (pthread_create(&distributor_thread, NULL, distributor_client_mainloop_thread, &distributor_return) != 0)
     {
         return 1;
@@ -403,7 +432,7 @@ int main(int argc, char ** argv)
 
     /* Try to gracefully shutdown all threads. */
 
-    while (thread_wait_for_termination(distributor_thread, 1, &distributor_return) == 0)
+    while (thread_wait_for_termination(distributor_thread, 1, &distributor_return.thread_return_value) == 0)
     {
         if (THREADS_RETURNED_ERROR() != 0)
         {
@@ -446,14 +475,22 @@ int main(int argc, char ** argv)
             nDPId_return.total_idle_flows);
 
         printf(
-            "~~ total memory allocated....: %lu bytes\n"
-            "~~ total memory freed........: %lu bytes\n"
-            "~~ total allocations/frees...: %lu/%lu\n"
+            "~~ total memory allocated....: %llu bytes\n"
+            "~~ total memory freed........: %llu bytes\n"
+            "~~ total allocations/frees...: %llu/%llu\n"
             "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n",
-            ndpi_memory_alloc_bytes,
-            ndpi_memory_free_bytes,
-            ndpi_memory_alloc_count,
-            ndpi_memory_free_count);
+            (unsigned long long int)ndpi_memory_alloc_bytes,
+            (unsigned long long int)ndpi_memory_free_bytes,
+            (unsigned long long int)ndpi_memory_alloc_count,
+            (unsigned long long int)ndpi_memory_free_count);
+
+        printf(
+            "~~ json string min len.......: %llu chars\n"
+            "~~ json string max len.......: %llu chars\n"
+            "~~ json string avg len.......: %llu chars\n",
+            distributor_return.json_string_len_min,
+            distributor_return.json_string_len_max,
+            (unsigned long long int)distributor_return.json_string_len_avg);
     }
 
     if (ndpi_memory_alloc_bytes != ndpi_memory_free_bytes || ndpi_memory_alloc_count != ndpi_memory_free_count ||

@@ -31,3 +31,6 @@
 ~~ total memory freed........: 1932879 bytes
 ~~ total allocations/frees...: 35350/35350
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~ json string min len.......: 130 chars
+~~ json string max len.......: 2374 chars
+~~ json string avg len.......: 1325 chars

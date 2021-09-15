@@ -30,7 +30,8 @@ struct remote_desc
     int fd;
     struct nDPIsrvd_buffer buf;
     UT_array * buf_cache;
-    union {
+    union
+    {
         struct
         {
             int json_sockfd;
@@ -192,6 +193,7 @@ static int drain_main_buffer(struct remote_desc * const remote)
     }
     if ((size_t)bytes_written < remote->buf.used)
     {
+#if 0
         syslog(LOG_DAEMON,
                "Distributor wrote less than expected to %.*s:%u: %zd < %zu",
                (int)sizeof(remote->event_serv.peer_addr),
@@ -199,9 +201,10 @@ static int drain_main_buffer(struct remote_desc * const remote)
                ntohs(remote->event_serv.peer.sin_port),
                bytes_written,
                remote->buf.used);
+#endif
         memmove(remote->buf.ptr.raw, remote->buf.ptr.raw + bytes_written, remote->buf.used - bytes_written);
         remote->buf.used -= bytes_written;
-        return -1;
+        return 0;
     }
 
     remote->buf.used = 0;
@@ -578,7 +581,8 @@ static struct remote_desc * accept_remote(int server_fd,
 
 static int new_connection(int epollfd, int eventfd)
 {
-    union {
+    union
+    {
         struct sockaddr_un event_json;
         struct sockaddr_un event_serv;
     } sockaddr;
