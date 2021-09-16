@@ -378,7 +378,7 @@ int main(int argc, char ** argv)
      * zLib compression is forced disabled for testing at the moment.
      * That may change in the future.
      */
-    nDPId_options.enable_zlib_compression = 0;
+    nDPId_options.enable_zlib_compression = 1;
 #endif
     nDPId_options.memory_profiling_print_every = (unsigned long long int)-1;
     nDPId_options.reader_thread_count = 1; /* Please do not change this! Generating meaningful pcap diff's relies on a

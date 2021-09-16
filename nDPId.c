@@ -34,7 +34,7 @@
 #endif
 
 #if !defined(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4) || !defined(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_8)
-#error "Compare and Fetch aka __sync_fetch_and_add not available on your platform!"
+#error "Compare and Swap aka __sync_fetch_and_add not available on your platform!"
 #endif
 
 enum nDPId_l3_type
@@ -43,14 +43,16 @@ enum nDPId_l3_type
     L3_IP6
 };
 
-union nDPId_ip {
+union nDPId_ip
+{
     struct
     {
         uint32_t ip;
     } v4;
     struct
     {
-        union {
+        union
+        {
             uint64_t ip[2];
             uint32_t ip_u32[4];
         };
@@ -252,9 +254,8 @@ enum daemon_event
     DAEMON_EVENT_COUNT
 };
 
-static char const * const packet_event_name_table[PACKET_EVENT_COUNT] = {[PACKET_EVENT_INVALID] = "invalid",
-                                                                         [PACKET_EVENT_PAYLOAD] = "packet",
-                                                                         [PACKET_EVENT_PAYLOAD_FLOW] = "packet-flow"};
+static char const * const packet_event_name_table[PACKET_EVENT_COUNT] = {
+    [PACKET_EVENT_INVALID] = "invalid", [PACKET_EVENT_PAYLOAD] = "packet", [PACKET_EVENT_PAYLOAD_FLOW] = "packet-flow"};
 
 static char const * const flow_event_name_table[FLOW_EVENT_COUNT] = {[FLOW_EVENT_INVALID] = "invalid",
                                                                      [FLOW_EVENT_NEW] = "new",
@@ -1729,7 +1730,7 @@ static void send_to_json_sink(struct nDPId_reader_thread * const reader_thread,
         if (connect_to_json_socket(reader_thread) == 0)
         {
             syslog(LOG_DAEMON | LOG_ERR,
-                   "[%8llu, %d] Reconnected to JSON sink",
+                   "[%8llu, %d] Reconnected to nDPIsrvd Collector",
                    workflow->packets_captured,
                    reader_thread->array_index);
             jsonize_daemon(reader_thread, DAEMON_EVENT_RECONNECT);
@@ -1741,14 +1742,14 @@ static void send_to_json_sink(struct nDPId_reader_thread * const reader_thread,
     {
         saved_errno = errno;
         syslog(LOG_DAEMON | LOG_ERR,
-               "[%8llu, %d] send data to JSON sink failed: %s",
+               "[%8llu, %d] Send data to nDPIsrvd Collector failed: %s",
                workflow->packets_captured,
                reader_thread->array_index,
                strerror(saved_errno));
         if (saved_errno == EPIPE)
         {
             syslog(LOG_DAEMON | LOG_ERR,
-                   "[%8llu, %d] Lost connection to JSON sink",
+                   "[%8llu, %d] Lost connection to nDPIsrvd Collector",
                    workflow->packets_captured,
                    reader_thread->array_index);
         }
@@ -3126,7 +3127,7 @@ static void * processing_thread(void * const ndpi_thread_arg)
     if (connect_to_json_socket(reader_thread) != 0)
     {
         syslog(LOG_DAEMON | LOG_ERR,
-               "Thread %u: Could not connect to JSON sink %s, will try again later. Error: %s",
+               "Thread %u: Could not connect to nDPIsrvd Collector at %s, will try again later. Error: %s",
                reader_thread->array_index,
                nDPId_options.json_sockpath,
                (errno != 0 ? strerror(errno) : "Internal Error."));
@@ -3455,7 +3456,7 @@ static int nDPId_parse_options(int argc, char ** argv)
         "\t  \tis *NOT* part of the interface subnet. (External mode)\n"
         "\t-B\tSet an optional PCAP filter string. (BPF format)\n"
         "\t-l\tLog all messages to stderr as well. Logging via Syslog is always enabled.\n"
-        "\t-c\tPath to the Collector UNIX socket which acts as the JSON sink.\n"
+        "\t-c\tPath to the UNIX socket (nDPIsrvd Collector).\n"
         "\t-d\tForking into background after initialization.\n"
         "\t-p\tWrite the daemon PID to the given file path.\n"
         "\t-u\tChange UID to the numeric value of user.\n"
@@ -3472,7 +3473,7 @@ static int nDPId_parse_options(int argc, char ** argv)
         "\t  \tmultiple instances and should be unique.\n"
         "\t  \tDefaults to your hostname.\n"
 #ifdef ENABLE_ZLIB
-        "\t-z\tEnable flow memory zLib compression. (Experimental!)\n"
+        "\t-z\tEnable flow memory zLib compression.\n"
 #endif
         "\t-o\t(Carefully) Tune some daemon options. See subopts below.\n"
         "\t-v\tversion\n"
@@ -3661,7 +3662,15 @@ static int validate_options(char const * const arg0)
 #ifdef ENABLE_ZLIB
     if (nDPId_options.enable_zlib_compression != 0)
     {
-        fprintf(stderr, "%s: WARNING: zLib compression is an experimental feature! Expect random crashes.\n", arg0);
+        if (nDPId_options.compression_flow_inactivity < 10000 || nDPId_options.compression_scan_period < 10000)
+        {
+            fprintf(stderr,
+                    "%s: Setting compression-scan-period / compression-flow-activity to values lower than 10000 is not "
+                    "recommended.\n"
+                    "%s: Your CPU usage may increase heavily.\n",
+                    arg0,
+                    arg0);
+        }
     }
 #endif
     if (is_path_absolute("JSON socket", nDPId_options.json_sockpath) != 0)

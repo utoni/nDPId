@@ -12,7 +12,7 @@ if(NOT MATH_FUNCTION_EXISTS AND NOT NEED_LINKING_AGAINST_LIBM)
       list(APPEND CMAKE_REQUIRED_LIBRARIES m)
       CHECK_FUNCTION_EXISTS(log2f MATH_FUNCTION_EXISTS)
       if(MATH_FUNCTION_EXISTS)
-          set(NEED_LINKING_AGAINST_LIBM True CACHE BOOL "" FORCE)
+          set(NEED_LINKING_AGAINST_LIBM TRUE CACHE BOOL "" FORCE)
       else()
           message(FATAL_ERROR "Failed making the log2f() function available")
       endif()
@@ -56,9 +56,6 @@ if(NOT CROSS_COMPILE_TRIPLET STREQUAL "")
 endif()
 
 if(BUILD_NDPI)
-    message(WARNING "Building nDPI from source is an experimental feature "
-                    "used for development/testing purposes.\n"
-                    "The build process may fail at any time.")
     enable_testing()
     add_test(NAME run_tests
              COMMAND "${CMAKE_SOURCE_DIR}/test/run_tests.sh"

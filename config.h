@@ -26,7 +26,7 @@
 #define nDPId_COMPRESSION_FLOW_INACTIVITY 30000u /* 30 sec */
 #define nDPId_IDLE_SCAN_PERIOD 10000u /* 10 sec */
 #define nDPId_GENERIC_IDLE_TIME 600000u /* 600 */
-#define nDPId_ICMP_IDLE_TIME 30000u /* 30 sec */
+#define nDPId_ICMP_IDLE_TIME 10000u /* 10 sec */
 #define nDPId_TCP_IDLE_TIME 7440000u /* 7440 sec */
 #define nDPId_UDP_IDLE_TIME 180000u /* 180 sec */
 #define nDPId_TCP_POST_END_FLOW_TIME 120000u /* 120 sec */
