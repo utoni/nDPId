@@ -1,0 +1,42 @@
+name: Build
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+    types: [opened, synchronize, reopened]
+  release:
+    types: [created]
+jobs:
+  test:
+    name: ${{ matrix.os }} ${{ matrix.gcrypt }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os: ["ubuntu-latest", "ubuntu-18.04"]
+        ndpid_gcrypt: ["-DNDPI_WITH_GCRYPT=OFF", ""]
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Install Ubuntu Prerequisites
+        if: startsWith(matrix.os, 'ubuntu')
+        run: |
+          sudo apt-get update
+          sudo apt-get install autoconf automake cmake libtool pkg-config gettext libjson-c-dev flex bison libpcap-dev
+          sudo apt-get install gcc-arm-linux-gnueabihf gcc-mingw-w64 libc6-dev
+      - name: Install Ubuntu Prerequisites (libgcrypt)
+        if: startsWith(matrix.os, 'ubuntu') && !startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=OFF')
+        run: |
+          sudo apt-get install libgcrypt20-dev
+      - name: Configure nDPI
+        run: |
+          mkdir build && cd build
+          env CMAKE_C_FLAGS='-Werror' cmake .. -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DENABLE_SANITIZER=ON ${{ matrix.ndpid_gcrypt }}
+      - name: Build nDPI
+        run: |
+          make -C build all

@@ -32,6 +32,8 @@ struct nDPId_return_value
     unsigned long long int detected_flow_protocols;
     unsigned long long int total_active_flows;
     unsigned long long int total_idle_flows;
+    unsigned long long int cur_active_flows;
+    unsigned long long int cur_idle_flows;
 };
 
 struct distributor_return_value
@@ -316,6 +318,8 @@ static void * nDPId_mainloop_thread(void * const arg)
         nrv->detected_flow_protocols = reader_threads[i].workflow->detected_flow_protocols;
         nrv->total_active_flows = reader_threads[i].workflow->total_active_flows;
         nrv->total_idle_flows = reader_threads[i].workflow->total_idle_flows;
+        nrv->cur_active_flows = reader_threads[i].workflow->cur_active_flows;
+        nrv->cur_idle_flows = reader_threads[i].workflow->cur_idle_flows;
     }
 
 error:
@@ -499,6 +503,31 @@ int main(int argc, char ** argv)
         fprintf(stderr, "%s: %s\n", argv[0], "Memory / Flow leak detected.");
         return 1;
     }
+
+    if (nDPId_return.cur_active_flows != 0 || nDPId_return.cur_idle_flows != 0)
+    {
+        fprintf(stderr, "%s: %s\n", argv[0], "Active / Idle inconsistency detected.");
+        return 1;
+    }
+
+    if (nDPId_return.total_skipped_flows != 0)
+    {
+        fprintf(stderr, "%s: %s\n", argv[0], "Skipped flow detected, that should not happen.");
+        return 1;
+    }
+
+#ifdef ENABLE_ZLIB
+    if (zlib_compressions != zlib_decompressions)
+    {
+        fprintf(stderr,
+                "%s: %s (%llu != %llu)\n",
+                argv[0],
+                "ZLib compression / decompression inconsistency detected.",
+                zlib_compressions,
+                zlib_decompressions);
+        return 1;
+    }
+#endif
 
     return THREADS_RETURNED_ERROR();
 }

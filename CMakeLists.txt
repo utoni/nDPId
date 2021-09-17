@@ -107,6 +107,10 @@ if(ENABLE_SANITIZER_THREAD)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=undefined -fno-sanitize=alignment -fsanitize=enum -fsanitize=thread")
 endif()
 
+if(NOT NDPI_WITH_GCRYPT)
+    set(NDPI_ADDITIONAL_ARGS "--disable-gcrypt")
+endif()
+
 if(STATIC_LIBNDPI_INSTALLDIR STREQUAL "" AND BUILD_NDPI)
     include(ExternalProject)
     ExternalProject_Add(
@@ -117,6 +121,7 @@ if(STATIC_LIBNDPI_INSTALLDIR STREQUAL "" AND BUILD_NDPI)
             CFLAGS=${CMAKE_C_FLAGS}
             LDFLAGS=${CMAKE_MODULE_LINKER_FLAGS}
             CROSS_COMPILE_TRIPLET=${CROSS_COMPILE_TRIPLET}
+            ADDITIONAL_ARGS=${NDPI_ADDITIONAL_ARGS}
             MAKE_PROGRAM=make
             DEST_INSTALL=${CMAKE_BINARY_DIR}/libnDPI
             ${CMAKE_CURRENT_SOURCE_DIR}/scripts/get-and-build-libndpi.sh
@@ -138,10 +143,6 @@ if(NOT STATIC_LIBNDPI_INSTALLDIR STREQUAL "" OR BUILD_NDPI OR NDPI_NO_PKGCONFIG)
     option(NDPI_WITH_GCRYPT "Link static libndpi library against libgcrypt." ON)
     option(NDPI_WITH_PCRE "Link static libndpi library against libpcre." OFF)
     option(NDPI_WITH_MAXMINDDB "Link static libndpi library against libmaxminddb." OFF)
-
-    if(BUILD_NDPI AND NOT NDPI_WITH_GCRYPT)
-        message(FATAL_ERROR "BUILD_NDPI enabled, but NDPI_WITH_GCRYPT not. This will lead to unexpected test results.")
-    endif()
 
     if(NDPI_WITH_GCRYPT)
         find_package(GCRYPT "1.4.2" REQUIRED)
@@ -176,6 +177,7 @@ else()
 endif()
 
 find_package(PCAP "1.8.1" REQUIRED)
+
 target_compile_options(nDPId PRIVATE "-pthread")
 target_compile_definitions(nDPId PRIVATE -DGIT_VERSION=\"${GIT_VERSION}\" ${NDPID_DEFS} ${ZLIB_DEFS})
 target_include_directories(nDPId PRIVATE

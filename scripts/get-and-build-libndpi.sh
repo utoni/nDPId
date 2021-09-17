@@ -25,7 +25,7 @@ if [ ! -z "${CROSS_COMPILE_TRIPLET}" ]; then
 else
     HOST_ARG=""
 fi
-./autogen.sh --prefix="${DEST_INSTALL}" --with-only-libndpi ${HOST_ARG}
+./autogen.sh --prefix="${DEST_INSTALL}" --with-only-libndpi ${HOST_ARG} ${ADDITIONAL_ARGS}
 ${MAKE_PROGRAM} install
 
 rm -f "${LOCKFILE}"
