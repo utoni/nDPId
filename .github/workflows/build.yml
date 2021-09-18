@@ -17,7 +17,7 @@ jobs:
       fail-fast: true
       matrix:
         os: ["ubuntu-latest", "ubuntu-18.04"]
-        ndpid_gcrypt: ["-DNDPI_WITH_GCRYPT=OFF", ""]
+        ndpid_gcrypt: ["-DNDPI_WITH_GCRYPT=OFF", "-DNDPI_WITH_GCRYPT=ON"]
 
     steps:
       - uses: actions/checkout@v2
@@ -27,7 +27,7 @@ jobs:
         if: startsWith(matrix.os, 'ubuntu')
         run: |
           sudo apt-get update
-          sudo apt-get install autoconf automake cmake libtool pkg-config gettext libjson-c-dev flex bison libpcap-dev
+          sudo apt-get install autoconf automake cmake libtool pkg-config gettext libjson-c-dev flex bison libpcap-dev zlib1g-dev
           sudo apt-get install gcc-arm-linux-gnueabihf gcc-mingw-w64 libc6-dev
       - name: Install Ubuntu Prerequisites (libgcrypt)
         if: startsWith(matrix.os, 'ubuntu') && !startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=OFF')
@@ -36,7 +36,22 @@ jobs:
       - name: Configure nDPI
         run: |
           mkdir build && cd build
-          env CMAKE_C_FLAGS='-Werror' cmake .. -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DENABLE_SANITIZER=ON ${{ matrix.ndpid_gcrypt }}
+          env CMAKE_C_FLAGS='-Werror' cmake .. -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DENABLE_SANITIZER=ON -DENABLE_ZLIB=ON ${{ matrix.ndpid_gcrypt }}
       - name: Build nDPI
         run: |
-          make -C build all
+          make -C build all VERBOSE=1
+      - name: Test EXEC
+        run: |
+          ./build/nDPId-test || test $? -eq 1
+          ./build/nDPId -h || test $? -eq 1
+      - name: Test DIFF
+        if: startsWith(matrix.os, 'ubuntu') && !startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=OFF')
+        run: |
+          ./test/run_tests.sh ./libnDPI ./build/nDPId-test
+      - name: Daemon
+        run: |
+          make -C ./build daemon VERBOSE=1
+          make -C ./build daemon VERBOSE=1
+      - name: Dist
+        run: |
+          ./scripts/make-dist.sh

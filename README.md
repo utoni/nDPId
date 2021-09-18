@@ -1,5 +1,5 @@
-![Travis-CI](https://www.travis-ci.com/lnslbrty/nDPId.svg?branch=master "Travis-CI: master branch")
-![Gitlab-CI](https://gitlab.com/lnslbrty/nDPId/badges/master/pipeline.svg "Gitlab-CI: master branch")
+[![Build](https://github.com/lnslbrty/nDPId/actions/workflows/build.yml/badge.svg)](https://github.com/lnslbrty/nDPId/actions/workflows/build.yml)
+[![Gitlab-CI](https://gitlab.com/lnslbrty/nDPId/badges/master/pipeline.svg)](https://gitlab.com/lnslbrty/nDPId/-/pipelines)
 
 # abstract
 

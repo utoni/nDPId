@@ -31,6 +31,11 @@ else
     nDPI_SOURCE_ROOT="$(realpath "${1}")"
 fi
 
+if [ ! -x "${nDPI_SOURCE_ROOT}/tests/pcap" ]; then
+    printf 'PCAP directory %s does not exist or you do not have the permission to access it.\n' "${nDPI_SOURCE_ROOT}/tests/pcap" >&2
+    exit 2
+fi
+
 LOCKFILE="$(realpath "${0}").lock"
 
 touch "${LOCKFILE}"
