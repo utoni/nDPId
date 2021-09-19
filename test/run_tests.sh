@@ -5,7 +5,7 @@ set -e
 LINE_SPACES=${LINE_SPACES:-48}
 MYDIR="$(realpath "$(dirname ${0})")"
 nDPId_test_EXEC="$(realpath "${2:-"${MYDIR}/../nDPId-test"}")"
-NETCAT_EXEC="nc -q 0 -l 127.0.0.1 9000"
+NETCAT_EXEC="$(which nc) -q 0 -l 127.0.0.1 9000"
 JSON_VALIDATOR="$(realpath "${3:-"${MYDIR}/../examples/py-schema-validation/py-schema-validation.py"}")"
 SEMN_VALIDATOR="$(realpath "${4:-"${MYDIR}/../examples/py-semantic-validation/py-semantic-validation.py"}")"
 
@@ -21,6 +21,10 @@ usage: ${0} [path-to-nDPI-source-root] \\
 EOF
 return 0
 }
+
+test -z "$(which flock)" && { printf '%s\n' 'flock not found'; exit 1; }
+test -z "$(which pkill)" && { printf '%s\n' 'pkill not found'; exit 1; }
+test -z "$(which nc)" && { printf '%s\n' 'nc not found'; exit 1; }
 
 if [ $# -eq 0 -a -x "${MYDIR}/../libnDPI/tests/pcap" ]; then
     nDPI_SOURCE_ROOT="${MYDIR}/../libnDPI"
@@ -40,14 +44,14 @@ LOCKFILE="$(realpath "${0}").lock"
 
 touch "${LOCKFILE}"
 exec 42< "${LOCKFILE}"
-flock -x -n 42 || {
+$(which flock) -x -n 42 || {
     printf '%s\n' "Could not aquire file lock for ${0}. Already running instance?" >&2;
     exit 3;
 }
 function sighandler()
 {
     printf '%s\n' ' Received shutdown SIGNAL, bye' >&2
-    pkill -P $$
+    $(which pkill) -P $$
     wait
     rm -f "${LOCKFILE}"
     exit 4
@@ -60,9 +64,9 @@ if [ ! -x "${nDPId_test_EXEC}" ]; then
     exit 5
 fi
 
-nc -h |& head -n1 | grep -qoE '^OpenBSD netcat' || {
-    printf '%s\n' "OpenBSD netcat (nc) version required!" >&2;
-    printf '%s\n' "Your version: $(nc -h |& head -n1)" >&2;
+$(which nc) -h |& head -n1 | grep -qoE '^OpenBSD netcat' || {
+    printf '%s\n' "$(which nc): OpenBSD netcat (nc) version required!" >&2;
+    printf '%s\n' "$(which nc): Your version: $(nc -h |& head -n1)" >&2;
     exit 6;
 }
 
