@@ -23,6 +23,7 @@ build_and_test:
     - make libnDPI
     - tree libnDPI
     - make install VERBOSE=1 DESTDIR="$(realpath ../_install)"
+    - cpack -G DEB
     - cd ..
     - ./test/run_tests.sh ./libnDPI ./build-cmake-submodule/nDPId-test
     - >
@@ -41,7 +42,7 @@ build_and_test:
     - make -C ./build daemon VERBOSE=1
     - make -C ./build daemon VERBOSE=1
     # make dist
-    - ./scripts/make-dist.sh
+    - make -C ./build dist
   artifacts:
     expire_in: 1 week
     paths:

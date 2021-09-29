@@ -54,4 +54,7 @@ jobs:
           make -C ./build daemon VERBOSE=1
       - name: Dist
         run: |
-          ./scripts/make-dist.sh
+          make -C ./build dist
+      - name: CPack DEB
+        run: |
+          cd ./build && cpack -G DEB && cd ..

@@ -3,6 +3,13 @@ project(nDPId C)
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 find_package(PkgConfig REQUIRED)
 
+set(CPACK_PACKAGE_CONTACT "toni@impl.cc")
+set(CPACK_DEBIAN_PACKAGE_NAME "nDPId")
+set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
+set(CPACK_PACKAGE_VERSION_MAJOR 1)
+set(CPACK_PACKAGE_VERSION_MINOR 5)
+
+include(CPack)
 include(CheckFunctionExists)
 
 if(NOT MATH_FUNCTION_EXISTS AND NOT NEED_LINKING_AGAINST_LIBM)
@@ -45,6 +52,12 @@ add_executable(nDPId nDPId.c utils.c)
 add_executable(nDPIsrvd nDPIsrvd.c utils.c)
 add_executable(nDPId-test nDPId-test.c utils.c)
 
+add_custom_target(dist)
+add_custom_command(
+    TARGET dist
+    COMMAND "${CMAKE_SOURCE_DIR}/scripts/make-dist.sh"
+)
+
 add_custom_target(daemon)
 add_custom_command(
     TARGET  daemon
@@ -68,6 +81,28 @@ if(BUILD_NDPI AND NDPI_WITH_GCRYPT)
                      "$<TARGET_FILE:nDPId-test>")
 endif()
 
+if(ENABLE_SANITIZER)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address -fsanitize=undefined -fno-sanitize=alignment -fsanitize=enum -fsanitize=leak")
+endif()
+if(ENABLE_SANITIZER_THREAD)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=undefined -fno-sanitize=alignment -fsanitize=enum -fsanitize=thread")
+endif()
+if(ENABLE_ZLIB)
+    set(ZLIB_DEFS "-DENABLE_ZLIB=1")
+    pkg_check_modules(ZLIB REQUIRED zlib)
+endif()
+if(NDPI_WITH_GCRYPT)
+    message(STATUS "Enable GCRYPT")
+else()
+    set(NDPI_ADDITIONAL_ARGS "--disable-gcrypt")
+endif()
+if(NDPI_WITH_PCRE)
+    message(STATUS "Enable PCRE")
+endif()
+if(NDPI_WITH_MAXMINDDB)
+    message(STATUS "Enable MAXMINDDB")
+endif()
+
 execute_process(
     COMMAND git describe --tags
     WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
@@ -75,9 +110,9 @@ execute_process(
 string(STRIP "${GIT_VERSION}" GIT_VERSION)
 if(GIT_VERSION STREQUAL "" OR NOT IS_DIRECTORY "${CMAKE_SOURCE_DIR}/.git")
     if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "")
-        set(GIT_VERSION "1.5-pre")
+        set(GIT_VERSION "${CPACK_PACKAGE_VERSION}-pre")
     else()
-        set(GIT_VERSION "1.5-release")
+        set(GIT_VERSION "${CPACK_PACKAGE_VERSION}-release")
     endif()
 endif()
 
@@ -91,29 +126,12 @@ else()
     set(NDPID_TEST_MPROF_DEFS "-DENABLE_MEMORY_PROFILING=1")
 endif()
 
-if(ENABLE_ZLIB)
-    set(ZLIB_DEFS "-DENABLE_ZLIB=1")
-    pkg_check_modules(ZLIB REQUIRED zlib)
-endif()
-
 if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0 -g3 -fno-omit-frame-pointer -fno-inline")
 endif()
 
 if(ENABLE_SANITIZER AND ENABLE_SANITIZER_THREAD)
     message(FATAL_ERROR "ENABLE_SANITIZER and ENABLE_SANITIZER_THREAD can not be used together!")
-endif()
-
-if(ENABLE_SANITIZER)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address -fsanitize=undefined -fno-sanitize=alignment -fsanitize=enum -fsanitize=leak")
-endif()
-
-if(ENABLE_SANITIZER_THREAD)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=undefined -fno-sanitize=alignment -fsanitize=enum -fsanitize=thread")
-endif()
-
-if(NOT NDPI_WITH_GCRYPT)
-    set(NDPI_ADDITIONAL_ARGS "--disable-gcrypt")
 endif()
 
 if(STATIC_LIBNDPI_INSTALLDIR STREQUAL "" AND BUILD_NDPI)

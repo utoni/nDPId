@@ -23,7 +23,9 @@ cd ./libnDPI && \
     git archive --prefix="nDPId-${NDPID_GIT_VERSION}/libnDPI/" -o "../libnDPI-${LIBNDPI_GIT_VERSION}.tar" HEAD && \
     cd ..
 git archive --prefix="nDPId-${NDPID_GIT_VERSION}/" -o "./nDPId-${NDPID_GIT_VERSION}.tar" HEAD
+printf '%s\n' "Creating $(realpath ./nDPId-${NDPID_GIT_VERSION}.tar)"
 tar --concatenate --file="./nDPId-${NDPID_GIT_VERSION}.tar" "./libnDPI-${LIBNDPI_GIT_VERSION}.tar"
-bzip2 -9 "./nDPId-${NDPID_GIT_VERSION}.tar"
+printf '%s\n' "Creating $(realpath ./nDPId-${NDPID_GIT_VERSION}.tar.bz2)"
+bzip2 -f -9 "./nDPId-${NDPID_GIT_VERSION}.tar"
 
 rm -f "${LOCKFILE}"
