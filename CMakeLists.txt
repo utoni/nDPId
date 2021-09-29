@@ -1,5 +1,12 @@
 cmake_minimum_required(VERSION 3.12.4)
 project(nDPId C)
+if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
+    message(FATAL_ERROR "In-source builds are not allowed.\n"
+                        "Please remove ${PROJECT_SOURCE_DIR}/CMakeCache.txt\n"
+                        "and\n"
+                        "${PROJECT_SOURCE_DIR}/CMakeFiles\n"
+                        "Create a build directory somewhere and run CMake again.")
+endif()
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 find_package(PkgConfig REQUIRED)
 
@@ -38,14 +45,31 @@ option(ENABLE_MEMORY_PROFILING "Enable dynamic memory tracking." OFF)
 option(ENABLE_ZLIB "Enable zlib support for nDPId (experimental)." OFF)
 option(BUILD_EXAMPLES "Build C examples." ON)
 option(BUILD_NDPI "Clone and build nDPI from github." OFF)
-option(NDPI_NO_PKGCONFIG "Do not use pkgconfig to search for libnDPI." OFF)
-if(NOT STATIC_LIBNDPI_INSTALLDIR STREQUAL "" OR BUILD_NDPI OR NDPI_NO_PKGCONFIG)
+if(BUILD_NDPI)
+    unset(NDPI_NO_PKGCONFIG CACHE)
+    unset(STATIC_LIBNDPI_INSTALLDIR CACHE)
+else()
+    option(NDPI_NO_PKGCONFIG "Do not use pkgconfig to search for libnDPI." OFF)
+    if(NDPI_NO_PKGCONFIG)
+        set(STATIC_LIBNDPI_INSTALLDIR "/opt/libnDPI/usr" CACHE STRING "Path to a installation directory of libnDPI e.g. /opt/libnDPI/usr")
+        if(STATIC_LIBNDPI_INSTALLDIR STREQUAL "")
+            message(FATAL_ERROR "STATIC_LIBNDPI_INSTALLDIR can not be an empty string within your configuration!")
+        endif()
+    else()
+        unset(STATIC_LIBNDPI_INSTALLDIR CACHE)
+    endif()
+endif()
+
+if(STATIC_LIBNDPI_INSTALLDIR OR BUILD_NDPI OR NDPI_NO_PKGCONFIG)
     option(NDPI_WITH_GCRYPT "Link static libndpi library against libgcrypt." ON)
     option(NDPI_WITH_PCRE "Link static libndpi library against libpcre." OFF)
     option(NDPI_WITH_MAXMINDDB "Link static libndpi library against libmaxminddb." OFF)
+else()
+    unset(NDPI_WITH_GCRYPT CACHE)
+    unset(NDPI_WITH_PCRE CACHE)
+    unset(NDPI_WITH_MAXMINDDB CACHE)
 endif()
 
-set(STATIC_LIBNDPI_INSTALLDIR "" CACHE STRING "Path to a installation directory of libnDPI e.g. /opt/libnDPI/usr")
 set(CROSS_COMPILE_TRIPLET "" CACHE STRING "Host triplet used to enable cross compiling.")
 
 add_executable(nDPId nDPId.c utils.c)
@@ -79,6 +103,10 @@ if(BUILD_NDPI AND NDPI_WITH_GCRYPT)
              COMMAND "${CMAKE_SOURCE_DIR}/test/run_tests.sh"
                      "${CMAKE_SOURCE_DIR}/libnDPI"
                      "$<TARGET_FILE:nDPId-test>")
+    if(NDPI_WITH_PCRE OR NDPI_WITH_MAXMINDDB)
+        message(WARNING "NDPI_WITH_PCRE or NDPI_WITH_MAXMINDDB enabled.\n"
+                        "${CMAKE_CURRENT_SOURCE_DIR}/test/run_tests.sh or ctest will fail!")
+    endif()
 endif()
 
 if(ENABLE_SANITIZER)
@@ -94,13 +122,15 @@ endif()
 if(NDPI_WITH_GCRYPT)
     message(STATUS "Enable GCRYPT")
 else()
-    set(NDPI_ADDITIONAL_ARGS "--disable-gcrypt")
+    set(NDPI_ADDITIONAL_ARGS "${NDPI_ADDITIONAL_ARGS} --disable-gcrypt")
 endif()
 if(NDPI_WITH_PCRE)
     message(STATUS "Enable PCRE")
+    set(NDPI_ADDITIONAL_ARGS "${NDPI_ADDITIONAL_ARGS} --with-pcre")
 endif()
 if(NDPI_WITH_MAXMINDDB)
     message(STATUS "Enable MAXMINDDB")
+    set(NDPI_ADDITIONAL_ARGS "${NDPI_ADDITIONAL_ARGS} --with-maxminddb")
 endif()
 
 execute_process(
@@ -134,7 +164,7 @@ if(ENABLE_SANITIZER AND ENABLE_SANITIZER_THREAD)
     message(FATAL_ERROR "ENABLE_SANITIZER and ENABLE_SANITIZER_THREAD can not be used together!")
 endif()
 
-if(STATIC_LIBNDPI_INSTALLDIR STREQUAL "" AND BUILD_NDPI)
+if(BUILD_NDPI)
     include(ExternalProject)
     ExternalProject_Add(
         libnDPI
@@ -145,7 +175,7 @@ if(STATIC_LIBNDPI_INSTALLDIR STREQUAL "" AND BUILD_NDPI)
             LDFLAGS=${CMAKE_MODULE_LINKER_FLAGS}
             CROSS_COMPILE_TRIPLET=${CROSS_COMPILE_TRIPLET}
             ADDITIONAL_ARGS=${NDPI_ADDITIONAL_ARGS}
-            MAKE_PROGRAM=make
+            MAKE_PROGRAM=${CMAKE_MAKE_PROGRAM}
             DEST_INSTALL=${CMAKE_BINARY_DIR}/libnDPI
             ${CMAKE_CURRENT_SOURCE_DIR}/scripts/get-and-build-libndpi.sh
         BUILD_BYPRODUCTS ${CMAKE_BINARY_DIR}/libnDPI/lib/libndpi.a
@@ -162,7 +192,7 @@ if(STATIC_LIBNDPI_INSTALLDIR STREQUAL "" AND BUILD_NDPI)
     add_dependencies(nDPId-test libnDPI)
 endif()
 
-if(NOT STATIC_LIBNDPI_INSTALLDIR STREQUAL "" OR BUILD_NDPI OR NDPI_NO_PKGCONFIG)
+if(STATIC_LIBNDPI_INSTALLDIR OR BUILD_NDPI OR NDPI_NO_PKGCONFIG)
     if(NDPI_WITH_GCRYPT)
         find_package(GCRYPT "1.4.2" REQUIRED)
     endif()
@@ -176,22 +206,23 @@ if(NOT STATIC_LIBNDPI_INSTALLDIR STREQUAL "" OR BUILD_NDPI OR NDPI_NO_PKGCONFIG)
     endif()
 endif()
 
-if(NOT STATIC_LIBNDPI_INSTALLDIR STREQUAL "" OR BUILD_NDPI)
+if(STATIC_LIBNDPI_INSTALLDIR OR BUILD_NDPI)
     add_definitions("-DLIBNDPI_STATIC=1")
     set(STATIC_LIBNDPI_INC "${STATIC_LIBNDPI_INSTALLDIR}/include/ndpi")
     set(STATIC_LIBNDPI_LIB "${STATIC_LIBNDPI_INSTALLDIR}/lib/libndpi.a")
+
+    if(STATIC_LIBNDPI_INSTALLDIR AND NOT BUILD_NDPI)
+        if(NOT EXISTS "${STATIC_LIBNDPI_INC}" OR NOT EXISTS "${STATIC_LIBNDPI_LIB}")
+            message(FATAL_ERROR "Include directory \"${STATIC_LIBNDPI_INC}\" or\n"
+                                "static library \"${STATIC_LIBNDPI_LIB}\" does not exist!")
+        endif()
+    endif()
 else()
     if(NOT NDPI_NO_PKGCONFIG)
         pkg_check_modules(NDPI REQUIRED libndpi>=3.5.0)
 
-        set(STATIC_LIBNDPI_INC "")
-        set(STATIC_LIBNDPI_LIB "")
-    else()
-        set(LIBNDPI_INC "" CACHE STRING "/usr/include/ndpi")
-        set(LIBNDPI_LIB "" CACHE STRING "/usr/lib/libndpi.a")
-
-        set(STATIC_LIBNDPI_INC "${LIBNDPI_INC}")
-        set(STATIC_LIBNDPI_LIB "${LIBNDPI_LIB}")
+        unset(STATIC_LIBNDPI_INC CACHE)
+        unset(STATIC_LIBNDPI_LIB CACHE)
     endif()
 endif()
 
@@ -278,16 +309,15 @@ message(STATUS "ENABLE_SANITIZER.........: ${ENABLE_SANITIZER}")
 message(STATUS "ENABLE_SANITIZER_THREAD..: ${ENABLE_SANITIZER_THREAD}")
 message(STATUS "ENABLE_MEMORY_PROFILING..: ${ENABLE_MEMORY_PROFILING}")
 message(STATUS "ENABLE_ZLIB..............: ${ENABLE_ZLIB}")
-if(NOT BUILD_NDPI AND NOT STATIC_LIBNDPI_INSTALLDIR STREQUAL "")
+if(STATIC_LIBNDPI_INSTALLDIR)
 message(STATUS "STATIC_LIBNDPI_INSTALLDIR: ${STATIC_LIBNDPI_INSTALLDIR}")
 endif()
 message(STATUS "BUILD_NDPI...............: ${BUILD_NDPI}")
-message(STATUS "NDPI_NO_PKGCONFIG........: ${NDPI_NO_PKGCONFIG}")
-if(NDPI_NO_PKGCONFIG)
-message(STATUS "LIBNDPI_INC..............: ${LIBNDPI_INC}")
-message(STATUS "LIBNDPI_LIB..............: ${LIBNDPI_LIB}")
+if(BUILD_NDPI)
+message(STATUS "NDPI_ADDITIONAL_ARGS.....: ${NDPI_ADDITIONAL_ARGS}")
 endif()
-if(NOT STATIC_LIBNDPI_INSTALLDIR STREQUAL "" OR BUILD_NDPI OR NDPI_NO_PKGCONFIG)
+message(STATUS "NDPI_NO_PKGCONFIG........: ${NDPI_NO_PKGCONFIG}")
+if(STATIC_LIBNDPI_INSTALLDIR OR BUILD_NDPI OR NDPI_NO_PKGCONFIG)
 message(STATUS "--------------------------")
 message(STATUS "- STATIC_LIBNDPI_INC....: ${STATIC_LIBNDPI_INC}")
 message(STATUS "- STATIC_LIBNDPI_LIB....: ${STATIC_LIBNDPI_LIB}")
