@@ -484,9 +484,9 @@
 ~~ total detected protocols..: 77
 ~~ total active/idle flows...: 77/77
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~ total memory allocated....: 2514058 bytes
-~~ total memory freed........: 2514058 bytes
-~~ total allocations/frees...: 36555/36555
+~~ total memory allocated....: 2400434 bytes
+~~ total memory freed........: 2400434 bytes
+~~ total allocations/frees...: 36568/36568
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~ json string min len.......: 142 chars
 ~~ json string max len.......: 2124 chars
