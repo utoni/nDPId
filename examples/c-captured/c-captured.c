@@ -1,7 +1,6 @@
 #include <arpa/inet.h>
 #include <errno.h>
 #include <linux/limits.h>
-#include <ndpi_api.h>
 #include <ndpi_typedefs.h>
 #include <netinet/ip_icmp.h>
 #include <netinet/tcp.h>
@@ -31,7 +30,8 @@ struct packet_data
     nDPIsrvd_ull packet_ts_usec;
     nDPIsrvd_ull packet_len;
     int base64_packet_size;
-    union {
+    union
+    {
         char * base64_packet;
         char const * base64_packet_const;
     };
@@ -39,6 +39,7 @@ struct packet_data
 
 struct flow_user_data
 {
+    nDPIsrvd_ull flow_last_seen_ts_sec;
     uint8_t flow_new_seen;
     uint8_t detection_finished;
     uint8_t guessed;
@@ -382,6 +383,8 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
             perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_tot_l4_payload_len"),
                                           &flow_user->flow_tot_l4_payload_len),
                        "flow_tot_l4_payload_len");
+
+            perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_last_seen"), &flow_user->flow_last_seen_ts_sec), "flow_last_seen");
         }
 
         if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "new") != 0)
@@ -424,8 +427,7 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
                     nDPIsrvd_ull numeric_risk_value = 0ull;
 
                     if (TOKEN_KEY_TO_ULL(current, &numeric_risk_value) == CONVERSION_OK &&
-                        numeric_risk_value < NDPI_MAX_RISK &&
-                        has_ndpi_risk(&process_risky, numeric_risk_value) != 0)
+                        numeric_risk_value < NDPI_MAX_RISK && has_ndpi_risk(&process_risky, numeric_risk_value) != 0)
                     {
                         flow_user->risky = 1;
                     }
@@ -475,11 +477,39 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
     return CALLBACK_OK;
 }
 
+static void nDPIsrvd_write_flow_info_cb(int outfd, struct nDPIsrvd_flow * const flow)
+{
+    struct flow_user_data * const flow_user = (struct flow_user_data *)flow->flow_user_data;
+
+    dprintf(outfd,
+            "[ptr: %p][last-seen: %llu][finished: %u][detected: %u][midstream: %u][risky: %u][total-L4-payload-length: "
+            "%llu][packets-captured: %u]",
+            flow, flow_user->flow_last_seen_ts_sec,
+            flow_user->detection_finished,
+            flow_user->detected,
+            flow_user->flow_new_seen == 0,
+            flow_user->risky,
+            flow_user->flow_tot_l4_payload_len,
+            flow_user->packets != NULL ? utarray_len(flow_user->packets) : 0);
+    syslog(LOG_DAEMON,
+           "[ptr: %p][last-seen: %llu][finished: %u][detected: %u][midstream: %u][risky: %u][total-L4-payload-length: "
+           "%llu][packets-captured: %u]",
+           flow, flow_user->flow_last_seen_ts_sec,
+           flow_user->detection_finished,
+           flow_user->detected,
+           flow_user->flow_new_seen == 0,
+           flow_user->risky,
+           flow_user->flow_tot_l4_payload_len,
+           flow_user->packets != NULL ? utarray_len(flow_user->packets) : 0);
+}
+
 static void sighandler(int signum)
 {
-    (void)signum;
-
-    if (main_thread_shutdown == 0)
+    if (signum == SIGUSR1)
+    {
+        nDPIsrvd_write_flow_info(2, sock, nDPIsrvd_write_flow_info_cb);
+    }
+    else if (main_thread_shutdown == 0)
     {
         main_thread_shutdown = 1;
     }
@@ -519,7 +549,8 @@ static void print_usage(char const * const arg0)
         "\t-R\tRisky - Dump risky flows to a PCAP file. See additional help below.\n"
         "\t-M\tMidstream - Dump midstream flows to a PCAP file.\n"
         "\t-E\tEmpty - Ignore flows w/o any layer 4 payload\n\n"
-        "\tPossible options for `-R' (can be specified multiple times, processed from left to right, ~ disables a risk):\n"
+        "\tPossible options for `-R' (can be specified multiple times, processed from left to right, ~ disables a "
+        "risk):\n"
         "\t  \tExample: -R0 -R~15 would enable all risks except risk with id 15\n";
 
     fprintf(stderr, usage, arg0);
@@ -600,7 +631,9 @@ static int parse_options(int argc, char ** argv)
                 if (optarg[0] == '~')
                 {
                     unset_ndpi_risk(&process_risky, risk);
-                } else {
+                }
+                else
+                {
                     set_ndpi_risk(&process_risky, risk);
                 }
                 break;
@@ -666,8 +699,14 @@ static int parse_options(int argc, char ** argv)
 
 static int mainloop(void)
 {
+    sigset_t sigusr1_block;
+
+    sigemptyset(&sigusr1_block);
+    sigaddset(&sigusr1_block, SIGUSR1);
+
     while (main_thread_shutdown == 0)
     {
+        sigprocmask(SIG_BLOCK, &sigusr1_block, NULL);
         errno = 0;
         enum nDPIsrvd_read_return read_ret = nDPIsrvd_read(sock);
         if (read_ret != READ_OK)
@@ -682,6 +721,7 @@ static int mainloop(void)
             syslog(LOG_DAEMON | LOG_ERR, "nDPIsrvd parse failed with: %s", nDPIsrvd_enum_to_string(parse_ret));
             return 1;
         }
+        sigprocmask(SIG_UNBLOCK, &sigusr1_block, NULL);
     }
 
     return 0;
@@ -712,6 +752,7 @@ int main(int argc, char ** argv)
         return 1;
     }
 
+    signal(SIGUSR1, sighandler);
     signal(SIGINT, sighandler);
     signal(SIGTERM, sighandler);
     signal(SIGPIPE, sighandler);

@@ -126,7 +126,8 @@ typedef void (*flow_end_callback)(struct nDPIsrvd_socket * const sock, struct nD
 struct nDPIsrvd_address
 {
     socklen_t size;
-    union {
+    union
+    {
         struct sockaddr_in in;
         struct sockaddr_in6 in6;
         struct sockaddr_un un;
@@ -136,7 +137,8 @@ struct nDPIsrvd_address
 
 struct nDPIsrvd_buffer
 {
-    union {
+    union
+    {
         char * text;
         uint8_t * raw;
     } ptr;
@@ -503,8 +505,7 @@ static inline enum nDPIsrvd_connect_return nDPIsrvd_connect(struct nDPIsrvd_sock
 
 static inline enum nDPIsrvd_read_return nDPIsrvd_read(struct nDPIsrvd_socket * const sock)
 {
-    ssize_t bytes_read =
-        read(sock->fd, sock->buffer.ptr.raw + sock->buffer.used, sock->buffer.max - sock->buffer.used);
+    ssize_t bytes_read = read(sock->fd, sock->buffer.ptr.raw + sock->buffer.used, sock->buffer.max - sock->buffer.used);
 
     if (bytes_read == 0)
     {
@@ -557,10 +558,9 @@ static inline struct nDPIsrvd_json_token const * token_get(struct nDPIsrvd_socke
     return NULL;
 }
 
-static inline struct nDPIsrvd_json_token const *
-token_get_next_child(struct nDPIsrvd_socket const * const sock,
-                     struct nDPIsrvd_json_token const * const start,
-                     int * next_index)
+static inline struct nDPIsrvd_json_token const * token_get_next_child(struct nDPIsrvd_socket const * const sock,
+                                                                      struct nDPIsrvd_json_token const * const start,
+                                                                      int * next_index)
 {
     struct nDPIsrvd_json_token const * result = NULL;
 
@@ -575,8 +575,7 @@ token_get_next_child(struct nDPIsrvd_socket const * const sock,
 
     for (int i = *next_index + 2; i < sock->jsmn.tokens_found; i += 2)
     {
-        if (sock->jsmn.tokens[i].parent != start->token_index + 1 ||
-            sock->jsmn.tokens[i].type != JSMN_STRING)
+        if (sock->jsmn.tokens[i].parent != start->token_index + 1 || sock->jsmn.tokens[i].type != JSMN_STRING)
         {
             continue;
         }
@@ -717,6 +716,9 @@ static inline struct nDPIsrvd_flow * nDPIsrvd_get_flow(struct nDPIsrvd_socket * 
         TOKEN_VALUE_TO_ULL(tokens[0], &flow->id_as_ull);
         memcpy(flow->flow_key.key, key.key, nDPIsrvd_FLOW_KEY_STRLEN);
         HASH_ADD(hh, sock->flow_table, flow_key, sizeof(flow->flow_key), flow);
+#ifdef ENABLE_MEMORY_PROFILING
+        printf("Flow %llu added: %zu bytes.\n", flow->id_as_ull, sizeof(*flow) + sock->flow_user_data_size);
+#endif
     }
 
     return flow;
@@ -739,6 +741,9 @@ static inline int nDPIsrvd_check_flow_end(struct nDPIsrvd_socket * const sock,
             sock->flow_end_callback(sock, current_flow);
         }
         HASH_DEL(sock->flow_table, current_flow);
+#ifdef ENABLE_MEMORY_PROFILING
+        printf("Flow %llu deleted: %zu bytes.\n", current_flow->id_as_ull, sizeof(*current_flow) + sock->flow_user_data_size);
+#endif
         free(current_flow);
     }
 
@@ -778,7 +783,8 @@ static inline enum nDPIsrvd_parse_return nDPIsrvd_parse_line(struct nDPIsrvd_buf
     {
         return PARSE_NEED_MORE_DATA;
     }
-    if (buffer->ptr.text[buffer->json_string_length - 2] != '}' || buffer->ptr.text[buffer->json_string_length - 1] != '\n')
+    if (buffer->ptr.text[buffer->json_string_length - 2] != '}' ||
+        buffer->ptr.text[buffer->json_string_length - 1] != '\n')
     {
         return PARSE_INVALID_CLOSING_CHAR;
     }
@@ -926,5 +932,18 @@ static inline void nDPIsrvd_uthash_free(void * const freeable, size_t const size
     free(freeable);
 }
 #endif
+
+static inline void nDPIsrvd_write_flow_info(int outfd, struct nDPIsrvd_socket const * const sock, void (*write_cb)(int outfd, struct nDPIsrvd_flow *))
+{
+    struct nDPIsrvd_flow * current_flow;
+    struct nDPIsrvd_flow * ftmp;
+
+    HASH_ITER(hh, sock->flow_table, current_flow, ftmp)
+    {
+        dprintf(outfd, "[Flow %llu]", current_flow->id_as_ull);
+        write_cb(outfd, current_flow);
+        dprintf(outfd, "%c", '\n');
+    }
+}
 
 #endif
