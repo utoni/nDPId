@@ -2999,7 +2999,7 @@ static void ndpi_process_packet(uint8_t * const args,
     flow_to_process->flow_extended.total_l4_payload_len += l4_payload_len;
     if (flow_to_process->flow_extended.first_seen == 0)
     {
-        flow_to_process->flow_extended.first_seen = time_ms;
+        flow_to_process->flow_extended.first_seen = flow_to_process->flow_extended.flow_basic.last_seen = time_ms;
     }
     if (l4_payload_len > flow_to_process->flow_extended.max_l4_payload_len)
     {

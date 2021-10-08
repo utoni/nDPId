@@ -79,7 +79,8 @@
             "type": "number"
         },
         "pkt_ts_sec": {
-            "type": "number"
+            "type": "number",
+            "minimum": 1
         },
         "pkt": {
             "type": "string"

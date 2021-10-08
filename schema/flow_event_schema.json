@@ -68,10 +68,12 @@
             "type": "number"
         },
         "flow_first_seen": {
-            "type": "number"
+            "type": "number",
+            "minimum": 24710
         },
         "flow_last_seen": {
-            "type": "number"
+            "type": "number",
+            "minimum": 24710
         },
         "flow_max_packets": {
             "type": "number"
