@@ -1,12 +1,12 @@
 #include <arpa/inet.h>
 #include <errno.h>
 #include <linux/limits.h>
-#include <ndpi_typedefs.h>
 #include <netinet/ip_icmp.h>
 #include <netinet/tcp.h>
 #include <netinet/udp.h>
 #include <pcap/pcap.h>
 #include <signal.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -16,6 +16,8 @@
 #include <sys/types.h>
 #include <time.h>
 #include <unistd.h>
+
+#include <ndpi_typedefs.h>
 
 #include "nDPIsrvd.h"
 #include "utarray.h"
