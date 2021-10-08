@@ -940,7 +940,7 @@ static inline void nDPIsrvd_write_flow_info(int outfd, struct nDPIsrvd_socket co
 
     HASH_ITER(hh, sock->flow_table, current_flow, ftmp)
     {
-        dprintf(outfd, "[Flow %llu]", current_flow->id_as_ull);
+        dprintf(outfd, "[Flow %4llu]", current_flow->id_as_ull);
         write_cb(outfd, current_flow);
         dprintf(outfd, "%c", '\n');
     }

@@ -386,7 +386,8 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
                                           &flow_user->flow_tot_l4_payload_len),
                        "flow_tot_l4_payload_len");
 
-            perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_last_seen"), &flow_user->flow_last_seen_ts_sec), "flow_last_seen");
+            perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_last_seen"), &flow_user->flow_last_seen_ts_sec),
+                       "flow_last_seen");
         }
 
         if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "new") != 0)
@@ -484,19 +485,47 @@ static void nDPIsrvd_write_flow_info_cb(int outfd, struct nDPIsrvd_flow * const 
     struct flow_user_data * const flow_user = (struct flow_user_data *)flow->flow_user_data;
 
     dprintf(outfd,
-            "[ptr: %p][last-seen: %llu][finished: %u][detected: %u][midstream: %u][risky: %u][total-L4-payload-length: "
-            "%llu][packets-captured: %u]",
-            flow, flow_user->flow_last_seen_ts_sec,
+            "[ptr: "
+#ifdef __LP64__
+            "0x%016llx"
+#else
+            "0x%08lx"
+#endif
+            "][last-seen: %13llu][new-seen: %u][finished: %u][detected: %u][midstream: %u][risky: "
+            "%u][total-L4-payload-length: "
+            "%4llu][packets-captured: %u]",
+#ifdef __LP64__
+            (unsigned long long int)flow,
+#else
+            (unsigned long int)flow,
+#endif
+            flow_user->flow_last_seen_ts_sec,
+            flow_user->flow_new_seen,
             flow_user->detection_finished,
             flow_user->detected,
             flow_user->flow_new_seen == 0,
             flow_user->risky,
             flow_user->flow_tot_l4_payload_len,
             flow_user->packets != NULL ? utarray_len(flow_user->packets) : 0);
+
     syslog(LOG_DAEMON,
-           "[ptr: %p][last-seen: %llu][finished: %u][detected: %u][midstream: %u][risky: %u][total-L4-payload-length: "
-           "%llu][packets-captured: %u]",
-           flow, flow_user->flow_last_seen_ts_sec,
+           "[Flow %4llu][ptr: "
+#ifdef __LP64__
+           "0x%016llx"
+#else
+           "0x%08lx"
+#endif
+           "][last-seen: %13llu][new-seen: %u][finished: %u][detected: %u][midstream: %u][risky: "
+           "%u][total-L4-payload-length: "
+           "%4llu][packets-captured: %u]",
+           flow->id_as_ull,
+#ifdef __LP64__
+           (unsigned long long int)flow,
+#else
+           (unsigned long int)flow,
+#endif
+           flow_user->flow_last_seen_ts_sec,
+           flow_user->flow_new_seen,
            flow_user->detection_finished,
            flow_user->detected,
            flow_user->flow_new_seen == 0,
