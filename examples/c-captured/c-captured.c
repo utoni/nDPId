@@ -491,7 +491,7 @@ static void nDPIsrvd_write_flow_info_cb(int outfd, struct nDPIsrvd_flow * const 
 #else
             "0x%08lx"
 #endif
-            "][last-seen: %13llu][new-seen: %u][finished: %u][detected: %u][midstream: %u][risky: "
+            "][last-seen: %13llu][new-seen: %u][finished: %u][detected: %u][risky: "
             "%u][total-L4-payload-length: "
             "%4llu][packets-captured: %u]",
 #ifdef __LP64__
@@ -503,7 +503,6 @@ static void nDPIsrvd_write_flow_info_cb(int outfd, struct nDPIsrvd_flow * const 
             flow_user->flow_new_seen,
             flow_user->detection_finished,
             flow_user->detected,
-            flow_user->flow_new_seen == 0,
             flow_user->risky,
             flow_user->flow_tot_l4_payload_len,
             flow_user->packets != NULL ? utarray_len(flow_user->packets) : 0);
@@ -515,7 +514,7 @@ static void nDPIsrvd_write_flow_info_cb(int outfd, struct nDPIsrvd_flow * const 
 #else
            "0x%08lx"
 #endif
-           "][last-seen: %13llu][new-seen: %u][finished: %u][detected: %u][midstream: %u][risky: "
+           "][last-seen: %13llu][new-seen: %u][finished: %u][detected: %u][risky: "
            "%u][total-L4-payload-length: "
            "%4llu][packets-captured: %u]",
            flow->id_as_ull,
@@ -528,7 +527,6 @@ static void nDPIsrvd_write_flow_info_cb(int outfd, struct nDPIsrvd_flow * const 
            flow_user->flow_new_seen,
            flow_user->detection_finished,
            flow_user->detected,
-           flow_user->flow_new_seen == 0,
            flow_user->risky,
            flow_user->flow_tot_l4_payload_len,
            flow_user->packets != NULL ? utarray_len(flow_user->packets) : 0);

@@ -13,12 +13,11 @@ except ImportError:
     import nDPIsrvd
     from nDPIsrvd import nDPIsrvdSocket, TermColor
 
-global lowest_flow_id_for_new_flow
-lowest_flow_id_for_new_flow = 0
 
 class Stats:
     event_counter   = dict()
 
+    lowest_flow_id_for_new_flow = 0
     lines_processed = 0
     print_dot_every = 10
     print_nmb_every = print_dot_every * 5
@@ -65,6 +64,7 @@ class Stats:
             for k in klist:
                 retval += '| {:<16}: {:<4} '.format(k, self.event_counter[k])
             retval += '\n--' + '-' * 98 + '\n'
+        retval += 'Lowest possible flow id (for new flows): {}\n'.format(self.lowest_flow_id_for_new_flow)
         return retval
 
     def __init__(self):
@@ -81,10 +81,10 @@ class SemanticValidationException(Exception):
             return 'Flow ID {}: {}'.format(self.current_flow.flow_id, self.text)
 
 def onJsonLineRecvd(json_dict, current_flow, global_user_data):
-    global lowest_flow_id_for_new_flow
     stats = global_user_data
     stats.incrementEventCounter(json_dict)
 
+    # dictionary unique for every flow, useful for flow specific semantic validation
     try:
         semdict = current_flow.semdict
     except AttributeError:
@@ -103,6 +103,19 @@ def onJsonLineRecvd(json_dict, current_flow, global_user_data):
 
     if current_flow is not None:
         if 'flow_id' in semdict:
+            semdict_thread_key = 'thread' + str(json_dict['thread_id'])
+            if semdict_thread_key in semdict:
+                if semdict[semdict_thread_key]['lowest_packet_id'] > json_dict['packet_id']:
+                    raise SemanticValidationException(current_flow,
+                                                      'Invalid packet id for thread {} received: ' \
+                                                      'expected packet id lesser or equal {}, ' \
+                                                      'got {}'.format(json_dict['thread_id'],
+                                                                      semdict[semdict_thread_key]['lowest_packet_id'],
+                                                                      json_dict['packet_id']))
+            else:
+                semdict[semdict_thread_key] = dict()
+            semdict[semdict_thread_key]['lowest_packet_id'] = json_dict['packet_id']
+
             if semdict['flow_id'] != current_flow.flow_id or \
                semdict['flow_id'] != json_dict['flow_id']:
                 raise SemanticValidationException(current_flow,
@@ -116,18 +129,43 @@ def onJsonLineRecvd(json_dict, current_flow, global_user_data):
                                                   '{} != {}'.format(json_dict['flow_id'], current_flow.flow_id))
             semdict['flow_id'] = json_dict['flow_id']
 
+        if 'flow_packet_id' in json_dict:
+            try:
+                if json_dict['flow_packet_id'] != current_flow.low_packet_id + 1:
+                    raise SemanticValidationException(current_flow,
+                                                      'Invalid flow_packet_id seen, expected {}, got ' \
+                                                      '{}'.format(current_flow.low_packet_id + 1, json_dict['flow_packet_id']))
+                else:
+                    current_flow.low_packet_id += 1
+            except AttributeError:
+                pass
+
+    try:
+        if current_flow.flow_ended == True:
+            raise SemanticValidationException(current_flow,
+                                              'Received JSON string for a flow that already ended/idled.')
+    except AttributeError:
+        pass
+
     if 'flow_event_name' in json_dict:
         if json_dict['flow_event_name'] == 'end' or \
            json_dict['flow_event_name'] == 'idle':
-            pass
+            current_flow.flow_ended = True
         elif json_dict['flow_event_name'] == 'new':
-            if lowest_flow_id_for_new_flow > current_flow.flow_id:
+            if stats.lowest_flow_id_for_new_flow > current_flow.flow_id:
                 raise SemanticValidationException(current_flow,
                                                   'JSON dictionary lowest flow id for new flow > current flow id: ' \
-                                                  '{} != {}'.format(lowest_flow_id_for_new_flow, current_flow.flow_id))
+                                                  '{} != {}'.format(stats.lowest_flow_id_for_new_flow, current_flow.flow_id))
+            try:
+                if current_flow.flow_new_seen == True:
+                    raise SemanticValidationException(current_flow,
+                                                      'Received flow new event twice.')
+            except AttributeError:
+                pass
             current_flow.flow_new_seen = True
-            if lowest_flow_id_for_new_flow == 0:
-                lowest_flow_id_for_new_flow = current_flow.flow_id
+            current_flow.flow_packet_id = 0
+            if stats.lowest_flow_id_for_new_flow == 0:
+                stats.lowest_flow_id_for_new_flow = current_flow.flow_id
         elif json_dict['flow_event_name'] == 'detected' or \
              json_dict['flow_event_name'] == 'not-detected':
             try:
@@ -139,9 +177,9 @@ def onJsonLineRecvd(json_dict, current_flow, global_user_data):
             current_flow.flow_detection_finished = True
 
     try:
-        if current_flow.flow_new_seen is True and lowest_flow_id_for_new_flow > current_flow.flow_id:
+        if current_flow.flow_new_seen is True and stats.lowest_flow_id_for_new_flow > current_flow.flow_id:
             raise SemanticValidationException(current_flow, 'Lowest flow id for flow > current flow id: ' \
-                                              '{} > {}'.format(lowest_flow_id_for_new_flow, current_flow.flow_id))
+                                              '{} > {}'.format(stats.lowest_flow_id_for_new_flow, current_flow.flow_id))
     except AttributeError:
         pass
 

@@ -1672,7 +1672,7 @@ static int connect_to_json_socket(struct nDPId_reader_thread * const reader_thre
     int opt = NETWORK_BUFFER_MAX_SIZE * 16;
     if (setsockopt(reader_thread->json_sockfd, SOL_SOCKET, SO_SNDBUF, &opt, sizeof(opt)) < 0)
     {
-        /* Nop. */
+        return 1;
     }
 
     saddr.sun_family = AF_UNIX;
