@@ -102,6 +102,15 @@ def onJsonLineRecvd(json_dict, current_flow, global_user_data):
         semdict['current_flow'] = current_flow
 
     if current_flow is not None:
+        if 'pkt_ts_sec' in json_dict:
+            current_flow.last_pkt_seen = int(json_dict['pkt_ts_sec'] * 1000.0)
+            if 'pkt_ts_usec' in json_dict:
+                current_flow.last_pkt_seen += int(json_dict['pkt_ts_usec'] / 1000.0)
+            else:
+                raise SemanticValidationException(current_flow,
+                                                  'Got pkt_ts_sec but no pkt_ts_usec for packet id ' \
+                                                  '{}'.format(json_dict['packet_id']))
+
         if 'flow_id' in semdict:
             semdict_thread_key = 'thread' + str(json_dict['thread_id'])
             if semdict_thread_key in semdict:
@@ -148,6 +157,18 @@ def onJsonLineRecvd(json_dict, current_flow, global_user_data):
         pass
 
     if 'flow_event_name' in json_dict:
+        try:
+            if json_dict['flow_first_seen'] > current_flow.last_pkt_seen or \
+               json_dict['flow_last_seen'] < current_flow.last_pkt_seen:
+                raise SemanticValidationException(current_flow,
+                                                  'Last packet timestamp is invalid: ' \
+                                                  'first_seen({}) <= {} <= last_seen({})'.format(json_dict['flow_first_seen'],
+                                                                                                 current_flow.last_pkt_seen,
+                                                                                                 json_dict['flow_last_seen']))
+        except AttributeError:
+            if json_dict['flow_event_name'] == 'new':
+                pass
+
         if json_dict['flow_event_name'] == 'end' or \
            json_dict['flow_event_name'] == 'idle':
             current_flow.flow_ended = True
