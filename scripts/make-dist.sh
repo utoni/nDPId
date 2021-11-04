@@ -19,7 +19,8 @@ fi
 git submodule update --init ./libnDPI
 NDPID_GIT_VERSION="$(git describe --tags)"
 cd ./libnDPI && \
-    LIBNDPI_GIT_VERSION="$(git describe --tags)"
+    LIBNDPI_GIT_VERSION="$(git describe --tags)" && \
+    printf '%s\n' "Creating $(realpath ./libnDPI-${LIBNDPI_GIT_VERSION}.tar)" && \
     git archive --prefix="nDPId-${NDPID_GIT_VERSION}/libnDPI/" -o "../libnDPI-${LIBNDPI_GIT_VERSION}.tar" HEAD && \
     cd ..
 git archive --prefix="nDPId-${NDPID_GIT_VERSION}/" -o "./nDPId-${NDPID_GIT_VERSION}.tar" HEAD

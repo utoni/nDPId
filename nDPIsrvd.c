@@ -2,6 +2,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <netdb.h>
+#include <netinet/tcp.h>
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -381,7 +382,7 @@ static int create_listen_sockets(void)
     return 0;
 }
 
-static struct remote_desc * get_unused_remote_descriptor(enum sock_type type, int remote_fd)
+static struct remote_desc * get_unused_remote_descriptor(enum sock_type type, int remote_fd, size_t max_buffer_size)
 {
     if (remotes.desc_used == remotes.desc_size)
     {
@@ -394,7 +395,7 @@ static struct remote_desc * get_unused_remote_descriptor(enum sock_type type, in
         {
             remotes.desc_used++;
             utarray_new(remotes.desc[i].buf_cache, &nDPIsrvd_buffer_array_icd);
-            if (nDPIsrvd_buffer_init(&remotes.desc[i].buf, NETWORK_BUFFER_MAX_SIZE) != 0 ||
+            if (nDPIsrvd_buffer_init(&remotes.desc[i].buf, max_buffer_size) != 0 ||
                 remotes.desc[i].buf_cache == NULL)
             {
                 return NULL;
@@ -569,7 +570,7 @@ static struct remote_desc * accept_remote(int server_fd,
         return NULL;
     }
 
-    struct remote_desc * current = get_unused_remote_descriptor(socktype, client_fd);
+    struct remote_desc * current = get_unused_remote_descriptor(socktype, client_fd, NETWORK_BUFFER_MAX_SIZE);
     if (current == NULL)
     {
         syslog(LOG_DAEMON | LOG_ERR, "Max number of connections reached: %zu", remotes.desc_used);
@@ -625,10 +626,18 @@ static int new_connection(int epollfd, int eventfd)
             if (setsockopt(current->fd, SOL_SOCKET, SO_RCVBUF, &sockopt, sizeof(sockopt)) < 0)
             {
                 syslog(LOG_DAEMON | LOG_ERR, "Error setting socket option SO_RCVBUF: %s", strerror(errno));
+                return 1;
             }
             break;
         case SERV_SOCK:
             sock_type = "distributor";
+
+            if (setsockopt(current->fd, SOL_SOCKET, SO_SNDBUF, &sockopt, sizeof(sockopt)) < 0)
+            {
+                syslog(LOG_DAEMON | LOG_ERR, "Error setting socket option SO_SNDBUF: %s", strerror(errno));
+                return 1;
+            }
+
             if (inet_ntop(current->event_serv.peer.sin_family,
                           &current->event_serv.peer.sin_addr,
                           &current->event_serv.peer_addr[0],
@@ -813,14 +822,13 @@ static int handle_incoming_data(int epollfd, struct remote_desc * const current)
                     syslog(LOG_DAEMON, "Buffer capacity threshold (%zu bytes) reached, caching JSON strings.", remotes.desc[i].buf.used);
 #endif
                     errno = 0;
-                    if (add_out_event(epollfd, remotes.desc[i].fd, &remotes.desc[i]) != 0)
+                    if (add_out_event(epollfd, remotes.desc[i].fd, &remotes.desc[i]) != 0 && errno != EEXIST /* required for nDPId-test */)
                     {
                         syslog(LOG_DAEMON | LOG_ERR, "%s: %s", "Could not add event, disconnecting", strerror(errno));
                         disconnect_client(epollfd, &remotes.desc[i]);
                         continue;
                     }
                 }
-
                 if (add_to_cache(&remotes.desc[i], current->buf.ptr.raw, current->event_json.json_bytes) != 0)
                 {
                     disconnect_client(epollfd, &remotes.desc[i]);

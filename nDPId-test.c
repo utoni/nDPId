@@ -100,13 +100,13 @@ static void * nDPIsrvd_mainloop_thread(void * const arg)
         THREAD_ERROR_GOTO(arg);
     }
 
-    mock_json_desc = get_unused_remote_descriptor(JSON_SOCK, mock_pipefds[PIPE_nDPIsrvd]);
+    mock_json_desc = get_unused_remote_descriptor(JSON_SOCK, mock_pipefds[PIPE_nDPIsrvd], NETWORK_BUFFER_MAX_SIZE);
     if (mock_json_desc == NULL)
     {
         THREAD_ERROR_GOTO(arg);
     }
 
-    mock_serv_desc = get_unused_remote_descriptor(SERV_SOCK, mock_servfds[PIPE_WRITE]);
+    mock_serv_desc = get_unused_remote_descriptor(SERV_SOCK, mock_servfds[PIPE_WRITE], NETWORK_BUFFER_MAX_SIZE / 4);
     if (mock_serv_desc == NULL)
     {
         THREAD_ERROR_GOTO(arg);
@@ -150,6 +150,8 @@ static void * nDPIsrvd_mainloop_thread(void * const arg)
     }
 
 error:
+    drain_cache_blocking(mock_serv_desc);
+
     del_event(epollfd, mock_pipefds[PIPE_nDPIsrvd]);
     del_event(epollfd, mock_servfds[PIPE_WRITE]);
     close(mock_pipefds[PIPE_nDPIsrvd]);
