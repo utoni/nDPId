@@ -5,6 +5,7 @@
 
 NUSER="nobody"
 NSUFFIX="${NSUFFIX:-daemon-test}"
+nDPId_THREADS="${nDPId_THREADS:-4}"
 
 if [ x"${1}" = x -o x"${2}" = x ]; then
     printf '%s\n' "usage: ${0} [nDPId-path] [nDPIsrvd-path]" >&2
@@ -39,7 +40,7 @@ else
     ${2} -p "/tmp/nDPIsrvd-${NSUFFIX}.pid" -c "/tmp/nDPIsrvd-${NSUFFIX}-collector.sock" -s "/tmp/nDPIsrvd-${NSUFFIX}-distributor.sock" -d
     sudo chgrp "$(id -n -g "${NUSER}")" "/tmp/nDPIsrvd-${NSUFFIX}-collector.sock"
     sudo chmod g+w "/tmp/nDPIsrvd-${NSUFFIX}-collector.sock"
-    sudo ${1} -p "/tmp/nDPId-${NSUFFIX}.pid" -c "/tmp/nDPIsrvd-${NSUFFIX}-collector.sock" -d -u "${NUSER}"
+    sudo ${1} -p "/tmp/nDPId-${NSUFFIX}.pid" -c "/tmp/nDPIsrvd-${NSUFFIX}-collector.sock" -d -u "${NUSER}" -o max-reader-threads=${nDPId_THREADS}
     set +x
     printf '%s\n' "daemons started" >&2
     printf '%s\n' "You may now run examples e.g.: $(realpath --relative-to="$(pwd)" $(dirname "${0}")/../examples/py-flow-info/flow-info.py) --unix /tmp/nDPIsrvd-${NSUFFIX}-distributor.sock"

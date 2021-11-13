@@ -19,7 +19,7 @@ build_and_test:
     # static linked build
     - mkdir build-cmake-submodule
     - cd build-cmake-submodule
-    - cmake .. -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DENABLE_SANITIZER=ON -DENABLE_ZLIB=ON
+    - env CMAKE_C_FLAGS='-Werror' cmake .. -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DENABLE_SANITIZER=ON -DENABLE_ZLIB=ON
     - make libnDPI
     - tree libnDPI
     - make install VERBOSE=1 DESTDIR="$(realpath ../_install)"
@@ -33,7 +33,7 @@ build_and_test:
     - mkdir build
     - cd build
     - export PKG_CONFIG_PATH="$(realpath ../build-cmake-submodule/libnDPI/lib/pkgconfig)"
-    - cmake .. -DBUILD_EXAMPLES=ON -DENABLE_SANITIZER=ON -DENABLE_MEMORY_PROFILING=ON -DENABLE_ZLIB=ON
+    - env CMAKE_C_FLAGS='-Werror' cmake .. -DBUILD_EXAMPLES=ON -DENABLE_SANITIZER=ON -DENABLE_MEMORY_PROFILING=ON -DENABLE_ZLIB=ON
     - make all VERBOSE=1
     - cd ..
     - ./build/nDPId-test || test $? -eq 1

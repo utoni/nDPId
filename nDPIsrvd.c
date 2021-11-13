@@ -8,7 +8,9 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
+#ifndef NO_MAIN
 #include <syslog.h>
+#endif
 #include <sys/epoll.h>
 #include <sys/signalfd.h>
 #include <sys/socket.h>

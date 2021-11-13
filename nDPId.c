@@ -16,7 +16,9 @@
 #include <stdlib.h>
 #include <sys/ioctl.h>
 #include <sys/un.h>
+#ifndef NO_MAIN
 #include <syslog.h>
+#endif
 #include <unistd.h>
 #ifdef ENABLE_ZLIB
 #include <zlib.h>
@@ -930,46 +932,205 @@ static void ndpi_free_wrapper(void * const freeable)
     free(p);
 }
 
-static void log_memory_usage(struct nDPId_reader_thread * const reader_thread)
+static void log_memory_usage(struct nDPId_reader_thread const * const reader_thread)
 {
-    struct nDPId_workflow * const workflow = reader_thread->workflow;
-
-    if (workflow->last_memory_usage_log_time + nDPId_options.memory_profiling_print_every < workflow->last_time)
+    if (reader_thread->array_index == 0)
     {
-        if (reader_thread->array_index == 0)
-        {
-            uint64_t alloc_count = __sync_fetch_and_add(&ndpi_memory_alloc_count, 0);
-            uint64_t free_count = __sync_fetch_and_add(&ndpi_memory_free_count, 0);
-            uint64_t alloc_bytes = __sync_fetch_and_add(&ndpi_memory_alloc_bytes, 0);
-            uint64_t free_bytes = __sync_fetch_and_add(&ndpi_memory_free_bytes, 0);
+        uint64_t alloc_count = __sync_fetch_and_add(&ndpi_memory_alloc_count, 0);
+        uint64_t free_count = __sync_fetch_and_add(&ndpi_memory_free_count, 0);
+        uint64_t alloc_bytes = __sync_fetch_and_add(&ndpi_memory_alloc_bytes, 0);
+        uint64_t free_bytes = __sync_fetch_and_add(&ndpi_memory_free_bytes, 0);
 
-            syslog(LOG_DAEMON,
-                   "MemoryProfiler: %llu allocs, %llu frees, %llu bytes allocated, %llu bytes freed, %llu blocks in "
-                   "use, "
-                   "%llu bytes in use",
-                   (long long unsigned int)alloc_count,
-                   (long long unsigned int)free_count,
-                   (long long unsigned int)alloc_bytes,
-                   (long long unsigned int)free_bytes,
-                   (long long unsigned int)(alloc_count - free_count),
-                   (long long unsigned int)(alloc_bytes - free_bytes));
+        syslog(LOG_DAEMON,
+               "MemoryProfiler: %llu allocs, %llu frees, %llu bytes allocated, %llu bytes freed, %llu blocks in "
+               "use, "
+               "%llu bytes in use",
+               (long long unsigned int)alloc_count,
+               (long long unsigned int)free_count,
+               (long long unsigned int)alloc_bytes,
+               (long long unsigned int)free_bytes,
+               (long long unsigned int)(alloc_count - free_count),
+               (long long unsigned int)(alloc_bytes - free_bytes));
 #ifdef ENABLE_ZLIB
-            uint64_t zlib_compression_count = __sync_fetch_and_add(&zlib_compressions, 0);
-            uint64_t zlib_decompression_count = __sync_fetch_and_add(&zlib_decompressions, 0);
-            uint64_t zlib_bytes_diff = __sync_fetch_and_add(&zlib_compression_diff, 0);
+        uint64_t zlib_compression_count = __sync_fetch_and_add(&zlib_compressions, 0);
+        uint64_t zlib_decompression_count = __sync_fetch_and_add(&zlib_decompressions, 0);
+        uint64_t zlib_bytes_diff = __sync_fetch_and_add(&zlib_compression_diff, 0);
 
-            syslog(LOG_DAEMON,
-                   "MemoryProfiler (zLib): %llu compressions, %llu decompressions, %llu compressed blocks in use, %llu "
-                   "bytes "
-                   "diff",
-                   (long long unsigned int)zlib_compression_count,
-                   (long long unsigned int)zlib_decompression_count,
-                   (long long unsigned int)zlib_compression_count - (long long unsigned int)zlib_decompression_count,
-                   (long long unsigned int)zlib_bytes_diff);
+        syslog(LOG_DAEMON,
+               "MemoryProfiler (zLib): %llu compressions, %llu decompressions, %llu compressed blocks in use, %llu "
+               "bytes "
+               "diff",
+               (long long unsigned int)zlib_compression_count,
+               (long long unsigned int)zlib_decompression_count,
+               (long long unsigned int)zlib_compression_count - (long long unsigned int)zlib_decompression_count,
+               (long long unsigned int)zlib_bytes_diff);
 #endif
+    }
+}
+
+struct log_flows_user_data
+{
+    struct nDPId_workflow * workflow;
+    unsigned long long int flows_ukn;
+    unsigned long long int flows_skp;
+    unsigned long long int flows_fin;
+    unsigned long long int flows_inf;
+    struct nDPId_flow_basic const * flows_active_fin[nDPId_MAX_FLOWS_PER_THREAD];
+    struct nDPId_flow_basic const * flows_active_inf[nDPId_MAX_FLOWS_PER_THREAD];
+};
+
+static void log_flows_flow_walker(void const * const A, ndpi_VISIT which, int depth, void * const user_data)
+{
+    struct log_flows_user_data * const log_user_data = (struct log_flows_user_data *)user_data;
+    struct nDPId_flow_basic * const flow_basic = *(struct nDPId_flow_basic **)A;
+
+    (void)depth;
+
+    if (log_user_data->workflow == NULL || flow_basic == NULL)
+    {
+        return;
+    }
+
+    if (which == ndpi_preorder || which == ndpi_leaf)
+    {
+        switch (flow_basic->type)
+        {
+            case FT_UNKNOWN:
+                log_user_data->flows_ukn++;
+                break;
+
+            case FT_SKIPPED:
+                log_user_data->flows_skp++;
+                break;
+
+            case FT_FINISHED:
+            {
+                log_user_data->flows_fin++;
+                log_user_data->flows_active_fin[log_user_data->flows_fin - 1] = flow_basic;
+                break;
+            }
+
+            case FT_INFO:
+            {
+                log_user_data->flows_inf++;
+                log_user_data->flows_active_inf[log_user_data->flows_inf - 1] = flow_basic;
+                break;
+            }
+        }
+    }
+}
+
+static size_t log_flows_to_str(struct nDPId_flow_basic const * flows[nDPId_MAX_FLOWS_PER_THREAD],
+                               unsigned long long int flows_used,
+                               char output[BUFSIZ])
+{
+    size_t output_used = 0;
+    int written;
+
+    output[0] = '\0';
+
+    for (size_t flow_index = 0; flow_index < flows_used; ++flow_index)
+    {
+        struct nDPId_flow_basic const * const flow_basic = flows[flow_index];
+
+        written = -1;
+
+        switch (flow_basic->type)
+        {
+            case FT_UNKNOWN:
+            case FT_SKIPPED:
+                break;
+
+            case FT_FINISHED:
+            {
+                struct nDPId_flow_finished const * const flow_finished = (struct nDPId_flow_finished const *)flow_basic;
+
+#if 1
+                written = snprintf(output + output_used, BUFSIZ, "%u,", flow_finished->flow_info.flow_extended.flow_id);
+#else
+                written =
+                    snprintf(output + output_used,
+                             BUFSIZ,
+                             "[%u, %u, %llu],",
+                             flow_finished->flow_info.flow_extended.flow_id,
+                             flow_finished->flow_info.flow_extended.flow_basic.l4_protocol,
+                             (unsigned long long int const)flow_finished->flow_info.flow_extended.flow_basic.last_seen);
+#endif
+                break;
+            }
+
+            case FT_INFO:
+            {
+                struct nDPId_flow_info const * const flow_info = (struct nDPId_flow_info const *)flow_basic;
+
+#if 1
+                written = snprintf(output + output_used, BUFSIZ, "%u,", flow_info->flow_extended.flow_id);
+#else
+                written = snprintf(output + output_used,
+                                   BUFSIZ,
+                                   "[%u, %u, %llu],",
+                                   flow_info->flow_extended.flow_id,
+                                   flow_info->flow_extended.flow_basic.l4_protocol,
+                                   (unsigned long long int const)flow_info->flow_extended.flow_basic.last_seen);
+#endif
+                break;
+            }
         }
 
-        workflow->last_memory_usage_log_time = workflow->last_time;
+        if (written <= 0)
+        {
+            break;
+        }
+        output_used += written;
+    }
+
+    return (output_used > 0 ? output_used - 1 : 0);
+}
+
+static void log_flows(struct nDPId_reader_thread const * const reader_thread)
+{
+    struct nDPId_workflow * const workflow = reader_thread->workflow;
+    struct log_flows_user_data log_user_data;
+    char flows_log_str[BUFSIZ];
+    size_t flows_log_str_used;
+
+    log_user_data.workflow = reader_thread->workflow;
+    log_user_data.flows_ukn = 0;
+    log_user_data.flows_skp = 0;
+    log_user_data.flows_fin = 0;
+    log_user_data.flows_inf = 0;
+
+    for (size_t scan_index = 0; scan_index < workflow->max_active_flows; ++scan_index)
+    {
+        ndpi_twalk(workflow->ndpi_flows_active[scan_index], log_flows_flow_walker, &log_user_data);
+    }
+
+    syslog(LOG_DAEMON,
+           "MemoryProfiler flow stats: [thread: %d][unknown: %llu][skipped: %llu][finished: %llu][info: %llu]",
+           reader_thread->array_index,
+           log_user_data.flows_ukn,
+           log_user_data.flows_skp,
+           log_user_data.flows_fin,
+           log_user_data.flows_inf);
+
+    flows_log_str_used = log_flows_to_str(log_user_data.flows_active_fin, log_user_data.flows_fin, flows_log_str);
+    if (flows_log_str_used > 0)
+    {
+        syslog(LOG_DAEMON,
+               "MemoryProfiler flows active (finished): [thread: %d][%.*s]",
+               reader_thread->array_index,
+               (int)flows_log_str_used,
+               flows_log_str);
+    }
+
+    flows_log_str_used = log_flows_to_str(log_user_data.flows_active_inf, log_user_data.flows_inf, flows_log_str);
+    if (flows_log_str_used > 0)
+    {
+        syslog(LOG_DAEMON,
+               "MemoryProfiler flows active (info): [thread: %d][%.*s]",
+               reader_thread->array_index,
+               (int)flows_log_str_used,
+               flows_log_str);
     }
 }
 #endif
@@ -2591,7 +2752,12 @@ static void ndpi_process_packet(uint8_t * const args,
 
     check_for_idle_flows(reader_thread);
 #ifdef ENABLE_MEMORY_PROFILING
-    log_memory_usage(reader_thread);
+    if (workflow->last_memory_usage_log_time + nDPId_options.memory_profiling_print_every < workflow->last_time)
+    {
+        log_memory_usage(reader_thread);
+        log_flows(reader_thread);
+        workflow->last_memory_usage_log_time = workflow->last_time;
+    }
 #endif
 
     if (process_datalink_layer(reader_thread, header, packet, &ip_offset, &type) != 0)

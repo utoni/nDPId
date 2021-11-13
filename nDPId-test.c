@@ -3,6 +3,19 @@
 #include <stdarg.h>
 #include <unistd.h>
 
+/*
+ * Mock some syslog variables and functions.
+ * This way, we do not spam any syslog daemon on the host.
+ */
+#define LOG_DAEMON 0x1
+#define LOG_ERR    0x2
+#define LOG_CONS   0x4
+#define LOG_PERROR 0x8
+
+static void openlog(const char *ident, int option, int facility);
+static void syslog(int p, const char * format, ...);
+static void closelog(void);
+
 #define NO_MAIN 1
 #include "nDPIsrvd.c"
 #include "nDPId.c"
@@ -63,7 +76,14 @@ static pthread_mutex_t log_mutex = PTHREAD_MUTEX_INITIALIZER;
         goto error;                                                                                                    \
     } while (0);
 
-void mock_syslog_stderr(int p, const char * format, ...)
+static void openlog(const char *ident, int option, int facility)
+{
+    (void)ident;
+    (void)option;
+    (void)facility;
+}
+
+static void syslog(int p, const char * format, ...)
 {
     va_list ap;
 
@@ -74,6 +94,10 @@ void mock_syslog_stderr(int p, const char * format, ...)
     fprintf(stderr, "%s\n", "");
     pthread_mutex_unlock(&log_mutex);
     va_end(ap);
+}
+
+static void closelog(void)
+{
 }
 
 static int setup_pipe(int pipefd[PIPE_COUNT])

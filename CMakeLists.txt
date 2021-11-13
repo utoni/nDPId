@@ -149,6 +149,7 @@ endif()
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
 set(NDPID_DEFS -DJSMN_STATIC=1 -DJSMN_STRICT=1 -DJSMN_PARENT_LINKS=1)
 if(ENABLE_MEMORY_PROFILING)
+    message(WARNING "ENABLE_MEMORY_PROFILING should not be used in production environments.")
     add_definitions("-DENABLE_MEMORY_PROFILING=1"
                     "-Duthash_malloc=nDPIsrvd_uthash_malloc"
                     "-Duthash_free=nDPIsrvd_uthash_free")
@@ -255,7 +256,7 @@ target_compile_definitions(nDPId-test PRIVATE ${NDPID_DEFS})
 target_include_directories(nDPId-test PRIVATE
                            "${STATIC_LIBNDPI_INC}" "${NDPI_INCLUDEDIR}" "${NDPI_INCLUDEDIR}/ndpi"
                            "${CMAKE_SOURCE_DIR}/dependencies/uthash/src")
-target_compile_definitions(nDPId-test PRIVATE "-D_GNU_SOURCE=1" "-DNO_MAIN=1" "-Dsyslog=mock_syslog_stderr" ${NDPID_TEST_MPROF_DEFS})
+target_compile_definitions(nDPId-test PRIVATE "-D_GNU_SOURCE=1" "-DNO_MAIN=1" ${NDPID_TEST_MPROF_DEFS})
 target_link_libraries(nDPId-test "${STATIC_LIBNDPI_LIB}" "${pkgcfg_lib_NDPI_ndpi}"
                                  "${pkgcfg_lib_PCRE_pcre}" "${pkgcfg_lib_MAXMINDDB_maxminddb}"
                                  "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}" "${LIBM_LIB}"
