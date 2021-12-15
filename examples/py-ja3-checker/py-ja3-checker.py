@@ -105,7 +105,7 @@ def getInfoFromJA3ER(ja3_hash):
             print('No fingerprint for JA3 {} found.'.format(ja3_hash))
 
 
-def onJsonLineRecvd(json_dict, current_flow, global_user_data):
+def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
     if 'tls' in json_dict and 'ja3' in json_dict['tls']:
 
         if json_dict['tls']['client_requested_server_name'] == 'ja3er.com':
@@ -139,7 +139,7 @@ if __name__ == '__main__':
     nsock = nDPIsrvdSocket()
     nsock.connect(address)
     try:
-        nsock.loop(onJsonLineRecvd, None)
+        nsock.loop(onJsonLineRecvd, None, None)
     except nDPIsrvd.SocketConnectionBroken as err:
         sys.stderr.write('\n{}\n'.format(err))
     except KeyboardInterrupt:

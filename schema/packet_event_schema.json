@@ -6,8 +6,25 @@
         "thread_id",
         "packet_id",
         "packet_event_id",
-        "packet_event_name"
+        "packet_event_name",
+        "pkt_oversize",
+        "pkt_caplen",
+        "pkt_type",
+        "pkt_l3_offset",
+        "pkt_l4_offset",
+        "pkt_len",
+        "pkt_l4_len",
+        "ts_msec"
     ],
+    "dependencies" : {
+        "flow_id" : [ "flow_packet_id", "flow_last_seen", "flow_idle_time" ]
+    },
+    "if": {
+        "properties": { "packet_event_name": { "const": "packet-flow" } }
+    },
+    "then": {
+        "required": [ "flow_id" ]
+    },
     "properties": {
         "alias": {
             "type": "string"
@@ -42,6 +59,14 @@
         "flow_packet_id": {
             "type": "number"
         },
+        "flow_last_seen": {
+            "type": "number",
+            "minimum": 24710
+        },
+        "flow_idle_time": {
+            "type": "number",
+            "minimum": 1
+        },
         "pkt_caplen": {
             "type": "number",
             "minimum": 1,
@@ -65,6 +90,10 @@
             "minimum": 0,
             "maximum": 65535
         },
+        "ts_msec": {
+            "type": "number",
+            "minimum": 0
+        },
         "pkt_l4_offset": {
             "type": "number",
             "minimum": 0,
@@ -74,13 +103,6 @@
             "type": "number",
             "minimum": 0,
             "maximum": 65535
-        },
-        "pkt_ts_usec": {
-            "type": "number"
-        },
-        "pkt_ts_sec": {
-            "type": "number",
-            "minimum": 1
         },
         "pkt": {
             "type": "string"

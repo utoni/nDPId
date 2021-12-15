@@ -18,7 +18,7 @@ class Stats:
     print_dot_every = 10
     print_nmb_every = print_dot_every * 5
 
-def onJsonLineRecvd(json_dict, current_flow, global_user_data):
+def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
     validation_done = nDPIsrvd.validateAgainstSchema(json_dict)
 
     global_user_data.lines_processed += 1
@@ -45,7 +45,7 @@ if __name__ == '__main__':
     nsock = nDPIsrvdSocket()
     nsock.connect(address)
     try:
-        nsock.loop(onJsonLineRecvd, Stats())
+        nsock.loop(onJsonLineRecvd, None, Stats())
     except nDPIsrvd.SocketConnectionBroken as err:
         sys.stderr.write('\n{}\n'.format(err))
     except KeyboardInterrupt:

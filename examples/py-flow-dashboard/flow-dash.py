@@ -88,24 +88,25 @@ def update_pie(n):
     values = [0, 0, 0, 0, 0]
 
     for flow_id in shared_flow_dict.keys():
+        try:
+            flow = shared_flow_dict[flow_id]
+        except KeyError:
+            continue
 
-        if shared_flow_dict[flow_id]['is_risky'] is True:
+        if flow['is_risky'] is True:
             values[0] += 1
 
-        if shared_flow_dict[flow_id]['is_midstream'] is True:
+        if flow['is_midstream'] is True:
             values[1] += 1
 
-        if shared_flow_dict[flow_id]['is_detected'] is True:
+        if flow['is_detected'] is True:
             values[2] += 1
 
-        if shared_flow_dict[flow_id]['is_guessed'] is True:
+        if flow['is_guessed'] is True:
             values[3] += 1
 
-        if shared_flow_dict[flow_id]['is_not_detected'] is True:
+        if flow['is_not_detected'] is True:
             values[4] += 1
-
-        if shared_flow_dict[flow_id]['remove_me'] is True:
-            del shared_flow_dict[flow_id]
 
     # print(values)
 
@@ -121,8 +122,13 @@ def web_worker():
     app.run_server()
 
 
-def nDPIsrvd_worker_onJsonLineRecvd(json_dict, current_flow, global_user_data):
-    if 'flow_event_name' not in json_dict:
+def nDPIsrvd_worker_onFlowCleanup(instance, current_flow, global_user_data):
+    del shared_flow_dict[current_flow.flow_id]
+
+    return True
+
+def nDPIsrvd_worker_onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
+    if 'flow_id' not in json_dict:
         return True
 
     # print(json_dict)
@@ -134,7 +140,9 @@ def nDPIsrvd_worker_onJsonLineRecvd(json_dict, current_flow, global_user_data):
         shared_flow_dict[json_dict['flow_id']]['is_not_detected'] = False
         shared_flow_dict[json_dict['flow_id']]['is_midstream'] = False
         shared_flow_dict[json_dict['flow_id']]['is_risky'] = False
-        shared_flow_dict[json_dict['flow_id']]['remove_me'] = False
+
+    if 'flow_event_name' not in json_dict:
+        return True
 
     if json_dict['flow_event_name'] == 'new':
         if 'midstream' in json_dict and json_dict['midstream'] != 0:
@@ -146,12 +154,8 @@ def nDPIsrvd_worker_onJsonLineRecvd(json_dict, current_flow, global_user_data):
     elif json_dict['flow_event_name'] == 'detected':
         shared_flow_dict[json_dict['flow_id']]['is_detected'] = True
         shared_flow_dict[json_dict['flow_id']]['is_guessed'] = False
-        shared_flow_dict[json_dict['flow_id']]['is_not_detected'] = False
         if 'ndpi' in json_dict and 'flow_risk' in json_dict['ndpi']:
             shared_flow_dict[json_dict['flow_id']]['is_risky'] = True
-    elif json_dict['flow_event_name'] == 'idle' or \
-            json_dict['flow_event_name'] == 'end':
-        shared_flow_dict[json_dict['flow_id']]['remove_me'] = True
 
     return True
 
@@ -165,7 +169,9 @@ def nDPIsrvd_worker(address, nDPIsrvd_global_user_data):
 
     nsock = nDPIsrvdSocket()
     nsock.connect(address)
-    nsock.loop(nDPIsrvd_worker_onJsonLineRecvd, nDPIsrvd_global_user_data)
+    nsock.loop(nDPIsrvd_worker_onJsonLineRecvd,
+               nDPIsrvd_worker_onFlowCleanup,
+               nDPIsrvd_global_user_data)
 
 
 if __name__ == '__main__':

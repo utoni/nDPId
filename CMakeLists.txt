@@ -15,6 +15,7 @@ set(CPACK_DEBIAN_PACKAGE_NAME "nDPId")
 set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
 set(CPACK_PACKAGE_VERSION_MAJOR 1)
 set(CPACK_PACKAGE_VERSION_MINOR 5)
+set(CPACK_PACKAGE_VERSION_PATCH 0)
 
 include(CPack)
 include(CheckFunctionExists)
@@ -291,7 +292,18 @@ if(BUILD_EXAMPLES)
                                "${CMAKE_SOURCE_DIR}"
                                "${CMAKE_SOURCE_DIR}/dependencies/jsmn")
 
-    install(TARGETS nDPIsrvd-collectd nDPIsrvd-captured nDPIsrvd-json-dump DESTINATION bin)
+    add_executable(nDPIsrvd-simple examples/c-simple/c-simple.c)
+    target_compile_definitions(nDPIsrvd-simple PRIVATE ${NDPID_DEFS})
+    target_include_directories(nDPIsrvd-simple PRIVATE
+                               "${CMAKE_SOURCE_DIR}"
+                               "${CMAKE_SOURCE_DIR}/dependencies"
+                               "${CMAKE_SOURCE_DIR}/dependencies/jsmn"
+                               "${CMAKE_SOURCE_DIR}/dependencies/uthash/src")
+    target_link_libraries(nDPIsrvd-simple "${pkgcfg_lib_NDPI_ndpi}"
+                                          "${pkgcfg_lib_PCRE_pcre}" "${pkgcfg_lib_MAXMINDDB_maxminddb}"
+                                          "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}")
+
+    install(TARGETS nDPIsrvd-collectd nDPIsrvd-captured nDPIsrvd-json-dump nDPIsrvd-simple DESTINATION bin)
 endif()
 
 install(TARGETS nDPId DESTINATION sbin)

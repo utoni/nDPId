@@ -51,7 +51,15 @@ All JSON strings sent need to be in the following format:
 ```text
 00015{"key":"value"}
 ```
-where `00015` describes the length of a **complete** JSON string.
+where `00015` describes the length (as decimal number) of the **entire** JSON string including the newline `\n` at the end.
+
+A common sequence of received JSON strings could look alike (simplified):
+```text
+00070{"flow_event_id":1,"flow_event_name":"new","packet_id":1,"flow_id":1}
+00101{"flow_id":1,"flow_packet_id":1,"packet_event_id":2,"packet_event_name":"packet-flow","packet_id":1}
+00075{"flow_event_id":5,"flow_event_name":"detected","packet_id":4,"flow_id":1}
+00093{"flow_event_id":2,"flow_event_name":"end","packet_id":258,"flow_id":1,"flow_packet_id":258}
+```
 
 # build (CMake)
 

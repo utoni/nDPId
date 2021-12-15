@@ -8,6 +8,18 @@
         "daemon_event_id",
         "daemon_event_name"
     ],
+    "if": {
+        "properties": { "daemon_event_name": { "const": "init" } }
+    },
+    "then": {
+        "required": [ "max-flows-per-thread", "max-idle-flows-per-thread", "tick-resolution", "reader-thread-count", "flow-scan-interval", "generic-max-idle-time", "icmp-max-idle-time", "udp-max-idle-time", "tcp-max-idle-time", "max-packets-per-flow-to-send", "max-packets-per-flow-to-process" ]
+    },
+    "if": {
+        "properties": { "daemon_event_name": { "const": "shutdown" } }
+    },
+    "then": {
+        "required": [ "total-events-serialized" ]
+    },
     "properties": {
         "alias": {
             "type": "string"
@@ -50,7 +62,7 @@
         "reader-thread-count": {
             "type": "number"
         },
-        "idle-scan-period": {
+        "flow-scan-interval": {
             "type": "number"
         },
         "generic-max-idle-time": {
@@ -65,14 +77,15 @@
         "tcp-max-idle-time": {
             "type": "number"
         },
-        "tcp-max-post-end-flow-time": {
-            "type": "number"
-        },
         "max-packets-per-flow-to-process": {
             "type": "number"
         },
         "max-packets-per-flow-to-send": {
             "type": "number"
+        },
+        "total-events-serialized": {
+            "type": "number",
+            "minimum": 1
         }
     },
     "additionalProperties": false

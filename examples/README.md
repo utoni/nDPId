@@ -17,9 +17,13 @@ A collecd-exec compatible middleware that gathers statistic values from nDPId.
 
 Tiny nDPId json dumper. Does not provide any useful funcationality besides dumping parsed JSON objects.
 
-## go-dashboard
+## c-simple
 
-A discontinued tty UI nDPId dashboard. I've figured out that Go + UI is a bad idea, in particular if performance is a concern.
+Very tiny integration example.
+
+## go-dashboard (DISCONTINUED!)
+
+A discontinued tty UI nDPId dashboard.
 
 ## py-flow-info
 

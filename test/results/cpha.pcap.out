@@ -1,18 +1,19 @@
-00472{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"cpha.pcap","alias":"nDPId-test","max-flows-per-thread":2048,"max-idle-flows-per-thread":256,"tick-resolution":1000,"reader-thread-count":1,"idle-scan-period":10000,"generic-max-idle-time":600000,"icmp-max-idle-time":10000,"udp-max-idle-time":180000,"tcp-max-idle-time":7440000,"tcp-max-post-end-flow-time":120000,"max-packets-per-flow-to-send":15,"max-packets-per-flow-to-process":255}
-00426{"packet_event_id":1,"packet_event_name":"packet","thread_id":0,"packet_id":1,"source":"cpha.pcap","alias":"nDPId-test","pkt_oversize":false,"pkt_ts_sec":1603354463,"pkt_ts_usec":286532,"pkt_caplen":96,"pkt_type":33024,"pkt_l3_offset":14,"pkt_l4_offset":0,"pkt_len":96,"pkt_l4_len":0,"pkt":"AQBeFQMBAAAAAAEBgQAAFQgARQAATgAAAAD\/EQyKAAAAAKwVAwAftB+0ADpJ\/BqQDDEnhQABABZ5PgAB\/\/7gSgEAAAIAAQAACAoAAgADAAQAAAIECQAAAAkAAAAAAAIA"}
+00438{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"cpha.pcap","alias":"nDPId-test","max-flows-per-thread":2048,"max-idle-flows-per-thread":256,"tick-resolution":1000,"reader-thread-count":1,"flow-scan-interval":10000,"generic-max-idle-time":600000,"icmp-max-idle-time":120000,"udp-max-idle-time":180000,"tcp-max-idle-time":7460000,"max-packets-per-flow-to-send":3,"max-packets-per-flow-to-process":255}
+00405{"packet_event_id":1,"packet_event_name":"packet","thread_id":0,"packet_id":1,"source":"cpha.pcap","alias":"nDPId-test","pkt_oversize":false,"pkt_caplen":96,"pkt_type":33024,"pkt_l3_offset":14,"pkt_l4_offset":0,"pkt_len":96,"pkt_l4_len":0,"ts_msec":1603354463286,"pkt":"AQBeFQMBAAAAAAEBgQAAFQgARQAATgAAAAD\/EQyKAAAAAKwVAwAftB+0ADpJ\/BqQDDEnhQABABZ5PgAB\/\/7gSgEAAAIAAQAACAoAAgADAAQAAAIECQAAAAkAAAAAAAIA"}
 00145{"basic_event_id":5,"basic_event_name":"Unknown packet type","thread_id":0,"packet_id":1,"source":"cpha.pcap","alias":"nDPId-test","type":33024}
-00123{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":1,"source":"cpha.pcap","alias":"nDPId-test"}
+00151{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":1,"source":"cpha.pcap","alias":"nDPId-test","total-events-serialized":4}
 ~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~
 ~~ packets captured/processed: 1/0
 ~~ skipped flows.............: 0
 ~~ total layer4 data length..: 0 bytes
 ~~ total detected protocols..: 0
 ~~ total active/idle flows...: 0/0
+~~ total timeout flows.......: 0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~ total memory allocated....: 1926468 bytes
-~~ total memory freed........: 1926468 bytes
+~~ total memory allocated....: 1926508 bytes
+~~ total memory freed........: 1926508 bytes
 ~~ total allocations/frees...: 35335/35335
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~ json string min len.......: 128 chars
-~~ json string max len.......: 477 chars
-~~ json string avg len.......: 315 chars
+~~ json string min len.......: 150 chars
+~~ json string max len.......: 443 chars
+~~ json string avg len.......: 302 chars

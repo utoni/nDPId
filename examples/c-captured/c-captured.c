@@ -18,6 +18,7 @@
 #include <unistd.h>
 
 #include <ndpi_typedefs.h>
+#include <ndpi_api.h>
 
 #include "nDPIsrvd.h"
 #include "utarray.h"
@@ -41,7 +42,6 @@ struct packet_data
 
 struct flow_user_data
 {
-    nDPIsrvd_ull flow_last_seen_ts_sec;
     uint8_t flow_new_seen;
     uint8_t detection_finished;
     uint8_t guessed;
@@ -70,6 +70,19 @@ static uint8_t process_undetected = 0;
 static ndpi_risk process_risky = NDPI_NO_RISK;
 static uint8_t process_midstream = 0;
 static uint8_t ignore_empty_flows = 0;
+
+#ifdef ENABLE_MEMORY_PROFILING
+void nDPIsrvd_memprof_log(char const * const format, ...)
+{
+    va_list ap;
+
+    va_start(ap, format);
+    fprintf(stderr, "%s", "nDPIsrvd MemoryProfiler: ");
+    vfprintf(stderr, format, ap);
+    fprintf(stderr, "%s\n", "");
+    va_end(ap);
+}
+#endif
 
 static void packet_data_copy(void * dst, const void * src)
 {
@@ -324,11 +337,14 @@ static enum nDPIsrvd_conversion_return perror_ull(enum nDPIsrvd_conversion_retur
 }
 
 static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_socket * const sock,
+                                                            struct nDPIsrvd_instance * const instance,
                                                             struct nDPIsrvd_flow * const flow)
 {
+    (void)instance;
+
     if (flow == NULL)
     {
-        return CALLBACK_OK; // We do not care for non flow/packet-flow events for NOW.
+        return CALLBACK_OK; // We do not care for non-flow events for NOW except for packet-flow events.
     }
 
     struct flow_user_data * const flow_user = (struct flow_user_data *)flow->flow_user_data;
@@ -354,11 +370,8 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
             return CALLBACK_ERROR;
         }
 
-        nDPIsrvd_ull pkt_ts_sec = 0ull;
-        perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "pkt_ts_sec"), &pkt_ts_sec), "pkt_ts_sec");
-
-        nDPIsrvd_ull pkt_ts_usec = 0ull;
-        perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "pkt_ts_usec"), &pkt_ts_usec), "pkt_ts_usec");
+        nDPIsrvd_ull ts_msec = 0ull;
+        perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "ts_msec"), &ts_msec), "ts_msec");
 
         nDPIsrvd_ull pkt_len = 0ull;
         perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "pkt_len"), &pkt_len), "pkt_len");
@@ -369,8 +382,8 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
         nDPIsrvd_ull pkt_l4_offset = 0ull;
         perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "pkt_l4_offset"), &pkt_l4_offset), "pkt_l4_offset");
 
-        struct packet_data pd = {.packet_ts_sec = pkt_ts_sec,
-                                 .packet_ts_usec = pkt_ts_usec,
+        struct packet_data pd = {.packet_ts_sec = ts_msec / 1000,
+                                 .packet_ts_usec = (ts_msec % 1000) * 1000,
                                  .packet_len = pkt_len,
                                  .base64_packet_size = pkt->value_length,
                                  .base64_packet_const = pkt->value};
@@ -385,9 +398,6 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
             perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_tot_l4_payload_len"),
                                           &flow_user->flow_tot_l4_payload_len),
                        "flow_tot_l4_payload_len");
-
-            perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_last_seen"), &flow_user->flow_last_seen_ts_sec),
-                       "flow_last_seen");
         }
 
         if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "new") != 0)
@@ -480,12 +490,14 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
     return CALLBACK_OK;
 }
 
-static void nDPIsrvd_write_flow_info_cb(int outfd, struct nDPIsrvd_flow * const flow)
+static void nDPIsrvd_write_flow_info_cb(struct nDPIsrvd_flow const * const flow, void * user_data)
 {
-    struct flow_user_data * const flow_user = (struct flow_user_data *)flow->flow_user_data;
+    (void)user_data;
 
-    dprintf(outfd,
-            "[ptr: "
+    struct flow_user_data const * const flow_user = (struct flow_user_data const *)flow->flow_user_data;
+
+    fprintf(stderr,
+            "[Flow %4llu][ptr: "
 #ifdef __LP64__
             "0x%016llx"
 #else
@@ -493,13 +505,14 @@ static void nDPIsrvd_write_flow_info_cb(int outfd, struct nDPIsrvd_flow * const 
 #endif
             "][last-seen: %13llu][new-seen: %u][finished: %u][detected: %u][risky: "
             "%u][total-L4-payload-length: "
-            "%4llu][packets-captured: %u]",
+            "%4llu][packets-captured: %u]\n",
+            flow->id_as_ull,
 #ifdef __LP64__
             (unsigned long long int)flow,
 #else
             (unsigned long int)flow,
 #endif
-            flow_user->flow_last_seen_ts_sec,
+            flow->last_seen,
             flow_user->flow_new_seen,
             flow_user->detection_finished,
             flow_user->detected,
@@ -523,7 +536,7 @@ static void nDPIsrvd_write_flow_info_cb(int outfd, struct nDPIsrvd_flow * const 
 #else
            (unsigned long int)flow,
 #endif
-           flow_user->flow_last_seen_ts_sec,
+           flow->last_seen,
            flow_user->flow_new_seen,
            flow_user->detection_finished,
            flow_user->detected,
@@ -536,7 +549,7 @@ static void sighandler(int signum)
 {
     if (signum == SIGUSR1)
     {
-        nDPIsrvd_write_flow_info(2, sock, nDPIsrvd_write_flow_info_cb);
+        nDPIsrvd_flow_info(sock, nDPIsrvd_write_flow_info_cb, NULL);
     }
     else if (main_thread_shutdown == 0)
     {
@@ -544,9 +557,14 @@ static void sighandler(int signum)
     }
 }
 
-static void captured_flow_end_callback(struct nDPIsrvd_socket * const sock, struct nDPIsrvd_flow * const flow)
+static void captured_flow_cleanup_callback(struct nDPIsrvd_socket * const sock,
+                                           struct nDPIsrvd_instance * const instance,
+                                           struct nDPIsrvd_flow * const flow,
+                                           enum nDPIsrvd_cleanup_reason reason)
 {
     (void)sock;
+    (void)instance;
+    (void)reason;
 
 #ifdef VERBOSE
     printf("flow %llu end, remaining flows: %u\n", flow->id_as_ull, sock->flow_table->hh.tbl->num_items);
@@ -758,7 +776,8 @@ static int mainloop(void)
 
 int main(int argc, char ** argv)
 {
-    sock = nDPIsrvd_init(0, sizeof(struct flow_user_data), captured_json_callback, captured_flow_end_callback);
+    sock =
+        nDPIsrvd_socket_init(0, sizeof(struct flow_user_data), captured_json_callback, captured_flow_cleanup_callback);
     if (sock == NULL)
     {
         fprintf(stderr, "%s: nDPIsrvd socket memory allocation failed!\n", argv[0]);
@@ -777,7 +796,7 @@ int main(int argc, char ** argv)
     if (connect_ret != CONNECT_OK)
     {
         fprintf(stderr, "%s: nDPIsrvd socket connect to %s failed!\n", argv[0], serv_optarg);
-        nDPIsrvd_free(&sock);
+        nDPIsrvd_socket_free(&sock);
         return 1;
     }
 
@@ -809,7 +828,7 @@ int main(int argc, char ** argv)
 
     int retval = mainloop();
 
-    nDPIsrvd_free(&sock);
+    nDPIsrvd_socket_free(&sock);
     daemonize_shutdown(pidfile);
     closelog();
 

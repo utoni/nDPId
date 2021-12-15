@@ -19,7 +19,7 @@ var (
 	InfoLogger    *log.Logger
 	ErrorLogger   *log.Logger
 
-	NETWORK_BUFFER_MAX_SIZE uint16 = 12288
+	NETWORK_BUFFER_MAX_SIZE uint16 = 13312
 	NETWORK_BUFFER_LENGTH_DIGITS uint16 = 5
 )
 
@@ -30,11 +30,11 @@ type packet_event struct {
 	FlowID       uint32 `json:"flow_id"`
 	FlowPacketID uint64 `json:"flow_packet_id"`
 
+	Timestamp uint64 `json:"ts_msec"`
+
 	PacketEventID       uint8  `json:"packet_event_id"`
 	PacketEventName     string `json:"packet_event_name"`
 	PacketOversize      bool   `json:"pkt_oversize"`
-	PacketTimestampS    uint64 `json:"pkt_ts_sec"`
-	PacketTimestampUs   uint64 `json:"pkt_ts_usec"`
 	PacketLength        uint32 `json:"pkt_len"`
 	PacketL4Length      uint32 `json:"pkt_l4_len"`
 	Packet              string `json:"pkt"`
@@ -49,7 +49,7 @@ type flow_event struct {
 	PacketID uint64 `json:"packet_id"`
 
 	FlowID                    uint32 `json:"flow_id"`
-	FlowPacketID              uint64 `json:"flow_packet_id"`
+	FlowPacketID              uint64 `json:"flow_packets_processed"`
 	FlowFirstSeen             uint64 `json:"flow_first_seen"`
 	FlowLastSeen              uint64 `json:"flow_last_seen"`
 	FlowTotalLayer4DataLength uint64 `json:"flow_tot_l4_data_len"`

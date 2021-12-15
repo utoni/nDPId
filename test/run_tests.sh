@@ -84,6 +84,8 @@ nDPI pcaps: ${nDPI_TEST_DIR} ($(ls -l *.pcap *.pcapng *.cap | wc -l) total)
 EOF
 
 mkdir -p /tmp/nDPId-test-stderr
+mkdir -p /tmp/nDPId-test-stdout
+
 set +e
 TESTS_FAILED=0
 
@@ -101,8 +103,8 @@ for pcap_file in *.pcap *.pcapng *.cap; do
 
     printf "%-${LINE_SPACES}s\t" "${pcap_file}"
 
-    PRINT_SUMMARY=y ${nDPId_test_EXEC} "${pcap_file}" \
-        >"${MYDIR}/results/${pcap_file}.out.new" \
+    ${nDPId_test_EXEC} "${pcap_file}" \
+        >"/tmp/nDPId-test-stdout/${pcap_file}.out.new" \
         2>>"/tmp/nDPId-test-stderr/${pcap_file}.out"
     nDPId_test_RETVAL=$?
 
@@ -122,17 +124,18 @@ for pcap_file in *.pcap *.pcapng *.cap; do
     elif [ ${nDPId_test_RETVAL} -eq 0 ]; then
         if [ ! -r "${MYDIR}/results/${pcap_file}.out" ]; then
             printf '%s\n' '[NEW]'
-            mv -v "${MYDIR}/results/${pcap_file}.out.new" \
+            mv -v "/tmp/nDPId-test-stdout/${pcap_file}.out.new" \
                   "${MYDIR}/results/${pcap_file}.out"
             TESTS_FAILED=$((TESTS_FAILED + 1))
         elif diff -u0 "${MYDIR}/results/${pcap_file}.out" \
-                      "${MYDIR}/results/${pcap_file}.out.new" >/dev/null; then
+                      "/tmp/nDPId-test-stdout/${pcap_file}.out.new" >/dev/null; then
             printf '%s\n' '[OK]'
+            rm -f "/tmp/nDPId-test-stdout/${pcap_file}.out.new"
         else
             printf '%s\n' '[DIFF]'
             diff -u0 "${MYDIR}/results/${pcap_file}.out" \
-                     "${MYDIR}/results/${pcap_file}.out.new"
-            mv -v "${MYDIR}/results/${pcap_file}.out.new" \
+                     "/tmp/nDPId-test-stdout/${pcap_file}.out.new"
+            mv -v "/tmp/nDPId-test-stdout/${pcap_file}.out.new" \
                   "${MYDIR}/results/${pcap_file}.out"
             TESTS_FAILED=$((TESTS_FAILED + 1))
         fi
@@ -143,8 +146,6 @@ for pcap_file in *.pcap *.pcapng *.cap; do
         cat "/tmp/nDPId-test-stderr/${pcap_file}.out"
         TESTS_FAILED=$((TESTS_FAILED + 1))
     fi
-
-    rm -f "${MYDIR}/results/${pcap_file}.out.new"
 done
 
 function validate_results()
@@ -166,7 +167,7 @@ function validate_results()
         return 0
     fi
 
-    # Note that the grep command is required as we generate a summary in the results file. (PRINT_SUMMARY=y)
+    # Note that the grep command is required as we generate a summary in the results file.
     cat "${result_file}" | grep -vE '^~~.*$' | ${NETCAT_EXEC} &
     nc_pid=$!
     printf '%s\n' "-- ${validator_exec}" >>"/tmp/nDPId-test-stderr/${pcap_file}.out"

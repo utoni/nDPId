@@ -8,9 +8,10 @@
         "flow_event_id",
         "flow_event_name",
         "flow_id",
-        "flow_packet_id",
+        "flow_packets_processed",
         "flow_first_seen",
         "flow_last_seen",
+        "flow_idle_time",
         "flow_min_l4_payload_len",
         "flow_max_l4_payload_len",
         "flow_tot_l4_payload_len",
@@ -18,9 +19,40 @@
         "l3_proto",
         "l4_proto",
         "midstream",
+        "ts_msec",
         "src_ip",
         "dst_ip"
     ],
+    "if": {
+        "properties": { "flow_event_name": { "const": "update" } }
+    },
+    "then": {
+        "required": [ "flow_datalink", "flow_max_packets" ]
+    },
+    "if": {
+        "properties": { "flow_event_name": { "const": "not-detected" } }
+    },
+    "then": {
+        "required": [ "ndpi" ]
+    },
+    "if": {
+        "properties": { "flow_event_name": { "const": "guessed" } }
+    },
+    "then": {
+        "required": [ "ndpi" ]
+    },
+    "if": {
+        "properties": { "flow_event_name": { "const": "detected" } }
+    },
+    "then": {
+        "required": [ "ndpi" ]
+    },
+    "if": {
+        "properties": { "flow_event_name": { "const": "detection-update" } }
+    },
+    "then": {
+        "required": [ "ndpi" ]
+    },
     "properties": {
         "alias": {
             "type": "string"
@@ -40,7 +72,7 @@
         "flow_event_id": {
             "type": "number",
             "minimum": 0,
-            "maximum": 7
+            "maximum": 8
         },
         "flow_event_name": {
             "type": "string",
@@ -49,23 +81,28 @@
                 "new",
                 "end",
                 "idle",
+                "update",
                 "guessed",
                 "detected",
                 "detection-update",
                 "not-detected"
             ]
         },
+        "flow_id": {
+            "type": "number",
+            "minimum": 1
+        },
         "flow_datalink": {
             "type": "number",
             "minimum": 0,
             "maximum": 265
         },
-        "flow_id": {
-            "type": "number",
-            "minimum": 1
-        },
-        "flow_packet_id": {
+        "flow_packets_processed": {
             "type": "number"
+        },
+        "flow_max_packets": {
+            "type": "number",
+            "minimum": 0
         },
         "flow_first_seen": {
             "type": "number",
@@ -75,8 +112,9 @@
             "type": "number",
             "minimum": 24710
         },
-        "flow_max_packets": {
-            "type": "number"
+        "flow_idle_time": {
+            "type": "number",
+            "minimum": 1
         },
         "flow_min_l4_payload_len": {
             "type": "number"
@@ -118,6 +156,10 @@
             "type": "number",
             "minimum": 0,
             "maximum": 1
+        },
+        "ts_msec": {
+            "type": "number",
+            "minimum": 0
         },
         "src_ip": {
             "type": "string",

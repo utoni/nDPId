@@ -23,7 +23,6 @@
         syslog(flags, format, __VA_ARGS__);                                                                            \
     }
 
-static struct nDPIsrvd_socket * sock = NULL;
 static int main_thread_shutdown = 0;
 static int collectd_timerfd = -1;
 static pid_t collectd_pid;
@@ -97,6 +96,19 @@ static struct
     uint64_t flow_l4_other_count;
 } collectd_statistics = {};
 
+#ifdef ENABLE_MEMORY_PROFILING
+void nDPIsrvd_memprof_log(char const * const format, ...)
+{
+    va_list ap;
+
+    va_start(ap, format);
+    fprintf(stderr, "%s", "nDPIsrvd MemoryProfiler: ");
+    vfprintf(stderr, format, ap);
+    fprintf(stderr, "%s\n", "");
+    va_end(ap);
+}
+#endif
+
 static int set_collectd_timer(void)
 {
     const time_t interval = collectd_interval_ull * 1000;
@@ -132,7 +144,7 @@ static void sighandler(int signum)
     }
 }
 
-static int parse_options(int argc, char ** argv)
+static int parse_options(int argc, char ** argv, struct nDPIsrvd_socket * const sock)
 {
     int opt;
 
@@ -344,7 +356,7 @@ static void print_collectd_exec_output(void)
     memset(&collectd_statistics, 0, sizeof(collectd_statistics));
 }
 
-static int mainloop(int epollfd)
+static int mainloop(int epollfd, struct nDPIsrvd_socket * const sock)
 {
     struct epoll_event events[32];
     size_t const events_size = sizeof(events) / sizeof(events[0]);
@@ -427,9 +439,11 @@ static uint64_t get_total_flow_bytes(struct nDPIsrvd_socket * const sock)
 }
 
 static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_socket * const sock,
+                                                            struct nDPIsrvd_instance * const instance,
                                                             struct nDPIsrvd_flow * const flow)
 {
     (void)sock;
+    (void)instance;
     (void)flow;
 
     struct nDPIsrvd_json_token const * const flow_event_name = TOKEN_GET_SZ(sock, "flow_event_name");
@@ -668,14 +682,14 @@ int main(int argc, char ** argv)
 
     openlog("nDPIsrvd-collectd", LOG_CONS, LOG_DAEMON);
 
-    sock = nDPIsrvd_init(0, 0, captured_json_callback, NULL);
+    struct nDPIsrvd_socket * sock = nDPIsrvd_socket_init(0, 0, captured_json_callback, NULL);
     if (sock == NULL)
     {
         LOG(LOG_DAEMON | LOG_ERR, "%s", "nDPIsrvd socket memory allocation failed!");
         return 1;
     }
 
-    if (parse_options(argc, argv) != 0)
+    if (parse_options(argc, argv, sock) != 0)
     {
         return 1;
     }
@@ -696,7 +710,7 @@ int main(int argc, char ** argv)
     if (connect_ret != CONNECT_OK)
     {
         LOG(LOG_DAEMON | LOG_ERR, "nDPIsrvd socket connect to %s failed!", serv_optarg);
-        nDPIsrvd_free(&sock);
+        nDPIsrvd_socket_free(&sock);
         return 1;
     }
 
@@ -738,9 +752,9 @@ int main(int argc, char ** argv)
     }
 
     LOG(LOG_DAEMON | LOG_NOTICE, "%s", "Initialization succeeded.");
-    retval = mainloop(epollfd);
+    retval = mainloop(epollfd, sock);
 
-    nDPIsrvd_free(&sock);
+    nDPIsrvd_socket_free(&sock);
     close(collectd_timerfd);
     close(epollfd);
     closelog();

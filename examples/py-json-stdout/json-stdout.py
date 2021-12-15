@@ -13,7 +13,7 @@ except ImportError:
     import nDPIsrvd
     from nDPIsrvd import nDPIsrvdSocket, TermColor
 
-def onJsonLineRecvd(json_dict, current_flow, global_user_data):
+def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
     print(json_dict)
     return True
 
@@ -27,4 +27,4 @@ if __name__ == '__main__':
 
     nsock = nDPIsrvdSocket()
     nsock.connect(address)
-    nsock.loop(onJsonLineRecvd, None)
+    nsock.loop(onJsonLineRecvd, None, None)
