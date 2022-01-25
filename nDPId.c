@@ -1540,12 +1540,13 @@ static uint64_t get_l4_protocol_idle_time(uint8_t l4_protocol)
 static int is_l4_protocol_timed_out(struct nDPId_workflow const * const workflow,
                                     struct nDPId_flow_basic const * const flow_basic)
 {
+    uint64_t sdiff = flow_basic->last_seen % nDPId_options.flow_scan_interval;
     uint64_t itime =
-        get_l4_protocol_idle_time(flow_basic->l4_protocol) - (flow_basic->last_seen % nDPId_options.flow_scan_interval);
+        get_l4_protocol_idle_time(flow_basic->l4_protocol) - sdiff;
 
     return (flow_basic->last_seen + itime <= workflow->last_time) ||
            (flow_basic->tcp_fin_rst_seen == 1 &&
-            flow_basic->last_seen + nDPId_options.tcp_max_post_end_flow_time <= workflow->last_time);
+            flow_basic->last_seen + nDPId_options.tcp_max_post_end_flow_time - sdiff <= workflow->last_time);
 }
 
 static int is_flow_update_required(struct nDPId_workflow const * const workflow,
@@ -3339,7 +3340,7 @@ static void ndpi_process_packet(uint8_t * const args,
         struct nDPId_flow_basic * const flow_basic_to_process = *(struct nDPId_flow_basic **)tree_result;
         /* Update last seen timestamp for timeout handling. */
         flow_basic_to_process->last_seen = workflow->last_time;
-        /* TCP-FIN: indicates that at least one side wants to end the connection. */
+        /* TCP-FIN/TCP-RST: indicates that at least one side wants to end the connection. */
         if (flow_basic.tcp_fin_rst_seen != 0)
         {
             flow_basic_to_process->tcp_fin_rst_seen = 1;
@@ -4380,7 +4381,7 @@ int main(int argc, char ** argv)
         sleep(1);
     }
 
-    if (nDPId_main_thread_shutdown == 1 && stop_reader_threads() != 0)
+    if (stop_reader_threads() != 0)
     {
         return 1;
     }

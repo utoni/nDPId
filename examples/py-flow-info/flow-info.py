@@ -72,7 +72,11 @@ class Stats:
         set_attr_from_dict(current_flow, json_dict, 'flow_event_name', '')
         set_attr_if_not_set(current_flow, 'guessed', False)
         set_attr_if_not_set(current_flow, 'not_detected', False)
-        if current_flow.flow_event_name == 'guessed':
+
+        if current_flow.flow_event_name == 'detected' or \
+           current_flow.flow_event_name == 'detection-update':
+            current_flow.guessed = False
+        elif current_flow.flow_event_name == 'guessed':
             current_flow.guessed = True
         elif current_flow.flow_event_name == 'not-detected':
             current_flow.not_detected = True
