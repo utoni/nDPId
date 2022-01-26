@@ -477,6 +477,10 @@ static void disconnect_client(int epollfd, struct remote_desc * const current)
         current->fd = -1;
         remotes.desc_used--;
     }
+    if (current->buf_cache != NULL)
+    {
+        utarray_clear(current->buf_cache);
+    }
     nDPIsrvd_buffer_free(&current->buf);
 }
 
