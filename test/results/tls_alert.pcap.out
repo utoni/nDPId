@@ -3,7 +3,7 @@
 00477{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":1,"source":"tls_alert.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":1,"flow_last_seen":1628259176203,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":78,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":78,"pkt_l4_len":44,"ts_msec":1628259176203,"pkt":"AICPmq69oM7IELEuCABFAABAAABAAEAGtpPAqAHAwKgBFPa2AbvtIEkOAAAAALAC\/\/9MagAAAgQFtAEDAwUBAQgKE9Ij+wAAAAAEAgAA"}
 00471{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":2,"source":"tls_alert.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":2,"flow_last_seen":1628259176203,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":74,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":74,"pkt_l4_len":40,"ts_msec":1628259176203,"pkt":"oM7IELEuAICPmq69CABFAAA8AABAAEAGtpfAqAEUwKgBwAG79rbEoc1F7SBJD6AScSBz9QAAAgQFtAQCCAoAseWtE9Ij+wEDAwc="}
 00461{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":3,"source":"tls_alert.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":3,"flow_last_seen":1628259176203,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":66,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":66,"pkt_l4_len":32,"ts_msec":1628259176203,"pkt":"AICPmq69oM7IELEuCABFAAA0AABAAEAGtp\/AqAHAwKgBFPa2AbvtIEkPxKHNRoAQEBUDzQAAAQEIChPSI\/sAseWt"}
-00898{"flow_event_id":6,"flow_event_name":"detected","thread_id":0,"packet_id":4,"source":"tls_alert.pcap","alias":"nDPId-test","flow_id":1,"flow_packets_processed":4,"flow_first_seen":1628259176203,"flow_last_seen":1628259176204,"flow_idle_time":7440000,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":199,"flow_tot_l4_payload_len":199,"flow_avg_l4_payload_len":49,"midstream":0,"ts_msec":1628259176204,"l3_proto":"ip4","src_ip":"192.168.1.192","dst_ip":"192.168.1.20","src_port":63158,"dst_port":443,"l4_proto":"tcp","ndpi": {"flow_risk": {"7":"Obsolete TLS version (older than 1.2)"},"proto":"TLS.Google","breed":"Tracker\/Ads","category":"Web"},"tls": {"version":"TLSv1","client_requested_server_name":"www.google-analytics.com","ja3":"d78489b860c8bf7838a6ff0b4d131541","ja3s":"","unsafe_cipher":0,"cipher":"TLS_NULL_WITH_NULL_NULL","alpn":"h2,h2-16,h2-15,h2-14,spdy\/3.1,spdy\/3,http\/1.1"}}
+00906{"flow_event_id":6,"flow_event_name":"detected","thread_id":0,"packet_id":4,"source":"tls_alert.pcap","alias":"nDPId-test","flow_id":1,"flow_packets_processed":4,"flow_first_seen":1628259176203,"flow_last_seen":1628259176204,"flow_idle_time":7440000,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":199,"flow_tot_l4_payload_len":199,"flow_avg_l4_payload_len":49,"midstream":0,"ts_msec":1628259176204,"l3_proto":"ip4","src_ip":"192.168.1.192","dst_ip":"192.168.1.20","src_port":63158,"dst_port":443,"l4_proto":"tcp","ndpi": {"flow_risk": {"7":"Obsolete TLS version (older than 1.2)"},"proto":"TLS.Google","breed":"Acceptable","category":"Advertisement"},"tls": {"version":"TLSv1","client_requested_server_name":"www.google-analytics.com","ja3":"d78489b860c8bf7838a6ff0b4d131541","ja3s":"","unsafe_cipher":0,"cipher":"TLS_NULL_WITH_NULL_NULL","alpn":"h2,h2-16,h2-15,h2-14,spdy\/3.1,spdy\/3,http\/1.1"}}
 00557{"flow_event_id":2,"flow_event_name":"end","thread_id":0,"packet_id":11,"source":"tls_alert.pcap","alias":"nDPId-test","flow_id":1,"flow_packets_processed":11,"flow_first_seen":1628259176203,"flow_last_seen":1628259176206,"flow_idle_time":7440000,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":199,"flow_tot_l4_payload_len":206,"flow_avg_l4_payload_len":18,"midstream":0,"ts_msec":1628259176206,"l3_proto":"ip4","src_ip":"192.168.1.192","dst_ip":"192.168.1.20","src_port":63158,"dst_port":443,"l4_proto":"tcp","flow_datalink":1,"flow_max_packets":3}
 00157{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":11,"source":"tls_alert.pcap","alias":"nDPId-test","total-events-serialized":8}
 ~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~
@@ -14,10 +14,10 @@
 ~~ total active/idle flows...: 1/1
 ~~ total timeout flows.......: 0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~ total memory allocated....: 1930537 bytes
-~~ total memory freed........: 1930537 bytes
-~~ total allocations/frees...: 35351/35351
+~~ total memory allocated....: 4592852 bytes
+~~ total memory freed........: 4592852 bytes
+~~ total allocations/frees...: 99547/99547
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~ json string min len.......: 162 chars
-~~ json string max len.......: 903 chars
-~~ json string avg len.......: 579 chars
+~~ json string max len.......: 911 chars
+~~ json string avg len.......: 583 chars

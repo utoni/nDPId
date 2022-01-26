@@ -188,6 +188,9 @@
         "ndpi": {
             "type": "object"
         },
+        "entropy": {
+            "type": "number"
+        },
         "dhcp": {
             "type": "object"
         },
@@ -195,6 +198,9 @@
             "type": "object"
         },
         "mdns": {
+            "type": "object"
+        },
+        "ntp": {
             "type": "object"
         },
         "ubntac2": {

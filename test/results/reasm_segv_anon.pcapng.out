@@ -3,7 +3,7 @@
 00198{"basic_event_id":15,"basic_event_name":"Captured packet size is smaller than packet size","thread_id":0,"packet_id":1,"source":"reasm_segv_anon.pcapng","alias":"nDPId-test","caplen":106,"len":110}
 00560{"flow_event_id":1,"flow_event_name":"new","thread_id":0,"packet_id":1,"source":"reasm_segv_anon.pcapng","alias":"nDPId-test","flow_id":1,"flow_packets_processed":1,"flow_first_seen":1550422828553,"flow_last_seen":1550422828553,"flow_idle_time":180000,"flow_min_l4_payload_len":64,"flow_max_l4_payload_len":64,"flow_tot_l4_payload_len":64,"flow_avg_l4_payload_len":64,"midstream":0,"ts_msec":1550422828553,"l3_proto":"ip4","src_ip":"145.76.2.236","dst_ip":"187.96.52.85","src_port":2152,"dst_port":2152,"l4_proto":"udp","flow_datalink":1,"flow_max_packets":3}
 00525{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":1,"source":"reasm_segv_anon.pcapng","alias":"nDPId-test","flow_id":1,"flow_packet_id":1,"flow_last_seen":1550422828553,"flow_idle_time":180000,"pkt_oversize":false,"pkt_caplen":106,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":110,"pkt_l4_len":72,"ts_msec":1550422828553,"pkt":"AAAAcxs8EFFy5LtdCABFeABcpb4AAEARUG2RTALsu2A0VQhoCGgASAAAMv8AOAn8kEPKcwAARQAANFkiQAB\/BgGSrBEkFT++kSvhEwBQ8LOPBjqqVCGAEAEBeCMAAAEBBQo6qnTxOqqFWQ=="}
-00592{"flow_event_id":6,"flow_event_name":"detected","thread_id":0,"packet_id":1,"source":"reasm_segv_anon.pcapng","alias":"nDPId-test","flow_id":1,"flow_packets_processed":1,"flow_first_seen":1550422828553,"flow_last_seen":1550422828553,"flow_idle_time":180000,"flow_min_l4_payload_len":64,"flow_max_l4_payload_len":64,"flow_tot_l4_payload_len":64,"flow_avg_l4_payload_len":64,"midstream":0,"ts_msec":1550422828553,"l3_proto":"ip4","src_ip":"145.76.2.236","dst_ip":"187.96.52.85","src_port":2152,"dst_port":2152,"l4_proto":"udp","ndpi": {"proto":"GTP","breed":"Acceptable","category":"Network"}}
+00598{"flow_event_id":6,"flow_event_name":"detected","thread_id":0,"packet_id":1,"source":"reasm_segv_anon.pcapng","alias":"nDPId-test","flow_id":1,"flow_packets_processed":1,"flow_first_seen":1550422828553,"flow_last_seen":1550422828553,"flow_idle_time":180000,"flow_min_l4_payload_len":64,"flow_max_l4_payload_len":64,"flow_tot_l4_payload_len":64,"flow_avg_l4_payload_len":64,"midstream":0,"ts_msec":1550422828553,"l3_proto":"ip4","src_ip":"145.76.2.236","dst_ip":"187.96.52.85","src_port":2152,"dst_port":2152,"l4_proto":"udp","ndpi": {"proto":"GTP.GTP_U","breed":"Acceptable","category":"Network"}}
 00432{"packet_event_id":1,"packet_event_name":"packet","thread_id":0,"packet_id":2,"source":"reasm_segv_anon.pcapng","alias":"nDPId-test","pkt_oversize":false,"pkt_caplen":106,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":0,"pkt_len":110,"pkt_l4_len":0,"ts_msec":1550422828949,"pkt":"AAAAcxs8EFFy5LtdCABFeABcLoEAAEARx6qRTALsu2A0VQhoCGgASAAAMv8AOAn8kEPNcwAARQAANFkkQAB\/BgGQrBEkFT++kSvhEwBQ8LOPBjqqVCGAEAEBcqsAAAEBBQo6qnTxOqqK0Q=="}
 00198{"basic_event_id":15,"basic_event_name":"Captured packet size is smaller than packet size","thread_id":0,"packet_id":2,"source":"reasm_segv_anon.pcapng","alias":"nDPId-test","caplen":106,"len":110}
 00525{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":2,"source":"reasm_segv_anon.pcapng","alias":"nDPId-test","flow_id":1,"flow_packet_id":2,"flow_last_seen":1550422828949,"flow_idle_time":180000,"pkt_oversize":false,"pkt_caplen":106,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":110,"pkt_l4_len":72,"ts_msec":1550422828949,"pkt":"AAAAcxs8EFFy5LtdCABFeABcLoEAAEARx6qRTALsu2A0VQhoCGgASAAAMv8AOAn8kEPNcwAARQAANFkkQAB\/BgGQrBEkFT++kSvhEwBQ8LOPBjqqVCGAEAEBcqsAAAEBBQo6qnTxOqqK0Q=="}
@@ -70,10 +70,10 @@
 ~~ total active/idle flows...: 1/1
 ~~ total timeout flows.......: 0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~ total memory allocated....: 1930502 bytes
-~~ total memory freed........: 1930502 bytes
-~~ total allocations/frees...: 35420/35420
+~~ total memory allocated....: 4592817 bytes
+~~ total memory freed........: 4592817 bytes
+~~ total allocations/frees...: 99616/99616
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~ json string min len.......: 171 chars
-~~ json string max len.......: 597 chars
-~~ json string avg len.......: 391 chars
+~~ json string max len.......: 603 chars
+~~ json string avg len.......: 394 chars

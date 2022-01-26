@@ -3,7 +3,7 @@
 00475{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":1,"source":"smtp-starttls.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":1,"flow_last_seen":1388017124762,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":74,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":74,"pkt_l4_len":40,"ts_msec":1388017124762,"pkt":"AAAMB6wBABNyxPHhCABFAAA8JqtAAEAGeocKAAABrcJEGuA+ABlXuT72AAAAAKACOQgLsAAAAgQFtAQCCAraWRhdAAAAAAEDAwc="}
 00475{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":2,"source":"smtp-starttls.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":2,"flow_last_seen":1388017124774,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":74,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":74,"pkt_l4_len":40,"ts_msec":1388017124774,"pkt":"ABNyxPHhANAr0XYACABFAAA8X3cAAC4Gk7utwkQaCgAAAQAZ4D6dvxfqV7k+96ASpiw5gwAAAgQFlgQCCAoS8Zx72lkYXQEDAwY="}
 00463{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":3,"source":"smtp-starttls.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":3,"flow_last_seen":1388017124774,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":66,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":66,"pkt_l4_len":32,"ts_msec":1388017124774,"pkt":"AAAMB6wBABNyxPHhCABFAAA0JqxAAEAGeo4KAAABrcJEGuA+ABlXuT73nb8X64AQAHMN3wAAAQEICtpZGGgS8Zx7"}
-00624{"flow_event_id":6,"flow_event_name":"detected","thread_id":0,"packet_id":4,"source":"smtp-starttls.pcap","alias":"nDPId-test","flow_id":1,"flow_packets_processed":4,"flow_first_seen":1388017124762,"flow_last_seen":1388017124785,"flow_idle_time":7440000,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":51,"flow_tot_l4_payload_len":51,"flow_avg_l4_payload_len":12,"midstream":0,"ts_msec":1388017124785,"l3_proto":"ip4","src_ip":"10.0.0.1","dst_ip":"173.194.68.26","src_port":57406,"dst_port":25,"l4_proto":"tcp","ndpi": {"proto":"SMTP.Google","breed":"Tracker\/Ads","category":"Web"},"smtp": {"user":"","password":""}}
+00622{"flow_event_id":6,"flow_event_name":"detected","thread_id":0,"packet_id":4,"source":"smtp-starttls.pcap","alias":"nDPId-test","flow_id":1,"flow_packets_processed":4,"flow_first_seen":1388017124762,"flow_last_seen":1388017124785,"flow_idle_time":7440000,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":51,"flow_tot_l4_payload_len":51,"flow_avg_l4_payload_len":12,"midstream":0,"ts_msec":1388017124785,"l3_proto":"ip4","src_ip":"10.0.0.1","dst_ip":"173.194.68.26","src_port":57406,"dst_port":25,"l4_proto":"tcp","ndpi": {"proto":"SMTP.Google","breed":"Acceptable","category":"Web"},"smtp": {"user":"","password":""}}
 00559{"flow_event_id":2,"flow_event_name":"end","thread_id":0,"packet_id":36,"source":"smtp-starttls.pcap","alias":"nDPId-test","flow_id":1,"flow_packets_processed":36,"flow_first_seen":1388017124762,"flow_last_seen":1388017125239,"flow_idle_time":7440000,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":1418,"flow_tot_l4_payload_len":6011,"flow_avg_l4_payload_len":166,"midstream":0,"ts_msec":1388017125239,"l3_proto":"ip4","src_ip":"10.0.0.1","dst_ip":"173.194.68.26","src_port":57406,"dst_port":25,"l4_proto":"tcp","flow_datalink":1,"flow_max_packets":3}
 00161{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":36,"source":"smtp-starttls.pcap","alias":"nDPId-test","total-events-serialized":8}
 ~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~
@@ -14,10 +14,10 @@
 ~~ total active/idle flows...: 1/1
 ~~ total timeout flows.......: 0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~ total memory allocated....: 1929168 bytes
-~~ total memory freed........: 1929168 bytes
-~~ total allocations/frees...: 35374/35374
+~~ total memory allocated....: 4591483 bytes
+~~ total memory freed........: 4591483 bytes
+~~ total allocations/frees...: 99570/99570
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~ json string min len.......: 166 chars
-~~ json string max len.......: 629 chars
-~~ json string avg len.......: 461 chars
+~~ json string max len.......: 627 chars
+~~ json string avg len.......: 460 chars

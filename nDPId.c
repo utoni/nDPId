@@ -1244,6 +1244,7 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     workflow->ndpi_struct = ndpi_init_detection_module(init_prefs);
     if (workflow->ndpi_struct == NULL)
     {
+        syslog(LOG_DAEMON | LOG_ERR, "%s", "BUG: Could not init ndpi detection module");
         free_workflow(&workflow);
         return NULL;
     }
@@ -1254,6 +1255,9 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     workflow->ndpi_flows_active = (void **)ndpi_calloc(workflow->max_active_flows, sizeof(void *));
     if (workflow->ndpi_flows_active == NULL)
     {
+        syslog(LOG_DAEMON | LOG_ERR,
+               "Could not allocate %llu bytes for (active) flow tracking",
+               workflow->max_active_flows * sizeof(void *));
         free_workflow(&workflow);
         return NULL;
     }
@@ -1263,6 +1267,9 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     workflow->ndpi_flows_idle = (void **)ndpi_calloc(workflow->max_idle_flows, sizeof(void *));
     if (workflow->ndpi_flows_idle == NULL)
     {
+        syslog(LOG_DAEMON | LOG_ERR,
+               "Could not allocate %llu bytes for (idle) flow tracking",
+               workflow->max_idle_flows * sizeof(void *));
         free_workflow(&workflow);
         return NULL;
     }
@@ -1291,8 +1298,12 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     ndpi_set_detection_preferences(workflow->ndpi_struct, ndpi_pref_enable_tls_block_dissection, 1);
 
     if (ndpi_init_serializer_ll(&workflow->ndpi_serializer, ndpi_serialization_format_json, NETWORK_BUFFER_MAX_SIZE) !=
-        1)
+        0)
     {
+        syslog(LOG_DAEMON | LOG_ERR,
+               "BUG: Could not init JSON serializer with buffer size: %u bytes",
+               NETWORK_BUFFER_MAX_SIZE);
+        free_workflow(&workflow);
         return NULL;
     }
 
@@ -1541,8 +1552,7 @@ static int is_l4_protocol_timed_out(struct nDPId_workflow const * const workflow
                                     struct nDPId_flow_basic const * const flow_basic)
 {
     uint64_t sdiff = flow_basic->last_seen % nDPId_options.flow_scan_interval;
-    uint64_t itime =
-        get_l4_protocol_idle_time(flow_basic->l4_protocol) - sdiff;
+    uint64_t itime = get_l4_protocol_idle_time(flow_basic->l4_protocol) - sdiff;
 
     return (flow_basic->last_seen + itime <= workflow->last_time) ||
            (flow_basic->tcp_fin_rst_seen == 1 &&
@@ -3076,16 +3086,18 @@ static void ndpi_process_packet(uint8_t * const args,
         flow_basic.src.v6.ip[1] = ip6->ip6_src.u6_addr.u6_addr64[1];
         flow_basic.dst.v6.ip[0] = ip6->ip6_dst.u6_addr.u6_addr64[0];
         flow_basic.dst.v6.ip[1] = ip6->ip6_dst.u6_addr.u6_addr64[1];
+
         uint64_t min_addr[2];
-        if (flow_basic.src.v6.ip[0] > flow_basic.dst.v6.ip[0] && flow_basic.src.v6.ip[1] > flow_basic.dst.v6.ip[1])
+        if (flow_basic.src.v6.ip[0] > flow_basic.dst.v6.ip[0] ||
+            (flow_basic.src.v6.ip[0] == flow_basic.dst.v6.ip[0] && flow_basic.src.v6.ip[1] > flow_basic.dst.v6.ip[1]))
         {
             min_addr[0] = flow_basic.dst.v6.ip[0];
-            min_addr[1] = flow_basic.dst.v6.ip[0];
+            min_addr[1] = flow_basic.dst.v6.ip[1];
         }
         else
         {
             min_addr[0] = flow_basic.src.v6.ip[0];
-            min_addr[1] = flow_basic.src.v6.ip[0];
+            min_addr[1] = flow_basic.src.v6.ip[1];
         }
         thread_index = min_addr[0] + min_addr[1] + ip6->ip6_hdr.ip6_un1_nxt;
     }
