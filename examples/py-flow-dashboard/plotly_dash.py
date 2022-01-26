@@ -1,11 +1,25 @@
 import math
 
 import dash
+
+try:
+    from dash import dcc
+except ImportError:
+    import dash_core_components as dcc
+
+try:
+    from dash import html
+except ImportError:
+    import dash_html_components as html
+
+try:
+    from dash import dash_table as dt
+except ImportError:
+    import dash_table as dt
+
 from dash.dependencies import Input, Output, State
-import dash_core_components as dcc
-import dash_html_components as html
+
 import dash_daq as daq
-import dash_table as dt
 
 import plotly.graph_objects as go
 
@@ -14,34 +28,67 @@ global shared_flow_dict
 app = dash.Dash(__name__)
 
 def generate_box():
-    return { \
-        'display': 'flex', 'flex-direction': 'row', \
-        'box-shadow': '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)', \
-        'background-color': '#082255' \
+    return {
+        'display': 'flex', 'flex-direction': 'row',
+        'background-color': '#082255'
     }
 
 def generate_led_display(div_id, label_name):
-    return daq.LEDDisplay( \
-        id=div_id, \
-        label={'label': label_name, 'style': {'color': '#C4CDD5'}}, \
-        labelPosition='bottom', \
-        value='0', \
-        backgroundColor='#082255', \
-        color='#C4CDD5', \
+    return daq.LEDDisplay(
+        id=div_id,
+        label={'label': label_name, 'style': {'color': '#C4CDD5'}},
+        labelPosition='bottom',
+        value='0',
+        backgroundColor='#082255',
+        color='#C4CDD5',
     )
 
 def generate_gauge(div_id, label_name, max_value=10):
-    return daq.Gauge( \
-        id=div_id, \
-        value=0, \
-        label={'label': label_name, 'style': {'color': '#C4CDD5'}}, \
-        max=max_value, \
-        min=0, \
+    return daq.Gauge(
+        id=div_id,
+        value=0,
+        label={'label': label_name, 'style': {'color': '#C4CDD5'}},
+        max=max_value,
+        min=0,
     )
 
-app.layout = html.Div([
+def build_gauge(key, max_value=100):
+    gauge_max = int(max(max_value,
+                        shared_flow_dict[key]))
+    grad_green  = [0,                    int(gauge_max * 1/3)]
+    grad_yellow = [int(gauge_max * 1/3), int(gauge_max * 2/3)]
+    grad_red    = [int(gauge_max * 2/3), gauge_max]
+
+    grad_dict   = {
+        "gradient":True,
+        "ranges":{
+            "green":grad_green,
+            "yellow":grad_yellow,
+            "red":grad_red
+        }
+    }
+
+    return shared_flow_dict[key], gauge_max, grad_dict
+
+def build_piechart(labels, values):
+    lay = dict(
+        plot_bgcolor = '#082255',
+        paper_bgcolor = '#082255',
+        font={"color": "#fff"},
+        autosize=True,
+        height=250,
+        margin = {'autoexpand': True, 'b': 0, 'l': 0, 'r': 0, 't': 0, 'pad': 0},
+        width = 500,
+        uniformtext_minsize = 12,
+        uniformtext_mode = 'hide',
+    )
+
+    return go.Figure(layout=lay, data=[go.Pie(labels=labels, values=values, textinfo='percent', textposition='inside')])
+
+def generate_tab_flow():
+    return html.Div([
     html.Div(children=[
-        dcc.Interval(id="default-interval", interval=1 * 2000, n_intervals=0),
+        dcc.Interval(id="tab-flow-default-interval", interval=1 * 2000, n_intervals=0),
 
         html.Div(children=[
 
@@ -59,6 +106,8 @@ app.layout = html.Div([
                 config={
                     'displayModeBar': False,
                 },
+                figure=build_piechart(['Detected', 'Guessed', 'Not-Detected', 'Unclassified'],
+                                      [0, 0, 0, 0]),
             ),
         ], style={'padding': 10, 'flex': 1}),
 
@@ -68,6 +117,8 @@ app.layout = html.Div([
                 config={
                     'displayModeBar': False,
                 },
+                figure=build_piechart(['Not Midstream', 'Midstream'],
+                                      [0, 0]),
             ),
         ], style={'padding': 10, 'flex': 1}),
 
@@ -77,12 +128,14 @@ app.layout = html.Div([
                 config={
                     'displayModeBar': False,
                 },
+                figure=build_piechart(['Not Risky', 'Risky'],
+                                      [0, 0]),
             ),
         ], style={'padding': 10, 'flex': 1}),
     ], style=generate_box()),
 
     html.Div(children=[
-        dcc.Interval(id="graph-interval", interval=4 * 1000, n_intervals=0),
+        dcc.Interval(id="tab-flow-graph-interval", interval=4 * 1000, n_intervals=0),
         dcc.Store(id="graph-traces"),
 
         html.Div(children=[
@@ -94,42 +147,53 @@ app.layout = html.Div([
                 style={'height':'60vh'},
             ),
         ], style={'padding': 10, 'flex': 1})
-    ], style=generate_box()),
+    ], style=generate_box())
+    ])
+
+def generate_tab_other():
+    return html.Div([
+    html.Div(children=[
+        dcc.Interval(id="tab-other-default-interval", interval=1 * 2000, n_intervals=0),
+
+        html.Div(children=[
+            dcc.Graph(
+                id='piechart-events',
+                config={
+                    'displayModeBar': False,
+                },
+            ),
+        ], style={'padding': 10, 'flex': 1}),
+    ], style=generate_box())
+    ])
+
+TABS_STYLES = {
+    'height': '34px'
+}
+TAB_STYLE = {
+    'borderBottom': '1px solid #d6d6d6',
+    'backgroundColor': '#385285',
+    'padding': '6px',
+    'fontWeight': 'bold',
+}
+TAB_SELECTED_STYLE = {
+    'borderTop': '1px solid #d6d6d6',
+    'borderBottom': '1px solid #d6d6d6',
+    'backgroundColor': '#119DFF',
+    'color': 'white',
+    'padding': '6px'
+}
+
+app.layout = html.Div([
+    dcc.Tabs(id="tabs-flow-dash", value="tab-flows", children=[
+        dcc.Tab(label="Flow", value="tab-flows", style=TAB_STYLE,
+                                                 selected_style=TAB_SELECTED_STYLE,
+                                                 children=generate_tab_flow()),
+        dcc.Tab(label="Other", value="tab-other", style=TAB_STYLE,
+                                                  selected_style=TAB_SELECTED_STYLE,
+                                                  children=generate_tab_other()),
+    ], style=TABS_STYLES),
+    html.Div(id="tabs-content")
 ])
-
-def build_gauge(key, max_value=100):
-    gauge_max = int(max(max_value,
-                        shared_flow_dict[key]))
-    grad_green  = [0,                    int(gauge_max * 1/3)]
-    grad_yellow = [int(gauge_max * 1/3), int(gauge_max * 2/3)]
-    grad_red    = [int(gauge_max * 2/3), gauge_max]
-
-    grad_dict   = \
-        { \
-            "gradient":True, \
-            "ranges":{ \
-                "green":grad_green, \
-                "yellow":grad_yellow, \
-                "red":grad_red \
-            } \
-        }
-
-    return shared_flow_dict[key], gauge_max, grad_dict
-
-def build_piechart(labels, values):
-    lay = dict(
-        plot_bgcolor = '#082255',
-        paper_bgcolor = '#082255',
-        font={"color": "#fff"},
-        autosize=True,
-        height=250,
-        margin = {'autoexpand': False, 'b': 0, 'l': 0, 'r': 0, 't': 0, 'pad': 0},
-        width = 500,
-        uniformtext_minsize = 12,
-        uniformtext_mode = 'hide',
-    )
-
-    return go.Figure(layout=lay, data=[go.Pie(labels=labels, values=values, textinfo='percent', textposition='inside')])
 
 def prettifyBytes(bytes_received):
     size_names = ['B', 'KB', 'MB', 'GB', 'TB']
@@ -146,8 +210,8 @@ def prettifyBytes(bytes_received):
                       Output('piechart-midstream-flows', 'figure'),
                       Output('piechart-risky-flows', 'figure')],
 
-              inputs=[Input('default-interval', 'n_intervals')])
-def update_led_gauge(n):
+              inputs=[Input('tab-flow-default-interval', 'n_intervals')])
+def tab_flow_update_components(n):
     return [[{'key': 'Total JSON Events',        'value': shared_flow_dict['total-events']},
              {'key': 'Total JSON Bytes',         'value': prettifyBytes(shared_flow_dict['total-bytes'])},
              {'key': 'Total Flows',              'value': shared_flow_dict['total-flows']},
@@ -155,7 +219,7 @@ def update_led_gauge(n):
              {'key': 'Total Midstream Flows',    'value': shared_flow_dict['total-midstream-flows']},
              {'key': 'Total Guessed Flows',      'value': shared_flow_dict['total-guessed-flows']},
              {'key': 'Total Not Detected Flows', 'value': shared_flow_dict['total-not-detected-flows']}],
-            build_piechart(['Detected', 'Guessed', 'Undetected', 'Unclassified'],
+            build_piechart(['Detected', 'Guessed', 'Not-Detected', 'Unclassified'],
                            [shared_flow_dict['current-detected-flows'],
                             shared_flow_dict['current-guessed-flows'],
                             shared_flow_dict['current-not-detected-flows'],
@@ -174,10 +238,10 @@ def update_led_gauge(n):
 
 @app.callback(output=[Output('graph-flows', 'figure'),
                       Output('graph-traces', 'data')],
-              inputs=[Input('graph-interval', 'n_intervals'),
-                      Input('graph-interval', 'interval')],
+              inputs=[Input('tab-flow-graph-interval', 'n_intervals'),
+                      Input('tab-flow-graph-interval', 'interval')],
               state=[State('graph-traces', 'data')])
-def update_graph(n, i, traces):
+def tab_flow_update_graph(n, i, traces):
     if traces is None:
         traces = ([], [], [], [], [], [])
 
@@ -233,8 +297,8 @@ def update_graph(n, i, traces):
     )
 
     fig = go.Figure(layout=lay)
-    fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='#007ACE', zeroline=True, zerolinewidth=1)
-    fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='#007ACE', zeroline=True, zerolinewidth=1)
+    fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='#004D80', zeroline=True, zerolinewidth=1)
+    fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='#004D80', zeroline=True, zerolinewidth=1)
     fig.add_trace(go.Scatter(
         x=x,
         y=traces[0],
@@ -258,7 +322,7 @@ def update_graph(n, i, traces):
     fig.add_trace(go.Scatter(
         x=x,
         y=traces[4],
-        name='Current Not Detected Flows',
+        name='Current Not-Detected Flows',
     ))
     fig.add_trace(go.Scatter(
         x=x,
@@ -268,9 +332,27 @@ def update_graph(n, i, traces):
 
     return [fig, traces]
 
-def web_worker(mp_shared_flow_dict):
+@app.callback(output=[Output('piechart-events', 'figure')],
+              inputs=[Input('tab-other-default-interval', 'n_intervals')])
+def tab_other_update_components(n):
+    return [build_piechart(['Base', 'Daemon', 'Packet',
+                            'Flow New', 'Flow Update', 'Flow End', 'Flow Idle',
+                            'Flow Detection', 'Flow Detection-Updates', 'Flow Guessed', 'Flow Not-Detected'],
+                           [shared_flow_dict['total-base-events'],
+                            shared_flow_dict['total-daemon-events'],
+                            shared_flow_dict['total-packet-events'],
+                            shared_flow_dict['total-flow-new-events'],
+                            shared_flow_dict['total-flow-update-events'],
+                            shared_flow_dict['total-flow-end-events'],
+                            shared_flow_dict['total-flow-idle-events'],
+                            shared_flow_dict['total-flow-detected-events'],
+                            shared_flow_dict['total-flow-detection-update-events'],
+                            shared_flow_dict['total-flow-guessed-events'],
+                            shared_flow_dict['total-flow-not-detected-events']])]
+
+def web_worker(mp_shared_flow_dict, listen_host, listen_port):
     global shared_flow_dict
 
     shared_flow_dict = mp_shared_flow_dict
 
-    app.run_server(debug=False)
+    app.run_server(debug=False, host=listen_host, port=listen_port)

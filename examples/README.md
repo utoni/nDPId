@@ -29,9 +29,10 @@ A discontinued tty UI nDPId dashboard.
 
 Prints prettyfied information about flow events.
 
-## py-flow-dash
+## py-flow-dashboard
 
 A realtime web based graph using Plotly/Dash.
+Probably the most informative example.
 
 ## py-flow-multiprocess
 
