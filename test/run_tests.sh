@@ -8,6 +8,7 @@ nDPId_test_EXEC="$(realpath "${2:-"${MYDIR}/../nDPId-test"}")"
 NETCAT_EXEC="$(which nc) -q 0 -l 127.0.0.1 9000"
 JSON_VALIDATOR="$(realpath "${3:-"${MYDIR}/../examples/py-schema-validation/py-schema-validation.py"}")"
 SEMN_VALIDATOR="$(realpath "${4:-"${MYDIR}/../examples/py-semantic-validation/py-semantic-validation.py"}")"
+IS_GIT=$(test -d "${MYDIR}/../.git" && printf '1' || printf '0')
 
 function usage()
 {
@@ -108,24 +109,12 @@ for pcap_file in *.pcap *.pcapng *.cap; do
         2>>"/tmp/nDPId-test-stderr/${pcap_file}.out"
     nDPId_test_RETVAL=$?
 
-    if [[ ${pcap_file} == fuzz-* ]]; then
-        if [ ${nDPId_test_RETVAL} -eq 0 ]; then
-            printf '%s\n' '[OK]'
-        elif [ ${nDPId_test_RETVAL} -eq 1 ]; then
-            # fuzzed PCAPs with a return value of 1 indicates that libpcap failed
-            printf '%s\n' '[FAIL][IGNORED]'
-        else
-            # may be a valid sanitizer/other failure
-            printf '%s\n' '[FAIL]'
-            printf '%s\n' '----------------------------------------'
-            printf '%s\n' "-- STDERR of ${pcap_file}: /tmp/nDPId-test-stderr/${pcap_file}.out"
-            cat "/tmp/nDPId-test-stderr/${pcap_file}.out"
-        fi
-    elif [ ${nDPId_test_RETVAL} -eq 0 ]; then
+    if [ ${nDPId_test_RETVAL} -eq 0 ]; then
         if [ ! -r "${MYDIR}/results/${pcap_file}.out" ]; then
             printf '%s\n' '[NEW]'
-            mv -v "/tmp/nDPId-test-stdout/${pcap_file}.out.new" \
-                  "${MYDIR}/results/${pcap_file}.out"
+            test ${IS_GIT} -eq 1 && \
+                mv -v "/tmp/nDPId-test-stdout/${pcap_file}.out.new" \
+                      "${MYDIR}/results/${pcap_file}.out"
             TESTS_FAILED=$((TESTS_FAILED + 1))
         elif diff -u0 "${MYDIR}/results/${pcap_file}.out" \
                       "/tmp/nDPId-test-stdout/${pcap_file}.out.new" >/dev/null; then
@@ -135,8 +124,9 @@ for pcap_file in *.pcap *.pcapng *.cap; do
             printf '%s\n' '[DIFF]'
             diff -u0 "${MYDIR}/results/${pcap_file}.out" \
                      "/tmp/nDPId-test-stdout/${pcap_file}.out.new"
-            mv -v "/tmp/nDPId-test-stdout/${pcap_file}.out.new" \
-                  "${MYDIR}/results/${pcap_file}.out"
+            test ${IS_GIT} -eq 1 && \
+                mv -v "/tmp/nDPId-test-stdout/${pcap_file}.out.new" \
+                      "${MYDIR}/results/${pcap_file}.out"
             TESTS_FAILED=$((TESTS_FAILED + 1))
         fi
     else
@@ -161,10 +151,6 @@ function validate_results()
     if [ ! -r "${result_file}" ]; then
         printf ' %s\n' '[MISSING]'
         return 1
-    fi
-    if [[ ${pcap_file} == fuzz-* ]]; then
-        printf ' %s\n' '[SKIPPED]'
-        return 0
     fi
 
     # Note that the grep command is required as we generate a summary in the results file.
@@ -219,6 +205,14 @@ for out_file in results/*.out; do
         fi
     fi
 done
+
+cat <<EOF
+
+Done. For more information see text files in:
+    /tmp/nDPId-test-stdout/
+    /tmp/nDPId-test-stderr/
+
+EOF
 
 if [ ${TESTS_FAILED} -eq 0 ]; then
 cat <<EOF

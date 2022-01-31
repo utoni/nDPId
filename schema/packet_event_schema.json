@@ -16,15 +16,18 @@
         "pkt_l4_len",
         "ts_msec"
     ],
+
     "dependencies" : {
         "flow_id" : [ "flow_packet_id", "flow_last_seen", "flow_idle_time" ]
     },
+
     "if": {
-        "properties": { "packet_event_name": { "const": "packet-flow" } }
+        "properties": { "packet_event_name": { "enum": ["packet-flow"] } }
     },
     "then": {
-        "required": [ "flow_id" ]
+        "required": [ "flow_id", "flow_packet_id", "flow_last_seen", "flow_idle_time" ]
     },
+
     "properties": {
         "alias": {
             "type": "string"

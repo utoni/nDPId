@@ -27,13 +27,13 @@ enum
     PIPE_nDPIsrvd = 0, /* nDPIsrvd mock pipefd array index */
 
     PIPE_TEST_WRITE = 1, /* Distributor (data from nDPIsrvd) write */
-    PIPE_TEST_READ = 0,  /* Distributor (print to stdout) read */
+    PIPE_TEST_READ = 0,  /* Distributor (do some validation tests) read */
 
     PIPE_NULL_WRITE = 1, /* Distributor (data from nDPIsrvd) write */
-    PIPE_NULL_READ = 0,  /* Distributor (do nothing) read */
+    PIPE_NULL_READ = 0,  /* Distributor (print to stdout) read */
 
     PIPE_FDS = 2,
-    MAX_REMOTE_DESCRIPTORS = 3
+    MAX_REMOTE_DESCRIPTORS = 3 /* mock pipefd's + 2 * distributor pipefd's */
 };
 
 struct thread_return_value

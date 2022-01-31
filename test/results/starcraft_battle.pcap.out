@@ -49,7 +49,7 @@
 00456{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":26,"source":"starcraft_battle.pcap","alias":"nDPId-test","flow_id":11,"flow_packet_id":1,"flow_last_seen":1437389961548,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":55,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":55,"pkt_l4_len":21,"ts_msec":1437389961548,"pkt":"hCYVPnXEIImEa8W6CABFAAApPndAAIAGAKbAqAFkQOm4vArHFGzE+CH9edXaGlAQAPyZDAAAAA=="}
 00469{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":27,"source":"starcraft_battle.pcap","alias":"nDPId-test","flow_id":11,"flow_packet_id":2,"flow_last_seen":1437389961598,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":66,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":66,"pkt_l4_len":32,"ts_msec":1437389961598,"pkt":"IImEa8W6hCYVPnXECABFAAA0aJ8AACgGbnNA6bi8wKgBZBRsCsd51doaxPgh\/oAQAXGUkwAAAQEFCsT4If3E+CH+"}
 00367{"packet_event_id":1,"packet_event_name":"packet","thread_id":0,"packet_id":28,"source":"starcraft_battle.pcap","alias":"nDPId-test","pkt_oversize":false,"pkt_caplen":58,"pkt_type":35020,"pkt_l3_offset":14,"pkt_l4_offset":0,"pkt_len":58,"pkt_l4_len":0,"ts_msec":1437389962628,"pkt":"AYDCAAAOIImEa8W6iMwCBwQgiYRrxboEBwMgiYRrxboGAg4R\/gkAEg8BAwABAAD+BwASuwEAAQEAAA=="}
-00158{"basic_event_id":5,"basic_event_name":"Unknown packet type","thread_id":0,"packet_id":28,"source":"starcraft_battle.pcap","alias":"nDPId-test","type":35020}
+00177{"basic_event_id":5,"basic_event_name":"Unknown packet type","datalink":1,"thread_id":0,"packet_id":28,"source":"starcraft_battle.pcap","alias":"nDPId-test","layer_type":35020}
 00570{"flow_event_id":1,"flow_event_name":"new","thread_id":0,"packet_id":29,"source":"starcraft_battle.pcap","alias":"nDPId-test","flow_id":12,"flow_packets_processed":1,"flow_first_seen":1437389963466,"flow_last_seen":1437389963466,"flow_idle_time":180000,"flow_min_l4_payload_len":381,"flow_max_l4_payload_len":381,"flow_tot_l4_payload_len":381,"flow_avg_l4_payload_len":381,"midstream":0,"ts_msec":1437389963466,"l3_proto":"ip4","src_ip":"192.168.1.254","dst_ip":"239.255.255.250","src_port":38605,"dst_port":1900,"l4_proto":"udp","flow_datalink":1,"flow_max_packets":3}
 00951{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":29,"source":"starcraft_battle.pcap","alias":"nDPId-test","flow_id":12,"flow_packet_id":1,"flow_last_seen":1437389963466,"flow_idle_time":180000,"pkt_oversize":false,"pkt_caplen":423,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":423,"pkt_l4_len":389,"ts_msec":1437389963466,"pkt":"AQBef\/\/6hCYVPnXECABFAAGZAABAAAERxbPAqAH+7\/\/\/+pbNB2wBhW9zTk9USUZZICogSFRUUC8xLjENCkhPU1Q6IDIzOS4yNTUuMjU1LjI1MDoxOTAwDQpDQUNIRS1DT05UUk9MOiBtYXgtYWdlPTYwDQpsT0NBVElPTjogaHR0cDovLzE5Mi4xNjguMS4yNTQ6NTcwNTIvcm9vdERlc2MwLnhtbA0KU0VSVkVSOiBFUElDRU5UUk8gVVBuUC8xLjAgTWluaVVQblBkLzEuNg0KTlQ6IHV1aWQ6MTEyNjY3MzYtZmE1OS0xMWU0LTljOWYtODQyNjE1M2U3NWM0DQpVU046IHV1aWQ6MTEyNjY3MzYtZmE1OS0xMWU0LTljOWYtODQyNjE1M2U3NWM0DQpOVFM6IHNzZHA6YWxpdmUNCk9QVDogImh0dHA6Ly9zY2hlbWFzLnVwbnAub3JnL3VwbnAvMS8wLyI7DQowMS1OTFM6IDENCkJPT1RJRC5VUE5QLk9SRzogMQ0KQ09ORklHSUQuVVBOUC5PUkc6IDEzMzcNCg0K"}
 00602{"flow_event_id":6,"flow_event_name":"detected","thread_id":0,"packet_id":29,"source":"starcraft_battle.pcap","alias":"nDPId-test","flow_id":12,"flow_packets_processed":1,"flow_first_seen":1437389963466,"flow_last_seen":1437389963466,"flow_idle_time":180000,"flow_min_l4_payload_len":381,"flow_max_l4_payload_len":381,"flow_tot_l4_payload_len":381,"flow_avg_l4_payload_len":381,"midstream":0,"ts_msec":1437389963466,"l3_proto":"ip4","src_ip":"192.168.1.254","dst_ip":"239.255.255.250","src_port":38605,"dst_port":1900,"l4_proto":"udp","ndpi": {"proto":"SSDP","breed":"Acceptable","category":"System"}}
@@ -323,10 +323,10 @@
 ~~ total active/idle flows...: 52/52
 ~~ total timeout flows.......: 0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~ total memory allocated....: 4700884 bytes
-~~ total memory freed........: 4700884 bytes
-~~ total allocations/frees...: 100554/100554
+~~ total memory allocated....: 4706794 bytes
+~~ total memory freed........: 4706794 bytes
+~~ total allocations/frees...: 100573/100573
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~ json string min len.......: 163 chars
+~~ json string min len.......: 172 chars
 ~~ json string max len.......: 956 chars
-~~ json string avg len.......: 559 chars
+~~ json string avg len.......: 566 chars

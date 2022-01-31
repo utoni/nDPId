@@ -6,8 +6,55 @@
         "thread_id",
         "packet_id",
         "basic_event_id",
-        "basic_event_name"
+        "basic_event_name",
+        "datalink"
     ],
+
+    "if": {
+        "properties": { "basic_event_name": { "enum": [ "Unknown datalink layer packet", "Unknown packet type" ] } }
+    },
+    "then": {
+        "required": [ "layer_type" ]
+    },
+
+    "if": {
+        "properties": { "basic_event_name": { "enum": [ "Unknown L3 protocol" ] } }
+    },
+    "then": {
+        "required": [ "protocol" ]
+    },
+
+    "if": {
+        "properties": { "basic_event_name": { "enum": [ "Packet too short", "IP4 packet too short",
+                                                        "IP6 packet too short", "TCP packet smaller than expected",
+                                                        "UDP packet smaller than expected",
+                                                        "Captured packet size is smaller than expected packet size" ] } }
+    },
+    "then": {
+        "required": [ "size", "expected" ]
+    },
+
+    "if": {
+        "properties": { "basic_event_name": { "enum": [ "Packet header invalid" ] } }
+    },
+    "then": {
+        "required": [ "raeson" ]
+    },
+
+    "if": {
+        "properties": { "basic_event_name": { "enum": [ "Flow memory allocation failed" ] } }
+    },
+    "then": {
+        "required": [ "size" ]
+    },
+
+    "if": {
+        "properties": { "basic_event_name": { "enum": [ "Max flows to track reached" ] } }
+    },
+    "then": {
+        "required": [ "current_active", "current_idle", "max_active", "max_idle" ]
+    },
+
     "properties": {
         "alias": {
             "type": "string"
@@ -28,47 +75,61 @@
             "maximum": 16
         },
         "basic_event_name": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+                "Unknown datalink layer packet",
+                "Unknown L3 protocol",
+                "Unsupported datalink layer",
+                "Packet too short",
+                "Unknown packet type",
+                "Packet header invalid",
+                "IP4 packet too short",
+                "Packet smaller than IP4 header",
+                "nDPI IPv4/L4 payload detection failed",
+                "IP6 packet too short",
+                "Packet smaller than IP6 header",
+                "nDPI IPv6/L4 payload detection failed",
+                "TCP packet smaller than expected",
+                "UDP packet smaller than expected",
+                "Captured packet size is smaller than expected packet size",
+                "Max flows to track reached",
+                "Flow memory allocation failed"
+            ]
         },
+
         "datalink": {
             "type": "number",
             "minimum": 0,
             "maximum": 265
         },
-        "header": {
-            "type": "number"
-        },
-        "type": {
+
+        "layer_type": {
             "type": "number",
-            "minimum": 0,
-            "maximum": 65535
+            "minimum": 0
         },
+
+        "l4_data_len": {
+            "type": "number",
+            "minimum": 0
+        },
+
+        "reason": {
+            "type": "string"
+        },
+
         "protocol": {
             "type": "number",
             "minimum": 0,
             "maximum": 65535
         },
-        "caplen": {
-            "type": "number"
-        },
-        "len": {
-            "type": "number"
-        },
-        "ip_size": {
+
+        "size": {
             "type": "number"
         },
         "expected": {
             "type": "number"
         },
-        "l4_data_len": {
-            "type": "number"
-        },
-        "header_len": {
-            "type": "number"
-        },
-        "size": {
-            "type": "number"
-        },
+
         "current_active": {
             "type": "number"
         },
@@ -76,6 +137,9 @@
             "type": "number"
         },
         "max_active": {
+            "type": "number"
+        },
+        "max_idle": {
             "type": "number"
         }
     },

@@ -23,36 +23,22 @@
         "src_ip",
         "dst_ip"
     ],
+
     "if": {
-        "properties": { "flow_event_name": { "const": "update" } }
+        "properties": { "flow_event_name": { "enum": [ "new", "end", "idle", "update" ] } }
     },
     "then": {
         "required": [ "flow_datalink", "flow_max_packets" ]
     },
+
     "if": {
-        "properties": { "flow_event_name": { "const": "not-detected" } }
+        "properties": { "flow_event_name": { "enum": [ "guessed", "detected",
+                                                       "detection-update", "not-detected" ] } }
     },
     "then": {
         "required": [ "ndpi" ]
     },
-    "if": {
-        "properties": { "flow_event_name": { "const": "guessed" } }
-    },
-    "then": {
-        "required": [ "ndpi" ]
-    },
-    "if": {
-        "properties": { "flow_event_name": { "const": "detected" } }
-    },
-    "then": {
-        "required": [ "ndpi" ]
-    },
-    "if": {
-        "properties": { "flow_event_name": { "const": "detection-update" } }
-    },
-    "then": {
-        "required": [ "ndpi" ]
-    },
+
     "properties": {
         "alias": {
             "type": "string"
@@ -186,7 +172,31 @@
             "maximum": 65535
         },
         "ndpi": {
-            "type": "object"
+            "type": "object",
+            "required": [ "proto", "breed" ],
+
+            "if": {
+                "properties": { "proto": { "enum": [ "Unknown", "Skype_Teams" ] } }
+            },
+            "then": {
+                "return": true
+            },
+            "else": {
+                "required": [ "category" ]
+            },
+
+            "proto": {
+                "type": "string"
+            },
+            "category": {
+                "type": "string"
+            },
+            "breed": {
+                "type": "string"
+            },
+            "flow_risk": {
+                "type": "object"
+            }
         },
         "entropy": {
             "type": "number"
