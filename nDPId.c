@@ -17,9 +17,6 @@
 #include <sys/epoll.h>
 #include <sys/ioctl.h>
 #include <sys/un.h>
-#ifndef NO_MAIN
-#include <syslog.h>
-#endif
 #include <unistd.h>
 #ifdef ENABLE_ZLIB
 #include <zlib.h>
@@ -167,6 +164,11 @@ struct nDPId_flow_finished
 {
     struct nDPId_flow_info flow_info;
 };
+
+_Static_assert(sizeof(struct nDPId_flow_finished) <= sizeof(struct nDPId_flow_info),
+               "The size of struct nDPId_flow_finished needs be smaller or equal "
+               "than the size of struct nDPId_flow_info."
+               "Otherwise some code parts need to be changed.");
 
 struct nDPId_workflow
 {
@@ -340,6 +342,7 @@ static uint64_t ndpi_memory_free_bytes = 0;
 static uint64_t zlib_compressions = 0;
 static uint64_t zlib_decompressions = 0;
 static uint64_t zlib_compression_diff = 0;
+static uint64_t zlib_compression_bytes = 0;
 #endif
 #endif
 
@@ -353,7 +356,6 @@ static struct
     uint8_t process_internal_initial_direction;
     uint8_t process_external_initial_direction;
     char * bpf_str;
-    int log_to_stderr;
     char pidfile[UNIX_PATH_MAX];
     char * user;
     char * group;
@@ -488,6 +490,7 @@ static int zlib_deflate(const void * const src, int srcLen, void * dst, int dstL
 #ifdef ENABLE_MEMORY_PROFILING
             __sync_fetch_and_add(&zlib_compressions, 1);
             __sync_fetch_and_add(&zlib_compression_diff, srcLen - ret);
+            __sync_fetch_and_add(&zlib_compression_bytes, ret);
 #endif
         }
         else
@@ -654,7 +657,7 @@ static void ndpi_comp_scan_walker(void const * const A, ndpi_VISIT which, int de
 
                     if (ret <= 0)
                     {
-                        syslog(LOG_DAEMON | LOG_ERR,
+                        logger(1,
                                "zLib compression failed for flow %llu with error code: %d",
                                flow_info->flow_extended.flow_id,
                                ret);
@@ -812,7 +815,7 @@ static int get_ip6_address_and_netmask(char const * const ifa_name, size_t ifnam
                                  L3_IP6);
             inet_ntop(AF_INET6, &nDPId_options.pcap_dev_subnet6.v6, subnet6, sizeof(subnet6));
 
-            syslog(LOG_DAEMON,
+            logger(0,
                    "%s IPv6 address/prefix netmask subnet: %s/%u %s %s",
                    nDPId_options.pcap_file_or_interface,
                    addr6,
@@ -879,7 +882,7 @@ static int get_ip4_address_and_netmask(char const * const ifa_name, size_t ifnam
         void * saddr = &nDPId_options.pcap_dev_ip4.v4.ip;
         void * snetm = &nDPId_options.pcap_dev_netmask4.v4.ip;
         void * ssubn = &nDPId_options.pcap_dev_subnet4.v4.ip;
-        syslog(LOG_DAEMON,
+        logger(0,
                "%s IPv4 address netmask subnet: %s %s %s",
                nDPId_options.pcap_file_or_interface,
                inet_ntop(AF_INET, saddr, addr, sizeof(addr)),
@@ -941,9 +944,7 @@ static int get_ip_netmask_from_pcap_dev(char const * const pcap_dev)
          nDPId_options.process_external_initial_direction != 0) &&
         ip4_interface_avail == 0 && ip6_interface_avail == 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR,
-               "Interface %s does not have any IPv4 / IPv6 address set, -I / -E won't work.",
-               pcap_dev);
+        logger_early(1, "Interface %s does not have any IPv4 / IPv6 address set, -I / -E won't work.", pcap_dev);
         retval = 1;
     }
 
@@ -987,7 +988,7 @@ static void log_memory_usage(struct nDPId_reader_thread const * const reader_thr
         uint64_t alloc_bytes = __sync_fetch_and_add(&ndpi_memory_alloc_bytes, 0);
         uint64_t free_bytes = __sync_fetch_and_add(&ndpi_memory_free_bytes, 0);
 
-        syslog(LOG_DAEMON,
+        logger(0,
                "MemoryProfiler: %llu allocs, %llu frees, %llu bytes allocated, %llu bytes freed, %llu blocks in "
                "use, "
                "%llu bytes in use",
@@ -1001,15 +1002,16 @@ static void log_memory_usage(struct nDPId_reader_thread const * const reader_thr
         uint64_t zlib_compression_count = __sync_fetch_and_add(&zlib_compressions, 0);
         uint64_t zlib_decompression_count = __sync_fetch_and_add(&zlib_decompressions, 0);
         uint64_t zlib_bytes_diff = __sync_fetch_and_add(&zlib_compression_diff, 0);
+        uint64_t zlib_bytes_total = __sync_fetch_and_add(&zlib_compression_bytes, 0);
 
-        syslog(LOG_DAEMON,
+        logger(0,
                "MemoryProfiler (zLib): %llu compressions, %llu decompressions, %llu compressed blocks in use, %llu "
-               "bytes "
-               "diff",
+               "bytes diff, %llu bytes total compressed",
                (long long unsigned int)zlib_compression_count,
                (long long unsigned int)zlib_decompression_count,
                (long long unsigned int)zlib_compression_count - (long long unsigned int)zlib_decompression_count,
-               (long long unsigned int)zlib_bytes_diff);
+               (long long unsigned int)zlib_bytes_diff,
+               (long long unsigned int)zlib_bytes_total);
 #endif
     }
 }
@@ -1163,7 +1165,7 @@ static void log_flows(struct nDPId_reader_thread const * const reader_thread)
         ndpi_twalk(workflow->ndpi_flows_active[scan_index], log_flows_flow_walker, &log_user_data);
     }
 
-    syslog(LOG_DAEMON,
+    logger(0,
            "MemoryProfiler flow stats: [thread: %d][unknown: %llu][skipped: %llu][finished: %llu][info: %llu]",
            reader_thread->array_index,
            log_user_data.flows_ukn,
@@ -1174,7 +1176,7 @@ static void log_flows(struct nDPId_reader_thread const * const reader_thread)
     flows_log_str_used = log_flows_to_str(log_user_data.flows_active_fin, log_user_data.flows_fin, flows_log_str);
     if (flows_log_str_used > 0)
     {
-        syslog(LOG_DAEMON,
+        logger(0,
                "MemoryProfiler flows active (finished): [thread: %d][%.*s]",
                reader_thread->array_index,
                (int)flows_log_str_used,
@@ -1184,7 +1186,7 @@ static void log_flows(struct nDPId_reader_thread const * const reader_thread)
     flows_log_str_used = log_flows_to_str(log_user_data.flows_active_inf, log_user_data.flows_inf, flows_log_str);
     if (flows_log_str_used > 0)
     {
-        syslog(LOG_DAEMON,
+        logger(0,
                "MemoryProfiler flows active (info): [thread: %d][%.*s]",
                reader_thread->array_index,
                (int)flows_log_str_used,
@@ -1225,17 +1227,18 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
 
     if (workflow->pcap_handle == NULL)
     {
-        syslog(LOG_DAEMON | LOG_ERR,
-               (workflow->is_pcap_file == 0 ? "pcap_open_live: %.*s" : "pcap_open_offline_with_tstamp_precision: %.*s"),
-               (int)PCAP_ERRBUF_SIZE,
-               pcap_error_buffer);
+        logger_early(1,
+                     (workflow->is_pcap_file == 0 ? "pcap_open_live: %.*s"
+                                                  : "pcap_open_offline_with_tstamp_precision: %.*s"),
+                     (int)PCAP_ERRBUF_SIZE,
+                     pcap_error_buffer);
         free_workflow(&workflow);
         return NULL;
     }
 
     if (workflow->is_pcap_file == 0 && pcap_setnonblock(workflow->pcap_handle, 1, pcap_error_buffer) == PCAP_ERROR)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "pcap_setnonblock: %.*s", (int)PCAP_ERRBUF_SIZE, pcap_error_buffer);
+        logger_early(1, "pcap_setnonblock: %.*s", (int)PCAP_ERRBUF_SIZE, pcap_error_buffer);
         free_workflow(&workflow);
         return NULL;
     }
@@ -1245,13 +1248,13 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
         struct bpf_program fp;
         if (pcap_compile(workflow->pcap_handle, &fp, nDPId_options.bpf_str, 1, PCAP_NETMASK_UNKNOWN) != 0)
         {
-            syslog(LOG_DAEMON | LOG_ERR, "pcap_compile: %s", pcap_geterr(workflow->pcap_handle));
+            logger_early(1, "pcap_compile: %s", pcap_geterr(workflow->pcap_handle));
             free_workflow(&workflow);
             return NULL;
         }
         if (pcap_setfilter(workflow->pcap_handle, &fp) != 0)
         {
-            syslog(LOG_DAEMON | LOG_ERR, "pcap_setfilter: %s", pcap_geterr(workflow->pcap_handle));
+            logger_early(1, "pcap_setfilter: %s", pcap_geterr(workflow->pcap_handle));
             free_workflow(&workflow);
             pcap_freecode(&fp);
             return NULL;
@@ -1263,7 +1266,7 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     workflow->ndpi_struct = ndpi_init_detection_module(init_prefs);
     if (workflow->ndpi_struct == NULL)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "%s", "BUG: Could not init ndpi detection module");
+        logger_early(1, "%s", "BUG: Could not init ndpi detection module");
         free_workflow(&workflow);
         return NULL;
     }
@@ -1274,9 +1277,9 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     workflow->ndpi_flows_active = (void **)ndpi_calloc(workflow->max_active_flows, sizeof(void *));
     if (workflow->ndpi_flows_active == NULL)
     {
-        syslog(LOG_DAEMON | LOG_ERR,
-               "Could not allocate %llu bytes for (active) flow tracking",
-               workflow->max_active_flows * sizeof(void *));
+        logger_early(1,
+                     "Could not allocate %llu bytes for (active) flow tracking",
+                     workflow->max_active_flows * sizeof(void *));
         free_workflow(&workflow);
         return NULL;
     }
@@ -1286,9 +1289,9 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     workflow->ndpi_flows_idle = (void **)ndpi_calloc(workflow->max_idle_flows, sizeof(void *));
     if (workflow->ndpi_flows_idle == NULL)
     {
-        syslog(LOG_DAEMON | LOG_ERR,
-               "Could not allocate %llu bytes for (idle) flow tracking",
-               workflow->max_idle_flows * sizeof(void *));
+        logger_early(1,
+                     "Could not allocate %llu bytes for (idle) flow tracking",
+                     workflow->max_idle_flows * sizeof(void *));
         free_workflow(&workflow);
         return NULL;
     }
@@ -1319,9 +1322,7 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     if (ndpi_init_serializer_ll(&workflow->ndpi_serializer, ndpi_serialization_format_json, NETWORK_BUFFER_MAX_SIZE) !=
         0)
     {
-        syslog(LOG_DAEMON | LOG_ERR,
-               "BUG: Could not init JSON serializer with buffer size: %u bytes",
-               NETWORK_BUFFER_MAX_SIZE);
+        logger_early(1, "BUG: Could not init JSON serializer with buffer size: %u bytes", NETWORK_BUFFER_MAX_SIZE);
         free_workflow(&workflow);
         return NULL;
     }
@@ -1434,10 +1435,10 @@ static int setup_reader_threads(void)
         nDPId_options.pcap_file_or_interface = get_default_pcapdev(pcap_error_buffer);
         if (nDPId_options.pcap_file_or_interface == NULL)
         {
-            syslog(LOG_DAEMON | LOG_ERR, "pcap_lookupdev: %.*s", (int)PCAP_ERRBUF_SIZE, pcap_error_buffer);
+            logger_early(1, "pcap_lookupdev: %.*s", (int)PCAP_ERRBUF_SIZE, pcap_error_buffer);
             return 1;
         }
-        syslog(LOG_DAEMON, "Capturing packets from default device: %s", nDPId_options.pcap_file_or_interface);
+        logger_early(0, "Capturing packets from default device: %s", nDPId_options.pcap_file_or_interface);
     }
 
     errno = 0;
@@ -1448,10 +1449,10 @@ static int setup_reader_threads(void)
         {
             if (errno != 0)
             {
-                syslog(LOG_DAEMON | LOG_ERR,
-                       "Could not get netmask for pcap device %s: %s",
-                       nDPId_options.pcap_file_or_interface,
-                       strerror(errno));
+                logger_early(1,
+                             "Could not get netmask for pcap device %s: %s",
+                             nDPId_options.pcap_file_or_interface,
+                             strerror(errno));
             }
             return 1;
         }
@@ -1460,12 +1461,12 @@ static int setup_reader_threads(void)
     {
         if (nDPId_options.process_internal_initial_direction != 0)
         {
-            syslog(LOG_DAEMON | LOG_ERR, "You are processing a PCAP file, `-I' ignored");
+            logger_early(1, "%s", "You are processing a PCAP file, `-I' ignored");
             nDPId_options.process_internal_initial_direction = 0;
         }
         if (nDPId_options.process_external_initial_direction != 0)
         {
-            syslog(LOG_DAEMON | LOG_ERR, "You are processing a PCAP file, `-E' ignored");
+            logger_early(1, "%s", "You are processing a PCAP file, `-E' ignored");
             nDPId_options.process_external_initial_direction = 0;
         }
     }
@@ -1695,7 +1696,7 @@ static void process_idle_flow(struct nDPId_reader_thread * const reader_thread, 
                     int ret = detection_data_inflate(flow_info);
                     if (ret <= 0)
                     {
-                        syslog(LOG_DAEMON | LOG_ERR, "zLib decompression failed with error code: %d", ret);
+                        logger(1, "zLib decompression failed with error code: %d", ret);
                         return;
                     }
                 }
@@ -1816,22 +1817,22 @@ static void jsonize_l3_l4(struct nDPId_workflow * const workflow, struct nDPId_f
             ndpi_serialize_string_string(serializer, "l3_proto", "ip4");
             if (inet_ntop(AF_INET, &flow_basic->src.v4.ip, src_name, sizeof(src_name)) == NULL)
             {
-                syslog(LOG_DAEMON | LOG_ERR, "Could not convert IPv4 source ip to string: %s", strerror(errno));
+                logger(1, "Could not convert IPv4 source ip to string: %s", strerror(errno));
             }
             if (inet_ntop(AF_INET, &flow_basic->dst.v4.ip, dst_name, sizeof(dst_name)) == NULL)
             {
-                syslog(LOG_DAEMON | LOG_ERR, "Could not convert IPv4 destination ip to string: %s", strerror(errno));
+                logger(1, "Could not convert IPv4 destination ip to string: %s", strerror(errno));
             }
             break;
         case L3_IP6:
             ndpi_serialize_string_string(serializer, "l3_proto", "ip6");
             if (inet_ntop(AF_INET6, &flow_basic->src.v6.ip[0], src_name, sizeof(src_name)) == NULL)
             {
-                syslog(LOG_DAEMON | LOG_ERR, "Could not convert IPv6 source ip to string: %s", strerror(errno));
+                logger(1, "Could not convert IPv6 source ip to string: %s", strerror(errno));
             }
             if (inet_ntop(AF_INET6, &flow_basic->dst.v6.ip[0], dst_name, sizeof(dst_name)) == NULL)
             {
-                syslog(LOG_DAEMON | LOG_ERR, "Could not convert IPv6 destination ip to string: %s", strerror(errno));
+                logger(1, "Could not convert IPv6 destination ip to string: %s", strerror(errno));
             }
 
             /* For consistency across platforms replace :0: with :: */
@@ -1985,8 +1986,13 @@ static int connect_to_json_socket(struct nDPId_reader_thread * const reader_thre
     }
 
     saddr.sun_family = AF_UNIX;
-    if (snprintf(saddr.sun_path, sizeof(saddr.sun_path), "%s", nDPId_options.json_sockpath) < 0 ||
-        connect(reader_thread->json_sockfd, (struct sockaddr *)&saddr, sizeof(saddr)) < 0)
+    int written = snprintf(saddr.sun_path, sizeof(saddr.sun_path), "%s", nDPId_options.json_sockpath);
+    if (written < 0)
+    {
+        return 1;
+    }
+
+    if (connect(reader_thread->json_sockfd, (struct sockaddr *)&saddr, sizeof(saddr)) < 0)
     {
         reader_thread->json_sock_reconnect = 1;
         return 1;
@@ -2024,9 +2030,9 @@ static void send_to_json_sink(struct nDPId_reader_thread * const reader_thread,
                      (int)json_str_len,
                      json_str);
 
-    if (s_ret < 0 || s_ret > (int)sizeof(newline_json_str))
+    if (s_ret < 0 || s_ret == (int)sizeof(newline_json_str))
     {
-        syslog(LOG_DAEMON | LOG_ERR,
+        logger(1,
                "[%8llu, %d] JSON buffer prepare failed: snprintf returned %d, buffer size %zu",
                workflow->packets_captured,
                reader_thread->array_index,
@@ -2039,7 +2045,7 @@ static void send_to_json_sink(struct nDPId_reader_thread * const reader_thread,
     {
         if (connect_to_json_socket(reader_thread) == 0)
         {
-            syslog(LOG_DAEMON | LOG_ERR,
+            logger(1,
                    "[%8llu, %d] Reconnected to nDPIsrvd Collector",
                    workflow->packets_captured,
                    reader_thread->array_index);
@@ -2055,7 +2061,7 @@ static void send_to_json_sink(struct nDPId_reader_thread * const reader_thread,
         saved_errno = errno;
         if (saved_errno == EPIPE)
         {
-            syslog(LOG_DAEMON | LOG_ERR,
+            logger(1,
                    "[%8llu, %d] Lost connection to nDPIsrvd Collector",
                    workflow->packets_captured,
                    reader_thread->array_index);
@@ -2072,7 +2078,7 @@ static void send_to_json_sink(struct nDPId_reader_thread * const reader_thread,
             {
                 if (written < 0)
                 {
-                    syslog(LOG_DAEMON | LOG_ERR,
+                    logger(1,
                            "[%8llu, %d] Send data (blocking I/O) to nDPIsrvd Collector failed: %s",
                            workflow->packets_captured,
                            reader_thread->array_index,
@@ -2098,7 +2104,7 @@ static void serialize_and_send(struct nDPId_reader_thread * const reader_thread)
     json_str = ndpi_serializer_get_buffer(&reader_thread->workflow->ndpi_serializer, &json_str_len);
     if (json_str == NULL || json_str_len == 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR,
+        logger(1,
                "[%8llu, %d] jsonize failed, buffer length: %u",
                reader_thread->workflow->packets_captured,
                reader_thread->array_index,
@@ -2235,7 +2241,7 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
     {
         if (flow_ext == NULL)
         {
-            syslog(LOG_DAEMON | LOG_ERR,
+            logger(1,
                    "[%8llu, %d] BUG: got a PACKET_EVENT_PAYLOAD_FLOW with a flow pointer equals NULL",
                    reader_thread->workflow->packets_captured,
                    reader_thread->array_index);
@@ -2286,7 +2292,7 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
     {
         if (ndpi_serialize_string_binary(&workflow->ndpi_serializer, "pkt", base64_data, base64_data_len) != 0)
         {
-            syslog(LOG_DAEMON | LOG_ERR,
+            logger(1,
                    "[%8llu, %d] JSON serializing base64 packet buffer failed",
                    reader_thread->workflow->packets_captured,
                    reader_thread->array_index);
@@ -2294,7 +2300,7 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
     }
     else
     {
-        syslog(LOG_DAEMON | LOG_ERR,
+        logger(1,
                "[%8llu, %d] Base64 encoding failed with: %s.",
                reader_thread->workflow->packets_captured,
                reader_thread->array_index,
@@ -2346,7 +2352,7 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
         case FLOW_EVENT_GUESSED:
         case FLOW_EVENT_DETECTED:
         case FLOW_EVENT_DETECTION_UPDATE:
-            syslog(LOG_DAEMON | LOG_ERR,
+            logger(1,
                    "[%8llu, %4llu] internal error / invalid function call",
                    workflow->packets_captured,
                    flow_ext->flow_id);
@@ -2386,7 +2392,7 @@ static void jsonize_flow_detection_event(struct nDPId_reader_thread * const read
         case FLOW_EVENT_END:
         case FLOW_EVENT_IDLE:
         case FLOW_EVENT_UPDATE:
-            syslog(LOG_DAEMON | LOG_ERR,
+            logger(1,
                    "[%8llu, %4llu] internal error / invalid function call",
                    workflow->packets_captured,
                    flow_info->flow_extended.flow_id);
@@ -2399,7 +2405,7 @@ static void jsonize_flow_detection_event(struct nDPId_reader_thread * const read
                               flow_info->detection_data->guessed_l7_protocol,
                               &workflow->ndpi_serializer) != 0)
             {
-                syslog(LOG_DAEMON | LOG_ERR,
+                logger(1,
                        "[%8llu, %4llu] ndpi_dpi2json failed for not-detected/guessed flow",
                        workflow->packets_captured,
                        flow_info->flow_extended.flow_id);
@@ -2413,7 +2419,7 @@ static void jsonize_flow_detection_event(struct nDPId_reader_thread * const read
                               flow_info->detection_data->detected_l7_protocol,
                               &workflow->ndpi_serializer) != 0)
             {
-                syslog(LOG_DAEMON | LOG_ERR,
+                logger(1,
                        "[%8llu, %4llu] ndpi_dpi2json failed for detected/detection-update flow",
                        workflow->packets_captured,
                        flow_info->flow_extended.flow_id);
@@ -2426,10 +2432,7 @@ static void jsonize_flow_detection_event(struct nDPId_reader_thread * const read
 
 static void internal_format_error(ndpi_serializer * const serializer, char const * const format, uint32_t format_index)
 {
-    syslog(LOG_DAEMON | LOG_ERR,
-           "BUG: Internal error detected for format string `%s' at format index %u",
-           format,
-           format_index);
+    logger(1, "BUG: Internal error detected for format string `%s' at format index %u", format, format_index);
     ndpi_reset_serializer(serializer);
 }
 
@@ -3490,7 +3493,7 @@ static void ndpi_process_packet(uint8_t * const args,
             int ret = detection_data_inflate(flow_to_process);
             if (ret <= 0)
             {
-                syslog(LOG_DAEMON | LOG_ERR,
+                logger(1,
                        "zLib decompression failed for existing flow %llu with error code: %d",
                        flow_to_process->flow_extended.flow_id,
                        ret);
@@ -3638,9 +3641,7 @@ static void run_pcap_loop(struct nDPId_reader_thread * const reader_thread)
             switch (pcap_loop(reader_thread->workflow->pcap_handle, -1, &ndpi_process_packet, (uint8_t *)reader_thread))
             {
                 case PCAP_ERROR:
-                    syslog(LOG_DAEMON | LOG_ERR,
-                           "Error while reading pcap file: '%s'",
-                           pcap_geterr(reader_thread->workflow->pcap_handle));
+                    logger(1, "Error while reading pcap file: '%s'", pcap_geterr(reader_thread->workflow->pcap_handle));
                     __sync_fetch_and_add(&reader_thread->workflow->error_or_eof, 1);
                     return;
                 case PCAP_ERROR_BREAK:
@@ -3655,7 +3656,7 @@ static void run_pcap_loop(struct nDPId_reader_thread * const reader_thread)
             int pcap_fd = pcap_get_selectable_fd(reader_thread->workflow->pcap_handle);
             if (pcap_fd < 0)
             {
-                syslog(LOG_DAEMON | LOG_ERR, "%s", "Got an invalid PCAP fd");
+                logger(1, "%s", "Got an invalid PCAP fd");
                 __sync_fetch_and_add(&reader_thread->workflow->error_or_eof, 1);
                 return;
             }
@@ -3663,7 +3664,7 @@ static void run_pcap_loop(struct nDPId_reader_thread * const reader_thread)
             int epoll_fd = epoll_create1(EPOLL_CLOEXEC);
             if (epoll_fd < 0)
             {
-                syslog(LOG_DAEMON | LOG_ERR, "Got an invalid epoll fd: %s", strerror(errno));
+                logger(1, "Got an invalid epoll fd: %s", strerror(errno));
                 __sync_fetch_and_add(&reader_thread->workflow->error_or_eof, 1);
                 return;
             }
@@ -3673,11 +3674,7 @@ static void run_pcap_loop(struct nDPId_reader_thread * const reader_thread)
             event.data.fd = pcap_fd;
             if (epoll_ctl(epoll_fd, EPOLL_CTL_ADD, pcap_fd, &event) != 0)
             {
-                syslog(LOG_DAEMON | LOG_ERR,
-                       "Could not add pcap fd %d to epoll fd %d: %s",
-                       epoll_fd,
-                       pcap_fd,
-                       strerror(errno));
+                logger(1, "Could not add pcap fd %d to epoll fd %d: %s", epoll_fd, pcap_fd, strerror(errno));
                 __sync_fetch_and_add(&reader_thread->workflow->error_or_eof, 1);
                 return;
             }
@@ -3703,7 +3700,7 @@ static void run_pcap_loop(struct nDPId_reader_thread * const reader_thread)
                         reader_thread->workflow->pcap_handle, -1, ndpi_process_packet, (uint8_t *)reader_thread))
                     {
                         case PCAP_ERROR:
-                            syslog(LOG_DAEMON | LOG_ERR,
+                            logger(1,
                                    "Error while reading from pcap device: '%s'",
                                    pcap_geterr(reader_thread->workflow->pcap_handle));
                             __sync_fetch_and_add(&reader_thread->workflow->error_or_eof, 1);
@@ -3738,7 +3735,7 @@ static void * processing_thread(void * const ndpi_thread_arg)
     errno = 0;
     if (connect_to_json_socket(reader_thread) != 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR,
+        logger(1,
                "Thread %u: Could not connect to nDPIsrvd Collector at %s, will try again later. Error: %s",
                reader_thread->array_index,
                nDPId_options.json_sockpath,
@@ -3776,7 +3773,7 @@ static int start_reader_threads(void)
     sigdelset(&thread_signal_set, SIGTERM);
     if (pthread_sigmask(SIG_BLOCK, &thread_signal_set, &old_signal_set) != 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "pthread_sigmask: %s", strerror(errno));
+        logger_early(1, "pthread_sigmask: %s", strerror(errno));
         return 1;
     }
 
@@ -3784,19 +3781,25 @@ static int start_reader_threads(void)
     {
         return 1;
     }
-    closelog();
-    openlog("nDPId", LOG_CONS | (nDPId_options.log_to_stderr != 0 ? LOG_PERROR : 0), LOG_DAEMON);
 
     errno = 0;
-    if (change_user_group(nDPId_options.user, nDPId_options.group, nDPId_options.pidfile, NULL, NULL) != 0)
+    if (nDPId_options.user != NULL &&
+        change_user_group(nDPId_options.user, nDPId_options.group, nDPId_options.pidfile, NULL, NULL) != 0)
     {
         if (errno != 0)
         {
-            syslog(LOG_DAEMON | LOG_ERR, "Change user/group failed: %s", strerror(errno));
+            logger(1,
+                   "Change user/group to %s/%s failed: %s",
+                   (nDPId_options.user != NULL ? nDPId_options.user : "-"),
+                   (nDPId_options.group != NULL ? nDPId_options.group : "-"),
+                   strerror(errno));
         }
         else
         {
-            syslog(LOG_DAEMON | LOG_ERR, "Change user/group failed.");
+            logger(1,
+                   "Change user/group to %s/%s failed.",
+                   (nDPId_options.user != NULL ? nDPId_options.user : "-"),
+                   (nDPId_options.group != NULL ? nDPId_options.group : "-"));
         }
         return 1;
     }
@@ -3813,14 +3816,14 @@ static int start_reader_threads(void)
 
         if (pthread_create(&reader_threads[i].thread_id, NULL, processing_thread, &reader_threads[i]) != 0)
         {
-            syslog(LOG_DAEMON | LOG_ERR, "pthread_create: %s", strerror(errno));
+            logger(1, "pthread_create: %s", strerror(errno));
             return 1;
         }
     }
 
     if (pthread_sigmask(SIG_BLOCK, &old_signal_set, NULL) != 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "pthread_sigmask: %s", strerror(errno));
+        logger(1, "pthread_sigmask: %s", strerror(errno));
         return 1;
     }
 
@@ -3868,7 +3871,7 @@ static void process_remaining_flows(void)
                   F_SETFL,
                   fcntl(reader_threads[i].json_sockfd, F_GETFL, 0) & ~O_NONBLOCK) == -1)
         {
-            syslog(LOG_DAEMON | LOG_ERR,
+            logger(1,
                    "Could not set JSON fd %d to blocking mode for shutdown: %s",
                    reader_threads[i].json_sockfd,
                    strerror(errno));
@@ -3915,7 +3918,7 @@ static int stop_reader_threads(void)
 
         if (pthread_join(reader_threads[i].thread_id, NULL) != 0)
         {
-            syslog(LOG_DAEMON | LOG_ERR, "pthread_join: %s", strerror(errno));
+            logger(1, "pthread_join: %s", strerror(errno));
         }
     }
 
@@ -4078,7 +4081,7 @@ static int nDPId_parse_options(int argc, char ** argv)
         "Usage: %s "
         "[-i pcap-file/interface] [-I] [-E] [-B bpf-filter]\n"
         "\t  \t"
-        "[-l] [-c path-to-unix-sock] "
+        "[-l] [-L logfile] [-c path-to-unix-sock] "
         "[-d] [-p pidfile]\n"
         "\t  \t"
         "[-u user] [-g group] "
@@ -4093,7 +4096,8 @@ static int nDPId_parse_options(int argc, char ** argv)
         "\t-E\tProcess only packets where the source address of the first packet\n"
         "\t  \tis *NOT* part of the interface subnet. (External mode)\n"
         "\t-B\tSet an optional PCAP filter string. (BPF format)\n"
-        "\t-l\tLog all messages to stderr as well. Logging via Syslog is always enabled.\n"
+        "\t-l\tLog all messages to stderr.\n"
+        "\t-L\tLog all messages to a log file.\n"
         "\t-c\tPath to the UNIX socket (nDPIsrvd Collector).\n"
         "\t-d\tForking into background after initialization.\n"
         "\t-p\tWrite the daemon PID to the given file path.\n"
@@ -4117,7 +4121,7 @@ static int nDPId_parse_options(int argc, char ** argv)
         "\t-v\tversion\n"
         "\t-h\tthis\n\n";
 
-    while ((opt = getopt(argc, argv, "hi:IEB:lc:dp:u:g:P:C:J:S:a:zo:vh")) != -1)
+    while ((opt = getopt(argc, argv, "hi:IEB:lL:c:dp:u:g:P:C:J:S:a:zo:vh")) != -1)
     {
         switch (opt)
         {
@@ -4134,13 +4138,12 @@ static int nDPId_parse_options(int argc, char ** argv)
                 nDPId_options.bpf_str = strdup(optarg);
                 break;
             case 'l':
-                nDPId_options.log_to_stderr = 1;
-                if (setvbuf(stderr, NULL, _IOLBF, 0) != 0)
+                enable_console_logger();
+                break;
+            case 'L':
+                if (enable_file_logger(optarg) != 0)
                 {
-                    fprintf(stderr,
-                            "%s: Could not set stderr line-buffered, "
-                            "console syslog() messages may appear weird.\n",
-                            argv[0]);
+                    return 1;
                 }
                 break;
             case 'c':
@@ -4180,7 +4183,7 @@ static int nDPId_parse_options(int argc, char ** argv)
                 nDPId_options.enable_zlib_compression = 1;
                 break;
 #else
-                fprintf(stderr, "nDPId was built w/o zLib compression\n");
+                logger_early(1, "%s", "nDPId was built w/o zLib compression");
                 return 1;
 #endif
             case 'o':
@@ -4195,7 +4198,8 @@ static int nDPId_parse_options(int argc, char ** argv)
                     int subopt = getsubopt(&subopts, subopt_token, &value);
                     if (subopt == -1)
                     {
-                        fprintf(stderr, "Invalid subopt: %s\n\n", value);
+                        logger_early(1, "Invalid subopt: %s", value);
+                        fprintf(stderr, "%s", "\n");
                         fprintf(stderr, usage, argv[0]);
                         print_subopt_usage();
                         return 1;
@@ -4204,15 +4208,12 @@ static int nDPId_parse_options(int argc, char ** argv)
                     long int value_llu = strtoull(value, &endptr, 10);
                     if (value == endptr)
                     {
-                        fprintf(stderr,
-                                "Subopt `%s': Value `%s' is not a valid number.\n",
-                                subopt_token[subopt],
-                                value);
+                        logger_early(1, "Subopt `%s': Value `%s' is not a valid number.", subopt_token[subopt], value);
                         return 1;
                     }
                     if (errno == ERANGE)
                     {
-                        fprintf(stderr, "Subopt `%s': Number too large.\n", subopt_token[subopt]);
+                        logger_early(1, "Subopt `%s': Number too large.", subopt_token[subopt]);
                         return 1;
                     }
 
@@ -4284,7 +4285,8 @@ static int nDPId_parse_options(int argc, char ** argv)
 
     if (optind < argc)
     {
-        fprintf(stderr, "Unexpected argument after options\n\n");
+        logger_early(1, "%s", "Unexpected argument after options");
+        fprintf(stderr, "%s", "\n");
         fprintf(stderr, usage, argv[0]);
         print_subopt_usage();
         return 1;
@@ -4293,28 +4295,45 @@ static int nDPId_parse_options(int argc, char ** argv)
     return 0;
 }
 
-static int validate_options(char const * const arg0)
+static int validate_options(void)
 {
     int retval = 0;
 
+    if (is_daemonize_enabled() != 0 && is_console_logger_enabled() != 0)
+    {
+        logger_early(1,
+                     "%s",
+                     "Daemon mode `-d' and `-l' can not be used together, "
+                     "because stdout/stderr is beeing redirected to /dev/null");
+        retval = 1;
+    }
 #ifdef ENABLE_ZLIB
     if (nDPId_options.enable_zlib_compression != 0)
     {
         if (nDPId_options.compression_flow_inactivity < 10000 || nDPId_options.compression_scan_interval < 10000)
         {
-            fprintf(stderr,
-                    "%s: Setting compression-scan-interval / compression-flow-activity to values lower than 10000 is "
-                    "not "
-                    "recommended.\n"
-                    "%s: Your CPU usage may increase heavily.\n",
-                    arg0,
-                    arg0);
+            logger_early(1,
+                         "%s",
+                         "Setting compression-scan-interval / compression-flow-activity "
+                         "to values lower than 10000 is not recommended.");
+            logger_early(1, "%s", "Your CPU usage may increase heavily.");
         }
     }
 #endif
     if (is_path_absolute("JSON socket", nDPId_options.json_sockpath) != 0)
     {
         retval = 1;
+    }
+    {
+        struct sockaddr_un saddr;
+        if (strlen(nDPId_options.json_sockpath) >= sizeof(saddr.sun_path))
+        {
+            logger_early(1,
+                         "JSON socket path too long, current/max: %zu/%zu",
+                         strlen(nDPId_options.json_sockpath),
+                         sizeof(saddr.sun_path) - 1);
+            retval = 1;
+        }
     }
     if (nDPId_options.instance_alias == NULL)
     {
@@ -4323,16 +4342,13 @@ static int validate_options(char const * const arg0)
         errno = 0;
         if (gethostname(hname, sizeof(hname)) != 0)
         {
-            fprintf(stderr, "%s: Could not retrieve your hostname: %s\n", arg0, strerror(errno));
+            logger_early(1, "Could not retrieve your hostname: %s", strerror(errno));
             retval = 1;
         }
         else
         {
             nDPId_options.instance_alias = strdup(hname);
-            fprintf(stderr,
-                    "%s: No instance alias given, using your hostname '%s'\n",
-                    arg0,
-                    nDPId_options.instance_alias);
+            logger_early(0, "No instance alias given, using your hostname '%s'", nDPId_options.instance_alias);
             if (nDPId_options.instance_alias == NULL)
             {
                 retval = 1;
@@ -4341,108 +4357,93 @@ static int validate_options(char const * const arg0)
     }
     if (nDPId_options.max_flows_per_thread < 128 || nDPId_options.max_flows_per_thread > nDPId_MAX_FLOWS_PER_THREAD)
     {
-        fprintf(stderr,
-                "%s: Value not in range: 128 < max-flows-per-thread[%llu] < %d\n",
-                arg0,
-                nDPId_options.max_flows_per_thread,
-                nDPId_MAX_FLOWS_PER_THREAD);
+        logger_early(1,
+                     "Value not in range: 128 < max-flows-per-thread[%llu] < %d",
+                     nDPId_options.max_flows_per_thread,
+                     nDPId_MAX_FLOWS_PER_THREAD);
         retval = 1;
     }
     if (nDPId_options.max_idle_flows_per_thread < 64 ||
         nDPId_options.max_idle_flows_per_thread > nDPId_MAX_IDLE_FLOWS_PER_THREAD)
     {
-        fprintf(stderr,
-                "%s: Value not in range: 64 < max-idle-flows-per-thread[%llu] < %d\n",
-                arg0,
-                nDPId_options.max_idle_flows_per_thread,
-                nDPId_MAX_IDLE_FLOWS_PER_THREAD);
+        logger_early(1,
+                     "Value not in range: 64 < max-idle-flows-per-thread[%llu] < %d",
+                     nDPId_options.max_idle_flows_per_thread,
+                     nDPId_MAX_IDLE_FLOWS_PER_THREAD);
         retval = 1;
     }
     if (nDPId_options.tick_resolution < 1)
     {
-        fprintf(stderr, "%s: Value not in range: tick-resolution[%llu] > 1\n", arg0, nDPId_options.tick_resolution);
+        logger_early(1, "Value not in range: tick-resolution[%llu] > 1", nDPId_options.tick_resolution);
         retval = 1;
     }
     if (nDPId_options.reader_thread_count < 1 || nDPId_options.reader_thread_count > nDPId_MAX_READER_THREADS)
     {
-        fprintf(stderr,
-                "%s: Value not in range: 1 < reader-thread-count[%llu] < %d\n",
-                arg0,
-                nDPId_options.reader_thread_count,
-                nDPId_MAX_READER_THREADS);
+        logger_early(1,
+                     "Value not in range: 1 < reader-thread-count[%llu] < %d",
+                     nDPId_options.reader_thread_count,
+                     nDPId_MAX_READER_THREADS);
         retval = 1;
     }
     if (nDPId_options.flow_scan_interval < 1000)
     {
-        fprintf(stderr,
-                "%s: Value not in range: idle-scan-interval[%llu] > 1000\n",
-                arg0,
-                nDPId_options.flow_scan_interval);
+        logger_early(1, "Value not in range: idle-scan-interval[%llu] > 1000", nDPId_options.flow_scan_interval);
         retval = 1;
     }
     if (nDPId_options.flow_scan_interval >= nDPId_options.generic_max_idle_time)
     {
-        fprintf(stderr,
-                "%s: Value not in range: flow-scan-interval[%llu] < generic-max-idle-time[%llu]\n",
-                arg0,
-                nDPId_options.flow_scan_interval,
-                nDPId_options.generic_max_idle_time);
+        logger_early(1,
+                     "Value not in range: flow-scan-interval[%llu] < generic-max-idle-time[%llu]",
+                     nDPId_options.flow_scan_interval,
+                     nDPId_options.generic_max_idle_time);
         retval = 1;
     }
     if (nDPId_options.flow_scan_interval >= nDPId_options.icmp_max_idle_time)
     {
-        fprintf(stderr,
-                "%s: Value not in range: flow-scan-interval[%llu] < icmp-max-idle-time[%llu]\n",
-                arg0,
-                nDPId_options.flow_scan_interval,
-                nDPId_options.icmp_max_idle_time);
+        logger_early(1,
+                     "Value not in range: flow-scan-interval[%llu] < icmp-max-idle-time[%llu]",
+                     nDPId_options.flow_scan_interval,
+                     nDPId_options.icmp_max_idle_time);
         retval = 1;
     }
     if (nDPId_options.flow_scan_interval >= nDPId_options.tcp_max_idle_time)
     {
-        fprintf(stderr,
-                "%s: Value not in range: flow-scan-interval[%llu] < generic-max-idle-time[%llu]\n",
-                arg0,
-                nDPId_options.flow_scan_interval,
-                nDPId_options.tcp_max_idle_time);
+        logger_early(1,
+                     "Value not in range: flow-scan-interval[%llu] < generic-max-idle-time[%llu]",
+                     nDPId_options.flow_scan_interval,
+                     nDPId_options.tcp_max_idle_time);
         retval = 1;
     }
     if (nDPId_options.flow_scan_interval >= nDPId_options.udp_max_idle_time)
     {
-        fprintf(stderr,
-                "%s: Value not in range:flow-scan-interval[%llu] < udp-max-idle-time[%llu]\n",
-                arg0,
-                nDPId_options.flow_scan_interval,
-                nDPId_options.udp_max_idle_time);
+        logger_early(1,
+                     "Value not in range:flow-scan-interval[%llu] < udp-max-idle-time[%llu]",
+                     nDPId_options.flow_scan_interval,
+                     nDPId_options.udp_max_idle_time);
         retval = 1;
     }
     if (nDPId_options.process_internal_initial_direction != 0 && nDPId_options.process_external_initial_direction != 0)
     {
-        fprintf(stderr,
-                "%s: Internal and External packet processing does not make sense as this is the default.\n",
-                arg0);
+        logger_early(1, "%s", "Internal and External packet processing does not make sense as this is the default.");
         retval = 1;
     }
     if (nDPId_options.process_internal_initial_direction != 0 || nDPId_options.process_external_initial_direction != 0)
     {
-        fprintf(stderr,
-                "%s: Internal and External packet processing may lead to incorrect results for flows that were active "
-                "before the daemon started.\n",
-                arg0);
+        logger_early(1,
+                     "%s",
+                     "Internal and External packet processing may lead to incorrect results for flows that were active "
+                     "before the daemon started.");
     }
     if (nDPId_options.max_packets_per_flow_to_process < 1 || nDPId_options.max_packets_per_flow_to_process > 65535)
     {
-        fprintf(stderr,
-                "%s: Value not in range: 1 =< max-packets-per-flow-to-process[%llu] =< 65535\n",
-                arg0,
-                nDPId_options.max_packets_per_flow_to_process);
+        logger_early(1,
+                     "Value not in range: 1 =< max-packets-per-flow-to-process[%llu] =< 65535",
+                     nDPId_options.max_packets_per_flow_to_process);
         retval = 1;
     }
     if (nDPId_options.max_packets_per_flow_to_send > 30)
     {
-        fprintf(stderr,
-                "%s: Higher values of max-packets-per-flow-to-send may cause superfluous network usage.\n",
-                arg0);
+        logger_early(1, "%s", "Higher values of max-packets-per-flow-to-send may cause superfluous network usage.");
     }
 
     return retval;
@@ -4456,15 +4457,19 @@ int main(int argc, char ** argv)
         return 1;
     }
 
+    init_logging("nDPId");
+
     if (nDPId_parse_options(argc, argv) != 0)
     {
         return 1;
     }
-    if (validate_options(argv[0]) != 0)
+    if (validate_options() != 0)
     {
-        fprintf(stderr, "%s: Option validation failed.\n", argv[0]);
+        logger_early(1, "%s", "Option validation failed.");
         return 1;
     }
+
+    log_app_info();
 
     printf(
         "----------------------------------\n"
@@ -4483,9 +4488,11 @@ int main(int argc, char ** argv)
             ndpi_get_gcrypt_version());
     }
 
-    openlog("nDPId", LOG_CONS | LOG_PERROR, LOG_DAEMON);
 #ifdef ENABLE_MEMORY_PROFILING
-    syslog(LOG_DAEMON, "size/flow: %zu bytes\n", sizeof(struct nDPId_flow_info) + sizeof(struct nDPId_detection_data));
+    logger_early(0, "size/workflow...: %zu bytes", sizeof(struct nDPId_workflow));
+    logger_early(0,
+                 "size/flow.......: %zu bytes",
+                 sizeof(struct nDPId_flow_info) + sizeof(struct nDPId_detection_data));
 #endif
 
     if (setup_reader_threads() != 0)
@@ -4514,8 +4521,8 @@ int main(int argc, char ** argv)
     free_reader_threads();
 
     daemonize_shutdown(nDPId_options.pidfile);
-    syslog(LOG_DAEMON | LOG_NOTICE, "Bye.");
-    closelog();
+    logger(0, "%s", "Bye.");
+    shutdown_logging();
 
     return 0;
 }

@@ -1,4 +1,4 @@
-00440{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"wechat.pcap","alias":"nDPId-test","max-flows-per-thread":2048,"max-idle-flows-per-thread":256,"tick-resolution":1000,"reader-thread-count":1,"flow-scan-interval":10000,"generic-max-idle-time":600000,"icmp-max-idle-time":120000,"udp-max-idle-time":180000,"tcp-max-idle-time":7560000,"max-packets-per-flow-to-send":3,"max-packets-per-flow-to-process":255}
+00439{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"wechat.pcap","alias":"nDPId-test","max-flows-per-thread":2048,"max-idle-flows-per-thread":64,"tick-resolution":1000,"reader-thread-count":1,"flow-scan-interval":10000,"generic-max-idle-time":600000,"icmp-max-idle-time":120000,"udp-max-idle-time":180000,"tcp-max-idle-time":7560000,"max-packets-per-flow-to-send":3,"max-packets-per-flow-to-process":255}
 00558{"flow_event_id":1,"flow_event_name":"new","thread_id":0,"packet_id":1,"source":"wechat.pcap","alias":"nDPId-test","flow_id":1,"flow_packets_processed":1,"flow_first_seen":1492167337792,"flow_last_seen":1492167337792,"flow_idle_time":7440000,"flow_min_l4_payload_len":604,"flow_max_l4_payload_len":604,"flow_tot_l4_payload_len":604,"flow_avg_l4_payload_len":604,"midstream":1,"ts_msec":1492167337792,"l3_proto":"ip4","src_ip":"203.205.151.162","dst_ip":"192.168.1.103","src_port":443,"dst_port":54084,"l4_proto":"tcp","flow_datalink":1,"flow_max_packets":3}
 01274{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":1,"source":"wechat.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":1,"flow_last_seen":1492167337792,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":670,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":670,"pkt_l4_len":636,"ts_msec":1492167337792,"pkt":"eJKcD6iO8IQvSpdgCABFoAKQLFpAACwG+e7LzZeiwKgBZwG700RsJQvmFiW5B4AYAQBhCAAAAQEICkXRlQMAMKrIjxNPGb1b2gIOFmmrodrIUGWpRD8pBe\/eyANOuHxnf1oEiCDKQxkU6yvgqiltC85O1YOlf4+boaZn\/v7U0TkR+lQ9a8XEdMtbUDNvRkN1lpLANNJe9T6WEXQRZhhQATyvHXIsPxznFQlv1ayF4fN0Lp1Tv+DnMtPovG4l64Fdnf94BKNh3wpUis\/1aaAJUl4N4QYAa2BN+MLHUIjBfzQomk58kbDVZlQvabo4eeiFrJQbG0CRtmIDLIV4UlMABwm2B+L0SD\/lX+vPdRjlbT0hOePKWkrPVp4oa0GnGMtovp\/3dKKj2adHC1yCvZqzc+T4heafDFJJDxNGnnTZtJeXWQW2\/Wn0xAXZa5xeVmiob7mVi7gQwqB4EyVdzoi+MdLqv1I0FdZ7WKuu9o+r6i7T5KxQ7NhUIRC9KEInuscbFfTp5tcTpkg81VRtJhveR07GYTrLSFchnUCEzbFpCOPEOlfHshGkgemcZqUW0JSeBZoVIhGHuP8IElk+zTdckKSFR7XZosRv+JZpXULghhsYEQIcWSnXEwiNwHqD7SkijDTYTSRARplFy3lQ+I9PYai9e3wxDdj38dt3ZjnYHW+Jgcvyxa81TfaFhCzMBo8JWYVcQLLQCzJJ7po8hcjxwSKSvs1BzLjoAmGIOQCY3cD2niwBo4mLwkfrwM7iYYbbTgCByxdl2XUzXKGTmMiV+yqiF1sadTUF0KDk8zQPlxqASeejWTULCaKDKO7zq0WMvrWWgtPS5+WycvqXy24tfwXRN6su4lzlC8cmzA\/wzbACdxOu6m0puRk6CDMzrA=="}
 00456{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":2,"source":"wechat.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":2,"flow_last_seen":1492167337792,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":66,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":66,"pkt_l4_len":32,"ts_msec":1492167337792,"pkt":"8IQvSpdgeJKcD6iOCABFAAA0B7NAAEAGDZLAqAFny82XotNEAbsWJbkHbCUOQoAQAk6qQAAAAQEICgAwqxZF0ZUD"}
@@ -727,9 +727,9 @@
 ~~ total active/idle flows...: 112/112
 ~~ total timeout flows.......: 0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~ total memory allocated....: 5176205 bytes
-~~ total memory freed........: 5176205 bytes
-~~ total allocations/frees...: 102171/102171
+~~ total memory allocated....: 5290117 bytes
+~~ total memory freed........: 5290117 bytes
+~~ total allocations/frees...: 102393/102393
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~ json string min len.......: 163 chars
 ~~ json string max len.......: 2268 chars

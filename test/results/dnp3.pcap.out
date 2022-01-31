@@ -1,4 +1,4 @@
-00438{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"dnp3.pcap","alias":"nDPId-test","max-flows-per-thread":2048,"max-idle-flows-per-thread":256,"tick-resolution":1000,"reader-thread-count":1,"flow-scan-interval":10000,"generic-max-idle-time":600000,"icmp-max-idle-time":120000,"udp-max-idle-time":180000,"tcp-max-idle-time":7560000,"max-packets-per-flow-to-send":3,"max-packets-per-flow-to-process":255}
+00437{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"dnp3.pcap","alias":"nDPId-test","max-flows-per-thread":2048,"max-idle-flows-per-thread":64,"tick-resolution":1000,"reader-thread-count":1,"flow-scan-interval":10000,"generic-max-idle-time":600000,"icmp-max-idle-time":120000,"udp-max-idle-time":180000,"tcp-max-idle-time":7560000,"max-packets-per-flow-to-send":3,"max-packets-per-flow-to-process":255}
 00537{"flow_event_id":1,"flow_event_name":"new","thread_id":0,"packet_id":1,"source":"dnp3.pcap","alias":"nDPId-test","flow_id":1,"flow_packets_processed":1,"flow_first_seen":1097501938503,"flow_last_seen":1097501938503,"flow_idle_time":7440000,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":0,"flow_tot_l4_payload_len":0,"flow_avg_l4_payload_len":0,"midstream":0,"ts_msec":1097501938503,"l3_proto":"ip4","src_ip":"10.0.0.8","dst_ip":"10.0.0.3","src_port":2789,"dst_port":20000,"l4_proto":"tcp","flow_datalink":1,"flow_max_packets":3}
 00452{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":1,"source":"dnp3.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":1,"flow_last_seen":1097501938503,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":62,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":62,"pkt_l4_len":28,"ts_msec":1097501938503,"pkt":"AAKzznBRAFAEk3BnCABFAAAwTFlAAIAGmmQKAAAICgAAAwrlTiBVHBrSAAAAAHAC\/\/+mIQAAAgQFtAEBBAI="}
 00452{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":2,"source":"dnp3.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":2,"flow_last_seen":1097501938503,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":62,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":62,"pkt_l4_len":28,"ts_msec":1097501938503,"pkt":"AAKzznBRAFAEk3BnCABFAAAwTFlAAIAGmmQKAAAICgAAAwrlTiBVHBrSAAAAAHAC\/\/+mIQAAAgQFtAEBBAI="}
@@ -60,9 +60,9 @@
 ~~ total active/idle flows...: 8/8
 ~~ total timeout flows.......: 0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~ total memory allocated....: 4622488 bytes
-~~ total memory freed........: 4622488 bytes
-~~ total allocations/frees...: 100118/100118
+~~ total memory allocated....: 4627200 bytes
+~~ total memory freed........: 4627200 bytes
+~~ total allocations/frees...: 100130/100130
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~ json string min len.......: 159 chars
 ~~ json string max len.......: 582 chars

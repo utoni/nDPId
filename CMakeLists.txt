@@ -75,7 +75,7 @@ set(CROSS_COMPILE_TRIPLET "" CACHE STRING "Host triplet used to enable cross com
 
 add_executable(nDPId nDPId.c utils.c)
 add_executable(nDPIsrvd nDPIsrvd.c utils.c)
-add_executable(nDPId-test nDPId-test.c utils.c)
+add_executable(nDPId-test nDPId-test.c)
 
 add_custom_target(dist)
 add_custom_command(
@@ -252,13 +252,13 @@ target_include_directories(nDPId-test PRIVATE
                            "${CMAKE_SOURCE_DIR}/dependencies/jsmn"
                            "${CMAKE_SOURCE_DIR}/dependencies/uthash/src")
 target_compile_options(nDPId-test PRIVATE "-Wno-unused-function" "-pthread")
-target_compile_definitions(nDPId-test PRIVATE ${NDPID_DEFS})
+target_compile_definitions(nDPId-test PRIVATE -D_GNU_SOURCE=1 -DNO_MAIN=1 -DGIT_VERSION=\"${GIT_VERSION}\"
+                                              ${NDPID_DEFS} ${ZLIB_DEFS} ${NDPID_TEST_MPROF_DEFS})
 target_include_directories(nDPId-test PRIVATE
                            "${STATIC_LIBNDPI_INC}" "${NDPI_INCLUDEDIR}" "${NDPI_INCLUDEDIR}/ndpi"
                            "${CMAKE_SOURCE_DIR}/dependencies/uthash/src")
-target_compile_definitions(nDPId-test PRIVATE "-D_GNU_SOURCE=1" "-DNO_MAIN=1" ${NDPID_TEST_MPROF_DEFS})
 target_link_libraries(nDPId-test "${STATIC_LIBNDPI_LIB}" "${pkgcfg_lib_NDPI_ndpi}"
-                                 "${pkgcfg_lib_PCRE_pcre}" "${pkgcfg_lib_MAXMINDDB_maxminddb}"
+                                 "${pkgcfg_lib_PCRE_pcre}" "${pkgcfg_lib_MAXMINDDB_maxminddb}" "${pkgcfg_lib_ZLIB_z}"
                                  "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}" "${LIBM_LIB}"
                                  "-pthread")
 

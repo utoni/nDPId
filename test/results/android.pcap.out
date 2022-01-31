@@ -1,4 +1,4 @@
-00441{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"android.pcap","alias":"nDPId-test","max-flows-per-thread":2048,"max-idle-flows-per-thread":256,"tick-resolution":1000,"reader-thread-count":1,"flow-scan-interval":10000,"generic-max-idle-time":600000,"icmp-max-idle-time":120000,"udp-max-idle-time":180000,"tcp-max-idle-time":7560000,"max-packets-per-flow-to-send":3,"max-packets-per-flow-to-process":255}
+00440{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"android.pcap","alias":"nDPId-test","max-flows-per-thread":2048,"max-idle-flows-per-thread":64,"tick-resolution":1000,"reader-thread-count":1,"flow-scan-interval":10000,"generic-max-idle-time":600000,"icmp-max-idle-time":120000,"udp-max-idle-time":180000,"tcp-max-idle-time":7560000,"max-packets-per-flow-to-send":3,"max-packets-per-flow-to-process":255}
 00551{"flow_event_id":1,"flow_event_name":"new","thread_id":0,"packet_id":1,"source":"android.pcap","alias":"nDPId-test","flow_id":1,"flow_packets_processed":1,"flow_first_seen":1582454769772,"flow_last_seen":1582454769772,"flow_idle_time":7440000,"flow_min_l4_payload_len":24,"flow_max_l4_payload_len":24,"flow_tot_l4_payload_len":24,"flow_avg_l4_payload_len":24,"midstream":1,"ts_msec":1582454769772,"l3_proto":"ip4","src_ip":"95.101.24.53","dst_ip":"192.168.2.17","src_port":443,"dst_port":50677,"l4_proto":"tcp","flow_datalink":1,"flow_max_packets":3}
 00489{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":1,"source":"android.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":1,"flow_last_seen":1582454769772,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":90,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":90,"pkt_l4_len":56,"ts_msec":1582454769772,"pkt":"xGGLNYKpxiwDYGpkCABFAABMMy4AADUGGCtfZRg1wKgCEQG7xfVNnd4qbhnKg4AYAUXNDgAAAQEICmx+XigR4ZkoFwMDABMwxZA0Xbk6ucnG2OFNZYAG8R1y"}
 00552{"flow_event_id":1,"flow_event_name":"new","thread_id":0,"packet_id":2,"source":"android.pcap","alias":"nDPId-test","flow_id":2,"flow_packets_processed":1,"flow_first_seen":1582454779631,"flow_last_seen":1582454779631,"flow_idle_time":7440000,"flow_min_l4_payload_len":46,"flow_max_l4_payload_len":46,"flow_tot_l4_payload_len":46,"flow_avg_l4_payload_len":46,"midstream":1,"ts_msec":1582454779631,"l3_proto":"ip4","src_ip":"17.248.176.75","dst_ip":"192.168.2.17","src_port":443,"dst_port":50584,"l4_proto":"tcp","flow_datalink":1,"flow_max_packets":3}
@@ -386,10 +386,10 @@
 ~~ total active/idle flows...: 63/63
 ~~ total timeout flows.......: 0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~ total memory allocated....: 4894018 bytes
-~~ total memory freed........: 4894018 bytes
-~~ total allocations/frees...: 100480/100480
+~~ total memory allocated....: 4900810 bytes
+~~ total memory freed........: 4900810 bytes
+~~ total allocations/frees...: 100496/100496
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~ json string min len.......: 163 chars
 ~~ json string max len.......: 2228 chars
-~~ json string avg len.......: 1266 chars
+~~ json string avg len.......: 1265 chars

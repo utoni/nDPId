@@ -1,4 +1,4 @@
-00443{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"mssql_tds.pcap","alias":"nDPId-test","max-flows-per-thread":2048,"max-idle-flows-per-thread":256,"tick-resolution":1000,"reader-thread-count":1,"flow-scan-interval":10000,"generic-max-idle-time":600000,"icmp-max-idle-time":120000,"udp-max-idle-time":180000,"tcp-max-idle-time":7560000,"max-packets-per-flow-to-send":3,"max-packets-per-flow-to-process":255}
+00442{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"mssql_tds.pcap","alias":"nDPId-test","max-flows-per-thread":2048,"max-idle-flows-per-thread":64,"tick-resolution":1000,"reader-thread-count":1,"flow-scan-interval":10000,"generic-max-idle-time":600000,"icmp-max-idle-time":120000,"udp-max-idle-time":180000,"tcp-max-idle-time":7560000,"max-packets-per-flow-to-send":3,"max-packets-per-flow-to-process":255}
 00555{"flow_event_id":1,"flow_event_name":"new","thread_id":0,"packet_id":1,"source":"mssql_tds.pcap","alias":"nDPId-test","flow_id":1,"flow_packets_processed":1,"flow_first_seen":1240877917888,"flow_last_seen":1240877917888,"flow_idle_time":7440000,"flow_min_l4_payload_len":190,"flow_max_l4_payload_len":190,"flow_tot_l4_payload_len":190,"flow_avg_l4_payload_len":190,"midstream":1,"ts_msec":1240877917888,"l3_proto":"ip4","src_ip":"10.111.111.111","dst_ip":"10.0.0.1","src_port":1111,"dst_port":1433,"l4_proto":"tcp","flow_datalink":1,"flow_max_packets":3}
 00718{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":1,"source":"mssql_tds.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":1,"flow_last_seen":1240877917888,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":256,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":256,"pkt_l4_len":222,"ts_msec":1240877917888,"pkt":"AAwpiUrKAFBWwAABCABFAADynIJAAEAGGaUKb29vCgAAAQRXBZk+5C72WSFQkoAYAFx5qQAAAQEICgQLsN8AAVvMAQEAvgAAAQAWAAAAEgAAAAIAAAAAAAAAAAABAAAAIABzAGUAdAAgAHQAcgBhAG4AcwBhAGMAdABpAG8AbgAgAGkAcwBvAGwAYQB0AGkAbwBuACAAbABlAHYAZQBsACAAIAByAGUAYQBkACAAYwBvAG0AbQBpAHQAdABlAGQAIAAgAHMAZQB0ACAAaQBtAHAAbABpAGMAaQB0AF8AdAByAGEAbgBzAGEAYwB0AGkAbwBuAHMAIABvAGYAZgAgAA=="}
 00594{"flow_event_id":6,"flow_event_name":"detected","thread_id":0,"packet_id":1,"source":"mssql_tds.pcap","alias":"nDPId-test","flow_id":1,"flow_packets_processed":1,"flow_first_seen":1240877917888,"flow_last_seen":1240877917888,"flow_idle_time":7440000,"flow_min_l4_payload_len":190,"flow_max_l4_payload_len":190,"flow_tot_l4_payload_len":190,"flow_avg_l4_payload_len":190,"midstream":1,"ts_msec":1240877917888,"l3_proto":"ip4","src_ip":"10.111.111.111","dst_ip":"10.0.0.1","src_port":1111,"dst_port":1433,"l4_proto":"tcp","ndpi": {"proto":"MsSQL-TDS","breed":"Acceptable","category":"Database"}}
@@ -63,10 +63,10 @@
 ~~ total active/idle flows...: 12/12
 ~~ total timeout flows.......: 1
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~ total memory allocated....: 4649396 bytes
-~~ total memory freed........: 4649396 bytes
-~~ total allocations/frees...: 99631/99631
+~~ total memory allocated....: 4652028 bytes
+~~ total memory freed........: 4652028 bytes
+~~ total allocations/frees...: 99639/99639
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~ json string min len.......: 163 chars
 ~~ json string max len.......: 2410 chars
-~~ json string avg len.......: 1357 chars
+~~ json string avg len.......: 1356 chars

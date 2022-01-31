@@ -3,21 +3,10 @@
 #include <stdarg.h>
 #include <unistd.h>
 
-/*
- * Mock some syslog variables and functions.
- * This way, we do not spam any syslog daemon on the host.
- */
-#define LOG_DAEMON 0x1
-#define LOG_ERR 0x2
-#define LOG_CONS 0x4
-#define LOG_PERROR 0x8
-
-static void openlog(char const * const ident, int option, int facility);
-static void syslog(int p, char const * const format, ...);
-static void closelog(void);
 static void nDPIsrvd_memprof_log(char const * const format, ...);
 
 #define NO_MAIN 1
+#include "utils.c"
 #include "nDPIsrvd.c"
 #include "nDPId.c"
 
@@ -125,30 +114,6 @@ static pthread_mutex_t log_mutex = PTHREAD_MUTEX_INITIALIZER;
         goto error;                                                                                                    \
     } while (0);
 
-static void openlog(char const * const ident, int option, int facility)
-{
-    (void)ident;
-    (void)option;
-    (void)facility;
-}
-
-static void syslog(int p, char const * const format, ...)
-{
-    va_list ap;
-
-    (void)p;
-    va_start(ap, format);
-    pthread_mutex_lock(&log_mutex);
-    vfprintf(stderr, format, ap);
-    fprintf(stderr, "%s\n", "");
-    pthread_mutex_unlock(&log_mutex);
-    va_end(ap);
-}
-
-static void closelog(void)
-{
-}
-
 static void nDPIsrvd_memprof_log(char const * const format, ...)
 {
     va_list ap;
@@ -184,14 +149,14 @@ static void * nDPIsrvd_mainloop_thread(void * const arg)
 
     if (epollfd < 0)
     {
-        syslog(0, "nDPIsrvd epollfd invalid: %d", epollfd);
+        logger(1, "nDPIsrvd epollfd invalid: %d", epollfd);
         THREAD_ERROR_GOTO(arg);
     }
 
     mock_json_desc = get_unused_remote_descriptor(JSON_SOCK, mock_pipefds[PIPE_nDPIsrvd], NETWORK_BUFFER_MAX_SIZE);
     if (mock_json_desc == NULL)
     {
-        syslog(0, "%s", "nDPIsrvd could not acquire remote descriptor (Collector)");
+        logger(1, "%s", "nDPIsrvd could not acquire remote descriptor (Collector)");
         THREAD_ERROR_GOTO(arg);
     }
 
@@ -199,14 +164,14 @@ static void * nDPIsrvd_mainloop_thread(void * const arg)
         get_unused_remote_descriptor(SERV_SOCK, mock_testfds[PIPE_TEST_WRITE], NETWORK_BUFFER_MAX_SIZE / 4);
     if (mock_test_desc == NULL)
     {
-        syslog(0, "%s", "nDPIsrvd could not acquire remote descriptor (TEST Distributor)");
+        logger(1, "%s", "nDPIsrvd could not acquire remote descriptor (TEST Distributor)");
         THREAD_ERROR_GOTO(arg);
     }
 
     mock_null_desc = get_unused_remote_descriptor(SERV_SOCK, mock_nullfds[PIPE_NULL_WRITE], NETWORK_BUFFER_MAX_SIZE);
     if (mock_null_desc == NULL)
     {
-        syslog(0, "%s", "nDPIsrvd could not acquire remote descriptor (NULL Distributor)");
+        logger(1, "%s", "nDPIsrvd could not acquire remote descriptor (NULL Distributor)");
         THREAD_ERROR_GOTO(arg);
     }
 
@@ -219,7 +184,7 @@ static void * nDPIsrvd_mainloop_thread(void * const arg)
         add_in_event(epollfd, mock_testfds[PIPE_TEST_WRITE], mock_test_desc) != 0 ||
         add_in_event(epollfd, mock_nullfds[PIPE_NULL_WRITE], mock_null_desc) != 0)
     {
-        syslog(0, "%s", "nDPIsrvd add input event failed");
+        logger(1, "%s", "nDPIsrvd add input event failed");
         THREAD_ERROR_GOTO(arg);
     }
 
@@ -245,7 +210,7 @@ static void * nDPIsrvd_mainloop_thread(void * const arg)
             }
             else
             {
-                syslog(0,
+                logger(1,
                        "nDPIsrvd epoll returned unexpected event data: %d (%p)",
                        events[i].data.fd,
                        events[i].data.ptr);
@@ -340,10 +305,10 @@ static enum nDPIsrvd_callback_return distributor_json_callback(struct nDPIsrvd_s
                 global_stats->cur_active_flows++;
                 global_stats->flow_new_count++;
 
-                unsigned hash_count = HASH_COUNT(instance->flow_table);
+                unsigned int hash_count = HASH_COUNT(instance->flow_table);
                 if (hash_count != global_stats->cur_active_flows)
                 {
-                    syslog(0,
+                    logger(1,
                            "Amount of flows in the flow table not equal to current active flows counter: %u != %llu",
                            hash_count,
                            global_stats->cur_active_flows);
@@ -392,10 +357,10 @@ static enum nDPIsrvd_callback_return distributor_json_callback(struct nDPIsrvd_s
             }
             if (flow_count != global_stats->cur_active_flows + global_stats->cur_idle_flows)
             {
-                syslog(0,
+                logger(1,
                        "Amount of flows in flow table not equal current active flows plus current idle flows: %llu != "
                        "%llu + %llu",
-                       flow_count,
+                       (unsigned long long int)flow_count,
                        global_stats->cur_active_flows,
                        global_stats->cur_idle_flows);
                 return CALLBACK_ERROR;
@@ -423,7 +388,7 @@ static enum nDPIsrvd_callback_return distributor_json_callback(struct nDPIsrvd_s
 
             if (flow_total_l4_payload_len == NULL)
             {
-                syslog(0, "%s", "Flow total l4 payload length not found in flow event");
+                logger(1, "%s", "Flow total l4 payload length not found in flow event");
                 return CALLBACK_ERROR;
             }
 
@@ -459,7 +424,7 @@ static void distributor_flow_cleanup_callback(struct nDPIsrvd_socket * const soc
         case CLEANUP_REASON_DAEMON_INIT:
         case CLEANUP_REASON_DAEMON_SHUTDOWN:
             /* If that happens, it is either a BUG or caused by other applications. */
-            syslog(0, "Invalid flow cleanup reason: %s", nDPIsrvd_enum_to_string(reason));
+            logger(1, "Invalid flow cleanup reason: %s", nDPIsrvd_enum_to_string(reason));
             global_stats->flow_cleanup_error = 1;
             break;
 
@@ -487,9 +452,9 @@ static void distributor_flow_cleanup_callback(struct nDPIsrvd_socket * const soc
     unsigned hash_count = HASH_COUNT(instance->flow_table);
     if (hash_count != global_stats->cur_active_flows + global_stats->cur_idle_flows)
     {
-        syslog(0,
+        logger(1,
                "Flow count is not equal to current active flows plus current idle flows plus current timedout flows: "
-               "%llu != %llu + %llu",
+               "%u != %llu + %llu",
                hash_count,
                global_stats->cur_active_flows,
                global_stats->cur_idle_flows);
@@ -551,7 +516,7 @@ static void * distributor_client_mainloop_thread(void * const arg)
         int nready = epoll_wait(dis_epollfd, events, events_size, -1);
         if (nready < 0 && errno != EINTR)
         {
-            syslog(0, "%s", "Distributor epoll wait failed.");
+            logger(1, "%s", "Distributor epoll wait failed.");
             THREAD_ERROR_GOTO(trv);
         }
 
@@ -559,7 +524,7 @@ static void * distributor_client_mainloop_thread(void * const arg)
         {
             if ((events[i].events & EPOLLIN) == 0 && (events[i].events & EPOLLHUP) == 0)
             {
-                syslog(0, "Invalid epoll event received: %d", events[i].events & (~EPOLLIN & ~EPOLLHUP));
+                logger(1, "Invalid epoll event received: %d", events[i].events & (~EPOLLIN & ~EPOLLHUP));
                 THREAD_ERROR_GOTO(trv);
             }
 
@@ -571,7 +536,7 @@ static void * distributor_client_mainloop_thread(void * const arg)
                         break;
                     case READ_LAST_ENUM_VALUE:
                     case READ_ERROR:
-                        syslog(0, "Read and verify fd returned an error: %s", strerror(errno));
+                        logger(1, "Read and verify fd returned an error: %s", strerror(errno));
                         THREAD_ERROR_GOTO(trv);
                     case READ_PEER_DISCONNECT:
                         del_event(dis_epollfd, mock_testfds[PIPE_TEST_READ]);
@@ -582,13 +547,13 @@ static void * distributor_client_mainloop_thread(void * const arg)
                 enum nDPIsrvd_parse_return parse_ret = nDPIsrvd_parse_all(mock_sock);
                 if (parse_ret != PARSE_NEED_MORE_DATA)
                 {
-                    syslog(0, "JSON parsing failed: %s", nDPIsrvd_enum_to_string(parse_ret));
+                    logger(1, "JSON parsing failed: %s", nDPIsrvd_enum_to_string(parse_ret));
                     THREAD_ERROR_GOTO(trv);
                 }
 
                 if (stats->flow_cleanup_error != 0)
                 {
-                    syslog(0, "%s", "Flow cleanup callback error'd");
+                    logger(1, "%s", "Flow cleanup callback error'd");
                     THREAD_ERROR_GOTO(trv);
                 }
             }
@@ -599,7 +564,7 @@ static void * distributor_client_mainloop_thread(void * const arg)
                 ssize_t bytes_read = read(mock_nullfds[PIPE_NULL_READ], buf, sizeof(buf));
                 if (bytes_read < 0)
                 {
-                    syslog(0, "Read and print to stdout fd returned an error: %s", strerror(errno));
+                    logger(1, "Read and print to stdout fd returned an error: %s", strerror(errno));
                     THREAD_ERROR_GOTO(trv);
                 }
                 if (bytes_read == 0)
@@ -624,13 +589,13 @@ static void * distributor_client_mainloop_thread(void * const arg)
 
                 if (fdsi.ssi_signo == SIGINT || fdsi.ssi_signo == SIGTERM || fdsi.ssi_signo == SIGQUIT)
                 {
-                    syslog(0, "Got signal %d, abort.", fdsi.ssi_signo);
+                    logger(1, "Got signal %d, abort.", fdsi.ssi_signo);
                     THREAD_ERROR_GOTO(trv);
                 }
             }
             else
             {
-                syslog(0,
+                logger(1,
                        "Distributor epoll returned unexpected event data: %d (%p)",
                        events[i].data.fd,
                        events[i].data.ptr);
@@ -649,7 +614,7 @@ static void * distributor_client_mainloop_thread(void * const arg)
     {
         HASH_ITER(hh, current_instance->flow_table, current_flow, ftmp)
         {
-            syslog(0, "Active flow found during client distributor shutdown: %llu", current_flow->id_as_ull);
+            logger(1, "Active flow found during client distributor shutdown: %llu", current_flow->id_as_ull);
             THREAD_ERROR(trv);
             break;
         }
@@ -721,7 +686,7 @@ error:
 
 static void usage(char const * const arg0)
 {
-    syslog(0, "usage: %s [path-to-pcap-file]", arg0);
+    fprintf(stderr, "usage: %s [path-to-pcap-file]", arg0);
 }
 
 static int thread_wait_for_termination(pthread_t thread, time_t wait_time_secs, struct thread_return_value * const trv)
@@ -758,6 +723,9 @@ int main(int argc, char ** argv)
         return 1;
     }
 
+    init_logging("nDPId-test");
+    log_app_info();
+
     if (signal(SIGPIPE, SIG_IGN) == SIG_ERR)
     {
         return 1;
@@ -766,8 +734,9 @@ int main(int argc, char ** argv)
     nDPId_options.max_packets_per_flow_to_send = 3;
 #ifdef ENABLE_ZLIB
     /*
-     * zLib compression is forced disabled for testing at the moment.
-     * That may change in the future.
+     * zLib compression is forced enabled for testing.
+     * Remember to compile nDPId with zlib enabled.
+     * There will be diff's while running `test/run_tests.sh' otherwise.
      */
     nDPId_options.enable_zlib_compression = 1;
 #endif
@@ -777,11 +746,11 @@ int main(int argc, char ** argv)
     nDPId_options.instance_alias = strdup("nDPId-test");
     if (access(argv[1], R_OK) != 0)
     {
-        syslog(0, "%s: pcap file `%s' does not exist or is not readable", argv[0], argv[1]);
+        logger_early(1, "%s: pcap file `%s' does not exist or is not readable", argv[0], argv[1]);
         return 1;
     }
     nDPId_options.pcap_file_or_interface = strdup(argv[1]);
-    if (validate_options(argv[0]) != 0)
+    if (validate_options() != 0)
     {
         return 1;
     }
@@ -871,7 +840,7 @@ int main(int argc, char ** argv)
             which_thread = "Distributor";
         }
 
-        syslog(0, "%s Thread returned a non zero value", which_thread);
+        logger(1, "%s Thread returned a non zero value", which_thread);
         return 1;
     }
 
@@ -894,13 +863,26 @@ int main(int argc, char ** argv)
             nDPId_return.total_idle_flows,
             distributor_return.stats.total_flow_timeouts);
 
+        unsigned long long int total_memory_alloc =
+#ifdef ENABLE_ZLIB
+            (unsigned long long int)(ndpi_memory_alloc_bytes - zlib_compression_bytes);
+#else
+            (unsigned long long int)ndpi_memory_alloc_bytes;
+#endif
+        unsigned long long int total_memory_free =
+#ifdef ENABLE_ZLIB
+            (unsigned long long int)(ndpi_memory_free_bytes - zlib_compression_bytes);
+#else
+            (unsigned long long int)ndpi_memory_free_bytes;
+#endif
+
         printf(
             "~~ total memory allocated....: %llu bytes\n"
             "~~ total memory freed........: %llu bytes\n"
             "~~ total allocations/frees...: %llu/%llu\n"
             "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n",
-            (unsigned long long int)ndpi_memory_alloc_bytes,
-            (unsigned long long int)ndpi_memory_free_bytes,
+            total_memory_alloc,
+            total_memory_free,
             (unsigned long long int)ndpi_memory_alloc_count,
             (unsigned long long int)ndpi_memory_free_count);
 
@@ -916,26 +898,26 @@ int main(int argc, char ** argv)
     if (ndpi_memory_alloc_bytes != ndpi_memory_free_bytes || ndpi_memory_alloc_count != ndpi_memory_free_count ||
         nDPId_return.total_active_flows != nDPId_return.total_idle_flows)
     {
-        syslog(0, "%s: %s", argv[0], "Memory / Flow leak detected.");
+        logger(1, "%s: %s", argv[0], "Memory / Flow leak detected.");
         return 1;
     }
 
     if (nDPId_return.cur_active_flows != 0 || nDPId_return.cur_idle_flows != 0)
     {
-        syslog(0, "%s: %s", argv[0], "Active / Idle inconsistency detected.");
+        logger(1, "%s: %s", argv[0], "Active / Idle inconsistency detected.");
         return 1;
     }
 
     if (nDPId_return.total_skipped_flows != 0)
     {
-        syslog(0, "%s: %s", argv[0], "Skipped flow detected, that should not happen.");
+        logger(1, "%s: %s", argv[0], "Skipped flow detected, that should not happen.");
         return 1;
     }
 
     if (nDPId_return.total_events_serialized != distributor_return.stats.total_events_deserialized ||
         nDPId_return.total_events_serialized != distributor_return.stats.total_events_serialized)
     {
-        syslog(0,
+        logger(1,
                "%s: Event count of nDPId and distributor not equal: %llu != %llu",
                argv[0],
                nDPId_return.total_events_serialized,
@@ -945,7 +927,7 @@ int main(int argc, char ** argv)
 
     if (nDPId_return.packets_processed != distributor_return.stats.total_packets_processed)
     {
-        syslog(0,
+        logger(1,
                "%s: Total nDPId and distributor packets processed not equal: %llu != %llu",
                argv[0],
                nDPId_return.packets_processed,
@@ -955,7 +937,7 @@ int main(int argc, char ** argv)
 
     if (nDPId_return.total_l4_data_len != distributor_return.stats.total_l4_data_len)
     {
-        syslog(0,
+        logger(1,
                "%s: Total processed layer4 payload length of nDPId and distributor not equal: %llu != %llu",
                argv[0],
                nDPId_return.total_l4_data_len,
@@ -966,7 +948,7 @@ int main(int argc, char ** argv)
     if (distributor_return.stats.flow_new_count !=
         distributor_return.stats.flow_end_count + distributor_return.stats.flow_idle_count)
     {
-        syslog(0,
+        logger(1,
                "%s: Amount of flow 'new' events received is not equal to the amount of 'end' plus 'idle': %llu != "
                "%llu + %llu",
                argv[0],
@@ -979,7 +961,7 @@ int main(int argc, char ** argv)
     if (nDPId_return.total_active_flows !=
         distributor_return.stats.flow_end_count + distributor_return.stats.flow_idle_count)
     {
-        syslog(0,
+        logger(1,
                "%s: Amount of total active flows is not equal to the amount of received 'end' plus 'idle' events: "
                "%llu != %llu + %llu",
                argv[0],
@@ -992,7 +974,7 @@ int main(int argc, char ** argv)
     if (nDPId_return.total_idle_flows !=
         distributor_return.stats.flow_idle_count + distributor_return.stats.flow_end_count)
     {
-        syslog(0,
+        logger(1,
                "%s: Amount of total idle flows is not equal to the amount of received 'idle' events: %llu != %llu",
                argv[0],
                nDPId_return.total_idle_flows,
@@ -1002,7 +984,7 @@ int main(int argc, char ** argv)
 
     if (nDPId_return.not_detected_flow_protocols != distributor_return.stats.flow_not_detected_count)
     {
-        syslog(0,
+        logger(1,
                "%s: Amount of total undetected flows is not equal to the amount of received 'not-detected' events: "
                "%llu != %llu",
                argv[0],
@@ -1013,7 +995,7 @@ int main(int argc, char ** argv)
 
     if (nDPId_return.guessed_flow_protocols != distributor_return.stats.flow_guessed_count)
     {
-        syslog(0,
+        logger(1,
                "%s: Amount of total guessed flows is not equal to the amount of received 'guessed' events: %llu != "
                "%llu",
                argv[0],
@@ -1024,7 +1006,7 @@ int main(int argc, char ** argv)
 
     if (nDPId_return.detected_flow_protocols != distributor_return.stats.flow_detected_count)
     {
-        syslog(0,
+        logger(1,
                "%s: Amount of total detected flows not equal to the amount of received 'detected' events: %llu != "
                "%llu",
                argv[0],
@@ -1035,7 +1017,7 @@ int main(int argc, char ** argv)
 
     if (nDPId_return.flow_detection_updates != distributor_return.stats.flow_detection_update_count)
     {
-        syslog(0,
+        logger(1,
                "%s: Amount of total detection updates is not equal to the amount of received 'detection-update' "
                "events: %llu != %llu",
                argv[0],
@@ -1046,7 +1028,7 @@ int main(int argc, char ** argv)
 
     if (nDPId_return.flow_updates != distributor_return.stats.flow_update_count)
     {
-        syslog(0,
+        logger(1,
                "%s: Amount of total flow updates is not equal to the amount of received 'update' events: %llu != "
                "%llu",
                argv[0],
@@ -1059,7 +1041,7 @@ int main(int argc, char ** argv)
                                               distributor_return.stats.flow_guessed_count +
                                               distributor_return.stats.flow_not_detected_count)
     {
-        syslog(0,
+        logger(1,
                "%s: Amount of total active flows not equal to the amount of received 'detected', 'guessed and "
                "'not-detected' events: %llu != "
                "%llu + %llu + %llu",
@@ -1074,12 +1056,12 @@ int main(int argc, char ** argv)
 #ifdef ENABLE_ZLIB
     if (zlib_compressions != zlib_decompressions)
     {
-        syslog(0,
+        logger(1,
                "%s: %s (%llu != %llu)",
                argv[0],
                "ZLib compression / decompression inconsistency detected.",
-               zlib_compressions,
-               zlib_decompressions);
+               (unsigned long long int)zlib_compressions,
+               (unsigned long long int)zlib_decompressions);
         return 1;
     }
 #endif

@@ -1,4 +1,4 @@
-00450{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"starcraft_battle.pcap","alias":"nDPId-test","max-flows-per-thread":2048,"max-idle-flows-per-thread":256,"tick-resolution":1000,"reader-thread-count":1,"flow-scan-interval":10000,"generic-max-idle-time":600000,"icmp-max-idle-time":120000,"udp-max-idle-time":180000,"tcp-max-idle-time":7560000,"max-packets-per-flow-to-send":3,"max-packets-per-flow-to-process":255}
+00449{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"starcraft_battle.pcap","alias":"nDPId-test","max-flows-per-thread":2048,"max-idle-flows-per-thread":64,"tick-resolution":1000,"reader-thread-count":1,"flow-scan-interval":10000,"generic-max-idle-time":600000,"icmp-max-idle-time":120000,"udp-max-idle-time":180000,"tcp-max-idle-time":7560000,"max-packets-per-flow-to-send":3,"max-packets-per-flow-to-process":255}
 00561{"flow_event_id":1,"flow_event_name":"new","thread_id":0,"packet_id":1,"source":"starcraft_battle.pcap","alias":"nDPId-test","flow_id":1,"flow_packets_processed":1,"flow_first_seen":1437389953643,"flow_last_seen":1437389953643,"flow_idle_time":7440000,"flow_min_l4_payload_len":31,"flow_max_l4_payload_len":31,"flow_tot_l4_payload_len":31,"flow_avg_l4_payload_len":31,"midstream":1,"ts_msec":1437389953643,"l3_proto":"ip4","src_ip":"192.30.252.91","dst_ip":"192.168.1.100","src_port":443,"dst_port":3213,"l4_proto":"tcp","flow_datalink":1,"flow_max_packets":3}
 00496{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":1,"source":"starcraft_battle.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":1,"flow_last_seen":1437389953643,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":85,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":85,"pkt_l4_len":51,"ts_msec":1437389953643,"pkt":"IImEa8W6hCYVPnXECABFAABHZtpAAPMGok\/AHvxbwKgBZAG7DI12Mx9qhBzaXVAYAB\/+XQAAFwMDABrSe+rfqh1HHm09zJFdvf5O5AwaBTHDWE16Zg=="}
 00502{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":2,"source":"starcraft_battle.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":2,"flow_last_seen":1437389953643,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":89,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":89,"pkt_l4_len":55,"ts_msec":1437389953643,"pkt":"hCYVPnXEIImEa8W6CABFAABLZZBAAIAGFpbAqAFkwB78WwyNAbuEHNpddjMfiVAYAP4NnAAAFwMDAB4AAAAAAAAAE\/\/36Dj9UZVbiDpZWB\/\/4P+7KR1Y0OI="}
@@ -323,8 +323,8 @@
 ~~ total active/idle flows...: 52/52
 ~~ total timeout flows.......: 0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~ total memory allocated....: 4706794 bytes
-~~ total memory freed........: 4706794 bytes
+~~ total memory allocated....: 4705266 bytes
+~~ total memory freed........: 4705266 bytes
 ~~ total allocations/frees...: 100573/100573
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~ json string min len.......: 172 chars

@@ -8,9 +8,6 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
-#ifndef NO_MAIN
-#include <syslog.h>
-#endif
 #include <sys/epoll.h>
 #include <sys/signalfd.h>
 #include <sys/socket.h>
@@ -66,7 +63,6 @@ static struct nDPIsrvd_address serv_address = {
 
 static struct
 {
-    int log_to_stderr;
     char * pidfile;
     char * json_sockpath;
     char * serv_optarg;
@@ -121,7 +117,7 @@ void nDPIsrvd_memprof_log(char const * const format, ...)
     va_list ap;
 
     va_start(ap, format);
-    vsyslog(LOG_DAEMON, format, ap);
+    vlogger(0, format, ap);
     va_end(ap);
 }
 #endif
@@ -135,19 +131,17 @@ static int add_to_cache(struct remote_desc * const remote, uint8_t * const buf, 
     {
         if (nDPIsrvd_options.cache_fallback_to_blocking == 0)
         {
-            syslog(LOG_DAEMON | LOG_ERR,
-                   "Buffer cache limit (%u lines) reached, remote too slow.",
-                   utarray_len(remote->buf_cache));
+            logger(1, "Buffer cache limit (%u lines) reached, remote too slow.", utarray_len(remote->buf_cache));
             return -1;
         }
         else
         {
-            syslog(LOG_DAEMON | LOG_ERR,
+            logger(0,
                    "Buffer JSON string cache limit (%u lines) reached, falling back to blocking I/O.",
                    utarray_len(remote->buf_cache));
             if (drain_cache_blocking(remote) != 0)
             {
-                syslog(LOG_DAEMON | LOG_ERR, "Could not drain buffer cache in blocking I/O: %s", strerror(errno));
+                logger(1, "Could not drain buffer cache in blocking I/O: %s", strerror(errno));
                 return -1;
             }
         }
@@ -177,11 +171,11 @@ static int drain_main_buffer(struct remote_desc * const remote)
     {
         if (remote->event_serv.peer_addr[0] == '\0')
         {
-            syslog(LOG_DAEMON | LOG_ERR, "Distributor connection closed, send failed: %s", strerror(errno));
+            logger(1, "Distributor connection closed, send failed: %s", strerror(errno));
         }
         else
         {
-            syslog(LOG_DAEMON | LOG_ERR,
+            logger(1,
                    "Distributor connection to %.*s:%u closed, send failed: %s",
                    (int)sizeof(remote->event_serv.peer_addr),
                    remote->event_serv.peer_addr,
@@ -194,11 +188,11 @@ static int drain_main_buffer(struct remote_desc * const remote)
     {
         if (remote->event_serv.peer_addr[0] == '\0')
         {
-            syslog(LOG_DAEMON, "%s", "Distributor connection closed during write");
+            logger(0, "%s", "Distributor connection closed during write");
         }
         else
         {
-            syslog(LOG_DAEMON,
+            logger(0,
                    "Distributor connection to %.*s:%u closed during write",
                    (int)sizeof(remote->event_serv.peer_addr),
                    remote->event_serv.peer_addr,
@@ -209,8 +203,7 @@ static int drain_main_buffer(struct remote_desc * const remote)
     if ((size_t)bytes_written < remote->buf.used)
     {
 #if 0
-        syslog(LOG_DAEMON,
-               "Distributor wrote less than expected to %.*s:%u: %zd < %zu",
+        logger(0, "Distributor wrote less than expected to %.*s:%u: %zd < %zu",
                (int)sizeof(remote->event_serv.peer_addr),
                remote->event_serv.peer_addr,
                ntohs(remote->event_serv.peer.sin_port),
@@ -267,7 +260,7 @@ static int drain_cache_blocking(struct remote_desc * const remote)
 
     if (fcntl_del_flags(remote->fd, O_NONBLOCK) != 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "Error setting distributor fd flags: %s", strerror(errno));
+        logger(1, "Error setting distributor fd flags: %s", strerror(errno));
         return -1;
     }
     if (drain_cache(remote) != 0)
@@ -276,7 +269,7 @@ static int drain_cache_blocking(struct remote_desc * const remote)
     }
     if (fcntl_add_flags(remote->fd, O_NONBLOCK) != 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "Error setting distributor fd flags: %s", strerror(errno));
+        logger(1, "Error setting distributor fd flags: %s", strerror(errno));
         return -1;
     }
 
@@ -332,7 +325,7 @@ static int create_listen_sockets(void)
     serv_sockfd = socket(serv_address.raw.sa_family, SOCK_STREAM, 0);
     if (json_sockfd < 0 || serv_sockfd < 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "Error opening socket: %s", strerror(errno));
+        logger(1, "Error opening socket: %s", strerror(errno));
         return 1;
     }
 
@@ -340,21 +333,30 @@ static int create_listen_sockets(void)
     if (setsockopt(json_sockfd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0 ||
         setsockopt(serv_sockfd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "setsockopt with SO_REUSEADDR failed: %s", strerror(errno));
+        logger(1, "setsockopt with SO_REUSEADDR failed: %s", strerror(errno));
     }
 
     struct sockaddr_un json_addr;
     json_addr.sun_family = AF_UNIX;
-    if (snprintf(json_addr.sun_path, sizeof(json_addr.sun_path), "%s", nDPIsrvd_options.json_sockpath) <= 0)
+    int written = snprintf(json_addr.sun_path, sizeof(json_addr.sun_path), "%s", nDPIsrvd_options.json_sockpath);
+    if (written < 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "snprintf failed: %s", strerror(errno));
+        logger(1, "snprintf failed: %s", strerror(errno));
+        return 1;
+    }
+    else if (written == sizeof(json_addr.sun_path))
+    {
+        logger(1,
+               "JSON socket path too long, current/max: %zu/%zu",
+               strlen(nDPIsrvd_options.json_sockpath),
+               sizeof(json_addr.sun_path) - 1);
         return 1;
     }
 
     if (bind(json_sockfd, (struct sockaddr *)&json_addr, sizeof(json_addr)) < 0)
     {
         unlink(nDPIsrvd_options.json_sockpath);
-        syslog(LOG_DAEMON | LOG_ERR,
+        logger(1,
                "Error on binding UNIX socket (collector) to %s: %s",
                nDPIsrvd_options.json_sockpath,
                strerror(errno));
@@ -363,10 +365,7 @@ static int create_listen_sockets(void)
 
     if (bind(serv_sockfd, &serv_address.raw, serv_address.size) < 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR,
-               "Error on binding socket (distributor) to %s: %s",
-               nDPIsrvd_options.serv_optarg,
-               strerror(errno));
+        logger(1, "Error on binding socket (distributor) to %s: %s", nDPIsrvd_options.serv_optarg, strerror(errno));
         unlink(nDPIsrvd_options.json_sockpath);
         return 1;
     }
@@ -374,20 +373,20 @@ static int create_listen_sockets(void)
     if (listen(json_sockfd, 16) < 0 || listen(serv_sockfd, 16) < 0)
     {
         unlink(nDPIsrvd_options.json_sockpath);
-        syslog(LOG_DAEMON | LOG_ERR, "Error on listen: %s", strerror(errno));
+        logger(1, "Error on listen: %s", strerror(errno));
         return 1;
     }
 
     if (fcntl_add_flags(json_sockfd, O_NONBLOCK) != 0)
     {
         unlink(nDPIsrvd_options.json_sockpath);
-        syslog(LOG_DAEMON | LOG_ERR, "Error setting fd flags for the collector socket: %s", strerror(errno));
+        logger(1, "Error setting fd flags for the collector socket: %s", strerror(errno));
         return 1;
     }
 
     if (fcntl_add_flags(serv_sockfd, O_NONBLOCK) != 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "Error setting fd flags for the distributor socket: %s", strerror(errno));
+        logger(1, "Error setting fd flags for the distributor socket: %s", strerror(errno));
         return 1;
     }
 
@@ -472,7 +471,7 @@ static void disconnect_client(int epollfd, struct remote_desc * const current)
         del_event(epollfd, current->fd);
         if (close(current->fd) != 0)
         {
-            syslog(LOG_DAEMON | LOG_ERR, "Error closing fd: %s", strerror(errno));
+            logger(1, "Error closing fd: %s", strerror(errno));
         }
         current->fd = -1;
         remotes.desc_used--;
@@ -488,12 +487,18 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
 {
     int opt;
 
-    while ((opt = getopt(argc, argv, "lc:dp:s:u:g:C:Dvh")) != -1)
+    while ((opt = getopt(argc, argv, "lL:c:dp:s:u:g:C:Dvh")) != -1)
     {
         switch (opt)
         {
             case 'l':
-                nDPIsrvd_options.log_to_stderr = 1;
+                enable_console_logger();
+                break;
+            case 'L':
+                if (enable_file_logger(optarg) != 0)
+                {
+                    return 1;
+                }
                 break;
             case 'c':
                 free(nDPIsrvd_options.json_sockpath);
@@ -535,7 +540,7 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
             default:
                 fprintf(stderr, "%s\n", get_nDPId_version());
                 fprintf(stderr,
-                        "Usage: %s [-l] [-c path-to-unix-sock] [-d] [-p pidfile]\n"
+                        "Usage: %s [-l] [-L logfile] [-c path-to-unix-sock] [-d] [-p pidfile]\n"
                         "\t[-s path-to-unix-socket|distributor-host:port] [-u user] [-g group]\n"
                         "\t[-C max-buffered-collector-json-lines] [-D]\n"
                         "\t[-v] [-h]\n",
@@ -569,7 +574,7 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
 
     if (nDPIsrvd_setup_address(&serv_address, nDPIsrvd_options.serv_optarg) != 0)
     {
-        fprintf(stderr, "%s: Could not parse address `%s'\n", argv[0], nDPIsrvd_options.serv_optarg);
+        logger_early(1, "%s: Could not parse address `%s'\n", argv[0], nDPIsrvd_options.serv_optarg);
         return 1;
     }
     if (serv_address.raw.sa_family == AF_UNIX && is_path_absolute("SERV socket", nDPIsrvd_options.serv_optarg) != 0)
@@ -579,7 +584,7 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
 
     if (optind < argc)
     {
-        fprintf(stderr, "%s: Unexpected argument after options\n", argv[0]);
+        logger_early(1, "%s: Unexpected argument after options\n", argv[0]);
         return 1;
     }
 
@@ -594,14 +599,14 @@ static struct remote_desc * accept_remote(int server_fd,
     int client_fd = accept(server_fd, sockaddr, addrlen);
     if (client_fd < 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "Accept failed: %s", strerror(errno));
+        logger(1, "Accept failed: %s", strerror(errno));
         return NULL;
     }
 
     struct remote_desc * current = get_unused_remote_descriptor(socktype, client_fd, NETWORK_BUFFER_MAX_SIZE);
     if (current == NULL)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "Max number of connections reached: %zu", remotes.desc_used);
+        logger(1, "Max number of connections reached: %zu", remotes.desc_used);
         return NULL;
     }
 
@@ -649,11 +654,11 @@ static int new_connection(int epollfd, int eventfd)
         case JSON_SOCK:
             sock_type = "collector";
             current->event_json.json_bytes = 0;
-            syslog(LOG_DAEMON, "New collector connection");
+            logger(0, "New collector connection");
 
             if (setsockopt(current->fd, SOL_SOCKET, SO_RCVBUF, &sockopt, sizeof(sockopt)) < 0)
             {
-                syslog(LOG_DAEMON | LOG_ERR, "Error setting socket option SO_RCVBUF: %s", strerror(errno));
+                logger(1, "Error setting socket option SO_RCVBUF: %s", strerror(errno));
                 return 1;
             }
             break;
@@ -662,7 +667,7 @@ static int new_connection(int epollfd, int eventfd)
 
             if (setsockopt(current->fd, SOL_SOCKET, SO_SNDBUF, &sockopt, sizeof(sockopt)) < 0)
             {
-                syslog(LOG_DAEMON | LOG_ERR, "Error setting socket option SO_SNDBUF: %s", strerror(errno));
+                logger(1, "Error setting socket option SO_SNDBUF: %s", strerror(errno));
                 return 1;
             }
 
@@ -673,17 +678,17 @@ static int new_connection(int epollfd, int eventfd)
             {
                 if (errno == EAFNOSUPPORT)
                 {
-                    syslog(LOG_DAEMON | LOG_ERR, "%s", "New distributor connection.");
+                    logger(0, "%s", "New distributor connection.");
                 }
                 else
                 {
-                    syslog(LOG_DAEMON | LOG_ERR, "Error converting an internet address: %s", strerror(errno));
+                    logger(1, "Error converting an internet address: %s", strerror(errno));
                 }
                 current->event_serv.peer_addr[0] = '\0';
             }
             else
             {
-                syslog(LOG_DAEMON,
+                logger(0,
                        "New distributor connection from %.*s:%u",
                        (int)sizeof(current->event_serv.peer_addr),
                        current->event_serv.peer_addr,
@@ -693,11 +698,11 @@ static int new_connection(int epollfd, int eventfd)
                 struct timeval send_timeout = {1, 0};
                 if (setsockopt(current->fd, SOL_SOCKET, SO_SNDTIMEO, (char *)&send_timeout, sizeof(send_timeout)) != 0)
                 {
-                    syslog(LOG_DAEMON | LOG_ERR, "Error setting socket option send timeout: %s", strerror(errno));
+                    logger(1, "Error setting socket option send timeout: %s", strerror(errno));
                 }
                 if (setsockopt(current->fd, SOL_SOCKET, SO_SNDBUF, &sockopt, sizeof(sockopt)) < 0)
                 {
-                    syslog(LOG_DAEMON | LOG_ERR, "Error setting socket option SO_SNDBUF: %s", strerror(errno));
+                    logger(1, "Error setting socket option SO_SNDBUF: %s", strerror(errno));
                 }
             }
             break;
@@ -706,7 +711,7 @@ static int new_connection(int epollfd, int eventfd)
     /* nonblocking fd is mandatory */
     if (fcntl_add_flags(current->fd, O_NONBLOCK) != 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "Error setting %s fd flags: %s", sock_type, strerror(errno));
+        logger(1, "Error setting %s fd flags: %s", sock_type, strerror(errno));
         disconnect_client(epollfd, current);
         return 1;
     }
@@ -736,9 +741,7 @@ static int handle_collector_protocol(int epollfd, struct remote_desc * const cur
 
     if (current->buf.ptr.text[NETWORK_BUFFER_LENGTH_DIGITS] != '{')
     {
-        syslog(LOG_DAEMON | LOG_ERR,
-               "BUG: JSON invalid opening character: '%c'",
-               current->buf.ptr.text[NETWORK_BUFFER_LENGTH_DIGITS]);
+        logger(1, "BUG: JSON invalid opening character: '%c'", current->buf.ptr.text[NETWORK_BUFFER_LENGTH_DIGITS]);
         disconnect_client(epollfd, current);
         return 1;
     }
@@ -749,14 +752,14 @@ static int handle_collector_protocol(int epollfd, struct remote_desc * const cur
 
     if (errno == ERANGE)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "BUG: Size of JSON exceeds limit");
+        logger(1, "BUG: Size of JSON exceeds limit");
         disconnect_client(epollfd, current);
         return 1;
     }
 
     if (json_str_start == current->buf.ptr.text)
     {
-        syslog(LOG_DAEMON | LOG_ERR,
+        logger(1,
                "BUG: Missing size before JSON string: \"%.*s\"",
                NETWORK_BUFFER_LENGTH_DIGITS,
                current->buf.ptr.text);
@@ -766,7 +769,7 @@ static int handle_collector_protocol(int epollfd, struct remote_desc * const cur
 
     if (json_str_start - current->buf.ptr.text != NETWORK_BUFFER_LENGTH_DIGITS)
     {
-        syslog(LOG_DAEMON | LOG_ERR,
+        logger(1,
                "BUG: Invalid collector protocol data received. Expected protocol preamble of size %u bytes, got %ld "
                "bytes",
                NETWORK_BUFFER_LENGTH_DIGITS,
@@ -775,10 +778,7 @@ static int handle_collector_protocol(int epollfd, struct remote_desc * const cur
 
     if (current->event_json.json_bytes > current->buf.max)
     {
-        syslog(LOG_DAEMON | LOG_ERR,
-               "BUG: JSON string too big: %llu > %zu",
-               current->event_json.json_bytes,
-               current->buf.max);
+        logger(1, "BUG: JSON string too big: %llu > %zu", current->event_json.json_bytes, current->buf.max);
         disconnect_client(epollfd, current);
         return 1;
     }
@@ -791,10 +791,7 @@ static int handle_collector_protocol(int epollfd, struct remote_desc * const cur
     if (current->buf.ptr.text[current->event_json.json_bytes - 2] != '}' ||
         current->buf.ptr.text[current->event_json.json_bytes - 1] != '\n')
     {
-        syslog(LOG_DAEMON | LOG_ERR,
-               "BUG: Invalid JSON string: %.*s",
-               (int)current->event_json.json_bytes,
-               current->buf.ptr.text);
+        logger(1, "BUG: Invalid JSON string: %.*s", (int)current->event_json.json_bytes, current->buf.ptr.text);
         disconnect_client(epollfd, current);
         return 1;
     }
@@ -812,7 +809,7 @@ static int handle_incoming_data(int epollfd, struct remote_desc * const current)
     /* read JSON strings (or parts) from the UNIX socket (collecting) */
     if (current->buf.used == current->buf.max)
     {
-        syslog(LOG_DAEMON, "Collector read buffer full. No more read possible.");
+        logger(1, "Collector read buffer full. No more read possible.");
     }
     else
     {
@@ -826,7 +823,7 @@ static int handle_incoming_data(int epollfd, struct remote_desc * const current)
         }
         if (bytes_read == 0)
         {
-            syslog(LOG_DAEMON, "Collector connection closed during read");
+            logger(0, "Collector connection closed during read");
             disconnect_client(epollfd, current);
             return 1;
         }
@@ -856,13 +853,13 @@ static int handle_incoming_data(int epollfd, struct remote_desc * const current)
                 if (utarray_len(remotes.desc[i].buf_cache) == 0)
                 {
 #if 0
-                    syslog(LOG_DAEMON, "Buffer capacity threshold (%zu bytes) reached, caching JSON strings.", remotes.desc[i].buf.used);
+                    logger(0, "Buffer capacity threshold (%zu bytes) reached, caching JSON strings.", remotes.desc[i].buf.used);
 #endif
                     errno = 0;
                     if (add_out_event(epollfd, remotes.desc[i].fd, &remotes.desc[i]) != 0 &&
                         errno != EEXIST /* required for nDPId-test */)
                     {
-                        syslog(LOG_DAEMON | LOG_ERR, "%s: %s", "Could not add event, disconnecting", strerror(errno));
+                        logger(1, "%s: %s", "Could not add event, disconnecting", strerror(errno));
                         disconnect_client(epollfd, &remotes.desc[i]);
                         continue;
                     }
@@ -903,19 +900,19 @@ static int handle_data_event(int epollfd, struct epoll_event * const event)
 
     if ((event->events & EPOLLIN) == 0 && (event->events & EPOLLOUT) == 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "Can not handle event mask: %d", event->events);
+        logger(1, "Can not handle event mask: %d", event->events);
         return 1;
     }
 
     if (current == NULL)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "%s", "Remote descriptor got from event data invalid.");
+        logger(1, "%s", "Remote descriptor got from event data invalid.");
         return 1;
     }
 
     if (current->fd < 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "File descriptor `%d' got from event data invalid.", current->fd);
+        logger(1, "File descriptor `%d' got from event data invalid.", current->fd);
         return 1;
     }
 
@@ -982,16 +979,16 @@ static int mainloop(int epollfd)
                     switch (current->sock_type)
                     {
                         case JSON_SOCK:
-                            syslog(LOG_DAEMON | LOG_ERR, "Collector disconnected: %d", current->fd);
+                            logger(1, "Collector disconnected: %d", current->fd);
                             break;
                         case SERV_SOCK:
                             if (current->event_serv.peer_addr[0] == '\0')
                             {
-                                syslog(LOG_DAEMON | LOG_ERR, "%s", "Distributor disconnected");
+                                logger(1, "%s", "Distributor disconnected");
                             }
                             else
                             {
-                                syslog(LOG_DAEMON | LOG_ERR,
+                                logger(1,
                                        "Distributor disconnected: %.*s:%u",
                                        (int)sizeof(current->event_serv.peer_addr),
                                        current->event_serv.peer_addr,
@@ -1003,7 +1000,7 @@ static int mainloop(int epollfd)
                 }
                 else
                 {
-                    syslog(LOG_DAEMON | LOG_ERR, "Epoll event error: %s", (errno != 0 ? strerror(errno) : "unknown"));
+                    logger(1, "Epoll event error: %s", (errno != 0 ? strerror(errno) : "unknown"));
                 }
                 continue;
             }
@@ -1024,7 +1021,7 @@ static int mainloop(int epollfd)
                 s = read(signalfd, &fdsi, sizeof(struct signalfd_siginfo));
                 if (s != sizeof(struct signalfd_siginfo))
                 {
-                    syslog(LOG_DAEMON | LOG_ERR,
+                    logger(1,
                            "Invalid signal fd read size. Got %zd, wanted %zu bytes.",
                            s,
                            sizeof(struct signalfd_siginfo));
@@ -1065,19 +1062,19 @@ static int setup_event_queue(void)
     int epollfd = create_evq();
     if (epollfd < 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "Error creating epoll: %s", strerror(errno));
+        logger(1, "Error creating epoll: %s", strerror(errno));
         return -1;
     }
 
     if (add_in_event(epollfd, json_sockfd, NULL) != 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "Error adding JSON fd to epoll: %s", strerror(errno));
+        logger(1, "Error adding JSON fd to epoll: %s", strerror(errno));
         return -1;
     }
 
     if (add_in_event(epollfd, serv_sockfd, NULL) != 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "Error adding SERV fd to epoll: %s", strerror(errno));
+        logger(1, "Error adding SERV fd to epoll: %s", strerror(errno));
         return -1;
     }
 
@@ -1121,28 +1118,37 @@ int main(int argc, char ** argv)
         return 1;
     }
 
+    init_logging("nDPIsrvd");
+
     if (nDPIsrvd_parse_options(argc, argv) != 0)
     {
         return 1;
     }
 
-    openlog("nDPIsrvd", LOG_CONS | LOG_PERROR, LOG_DAEMON);
+    if (is_daemonize_enabled() != 0 && is_console_logger_enabled() != 0)
+    {
+        logger_early(1,
+                     "%s",
+                     "Daemon mode `-d' and `-l' can not be used together, "
+                     "because stdout/stderr is beeing redirected to /dev/null");
+        retval = 1;
+    }
 
     if (access(nDPIsrvd_options.json_sockpath, F_OK) == 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR,
-               "UNIX socket %s exists; nDPIsrvd already running? "
-               "Please remove the socket manually or change socket path.",
-               nDPIsrvd_options.json_sockpath);
+        logger_early(1,
+                     "UNIX socket %s exists; nDPIsrvd already running? "
+                     "Please remove the socket manually or change socket path.",
+                     nDPIsrvd_options.json_sockpath);
         return 1;
     }
+
+    log_app_info();
 
     if (daemonize_with_pidfile(nDPIsrvd_options.pidfile) != 0)
     {
         goto error;
     }
-    closelog();
-    openlog("nDPIsrvd", LOG_CONS | (nDPIsrvd_options.log_to_stderr != 0 ? LOG_PERROR : 0), LOG_DAEMON);
 
     if (setup_remote_descriptors(32) != 0)
     {
@@ -1154,15 +1160,15 @@ int main(int argc, char ** argv)
         goto error;
     }
 
-    syslog(LOG_DAEMON, "collector listen on %s", nDPIsrvd_options.json_sockpath);
-    syslog(LOG_DAEMON, "distributor listen on %s", nDPIsrvd_options.serv_optarg);
+    logger(0, "collector listen on %s", nDPIsrvd_options.json_sockpath);
+    logger(0, "distributor listen on %s", nDPIsrvd_options.serv_optarg);
     switch (serv_address.raw.sa_family)
     {
         default:
             goto error;
         case AF_INET:
         case AF_INET6:
-            syslog(LOG_DAEMON | LOG_ERR,
+            logger(1,
                    "Please keep in mind that using a TCP Socket may leak sensitive information to "
                    "everyone with access to the device/network. You've been warned!");
             break;
@@ -1171,7 +1177,8 @@ int main(int argc, char ** argv)
     }
 
     errno = 0;
-    if (change_user_group(nDPIsrvd_options.user,
+    if (nDPIsrvd_options.user != NULL &&
+        change_user_group(nDPIsrvd_options.user,
                           nDPIsrvd_options.group,
                           nDPIsrvd_options.pidfile,
                           nDPIsrvd_options.json_sockpath,
@@ -1179,11 +1186,18 @@ int main(int argc, char ** argv)
     {
         if (errno != 0)
         {
-            syslog(LOG_DAEMON | LOG_ERR, "Change user/group failed: %s", strerror(errno));
+            logger(1,
+                   "Change user/group to %s/%s failed: %s",
+                   nDPIsrvd_options.user,
+                   (nDPIsrvd_options.group != NULL ? nDPIsrvd_options.group : "-"),
+                   strerror(errno));
         }
         else
         {
-            syslog(LOG_DAEMON | LOG_ERR, "Change user/group failed.");
+            logger(1,
+                   "Change user/group to %s/%s failed.",
+                   nDPIsrvd_options.user,
+                   (nDPIsrvd_options.group != NULL ? nDPIsrvd_options.group : "-"));
         }
         goto error;
     }
@@ -1207,8 +1221,8 @@ error:
     close(serv_sockfd);
 
     daemonize_shutdown(nDPIsrvd_options.pidfile);
-    syslog(LOG_DAEMON | LOG_NOTICE, "Bye.");
-    closelog();
+    logger(0, "Bye.");
+    shutdown_logging();
 
     unlink(nDPIsrvd_options.json_sockpath);
     unlink(nDPIsrvd_options.serv_optarg);

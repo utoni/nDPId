@@ -4,7 +4,9 @@
 #include <pwd.h>
 #include <stdio.h>
 #include <string.h>
+#ifndef NO_MAIN
 #include <syslog.h>
+#endif
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -13,11 +15,19 @@
 
 typedef char pid_str[16];
 
+static char const * app_name = NULL;
 static int daemonize = 0;
+static int log_to_console = 0;
+static int log_to_file_fd = -1;
 
 void daemonize_enable(void)
 {
     daemonize = 1;
+}
+
+int is_daemonize_enabled(void)
+{
+    return daemonize != 0;
 }
 
 static int is_daemon_running(char const * const pidfile, pid_str ps)
@@ -64,7 +74,7 @@ static int create_pidfile(char const * const pidfile)
 
     if (pfd < 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "Could open pidfile %s for writing: %s", pidfile, strerror(errno));
+        logger_early(1, "Could not open pidfile %s for writing: %s", pidfile, strerror(errno));
         return 1;
     }
 
@@ -83,10 +93,7 @@ int is_path_absolute(char const * const prefix, char const * const path)
 {
     if (path[0] != '/')
     {
-        syslog(LOG_DAEMON | LOG_ERR,
-               "%s path must be absolut i.e. starting with a `/', path given: `%s'",
-               prefix,
-               path);
+        logger_early(1, "%s path must be absolut i.e. starting with a `/', path given: `%s'", prefix, path);
         return 1;
     }
 
@@ -101,13 +108,13 @@ int daemonize_with_pidfile(char const * const pidfile)
     {
         if (is_daemon_running(pidfile, ps) != 0)
         {
-            syslog(LOG_DAEMON | LOG_ERR, "Pidfile %s found and daemon %s still running", pidfile, ps);
+            logger_early(1, "Pidfile %s found and daemon %s still running", pidfile, ps);
             return 1;
         }
 
         if (daemon(0, 0) != 0)
         {
-            syslog(LOG_DAEMON | LOG_ERR, "daemon: %s", strerror(errno));
+            logger_early(1, "daemon: %s", strerror(errno));
             return 1;
         }
 
@@ -124,9 +131,9 @@ int daemonize_shutdown(char const * const pidfile)
 {
     if (daemonize != 0)
     {
-        if (unlink(pidfile) != 0)
+        if (unlink(pidfile) != 0 && errno != ENOENT)
         {
-            syslog(LOG_DAEMON | LOG_ERR, "Could not unlink pidfile %s: %s", pidfile, strerror(errno));
+            logger(1, "Could not unlink pidfile %s: %s", pidfile, strerror(errno));
             return 1;
         }
     }
@@ -144,16 +151,12 @@ int change_user_group(char const * const user,
     struct group * grp;
     gid_t gid;
 
-    if (getuid() != 0)
-    {
-        return 0;
-    }
-
     if (user == NULL)
     {
         return 1;
     }
 
+    errno = 0;
     pwd = getpwnam(user);
     if (pwd == NULL)
     {
@@ -162,6 +165,7 @@ int change_user_group(char const * const user,
 
     if (group != NULL)
     {
+        errno = 0;
         grp = getgrnam(group);
         if (grp == NULL)
         {
@@ -191,7 +195,158 @@ int change_user_group(char const * const user,
     return setregid(gid, gid) != 0 || setreuid(pwd->pw_uid, pwd->pw_uid);
 }
 
-char const * get_nDPId_version()
+void init_logging(char const * const name)
+{
+    app_name = name;
+#ifndef NO_MAIN
+    openlog(app_name, LOG_CONS, LOG_DAEMON);
+#endif
+}
+
+void log_app_info(void)
+{
+    logger(0,
+           "version %s",
+#ifdef GIT_VERSION
+           GIT_VERSION
+#else
+           "unknown"
+#endif
+    );
+}
+
+void shutdown_logging(void)
+{
+#ifndef NO_MAIN
+    closelog();
+#endif
+}
+
+int enable_file_logger(char const * const log_file)
+{
+    log_to_file_fd = open(log_file, O_CREAT | O_WRONLY | O_APPEND, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+
+    if (log_to_file_fd < 0)
+    {
+        logger_early(1, "Could not open logfile %s for appending: %s", log_file, strerror(errno));
+        return 1;
+    }
+
+    return 0;
+}
+
+int get_log_file_fd(void)
+{
+    return log_to_file_fd;
+}
+
+void enable_console_logger(void)
+{
+    if (setvbuf(stderr, NULL, _IOLBF, 0) != 0)
+    {
+        fprintf(stderr,
+                "%s",
+                "Could not set stderr line-buffered, "
+                "console syslog() messages may appear weird.\n");
+    }
+    else
+    {
+        log_to_console = 1;
+    }
+}
+
+int is_console_logger_enabled(void)
+{
+    return log_to_console != 0;
+}
+
+static void vlogger_to(int fd, int is_error, char const * const format, va_list * const ap)
+{
+    char logbuf[512];
+
+    if (vsnprintf(logbuf, sizeof(logbuf), format, *ap) == sizeof(logbuf))
+    {
+        fprintf(stderr, "%s\n", "BUG: Log output was truncated due the logging buffer size limit.");
+    }
+
+    if (is_error != 0)
+    {
+        if (dprintf(fd, "%s [error]: %s\n", app_name, logbuf) < 0)
+        {
+            fprintf(stderr, "Could not write to fd %d: %s\n", fd, strerror(errno));
+        }
+    }
+    else
+    {
+        if (dprintf(fd, "%s: %s\n", app_name, logbuf) < 0)
+        {
+            fprintf(stderr, "Could not write to fd %d: %s\n", fd, strerror(errno));
+        }
+    }
+}
+
+void vlogger(int is_error, char const * const format, va_list ap)
+{
+    va_list logfile_ap, stderr_ap;
+
+    va_copy(logfile_ap, ap);
+    va_copy(stderr_ap, ap);
+
+#ifndef NO_MAIN
+    if (log_to_console == 0)
+    {
+        if (is_error == 0)
+        {
+            vsyslog(LOG_DAEMON, format, ap);
+        }
+        else
+        {
+            vsyslog(LOG_DAEMON | LOG_ERR, format, ap);
+        }
+    }
+    else
+#endif
+    {
+        vlogger_to(fileno(stderr), is_error, format, &stderr_ap);
+    }
+
+    if (log_to_file_fd >= 0)
+    {
+        vlogger_to(log_to_file_fd, is_error, format, &logfile_ap);
+    }
+
+    va_end(stderr_ap);
+    va_end(logfile_ap);
+}
+
+__attribute__((format(printf, 2, 3))) void logger(int is_error, char const * const format, ...)
+{
+    va_list ap;
+
+    va_start(ap, format);
+    vlogger(is_error, format, ap);
+    va_end(ap);
+}
+
+__attribute__((format(printf, 2, 3))) void logger_early(int is_error, char const * const format, ...)
+{
+    int old_log_to_console = log_to_console;
+    va_list ap;
+
+    va_start(ap, format);
+    vlogger_to(fileno(stderr), is_error, format, &ap);
+    va_end(ap);
+
+    log_to_console = 0;
+
+    va_start(ap, format);
+    vlogger(is_error, format, ap);
+    va_end(ap);
+
+    log_to_console = old_log_to_console;
+}
+
+char const * get_nDPId_version(void)
 {
     return "nDPId version "
 #ifdef GIT_VERSION

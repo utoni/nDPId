@@ -8,11 +8,15 @@ before_script:
   - apt-get update -qq
   - >
       apt-get install -y -qq \
-        coreutils \
+        coreutils sudo \
         build-essential make cmake binutils gcc autoconf automake \
         libtool pkg-config git \
         libpcap-dev libgcrypt-dev libgpg-error-dev libjson-c-dev zlib1g-dev \
         netcat-openbsd python3 python3-jsonschema tree
+
+after_script:
+  - cat /tmp/nDPIsrvd.log
+  - cat /tmp/nDPId.log
 
 build_and_test:
   script:
@@ -39,8 +43,8 @@ build_and_test:
     - ./build/nDPId-test || test $? -eq 1
     - ./build/nDPId -h || test $? -eq 1
     # dameon start/stop test
-    - make -C ./build daemon VERBOSE=1
-    - make -C ./build daemon VERBOSE=1
+    - NUSER=nobody make -C ./build daemon VERBOSE=1
+    - NUSER=nobody make -C ./build daemon VERBOSE=1
     # make dist
     - make -C ./build dist
   artifacts:

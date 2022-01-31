@@ -1,4 +1,4 @@
-00448{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"anyconnect-vpn.pcap","alias":"nDPId-test","max-flows-per-thread":2048,"max-idle-flows-per-thread":256,"tick-resolution":1000,"reader-thread-count":1,"flow-scan-interval":10000,"generic-max-idle-time":600000,"icmp-max-idle-time":120000,"udp-max-idle-time":180000,"tcp-max-idle-time":7560000,"max-packets-per-flow-to-send":3,"max-packets-per-flow-to-process":255}
+00447{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"anyconnect-vpn.pcap","alias":"nDPId-test","max-flows-per-thread":2048,"max-idle-flows-per-thread":64,"tick-resolution":1000,"reader-thread-count":1,"flow-scan-interval":10000,"generic-max-idle-time":600000,"icmp-max-idle-time":120000,"udp-max-idle-time":180000,"tcp-max-idle-time":7560000,"max-packets-per-flow-to-send":3,"max-packets-per-flow-to-process":255}
 00551{"flow_event_id":1,"flow_event_name":"new","thread_id":0,"packet_id":1,"source":"anyconnect-vpn.pcap","alias":"nDPId-test","flow_id":1,"flow_packets_processed":1,"flow_first_seen":1569687240992,"flow_last_seen":1569687240992,"flow_idle_time":7440000,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":0,"flow_tot_l4_payload_len":0,"flow_avg_l4_payload_len":0,"midstream":1,"ts_msec":1569687240992,"l3_proto":"ip4","src_ip":"10.0.0.227","dst_ip":"184.25.56.53","src_port":56885,"dst_port":80,"l4_proto":"tcp","flow_datalink":1,"flow_max_packets":3}
 00465{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":1,"source":"anyconnect-vpn.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":1,"flow_last_seen":1569687240992,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":66,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":66,"pkt_l4_len":32,"ts_msec":1569687240992,"pkt":"LH6BsEqhNDY7z3UoCABFAAA0AABAAEAGP5MKAADjuBk4Nd41AFDGVya80\/P93YAREABFkgAAAQEIChwNaWayL1Dq"}
 00465{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":2,"source":"anyconnect-vpn.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":2,"flow_last_seen":1569687241009,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":66,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":66,"pkt_l4_len":32,"ts_msec":1569687241009,"pkt":"NDY7z3UoLH6BsEqhCABFAAA0BhtAADcGQni4GTg1CgAA4wBQ3jXT8\/3dxlcmvYARAOurFAAAAQEICrIv+nscDWlm"}
@@ -404,9 +404,9 @@
 ~~ total active/idle flows...: 69/69
 ~~ total timeout flows.......: 0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~ total memory allocated....: 4831371 bytes
-~~ total memory freed........: 4831371 bytes
-~~ total allocations/frees...: 102807/102807
+~~ total memory allocated....: 4843363 bytes
+~~ total memory freed........: 4843363 bytes
+~~ total allocations/frees...: 102833/102833
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~ json string min len.......: 171 chars
 ~~ json string max len.......: 1303 chars

@@ -1,4 +1,4 @@
-00437{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"ocs.pcap","alias":"nDPId-test","max-flows-per-thread":2048,"max-idle-flows-per-thread":256,"tick-resolution":1000,"reader-thread-count":1,"flow-scan-interval":10000,"generic-max-idle-time":600000,"icmp-max-idle-time":120000,"udp-max-idle-time":180000,"tcp-max-idle-time":7560000,"max-packets-per-flow-to-send":3,"max-packets-per-flow-to-process":255}
+00436{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"ocs.pcap","alias":"nDPId-test","max-flows-per-thread":2048,"max-idle-flows-per-thread":64,"tick-resolution":1000,"reader-thread-count":1,"flow-scan-interval":10000,"generic-max-idle-time":600000,"icmp-max-idle-time":120000,"udp-max-idle-time":180000,"tcp-max-idle-time":7560000,"max-packets-per-flow-to-send":3,"max-packets-per-flow-to-process":255}
 00347{"packet_event_id":1,"packet_event_name":"packet","thread_id":0,"packet_id":1,"source":"ocs.pcap","alias":"nDPId-test","pkt_oversize":false,"pkt_caplen":60,"pkt_type":0,"pkt_l3_offset":0,"pkt_l4_offset":0,"pkt_len":60,"pkt_l4_len":0,"ts_msec":1449652784341,"pkt":"RQAAPKbzQABABiV4wKi0AkDpuLy6UxRsAv3YCQAAAACgAjkIdPYAAAIEBbQEAggKADWBtgAAAAABAwMG"}
 00152{"basic_event_id":3,"basic_event_name":"Unsupported datalink layer","datalink":12,"thread_id":0,"packet_id":1,"source":"ocs.pcap","alias":"nDPId-test"}
 00351{"packet_event_id":1,"packet_event_name":"packet","thread_id":0,"packet_id":2,"source":"ocs.pcap","alias":"nDPId-test","pkt_oversize":false,"pkt_caplen":63,"pkt_type":0,"pkt_l3_offset":0,"pkt_l4_offset":0,"pkt_len":63,"pkt_l4_len":0,"ts_msec":1449652786071,"pkt":"RQAAP4JiQABAETORwKi0AggICAiWSAA1ACtxaqbPAQAAAQAAAAAAAAVvY3UwMwhsYWJnZW5jeQJ3cwAAAQAB"}
@@ -1900,8 +1900,8 @@
 ~~ total active/idle flows...: 0/0
 ~~ total timeout flows.......: 0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~ total memory allocated....: 4595157 bytes
-~~ total memory freed........: 4595157 bytes
+~~ total memory allocated....: 4593629 bytes
+~~ total memory freed........: 4593629 bytes
 ~~ total allocations/frees...: 99550/99550
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~ json string min len.......: 157 chars

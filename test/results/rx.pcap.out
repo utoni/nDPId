@@ -1,4 +1,4 @@
-00436{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"rx.pcap","alias":"nDPId-test","max-flows-per-thread":2048,"max-idle-flows-per-thread":256,"tick-resolution":1000,"reader-thread-count":1,"flow-scan-interval":10000,"generic-max-idle-time":600000,"icmp-max-idle-time":120000,"udp-max-idle-time":180000,"tcp-max-idle-time":7560000,"max-packets-per-flow-to-send":3,"max-packets-per-flow-to-process":255}
+00435{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"rx.pcap","alias":"nDPId-test","max-flows-per-thread":2048,"max-idle-flows-per-thread":64,"tick-resolution":1000,"reader-thread-count":1,"flow-scan-interval":10000,"generic-max-idle-time":600000,"icmp-max-idle-time":120000,"udp-max-idle-time":180000,"tcp-max-idle-time":7560000,"max-packets-per-flow-to-send":3,"max-packets-per-flow-to-process":255}
 00556{"flow_event_id":1,"flow_event_name":"new","thread_id":0,"packet_id":1,"source":"rx.pcap","alias":"nDPId-test","flow_id":1,"flow_packets_processed":1,"flow_first_seen":1460647264018,"flow_last_seen":1460647264018,"flow_idle_time":180000,"flow_min_l4_payload_len":292,"flow_max_l4_payload_len":292,"flow_tot_l4_payload_len":292,"flow_avg_l4_payload_len":292,"midstream":0,"ts_msec":1460647264018,"l3_proto":"ip4","src_ip":"131.114.219.168","dst_ip":"192.167.206.124","src_port":41559,"dst_port":7002,"l4_proto":"udp","flow_datalink":1,"flow_max_packets":3}
 00816{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":1,"source":"rx.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":1,"flow_last_seen":1460647264018,"flow_idle_time":180000,"pkt_oversize":false,"pkt_caplen":334,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":334,"pkt_l4_len":300,"ts_msec":1460647264018,"pkt":"PIqwbTfwAAjK968mCABFAAFA5\/AAAEARo32DctuowKfOfKJXG1oBLBrkVw+1YFw\/yYgAAAABAAAAAQAAAAEBBQAAAAAASQAAAfgAAAABAAAAZwAAAGkAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="}
 00583{"flow_event_id":6,"flow_event_name":"detected","thread_id":0,"packet_id":1,"source":"rx.pcap","alias":"nDPId-test","flow_id":1,"flow_packets_processed":1,"flow_first_seen":1460647264018,"flow_last_seen":1460647264018,"flow_idle_time":180000,"flow_min_l4_payload_len":292,"flow_max_l4_payload_len":292,"flow_tot_l4_payload_len":292,"flow_avg_l4_payload_len":292,"midstream":0,"ts_msec":1460647264018,"l3_proto":"ip4","src_ip":"131.114.219.168","dst_ip":"192.167.206.124","src_port":41559,"dst_port":7002,"l4_proto":"udp","ndpi": {"proto":"RX","breed":"Acceptable","category":"RPC"}}
@@ -38,9 +38,9 @@
 ~~ total active/idle flows...: 5/5
 ~~ total timeout flows.......: 0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~ total memory allocated....: 4604945 bytes
-~~ total memory freed........: 4604945 bytes
-~~ total allocations/frees...: 99697/99697
+~~ total memory allocated....: 4605497 bytes
+~~ total memory freed........: 4605497 bytes
+~~ total allocations/frees...: 99701/99701
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~ json string min len.......: 157 chars
 ~~ json string max len.......: 1892 chars

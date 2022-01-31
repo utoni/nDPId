@@ -1,4 +1,4 @@
-00447{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"smtp-starttls.pcap","alias":"nDPId-test","max-flows-per-thread":2048,"max-idle-flows-per-thread":256,"tick-resolution":1000,"reader-thread-count":1,"flow-scan-interval":10000,"generic-max-idle-time":600000,"icmp-max-idle-time":120000,"udp-max-idle-time":180000,"tcp-max-idle-time":7560000,"max-packets-per-flow-to-send":3,"max-packets-per-flow-to-process":255}
+00446{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"smtp-starttls.pcap","alias":"nDPId-test","max-flows-per-thread":2048,"max-idle-flows-per-thread":64,"tick-resolution":1000,"reader-thread-count":1,"flow-scan-interval":10000,"generic-max-idle-time":600000,"icmp-max-idle-time":120000,"udp-max-idle-time":180000,"tcp-max-idle-time":7560000,"max-packets-per-flow-to-send":3,"max-packets-per-flow-to-process":255}
 00549{"flow_event_id":1,"flow_event_name":"new","thread_id":0,"packet_id":1,"source":"smtp-starttls.pcap","alias":"nDPId-test","flow_id":1,"flow_packets_processed":1,"flow_first_seen":1388017124762,"flow_last_seen":1388017124762,"flow_idle_time":7440000,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":0,"flow_tot_l4_payload_len":0,"flow_avg_l4_payload_len":0,"midstream":0,"ts_msec":1388017124762,"l3_proto":"ip4","src_ip":"10.0.0.1","dst_ip":"173.194.68.26","src_port":57406,"dst_port":25,"l4_proto":"tcp","flow_datalink":1,"flow_max_packets":3}
 00475{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":1,"source":"smtp-starttls.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":1,"flow_last_seen":1388017124762,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":74,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":74,"pkt_l4_len":40,"ts_msec":1388017124762,"pkt":"AAAMB6wBABNyxPHhCABFAAA8JqtAAEAGeocKAAABrcJEGuA+ABlXuT72AAAAAKACOQgLsAAAAgQFtAQCCAraWRhdAAAAAAEDAwc="}
 00475{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":2,"source":"smtp-starttls.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":2,"flow_last_seen":1388017124774,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":74,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":74,"pkt_l4_len":40,"ts_msec":1388017124774,"pkt":"ABNyxPHhANAr0XYACABFAAA8X3cAAC4Gk7utwkQaCgAAAQAZ4D6dvxfqV7k+96ASpiw5gwAAAgQFlgQCCAoS8Zx72lkYXQEDAwY="}
@@ -14,8 +14,8 @@
 ~~ total active/idle flows...: 1/1
 ~~ total timeout flows.......: 0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~ total memory allocated....: 4597393 bytes
-~~ total memory freed........: 4597393 bytes
+~~ total memory allocated....: 4595865 bytes
+~~ total memory freed........: 4595865 bytes
 ~~ total allocations/frees...: 99589/99589
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~ json string min len.......: 166 chars

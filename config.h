@@ -18,7 +18,7 @@
 /* nDPId default config options */
 #define nDPId_PIDFILE "/tmp/ndpid.pid"
 #define nDPId_MAX_FLOWS_PER_THREAD 4096u
-#define nDPId_MAX_IDLE_FLOWS_PER_THREAD 512u
+#define nDPId_MAX_IDLE_FLOWS_PER_THREAD (nDPId_MAX_FLOWS_PER_THREAD / 32u)
 #define nDPId_TICK_RESOLUTION 1000u
 #define nDPId_MAX_READER_THREADS 32u
 #define nDPId_MEMORY_PROFILING_LOG_INTERVAL 5000u /* 5 sec */

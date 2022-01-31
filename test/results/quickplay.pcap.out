@@ -1,4 +1,4 @@
-00443{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"quickplay.pcap","alias":"nDPId-test","max-flows-per-thread":2048,"max-idle-flows-per-thread":256,"tick-resolution":1000,"reader-thread-count":1,"flow-scan-interval":10000,"generic-max-idle-time":600000,"icmp-max-idle-time":120000,"udp-max-idle-time":180000,"tcp-max-idle-time":7560000,"max-packets-per-flow-to-send":3,"max-packets-per-flow-to-process":255}
+00442{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"quickplay.pcap","alias":"nDPId-test","max-flows-per-thread":2048,"max-idle-flows-per-thread":64,"tick-resolution":1000,"reader-thread-count":1,"flow-scan-interval":10000,"generic-max-idle-time":600000,"icmp-max-idle-time":120000,"udp-max-idle-time":180000,"tcp-max-idle-time":7560000,"max-packets-per-flow-to-send":3,"max-packets-per-flow-to-process":255}
 00559{"flow_event_id":1,"flow_event_name":"new","thread_id":0,"packet_id":1,"source":"quickplay.pcap","alias":"nDPId-test","flow_id":1,"flow_packets_processed":1,"flow_first_seen":1429000030398,"flow_last_seen":1429000030398,"flow_idle_time":7440000,"flow_min_l4_payload_len":312,"flow_max_l4_payload_len":312,"flow_tot_l4_payload_len":312,"flow_avg_l4_payload_len":312,"midstream":1,"ts_msec":1429000030398,"l3_proto":"ip4","src_ip":"10.54.169.250","dst_ip":"120.28.35.41","src_port":50668,"dst_port":80,"l4_proto":"tcp","flow_datalink":113,"flow_max_packets":3}
 00866{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":1,"source":"quickplay.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":1,"flow_last_seen":1429000030398,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":368,"pkt_type":2048,"pkt_l3_offset":16,"pkt_l4_offset":36,"pkt_len":368,"pkt_l4_len":332,"ts_msec":1429000030398,"pkt":"AAQCEgAAAAAAAAAAAAAIAEUAAWBDAUAAPwaoIQo2qfp4HCMpxewAUEHDiNf6xwiBUBgAc22rAABHRVQgL3NvbHIvUmVzdEFwaVNpbmdUZWxfUEgvcmVzdGFwaS9jYXRlZ29yaWVzL0hVRD9hcGlLZXk9cXdlcnR5JmRldmljZT1hbmRyb2lkbW9iaWxlJmxvY2FsZT1lbmcmbmV0d29yaz1XSUZJJnBhZ2VOdW1iZXI9MSZwYWdlU2l6ZT01MCBIVFRQLzEuMQ0KVXNlci1BZ2VudDogRGFsdmlrLzEuNi4wIChMaW51eDsgVTsgQW5kcm9pZCA0LjQuNDsgTUkgM1cgTUlVSS9WNi40LjIuMC5LWERNSUNCKQ0KSG9zdDogYXBpLXNpbmd0ZWxoYXdrLnF1aWNrcGxheS5jb20NCkNvbm5lY3Rpb246IEtlZXAtQWxpdmUNCkFjY2VwdC1FbmNvZGluZzogZ3ppcA0KDQo="}
 00930{"flow_event_id":6,"flow_event_name":"detected","thread_id":0,"packet_id":1,"source":"quickplay.pcap","alias":"nDPId-test","flow_id":1,"flow_packets_processed":1,"flow_first_seen":1429000030398,"flow_last_seen":1429000030398,"flow_idle_time":7440000,"flow_min_l4_payload_len":312,"flow_max_l4_payload_len":312,"flow_tot_l4_payload_len":312,"flow_avg_l4_payload_len":312,"midstream":1,"ts_msec":1429000030398,"l3_proto":"ip4","src_ip":"10.54.169.250","dst_ip":"120.28.35.41","src_port":50668,"dst_port":80,"l4_proto":"tcp","ndpi": {"proto":"HTTP","breed":"Acceptable","category":"Streaming"},"http": {"hostname":"api-singtelhawk.quickplay.com","url":"api-singtelhawk.quickplay.com\/solr\/RestApiSingTel_PH\/restapi\/categories\/HUD?apiKey=qwerty&device=androidmobile&locale=eng&network=WIFI&pageNumber=1&pageSize=50","code":0,"content_type":"","user_agent":"Dalvik\/1.6.0 (Linux; U; Android 4.4.4; MI 3W MIUI\/V6.4.2.0.KXDMICB)"}}
@@ -125,10 +125,10 @@
 ~~ total active/idle flows...: 21/21
 ~~ total timeout flows.......: 0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~ total memory allocated....: 4629973 bytes
-~~ total memory freed........: 4629973 bytes
-~~ total allocations/frees...: 99824/99824
+~~ total memory allocated....: 4647165 bytes
+~~ total memory freed........: 4647165 bytes
+~~ total allocations/frees...: 99860/99860
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~ json string min len.......: 165 chars
 ~~ json string max len.......: 2360 chars
-~~ json string avg len.......: 1333 chars
+~~ json string avg len.......: 1332 chars

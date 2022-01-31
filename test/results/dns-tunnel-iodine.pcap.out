@@ -1,4 +1,4 @@
-00451{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"dns-tunnel-iodine.pcap","alias":"nDPId-test","max-flows-per-thread":2048,"max-idle-flows-per-thread":256,"tick-resolution":1000,"reader-thread-count":1,"flow-scan-interval":10000,"generic-max-idle-time":600000,"icmp-max-idle-time":120000,"udp-max-idle-time":180000,"tcp-max-idle-time":7560000,"max-packets-per-flow-to-send":3,"max-packets-per-flow-to-process":255}
+00450{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"dns-tunnel-iodine.pcap","alias":"nDPId-test","max-flows-per-thread":2048,"max-idle-flows-per-thread":64,"tick-resolution":1000,"reader-thread-count":1,"flow-scan-interval":10000,"generic-max-idle-time":600000,"icmp-max-idle-time":120000,"udp-max-idle-time":180000,"tcp-max-idle-time":7560000,"max-packets-per-flow-to-send":3,"max-packets-per-flow-to-process":255}
 00553{"flow_event_id":1,"flow_event_name":"new","thread_id":0,"packet_id":1,"source":"dns-tunnel-iodine.pcap","alias":"nDPId-test","flow_id":1,"flow_packets_processed":1,"flow_first_seen":1282356640051,"flow_last_seen":1282356640051,"flow_idle_time":180000,"flow_min_l4_payload_len":40,"flow_max_l4_payload_len":40,"flow_tot_l4_payload_len":40,"flow_avg_l4_payload_len":40,"midstream":0,"ts_msec":1282356640051,"l3_proto":"ip4","src_ip":"10.0.2.30","dst_ip":"10.0.2.20","src_port":44639,"dst_port":53,"l4_proto":"udp","flow_datalink":1,"flow_max_packets":3}
 00490{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":1,"source":"dns-tunnel-iodine.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":1,"flow_last_seen":1282356640051,"flow_idle_time":180000,"pkt_oversize":false,"pkt_caplen":82,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":82,"pkt_l4_len":48,"ts_msec":1282356640051,"pkt":"CAAnx266CAAnnOC0CABFAABEAABAAEARIngKAAIeCgACFK5fADUAMAHkErABAAABAAAAAAAAC3ZhYWFha2FyZGxpBnBpcmF0ZQNzZWEAAAoAAQ=="}
 00724{"flow_event_id":6,"flow_event_name":"detected","thread_id":0,"packet_id":1,"source":"dns-tunnel-iodine.pcap","alias":"nDPId-test","flow_id":1,"flow_packets_processed":1,"flow_first_seen":1282356640051,"flow_last_seen":1282356640051,"flow_idle_time":180000,"flow_min_l4_payload_len":40,"flow_max_l4_payload_len":40,"flow_tot_l4_payload_len":40,"flow_avg_l4_payload_len":40,"midstream":0,"ts_msec":1282356640051,"l3_proto":"ip4","src_ip":"10.0.2.30","dst_ip":"10.0.2.20","src_port":44639,"dst_port":53,"l4_proto":"udp","ndpi": {"proto":"DNS","breed":"Acceptable","category":"Network"},"dns": {"query":"vaaaakardli.pirate.sea","num_queries":0,"num_answers":0,"reply_code":0,"query_type":10,"rsp_type":0,"rsp_addr":"0.0.0.0"}}
@@ -20,8 +20,8 @@
 ~~ total active/idle flows...: 1/1
 ~~ total timeout flows.......: 0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~ total memory allocated....: 4608935 bytes
-~~ total memory freed........: 4608935 bytes
+~~ total memory allocated....: 4607407 bytes
+~~ total memory freed........: 4607407 bytes
 ~~ total allocations/frees...: 99987/99987
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~ json string min len.......: 172 chars

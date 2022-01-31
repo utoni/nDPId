@@ -1,4 +1,4 @@
-00449{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"WebattackSQLinj.pcap","alias":"nDPId-test","max-flows-per-thread":2048,"max-idle-flows-per-thread":256,"tick-resolution":1000,"reader-thread-count":1,"flow-scan-interval":10000,"generic-max-idle-time":600000,"icmp-max-idle-time":120000,"udp-max-idle-time":180000,"tcp-max-idle-time":7560000,"max-packets-per-flow-to-send":3,"max-packets-per-flow-to-process":255}
+00448{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"WebattackSQLinj.pcap","alias":"nDPId-test","max-flows-per-thread":2048,"max-idle-flows-per-thread":64,"tick-resolution":1000,"reader-thread-count":1,"flow-scan-interval":10000,"generic-max-idle-time":600000,"icmp-max-idle-time":120000,"udp-max-idle-time":180000,"tcp-max-idle-time":7560000,"max-packets-per-flow-to-send":3,"max-packets-per-flow-to-process":255}
 00553{"flow_event_id":1,"flow_event_name":"new","thread_id":0,"packet_id":1,"source":"WebattackSQLinj.pcap","alias":"nDPId-test","flow_id":1,"flow_packets_processed":1,"flow_first_seen":1499348407419,"flow_last_seen":1499348407419,"flow_idle_time":7440000,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":0,"flow_tot_l4_payload_len":0,"flow_avg_l4_payload_len":0,"midstream":0,"ts_msec":1499348407419,"l3_proto":"ip4","src_ip":"172.16.0.1","dst_ip":"192.168.10.50","src_port":36196,"dst_port":80,"l4_proto":"tcp","flow_datalink":1,"flow_max_packets":3}
 00477{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":1,"source":"WebattackSQLinj.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":1,"flow_last_seen":1499348407419,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":74,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":74,"pkt_l4_len":40,"ts_msec":1499348407419,"pkt":"ABm5CmnxAMGxFOsxCABFAAA84aRAAD4G5CusEAABwKgKMo1kAFAWk4RJAAAAAKACchDPRwAAAgQFtAQCCAoBPmXtAAAAAAEDAwc="}
 00477{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":2,"source":"WebattackSQLinj.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":2,"flow_last_seen":1499348407419,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":74,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":74,"pkt_l4_len":40,"ts_msec":1499348407419,"pkt":"AMGxFOsxABm5CmnxCABFAAA8AABAAEAGw9DAqAoyrBAAAQBQjWS7EzBkFpOESqAScSCpZgAAAgQFtAQCCAoD6DdgAT5l7QEDAwc="}
@@ -62,10 +62,10 @@
 ~~ total active/idle flows...: 9/9
 ~~ total timeout flows.......: 0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~ total memory allocated....: 4610339 bytes
-~~ total memory freed........: 4610339 bytes
-~~ total allocations/frees...: 99707/99707
+~~ total memory allocated....: 4615051 bytes
+~~ total memory freed........: 4615051 bytes
+~~ total allocations/frees...: 99719/99719
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~ json string min len.......: 169 chars
 ~~ json string max len.......: 942 chars
-~~ json string avg len.......: 626 chars
+~~ json string avg len.......: 625 chars
