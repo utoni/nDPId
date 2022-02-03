@@ -8,6 +8,7 @@
         "flow_event_id",
         "flow_event_name",
         "flow_id",
+        "flow_state",
         "flow_packets_processed",
         "flow_first_seen",
         "flow_last_seen",
@@ -34,6 +35,13 @@
     "if": {
         "properties": { "flow_event_name": { "enum": [ "guessed", "detected",
                                                        "detection-update", "not-detected" ] } }
+    },
+    "then": {
+        "required": [ "ndpi" ]
+    },
+
+    "if": {
+        "properties": { "flow_state": { "enum": [ "finished" ] } }
     },
     "then": {
         "required": [ "ndpi" ]
@@ -77,6 +85,13 @@
         "flow_id": {
             "type": "number",
             "minimum": 1
+        },
+        "flow_state": {
+            "type": "string",
+            "enum": [
+                "finished",
+                "info"
+            ]
         },
         "flow_datalink": {
             "type": "number",

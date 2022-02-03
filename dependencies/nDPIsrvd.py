@@ -170,12 +170,13 @@ class FlowManager:
                json_dict['daemon_event_name'].lower() == 'shutdown':
                 # invalidate all existing flows with that alias/source
                 for flow_id in instance.flows:
-                    flow = instance.flows.pop(flow_id)
+                    flow = instance.flows[flow_id]
                     if json_dict['daemon_event_name'].lower() == 'init':
                         flow.cleanup_reason = FlowManager.CLEANUP_REASON_DAEMON_INIT
                     else:
                         flow.cleanup_reason = FlowManager.CLEANUP_REASON_DAEMON_SHUTDOWN
                     flows[flow_id] = flow
+                instance.flows = dict()
                 del self.instances[instance.alias][instance.source]
 
         elif 'flow_event_name' in json_dict and \
@@ -434,16 +435,28 @@ def validateAgainstSchema(json_dict):
     import jsonschema
 
     if 'packet_event_id' in json_dict:
-        jsonschema.validate(instance=json_dict, schema=schema['packet_event_schema'])
+        try:
+            jsonschema.Draft7Validator(schema=schema['packet_event_schema']).validate(instance=json_dict)
+        except AttributeError:
+            jsonschema.validate(instance=json_dict, schema=schema['packet_event_schema'])
         return True
     if 'basic_event_id' in json_dict:
-        jsonschema.validate(instance=json_dict, schema=schema['basic_event_schema'])
+        try:
+            jsonschema.Draft7Validator(schema=schema['basic_event_schema']).validate(instance=json_dict)
+        except AttributeError:
+            jsonschema.validate(instance=json_dict, schema=schema['basic_event_schema'])
         return True
     if 'daemon_event_id' in json_dict:
-        jsonschema.validate(instance=json_dict, schema=schema['daemon_event_schema'])
+        try:
+            jsonschema.Draft7Validator(schema=schema['daemon_event_schema']).validate(instance=json_dict)
+        except AttributeError:
+            jsonschema.validate(instance=json_dict, schema=schema['daemon_event_schema'])
         return True
     if 'flow_event_id' in json_dict:
-        jsonschema.validate(instance=json_dict, schema=schema['flow_event_schema'])
+        try:
+            jsonschema.Draft7Validator(schema=schema['flow_event_schema']).validate(instance=json_dict)
+        except AttributeError:
+            jsonschema.validate(instance=json_dict, schema=schema['flow_event_schema'])
         return True
 
     return False

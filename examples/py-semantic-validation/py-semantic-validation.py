@@ -164,6 +164,12 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
     else:
         td = thread_data_dict[json_dict['thread_id']] = ThreadData()
 
+    for event_name in ['basic_event_name', 'daemon_event_name',
+                       'packet_event_name', 'flow_event_name']:
+        if event_name in json_dict and json_dict[event_name].lower() == 'invalid':
+            raise SemanticValidationException(current_flow,
+                                              'Received an invalid event for {}'.format(event_name))
+
     lowest_possible_flow_id = td.lowest_possible_flow_id
     lowest_possible_packet_id = td.lowest_possible_packet_id
 
@@ -242,6 +248,38 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
 
     if 'flow_event_name' in json_dict:
         try:
+            if current_flow.flow_detection_finished == True and \
+               (json_dict['flow_event_name'] == 'detected' or \
+                json_dict['flow_event_name'] == 'guessed'):
+                raise SemanticValidationException(current_flow,
+                                                  'Received another detected/guessed event after '
+                                                  'a flow was already detected')
+
+            if current_flow.flow_detected == True and \
+               json_dict['flow_state'] == 'finished' and \
+               json_dict['ndpi']['proto'] == 'Unknown' and \
+               json_dict['ndpi']['category'] == 'Unknown':
+                raise SemanticValidationException(current_flow,
+                                                  'Flow detection successfully finished, but '
+                                                  'flow update indiciates an unknown flow.')
+        except AttributeError:
+            pass
+
+        try:
+            if json_dict['flow_state'] == 'finished':
+                current_flow.flow_finished = True
+
+            if current_flow.flow_finished == True and \
+               json_dict['flow_event_name'] != 'update' and \
+               json_dict['flow_event_name'] != 'idle' and \
+               json_dict['flow_event_name'] != 'end':
+                raise SemanticValidationException(current_flow,
+                                                  'Flow detection finished, but received another '
+                                                  '{} event'.format(json_dict['flow_event_name']))
+        except AttributeError:
+            pass
+
+        try:
             if json_dict['flow_first_seen'] > current_flow.ts_msec or \
                json_dict['flow_last_seen'] > current_flow.ts_msec or \
                json_dict['flow_first_seen'] > json_dict['flow_last_seen']:
@@ -281,6 +319,7 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
             except AttributeError:
                 pass
             current_flow.flow_detection_finished = True
+            current_flow.flow_detected = True if json_dict['flow_event_name'] == 'detected' else False
 
     try:
         if current_flow.flow_new_seen is True and lowest_possible_flow_id > current_flow.flow_id:

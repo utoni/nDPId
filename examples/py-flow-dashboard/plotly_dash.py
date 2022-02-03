@@ -95,7 +95,7 @@ def generate_tab_flow():
             dt.DataTable(
                 id='table-info',
                 columns=[{'id': c.lower(), 'name': c, 'editable': False}
-                         for c in ['Key', 'Value']],
+                         for c in ['Name', 'Total']],
             )
 
         ], style={'display': 'flex', 'flex-direction': 'row'}),
@@ -212,13 +212,14 @@ def prettifyBytes(bytes_received):
 
               inputs=[Input('tab-flow-default-interval', 'n_intervals')])
 def tab_flow_update_components(n):
-    return [[{'key': 'Total JSON Events',        'value': shared_flow_dict['total-events']},
-             {'key': 'Total JSON Bytes',         'value': prettifyBytes(shared_flow_dict['total-bytes'])},
-             {'key': 'Total Flows',              'value': shared_flow_dict['total-flows']},
-             {'key': 'Total Risky Flows',        'value': shared_flow_dict['total-risky-flows']},
-             {'key': 'Total Midstream Flows',    'value': shared_flow_dict['total-midstream-flows']},
-             {'key': 'Total Guessed Flows',      'value': shared_flow_dict['total-guessed-flows']},
-             {'key': 'Total Not Detected Flows', 'value': shared_flow_dict['total-not-detected-flows']}],
+    return [[{'name': 'JSON Events',        'total': shared_flow_dict['total-events']},
+             {'name': 'JSON Bytes',         'total': prettifyBytes(shared_flow_dict['total-json-bytes'])},
+             {'name': 'Layer4 Bytes',       'total': prettifyBytes(shared_flow_dict['total-l4-bytes'])},
+             {'name': 'Flows',              'total': shared_flow_dict['total-flows']},
+             {'name': 'Risky Flows',        'total': shared_flow_dict['total-risky-flows']},
+             {'name': 'Midstream Flows',    'total': shared_flow_dict['total-midstream-flows']},
+             {'name': 'Guessed Flows',      'total': shared_flow_dict['total-guessed-flows']},
+             {'name': 'Not Detected Flows', 'total': shared_flow_dict['total-not-detected-flows']}],
             build_piechart(['Detected', 'Guessed', 'Not-Detected', 'Unclassified'],
                            [shared_flow_dict['current-detected-flows'],
                             shared_flow_dict['current-guessed-flows'],
@@ -355,4 +356,7 @@ def web_worker(mp_shared_flow_dict, listen_host, listen_port):
 
     shared_flow_dict = mp_shared_flow_dict
 
-    app.run_server(debug=False, host=listen_host, port=listen_port)
+    try:
+        app.run_server(debug=False, host=listen_host, port=listen_port)
+    except KeyboardInterrupt:
+        pass

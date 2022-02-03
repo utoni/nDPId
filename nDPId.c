@@ -81,7 +81,8 @@ enum nDPId_flow_type
     FT_UNKNOWN = 0, // should never happen, bug otherwise
     FT_SKIPPED,     // flow should not be processed, see command line args -I and -E
     FT_FINISHED,    // detection done and detection data free'd
-    FT_INFO         // detection in progress, detection data allocated
+    FT_INFO,        // detection in progress, detection data allocated
+    FT_COUNT
 };
 
 /*
@@ -150,7 +151,8 @@ struct nDPId_flow_info
     struct nDPId_flow_extended flow_extended;
 
     uint8_t detection_completed : 1;
-    uint8_t reserved_00 : 7;
+    uint8_t extra_dissection_completed : 1;
+    uint8_t reserved_00 : 6;
     uint8_t reserved_01[1];
 #ifdef ENABLE_ZLIB
     uint16_t detection_data_compressed_size;
@@ -158,17 +160,24 @@ struct nDPId_flow_info
     uint16_t reserved_02;
 #endif
     struct nDPId_detection_data * detection_data;
+    uint32_t reserved_03; // required to re-use that memory for `struct nDPId_flow_finished'
 };
 
 struct nDPId_flow_finished
 {
-    struct nDPId_flow_info flow_info;
+    struct nDPId_flow_extended flow_extended;
+
+    struct ndpi_proto detected_l7_protocol;
+    ndpi_risk risk;
 };
 
+/* TODO: Merge `struct nDPId_flow_info' with `struct nDPId_flow_finished' and use a union instead? */
 _Static_assert(sizeof(struct nDPId_flow_finished) <= sizeof(struct nDPId_flow_info),
                "The size of struct nDPId_flow_finished needs be smaller or equal "
                "than the size of struct nDPId_flow_info."
-               "Otherwise some code parts need to be changed.");
+               "Otherwise some code parts need to be changed."
+               "This is required to make the transition from `struct nDPId_flow_info' "
+               "to `struct nDPId_flow_finished' work.");
 
 struct nDPId_workflow
 {
@@ -287,6 +296,9 @@ enum daemon_event
 
     DAEMON_EVENT_COUNT
 };
+
+static char const * const flow_state_name_table[FT_COUNT] = {
+    [FT_UNKNOWN] = "unknown", [FT_SKIPPED] = "skipped", [FT_FINISHED] = "finished", [FT_INFO] = "info"};
 
 static char const * const packet_event_name_table[PACKET_EVENT_COUNT] = {
     [PACKET_EVENT_INVALID] = "invalid", [PACKET_EVENT_PAYLOAD] = "packet", [PACKET_EVENT_PAYLOAD_FLOW] = "packet-flow"};
@@ -638,6 +650,8 @@ static void ndpi_comp_scan_walker(void const * const A, ndpi_VISIT which, int de
         switch (flow_basic->type)
         {
             case FT_UNKNOWN:
+            case FT_COUNT:
+
             case FT_SKIPPED:
             case FT_FINISHED:
                 break;
@@ -1047,6 +1061,9 @@ static void log_flows_flow_walker(void const * const A, ndpi_VISIT which, int de
                 log_user_data->flows_ukn++;
                 break;
 
+            case FT_COUNT:
+                break;
+
             case FT_SKIPPED:
                 log_user_data->flows_skp++;
                 break;
@@ -1086,6 +1103,8 @@ static size_t log_flows_to_str(struct nDPId_flow_basic const * flows[nDPId_MAX_F
         switch (flow_basic->type)
         {
             case FT_UNKNOWN:
+            case FT_COUNT:
+
             case FT_SKIPPED:
                 written = 0;
                 break;
@@ -1095,18 +1114,15 @@ static size_t log_flows_to_str(struct nDPId_flow_basic const * flows[nDPId_MAX_F
                 struct nDPId_flow_finished const * const flow_finished = (struct nDPId_flow_finished const *)flow_basic;
 
 #if 1
+                written =
+                    snprintf(output + output_used, BUFSIZ - output_used, "%llu,", flow_finished->flow_extended.flow_id);
+#else
                 written = snprintf(output + output_used,
                                    BUFSIZ - output_used,
-                                   "%llu,",
-                                   flow_finished->flow_info.flow_extended.flow_id);
-#else
-                written =
-                    snprintf(output + output_used,
-                             BUFSIZ - output_used,
-                             "[%llu, %u, %llu],",
-                             flow_finished->flow_info.flow_extended.flow_id,
-                             flow_finished->flow_info.flow_extended.flow_basic.l4_protocol,
-                             (unsigned long long int const)flow_finished->flow_info.flow_extended.flow_basic.last_seen);
+                                   "[%llu, %u, %llu],",
+                                   flow_finished->flow_extended.flow_id,
+                                   flow_finished->flow_extended.flow_basic.l4_protocol,
+                                   (unsigned long long int const)flow_finished->flow_extended.flow_basic.last_seen);
 #endif
                 break;
             }
@@ -1361,6 +1377,8 @@ static void ndpi_flow_info_freer(void * const node)
     switch (flow_basic->type)
     {
         case FT_UNKNOWN:
+        case FT_COUNT:
+
         case FT_SKIPPED:
         case FT_FINISHED:
             break;
@@ -1617,6 +1635,8 @@ static void ndpi_idle_scan_walker(void const * const A, ndpi_VISIT which, int de
             switch (flow_basic->type)
             {
                 case FT_UNKNOWN:
+                case FT_COUNT:
+
                 case FT_SKIPPED:
                     break;
 
@@ -1668,6 +1688,8 @@ static void process_idle_flow(struct nDPId_reader_thread * const reader_thread, 
         switch (flow_basic->type)
         {
             case FT_UNKNOWN:
+            case FT_COUNT:
+
             case FT_SKIPPED:
                 break;
 
@@ -1677,11 +1699,11 @@ static void process_idle_flow(struct nDPId_reader_thread * const reader_thread, 
 
                 if (flow_basic->tcp_fin_rst_seen != 0)
                 {
-                    jsonize_flow_event(reader_thread, &flow_finished->flow_info.flow_extended, FLOW_EVENT_END);
+                    jsonize_flow_event(reader_thread, &flow_finished->flow_extended, FLOW_EVENT_END);
                 }
                 else
                 {
-                    jsonize_flow_event(reader_thread, &flow_finished->flow_info.flow_extended, FLOW_EVENT_IDLE);
+                    jsonize_flow_event(reader_thread, &flow_finished->flow_extended, FLOW_EVENT_IDLE);
                 }
                 break;
             }
@@ -1775,6 +1797,8 @@ static void ndpi_flow_update_scan_walker(void const * const A, ndpi_VISIT which,
         switch (flow_basic->type)
         {
             case FT_UNKNOWN:
+            case FT_COUNT:
+
             case FT_SKIPPED:
                 break;
 
@@ -1945,6 +1969,9 @@ static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enu
 static void jsonize_flow(struct nDPId_workflow * const workflow, struct nDPId_flow_extended const * const flow_ext)
 {
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_id", flow_ext->flow_id);
+    ndpi_serialize_string_string(&workflow->ndpi_serializer,
+                                 "flow_state",
+                                 flow_state_name_table[flow_ext->flow_basic.type]);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_packets_processed", flow_ext->packets_processed);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_first_seen", flow_ext->first_seen);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_last_seen", flow_ext->flow_basic.last_seen);
@@ -2346,6 +2373,16 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
             ndpi_serialize_string_uint32(&workflow->ndpi_serializer,
                                          "flow_max_packets",
                                          nDPId_options.max_packets_per_flow_to_send);
+
+            if (flow_ext->flow_basic.type == FT_FINISHED)
+            {
+                struct nDPId_flow_finished * const flow_finished = (struct nDPId_flow_finished *)flow_ext;
+
+                ndpi_serialize_proto(workflow->ndpi_struct,
+                                     &workflow->ndpi_serializer,
+                                     flow_finished->risk,
+                                     flow_finished->detected_l7_protocol);
+            }
             break;
 
         case FLOW_EVENT_NOT_DETECTED:
@@ -3005,6 +3042,8 @@ static struct nDPId_flow_basic * add_new_flow(struct nDPId_workflow * const work
     switch (type)
     {
         case FT_UNKNOWN:
+        case FT_COUNT:
+
         case FT_FINISHED: // do not allocate something for FT_FINISHED as we are re-using memory allocated by FT_INFO
             return NULL;
 
@@ -3478,6 +3517,8 @@ static void ndpi_process_packet(uint8_t * const args,
         switch (flow_basic_to_process->type)
         {
             case FT_UNKNOWN:
+            case FT_COUNT:
+
             case FT_SKIPPED:
                 return;
 
@@ -3487,38 +3528,39 @@ static void ndpi_process_packet(uint8_t * const args,
         }
         flow_to_process = (struct nDPId_flow_info *)flow_basic_to_process;
 
-#ifdef ENABLE_ZLIB
-        if (nDPId_options.enable_zlib_compression != 0 && flow_to_process->detection_data_compressed_size > 0)
+        ndpi_src = NULL;
+        ndpi_dst = NULL;
+
+        if (flow_to_process->flow_extended.flow_basic.type == FT_INFO)
         {
-            int ret = detection_data_inflate(flow_to_process);
-            if (ret <= 0)
+#ifdef ENABLE_ZLIB
+            if (nDPId_options.enable_zlib_compression != 0 && flow_to_process->detection_data_compressed_size > 0)
             {
-                logger(1,
-                       "zLib decompression failed for existing flow %llu with error code: %d",
-                       flow_to_process->flow_extended.flow_id,
-                       ret);
-                return;
+                int ret = detection_data_inflate(flow_to_process);
+                if (ret <= 0)
+                {
+                    logger(1,
+                           "zLib decompression failed for existing flow %llu with error code: %d",
+                           flow_to_process->flow_extended.flow_id,
+                           ret);
+                    return;
+                }
             }
-        }
 #endif
 
-        if (flow_to_process->detection_data != NULL)
-        {
-            if (direction_changed != 0)
+            if (flow_to_process->detection_data != NULL)
             {
-                ndpi_src = &flow_to_process->detection_data->dst;
-                ndpi_dst = &flow_to_process->detection_data->src;
+                if (direction_changed != 0)
+                {
+                    ndpi_src = &flow_to_process->detection_data->dst;
+                    ndpi_dst = &flow_to_process->detection_data->src;
+                }
+                else
+                {
+                    ndpi_src = &flow_to_process->detection_data->src;
+                    ndpi_dst = &flow_to_process->detection_data->dst;
+                }
             }
-            else
-            {
-                ndpi_src = &flow_to_process->detection_data->src;
-                ndpi_dst = &flow_to_process->detection_data->dst;
-            }
-        }
-        else
-        {
-            ndpi_src = NULL;
-            ndpi_dst = NULL;
         }
     }
 
@@ -3541,12 +3583,6 @@ static void ndpi_process_packet(uint8_t * const args,
         flow_to_process->flow_extended.min_l4_payload_len = l4_payload_len;
     }
 
-    if (flow_to_process->flow_extended.flow_basic.type != FT_INFO)
-    {
-        /* Only FT_INFO goes through the whole detection process. */
-        return;
-    }
-
     if (is_new_flow != 0)
     {
         flow_to_process->flow_extended.max_l4_payload_len = l4_payload_len;
@@ -3563,6 +3599,12 @@ static void ndpi_process_packet(uint8_t * const args,
                          l4_len,
                          &flow_to_process->flow_extended,
                          PACKET_EVENT_PAYLOAD_FLOW);
+
+    if (flow_to_process->flow_extended.flow_basic.type != FT_INFO)
+    {
+        /* Only FT_INFO goes through the whole detection process. */
+        return;
+    }
 
     if (flow_to_process->detection_data->flow.num_processed_pkts == nDPId_options.max_packets_per_flow_to_process - 1)
     {
@@ -3607,8 +3649,13 @@ static void ndpi_process_packet(uint8_t * const args,
         jsonize_flow_detection_event(reader_thread, flow_to_process, FLOW_EVENT_DETECTED);
         flow_to_process->detection_data->last_ndpi_flow_struct_hash =
             calculate_ndpi_flow_struct_hash(&flow_to_process->detection_data->flow);
+
+        if (ndpi_extra_dissection_possible(workflow->ndpi_struct, &flow_to_process->detection_data->flow) == 0)
+        {
+            flow_to_process->extra_dissection_completed = 1;
+        }
     }
-    else if (flow_to_process->detection_completed == 1)
+    else if (flow_to_process->detection_completed == 1 && flow_to_process->extra_dissection_completed == 0)
     {
         uint32_t hash = calculate_ndpi_flow_struct_hash(&flow_to_process->detection_data->flow);
         if (hash != flow_to_process->detection_data->last_ndpi_flow_struct_hash)
@@ -3617,15 +3664,38 @@ static void ndpi_process_packet(uint8_t * const args,
             jsonize_flow_detection_event(reader_thread, flow_to_process, FLOW_EVENT_DETECTION_UPDATE);
             flow_to_process->detection_data->last_ndpi_flow_struct_hash = hash;
         }
+
+        if (ndpi_extra_dissection_possible(workflow->ndpi_struct, &flow_to_process->detection_data->flow) == 0)
+        {
+            flow_to_process->extra_dissection_completed = 1;
+        }
     }
 
-    if (flow_to_process->detection_data->flow.num_processed_pkts == nDPId_options.max_packets_per_flow_to_process)
+    if (flow_to_process->detection_data->flow.num_processed_pkts == nDPId_options.max_packets_per_flow_to_process ||
+        (flow_to_process->detection_completed == 1 && flow_to_process->extra_dissection_completed == 1))
     {
+        struct ndpi_proto detected_l7_protocol = flow_to_process->detection_data->detected_l7_protocol;
+        ndpi_risk risk = flow_to_process->detection_data->flow.risk;
+
         free_detection_data(flow_to_process);
+
         flow_to_process->flow_extended.flow_basic.type = FT_FINISHED;
+        struct nDPId_flow_finished * const flow_finished = (struct nDPId_flow_finished *)flow_to_process;
+        if (flow_to_process->detection_completed == 0)
+        {
+            struct ndpi_proto unknown_l7_protocol = {};
+            flow_finished->detected_l7_protocol = unknown_l7_protocol;
+            flow_finished->risk = NDPI_NO_RISK;
+        }
+        else
+        {
+            flow_finished->detected_l7_protocol = detected_l7_protocol;
+            flow_finished->risk = risk;
+        }
     }
+
 #ifdef ENABLE_ZLIB
-    else if (nDPId_options.enable_zlib_compression != 0)
+    if (nDPId_options.enable_zlib_compression != 0)
     {
         check_for_compressable_flows(reader_thread);
     }
@@ -3853,6 +3923,8 @@ static void ndpi_shutdown_walker(void const * const A, ndpi_VISIT which, int dep
         switch (flow_basic->type)
         {
             case FT_UNKNOWN:
+            case FT_COUNT:
+
             case FT_SKIPPED:
                 break;
             case FT_INFO:

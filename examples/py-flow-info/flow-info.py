@@ -177,29 +177,29 @@ def prettifyEvent(color_list, whitespaces, text):
     return fmt.format(term_attrs, text, TermColor.END)
 
 def checkEventFilter(json_dict):
-    if json_dict['flow_event_name'] == 'new':
-        if args.new is True:
-            return True
-    if json_dict['flow_event_name'] == 'detected' or \
-       json_dict['flow_event_name'] == 'detection-update':
-        if args.detection is True:
-            return True
-    if json_dict['flow_event_name'] == 'guessed':
-        if args.guessed is True:
-            return True
-    if json_dict['flow_event_name'] == 'not-detected':
-        if args.undetected is True:
-            return True
+    flow_events = {'new': args.new, 'end': args.end, 'idle': args.idle,
+                   'guessed': args.guessed, 'detected': args.detected,
+                   'detection-update': args.detection_update,
+                   'not-detected': args.not_detected,
+                   'update': args.update}
+
+    if flow_events[json_dict['flow_event_name']] is True:
+        return True
+
     if 'ndpi' in json_dict and 'flow_risk' in json_dict['ndpi']:
         if args.risky is True:
             return True
+
     if json_dict['midstream'] != 0:
         if args.midstream is True:
             return True
 
-    if args.new is False and args.detection is False and \
-        args.guessed is False and args.undetected is False and \
-        args.risky is False and args.midstream is False:
+    flow_event_filter_disabled = True
+    for flow_event in list(flow_events.values()) + [args.risky, args.midstream]:
+        if flow_event is True:
+            flow_event_filter_disabled = False
+            break
+    if flow_event_filter_disabled is True:
         return True
 
     return False
@@ -269,8 +269,9 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
 
     line_suffix = ''
     flow_event_name = ''
+    flow_active_color = '' if json_dict['flow_state'] == 'finished' else TermColor.BOLD
     if json_dict['flow_event_name'] == 'guessed':
-        flow_event_name += '{}{:>16}{}'.format(TermColor.HINT, json_dict['flow_event_name'], TermColor.END)
+        flow_event_name += '{}{:>16}{}'.format(TermColor.HINT + flow_active_color, json_dict['flow_event_name'], TermColor.END)
     elif json_dict['flow_event_name'] == 'not-detected':
         flow_event_name += '{}{:>16}{}'.format(TermColor.WARNING + TermColor.BOLD + TermColor.BLINK,
                                                json_dict['flow_event_name'], TermColor.END)
@@ -292,7 +293,7 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
                 if src_whois is None and dst_whois is None:
                     line_suffix += TermColor.WARNING + 'WHOIS empty' + TermColor.END
                 line_suffix += ']'
-        flow_event_name += '{:>16}'.format(json_dict['flow_event_name'])
+        flow_event_name += '{}{:>16}{}'.format(flow_active_color, json_dict['flow_event_name'], TermColor.END)
 
     if json_dict['l3_proto'] == 'ip4':
         print('{} {}: [{:.>6}] [{}][{:.>5}] [{:.>15}]{} -> [{:.>15}]{} {}{}' \
@@ -325,10 +326,15 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
 if __name__ == '__main__':
     argparser = nDPIsrvd.defaultArgumentParser()
     argparser.add_argument('--guessed',    action='store_true', default=False, help='Print only guessed flow events.')
-    argparser.add_argument('--undetected', action='store_true', default=False, help='Print only undetected flow events.')
+    argparser.add_argument('--not-detected', action='store_true', default=False, help='Print only undetected flow events.')
+    argparser.add_argument('--detected',   action='store_true', default=False, help='Print only detected flow events.')
+    argparser.add_argument('--detection-update', action='store_true', default=False, help='Print only detection-update flow events.')
     argparser.add_argument('--risky',      action='store_true', default=False, help='Print only risky flow events.')
     argparser.add_argument('--midstream',  action='store_true', default=False, help='Print only midstream flow events.')
     argparser.add_argument('--new',        action='store_true', default=False, help='Print only new flow events.')
+    argparser.add_argument('--end',        action='store_true', default=False, help='Print only end flow events.')
+    argparser.add_argument('--idle',       action='store_true', default=False, help='Print only idle flow events.')
+    argparser.add_argument('--update',     action='store_true', default=False, help='Print only update flow events.')
     argparser.add_argument('--detection',  action='store_true', default=False, help='Print only detected/detection-update flow events.')
     argparser.add_argument('--ipwhois',    action='store_true', default=False, help='Use Python-IPWhois to print additional location information.')
     args = argparser.parse_args()
