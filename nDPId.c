@@ -76,13 +76,13 @@ union nDPId_ip
     } v6;
 };
 
-enum nDPId_flow_type
+enum nDPId_flow_state
 {
-    FT_UNKNOWN = 0, // should never happen, bug otherwise
-    FT_SKIPPED,     // flow should not be processed, see command line args -I and -E
-    FT_FINISHED,    // detection done and detection data free'd
-    FT_INFO,        // detection in progress, detection data allocated
-    FT_COUNT
+    FS_UNKNOWN = 0, // should never happen, bug otherwise
+    FS_SKIPPED,     // flow should not be processed, see command line args -I and -E
+    FS_FINISHED,    // detection done and detection data free'd
+    FS_INFO,        // detection in progress, detection data allocated
+    FS_COUNT
 };
 
 /*
@@ -90,7 +90,7 @@ enum nDPId_flow_type
  */
 struct nDPId_flow_basic
 {
-    enum nDPId_flow_type type;
+    enum nDPId_flow_state state;
     enum nDPId_l3_type l3_type;
     uint64_t hashval;
     union nDPId_ip src;
@@ -297,8 +297,8 @@ enum daemon_event
     DAEMON_EVENT_COUNT
 };
 
-static char const * const flow_state_name_table[FT_COUNT] = {
-    [FT_UNKNOWN] = "unknown", [FT_SKIPPED] = "skipped", [FT_FINISHED] = "finished", [FT_INFO] = "info"};
+static char const * const flow_state_name_table[FS_COUNT] = {
+    [FS_UNKNOWN] = "unknown", [FS_SKIPPED] = "skipped", [FS_FINISHED] = "finished", [FS_INFO] = "info"};
 
 static char const * const packet_event_name_table[PACKET_EVENT_COUNT] = {
     [PACKET_EVENT_INVALID] = "invalid", [PACKET_EVENT_PAYLOAD] = "packet", [PACKET_EVENT_PAYLOAD_FLOW] = "packet-flow"};
@@ -647,16 +647,16 @@ static void ndpi_comp_scan_walker(void const * const A, ndpi_VISIT which, int de
 
     if (which == ndpi_preorder || which == ndpi_leaf)
     {
-        switch (flow_basic->type)
+        switch (flow_basic->state)
         {
-            case FT_UNKNOWN:
-            case FT_COUNT:
+            case FS_UNKNOWN:
+            case FS_COUNT:
 
-            case FT_SKIPPED:
-            case FT_FINISHED:
+            case FS_SKIPPED:
+            case FS_FINISHED:
                 break;
 
-            case FT_INFO:
+            case FS_INFO:
             {
                 if (flow_basic->last_seen + nDPId_options.compression_flow_inactivity < workflow->last_time)
                 {
@@ -1055,27 +1055,27 @@ static void log_flows_flow_walker(void const * const A, ndpi_VISIT which, int de
 
     if (which == ndpi_preorder || which == ndpi_leaf)
     {
-        switch (flow_basic->type)
+        switch (flow_basic->state)
         {
-            case FT_UNKNOWN:
+            case FS_UNKNOWN:
                 log_user_data->flows_ukn++;
                 break;
 
-            case FT_COUNT:
+            case FS_COUNT:
                 break;
 
-            case FT_SKIPPED:
+            case FS_SKIPPED:
                 log_user_data->flows_skp++;
                 break;
 
-            case FT_FINISHED:
+            case FS_FINISHED:
             {
                 log_user_data->flows_fin++;
                 log_user_data->flows_active_fin[log_user_data->flows_fin - 1] = flow_basic;
                 break;
             }
 
-            case FT_INFO:
+            case FS_INFO:
             {
                 log_user_data->flows_inf++;
                 log_user_data->flows_active_inf[log_user_data->flows_inf - 1] = flow_basic;
@@ -1100,16 +1100,16 @@ static size_t log_flows_to_str(struct nDPId_flow_basic const * flows[nDPId_MAX_F
 
         written = -1;
 
-        switch (flow_basic->type)
+        switch (flow_basic->state)
         {
-            case FT_UNKNOWN:
-            case FT_COUNT:
+            case FS_UNKNOWN:
+            case FS_COUNT:
 
-            case FT_SKIPPED:
+            case FS_SKIPPED:
                 written = 0;
                 break;
 
-            case FT_FINISHED:
+            case FS_FINISHED:
             {
                 struct nDPId_flow_finished const * const flow_finished = (struct nDPId_flow_finished const *)flow_basic;
 
@@ -1127,7 +1127,7 @@ static size_t log_flows_to_str(struct nDPId_flow_basic const * flows[nDPId_MAX_F
                 break;
             }
 
-            case FT_INFO:
+            case FS_INFO:
             {
                 struct nDPId_flow_info const * const flow_info = (struct nDPId_flow_info const *)flow_basic;
 
@@ -1374,16 +1374,16 @@ static void ndpi_flow_info_freer(void * const node)
 {
     struct nDPId_flow_basic * const flow_basic = (struct nDPId_flow_basic *)node;
 
-    switch (flow_basic->type)
+    switch (flow_basic->state)
     {
-        case FT_UNKNOWN:
-        case FT_COUNT:
+        case FS_UNKNOWN:
+        case FS_COUNT:
 
-        case FT_SKIPPED:
-        case FT_FINISHED:
+        case FS_SKIPPED:
+        case FS_FINISHED:
             break;
 
-        case FT_INFO:
+        case FS_INFO:
         {
             struct nDPId_flow_info * const flow_info = (struct nDPId_flow_info *)flow_basic;
             free_detection_data(flow_info);
@@ -1632,16 +1632,16 @@ static void ndpi_idle_scan_walker(void const * const A, ndpi_VISIT which, int de
         if (is_l4_protocol_timed_out(workflow, flow_basic) != 0)
         {
             workflow->ndpi_flows_idle[workflow->cur_idle_flows++] = flow_basic;
-            switch (flow_basic->type)
+            switch (flow_basic->state)
             {
-                case FT_UNKNOWN:
-                case FT_COUNT:
+                case FS_UNKNOWN:
+                case FS_COUNT:
 
-                case FT_SKIPPED:
+                case FS_SKIPPED:
                     break;
 
-                case FT_FINISHED:
-                case FT_INFO:
+                case FS_FINISHED:
+                case FS_INFO:
                     workflow->total_idle_flows++;
                     break;
             }
@@ -1685,15 +1685,15 @@ static void process_idle_flow(struct nDPId_reader_thread * const reader_thread, 
         struct nDPId_flow_basic * const flow_basic =
             (struct nDPId_flow_basic *)workflow->ndpi_flows_idle[--workflow->cur_idle_flows];
 
-        switch (flow_basic->type)
+        switch (flow_basic->state)
         {
-            case FT_UNKNOWN:
-            case FT_COUNT:
+            case FS_UNKNOWN:
+            case FS_COUNT:
 
-            case FT_SKIPPED:
+            case FS_SKIPPED:
                 break;
 
-            case FT_FINISHED:
+            case FS_FINISHED:
             {
                 struct nDPId_flow_finished * const flow_finished = (struct nDPId_flow_finished *)flow_basic;
 
@@ -1708,7 +1708,7 @@ static void process_idle_flow(struct nDPId_reader_thread * const reader_thread, 
                 break;
             }
 
-            case FT_INFO:
+            case FS_INFO:
             {
                 struct nDPId_flow_info * const flow_info = (struct nDPId_flow_info *)flow_basic;
 
@@ -1794,16 +1794,16 @@ static void ndpi_flow_update_scan_walker(void const * const A, ndpi_VISIT which,
 
     if (which == ndpi_preorder || which == ndpi_leaf)
     {
-        switch (flow_basic->type)
+        switch (flow_basic->state)
         {
-            case FT_UNKNOWN:
-            case FT_COUNT:
+            case FS_UNKNOWN:
+            case FS_COUNT:
 
-            case FT_SKIPPED:
+            case FS_SKIPPED:
                 break;
 
-            case FT_FINISHED:
-            case FT_INFO:
+            case FS_FINISHED:
+            case FS_INFO:
             {
                 struct nDPId_flow_extended * const flow_ext = (struct nDPId_flow_extended *)flow_basic;
 
@@ -1971,7 +1971,7 @@ static void jsonize_flow(struct nDPId_workflow * const workflow, struct nDPId_fl
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_id", flow_ext->flow_id);
     ndpi_serialize_string_string(&workflow->ndpi_serializer,
                                  "flow_state",
-                                 flow_state_name_table[flow_ext->flow_basic.type]);
+                                 flow_state_name_table[flow_ext->flow_basic.state]);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_packets_processed", flow_ext->packets_processed);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_first_seen", flow_ext->first_seen);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_last_seen", flow_ext->flow_basic.last_seen);
@@ -2374,7 +2374,7 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
                                          "flow_max_packets",
                                          nDPId_options.max_packets_per_flow_to_send);
 
-            if (flow_ext->flow_basic.type == FT_FINISHED)
+            if (flow_ext->flow_basic.state == FS_FINISHED)
             {
                 struct nDPId_flow_finished * const flow_finished = (struct nDPId_flow_finished *)flow_ext;
 
@@ -3034,25 +3034,25 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
 
 static struct nDPId_flow_basic * add_new_flow(struct nDPId_workflow * const workflow,
                                               struct nDPId_flow_basic * orig_flow_basic,
-                                              enum nDPId_flow_type type,
+                                              enum nDPId_flow_state state,
                                               size_t hashed_index)
 {
     size_t s;
 
-    switch (type)
+    switch (state)
     {
-        case FT_UNKNOWN:
-        case FT_COUNT:
+        case FS_UNKNOWN:
+        case FS_COUNT:
 
-        case FT_FINISHED: // do not allocate something for FT_FINISHED as we are re-using memory allocated by FT_INFO
+        case FS_FINISHED: // do not allocate something for FS_FINISHED as we are re-using memory allocated by FS_INFO
             return NULL;
 
-        case FT_SKIPPED:
+        case FS_SKIPPED:
             workflow->total_skipped_flows++;
             s = sizeof(struct nDPId_flow_skipped);
             break;
 
-        case FT_INFO:
+        case FS_INFO:
             s = sizeof(struct nDPId_flow_info);
             break;
     }
@@ -3064,7 +3064,7 @@ static struct nDPId_flow_basic * add_new_flow(struct nDPId_workflow * const work
     }
     memset(flow_basic, 0, s);
     *flow_basic = *orig_flow_basic;
-    flow_basic->type = type;
+    flow_basic->state = state;
     if (ndpi_tsearch(flow_basic, &workflow->ndpi_flows_active[hashed_index], ndpi_workflow_node_cmp) == NULL)
     {
         ndpi_free(flow_basic);
@@ -3410,7 +3410,7 @@ static void ndpi_process_packet(uint8_t * const args,
         {
             if (is_ip_in_subnet(&flow_basic.src, netmask, subnet, flow_basic.l3_type) == 0)
             {
-                if (add_new_flow(workflow, &flow_basic, FT_SKIPPED, hashed_index) == NULL)
+                if (add_new_flow(workflow, &flow_basic, FS_SKIPPED, hashed_index) == NULL)
                 {
                     jsonize_packet_event(reader_thread,
                                          header,
@@ -3434,7 +3434,7 @@ static void ndpi_process_packet(uint8_t * const args,
         {
             if (is_ip_in_subnet(&flow_basic.src, netmask, subnet, flow_basic.l3_type) != 0)
             {
-                if (add_new_flow(workflow, &flow_basic, FT_SKIPPED, hashed_index) == NULL)
+                if (add_new_flow(workflow, &flow_basic, FS_SKIPPED, hashed_index) == NULL)
                 {
                     jsonize_packet_event(reader_thread,
                                          header,
@@ -3473,7 +3473,7 @@ static void ndpi_process_packet(uint8_t * const args,
             return;
         }
 
-        flow_to_process = (struct nDPId_flow_info *)add_new_flow(workflow, &flow_basic, FT_INFO, hashed_index);
+        flow_to_process = (struct nDPId_flow_info *)add_new_flow(workflow, &flow_basic, FS_INFO, hashed_index);
         if (flow_to_process == NULL)
         {
             jsonize_packet_event(
@@ -3514,16 +3514,16 @@ static void ndpi_process_packet(uint8_t * const args,
             flow_basic_to_process->tcp_fin_rst_seen = 1;
         }
 
-        switch (flow_basic_to_process->type)
+        switch (flow_basic_to_process->state)
         {
-            case FT_UNKNOWN:
-            case FT_COUNT:
+            case FS_UNKNOWN:
+            case FS_COUNT:
 
-            case FT_SKIPPED:
+            case FS_SKIPPED:
                 return;
 
-            case FT_FINISHED:
-            case FT_INFO:
+            case FS_FINISHED:
+            case FS_INFO:
                 break;
         }
         flow_to_process = (struct nDPId_flow_info *)flow_basic_to_process;
@@ -3531,7 +3531,7 @@ static void ndpi_process_packet(uint8_t * const args,
         ndpi_src = NULL;
         ndpi_dst = NULL;
 
-        if (flow_to_process->flow_extended.flow_basic.type == FT_INFO)
+        if (flow_to_process->flow_extended.flow_basic.state == FS_INFO)
         {
 #ifdef ENABLE_ZLIB
             if (nDPId_options.enable_zlib_compression != 0 && flow_to_process->detection_data_compressed_size > 0)
@@ -3600,9 +3600,9 @@ static void ndpi_process_packet(uint8_t * const args,
                          &flow_to_process->flow_extended,
                          PACKET_EVENT_PAYLOAD_FLOW);
 
-    if (flow_to_process->flow_extended.flow_basic.type != FT_INFO)
+    if (flow_to_process->flow_extended.flow_basic.state != FS_INFO)
     {
-        /* Only FT_INFO goes through the whole detection process. */
+        /* Only FS_INFO goes through the whole detection process. */
         return;
     }
 
@@ -3679,7 +3679,7 @@ static void ndpi_process_packet(uint8_t * const args,
 
         free_detection_data(flow_to_process);
 
-        flow_to_process->flow_extended.flow_basic.type = FT_FINISHED;
+        flow_to_process->flow_extended.flow_basic.state = FS_FINISHED;
         struct nDPId_flow_finished * const flow_finished = (struct nDPId_flow_finished *)flow_to_process;
         if (flow_to_process->detection_completed == 0)
         {
@@ -3920,15 +3920,15 @@ static void ndpi_shutdown_walker(void const * const A, ndpi_VISIT which, int dep
     if (which == ndpi_preorder || which == ndpi_leaf)
     {
         workflow->ndpi_flows_idle[workflow->cur_idle_flows++] = flow_basic;
-        switch (flow_basic->type)
+        switch (flow_basic->state)
         {
-            case FT_UNKNOWN:
-            case FT_COUNT:
+            case FS_UNKNOWN:
+            case FS_COUNT:
 
-            case FT_SKIPPED:
+            case FS_SKIPPED:
                 break;
-            case FT_INFO:
-            case FT_FINISHED:
+            case FS_INFO:
+            case FS_FINISHED:
                 workflow->total_idle_flows++;
                 break;
         }

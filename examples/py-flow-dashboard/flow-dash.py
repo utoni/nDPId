@@ -81,6 +81,8 @@ def nDPIsrvd_worker_onJsonLineRecvd(json_dict, instance, current_flow, global_us
         shared_flow_dict[flow_id]['is_risky']        = False
         shared_flow_dict[flow_id]['total-l4-bytes']  = 0
 
+        shared_flow_dict[flow_id]['json'] = mgr.dict()
+
         shared_flow_dict['total-flows']   += 1
         shared_flow_dict['current-flows'] += 1
 
@@ -93,11 +95,15 @@ def nDPIsrvd_worker_onJsonLineRecvd(json_dict, instance, current_flow, global_us
             shared_flow_dict['current-midstream-flows'] += 1
         shared_flow_dict[flow_id]['is_midstream'] = True
 
-    if 'ndpi' in json_dict and 'flow_risk' in json_dict['ndpi']:
-        if shared_flow_dict[flow_id]['is_risky'] is False:
-            shared_flow_dict['total-risky-flows']   += 1
-            shared_flow_dict['current-risky-flows'] += 1
-        shared_flow_dict[flow_id]['is_risky'] = True
+    if 'ndpi' in json_dict:
+        # XXX: Will make use of that JSON string in Plotly. Soon..
+        shared_flow_dict[flow_id]['json']['ndpi'] = json_dict['ndpi']
+
+        if 'flow_risk' in json_dict['ndpi']:
+            if shared_flow_dict[flow_id]['is_risky'] is False:
+                shared_flow_dict['total-risky-flows']   += 1
+                shared_flow_dict['current-risky-flows'] += 1
+            shared_flow_dict[flow_id]['is_risky'] = True
 
     if 'flow_event_name' not in json_dict:
         return True

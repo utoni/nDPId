@@ -1,4 +1,4 @@
-00448{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"fuzz-2021-10-13.pcap","alias":"nDPId-test","max-flows-per-thread":2048,"max-idle-flows-per-thread":64,"tick-resolution":1000,"reader-thread-count":1,"flow-scan-interval":10000,"generic-max-idle-time":600000,"icmp-max-idle-time":120000,"udp-max-idle-time":180000,"tcp-max-idle-time":7560000,"max-packets-per-flow-to-send":3,"max-packets-per-flow-to-process":255}
+00447{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"fuzz-2021-10-13.pcap","alias":"nDPId-test","max-flows-per-thread":2048,"max-idle-flows-per-thread":64,"tick-resolution":1000,"reader-thread-count":1,"flow-scan-interval":10000,"generic-max-idle-time":600000,"icmp-max-idle-time":120000,"udp-max-idle-time":180000,"tcp-max-idle-time":7560000,"max-packets-per-flow-to-send":3,"max-packets-per-flow-to-process":32}
 00550{"packet_event_id":1,"packet_event_name":"packet","thread_id":0,"packet_id":1,"source":"fuzz-2021-10-13.pcap","alias":"nDPId-test","pkt_oversize":false,"pkt_caplen":197,"pkt_type":0,"pkt_l3_offset":0,"pkt_l4_offset":0,"pkt_len":197,"pkt_l4_len":0,"ts_msec":980658803882,"pkt":"AC8AbGXLAAAAlQZ\/NAA6MDA1L3VwbG8yZD9sPTAuAAAAAAAAAAA9AAAAgAGtAAAAPAEAADUAMMkAAFsEMjk5oIBtrTHFxwpdEDIAAQBGAAAAaXAAc+dXAAAAAAAIAAoAAAD\/MvsABgAAAAAAAAAAAAAAAAAAAAAkABAAAAAAAAA8AQAAAAAACJcFAAAA\/zL7AAYAAP9NPLKhAgAAAI8NOwAAAH8AAhwAAQAAAAAAECA\/BeIoAAAAACA9eC75+f\/\/xQAAAAA="}
 00187{"basic_event_id":1,"basic_event_name":"Unknown datalink layer packet","datalink":0,"thread_id":0,"packet_id":1,"source":"fuzz-2021-10-13.pcap","alias":"nDPId-test","layer_type":3080300}
 00162{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":1,"source":"fuzz-2021-10-13.pcap","alias":"nDPId-test","total-events-serialized":4}
@@ -16,4 +16,4 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~ json string min len.......: 167 chars
 ~~ json string max len.......: 555 chars
-~~ json string avg len.......: 365 chars
+~~ json string avg len.......: 364 chars

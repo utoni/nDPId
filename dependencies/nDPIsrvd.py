@@ -389,8 +389,9 @@ class nDPIsrvdSocket:
     def verify(self):
         return self.flow_mgr.verifyFlows()
 
-def defaultArgumentParser():
-    parser = argparse.ArgumentParser(description='nDPIsrvd options', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+def defaultArgumentParser(desc='nDPIsrvd Python Interface',
+                          help_formatter=argparse.ArgumentDefaultsHelpFormatter):
+    parser = argparse.ArgumentParser(description=desc, formatter_class=help_formatter)
     parser.add_argument('--host', type=str, help='nDPIsrvd host IP')
     parser.add_argument('--port', type=int, default=DEFAULT_PORT, help='nDPIsrvd TCP port')
     parser.add_argument('--unix', type=str, help='nDPIsrvd unix socket path')

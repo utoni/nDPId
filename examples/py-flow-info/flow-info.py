@@ -4,6 +4,7 @@ import os
 import math
 import sys
 import time
+import datetime
 
 sys.path.append(os.path.dirname(sys.argv[0]) + '/../share/nDPId')
 sys.path.append(os.path.dirname(sys.argv[0]) + '/../usr/share/nDPId')
@@ -176,6 +177,12 @@ def prettifyEvent(color_list, whitespaces, text):
     fmt = '{}{:>' + str(whitespaces) + '}{}'
     return fmt.format(term_attrs, text, TermColor.END)
 
+def prettifyTimediff(epoch_ts1, epoch_ts2):
+    dt1 = datetime.datetime.fromtimestamp(epoch_ts1)
+    dt2 = datetime.datetime.fromtimestamp(epoch_ts2)
+    seconds_diff = (dt2 - dt1).total_seconds()
+    return '{:.>4}m{:.>3}s'.format(int(seconds_diff / 60), int(seconds_diff) % 60)
+
 def checkEventFilter(json_dict):
     flow_events = {'new': args.new, 'end': args.end, 'idle': args.idle,
                    'guessed': args.guessed, 'detected': args.detected,
@@ -225,15 +232,20 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
     stats.resetStatus()
 
     instance_and_source = ''
-    instance_and_source += '[{}]'.format(TermColor.setColorByString(instance.alias))
-    instance_and_source += '[{}]'.format(TermColor.setColorByString(instance.source))
+    if args.hide_instance_info is False:
+        instance_and_source += '[{}]'.format(TermColor.setColorByString(instance.alias))
+        instance_and_source += '[{}] '.format(TermColor.setColorByString(instance.source))
 
     if 'daemon_event_id' in json_dict:
-        print('{} {}: {}'.format(instance_and_source, prettifyEvent([TermColor.WARNING, TermColor.BLINK], 16, 'DAEMON-EVENT'), json_dict['daemon_event_name']))
+        print('{} {}: {}'.format(instance_and_source,
+                                 prettifyEvent([TermColor.WARNING, TermColor.BLINK], 16, 'DAEMON-EVENT'),
+                                 json_dict['daemon_event_name']))
         stats.printStatus()
         return True
     if 'basic_event_id' in json_dict:
-        print('{} {}: {}'.format(instance_and_source, prettifyEvent([TermColor.FAIL, TermColor.BLINK], 16, 'BASIC-EVENT'), json_dict['basic_event_name']))
+        print('{} {}: {}'.format(instance_and_source,
+                                 prettifyEvent([TermColor.FAIL, TermColor.BLINK], 16, 'BASIC-EVENT'),
+                                 json_dict['basic_event_name']))
         stats.printStatus()
         return True
     elif 'flow_event_id' not in json_dict:
@@ -243,6 +255,28 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
     if checkEventFilter(json_dict) is False:
         stats.printStatus()
         return True
+
+    timestamp = ''
+    if args.print_timestamp is True and 'ts_msec' in json_dict:
+        timestamp += '[{}]'.format(time.strftime('%H:%M:%S',
+                                   time.localtime(json_dict['ts_msec'] / 1000)))
+
+    first_seen = ''
+    if args.print_first_seen is True and 'flow_first_seen' in json_dict:
+        first_seen = '[' + prettifyTimediff(json_dict['flow_first_seen'] / 1000,
+                                            json_dict['ts_msec'] / 1000) + ']'
+
+    last_seen = ''
+    if args.print_last_seen is True and 'flow_last_seen' in json_dict:
+        last_seen = '[' + prettifyTimediff(json_dict['flow_last_seen'] / 1000,
+                                           json_dict['ts_msec'] / 1000) + ']'
+
+    if len(last_seen) > 0:
+        last_seen += ' '
+    elif len(timestamp) > 0:
+        timestamp += ' '
+    elif len(first_seen) > 0:
+        first_seen += ' '
 
     ndpi_proto_categ_breed = ''
     ndpi_frisk = ''
@@ -271,7 +305,8 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
     flow_event_name = ''
     flow_active_color = '' if json_dict['flow_state'] == 'finished' else TermColor.BOLD
     if json_dict['flow_event_name'] == 'guessed':
-        flow_event_name += '{}{:>16}{}'.format(TermColor.HINT + flow_active_color, json_dict['flow_event_name'], TermColor.END)
+        flow_event_name += '{}{:>16}{}'.format(TermColor.HINT + flow_active_color,
+                                               json_dict['flow_event_name'], TermColor.END)
     elif json_dict['flow_event_name'] == 'not-detected':
         flow_event_name += '{}{:>16}{}'.format(TermColor.WARNING + TermColor.BOLD + TermColor.BLINK,
                                                json_dict['flow_event_name'], TermColor.END)
@@ -296,8 +331,8 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
         flow_event_name += '{}{:>16}{}'.format(flow_active_color, json_dict['flow_event_name'], TermColor.END)
 
     if json_dict['l3_proto'] == 'ip4':
-        print('{} {}: [{:.>6}] [{}][{:.>5}] [{:.>15}]{} -> [{:.>15}]{} {}{}' \
-              ''.format(instance_and_source, flow_event_name, 
+        print('{}{}{}{}{}: [{:.>6}] [{}][{:.>5}] [{:.>15}]{} -> [{:.>15}]{} {}{}' \
+              ''.format(timestamp, first_seen, last_seen, instance_and_source, flow_event_name, 
               json_dict['flow_id'], json_dict['l3_proto'], json_dict['l4_proto'],
               json_dict['src_ip'].lower(),
               '[{:.>5}]'.format(json_dict['src_port']) if 'src_port' in json_dict else '',
@@ -305,8 +340,8 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
               '[{:.>5}]'.format(json_dict['dst_port']) if 'dst_port' in json_dict else '',
               ndpi_proto_categ_breed, line_suffix))
     elif json_dict['l3_proto'] == 'ip6':
-        print('{} {}: [{:.>6}] [{}][{:.>5}] [{:.>39}]{} -> [{:.>39}]{} {}{}' \
-                ''.format(instance_and_source, flow_event_name,
+        print('{}{}{}{}{}: [{:.>6}] [{}][{:.>5}] [{:.>39}]{} -> [{:.>39}]{} {}{}' \
+                ''.format(timestamp, first_seen, last_seen, instance_and_source, flow_event_name,
               json_dict['flow_id'], json_dict['l3_proto'], json_dict['l4_proto'],
               json_dict['src_ip'].lower(),
               '[{:.>5}]'.format(json_dict['src_port']) if 'src_port' in json_dict else '',
@@ -317,14 +352,23 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
         raise RuntimeError('unsupported l3 protocol: {}'.format(json_dict['l3_proto']))
 
     if len(ndpi_frisk) > 0:
-        print('{} {:>18}{}'.format(instance_and_source, '', ndpi_frisk))
+        print('{}{}{}{}{:>18}{}'.format(timestamp, first_seen, last_seen,
+                                        instance_and_source, '', ndpi_frisk))
 
     stats.printStatus()
 
     return True
 
 if __name__ == '__main__':
-    argparser = nDPIsrvd.defaultArgumentParser()
+    argparser = nDPIsrvd.defaultArgumentParser('Prettify and print events using the nDPIsrvd Python interface.')
+    argparser.add_argument('--hide-instance-info', action='store_true', default=False,
+                           help='Hide instance Alias/Source prefixed every line.')
+    argparser.add_argument('--print-timestamp', action='store_true', default=False,
+                           help='Print received event timestamps.')
+    argparser.add_argument('--print-first-seen', action='store_true', default=False,
+                           help='Print first seen flow time diff.')
+    argparser.add_argument('--print-last-seen', action='store_true', default=False,
+                           help='Print last seen flow time diff.')
     argparser.add_argument('--guessed',    action='store_true', default=False, help='Print only guessed flow events.')
     argparser.add_argument('--not-detected', action='store_true', default=False, help='Print only undetected flow events.')
     argparser.add_argument('--detected',   action='store_true', default=False, help='Print only detected flow events.')

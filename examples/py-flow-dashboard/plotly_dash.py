@@ -70,11 +70,12 @@ def build_gauge(key, max_value=100):
 
     return shared_flow_dict[key], gauge_max, grad_dict
 
-def build_piechart(labels, values):
+def build_piechart(labels, values, color_map=None):
     lay = dict(
         plot_bgcolor = '#082255',
         paper_bgcolor = '#082255',
         font={"color": "#fff"},
+        uirevision=True,
         autosize=True,
         height=250,
         margin = {'autoexpand': True, 'b': 0, 'l': 0, 'r': 0, 't': 0, 'pad': 0},
@@ -83,7 +84,20 @@ def build_piechart(labels, values):
         uniformtext_mode = 'hide',
     )
 
-    return go.Figure(layout=lay, data=[go.Pie(labels=labels, values=values, textinfo='percent', textposition='inside')])
+    return go.Figure(layout=lay, data=[go.Pie(labels=labels, values=values, sort=False, marker_colors=color_map, textinfo='percent', textposition='inside')])
+
+COLOR_MAP = {
+    'piechart-flows': ['rgb(153, 153, 255)', 'rgb(153, 204, 255)', 'rgb(255, 204, 153)', 'rgb(255, 255, 255)'],
+    'piechart-midstream-flows': ['rgb(255, 255, 153)', 'rgb(153, 153, 255)'],
+    'piechart-risky-flows': ['rgb(255, 153, 153)', 'rgb(153, 153, 255)'],
+    'graph-flows': {'Current Active Flows': {'color': 'rgb(153, 153, 255)', 'width': 1},
+                    'Current Risky Flows': {'color': 'rgb(255, 153, 153)', 'width': 3},
+                    'Current Midstream Flows': {'color': 'rgb(255, 255, 153)', 'width': 3},
+                    'Current Guessed Flows': {'color': 'rgb(153, 204, 255)', 'width': 1},
+                    'Current Not-Detected Flows': {'color': 'rgb(255, 204, 153)', 'width': 1},
+                    'Current Unclassified Flows': {'color': 'rgb(255, 255, 255)', 'width': 1},
+                   },
+}
 
 def generate_tab_flow():
     return html.Div([
@@ -96,6 +110,14 @@ def generate_tab_flow():
                 id='table-info',
                 columns=[{'id': c.lower(), 'name': c, 'editable': False}
                          for c in ['Name', 'Total']],
+                style_header={
+                    'backgroundColor': '#082233',
+                    'color': 'white'
+                },
+                style_data={
+                    'backgroundColor': '#082244',
+                    'color': 'white'
+                },
             )
 
         ], style={'display': 'flex', 'flex-direction': 'row'}),
@@ -107,7 +129,7 @@ def generate_tab_flow():
                     'displayModeBar': False,
                 },
                 figure=build_piechart(['Detected', 'Guessed', 'Not-Detected', 'Unclassified'],
-                                      [0, 0, 0, 0]),
+                                      [0, 0, 0, 0], COLOR_MAP['piechart-flows']),
             ),
         ], style={'padding': 10, 'flex': 1}),
 
@@ -117,8 +139,8 @@ def generate_tab_flow():
                 config={
                     'displayModeBar': False,
                 },
-                figure=build_piechart(['Not Midstream', 'Midstream'],
-                                      [0, 0]),
+                figure=build_piechart(['Midstream', 'Not Midstream'],
+                                      [0, 0], COLOR_MAP['piechart-midstream-flows']),
             ),
         ], style={'padding': 10, 'flex': 1}),
 
@@ -128,8 +150,8 @@ def generate_tab_flow():
                 config={
                     'displayModeBar': False,
                 },
-                figure=build_piechart(['Not Risky', 'Risky'],
-                                      [0, 0]),
+                figure=build_piechart(['Risky', 'Not Risky'],
+                                      [0, 0], COLOR_MAP['piechart-risky-flows']),
             ),
         ], style={'padding': 10, 'flex': 1}),
     ], style=generate_box()),
@@ -142,7 +164,8 @@ def generate_tab_flow():
             dcc.Graph(
                 id="graph-flows",
                 config={
-                    'displayModeBar': False,
+                    'displayModeBar': True,
+                    'displaylogo': False,
                 },
                 style={'height':'60vh'},
             ),
@@ -227,15 +250,18 @@ def tab_flow_update_components(n):
                             shared_flow_dict['current-flows']
                                 - shared_flow_dict['current-detected-flows']
                                 - shared_flow_dict['current-guessed-flows']
-                                - shared_flow_dict['current-not-detected-flows']]),
+                                - shared_flow_dict['current-not-detected-flows']],
+                           COLOR_MAP['piechart-flows']),
             build_piechart(['Midstream', 'Not Midstream'],
                            [shared_flow_dict['current-midstream-flows'],
                             shared_flow_dict['current-flows'] -
-                            shared_flow_dict['current-midstream-flows']]),
+                            shared_flow_dict['current-midstream-flows']],
+                           COLOR_MAP['piechart-midstream-flows']),
             build_piechart(['Risky', 'Not Risky'],
                            [shared_flow_dict['current-risky-flows'],
                             shared_flow_dict['current-flows'] -
-                            shared_flow_dict['current-risky-flows']])]
+                            shared_flow_dict['current-risky-flows']],
+                           COLOR_MAP['piechart-risky-flows'])]
 
 @app.callback(output=[Output('graph-flows', 'figure'),
                       Output('graph-traces', 'data')],
@@ -246,7 +272,7 @@ def tab_flow_update_graph(n, i, traces):
     if traces is None:
         traces = ([], [], [], [], [], [])
 
-    max_bins = 50
+    max_bins = 100
 
     traces[0].append(shared_flow_dict['current-flows'])
     traces[1].append(shared_flow_dict['current-risky-flows'])
@@ -289,11 +315,12 @@ def tab_flow_update_graph(n, i, traces):
             "tickmode": 'linear',
             "dtick": 10,
         },
+        uirevision=True,
         autosize=True,
         bargap=0.01,
         bargroupgap=0,
         hovermode="closest",
-        margin = {'b': 0, 'l': 0, 'r': 0, 't': 0, 'pad': 0},
+        margin = {'b': 0, 'l': 0, 'r': 0, 't': 30, 'pad': 0},
         legend = {'borderwidth': 0},
     )
 
@@ -304,31 +331,43 @@ def tab_flow_update_graph(n, i, traces):
         x=x,
         y=traces[0],
         name='Current Active Flows',
+        mode='lines+markers',
+        line=COLOR_MAP['graph-flows']['Current Active Flows'],
     ))
     fig.add_trace(go.Scatter(
         x=x,
         y=traces[1],
         name='Current Risky Flows',
+        mode='lines+markers',
+        line=COLOR_MAP['graph-flows']['Current Risky Flows'],
     ))
     fig.add_trace(go.Scatter(
         x=x,
         y=traces[2],
         name='Current Midstream Flows',
+        mode='lines+markers',
+        line=COLOR_MAP['graph-flows']['Current Midstream Flows'],
     ))
     fig.add_trace(go.Scatter(
         x=x,
         y=traces[3],
         name='Current Guessed Flows',
+        mode='lines+markers',
+        line=COLOR_MAP['graph-flows']['Current Guessed Flows'],
     ))
     fig.add_trace(go.Scatter(
         x=x,
         y=traces[4],
         name='Current Not-Detected Flows',
+        mode='lines+markers',
+        line=COLOR_MAP['graph-flows']['Current Not-Detected Flows'],
     ))
     fig.add_trace(go.Scatter(
         x=x,
         y=traces[5],
         name='Current Unclassified Flows',
+        mode='lines+markers',
+        line=COLOR_MAP['graph-flows']['Current Unclassified Flows'],
     ))
 
     return [fig, traces]

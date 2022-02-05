@@ -1,4 +1,4 @@
-00459{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"fuzz-2021-06-07-c6c72a0a56.pcap","alias":"nDPId-test","max-flows-per-thread":2048,"max-idle-flows-per-thread":64,"tick-resolution":1000,"reader-thread-count":1,"flow-scan-interval":10000,"generic-max-idle-time":600000,"icmp-max-idle-time":120000,"udp-max-idle-time":180000,"tcp-max-idle-time":7560000,"max-packets-per-flow-to-send":3,"max-packets-per-flow-to-process":255}
+00458{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"fuzz-2021-06-07-c6c72a0a56.pcap","alias":"nDPId-test","max-flows-per-thread":2048,"max-idle-flows-per-thread":64,"tick-resolution":1000,"reader-thread-count":1,"flow-scan-interval":10000,"generic-max-idle-time":600000,"icmp-max-idle-time":120000,"udp-max-idle-time":180000,"tcp-max-idle-time":7560000,"max-packets-per-flow-to-send":3,"max-packets-per-flow-to-process":32}
 00365{"packet_event_id":1,"packet_event_name":"packet","thread_id":0,"packet_id":1,"source":"fuzz-2021-06-07-c6c72a0a56.pcap","alias":"nDPId-test","pkt_oversize":false,"pkt_caplen":48,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":0,"pkt_len":48,"pkt_l4_len":0,"ts_msec":18448697704865147,"pkt":"\/wAAJAAjAMBfnZUlCABF\/4mFRACAAFARjVhmboAgAAb\/AAho0tcI0wgALf8gewty"}
 00238{"basic_event_id":15,"basic_event_name":"Captured packet size is smaller than expected packet size","datalink":1,"thread_id":0,"packet_id":1,"source":"fuzz-2021-06-07-c6c72a0a56.pcap","alias":"nDPId-test","size":48,"expected":4093509168}
 00365{"packet_event_id":1,"packet_event_name":"packet","thread_id":0,"packet_id":1,"source":"fuzz-2021-06-07-c6c72a0a56.pcap","alias":"nDPId-test","pkt_oversize":false,"pkt_caplen":48,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":0,"pkt_len":48,"pkt_l4_len":0,"ts_msec":18448697704865147,"pkt":"\/wAAJAAjAMBfnZUlCABF\/4mFRACAAFARjVhmboAgAAb\/AAho0tcI0wgALf8gewty"}
@@ -17,5 +17,5 @@
 ~~ total allocations/frees...: 99550/99550
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~ json string min len.......: 178 chars
-~~ json string max len.......: 464 chars
+~~ json string max len.......: 463 chars
 ~~ json string avg len.......: 330 chars
