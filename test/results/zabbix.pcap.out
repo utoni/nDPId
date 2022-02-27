@@ -3,8 +3,8 @@
 00468{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":1,"source":"zabbix.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":1,"flow_last_seen":1572254070608,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":74,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":74,"pkt_l4_len":40,"ts_msec":1572254070608,"pkt":"RoQclwmZOjUSPEK7CABFAAA85AdAAEAGTujAqENiwKhDGd9KJ0JwAdHUAAAAAKACchAH+wAAAgQFtAQCCAorwjXTAAAAAAEDAwc="}
 00468{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":2,"source":"zabbix.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":2,"flow_last_seen":1572254070608,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":74,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":74,"pkt_l4_len":40,"ts_msec":1572254070608,"pkt":"OjUSPEK7RoQclwmZCABFAAA8AABAAEAGMvDAqEMZwKhDYidC30pw8XhkcAHR1aAScSDKPwAAAgQFtAQCCAorfUX3K8I10wEDAwc="}
 00457{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":3,"source":"zabbix.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":3,"flow_last_seen":1572254070608,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":66,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":66,"pkt_l4_len":32,"ts_msec":1572254070608,"pkt":"RoQclwmZOjUSPEK7CABFAAA05AhAAEAGTu\/AqENiwKhDGd9KJ0JwAdHVcPF4ZYAQAOUH8wAAAQEICivCNdQrfUX3"}
-00607{"flow_event_id":6,"flow_event_name":"detected","thread_id":0,"packet_id":4,"source":"zabbix.pcap","alias":"nDPId-test","flow_id":1,"flow_state":"info","flow_packets_processed":4,"flow_first_seen":1572254070608,"flow_last_seen":1572254070608,"flow_idle_time":7440000,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":23,"flow_tot_l4_payload_len":23,"flow_avg_l4_payload_len":5,"midstream":0,"ts_msec":1572254070608,"l3_proto":"ip4","src_ip":"192.168.67.98","dst_ip":"192.168.67.25","src_port":57162,"dst_port":10050,"l4_proto":"tcp","ndpi": {"proto":"Zabbix","breed":"Acceptable","category":"Network"}}
-00647{"flow_event_id":2,"flow_event_name":"end","thread_id":0,"packet_id":10,"source":"zabbix.pcap","alias":"nDPId-test","flow_id":1,"flow_state":"finished","flow_packets_processed":10,"flow_first_seen":1572254070608,"flow_last_seen":1572254070614,"flow_idle_time":7440000,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":23,"flow_tot_l4_payload_len":39,"flow_avg_l4_payload_len":3,"midstream":0,"ts_msec":1572254070614,"l3_proto":"ip4","src_ip":"192.168.67.98","dst_ip":"192.168.67.25","src_port":57162,"dst_port":10050,"l4_proto":"tcp","flow_datalink":1,"flow_max_packets":3,"ndpi": {"proto":"Zabbix","breed":"Acceptable","category":"Network"}}
+00633{"flow_event_id":6,"flow_event_name":"detected","thread_id":0,"packet_id":4,"source":"zabbix.pcap","alias":"nDPId-test","flow_id":1,"flow_state":"info","flow_packets_processed":4,"flow_first_seen":1572254070608,"flow_last_seen":1572254070608,"flow_idle_time":7440000,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":23,"flow_tot_l4_payload_len":23,"flow_avg_l4_payload_len":5,"midstream":0,"ts_msec":1572254070608,"l3_proto":"ip4","src_ip":"192.168.67.98","dst_ip":"192.168.67.25","src_port":57162,"dst_port":10050,"l4_proto":"tcp","ndpi": {"confidence": {"4":"DPI"},"proto":"Zabbix","breed":"Acceptable","category":"Network"}}
+00673{"flow_event_id":2,"flow_event_name":"end","thread_id":0,"packet_id":10,"source":"zabbix.pcap","alias":"nDPId-test","flow_id":1,"flow_state":"finished","flow_packets_processed":10,"flow_first_seen":1572254070608,"flow_last_seen":1572254070614,"flow_idle_time":7440000,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":23,"flow_tot_l4_payload_len":39,"flow_avg_l4_payload_len":3,"midstream":0,"ts_msec":1572254070614,"l3_proto":"ip4","src_ip":"192.168.67.98","dst_ip":"192.168.67.25","src_port":57162,"dst_port":10050,"l4_proto":"tcp","flow_datalink":1,"flow_max_packets":3,"ndpi": {"confidence": {"4":"DPI"},"proto":"Zabbix","breed":"Acceptable","category":"Network"}}
 00154{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":10,"source":"zabbix.pcap","alias":"nDPId-test","total-events-serialized":8}
 ~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~
 ~~ packets captured/processed: 10/10
@@ -14,10 +14,10 @@
 ~~ total active/idle flows...: 1/1
 ~~ total timeout flows.......: 0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~ total memory allocated....: 4595119 bytes
-~~ total memory freed........: 4595119 bytes
-~~ total allocations/frees...: 99563/99563
+~~ total memory allocated....: 4680072 bytes
+~~ total memory freed........: 4680072 bytes
+~~ total allocations/frees...: 101153/101153
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~ json string min len.......: 159 chars
-~~ json string max len.......: 652 chars
-~~ json string avg len.......: 466 chars
+~~ json string max len.......: 678 chars
+~~ json string avg len.......: 477 chars

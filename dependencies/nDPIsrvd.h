@@ -25,7 +25,7 @@
 #include <stdarg.h>
 #endif
 
-#define nDPIsrvd_MAX_JSON_TOKENS 128
+#define nDPIsrvd_MAX_JSON_TOKENS 256
 #define nDPIsrvd_JSON_KEY_STRLEN 32
 
 #define nDPIsrvd_STRLEN_SZ(s) (sizeof(s) / sizeof(s[0]) - sizeof(s[0]))
@@ -67,7 +67,11 @@ enum nDPIsrvd_parse_return
     PARSE_SIZE_MISSING,
     PARSE_STRING_TOO_BIG,
     PARSE_INVALID_CLOSING_CHAR,
-    PARSE_JSMN_ERROR,
+    PARSE_JSMN_KEY_MISSING,
+    PARSE_JSMN_NOMEM,
+    PARSE_JSMN_INVALID,
+    PARSE_JSMN_PARTIAL,
+    PARSE_JSMN_UNKNOWN_ERROR,
     PARSE_JSON_CALLBACK_ERROR,
     PARSE_JSON_MGMT_ERROR,
     PARSE_FLOW_MGMT_ERROR,
@@ -306,7 +310,11 @@ static inline char const * nDPIsrvd_enum_to_string(int enum_value)
                                                                "PARSE_SIZE_MISSING",
                                                                "PARSE_STRING_TOO_BIG",
                                                                "PARSE_INVALID_CLOSING_CHAR",
-                                                               "PARSE_JSMN_ERROR",
+                                                               "PARSE_JSMN_KEY_MISSING",
+                                                               "PARSE_JSMN_NOMEM",
+                                                               "PARSE_JSMN_INVALID",
+                                                               "PARSE_JSMN_PARTIAL",
+                                                               "PARSE_JSMN_UNKNOWN_ERROR",
                                                                "PARSE_JSON_CALLBACK_ERROR",
                                                                "PARSE_JSON_MGMT_ERROR",
                                                                "PARSE_FLOW_MGMT_ERROR",
@@ -569,6 +577,11 @@ static inline enum nDPIsrvd_connect_return nDPIsrvd_connect(struct nDPIsrvd_sock
 
 static inline enum nDPIsrvd_read_return nDPIsrvd_read(struct nDPIsrvd_socket * const sock)
 {
+    if (sock->buffer.used == sock->buffer.max)
+    {
+        return READ_OK;
+    }
+
     ssize_t bytes_read = read(sock->fd,
                               sock->buffer.ptr.raw + sock->buffer.used,
                               sock->buffer.max - sock->buffer.used);
@@ -966,7 +979,17 @@ static inline enum nDPIsrvd_parse_return nDPIsrvd_parse_line(struct nDPIsrvd_buf
                                     nDPIsrvd_MAX_JSON_TOKENS);
     if (jsmn->tokens_found < 0 || jsmn->tokens[0].type != JSMN_OBJECT)
     {
-        return PARSE_JSMN_ERROR;
+        switch ((enum jsmnerr)jsmn->tokens_found)
+        {
+            case JSMN_ERROR_NOMEM:
+                return PARSE_JSMN_NOMEM;
+            case JSMN_ERROR_INVAL:
+                return PARSE_JSMN_INVALID;
+            case JSMN_ERROR_PART:
+                return PARSE_JSMN_PARTIAL;
+        }
+
+        return PARSE_JSMN_UNKNOWN_ERROR;
     }
 
     return PARSE_OK;
@@ -994,7 +1017,7 @@ static inline enum nDPIsrvd_parse_return nDPIsrvd_parse_all(struct nDPIsrvd_sock
             {
                 if (key != NULL)
                 {
-                    ret = PARSE_JSMN_ERROR;
+                    ret = PARSE_JSMN_KEY_MISSING;
                     break;
                 }
 
@@ -1003,7 +1026,7 @@ static inline enum nDPIsrvd_parse_return nDPIsrvd_parse_all(struct nDPIsrvd_sock
 
                 if (key == NULL)
                 {
-                    ret = PARSE_JSMN_ERROR;
+                    ret = PARSE_JSMN_KEY_MISSING;
                     break;
                 }
             }

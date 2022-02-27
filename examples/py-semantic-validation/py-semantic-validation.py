@@ -3,16 +3,11 @@
 import os
 import sys
 
+sys.path.append(os.path.dirname(sys.argv[0]) + '/../../dependencies')
 sys.path.append(os.path.dirname(sys.argv[0]) + '/../share/nDPId')
 sys.path.append(os.path.dirname(sys.argv[0]) + '/../usr/share/nDPId')
-try:
-    import nDPIsrvd
-    from nDPIsrvd import nDPIsrvdSocket, TermColor
-except ImportError:
-    sys.path.append(os.path.dirname(sys.argv[0]) + '/../../dependencies')
-    import nDPIsrvd
-    from nDPIsrvd import nDPIsrvdSocket, TermColor
-
+import nDPIsrvd
+from nDPIsrvd import nDPIsrvdSocket, TermColor
 
 class Stats:
     event_counter   = dict()

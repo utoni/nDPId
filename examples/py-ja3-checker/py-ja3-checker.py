@@ -8,15 +8,11 @@ import requests
 import sys
 import time
 
+sys.path.append(os.path.dirname(sys.argv[0]) + '/../../dependencies')
 sys.path.append(os.path.dirname(sys.argv[0]) + '/../share/nDPId')
 sys.path.append(os.path.dirname(sys.argv[0]) + '/../usr/share/nDPId')
-try:
-    import nDPIsrvd
-    from nDPIsrvd import nDPIsrvdSocket
-except ImportError:
-    sys.path.append(os.path.dirname(sys.argv[0]) + '/../../dependencies')
-    import nDPIsrvd
-    from nDPIsrvd import nDPIsrvdSocket
+import nDPIsrvd
+from nDPIsrvd import nDPIsrvdSocket
 
 global ja3_fps
 ja3_fps = dict()

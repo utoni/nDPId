@@ -427,10 +427,21 @@ def validateAddress(args):
 global schema
 schema = {'packet_event_schema' : None, 'basic_event_schema' : None, 'daemon_event_schema' : None, 'flow_event_schema' : None}
 
-def initSchemaValidator(schema_dir='./schema'):
+def initSchemaValidator(schema_dirs=[]):
+    if len(schema_dirs) == 0:
+        schema_dirs += [os.path.dirname(sys.argv[0]) + '/../../schema']
+        schema_dirs += [os.path.dirname(sys.argv[0]) + '/../share/nDPId']
+        schema_dirs += [sys.base_prefix + '/share/nDPId']
+
     for key in schema:
-        with open(schema_dir + '/' + str(key) + '.json', 'r') as schema_file:
-            schema[key] = json.load(schema_file)
+        for schema_dir in schema_dirs:
+            try:
+                with open(schema_dir + '/' + str(key) + '.json', 'r') as schema_file:
+                    schema[key] = json.load(schema_file)
+            except FileNotFoundError:
+                continue
+            else:
+                break
 
 def validateAgainstSchema(json_dict):
     import jsonschema

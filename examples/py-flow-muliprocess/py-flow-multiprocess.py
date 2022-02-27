@@ -4,16 +4,11 @@ import multiprocessing
 import os
 import sys
 
+sys.path.append(os.path.dirname(sys.argv[0]) + '/../../dependencies')
 sys.path.append(os.path.dirname(sys.argv[0]) + '/../share/nDPId')
 sys.path.append(os.path.dirname(sys.argv[0]) + '/../usr/share/nDPId')
-try:
-    import nDPIsrvd
-    from nDPIsrvd import nDPIsrvdSocket
-except ImportError:
-    sys.path.append(os.path.dirname(sys.argv[0]) + '/../../dependencies')
-    import nDPIsrvd
-    from nDPIsrvd import nDPIsrvdSocket
-
+import nDPIsrvd
+from nDPIsrvd import nDPIsrvdSocket
 
 def mp_worker(unused, shared_flow_dict):
     import time

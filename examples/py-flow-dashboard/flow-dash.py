@@ -4,18 +4,12 @@ import multiprocessing
 import os
 import sys
 
-import plotly_dash
-
+sys.path.append(os.path.dirname(sys.argv[0]) + '/../../dependencies')
 sys.path.append(os.path.dirname(sys.argv[0]) + '/../share/nDPId')
-sys.path.append(os.path.dirname(sys.argv[0]) + '/../usr/share/nDPId')
-try:
-    import nDPIsrvd
-    from nDPIsrvd import nDPIsrvdSocket
-except ImportError:
-    sys.path.append(os.path.dirname(sys.argv[0]) + '/../../dependencies')
-    import nDPIsrvd
-    from nDPIsrvd import nDPIsrvdSocket
-
+sys.path.append(sys.base_prefix + '/share/nDPId')
+import nDPIsrvd
+from nDPIsrvd import nDPIsrvdSocket
+import plotly_dash
 
 def nDPIsrvd_worker_onFlowCleanup(instance, current_flow, global_user_data):
     _, shared_flow_dict = global_user_data

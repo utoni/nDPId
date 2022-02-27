@@ -3,15 +3,11 @@
 import os
 import sys
 
+sys.path.append(os.path.dirname(sys.argv[0]) + '/../../dependencies')
 sys.path.append(os.path.dirname(sys.argv[0]) + '/../share/nDPId')
 sys.path.append(os.path.dirname(sys.argv[0]) + '/../usr/share/nDPId')
-try:
-    import nDPIsrvd
-    from nDPIsrvd import nDPIsrvdSocket, TermColor
-except ImportError:
-    sys.path.append(os.path.dirname(sys.argv[0]) + '/../../dependencies')
-    import nDPIsrvd
-    from nDPIsrvd import nDPIsrvdSocket, TermColor
+import nDPIsrvd
+from nDPIsrvd import nDPIsrvdSocket, TermColor
 
 class Stats:
     lines_processed = 0
@@ -40,7 +36,7 @@ if __name__ == '__main__':
     sys.stderr.write('Recv buffer size: {}\n'.format(nDPIsrvd.NETWORK_BUFFER_MAX_SIZE))
     sys.stderr.write('Connecting to {} ..\n'.format(address[0]+':'+str(address[1]) if type(address) is tuple else address))
 
-    nDPIsrvd.initSchemaValidator(os.path.dirname(sys.argv[0]) + '/../../schema')
+    nDPIsrvd.initSchemaValidator()
 
     nsock = nDPIsrvdSocket()
     nsock.connect(address)

@@ -3,8 +3,8 @@
 00445{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":1,"source":"smtp.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":1,"flow_last_seen":934028408568,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":60,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":60,"pkt_l4_len":24,"ts_msec":934028408568,"pkt":"AMBPo1fbABB7OEYzCABFAAAsEDMAAD8GkhjCB\/iZrBByzwhPABnlqEITAAAAAGACAgCMgQAAAgQFtAAA"}
 00444{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":2,"source":"smtp.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":2,"flow_last_seen":934028408569,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":60,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":60,"pkt_l4_len":24,"ts_msec":934028408569,"pkt":"ABB7OEYzAMBPo1fbCABFAAAsFcQAAEAGi4esEHLPwgf4mQAZCE+jURBm5ahCFGASf+Ba2AAAAgQFtAW0"}
 00446{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":3,"source":"smtp.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":3,"flow_last_seen":934028408570,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":60,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":60,"pkt_l4_len":20,"ts_msec":934028408570,"pkt":"AMBPo1fbABB7OEYzCABFAAAoEDRAAD8GUhvCB\/iZrBByzwhPABnlqEIUo1EQZ1AQfXh0\/QAAAAAAAAAA"}
-00633{"flow_event_id":6,"flow_event_name":"detected","thread_id":0,"packet_id":10,"source":"smtp.pcap","alias":"nDPId-test","flow_id":1,"flow_state":"info","flow_packets_processed":10,"flow_first_seen":934028408568,"flow_last_seen":934028408647,"flow_idle_time":7440000,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":84,"flow_tot_l4_payload_len":198,"flow_avg_l4_payload_len":19,"midstream":0,"ts_msec":934028408647,"l3_proto":"ip4","src_ip":"194.7.248.153","dst_ip":"172.16.114.207","src_port":2127,"dst_port":25,"l4_proto":"tcp","ndpi": {"proto":"SMTP","breed":"Acceptable","category":"Email"},"smtp": {"user":"","password":""}}
-00642{"flow_event_id":2,"flow_event_name":"end","thread_id":0,"packet_id":95,"source":"smtp.pcap","alias":"nDPId-test","flow_id":1,"flow_state":"finished","flow_packets_processed":95,"flow_first_seen":934028408568,"flow_last_seen":934028408801,"flow_idle_time":7440000,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":1460,"flow_tot_l4_payload_len":17955,"flow_avg_l4_payload_len":189,"midstream":0,"ts_msec":934028408801,"l3_proto":"ip4","src_ip":"194.7.248.153","dst_ip":"172.16.114.207","src_port":2127,"dst_port":25,"l4_proto":"tcp","flow_datalink":1,"flow_max_packets":3,"ndpi": {"proto":"SMTP","breed":"Acceptable","category":"Email"}}
+00659{"flow_event_id":6,"flow_event_name":"detected","thread_id":0,"packet_id":10,"source":"smtp.pcap","alias":"nDPId-test","flow_id":1,"flow_state":"info","flow_packets_processed":10,"flow_first_seen":934028408568,"flow_last_seen":934028408647,"flow_idle_time":7440000,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":84,"flow_tot_l4_payload_len":198,"flow_avg_l4_payload_len":19,"midstream":0,"ts_msec":934028408647,"l3_proto":"ip4","src_ip":"194.7.248.153","dst_ip":"172.16.114.207","src_port":2127,"dst_port":25,"l4_proto":"tcp","ndpi": {"confidence": {"4":"DPI"},"proto":"SMTP","breed":"Acceptable","category":"Email"},"smtp": {"user":"","password":""}}
+00668{"flow_event_id":2,"flow_event_name":"end","thread_id":0,"packet_id":95,"source":"smtp.pcap","alias":"nDPId-test","flow_id":1,"flow_state":"finished","flow_packets_processed":95,"flow_first_seen":934028408568,"flow_last_seen":934028408801,"flow_idle_time":7440000,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":1460,"flow_tot_l4_payload_len":17955,"flow_avg_l4_payload_len":189,"midstream":0,"ts_msec":934028408801,"l3_proto":"ip4","src_ip":"194.7.248.153","dst_ip":"172.16.114.207","src_port":2127,"dst_port":25,"l4_proto":"tcp","flow_datalink":1,"flow_max_packets":3,"ndpi": {"confidence": {"4":"DPI"},"proto":"SMTP","breed":"Acceptable","category":"Email"}}
 00152{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":95,"source":"smtp.pcap","alias":"nDPId-test","total-events-serialized":8}
 ~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~
 ~~ packets captured/processed: 95/95
@@ -14,10 +14,10 @@
 ~~ total active/idle flows...: 1/1
 ~~ total timeout flows.......: 0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~ total memory allocated....: 4599632 bytes
-~~ total memory freed........: 4599632 bytes
-~~ total allocations/frees...: 99649/99649
+~~ total memory allocated....: 4684585 bytes
+~~ total memory freed........: 4684585 bytes
+~~ total allocations/frees...: 101239/101239
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~ json string min len.......: 157 chars
-~~ json string max len.......: 647 chars
-~~ json string avg len.......: 465 chars
+~~ json string max len.......: 673 chars
+~~ json string avg len.......: 476 chars

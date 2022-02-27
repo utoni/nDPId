@@ -548,6 +548,12 @@ static void * distributor_client_mainloop_thread(void * const arg)
                 if (parse_ret != PARSE_NEED_MORE_DATA)
                 {
                     logger(1, "JSON parsing failed: %s", nDPIsrvd_enum_to_string(parse_ret));
+                    logger(1, "Problematic JSON string (start: %zu, length: %llu, buffer usage: %zu): %.*s",
+                           mock_sock->buffer.json_string_start,
+                           mock_sock->buffer.json_string_length,
+                           mock_sock->buffer.used,
+                           (int)mock_sock->buffer.json_string_length,
+                           mock_sock->buffer.json_string);
                     THREAD_ERROR_GOTO(trv);
                 }
 

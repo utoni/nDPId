@@ -3,8 +3,8 @@
 00477{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":1,"source":"443-opvn.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":1,"flow_last_seen":1581153175528,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":78,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":78,"pkt_l4_len":44,"ts_msec":1581153175528,"pkt":"EBMx8Tl2KDc3AG3ICABFAABAAABAAEAG+EfAqAFUwAzAZ87tBKpga1quAAAAALAC\/\/\/PlAAAAgQFtAEDAwUBAQgKFg2AOQAAAAAEAgAA"}
 00470{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":2,"source":"443-opvn.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":2,"flow_last_seen":1581153175550,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":74,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":74,"pkt_l4_len":40,"ts_msec":1581153175550,"pkt":"KDc3AG3IEBMx8Tl2CABFAAA8AABAADYGAkzADMBnwKgBVASqzu1gWZU1YGtar6AScSBwigAAAgQFrAQCCAocQO0VFg2AOQEDAwY="}
 00458{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":3,"source":"443-opvn.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":3,"flow_last_seen":1581153175550,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":66,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":66,"pkt_l4_len":32,"ts_msec":1581153175550,"pkt":"EBMx8Tl2KDc3AG3ICABFAAA0AABAAEAG+FPAqAFUwAzAZ87tBKpga1qvYFmVNoAQECwALgAAAQEIChYNgE0cQO0V"}
-00607{"flow_event_id":6,"flow_event_name":"detected","thread_id":0,"packet_id":6,"source":"443-opvn.pcap","alias":"nDPId-test","flow_id":1,"flow_state":"info","flow_packets_processed":6,"flow_first_seen":1581153175528,"flow_last_seen":1581153176626,"flow_idle_time":7440000,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":56,"flow_tot_l4_payload_len":100,"flow_avg_l4_payload_len":16,"midstream":0,"ts_msec":1581153176626,"l3_proto":"ip4","src_ip":"192.168.1.84","dst_ip":"192.12.192.103","src_port":52973,"dst_port":1194,"l4_proto":"tcp","ndpi": {"proto":"OpenVPN","breed":"Acceptable","category":"VPN"}}
-00651{"flow_event_id":2,"flow_event_name":"end","thread_id":0,"packet_id":46,"source":"443-opvn.pcap","alias":"nDPId-test","flow_id":1,"flow_state":"finished","flow_packets_processed":46,"flow_first_seen":1581153175528,"flow_last_seen":1581153184491,"flow_idle_time":7440000,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":1440,"flow_tot_l4_payload_len":8517,"flow_avg_l4_payload_len":185,"midstream":0,"ts_msec":1581153184491,"l3_proto":"ip4","src_ip":"192.168.1.84","dst_ip":"192.12.192.103","src_port":52973,"dst_port":1194,"l4_proto":"tcp","flow_datalink":1,"flow_max_packets":3,"ndpi": {"proto":"OpenVPN","breed":"Acceptable","category":"VPN"}}
+00633{"flow_event_id":6,"flow_event_name":"detected","thread_id":0,"packet_id":6,"source":"443-opvn.pcap","alias":"nDPId-test","flow_id":1,"flow_state":"info","flow_packets_processed":6,"flow_first_seen":1581153175528,"flow_last_seen":1581153176626,"flow_idle_time":7440000,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":56,"flow_tot_l4_payload_len":100,"flow_avg_l4_payload_len":16,"midstream":0,"ts_msec":1581153176626,"l3_proto":"ip4","src_ip":"192.168.1.84","dst_ip":"192.12.192.103","src_port":52973,"dst_port":1194,"l4_proto":"tcp","ndpi": {"confidence": {"4":"DPI"},"proto":"OpenVPN","breed":"Acceptable","category":"VPN"}}
+00677{"flow_event_id":2,"flow_event_name":"end","thread_id":0,"packet_id":46,"source":"443-opvn.pcap","alias":"nDPId-test","flow_id":1,"flow_state":"finished","flow_packets_processed":46,"flow_first_seen":1581153175528,"flow_last_seen":1581153184491,"flow_idle_time":7440000,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":1440,"flow_tot_l4_payload_len":8517,"flow_avg_l4_payload_len":185,"midstream":0,"ts_msec":1581153184491,"l3_proto":"ip4","src_ip":"192.168.1.84","dst_ip":"192.12.192.103","src_port":52973,"dst_port":1194,"l4_proto":"tcp","flow_datalink":1,"flow_max_packets":3,"ndpi": {"confidence": {"4":"DPI"},"proto":"OpenVPN","breed":"Acceptable","category":"VPN"}}
 00156{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":46,"source":"443-opvn.pcap","alias":"nDPId-test","total-events-serialized":8}
 ~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~
 ~~ packets captured/processed: 46/46
@@ -14,10 +14,10 @@
 ~~ total active/idle flows...: 1/1
 ~~ total timeout flows.......: 0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~ total memory allocated....: 4598211 bytes
-~~ total memory freed........: 4598211 bytes
-~~ total allocations/frees...: 99600/99600
+~~ total memory allocated....: 4683164 bytes
+~~ total memory freed........: 4683164 bytes
+~~ total allocations/frees...: 101190/101190
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~ json string min len.......: 161 chars
-~~ json string max len.......: 656 chars
-~~ json string avg len.......: 469 chars
+~~ json string max len.......: 682 chars
+~~ json string avg len.......: 480 chars

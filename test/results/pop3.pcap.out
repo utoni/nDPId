@@ -3,8 +3,8 @@
 00467{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":1,"source":"pop3.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":1,"flow_last_seen":1349776771892,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":74,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":74,"pkt_l4_len":40,"ts_msec":1349776771892,"pkt":"ABffs8QAAMCfw1sHCABFEAA8\/wtAAEAGdh2P4eW1StAFHInXAG5gksK3AAAAAKACFtDFsQAAAgQFtAQCCAoAYD28AAAAAAEDAwY="}
 00466{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":2,"source":"pop3.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":2,"flow_last_seen":1349776772030,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":74,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":74,"pkt_l4_len":40,"ts_msec":1349776772030,"pkt":"AMCfw1sHABffs8QACABFAAA8AABAADUGgDlK0AUcj+HltQBuidcdXnV7YJLCuKASFqDzqQAAAgQFtAQCCApTpKX2AGA9vAEDAwk="}
 00455{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":3,"source":"pop3.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":3,"flow_last_seen":1349776772030,"flow_idle_time":7440000,"pkt_oversize":false,"pkt_caplen":66,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":66,"pkt_l4_len":32,"ts_msec":1349776772030,"pkt":"ABffs8QAAMCfw1sHCABFEAA0\/wxAAEAGdiSP4eW1StAFHInXAG5gksK4HV51fIAQAFzFqQAAAQEICgBgPkZTpKX2"}
-00703{"flow_event_id":6,"flow_event_name":"detected","thread_id":0,"packet_id":10,"source":"pop3.pcap","alias":"nDPId-test","flow_id":1,"flow_state":"info","flow_packets_processed":10,"flow_first_seen":1349776771892,"flow_last_seen":1349776780730,"flow_idle_time":7440000,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":60,"flow_tot_l4_payload_len":142,"flow_avg_l4_payload_len":14,"midstream":0,"ts_msec":1349776780730,"l3_proto":"ip4","src_ip":"143.225.229.181","dst_ip":"74.208.5.28","src_port":35287,"dst_port":110,"l4_proto":"tcp","ndpi": {"flow_risk": {"22":"Unsafe Protocol"},"proto":"POP3","breed":"Unsafe","category":"Email"},"pop": {"user":"cicciopernacchio@mail.com","password":"pippozzo"}}
-00678{"flow_event_id":2,"flow_event_name":"end","thread_id":0,"packet_id":31,"source":"pop3.pcap","alias":"nDPId-test","flow_id":1,"flow_state":"finished","flow_packets_processed":31,"flow_first_seen":1349776771892,"flow_last_seen":1349776799209,"flow_idle_time":7440000,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":1448,"flow_tot_l4_payload_len":1853,"flow_avg_l4_payload_len":59,"midstream":0,"ts_msec":1349776799209,"l3_proto":"ip4","src_ip":"143.225.229.181","dst_ip":"74.208.5.28","src_port":35287,"dst_port":110,"l4_proto":"tcp","flow_datalink":1,"flow_max_packets":3,"ndpi": {"flow_risk": {"22":"Unsafe Protocol"},"proto":"POP3","breed":"Unsafe","category":"Email"}}
+00810{"flow_event_id":6,"flow_event_name":"detected","thread_id":0,"packet_id":10,"source":"pop3.pcap","alias":"nDPId-test","flow_id":1,"flow_state":"info","flow_packets_processed":10,"flow_first_seen":1349776771892,"flow_last_seen":1349776780730,"flow_idle_time":7440000,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":60,"flow_tot_l4_payload_len":142,"flow_avg_l4_payload_len":14,"midstream":0,"ts_msec":1349776780730,"l3_proto":"ip4","src_ip":"143.225.229.181","dst_ip":"74.208.5.28","src_port":35287,"dst_port":110,"l4_proto":"tcp","ndpi": {"flow_risk": {"22": {"risk":"Unsafe Protocol","severity":"Low","risk_score": {"total":750,"client":575,"server":175}}},"confidence": {"4":"DPI"},"proto":"POP3","breed":"Unsafe","category":"Email"},"pop": {"user":"cicciopernacchio@mail.com","password":"pippozzo"}}
+00785{"flow_event_id":2,"flow_event_name":"end","thread_id":0,"packet_id":31,"source":"pop3.pcap","alias":"nDPId-test","flow_id":1,"flow_state":"finished","flow_packets_processed":31,"flow_first_seen":1349776771892,"flow_last_seen":1349776799209,"flow_idle_time":7440000,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":1448,"flow_tot_l4_payload_len":1853,"flow_avg_l4_payload_len":59,"midstream":0,"ts_msec":1349776799209,"l3_proto":"ip4","src_ip":"143.225.229.181","dst_ip":"74.208.5.28","src_port":35287,"dst_port":110,"l4_proto":"tcp","flow_datalink":1,"flow_max_packets":3,"ndpi": {"flow_risk": {"22": {"risk":"Unsafe Protocol","severity":"Low","risk_score": {"total":750,"client":575,"server":175}}},"confidence": {"4":"DPI"},"proto":"POP3","breed":"Unsafe","category":"Email"}}
 00152{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":31,"source":"pop3.pcap","alias":"nDPId-test","total-events-serialized":8}
 ~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~
 ~~ packets captured/processed: 31/31
@@ -14,10 +14,10 @@
 ~~ total active/idle flows...: 1/1
 ~~ total timeout flows.......: 0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~ total memory allocated....: 4597776 bytes
-~~ total memory freed........: 4597776 bytes
-~~ total allocations/frees...: 99585/99585
+~~ total memory allocated....: 4682729 bytes
+~~ total memory freed........: 4682729 bytes
+~~ total allocations/frees...: 101175/101175
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~ json string min len.......: 157 chars
-~~ json string max len.......: 708 chars
-~~ json string avg len.......: 492 chars
+~~ json string max len.......: 815 chars
+~~ json string avg len.......: 539 chars

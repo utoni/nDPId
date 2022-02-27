@@ -10,6 +10,17 @@ flock -x -n 42 || {
     exit 1;
 }
 
+cat <<EOF
+------ environment variables ------
+CFLAGS=${CFLAGS:-}
+LDFLAGS=${LDFLAGS:-}
+CROSS_COMPILE_TRIPLET=${CROSS_COMPILE_TRIPLET:-}
+ADDITIONAL_ARGS=${ADDITIONAL_ARGS:-}
+MAKE_PROGRAM=${MAKE_PROGRAM:-}
+DEST_INSTALL=${DEST_INSTALL:-}
+-----------------------------------
+EOF
+
 set -x
 
 cd "$(dirname "${0}")/.."

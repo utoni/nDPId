@@ -122,6 +122,7 @@ struct nDPId_flow_extended
     uint64_t last_flow_update;
 
     unsigned long long int total_l4_payload_len;
+    struct ndpi_proto detected_l7_protocol;
 };
 
 /*
@@ -139,11 +140,8 @@ struct nDPId_flow_skipped
 struct nDPId_detection_data
 {
     uint32_t last_ndpi_flow_struct_hash;
-    struct ndpi_proto detected_l7_protocol;
     struct ndpi_proto guessed_l7_protocol;
     struct ndpi_flow_struct flow;
-    struct ndpi_id_struct src;
-    struct ndpi_id_struct dst;
 };
 
 struct nDPId_flow_info
@@ -151,8 +149,7 @@ struct nDPId_flow_info
     struct nDPId_flow_extended flow_extended;
 
     uint8_t detection_completed : 1;
-    uint8_t extra_dissection_completed : 1;
-    uint8_t reserved_00 : 6;
+    uint8_t reserved_00 : 7;
     uint8_t reserved_01[1];
 #ifdef ENABLE_ZLIB
     uint16_t detection_data_compressed_size;
@@ -167,8 +164,8 @@ struct nDPId_flow_finished
 {
     struct nDPId_flow_extended flow_extended;
 
-    struct ndpi_proto detected_l7_protocol;
     ndpi_risk risk;
+    ndpi_confidence_t confidence;
 };
 
 /* TODO: Merge `struct nDPId_flow_info' with `struct nDPId_flow_finished' and use a union instead? */
@@ -620,15 +617,6 @@ static int detection_data_inflate(struct nDPId_flow_info * const flow_info)
 
     memcpy(flow_info->detection_data, tmpOut, ret);
     flow_info->detection_data_compressed_size = 0;
-
-    /*
-     * The ndpi_id_struct's from ndpi_flow may not be valid anymore.
-     * nDPI only updates those pointers while processing packets!
-     * This is especially important when using compression
-     * to prevent use of dangling pointers.
-     */
-    flow_info->detection_data->flow.src = &flow_info->detection_data->src;
-    flow_info->detection_data->flow.dst = &flow_info->detection_data->dst;
 
     return ret;
 }
@@ -2381,7 +2369,8 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
                 ndpi_serialize_proto(workflow->ndpi_struct,
                                      &workflow->ndpi_serializer,
                                      flow_finished->risk,
-                                     flow_finished->detected_l7_protocol);
+                                     flow_finished->confidence,
+                                     flow_finished->flow_extended.detected_l7_protocol);
             }
             break;
 
@@ -2453,7 +2442,7 @@ static void jsonize_flow_detection_event(struct nDPId_reader_thread * const read
         case FLOW_EVENT_DETECTION_UPDATE:
             if (ndpi_dpi2json(workflow->ndpi_struct,
                               &flow_info->detection_data->flow,
-                              flow_info->detection_data->detected_l7_protocol,
+                              flow_info->flow_extended.detected_l7_protocol,
                               &workflow->ndpi_serializer) != 0)
             {
                 logger(1,
@@ -2704,13 +2693,14 @@ static uint32_t calculate_ndpi_flow_struct_hash(struct ndpi_flow_struct const * 
     uint32_t hash = murmur3_32((uint8_t const *)&ndpi_flow->protos, sizeof(ndpi_flow->protos), nDPId_FLOW_STRUCT_SEED);
     hash += ndpi_flow->category;
     hash += ndpi_flow->risk;
+    hash += ndpi_flow->confidence;
 
-    const size_t protocol_bitmask_size = sizeof(ndpi_flow->src->detected_protocol_bitmask.fds_bits) /
-                                         sizeof(ndpi_flow->src->detected_protocol_bitmask.fds_bits[0]);
+    const size_t protocol_bitmask_size = sizeof(ndpi_flow->excluded_protocol_bitmask.fds_bits) /
+                                         sizeof(ndpi_flow->excluded_protocol_bitmask.fds_bits[0]);
     for (size_t i = 0; i < protocol_bitmask_size; ++i)
     {
-        hash += ndpi_flow->src->detected_protocol_bitmask.fds_bits[i];
-        hash += ndpi_flow->dst->detected_protocol_bitmask.fds_bits[i];
+        hash += ndpi_flow->excluded_protocol_bitmask.fds_bits[i];
+        hash += ndpi_flow->excluded_protocol_bitmask.fds_bits[i];
     }
 
     size_t host_server_name_len =
@@ -3106,10 +3096,7 @@ static void ndpi_process_packet(uint8_t * const args,
     void * tree_result;
     struct nDPId_flow_info * flow_to_process;
 
-    uint8_t direction_changed = 0;
     uint8_t is_new_flow = 0;
-    struct ndpi_id_struct * ndpi_src;
-    struct ndpi_id_struct * ndpi_dst;
 
     const struct ndpi_iphdr * ip;
     struct ndpi_ipv6hdr * ip6;
@@ -3376,10 +3363,6 @@ static void ndpi_process_packet(uint8_t * const args,
         flow_basic.dst_port = orig_src_port;
 
         tree_result = ndpi_tfind(&flow_basic, &workflow->ndpi_flows_active[hashed_index], ndpi_workflow_node_cmp);
-        if (tree_result != NULL)
-        {
-            direction_changed = 1;
-        }
 
         flow_basic.src.v6.ip[0] = orig_src_ip[0];
         flow_basic.src.v6.ip[1] = orig_src_ip[1];
@@ -3496,9 +3479,6 @@ static void ndpi_process_packet(uint8_t * const args,
             return;
         }
 
-        ndpi_src = &flow_to_process->detection_data->src;
-        ndpi_dst = &flow_to_process->detection_data->dst;
-
         is_new_flow = 1;
     }
     else
@@ -3528,9 +3508,6 @@ static void ndpi_process_packet(uint8_t * const args,
         }
         flow_to_process = (struct nDPId_flow_info *)flow_basic_to_process;
 
-        ndpi_src = NULL;
-        ndpi_dst = NULL;
-
         if (flow_to_process->flow_extended.flow_basic.state == FS_INFO)
         {
 #ifdef ENABLE_ZLIB
@@ -3547,20 +3524,6 @@ static void ndpi_process_packet(uint8_t * const args,
                 }
             }
 #endif
-
-            if (flow_to_process->detection_data != NULL)
-            {
-                if (direction_changed != 0)
-                {
-                    ndpi_src = &flow_to_process->detection_data->dst;
-                    ndpi_dst = &flow_to_process->detection_data->src;
-                }
-                else
-                {
-                    ndpi_src = &flow_to_process->detection_data->src;
-                    ndpi_dst = &flow_to_process->detection_data->dst;
-                }
-            }
         }
     }
 
@@ -3632,16 +3595,14 @@ static void ndpi_process_packet(uint8_t * const args,
         }
     }
 
-    flow_to_process->detection_data->detected_l7_protocol =
+    flow_to_process->flow_extended.detected_l7_protocol =
         ndpi_detection_process_packet(workflow->ndpi_struct,
                                       &flow_to_process->detection_data->flow,
                                       ip != NULL ? (uint8_t *)ip : (uint8_t *)ip6,
                                       ip_size,
-                                      workflow->last_time,
-                                      ndpi_src,
-                                      ndpi_dst);
+                                      workflow->last_time);
 
-    if (ndpi_is_protocol_detected(workflow->ndpi_struct, flow_to_process->detection_data->detected_l7_protocol) != 0 &&
+    if (ndpi_is_protocol_detected(workflow->ndpi_struct, flow_to_process->flow_extended.detected_l7_protocol) != 0 &&
         flow_to_process->detection_completed == 0)
     {
         flow_to_process->detection_completed = 1;
@@ -3649,13 +3610,8 @@ static void ndpi_process_packet(uint8_t * const args,
         jsonize_flow_detection_event(reader_thread, flow_to_process, FLOW_EVENT_DETECTED);
         flow_to_process->detection_data->last_ndpi_flow_struct_hash =
             calculate_ndpi_flow_struct_hash(&flow_to_process->detection_data->flow);
-
-        if (ndpi_extra_dissection_possible(workflow->ndpi_struct, &flow_to_process->detection_data->flow) == 0)
-        {
-            flow_to_process->extra_dissection_completed = 1;
-        }
     }
-    else if (flow_to_process->detection_completed == 1 && flow_to_process->extra_dissection_completed == 0)
+    else if (flow_to_process->detection_completed == 1)
     {
         uint32_t hash = calculate_ndpi_flow_struct_hash(&flow_to_process->detection_data->flow);
         if (hash != flow_to_process->detection_data->last_ndpi_flow_struct_hash)
@@ -3664,34 +3620,28 @@ static void ndpi_process_packet(uint8_t * const args,
             jsonize_flow_detection_event(reader_thread, flow_to_process, FLOW_EVENT_DETECTION_UPDATE);
             flow_to_process->detection_data->last_ndpi_flow_struct_hash = hash;
         }
-
-        if (ndpi_extra_dissection_possible(workflow->ndpi_struct, &flow_to_process->detection_data->flow) == 0)
-        {
-            flow_to_process->extra_dissection_completed = 1;
-        }
     }
 
     if (flow_to_process->detection_data->flow.num_processed_pkts == nDPId_options.max_packets_per_flow_to_process ||
-        (flow_to_process->detection_completed == 1 && flow_to_process->extra_dissection_completed == 1))
+        (flow_to_process->detection_completed == 1 &&
+         ndpi_extra_dissection_possible(workflow->ndpi_struct, &flow_to_process->detection_data->flow) == 0))
     {
-        struct ndpi_proto detected_l7_protocol = flow_to_process->detection_data->detected_l7_protocol;
+        struct ndpi_proto detected_l7_protocol = flow_to_process->flow_extended.detected_l7_protocol;
+        if (ndpi_is_protocol_detected(workflow->ndpi_struct, detected_l7_protocol) == 0)
+        {
+            detected_l7_protocol = flow_to_process->detection_data->guessed_l7_protocol;
+        }
+
         ndpi_risk risk = flow_to_process->detection_data->flow.risk;
+        ndpi_confidence_t confidence = flow_to_process->detection_data->flow.confidence;
 
         free_detection_data(flow_to_process);
 
         flow_to_process->flow_extended.flow_basic.state = FS_FINISHED;
         struct nDPId_flow_finished * const flow_finished = (struct nDPId_flow_finished *)flow_to_process;
-        if (flow_to_process->detection_completed == 0)
-        {
-            struct ndpi_proto unknown_l7_protocol = {};
-            flow_finished->detected_l7_protocol = unknown_l7_protocol;
-            flow_finished->risk = NDPI_NO_RISK;
-        }
-        else
-        {
-            flow_finished->detected_l7_protocol = detected_l7_protocol;
-            flow_finished->risk = risk;
-        }
+        flow_finished->flow_extended.detected_l7_protocol = detected_l7_protocol;
+        flow_finished->risk = risk;
+        flow_finished->confidence = confidence;
     }
 
 #ifdef ENABLE_ZLIB
@@ -3854,7 +3804,8 @@ static int start_reader_threads(void)
 
     errno = 0;
     if (nDPId_options.user != NULL &&
-        change_user_group(nDPId_options.user, nDPId_options.group, nDPId_options.pidfile, NULL, NULL) != 0)
+        change_user_group(nDPId_options.user, nDPId_options.group, nDPId_options.pidfile, NULL, NULL) != 0 &&
+        errno != EPERM)
     {
         if (errno != 0)
         {

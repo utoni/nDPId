@@ -1,8 +1,8 @@
 00446{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"malformed_icmp.pcap","alias":"nDPId-test","max-flows-per-thread":2048,"max-idle-flows-per-thread":64,"tick-resolution":1000,"reader-thread-count":1,"flow-scan-interval":10000,"generic-max-idle-time":600000,"icmp-max-idle-time":120000,"udp-max-idle-time":180000,"tcp-max-idle-time":7560000,"max-packets-per-flow-to-send":3,"max-packets-per-flow-to-process":32}
 00547{"flow_event_id":1,"flow_event_name":"new","thread_id":0,"packet_id":1,"source":"malformed_icmp.pcap","alias":"nDPId-test","flow_id":1,"flow_state":"info","flow_packets_processed":1,"flow_first_seen":1593066612951,"flow_last_seen":1593066612951,"flow_idle_time":120000,"flow_min_l4_payload_len":8,"flow_max_l4_payload_len":8,"flow_tot_l4_payload_len":8,"flow_avg_l4_payload_len":8,"midstream":0,"ts_msec":1593066612951,"l3_proto":"ip4","src_ip":"218.152.179.213","dst_ip":"218.152.179.54","l4_proto":"icmp","flow_datalink":1,"flow_max_packets":3}
 00431{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":0,"packet_id":1,"source":"malformed_icmp.pcap","alias":"nDPId-test","flow_id":1,"flow_packet_id":1,"flow_last_seen":1593066612951,"flow_idle_time":120000,"pkt_oversize":false,"pkt_caplen":42,"pkt_type":2048,"pkt_l3_offset":14,"pkt_l4_offset":34,"pkt_len":42,"pkt_l4_len":8,"ts_msec":1593066612951,"pkt":"AFUir8Y3AERm\/CmvCABFAAAcAAEAAEABXqPamLPV2pizNqUAWv8AAAAA"}
-00619{"flow_event_id":6,"flow_event_name":"detected","thread_id":0,"packet_id":1,"source":"malformed_icmp.pcap","alias":"nDPId-test","flow_id":1,"flow_state":"info","flow_packets_processed":1,"flow_first_seen":1593066612951,"flow_last_seen":1593066612951,"flow_idle_time":120000,"flow_min_l4_payload_len":8,"flow_max_l4_payload_len":8,"flow_tot_l4_payload_len":8,"flow_avg_l4_payload_len":8,"midstream":0,"ts_msec":1593066612951,"l3_proto":"ip4","src_ip":"218.152.179.213","dst_ip":"218.152.179.54","l4_proto":"icmp","ndpi": {"flow_risk": {"17":"Malformed packet"},"proto":"ICMP","breed":"Acceptable","category":"Network"}}
-00658{"flow_event_id":3,"flow_event_name":"idle","thread_id":0,"packet_id":1,"source":"malformed_icmp.pcap","alias":"nDPId-test","flow_id":1,"flow_state":"finished","flow_packets_processed":1,"flow_first_seen":1593066612951,"flow_last_seen":1593066612951,"flow_idle_time":120000,"flow_min_l4_payload_len":8,"flow_max_l4_payload_len":8,"flow_tot_l4_payload_len":8,"flow_avg_l4_payload_len":8,"midstream":0,"ts_msec":1593066612951,"l3_proto":"ip4","src_ip":"218.152.179.213","dst_ip":"218.152.179.54","l4_proto":"icmp","flow_datalink":1,"flow_max_packets":3,"ndpi": {"flow_risk": {"17":"Malformed packet"},"proto":"ICMP","breed":"Acceptable","category":"Network"}}
+00726{"flow_event_id":6,"flow_event_name":"detected","thread_id":0,"packet_id":1,"source":"malformed_icmp.pcap","alias":"nDPId-test","flow_id":1,"flow_state":"info","flow_packets_processed":1,"flow_first_seen":1593066612951,"flow_last_seen":1593066612951,"flow_idle_time":120000,"flow_min_l4_payload_len":8,"flow_max_l4_payload_len":8,"flow_tot_l4_payload_len":8,"flow_avg_l4_payload_len":8,"midstream":0,"ts_msec":1593066612951,"l3_proto":"ip4","src_ip":"218.152.179.213","dst_ip":"218.152.179.54","l4_proto":"icmp","ndpi": {"flow_risk": {"17": {"risk":"Malformed Packet","severity":"Low","risk_score": {"total":260,"client":130,"server":130}}},"confidence": {"4":"DPI"},"proto":"ICMP","breed":"Acceptable","category":"Network"}}
+00765{"flow_event_id":3,"flow_event_name":"idle","thread_id":0,"packet_id":1,"source":"malformed_icmp.pcap","alias":"nDPId-test","flow_id":1,"flow_state":"finished","flow_packets_processed":1,"flow_first_seen":1593066612951,"flow_last_seen":1593066612951,"flow_idle_time":120000,"flow_min_l4_payload_len":8,"flow_max_l4_payload_len":8,"flow_tot_l4_payload_len":8,"flow_avg_l4_payload_len":8,"midstream":0,"ts_msec":1593066612951,"l3_proto":"ip4","src_ip":"218.152.179.213","dst_ip":"218.152.179.54","l4_proto":"icmp","flow_datalink":1,"flow_max_packets":3,"ndpi": {"flow_risk": {"17": {"risk":"Malformed Packet","severity":"Low","risk_score": {"total":260,"client":130,"server":130}}},"confidence": {"4":"DPI"},"proto":"ICMP","breed":"Acceptable","category":"Network"}}
 00161{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":1,"source":"malformed_icmp.pcap","alias":"nDPId-test","total-events-serialized":6}
 ~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~
 ~~ packets captured/processed: 1/1
@@ -12,10 +12,10 @@
 ~~ total active/idle flows...: 1/1
 ~~ total timeout flows.......: 0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~ total memory allocated....: 4594858 bytes
-~~ total memory freed........: 4594858 bytes
-~~ total allocations/frees...: 99554/99554
+~~ total memory allocated....: 4679811 bytes
+~~ total memory freed........: 4679811 bytes
+~~ total allocations/frees...: 101144/101144
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~ json string min len.......: 166 chars
-~~ json string max len.......: 663 chars
-~~ json string avg len.......: 464 chars
+~~ json string max len.......: 770 chars
+~~ json string avg len.......: 511 chars

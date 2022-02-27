@@ -6,15 +6,11 @@ import sys
 import time
 import datetime
 
+sys.path.append(os.path.dirname(sys.argv[0]) + '/../../dependencies')
 sys.path.append(os.path.dirname(sys.argv[0]) + '/../share/nDPId')
-sys.path.append(os.path.dirname(sys.argv[0]) + '/../usr/share/nDPId')
-try:
-    import nDPIsrvd
-    from nDPIsrvd import nDPIsrvdSocket, TermColor
-except ImportError:
-    sys.path.append(os.path.dirname(sys.argv[0]) + '/../../dependencies')
-    import nDPIsrvd
-    from nDPIsrvd import nDPIsrvdSocket, TermColor
+sys.path.append(sys.base_prefix + '/share/nDPId')
+import nDPIsrvd
+from nDPIsrvd import nDPIsrvdSocket, TermColor
 
 global args
 global whois_db
