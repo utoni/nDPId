@@ -21,9 +21,10 @@ Tiny nDPId json dumper. Does not provide any useful funcationality besides dumpi
 
 Very tiny integration example.
 
-## go-dashboard (DISCONTINUED!)
+## ~~go-dashboard~~ (DISCONTINUED!)
 
 A discontinued tty UI nDPId dashboard.
+Removed with commit 29c72fb30bb7d5614c0a8ebb73bee2ac7eca6608.
 
 ## py-flow-info
 
