@@ -7,7 +7,8 @@
         "packet_id",
         "basic_event_id",
         "basic_event_name",
-        "datalink"
+        "datalink",
+        "global_ts_msec"
     ],
 
     "if": {
@@ -100,7 +101,7 @@
         "datalink": {
             "type": "number",
             "minimum": 0,
-            "maximum": 265
+            "maximum": 292
         },
 
         "layer_type": {
@@ -141,6 +142,10 @@
         },
         "max_idle": {
             "type": "number"
+        },
+        "global_ts_msec": {
+            "type": "number",
+            "minimum": 0
         }
     },
     "additionalProperties": false

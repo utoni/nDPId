@@ -11,6 +11,11 @@ import nDPIsrvd
 from nDPIsrvd import nDPIsrvdSocket
 import plotly_dash
 
+FLOW_RISK_SEVERE = 4
+FLOW_RISK_HIGH   = 3
+FLOW_RISK_MEDIUM = 2
+FLOW_RISK_LOW    = 1
+
 def nDPIsrvd_worker_onFlowCleanup(instance, current_flow, global_user_data):
     _, shared_flow_dict = global_user_data
 
@@ -35,8 +40,17 @@ def nDPIsrvd_worker_onFlowCleanup(instance, current_flow, global_user_data):
     if shared_flow_dict[flow_id]['is_midstream'] is True:
         shared_flow_dict['current-midstream-flows'] -= 1
 
-    if shared_flow_dict[flow_id]['is_risky'] is True:
+    if shared_flow_dict[flow_id]['is_risky'] > 0:
         shared_flow_dict['current-risky-flows'] -= 1
+
+    if shared_flow_dict[flow_id]['is_risky'] == FLOW_RISK_LOW:
+        shared_flow_dict['current-risky-flows-low'] -= 1
+    elif shared_flow_dict[flow_id]['is_risky'] == FLOW_RISK_MEDIUM:
+        shared_flow_dict['current-risky-flows-medium'] -= 1
+    elif shared_flow_dict[flow_id]['is_risky'] == FLOW_RISK_HIGH:
+        shared_flow_dict['current-risky-flows-high'] -= 1
+    elif shared_flow_dict[flow_id]['is_risky'] == FLOW_RISK_SEVERE:
+        shared_flow_dict['current-risky-flows-severe'] -= 1
 
     del shared_flow_dict[current_flow.flow_id]
 
@@ -72,7 +86,7 @@ def nDPIsrvd_worker_onJsonLineRecvd(json_dict, instance, current_flow, global_us
         shared_flow_dict[flow_id]['is_guessed']      = False
         shared_flow_dict[flow_id]['is_not_detected'] = False
         shared_flow_dict[flow_id]['is_midstream']    = False
-        shared_flow_dict[flow_id]['is_risky']        = False
+        shared_flow_dict[flow_id]['is_risky']        = 0
         shared_flow_dict[flow_id]['total-l4-bytes']  = 0
 
         shared_flow_dict[flow_id]['json'] = mgr.dict()
@@ -93,11 +107,33 @@ def nDPIsrvd_worker_onJsonLineRecvd(json_dict, instance, current_flow, global_us
         # XXX: Will make use of that JSON string in Plotly. Soon..
         shared_flow_dict[flow_id]['json']['ndpi'] = json_dict['ndpi']
 
-        if 'flow_risk' in json_dict['ndpi']:
-            if shared_flow_dict[flow_id]['is_risky'] is False:
-                shared_flow_dict['total-risky-flows']   += 1
-                shared_flow_dict['current-risky-flows'] += 1
-            shared_flow_dict[flow_id]['is_risky'] = True
+        if 'flow_risk' in json_dict['ndpi'] and shared_flow_dict[flow_id]['is_risky'] == 0:
+            shared_flow_dict['total-risky-flows']   += 1
+            shared_flow_dict['current-risky-flows'] += 1
+
+            severity = shared_flow_dict[flow_id]['is_risky']
+            for key in json_dict['ndpi']['flow_risk']:
+                if json_dict['ndpi']['flow_risk'][key]['severity'] == 'Low':
+                    severity = max(severity, FLOW_RISK_LOW)
+                elif json_dict['ndpi']['flow_risk'][key]['severity'] == 'Medium':
+                    severity = max(severity, FLOW_RISK_MEDIUM)
+                elif json_dict['ndpi']['flow_risk'][key]['severity'] == 'High':
+                    severity = max(severity, FLOW_RISK_HIGH)
+                elif json_dict['ndpi']['flow_risk'][key]['severity'] == 'Severe':
+                    severity = max(severity, FLOW_RISK_SEVERE)
+                else:
+                    raise RuntimeError('Invalid flow risk severity: {}'.format(
+                                       json_dict['ndpi']['flow_risk'][key]['severity']))
+            shared_flow_dict[flow_id]['is_risky'] = severity
+
+            if shared_flow_dict[flow_id]['is_risky'] == FLOW_RISK_LOW:
+                shared_flow_dict['current-risky-flows-low'] += 1
+            elif shared_flow_dict[flow_id]['is_risky'] == FLOW_RISK_MEDIUM:
+                shared_flow_dict['current-risky-flows-medium'] += 1
+            elif shared_flow_dict[flow_id]['is_risky'] == FLOW_RISK_HIGH:
+                shared_flow_dict['current-risky-flows-high'] += 1
+            elif shared_flow_dict[flow_id]['is_risky'] == FLOW_RISK_SEVERE:
+                shared_flow_dict['current-risky-flows-severe'] += 1
 
     if 'flow_event_name' not in json_dict:
         return True
@@ -221,10 +257,15 @@ if __name__ == '__main__':
 
     shared_flow_dict['current-flows']              = 0
     shared_flow_dict['current-detected-flows']     = 0
-    shared_flow_dict['current-risky-flows']        = 0
     shared_flow_dict['current-midstream-flows']    = 0
     shared_flow_dict['current-guessed-flows']      = 0
     shared_flow_dict['current-not-detected-flows'] = 0
+
+    shared_flow_dict['current-risky-flows']        = 0
+    shared_flow_dict['current-risky-flows-severe'] = 0
+    shared_flow_dict['current-risky-flows-high']   = 0
+    shared_flow_dict['current-risky-flows-medium'] = 0
+    shared_flow_dict['current-risky-flows-low']    = 0
 
     nDPIsrvd_job = multiprocessing.Process(target=nDPIsrvd_worker,
                                            args=(address, shared_flow_dict))

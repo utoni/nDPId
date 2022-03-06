@@ -11,7 +11,7 @@
  * NOTE: Buffer size needs to keep in sync with other implementations
  *       e.g. dependencies/nDPIsrvd.py
  */
-#define NETWORK_BUFFER_MAX_SIZE 13312u /* 8192 + 4096 + 1024 */
+#define NETWORK_BUFFER_MAX_SIZE 16384u /* 8192 + 8192 */
 #define NETWORK_BUFFER_LENGTH_DIGITS 5u
 #define NETWORK_BUFFER_LENGTH_DIGITS_STR "5"
 
@@ -21,6 +21,7 @@
 #define nDPId_MAX_IDLE_FLOWS_PER_THREAD (nDPId_MAX_FLOWS_PER_THREAD / 32u)
 #define nDPId_TICK_RESOLUTION 1000u
 #define nDPId_MAX_READER_THREADS 32u
+#define nDPId_DAEMON_STATUS_INTERVAL 600000u /* 600 sec */
 #define nDPId_MEMORY_PROFILING_LOG_INTERVAL 5000u /* 5 sec */
 #define nDPId_COMPRESSION_SCAN_INTERVAL 20000u /* 20 sec */
 #define nDPId_COMPRESSION_FLOW_INACTIVITY 30000u /* 30 sec */

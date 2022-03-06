@@ -692,7 +692,7 @@ error:
 
 static void usage(char const * const arg0)
 {
-    fprintf(stderr, "usage: %s [path-to-pcap-file]", arg0);
+    fprintf(stderr, "usage: %s [path-to-pcap-file]\n", arg0);
 }
 
 static int thread_wait_for_termination(pthread_t thread, time_t wait_time_secs, struct thread_return_value * const trv)
@@ -910,13 +910,13 @@ int main(int argc, char ** argv)
 
     if (nDPId_return.cur_active_flows != 0 || nDPId_return.cur_idle_flows != 0)
     {
-        logger(1, "%s: %s", argv[0], "Active / Idle inconsistency detected.");
+        logger(1, "%s: %s [%llu / %llu]", argv[0], "Active / Idle inconsistency detected.", nDPId_return.cur_active_flows, nDPId_return.cur_idle_flows);
         return 1;
     }
 
     if (nDPId_return.total_skipped_flows != 0)
     {
-        logger(1, "%s: %s", argv[0], "Skipped flow detected, that should not happen.");
+        logger(1, "%s: %s [%llu]", argv[0], "Skipped flow detected, that should not happen.", nDPId_return.total_skipped_flows);
         return 1;
     }
 

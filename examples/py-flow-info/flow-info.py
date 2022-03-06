@@ -229,18 +229,57 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
 
     instance_and_source = ''
     if args.hide_instance_info is False:
-        instance_and_source += '[{}]'.format(TermColor.setColorByString(instance.alias))
-        instance_and_source += '[{}] '.format(TermColor.setColorByString(instance.source))
+        instance_and_source += '[{}][{}][{:.>2}] '.format(
+                        TermColor.setColorByString(instance.alias),
+                        TermColor.setColorByString(instance.source),
+                        json_dict['thread_id'])
+    else:
+        instance_and_source += ' '
+
+    basic_daemon_event_prefix = ''
+    timestamp = ''
+    if args.print_timestamp is True:
+        if 'thread_ts_msec' in json_dict:
+            timestamp += '[{}]'.format(time.strftime('%H:%M:%S',
+                                       time.localtime(json_dict['thread_ts_msec'] / 1000)))
+        elif 'global_ts_msec' in json_dict:
+            timestamp += '[{}]'.format(time.strftime('%H:%M:%S',
+                                       time.localtime(json_dict['global_ts_msec'] / 1000)))
+
+    first_seen = ''
+    if args.print_first_seen is True:
+        basic_daemon_event_prefix += ' ' * 11
+        if 'flow_first_seen' in json_dict:
+            first_seen = '[' + prettifyTimediff(json_dict['flow_first_seen'] / 1000,
+                                                json_dict['thread_ts_msec'] / 1000) + ']'
+
+    last_seen = ''
+    if args.print_last_seen is True:
+        basic_daemon_event_prefix +=  ' ' * 11
+        if 'flow_last_seen' in json_dict:
+            last_seen = '[' + prettifyTimediff(json_dict['flow_last_seen'] / 1000,
+                                               json_dict['thread_ts_msec'] / 1000) + ']'
 
     if 'daemon_event_id' in json_dict:
-        print('{} {}: {}'.format(instance_and_source,
-                                 prettifyEvent([TermColor.WARNING, TermColor.BLINK], 16, 'DAEMON-EVENT'),
-                                 json_dict['daemon_event_name']))
+        if json_dict['daemon_event_name'] == 'status':
+            color = [TermColor.WARNING]
+            daemon_msg = '[Processed: {} pkts][Flows][active: {} / {}|skipped: {}|!detected: {}' \
+                         '|guessed: {}|detection-updates: {}|updates: {}]'.format(
+                            json_dict['packets-processed'],
+                            json_dict['current-active-flows'], json_dict['total-active-flows'],
+                            json_dict['total-skipped-flows'],
+                            json_dict['total-not-detected-flows'], json_dict['total-guessed-flows'],
+                            json_dict['total-detection-updates'], json_dict['total-updates'])
+        else:
+            color = [TermColor.WARNING, TermColor.BLINK]
+            daemon_msg = json_dict['daemon_event_name']
+        print('{}{}{} {}: {}'.format(timestamp, basic_daemon_event_prefix, instance_and_source,
+                                 prettifyEvent(color, 15, 'DAEMON-EVENT'), daemon_msg))
         stats.printStatus()
         return True
     if 'basic_event_id' in json_dict:
-        print('{} {}: {}'.format(instance_and_source,
-                                 prettifyEvent([TermColor.FAIL, TermColor.BLINK], 16, 'BASIC-EVENT'),
+        print('{}{}{} {}: {}'.format(timestamp, basic_daemon_event_prefix, instance_and_source,
+                                 prettifyEvent([TermColor.FAIL, TermColor.BLINK], 15, 'BASIC-EVENT'),
                                  json_dict['basic_event_name']))
         stats.printStatus()
         return True
@@ -251,28 +290,6 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
     if checkEventFilter(json_dict) is False:
         stats.printStatus()
         return True
-
-    timestamp = ''
-    if args.print_timestamp is True and 'ts_msec' in json_dict:
-        timestamp += '[{}]'.format(time.strftime('%H:%M:%S',
-                                   time.localtime(json_dict['ts_msec'] / 1000)))
-
-    first_seen = ''
-    if args.print_first_seen is True and 'flow_first_seen' in json_dict:
-        first_seen = '[' + prettifyTimediff(json_dict['flow_first_seen'] / 1000,
-                                            json_dict['ts_msec'] / 1000) + ']'
-
-    last_seen = ''
-    if args.print_last_seen is True and 'flow_last_seen' in json_dict:
-        last_seen = '[' + prettifyTimediff(json_dict['flow_last_seen'] / 1000,
-                                           json_dict['ts_msec'] / 1000) + ']'
-
-    if len(last_seen) > 0:
-        last_seen += ' '
-    elif len(timestamp) > 0:
-        timestamp += ' '
-    elif len(first_seen) > 0:
-        first_seen += ' '
 
     ndpi_proto_categ_breed = ''
     ndpi_frisk = ''
@@ -288,14 +305,33 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
             ndpi_proto_categ_breed += '[' + str(json_dict['ndpi']['breed']) + ']'
 
         if 'flow_risk' in json_dict['ndpi']:
+            severity = 0
             cnt = 0
+
             for key in json_dict['ndpi']['flow_risk']:
-                ndpi_frisk += str(json_dict['ndpi']['flow_risk'][key]) + ', '
+                ndpi_frisk += str(json_dict['ndpi']['flow_risk'][key]['risk']) + ', '
+                if json_dict['ndpi']['flow_risk'][key]['severity'] == 'Low':
+                    severity = max(severity, 1)
+                elif json_dict['ndpi']['flow_risk'][key]['severity'] == 'Medium':
+                    severity = max(severity, 2)
+                elif json_dict['ndpi']['flow_risk'][key]['severity'] == 'High':
+                    severity = max(severity, 3)
+                elif json_dict['ndpi']['flow_risk'][key]['severity'] == 'Severe':
+                    severity = max(severity, 4)
                 cnt += 1
-            ndpi_frisk = '{}: {}'.format(
-                TermColor.WARNING + TermColor.BOLD + 'RISK' + TermColor.END if cnt < 2
-                else TermColor.FAIL + TermColor.BOLD + TermColor.BLINK + 'RISK' + TermColor.END,
-                ndpi_frisk[:-2])
+
+            if severity == 1:
+                color = TermColor.WARNING + TermColor.BOLD
+            elif severity == 2:
+                color = TermColor.WARNING + TermColor.BOLD + TermColor.BLINK
+            elif severity == 3:
+                color = TermColor.FAIL + TermColor.BOLD
+            elif severity == 4:
+                color = TermColor.FAIL + TermColor.BOLD + TermColor.BLINK
+            else:
+                color = ''
+
+            ndpi_frisk = '{}{}{}: {}'.format(color, 'RISK', TermColor.END, ndpi_frisk[:-2])
 
     line_suffix = ''
     flow_event_name = ''

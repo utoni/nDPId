@@ -21,7 +21,7 @@ DEFAULT_PORT = 7000
 DEFAULT_UNIX = '/tmp/ndpid-distributor.sock'
 
 NETWORK_BUFFER_MIN_SIZE = 6 # NETWORK_BUFFER_LENGTH_DIGITS + 1
-NETWORK_BUFFER_MAX_SIZE = 13312 # Please keep this value in sync with the one in config.h
+NETWORK_BUFFER_MAX_SIZE = 16384 # Please keep this value in sync with the one in config.h
 
 PKT_TYPE_ETH_IP4 = 0x0800
 PKT_TYPE_ETH_IP6 = 0x86DD
@@ -75,11 +75,14 @@ class TermColor:
         else:
             return '{}{}{}'.format(TermColor.BOLD, string, TermColor.END)
 
+class ThreadData:
+    pass
+
 class Instance:
     alias = ''
     source = ''
-    most_recent_flow_time = 0
     flows = dict()
+    thread_data = dict()
 
     def __init__(self, alias, source):
         self.alias = str(alias)
@@ -94,14 +97,48 @@ class Instance:
             self.source
         )
 
+    def getThreadData(self, thread_id):
+        if thread_id not in self.thread_data:
+            return None
+        return self.thread_data[thread_id]
+
+    def getThreadDataFromJSON(self, json_dict):
+        if 'thread_id' not in json_dict:
+            return None
+        return self.getThreadData(json_dict['thread_id'])
+
+    def getMostRecentFlowTime(self, thread_id):
+        return self.thread_data[thread_id].most_recent_flow_time
+
+    def setMostRecentFlowTime(self, thread_id, most_recent_flow_time):
+        if thread_id in self.thread_data:
+            return self.thread_data[thread_id]
+
+        self.thread_data[thread_id] = ThreadData()
+        self.thread_data[thread_id].most_recent_flow_time = most_recent_flow_time
+        return self.thread_data[thread_id]
+
+    def getMostRecentFlowTimeFromJSON(self, json_dict):
+        if 'thread_id' not in json_dict:
+            return 0
+        return self.getThreadData(json_dict['thread_id']).most_recent_flow_time
+
+    def setMostRecentFlowTimeFromJSON(self, json_dict):
+        thread_id = json_dict['thread_id']
+        if 'thread_ts_msec' in json_dict:
+            mrtf = self.getMostRecentFlowTime(thread_id) if thread_id in self.thread_data else 0
+            self.setMostRecentFlowTime(thread_id, max(json_dict['thread_ts_msec'], mrtf))
+
 class Flow:
     flow_id = -1
+    thread_id = -1
     flow_last_seen = -1
     flow_idle_time = -1
     cleanup_reason = -1
 
-    def __init__(self, flow_id):
+    def __init__(self, flow_id, thread_id):
         self.flow_id = flow_id
+        self.thread_id = thread_id
 
     def __str__(self):
         return '<%s.%s object at %s with flow id %d>' % (
@@ -137,10 +174,7 @@ class FlowManager:
             self.instances[alias][source] = dict()
             self.instances[alias][source] = Instance(alias, source)
 
-        if 'ts_msec' in json_dict:
-            self.instances[alias][source].most_recent_flow_time = \
-                max(self.instances[alias][source].most_recent_flow_time, \
-                    json_dict['ts_msec'])
+        self.instances[alias][source].setMostRecentFlowTimeFromJSON(json_dict)
 
         return self.instances[alias][source]
 
@@ -155,7 +189,8 @@ class FlowManager:
             instance.flows[flow_id].flow_idle_time = int(json_dict['flow_idle_time'])
             return instance.flows[flow_id]
 
-        instance.flows[flow_id] = Flow(flow_id)
+        thread_id = int(json_dict['thread_id'])
+        instance.flows[flow_id] = Flow(flow_id, thread_id)
         instance.flows[flow_id].flow_last_seen = int(json_dict['flow_last_seen'])
         instance.flows[flow_id].flow_idle_time = int(json_dict['flow_idle_time'])
         instance.flows[flow_id].cleanup_reason = FlowManager.CLEANUP_REASON_INVALID
@@ -200,7 +235,7 @@ class FlowManager:
 
         elif 'flow_last_seen' in json_dict:
             if int(json_dict['flow_last_seen']) + int(json_dict['flow_idle_time']) < \
-               instance.most_recent_flow_time:
+               instance.getMostRecentFlowTimeFromJSON(json_dict):
                 flow_id = json_dict['flow_id']
                 instance.flows[flow_id].cleanup_reason = FlowManager.CLEANUP_REASON_FLOW_TIMEOUT
                 flows[flow_id] = instance.flows.pop(flow_id)
@@ -227,9 +262,10 @@ class FlowManager:
         for alias in self.instances:
             for source in self.instances[alias]:
                 for flow_id in self.instances[alias][source].flows:
+                    thread_id = self.instances[alias][source].flows[flow_id].thread_id
                     if self.instances[alias][source].flows[flow_id].flow_last_seen + \
                        self.instances[alias][source].flows[flow_id].flow_idle_time < \
-                       self.instances[alias][source].most_recent_flow_time:
+                       self.instances[alias][source].getMostRecentFlowTime(thread_id):
                         invalid_flows += [flow_id]
 
         return invalid_flows

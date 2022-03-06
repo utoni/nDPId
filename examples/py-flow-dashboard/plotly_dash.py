@@ -89,7 +89,7 @@ def build_piechart(labels, values, color_map=None):
 COLOR_MAP = {
     'piechart-flows': ['rgb(153, 153, 255)', 'rgb(153, 204, 255)', 'rgb(255, 204, 153)', 'rgb(255, 255, 255)'],
     'piechart-midstream-flows': ['rgb(255, 255, 153)', 'rgb(153, 153, 255)'],
-    'piechart-risky-flows': ['rgb(255, 153, 153)', 'rgb(153, 153, 255)'],
+    'piechart-risky-flows': ['rgb(255, 0, 0)', 'rgb(255, 128, 0)', 'rgb(255, 255, 0)', 'rgb(128, 255, 0)', 'rgb(153, 153, 255)'],
     'graph-flows': {'Current Active Flows': {'color': 'rgb(153, 153, 255)', 'width': 1},
                     'Current Risky Flows': {'color': 'rgb(255, 153, 153)', 'width': 3},
                     'Current Midstream Flows': {'color': 'rgb(255, 255, 153)', 'width': 3},
@@ -150,7 +150,7 @@ def generate_tab_flow():
                 config={
                     'displayModeBar': False,
                 },
-                figure=build_piechart(['Risky', 'Not Risky'],
+                figure=build_piechart(['Severy Risk', 'High Risk', 'Medium Risk', 'Low Risk', 'No Risk'],
                                       [0, 0], COLOR_MAP['piechart-risky-flows']),
             ),
         ], style={'padding': 10, 'flex': 1}),
@@ -257,8 +257,11 @@ def tab_flow_update_components(n):
                             shared_flow_dict['current-flows'] -
                             shared_flow_dict['current-midstream-flows']],
                            COLOR_MAP['piechart-midstream-flows']),
-            build_piechart(['Risky', 'Not Risky'],
-                           [shared_flow_dict['current-risky-flows'],
+            build_piechart(['Severe', 'High', 'Medium', 'Low', 'No Risk'],
+                           [shared_flow_dict['current-risky-flows-severe'],
+                            shared_flow_dict['current-risky-flows-high'],
+                            shared_flow_dict['current-risky-flows-medium'],
+                            shared_flow_dict['current-risky-flows-low'],
                             shared_flow_dict['current-flows'] -
                             shared_flow_dict['current-risky-flows']],
                            COLOR_MAP['piechart-risky-flows'])]

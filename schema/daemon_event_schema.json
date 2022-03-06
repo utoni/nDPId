@@ -6,19 +6,20 @@
         "thread_id",
         "packet_id",
         "daemon_event_id",
-        "daemon_event_name"
+        "daemon_event_name",
+        "global_ts_msec"
     ],
     "if": {
-        "properties": { "daemon_event_name": { "const": "init" } }
+        "properties": { "daemon_event_name": { "enum": [ "init", "reconnect" ] } }
     },
     "then": {
         "required": [ "max-flows-per-thread", "max-idle-flows-per-thread", "tick-resolution", "reader-thread-count", "flow-scan-interval", "generic-max-idle-time", "icmp-max-idle-time", "udp-max-idle-time", "tcp-max-idle-time", "max-packets-per-flow-to-send", "max-packets-per-flow-to-process" ]
     },
     "if": {
-        "properties": { "daemon_event_name": { "const": "shutdown" } }
+        "properties": { "daemon_event_name": { "enum": [ "status", "shutdown" ] } }
     },
     "then": {
-        "required": [ "total-events-serialized" ]
+        "required": [ "packets-captured", "packets-processed", "total-skipped-flows", "total-l4-data-len", "total-not-detected-flows", "total-guessed-flows", "total-detected-flows", "total-detection-updates", "total-updates", "current-active-flows", "total-active-flows", "total-idle-flows", "total-events-serialized" ]
     },
     "properties": {
         "alias": {
@@ -39,7 +40,7 @@
         "daemon_event_id": {
             "type": "number",
             "minimum": 0,
-            "maximum": 3
+            "maximum": 4
         },
         "daemon_event_name": {
             "type": "string",
@@ -47,9 +48,11 @@
                 "invalid",
                 "init",
                 "reconnect",
-                "shutdown"
+                "shutdown",
+                "status"
             ]
         },
+
         "max-flows-per-thread": {
             "type": "number"
         },
@@ -83,9 +86,62 @@
         "max-packets-per-flow-to-send": {
             "type": "number"
         },
+
+        "packets-captured": {
+            "type": "number",
+            "minimum": 0
+        },
+        "packets-processed": {
+            "type": "number",
+            "minimum": 0
+        },
+        "total-skipped-flows": {
+            "type": "number",
+            "minimum": 0
+        },
+        "total-l4-data-len": {
+            "type": "number",
+            "minimum": 0
+        },
+        "total-not-detected-flows": {
+            "type": "number",
+            "minimum": 0
+        },
+        "total-guessed-flows": {
+            "type": "number",
+            "minimum": 0
+        },
+        "total-detected-flows": {
+            "type": "number",
+            "minimum": 0
+        },
+        "total-detection-updates": {
+            "type": "number",
+            "minimum": 0
+        },
+        "total-updates": {
+            "type": "number",
+            "minimum": 0
+        },
+        "current-active-flows": {
+            "type": "number",
+            "minimum": 0
+        },
+        "total-active-flows": {
+            "type": "number",
+            "minimum": 0
+        },
+        "total-idle-flows": {
+            "type": "number",
+            "minimum": 0
+        },
         "total-events-serialized": {
             "type": "number",
             "minimum": 1
+        },
+        "global_ts_msec": {
+            "type": "number",
+            "minimum": 0
         }
     },
     "additionalProperties": false

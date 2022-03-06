@@ -14,7 +14,7 @@
         "pkt_l4_offset",
         "pkt_len",
         "pkt_l4_len",
-        "ts_msec"
+        "thread_ts_msec"
     ],
 
     "dependencies" : {
@@ -93,7 +93,7 @@
             "minimum": 0,
             "maximum": 65535
         },
-        "ts_msec": {
+        "thread_ts_msec": {
             "type": "number",
             "minimum": 0
         },
