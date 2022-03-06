@@ -38,6 +38,14 @@
 #define ETHERTYPE_PAE 0x888e
 #endif
 
+#ifndef DLT_DSA_TAG_DSA
+#define DLT_DSA_TAG_DSA 284
+#endif
+
+#ifndef DLT_DSA_TAG_EDSA
+#define DLT_DSA_TAG_EDSA 285
+#endif
+
 #if ((NDPI_MAJOR == 3 && NDPI_MINOR < 5) || NDPI_MAJOR < 3) && NDPI_API_VERSION < 4087
 #error "nDPI >= 3.5.0 or API version >= 4087 required"
 #endif
