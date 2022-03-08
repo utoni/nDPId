@@ -29,23 +29,22 @@ def set_attr_if_not_set(some_object, attr_name, value):
         setattr(some_object, attr_name, value)
 
 class Stats:
-    last_status_length = 0
-    avg_xfer_json_bytes = 0.0
-    expired_tot_l4_payload_len = 0
-    expired_avg_l4_payload_len = 0
-    total_flows        = 0
-    risky_flows        = 0
-    midstream_flows    = 0
-    guessed_flows      = 0
-    not_detected_flows = 0
-    start_time    = 0.0
-    current_time  = 0.0
-    json_lines    = 0
-    spinner_state = 0
 
     def __init__(self, nDPIsrvd_sock):
         self.start_time = time.time()
         self.nsock = nDPIsrvd_sock
+        self.last_status_length = 0
+        self.avg_xfer_json_bytes = 0.0
+        self.expired_tot_l4_payload_len = 0
+        self.expired_avg_l4_payload_len = 0
+        self.total_flows        = 0
+        self.risky_flows        = 0
+        self.midstream_flows    = 0
+        self.guessed_flows      = 0
+        self.not_detected_flows = 0
+        self.current_time  = 0.0
+        self.json_lines    = 0
+        self.spinner_state = 0
 
     def updateSpinner(self):
         if self.current_time + 0.25 <= time.time():

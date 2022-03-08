@@ -79,14 +79,12 @@ class ThreadData:
     pass
 
 class Instance:
-    alias = ''
-    source = ''
-    flows = dict()
-    thread_data = dict()
 
     def __init__(self, alias, source):
         self.alias = str(alias)
         self.source = str(source)
+        self.flows = dict()
+        self.thread_data = dict()
 
     def __str__(self):
         return '<%s.%s object at %s with alias %s, source %s>' % (
@@ -130,15 +128,13 @@ class Instance:
             self.setMostRecentFlowTime(thread_id, max(json_dict['thread_ts_msec'], mrtf))
 
 class Flow:
-    flow_id = -1
-    thread_id = -1
-    flow_last_seen = -1
-    flow_idle_time = -1
-    cleanup_reason = -1
 
     def __init__(self, flow_id, thread_id):
         self.flow_id = flow_id
         self.thread_id = thread_id
+        self.flow_last_seen = -1
+        self.flow_idle_time = -1
+        self.cleanup_reason = -1
 
     def __str__(self):
         return '<%s.%s object at %s with flow id %d>' % (

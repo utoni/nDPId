@@ -19,40 +19,40 @@ FLOW_RISK_LOW    = 1
 def nDPIsrvd_worker_onFlowCleanup(instance, current_flow, global_user_data):
     _, shared_flow_dict = global_user_data
 
-    flow_id = current_flow.flow_id
+    flow_key = current_flow.flow_key
 
     shared_flow_dict['current-flows'] -= 1
 
-    if flow_id not in shared_flow_dict:
+    if flow_key not in shared_flow_dict:
         return True
 
-    shared_flow_dict['total-l4-bytes'] += shared_flow_dict[flow_id]['total-l4-bytes']
+    shared_flow_dict['total-l4-bytes'] += shared_flow_dict[flow_key]['total-l4-bytes']
 
-    if shared_flow_dict[flow_id]['is_detected'] is True:
+    if shared_flow_dict[flow_key]['is_detected'] is True:
         shared_flow_dict['current-detected-flows'] -= 1
 
-    if shared_flow_dict[flow_id]['is_guessed'] is True:
+    if shared_flow_dict[flow_key]['is_guessed'] is True:
         shared_flow_dict['current-guessed-flows'] -= 1
 
-    if shared_flow_dict[flow_id]['is_not_detected'] is True:
+    if shared_flow_dict[flow_key]['is_not_detected'] is True:
         shared_flow_dict['current-not-detected-flows'] -= 1
 
-    if shared_flow_dict[flow_id]['is_midstream'] is True:
+    if shared_flow_dict[flow_key]['is_midstream'] is True:
         shared_flow_dict['current-midstream-flows'] -= 1
 
-    if shared_flow_dict[flow_id]['is_risky'] > 0:
+    if shared_flow_dict[flow_key]['is_risky'] > 0:
         shared_flow_dict['current-risky-flows'] -= 1
 
-    if shared_flow_dict[flow_id]['is_risky'] == FLOW_RISK_LOW:
+    if shared_flow_dict[flow_key]['is_risky'] == FLOW_RISK_LOW:
         shared_flow_dict['current-risky-flows-low'] -= 1
-    elif shared_flow_dict[flow_id]['is_risky'] == FLOW_RISK_MEDIUM:
+    elif shared_flow_dict[flow_key]['is_risky'] == FLOW_RISK_MEDIUM:
         shared_flow_dict['current-risky-flows-medium'] -= 1
-    elif shared_flow_dict[flow_id]['is_risky'] == FLOW_RISK_HIGH:
+    elif shared_flow_dict[flow_key]['is_risky'] == FLOW_RISK_HIGH:
         shared_flow_dict['current-risky-flows-high'] -= 1
-    elif shared_flow_dict[flow_id]['is_risky'] == FLOW_RISK_SEVERE:
+    elif shared_flow_dict[flow_key]['is_risky'] == FLOW_RISK_SEVERE:
         shared_flow_dict['current-risky-flows-severe'] -= 1
 
-    del shared_flow_dict[current_flow.flow_id]
+    del shared_flow_dict[current_flow.flow_key]
 
     return True
 
@@ -76,42 +76,53 @@ def nDPIsrvd_worker_onJsonLineRecvd(json_dict, instance, current_flow, global_us
     if 'flow_id' not in json_dict:
         return True
     else:
-        if current_flow.flow_id != json_dict['flow_id']:
-            return False
-        flow_id = current_flow.flow_id
+        flow_key = json_dict['alias'] + '-' + json_dict['source'] + '-' + str(json_dict['flow_id'])
 
-    if flow_id not in shared_flow_dict:
-        shared_flow_dict[flow_id] = mgr.dict()
-        shared_flow_dict[flow_id]['is_detected']     = False
-        shared_flow_dict[flow_id]['is_guessed']      = False
-        shared_flow_dict[flow_id]['is_not_detected'] = False
-        shared_flow_dict[flow_id]['is_midstream']    = False
-        shared_flow_dict[flow_id]['is_risky']        = 0
-        shared_flow_dict[flow_id]['total-l4-bytes']  = 0
+    if flow_key not in shared_flow_dict:
+        current_flow.flow_key = flow_key
+        shared_flow_dict[flow_key] = mgr.dict()
+        shared_flow_dict[flow_key]['is_detected']     = False
+        shared_flow_dict[flow_key]['is_guessed']      = False
+        shared_flow_dict[flow_key]['is_not_detected'] = False
+        shared_flow_dict[flow_key]['is_midstream']    = False
+        shared_flow_dict[flow_key]['is_risky']        = 0
+        shared_flow_dict[flow_key]['total-l4-bytes']  = 0
 
-        shared_flow_dict[flow_id]['json'] = mgr.dict()
+        shared_flow_dict[flow_key]['json'] = mgr.dict()
 
         shared_flow_dict['total-flows']   += 1
         shared_flow_dict['current-flows'] += 1
 
+    if current_flow.flow_key != flow_key:
+        return False
+
     if 'flow_tot_l4_payload_len' in json_dict:
-        shared_flow_dict[flow_id]['total-l4-bytes'] = json_dict['flow_tot_l4_payload_len']
+        shared_flow_dict[flow_key]['total-l4-bytes'] = json_dict['flow_tot_l4_payload_len']
 
     if 'midstream' in json_dict and json_dict['midstream'] != 0:
-        if shared_flow_dict[flow_id]['is_midstream'] is False:
+        if shared_flow_dict[flow_key]['is_midstream'] is False:
             shared_flow_dict['total-midstream-flows']   += 1
             shared_flow_dict['current-midstream-flows'] += 1
-        shared_flow_dict[flow_id]['is_midstream'] = True
+        shared_flow_dict[flow_key]['is_midstream'] = True
 
     if 'ndpi' in json_dict:
-        # XXX: Will make use of that JSON string in Plotly. Soon..
-        shared_flow_dict[flow_id]['json']['ndpi'] = json_dict['ndpi']
+        shared_flow_dict[flow_key]['json']['ndpi'] = json_dict['ndpi']
 
-        if 'flow_risk' in json_dict['ndpi'] and shared_flow_dict[flow_id]['is_risky'] == 0:
-            shared_flow_dict['total-risky-flows']   += 1
-            shared_flow_dict['current-risky-flows'] += 1
+        if 'flow_risk' in json_dict['ndpi']:
+            if shared_flow_dict[flow_key]['is_risky'] == 0:
+                shared_flow_dict['total-risky-flows']   += 1
+                shared_flow_dict['current-risky-flows'] += 1
 
-            severity = shared_flow_dict[flow_id]['is_risky']
+            severity = shared_flow_dict[flow_key]['is_risky']
+            if severity == FLOW_RISK_LOW:
+                shared_flow_dict['current-risky-flows-low'] -= 1
+            elif severity == FLOW_RISK_MEDIUM:
+                shared_flow_dict['current-risky-flows-medium'] -= 1
+            elif severity == FLOW_RISK_HIGH:
+                shared_flow_dict['current-risky-flows-high'] -= 1
+            elif severity == FLOW_RISK_SEVERE:
+                shared_flow_dict['current-risky-flows-severe'] -= 1
+
             for key in json_dict['ndpi']['flow_risk']:
                 if json_dict['ndpi']['flow_risk'][key]['severity'] == 'Low':
                     severity = max(severity, FLOW_RISK_LOW)
@@ -124,15 +135,15 @@ def nDPIsrvd_worker_onJsonLineRecvd(json_dict, instance, current_flow, global_us
                 else:
                     raise RuntimeError('Invalid flow risk severity: {}'.format(
                                        json_dict['ndpi']['flow_risk'][key]['severity']))
-            shared_flow_dict[flow_id]['is_risky'] = severity
 
-            if shared_flow_dict[flow_id]['is_risky'] == FLOW_RISK_LOW:
+            shared_flow_dict[flow_key]['is_risky'] = severity
+            if severity == FLOW_RISK_LOW:
                 shared_flow_dict['current-risky-flows-low'] += 1
-            elif shared_flow_dict[flow_id]['is_risky'] == FLOW_RISK_MEDIUM:
+            elif severity == FLOW_RISK_MEDIUM:
                 shared_flow_dict['current-risky-flows-medium'] += 1
-            elif shared_flow_dict[flow_id]['is_risky'] == FLOW_RISK_HIGH:
+            elif severity == FLOW_RISK_HIGH:
                 shared_flow_dict['current-risky-flows-high'] += 1
-            elif shared_flow_dict[flow_id]['is_risky'] == FLOW_RISK_SEVERE:
+            elif severity == FLOW_RISK_SEVERE:
                 shared_flow_dict['current-risky-flows-severe'] += 1
 
     if 'flow_event_name' not in json_dict:
@@ -140,10 +151,10 @@ def nDPIsrvd_worker_onJsonLineRecvd(json_dict, instance, current_flow, global_us
 
     if json_dict['flow_state'] == 'finished' and \
        json_dict['ndpi']['proto'] != 'Unknown' and \
-       shared_flow_dict[flow_id]['is_detected'] is False:
+       shared_flow_dict[flow_key]['is_detected'] is False:
         shared_flow_dict['total-detected-flows']   += 1
         shared_flow_dict['current-detected-flows'] += 1
-        shared_flow_dict[flow_id]['is_detected'] = True
+        shared_flow_dict[flow_key]['is_detected'] = True
 
     if json_dict['flow_event_name'] == 'new':
 
@@ -165,19 +176,19 @@ def nDPIsrvd_worker_onJsonLineRecvd(json_dict, instance, current_flow, global_us
 
         shared_flow_dict['total-flow-guessed-events'] += 1
 
-        if shared_flow_dict[flow_id]['is_guessed'] is False:
+        if shared_flow_dict[flow_key]['is_guessed'] is False:
             shared_flow_dict['total-guessed-flows']   += 1
             shared_flow_dict['current-guessed-flows'] += 1
-        shared_flow_dict[flow_id]['is_guessed'] = True
+        shared_flow_dict[flow_key]['is_guessed'] = True
 
     elif json_dict['flow_event_name'] == 'not-detected':
 
         shared_flow_dict['total-flow-not-detected-events'] += 1
 
-        if shared_flow_dict[flow_id]['is_not_detected'] is False:
+        if shared_flow_dict[flow_key]['is_not_detected'] is False:
             shared_flow_dict['total-not-detected-flows']   += 1
             shared_flow_dict['current-not-detected-flows'] += 1
-        shared_flow_dict[flow_id]['is_not_detected'] = True
+        shared_flow_dict[flow_key]['is_not_detected'] = True
 
     elif json_dict['flow_event_name'] == 'detected' or \
          json_dict['flow_event_name'] == 'detection-update':
@@ -187,15 +198,15 @@ def nDPIsrvd_worker_onJsonLineRecvd(json_dict, instance, current_flow, global_us
         else:
             shared_flow_dict['total-flow-detected-events'] += 1
 
-        if shared_flow_dict[flow_id]['is_detected'] is False:
+        if shared_flow_dict[flow_key]['is_detected'] is False:
             shared_flow_dict['total-detected-flows']   += 1
             shared_flow_dict['current-detected-flows'] += 1
-        shared_flow_dict[flow_id]['is_detected'] = True
+        shared_flow_dict[flow_key]['is_detected'] = True
 
-        if shared_flow_dict[flow_id]['is_guessed'] is True:
+        if shared_flow_dict[flow_key]['is_guessed'] is True:
             shared_flow_dict['total-guessed-flows']   -= 1
             shared_flow_dict['current-guessed-flows'] -= 1
-        shared_flow_dict[flow_id]['is_guessed'] = False
+        shared_flow_dict[flow_key]['is_guessed'] = False
 
     return True
 

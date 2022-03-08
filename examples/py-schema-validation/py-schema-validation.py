@@ -10,9 +10,11 @@ import nDPIsrvd
 from nDPIsrvd import nDPIsrvdSocket, TermColor
 
 class Stats:
-    lines_processed = 0
-    print_dot_every = 10
-    print_nmb_every = print_dot_every * 5
+
+    def __init__(self):
+        self.lines_processed = 0
+        self.print_dot_every = 10
+        self.print_nmb_every = self.print_dot_every * 5
 
 def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
     validation_done = nDPIsrvd.validateAgainstSchema(json_dict)
