@@ -40,6 +40,7 @@ else()
     set(LIBM_LIB "")
 endif()
 
+option(ENABLE_COVERAGE "Generate a code coverage report using lcov/genhtml." OFF)
 option(ENABLE_SANITIZER "Enable ASAN/LSAN/UBSAN." OFF)
 option(ENABLE_SANITIZER_THREAD "Enable TSAN (does not work together with ASAN)." OFF)
 option(ENABLE_MEMORY_PROFILING "Enable dynamic memory tracking." OFF)
@@ -110,6 +111,16 @@ if(BUILD_NDPI AND NDPI_WITH_GCRYPT)
     endif()
 endif()
 
+if(ENABLE_COVERAGE)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fprofile-arcs -ftest-coverage")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
+    add_custom_target(coverage)
+    add_custom_command(
+        TARGET  coverage
+        COMMAND "${CMAKE_SOURCE_DIR}/scripts/code-coverage.sh"
+        DEPENDS nDPId nDPIsrvd nDPId-test
+    )
+endif()
 if(ENABLE_SANITIZER)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address -fsanitize=undefined -fno-sanitize=alignment -fsanitize=enum -fsanitize=leak")
 endif()
@@ -303,6 +314,10 @@ if(BUILD_EXAMPLES)
                                           "${pkgcfg_lib_PCRE_pcre}" "${pkgcfg_lib_MAXMINDDB_maxminddb}"
                                           "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}")
 
+    if(ENABLE_COVERAGE)
+        add_dependencies(coverage nDPIsrvd-collectd nDPIsrvd-captured nDPIsrvd-json-dump nDPIsrvd-simple)
+    endif()
+
     install(TARGETS nDPIsrvd-collectd nDPIsrvd-captured nDPIsrvd-json-dump nDPIsrvd-simple DESTINATION bin)
 endif()
 
@@ -337,6 +352,7 @@ message(STATUS "CROSS_COMPILE_TRIPLET....: ${CROSS_COMPILE_TRIPLET}")
 message(STATUS "CMAKE_BUILD_TYPE.........: ${CMAKE_BUILD_TYPE}")
 message(STATUS "CMAKE_C_FLAGS............: ${CMAKE_C_FLAGS}")
 message(STATUS "NDPID_DEFS...............: ${NDPID_DEFS}")
+message(STATUS "ENABLE_COVERAGE..........: ${ENABLE_COVERAGE}")
 message(STATUS "ENABLE_SANITIZER.........: ${ENABLE_SANITIZER}")
 message(STATUS "ENABLE_SANITIZER_THREAD..: ${ENABLE_SANITIZER_THREAD}")
 message(STATUS "ENABLE_MEMORY_PROFILING..: ${ENABLE_MEMORY_PROFILING}")

@@ -36,7 +36,7 @@ jobs:
       - name: Configure nDPI
         run: |
           mkdir build && cd build
-          env CMAKE_C_FLAGS='-Werror' cmake .. -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DENABLE_SANITIZER=ON -DENABLE_ZLIB=ON ${{ matrix.ndpid_gcrypt }}
+          env CMAKE_C_FLAGS='-Werror' cmake .. -DENABLE_COVERAGE=ON -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DENABLE_SANITIZER=ON -DENABLE_ZLIB=ON ${{ matrix.ndpid_gcrypt }}
       - name: Build nDPI
         run: |
           make -C build all VERBOSE=1
@@ -52,6 +52,9 @@ jobs:
         run: |
           make -C ./build daemon VERBOSE=1
           make -C ./build daemon VERBOSE=1
+      - name: Coverage
+        run: |
+          make -C ./build coverage
       - name: Dist
         run: |
           make -C ./build dist
