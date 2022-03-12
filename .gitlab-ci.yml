@@ -12,7 +12,7 @@ before_script:
         build-essential make cmake binutils gcc autoconf automake \
         libtool pkg-config git \
         libpcap-dev libgcrypt-dev libgpg-error-dev libjson-c-dev zlib1g-dev \
-        netcat-openbsd python3 python3-jsonschema tree
+        netcat-openbsd python3 python3-jsonschema tree lcov
 
 after_script:
   - cat /tmp/nDPIsrvd.log
@@ -30,6 +30,8 @@ build_and_test:
     - cpack -G DEB
     - cd ..
     - ./test/run_tests.sh ./libnDPI ./build-cmake-submodule/nDPId-test
+    # generate coverage report
+    - make -C ./build-cmake-submodule coverage
     - >
       if ldd build/nDPId | grep -qoEi libndpi; then \
       echo 'nDPId linked against a static libnDPI should not contain a shared linked libnDPI.' >&2; false; fi
@@ -37,7 +39,7 @@ build_and_test:
     - mkdir build
     - cd build
     - export PKG_CONFIG_PATH="$(realpath ../build-cmake-submodule/libnDPI/lib/pkgconfig)"
-    - env CMAKE_C_FLAGS='-Werror' cmake .. -DENABLE_COVERAGE=ON -DBUILD_EXAMPLES=ON -DENABLE_SANITIZER=ON -DENABLE_MEMORY_PROFILING=ON -DENABLE_ZLIB=ON
+    - env CMAKE_C_FLAGS='-Werror' cmake .. -DBUILD_EXAMPLES=ON -DENABLE_SANITIZER=ON -DENABLE_MEMORY_PROFILING=ON -DENABLE_ZLIB=ON
     - make all VERBOSE=1
     - cd ..
     - ./build/nDPId-test || test $? -eq 1
@@ -45,8 +47,6 @@ build_and_test:
     # dameon start/stop test
     - NUSER=nobody make -C ./build daemon VERBOSE=1
     - NUSER=nobody make -C ./build daemon VERBOSE=1
-    # generate coverage report
-    - make -C ./build coverage
     # make dist
     - make -C ./build dist
   artifacts:
