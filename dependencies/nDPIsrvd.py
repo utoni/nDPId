@@ -122,6 +122,8 @@ class Instance:
         return self.getThreadData(json_dict['thread_id']).most_recent_flow_time
 
     def setMostRecentFlowTimeFromJSON(self, json_dict):
+        if 'thread_id' not in json_dict:
+            return
         thread_id = json_dict['thread_id']
         if 'thread_ts_msec' in json_dict:
             mrtf = self.getMostRecentFlowTime(thread_id) if thread_id in self.thread_data else 0

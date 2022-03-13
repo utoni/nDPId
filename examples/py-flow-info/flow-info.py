@@ -231,7 +231,7 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
         instance_and_source += '[{}][{}][{:.>2}] '.format(
                         TermColor.setColorByString(instance.alias),
                         TermColor.setColorByString(instance.source),
-                        json_dict['thread_id'])
+                        json_dict['thread_id'] if 'thread_id' in json_dict else '')
     else:
         instance_and_source += ' '
 

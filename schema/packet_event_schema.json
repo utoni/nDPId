@@ -3,7 +3,6 @@
     "required": [
         "alias",
         "source",
-        "thread_id",
         "packet_id",
         "packet_event_id",
         "packet_event_name",
@@ -25,7 +24,10 @@
         "properties": { "packet_event_name": { "enum": ["packet-flow"] } }
     },
     "then": {
-        "required": [ "flow_id", "flow_packet_id", "flow_last_seen", "flow_idle_time" ]
+        "required": [ "thread_id", "flow_id", "flow_packet_id", "flow_last_seen", "flow_idle_time" ]
+    },
+    "else": {
+        "not": { "required": [ "thread_id", "flow_id", "flow_packet_id", "flow_last_seen", "flow_idle_time" ] }
     },
 
     "properties": {

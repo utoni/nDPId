@@ -243,7 +243,7 @@ endif()
 find_package(PCAP "1.8.1" REQUIRED)
 
 target_compile_options(nDPId PRIVATE "-pthread")
-target_compile_definitions(nDPId PRIVATE -DGIT_VERSION=\"${GIT_VERSION}\" ${NDPID_DEFS} ${ZLIB_DEFS})
+target_compile_definitions(nDPId PRIVATE -D_GNU_SOURCE=1 -DGIT_VERSION=\"${GIT_VERSION}\" ${NDPID_DEFS} ${ZLIB_DEFS})
 target_include_directories(nDPId PRIVATE
                            "${STATIC_LIBNDPI_INC}" "${NDPI_INCLUDEDIR}" "${NDPI_INCLUDEDIR}/ndpi")
 target_link_libraries(nDPId "${STATIC_LIBNDPI_LIB}" "${pkgcfg_lib_NDPI_ndpi}"
@@ -251,7 +251,7 @@ target_link_libraries(nDPId "${STATIC_LIBNDPI_LIB}" "${pkgcfg_lib_NDPI_ndpi}"
                             "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}" "${LIBM_LIB}"
                             "-pthread")
 
-target_compile_definitions(nDPIsrvd PRIVATE -DGIT_VERSION=\"${GIT_VERSION}\" ${NDPID_DEFS})
+target_compile_definitions(nDPIsrvd PRIVATE -D_GNU_SOURCE=1 -DGIT_VERSION=\"${GIT_VERSION}\" ${NDPID_DEFS})
 target_include_directories(nDPIsrvd PRIVATE
                            "${CMAKE_SOURCE_DIR}"
                            "${CMAKE_SOURCE_DIR}/dependencies"

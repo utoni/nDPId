@@ -117,9 +117,6 @@ static void simple_flow_cleanup_callback(struct nDPIsrvd_socket * const sock,
 
 int main(int argc, char ** argv)
 {
-    (void)argc;
-    (void)argv;
-
     signal(SIGUSR1, sighandler);
     signal(SIGINT, sighandler);
     signal(SIGTERM, sighandler);
@@ -131,7 +128,7 @@ int main(int argc, char ** argv)
         return 1;
     }
 
-    if (nDPIsrvd_setup_address(&sock->address, "127.0.0.1:7000") != 0)
+    if (nDPIsrvd_setup_address(&sock->address, (argc > 1 ? argv[1] : "127.0.0.1:7000")) != 0)
     {
         return 1;
     }

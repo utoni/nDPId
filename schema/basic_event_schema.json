@@ -3,7 +3,6 @@
     "required": [
         "alias",
         "source",
-        "thread_id",
         "packet_id",
         "basic_event_id",
         "basic_event_name",
@@ -15,14 +14,20 @@
         "properties": { "basic_event_name": { "enum": [ "Unknown datalink layer packet", "Unknown packet type" ] } }
     },
     "then": {
-        "required": [ "layer_type" ]
+        "anyOf": [
+            { "required": [ "layer_type" ] },
+            { "not": { "required": [ "thread_id" ] } }
+        ]
     },
 
     "if": {
         "properties": { "basic_event_name": { "enum": [ "Unknown L3 protocol" ] } }
     },
     "then": {
-        "required": [ "protocol" ]
+        "anyOf": [
+            { "required": [ "protocol" ] },
+            { "not": { "required": [ "thread_id" ] } }
+        ]
     },
 
     "if": {
@@ -32,28 +37,34 @@
                                                         "Captured packet size is smaller than expected packet size" ] } }
     },
     "then": {
-        "required": [ "size", "expected" ]
+        "anyOf": [
+            { "required": [ "size", "expected" ] },
+            { "not": { "required": [ "thread_id" ] } }
+        ]
     },
 
     "if": {
         "properties": { "basic_event_name": { "enum": [ "Packet header invalid" ] } }
     },
     "then": {
-        "required": [ "raeson" ]
+        "anyOf": [
+            { "required": [ "raeson" ] },
+            { "not": { "required": [ "thread_id" ] } }
+        ]
     },
 
     "if": {
         "properties": { "basic_event_name": { "enum": [ "Flow memory allocation failed" ] } }
     },
     "then": {
-        "required": [ "size" ]
+        "required": [ "thread_id", "size" ]
     },
 
     "if": {
         "properties": { "basic_event_name": { "enum": [ "Max flows to track reached" ] } }
     },
     "then": {
-        "required": [ "current_active", "current_idle", "max_active", "max_idle" ]
+        "required": [ "thread_id", "current_active", "current_idle", "max_active", "max_idle" ]
     },
 
     "properties": {
