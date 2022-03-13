@@ -62,7 +62,7 @@ def nDPIsrvd_worker_onJsonLineRecvd(json_dict, instance, current_flow, global_us
     shared_flow_dict['total-events'] += 1
     shared_flow_dict['total-json-bytes'] = nsock.received_bytes
 
-    if 'basic_event_name' in json_dict:
+    if 'error_event_name' in json_dict:
         shared_flow_dict['total-base-events'] += 1
 
     if 'daemon_event_name' in json_dict:

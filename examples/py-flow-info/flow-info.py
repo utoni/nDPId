@@ -276,10 +276,10 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
                                  prettifyEvent(color, 15, 'DAEMON-EVENT'), daemon_msg))
         stats.printStatus()
         return True
-    if 'basic_event_id' in json_dict:
+    if 'error_event_id' in json_dict:
         print('{}{}{} {}: {}'.format(timestamp, basic_daemon_event_prefix, instance_and_source,
-                                 prettifyEvent([TermColor.FAIL, TermColor.BLINK], 15, 'BASIC-EVENT'),
-                                 json_dict['basic_event_name']))
+                                 prettifyEvent([TermColor.FAIL, TermColor.BLINK], 15, 'ERROR-EVENT'),
+                                 json_dict['error_event_name']))
         stats.printStatus()
         return True
     elif 'flow_event_id' not in json_dict:

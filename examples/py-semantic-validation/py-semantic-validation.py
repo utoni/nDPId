@@ -143,7 +143,7 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
 
     td = instance.getThreadDataFromJSON(json_dict)
 
-    for event_name in ['basic_event_name', 'daemon_event_name',
+    for event_name in ['error_event_name', 'daemon_event_name',
                        'packet_event_name', 'flow_event_name']:
         if event_name in json_dict and json_dict[event_name].lower() == 'invalid':
             raise SemanticValidationException(current_flow,

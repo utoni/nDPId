@@ -459,7 +459,7 @@ def validateAddress(args):
     return address
 
 global schema
-schema = {'packet_event_schema' : None, 'basic_event_schema' : None, 'daemon_event_schema' : None, 'flow_event_schema' : None}
+schema = {'packet_event_schema' : None, 'error_event_schema' : None, 'daemon_event_schema' : None, 'flow_event_schema' : None}
 
 def initSchemaValidator(schema_dirs=[]):
     if len(schema_dirs) == 0:
@@ -486,11 +486,11 @@ def validateAgainstSchema(json_dict):
         except AttributeError:
             jsonschema.validate(instance=json_dict, schema=schema['packet_event_schema'])
         return True
-    if 'basic_event_id' in json_dict:
+    if 'error_event_id' in json_dict:
         try:
-            jsonschema.Draft7Validator(schema=schema['basic_event_schema']).validate(instance=json_dict)
+            jsonschema.Draft7Validator(schema=schema['error_event_schema']).validate(instance=json_dict)
         except AttributeError:
-            jsonschema.validate(instance=json_dict, schema=schema['basic_event_schema'])
+            jsonschema.validate(instance=json_dict, schema=schema['error_event_schema'])
         return True
     if 'daemon_event_id' in json_dict:
         try:

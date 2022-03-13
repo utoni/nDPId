@@ -4,14 +4,14 @@
         "alias",
         "source",
         "packet_id",
-        "basic_event_id",
-        "basic_event_name",
+        "error_event_id",
+        "error_event_name",
         "datalink",
         "global_ts_msec"
     ],
 
     "if": {
-        "properties": { "basic_event_name": { "enum": [ "Unknown datalink layer packet", "Unknown packet type" ] } }
+        "properties": { "error_event_name": { "enum": [ "Unknown datalink layer packet", "Unknown packet type" ] } }
     },
     "then": {
         "anyOf": [
@@ -21,7 +21,7 @@
     },
 
     "if": {
-        "properties": { "basic_event_name": { "enum": [ "Unknown L3 protocol" ] } }
+        "properties": { "error_event_name": { "enum": [ "Unknown L3 protocol" ] } }
     },
     "then": {
         "anyOf": [
@@ -31,7 +31,7 @@
     },
 
     "if": {
-        "properties": { "basic_event_name": { "enum": [ "Packet too short", "IP4 packet too short",
+        "properties": { "error_event_name": { "enum": [ "Packet too short", "IP4 packet too short",
                                                         "IP6 packet too short", "TCP packet smaller than expected",
                                                         "UDP packet smaller than expected",
                                                         "Captured packet size is smaller than expected packet size" ] } }
@@ -44,7 +44,7 @@
     },
 
     "if": {
-        "properties": { "basic_event_name": { "enum": [ "Packet header invalid" ] } }
+        "properties": { "error_event_name": { "enum": [ "Packet header invalid" ] } }
     },
     "then": {
         "anyOf": [
@@ -54,14 +54,14 @@
     },
 
     "if": {
-        "properties": { "basic_event_name": { "enum": [ "Flow memory allocation failed" ] } }
+        "properties": { "error_event_name": { "enum": [ "Flow memory allocation failed" ] } }
     },
     "then": {
         "required": [ "thread_id", "size" ]
     },
 
     "if": {
-        "properties": { "basic_event_name": { "enum": [ "Max flows to track reached" ] } }
+        "properties": { "error_event_name": { "enum": [ "Max flows to track reached" ] } }
     },
     "then": {
         "required": [ "thread_id", "current_active", "current_idle", "max_active", "max_idle" ]
@@ -81,12 +81,12 @@
             "type": "number",
             "minimum": 0
         },
-        "basic_event_id": {
+        "error_event_id": {
             "type": "number",
             "minimum": 0,
             "maximum": 16
         },
-        "basic_event_name": {
+        "error_event_name": {
             "type": "string",
             "enum": [
                 "Unknown datalink layer packet",

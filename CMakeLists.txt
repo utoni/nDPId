@@ -344,7 +344,7 @@ install(FILES examples/py-schema-validation/py-schema-validation.py
 install(FILES examples/py-semantic-validation/py-semantic-validation.py
         DESTINATION bin RENAME nDPIsrvd-semantic-validation.py
         PERMISSIONS OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
-install(FILES schema/basic_event_schema.json schema/daemon_event_schema.json
+install(FILES schema/error_event_schema.json schema/daemon_event_schema.json
               schema/flow_event_schema.json schema/packet_event_schema.json DESTINATION share/nDPId)
 
 message(STATUS "--------------------------")
