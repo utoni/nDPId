@@ -21,18 +21,25 @@ void nDPIsrvd_memprof_log(char const * const format, ...)
 }
 #endif
 
-static void nDPIsrvd_write_flow_info_cb(struct nDPIsrvd_flow const * const flow, void * user_data)
+static void nDPIsrvd_write_flow_info_cb(struct nDPIsrvd_socket const * sock,
+                                        struct nDPIsrvd_instance const * instance,
+                                        struct nDPIsrvd_thread_data const * thread_data,
+                                        struct nDPIsrvd_flow const * flow,
+                                        void * user_data)
 {
+    (void)sock;
+    (void)instance;
     (void)user_data;
 
     fprintf(stderr,
-            "[Flow %4llu][ptr: "
+            "[Thread %2d][Flow %5llu][ptr: "
 #ifdef __LP64__
             "0x%016llx"
 #else
             "0x%08lx"
 #endif
-            "][last-seen: %13llu][idle-time: %13llu]\n",
+            "][last-seen: %13llu][idle-time: %7llu][time-until-timeout: %7llu]\n",
+            flow->thread_id,
             flow->id_as_ull,
 #ifdef __LP64__
             (unsigned long long int)flow,
@@ -40,14 +47,44 @@ static void nDPIsrvd_write_flow_info_cb(struct nDPIsrvd_flow const * const flow,
             (unsigned long int)flow,
 #endif
             flow->last_seen,
-            flow->idle_time);
+            flow->idle_time,
+            (flow->last_seen + flow->idle_time >= thread_data->most_recent_flow_time
+                 ? flow->last_seen + flow->idle_time - thread_data->most_recent_flow_time
+                 : 0));
 }
 
-static void nDPIsrvd_verify_flows_cb(struct nDPIsrvd_flow const * const flow, void * user_data)
+static void nDPIsrvd_verify_flows_cb(struct nDPIsrvd_thread_data const * const thread_data,
+                                     struct nDPIsrvd_flow const * const flow,
+                                     void * user_data)
 {
     (void)user_data;
 
-    fprintf(stderr, "Flow %llu verification failed\n", flow->id_as_ull);
+    if (thread_data != NULL)
+    {
+        if (flow->last_seen + flow->idle_time >= thread_data->most_recent_flow_time)
+        {
+            fprintf(stderr,
+                    "Thread %d / %d, Flow %llu verification failed\n",
+                    thread_data->thread_key,
+                    flow->thread_id,
+                    flow->id_as_ull);
+        }
+        else
+        {
+            fprintf(stderr,
+                    "Thread %d / %d, Flow %llu verification failed, diff: %llu\n",
+                    thread_data->thread_key,
+                    flow->thread_id,
+                    flow->id_as_ull,
+                    thread_data->most_recent_flow_time - flow->last_seen + flow->idle_time);
+        }
+    }
+    else
+    {
+        fprintf(stderr, "Thread [UNKNOWN], Flow %llu verification failed\n", flow->id_as_ull);
+    }
+
+    exit(1);
 }
 
 static void sighandler(int signum)
@@ -81,15 +118,24 @@ static void sighandler(int signum)
 
 static enum nDPIsrvd_callback_return simple_json_callback(struct nDPIsrvd_socket * const sock,
                                                           struct nDPIsrvd_instance * const instance,
+                                                          struct nDPIsrvd_thread_data * const thread_data,
                                                           struct nDPIsrvd_flow * const flow)
 {
     (void)sock;
-    (void)flow;
+    (void)thread_data;
+
+    if (flow == NULL)
+    {
+        return CALLBACK_OK;
+    }
 
     struct nDPIsrvd_json_token const * const flow_event_name = TOKEN_GET_SZ(sock, "flow_event_name");
     if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "new") != 0)
     {
-        printf("Instance %d, Flow %llu new\n", instance->alias_source_key, flow->id_as_ull);
+        printf("Instance 0x%x, Thread %d, Flow %llu new\n",
+               instance->alias_source_key,
+               flow->thread_id,
+               flow->id_as_ull);
     }
 
     return CALLBACK_OK;
@@ -97,20 +143,23 @@ static enum nDPIsrvd_callback_return simple_json_callback(struct nDPIsrvd_socket
 
 static void simple_flow_cleanup_callback(struct nDPIsrvd_socket * const sock,
                                          struct nDPIsrvd_instance * const instance,
+                                         struct nDPIsrvd_thread_data * const thread_data,
                                          struct nDPIsrvd_flow * const flow,
                                          enum nDPIsrvd_cleanup_reason reason)
 {
     (void)sock;
+    (void)thread_data;
 
     char const * const reason_str = nDPIsrvd_enum_to_string(reason);
-    printf("Instance %d, Flow %llu cleanup, reason: %s\n",
+    printf("Instance 0x%x, Thread %d, Flow %llu cleanup, reason: %s\n",
            instance->alias_source_key,
+           flow->thread_id,
            flow->id_as_ull,
            (reason_str != NULL ? reason_str : "UNKNOWN"));
 
     if (reason == CLEANUP_REASON_FLOW_TIMEOUT)
     {
-        printf("Did an nDPId instance die or was SIGKILL'ed?\n");
+        fprintf(stderr, "Flow timeout occurred, something really bad happened.\n");
         exit(1);
     }
 }
@@ -122,7 +171,7 @@ int main(int argc, char ** argv)
     signal(SIGTERM, sighandler);
     signal(SIGPIPE, sighandler);
 
-    sock = nDPIsrvd_socket_init(0, 0, simple_json_callback, simple_flow_cleanup_callback);
+    sock = nDPIsrvd_socket_init(0, 0, 0, 0, simple_json_callback, NULL, simple_flow_cleanup_callback);
     if (sock == NULL)
     {
         return 1;

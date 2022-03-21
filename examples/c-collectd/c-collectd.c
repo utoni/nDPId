@@ -440,10 +440,12 @@ static uint64_t get_total_flow_bytes(struct nDPIsrvd_socket * const sock)
 
 static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_socket * const sock,
                                                             struct nDPIsrvd_instance * const instance,
+                                                            struct nDPIsrvd_thread_data * const thread_data,
                                                             struct nDPIsrvd_flow * const flow)
 {
     (void)sock;
     (void)instance;
+    (void)thread_data;
     (void)flow;
 
     struct nDPIsrvd_json_token const * const flow_event_name = TOKEN_GET_SZ(sock, "flow_event_name");
@@ -682,7 +684,7 @@ int main(int argc, char ** argv)
 
     openlog("nDPIsrvd-collectd", LOG_CONS, LOG_DAEMON);
 
-    struct nDPIsrvd_socket * sock = nDPIsrvd_socket_init(0, 0, captured_json_callback, NULL);
+    struct nDPIsrvd_socket * sock = nDPIsrvd_socket_init(0, 0, 0, 0, captured_json_callback, NULL, NULL);
     if (sock == NULL)
     {
         LOG(LOG_DAEMON | LOG_ERR, "%s", "nDPIsrvd socket memory allocation failed!");

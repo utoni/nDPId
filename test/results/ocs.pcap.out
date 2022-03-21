@@ -1,5 +1,5 @@
 00454{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"ocs.pcap","alias":"nDPId-test","max-flows-per-thread":2048,"max-idle-flows-per-thread":64,"tick-resolution":1000,"reader-thread-count":1,"flow-scan-interval":10000,"generic-max-idle-time":600000,"icmp-max-idle-time":120000,"udp-max-idle-time":180000,"tcp-max-idle-time":7560000,"max-packets-per-flow-to-send":3,"max-packets-per-flow-to-process":32,"global_ts_msec":0}
-00461{"daemon_event_id":4,"daemon_event_name":"status","thread_id":0,"packet_id":1,"source":"ocs.pcap","alias":"nDPId-test","packets-captured":1,"packets-processed":0,"total-skipped-flows":0,"total-l4-data-len":0,"total-not-detected-flows":0,"total-guessed-flows":0,"total-detected-flows":0,"total-detection-updates":0,"total-updates":0,"current-active-flows":0,"total-active-flows":0,"total-idle-flows":0,"total-events-serialized":2,"global_ts_msec":1449652784341}
+00540{"daemon_event_id":4,"daemon_event_name":"status","thread_id":0,"packet_id":1,"source":"ocs.pcap","alias":"nDPId-test","packets-captured":1,"packets-processed":0,"total-skipped-flows":0,"total-l4-data-len":0,"total-not-detected-flows":0,"total-guessed-flows":0,"total-detected-flows":0,"total-detection-updates":0,"total-updates":0,"current-active-flows":0,"total-active-flows":0,"total-idle-flows":0,"total-compressions":0,"total-compression-diff":0,"current-compression-diff":0,"total-events-serialized":2,"global_ts_msec":1449652784341}
 00169{"error_event_id":3,"error_event_name":"Unsupported datalink layer","datalink":12,"packet_id":1,"source":"ocs.pcap","alias":"nDPId-test","global_ts_msec":1449652784341}
 00328{"packet_event_id":1,"packet_event_name":"packet","packet_id":1,"source":"ocs.pcap","alias":"nDPId-test","pkt_oversize":false,"pkt_caplen":60,"pkt_type":0,"pkt_l3_offset":0,"pkt_l4_offset":0,"pkt_len":60,"pkt_l4_len":0,"thread_ts_msec":0,"pkt":"RQAAPKbzQABABiV4wKi0AkDpuLy6UxRsAv3YCQAAAACgAjkIdPYAAAIEBbQEAggKADWBtgAAAAABAwMG"}
 00169{"error_event_id":3,"error_event_name":"Unsupported datalink layer","datalink":12,"packet_id":2,"source":"ocs.pcap","alias":"nDPId-test","global_ts_msec":1449652786071}
@@ -1892,7 +1892,7 @@
 00338{"packet_event_id":1,"packet_event_name":"packet","packet_id":945,"source":"ocs.pcap","alias":"nDPId-test","pkt_oversize":false,"pkt_caplen":64,"pkt_type":0,"pkt_l3_offset":0,"pkt_l4_offset":0,"pkt_len":64,"pkt_l4_len":0,"thread_ts_msec":0,"pkt":"RQAAQD9qQABABgLYwKi0ArL40NKmXgBQrzComDk0Q6ywEAgkkQkAAAEBCAoANZnyGkFqZAEBBQo5NE6EOTRT8A=="}
 00171{"error_event_id":3,"error_event_name":"Unsupported datalink layer","datalink":12,"packet_id":946,"source":"ocs.pcap","alias":"nDPId-test","global_ts_msec":1449652846380}
 00338{"packet_event_id":1,"packet_event_name":"packet","packet_id":946,"source":"ocs.pcap","alias":"nDPId-test","pkt_oversize":false,"pkt_caplen":64,"pkt_type":0,"pkt_l3_offset":0,"pkt_l4_offset":0,"pkt_len":64,"pkt_l4_len":0,"thread_ts_msec":0,"pkt":"RQAAQD9rQABABgLXwKi0ArL40NKmXgBQrzComDk0Q6ywEAgki50AAAEBCAoANZnyGkFqZAEBBQo5NE6EOTRZXA=="}
-00470{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":946,"source":"ocs.pcap","alias":"nDPId-test","packets-captured":946,"packets-processed":0,"total-skipped-flows":0,"total-l4-data-len":0,"total-not-detected-flows":0,"total-guessed-flows":0,"total-detected-flows":0,"total-detection-updates":0,"total-updates":0,"current-active-flows":0,"total-active-flows":0,"total-idle-flows":0,"total-events-serialized":1895,"global_ts_msec":1449652846380}
+00549{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":946,"source":"ocs.pcap","alias":"nDPId-test","packets-captured":946,"packets-processed":0,"total-skipped-flows":0,"total-l4-data-len":0,"total-not-detected-flows":0,"total-guessed-flows":0,"total-detected-flows":0,"total-detection-updates":0,"total-updates":0,"current-active-flows":0,"total-active-flows":0,"total-idle-flows":0,"total-compressions":0,"total-compression-diff":0,"current-compression-diff":0,"total-events-serialized":1895,"global_ts_msec":1449652846380}
 ~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~
 ~~ packets captured/processed: 946/0
 ~~ skipped flows.............: 0
@@ -1901,8 +1901,8 @@
 ~~ total active/idle flows...: 0/0
 ~~ total timeout flows.......: 0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~ total memory allocated....: 4678926 bytes
-~~ total memory freed........: 4678926 bytes
+~~ total memory allocated....: 4678950 bytes
+~~ total memory freed........: 4678950 bytes
 ~~ total allocations/frees...: 101140/101140
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~ json string min len.......: 174 chars

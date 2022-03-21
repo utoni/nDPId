@@ -338,9 +338,11 @@ static enum nDPIsrvd_conversion_return perror_ull(enum nDPIsrvd_conversion_retur
 
 static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_socket * const sock,
                                                             struct nDPIsrvd_instance * const instance,
+                                                            struct nDPIsrvd_thread_data * const thread_data,
                                                             struct nDPIsrvd_flow * const flow)
 {
     (void)instance;
+    (void)thread_data;
 
     if (flow == NULL)
     {
@@ -440,8 +442,7 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
                     nDPIsrvd_ull numeric_risk_value = (nDPIsrvd_ull)-1;
 
                     if (TOKEN_KEY_TO_ULL(current, &numeric_risk_value) == CONVERSION_OK &&
-                        numeric_risk_value < NDPI_MAX_RISK &&
-                        has_ndpi_risk(&process_risky, numeric_risk_value) != 0)
+                        numeric_risk_value < NDPI_MAX_RISK && has_ndpi_risk(&process_risky, numeric_risk_value) != 0)
                     {
                         flow_user->risky = 1;
                     }
@@ -491,8 +492,15 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
     return CALLBACK_OK;
 }
 
-static void nDPIsrvd_write_flow_info_cb(struct nDPIsrvd_flow const * const flow, void * user_data)
+static void nDPIsrvd_write_flow_info_cb(struct nDPIsrvd_socket const * sock,
+                                        struct nDPIsrvd_instance const * instance,
+                                        struct nDPIsrvd_thread_data const * thread_data,
+                                        struct nDPIsrvd_flow const * flow,
+                                        void * user_data)
 {
+    (void)sock;
+    (void)instance;
+    (void)thread_data;
     (void)user_data;
 
     struct flow_user_data const * const flow_user = (struct flow_user_data const *)flow->flow_user_data;
@@ -560,11 +568,13 @@ static void sighandler(int signum)
 
 static void captured_flow_cleanup_callback(struct nDPIsrvd_socket * const sock,
                                            struct nDPIsrvd_instance * const instance,
+                                           struct nDPIsrvd_thread_data * const thread_data,
                                            struct nDPIsrvd_flow * const flow,
                                            enum nDPIsrvd_cleanup_reason reason)
 {
     (void)sock;
     (void)instance;
+    (void)thread_data;
     (void)reason;
 
 #ifdef VERBOSE
@@ -777,8 +787,8 @@ static int mainloop(void)
 
 int main(int argc, char ** argv)
 {
-    sock =
-        nDPIsrvd_socket_init(0, sizeof(struct flow_user_data), captured_json_callback, captured_flow_cleanup_callback);
+    sock = nDPIsrvd_socket_init(
+        0, 0, 0, sizeof(struct flow_user_data), captured_json_callback, NULL, captured_flow_cleanup_callback);
     if (sock == NULL)
     {
         fprintf(stderr, "%s: nDPIsrvd socket memory allocation failed!\n", argv[0]);

@@ -201,16 +201,20 @@ class FlowManager:
         if 'daemon_event_name' in json_dict:
             if json_dict['daemon_event_name'].lower() == 'init' or \
                json_dict['daemon_event_name'].lower() == 'shutdown':
-                # invalidate all existing flows with that alias/source
+                # invalidate all existing flows with that alias/source/thread_id
                 for flow_id in instance.flows:
                     flow = instance.flows[flow_id]
+                    if flow.thread_id != int(json_dict['thread_id']):
+                        continue
                     if json_dict['daemon_event_name'].lower() == 'init':
                         flow.cleanup_reason = FlowManager.CLEANUP_REASON_DAEMON_INIT
                     else:
                         flow.cleanup_reason = FlowManager.CLEANUP_REASON_DAEMON_SHUTDOWN
                     flows[flow_id] = flow
-                instance.flows = dict()
-                del self.instances[instance.alias][instance.source]
+                for flow_id in flows:
+                    del instance.flows[flow_id]
+                if len(instance.flows) == 0:
+                    del self.instances[instance.alias][instance.source]
 
         elif 'flow_event_name' in json_dict and \
            (json_dict['flow_event_name'].lower() == 'end' or \
