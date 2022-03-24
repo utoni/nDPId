@@ -66,7 +66,7 @@
         },
         "flow_last_seen": {
             "type": "number",
-            "minimum": 24710
+            "minimum": 0
         },
         "flow_idle_time": {
             "type": "number",

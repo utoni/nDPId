@@ -31,7 +31,7 @@ jobs:
           sudo apt-get install autoconf automake cmake libtool pkg-config gettext libjson-c-dev flex bison libpcap-dev zlib1g-dev
           sudo apt-get install gcc-arm-linux-gnueabihf gcc-mingw-w64 libc6-dev lcov
       - name: Install Ubuntu Prerequisites (libgcrypt)
-        if: startsWith(matrix.os, 'ubuntu') && !startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=OFF')
+        if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=ON')
         run: |
           sudo apt-get install libgcrypt20-dev
       - name: Install Ubuntu Prerequisities (zlib)
@@ -50,7 +50,7 @@ jobs:
           ./build/nDPId-test || test $? -eq 1
           ./build/nDPId -h || test $? -eq 1
       - name: Test DIFF
-        if: startsWith(matrix.os, 'ubuntu') && !startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=OFF')
+        if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=OFF')
         run: |
           ./test/run_tests.sh ./libnDPI ./build/nDPId-test
       - name: Daemon

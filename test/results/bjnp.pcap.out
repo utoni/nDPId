@@ -1,0 +1,38 @@
+00455{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"bjnp.pcap","alias":"nDPId-test","max-flows-per-thread":2048,"max-idle-flows-per-thread":64,"tick-resolution":1000,"reader-thread-count":1,"flow-scan-interval":10000,"generic-max-idle-time":600000,"icmp-max-idle-time":120000,"udp-max-idle-time":180000,"tcp-max-idle-time":7560000,"max-packets-per-flow-to-send":3,"max-packets-per-flow-to-process":32,"global_ts_msec":0}
+00541{"daemon_event_id":4,"daemon_event_name":"status","thread_id":0,"packet_id":1,"source":"bjnp.pcap","alias":"nDPId-test","packets-captured":1,"packets-processed":0,"total-skipped-flows":0,"total-l4-data-len":0,"total-not-detected-flows":0,"total-guessed-flows":0,"total-detected-flows":0,"total-detection-updates":0,"total-updates":0,"current-active-flows":0,"total-active-flows":0,"total-idle-flows":0,"total-compressions":0,"total-compression-diff":0,"current-compression-diff":0,"total-events-serialized":2,"global_ts_msec":1467725378685}
+00170{"error_event_id":3,"error_event_name":"Unsupported datalink layer","datalink":12,"packet_id":1,"source":"bjnp.pcap","alias":"nDPId-test","global_ts_msec":1467725378685}
+00313{"packet_event_id":1,"packet_event_name":"packet","packet_id":1,"source":"bjnp.pcap","alias":"nDPId-test","pkt_oversize":false,"pkt_caplen":46,"pkt_type":0,"pkt_l3_offset":0,"pkt_l4_offset":0,"pkt_len":46,"pkt_l4_len":0,"thread_ts_msec":0,"pkt":"RQAALAmDAAB5EfxOwKi5jcCoARHDpyGkABg0Q0JKTlACAQAAF6QAAAAAAADK6w=="}
+00170{"error_event_id":3,"error_event_name":"Unsupported datalink layer","datalink":12,"packet_id":2,"source":"bjnp.pcap","alias":"nDPId-test","global_ts_msec":1467725383705}
+00313{"packet_event_id":1,"packet_event_name":"packet","packet_id":2,"source":"bjnp.pcap","alias":"nDPId-test","pkt_oversize":false,"pkt_caplen":46,"pkt_type":0,"pkt_l3_offset":0,"pkt_l4_offset":0,"pkt_len":46,"pkt_l4_len":0,"thread_ts_msec":0,"pkt":"RQAALAmRAAB5EfxQwKi5jcCoAQHDqSGkABg0T0JKTlACAQAAF6YAAAAAAACF3A=="}
+00170{"error_event_id":3,"error_event_name":"Unsupported datalink layer","datalink":12,"packet_id":3,"source":"bjnp.pcap","alias":"nDPId-test","global_ts_msec":1467725383909}
+00313{"packet_event_id":1,"packet_event_name":"packet","packet_id":3,"source":"bjnp.pcap","alias":"nDPId-test","pkt_oversize":false,"pkt_caplen":46,"pkt_type":0,"pkt_l3_offset":0,"pkt_l4_offset":0,"pkt_len":46,"pkt_l4_len":0,"thread_ts_msec":0,"pkt":"RQAALAmSAAB5EfxOwKi5jcCoAQLDqSGkABg0TUJKTlACAQAAF6cAAAAAAAAfDQ=="}
+00170{"error_event_id":3,"error_event_name":"Unsupported datalink layer","datalink":12,"packet_id":4,"source":"bjnp.pcap","alias":"nDPId-test","global_ts_msec":1467725384113}
+00313{"packet_event_id":1,"packet_event_name":"packet","packet_id":4,"source":"bjnp.pcap","alias":"nDPId-test","pkt_oversize":false,"pkt_caplen":46,"pkt_type":0,"pkt_l3_offset":0,"pkt_l4_offset":0,"pkt_len":46,"pkt_l4_len":0,"thread_ts_msec":0,"pkt":"RQAALAmTAAB5EfxMwKi5jcCoAQPDqSGkABg0S0JKTlACAQAAF6gAAAAAAACCRA=="}
+00170{"error_event_id":3,"error_event_name":"Unsupported datalink layer","datalink":12,"packet_id":5,"source":"bjnp.pcap","alias":"nDPId-test","global_ts_msec":1467725384313}
+00313{"packet_event_id":1,"packet_event_name":"packet","packet_id":5,"source":"bjnp.pcap","alias":"nDPId-test","pkt_oversize":false,"pkt_caplen":46,"pkt_type":0,"pkt_l3_offset":0,"pkt_l4_offset":0,"pkt_len":46,"pkt_l4_len":0,"thread_ts_msec":0,"pkt":"RQAALAmVAAB5EfxJwKi5jcCoAQTDqSGkABg0SUJKTlACAQAAF6kAAAAAAADs+w=="}
+00170{"error_event_id":3,"error_event_name":"Unsupported datalink layer","datalink":12,"packet_id":6,"source":"bjnp.pcap","alias":"nDPId-test","global_ts_msec":1467725384517}
+00313{"packet_event_id":1,"packet_event_name":"packet","packet_id":6,"source":"bjnp.pcap","alias":"nDPId-test","pkt_oversize":false,"pkt_caplen":46,"pkt_type":0,"pkt_l3_offset":0,"pkt_l4_offset":0,"pkt_len":46,"pkt_l4_len":0,"thread_ts_msec":0,"pkt":"RQAALAmWAAB5EfxHwKi5jcCoAQXDqSGkABg0R0JKTlACAQAAF6oAAAAAAADhdg=="}
+00170{"error_event_id":3,"error_event_name":"Unsupported datalink layer","datalink":12,"packet_id":7,"source":"bjnp.pcap","alias":"nDPId-test","global_ts_msec":1467725384721}
+00313{"packet_event_id":1,"packet_event_name":"packet","packet_id":7,"source":"bjnp.pcap","alias":"nDPId-test","pkt_oversize":false,"pkt_caplen":46,"pkt_type":0,"pkt_l3_offset":0,"pkt_l4_offset":0,"pkt_len":46,"pkt_l4_len":0,"thread_ts_msec":0,"pkt":"RQAALAmXAAB5EfxFwKi5jcCoAQbDqSGkABg0RUJKTlACAQAAF6sAAAAAAACzRQ=="}
+00170{"error_event_id":3,"error_event_name":"Unsupported datalink layer","datalink":12,"packet_id":8,"source":"bjnp.pcap","alias":"nDPId-test","global_ts_msec":1467725384921}
+00313{"packet_event_id":1,"packet_event_name":"packet","packet_id":8,"source":"bjnp.pcap","alias":"nDPId-test","pkt_oversize":false,"pkt_caplen":46,"pkt_type":0,"pkt_l3_offset":0,"pkt_l4_offset":0,"pkt_len":46,"pkt_l4_len":0,"thread_ts_msec":0,"pkt":"RQAALAmYAAB5EfxDwKi5jcCoAQfDqSGkABg0Q0JKTlACAQAAF6wAAAAAAAC5aQ=="}
+00170{"error_event_id":3,"error_event_name":"Unsupported datalink layer","datalink":12,"packet_id":9,"source":"bjnp.pcap","alias":"nDPId-test","global_ts_msec":1467725385125}
+00313{"packet_event_id":1,"packet_event_name":"packet","packet_id":9,"source":"bjnp.pcap","alias":"nDPId-test","pkt_oversize":false,"pkt_caplen":46,"pkt_type":0,"pkt_l3_offset":0,"pkt_l4_offset":0,"pkt_len":46,"pkt_l4_len":0,"thread_ts_msec":0,"pkt":"RQAALAmaAAB5EfxAwKi5jcCoAQjDqSGkABg0QUJKTlACAQAAF60AAAAAAACvDw=="}
+00171{"error_event_id":3,"error_event_name":"Unsupported datalink layer","datalink":12,"packet_id":10,"source":"bjnp.pcap","alias":"nDPId-test","global_ts_msec":1467725385329}
+00314{"packet_event_id":1,"packet_event_name":"packet","packet_id":10,"source":"bjnp.pcap","alias":"nDPId-test","pkt_oversize":false,"pkt_caplen":46,"pkt_type":0,"pkt_l3_offset":0,"pkt_l4_offset":0,"pkt_len":46,"pkt_l4_len":0,"thread_ts_msec":0,"pkt":"RQAALAmbAAB5Efw+wKi5jcCoAQnDqSGkABg0P0JKTlACAQAAF64AAAAAAABjbw=="}
+00546{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":10,"source":"bjnp.pcap","alias":"nDPId-test","packets-captured":10,"packets-processed":0,"total-skipped-flows":0,"total-l4-data-len":0,"total-not-detected-flows":0,"total-guessed-flows":0,"total-detected-flows":0,"total-detection-updates":0,"total-updates":0,"current-active-flows":0,"total-active-flows":0,"total-idle-flows":0,"total-compressions":0,"total-compression-diff":0,"current-compression-diff":0,"total-events-serialized":23,"global_ts_msec":1467725385329}
+~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~
+~~ packets captured/processed: 10/0
+~~ skipped flows.............: 0
+~~ total layer4 data length..: 0 bytes
+~~ total detected protocols..: 0
+~~ total active/idle flows...: 0/0
+~~ total timeout flows.......: 0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~ total memory allocated....: 5177545 bytes
+~~ total memory freed........: 5177545 bytes
+~~ total allocations/frees...: 113022/113022
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~ json string min len.......: 175 chars
+~~ json string max len.......: 551 chars
+~~ json string avg len.......: 361 chars

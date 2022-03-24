@@ -11,7 +11,7 @@ before_script:
         coreutils sudo \
         build-essential make cmake binutils gcc autoconf automake \
         libtool pkg-config git \
-        libpcap-dev libgcrypt-dev libgpg-error-dev libjson-c-dev zlib1g-dev \
+        libpcap-dev libgpg-error-dev libjson-c-dev zlib1g-dev \
         netcat-openbsd python3 python3-jsonschema tree lcov
 
 after_script:

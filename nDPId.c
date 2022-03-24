@@ -47,8 +47,8 @@
 #define DLT_DSA_TAG_EDSA 285
 #endif
 
-#if ((NDPI_MAJOR == 4 && NDPI_MINOR < 4) || NDPI_MAJOR < 4) && NDPI_API_VERSION < 5892
-#error "nDPI >= 4.4.0 or API version >= 5892 required"
+#if ((NDPI_MAJOR == 4 && NDPI_MINOR < 3) || NDPI_MAJOR < 4) && NDPI_API_VERSION < 6043
+#error "nDPI >= 4.3.0 or API version >= 6043 required"
 #endif
 
 #if !defined(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4) || !defined(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_8)
