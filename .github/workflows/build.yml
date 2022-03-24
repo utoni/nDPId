@@ -18,6 +18,7 @@ jobs:
       matrix:
         os: ["ubuntu-latest", "ubuntu-18.04"]
         ndpid_gcrypt: ["-DNDPI_WITH_GCRYPT=OFF", "-DNDPI_WITH_GCRYPT=ON"]
+        ndpid_zlib: ["-DENABLE_ZLIB=OFF", "-DENABLE_ZLIB=ON"]
 
     steps:
       - uses: actions/checkout@v2
@@ -33,10 +34,14 @@ jobs:
         if: startsWith(matrix.os, 'ubuntu') && !startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=OFF')
         run: |
           sudo apt-get install libgcrypt20-dev
+      - name: Install Ubuntu Prerequisities (zlib)
+        if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.ndpid_zlib, '-DENABLE_ZLIB=ON')
+        run: |
+          sudo apt-get install zlib1g-dev
       - name: Configure nDPI
         run: |
           mkdir build && cd build
-          env CMAKE_C_FLAGS='-Werror' cmake .. -DENABLE_COVERAGE=ON -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DENABLE_SANITIZER=ON -DENABLE_ZLIB=ON ${{ matrix.ndpid_gcrypt }}
+          env CMAKE_C_FLAGS='-Werror' cmake .. -DENABLE_COVERAGE=ON -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DENABLE_SANITIZER=ON ${{ matrix.ndpid_zlib }} ${{ matrix.ndpid_gcrypt }}
       - name: Build nDPI
         run: |
           make -C build all VERBOSE=1

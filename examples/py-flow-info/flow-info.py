@@ -262,9 +262,10 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
     if 'daemon_event_id' in json_dict:
         if json_dict['daemon_event_name'] == 'status':
             color = [TermColor.WARNING]
-            daemon_msg = '[Processed: {} pkts][Flows][active: {} / {}|skipped: {}|!detected: {}' \
+            daemon_msg = '[Processed: {} pkts][ZLib][compressions: {}|diff: {} / {}][Flows][active: {} / {}|skipped: {}|!detected: {}' \
                          '|guessed: {}|detection-updates: {}|updates: {}]'.format(
                             json_dict['packets-processed'],
+                            json_dict['total-compressions'], json_dict['current-compression-diff'], json_dict['total-compression-diff'],
                             json_dict['current-active-flows'], json_dict['total-active-flows'],
                             json_dict['total-skipped-flows'],
                             json_dict['total-not-detected-flows'], json_dict['total-guessed-flows'],

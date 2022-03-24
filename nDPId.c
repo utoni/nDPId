@@ -213,12 +213,14 @@ struct nDPId_workflow
 #ifdef ENABLE_MEMORY_PROFILING
     uint64_t last_memory_usage_log_time;
 #endif
+
 #ifdef ENABLE_ZLIB
     uint64_t last_compression_scan_time;
     uint64_t total_compressions;
     uint64_t total_compression_diff;
     uint64_t current_compression_diff;
 #endif
+
     uint64_t last_scan_time;
     uint64_t last_status_time;
     uint64_t last_global_time;
@@ -361,20 +363,20 @@ static char const * const daemon_event_name_table[DAEMON_EVENT_COUNT] = {
 };
 
 static struct nDPId_reader_thread reader_threads[nDPId_MAX_READER_THREADS] = {};
-static int nDPId_main_thread_shutdown = 0;
-static uint64_t global_flow_id = 1;
+static volatile int nDPId_main_thread_shutdown = 0;
+static volatile uint64_t global_flow_id = 1;
 static int ip4_interface_avail = 0, ip6_interface_avail = 0;
 
 #ifdef ENABLE_MEMORY_PROFILING
-static uint64_t ndpi_memory_alloc_count = 0;
-static uint64_t ndpi_memory_alloc_bytes = 0;
-static uint64_t ndpi_memory_free_count = 0;
-static uint64_t ndpi_memory_free_bytes = 0;
+static volatile uint64_t ndpi_memory_alloc_count = 0;
+static volatile uint64_t ndpi_memory_alloc_bytes = 0;
+static volatile uint64_t ndpi_memory_free_count = 0;
+static volatile uint64_t ndpi_memory_free_bytes = 0;
 #ifdef ENABLE_ZLIB
-static uint64_t zlib_compressions = 0;
-static uint64_t zlib_decompressions = 0;
-static uint64_t zlib_compression_diff = 0;
-static uint64_t zlib_compression_bytes = 0;
+static volatile uint64_t zlib_compressions = 0;
+static volatile uint64_t zlib_decompressions = 0;
+static volatile uint64_t zlib_compression_diff = 0;
+static volatile uint64_t zlib_compression_bytes = 0;
 #endif
 #endif
 
@@ -1847,12 +1849,11 @@ static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enu
                                          "total-active-flows",
                                          workflow->total_active_flows);
             ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "total-idle-flows", workflow->total_idle_flows);
-#ifdef ENABLE_ZLIB
+#if defined(ENABLE_ZLIB) && !defined(NO_MAIN)
+            /* Compression diff's may very from run to run. Due to this, `nDPId-test' would be inconsistent. */
             ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
                                          "total-compressions",
                                          workflow->total_compressions);
-            /* Compression diff's may very from run to run. Due to this, `nDPId-test' would be inconsistent. */
-#ifndef NO_MAIN
             ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
                                          "total-compression-diff",
                                          workflow->total_compression_diff);
@@ -1860,11 +1861,8 @@ static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enu
                                          "current-compression-diff",
                                          workflow->current_compression_diff);
 #else
-            ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "total-compression-diff", 0);
-            ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "current-compression-diff", 0);
-#endif
-#else
             ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "total-compressions", 0);
+            ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "total-compression-diff", 0);
             ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "current-compression-diff", 0);
 #endif
             ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
@@ -3694,7 +3692,7 @@ static void get_current_time(struct timeval * const tval)
     gettimeofday(tval, NULL);
 }
 
-static void log_flows_flow_walker(void const * const A, ndpi_VISIT which, int depth, void * const user_data)
+static void ndpi_log_flow_walker(void const * const A, ndpi_VISIT which, int depth, void * const user_data)
 {
     struct nDPId_reader_thread const * const reader_thread = (struct nDPId_reader_thread *)user_data;
     struct nDPId_flow_basic const * const flow_basic = *(struct nDPId_flow_basic **)A;
@@ -3775,7 +3773,7 @@ static void log_all_flows(struct nDPId_reader_thread const * const reader_thread
            (unsigned long long int)workflow->last_scan_time);
     for (size_t scan_index = 0; scan_index < workflow->max_active_flows; ++scan_index)
     {
-        ndpi_twalk(workflow->ndpi_flows_active[scan_index], log_flows_flow_walker, (void *)reader_thread);
+        ndpi_twalk(workflow->ndpi_flows_active[scan_index], ndpi_log_flow_walker, (void *)reader_thread);
     }
 }
 
@@ -3859,7 +3857,7 @@ static void run_pcap_loop(struct nDPId_reader_thread * const reader_thread)
             int const timeout_ms = 1000; /* TODO: Configurable? */
             int nready;
             struct timeval tval_before_epoll, tval_after_epoll;
-            while (nDPId_main_thread_shutdown == 0 && processing_threads_error_or_eof() == 0)
+            while (__sync_fetch_and_add(&nDPId_main_thread_shutdown, 0) == 0 && processing_threads_error_or_eof() == 0)
             {
                 get_current_time(&tval_before_epoll);
                 errno = 0;
@@ -3947,7 +3945,7 @@ static void run_pcap_loop(struct nDPId_reader_thread * const reader_thread)
                     }
                     else
                     {
-                        logger(1, "Unknown event data 0x%lx returned", events[i].data.u64);
+                        logger(1, "Unknown event data 0x%llx returned", (unsigned long long int)events[i].data.u64);
                     }
                 }
             }
@@ -4756,7 +4754,7 @@ int main(int argc, char ** argv)
     signal(SIGTERM, sighandler);
     signal(SIGPIPE, SIG_IGN);
 
-    while (nDPId_main_thread_shutdown == 0 && processing_threads_error_or_eof() == 0)
+    while (__sync_fetch_and_add(&nDPId_main_thread_shutdown, 0) == 0 && processing_threads_error_or_eof() == 0)
     {
         sleep(1);
     }

@@ -118,7 +118,7 @@
 00695{"flow_event_id":3,"flow_event_name":"idle","thread_id":0,"packet_id":155,"source":"quickplay.pcap","alias":"nDPId-test","flow_id":5,"flow_state":"finished","flow_packets_processed":2,"flow_first_seen":1429000037314,"flow_last_seen":1429000037771,"flow_idle_time":7440000,"flow_min_l4_payload_len":187,"flow_max_l4_payload_len":283,"flow_tot_l4_payload_len":470,"flow_avg_l4_payload_len":235,"midstream":1,"thread_ts_msec":1429000385363,"l3_proto":"ip4","src_ip":"10.54.169.250","dst_ip":"173.252.74.22","src_port":52288,"dst_port":80,"l4_proto":"tcp","flow_datalink":113,"flow_max_packets":3,"ndpi": {"confidence": {"4":"DPI"},"proto":"HTTP.Facebook","breed":"Fun","category":"SocialNetwork"}}
 00683{"flow_event_id":3,"flow_event_name":"idle","thread_id":0,"packet_id":155,"source":"quickplay.pcap","alias":"nDPId-test","flow_id":15,"flow_state":"finished","flow_packets_processed":2,"flow_first_seen":1429000110390,"flow_last_seen":1429000110528,"flow_idle_time":7440000,"flow_min_l4_payload_len":206,"flow_max_l4_payload_len":625,"flow_tot_l4_payload_len":831,"flow_avg_l4_payload_len":415,"midstream":1,"thread_ts_msec":1429000385363,"l3_proto":"ip4","src_ip":"10.54.169.250","dst_ip":"203.205.147.215","src_port":35670,"dst_port":80,"l4_proto":"tcp","flow_datalink":113,"flow_max_packets":3,"ndpi": {"confidence": {"4":"DPI"},"proto":"HTTP.QQ","breed":"Fun","category":"Chat"}}
 00590{"flow_event_id":3,"flow_event_name":"idle","thread_id":0,"packet_id":155,"source":"quickplay.pcap","alias":"nDPId-test","flow_id":8,"flow_state":"info","flow_packets_processed":3,"flow_first_seen":1429000048159,"flow_last_seen":1429000048795,"flow_idle_time":7440000,"flow_min_l4_payload_len":487,"flow_max_l4_payload_len":1169,"flow_tot_l4_payload_len":2143,"flow_avg_l4_payload_len":714,"midstream":1,"thread_ts_msec":1429000385363,"l3_proto":"ip4","src_ip":"10.54.169.250","dst_ip":"120.28.5.41","src_port":44256,"dst_port":80,"l4_proto":"tcp","flow_datalink":113,"flow_max_packets":3}
-00563{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":155,"source":"quickplay.pcap","alias":"nDPId-test","packets-captured":155,"packets-processed":155,"total-skipped-flows":0,"total-l4-data-len":95867,"total-not-detected-flows":0,"total-guessed-flows":0,"total-detected-flows":21,"total-detection-updates":1,"total-updates":0,"current-active-flows":0,"total-active-flows":21,"total-idle-flows":21,"total-compressions":6,"total-compression-diff":0,"current-compression-diff":0,"total-events-serialized":121,"global_ts_msec":1429000385363}
+00563{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":155,"source":"quickplay.pcap","alias":"nDPId-test","packets-captured":155,"packets-processed":155,"total-skipped-flows":0,"total-l4-data-len":95867,"total-not-detected-flows":0,"total-guessed-flows":0,"total-detected-flows":21,"total-detection-updates":1,"total-updates":0,"current-active-flows":0,"total-active-flows":21,"total-idle-flows":21,"total-compressions":0,"total-compression-diff":0,"current-compression-diff":0,"total-events-serialized":121,"global_ts_msec":1429000385363}
 ~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~
 ~~ packets captured/processed: 155/155
 ~~ skipped flows.............: 0
@@ -127,9 +127,9 @@
 ~~ total active/idle flows...: 21/21
 ~~ total timeout flows.......: 0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~ total memory allocated....: 4711270 bytes
-~~ total memory freed........: 4711270 bytes
-~~ total allocations/frees...: 101426/101426
+~~ total memory allocated....: 4706734 bytes
+~~ total memory freed........: 4706734 bytes
+~~ total allocations/frees...: 101414/101414
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~ json string min len.......: 465 chars
 ~~ json string max len.......: 2367 chars

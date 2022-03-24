@@ -990,17 +990,31 @@ int main(int argc, char ** argv)
             nDPId_return.total_idle_flows,
             distributor_return.stats.total_flow_timeouts);
 
-        unsigned long long int total_memory_alloc =
+        unsigned long long int total_alloc_bytes =
 #ifdef ENABLE_ZLIB
-            (unsigned long long int)(ndpi_memory_alloc_bytes - zlib_compression_bytes);
+            (unsigned long long int)(ndpi_memory_alloc_bytes - zlib_compression_bytes - (zlib_compressions * sizeof(struct nDPId_detection_data)));
 #else
             (unsigned long long int)ndpi_memory_alloc_bytes;
 #endif
-        unsigned long long int total_memory_free =
+        unsigned long long int total_free_bytes =
 #ifdef ENABLE_ZLIB
-            (unsigned long long int)(ndpi_memory_free_bytes - zlib_compression_bytes);
+            (unsigned long long int)(ndpi_memory_free_bytes - zlib_compression_bytes - (zlib_compressions * sizeof(struct nDPId_detection_data)));
 #else
             (unsigned long long int)ndpi_memory_free_bytes;
+#endif
+
+        unsigned long long int total_alloc_count =
+#ifdef ENABLE_ZLIB
+            (unsigned long long int)(ndpi_memory_alloc_count - zlib_compressions * 2);
+#else
+            (unsigned long long int)ndpi_memory_alloc_count;
+#endif
+
+        unsigned long long int total_free_count =
+#ifdef ENABLE_ZLIB
+            (unsigned long long int)(ndpi_memory_free_count - zlib_decompressions * 2);
+#else
+            (unsigned long long int)ndpi_memory_free_count;
 #endif
 
         printf(
@@ -1008,10 +1022,13 @@ int main(int argc, char ** argv)
             "~~ total memory freed........: %llu bytes\n"
             "~~ total allocations/frees...: %llu/%llu\n"
             "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n",
-            total_memory_alloc,
-            total_memory_free,
-            (unsigned long long int)ndpi_memory_alloc_count,
-            (unsigned long long int)ndpi_memory_free_count);
+            total_alloc_bytes -
+                sizeof(struct nDPId_workflow) *
+                    nDPId_options.reader_thread_count /* We do not want to take the workflow into account. */,
+            total_free_bytes -
+                sizeof(struct nDPId_workflow) *
+                    nDPId_options.reader_thread_count /* We do not want to take the workflow into account. */,
+            total_alloc_count, total_free_count);
 
         printf(
             "~~ json string min len.......: %llu chars\n"

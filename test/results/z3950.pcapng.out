@@ -13,7 +13,7 @@
 00587{"flow_event_id":2,"flow_event_name":"end","thread_id":0,"packet_id":26,"source":"z3950.pcapng","alias":"nDPId-test","flow_id":1,"flow_state":"info","flow_packets_processed":15,"flow_first_seen":1623680697296,"flow_last_seen":1623680698846,"flow_idle_time":7440000,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":1452,"flow_tot_l4_payload_len":4151,"flow_avg_l4_payload_len":276,"midstream":0,"thread_ts_msec":1625070132777,"l3_proto":"ip4","src_ip":"192.168.2.100","dst_ip":"193.174.240.93","src_port":58921,"dst_port":210,"l4_proto":"tcp","flow_datalink":1,"flow_max_packets":3}
 00785{"flow_event_id":6,"flow_event_name":"detected","thread_id":0,"packet_id":26,"source":"z3950.pcapng","alias":"nDPId-test","flow_id":2,"flow_state":"info","flow_packets_processed":11,"flow_first_seen":1625070123680,"flow_last_seen":1625070196998,"flow_idle_time":7440000,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":113,"flow_tot_l4_payload_len":368,"flow_avg_l4_payload_len":33,"midstream":0,"thread_ts_msec":1625070196998,"l3_proto":"ip4","src_ip":"192.168.0.20","dst_ip":"129.187.139.43","src_port":46524,"dst_port":9991,"l4_proto":"tcp","ndpi": {"flow_risk": {"5": {"risk":"Known Protocol on Non Standard Port","severity":"Medium","risk_score": {"total":260,"client":230,"server":30}}},"confidence": {"4":"DPI"},"proto":"Z39.50","breed":"Acceptable","category":"Network"}}
 00823{"flow_event_id":2,"flow_event_name":"end","thread_id":0,"packet_id":31,"source":"z3950.pcapng","alias":"nDPId-test","flow_id":2,"flow_state":"finished","flow_packets_processed":16,"flow_first_seen":1625070123680,"flow_last_seen":1625070200217,"flow_idle_time":7440000,"flow_min_l4_payload_len":0,"flow_max_l4_payload_len":113,"flow_tot_l4_payload_len":411,"flow_avg_l4_payload_len":25,"midstream":0,"thread_ts_msec":1625070200217,"l3_proto":"ip4","src_ip":"192.168.0.20","dst_ip":"129.187.139.43","src_port":46524,"dst_port":9991,"l4_proto":"tcp","flow_datalink":1,"flow_max_packets":3,"ndpi": {"flow_risk": {"5": {"risk":"Known Protocol on Non Standard Port","severity":"Medium","risk_score": {"total":260,"client":230,"server":30}}},"confidence": {"4":"DPI"},"proto":"Z39.50","breed":"Acceptable","category":"Network"}}
-00553{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":31,"source":"z3950.pcapng","alias":"nDPId-test","packets-captured":31,"packets-processed":31,"total-skipped-flows":0,"total-l4-data-len":4562,"total-not-detected-flows":0,"total-guessed-flows":1,"total-detected-flows":1,"total-detection-updates":0,"total-updates":0,"current-active-flows":0,"total-active-flows":2,"total-idle-flows":2,"total-compressions":1,"total-compression-diff":0,"current-compression-diff":0,"total-events-serialized":16,"global_ts_msec":1625070200217}
+00553{"daemon_event_id":3,"daemon_event_name":"shutdown","thread_id":0,"packet_id":31,"source":"z3950.pcapng","alias":"nDPId-test","packets-captured":31,"packets-processed":31,"total-skipped-flows":0,"total-l4-data-len":4562,"total-not-detected-flows":0,"total-guessed-flows":1,"total-detected-flows":1,"total-detection-updates":0,"total-updates":0,"current-active-flows":0,"total-active-flows":2,"total-idle-flows":2,"total-compressions":0,"total-compression-diff":0,"current-compression-diff":0,"total-events-serialized":16,"global_ts_msec":1625070200217}
 ~~~~~~~~~~~~~~~~~~~~ SUMMARY ~~~~~~~~~~~~~~~~~~~~
 ~~ packets captured/processed: 31/31
 ~~ skipped flows.............: 0
@@ -22,9 +22,9 @@
 ~~ total active/idle flows...: 2/2
 ~~ total timeout flows.......: 1
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~ total memory allocated....: 4692754 bytes
-~~ total memory freed........: 4692754 bytes
-~~ total allocations/frees...: 101183/101183
+~~ total memory allocated....: 4691738 bytes
+~~ total memory freed........: 4691738 bytes
+~~ total allocations/frees...: 101181/101181
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~ json string min len.......: 453 chars
 ~~ json string max len.......: 828 chars
