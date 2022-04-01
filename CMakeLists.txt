@@ -63,7 +63,7 @@ else()
 endif()
 
 if(STATIC_LIBNDPI_INSTALLDIR OR BUILD_NDPI OR NDPI_NO_PKGCONFIG)
-    option(NDPI_WITH_GCRYPT "Link static libndpi library against libgcrypt." ON)
+    option(NDPI_WITH_GCRYPT "Link static libndpi library against libgcrypt." OFF)
     option(NDPI_WITH_PCRE "Link static libndpi library against libpcre." OFF)
     option(NDPI_WITH_MAXMINDDB "Link static libndpi library against libmaxminddb." OFF)
 else()
@@ -99,7 +99,7 @@ if(NOT CROSS_COMPILE_TRIPLET STREQUAL "")
     set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 endif()
 
-if(BUILD_NDPI AND NDPI_WITH_GCRYPT)
+if(BUILD_NDPI)
     enable_testing()
     add_test(NAME run_tests
              COMMAND "${CMAKE_SOURCE_DIR}/test/run_tests.sh"
