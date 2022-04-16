@@ -12,6 +12,9 @@ flock -x -n 42 || {
 
 cat <<EOF
 ------ environment variables ------
+CC=${CC:-}
+CXX=${CXX:-}
+PKG_CONFIG=${PKG_CONFIG:-}
 CFLAGS=${CFLAGS:-}
 LDFLAGS=${LDFLAGS:-}
 CROSS_COMPILE_TRIPLET=${CROSS_COMPILE_TRIPLET:-}
