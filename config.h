@@ -39,6 +39,6 @@
 /* nDPIsrvd default config options */
 #define nDPIsrvd_PIDFILE "/tmp/ndpisrvd.pid"
 #define nDPIsrvd_MAX_REMOTE_DESCRIPTORS 32
-#define nDPIsrvd_CACHE_ARRAY_LENGTH 256
+#define nDPIsrvd_MAX_WRITE_BUFFERS 1024
 
 #endif

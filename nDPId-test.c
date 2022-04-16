@@ -255,15 +255,15 @@ static void * nDPIsrvd_mainloop_thread(void * const arg)
 error:
     if (mock_test_desc != NULL)
     {
-        drain_cache_blocking(mock_test_desc);
+        drain_write_buffers_blocking(mock_test_desc);
     }
     if (mock_null_desc != NULL)
     {
-        drain_cache_blocking(mock_null_desc);
+        drain_write_buffers_blocking(mock_null_desc);
     }
     if (mock_arpa_desc != NULL)
     {
-        drain_cache_blocking(mock_arpa_desc);
+        drain_write_buffers_blocking(mock_arpa_desc);
     }
 
     del_event(epollfd, mock_pipefds[PIPE_nDPIsrvd]);
@@ -640,7 +640,7 @@ static void * distributor_client_mainloop_thread(void * const arg)
                            "Problematic JSON string (start: %zu, length: %llu, buffer usage: %zu): %.*s",
                            mock_sock->buffer.json_string_start,
                            mock_sock->buffer.json_string_length,
-                           mock_sock->buffer.used,
+                           mock_sock->buffer.buf.used,
                            (int)mock_sock->buffer.json_string_length,
                            mock_sock->buffer.json_string);
                     THREAD_ERROR_GOTO(trv);
@@ -992,13 +992,15 @@ int main(int argc, char ** argv)
 
         unsigned long long int total_alloc_bytes =
 #ifdef ENABLE_ZLIB
-            (unsigned long long int)(ndpi_memory_alloc_bytes - zlib_compression_bytes - (zlib_compressions * sizeof(struct nDPId_detection_data)));
+            (unsigned long long int)(ndpi_memory_alloc_bytes - zlib_compression_bytes -
+                                     (zlib_compressions * sizeof(struct nDPId_detection_data)));
 #else
             (unsigned long long int)ndpi_memory_alloc_bytes;
 #endif
         unsigned long long int total_free_bytes =
 #ifdef ENABLE_ZLIB
-            (unsigned long long int)(ndpi_memory_free_bytes - zlib_compression_bytes - (zlib_compressions * sizeof(struct nDPId_detection_data)));
+            (unsigned long long int)(ndpi_memory_free_bytes - zlib_compression_bytes -
+                                     (zlib_compressions * sizeof(struct nDPId_detection_data)));
 #else
             (unsigned long long int)ndpi_memory_free_bytes;
 #endif
@@ -1028,7 +1030,8 @@ int main(int argc, char ** argv)
             total_free_bytes -
                 sizeof(struct nDPId_workflow) *
                     nDPId_options.reader_thread_count /* We do not want to take the workflow into account. */,
-            total_alloc_count, total_free_count);
+            total_alloc_count,
+            total_free_count);
 
         printf(
             "~~ json string min len.......: %llu chars\n"

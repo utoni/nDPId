@@ -196,6 +196,11 @@ struct nDPIsrvd_buffer
     } ptr;
     size_t used;
     size_t max;
+};
+
+struct nDPIsrvd_json_buffer
+{
+    struct nDPIsrvd_buffer buf;
     char * json_string;
     size_t json_string_start;
     nDPIsrvd_ull json_string_length;
@@ -221,7 +226,7 @@ struct nDPIsrvd_socket
     instance_cleanup_callback instance_cleanup_callback;
     flow_cleanup_callback flow_cleanup_callback;
 
-    struct nDPIsrvd_buffer buffer;
+    struct nDPIsrvd_json_buffer buffer;
     struct nDPIsrvd_jsmn jsmn;
 
     /* easy and fast JSON key/value access via hash table and a static array */
@@ -375,9 +380,6 @@ static inline int nDPIsrvd_buffer_init(struct nDPIsrvd_buffer * const buffer, si
         return 1;
     }
 
-    buffer->json_string_start = 0;
-    buffer->json_string_length = 0ull;
-    buffer->json_string = NULL;
     buffer->used = 0;
     buffer->max = buffer_size;
 
@@ -388,6 +390,24 @@ static inline void nDPIsrvd_buffer_free(struct nDPIsrvd_buffer * const buffer)
 {
     nDPIsrvd_free(buffer->ptr.raw);
     buffer->ptr.raw = NULL;
+}
+
+static inline int nDPIsrvd_json_buffer_init(struct nDPIsrvd_json_buffer * const json_buffer, size_t json_buffer_size)
+{
+    int ret = nDPIsrvd_buffer_init(&json_buffer->buf, json_buffer_size);
+    if (ret == 0)
+    {
+        json_buffer->json_string_start = 0ul;
+        json_buffer->json_string_length = 0ull;
+        json_buffer->json_string = NULL;
+    }
+
+    return ret;
+}
+
+static inline void nDPIsrvd_json_buffer_free(struct nDPIsrvd_json_buffer * const json_buffer)
+{
+    nDPIsrvd_buffer_free(&json_buffer->buf);
 }
 
 static inline struct nDPIsrvd_socket * nDPIsrvd_socket_init(size_t global_user_data_size,
@@ -409,7 +429,7 @@ static inline struct nDPIsrvd_socket * nDPIsrvd_socket_init(size_t global_user_d
     if (sock != NULL)
     {
         sock->fd = -1;
-        if (nDPIsrvd_buffer_init(&sock->buffer, NETWORK_BUFFER_MAX_SIZE) != 0)
+        if (nDPIsrvd_json_buffer_init(&sock->buffer, NETWORK_BUFFER_MAX_SIZE) != 0)
         {
             goto error;
         }
@@ -435,7 +455,7 @@ static inline struct nDPIsrvd_socket * nDPIsrvd_socket_init(size_t global_user_d
 
     return sock;
 error:
-    nDPIsrvd_buffer_free(&sock->buffer);
+    nDPIsrvd_json_buffer_free(&sock->buffer);
     nDPIsrvd_socket_free(&sock);
     return NULL;
 }
@@ -545,7 +565,7 @@ static inline void nDPIsrvd_socket_free(struct nDPIsrvd_socket ** const sock)
     }
     (*sock)->instance_table = NULL;
 
-    nDPIsrvd_buffer_free(&(*sock)->buffer);
+    nDPIsrvd_json_buffer_free(&(*sock)->buffer);
     nDPIsrvd_free(*sock);
 
     *sock = NULL;
@@ -641,12 +661,13 @@ static inline enum nDPIsrvd_connect_return nDPIsrvd_connect(struct nDPIsrvd_sock
 
 static inline enum nDPIsrvd_read_return nDPIsrvd_read(struct nDPIsrvd_socket * const sock)
 {
-    if (sock->buffer.used == sock->buffer.max)
+    if (sock->buffer.buf.used == sock->buffer.buf.max)
     {
         return READ_OK;
     }
 
-    ssize_t bytes_read = read(sock->fd, sock->buffer.ptr.raw + sock->buffer.used, sock->buffer.max - sock->buffer.used);
+    ssize_t bytes_read =
+        read(sock->fd, sock->buffer.buf.ptr.raw + sock->buffer.buf.used, sock->buffer.buf.max - sock->buffer.buf.used);
 
     if (bytes_read == 0)
     {
@@ -657,7 +678,7 @@ static inline enum nDPIsrvd_read_return nDPIsrvd_read(struct nDPIsrvd_socket * c
         return READ_ERROR;
     }
 
-    sock->buffer.used += bytes_read;
+    sock->buffer.buf.used += bytes_read;
 
     return READ_OK;
 }
@@ -1080,49 +1101,49 @@ static inline int nDPIsrvd_check_flow_end(struct nDPIsrvd_socket * const sock,
     return 0;
 }
 
-static inline enum nDPIsrvd_parse_return nDPIsrvd_parse_line(struct nDPIsrvd_buffer * const buffer,
+static inline enum nDPIsrvd_parse_return nDPIsrvd_parse_line(struct nDPIsrvd_json_buffer * const json_buffer,
                                                              struct nDPIsrvd_jsmn * const jsmn)
 {
-    if (buffer->used < NETWORK_BUFFER_LENGTH_DIGITS + 1)
+    if (json_buffer->buf.used < NETWORK_BUFFER_LENGTH_DIGITS + 1)
     {
         return PARSE_NEED_MORE_DATA;
     }
-    if (buffer->ptr.text[NETWORK_BUFFER_LENGTH_DIGITS] != '{')
+    if (json_buffer->buf.ptr.text[NETWORK_BUFFER_LENGTH_DIGITS] != '{')
     {
         return PARSE_INVALID_OPENING_CHAR;
     }
 
     errno = 0;
-    buffer->json_string_length = strtoull((const char *)buffer->ptr.text, &buffer->json_string, 10);
-    buffer->json_string_length += buffer->json_string - buffer->ptr.text;
-    buffer->json_string_start = buffer->json_string - buffer->ptr.text;
+    json_buffer->json_string_length = strtoull((const char *)json_buffer->buf.ptr.text, &json_buffer->json_string, 10);
+    json_buffer->json_string_length += json_buffer->json_string - json_buffer->buf.ptr.text;
+    json_buffer->json_string_start = json_buffer->json_string - json_buffer->buf.ptr.text;
 
     if (errno == ERANGE)
     {
         return PARSE_SIZE_EXCEEDS_CONVERSION_LIMIT;
     }
-    if (buffer->json_string == buffer->ptr.text)
+    if (json_buffer->json_string == json_buffer->buf.ptr.text)
     {
         return PARSE_SIZE_MISSING;
     }
-    if (buffer->json_string_length > buffer->max)
+    if (json_buffer->json_string_length > json_buffer->buf.max)
     {
         return PARSE_STRING_TOO_BIG;
     }
-    if (buffer->json_string_length > buffer->used)
+    if (json_buffer->json_string_length > json_buffer->buf.used)
     {
         return PARSE_NEED_MORE_DATA;
     }
-    if (buffer->ptr.text[buffer->json_string_length - 2] != '}' ||
-        buffer->ptr.text[buffer->json_string_length - 1] != '\n')
+    if (json_buffer->buf.ptr.text[json_buffer->json_string_length - 2] != '}' ||
+        json_buffer->buf.ptr.text[json_buffer->json_string_length - 1] != '\n')
     {
         return PARSE_INVALID_CLOSING_CHAR;
     }
 
     jsmn_init(&jsmn->parser);
     jsmn->tokens_found = jsmn_parse(&jsmn->parser,
-                                    buffer->ptr.text + buffer->json_string_start,
-                                    buffer->json_string_length - buffer->json_string_start,
+                                    json_buffer->buf.ptr.text + json_buffer->json_string_start,
+                                    json_buffer->json_string_length - json_buffer->json_string_start,
                                     jsmn->tokens,
                                     nDPIsrvd_MAX_JSON_TOKENS);
     if (jsmn->tokens_found < 0 || jsmn->tokens[0].type != JSMN_OBJECT)
@@ -1143,12 +1164,14 @@ static inline enum nDPIsrvd_parse_return nDPIsrvd_parse_line(struct nDPIsrvd_buf
     return PARSE_OK;
 }
 
-static void nDPIsrvd_drain_buffer(struct nDPIsrvd_buffer * const buffer)
+static void nDPIsrvd_drain_buffer(struct nDPIsrvd_json_buffer * const json_buffer)
 {
-    memmove(buffer->ptr.raw, buffer->ptr.raw + buffer->json_string_length, buffer->used - buffer->json_string_length);
-    buffer->used -= buffer->json_string_length;
-    buffer->json_string_length = 0;
-    buffer->json_string_start = 0;
+    memmove(json_buffer->buf.ptr.raw,
+            json_buffer->buf.ptr.raw + json_buffer->json_string_length,
+            json_buffer->buf.used - json_buffer->json_string_length);
+    json_buffer->buf.used -= json_buffer->json_string_length;
+    json_buffer->json_string_length = 0;
+    json_buffer->json_string_start = 0;
 }
 
 static inline enum nDPIsrvd_parse_return nDPIsrvd_parse_all(struct nDPIsrvd_socket * const sock)
