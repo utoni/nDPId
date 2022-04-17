@@ -159,8 +159,7 @@ static void simple_flow_cleanup_callback(struct nDPIsrvd_socket * const sock,
 
     if (reason == CLEANUP_REASON_FLOW_TIMEOUT)
     {
-        fprintf(stderr, "Flow timeout occurred, something really bad happened.\n");
-        exit(1);
+        fprintf(stderr, "Flow %llu timeouted.\n", flow->id_as_ull);
     }
 }
 
@@ -188,9 +187,27 @@ int main(int argc, char ** argv)
         return 1;
     }
 
-    enum nDPIsrvd_read_return read_ret;
-    while (main_thread_shutdown == 0 && (read_ret = nDPIsrvd_read(sock)) == READ_OK)
+    if (nDPIsrvd_set_read_timeout(sock, 3, 0) != 0)
     {
+        return 1;
+    }
+
+    enum nDPIsrvd_read_return read_ret;
+    while (main_thread_shutdown == 0)
+    {
+        read_ret = nDPIsrvd_read(sock);
+        if (read_ret == READ_TIMEOUT)
+        {
+            printf("No data received during the last %llu second(s).\n",
+                   (long long unsigned int)sock->read_timeout.tv_sec);
+            continue;
+        }
+        if (read_ret != READ_OK)
+        {
+            main_thread_shutdown = 1;
+            continue;
+        }
+
         enum nDPIsrvd_parse_return parse_ret = nDPIsrvd_parse_all(sock);
         if (parse_ret != PARSE_NEED_MORE_DATA)
         {

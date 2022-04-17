@@ -11,7 +11,6 @@ flow_detection_update_count value:GAUGE:0:U
 flow_not_detected_count     value:GAUGE:0:U
 
 # flow additional counters
-flow_packet_count           value:GAUGE:0:U
 flow_total_bytes            value:GAUGE:0:U
 flow_risky_count            value:GAUGE:0:U
 

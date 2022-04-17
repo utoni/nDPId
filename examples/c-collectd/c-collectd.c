@@ -44,7 +44,6 @@ static struct
     uint64_t flow_detection_update_count;
     uint64_t flow_not_detected_count;
 
-    uint64_t flow_packet_count;
     uint64_t flow_total_bytes;
     uint64_t flow_risky_count;
 
@@ -256,7 +255,7 @@ static void print_collectd_exec_output(void)
     printf(COLLECTD_PUTVAL_N_FORMAT(flow_new_count) COLLECTD_PUTVAL_N_FORMAT(flow_end_count)
                COLLECTD_PUTVAL_N_FORMAT(flow_idle_count) COLLECTD_PUTVAL_N_FORMAT(flow_guessed_count)
                    COLLECTD_PUTVAL_N_FORMAT(flow_detected_count) COLLECTD_PUTVAL_N_FORMAT(flow_detection_update_count)
-                       COLLECTD_PUTVAL_N_FORMAT(flow_not_detected_count) COLLECTD_PUTVAL_N_FORMAT(flow_packet_count)
+                       COLLECTD_PUTVAL_N_FORMAT(flow_not_detected_count)
                            COLLECTD_PUTVAL_N_FORMAT(flow_total_bytes) COLLECTD_PUTVAL_N_FORMAT(flow_risky_count),
 
            COLLECTD_PUTVAL_N(flow_new_count),
@@ -266,7 +265,6 @@ static void print_collectd_exec_output(void)
            COLLECTD_PUTVAL_N(flow_detected_count),
            COLLECTD_PUTVAL_N(flow_detection_update_count),
            COLLECTD_PUTVAL_N(flow_not_detected_count),
-           COLLECTD_PUTVAL_N(flow_packet_count),
            COLLECTD_PUTVAL_N(flow_total_bytes),
            COLLECTD_PUTVAL_N(flow_risky_count));
 
@@ -428,7 +426,7 @@ static uint64_t get_total_flow_bytes(struct nDPIsrvd_socket * const sock)
 {
     nDPIsrvd_ull total_bytes_ull = 0;
 
-    if (TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_tot_l4_data_len"), &total_bytes_ull) == CONVERSION_OK)
+    if (TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_tot_l4_payload_len"), &total_bytes_ull) == CONVERSION_OK)
     {
         return total_bytes_ull;
     }
@@ -670,11 +668,6 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
         collectd_statistics.flow_not_detected_count++;
     }
 
-    if (TOKEN_GET_SZ(sock, "packet_event_name") != NULL)
-    {
-        collectd_statistics.flow_packet_count++;
-    }
-
     return CALLBACK_OK;
 }
 
@@ -712,6 +705,13 @@ int main(int argc, char ** argv)
     if (connect_ret != CONNECT_OK)
     {
         LOG(LOG_DAEMON | LOG_ERR, "nDPIsrvd socket connect to %s failed!", serv_optarg);
+        nDPIsrvd_socket_free(&sock);
+        return 1;
+    }
+
+    if (nDPIsrvd_set_nonblock(sock) != 0)
+    {
+        LOG(LOG_DAEMON | LOG_ERR, "nDPIsrvd set nonblock failed: %s", strerror(errno));
         nDPIsrvd_socket_free(&sock);
         return 1;
     }

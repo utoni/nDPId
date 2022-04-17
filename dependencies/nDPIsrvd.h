@@ -4,6 +4,7 @@
 #include <arpa/inet.h>
 #include <ctype.h>
 #include <errno.h>
+#include <fcntl.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -53,6 +54,7 @@ enum nDPIsrvd_read_return
 {
     READ_OK = CONNECT_LAST_ENUM_VALUE,
     READ_PEER_DISCONNECT,
+    READ_TIMEOUT,
     READ_ERROR, /* check for errno */
 
     READ_LAST_ENUM_VALUE
@@ -216,6 +218,7 @@ struct nDPIsrvd_jsmn
 struct nDPIsrvd_socket
 {
     int fd;
+    struct timeval read_timeout;
     struct nDPIsrvd_address address;
 
     size_t instance_user_data_size;
@@ -324,6 +327,7 @@ static inline char const * nDPIsrvd_enum_to_string(int enum_value)
 
                                                                "READ_OK",
                                                                "READ_PEER_DISCONNECT",
+                                                               "READ_TIMEOUT",
                                                                "READ_ERROR",
 
                                                                "PARSE_OK",
@@ -429,6 +433,9 @@ static inline struct nDPIsrvd_socket * nDPIsrvd_socket_init(size_t global_user_d
     if (sock != NULL)
     {
         sock->fd = -1;
+        sock->read_timeout.tv_sec = 0;
+        sock->read_timeout.tv_usec = 0;
+
         if (nDPIsrvd_json_buffer_init(&sock->buffer, NETWORK_BUFFER_MAX_SIZE) != 0)
         {
             goto error;
@@ -458,6 +465,45 @@ error:
     nDPIsrvd_json_buffer_free(&sock->buffer);
     nDPIsrvd_socket_free(&sock);
     return NULL;
+}
+
+static inline int nDPIsrvd_set_read_timeout(struct nDPIsrvd_socket * const sock,
+                                            time_t seconds,
+                                            suseconds_t micro_seconds)
+{
+    struct timeval tv = {.tv_sec = seconds, .tv_usec = micro_seconds};
+
+    if (sock->fd < 0)
+    {
+        return 1;
+    }
+
+    if (setsockopt(sock->fd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv)) < 0)
+    {
+        return 1;
+    }
+
+    sock->read_timeout = tv;
+
+    return 0;
+}
+
+static inline int nDPIsrvd_set_nonblock(struct nDPIsrvd_socket * const sock)
+{
+    int flags;
+
+    if (sock->fd < 0)
+    {
+        return 1;
+    }
+
+    flags = fcntl(sock->fd, F_GETFL, 0);
+    if (flags == -1)
+    {
+        return 1;
+    }
+
+    return (fcntl(sock->fd, F_SETFL, flags | O_NONBLOCK) != 0);
 }
 
 static inline void nDPIsrvd_cleanup_flow(struct nDPIsrvd_socket * const sock,
@@ -675,6 +721,10 @@ static inline enum nDPIsrvd_read_return nDPIsrvd_read(struct nDPIsrvd_socket * c
     }
     if (bytes_read < 0)
     {
+        if (errno == EAGAIN)
+        {
+            return READ_TIMEOUT;
+        }
         return READ_ERROR;
     }
 

@@ -426,8 +426,16 @@ if __name__ == '__main__':
 
     nsock = nDPIsrvdSocket()
     nsock.connect(address)
+    nsock.timeout(1.0)
     stats = Stats(nsock)
-    try:
-        nsock.loop(onJsonLineRecvd, onFlowCleanup, stats)
-    except KeyboardInterrupt:
-        print('\n\nKeyboard Interrupt: cleaned up {} flows.'.format(len(nsock.shutdown())))
+
+    while True:
+        try:
+            nsock.loop(onJsonLineRecvd, onFlowCleanup, stats)
+        except KeyboardInterrupt:
+            print('\n\nKeyboard Interrupt: cleaned up {} flows.'.format(len(nsock.shutdown())))
+            break
+        except TimeoutError:
+            stats.updateSpinner()
+            stats.resetStatus()
+            stats.printStatus()

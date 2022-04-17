@@ -339,6 +339,9 @@ class nDPIsrvdSocket:
         self.digitlen = 0
         self.lines = []
 
+    def timeout(self, timeout):
+        self.sock.settimeout(timeout)
+
     def receive(self):
         if len(self.buffer) == NETWORK_BUFFER_MAX_SIZE:
             raise BufferCapacityReached(len(self.buffer), NETWORK_BUFFER_MAX_SIZE)
@@ -349,6 +352,7 @@ class nDPIsrvdSocket:
         except ConnectionResetError:
             connection_finished = True
             recvd = bytes()
+
         if len(recvd) == 0:
             connection_finished = True
 
