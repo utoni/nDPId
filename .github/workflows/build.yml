@@ -19,6 +19,15 @@ jobs:
         os: ["ubuntu-latest", "ubuntu-18.04"]
         ndpid_gcrypt: ["-DNDPI_WITH_GCRYPT=OFF", "-DNDPI_WITH_GCRYPT=ON"]
         ndpid_zlib: ["-DENABLE_ZLIB=OFF", "-DENABLE_ZLIB=ON"]
+        include:
+          - compiler: "default-cc"
+            os: "ubuntu-latest"
+          - compiler: "clang-12"
+            os: "ubuntu-latest"
+          - compiler: "gcc-10"
+            os: "ubuntu-latest"
+          - compiler: "gcc-7"
+            os: "ubuntu-latest"
 
     steps:
       - uses: actions/checkout@v2
@@ -29,7 +38,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install autoconf automake cmake libtool pkg-config gettext libjson-c-dev flex bison libpcap-dev zlib1g-dev
-          sudo apt-get install gcc-arm-linux-gnueabihf gcc-mingw-w64 libc6-dev lcov
+          sudo apt-get install ${{ matrix.compiler }} lcov
       - name: Install Ubuntu Prerequisites (libgcrypt)
         if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=ON')
         run: |
@@ -41,7 +50,7 @@ jobs:
       - name: Configure nDPI
         run: |
           mkdir build && cd build
-          env CMAKE_C_FLAGS='-Werror' cmake .. -DENABLE_COVERAGE=ON -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DENABLE_SANITIZER=ON ${{ matrix.ndpid_zlib }} ${{ matrix.ndpid_gcrypt }}
+          env CMAKE_C_COMPILER=${{ matrix.compiler }} CMAKE_C_FLAGS='-Werror' cmake .. -DENABLE_COVERAGE=ON -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DENABLE_SANITIZER=ON ${{ matrix.ndpid_zlib }} ${{ matrix.ndpid_gcrypt }}
       - name: Build nDPI
         run: |
           make -C build all VERBOSE=1
