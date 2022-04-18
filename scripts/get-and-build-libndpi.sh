@@ -32,6 +32,7 @@ if [ -d ./.git ]; then
 fi
 
 cd ./libnDPI
+test -r Makefile && make distclean
 DEST_INSTALL="${DEST_INSTALL:-$(realpath ./install)}"
 MAKE_PROGRAM="${MAKE_PROGRAM:-make -j4}"
 if [ ! -z "${CROSS_COMPILE_TRIPLET}" ]; then
