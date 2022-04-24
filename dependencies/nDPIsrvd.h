@@ -394,6 +394,8 @@ static inline void nDPIsrvd_buffer_free(struct nDPIsrvd_buffer * const buffer)
 {
     nDPIsrvd_free(buffer->ptr.raw);
     buffer->ptr.raw = NULL;
+    buffer->used = 0;
+    buffer->max = 0;
 }
 
 static inline int nDPIsrvd_json_buffer_init(struct nDPIsrvd_json_buffer * const json_buffer, size_t json_buffer_size)
@@ -412,6 +414,9 @@ static inline int nDPIsrvd_json_buffer_init(struct nDPIsrvd_json_buffer * const 
 static inline void nDPIsrvd_json_buffer_free(struct nDPIsrvd_json_buffer * const json_buffer)
 {
     nDPIsrvd_buffer_free(&json_buffer->buf);
+    json_buffer->json_string_start = 0ul;
+    json_buffer->json_string_length = 0ull;
+    json_buffer->json_string = NULL;
 }
 
 static inline struct nDPIsrvd_socket * nDPIsrvd_socket_init(size_t global_user_data_size,

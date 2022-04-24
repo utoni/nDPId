@@ -41,7 +41,6 @@ struct remote_desc
     {
         struct
         {
-            int collector_sockfd;
             struct sockaddr_un peer;
             unsigned long long int json_bytes;
             pid_t pid;
@@ -50,7 +49,6 @@ struct remote_desc
         } event_collector_un;
         struct
         {
-            int distributor_sockfd;
             struct sockaddr_un peer;
             pid_t pid;
             char * user_name;
@@ -60,7 +58,6 @@ struct remote_desc
         } event_distributor_un; /* UNIX socket */
         struct
         {
-            int distributor_sockfd;
             struct sockaddr_in peer;
             char peer_addr[INET_ADDRSTRLEN];
 
@@ -135,6 +132,7 @@ static void nDPIsrvd_buffer_array_dtor(void * elt)
     struct nDPIsrvd_write_buffer * const buf_dst = (struct nDPIsrvd_write_buffer *)elt;
 
     nDPIsrvd_buffer_free(&buf_dst->buf);
+    buf_dst->written = 0;
 }
 
 static const UT_icd nDPIsrvd_buffer_array_icd = {sizeof(struct nDPIsrvd_write_buffer),
@@ -679,13 +677,10 @@ static void free_remote(int epollfd, struct remote_desc * remote)
                 }
                 if (remote->event_distributor_un.additional_write_buffers != NULL)
                 {
-                    utarray_clear(remote->event_distributor_un.additional_write_buffers);
+                    utarray_free(remote->event_distributor_un.additional_write_buffers);
                 }
                 nDPIsrvd_buffer_free(&remote->event_distributor_un.main_write_buffer.buf);
-                remote->event_distributor_un.main_write_buffer.written = 0;
-
                 free(remote->event_distributor_un.user_name);
-                remote->event_distributor_un.user_name = NULL;
                 break;
             case DISTRIBUTOR_IN:
                 if (errno != 0)
@@ -694,13 +689,13 @@ static void free_remote(int epollfd, struct remote_desc * remote)
                 }
                 if (remote->event_distributor_in.additional_write_buffers != NULL)
                 {
-                    utarray_clear(remote->event_distributor_in.additional_write_buffers);
+                    utarray_free(remote->event_distributor_in.additional_write_buffers);
                 }
                 nDPIsrvd_buffer_free(&remote->event_distributor_in.main_write_buffer.buf);
-                remote->event_distributor_in.main_write_buffer.written = 0;
                 break;
         }
 
+        memset(remote, 0, sizeof(*remote));
         remote->fd = -1;
         remotes.desc_used--;
     }

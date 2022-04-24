@@ -154,37 +154,29 @@ struct nDPId_detection_data
     struct ndpi_flow_struct flow;
 };
 
-struct nDPId_flow_info
+struct nDPId_flow
 {
     struct nDPId_flow_extended flow_extended;
 
-    uint8_t detection_completed : 1;
-    uint8_t reserved_00 : 7;
-    uint8_t reserved_01[1];
+    union
+    {
+        struct
+        {
+            uint8_t detection_completed : 1;
+            uint8_t reserved_00 : 7;
+            uint8_t reserved_01[1];
 #ifdef ENABLE_ZLIB
-    uint16_t detection_data_compressed_size;
-#else
-    uint16_t reserved_02;
+            uint16_t detection_data_compressed_size;
 #endif
-    struct nDPId_detection_data * detection_data;
-    uint32_t reserved_03; // required to re-use that memory for `struct nDPId_flow_finished'
+            struct nDPId_detection_data * detection_data;
+        } info;
+        struct
+        {
+            ndpi_risk risk;
+            ndpi_confidence_t confidence;
+        } finished;
+    };
 };
-
-struct nDPId_flow_finished
-{
-    struct nDPId_flow_extended flow_extended;
-
-    ndpi_risk risk;
-    ndpi_confidence_t confidence;
-};
-
-/* TODO: Merge `struct nDPId_flow_info' with `struct nDPId_flow_finished' and use a union instead? */
-_Static_assert(sizeof(struct nDPId_flow_finished) <= sizeof(struct nDPId_flow_info),
-               "The size of struct nDPId_flow_finished needs be smaller or equal "
-               "than the size of struct nDPId_flow_info."
-               "Otherwise some code parts need to be changed."
-               "This is required to make the transition from `struct nDPId_flow_info' "
-               "to `struct nDPId_flow_finished' work.");
 
 struct nDPId_workflow
 {
@@ -499,7 +491,7 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
                                struct nDPId_flow_extended * const flow_ext,
                                enum flow_event event);
 static void jsonize_flow_detection_event(struct nDPId_reader_thread * const reader_thread,
-                                         struct nDPId_flow_info * const flow_info,
+                                         struct nDPId_flow * const flow,
                                          enum flow_event event);
 
 #ifdef ENABLE_ZLIB
@@ -590,17 +582,17 @@ static int zlib_inflate(const void * src, int srcLen, void * dst, int dstLen)
     return ret;
 }
 
-static int detection_data_deflate(struct nDPId_flow_info * const flow_info)
+static int detection_data_deflate(struct nDPId_flow * const flow)
 {
-    uint8_t tmpOut[sizeof(*flow_info->detection_data)];
+    uint8_t tmpOut[sizeof(*flow->info.detection_data)];
     int ret;
 
-    if (flow_info->detection_data_compressed_size > 0)
+    if (flow->info.detection_data_compressed_size > 0)
     {
         return -7;
     }
 
-    ret = zlib_deflate(flow_info->detection_data, sizeof(*flow_info->detection_data), tmpOut, sizeof(tmpOut));
+    ret = zlib_deflate(flow->info.detection_data, sizeof(*flow->info.detection_data), tmpOut, sizeof(tmpOut));
     if (ret <= 0)
     {
         return ret;
@@ -611,26 +603,26 @@ static int detection_data_deflate(struct nDPId_flow_info * const flow_info)
     {
         return -8;
     }
-    ndpi_free(flow_info->detection_data);
-    flow_info->detection_data = new_det_data;
+    ndpi_free(flow->info.detection_data);
+    flow->info.detection_data = new_det_data;
 
-    memcpy(flow_info->detection_data, tmpOut, ret);
-    flow_info->detection_data_compressed_size = ret;
+    memcpy(flow->info.detection_data, tmpOut, ret);
+    flow->info.detection_data_compressed_size = ret;
 
     return ret;
 }
 
-static int detection_data_inflate(struct nDPId_flow_info * const flow_info)
+static int detection_data_inflate(struct nDPId_flow * const flow)
 {
-    uint8_t tmpOut[sizeof(*flow_info->detection_data)];
+    uint8_t tmpOut[sizeof(*flow->info.detection_data)];
     int ret;
 
-    if (flow_info->detection_data_compressed_size == 0)
+    if (flow->info.detection_data_compressed_size == 0)
     {
         return -7;
     }
 
-    ret = zlib_inflate(flow_info->detection_data, flow_info->detection_data_compressed_size, tmpOut, sizeof(tmpOut));
+    ret = zlib_inflate(flow->info.detection_data, flow->info.detection_data_compressed_size, tmpOut, sizeof(tmpOut));
     if (ret <= 0)
     {
         return ret;
@@ -641,11 +633,11 @@ static int detection_data_inflate(struct nDPId_flow_info * const flow_info)
     {
         return -8;
     }
-    ndpi_free(flow_info->detection_data);
-    flow_info->detection_data = new_det_data;
+    ndpi_free(flow->info.detection_data);
+    flow->info.detection_data = new_det_data;
 
-    memcpy(flow_info->detection_data, tmpOut, ret);
-    flow_info->detection_data_compressed_size = 0;
+    memcpy(flow->info.detection_data, tmpOut, ret);
+    flow->info.detection_data_compressed_size = 0;
 
     return ret;
 }
@@ -677,20 +669,20 @@ static void ndpi_comp_scan_walker(void const * const A, ndpi_VISIT which, int de
             {
                 if (flow_basic->last_seen + nDPId_options.compression_flow_inactivity < workflow->last_thread_time)
                 {
-                    struct nDPId_flow_info * const flow_info = (struct nDPId_flow_info *)flow_basic;
+                    struct nDPId_flow * const flow = (struct nDPId_flow *)flow_basic;
 
-                    if (flow_info->detection_data_compressed_size > 0)
+                    if (flow->info.detection_data_compressed_size > 0)
                     {
                         break;
                     }
 
-                    int ret = detection_data_deflate(flow_info);
+                    int ret = detection_data_deflate(flow);
 
                     if (ret <= 0)
                     {
                         logger(1,
                                "zLib compression failed for flow %llu with error code: %d",
-                               flow_info->flow_extended.flow_id,
+                               flow->flow_extended.flow_id,
                                ret);
                     }
                     else
@@ -1189,27 +1181,27 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     return workflow;
 }
 
-static void free_detection_data(struct nDPId_flow_info * const flow_info)
+static void free_detection_data(struct nDPId_flow * const flow)
 {
-    ndpi_free_flow_data(&flow_info->detection_data->flow);
-    ndpi_free(flow_info->detection_data);
-    flow_info->detection_data = NULL;
+    ndpi_free_flow_data(&flow->info.detection_data->flow);
+    ndpi_free(flow->info.detection_data);
+    flow->info.detection_data = NULL;
 }
 
-static int alloc_detection_data(struct nDPId_flow_info * const flow_info)
+static int alloc_detection_data(struct nDPId_flow * const flow)
 {
-    flow_info->detection_data = (struct nDPId_detection_data *)ndpi_flow_malloc(sizeof(*flow_info->detection_data));
+    flow->info.detection_data = (struct nDPId_detection_data *)ndpi_flow_malloc(sizeof(*flow->info.detection_data));
 
-    if (flow_info->detection_data == NULL)
+    if (flow->info.detection_data == NULL)
     {
         goto error;
     }
 
-    memset(flow_info->detection_data, 0, sizeof(*flow_info->detection_data));
+    memset(flow->info.detection_data, 0, sizeof(*flow->info.detection_data));
 
     return 0;
 error:
-    free_detection_data(flow_info);
+    free_detection_data(flow);
     return 1;
 }
 
@@ -1228,8 +1220,8 @@ static void ndpi_flow_info_freer(void * const node)
 
         case FS_INFO:
         {
-            struct nDPId_flow_info * const flow_info = (struct nDPId_flow_info *)flow_basic;
-            free_detection_data(flow_info);
+            struct nDPId_flow * const flow = (struct nDPId_flow *)flow_basic;
+            free_detection_data(flow);
             break;
         }
     }
@@ -1555,46 +1547,46 @@ static void process_idle_flow(struct nDPId_reader_thread * const reader_thread, 
 
             case FS_FINISHED:
             {
-                struct nDPId_flow_finished * const flow_finished = (struct nDPId_flow_finished *)flow_basic;
+                struct nDPId_flow * const flow = (struct nDPId_flow *)flow_basic;
 
-                if (flow_basic->tcp_fin_rst_seen != 0)
+                if (flow->flow_extended.flow_basic.tcp_fin_rst_seen != 0)
                 {
-                    jsonize_flow_event(reader_thread, &flow_finished->flow_extended, FLOW_EVENT_END);
+                    jsonize_flow_event(reader_thread, &flow->flow_extended, FLOW_EVENT_END);
                 }
                 else
                 {
-                    jsonize_flow_event(reader_thread, &flow_finished->flow_extended, FLOW_EVENT_IDLE);
+                    jsonize_flow_event(reader_thread, &flow->flow_extended, FLOW_EVENT_IDLE);
                 }
                 break;
             }
 
             case FS_INFO:
             {
-                struct nDPId_flow_info * const flow_info = (struct nDPId_flow_info *)flow_basic;
+                struct nDPId_flow * const flow = (struct nDPId_flow *)flow_basic;
 
 #ifdef ENABLE_ZLIB
-                if (nDPId_options.enable_zlib_compression != 0 && flow_info->detection_data_compressed_size > 0)
+                if (nDPId_options.enable_zlib_compression != 0 && flow->info.detection_data_compressed_size > 0)
                 {
-                    workflow->current_compression_diff -= flow_info->detection_data_compressed_size;
-                    int ret = detection_data_inflate(flow_info);
+                    workflow->current_compression_diff -= flow->info.detection_data_compressed_size;
+                    int ret = detection_data_inflate(flow);
                     if (ret <= 0)
                     {
-                        workflow->current_compression_diff += flow_info->detection_data_compressed_size;
+                        workflow->current_compression_diff += flow->info.detection_data_compressed_size;
                         logger(1, "zLib decompression failed with error code: %d", ret);
                         return;
                     }
                 }
 #endif
 
-                if (flow_info->detection_completed == 0)
+                if (flow->info.detection_completed == 0)
                 {
                     uint8_t protocol_was_guessed = 0;
 
                     if (ndpi_is_protocol_detected(workflow->ndpi_struct,
-                                                  flow_info->detection_data->guessed_l7_protocol) == 0)
+                                                  flow->info.detection_data->guessed_l7_protocol) == 0)
                     {
-                        flow_info->detection_data->guessed_l7_protocol = ndpi_detection_giveup(
-                            workflow->ndpi_struct, &flow_info->detection_data->flow, 1, &protocol_was_guessed);
+                        flow->info.detection_data->guessed_l7_protocol = ndpi_detection_giveup(
+                            workflow->ndpi_struct, &flow->info.detection_data->flow, 1, &protocol_was_guessed);
                     }
                     else
                     {
@@ -1604,21 +1596,21 @@ static void process_idle_flow(struct nDPId_reader_thread * const reader_thread, 
                     if (protocol_was_guessed != 0)
                     {
                         workflow->total_guessed_flows++;
-                        jsonize_flow_detection_event(reader_thread, flow_info, FLOW_EVENT_GUESSED);
+                        jsonize_flow_detection_event(reader_thread, flow, FLOW_EVENT_GUESSED);
                     }
                     else
                     {
                         workflow->total_not_detected_flows++;
-                        jsonize_flow_detection_event(reader_thread, flow_info, FLOW_EVENT_NOT_DETECTED);
+                        jsonize_flow_detection_event(reader_thread, flow, FLOW_EVENT_NOT_DETECTED);
                     }
                 }
-                if (flow_basic->tcp_fin_rst_seen != 0)
+                if (flow->flow_extended.flow_basic.tcp_fin_rst_seen != 0)
                 {
-                    jsonize_flow_event(reader_thread, &flow_info->flow_extended, FLOW_EVENT_END);
+                    jsonize_flow_event(reader_thread, &flow->flow_extended, FLOW_EVENT_END);
                 }
                 else
                 {
-                    jsonize_flow_event(reader_thread, &flow_info->flow_extended, FLOW_EVENT_IDLE);
+                    jsonize_flow_event(reader_thread, &flow->flow_extended, FLOW_EVENT_IDLE);
                 }
                 break;
             }
@@ -2306,13 +2298,13 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
 
             if (flow_ext->flow_basic.state == FS_FINISHED)
             {
-                struct nDPId_flow_finished * const flow_finished = (struct nDPId_flow_finished *)flow_ext;
+                struct nDPId_flow * const flow = (struct nDPId_flow *)flow_ext;
 
                 ndpi_serialize_proto(workflow->ndpi_struct,
                                      &workflow->ndpi_serializer,
-                                     flow_finished->risk,
-                                     flow_finished->confidence,
-                                     flow_finished->flow_extended.detected_l7_protocol);
+                                     flow->finished.risk,
+                                     flow->finished.confidence,
+                                     flow->flow_extended.detected_l7_protocol);
             }
             break;
 
@@ -2331,7 +2323,7 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
 }
 
 static void jsonize_flow_detection_event(struct nDPId_reader_thread * const reader_thread,
-                                         struct nDPId_flow_info * const flow_info,
+                                         struct nDPId_flow * const flow,
                                          enum flow_event event)
 {
     struct nDPId_workflow * const workflow = reader_thread->workflow;
@@ -2347,8 +2339,8 @@ static void jsonize_flow_detection_event(struct nDPId_reader_thread * const read
         ndpi_serialize_string_string(&workflow->ndpi_serializer, ev, flow_event_name_table[FLOW_EVENT_INVALID]);
     }
     jsonize_basic(reader_thread, 1);
-    jsonize_flow(workflow, &flow_info->flow_extended);
-    jsonize_l3_l4(workflow, &flow_info->flow_extended.flow_basic);
+    jsonize_flow(workflow, &flow->flow_extended);
+    jsonize_l3_l4(workflow, &flow->flow_extended.flow_basic);
 
     switch (event)
     {
@@ -2363,34 +2355,34 @@ static void jsonize_flow_detection_event(struct nDPId_reader_thread * const read
             logger(1,
                    "[%8llu, %4llu] internal error / invalid function call",
                    workflow->packets_captured,
-                   flow_info->flow_extended.flow_id);
+                   flow->flow_extended.flow_id);
             break;
 
         case FLOW_EVENT_NOT_DETECTED:
         case FLOW_EVENT_GUESSED:
             if (ndpi_dpi2json(workflow->ndpi_struct,
-                              &flow_info->detection_data->flow,
-                              flow_info->detection_data->guessed_l7_protocol,
+                              &flow->info.detection_data->flow,
+                              flow->info.detection_data->guessed_l7_protocol,
                               &workflow->ndpi_serializer) != 0)
             {
                 logger(1,
                        "[%8llu, %4llu] ndpi_dpi2json failed for not-detected/guessed flow",
                        workflow->packets_captured,
-                       flow_info->flow_extended.flow_id);
+                       flow->flow_extended.flow_id);
             }
             break;
 
         case FLOW_EVENT_DETECTED:
         case FLOW_EVENT_DETECTION_UPDATE:
             if (ndpi_dpi2json(workflow->ndpi_struct,
-                              &flow_info->detection_data->flow,
-                              flow_info->flow_extended.detected_l7_protocol,
+                              &flow->info.detection_data->flow,
+                              flow->flow_extended.detected_l7_protocol,
                               &workflow->ndpi_serializer) != 0)
             {
                 logger(1,
                        "[%8llu, %4llu] ndpi_dpi2json failed for detected/detection-update flow",
                        workflow->packets_captured,
-                       flow_info->flow_extended.flow_id);
+                       flow->flow_extended.flow_id);
             }
             break;
     }
@@ -3014,7 +3006,7 @@ static struct nDPId_flow_basic * add_new_flow(struct nDPId_workflow * const work
             break;
 
         case FS_INFO:
-            s = sizeof(struct nDPId_flow_info);
+            s = sizeof(struct nDPId_flow);
             break;
     }
 
@@ -3079,7 +3071,7 @@ static void ndpi_process_packet(uint8_t * const args,
 
     size_t hashed_index;
     void * tree_result;
-    struct nDPId_flow_info * flow_to_process;
+    struct nDPId_flow * flow_to_process;
 
     uint8_t is_new_flow = 0;
 
@@ -3505,7 +3497,7 @@ static void ndpi_process_packet(uint8_t * const args,
         }
         workflow->max_flow_to_track_reached = 0;
 
-        flow_to_process = (struct nDPId_flow_info *)add_new_flow(workflow, &flow_basic, FS_INFO, hashed_index);
+        flow_to_process = (struct nDPId_flow *)add_new_flow(workflow, &flow_basic, FS_INFO, hashed_index);
         if (flow_to_process == NULL)
         {
             if (workflow->flow_allocation_already_failed == 0)
@@ -3567,18 +3559,18 @@ static void ndpi_process_packet(uint8_t * const args,
             case FS_INFO:
                 break;
         }
-        flow_to_process = (struct nDPId_flow_info *)flow_basic_to_process;
+        flow_to_process = (struct nDPId_flow *)flow_basic_to_process;
 
         if (flow_to_process->flow_extended.flow_basic.state == FS_INFO)
         {
 #ifdef ENABLE_ZLIB
-            if (nDPId_options.enable_zlib_compression != 0 && flow_to_process->detection_data_compressed_size > 0)
+            if (nDPId_options.enable_zlib_compression != 0 && flow_to_process->info.detection_data_compressed_size > 0)
             {
-                workflow->current_compression_diff -= flow_to_process->detection_data_compressed_size;
+                workflow->current_compression_diff -= flow_to_process->info.detection_data_compressed_size;
                 int ret = detection_data_inflate(flow_to_process);
                 if (ret <= 0)
                 {
-                    workflow->current_compression_diff += flow_to_process->detection_data_compressed_size;
+                    workflow->current_compression_diff += flow_to_process->info.detection_data_compressed_size;
                     logger(1,
                            "zLib decompression failed for existing flow %llu with error code: %d",
                            flow_to_process->flow_extended.flow_id,
@@ -3632,9 +3624,10 @@ static void ndpi_process_packet(uint8_t * const args,
         return;
     }
 
-    if (flow_to_process->detection_data->flow.num_processed_pkts == nDPId_options.max_packets_per_flow_to_process - 1)
+    if (flow_to_process->info.detection_data->flow.num_processed_pkts ==
+        nDPId_options.max_packets_per_flow_to_process - 1)
     {
-        if (flow_to_process->detection_completed != 0)
+        if (flow_to_process->info.detection_completed != 0)
         {
             reader_thread->workflow->total_flow_detection_updates++;
             jsonize_flow_detection_event(reader_thread, flow_to_process, FLOW_EVENT_DETECTION_UPDATE);
@@ -3643,8 +3636,8 @@ static void ndpi_process_packet(uint8_t * const args,
         {
             /* last chance to guess something, better then nothing */
             uint8_t protocol_was_guessed = 0;
-            flow_to_process->detection_data->guessed_l7_protocol = ndpi_detection_giveup(
-                workflow->ndpi_struct, &flow_to_process->detection_data->flow, 1, &protocol_was_guessed);
+            flow_to_process->info.detection_data->guessed_l7_protocol = ndpi_detection_giveup(
+                workflow->ndpi_struct, &flow_to_process->info.detection_data->flow, 1, &protocol_was_guessed);
             if (protocol_was_guessed != 0)
             {
                 workflow->total_guessed_flows++;
@@ -3660,51 +3653,52 @@ static void ndpi_process_packet(uint8_t * const args,
 
     flow_to_process->flow_extended.detected_l7_protocol =
         ndpi_detection_process_packet(workflow->ndpi_struct,
-                                      &flow_to_process->detection_data->flow,
+                                      &flow_to_process->info.detection_data->flow,
                                       ip != NULL ? (uint8_t *)ip : (uint8_t *)ip6,
                                       ip_size,
                                       workflow->last_thread_time);
 
     if (ndpi_is_protocol_detected(workflow->ndpi_struct, flow_to_process->flow_extended.detected_l7_protocol) != 0 &&
-        flow_to_process->detection_completed == 0)
+        flow_to_process->info.detection_completed == 0)
     {
-        flow_to_process->detection_completed = 1;
+        flow_to_process->info.detection_completed = 1;
         workflow->total_detected_flows++;
         jsonize_flow_detection_event(reader_thread, flow_to_process, FLOW_EVENT_DETECTED);
-        flow_to_process->detection_data->last_ndpi_flow_struct_hash =
-            calculate_ndpi_flow_struct_hash(&flow_to_process->detection_data->flow);
+        flow_to_process->info.detection_data->last_ndpi_flow_struct_hash =
+            calculate_ndpi_flow_struct_hash(&flow_to_process->info.detection_data->flow);
     }
-    else if (flow_to_process->detection_completed == 1)
+    else if (flow_to_process->info.detection_completed == 1)
     {
-        uint32_t hash = calculate_ndpi_flow_struct_hash(&flow_to_process->detection_data->flow);
-        if (hash != flow_to_process->detection_data->last_ndpi_flow_struct_hash)
+        uint32_t hash = calculate_ndpi_flow_struct_hash(&flow_to_process->info.detection_data->flow);
+        if (hash != flow_to_process->info.detection_data->last_ndpi_flow_struct_hash)
         {
             workflow->total_flow_detection_updates++;
             jsonize_flow_detection_event(reader_thread, flow_to_process, FLOW_EVENT_DETECTION_UPDATE);
-            flow_to_process->detection_data->last_ndpi_flow_struct_hash = hash;
+            flow_to_process->info.detection_data->last_ndpi_flow_struct_hash = hash;
         }
     }
 
-    if (flow_to_process->detection_data->flow.num_processed_pkts == nDPId_options.max_packets_per_flow_to_process ||
-        (flow_to_process->detection_completed == 1 &&
-         ndpi_extra_dissection_possible(workflow->ndpi_struct, &flow_to_process->detection_data->flow) == 0))
+    if (flow_to_process->info.detection_data->flow.num_processed_pkts ==
+            nDPId_options.max_packets_per_flow_to_process ||
+        (flow_to_process->info.detection_completed == 1 &&
+         ndpi_extra_dissection_possible(workflow->ndpi_struct, &flow_to_process->info.detection_data->flow) == 0))
     {
         struct ndpi_proto detected_l7_protocol = flow_to_process->flow_extended.detected_l7_protocol;
         if (ndpi_is_protocol_detected(workflow->ndpi_struct, detected_l7_protocol) == 0)
         {
-            detected_l7_protocol = flow_to_process->detection_data->guessed_l7_protocol;
+            detected_l7_protocol = flow_to_process->info.detection_data->guessed_l7_protocol;
         }
 
-        ndpi_risk risk = flow_to_process->detection_data->flow.risk;
-        ndpi_confidence_t confidence = flow_to_process->detection_data->flow.confidence;
+        ndpi_risk risk = flow_to_process->info.detection_data->flow.risk;
+        ndpi_confidence_t confidence = flow_to_process->info.detection_data->flow.confidence;
 
         free_detection_data(flow_to_process);
 
         flow_to_process->flow_extended.flow_basic.state = FS_FINISHED;
-        struct nDPId_flow_finished * const flow_finished = (struct nDPId_flow_finished *)flow_to_process;
-        flow_finished->flow_extended.detected_l7_protocol = detected_l7_protocol;
-        flow_finished->risk = risk;
-        flow_finished->confidence = confidence;
+        struct nDPId_flow * const flow = (struct nDPId_flow *)flow_to_process;
+        flow->flow_extended.detected_l7_protocol = detected_l7_protocol;
+        flow->finished.risk = risk;
+        flow->finished.confidence = confidence;
     }
 
 #ifdef ENABLE_ZLIB
@@ -3748,17 +3742,17 @@ static void ndpi_log_flow_walker(void const * const A, ndpi_VISIT which, int dep
 
             case FS_FINISHED:
             {
-                struct nDPId_flow_finished const * const flow_fin = (struct nDPId_flow_finished *)flow_basic;
+                struct nDPId_flow const * const flow = (struct nDPId_flow *)flow_basic;
 
-                uint64_t last_seen = flow_fin->flow_extended.flow_basic.last_seen;
-                uint64_t idle_time = get_l4_protocol_idle_time_external(flow_fin->flow_extended.flow_basic.l4_protocol);
+                uint64_t last_seen = flow->flow_extended.flow_basic.last_seen;
+                uint64_t idle_time = get_l4_protocol_idle_time_external(flow->flow_extended.flow_basic.l4_protocol);
                 logger(0,
                        "[%2zu][%4llu][last-seen: %13llu][last-update: %13llu][idle-time: %7llu][time-until-timeout: "
                        "%7llu]",
                        reader_thread->array_index,
-                       flow_fin->flow_extended.flow_id,
+                       flow->flow_extended.flow_id,
                        (unsigned long long int)last_seen,
-                       (unsigned long long int)flow_fin->flow_extended.last_flow_update,
+                       (unsigned long long int)flow->flow_extended.last_flow_update,
                        (unsigned long long int)idle_time,
                        (unsigned long long int)(last_seen + idle_time >= reader_thread->workflow->last_thread_time
                                                     ? last_seen + idle_time - reader_thread->workflow->last_thread_time
@@ -3768,18 +3762,17 @@ static void ndpi_log_flow_walker(void const * const A, ndpi_VISIT which, int dep
 
             case FS_INFO:
             {
-                struct nDPId_flow_info const * const flow_info = (struct nDPId_flow_info *)flow_basic;
+                struct nDPId_flow const * const flow = (struct nDPId_flow *)flow_basic;
 
-                uint64_t last_seen = flow_info->flow_extended.flow_basic.last_seen;
-                uint64_t idle_time =
-                    get_l4_protocol_idle_time_external(flow_info->flow_extended.flow_basic.l4_protocol);
+                uint64_t last_seen = flow->flow_extended.flow_basic.last_seen;
+                uint64_t idle_time = get_l4_protocol_idle_time_external(flow->flow_extended.flow_basic.l4_protocol);
                 logger(0,
                        "[%2zu][%4llu][last-seen: %13llu][last-update: %13llu][idle-time: %7llu][time-until-timeout: "
                        "%7llu]",
                        reader_thread->array_index,
-                       flow_info->flow_extended.flow_id,
+                       flow->flow_extended.flow_id,
                        (unsigned long long int)last_seen,
-                       (unsigned long long int)flow_info->flow_extended.last_flow_update,
+                       (unsigned long long int)flow->flow_extended.last_flow_update,
                        (unsigned long long int)idle_time,
                        (unsigned long long int)(last_seen + idle_time >= reader_thread->workflow->last_thread_time
                                                     ? last_seen + idle_time - reader_thread->workflow->last_thread_time
@@ -4764,9 +4757,7 @@ int main(int argc, char ** argv)
 
 #ifdef ENABLE_MEMORY_PROFILING
     logger_early(0, "size/workflow...: %zu bytes", sizeof(struct nDPId_workflow));
-    logger_early(0,
-                 "size/flow.......: %zu bytes",
-                 sizeof(struct nDPId_flow_info) + sizeof(struct nDPId_detection_data));
+    logger_early(0, "size/flow.......: %zu bytes", sizeof(struct nDPId_flow) + sizeof(struct nDPId_detection_data));
 #endif
 
     if (setup_reader_threads() != 0)
