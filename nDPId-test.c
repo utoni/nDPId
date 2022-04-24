@@ -872,7 +872,7 @@ int main(int argc, char ** argv)
     nDPId_options.instance_alias = strdup("nDPId-test");
     if (access(argv[1], R_OK) != 0)
     {
-        logger_early(1, "%s: pcap file `%s' does not exist or is not readable", argv[0], argv[1]);
+        logger(1, "%s: pcap file `%s' does not exist or is not readable", argv[0], argv[1]);
         return 1;
     }
     nDPId_options.pcap_file_or_interface = strdup(argv[1]);

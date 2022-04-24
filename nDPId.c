@@ -108,8 +108,7 @@ struct nDPId_flow_basic
     uint8_t l4_protocol;
     uint8_t tcp_fin_rst_seen : 1;
     uint8_t tcp_is_midstream_flow : 1;
-    uint8_t idled : 1;
-    uint8_t reserved_00 : 5;
+    uint8_t reserved_00 : 6;
     uint8_t reserved_01[2];
     uint16_t src_port;
     uint16_t dst_port;
@@ -1430,15 +1429,33 @@ static uint64_t get_l4_protocol_idle_time(uint8_t l4_protocol)
     }
 }
 
+static uint64_t get_l4_protocol_idle_time_external(uint8_t l4_protocol)
+{
+    uint64_t idle_time = get_l4_protocol_idle_time(l4_protocol);
+
+    if (l4_protocol == IPPROTO_TCP)
+    {
+        idle_time += nDPId_options.tcp_max_post_end_flow_time;
+    }
+
+    return idle_time;
+}
+
 static int is_l4_protocol_timed_out(struct nDPId_workflow const * const workflow,
                                     struct nDPId_flow_basic const * const flow_basic)
 {
     uint64_t sdiff = flow_basic->last_seen % nDPId_options.flow_scan_interval;
     uint64_t itime = get_l4_protocol_idle_time(flow_basic->l4_protocol) - sdiff;
 
-    return (flow_basic->last_seen + itime <= workflow->last_thread_time) ||
+    return flow_basic->tcp_fin_rst_seen == 1 || flow_basic->last_seen + itime <= workflow->last_thread_time;
+}
+
+static int is_tcp_post_end(struct nDPId_workflow const * const workflow,
+                           struct nDPId_flow_basic const * const flow_basic)
+{
+    return flow_basic->l4_protocol != IPPROTO_TCP || flow_basic->tcp_fin_rst_seen == 0 ||
            (flow_basic->tcp_fin_rst_seen == 1 &&
-            flow_basic->last_seen + nDPId_options.tcp_max_post_end_flow_time - sdiff <= workflow->last_thread_time);
+            flow_basic->last_seen + nDPId_options.tcp_max_post_end_flow_time <= workflow->last_thread_time);
 }
 
 static int is_flow_update_required(struct nDPId_workflow const * const workflow,
@@ -1446,11 +1463,6 @@ static int is_flow_update_required(struct nDPId_workflow const * const workflow,
 {
     uint64_t sdiff = flow_ext->flow_basic.last_seen % nDPId_options.flow_scan_interval;
     uint64_t itime = get_l4_protocol_idle_time(flow_ext->flow_basic.l4_protocol) - sdiff;
-
-    if (flow_ext->flow_basic.idled != 0)
-    {
-        return 0;
-    }
 
     return flow_ext->last_flow_update + itime <= workflow->last_thread_time;
 }
@@ -1476,20 +1488,22 @@ static void ndpi_idle_scan_walker(void const * const A, ndpi_VISIT which, int de
     {
         if (is_l4_protocol_timed_out(workflow, flow_basic) != 0)
         {
-            flow_basic->idled = 1;
-            workflow->ndpi_flows_idle[workflow->cur_idle_flows++] = flow_basic;
-            switch (flow_basic->state)
+            if (is_tcp_post_end(workflow, flow_basic) != 0)
             {
-                case FS_UNKNOWN:
-                case FS_COUNT:
+                workflow->ndpi_flows_idle[workflow->cur_idle_flows++] = flow_basic;
+                switch (flow_basic->state)
+                {
+                    case FS_UNKNOWN:
+                    case FS_COUNT:
 
-                case FS_SKIPPED:
-                    break;
+                    case FS_SKIPPED:
+                        break;
 
-                case FS_FINISHED:
-                case FS_INFO:
-                    workflow->total_idle_flows++;
-                    break;
+                    case FS_FINISHED:
+                    case FS_INFO:
+                        workflow->total_idle_flows++;
+                        break;
+                }
             }
         }
     }
@@ -1886,7 +1900,7 @@ static void jsonize_flow(struct nDPId_workflow * const workflow, struct nDPId_fl
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_last_seen", flow_ext->flow_basic.last_seen);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
                                  "flow_idle_time",
-                                 get_l4_protocol_idle_time(flow_ext->flow_basic.l4_protocol));
+                                 get_l4_protocol_idle_time_external(flow_ext->flow_basic.l4_protocol));
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_min_l4_payload_len", flow_ext->min_l4_payload_len);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_max_l4_payload_len", flow_ext->max_l4_payload_len);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_tot_l4_payload_len", flow_ext->total_l4_payload_len);
@@ -2215,7 +2229,7 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
         ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_last_seen", flow_ext->flow_basic.last_seen);
         ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
                                      "flow_idle_time",
-                                     get_l4_protocol_idle_time(flow_ext->flow_basic.l4_protocol));
+                                     get_l4_protocol_idle_time_external(flow_ext->flow_basic.l4_protocol));
     }
 
     char base64_data[NETWORK_BUFFER_MAX_SIZE];
@@ -2715,7 +2729,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
                 return 1;
             }
 
-            struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const * const) & packet[eth_offset];
+            struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const * const)&packet[eth_offset];
             *ip_offset = sizeof(struct ndpi_chdlc);
             *layer3_type = ntohs(chdlc->proto_code);
             break;
@@ -2737,7 +2751,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
 
             if (packet[0] == 0x0f || packet[0] == 0x8f)
             {
-                struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const * const) & packet[eth_offset];
+                struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const * const)&packet[eth_offset];
                 *ip_offset = sizeof(struct ndpi_chdlc); /* CHDLC_OFF = 4 */
                 *layer3_type = ntohs(chdlc->proto_code);
             }
@@ -2775,7 +2789,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
             }
 
             struct ndpi_radiotap_header const * const radiotap =
-                (struct ndpi_radiotap_header const * const) & packet[eth_offset];
+                (struct ndpi_radiotap_header const * const)&packet[eth_offset];
             uint16_t radio_len = radiotap->len;
 
             /* Check Bad FCS presence */
@@ -2837,9 +2851,23 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
             break;
         }
         case DLT_RAW:
-            jsonize_error_eventf(reader_thread, UNSUPPORTED_DATALINK_LAYER, NULL);
-            jsonize_packet_event(reader_thread, header, packet, 0, 0, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
-            return 1;
+            *ip_offset = 0;
+            if (header->caplen < 1)
+            {
+                return 1;
+            }
+            switch ((packet[0] & 0xF0) >> 4)
+            {
+                case 4:
+                    *layer3_type = ETH_P_IP;
+                    break;
+                case 6:
+                    *layer3_type = ETH_P_IPV6;
+                    break;
+                default:
+                    return 1;
+            }
+            break;
         case DLT_EN10MB:
             if (header->caplen < sizeof(struct ndpi_ethhdr))
             {
@@ -3723,7 +3751,7 @@ static void ndpi_log_flow_walker(void const * const A, ndpi_VISIT which, int dep
                 struct nDPId_flow_finished const * const flow_fin = (struct nDPId_flow_finished *)flow_basic;
 
                 uint64_t last_seen = flow_fin->flow_extended.flow_basic.last_seen;
-                uint64_t idle_time = get_l4_protocol_idle_time(flow_fin->flow_extended.flow_basic.l4_protocol);
+                uint64_t idle_time = get_l4_protocol_idle_time_external(flow_fin->flow_extended.flow_basic.l4_protocol);
                 logger(0,
                        "[%2zu][%4llu][last-seen: %13llu][last-update: %13llu][idle-time: %7llu][time-until-timeout: "
                        "%7llu]",
@@ -3743,7 +3771,8 @@ static void ndpi_log_flow_walker(void const * const A, ndpi_VISIT which, int dep
                 struct nDPId_flow_info const * const flow_info = (struct nDPId_flow_info *)flow_basic;
 
                 uint64_t last_seen = flow_info->flow_extended.flow_basic.last_seen;
-                uint64_t idle_time = get_l4_protocol_idle_time(flow_info->flow_extended.flow_basic.l4_protocol);
+                uint64_t idle_time =
+                    get_l4_protocol_idle_time_external(flow_info->flow_extended.flow_basic.l4_protocol);
                 logger(0,
                        "[%2zu][%4llu][last-seen: %13llu][last-update: %13llu][idle-time: %7llu][time-until-timeout: "
                        "%7llu]",

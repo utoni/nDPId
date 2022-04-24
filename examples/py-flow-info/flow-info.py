@@ -262,19 +262,23 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
     if 'daemon_event_id' in json_dict:
         if json_dict['daemon_event_name'] == 'status':
             color = [TermColor.WARNING]
-            daemon_msg = '[Processed: {} pkts][ZLib][compressions: {}|diff: {} / {}][Flows][active: {} / {}|skipped: {}|!detected: {}' \
-                         '|guessed: {}|detection-updates: {}|updates: {}]'.format(
-                            json_dict['packets-processed'],
-                            json_dict['total-compressions'], json_dict['current-compression-diff'], json_dict['total-compression-diff'],
-                            json_dict['current-active-flows'], json_dict['total-active-flows'],
-                            json_dict['total-skipped-flows'],
-                            json_dict['total-not-detected-flows'], json_dict['total-guessed-flows'],
-                            json_dict['total-detection-updates'], json_dict['total-updates'])
+            daemon_msg = list()
+            daemon_msg += ['[Processed: {} pkts][ZLib][compressions: {}|diff: {} / {}]'.format(
+                             json_dict['packets-processed'],
+                             json_dict['total-compressions'], json_dict['current-compression-diff'], json_dict['total-compression-diff'])]
+            daemon_msg += ['[Flows][active: {} / {}|skipped: {}|!detected: {}|guessed: {}|' \
+                                   'detection-updates: {}|updates: {}]'.format(
+                             json_dict['current-active-flows'], json_dict['total-active-flows'],
+                             json_dict['total-skipped-flows'],
+                             json_dict['total-not-detected-flows'], json_dict['total-guessed-flows'],
+                             json_dict['total-detection-updates'], json_dict['total-updates'])]
         else:
             color = [TermColor.WARNING, TermColor.BLINK]
-            daemon_msg = json_dict['daemon_event_name']
-        print('{}{}{} {}: {}'.format(timestamp, basic_daemon_event_prefix, instance_and_source,
-                                 prettifyEvent(color, 15, 'DAEMON-EVENT'), daemon_msg))
+            daemon_msg = list()
+            daemon_msg += [json_dict['daemon_event_name']]
+        for dm in daemon_msg:
+            print('{}{}{} {}: {}'.format(timestamp, basic_daemon_event_prefix, instance_and_source,
+                                         prettifyEvent(color, 15, 'DAEMON-EVENT'), dm))
         stats.printStatus()
         return True
     if 'error_event_id' in json_dict:

@@ -108,6 +108,7 @@ static int fcntl_add_flags(int fd, int flags);
 static int fcntl_del_flags(int fd, int flags);
 static int add_in_event_fd(int epollfd, int fd);
 static int add_in_event(int epollfd, struct remote_desc * const remote);
+static int del_event(int epollfd, int fd);
 static int del_out_event(int epollfd, struct remote_desc * const remote);
 static void disconnect_client(int epollfd, struct remote_desc * const current);
 static int drain_write_buffers_blocking(struct remote_desc * const remote);
@@ -120,6 +121,7 @@ static void nDPIsrvd_buffer_array_copy(void * dst, const void * src)
     buf_dst->buf.ptr.raw = NULL;
     if (nDPIsrvd_buffer_init(&buf_dst->buf, buf_src->buf.used) != 0)
     {
+        logger(1, "Additional write buffer init failed, size: %zu bytes", buf_src->buf.used);
         return;
     }
 
@@ -590,6 +592,7 @@ static struct remote_desc * get_remote_descriptor(enum sock_type type, int remot
 {
     if (remotes.desc_used == remotes.desc_size)
     {
+        logger(1, "Max number of connections reached: %llu", remotes.desc_used);
         return NULL;
     }
 
@@ -608,6 +611,7 @@ static struct remote_desc * get_remote_descriptor(enum sock_type type, int remot
                     if (nDPIsrvd_json_buffer_init(&remotes.desc[i].event_collector_un.main_read_buffer,
                                                   max_buffer_size) != 0)
                     {
+                        logger(1, "Read/JSON buffer init failed, size: %zu bytes", max_buffer_size);
                         return NULL;
                     }
                     break;
@@ -626,11 +630,13 @@ static struct remote_desc * get_remote_descriptor(enum sock_type type, int remot
                 utarray_new(*additional_write_buffers, &nDPIsrvd_buffer_array_icd);
                 if (*additional_write_buffers == NULL)
                 {
+                    logger(1, "%s", "Could not create additional write buffers");
                     return NULL;
                 }
             }
             if (write_buffer != NULL && nDPIsrvd_buffer_init(&write_buffer->buf, max_buffer_size) != 0)
             {
+                logger(1, "Write buffer init failed, size: %zu bytes", max_buffer_size);
                 return NULL;
             }
 
@@ -640,35 +646,71 @@ static struct remote_desc * get_remote_descriptor(enum sock_type type, int remot
         }
     }
 
+    logger(1, "%s", "BUG: Unknown error while finding the remote descriptor");
     return NULL;
 }
 
-static void free_remotes(void)
+static void free_remote(int epollfd, struct remote_desc * remote)
+{
+    if (remote->fd > -1)
+    {
+        errno = 0;
+        del_event(epollfd, remote->fd);
+        if (errno != 0)
+        {
+            logger_nDPIsrvd(remote, "Could not delete event from epoll for connection", ": %s", strerror(errno));
+        }
+        errno = 0;
+        close(remote->fd);
+
+        switch (remote->sock_type)
+        {
+            case COLLECTOR_UN:
+                if (errno != 0)
+                {
+                    logger_nDPIsrvd(remote, "Error closing collector connection", ": %s", strerror(errno));
+                }
+                nDPIsrvd_json_buffer_free(&remote->event_collector_un.main_read_buffer);
+                break;
+            case DISTRIBUTOR_UN:
+                if (errno != 0)
+                {
+                    logger_nDPIsrvd(remote, "Error closing distributor connection", ": %s", strerror(errno));
+                }
+                if (remote->event_distributor_un.additional_write_buffers != NULL)
+                {
+                    utarray_clear(remote->event_distributor_un.additional_write_buffers);
+                }
+                nDPIsrvd_buffer_free(&remote->event_distributor_un.main_write_buffer.buf);
+                remote->event_distributor_un.main_write_buffer.written = 0;
+
+                free(remote->event_distributor_un.user_name);
+                remote->event_distributor_un.user_name = NULL;
+                break;
+            case DISTRIBUTOR_IN:
+                if (errno != 0)
+                {
+                    logger_nDPIsrvd(remote, "Error closing distributor connection", ": %s", strerror(errno));
+                }
+                if (remote->event_distributor_in.additional_write_buffers != NULL)
+                {
+                    utarray_clear(remote->event_distributor_in.additional_write_buffers);
+                }
+                nDPIsrvd_buffer_free(&remote->event_distributor_in.main_write_buffer.buf);
+                remote->event_distributor_in.main_write_buffer.written = 0;
+                break;
+        }
+
+        remote->fd = -1;
+        remotes.desc_used--;
+    }
+}
+
+static void free_remotes(int epollfd)
 {
     for (size_t i = 0; i < remotes.desc_size; ++i)
     {
-        switch (remotes.desc[i].sock_type)
-        {
-            case COLLECTOR_UN:
-                nDPIsrvd_json_buffer_free(&remotes.desc[i].event_collector_un.main_read_buffer);
-                break;
-            case DISTRIBUTOR_UN:
-                if (remotes.desc[i].event_distributor_un.additional_write_buffers != NULL)
-                {
-                    utarray_free(remotes.desc[i].event_distributor_un.additional_write_buffers);
-                    remotes.desc[i].event_distributor_un.additional_write_buffers = NULL;
-                }
-                nDPIsrvd_buffer_free(&remotes.desc[i].event_distributor_un.main_write_buffer.buf);
-                break;
-            case DISTRIBUTOR_IN:
-                if (remotes.desc[i].event_distributor_in.additional_write_buffers != NULL)
-                {
-                    utarray_free(remotes.desc[i].event_distributor_in.additional_write_buffers);
-                    remotes.desc[i].event_distributor_in.additional_write_buffers = NULL;
-                }
-                nDPIsrvd_buffer_free(&remotes.desc[i].event_distributor_in.main_write_buffer.buf);
-                break;
-        }
+        free_remote(epollfd, &remotes.desc[i]);
     }
 }
 
@@ -724,47 +766,9 @@ static int del_event(int epollfd, int fd)
     return epoll_ctl(epollfd, EPOLL_CTL_DEL, fd, NULL);
 }
 
-static void disconnect_client(int epollfd, struct remote_desc * const current)
+static void disconnect_client(int epollfd, struct remote_desc * const remote)
 {
-    if (current->fd > -1)
-    {
-        del_event(epollfd, current->fd);
-        if (close(current->fd) != 0)
-        {
-            switch (current->sock_type)
-            {
-                case COLLECTOR_UN:
-                    logger_nDPIsrvd(current, "Error closing collector connection", ": %s", strerror(errno));
-                    nDPIsrvd_json_buffer_free(&current->event_collector_un.main_read_buffer);
-                    break;
-                case DISTRIBUTOR_UN:
-                    logger_nDPIsrvd(current, "Error closing distributor connection", ": %s", strerror(errno));
-                    if (current->event_distributor_un.additional_write_buffers != NULL)
-                    {
-                        utarray_clear(current->event_distributor_un.additional_write_buffers);
-                    }
-                    nDPIsrvd_buffer_free(&current->event_distributor_un.main_write_buffer.buf);
-                    current->event_distributor_un.main_write_buffer.written = 0;
-                    break;
-                case DISTRIBUTOR_IN:
-                    logger_nDPIsrvd(current, "Error closing distributor connection", ": %s", strerror(errno));
-                    if (current->event_distributor_in.additional_write_buffers != NULL)
-                    {
-                        utarray_clear(current->event_distributor_in.additional_write_buffers);
-                    }
-                    nDPIsrvd_buffer_free(&current->event_distributor_in.main_write_buffer.buf);
-                    current->event_distributor_in.main_write_buffer.written = 0;
-                    break;
-            }
-        }
-        if (current->sock_type == DISTRIBUTOR_UN)
-        {
-            free(current->event_distributor_un.user_name);
-            current->event_distributor_un.user_name = NULL;
-        }
-        current->fd = -1;
-        remotes.desc_used--;
-    }
+    free_remote(epollfd, remote);
 }
 
 static int nDPIsrvd_parse_options(int argc, char ** argv)
@@ -914,7 +918,6 @@ static struct remote_desc * accept_remote(int server_fd,
     struct remote_desc * current = get_remote_descriptor(socktype, client_fd, NETWORK_BUFFER_MAX_SIZE);
     if (current == NULL)
     {
-        logger(1, "Max number of connections reached: %llu", remotes.desc_used);
         return NULL;
     }
 
@@ -1433,8 +1436,7 @@ static int mainloop(int epollfd)
     }
 
     close(signalfd);
-
-    free_remotes();
+    free_remotes(epollfd);
 
     return 0;
 }
