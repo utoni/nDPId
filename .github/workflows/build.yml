@@ -47,11 +47,11 @@ jobs:
         if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.ndpid_zlib, '-DENABLE_ZLIB=ON')
         run: |
           sudo apt-get install zlib1g-dev
-      - name: Configure nDPI
+      - name: Configure nDPId
         run: |
           mkdir build && cd build
           env CMAKE_C_COMPILER=${{ matrix.compiler }} CMAKE_C_FLAGS='-Werror' cmake .. -DENABLE_COVERAGE=ON -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DENABLE_SANITIZER=ON ${{ matrix.ndpid_zlib }} ${{ matrix.ndpid_gcrypt }}
-      - name: Build nDPI
+      - name: Build nDPId
         run: |
           make -C build all VERBOSE=1
       - name: Test EXEC
@@ -75,3 +75,11 @@ jobs:
       - name: CPack DEB
         run: |
           cd ./build && cpack -G DEB && cd ..
+# enable this block after the next libnDPI release
+#      - name: Build against libnDPI-4.3
+#        run: |
+#          mkdir build-local-ndpi && cd build-local-ndpi
+#          wget 'https://github.com/ntop/nDPI/archive/refs/tags/4.3.tar.gz'
+#          tar -xzvf 4.3.tar.gz && cd nDPI-4.3 && ./autogen.sh --prefix=/usr --with-only-libndpi CC=${{ matrix.compiler }} CXX=false CFLAGS='-Werror' && sudo make install && cd ..
+#          env CMAKE_C_COMPILER=${{ matrix.compiler }} CMAKE_C_FLAGS='-Werror' cmake .. -DENABLE_COVERAGE=ON -DBUILD_EXAMPLES=ON -DBUILD_NDPI=OFF -DENABLE_SANITIZER=ON ${{ matrix.ndpid_zlib }}
+#          make all VERBOSE=1
