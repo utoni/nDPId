@@ -717,6 +717,7 @@ static inline enum nDPIsrvd_read_return nDPIsrvd_read(struct nDPIsrvd_socket * c
         return READ_OK;
     }
 
+    errno = 0;
     ssize_t bytes_read =
         read(sock->fd, sock->buffer.buf.ptr.raw + sock->buffer.buf.used, sock->buffer.buf.max - sock->buffer.buf.used);
 

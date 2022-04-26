@@ -192,10 +192,14 @@ int main(int argc, char ** argv)
         return 1;
     }
 
-    enum nDPIsrvd_read_return read_ret;
+    enum nDPIsrvd_read_return read_ret = READ_OK;
     while (main_thread_shutdown == 0)
     {
         read_ret = nDPIsrvd_read(sock);
+        if (errno == EINTR)
+        {
+            continue;
+        }
         if (read_ret == READ_TIMEOUT)
         {
             printf("No data received during the last %llu second(s).\n",
@@ -204,8 +208,7 @@ int main(int argc, char ** argv)
         }
         if (read_ret != READ_OK)
         {
-            main_thread_shutdown = 1;
-            continue;
+            break;
         }
 
         enum nDPIsrvd_parse_return parse_ret = nDPIsrvd_parse_all(sock);
@@ -216,7 +219,7 @@ int main(int argc, char ** argv)
         }
     }
 
-    if (read_ret != READ_OK)
+    if (main_thread_shutdown == 0 && read_ret != READ_OK)
     {
         printf("Parse read %s\n", nDPIsrvd_enum_to_string(read_ret));
     }

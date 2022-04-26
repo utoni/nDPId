@@ -1425,6 +1425,7 @@ static uint64_t get_l4_protocol_idle_time_external(uint8_t l4_protocol)
 {
     uint64_t idle_time = get_l4_protocol_idle_time(l4_protocol);
 
+    idle_time += nDPId_options.flow_scan_interval * 2;
     if (l4_protocol == IPPROTO_TCP)
     {
         idle_time += nDPId_options.tcp_max_post_end_flow_time;
@@ -1436,8 +1437,7 @@ static uint64_t get_l4_protocol_idle_time_external(uint8_t l4_protocol)
 static int is_l4_protocol_timed_out(struct nDPId_workflow const * const workflow,
                                     struct nDPId_flow_basic const * const flow_basic)
 {
-    uint64_t sdiff = flow_basic->last_seen % nDPId_options.flow_scan_interval;
-    uint64_t itime = get_l4_protocol_idle_time(flow_basic->l4_protocol) - sdiff;
+    uint64_t itime = get_l4_protocol_idle_time(flow_basic->l4_protocol);
 
     return flow_basic->tcp_fin_rst_seen == 1 || flow_basic->last_seen + itime <= workflow->last_thread_time;
 }
@@ -1453,8 +1453,7 @@ static int is_tcp_post_end(struct nDPId_workflow const * const workflow,
 static int is_flow_update_required(struct nDPId_workflow const * const workflow,
                                    struct nDPId_flow_extended const * const flow_ext)
 {
-    uint64_t sdiff = flow_ext->flow_basic.last_seen % nDPId_options.flow_scan_interval;
-    uint64_t itime = get_l4_protocol_idle_time(flow_ext->flow_basic.l4_protocol) - sdiff;
+    uint64_t itime = get_l4_protocol_idle_time(flow_ext->flow_basic.l4_protocol);
 
     return flow_ext->last_flow_update + itime <= workflow->last_thread_time;
 }
