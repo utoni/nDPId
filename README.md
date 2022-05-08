@@ -1,5 +1,5 @@
-[![Build](https://github.com/lnslbrty/nDPId/actions/workflows/build.yml/badge.svg)](https://github.com/lnslbrty/nDPId/actions/workflows/build.yml)
-[![Gitlab-CI](https://gitlab.com/lnslbrty/nDPId/badges/master/pipeline.svg)](https://gitlab.com/lnslbrty/nDPId/-/pipelines)
+[![Build](https://github.com/utoni/nDPId/actions/workflows/build.yml/badge.svg)](https://github.com/utoni/nDPId/actions/workflows/build.yml)
+[![Gitlab-CI](https://gitlab.com/utoni/nDPId/badges/master/pipeline.svg)](https://gitlab.com/utoni/nDPId/-/pipelines)
 
 # abstract
 
