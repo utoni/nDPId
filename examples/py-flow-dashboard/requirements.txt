@@ -1,2 +1,3 @@
 dash
 dash_daq
+Werkzeug==2.0
