@@ -24,9 +24,9 @@
 ~~ total active/idle flows...: 1/1
 ~~ total timeout flows.......: 0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~ total memory allocated....: 5125828 bytes
-~~ total memory freed........: 5125828 bytes
-~~ total allocations/frees...: 114176/114176
+~~ total memory allocated....: 5890976 bytes
+~~ total memory freed........: 5890976 bytes
+~~ total allocations/frees...: 118948/118948
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~ json string min len.......: 467 chars
 ~~ json string max len.......: 791 chars

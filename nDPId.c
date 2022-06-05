@@ -47,8 +47,8 @@
 #define DLT_DSA_TAG_EDSA 285
 #endif
 
-#if ((NDPI_MAJOR == 4 && NDPI_MINOR < 3) || NDPI_MAJOR < 4) && NDPI_API_VERSION < 6043
-#error "nDPI >= 4.3.0 or API version >= 6043 required"
+#if ((NDPI_MAJOR == 4 && NDPI_MINOR < 3) || NDPI_MAJOR < 4) && NDPI_API_VERSION < 6336
+#error "nDPI >= 4.3.0 or API version >= 6336 required"
 #endif
 
 #if !defined(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4) || !defined(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_8)
@@ -471,7 +471,7 @@ static char * const subopt_token[] = {[MAX_FLOWS_PER_THREAD] = "max-flows-per-th
 #endif
 #ifdef ENABLE_ZLIB
                                       [COMPRESSION_SCAN_INTERVAL] = "compression-scan-interval",
-                                      [COMPRESSION_FLOW_INACTIVITY] = "compression-flow-activity",
+                                      [COMPRESSION_FLOW_INACTIVITY] = "compression-flow-inactivity",
 #endif
                                       [FLOW_SCAN_INTVERAL] = "flow-scan-interval",
                                       [GENERIC_MAX_IDLE_TIME] = "generic-max-idle-time",
@@ -1156,7 +1156,7 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     }
     if (nDPId_options.custom_categories_file != NULL)
     {
-        ndpi_load_categories_file(workflow->ndpi_struct, nDPId_options.custom_categories_file);
+        ndpi_load_categories_file(workflow->ndpi_struct, nDPId_options.custom_categories_file, NULL);
     }
     if (nDPId_options.custom_ja3_file != NULL)
     {
@@ -4580,7 +4580,7 @@ static int validate_options(void)
         {
             logger_early(1,
                          "%s",
-                         "Setting compression-scan-interval / compression-flow-activity "
+                         "Setting compression-scan-interval / compression-flow-inactivity "
                          "to values lower than 10000 is not recommended.");
             logger_early(1, "%s", "Your CPU usage may increase heavily.");
         }
