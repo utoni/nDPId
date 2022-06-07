@@ -439,7 +439,7 @@ if __name__ == '__main__':
         except KeyboardInterrupt:
             print('\n\nKeyboard Interrupt: cleaned up {} flows.'.format(len(nsock.shutdown())))
             break
-        except TimeoutError:
+        except nDPIsrvd.SocketTimeout:
             stats.updateSpinner()
             stats.resetStatus()
             stats.printStatus()

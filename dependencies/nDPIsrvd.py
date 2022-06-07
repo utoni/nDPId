@@ -278,6 +278,7 @@ class nDPIsrvdException(Exception):
     SOCKET_CONNECTION_BROKEN = 3
     INVALID_LINE_RECEIVED    = 4
     CALLBACK_RETURNED_FALSE  = 5
+    SOCKET_TIMEOUT           = 6
 
     def __init__(self, etype):
         self.etype = etype
@@ -318,6 +319,12 @@ class CallbackReturnedFalse(nDPIsrvdException):
     def __str__(self):
         return 'Callback returned False, abort.'
 
+class SocketTimeout(nDPIsrvdException):
+    def __init__(self):
+        super().__init__(nDPIsrvdException.SOCKET_TIMEOUT)
+    def __str__(self):
+        return 'Socket timeout.'
+
 class nDPIsrvdSocket:
     def __init__(self):
         self.sock_family = None
@@ -352,6 +359,10 @@ class nDPIsrvdSocket:
         except ConnectionResetError:
             connection_finished = True
             recvd = bytes()
+        except TimeoutError:
+            raise SocketTimeout()
+        except socket.timeout:
+            raise SocketTimeout()
 
         if len(recvd) == 0:
             connection_finished = True
