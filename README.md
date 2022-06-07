@@ -1,20 +1,19 @@
-[![Build](https://github.com/lnslbrty/nDPId/actions/workflows/build.yml/badge.svg)](https://github.com/lnslbrty/nDPId/actions/workflows/build.yml)
-[![Gitlab-CI](https://gitlab.com/lnslbrty/nDPId/badges/master/pipeline.svg)](https://gitlab.com/lnslbrty/nDPId/-/pipelines)
+[![Build](https://github.com/utoni/nDPId/actions/workflows/build.yml/badge.svg)](https://github.com/utoni/nDPId/actions/workflows/build.yml)
+[![Gitlab-CI](https://gitlab.com/utoni/nDPId/badges/master/pipeline.svg)](https://gitlab.com/utoni/nDPId/-/pipelines)
 
 # abstract
 
-nDPId is a set of daemons and tools to capture, process and classify network flows.
-It's only dependencies (besides a half-way modern c library and POSIX threads) are libnDPI (>= 4.2.0 or current github dev branch) and libpcap.
+nDPId is a set of daemons and tools to capture, process and classify network traffic.
+It's minimal dependencies (besides a half-way modern c library and POSIX threads) are libnDPI (> 4.2.0 or current github dev branch) and libpcap.
 
-The core daemon nDPId uses pthread but does use mutexes for performance reasons.
+The daemon nDPId is capable of multithreading for packet processing, but w/o mutexes for performance reasons.
 Instead synchronization is achieved by a packet distribution mechanism.
-To balance all workload to all threads (more or less) equally a hash value is calculated using the 5-tuple.
-This value serves as unique identifier for the processing thread. Multithreaded packet processing has to be flow-stable.
+To balance all workload to all threads (more or less) equally a unique identifier represented as hash value is calculated using a 3-tuple consisting of IPv4/IPv6 src/dst address, IP header value of the layer4 protocol and (for TCP/UDP) src/dst port. Other protocols e.g. ICMP/ICMPv6 are lacking relevance for DPI, thus nDPId does not distinguish between different ICMP/ICMPv6 flows coming from the same host. Saves memory and performance, but might change in the future.
 
-nDPId uses libnDPI's JSON serialization to produce meaningful JSON output which it then sends to the nDPIsrvd for distribution.
-High level applications can connect to nDPIsrvd to get the latest flow/packet events from nDPId.
+nDPId uses libnDPI's JSON serialization interface to generate JSON strings for each event which it then sends to the nDPIsrvd for distribution.
+High level applications can connect to nDPIsrvd and get the latest events from nDPId.
 
-Unfortunately nDPIsrvd does currently not support any encryption/authentication for TCP connections.
+Unfortunately nDPIsrvd does currently not support any encryption/authentication for TCP connections (TODO!).
 
 # architecture
 
@@ -96,13 +95,15 @@ cd build
 cmake .. -DSTATIC_LIBNDPI_INSTALLDIR=[path/to/your/libnDPI/installdir] -DNDPI_WITH_GCRYPT=ON -DNDPI_WITH_PCRE=OFF -DNDPI_WITH_MAXMINDDB=OFF
 ```
 
-Or if this is all too much for you, let CMake do it for you:
+Or let a shell script do the work for you:
 
 ```shell
 mkdir build
 cd build
 cmake .. -DBUILD_NDPI=ON
 ```
+
+The CMake cache variable `-DBUILD_NDPI=ON` builds a version of `libnDPI` residing as git submodule in this repository.
 
 # run
 
