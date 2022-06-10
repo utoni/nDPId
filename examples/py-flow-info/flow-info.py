@@ -51,7 +51,12 @@ class Stats:
             self.spinner_state += 1
 
     def getSpinner(self):
-        spinner_states = ['-', '\\', '|', '/']
+        #spinner_states = ['-', '\\', '|', '/']
+        #spinner_states = ['▉', '▊', '▋', '▌', '▍', '▎', '▏', '▎', '▍', '▌', '▋', '▊', '▉']
+        spinner_states = ['←', '↖', '↑', '↗', '→', '↘', '↓', '↙']
+        #spinner_states = ['▁', '▂', '▃', '▄', '▅', '▆', '▇', '█', '▇', '▆', '▅', '▄', '▃', '▁']
+        #spinner_states = ['▖', '▘', '▝', '▗']
+        #spinner_states = ['┤', '┘', '┴', '└', '├', '┌', '┬', '┐']
         return spinner_states[self.spinner_state % len(spinner_states)]
 
     def getDataFromJson(self, json_dict, current_flow):
@@ -66,16 +71,16 @@ class Stats:
             set_attr_from_dict(current_flow, {}, 'flow_risk', {})
         set_attr_from_dict(current_flow, json_dict, 'midstream', 0)
         set_attr_from_dict(current_flow, json_dict, 'flow_event_name', '')
-        set_attr_if_not_set(current_flow, 'guessed', False)
-        set_attr_if_not_set(current_flow, 'not_detected', False)
+        set_attr_if_not_set(current_flow, 'guessed', 0)
+        set_attr_if_not_set(current_flow, 'not_detected', 0)
 
         if current_flow.flow_event_name == 'detected' or \
            current_flow.flow_event_name == 'detection-update':
-            current_flow.guessed = False
+            current_flow.guessed = 0
         elif current_flow.flow_event_name == 'guessed':
-            current_flow.guessed = True
+            current_flow.guessed = 1
         elif current_flow.flow_event_name == 'not-detected':
-            current_flow.not_detected = True
+            current_flow.not_detected = 1
 
     def update(self, json_dict, current_flow):
         self.updateSpinner()
@@ -90,8 +95,8 @@ class Stats:
         self.expired_avg_l4_payload_len += current_flow.flow_avg_l4_payload_len
         self.risky_flows += 1 if len(current_flow.flow_risk) > 0 else 0
         self.midstream_flows += 1 if current_flow.midstream != 0 else 0
-        self.guessed_flows += 1 if current_flow.guessed is True else 0
-        self.not_detected_flows += 1 if current_flow.not_detected is True else 0
+        self.guessed_flows += 1 if current_flow.guessed != 0 else 0
+        self.not_detected_flows += 1 if current_flow.not_detected != 0 else 0
 
     def getStatsFromFlowMgr(self):
         alias_count = 0
@@ -117,8 +122,8 @@ class Stats:
                     flow_avg_l4_payload_len += current_flow.flow_avg_l4_payload_len
                     risky += 1 if len(current_flow.flow_risk) > 0 else 0
                     midstream += 1 if current_flow.midstream != 0 else 0
-                    guessed += 1 if current_flow.guessed is True else 0
-                    not_detected = 1 if current_flow.not_detected is True else 0
+                    guessed += 1 if current_flow.guessed != 0 else 0
+                    not_detected = 1 if current_flow.not_detected != 0 else 0
 
         return alias_count, source_count, flow_count, \
                flow_tot_l4_payload_len, flow_avg_l4_payload_len, \

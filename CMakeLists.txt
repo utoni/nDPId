@@ -233,21 +233,24 @@ if(STATIC_LIBNDPI_INSTALLDIR OR BUILD_NDPI)
                                 "static library \"${STATIC_LIBNDPI_LIB}\" does not exist!")
         endif()
     endif()
+
+    unset(DEFAULT_NDPI_INCLUDE CACHE)
 else()
     if(NOT NDPI_NO_PKGCONFIG)
-        pkg_check_modules(NDPI REQUIRED libndpi>=3.5.0)
+        pkg_check_modules(NDPI REQUIRED libndpi>=4.3.0)
 
         unset(STATIC_LIBNDPI_INC CACHE)
         unset(STATIC_LIBNDPI_LIB CACHE)
     endif()
+
+    set(DEFAULT_NDPI_INCLUDE ${NDPI_INCLUDE_DIRS})
 endif()
 
 find_package(PCAP "1.8.1" REQUIRED)
 
 target_compile_options(nDPId PRIVATE "-pthread")
 target_compile_definitions(nDPId PRIVATE -D_GNU_SOURCE=1 -DGIT_VERSION=\"${GIT_VERSION}\" ${NDPID_DEFS} ${ZLIB_DEFS})
-target_include_directories(nDPId PRIVATE
-                           "${STATIC_LIBNDPI_INC}" "${NDPI_INCLUDEDIR}" "${NDPI_INCLUDEDIR}/ndpi")
+target_include_directories(nDPId PRIVATE "${STATIC_LIBNDPI_INC}" "${DEFAULT_NDPI_INCLUDE}")
 target_link_libraries(nDPId "${STATIC_LIBNDPI_LIB}" "${pkgcfg_lib_NDPI_ndpi}"
                             "${pkgcfg_lib_PCRE_pcre}" "${pkgcfg_lib_MAXMINDDB_maxminddb}" "${pkgcfg_lib_ZLIB_z}"
                             "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}" "${LIBM_LIB}"
@@ -269,8 +272,7 @@ target_compile_options(nDPId-test PRIVATE "-Wno-unused-function" "-pthread")
 target_compile_definitions(nDPId-test PRIVATE -D_GNU_SOURCE=1 -DNO_MAIN=1 -DGIT_VERSION=\"${GIT_VERSION}\"
                                               ${NDPID_DEFS} ${ZLIB_DEFS} ${NDPID_TEST_MPROF_DEFS})
 target_include_directories(nDPId-test PRIVATE
-                           "${STATIC_LIBNDPI_INC}" "${NDPI_INCLUDEDIR}" "${NDPI_INCLUDEDIR}/ndpi"
-                           "${CMAKE_SOURCE_DIR}/dependencies/uthash/src")
+                           "${STATIC_LIBNDPI_INC}" "${DEFAULT_NDPI_INCLUDE}" "${CMAKE_SOURCE_DIR}/dependencies/uthash/src")
 target_link_libraries(nDPId-test "${STATIC_LIBNDPI_LIB}" "${pkgcfg_lib_NDPI_ndpi}"
                                  "${pkgcfg_lib_PCRE_pcre}" "${pkgcfg_lib_MAXMINDDB_maxminddb}" "${pkgcfg_lib_ZLIB_z}"
                                  "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}" "${LIBM_LIB}"
@@ -291,8 +293,7 @@ if(BUILD_EXAMPLES)
     endif()
     target_compile_definitions(nDPIsrvd-captured PRIVATE ${NDPID_DEFS})
     target_include_directories(nDPIsrvd-captured PRIVATE
-                               "${STATIC_LIBNDPI_INC}" "${NDPI_INCLUDEDIR}" "${NDPI_INCLUDEDIR}/ndpi"
-                               "${CMAKE_SOURCE_DIR}"
+                               "${STATIC_LIBNDPI_INC}" "${DEFAULT_NDPI_INCLUDE}" "${CMAKE_SOURCE_DIR}"
                                "${CMAKE_SOURCE_DIR}/dependencies"
                                "${CMAKE_SOURCE_DIR}/dependencies/jsmn"
                                "${CMAKE_SOURCE_DIR}/dependencies/uthash/src")
@@ -375,5 +376,8 @@ message(STATUS "- STATIC_LIBNDPI_LIB....: ${STATIC_LIBNDPI_LIB}")
 message(STATUS "- NDPI_WITH_GCRYPT......: ${NDPI_WITH_GCRYPT}")
 message(STATUS "- NDPI_WITH_PCRE........: ${NDPI_WITH_PCRE}")
 message(STATUS "- NDPI_WITH_MAXMINDDB...: ${NDPI_WITH_MAXMINDDB}")
+endif()
+if(NOT STATIC_LIBNDPI_INSTALLDIR AND NOT BUILD_NDPI)
+message(STATUS "- DEFAULT_NDPI_INCLUDE..: ${DEFAULT_NDPI_INCLUDE}")
 endif()
 message(STATUS "--------------------------")

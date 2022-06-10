@@ -686,7 +686,7 @@ int main(int argc, char ** argv)
 
     if (parse_options(argc, argv, sock) != 0)
     {
-        return 1;
+        goto failure;
     }
 
     if (getenv("COLLECTD_HOSTNAME") == NULL && getenv("COLLECTD_INTERVAL") == NULL)
@@ -705,15 +705,13 @@ int main(int argc, char ** argv)
     if (connect_ret != CONNECT_OK)
     {
         LOG(LOG_DAEMON | LOG_ERR, "nDPIsrvd socket connect to %s failed!", serv_optarg);
-        nDPIsrvd_socket_free(&sock);
-        return 1;
+        goto failure;
     }
 
     if (nDPIsrvd_set_nonblock(sock) != 0)
     {
         LOG(LOG_DAEMON | LOG_ERR, "nDPIsrvd set nonblock failed: %s", strerror(errno));
-        nDPIsrvd_socket_free(&sock);
-        return 1;
+        goto failure;
     }
 
     signal(SIGINT, sighandler);
@@ -726,13 +724,13 @@ int main(int argc, char ** argv)
     if (epollfd < 0)
     {
         LOG(LOG_DAEMON | LOG_ERR, "Error creating epoll: %s", strerror(errno));
-        return 1;
+        goto failure;
     }
 
     if (create_collectd_timer() != 0)
     {
         LOG(LOG_DAEMON | LOG_ERR, "Error creating timer: %s", strerror(errno));
-        return 1;
+        goto failure;
     }
 
     {
@@ -740,7 +738,7 @@ int main(int argc, char ** argv)
         if (epoll_ctl(epollfd, EPOLL_CTL_ADD, collectd_timerfd, &timer_event) < 0)
         {
             LOG(LOG_DAEMON | LOG_ERR, "Error adding JSON fd to epoll: %s", strerror(errno));
-            return 1;
+            goto failure;
         }
     }
 
@@ -749,13 +747,14 @@ int main(int argc, char ** argv)
         if (epoll_ctl(epollfd, EPOLL_CTL_ADD, sock->fd, &socket_event) < 0)
         {
             LOG(LOG_DAEMON | LOG_ERR, "Error adding nDPIsrvd socket fd to epoll: %s", strerror(errno));
-            return 1;
+            goto failure;
         }
     }
 
     LOG(LOG_DAEMON | LOG_NOTICE, "%s", "Initialization succeeded.");
     retval = mainloop(epollfd, sock);
 
+failure:
     nDPIsrvd_socket_free(&sock);
     close(collectd_timerfd);
     close(epollfd);
