@@ -275,7 +275,7 @@ def tab_flow_update_graph(n, i, traces):
     if traces is None:
         traces = ([], [], [], [], [], [])
 
-    max_bins = 100
+    max_bins = 75
 
     traces[0].append(shared_flow_dict['current-flows'])
     traces[1].append(shared_flow_dict['current-risky-flows'])
@@ -295,19 +295,29 @@ def tab_flow_update_graph(n, i, traces):
         traces[5] = traces[5][1:]
 
     i /= 1000.0
-    x = list(range(max(n - max_bins, 0) * int(i), n * int(i), max(int(i), 1)))
+    x = list(range(max(n - max_bins, 0) * int(i), n * int(i), max(int(i), 0)))
+    if len(x) > 0 and x[0] > 60:
+        x = [round(t / 60, 2) for t in x]
+        x_div = 60
+        x_axis_title = 'Time (min)'
+    else:
+        x_div = 1
+        x_axis_title = 'Time (sec)'
+    min_x = max(0, x[0] if len(x) >= max_bins else 0)
+    max_x = max((max_bins * i) / x_div, x[max_bins - 1] if len(x) >= max_bins else 0)
 
     lay = dict(
         plot_bgcolor = '#082255',
         paper_bgcolor = '#082255',
         font={"color": "#fff"},
         xaxis = {
-            'title': 'Time (sec)',
+            'title': x_axis_title,
             "showgrid": False,
             "showline": False,
             "fixedrange": True,
             "tickmode": 'linear',
-            "dtick": i,
+            "tick0": round(max_bins / x_div, 2),
+            "dtick": round(max_bins / x_div, 2),
         },
         yaxis = {
             'title': 'Flow Count',
@@ -328,7 +338,7 @@ def tab_flow_update_graph(n, i, traces):
     )
 
     fig = go.Figure(layout=lay)
-    fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='#004D80', zeroline=True, zerolinewidth=1)
+    fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='#004D80', zeroline=True, zerolinewidth=1, range=[min_x, max_x])
     fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='#004D80', zeroline=True, zerolinewidth=1)
     fig.add_trace(go.Scatter(
         x=x,
