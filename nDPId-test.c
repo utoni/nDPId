@@ -40,7 +40,7 @@ struct nDPId_return_value
     unsigned long long int packets_captured;
     unsigned long long int packets_processed;
     unsigned long long int total_skipped_flows;
-    unsigned long long int total_l4_data_len;
+    unsigned long long int total_l4_payload_len;
 
     unsigned long long int not_detected_flow_protocols;
     unsigned long long int guessed_flow_protocols;
@@ -79,7 +79,7 @@ struct distributor_thread_user_data
 struct distributor_global_user_data
 {
     unsigned long long int total_packets_processed;
-    unsigned long long int total_l4_data_len;
+    unsigned long long int total_l4_payload_len;
     unsigned long long int total_events_deserialized;
     unsigned long long int total_events_serialized;
     unsigned long long int total_flow_timeouts;
@@ -544,7 +544,7 @@ static void distributor_flow_cleanup_callback(struct nDPIsrvd_socket * const soc
     if (flow_stats->is_flow_timedout == 0)
     {
         global_stats->total_packets_processed += flow_stats->total_packets_processed;
-        global_stats->total_l4_data_len += flow_stats->flow_total_l4_data_len;
+        global_stats->total_l4_payload_len += flow_stats->flow_total_l4_data_len;
         global_stats->cur_idle_flows--;
     }
 }
@@ -781,7 +781,7 @@ static void * nDPId_mainloop_thread(void * const arg)
         nrv->packets_captured += reader_threads[i].workflow->packets_captured;
         nrv->packets_processed += reader_threads[i].workflow->packets_processed;
         nrv->total_skipped_flows += reader_threads[i].workflow->total_skipped_flows;
-        nrv->total_l4_data_len += reader_threads[i].workflow->total_l4_data_len;
+        nrv->total_l4_payload_len += reader_threads[i].workflow->total_l4_payload_len;
 
         nrv->not_detected_flow_protocols += reader_threads[i].workflow->total_not_detected_flows;
         nrv->guessed_flow_protocols += reader_threads[i].workflow->total_guessed_flows;
@@ -985,7 +985,7 @@ int main(int argc, char ** argv)
             nDPId_return.packets_captured,
             nDPId_return.packets_processed,
             nDPId_return.total_skipped_flows,
-            nDPId_return.total_l4_data_len,
+            nDPId_return.total_l4_payload_len,
             nDPId_return.detected_flow_protocols,
             nDPId_return.total_active_flows,
             nDPId_return.total_idle_flows,
@@ -1092,13 +1092,13 @@ int main(int argc, char ** argv)
         return 1;
     }
 
-    if (nDPId_return.total_l4_data_len != distributor_return.stats.total_l4_data_len)
+    if (nDPId_return.total_l4_payload_len != distributor_return.stats.total_l4_payload_len)
     {
         logger(1,
                "%s: Total processed layer4 payload length of nDPId and distributor not equal: %llu != %llu",
                argv[0],
-               nDPId_return.total_l4_data_len,
-               distributor_return.stats.total_l4_data_len);
+               nDPId_return.total_l4_payload_len,
+               distributor_return.stats.total_l4_payload_len);
         return 1;
     }
 

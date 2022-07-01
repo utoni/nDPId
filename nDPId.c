@@ -193,7 +193,7 @@ struct nDPId_workflow
     unsigned long long int packets_captured;
     unsigned long long int packets_processed;
     unsigned long long int total_skipped_flows;
-    unsigned long long int total_l4_data_len;
+    unsigned long long int total_l4_payload_len;
 
     unsigned long long int total_not_detected_flows;
     unsigned long long int total_guessed_flows;
@@ -1833,7 +1833,7 @@ static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enu
             ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
                                          "total-skipped-flows",
                                          workflow->total_skipped_flows);
-            ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "total-l4-data-len", workflow->total_l4_data_len);
+            ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "total-l4-payload-len", workflow->total_l4_payload_len);
             ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
                                          "total-not-detected-flows",
                                          workflow->total_not_detected_flows);
@@ -3584,7 +3584,7 @@ static void ndpi_process_packet(uint8_t * const args,
     flow_to_process->flow_extended.packets_processed++;
     flow_to_process->flow_extended.total_l4_payload_len += l4_payload_len;
     workflow->packets_processed++;
-    workflow->total_l4_data_len += l4_payload_len;
+    workflow->total_l4_payload_len += l4_payload_len;
 
     if (flow_to_process->flow_extended.first_seen == 0)
     {
@@ -4153,7 +4153,7 @@ static void process_remaining_flows(void)
 static int stop_reader_threads(void)
 {
     unsigned long long int total_packets_processed = 0;
-    unsigned long long int total_l4_data_len = 0;
+    unsigned long long int total_l4_payload_len = 0;
     unsigned long long int total_flows_skipped = 0;
     unsigned long long int total_flows_captured = 0;
     unsigned long long int total_flows_idle = 0;
@@ -4194,7 +4194,7 @@ static int stop_reader_threads(void)
         }
 
         total_packets_processed += reader_threads[i].workflow->packets_processed;
-        total_l4_data_len += reader_threads[i].workflow->total_l4_data_len;
+        total_l4_payload_len += reader_threads[i].workflow->total_l4_payload_len;
         total_flows_skipped += reader_threads[i].workflow->total_skipped_flows;
         total_flows_captured += reader_threads[i].workflow->total_active_flows;
         total_flows_idle += reader_threads[i].workflow->total_idle_flows;
@@ -4211,7 +4211,7 @@ static int stop_reader_threads(void)
             "\tdetection updates.: %8llu, updated flows..: %8llu\n",
             reader_threads[i].array_index,
             reader_threads[i].workflow->packets_processed,
-            reader_threads[i].workflow->total_l4_data_len,
+            reader_threads[i].workflow->total_l4_payload_len,
             reader_threads[i].workflow->total_skipped_flows,
             reader_threads[i].workflow->total_active_flows,
             reader_threads[i].workflow->total_idle_flows,
@@ -4224,7 +4224,7 @@ static int stop_reader_threads(void)
     /* total packets captured: same value for all threads as packet2thread distribution happens later */
     printf("Total packets captured.......: %llu\n", reader_threads[0].workflow->packets_captured);
     printf("Total packets processed......: %llu\n", total_packets_processed);
-    printf("Total layer4 data size.......: %llu\n", total_l4_data_len);
+    printf("Total layer4 payload size....: %llu\n", total_l4_payload_len);
     printf("Total flows ignopred.........: %llu\n", total_flows_skipped);
     printf("Total flows processed........: %llu\n", total_flows_captured);
     printf("Total flows timed out........: %llu\n", total_flows_idle);

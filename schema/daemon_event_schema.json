@@ -19,7 +19,7 @@
         "properties": { "daemon_event_name": { "enum": [ "status", "shutdown" ] } }
     },
     "then": {
-        "required": [ "packets-captured", "packets-processed", "total-skipped-flows", "total-l4-data-len", "total-not-detected-flows", "total-guessed-flows", "total-detected-flows", "total-detection-updates", "total-updates", "current-active-flows", "total-active-flows", "total-idle-flows", "total-compressions", "total-compression-diff", "current-compression-diff", "total-events-serialized" ]
+        "required": [ "packets-captured", "packets-processed", "total-skipped-flows", "total-l4-payload-len", "total-not-detected-flows", "total-guessed-flows", "total-detected-flows", "total-detection-updates", "total-updates", "current-active-flows", "total-active-flows", "total-idle-flows", "total-compressions", "total-compression-diff", "current-compression-diff", "total-events-serialized" ]
     },
     "properties": {
         "alias": {
@@ -99,7 +99,7 @@
             "type": "number",
             "minimum": 0
         },
-        "total-l4-data-len": {
+        "total-l4-payload-len": {
             "type": "number",
             "minimum": 0
         },
