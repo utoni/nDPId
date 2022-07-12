@@ -114,6 +114,11 @@ Generate a nDPId compatible JSON dump:
 
 Daemons:
 ```shell
+make -C [path-to-a-build-dir] daemon
+```
+
+or
+```shell
 ./nDPIsrvd -d
 sudo ./nDPId -d
 ```
@@ -159,6 +164,4 @@ Remember that all test results are tied to a specific libnDPI commit hash
 as part of the `git submodule`. Using `test/run_tests.sh` for other commit hashes
 will most likely result in PCAP diff's.
 
-Why not use `examples/py-flow-dashboard/flow-dash.py` to visualize nDPId's output:
-
-![dashboard](examples/py-flow-dashboard/dashboard.png "Plotly/Dash Example")
+Why not use `examples/py-flow-dashboard/flow-dash.py` to visualize nDPId's output.
