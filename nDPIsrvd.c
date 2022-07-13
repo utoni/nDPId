@@ -1,6 +1,9 @@
 #include <arpa/inet.h>
 #include <errno.h>
 #include <fcntl.h>
+#ifdef ENABLE_GNUTLS
+#include <gnutls/gnutls.h>
+#endif
 #include <netdb.h>
 #include <netinet/tcp.h>
 #include <pwd.h>
@@ -81,6 +84,10 @@ static int distributor_in_sockfd = -1;
 static struct nDPIsrvd_address distributor_in_address = {
     .raw.sa_family = 0xFFFF,
 };
+#ifdef ENABLE_GNUTLS
+static gnutls_certificate_credentials_t x509_creds = NULL;
+static gnutls_priority_t prio_cache = NULL;
+#endif
 
 static struct
 {
@@ -93,6 +100,15 @@ static struct
     nDPIsrvd_ull max_remote_descriptors;
     nDPIsrvd_ull max_write_buffers;
     int bufferbloat_fallback_to_blocking;
+#ifdef ENABLE_GNUTLS
+    int enable_tls;
+    char * tls_proxy_listen_address;
+    char * tls_proxy_connect_address;
+    char * x509_certfile;
+    char * x509_keyfile;
+    char * x509_crlfile;
+    char * x509_cafile;
+#endif
 } nDPIsrvd_options = {.pidfile = CMDARG(nDPIsrvd_PIDFILE),
                       .collector_un_sockpath = CMDARG(COLLECTOR_UNIX_SOCKET),
                       .distributor_un_sockpath = CMDARG(DISTRIBUTOR_UNIX_SOCKET),
@@ -100,7 +116,6 @@ static struct
                       .user = CMDARG(DEFAULT_CHUSER),
                       .group = CMDARG(NULL),
                       .max_remote_descriptors = nDPIsrvd_MAX_REMOTE_DESCRIPTORS,
-                      .max_write_buffers = nDPIsrvd_MAX_WRITE_BUFFERS,
                       .bufferbloat_fallback_to_blocking = 1};
 
 static void logger_nDPIsrvd(struct remote_desc const * const remote,
@@ -167,6 +182,76 @@ void nDPIsrvd_memprof_log(char const * const format, ...)
     va_end(ap);
 }
 #endif
+#endif
+
+#ifdef ENABLE_GNUTLS
+static int gtls_global_init(char const * const certfile,
+                            char const * const keyfile,
+                            char const * const crlfile,
+                            char const * const cafile,
+                            gnutls_certificate_credentials_t * const x509_creds,
+                            gnutls_priority_t * prio_cache)
+{
+    int error;
+
+    if (gnutls_check_version("3.4.6") == NULL)
+    {
+        logger_early(1, "GnuTLS 3.4.6 or later is required.");
+        return -1;
+    }
+    if ((error = gnutls_global_init()) < 0)
+    {
+        logger_early(1, "GnuTLS global init failed %s %s.", gnutls_strerror(error), gnutls_strerror_name(error));
+        return -1;
+    }
+    if ((error = gnutls_certificate_allocate_credentials(x509_creds)) < 0)
+    {
+        logger_early(1,
+                     "GnuTLS certificate allocation failed %s %s.",
+                     gnutls_strerror(error),
+                     gnutls_strerror_name(error));
+        return -1;
+    }
+    if ((error = gnutls_certificate_set_x509_crl_file(*x509_creds, crlfile, GNUTLS_X509_FMT_PEM)) < 0)
+    {
+        logger_early(1,
+                     "GnuTLS x509 crl file invalid. PEM format required %s %s.",
+                     gnutls_strerror(error),
+                     gnutls_strerror_name(error));
+        return -1;
+    }
+    if ((error = gnutls_certificate_set_x509_key_file(*x509_creds, certfile, keyfile, GNUTLS_X509_FMT_PEM)) < 0)
+    {
+        logger_early(1,
+                     "GnuTLS x509 cert/key file invalid. PEM format required %s %s.",
+                     gnutls_strerror(error),
+                     gnutls_strerror_name(error));
+        return -1;
+    }
+    if ((error = gnutls_certificate_set_x509_trust_file(*x509_creds, cafile, GNUTLS_X509_FMT_PEM)) < 0)
+    {
+        logger_early(1,
+                     "GnuTLS x509 ca file invalid. PEM format required: %s %s.",
+                     gnutls_strerror(error),
+                     gnutls_strerror_name(error));
+        return -1;
+    }
+    if ((error = gnutls_priority_init(prio_cache, "SECURE256", NULL)) < 0)
+    {
+        logger_early(1,
+                     "GnuTLS priority cache init failed: %s %s.",
+                     gnutls_strerror(error),
+                     gnutls_strerror_name(error));
+        return -1;
+    }
+#if GNUTLS_VERSION_NUMBER >= 0x030506
+    gnutls_certificate_set_known_dh_params(*x509_creds, GNUTLS_SEC_PARAM_HIGH);
+#else
+    gnutls_certificate_set_dh_params(*x509_creds, GNUTLS_SEC_PARAM_HIGH);
+#endif
+
+    return 0;
+}
 #endif
 
 static struct nDPIsrvd_json_buffer * get_read_buffer(struct remote_desc * const remote)
@@ -791,7 +876,7 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
 {
     int opt;
 
-    while ((opt = getopt(argc, argv, "lL:c:dp:s:S:m:u:g:C:Dvh")) != -1)
+    while ((opt = getopt(argc, argv, "lL:c:dp:s:S:m:u:g:C:DvX:x:h")) != -1)
     {
         switch (opt)
         {
@@ -845,6 +930,88 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
             case 'v':
                 fprintf(stderr, "%s", get_nDPId_version());
                 return 1;
+            case 'X':
+            {
+#ifdef ENABLE_GNUTLS
+                static char * const x509_subopt_token[] = {"listen", "connect", NULL};
+                int errfnd = 0;
+                char * subopts = optarg;
+                char * value;
+
+                while (*subopts != '\0' && !errfnd)
+                {
+                    int subopt = getsubopt(&subopts, x509_subopt_token, &value);
+                    if (subopt == -1)
+                    {
+                        logger_early(1, "Invalid subopt: %s", value);
+                        return 1;
+                    }
+
+                    switch (subopt)
+                    {
+                        case 0: /* listen */
+                            nDPIsrvd_options.tls_proxy_listen_address = strdup(value);
+                            break;
+                        case 1: /* connect */
+                            nDPIsrvd_options.tls_proxy_connect_address = strdup(value);
+                            break;
+                        default:
+                            logger_early(1, "Invalid subopt: %s", value);
+                            return 1;
+                    }
+                }
+
+                nDPIsrvd_options.enable_tls = 1;
+#else
+                logger_early(1, "To use TLS capabilities (`-X'), GnuTLS support required.");
+                return 1;
+#endif
+                break;
+            }
+            case 'x':
+            {
+#ifdef ENABLE_GNUTLS
+                static char * const x509_subopt_token[] = {"cert", "key", "crl", "ca", NULL};
+                int errfnd = 0;
+                char * subopts = optarg;
+                char * value;
+
+                while (*subopts != '\0' && !errfnd)
+                {
+                    int subopt = getsubopt(&subopts, x509_subopt_token, &value);
+                    if (subopt == -1)
+                    {
+                        logger_early(1, "Invalid subopt: %s", value);
+                        return 1;
+                    }
+
+                    switch (subopt)
+                    {
+                        case 0: /* cert */
+                            nDPIsrvd_options.x509_certfile = strdup(value);
+                            break;
+                        case 1: /* key */
+                            nDPIsrvd_options.x509_keyfile = strdup(value);
+                            break;
+                        case 2: /* crl */
+                            nDPIsrvd_options.x509_crlfile = strdup(value);
+                            break;
+                        case 3: /* ca */
+                            nDPIsrvd_options.x509_cafile = strdup(value);
+                            break;
+                        default:
+                            logger_early(1, "Invalid subopt: %s", value);
+                            return 1;
+                    }
+                }
+
+                nDPIsrvd_options.enable_tls = 1;
+#else
+                logger_early(1, "To use TLS capabilities (`-x'), GnuTLS support required.");
+                return 1;
+#endif
+                break;
+            }
             case 'h':
             default:
                 fprintf(stderr, "%s\n", get_nDPId_version());
@@ -870,6 +1037,10 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
                         "\t-s\tPath to a listening UNIX socket (nDPIsrvd Distributor).\n"
                         "\t  \tDefault: %s\n"
                         "\t-S\tAddress:Port of the listening TCP/IP socket (nDPIsrvd Distributor).\n"
+#ifdef ENABLE_GNUTLS
+                        "\t[-X listen=TLS-proxy-listen-address] [-X connect=TLS-proxy-connect-address]\n"
+                        "\t[-x cert=PEM-file] [-x key=PEM-file] [-x crl=file] [-x ca=PEM-file]\n"
+#endif
                         "\t-v\tversion\n"
                         "\t-h\tthis\n\n",
                         argv[0],
@@ -916,6 +1087,30 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
             return 1;
         }
     }
+
+#ifdef ENABLE_GNUTLS
+    if (nDPIsrvd_options.enable_tls != 0)
+    {
+        if (nDPIsrvd_options.x509_certfile == NULL || nDPIsrvd_options.x509_keyfile == NULL ||
+            nDPIsrvd_options.x509_cafile == NULL)
+        {
+            logger_early(1,
+                         "%s: To use nDPIsrvd TLS proxy capabilities, `-x cert', `-x key' and `-x ca' need to be set.",
+                         argv[0]);
+            return 1;
+        }
+
+        if ((nDPIsrvd_options.tls_proxy_listen_address == NULL && nDPIsrvd_options.tls_proxy_connect_address == NULL) ||
+            (nDPIsrvd_options.tls_proxy_listen_address != NULL && nDPIsrvd_options.tls_proxy_connect_address != NULL))
+        {
+            logger_early(1,
+                         "%s: To use nDPIsrvd TLS proxy capabilities, either `-X listen' or `-X connect' need to be "
+                         "set.",
+                         argv[0]);
+            return 1;
+        }
+    }
+#endif
 
     if (optind < argc)
     {
@@ -1637,6 +1832,18 @@ int main(int argc, char ** argv)
         }
         goto error_unlink_sockets;
     }
+
+#ifdef ENABLE_GNUTLS
+    if (nDPIsrvd_options.enable_tls != 0 && gtls_global_init(nDPIsrvd_options.x509_certfile,
+                                                             nDPIsrvd_options.x509_keyfile,
+                                                             nDPIsrvd_options.x509_crlfile,
+                                                             nDPIsrvd_options.x509_cafile,
+                                                             &x509_creds,
+                                                             &prio_cache) != 0)
+    {
+        goto error_unlink_sockets;
+    }
+#endif
 
     signal(SIGPIPE, SIG_IGN);
     signal(SIGINT, SIG_IGN);

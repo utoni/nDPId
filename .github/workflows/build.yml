@@ -51,6 +51,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install autoconf automake cmake libtool pkg-config gettext libjson-c-dev flex bison libpcap-dev zlib1g-dev
           sudo apt-get install ${{ matrix.compiler }} lcov iproute2
+          sudo apt-get install rpm alien
       - name: Install Ubuntu Prerequisites (libgcrypt)
         if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=ON')
         run: |
@@ -93,6 +94,9 @@ jobs:
       - name: CPack DEB
         run: |
           cd ./build && cpack -G DEB && sudo dpkg -i nDPId-*.deb && cd ..
+      - name: CPack RPM
+        run: |
+          cd ./build && cpack -G RPM
       - name: systemd test
         if: startsWith(matrix.os, 'ubuntu-latest') && startsWith(matrix.compiler, 'default-cc')
         run: |
