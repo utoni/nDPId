@@ -673,7 +673,7 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
 
 int main(int argc, char ** argv)
 {
-    int retval = 1;
+    int retval = 1, epollfd = -1;
 
     openlog("nDPIsrvd-collectd", LOG_CONS, LOG_DAEMON);
 
@@ -720,7 +720,7 @@ int main(int argc, char ** argv)
 
     collectd_pid = getppid();
 
-    int epollfd = epoll_create1(0);
+    epollfd = epoll_create1(0);
     if (epollfd < 0)
     {
         LOG(LOG_DAEMON | LOG_ERR, "Error creating epoll: %s", strerror(errno));
