@@ -13,12 +13,16 @@ jobs:
   test:
     name: ${{ matrix.os }} ${{ matrix.gcrypt }}
     runs-on: ${{ matrix.os }}
+    env:
+      CMAKE_C_COMPILER: ${{ matrix.compiler }}
+      CMAKE_C_FLAGS: -Werror
     strategy:
       fail-fast: true
       matrix:
         os: ["ubuntu-latest", "ubuntu-18.04"]
         ndpid_gcrypt: ["-DNDPI_WITH_GCRYPT=OFF", "-DNDPI_WITH_GCRYPT=ON"]
         ndpid_zlib: ["-DENABLE_ZLIB=OFF", "-DENABLE_ZLIB=ON"]
+        ndpi_min_version: ["4.4"]
         include:
           - compiler: "default-cc"
             os: "ubuntu-latest"
@@ -50,7 +54,7 @@ jobs:
       - name: Configure nDPId
         run: |
           mkdir build && cd build
-          env CMAKE_C_COMPILER=${{ matrix.compiler }} CMAKE_C_FLAGS='-Werror' cmake .. -DENABLE_COVERAGE=ON -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DENABLE_SANITIZER=ON ${{ matrix.ndpid_zlib }} ${{ matrix.ndpid_gcrypt }}
+          cmake .. -DENABLE_COVERAGE=ON -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DENABLE_SANITIZER=ON ${{ matrix.ndpid_zlib }} ${{ matrix.ndpid_gcrypt }}
       - name: Build nDPId
         run: |
           make -C build all VERBOSE=1
@@ -75,11 +79,10 @@ jobs:
       - name: CPack DEB
         run: |
           cd ./build && cpack -G DEB && cd ..
-# enable this block after the next libnDPI release
-#      - name: Build against libnDPI-4.3
-#        run: |
-#          mkdir build-local-ndpi && cd build-local-ndpi
-#          wget 'https://github.com/ntop/nDPI/archive/refs/tags/4.3.tar.gz'
-#          tar -xzvf 4.3.tar.gz && cd nDPI-4.3 && ./autogen.sh --prefix=/usr --with-only-libndpi CC=${{ matrix.compiler }} CXX=false CFLAGS='-Werror' && sudo make install && cd ..
-#          env CMAKE_C_COMPILER=${{ matrix.compiler }} CMAKE_C_FLAGS='-Werror' cmake .. -DENABLE_COVERAGE=ON -DBUILD_EXAMPLES=ON -DBUILD_NDPI=OFF -DENABLE_SANITIZER=ON ${{ matrix.ndpid_zlib }}
-#          make all VERBOSE=1
+      - name: Build against libnDPI-${{ matrix.ndpi_min_version }}
+        run: |
+          mkdir build-local-ndpi && cd build-local-ndpi
+          wget 'https://github.com/ntop/nDPI/archive/refs/tags/${{ matrix.ndpi_min_version }}.tar.gz'
+          tar -xzvf ${{ matrix.ndpi_min_version }}.tar.gz && cd nDPI-${{ matrix.ndpi_min_version }} && ./autogen.sh --prefix=/usr --with-only-libndpi CC=${{ matrix.compiler }} CXX=false CFLAGS='-Werror' && sudo make install && cd ..
+          cmake .. -DENABLE_COVERAGE=ON -DBUILD_EXAMPLES=ON -DBUILD_NDPI=OFF -DENABLE_SANITIZER=ON ${{ matrix.ndpi_min_version }}
+          make all VERBOSE=1
