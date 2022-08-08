@@ -4459,6 +4459,14 @@ static int nDPId_parse_options(int argc, char ** argv)
                 {
                     char * endptr;
                     int subopt = getsubopt(&subopts, subopt_token, &value);
+                    if (value == NULL && subopt != -1)
+                    {
+                        logger_early(1, "Missing value for `%s'", subopt_token[subopt]);
+                        fprintf(stderr, "%s", "\n");
+                        fprintf(stderr, usage, argv[0]);
+                        print_subopt_usage();
+                        return 1;
+                    }
                     if (subopt == -1)
                     {
                         logger_early(1, "Invalid subopt: %s", value);
