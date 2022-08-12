@@ -1,26 +1,25 @@
 [![Build](https://github.com/utoni/nDPId/actions/workflows/build.yml/badge.svg)](https://github.com/utoni/nDPId/actions/workflows/build.yml)
 [![Gitlab-CI](https://gitlab.com/utoni/nDPId/badges/master/pipeline.svg)](https://gitlab.com/utoni/nDPId/-/pipelines)
 
-# abstract
+# Abstract
 
 nDPId is a set of daemons and tools to capture, process and classify network traffic.
 It's minimal dependencies (besides a half-way modern c library and POSIX threads) are libnDPI (>= 4.4.0 or current github dev branch) and libpcap.
 
-The daemon nDPId is capable of multithreading for packet processing, but w/o mutexes for performance reasons.
+The daemon `nDPId` is capable of multithreading for packet processing, but w/o mutexes for performance reasons.
 Instead synchronization is achieved by a packet distribution mechanism.
 To balance all workload to all threads (more or less) equally a unique identifier represented as hash value is calculated using a 3-tuple consisting of IPv4/IPv6 src/dst address, IP header value of the layer4 protocol and (for TCP/UDP) src/dst port. Other protocols e.g. ICMP/ICMPv6 are lacking relevance for DPI, thus nDPId does not distinguish between different ICMP/ICMPv6 flows coming from the same host. Saves memory and performance, but might change in the future.
 
-nDPId uses libnDPI's JSON serialization interface to generate JSON strings for each event which it then sends to the nDPIsrvd for distribution.
-High level applications can connect to nDPIsrvd and get the latest events from nDPId.
+`nDPId` uses libnDPI's JSON serialization interface to generate a JSON strings for each event it receive from the library and which it then sends out to a UNIX-socket (default: /tmp/ndpid-collector.sock ). From such a socket, `nDPIsrvd` (or other custom applications) can retrieve incoming JSON-messages and further proceed working/distributing messages to higher-level applications.
 
-Unfortunately nDPIsrvd does currently not support any encryption/authentication for TCP connections (TODO!).
+Unfortunately `nDPIsrvd` does currently not support any encryption/authentication for TCP connections (TODO!).
 
-# architecture
+# Architecture
 
 This project uses some kind of microservice architecture.
 
 ```text
-                connect to UNIX socket          connect to UNIX/TCP socket                
+                connect to UNIX socket [1]        connect to UNIX/TCP socket [2]                
 _______________________   |                                 |   __________________________
 |     "producer"      |___|                                 |___|       "consumer"       |
 |---------------------|      _____________________________      |------------------------|
@@ -30,45 +29,66 @@ _______________________   |                                 |   ________________
 |        `- Thread N >| ---> |>    >>> forward >>>      <| ---> |                        |
 |_____________________|  ^   |____________|______________|   ^  |< example/py-flow-info  |
 |                     |  |                                   |  |________________________|
-| nDPId --- Thread 1 >|  `- send serialized data             |  |                        |
+| nDPId --- Thread 1 >|  `- send serialized data [1]         |  |                        |
 | (eth1) `- Thread 2 >|                                      |  |< example/...           |
-|        `- Thread N >|             receive serialized data -'  |________________________|
+|        `- Thread N >|         receive serialized data [2] -'  |________________________|
 |_____________________|                                                                   
+
 ```
+where:
+* `nDPId` capture traffic, extract traffic data (with libnDPI) and send a JSON-serialized output stream to an already existing UNIX-socket;
+* `nDPIsrvd`:
+    * create and manage an "incoming" UNIX-socket (ref [1] above), to fetch data from a local `nDPId`;
+    * apply a filtering logic to received data to select "flow_event_id" related JSONs;
+    * create and manage an "outgoing" UNIX or TCP socket (ref [2] above) to relay matched events
+    to connected clients
+* `consumers` are common/custom applications being able to receive selected flows/events, via both UNIX-socket or TCP-socket.
 
-It doesn't use a producer/consumer design pattern, so the wording is not precise.
 
-# JSON TCP protocol
+# JSON stream format
 
-All JSON strings sent need to be in the following format:
+JSON messages streamed by both `nDPId` and `nDPIsrvd` are presented with:
+
+* a 5-digit-number describing (as decimal number) of the **entire** JSON string including the newline `\n` at the end;
+* the JSON messages
+
 ```text
 [5-digit-number][JSON string]
 ```
 
-## Example:
+as with the following example:
 
 ```text
-00015{"key":"value"}
-```
-where `00015` describes the length (as decimal number) of the **entire** JSON string including the newline `\n` at the end.
-
-A common sequence of received JSON strings could look alike (simplified):
-```text
-00070{"flow_event_id":1,"flow_event_name":"new","packet_id":1,"flow_id":1}
-00101{"flow_id":1,"flow_packet_id":1,"packet_event_id":2,"packet_event_name":"packet-flow","packet_id":1}
-00075{"flow_event_id":5,"flow_event_name":"detected","packet_id":4,"flow_id":1}
-00093{"flow_event_id":2,"flow_event_name":"end","packet_id":258,"flow_id":1,"flow_packet_id":258}
+01223{"flow_event_id":7,"flow_event_name":"detection-update","thread_id":12,"packet_id":307,"source":"wlan0",[...]}
+00458{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":11,"packet_id":324,"source":"wlan0",[...]]}
+00572{"flow_event_id":1,"flow_event_name":"new","thread_id":11,"packet_id":324,"source":"wlan0",[...]}
 ```
 
-# build (CMake)
+The full stream of `nDPId` generated JSON-events can be retrieved directly from `nDPId`, without relying on `nDPIsrvd`, by providing a properly managed UNIX-socket.
+
+Technical details about JSON-messages format can be obtained from related `.schema` file included in the `schema` directory
+
+
+# Build (CMake)
+
+`nDPId` build system is based on [CMake](https://cmake.org/)
 
 ```shell
+git clone https://github.com/utoni/nDPId.git
+[...]
+cd ndpid
 mkdir build
 cd build
 cmake ..
+[...]
+make
 ```
 
-or
+see below for a full/test live-session
+
+![](examples/ndpid_install_and_run.gif)
+
+Based on your building environment and/or desiderata, you could need:
 
 ```shell
 mkdir build
@@ -107,17 +127,33 @@ The CMake cache variable `-DBUILD_NDPI=ON` builds a version of `libnDPI` residin
 
 # run
 
-Generate a nDPId compatible JSON dump:
+As mentioned above, in order to run `nDPId` a UNIX-socket need to be provided in order to stream our related JSON-data.
+
+Such a UNIX-socket can be provided by both the included `nDPIsrvd` daemon, or, if you simply need a quick check, with the [ncat](https://nmap.org/book/ncat-man.html) utility, with a simple `ncat -U /tmp/listen.sock -l -k`
+
+Once the socket is ready, you can run `nDPId` capturing and analyzing your own traffic, with something similar to:
+
+Of course, both `ncat` and `nDPId` need to point to the same UNIX-socket (`nDPId` provides the `-c` option, exactly for this. As a default, `nDPId` refer to `/tmp/ndpid-collector.sock`, and the same default-path is also used by `nDPIsrvd` as for the incoming socket)
+
+You also need to provide `nDPId` some real-traffic. You can capture your own traffic, with something similar to:
+
+    ./nDPId -c /tmp/listen.sock -i wlan0 -l
+
+or you can generate a nDPId-compatible JSON dump with:
+
 ```shell
 ./nDPId-test [path-to-a-PCAP-file]
 ```
+
+You can also automatically fire both `nDPId` and `nDPIsrvd` automatically, with:
 
 Daemons:
 ```shell
 make -C [path-to-a-build-dir] daemon
 ```
 
-or
+Or you can proceed with a manual approach with:
+
 ```shell
 ./nDPIsrvd -d
 sudo ./nDPId -d
