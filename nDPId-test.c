@@ -1293,9 +1293,12 @@ int main(int argc, char ** argv)
     }
 
     /* We do not have any sockets, any socket operation must fail! */
-    collector_un_sockfd = -1;
-    distributor_un_sockfd = -1;
-    distributor_in_sockfd = -1;
+    sockfds[COLLECTOR_UN] = -1;
+    sockfds[DISTRIBUTOR_UN] = -1;
+    sockfds[DISTRIBUTOR_IN] = -1;
+#ifdef ENABLE_GNUTLS
+    sockfds[DISTRIBUTOR_IN_TLS] = -1;
+#endif
 
     if (setup_remote_descriptors(MAX_REMOTE_DESCRIPTORS) != 0)
     {

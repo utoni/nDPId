@@ -24,9 +24,12 @@
 
 enum sock_type
 {
-    COLLECTOR_UN,
+    COLLECTOR_UN = 0,
     DISTRIBUTOR_UN,
     DISTRIBUTOR_IN,
+#ifdef ENABLE_GNUTLS
+    DISTRIBUTOR_IN_TLS,
+#endif
 };
 
 struct nDPIsrvd_write_buffer
@@ -67,6 +70,18 @@ struct remote_desc
             struct nDPIsrvd_write_buffer main_write_buffer;
             UT_array * additional_write_buffers;
         } event_distributor_in; /* TCP/IP socket */
+#ifdef ENABLE_GNUTLS
+        struct
+        {
+            struct sockaddr_in peer;
+            char peer_addr[INET_ADDRSTRLEN];
+
+            struct nDPIsrvd_write_buffer main_write_buffer;
+            UT_array * additional_write_buffers;
+
+            gnutls_session_t session;
+        } event_distributor_in_tls;
+#endif
     };
 };
 
@@ -78,13 +93,35 @@ static struct
 } remotes = {NULL, 0, 0};
 
 static int nDPIsrvd_main_thread_shutdown = 0;
-static int collector_un_sockfd = -1;
-static int distributor_un_sockfd = -1;
-static int distributor_in_sockfd = -1;
-static struct nDPIsrvd_address distributor_in_address = {
-    .raw.sa_family = 0xFFFF,
-};
+static int sockfds[] = {[COLLECTOR_UN] = -1,
+                        [DISTRIBUTOR_UN] = -1,
+                        [DISTRIBUTOR_IN] = -1,
 #ifdef ENABLE_GNUTLS
+                        [DISTRIBUTOR_IN_TLS] = -1
+#endif
+};
+static struct nDPIsrvd_address addrs[] = {[COLLECTOR_UN] =
+                                              {
+                                                  .raw.sa_family = 0xFFFF,
+                                              },
+                                          [DISTRIBUTOR_UN] =
+                                              {
+                                                  .raw.sa_family = 0xFFFF,
+                                              },
+                                          [DISTRIBUTOR_IN] =
+                                              {
+                                                  .raw.sa_family = 0xFFFF,
+                                              },
+#ifdef ENABLE_GNUTLS
+                                          [DISTRIBUTOR_IN_TLS] =
+                                              {
+                                                  .raw.sa_family = 0xFFFF,
+                                              }
+#endif
+};
+
+#ifdef ENABLE_GNUTLS
+static int enable_tls;
 static gnutls_certificate_credentials_t x509_creds = NULL;
 static gnutls_priority_t prio_cache = NULL;
 #endif
@@ -101,9 +138,7 @@ static struct
     nDPIsrvd_ull max_write_buffers;
     int bufferbloat_fallback_to_blocking;
 #ifdef ENABLE_GNUTLS
-    int enable_tls;
-    char * tls_proxy_listen_address;
-    char * tls_proxy_connect_address;
+    char * distributor_in_tls_address;
     char * x509_certfile;
     char * x509_keyfile;
     char * x509_crlfile;
@@ -252,6 +287,37 @@ static int gtls_global_init(char const * const certfile,
 
     return 0;
 }
+
+static int gtls_init_session_server(struct remote_desc * const remote)
+{
+  if (remote->sock_type != DISTRIBUTOR_IN_TLS)
+  {
+    return 1;
+  }
+
+  if (gnutls_init(&remote->event_distributor_in_tls.session, GNUTLS_SERVER) < 0)
+  {
+    return 1;
+  }
+  if (gnutls_priority_set(remote->event_distributor_in_tls.session, prio_cache) < 0)
+  {
+    return 1;
+  }
+  if (gnutls_credentials_set(remote->event_distributor_in_tls.session,
+                             GNUTLS_CRD_CERTIFICATE, x509_creds) < 0)
+  {
+    return 1;
+  }
+  gnutls_session_set_verify_cert(remote->event_distributor_in_tls.session, NULL, 0);
+  gnutls_certificate_server_set_request(remote->event_distributor_in_tls.session, GNUTLS_CERT_REQUIRE);
+  gnutls_certificate_send_x509_rdn_sequence(remote->event_distributor_in_tls.session, 1);
+  gnutls_handshake_set_timeout(remote->event_distributor_in_tls.session,
+                               GNUTLS_DEFAULT_HANDSHAKE_TIMEOUT);
+
+  gnutls_transport_set_int(remote->event_distributor_in_tls.session, remote->fd);
+
+  return 0;
+}
 #endif
 
 static struct nDPIsrvd_json_buffer * get_read_buffer(struct remote_desc * const remote)
@@ -260,9 +326,11 @@ static struct nDPIsrvd_json_buffer * get_read_buffer(struct remote_desc * const 
     {
         case COLLECTOR_UN:
             return &remote->event_collector_un.main_read_buffer;
-
         case DISTRIBUTOR_UN:
         case DISTRIBUTOR_IN:
+#ifdef ENABLE_GNUTLS
+        case DISTRIBUTOR_IN_TLS:
+#endif
             return NULL;
     }
 
@@ -281,6 +349,11 @@ static struct nDPIsrvd_write_buffer * get_write_buffer(struct remote_desc * cons
 
         case DISTRIBUTOR_IN:
             return &remote->event_distributor_in.main_write_buffer;
+
+#ifdef ENABLE_GNUTLS
+        case DISTRIBUTOR_IN_TLS:
+            return &remote->event_distributor_in_tls.main_write_buffer;
+#endif
     }
 
     return NULL;
@@ -298,6 +371,10 @@ static UT_array * get_additional_write_buffers(struct remote_desc * const remote
 
         case DISTRIBUTOR_IN:
             return remote->event_distributor_in.additional_write_buffers;
+#ifdef ENABLE_GNUTLS
+        case DISTRIBUTOR_IN_TLS:
+            return remote->event_distributor_in_tls.additional_write_buffers;
+#endif
     }
 
     return NULL;
@@ -376,6 +453,17 @@ static void logger_nDPIsrvd(struct remote_desc const * const remote,
                    ntohs(remote->event_distributor_in.peer.sin_port),
                    logbuf);
             break;
+#ifdef ENABLE_GNUTLS
+        case DISTRIBUTOR_IN_TLS:
+            logger(1,
+                   "%s %.*s:%u %s",
+                   prefix,
+                   (int)sizeof(remote->event_distributor_in_tls.peer_addr),
+                   remote->event_distributor_in_tls.peer_addr,
+                   ntohs(remote->event_distributor_in_tls.peer.sin_port),
+                   logbuf);
+            break;
+#endif
         case COLLECTOR_UN:
             logger(1, "%s PID %d %s", prefix, remote->event_collector_un.pid, logbuf);
             break;
@@ -539,24 +627,39 @@ static int fcntl_del_flags(int fd, int flags)
 
 static int create_listen_sockets(void)
 {
-    collector_un_sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
-    distributor_un_sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
-    if (collector_un_sockfd < 0 || distributor_un_sockfd < 0)
+    sockfds[COLLECTOR_UN] = socket(AF_UNIX, SOCK_STREAM, 0);
+    sockfds[DISTRIBUTOR_UN] = socket(AF_UNIX, SOCK_STREAM, 0);
+    if (sockfds[COLLECTOR_UN] < 0 || sockfds[DISTRIBUTOR_UN] < 0)
     {
         logger(1, "Error creating UNIX socket: %s", strerror(errno));
         return 1;
     }
 
+#ifdef ENABLE_GNUTLS
+    if (enable_tls != 0)
+    {
+        if (nDPIsrvd_options.distributor_in_tls_address != NULL)
+        {
+            sockfds[DISTRIBUTOR_IN_TLS] = socket(AF_INET, SOCK_STREAM, 0);
+            if (sockfds[DISTRIBUTOR_IN_TLS] < 0)
+            {
+                logger(1, "Error creating distributor TLS proxy (server): %s", strerror(errno));
+                return 1;
+            }
+        }
+    }
+#endif
+
     if (is_cmdarg_set(&nDPIsrvd_options.distributor_in_address) != 0)
     {
-        distributor_in_sockfd = socket(distributor_in_address.raw.sa_family, SOCK_STREAM, 0);
-        if (distributor_in_sockfd < 0)
+        sockfds[DISTRIBUTOR_IN] = socket(addrs[DISTRIBUTOR_IN].raw.sa_family, SOCK_STREAM, 0);
+        if (sockfds[DISTRIBUTOR_IN] < 0)
         {
             logger(1, "Error creating TCP/IP socket: %s", strerror(errno));
             return 1;
         }
         int opt = 1;
-        if (setsockopt(distributor_in_sockfd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0)
+        if (setsockopt(sockfds[DISTRIBUTOR_IN], SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0)
         {
             logger(1, "Setting TCP/IP socket option SO_REUSEADDR failed: %s", strerror(errno));
         }
@@ -564,8 +667,8 @@ static int create_listen_sockets(void)
 
     {
         int opt = 1;
-        if (setsockopt(collector_un_sockfd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0 ||
-            setsockopt(distributor_un_sockfd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0)
+        if (setsockopt(sockfds[COLLECTOR_UN], SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0 ||
+            setsockopt(sockfds[DISTRIBUTOR_UN], SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0)
         {
             logger(1, "Setting UNIX socket option SO_REUSEADDR failed: %s", strerror(errno));
         }
@@ -592,7 +695,7 @@ static int create_listen_sockets(void)
             return 1;
         }
 
-        if (bind(collector_un_sockfd, (struct sockaddr *)&collector_addr, sizeof(collector_addr)) < 0)
+        if (bind(sockfds[COLLECTOR_UN], (struct sockaddr *)&collector_addr, sizeof(collector_addr)) < 0)
         {
             logger(1,
                    "Error binding Collector UNIX socket to `%s': %s",
@@ -623,7 +726,7 @@ static int create_listen_sockets(void)
             return 2;
         }
 
-        if (bind(distributor_un_sockfd, (struct sockaddr *)&distributor_addr, sizeof(distributor_addr)) < 0)
+        if (bind(sockfds[DISTRIBUTOR_UN], (struct sockaddr *)&distributor_addr, sizeof(distributor_addr)) < 0)
         {
             logger(1,
                    "Error binding Distributor socket to `%s': %s",
@@ -635,7 +738,7 @@ static int create_listen_sockets(void)
 
     if (is_cmdarg_set(&nDPIsrvd_options.distributor_in_address) != 0)
     {
-        if (bind(distributor_in_sockfd, &distributor_in_address.raw, distributor_in_address.size) < 0)
+        if (bind(sockfds[DISTRIBUTOR_IN], &addrs[DISTRIBUTOR_IN].raw, addrs[DISTRIBUTOR_IN].size) < 0)
         {
             logger(1,
                    "Error binding Distributor TCP/IP socket to %s: %s",
@@ -643,7 +746,7 @@ static int create_listen_sockets(void)
                    strerror(errno));
             return 3;
         }
-        if (listen(distributor_in_sockfd, 16) < 0)
+        if (listen(sockfds[DISTRIBUTOR_IN], 16) < 0)
         {
             logger(1,
                    "Error listening Distributor TCP/IP socket to %s: %s",
@@ -651,7 +754,7 @@ static int create_listen_sockets(void)
                    strerror(errno));
             return 3;
         }
-        if (fcntl_add_flags(distributor_in_sockfd, O_NONBLOCK) != 0)
+        if (fcntl_add_flags(sockfds[DISTRIBUTOR_IN], O_NONBLOCK) != 0)
         {
             logger(1,
                    "Error setting Distributor TCP/IP socket %s to non-blocking mode: %s",
@@ -661,13 +764,13 @@ static int create_listen_sockets(void)
         }
     }
 
-    if (listen(collector_un_sockfd, 16) < 0 || listen(distributor_un_sockfd, 16) < 0)
+    if (listen(sockfds[COLLECTOR_UN], 16) < 0 || listen(sockfds[DISTRIBUTOR_UN], 16) < 0)
     {
         logger(1, "Error listening UNIX socket: %s", strerror(errno));
         return 3;
     }
 
-    if (fcntl_add_flags(collector_un_sockfd, O_NONBLOCK) != 0)
+    if (fcntl_add_flags(sockfds[COLLECTOR_UN], O_NONBLOCK) != 0)
     {
         logger(1,
                "Error setting Collector UNIX socket `%s' to non-blocking mode: %s",
@@ -676,7 +779,7 @@ static int create_listen_sockets(void)
         return 3;
     }
 
-    if (fcntl_add_flags(distributor_un_sockfd, O_NONBLOCK) != 0)
+    if (fcntl_add_flags(sockfds[DISTRIBUTOR_UN], O_NONBLOCK) != 0)
     {
         logger(1,
                "Error setting Distributor UNIX socket `%s' to non-blocking mode: %s",
@@ -723,6 +826,17 @@ static struct remote_desc * get_remote_descriptor(enum sock_type type, int remot
                     write_buffer = &remotes.desc[i].event_distributor_in.main_write_buffer;
                     additional_write_buffers = &remotes.desc[i].event_distributor_in.additional_write_buffers;
                     break;
+#ifdef ENABLE_GNUTLS
+                case DISTRIBUTOR_IN_TLS:
+                    if (gtls_init_session_server(&remotes.desc[i]) != 0)
+                    {
+                        logger(1, "GnuTLS init session (server) failed.");
+                        return NULL;
+                    }
+                    write_buffer = &remotes.desc[i].event_distributor_in_tls.main_write_buffer;
+                    additional_write_buffers = &remotes.desc[i].event_distributor_in_tls.additional_write_buffers;
+                    break;
+#endif
             }
 
             if (additional_write_buffers != NULL && *additional_write_buffers == NULL)
@@ -795,6 +909,19 @@ static void free_remote(int epollfd, struct remote_desc * remote)
                 }
                 nDPIsrvd_buffer_free(&remote->event_distributor_in.main_write_buffer.buf);
                 break;
+#ifdef ENABLE_GNUTLS
+            case DISTRIBUTOR_IN_TLS:
+                if (errno != 0)
+                {
+                    logger_nDPIsrvd(remote, "Error closing distributor(TLS) connection", ": %s", strerror(errno));
+                }
+                if (remote->event_distributor_in_tls.additional_write_buffers != NULL)
+                {
+                    utarray_free(remote->event_distributor_in_tls.additional_write_buffers);
+                }
+                nDPIsrvd_buffer_free(&remote->event_distributor_in_tls.main_write_buffer.buf);
+                break;
+#endif
         }
 
         memset(remote, 0, sizeof(*remote));
@@ -931,43 +1058,14 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
                 fprintf(stderr, "%s", get_nDPId_version());
                 return 1;
             case 'X':
-            {
 #ifdef ENABLE_GNUTLS
-                static char * const x509_subopt_token[] = {"listen", "connect", NULL};
-                int errfnd = 0;
-                char * subopts = optarg;
-                char * value;
-
-                while (*subopts != '\0' && !errfnd)
-                {
-                    int subopt = getsubopt(&subopts, x509_subopt_token, &value);
-                    if (subopt == -1)
-                    {
-                        logger_early(1, "Invalid subopt: %s", value);
-                        return 1;
-                    }
-
-                    switch (subopt)
-                    {
-                        case 0: /* listen */
-                            nDPIsrvd_options.tls_proxy_listen_address = strdup(value);
-                            break;
-                        case 1: /* connect */
-                            nDPIsrvd_options.tls_proxy_connect_address = strdup(value);
-                            break;
-                        default:
-                            logger_early(1, "Invalid subopt: %s", value);
-                            return 1;
-                    }
-                }
-
-                nDPIsrvd_options.enable_tls = 1;
+                nDPIsrvd_options.distributor_in_tls_address = strdup(optarg);
+                enable_tls = 1;
+                break;
 #else
                 logger_early(1, "To use TLS capabilities (`-X'), GnuTLS support required.");
                 return 1;
 #endif
-                break;
-            }
             case 'x':
             {
 #ifdef ENABLE_GNUTLS
@@ -979,6 +1077,11 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
                 while (*subopts != '\0' && !errfnd)
                 {
                     int subopt = getsubopt(&subopts, x509_subopt_token, &value);
+                    if (value == NULL && subopt != -1)
+                    {
+                        logger_early(1, "Missing value for `%s'", x509_subopt_token[subopt]);
+                        return 1;
+                    }
                     if (subopt == -1)
                     {
                         logger_early(1, "Invalid subopt: %s", value);
@@ -1005,7 +1108,7 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
                     }
                 }
 
-                nDPIsrvd_options.enable_tls = 1;
+                enable_tls = 1;
 #else
                 logger_early(1, "To use TLS capabilities (`-x'), GnuTLS support required.");
                 return 1;
@@ -1038,7 +1141,7 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
                         "\t  \tDefault: %s\n"
                         "\t-S\tAddress:Port of the listening TCP/IP socket (nDPIsrvd Distributor).\n"
 #ifdef ENABLE_GNUTLS
-                        "\t[-X listen=TLS-proxy-listen-address] [-X connect=TLS-proxy-connect-address]\n"
+                        "\t[-X tls-distributor-host:port]\n"
                         "\t[-x cert=PEM-file] [-x key=PEM-file] [-x crl=file] [-x ca=PEM-file]\n"
 #endif
                         "\t-v\tversion\n"
@@ -1069,7 +1172,7 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
 
     if (is_cmdarg_set(&nDPIsrvd_options.distributor_in_address) != 0)
     {
-        if (nDPIsrvd_setup_address(&distributor_in_address, get_cmdarg(&nDPIsrvd_options.distributor_in_address)) != 0)
+        if (nDPIsrvd_setup_address(&addrs[DISTRIBUTOR_IN], get_cmdarg(&nDPIsrvd_options.distributor_in_address)) != 0)
         {
             logger_early(1,
                          "%s: Could not parse address %s",
@@ -1077,7 +1180,7 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
                          get_cmdarg(&nDPIsrvd_options.distributor_in_address));
             return 1;
         }
-        if (distributor_in_address.raw.sa_family == AF_UNIX)
+        if (addrs[DISTRIBUTOR_IN].raw.sa_family == AF_UNIX)
         {
             logger_early(1,
                          "%s: You've requested to setup another UNIX socket `%s', but there is already one at `%s'",
@@ -1089,24 +1192,38 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
     }
 
 #ifdef ENABLE_GNUTLS
-    if (nDPIsrvd_options.enable_tls != 0)
+    if (enable_tls != 0)
     {
         if (nDPIsrvd_options.x509_certfile == NULL || nDPIsrvd_options.x509_keyfile == NULL ||
             nDPIsrvd_options.x509_cafile == NULL)
         {
             logger_early(1,
-                         "%s: To use nDPIsrvd TLS proxy capabilities, `-x cert', `-x key' and `-x ca' need to be set.",
+                         "%s: To use nDPIsrvd TLS capabilities, `-x cert', `-x key' and `-x ca' need to be set.",
                          argv[0]);
             return 1;
         }
 
-        if ((nDPIsrvd_options.tls_proxy_listen_address == NULL && nDPIsrvd_options.tls_proxy_connect_address == NULL) ||
-            (nDPIsrvd_options.tls_proxy_listen_address != NULL && nDPIsrvd_options.tls_proxy_connect_address != NULL))
+        if (nDPIsrvd_options.distributor_in_tls_address == NULL)
+        {
+            logger_early(1, "%s: To use nDPIsrvd TLS capabilities, `-X' need to bet set.", argv[0]);
+            return 1;
+        }
+
+        if (nDPIsrvd_setup_address(&addrs[DISTRIBUTOR_IN_TLS],
+                                   nDPIsrvd_options.distributor_in_tls_address) != 0)
         {
             logger_early(1,
-                         "%s: To use nDPIsrvd TLS proxy capabilities, either `-X listen' or `-X connect' need to be "
-                         "set.",
-                         argv[0]);
+                         "%s: Could not parse address %s",
+                         argv[0],
+                         nDPIsrvd_options.distributor_in_tls_address);
+            return 1;
+        }
+        if (addrs[DISTRIBUTOR_IN_TLS].raw.sa_family == AF_UNIX)
+        {
+            logger_early(1,
+                         "%s: You've requested to setup another UNIX socket `%s' for TLS, which is not supported. Please use `-s'.",
+                         argv[0],
+                         nDPIsrvd_options.distributor_in_tls_address);
             return 1;
         }
     }
@@ -1142,6 +1259,63 @@ static struct remote_desc * accept_remote(int server_fd,
     return current;
 }
 
+static pid_t get_pid_from_unix_socket(int fd, uid_t * const uid)
+{
+    struct ucred ucred = {};
+    socklen_t ucred_len = sizeof(ucred);
+    if (getsockopt(fd, SOL_SOCKET, SO_PEERCRED, &ucred, &ucred_len) == -1)
+    {
+        logger(1, "Error getting credentials from UNIX socket: %s", strerror(errno));
+        return -1;
+    }
+    if (uid != NULL)
+    {
+        *uid = ucred.uid;
+    }
+
+    return ucred.pid;
+}
+
+static char * get_username_from_uid(uid_t const uid)
+{
+    struct passwd pwnam = {};
+    struct passwd * pwres = NULL;
+    ssize_t pwsiz = sysconf(_SC_GETPW_R_SIZE_MAX);
+    if (pwsiz == -1)
+    {
+        pwsiz = BUFSIZ;
+    }
+    char buf[pwsiz];
+    if (getpwuid_r(uid, &pwnam, &buf[0], pwsiz, &pwres) != 0)
+    {
+        logger(1, "Could not get passwd entry for user id %u", uid);
+        return NULL;
+    }
+
+    return strdup(pwres->pw_name);
+}
+
+int set_snd_opts(int fd)
+{
+    int sockopt = NETWORK_BUFFER_MAX_SIZE;
+    if (setsockopt(fd, SOL_SOCKET, SO_SNDBUF, &sockopt, sizeof(sockopt)) < 0)
+    {
+        logger(1, "Error setting socket option SO_SNDBUF: %s", strerror(errno));
+        return 1;
+    }
+
+    {
+        struct timeval send_timeout = {1, 0};
+        if (setsockopt(fd, SOL_SOCKET, SO_SNDTIMEO, (char *)&send_timeout, sizeof(send_timeout)) != 0)
+        {
+            logger(1, "Error setting socket option send timeout: %s", strerror(errno));
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
 static int new_connection(int epollfd, int eventfd)
 {
     union
@@ -1149,29 +1323,40 @@ static int new_connection(int epollfd, int eventfd)
         struct sockaddr_un saddr_collector_un;
         struct sockaddr_un saddr_distributor_un;
         struct sockaddr_in saddr_distributor_in;
+#ifdef ENABLE_GNUTLS
+        struct sockaddr_in saddr_distributor_in_tls;
+#endif
     } sockaddr;
 
     socklen_t peer_addr_len;
     enum sock_type stype;
     int server_fd;
-    if (eventfd == collector_un_sockfd)
+    if (eventfd == sockfds[COLLECTOR_UN])
     {
         peer_addr_len = sizeof(sockaddr.saddr_collector_un);
         stype = COLLECTOR_UN;
-        server_fd = collector_un_sockfd;
+        server_fd = sockfds[COLLECTOR_UN];
     }
-    else if (eventfd == distributor_un_sockfd)
+    else if (eventfd == sockfds[DISTRIBUTOR_UN])
     {
         peer_addr_len = sizeof(sockaddr.saddr_distributor_un);
         stype = DISTRIBUTOR_UN;
-        server_fd = distributor_un_sockfd;
+        server_fd = sockfds[DISTRIBUTOR_UN];
     }
-    else if (eventfd == distributor_in_sockfd)
+    else if (eventfd == sockfds[DISTRIBUTOR_IN])
     {
         peer_addr_len = sizeof(sockaddr.saddr_distributor_in);
         stype = DISTRIBUTOR_IN;
-        server_fd = distributor_in_sockfd;
+        server_fd = sockfds[DISTRIBUTOR_IN];
     }
+#ifdef ENABLE_GNUTLS
+    else if (eventfd == sockfds[DISTRIBUTOR_IN_TLS])
+    {
+        peer_addr_len = sizeof(sockaddr.saddr_distributor_in_tls);
+        stype = DISTRIBUTOR_IN_TLS;
+        server_fd = sockfds[DISTRIBUTOR_IN_TLS];
+    }
+#endif
     else
     {
         return 1;
@@ -1197,83 +1382,60 @@ static int new_connection(int epollfd, int eventfd)
                 return 1;
             }
 
-            struct ucred ucred = {};
-            socklen_t ucred_len = sizeof(ucred);
-            if (getsockopt(current->fd, SOL_SOCKET, SO_PEERCRED, &ucred, &ucred_len) == -1)
+            current->event_collector_un.pid = get_pid_from_unix_socket(current->fd, NULL);
+            if (current->event_collector_un.pid == -1)
             {
-                logger(1, "Error getting credentials from UNIX socket: %s", strerror(errno));
                 return 1;
             }
-
-            current->event_collector_un.pid = ucred.pid;
 
             logger_nDPIsrvd(current, "New collector connection from", "");
             break;
         case DISTRIBUTOR_UN:
-        case DISTRIBUTOR_IN:
-            if (current->sock_type == DISTRIBUTOR_UN)
+            current->event_distributor_un.peer = sockaddr.saddr_distributor_un;
+
+            uid_t uid;
+            current->event_distributor_un.pid = get_pid_from_unix_socket(current->fd, &uid);
+            if (current->event_distributor_un.pid == -1)
             {
-                current->event_distributor_un.peer = sockaddr.saddr_distributor_un;
-
-                struct ucred ucred = {};
-                socklen_t ucred_len = sizeof(ucred);
-                if (getsockopt(current->fd, SOL_SOCKET, SO_PEERCRED, &ucred, &ucred_len) == -1)
-                {
-                    logger(1, "Error getting credentials from UNIX socket: %s", strerror(errno));
-                    return 1;
-                }
-
-                struct passwd pwnam = {};
-                struct passwd * pwres = NULL;
-                ssize_t pwsiz = sysconf(_SC_GETPW_R_SIZE_MAX);
-                if (pwsiz == -1)
-                {
-                    pwsiz = BUFSIZ;
-                }
-                char buf[pwsiz];
-                if (getpwuid_r(ucred.uid, &pwnam, &buf[0], pwsiz, &pwres) != 0)
-                {
-                    logger(1, "Could not get passwd entry for user id %u", ucred.uid);
-                    return 1;
-                }
-
-                current->event_distributor_un.pid = ucred.pid;
-                current->event_distributor_un.user_name = strdup(pwres->pw_name);
-            }
-            else
-            {
-                current->event_distributor_in.peer = sockaddr.saddr_distributor_in;
-
-                sockopt = 1;
-                if (setsockopt(current->fd, SOL_SOCKET, SO_RCVBUF, &sockopt, sizeof(sockopt)) < 0)
-                {
-                    logger(1, "Error setting socket option SO_RCVBUF: %s", strerror(errno));
-                    return 1;
-                }
-
-                if (inet_ntop(current->event_distributor_in.peer.sin_family,
-                              &current->event_distributor_in.peer.sin_addr,
-                              &current->event_distributor_in.peer_addr[0],
-                              sizeof(current->event_distributor_in.peer_addr)) == NULL)
-                {
-                    logger(1, "Error converting an internet address: %s", strerror(errno));
-                    return 1;
-                }
-            }
-
-            sockopt = NETWORK_BUFFER_MAX_SIZE;
-            if (setsockopt(current->fd, SOL_SOCKET, SO_SNDBUF, &sockopt, sizeof(sockopt)) < 0)
-            {
-                logger(1, "Error setting socket option SO_SNDBUF: %s", strerror(errno));
                 return 1;
             }
 
+            current->event_distributor_un.user_name = get_username_from_uid(uid);
+            if (current->event_distributor_un.user_name == NULL)
             {
-                struct timeval send_timeout = {1, 0};
-                if (setsockopt(current->fd, SOL_SOCKET, SO_SNDTIMEO, (char *)&send_timeout, sizeof(send_timeout)) != 0)
-                {
-                    logger(1, "Error setting socket option send timeout: %s", strerror(errno));
-                }
+                return 1;
+            }
+
+            if (set_snd_opts(current->fd) != 0)
+            {
+                return 1;
+            }
+            break;
+        case DISTRIBUTOR_IN:
+#ifdef ENABLE_GNUTLS
+        case DISTRIBUTOR_IN_TLS:
+#endif
+            current->event_distributor_in.peer = sockaddr.saddr_distributor_in;
+
+            sockopt = 1;
+            if (setsockopt(current->fd, SOL_SOCKET, SO_RCVBUF, &sockopt, sizeof(sockopt)) < 0)
+            {
+                logger(1, "Error setting socket option SO_RCVBUF: %s", strerror(errno));
+                return 1;
+            }
+
+            if (inet_ntop(current->event_distributor_in.peer.sin_family,
+                          &current->event_distributor_in.peer.sin_addr,
+                          &current->event_distributor_in.peer_addr[0],
+                          sizeof(current->event_distributor_in.peer_addr)) == NULL)
+            {
+                logger(1, "Error converting an internet address: %s", strerror(errno));
+                return 1;
+            }
+
+            if (set_snd_opts(current->fd) != 0)
+            {
+                return 1;
             }
 
             logger_nDPIsrvd(current, "New distributor connection from", "");
@@ -1584,8 +1746,12 @@ static int mainloop(int epollfd)
         {
             if ((events[i].events & EPOLLERR) != 0 || (events[i].events & EPOLLHUP) != 0)
             {
-                if (events[i].data.fd != collector_un_sockfd && events[i].data.fd != distributor_un_sockfd &&
-                    events[i].data.fd != distributor_in_sockfd)
+                if (events[i].data.fd != sockfds[COLLECTOR_UN] &&
+                    events[i].data.fd != sockfds[DISTRIBUTOR_UN] && events[i].data.fd != sockfds[DISTRIBUTOR_IN]
+#ifdef ENABLE_GNUTLS
+                    && events[i].data.fd != sockfds[DISTRIBUTOR_IN_TLS]
+#endif
+                )
                 {
                     struct remote_desc * const current = (struct remote_desc *)events[i].data.ptr;
                     switch (current->sock_type)
@@ -1597,18 +1763,28 @@ static int mainloop(int epollfd)
                         case DISTRIBUTOR_IN:
                             logger_nDPIsrvd(current, "Distributor connection", "closed");
                             break;
+#ifdef ENABLE_GNUTLS
+                        case DISTRIBUTOR_IN_TLS:
+                            logger_nDPIsrvd(current, "Distributor (TLS) connection", "closed");
+                            break;
+#endif
                     }
                     disconnect_client(epollfd, current);
                 }
                 else
                 {
-                    logger(1, "Epoll event error: %s", (errno != 0 ? strerror(errno) : "unknown"));
+                    if (errno != 0)
+                    {
+                        logger(1, "Epoll event error: %s", strerror(errno));
+                    } else {
+                        logger(1, "Epoll event error (unknown) for fd %d", events[i].data.fd);
+                    }
                 }
                 continue;
             }
 
-            if (events[i].data.fd == collector_un_sockfd || events[i].data.fd == distributor_un_sockfd ||
-                events[i].data.fd == distributor_in_sockfd)
+            if (events[i].data.fd == sockfds[COLLECTOR_UN] || events[i].data.fd == sockfds[DISTRIBUTOR_UN] ||
+                events[i].data.fd == sockfds[DISTRIBUTOR_IN])
             {
                 /* New connection to collector / distributor. */
                 if (new_connection(epollfd, events[i].data.fd) != 0)
@@ -1668,21 +1844,21 @@ static int setup_event_queue(void)
         return -1;
     }
 
-    if (add_in_event_fd(epollfd, collector_un_sockfd) != 0)
+    if (add_in_event_fd(epollfd, sockfds[COLLECTOR_UN]) != 0)
     {
         logger(1, "Error adding collector UNIX socket fd to epoll: %s", strerror(errno));
         return -1;
     }
 
-    if (add_in_event_fd(epollfd, distributor_un_sockfd) != 0)
+    if (add_in_event_fd(epollfd, sockfds[DISTRIBUTOR_UN]) != 0)
     {
         logger(1, "Error adding distributor UNIX socket fd to epoll: %s", strerror(errno));
         return -1;
     }
 
-    if (distributor_in_sockfd >= 0)
+    if (sockfds[DISTRIBUTOR_IN] >= 0)
     {
-        if (add_in_event_fd(epollfd, distributor_in_sockfd) != 0)
+        if (add_in_event_fd(epollfd, sockfds[DISTRIBUTOR_IN]) != 0)
         {
             logger(1, "Error adding distributor TCP/IP socket fd to epoll: %s", strerror(errno));
             return -1;
@@ -1792,20 +1968,28 @@ int main(int argc, char ** argv)
 
     logger(0, "collector UNIX socket listen on `%s'", get_cmdarg(&nDPIsrvd_options.collector_un_sockpath));
     logger(0, "distributor UNIX listen on `%s'", get_cmdarg(&nDPIsrvd_options.distributor_un_sockpath));
-    switch (distributor_in_address.raw.sa_family)
+    switch (addrs[DISTRIBUTOR_IN].raw.sa_family)
     {
         default:
             goto error_unlink_sockets;
         case AF_INET:
         case AF_INET6:
+            logger(0, "distributor TCP listen on `%s'", get_cmdarg(&nDPIsrvd_options.distributor_in_address));
             logger(1,
-                   "Please keep in mind that using a TCP Socket may leak sensitive information to "
-                   "everyone with access to the device/network. You've been warned!");
+                   "Please keep in mind that using a TCP Socket (with `-S') may leak sensitive information to "
+                   "everyone with access to the device/network. You've been warned!"
+                   "Please use TLS (with `-x' and `-X' if possible.");
             break;
         case AF_UNIX:
         case 0xFFFF:
             break;
     }
+#ifdef ENABLE_GNUTLS
+    if (enable_tls)
+    {
+        logger(0, "distributor (TLS) TCP listen on `%s'", nDPIsrvd_options.distributor_in_tls_address);
+    }
+#endif
 
     errno = 0;
     if (change_user_group(get_cmdarg(&nDPIsrvd_options.user),
@@ -1834,12 +2018,12 @@ int main(int argc, char ** argv)
     }
 
 #ifdef ENABLE_GNUTLS
-    if (nDPIsrvd_options.enable_tls != 0 && gtls_global_init(nDPIsrvd_options.x509_certfile,
-                                                             nDPIsrvd_options.x509_keyfile,
-                                                             nDPIsrvd_options.x509_crlfile,
-                                                             nDPIsrvd_options.x509_cafile,
-                                                             &x509_creds,
-                                                             &prio_cache) != 0)
+    if (enable_tls != 0 && gtls_global_init(nDPIsrvd_options.x509_certfile,
+                                            nDPIsrvd_options.x509_keyfile,
+                                            nDPIsrvd_options.x509_crlfile,
+                                            nDPIsrvd_options.x509_cafile,
+                                            &x509_creds,
+                                            &prio_cache) != 0)
     {
         goto error_unlink_sockets;
     }
@@ -1863,9 +2047,9 @@ error_unlink_sockets:
     unlink(get_cmdarg(&nDPIsrvd_options.collector_un_sockpath));
     unlink(get_cmdarg(&nDPIsrvd_options.distributor_un_sockpath));
 error:
-    close(collector_un_sockfd);
-    close(distributor_un_sockfd);
-    close(distributor_in_sockfd);
+    close(sockfds[COLLECTOR_UN]);
+    close(sockfds[DISTRIBUTOR_UN]);
+    close(sockfds[DISTRIBUTOR_IN]);
 
     daemonize_shutdown(get_cmdarg(&nDPIsrvd_options.pidfile));
     logger(0, "Bye.");
