@@ -160,6 +160,10 @@ endif()
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
 set(NDPID_DEFS -DJSMN_STATIC=1 -DJSMN_STRICT=1 -DJSMN_PARENT_LINKS=1)
+set(NDPID_DEPS_INC "${CMAKE_SOURCE_DIR}"
+                   "${CMAKE_SOURCE_DIR}/dependencies"
+                   "${CMAKE_SOURCE_DIR}/dependencies/jsmn"
+                   "${CMAKE_SOURCE_DIR}/dependencies/uthash/src")
 if(ENABLE_MEMORY_PROFILING)
     message(WARNING "ENABLE_MEMORY_PROFILING should not be used in production environments.")
     add_definitions("-DENABLE_MEMORY_PROFILING=1"
@@ -250,29 +254,21 @@ find_package(PCAP "1.8.1" REQUIRED)
 
 target_compile_options(nDPId PRIVATE "-pthread")
 target_compile_definitions(nDPId PRIVATE -D_GNU_SOURCE=1 -DGIT_VERSION=\"${GIT_VERSION}\" ${NDPID_DEFS} ${ZLIB_DEFS})
-target_include_directories(nDPId PRIVATE "${STATIC_LIBNDPI_INC}" "${DEFAULT_NDPI_INCLUDE}")
+target_include_directories(nDPId PRIVATE "${STATIC_LIBNDPI_INC}" "${DEFAULT_NDPI_INCLUDE}" ${NDPID_DEPS_INC})
 target_link_libraries(nDPId "${STATIC_LIBNDPI_LIB}" "${pkgcfg_lib_NDPI_ndpi}"
                             "${pkgcfg_lib_PCRE_pcre}" "${pkgcfg_lib_MAXMINDDB_maxminddb}" "${pkgcfg_lib_ZLIB_z}"
                             "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}" "${LIBM_LIB}"
                             "-pthread")
 
 target_compile_definitions(nDPIsrvd PRIVATE -D_GNU_SOURCE=1 -DGIT_VERSION=\"${GIT_VERSION}\" ${NDPID_DEFS})
-target_include_directories(nDPIsrvd PRIVATE
-                           "${CMAKE_SOURCE_DIR}"
-                           "${CMAKE_SOURCE_DIR}/dependencies"
-                           "${CMAKE_SOURCE_DIR}/dependencies/jsmn"
-                           "${CMAKE_SOURCE_DIR}/dependencies/uthash/src")
+target_include_directories(nDPIsrvd PRIVATE ${NDPID_DEPS_INC})
 
-target_include_directories(nDPId-test PRIVATE
-                           "${CMAKE_SOURCE_DIR}"
-                           "${CMAKE_SOURCE_DIR}/dependencies"
-                           "${CMAKE_SOURCE_DIR}/dependencies/jsmn"
-                           "${CMAKE_SOURCE_DIR}/dependencies/uthash/src")
+target_include_directories(nDPId-test PRIVATE ${NDPID_DEPS_INC})
 target_compile_options(nDPId-test PRIVATE "-Wno-unused-function" "-pthread")
 target_compile_definitions(nDPId-test PRIVATE -D_GNU_SOURCE=1 -DNO_MAIN=1 -DGIT_VERSION=\"${GIT_VERSION}\"
                                               ${NDPID_DEFS} ${ZLIB_DEFS} ${NDPID_TEST_MPROF_DEFS})
 target_include_directories(nDPId-test PRIVATE
-                           "${STATIC_LIBNDPI_INC}" "${DEFAULT_NDPI_INCLUDE}" "${CMAKE_SOURCE_DIR}/dependencies/uthash/src")
+                           "${STATIC_LIBNDPI_INC}" "${DEFAULT_NDPI_INCLUDE}" ${NDPID_DEPS_INC})
 target_link_libraries(nDPId-test "${STATIC_LIBNDPI_LIB}" "${pkgcfg_lib_NDPI_ndpi}"
                                  "${pkgcfg_lib_PCRE_pcre}" "${pkgcfg_lib_MAXMINDDB_maxminddb}" "${pkgcfg_lib_ZLIB_z}"
                                  "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}" "${LIBM_LIB}"
@@ -281,11 +277,7 @@ target_link_libraries(nDPId-test "${STATIC_LIBNDPI_LIB}" "${pkgcfg_lib_NDPI_ndpi
 if(BUILD_EXAMPLES)
     add_executable(nDPIsrvd-collectd examples/c-collectd/c-collectd.c)
     target_compile_definitions(nDPIsrvd-collectd PRIVATE ${NDPID_DEFS})
-    target_include_directories(nDPIsrvd-collectd PRIVATE
-                               "${CMAKE_SOURCE_DIR}"
-                               "${CMAKE_SOURCE_DIR}/dependencies"
-                               "${CMAKE_SOURCE_DIR}/dependencies/jsmn"
-                               "${CMAKE_SOURCE_DIR}/dependencies/uthash/src")
+    target_include_directories(nDPIsrvd-collectd PRIVATE ${NDPID_DEPS_INC})
 
     add_executable(nDPIsrvd-captured examples/c-captured/c-captured.c utils.c)
     if(BUILD_NDPI)
@@ -293,27 +285,18 @@ if(BUILD_EXAMPLES)
     endif()
     target_compile_definitions(nDPIsrvd-captured PRIVATE ${NDPID_DEFS})
     target_include_directories(nDPIsrvd-captured PRIVATE
-                               "${STATIC_LIBNDPI_INC}" "${DEFAULT_NDPI_INCLUDE}" "${CMAKE_SOURCE_DIR}"
-                               "${CMAKE_SOURCE_DIR}/dependencies"
-                               "${CMAKE_SOURCE_DIR}/dependencies/jsmn"
-                               "${CMAKE_SOURCE_DIR}/dependencies/uthash/src")
+                               "${STATIC_LIBNDPI_INC}" "${DEFAULT_NDPI_INCLUDE}" "${CMAKE_SOURCE_DIR}" ${NDPID_DEPS_INC})
     target_link_libraries(nDPIsrvd-captured "${pkgcfg_lib_NDPI_ndpi}"
                                             "${pkgcfg_lib_PCRE_pcre}" "${pkgcfg_lib_MAXMINDDB_maxminddb}"
                                             "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}")
 
     add_executable(nDPIsrvd-json-dump examples/c-json-stdout/c-json-stdout.c)
     target_compile_definitions(nDPIsrvd-json-dump PRIVATE ${NDPID_DEFS})
-    target_include_directories(nDPIsrvd-json-dump PRIVATE
-                               "${CMAKE_SOURCE_DIR}"
-                               "${CMAKE_SOURCE_DIR}/dependencies/jsmn")
+    target_include_directories(nDPIsrvd-json-dump PRIVATE ${NDPID_DEPS_INC})
 
     add_executable(nDPIsrvd-simple examples/c-simple/c-simple.c)
     target_compile_definitions(nDPIsrvd-simple PRIVATE ${NDPID_DEFS})
-    target_include_directories(nDPIsrvd-simple PRIVATE
-                               "${CMAKE_SOURCE_DIR}"
-                               "${CMAKE_SOURCE_DIR}/dependencies"
-                               "${CMAKE_SOURCE_DIR}/dependencies/jsmn"
-                               "${CMAKE_SOURCE_DIR}/dependencies/uthash/src")
+    target_include_directories(nDPIsrvd-simple PRIVATE ${NDPID_DEPS_INC})
     target_link_libraries(nDPIsrvd-simple "${pkgcfg_lib_NDPI_ndpi}"
                                           "${pkgcfg_lib_PCRE_pcre}" "${pkgcfg_lib_MAXMINDDB_maxminddb}"
                                           "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}")

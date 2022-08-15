@@ -25,6 +25,7 @@
 #endif
 
 #include "config.h"
+#include "nDPIsrvd.h"
 #include "utils.h"
 
 #ifndef UNIX_PATH_MAX
@@ -354,6 +355,7 @@ static char const * const daemon_event_name_table[DAEMON_EVENT_COUNT] = {
 };
 
 static struct nDPId_reader_thread reader_threads[nDPId_MAX_READER_THREADS] = {};
+static struct nDPIsrvd_address collector_address;
 static volatile int nDPId_main_thread_shutdown = 0;
 static volatile uint64_t global_flow_id = 1;
 static int ip4_interface_avail = 0, ip6_interface_avail = 0;
@@ -388,7 +390,7 @@ static struct
     char * custom_categories_file;
     char * custom_ja3_file;
     char * custom_sha1_file;
-    char collector_sockpath[UNIX_PATH_MAX];
+    char collector_address[UNIX_PATH_MAX];
 #ifdef ENABLE_ZLIB
     uint8_t enable_zlib_compression;
 #endif
@@ -416,7 +418,7 @@ static struct
     unsigned long long int max_packets_per_flow_to_process;
 } nDPId_options = {.pidfile = nDPId_PIDFILE,
                    .user = "nobody",
-                   .collector_sockpath = COLLECTOR_UNIX_SOCKET,
+                   .collector_address = COLLECTOR_UNIX_SOCKET,
                    .max_flows_per_thread = nDPId_MAX_FLOWS_PER_THREAD / 2,
                    .max_idle_flows_per_thread = nDPId_MAX_IDLE_FLOWS_PER_THREAD / 2,
                    .tick_resolution = nDPId_TICK_RESOLUTION,
@@ -1833,7 +1835,9 @@ static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enu
             ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
                                          "total-skipped-flows",
                                          workflow->total_skipped_flows);
-            ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "total-l4-payload-len", workflow->total_l4_payload_len);
+            ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
+                                         "total-l4-payload-len",
+                                         workflow->total_l4_payload_len);
             ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
                                          "total-not-detected-flows",
                                          workflow->total_not_detected_flows);
@@ -1906,14 +1910,13 @@ static void jsonize_flow(struct nDPId_workflow * const workflow, struct nDPId_fl
 
 static int connect_to_collector(struct nDPId_reader_thread * const reader_thread)
 {
-    struct sockaddr_un saddr;
-
     if (reader_thread->collector_sockfd >= 0)
     {
         close(reader_thread->collector_sockfd);
     }
 
-    reader_thread->collector_sockfd = socket(AF_UNIX, SOCK_STREAM | SOCK_CLOEXEC, 0);
+    int sock_type = (collector_address.raw.sa_family == AF_UNIX ? SOCK_STREAM : SOCK_DGRAM);
+    reader_thread->collector_sockfd = socket(collector_address.raw.sa_family, sock_type | SOCK_CLOEXEC, 0);
     if (reader_thread->collector_sockfd < 0)
     {
         reader_thread->collector_sock_reconnect = 1;
@@ -1926,14 +1929,7 @@ static int connect_to_collector(struct nDPId_reader_thread * const reader_thread
         return 1;
     }
 
-    saddr.sun_family = AF_UNIX;
-    int written = snprintf(saddr.sun_path, sizeof(saddr.sun_path), "%s", nDPId_options.collector_sockpath);
-    if (written < 0)
-    {
-        return 1;
-    }
-
-    if (connect(reader_thread->collector_sockfd, (struct sockaddr *)&saddr, sizeof(saddr)) < 0)
+    if (connect(reader_thread->collector_sockfd, &collector_address.raw, collector_address.size) < 0)
     {
         reader_thread->collector_sock_reconnect = 1;
         return 1;
@@ -2720,7 +2716,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
                 return 1;
             }
 
-            struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const * const)&packet[eth_offset];
+            struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const * const) & packet[eth_offset];
             *ip_offset = sizeof(struct ndpi_chdlc);
             *layer3_type = ntohs(chdlc->proto_code);
             break;
@@ -2742,7 +2738,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
 
             if (packet[0] == 0x0f || packet[0] == 0x8f)
             {
-                struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const * const)&packet[eth_offset];
+                struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const * const) & packet[eth_offset];
                 *ip_offset = sizeof(struct ndpi_chdlc); /* CHDLC_OFF = 4 */
                 *layer3_type = ntohs(chdlc->proto_code);
             }
@@ -2780,7 +2776,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
             }
 
             struct ndpi_radiotap_header const * const radiotap =
-                (struct ndpi_radiotap_header const * const)&packet[eth_offset];
+                (struct ndpi_radiotap_header const * const) & packet[eth_offset];
             uint16_t radio_len = radiotap->len;
 
             /* Check Bad FCS presence */
@@ -3995,7 +3991,7 @@ static void * processing_thread(void * const ndpi_thread_arg)
         logger(1,
                "Thread %zu: Could not connect to nDPIsrvd Collector at %s, will try again later. Error: %s",
                reader_thread->array_index,
-               nDPId_options.collector_sockpath,
+               nDPId_options.collector_address,
                (errno != 0 ? strerror(errno) : "Internal Error."));
     }
     else
@@ -4344,7 +4340,7 @@ static int nDPId_parse_options(int argc, char ** argv)
         "Usage: %s "
         "[-i pcap-file/interface] [-I] [-E] [-B bpf-filter]\n"
         "\t  \t"
-        "[-l] [-L logfile] [-c path-to-unix-sock] "
+        "[-l] [-L logfile] [-c address] "
         "[-d] [-p pidfile]\n"
         "\t  \t"
         "[-u user] [-g group] "
@@ -4361,7 +4357,7 @@ static int nDPId_parse_options(int argc, char ** argv)
         "\t-B\tSet an optional PCAP filter string. (BPF format)\n"
         "\t-l\tLog all messages to stderr.\n"
         "\t-L\tLog all messages to a log file.\n"
-        "\t-c\tPath to the UNIX socket (nDPIsrvd Collector).\n"
+        "\t-c\tPath to a UNIX socket (nDPIsrvd Collector) or a custom UDP endpoint.\n"
         "\t-d\tForking into background after initialization.\n"
         "\t-p\tWrite the daemon PID to the given file path.\n"
         "\t-u\tChange UID to the numeric value of user.\n"
@@ -4384,7 +4380,7 @@ static int nDPId_parse_options(int argc, char ** argv)
         "\t-v\tversion\n"
         "\t-h\tthis\n\n";
 
-    while ((opt = getopt(argc, argv, "hi:IEB:lL:c:dp:u:g:P:C:J:S:a:zo:vh")) != -1)
+    while ((opt = getopt(argc, argv, "i:IEB:lL:c:dp:u:g:P:C:J:S:a:zo:vh")) != -1)
     {
         switch (opt)
         {
@@ -4410,8 +4406,8 @@ static int nDPId_parse_options(int argc, char ** argv)
                 }
                 break;
             case 'c':
-                strncpy(nDPId_options.collector_sockpath, optarg, sizeof(nDPId_options.collector_sockpath) - 1);
-                nDPId_options.collector_sockpath[sizeof(nDPId_options.collector_sockpath) - 1] = '\0';
+                strncpy(nDPId_options.collector_address, optarg, sizeof(nDPId_options.collector_address) - 1);
+                nDPId_options.collector_address[sizeof(nDPId_options.collector_address) - 1] = '\0';
                 break;
             case 'd':
                 daemonize_enable();
@@ -4594,20 +4590,10 @@ static int validate_options(void)
         }
     }
 #endif
-    if (is_path_absolute("Collector socket", nDPId_options.collector_sockpath) != 0)
+    if (nDPIsrvd_setup_address(&collector_address, nDPId_options.collector_address) != 0)
     {
         retval = 1;
-    }
-    {
-        struct sockaddr_un saddr;
-        if (strlen(nDPId_options.collector_sockpath) >= sizeof(saddr.sun_path))
-        {
-            logger_early(1,
-                         "Collector socket path too long, current/max: %zu/%zu",
-                         strlen(nDPId_options.collector_sockpath),
-                         sizeof(saddr.sun_path) - 1);
-            retval = 1;
-        }
+        logger_early(1, "Collector socket invalid address: %s.", nDPId_options.collector_address);
     }
     if (nDPId_options.instance_alias == NULL)
     {
