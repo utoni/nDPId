@@ -95,6 +95,13 @@ enum nDPId_flow_state
     FS_COUNT
 };
 
+enum nDPId_flow_direction
+{
+    FD_SRC2DST = 0,
+    FD_DST2SRC = 1,
+    FD_COUNT
+};
+
 /*
  * Minimal per-flow information required for flow mgmt and timeout handling.
  */
@@ -127,7 +134,7 @@ struct nDPId_flow_extended
     uint16_t min_l4_payload_len;
     uint16_t max_l4_payload_len;
 
-    unsigned long long int packets_processed;
+    unsigned long long int packets_processed[FD_COUNT];
     uint64_t first_seen;
     uint64_t last_flow_update;
 
@@ -1886,7 +1893,8 @@ static void jsonize_flow(struct nDPId_workflow * const workflow, struct nDPId_fl
     ndpi_serialize_string_string(&workflow->ndpi_serializer,
                                  "flow_state",
                                  flow_state_name_table[flow_ext->flow_basic.state]);
-    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_packets_processed", flow_ext->packets_processed);
+    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_src_packets_processed", flow_ext->packets_processed[FD_SRC2DST]);
+    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_dst_packets_processed", flow_ext->packets_processed[FD_DST2SRC]);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_first_seen", flow_ext->first_seen);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_last_seen", flow_ext->flow_basic.last_seen);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
@@ -1895,11 +1903,6 @@ static void jsonize_flow(struct nDPId_workflow * const workflow, struct nDPId_fl
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_min_l4_payload_len", flow_ext->min_l4_payload_len);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_max_l4_payload_len", flow_ext->max_l4_payload_len);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_tot_l4_payload_len", flow_ext->total_l4_payload_len);
-    ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
-                                 "flow_avg_l4_payload_len",
-                                 (flow_ext->packets_processed > 0
-                                      ? flow_ext->total_l4_payload_len / flow_ext->packets_processed
-                                      : 0));
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "midstream", flow_ext->flow_basic.tcp_is_midstream_flow);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "thread_ts_msec", workflow->last_thread_time);
 }
@@ -2195,7 +2198,7 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
                    reader_thread->array_index);
             return;
         }
-        if (flow_ext->packets_processed > nDPId_options.max_packets_per_flow_to_send)
+        if (flow_ext->packets_processed[FD_SRC2DST] + flow_ext->packets_processed[FD_DST2SRC] > nDPId_options.max_packets_per_flow_to_send)
         {
             return;
         }
@@ -2216,7 +2219,7 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
     if (event == PACKET_EVENT_PAYLOAD_FLOW)
     {
         ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_id", flow_ext->flow_id);
-        ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_packet_id", flow_ext->packets_processed);
+        ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_packet_id", flow_ext->packets_processed[FD_SRC2DST] + flow_ext->packets_processed[FD_DST2SRC]);
         ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_last_seen", flow_ext->flow_basic.last_seen);
         ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
                                      "flow_idle_time",
@@ -3067,6 +3070,7 @@ static void ndpi_process_packet(uint8_t * const args,
     struct nDPId_reader_thread * const reader_thread = (struct nDPId_reader_thread *)args;
     struct nDPId_workflow * workflow;
     struct nDPId_flow_basic flow_basic = {};
+    enum nDPId_flow_direction direction;
 
     size_t hashed_index;
     void * tree_result;
@@ -3373,9 +3377,12 @@ static void ndpi_process_packet(uint8_t * const args,
     flow_basic.hashval += flow_basic.l4_protocol + flow_basic.src_port + flow_basic.dst_port;
 
     hashed_index = flow_basic.hashval % workflow->max_active_flows;
+    direction = FD_SRC2DST;
     tree_result = ndpi_tfind(&flow_basic, &workflow->ndpi_flows_active[hashed_index], ndpi_workflow_node_cmp);
     if (tree_result == NULL)
     {
+        direction = FD_DST2SRC;
+
         /* flow not found in btree: switch src <-> dst and try to find it again */
         uint64_t orig_src_ip[2] = {flow_basic.src.v6.ip[0], flow_basic.src.v6.ip[1]};
         uint64_t orig_dst_ip[2] = {flow_basic.dst.v6.ip[0], flow_basic.dst.v6.ip[1]};
@@ -3402,6 +3409,7 @@ static void ndpi_process_packet(uint8_t * const args,
     if (tree_result == NULL)
     {
         /* flow still not found, must be new or midstream */
+        direction = FD_SRC2DST;
 
         union nDPId_ip const * netmask = NULL;
         union nDPId_ip const * subnet = NULL;
@@ -3581,7 +3589,7 @@ static void ndpi_process_packet(uint8_t * const args,
         }
     }
 
-    flow_to_process->flow_extended.packets_processed++;
+    flow_to_process->flow_extended.packets_processed[direction]++;
     flow_to_process->flow_extended.total_l4_payload_len += l4_payload_len;
     workflow->packets_processed++;
     workflow->total_l4_payload_len += l4_payload_len;

@@ -9,14 +9,14 @@
         "flow_event_name",
         "flow_id",
         "flow_state",
-        "flow_packets_processed",
+        "flow_src_packets_processed",
+        "flow_dst_packets_processed",
         "flow_first_seen",
         "flow_last_seen",
         "flow_idle_time",
         "flow_min_l4_payload_len",
         "flow_max_l4_payload_len",
         "flow_tot_l4_payload_len",
-        "flow_avg_l4_payload_len",
         "l3_proto",
         "l4_proto",
         "midstream",
@@ -98,8 +98,13 @@
             "minimum": 0,
             "maximum": 292
         },
-        "flow_packets_processed": {
-            "type": "number"
+        "flow_src_packets_processed": {
+            "type": "number",
+            "minimum": 0
+        },
+        "flow_dst_packets_processed": {
+            "type": "number",
+            "minimum": 0
         },
         "flow_max_packets": {
             "type": "number",
@@ -124,9 +129,6 @@
             "type": "number"
         },
         "flow_tot_l4_payload_len": {
-            "type": "number"
-        },
-        "flow_avg_l4_payload_len": {
             "type": "number"
         },
         "l3_proto": {

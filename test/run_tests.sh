@@ -8,7 +8,7 @@ nDPId_test_EXEC="$(realpath "${2:-"${MYDIR}/../nDPId-test"}")"
 NETCAT_EXEC="$(which nc) -q 0 -l 127.0.0.1 9000"
 JSON_VALIDATOR="$(realpath "${3:-"${MYDIR}/../examples/py-schema-validation/py-schema-validation.py"}")"
 SEMN_VALIDATOR="$(realpath "${4:-"${MYDIR}/../examples/py-semantic-validation/py-semantic-validation.py"}")"
-IS_GIT=$(test -d "${MYDIR}/../.git" && printf '1' || printf '0')
+IS_GIT=$(test -d "${MYDIR}/../.git" -o -f "${MYDIR}/../.git" && printf '1' || printf '0')
 
 function usage()
 {

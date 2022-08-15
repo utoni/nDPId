@@ -279,6 +279,33 @@ error:
     return NULL;
 }
 
+static enum nDPIsrvd_callback_return update_flow_packets_processed(struct nDPIsrvd_socket * const sock,
+                                                                   struct distributor_flow_user_data * const flow_stats)
+{
+    struct nDPIsrvd_json_token const * const flow_total_packets_processed[FD_COUNT] = {
+        TOKEN_GET_SZ(sock, "flow_src_packets_processed"), TOKEN_GET_SZ(sock, "flow_dst_packets_processed")};
+
+    flow_stats->total_packets_processed = 0;
+    for (enum nDPId_flow_direction dir = 0; dir < FD_COUNT; ++dir)
+    {
+        if (flow_total_packets_processed[dir] != NULL)
+        {
+            nDPIsrvd_ull nmb = 0;
+            if (TOKEN_VALUE_TO_ULL(flow_total_packets_processed[dir], &nmb) != CONVERSION_OK)
+            {
+                return CALLBACK_ERROR;
+            }
+
+            if (flow_stats != NULL)
+            {
+                flow_stats->total_packets_processed += nmb;
+            }
+        }
+    }
+
+    return CALLBACK_OK;
+}
+
 static enum nDPIsrvd_callback_return distributor_json_callback(struct nDPIsrvd_socket * const sock,
                                                                struct nDPIsrvd_instance * const instance,
                                                                struct nDPIsrvd_thread_data * const thread_data,
@@ -373,6 +400,11 @@ static enum nDPIsrvd_callback_return distributor_json_callback(struct nDPIsrvd_s
                 global_stats->cur_idle_flows++;
                 global_stats->flow_end_count++;
                 thread_stats->flow_end_count++;
+
+                if (update_flow_packets_processed(sock, flow_stats) != CALLBACK_OK)
+                {
+                    return CALLBACK_ERROR;
+                }
             }
             if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "idle") != 0)
             {
@@ -380,6 +412,11 @@ static enum nDPIsrvd_callback_return distributor_json_callback(struct nDPIsrvd_s
                 global_stats->cur_idle_flows++;
                 global_stats->flow_idle_count++;
                 thread_stats->flow_idle_count++;
+
+                if (update_flow_packets_processed(sock, flow_stats) != CALLBACK_OK)
+                {
+                    return CALLBACK_ERROR;
+                }
             }
             if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "detected") != 0)
             {
@@ -418,23 +455,6 @@ static enum nDPIsrvd_callback_return distributor_json_callback(struct nDPIsrvd_s
                        global_stats->cur_active_flows,
                        global_stats->cur_idle_flows);
                 return CALLBACK_ERROR;
-            }
-
-            struct nDPIsrvd_json_token const * const flow_total_packets_processed =
-                TOKEN_GET_SZ(sock, "flow_packets_processed");
-
-            if (flow_total_packets_processed != NULL)
-            {
-                nDPIsrvd_ull nmb = 0;
-                if (TOKEN_VALUE_TO_ULL(flow_total_packets_processed, &nmb) != CONVERSION_OK)
-                {
-                    return CALLBACK_ERROR;
-                }
-
-                if (flow_stats != NULL)
-                {
-                    flow_stats->total_packets_processed = nmb;
-                }
             }
 
             struct nDPIsrvd_json_token const * const flow_total_l4_payload_len =
