@@ -131,14 +131,15 @@ struct nDPId_flow_extended
 
     unsigned long long int flow_id;
 
-    uint16_t min_l4_payload_len;
-    uint16_t max_l4_payload_len;
+    uint16_t min_l4_payload_len[FD_COUNT];
+    uint16_t max_l4_payload_len[FD_COUNT];
+    ;
 
     unsigned long long int packets_processed[FD_COUNT];
     uint64_t first_seen;
     uint64_t last_flow_update;
 
-    unsigned long long int total_l4_payload_len;
+    unsigned long long int total_l4_payload_len[FD_COUNT];
     struct ndpi_proto detected_l7_protocol;
 };
 
@@ -1840,7 +1841,9 @@ static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enu
             ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
                                          "total-skipped-flows",
                                          workflow->total_skipped_flows);
-            ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "total-l4-payload-len", workflow->total_l4_payload_len);
+            ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
+                                         "total-l4-payload-len",
+                                         workflow->total_l4_payload_len);
             ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
                                          "total-not-detected-flows",
                                          workflow->total_not_detected_flows);
@@ -1893,16 +1896,35 @@ static void jsonize_flow(struct nDPId_workflow * const workflow, struct nDPId_fl
     ndpi_serialize_string_string(&workflow->ndpi_serializer,
                                  "flow_state",
                                  flow_state_name_table[flow_ext->flow_basic.state]);
-    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_src_packets_processed", flow_ext->packets_processed[FD_SRC2DST]);
-    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_dst_packets_processed", flow_ext->packets_processed[FD_DST2SRC]);
+    ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
+                                 "flow_src_packets_processed",
+                                 flow_ext->packets_processed[FD_SRC2DST]);
+    ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
+                                 "flow_dst_packets_processed",
+                                 flow_ext->packets_processed[FD_DST2SRC]);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_first_seen", flow_ext->first_seen);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_last_seen", flow_ext->flow_basic.last_seen);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
                                  "flow_idle_time",
                                  get_l4_protocol_idle_time_external(flow_ext->flow_basic.l4_protocol));
-    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_min_l4_payload_len", flow_ext->min_l4_payload_len);
-    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_max_l4_payload_len", flow_ext->max_l4_payload_len);
-    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_tot_l4_payload_len", flow_ext->total_l4_payload_len);
+    ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
+                                 "flow_src_min_l4_payload_len",
+                                 flow_ext->min_l4_payload_len[FD_SRC2DST]);
+    ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
+                                 "flow_dst_min_l4_payload_len",
+                                 flow_ext->min_l4_payload_len[FD_DST2SRC]);
+    ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
+                                 "flow_src_max_l4_payload_len",
+                                 flow_ext->max_l4_payload_len[FD_SRC2DST]);
+    ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
+                                 "flow_dst_max_l4_payload_len",
+                                 flow_ext->max_l4_payload_len[FD_DST2SRC]);
+    ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
+                                 "flow_src_tot_l4_payload_len",
+                                 flow_ext->total_l4_payload_len[FD_SRC2DST]);
+    ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
+                                 "flow_dst_tot_l4_payload_len",
+                                 flow_ext->total_l4_payload_len[FD_DST2SRC]);
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "midstream", flow_ext->flow_basic.tcp_is_midstream_flow);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "thread_ts_msec", workflow->last_thread_time);
 }
@@ -2198,7 +2220,8 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
                    reader_thread->array_index);
             return;
         }
-        if (flow_ext->packets_processed[FD_SRC2DST] + flow_ext->packets_processed[FD_DST2SRC] > nDPId_options.max_packets_per_flow_to_send)
+        if (flow_ext->packets_processed[FD_SRC2DST] + flow_ext->packets_processed[FD_DST2SRC] >
+            nDPId_options.max_packets_per_flow_to_send)
         {
             return;
         }
@@ -2219,7 +2242,9 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
     if (event == PACKET_EVENT_PAYLOAD_FLOW)
     {
         ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_id", flow_ext->flow_id);
-        ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_packet_id", flow_ext->packets_processed[FD_SRC2DST] + flow_ext->packets_processed[FD_DST2SRC]);
+        ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
+                                     "flow_packet_id",
+                                     flow_ext->packets_processed[FD_SRC2DST] + flow_ext->packets_processed[FD_DST2SRC]);
         ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_last_seen", flow_ext->flow_basic.last_seen);
         ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
                                      "flow_idle_time",
@@ -3590,7 +3615,7 @@ static void ndpi_process_packet(uint8_t * const args,
     }
 
     flow_to_process->flow_extended.packets_processed[direction]++;
-    flow_to_process->flow_extended.total_l4_payload_len += l4_payload_len;
+    flow_to_process->flow_extended.total_l4_payload_len[direction] += l4_payload_len;
     workflow->packets_processed++;
     workflow->total_l4_payload_len += l4_payload_len;
 
@@ -3599,19 +3624,19 @@ static void ndpi_process_packet(uint8_t * const args,
         flow_to_process->flow_extended.first_seen = flow_to_process->flow_extended.flow_basic.last_seen =
             flow_to_process->flow_extended.last_flow_update = workflow->last_thread_time;
     }
-    if (l4_payload_len > flow_to_process->flow_extended.max_l4_payload_len)
+    if (l4_payload_len > flow_to_process->flow_extended.max_l4_payload_len[direction])
     {
-        flow_to_process->flow_extended.max_l4_payload_len = l4_payload_len;
+        flow_to_process->flow_extended.max_l4_payload_len[direction] = l4_payload_len;
     }
-    if (l4_payload_len < flow_to_process->flow_extended.min_l4_payload_len)
+    if (l4_payload_len < flow_to_process->flow_extended.min_l4_payload_len[direction])
     {
-        flow_to_process->flow_extended.min_l4_payload_len = l4_payload_len;
+        flow_to_process->flow_extended.min_l4_payload_len[direction] = l4_payload_len;
     }
 
     if (is_new_flow != 0)
     {
-        flow_to_process->flow_extended.max_l4_payload_len = l4_payload_len;
-        flow_to_process->flow_extended.min_l4_payload_len = l4_payload_len;
+        flow_to_process->flow_extended.max_l4_payload_len[direction] = l4_payload_len;
+        flow_to_process->flow_extended.min_l4_payload_len[direction] = l4_payload_len;
         jsonize_flow_event(reader_thread, &flow_to_process->flow_extended, FLOW_EVENT_NEW);
     }
 

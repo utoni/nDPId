@@ -96,8 +96,9 @@ def nDPIsrvd_worker_onJsonLineRecvd(json_dict, instance, current_flow, global_us
     if current_flow.flow_key != flow_key:
         return False
 
-    if 'flow_tot_l4_payload_len' in json_dict:
-        shared_flow_dict[flow_key]['total-l4-bytes'] = json_dict['flow_tot_l4_payload_len']
+    if 'flow_src_tot_l4_payload_len' in json_dict and 'flow_dst_tot_l4_payload_len' in json_dict:
+        shared_flow_dict[flow_key]['total-l4-bytes'] = json_dict['flow_src_tot_l4_payload_len'] + \
+                                                       json_dict['flow_dst_tot_l4_payload_len']
 
     if 'midstream' in json_dict and json_dict['midstream'] != 0:
         if shared_flow_dict[flow_key]['is_midstream'] is False:

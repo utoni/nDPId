@@ -424,11 +424,12 @@ static int mainloop(int epollfd, struct nDPIsrvd_socket * const sock)
 
 static uint64_t get_total_flow_bytes(struct nDPIsrvd_socket * const sock)
 {
-    nDPIsrvd_ull total_bytes_ull = 0;
+    nDPIsrvd_ull total_bytes_ull[2] = {0, 0};
 
-    if (TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_tot_l4_payload_len"), &total_bytes_ull) == CONVERSION_OK)
+    if (TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_src_tot_l4_payload_len"), &total_bytes_ull[0]) == CONVERSION_OK &&
+        TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_dst_tot_l4_payload_len"), &total_bytes_ull[1]) == CONVERSION_OK)
     {
-        return total_bytes_ull;
+        return total_bytes_ull[0] + total_bytes_ull[1];
     }
     else
     {

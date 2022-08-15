@@ -397,9 +397,17 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
 
         if (flow_event_name != NULL)
         {
-            perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_tot_l4_payload_len"),
-                                          &flow_user->flow_tot_l4_payload_len),
-                       "flow_tot_l4_payload_len");
+            nDPIsrvd_ull nmb = 0;
+
+            perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_src_tot_l4_payload_len"), &nmb),
+                       "flow_src_tot_l4_payload_len");
+            flow_user->flow_tot_l4_payload_len += nmb;
+
+            nmb = 0;
+
+            perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_dst_tot_l4_payload_len"), &nmb),
+                       "flow_dst_tot_l4_payload_len");
+            flow_user->flow_tot_l4_payload_len += nmb;
         }
 
         if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "new") != 0)

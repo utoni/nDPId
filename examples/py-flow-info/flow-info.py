@@ -36,7 +36,6 @@ class Stats:
         self.last_status_length = 0
         self.avg_xfer_json_bytes = 0.0
         self.expired_tot_l4_payload_len = 0
-        self.expired_avg_l4_payload_len = 0
         self.total_flows        = 0
         self.risky_flows        = 0
         self.midstream_flows    = 0
@@ -64,7 +63,6 @@ class Stats:
             return
 
         set_attr_from_dict(current_flow, json_dict, 'flow_tot_l4_payload_len', 0)
-        set_attr_from_dict(current_flow, json_dict, 'flow_avg_l4_payload_len', 0)
         if 'ndpi' in json_dict:
             set_attr_from_dict(current_flow, json_dict['ndpi'], 'flow_risk', {})
         else:
@@ -92,7 +90,6 @@ class Stats:
     def updateOnCleanup(self, current_flow):
         self.total_flows += 1
         self.expired_tot_l4_payload_len += current_flow.flow_tot_l4_payload_len
-        self.expired_avg_l4_payload_len += current_flow.flow_avg_l4_payload_len
         self.risky_flows += 1 if len(current_flow.flow_risk) > 0 else 0
         self.midstream_flows += 1 if current_flow.midstream != 0 else 0
         self.guessed_flows += 1 if current_flow.guessed != 0 else 0
@@ -103,7 +100,6 @@ class Stats:
         source_count = 0
         flow_count = 0
         flow_tot_l4_payload_len = 0.0
-        flow_avg_l4_payload_len = 0.0
         risky = 0
         midstream = 0
         guessed = 0
@@ -119,14 +115,13 @@ class Stats:
                     current_flow = instances[alias][source].flows[flow_id]
 
                     flow_tot_l4_payload_len += current_flow.flow_tot_l4_payload_len
-                    flow_avg_l4_payload_len += current_flow.flow_avg_l4_payload_len
                     risky += 1 if len(current_flow.flow_risk) > 0 else 0
                     midstream += 1 if current_flow.midstream != 0 else 0
                     guessed += 1 if current_flow.guessed != 0 else 0
                     not_detected = 1 if current_flow.not_detected != 0 else 0
 
         return alias_count, source_count, flow_count, \
-               flow_tot_l4_payload_len, flow_avg_l4_payload_len, \
+               flow_tot_l4_payload_len, \
                risky, midstream, guessed, not_detected
 
     @staticmethod
@@ -146,17 +141,16 @@ class Stats:
 
     def printStatus(self):
         alias_count, source_count, flow_count, \
-        tot_l4_payload_len, avg_l4_payload_len, \
+        tot_l4_payload_len, \
         risky, midstream, guessed, not_detected = self.getStatsFromFlowMgr()
 
-        out_str = '\r[n|tot|avg JSONs: {}|{}|{}/s] [tot|avg l4: {}|{}] ' \
+        out_str = '\r[n|tot|avg JSONs: {}|{}|{}/s] [tot l4: {}] ' \
             '[lss|srcs: {}|{}] ' \
             '[flws|rsky|mdstrm|!dtctd|gssd: {}|{}|{}|{}|{} / {}|{}|{}|{}|{}] [{}]' \
             ''.format(self.json_lines,
                       Stats.prettifyBytes(self.nsock.received_bytes),
                       Stats.prettifyBytes(self.avg_xfer_json_bytes),
                       Stats.prettifyBytes(tot_l4_payload_len + self.expired_tot_l4_payload_len),
-                      Stats.prettifyBytes(avg_l4_payload_len + self.expired_avg_l4_payload_len),
                       alias_count, source_count,
                       flow_count, risky, midstream, not_detected, guessed,
                       flow_count + self.total_flows,
