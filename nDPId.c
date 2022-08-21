@@ -1985,9 +1985,10 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
         if (connect_to_collector(reader_thread) == 0)
         {
             logger(1,
-                   "[%8llu, %zu] Reconnected to nDPIsrvd Collector",
+                   "[%8llu, %zu] Reconnected to nDPIsrvd Collector at %s",
                    workflow->packets_captured,
-                   reader_thread->array_index);
+                   reader_thread->array_index,
+                   nDPId_options.collector_address);
             jsonize_daemon(reader_thread, DAEMON_EVENT_RECONNECT);
         }
     }
@@ -2007,7 +2008,19 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
         }
         if (saved_errno != EAGAIN)
         {
-            reader_thread->collector_sock_reconnect = 1;
+            if (saved_errno == ECONNREFUSED)
+            {
+                logger(1,
+                       "[%8llu, %zu] %s to %s refused by endpoint",
+                       workflow->packets_captured,
+                       reader_thread->array_index,
+                       (collector_address.raw.sa_family == AF_UNIX ? "Connection" : "Datagram"),
+                       nDPId_options.collector_address);
+            }
+            if (collector_address.raw.sa_family == AF_UNIX)
+            {
+                reader_thread->collector_sock_reconnect = 1;
+            }
         }
         else
         {
@@ -2021,11 +2034,15 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
                 if (written < 0)
                 {
                     logger(1,
-                           "[%8llu, %zu] Send data (blocking I/O) to nDPIsrvd Collector failed: %s",
+                           "[%8llu, %zu] Send data (blocking I/O) to nDPIsrvd Collector at %s failed: %s",
                            workflow->packets_captured,
                            reader_thread->array_index,
+                           nDPId_options.collector_address,
                            strerror(saved_errno));
-                    reader_thread->collector_sock_reconnect = 1;
+                    if (collector_address.raw.sa_family == AF_UNIX)
+                    {
+                        reader_thread->collector_sock_reconnect = 1;
+                    }
                     break;
                 }
                 else
@@ -2716,7 +2733,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
                 return 1;
             }
 
-            struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const * const) & packet[eth_offset];
+            struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const * const)&packet[eth_offset];
             *ip_offset = sizeof(struct ndpi_chdlc);
             *layer3_type = ntohs(chdlc->proto_code);
             break;
@@ -2738,7 +2755,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
 
             if (packet[0] == 0x0f || packet[0] == 0x8f)
             {
-                struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const * const) & packet[eth_offset];
+                struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const * const)&packet[eth_offset];
                 *ip_offset = sizeof(struct ndpi_chdlc); /* CHDLC_OFF = 4 */
                 *layer3_type = ntohs(chdlc->proto_code);
             }
@@ -2776,7 +2793,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
             }
 
             struct ndpi_radiotap_header const * const radiotap =
-                (struct ndpi_radiotap_header const * const) & packet[eth_offset];
+                (struct ndpi_radiotap_header const * const)&packet[eth_offset];
             uint16_t radio_len = radiotap->len;
 
             /* Check Bad FCS presence */
