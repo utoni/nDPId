@@ -1,5 +1,5 @@
 [![Build](https://github.com/utoni/nDPId/actions/workflows/build.yml/badge.svg)](https://github.com/utoni/nDPId/actions/workflows/build.yml)
-[![Gitlab-CI](https://gitlab.com/utoni/nDPId/badges/master/pipeline.svg)](https://gitlab.com/utoni/nDPId/-/pipelines)
+[![Gitlab-CI](https://gitlab.com/utoni/nDPId/badges/main/pipeline.svg)](https://gitlab.com/utoni/nDPId/-/pipelines)
 
 # Abstract
 
@@ -183,22 +183,26 @@ The CMake cache variable `-DBUILD_NDPI=ON` builds a version of `libnDPI` residin
 
 As mentioned above, in order to run `nDPId` a UNIX-socket need to be provided in order to stream our related JSON-data.
 
-Such a UNIX-socket can be provided by both the included `nDPIsrvd` daemon, or, if you simply need a quick check, with the `netcat` utility (preferably `openbsd-netcat`), with a simple `netcat -U /tmp/listen.sock -l -k`.
+Such a UNIX-socket can be provided by both the included `nDPIsrvd` daemon, or, if you simply need a quick check, with the [ncat](https://nmap.org/book/ncat-man.html) utility, with a simple `ncat -U /tmp/listen.sock -l -k`. Remember that OpenBSD `netcat` is not able to handle multiple connections reliably.
 
 Once the socket is ready, you can run `nDPId` capturing and analyzing your own traffic, with something similar to:
 
-Of course, both `netcat` and `nDPId` need to point to the same UNIX-socket (`nDPId` provides the `-c` option, exactly for this. As a default, `nDPId` refer to `/tmp/ndpid-collector.sock`, and the same default-path is also used by `nDPIsrvd` as for the incoming socket)
+Of course, both `ncat` and `nDPId` need to point to the same UNIX-socket (`nDPId` provides the `-c` option, exactly for this. As a default, `nDPId` refer to `/tmp/ndpid-collector.sock`, and the same default-path is also used by `nDPIsrvd` as for the incoming socket).
 
 You also need to provide `nDPId` some real-traffic. You can capture your own traffic, with something similar to:
 
 ```shell
+ncat -U /tmp/listen.sock -l -k
+#socat UNIX-Listen:/tmp/listen.sock,fork - # does the same as `ncat`
+sudo chown nobody:nobody /tmp/listen.sock # default `nDPId` user/group, see `-u` and `-g`
 sudo ./nDPId -c /tmp/listen.sock -l
 ```
 
 `nDPId` supports also UDP collector endpoints:
 
 ```shell
-netcat -u 127.0.0.1 7000 -l -k
+ncat -u 127.0.0.1 7000 -l -k
+#socat UDP-Listen:7000,fork - # does the same as `ncat`
 sudo ./nDPId -c 127.0.0.1:7000 -l
 ```
 
