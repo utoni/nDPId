@@ -25,6 +25,7 @@
 #endif
 
 #include "config.h"
+#include "nDPIsrvd.h"
 #include "utils.h"
 
 #ifndef UNIX_PATH_MAX
@@ -246,7 +247,7 @@ struct nDPId_reader_thread
     struct nDPId_workflow * workflow;
     pthread_t thread_id;
     int collector_sockfd;
-    int collector_sock_reconnect;
+    int collector_sock_last_errno;
     size_t array_index;
 };
 
@@ -362,6 +363,7 @@ static char const * const daemon_event_name_table[DAEMON_EVENT_COUNT] = {
 };
 
 static struct nDPId_reader_thread reader_threads[nDPId_MAX_READER_THREADS] = {};
+static struct nDPIsrvd_address collector_address;
 static volatile int nDPId_main_thread_shutdown = 0;
 static volatile uint64_t global_flow_id = 1;
 static int ip4_interface_avail = 0, ip6_interface_avail = 0;
@@ -396,7 +398,7 @@ static struct
     char * custom_categories_file;
     char * custom_ja3_file;
     char * custom_sha1_file;
-    char collector_sockpath[UNIX_PATH_MAX];
+    char collector_address[UNIX_PATH_MAX];
 #ifdef ENABLE_ZLIB
     uint8_t enable_zlib_compression;
 #endif
@@ -424,7 +426,7 @@ static struct
     unsigned long long int max_packets_per_flow_to_process;
 } nDPId_options = {.pidfile = nDPId_PIDFILE,
                    .user = "nobody",
-                   .collector_sockpath = COLLECTOR_UNIX_SOCKET,
+                   .collector_address = COLLECTOR_UNIX_SOCKET,
                    .max_flows_per_thread = nDPId_MAX_FLOWS_PER_THREAD / 2,
                    .max_idle_flows_per_thread = nDPId_MAX_IDLE_FLOWS_PER_THREAD / 2,
                    .tick_resolution = nDPId_TICK_RESOLUTION,
@@ -501,6 +503,44 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
 static void jsonize_flow_detection_event(struct nDPId_reader_thread * const reader_thread,
                                          struct nDPId_flow * const flow,
                                          enum flow_event event);
+
+static int set_collector_nonblock(struct nDPId_reader_thread * const reader_thread)
+{
+    int current_flags = fcntl(reader_thread->collector_sockfd, F_GETFL, 0);
+
+    if (current_flags == -1 || fcntl(reader_thread->collector_sockfd, F_SETFL, current_flags | O_NONBLOCK) == -1)
+    {
+        reader_thread->collector_sock_last_errno = errno;
+        logger(1,
+               "[%8llu, %zu] Could not set collector fd %d to non-blocking mode: %s",
+               reader_thread->workflow->packets_processed,
+               reader_thread->thread_id,
+               reader_thread->collector_sockfd,
+               strerror(errno));
+        return 1;
+    }
+
+    return 0;
+}
+
+static int set_collector_block(struct nDPId_reader_thread * const reader_thread)
+{
+    int current_flags = fcntl(reader_thread->collector_sockfd, F_GETFL, 0);
+
+    if (current_flags == -1 || fcntl(reader_thread->collector_sockfd, F_SETFL, current_flags & ~O_NONBLOCK) == -1)
+    {
+        reader_thread->collector_sock_last_errno = errno;
+        logger(1,
+               "[%8llu, %zu] Could not set collector fd %d to blocking mode: %s",
+               reader_thread->workflow->packets_processed,
+               reader_thread->thread_id,
+               reader_thread->collector_sockfd,
+               strerror(errno));
+        return 1;
+    }
+
+    return 0;
+}
 
 #ifdef ENABLE_ZLIB
 static int zlib_deflate(const void * const src, int srcLen, void * dst, int dstLen)
@@ -1931,53 +1971,43 @@ static void jsonize_flow(struct nDPId_workflow * const workflow, struct nDPId_fl
 
 static int connect_to_collector(struct nDPId_reader_thread * const reader_thread)
 {
-    struct sockaddr_un saddr;
-
     if (reader_thread->collector_sockfd >= 0)
     {
         close(reader_thread->collector_sockfd);
     }
 
-    reader_thread->collector_sockfd = socket(AF_UNIX, SOCK_STREAM | SOCK_CLOEXEC, 0);
+    int sock_type = (collector_address.raw.sa_family == AF_UNIX ? SOCK_STREAM : SOCK_DGRAM);
+    reader_thread->collector_sockfd = socket(collector_address.raw.sa_family, sock_type | SOCK_CLOEXEC, 0);
     if (reader_thread->collector_sockfd < 0)
     {
-        reader_thread->collector_sock_reconnect = 1;
+        reader_thread->collector_sock_last_errno = errno;
         return 1;
     }
 
-    int opt = NETWORK_BUFFER_MAX_SIZE * 16;
+    int opt = NETWORK_BUFFER_MAX_SIZE;
     if (setsockopt(reader_thread->collector_sockfd, SOL_SOCKET, SO_SNDBUF, &opt, sizeof(opt)) < 0)
     {
         return 1;
     }
 
-    saddr.sun_family = AF_UNIX;
-    int written = snprintf(saddr.sun_path, sizeof(saddr.sun_path), "%s", nDPId_options.collector_sockpath);
-    if (written < 0)
+    if (set_collector_nonblock(reader_thread) != 0)
     {
         return 1;
     }
 
-    if (connect(reader_thread->collector_sockfd, (struct sockaddr *)&saddr, sizeof(saddr)) < 0)
+    if (connect(reader_thread->collector_sockfd, &collector_address.raw, collector_address.size) < 0)
     {
-        reader_thread->collector_sock_reconnect = 1;
+        reader_thread->collector_sock_last_errno = errno;
         return 1;
     }
 
     if (shutdown(reader_thread->collector_sockfd, SHUT_RD) != 0)
     {
+        reader_thread->collector_sock_last_errno = errno;
         return 1;
     }
 
-    if (fcntl(reader_thread->collector_sockfd,
-              F_SETFL,
-              fcntl(reader_thread->collector_sockfd, F_GETFL, 0) | O_NONBLOCK) == -1)
-    {
-        reader_thread->collector_sock_reconnect = 1;
-        return 1;
-    }
-
-    reader_thread->collector_sock_reconnect = 0;
+    reader_thread->collector_sock_last_errno = 0;
 
     return 0;
 }
@@ -2009,25 +2039,46 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
         return;
     }
 
-    if (reader_thread->collector_sock_reconnect != 0)
+    if (reader_thread->collector_sock_last_errno != 0)
     {
+        saved_errno = reader_thread->collector_sock_last_errno;
+
         if (connect_to_collector(reader_thread) == 0)
         {
-            logger(1,
-                   "[%8llu, %zu] Reconnected to nDPIsrvd Collector",
-                   workflow->packets_captured,
-                   reader_thread->array_index);
-            jsonize_daemon(reader_thread, DAEMON_EVENT_RECONNECT);
+            if (collector_address.raw.sa_family == AF_UNIX)
+            {
+                logger(1,
+                       "[%8llu, %zu] Reconnected to nDPIsrvd Collector at %s",
+                       workflow->packets_captured,
+                       reader_thread->array_index,
+                       nDPId_options.collector_address);
+                jsonize_daemon(reader_thread, DAEMON_EVENT_RECONNECT);
+            }
+        }
+        else
+        {
+            if (saved_errno != reader_thread->collector_sock_last_errno)
+            {
+                logger(1,
+                       "[%8llu, %zu] Could not connect to nDPIsrvd Collector at %s, will try again later. Error: %s",
+                       workflow->packets_captured,
+                       reader_thread->array_index,
+                       nDPId_options.collector_address,
+                       (reader_thread->collector_sock_last_errno != 0
+                            ? strerror(reader_thread->collector_sock_last_errno)
+                            : "Internal Error."));
+            }
+            return;
         }
     }
 
     errno = 0;
     ssize_t written;
-    if (reader_thread->collector_sock_reconnect == 0 &&
+    if (reader_thread->collector_sock_last_errno == 0 &&
         (written = write(reader_thread->collector_sockfd, newline_json_str, s_ret)) != s_ret)
     {
         saved_errno = errno;
-        if (saved_errno == EPIPE)
+        if (saved_errno == EPIPE || written == 0)
         {
             logger(1,
                    "[%8llu, %zu] Lost connection to nDPIsrvd Collector",
@@ -2036,25 +2087,49 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
         }
         if (saved_errno != EAGAIN)
         {
-            reader_thread->collector_sock_reconnect = 1;
+            if (saved_errno == ECONNREFUSED)
+            {
+                logger(1,
+                       "[%8llu, %zu] %s to %s refused by endpoint",
+                       workflow->packets_captured,
+                       reader_thread->array_index,
+                       (collector_address.raw.sa_family == AF_UNIX ? "Connection" : "Datagram"),
+                       nDPId_options.collector_address);
+            }
+            reader_thread->collector_sock_last_errno = saved_errno;
         }
-        else
+        else if (collector_address.raw.sa_family == AF_UNIX)
         {
-            fcntl(reader_thread->collector_sockfd,
-                  F_SETFL,
-                  fcntl(reader_thread->collector_sockfd, F_GETFL, 0) & ~O_NONBLOCK);
             off_t pos = (written < 0 ? 0 : written);
+            logger(0,
+                   "[%8llu, %zu] Send less data then expected (%zd < %d bytes), falling back to blocking I/O",
+                   workflow->packets_captured,
+                   reader_thread->array_index,
+                   pos,
+                   s_ret);
+            set_collector_block(reader_thread);
             while ((written = write(reader_thread->collector_sockfd, newline_json_str + pos, s_ret - pos)) !=
                    s_ret - pos)
             {
-                if (written < 0)
+                saved_errno = errno;
+                if (saved_errno == EPIPE || written == 0)
                 {
                     logger(1,
-                           "[%8llu, %zu] Send data (blocking I/O) to nDPIsrvd Collector failed: %s",
+                           "[%8llu, %zu] Lost connection to nDPIsrvd Collector",
+                           workflow->packets_captured,
+                           reader_thread->array_index);
+                    reader_thread->collector_sock_last_errno = saved_errno;
+                    break;
+                }
+                else if (written < 0)
+                {
+                    logger(1,
+                           "[%8llu, %zu] Send data (blocking I/O) to nDPIsrvd Collector at %s failed: %s",
                            workflow->packets_captured,
                            reader_thread->array_index,
+                           nDPId_options.collector_address,
                            strerror(saved_errno));
-                    reader_thread->collector_sock_reconnect = 1;
+                    reader_thread->collector_sock_last_errno = saved_errno;
                     break;
                 }
                 else
@@ -2062,9 +2137,7 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
                     pos += written;
                 }
             }
-            fcntl(reader_thread->collector_sockfd,
-                  F_SETFL,
-                  fcntl(reader_thread->collector_sockfd, F_GETFL, 0) & O_NONBLOCK);
+            set_collector_nonblock(reader_thread);
         }
     }
 }
@@ -4020,16 +4093,15 @@ static void * processing_thread(void * const ndpi_thread_arg)
     struct nDPId_reader_thread * const reader_thread = (struct nDPId_reader_thread *)ndpi_thread_arg;
 
     reader_thread->collector_sockfd = -1;
-    reader_thread->collector_sock_reconnect = 1;
 
-    errno = 0;
     if (connect_to_collector(reader_thread) != 0)
     {
         logger(1,
                "Thread %zu: Could not connect to nDPIsrvd Collector at %s, will try again later. Error: %s",
                reader_thread->array_index,
-               nDPId_options.collector_sockpath,
-               (errno != 0 ? strerror(errno) : "Internal Error."));
+               nDPId_options.collector_address,
+               (reader_thread->collector_sock_last_errno != 0 ? strerror(reader_thread->collector_sock_last_errno)
+                                                              : "Internal Error."));
     }
     else
     {
@@ -4037,7 +4109,7 @@ static void * processing_thread(void * const ndpi_thread_arg)
     }
 
     run_pcap_loop(reader_thread);
-    fcntl(reader_thread->collector_sockfd, F_SETFL, fcntl(reader_thread->collector_sockfd, F_GETFL, 0) & ~O_NONBLOCK);
+    set_collector_block(reader_thread);
     __sync_fetch_and_add(&reader_thread->workflow->error_or_eof, 1);
     return NULL;
 }
@@ -4160,15 +4232,7 @@ static void process_remaining_flows(void)
 {
     for (unsigned long long int i = 0; i < nDPId_options.reader_thread_count; ++i)
     {
-        if (fcntl(reader_threads[i].collector_sockfd,
-                  F_SETFL,
-                  fcntl(reader_threads[i].collector_sockfd, F_GETFL, 0) & ~O_NONBLOCK) == -1)
-        {
-            logger(1,
-                   "Could not set JSON fd %d to blocking mode for shutdown: %s",
-                   reader_threads[i].collector_sockfd,
-                   strerror(errno));
-        }
+        set_collector_block(&reader_threads[i]);
 
         for (size_t idle_scan_index = 0; idle_scan_index < reader_threads[i].workflow->max_active_flows;
              ++idle_scan_index)
@@ -4377,7 +4441,7 @@ static int nDPId_parse_options(int argc, char ** argv)
         "Usage: %s "
         "[-i pcap-file/interface] [-I] [-E] [-B bpf-filter]\n"
         "\t  \t"
-        "[-l] [-L logfile] [-c path-to-unix-sock] "
+        "[-l] [-L logfile] [-c address] "
         "[-d] [-p pidfile]\n"
         "\t  \t"
         "[-u user] [-g group] "
@@ -4394,7 +4458,7 @@ static int nDPId_parse_options(int argc, char ** argv)
         "\t-B\tSet an optional PCAP filter string. (BPF format)\n"
         "\t-l\tLog all messages to stderr.\n"
         "\t-L\tLog all messages to a log file.\n"
-        "\t-c\tPath to the UNIX socket (nDPIsrvd Collector).\n"
+        "\t-c\tPath to a UNIX socket (nDPIsrvd Collector) or a custom UDP endpoint.\n"
         "\t-d\tForking into background after initialization.\n"
         "\t-p\tWrite the daemon PID to the given file path.\n"
         "\t-u\tChange UID to the numeric value of user.\n"
@@ -4417,7 +4481,7 @@ static int nDPId_parse_options(int argc, char ** argv)
         "\t-v\tversion\n"
         "\t-h\tthis\n\n";
 
-    while ((opt = getopt(argc, argv, "hi:IEB:lL:c:dp:u:g:P:C:J:S:a:zo:vh")) != -1)
+    while ((opt = getopt(argc, argv, "i:IEB:lL:c:dp:u:g:P:C:J:S:a:zo:vh")) != -1)
     {
         switch (opt)
         {
@@ -4443,8 +4507,8 @@ static int nDPId_parse_options(int argc, char ** argv)
                 }
                 break;
             case 'c':
-                strncpy(nDPId_options.collector_sockpath, optarg, sizeof(nDPId_options.collector_sockpath) - 1);
-                nDPId_options.collector_sockpath[sizeof(nDPId_options.collector_sockpath) - 1] = '\0';
+                strncpy(nDPId_options.collector_address, optarg, sizeof(nDPId_options.collector_address) - 1);
+                nDPId_options.collector_address[sizeof(nDPId_options.collector_address) - 1] = '\0';
                 break;
             case 'd':
                 daemonize_enable();
@@ -4627,20 +4691,10 @@ static int validate_options(void)
         }
     }
 #endif
-    if (is_path_absolute("Collector socket", nDPId_options.collector_sockpath) != 0)
+    if (nDPIsrvd_setup_address(&collector_address, nDPId_options.collector_address) != 0)
     {
         retval = 1;
-    }
-    {
-        struct sockaddr_un saddr;
-        if (strlen(nDPId_options.collector_sockpath) >= sizeof(saddr.sun_path))
-        {
-            logger_early(1,
-                         "Collector socket path too long, current/max: %zu/%zu",
-                         strlen(nDPId_options.collector_sockpath),
-                         sizeof(saddr.sun_path) - 1);
-            retval = 1;
-        }
+        logger_early(1, "Collector socket invalid address: %s.", nDPId_options.collector_address);
     }
     if (nDPId_options.instance_alias == NULL)
     {
