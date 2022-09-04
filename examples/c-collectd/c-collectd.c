@@ -11,6 +11,7 @@
 #include "nDPIsrvd.h"
 
 #define DEFAULT_COLLECTD_EXEC_INST "nDPIsrvd"
+//#define GENERATE_TIMESTAMP 1
 
 #define LOG(flags, format, ...)                                                                                        \
     if (quiet == 0)                                                                                                    \
@@ -244,13 +245,21 @@ static int parse_options(int argc, char ** argv, struct nDPIsrvd_socket * const 
     return 0;
 }
 
+#ifdef GENERATE_TIMESTAMP
 #define COLLECTD_PUTVAL_N_FORMAT(name) "PUTVAL \"%s/exec-%s/gauge-" #name "\" interval=%llu %llu:%llu\n"
 #define COLLECTD_PUTVAL_N(value)                                                                                       \
     collectd_hostname, instance_name, collectd_interval_ull, (unsigned long long int)now,                              \
         (unsigned long long int)collectd_statistics.value
+#else
+#define COLLECTD_PUTVAL_N_FORMAT(name) "PUTVAL \"%s/exec-%s/gauge-" #name "\" interval=%llu N:%llu\n"
+#define COLLECTD_PUTVAL_N(value)                                                                                       \
+    collectd_hostname, instance_name, collectd_interval_ull, (unsigned long long int)collectd_statistics.value
+#endif
 static void print_collectd_exec_output(void)
 {
+#ifdef GENERATE_TIMESTAMP
     time_t now = time(NULL);
+#endif
 
     printf(COLLECTD_PUTVAL_N_FORMAT(flow_new_count) COLLECTD_PUTVAL_N_FORMAT(flow_end_count)
                COLLECTD_PUTVAL_N_FORMAT(flow_idle_count) COLLECTD_PUTVAL_N_FORMAT(flow_guessed_count)
