@@ -22,7 +22,7 @@ jobs:
         os: ["ubuntu-latest", "ubuntu-18.04"]
         ndpid_gcrypt: ["-DNDPI_WITH_GCRYPT=OFF", "-DNDPI_WITH_GCRYPT=ON"]
         ndpid_zlib: ["-DENABLE_ZLIB=OFF", "-DENABLE_ZLIB=ON"]
-        ndpi_min_version: ["4.4"]
+        ndpi_min_version: ["4.5"]
         include:
           - compiler: "default-cc"
             os: "ubuntu-latest"
@@ -82,7 +82,11 @@ jobs:
       - name: Build against libnDPI-${{ matrix.ndpi_min_version }}
         run: |
           mkdir build-local-ndpi && cd build-local-ndpi
-          wget 'https://github.com/ntop/nDPI/archive/refs/tags/${{ matrix.ndpi_min_version }}.tar.gz'
-          tar -xzvf ${{ matrix.ndpi_min_version }}.tar.gz && cd nDPI-${{ matrix.ndpi_min_version }} && ./autogen.sh --prefix=/usr --with-only-libndpi CC=${{ matrix.compiler }} CXX=false CFLAGS='-Werror' && sudo make install && cd ..
-          cmake .. -DENABLE_COVERAGE=ON -DBUILD_EXAMPLES=ON -DBUILD_NDPI=OFF -DENABLE_SANITIZER=ON ${{ matrix.ndpi_min_version }}
-          make all VERBOSE=1
+          WGET_RET=0
+          wget 'https://github.com/ntop/nDPI/archive/refs/tags/${{ matrix.ndpi_min_version }}.tar.gz' || { WGET_RET=$?; true; }
+          echo "wget returned: ${WGET_RET}"
+          test $WGET_RET -ne 8 || echo "::warning file=nDPId.c::New libnDPI release required to build against release tarball."
+          test $WGET_RET -ne 0 || { tar -xzvf ${{ matrix.ndpi_min_version }}.tar.gz && cd nDPI-${{ matrix.ndpi_min_version }} && ./autogen.sh --prefix=/usr --with-only-libndpi CC=${{ matrix.compiler }} CXX=false CFLAGS='-Werror' && sudo make install && cd .. ; }
+          test $WGET_RET -ne 0 || { echo "running cmake .."; cmake .. -DENABLE_COVERAGE=ON -DBUILD_EXAMPLES=ON -DBUILD_NDPI=OFF -DENABLE_SANITIZER=ON ${{ matrix.ndpi_min_version }} ; }
+          test $WGET_RET -ne 0 || { echo "running make .."; make all VERBOSE=1 ; }
+          test $WGET_RET -eq 0 -o $WGET_RET -eq 8
