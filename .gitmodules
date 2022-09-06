@@ -3,3 +3,6 @@
 	url = https://github.com/ntop/nDPI
 	branch = dev
 	update = rebase
+[submodule "examples/js-rt-analyzer"]
+	path = examples/js-rt-analyzer
+	url = https://gitlab.com/verzulli/ndpid-rt-analyzer.git

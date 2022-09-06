@@ -26,6 +26,10 @@ Very tiny integration example.
 A discontinued tty UI nDPId dashboard.
 Removed with commit 29c72fb30bb7d5614c0a8ebb73bee2ac7eca6608.
 
+## js-rt-analyzer
+
+[nDPId-rt-analyzer](https://gitlab.com/verzulli/ndpid-rt-analyzer.git)
+
 ## py-flow-info
 
 Prints prettyfied information about flow events.
