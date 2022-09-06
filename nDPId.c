@@ -2400,11 +2400,13 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
             {
                 struct nDPId_flow * const flow = (struct nDPId_flow *)flow_ext;
 
+                ndpi_serialize_start_of_block(&workflow->ndpi_serializer, "ndpi");
                 ndpi_serialize_proto(workflow->ndpi_struct,
                                      &workflow->ndpi_serializer,
                                      flow->finished.risk,
                                      flow->finished.confidence,
                                      flow->flow_extended.detected_l7_protocol);
+                ndpi_serialize_end_of_block(&workflow->ndpi_serializer);
             }
             break;
 
@@ -2821,7 +2823,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
                 return 1;
             }
 
-            struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const * const)&packet[eth_offset];
+            struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const * const) & packet[eth_offset];
             *ip_offset = sizeof(struct ndpi_chdlc);
             *layer3_type = ntohs(chdlc->proto_code);
             break;
@@ -2843,7 +2845,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
 
             if (packet[0] == 0x0f || packet[0] == 0x8f)
             {
-                struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const * const)&packet[eth_offset];
+                struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const * const) & packet[eth_offset];
                 *ip_offset = sizeof(struct ndpi_chdlc); /* CHDLC_OFF = 4 */
                 *layer3_type = ntohs(chdlc->proto_code);
             }
@@ -2881,7 +2883,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
             }
 
             struct ndpi_radiotap_header const * const radiotap =
-                (struct ndpi_radiotap_header const * const)&packet[eth_offset];
+                (struct ndpi_radiotap_header const * const) & packet[eth_offset];
             uint16_t radio_len = radiotap->len;
 
             /* Check Bad FCS presence */
@@ -3761,7 +3763,8 @@ static void ndpi_process_packet(uint8_t * const args,
                                       &flow_to_process->info.detection_data->flow,
                                       ip != NULL ? (uint8_t *)ip : (uint8_t *)ip6,
                                       ip_size,
-                                      workflow->last_thread_time);
+                                      workflow->last_thread_time,
+                                      NULL);
 
     if (ndpi_is_protocol_detected(workflow->ndpi_struct, flow_to_process->flow_extended.detected_l7_protocol) != 0 &&
         flow_to_process->info.detection_completed == 0)
@@ -4847,6 +4850,14 @@ int main(int argc, char ** argv)
             "gcrypt version: %s\n"
             "----------------------------------\n",
             ndpi_get_gcrypt_version());
+    }
+    if (NDPI_API_VERSION != ndpi_get_api_version())
+    {
+        logger_early(1,
+                     "Unforeseen Consequences; nDPId was compiled with libnDPI api version %u, but the api version of "
+                     "the shared library is: %u.",
+                     NDPI_API_VERSION,
+                     ndpi_get_api_version());
     }
 
 #ifdef ENABLE_MEMORY_PROFILING

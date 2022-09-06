@@ -190,6 +190,8 @@ if(BUILD_NDPI)
         CONFIGURE_COMMAND env
             CC=${CMAKE_C_COMPILER}
             CXX=false
+            AR=${CMAKE_C_COMPILER_AR}
+            RANLIB=${CMAKE_C_COMPILER_RANLIB}
             PKG_CONFIG=${PKG_CONFIG_EXECUTABLE}
             CFLAGS=${CMAKE_C_FLAGS}
             LDFLAGS=${CMAKE_MODULE_LINKER_FLAGS}

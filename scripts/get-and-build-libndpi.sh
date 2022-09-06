@@ -14,6 +14,8 @@ cat <<EOF
 ------ environment variables ------
 CC=${CC:-}
 CXX=${CXX:-}
+AR=${AR:-}
+RANLIB=${RANLIB:-}
 PKG_CONFIG=${PKG_CONFIG:-}
 CFLAGS=${CFLAGS:-}
 LDFLAGS=${LDFLAGS:-}
@@ -40,7 +42,10 @@ if [ ! -z "${CROSS_COMPILE_TRIPLET}" ]; then
 else
     HOST_ARG=""
 fi
-./autogen.sh --enable-option-checking=fatal --prefix="${DEST_INSTALL}" --with-only-libndpi ${HOST_ARG} ${ADDITIONAL_ARGS}
+./autogen.sh --enable-option-checking=fatal \
+    --prefix="${DEST_INSTALL}" --exec-prefix="${DEST_INSTALL}" \
+    --includedir="${DEST_INSTALL}/include" --libdir="${DEST_INSTALL}/lib" \
+    --with-only-libndpi ${HOST_ARG} ${ADDITIONAL_ARGS}
 ${MAKE_PROGRAM} install
 
 rm -f "${LOCKFILE}"

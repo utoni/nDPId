@@ -208,91 +208,126 @@
         },
         "ndpi": {
             "type": "object",
-            "required": [ "proto", "breed" ],
+            "required": [ "proto", "proto_id", "breed", "encrypted" ],
 
-            "if": {
-                "properties": { "proto": { "enum": [ "Unknown", "Skype_Teams" ] } }
+            "properties": {
+                "proto": {
+                    "type": "string"
+                },
+                "proto_id": {
+                    "type": "string"
+                },
+                "category": {
+                    "type": "string"
+                },
+                "category_id": {
+                    "type": "number"
+                },
+                "encrypted": {
+                    "type": "number",
+                    "enum": [
+                        0,
+                        1
+                    ]
+                },
+                "breed": {
+                    "type": "string"
+                },
+                "flow_risk": {
+                    "type": "object"
+                },
+                "confidence": {
+                    "type": "object",
+                    "properties": {
+                        "0": {
+                            "type": "string"
+                        },
+                        "1": {
+                            "type": "string"
+                        },
+                        "2": {
+                            "type": "string"
+                        },
+                        "3": {
+                            "type": "string"
+                        },
+                        "4": {
+                            "type": "string"
+                        },
+                        "5": {
+                            "type": "string"
+                        },
+                        "6": {
+                            "type": "string"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                "entropy": {
+                    "type": "number"
+                },
+                "hostname": {
+                    "type": "string"
+                },
+                "dhcp": {
+                    "type": "object"
+                },
+                "discord": {
+                    "type": "object"
+                },
+                "bittorrent": {
+                    "type": "object"
+                },
+                "mdns": {
+                    "type": "object"
+                },
+                "ntp": {
+                    "type": "object"
+                },
+                "ubntac2": {
+                    "type": "object"
+                },
+                "kerberos": {
+                    "type": "object"
+                },
+                "telnet": {
+                    "type": "object"
+                },
+                "tls": {
+                    "type": "object"
+                },
+                "quic": {
+                    "type": "object"
+                },
+                "imap": {
+                    "type": "object"
+                },
+                "http": {
+                    "type": "object"
+                },
+                "pop": {
+                    "type": "object"
+                },
+                "smtp": {
+                    "type": "object"
+                },
+                "dns": {
+                    "type": "object"
+                },
+                "ftp": {
+                    "type": "object"
+                },
+                "ssh": {
+                    "type": "object"
+                },
+                "stun": {
+                    "type": "object"
+                },
+                "softether": {
+                    "type": "object"
+                }
             },
-            "then": {
-                "return": true
-            },
-            "else": {
-                "required": [ "category", "confidence" ]
-            },
-
-            "proto": {
-                "type": "string"
-            },
-            "category": {
-                "type": "string"
-            },
-            "breed": {
-                "type": "string"
-            },
-            "flow_risk": {
-                "type": "object"
-            },
-            "confidence": {
-                "type": "string",
-                "enum": [
-                    "0",
-                    "1",
-                    "2",
-                    "3",
-                    "4"
-                ]
-            }
-        },
-        "entropy": {
-            "type": "number"
-        },
-        "dhcp": {
-            "type": "object"
-        },
-        "bittorrent": {
-            "type": "object"
-        },
-        "mdns": {
-            "type": "object"
-        },
-        "ntp": {
-            "type": "object"
-        },
-        "ubntac2": {
-            "type": "object"
-        },
-        "kerberos": {
-            "type": "object"
-        },
-        "telnet": {
-            "type": "object"
-        },
-        "tls": {
-            "type": "object"
-        },
-        "quic": {
-            "type": "object"
-        },
-        "imap": {
-            "type": "object"
-        },
-        "http": {
-            "type": "object"
-        },
-        "pop": {
-            "type": "object"
-        },
-        "smtp": {
-            "type": "object"
-        },
-        "dns": {
-            "type": "object"
-        },
-        "ftp": {
-            "type": "object"
-        },
-        "ssh": {
-            "type": "object"
+            "additionalProperties": false
         }
     },
     "additionalProperties": false
