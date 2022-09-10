@@ -2101,15 +2101,15 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
         }
         else if (collector_address.raw.sa_family == AF_UNIX)
         {
-            off_t pos = (written < 0 ? 0 : written);
+            size_t pos = (written < 0 ? 0 : written);
             logger(0,
-                   "[%8llu, %zu] Send less data then expected (%zd < %d bytes), falling back to blocking I/O",
+                   "[%8llu, %zu] Send less data then expected (%zu < %d bytes), falling back to blocking I/O",
                    workflow->packets_captured,
                    reader_thread->array_index,
                    pos,
                    s_ret);
             set_collector_block(reader_thread);
-            while ((written = write(reader_thread->collector_sockfd, newline_json_str + pos, s_ret - pos)) !=
+            while ((size_t)(written = write(reader_thread->collector_sockfd, newline_json_str + pos, s_ret - pos)) !=
                    s_ret - pos)
             {
                 saved_errno = errno;

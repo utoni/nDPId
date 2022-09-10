@@ -1076,8 +1076,16 @@ int main(int argc, char ** argv)
         nDPId_return.total_active_flows != nDPId_return.total_idle_flows)
     {
         logger(1, "%s: %s", argv[0], "Memory / Flow leak detected.");
-        logger(1, "%s: Allocated / Free'd bytes: %lu / %lu", argv[0], ndpi_memory_alloc_bytes, ndpi_memory_free_bytes);
-        logger(1, "%s: Allocated / Free'd count: %lu / %lu", argv[0], ndpi_memory_alloc_count, ndpi_memory_free_count);
+        logger(1,
+               "%s: Allocated / Free'd bytes: %llu / %llu",
+               argv[0],
+               (unsigned long long int)ndpi_memory_alloc_bytes,
+               (unsigned long long int)ndpi_memory_free_bytes);
+        logger(1,
+               "%s: Allocated / Free'd count: %llu / %llu",
+               argv[0],
+               (unsigned long long int)ndpi_memory_alloc_count,
+               (unsigned long long int)ndpi_memory_free_count);
         logger(1,
                "%s: Total Active / Idle Flows: %llu / %llu",
                argv[0],
