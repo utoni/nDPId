@@ -18,7 +18,6 @@
 #include <sys/epoll.h>
 #include <sys/ioctl.h>
 #include <sys/signalfd.h>
-#include <sys/types.h>
 #include <sys/un.h>
 #include <unistd.h>
 #ifdef ENABLE_ZLIB
@@ -247,7 +246,6 @@ struct nDPId_reader_thread
 {
     struct nDPId_workflow * workflow;
     pthread_t thread;
-    pid_t thread_id;
     int collector_sockfd;
     int collector_sock_last_errno;
     size_t array_index;
@@ -514,9 +512,8 @@ static int set_collector_nonblock(struct nDPId_reader_thread * const reader_thre
     {
         reader_thread->collector_sock_last_errno = errno;
         logger(1,
-               "[%8llu, %d] Could not set collector fd %d to non-blocking mode: %s",
+               "[%8llu] Could not set collector fd %d to non-blocking mode: %s",
                reader_thread->workflow->packets_processed,
-               reader_thread->thread_id,
                reader_thread->collector_sockfd,
                strerror(errno));
         return 1;
@@ -533,9 +530,8 @@ static int set_collector_block(struct nDPId_reader_thread * const reader_thread)
     {
         reader_thread->collector_sock_last_errno = errno;
         logger(1,
-               "[%8llu, %d] Could not set collector fd %d to blocking mode: %s",
+               "[%8llu] Could not set collector fd %d to blocking mode: %s",
                reader_thread->workflow->packets_processed,
-               reader_thread->thread_id,
                reader_thread->collector_sockfd,
                strerror(errno));
         return 1;
@@ -2103,12 +2099,6 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
         else if (collector_address.raw.sa_family == AF_UNIX)
         {
             size_t pos = (written < 0 ? 0 : written);
-            logger(0,
-                   "[%8llu, %zu] Send less data then expected (%zu < %d bytes), falling back to blocking I/O",
-                   workflow->packets_captured,
-                   reader_thread->array_index,
-                   pos,
-                   s_ret);
             set_collector_block(reader_thread);
             while ((size_t)(written = write(reader_thread->collector_sockfd, newline_json_str + pos, s_ret - pos)) !=
                    s_ret - pos)
@@ -4097,7 +4087,6 @@ static void * processing_thread(void * const ndpi_thread_arg)
 {
     struct nDPId_reader_thread * const reader_thread = (struct nDPId_reader_thread *)ndpi_thread_arg;
 
-    reader_thread->thread_id = gettid();
     reader_thread->collector_sockfd = -1;
 
     if (connect_to_collector(reader_thread) != 0)
