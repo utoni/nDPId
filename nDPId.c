@@ -18,6 +18,7 @@
 #include <sys/epoll.h>
 #include <sys/ioctl.h>
 #include <sys/signalfd.h>
+#include <sys/types.h>
 #include <sys/un.h>
 #include <unistd.h>
 #ifdef ENABLE_ZLIB
