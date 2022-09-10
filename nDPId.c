@@ -245,7 +245,8 @@ struct nDPId_workflow
 struct nDPId_reader_thread
 {
     struct nDPId_workflow * workflow;
-    pthread_t thread_id;
+    pthread_t thread;
+    pid_t thread_id;
     int collector_sockfd;
     int collector_sock_last_errno;
     size_t array_index;
@@ -512,7 +513,7 @@ static int set_collector_nonblock(struct nDPId_reader_thread * const reader_thre
     {
         reader_thread->collector_sock_last_errno = errno;
         logger(1,
-               "[%8llu, %zu] Could not set collector fd %d to non-blocking mode: %s",
+               "[%8llu, %d] Could not set collector fd %d to non-blocking mode: %s",
                reader_thread->workflow->packets_processed,
                reader_thread->thread_id,
                reader_thread->collector_sockfd,
@@ -531,7 +532,7 @@ static int set_collector_block(struct nDPId_reader_thread * const reader_thread)
     {
         reader_thread->collector_sock_last_errno = errno;
         logger(1,
-               "[%8llu, %zu] Could not set collector fd %d to blocking mode: %s",
+               "[%8llu, %d] Could not set collector fd %d to blocking mode: %s",
                reader_thread->workflow->packets_processed,
                reader_thread->thread_id,
                reader_thread->collector_sockfd,
@@ -4095,6 +4096,7 @@ static void * processing_thread(void * const ndpi_thread_arg)
 {
     struct nDPId_reader_thread * const reader_thread = (struct nDPId_reader_thread *)ndpi_thread_arg;
 
+    reader_thread->thread_id = gettid();
     reader_thread->collector_sockfd = -1;
 
     if (connect_to_collector(reader_thread) != 0)
@@ -4180,7 +4182,7 @@ static int start_reader_threads(void)
             break;
         }
 
-        if (pthread_create(&reader_threads[i].thread_id, NULL, processing_thread, &reader_threads[i]) != 0)
+        if (pthread_create(&reader_threads[i].thread, NULL, processing_thread, &reader_threads[i]) != 0)
         {
             logger(1, "pthread_create: %s", strerror(errno));
             return 1;
@@ -4276,7 +4278,7 @@ static int stop_reader_threads(void)
             continue;
         }
 
-        if (pthread_join(reader_threads[i].thread_id, NULL) != 0)
+        if (pthread_join(reader_threads[i].thread, NULL) != 0)
         {
             logger(1, "pthread_join: %s", strerror(errno));
         }
