@@ -1209,7 +1209,7 @@ static int handle_incoming_data(int epollfd, struct remote_desc * const current)
         }
         if (bytes_read == 0)
         {
-            logger_nDPIsrvd(0, "Collector connection", "closed during read");
+            logger_nDPIsrvd(current, "Collector connection", "closed during read");
             disconnect_client(epollfd, current);
             return 1;
         }
