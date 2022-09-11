@@ -72,8 +72,6 @@ else()
     unset(NDPI_WITH_MAXMINDDB CACHE)
 endif()
 
-set(CROSS_COMPILE_TRIPLET "" CACHE STRING "Host triplet used to enable cross compiling.")
-
 add_executable(nDPId nDPId.c utils.c)
 add_executable(nDPIsrvd nDPIsrvd.c utils.c)
 add_executable(nDPId-test nDPId-test.c)
@@ -91,8 +89,7 @@ add_custom_command(
     DEPENDS nDPId nDPIsrvd
 )
 
-if(NOT CROSS_COMPILE_TRIPLET STREQUAL "")
-    set(CMAKE_C_COMPILER_TARGET ${CROSS_COMPILE_TRIPLET})
+if(CMAKE_CROSSCOMPILING)
     set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
     set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
     set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
@@ -190,12 +187,11 @@ if(BUILD_NDPI)
         CONFIGURE_COMMAND env
             CC=${CMAKE_C_COMPILER}
             CXX=false
-            AR=${CMAKE_C_COMPILER_AR}
-            RANLIB=${CMAKE_C_COMPILER_RANLIB}
+            AR=${CMAKE_AR}
+            RANLIB=${CMAKE_RANLIB}
             PKG_CONFIG=${PKG_CONFIG_EXECUTABLE}
             CFLAGS=${CMAKE_C_FLAGS}
             LDFLAGS=${CMAKE_MODULE_LINKER_FLAGS}
-            CROSS_COMPILE_TRIPLET=${CROSS_COMPILE_TRIPLET}
             ADDITIONAL_ARGS=${NDPI_ADDITIONAL_ARGS}
             MAKE_PROGRAM=${CMAKE_MAKE_PROGRAM}
             DEST_INSTALL=${CMAKE_BINARY_DIR}/libnDPI
@@ -337,7 +333,7 @@ install(FILES schema/error_event_schema.json schema/daemon_event_schema.json
 
 message(STATUS "--------------------------")
 message(STATUS "nDPId GIT_VERSION........: ${GIT_VERSION}")
-message(STATUS "CROSS_COMPILE_TRIPLET....: ${CROSS_COMPILE_TRIPLET}")
+message(STATUS "Cross Compilation........: ${CMAKE_CROSSCOMPILING}")
 message(STATUS "CMAKE_BUILD_TYPE.........: ${CMAKE_BUILD_TYPE}")
 message(STATUS "CMAKE_C_FLAGS............: ${CMAKE_C_FLAGS}")
 message(STATUS "NDPID_DEFS...............: ${NDPID_DEFS}")

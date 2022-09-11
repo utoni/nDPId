@@ -10,8 +10,13 @@ flock -x -n 42 || {
     exit 1;
 }
 
+if [ ! -z "${CC}" ]; then
+    HOST_TRIPLET="$(${CC} ${CFLAGS} -dumpmachine)"
+fi
+
 cat <<EOF
 ------ environment variables ------
+HOST_TRIPLET=${HOST_TRIPLET}
 CC=${CC:-}
 CXX=${CXX:-}
 AR=${AR:-}
@@ -19,7 +24,6 @@ RANLIB=${RANLIB:-}
 PKG_CONFIG=${PKG_CONFIG:-}
 CFLAGS=${CFLAGS:-}
 LDFLAGS=${LDFLAGS:-}
-CROSS_COMPILE_TRIPLET=${CROSS_COMPILE_TRIPLET:-}
 ADDITIONAL_ARGS=${ADDITIONAL_ARGS:-}
 MAKE_PROGRAM=${MAKE_PROGRAM:-}
 DEST_INSTALL=${DEST_INSTALL:-}
@@ -37,11 +41,7 @@ cd ./libnDPI
 test -r Makefile && make distclean
 DEST_INSTALL="${DEST_INSTALL:-$(realpath ./install)}"
 MAKE_PROGRAM="${MAKE_PROGRAM:-make -j4}"
-if [ ! -z "${CROSS_COMPILE_TRIPLET}" ]; then
-    HOST_ARG="--host=${CROSS_COMPILE_TRIPLET}"
-else
-    HOST_ARG=""
-fi
+HOST_ARG="--host=${HOST_TRIPLET}"
 ./autogen.sh --enable-option-checking=fatal \
     --prefix="${DEST_INSTALL}" --exec-prefix="${DEST_INSTALL}" \
     --includedir="${DEST_INSTALL}/include" --libdir="${DEST_INSTALL}/lib" \
