@@ -711,6 +711,13 @@ int main(int argc, char ** argv)
         LOG(LOG_DAEMON | LOG_NOTICE, "Collectd interval: %llu", collectd_interval_ull);
     }
 
+    if (setvbuf(stdout, NULL, _IONBF, 0) != 0)
+    {
+        LOG(LOG_DAEMON | LOG_ERR,
+            "Could not set stdout unbuffered: %s. Collectd may receive too old PUTVALs and complain.",
+            strerror(errno));
+    }
+
     enum nDPIsrvd_connect_return connect_ret = nDPIsrvd_connect(sock);
     if (connect_ret != CONNECT_OK)
     {
