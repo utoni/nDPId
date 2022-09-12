@@ -304,6 +304,8 @@ if(BUILD_EXAMPLES)
     endif()
 
     install(TARGETS nDPIsrvd-collectd nDPIsrvd-captured nDPIsrvd-json-dump nDPIsrvd-simple DESTINATION bin)
+    install(FILES examples/c-collectd/plugin_nDPIsrvd.conf examples/c-collectd/rrdgraph.sh DESTINATION share/nDPId/nDPIsrvd-collectd)
+    install(DIRECTORY examples/c-collectd/www DESTINATION share/nDPId/nDPIsrvd-collectd)
 endif()
 
 install(TARGETS nDPId DESTINATION sbin)
@@ -329,7 +331,7 @@ install(FILES examples/py-semantic-validation/py-semantic-validation.py
         DESTINATION bin RENAME nDPIsrvd-semantic-validation.py
         PERMISSIONS OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
 install(FILES schema/error_event_schema.json schema/daemon_event_schema.json
-              schema/flow_event_schema.json schema/packet_event_schema.json DESTINATION share/nDPId)
+              schema/flow_event_schema.json schema/packet_event_schema.json DESTINATION share/nDPId/json-schema)
 
 message(STATUS "--------------------------")
 message(STATUS "nDPId GIT_VERSION........: ${GIT_VERSION}")
