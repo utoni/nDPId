@@ -2999,7 +2999,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
                 return 1;
             }
 
-            struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const * const) & packet[eth_offset];
+            struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const * const)&packet[eth_offset];
             *ip_offset = sizeof(struct ndpi_chdlc);
             *layer3_type = ntohs(chdlc->proto_code);
             break;
@@ -3021,7 +3021,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
 
             if (packet[0] == 0x0f || packet[0] == 0x8f)
             {
-                struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const * const) & packet[eth_offset];
+                struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const * const)&packet[eth_offset];
                 *ip_offset = sizeof(struct ndpi_chdlc); /* CHDLC_OFF = 4 */
                 *layer3_type = ntohs(chdlc->proto_code);
             }
@@ -3059,7 +3059,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
             }
 
             struct ndpi_radiotap_header const * const radiotap =
-                (struct ndpi_radiotap_header const * const) & packet[eth_offset];
+                (struct ndpi_radiotap_header const * const)&packet[eth_offset];
             uint16_t radio_len = radiotap->len;
 
             /* Check Bad FCS presence */
@@ -3886,9 +3886,10 @@ static void ndpi_process_packet(uint8_t * const args,
 
     if (is_new_flow != 0)
     {
-        flow_to_process->flow_extended.first_seen = flow_to_process->flow_extended.flow_basic.last_pkt_time[direction] =
-            flow_to_process->flow_extended.flow_basic.last_pkt_time[1 - direction] =
-                flow_to_process->flow_extended.last_flow_update = workflow->last_thread_time;
+        last_pkt_time = flow_to_process->flow_extended.first_seen =
+            flow_to_process->flow_extended.flow_basic.last_pkt_time[direction] =
+                flow_to_process->flow_extended.flow_basic.last_pkt_time[1 - direction] =
+                    flow_to_process->flow_extended.last_flow_update = workflow->last_thread_time;
         flow_to_process->flow_extended.max_l4_payload_len[direction] = l4_payload_len;
         flow_to_process->flow_extended.min_l4_payload_len[direction] = l4_payload_len;
         jsonize_flow_event(reader_thread, &flow_to_process->flow_extended, FLOW_EVENT_NEW);
@@ -4685,6 +4686,7 @@ static int nDPId_parse_options(int argc, char ** argv)
         "\t  \tmultiple instances and should be unique.\n"
         "\t  \tDefaults to your hostname.\n"
         "\t-A\tEnable flow analysis aka feature extraction. Requires more memory and cpu usage.\n"
+        "\t  \tExperimental, do not rely on those values.\n"
 #ifdef ENABLE_ZLIB
         "\t-z\tEnable flow memory zLib compression.\n"
 #endif

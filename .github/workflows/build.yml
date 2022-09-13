@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - tmp
   pull_request:
     branches:
       - main
