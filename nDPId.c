@@ -3827,7 +3827,7 @@ static void ndpi_process_packet(uint8_t * const args,
 
         struct nDPId_flow_basic * const flow_basic_to_process = *(struct nDPId_flow_basic **)tree_result;
         /* Update last seen timestamp for timeout handling. */
-        last_pkt_time = flow_basic_to_process->last_pkt_time[direction];
+        last_pkt_time = get_last_pkt_time(flow_basic_to_process);
         flow_basic_to_process->last_pkt_time[direction] = workflow->last_thread_time;
         /* TCP-FIN/TCP-RST: indicates that at least one side wants to end the connection. */
         if (flow_basic.tcp_fin_rst_seen != 0)
