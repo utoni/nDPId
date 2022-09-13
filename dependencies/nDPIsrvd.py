@@ -21,7 +21,7 @@ DEFAULT_PORT = 7000
 DEFAULT_UNIX = '/tmp/ndpid-distributor.sock'
 
 NETWORK_BUFFER_MIN_SIZE = 6 # NETWORK_BUFFER_LENGTH_DIGITS + 1
-NETWORK_BUFFER_MAX_SIZE = 16384 # Please keep this value in sync with the one in config.h
+NETWORK_BUFFER_MAX_SIZE = 32768 # Please keep this value in sync with the one in config.h
 
 PKT_TYPE_ETH_IP4 = 0x0800
 PKT_TYPE_ETH_IP6 = 0x86DD
@@ -125,9 +125,9 @@ class Instance:
         if 'thread_id' not in json_dict:
             return
         thread_id = json_dict['thread_id']
-        if 'thread_ts_msec' in json_dict:
+        if 'thread_ts_usec' in json_dict:
             mrtf = self.getMostRecentFlowTime(thread_id) if thread_id in self.thread_data else 0
-            self.setMostRecentFlowTime(thread_id, max(json_dict['thread_ts_msec'], mrtf))
+            self.setMostRecentFlowTime(thread_id, max(json_dict['thread_ts_usec'], mrtf))
 
 class Flow:
 
@@ -176,6 +176,10 @@ class FlowManager:
 
         return self.instances[alias][source]
 
+    @staticmethod
+    def getLastPacketTime(instance, flow_id, json_dict):
+        return max(int(json_dict['flow_src_last_pkt_time']), int(json_dict['flow_dst_last_pkt_time']), instance.flows[flow_id].flow_last_seen)
+
     def getFlow(self, instance, json_dict):
         if 'flow_id' not in json_dict:
             return None
@@ -183,13 +187,13 @@ class FlowManager:
         flow_id = int(json_dict['flow_id'])
 
         if flow_id in instance.flows:
-            instance.flows[flow_id].flow_last_seen = int(json_dict['flow_last_seen'])
+            instance.flows[flow_id].flow_last_seen = FlowManager.getLastPacketTime(instance, flow_id, json_dict)
             instance.flows[flow_id].flow_idle_time = int(json_dict['flow_idle_time'])
             return instance.flows[flow_id]
 
         thread_id = int(json_dict['thread_id'])
         instance.flows[flow_id] = Flow(flow_id, thread_id)
-        instance.flows[flow_id].flow_last_seen = int(json_dict['flow_last_seen'])
+        instance.flows[flow_id].flow_last_seen = FlowManager.getLastPacketTime(instance, flow_id, json_dict)
         instance.flows[flow_id].flow_idle_time = int(json_dict['flow_idle_time'])
         instance.flows[flow_id].cleanup_reason = FlowManager.CLEANUP_REASON_INVALID
 
@@ -449,6 +453,9 @@ def defaultArgumentParser(desc='nDPIsrvd Python Interface',
     parser.add_argument('--port', type=int, default=DEFAULT_PORT, help='nDPIsrvd TCP port')
     parser.add_argument('--unix', type=str, help='nDPIsrvd unix socket path')
     return parser
+
+def toSeconds(usec):
+    return usec / (1000 * 1000)
 
 def validateAddress(args):
     tcp_addr_set = False

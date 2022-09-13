@@ -182,7 +182,7 @@ def checkEventFilter(json_dict):
                    'guessed': args.guessed, 'detected': args.detected,
                    'detection-update': args.detection_update,
                    'not-detected': args.not_detected,
-                   'update': args.update}
+                   'update': args.update, 'analysis': args.analysis}
 
     if flow_events[json_dict['flow_event_name']] is True:
         return True
@@ -237,26 +237,27 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
     basic_daemon_event_prefix = ''
     timestamp = ''
     if args.print_timestamp is True:
-        if 'thread_ts_msec' in json_dict:
+        if 'thread_ts_usec' in json_dict:
             timestamp += '[{}]'.format(time.strftime('%H:%M:%S',
-                                       time.localtime(json_dict['thread_ts_msec'] / 1000)))
-        elif 'global_ts_msec' in json_dict:
+                                       time.localtime(nDPIsrvd.toSeconds(json_dict['thread_ts_usec']))))
+        elif 'global_ts_usec' in json_dict:
             timestamp += '[{}]'.format(time.strftime('%H:%M:%S',
-                                       time.localtime(json_dict['global_ts_msec'] / 1000)))
+                                       time.localtime(nDPIsrvd.toSeconds(json_dict['global_ts_usec']))))
 
     first_seen = ''
     if args.print_first_seen is True:
         basic_daemon_event_prefix += ' ' * 11
         if 'flow_first_seen' in json_dict:
-            first_seen = '[' + prettifyTimediff(json_dict['flow_first_seen'] / 1000,
-                                                json_dict['thread_ts_msec'] / 1000) + ']'
+            first_seen = '[' + prettifyTimediff(nDPIsrvd.toSeconds(json_dict['flow_first_seen']),
+                                                nDPIsrvd.toSeconds(json_dict['thread_ts_usec']) + ']'
 
     last_seen = ''
     if args.print_last_seen is True:
         basic_daemon_event_prefix +=  ' ' * 11
-        if 'flow_last_seen' in json_dict:
-            last_seen = '[' + prettifyTimediff(json_dict['flow_last_seen'] / 1000,
-                                               json_dict['thread_ts_msec'] / 1000) + ']'
+        if current_flow is not None:
+            flow_last_seen = nDPIsrvd.FlowManager.getLastPacketTime(instance, current_flow.flow_id, json_dict)
+            last_seen = '[' + prettifyTimediff(nDPIsrvd.toSeconds(flow_last_seen),
+                                               nDPIsrvd.toSeconds(json_dict['thread_ts_usec']) + ']'
 
     if 'daemon_event_id' in json_dict:
         if json_dict['daemon_event_name'] == 'status':
@@ -345,6 +346,9 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
     elif json_dict['flow_event_name'] == 'not-detected':
         flow_event_name += '{}{:>16}{}'.format(TermColor.WARNING + TermColor.BOLD + TermColor.BLINK,
                                                json_dict['flow_event_name'], TermColor.END)
+    elif json_dict['flow_event_name'] == 'analysis':
+        flow_event_name += '{}{:>16}{}'.format(TermColor.WARNING + TermColor.BLINK,
+                                               json_dict['flow_event_name'], TermColor.END)
     else:
         if json_dict['flow_event_name'] == 'new':
             line_suffix = ''
@@ -414,6 +418,7 @@ if __name__ == '__main__':
     argparser.add_argument('--end',        action='store_true', default=False, help='Print only end flow events.')
     argparser.add_argument('--idle',       action='store_true', default=False, help='Print only idle flow events.')
     argparser.add_argument('--update',     action='store_true', default=False, help='Print only update flow events.')
+    argparser.add_argument('--analysis',   action='store_true', default=False, help='Print only analysis flow events.')
     argparser.add_argument('--detection',  action='store_true', default=False, help='Print only detected/detection-update flow events.')
     argparser.add_argument('--ipwhois',    action='store_true', default=False, help='Use Python-IPWhois to print additional location information.')
     args = argparser.parse_args()

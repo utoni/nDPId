@@ -7,7 +7,7 @@
         "packet_id",
         "daemon_event_id",
         "daemon_event_name",
-        "global_ts_msec"
+        "global_ts_usec"
     ],
     "if": {
         "properties": { "daemon_event_name": { "enum": [ "init", "reconnect" ] } }
@@ -151,9 +151,15 @@
             "type": "number",
             "minimum": 1
         },
-        "global_ts_msec": {
+        "global_ts_usec": {
             "type": "number",
-            "minimum": 0
+            "if": {
+                "properties": { "daemon_event_name": { "enum": [ "init" ] } }
+            },
+            "then" : true,
+            "else" : {
+                "minimum": 1000000
+            }
         }
     },
     "additionalProperties": false

@@ -21,7 +21,7 @@ class Stats:
 
     def resetEventCounter(self):
         keys = ['init','reconnect','shutdown','status', \
-                'new','end','idle','update',
+                'new','end','idle','update','analyse', \
                 'guessed','detected','detection-update','not-detected', \
                 'packet', 'packet-flow']
         for k in keys:
@@ -174,9 +174,11 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
         elif json_dict['packet_event_name'] != 'packet-flow':
             raise SemanticValidationException(current_flow, 'Layer4 protocol not found in JSON')
 
-        if 'flow_last_seen' in json_dict:
-            if json_dict['flow_last_seen'] != current_flow.flow_last_seen:
-                raise SemanticValidationException(current_flow, 'Flow last seen: {} != {}'.format(json_dict['flow_last_seen'],
+        flow_last_seen = None
+        if 'flow_src_last_pkt_time' in json_dict or 'flow_dst_last_pkt_time' in json_dict:
+            flow_last_seen = max(json_dict['flow_src_last_pkt_time'], json_dict['flow_dst_last_pkt_time'])
+            if flow_last_seen != current_flow.flow_last_seen:
+                raise SemanticValidationException(current_flow, 'Flow last seen: {} != {}'.format(flow_last_seen,
                                                                                                   current_flow.flow_last_seen))
 
         if 'flow_idle_time' in json_dict:
@@ -184,15 +186,14 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
                 raise SemanticValidationException(current_flow, 'Flow idle time mismatch: {} != {}'.format(json_dict['flow_idle_time'],
                                                                                                            current_flow.flow_idle_time))
 
-        if ('flow_last_seen' in json_dict and 'flow_idle_time' not in json_dict) or \
-           ('flow_last_seen' not in json_dict and 'flow_idle_time' in json_dict):
+        if (flow_last_seen is not None and 'flow_idle_time' not in json_dict) or \
+           (flow_last_seen is None and 'flow_idle_time' in json_dict):
             raise SemanticValidationException(current_flow,
-                                              'Got a JSON string with only one of both keys, ' \
-                                              'both required for timeout handling:' \
-                                              'flow_last_seen, flow_idle_time')
+                                              'Got a JSON string with only 2 of 3 keys, ' \
+                                              'required for timeout handling: flow_idle_time')
 
-        if 'thread_ts_msec' in json_dict:
-            current_flow.thread_ts_msec = int(json_dict['thread_ts_msec'])
+        if 'thread_ts_usec' in json_dict:
+            current_flow.thread_ts_usec = int(json_dict['thread_ts_usec'])
 
         if 'flow_packet_id' in json_dict:
             try:
@@ -254,6 +255,7 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
                 current_flow.flow_finished = True
 
             if current_flow.flow_finished == True and \
+               json_dict['flow_event_name'] != 'analyse' and \
                json_dict['flow_event_name'] != 'update' and \
                json_dict['flow_event_name'] != 'idle' and \
                json_dict['flow_event_name'] != 'end':
@@ -264,14 +266,14 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
             pass
 
         try:
-            if json_dict['flow_first_seen'] > current_flow.thread_ts_msec or \
-               json_dict['flow_last_seen'] > current_flow.thread_ts_msec or \
-               json_dict['flow_first_seen'] > json_dict['flow_last_seen']:
+            if json_dict['flow_first_seen'] > current_flow.thread_ts_usec or \
+               flow_last_seen > current_flow.thread_ts_usec or \
+               json_dict['flow_first_seen'] > flow_last_seen:
                 raise SemanticValidationException(current_flow,
                                                   'Last packet timestamp is invalid: ' \
                                                   'first_seen({}) <= {} >= last_seen({})'.format(json_dict['flow_first_seen'],
-                                                                                                 current_flow.thread_ts_msec,
-                                                                                                 json_dict['flow_last_seen']))
+                                                                                                 current_flow.thread_ts_usec,
+                                                                                                 flow_last_seen))
         except AttributeError:
             if json_dict['flow_event_name'] == 'new':
                 pass

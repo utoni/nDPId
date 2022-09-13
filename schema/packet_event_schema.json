@@ -13,21 +13,21 @@
         "pkt_l4_offset",
         "pkt_len",
         "pkt_l4_len",
-        "thread_ts_msec"
+        "thread_ts_usec"
     ],
 
     "dependencies" : {
-        "flow_id" : [ "flow_packet_id", "flow_last_seen", "flow_idle_time" ]
+        "flow_id" : [ "flow_packet_id", "flow_src_last_pkt_time", "flow_dst_last_pkt_time", "flow_idle_time" ]
     },
 
     "if": {
         "properties": { "packet_event_name": { "enum": ["packet-flow"] } }
     },
     "then": {
-        "required": [ "thread_id", "flow_id", "flow_packet_id", "flow_last_seen", "flow_idle_time" ]
+        "required": [ "thread_id", "flow_id", "flow_packet_id", "flow_src_last_pkt_time", "flow_dst_last_pkt_time", "flow_idle_time" ]
     },
     "else": {
-        "not": { "required": [ "thread_id", "flow_id", "flow_packet_id", "flow_last_seen", "flow_idle_time" ] }
+        "not": { "required": [ "thread_id", "flow_id", "flow_packet_id", "flow_src_last_pkt_time", "flow_dst_last_pkt_time", "flow_idle_time" ] }
     },
 
     "properties": {
@@ -64,7 +64,11 @@
         "flow_packet_id": {
             "type": "number"
         },
-        "flow_last_seen": {
+        "flow_src_last_pkt_time": {
+            "type": "number",
+            "minimum": 0
+        },
+        "flow_dst_last_pkt_time": {
             "type": "number",
             "minimum": 0
         },
@@ -95,7 +99,7 @@
             "minimum": 0,
             "maximum": 65535
         },
-        "thread_ts_msec": {
+        "thread_ts_usec": {
             "type": "number",
             "minimum": 0
         },

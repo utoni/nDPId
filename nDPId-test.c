@@ -236,9 +236,13 @@ static void * nDPIsrvd_mainloop_thread(void * const arg)
             if (events[i].data.ptr == mock_json_desc || events[i].data.ptr == mock_test_desc ||
                 events[i].data.ptr == mock_null_desc || events[i].data.ptr == mock_arpa_desc)
             {
-                if (handle_data_event(epollfd, &events[i]) != 0)
+                if ((events[i].events & EPOLLHUP) != 0)
                 {
                     goto error;
+                }
+                if (handle_data_event(epollfd, &events[i]) != 0)
+                {
+                    THREAD_ERROR_GOTO(arg);
                 }
             }
             else
@@ -886,6 +890,7 @@ int main(int argc, char ** argv)
         return 1;
     }
 
+    nDPId_options.enable_data_analysis = 1;
     nDPId_options.max_packets_per_flow_to_send = 3;
 #ifdef ENABLE_ZLIB
     /*

@@ -12,7 +12,8 @@
         "flow_src_packets_processed",
         "flow_dst_packets_processed",
         "flow_first_seen",
-        "flow_last_seen",
+        "flow_src_last_pkt_time",
+        "flow_dst_last_pkt_time",
         "flow_idle_time",
         "flow_src_min_l4_payload_len",
         "flow_dst_min_l4_payload_len",
@@ -23,7 +24,7 @@
         "l3_proto",
         "l4_proto",
         "midstream",
-        "thread_ts_msec",
+        "thread_ts_usec",
         "src_ip",
         "dst_ip"
     ],
@@ -36,15 +37,22 @@
     },
 
     "if": {
-        "properties": { "flow_event_name": { "enum": [ "guessed", "detected",
-                                                       "detection-update", "not-detected" ] } }
+        "properties": { "flow_event_name": { "enum": [ "analyse" ] } }
+    },
+    "then": {
+        "required": [ "data_analysis" ]
+    },
+
+    "if": {
+        "properties": { "flow_state": { "enum": [ "finished" ] } }
     },
     "then": {
         "required": [ "ndpi" ]
     },
 
     "if": {
-        "properties": { "flow_state": { "enum": [ "finished" ] } }
+        "properties": { "flow_event_name": { "enum": [ "guessed", "detected",
+                                                       "detection-update", "not-detected" ] } }
     },
     "then": {
         "required": [ "ndpi" ]
@@ -69,7 +77,7 @@
         "flow_event_id": {
             "type": "number",
             "minimum": 0,
-            "maximum": 8
+            "maximum": 9
         },
         "flow_event_name": {
             "type": "string",
@@ -79,6 +87,7 @@
                 "end",
                 "idle",
                 "update",
+                "analyse",
                 "guessed",
                 "detected",
                 "detection-update",
@@ -117,7 +126,11 @@
             "type": "number",
             "minimum": 0
         },
-        "flow_last_seen": {
+        "flow_src_last_pkt_time": {
+            "type": "number",
+            "minimum": 0
+        },
+        "flow_dst_last_pkt_time": {
             "type": "number",
             "minimum": 0
         },
@@ -178,7 +191,7 @@
             "minimum": 0,
             "maximum": 1
         },
-        "thread_ts_msec": {
+        "thread_ts_usec": {
             "type": "number",
             "minimum": 0
         },
@@ -325,6 +338,88 @@
                 },
                 "softether": {
                     "type": "object"
+                }
+            },
+            "additionalProperties": false
+        },
+        "data_analysis": {
+            "type": "object",
+            "required": [ "iat", "pktlen" ],
+
+            "properties": {
+                "iat": {
+                    "type": "object",
+
+                    "properties": {
+                        "flow_min": {
+                            "type": "number"
+                        },
+                        "flow_avg": {
+                            "type": "number"
+                        },
+                        "flow_max": {
+                            "type": "number"
+                        },
+                        "flow_stddev": {
+                            "type": "number"
+                        },
+                        "c_to_s_min": {
+                            "type": "number"
+                        },
+                        "c_to_s_avg": {
+                            "type": "number"
+                        },
+                        "c_to_s_max": {
+                            "type": "number"
+                        },
+                        "c_to_s_stddev": {
+                            "type": "number"
+                        },
+                        "s_to_c_min": {
+                            "type": "number"
+                        },
+                        "s_to_c_avg": {
+                            "type": "number"
+                        },
+                        "s_to_c_max": {
+                            "type": "number"
+                        },
+                        "s_to_c_stddev": {
+                            "type": "number"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                "pktlen": {
+                    "type": "object",
+
+                    "properties": {
+                        "c_to_s_min": {
+                            "type": "number"
+                            },
+                        "c_to_s_avg": {
+                            "type": "number"
+                        },
+                        "c_to_s_max": {
+                            "type": "number"
+                        },
+                        "c_to_s_stddev": {
+                            "type": "number"
+                        },
+                        "s_to_c_min": {
+                            "type": "number"
+                        },
+                        "s_to_c_avg": {
+                            "type": "number"
+                        },
+                        "s_to_c_max": {
+                            "type": "number"
+                        },
+                        "s_to_c_stddev": {
+                            "type": "number"
+                        }
+                    },
+                    "additionalProperties": false
                 }
             },
             "additionalProperties": false

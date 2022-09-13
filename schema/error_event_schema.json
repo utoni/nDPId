@@ -7,7 +7,7 @@
         "error_event_id",
         "error_event_name",
         "datalink",
-        "global_ts_msec"
+        "global_ts_usec"
     ],
 
     "if": {
@@ -154,7 +154,7 @@
         "max_idle": {
             "type": "number"
         },
-        "global_ts_msec": {
+        "global_ts_usec": {
             "type": "number",
             "minimum": 0
         }

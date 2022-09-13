@@ -109,10 +109,11 @@ Flow Events: all events related to a flow
  2. end: a TCP connections terminates
  3. idle: a flow timed out, because there was no packet on the wire for a certain amount of time
  4. update: inform nDPIsrvd or other apps about a long-lasting flow, whose detection was finished a long time ago but is still active
- 5. guessed: `libnDPI` was not able to reliable detect a layer7 protocol and falls back to IP/Port based detection
- 6. detected: `libnDPI` sucessfully detected a layer7 protocol
- 7. detection-update: `libnDPI` dissected more layer7 protocol data (after detection already done)
- 8. not-detected: neither detected nor guessed
+ 5. analyse: provide some information about extracted features of a flow (disabled per default, enabled with `-A`)
+ 6. guessed: `libnDPI` was not able to reliable detect a layer7 protocol and falls back to IP/Port based detection
+ 7. detected: `libnDPI` sucessfully detected a layer7 protocol
+ 8. detection-update: `libnDPI` dissected more layer7 protocol data (after detection already done)
+ 9. not-detected: neither detected nor guessed
 
 
 # Flow States

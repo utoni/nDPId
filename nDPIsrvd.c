@@ -1293,6 +1293,12 @@ static int handle_data_event(int epollfd, struct epoll_event * const event)
 
     if ((event->events & EPOLLIN) == 0 && (event->events & EPOLLOUT) == 0)
     {
+#ifdef NO_MAIN
+        if ((event->events & EPOLLHUP) != 0)
+        {
+            return 1;
+        }
+#endif
         logger(1, "Can not handle event mask: %d", event->events);
         return 1;
     }

@@ -372,8 +372,8 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
             return CALLBACK_ERROR;
         }
 
-        nDPIsrvd_ull thread_ts_msec = 0ull;
-        perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "thread_ts_msec"), &thread_ts_msec), "thread_ts_msec");
+        nDPIsrvd_ull thread_ts_usec = 0ull;
+        perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "thread_ts_usec"), &thread_ts_usec), "thread_ts_usec");
 
         nDPIsrvd_ull pkt_len = 0ull;
         perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "pkt_len"), &pkt_len), "pkt_len");
@@ -384,8 +384,8 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
         nDPIsrvd_ull pkt_l4_offset = 0ull;
         perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "pkt_l4_offset"), &pkt_l4_offset), "pkt_l4_offset");
 
-        struct packet_data pd = {.packet_ts_sec = thread_ts_msec / 1000,
-                                 .packet_ts_usec = (thread_ts_msec % 1000) * 1000,
+        struct packet_data pd = {.packet_ts_sec = thread_ts_usec / (1000 * 1000),
+                                 .packet_ts_usec = (thread_ts_usec % (1000 * 1000)),
                                  .packet_len = pkt_len,
                                  .base64_packet_size = pkt->value_length,
                                  .base64_packet_const = pkt->value};
