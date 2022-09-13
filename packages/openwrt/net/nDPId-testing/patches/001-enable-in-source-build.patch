@@ -1,0 +1,17 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 9045237..83f72b3 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1,12 +1,5 @@
+ cmake_minimum_required(VERSION 3.12.4)
+ project(nDPId C)
+-if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
+-    message(FATAL_ERROR "In-source builds are not allowed.\n"
+-                        "Please remove ${PROJECT_SOURCE_DIR}/CMakeCache.txt\n"
+-                        "and\n"
+-                        "${PROJECT_SOURCE_DIR}/CMakeFiles\n"
+-                        "Create a build directory somewhere and run CMake again.")
+-endif()
+ set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+ find_package(PkgConfig REQUIRED)
+ 

@@ -2,6 +2,8 @@
 
 set -e
 
+GITHUB_FALLBACK_URL='https://github.com/ntop/nDPI/archive/refs/heads/dev.zip'
+
 LOCKFILE="$(realpath "${0}").lock"
 touch "${LOCKFILE}"
 exec 42< "${LOCKFILE}"
@@ -35,6 +37,16 @@ set -x
 cd "$(dirname "${0}")/.."
 if [ -d ./.git ]; then
     git submodule update --init ./libnDPI
+else
+    printf '%s' '-----------------------------------'
+    printf 'WARNING: %s is supposed to be a GIT repository. But it is not.' "$(realpath $(dirname "${0}")/..)"
+    printf '%s' 'Can not clone libnDPI as GIT submodule.'
+    printf '%s' 'Falling back to Github direct download.'
+    printf 'URL: %s' "${GITHUB_FALLBACK_URL}"
+    printf '%s' '-----------------------------------'
+    wget "${GITHUB_FALLBACK_URL}" -O ./libnDPI-github-dev.zip
+    unzip ./libnDPI-github-dev.zip
+    mv ./nDPI-dev ./libnDPI
 fi
 
 cd ./libnDPI
