@@ -4,7 +4,11 @@ PKG_NAME:=nDPId-testing
 PKG_VERSION:=1.0
 PKG_RELEASE:=$(AUTORELEASE)
 
-SOURCE_DIR:=../../../..
+ifneq ($(wildcard /artifacts),)
+PKG_DIRECTORY:=/artifacts
+else
+PKG_DIRECTORY:=../../../..
+endif
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
 
@@ -61,6 +65,9 @@ endef
 endif
 
 define Build/Prepare
+	@echo 'tar: $(DL_DIR)/$(PKG_SOURCE)'
+	@echo 'PKG_DIRECTORY=$(PKG_DIRECTORY)'
+	@echo 'PKG_SOURCE_SUBDIR=$(PKG_SOURCE_SUBDIR)'
 	tar \
 		--exclude-tag-all='gcov.css' \
 		--exclude-tag-all='cmake_install.cmake' \
@@ -71,9 +78,10 @@ define Build/Prepare
 		--exclude-vcs \
 		--exclude-vcs-ignores \
 		--transform 's,^,$(PKG_SOURCE_SUBDIR)/,' \
-		-czf "$(DL_DIR)/$(PKG_SOURCE)" "$(SOURCE_DIR)"
+		-czf "$(DL_DIR)/$(PKG_SOURCE)" -C "$(PKG_DIRECTORY)" .
+	tar -tzf "$(DL_DIR)/$(PKG_SOURCE)"
 	$(PKG_UNPACK)
-	$(Build/Patch)
+	cd '$(PKG_BUILD_DIR)' && patch -p1 < $(PKG_BUILD_DIR)/packages/openwrt/net/nDPId-testing/001-enable-in-source-build.patch
 	env \
 		CC="$(TARGET_CC)" \
 		AR="$(TARGET_AR)" \

@@ -1,0 +1,70 @@
+name: OpenWrt Build
+
+on:
+  push:
+    branches:
+      - main
+      - tmp
+  pull_request:
+    branches:
+      - master
+    types: [opened, synchronize, reopened]
+  release:
+    types: [created]
+
+jobs:
+  build:
+    name: ${{ matrix.arch }} build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: arc_archs
+            target: archs38-generic
+
+          - arch: arm_cortex-a9_vfpv3-d16
+            target: mvebu-cortexa9
+
+          - arch: mips_24kc
+            target: ath79-generic
+
+          - arch: mipsel_24kc
+            target: mt7621
+
+          - arch: powerpc_464fp
+            target: apm821xx-nand
+
+          - arch: powerpc_8540
+            target: mpc85xx-p1010
+
+          - arch: aarch64_cortex-a53
+            target: mvebu-cortexa53
+
+          - arch: arm_cortex-a15_neon-vfpv4
+            target: armvirt-32
+
+          - arch: i386_pentium-mmx
+            target: x86-geode
+
+          - arch: x86_64
+            target: x86-64
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Build
+        uses: openwrt/gh-action-sdk@master
+        env:
+          ARCH: ${{ matrix.arch }}
+          FEED_DIR: ${{ github.workspace }}/packages/openwrt
+          FEEDNAME: ndpid_openwrt_packages_ci
+          PACKAGES: nDPId-testing
+
+      - name: Store packages
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.arch}}-packages
+          path: bin/packages/${{ matrix.arch }}/packages/*.ipk

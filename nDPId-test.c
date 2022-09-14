@@ -657,9 +657,9 @@ static void * distributor_client_mainloop_thread(void * const arg)
                         break;
                     case READ_LAST_ENUM_VALUE:
                     case READ_ERROR:
+                    case READ_TIMEOUT:
                         logger(1, "Read and verify fd returned an error: %s", strerror(errno));
                         THREAD_ERROR_GOTO(trv);
-                    case READ_TIMEOUT:
                     case READ_PEER_DISCONNECT:
                         del_event(dis_epollfd, mock_testfds[PIPE_TEST_READ]);
                         pipe_read_finished = 1;
@@ -762,9 +762,8 @@ static void * distributor_client_mainloop_thread(void * const arg)
     {
         HASH_ITER(hh, current_instance->flow_table, current_flow, ftmp)
         {
-            logger(1, "Active flow found during client distributor shutdown: %llu", current_flow->id_as_ull);
+            logger(1, "Active flow found during client distributor shutdown with id: %llu", current_flow->id_as_ull);
             THREAD_ERROR(trv);
-            break;
         }
 
         nDPIsrvd_cleanup_instance(mock_sock, current_instance, CLEANUP_REASON_APP_SHUTDOWN);
