@@ -1026,31 +1026,35 @@ int main(int argc, char ** argv)
 
         unsigned long long int total_alloc_bytes =
 #ifdef ENABLE_ZLIB
-            (unsigned long long int)(ndpi_memory_alloc_bytes - zlib_compression_bytes -
-                                     (zlib_compressions * sizeof(struct nDPId_detection_data)));
+            (unsigned long long int)(MT_GET_AND_ADD(ndpi_memory_alloc_bytes, 0) -
+                                     MT_GET_AND_ADD(zlib_compression_bytes, 0) -
+                                     (MT_GET_AND_ADD(zlib_compressions, 0) * sizeof(struct nDPId_detection_data)));
 #else
-            (unsigned long long int)ndpi_memory_alloc_bytes;
+            (unsigned long long int)MT_GET_AND_ADD(ndpi_memory_alloc_bytes, 0);
 #endif
         unsigned long long int total_free_bytes =
 #ifdef ENABLE_ZLIB
-            (unsigned long long int)(ndpi_memory_free_bytes - zlib_compression_bytes -
-                                     (zlib_compressions * sizeof(struct nDPId_detection_data)));
+            (unsigned long long int)(MT_GET_AND_ADD(ndpi_memory_free_bytes, 0) -
+                                     MT_GET_AND_ADD(zlib_compression_bytes, 0) -
+                                     (MT_GET_AND_ADD(zlib_compressions, 0) * sizeof(struct nDPId_detection_data)));
 #else
-            (unsigned long long int)ndpi_memory_free_bytes;
+            (unsigned long long int)MT_GET_AND_ADD(ndpi_memory_free_bytes, 0);
 #endif
 
         unsigned long long int total_alloc_count =
 #ifdef ENABLE_ZLIB
-            (unsigned long long int)(ndpi_memory_alloc_count - zlib_compressions * 2);
+            (unsigned long long int)(MT_GET_AND_ADD(ndpi_memory_alloc_count, 0) -
+                                     MT_GET_AND_ADD(zlib_compressions, 0) * 2);
 #else
-            (unsigned long long int)ndpi_memory_alloc_count;
+            (unsigned long long int)MT_GET_AND_ADD(ndpi_memory_alloc_count, 0);
 #endif
 
         unsigned long long int total_free_count =
 #ifdef ENABLE_ZLIB
-            (unsigned long long int)(ndpi_memory_free_count - zlib_decompressions * 2);
+            (unsigned long long int)(MT_GET_AND_ADD(ndpi_memory_free_count, 0) -
+                                     MT_GET_AND_ADD(zlib_decompressions, 0) * 2);
 #else
-            (unsigned long long int)ndpi_memory_free_count;
+            (unsigned long long int)MT_GET_AND_ADD(ndpi_memory_free_count, 0);
 #endif
 
         printf(
@@ -1076,20 +1080,21 @@ int main(int argc, char ** argv)
             (unsigned long long int)distributor_return.stats.json_string_len_avg);
     }
 
-    if (ndpi_memory_alloc_bytes != ndpi_memory_free_bytes || ndpi_memory_alloc_count != ndpi_memory_free_count ||
+    if (MT_GET_AND_ADD(ndpi_memory_alloc_bytes, 0) != MT_GET_AND_ADD(ndpi_memory_free_bytes, 0) ||
+        MT_GET_AND_ADD(ndpi_memory_alloc_count, 0) != MT_GET_AND_ADD(ndpi_memory_free_count, 0) ||
         nDPId_return.total_active_flows != nDPId_return.total_idle_flows)
     {
         logger(1, "%s: %s", argv[0], "Memory / Flow leak detected.");
         logger(1,
                "%s: Allocated / Free'd bytes: %llu / %llu",
                argv[0],
-               (unsigned long long int)ndpi_memory_alloc_bytes,
-               (unsigned long long int)ndpi_memory_free_bytes);
+               (unsigned long long int)MT_GET_AND_ADD(ndpi_memory_alloc_bytes, 0),
+               (unsigned long long int)MT_GET_AND_ADD(ndpi_memory_free_bytes, 0));
         logger(1,
                "%s: Allocated / Free'd count: %llu / %llu",
                argv[0],
-               (unsigned long long int)ndpi_memory_alloc_count,
-               (unsigned long long int)ndpi_memory_free_count);
+               (unsigned long long int)MT_GET_AND_ADD(ndpi_memory_alloc_count, 0),
+               (unsigned long long int)MT_GET_AND_ADD(ndpi_memory_free_count, 0));
         logger(1,
                "%s: Total Active / Idle Flows: %llu / %llu",
                argv[0],
@@ -1301,14 +1306,14 @@ int main(int argc, char ** argv)
     }
 
 #ifdef ENABLE_ZLIB
-    if (zlib_compressions != zlib_decompressions)
+    if (MT_GET_AND_ADD(zlib_compressions, 0) != MT_GET_AND_ADD(zlib_decompressions, 0))
     {
         logger(1,
                "%s: %s (%llu != %llu)",
                argv[0],
                "ZLib compression / decompression inconsistency detected.",
-               (unsigned long long int)zlib_compressions,
-               (unsigned long long int)zlib_decompressions);
+               (unsigned long long int)MT_GET_AND_ADD(zlib_compressions, 0),
+               (unsigned long long int)MT_GET_AND_ADD(zlib_decompressions, 0));
         return 1;
     }
     if (nDPId_return.current_compression_diff != 0)
@@ -1320,23 +1325,23 @@ int main(int argc, char ** argv)
                nDPId_return.current_compression_diff);
         return 1;
     }
-    if (nDPId_return.total_compressions != zlib_compressions)
+    if (nDPId_return.total_compressions != MT_GET_AND_ADD(zlib_compressions, 0))
     {
         logger(1,
                "%s: %s (%llu != %llu)",
                argv[0],
                "ZLib global<->workflow compression / decompression inconsistency detected.",
-               (unsigned long long int)zlib_compressions,
+               (unsigned long long int)MT_GET_AND_ADD(zlib_compressions, 0),
                nDPId_return.current_compression_diff);
         return 1;
     }
-    if (nDPId_return.total_compression_diff != zlib_compression_bytes)
+    if (nDPId_return.total_compression_diff != MT_GET_AND_ADD(zlib_compression_bytes, 0))
     {
         logger(1,
                "%s: %s (%llu bytes != %llu bytes)",
                argv[0],
                "ZLib global<->workflow compression / decompression inconsistency detected.",
-               (unsigned long long int)zlib_compression_bytes,
+               (unsigned long long int)MT_GET_AND_ADD(zlib_compression_bytes, 0),
                nDPId_return.total_compression_diff);
         return 1;
     }
