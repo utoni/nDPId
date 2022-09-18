@@ -1,3 +1,9 @@
+Notice
+======
+
+You should only use this as a feed if you are aware that you will get an unstable `nDPId` version.
+To get a more stable `nDPId` experience, use the https://github.com/utoni/my-openwrt-packages feed.
+
 HowTo use this
 ==============
 

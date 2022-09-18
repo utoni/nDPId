@@ -1,6 +1,11 @@
 [![Build](https://github.com/utoni/nDPId/actions/workflows/build.yml/badge.svg)](https://github.com/utoni/nDPId/actions/workflows/build.yml)
 [![Gitlab-CI](https://gitlab.com/utoni/nDPId/badges/main/pipeline.svg)](https://gitlab.com/utoni/nDPId/-/pipelines)
 
+# Disclaimer
+
+Please protect the privacy of others.
+The purpose of this software is not to spy on others, but to detect network anomalies and malicious traffic.
+
 # Abstract
 
 nDPId is a set of daemons and tools to capture, process and classify network traffic.

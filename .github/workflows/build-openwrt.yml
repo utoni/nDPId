@@ -67,4 +67,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.arch}}-packages
-          path: bin/packages/${{ matrix.arch }}/packages/*.ipk
+          path: bin/packages/${{ matrix.arch }}/ndpid_openwrt_packages_ci/*.ipk
