@@ -83,8 +83,6 @@ static void nDPIsrvd_verify_flows_cb(struct nDPIsrvd_thread_data const * const t
     {
         fprintf(stderr, "Thread [UNKNOWN], Flow %llu verification failed\n", flow->id_as_ull);
     }
-
-    exit(1);
 }
 
 static void sighandler(int signum)
@@ -108,6 +106,9 @@ static void sighandler(int signum)
         if (verification_failed == 0)
         {
             fprintf(stderr, "%s\n", "Flow verification succeeded.");
+        } else {
+            /* FATAL! */
+            exit(EXIT_FAILURE);
         }
     }
     else if (main_thread_shutdown == 0)
@@ -129,10 +130,19 @@ static enum nDPIsrvd_callback_return simple_json_callback(struct nDPIsrvd_socket
         return CALLBACK_OK;
     }
 
+    struct nDPIsrvd_json_token const * const alias = TOKEN_GET_SZ(sock, "alias");
+    struct nDPIsrvd_json_token const * const source = TOKEN_GET_SZ(sock, "source");
+    if (alias == NULL || source == NULL)
+    {
+        return CALLBACK_ERROR;
+    }
+
     struct nDPIsrvd_json_token const * const flow_event_name = TOKEN_GET_SZ(sock, "flow_event_name");
     if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "new") != 0)
     {
-        printf("Instance 0x%x, Thread %d, Flow %llu new\n",
+        printf("Instance %.*s/%.*s (HT-Key: 0x%x), Thread %d, Flow %llu new\n",
+               alias->value_length, alias->value,
+               source->value_length, source->value,
                instance->alias_source_key,
                flow->thread_id,
                flow->id_as_ull);
@@ -150,8 +160,19 @@ static void simple_flow_cleanup_callback(struct nDPIsrvd_socket * const sock,
     (void)sock;
     (void)thread_data;
 
+    struct nDPIsrvd_json_token const * const alias = TOKEN_GET_SZ(sock, "alias");
+    struct nDPIsrvd_json_token const * const source = TOKEN_GET_SZ(sock, "source");
+    if (alias == NULL || source == NULL)
+    {
+        /* FATAL! */
+        fprintf(stderr, "BUG: Missing JSON token alias/source.\n");
+        exit(EXIT_FAILURE);
+    }
+
     char const * const reason_str = nDPIsrvd_enum_to_string(reason);
-    printf("Instance 0x%x, Thread %d, Flow %llu cleanup, reason: %s\n",
+    printf("Instance %.*s/%.*s (HT-Key: 0x%x), Thread %d, Flow %llu cleanup, reason: %s\n",
+           alias->value_length, alias->value,
+           source->value_length, source->value,
            instance->alias_source_key,
            flow->thread_id,
            flow->id_as_ull,
@@ -159,7 +180,9 @@ static void simple_flow_cleanup_callback(struct nDPIsrvd_socket * const sock,
 
     if (reason == CLEANUP_REASON_FLOW_TIMEOUT)
     {
+        /* FATAL! */
         fprintf(stderr, "Flow %llu timeouted.\n", flow->id_as_ull);
+        exit(EXIT_FAILURE);
     }
 }
 

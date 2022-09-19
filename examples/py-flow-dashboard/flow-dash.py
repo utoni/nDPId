@@ -3,9 +3,11 @@
 import multiprocessing
 import os
 import sys
+import time
 
 sys.path.append(os.path.dirname(sys.argv[0]) + '/../../dependencies')
 sys.path.append(os.path.dirname(sys.argv[0]) + '/../share/nDPId')
+sys.path.append(os.path.dirname(sys.argv[0]))
 sys.path.append(sys.base_prefix + '/share/nDPId')
 import nDPIsrvd
 from nDPIsrvd import nDPIsrvdSocket
@@ -165,6 +167,10 @@ def nDPIsrvd_worker_onJsonLineRecvd(json_dict, instance, current_flow, global_us
 
         shared_flow_dict['total-flow-update-events'] += 1
 
+    elif json_dict['flow_event_name'] == 'analyse':
+
+        shared_flow_dict['total-flow-analyse-events'] += 1
+
     elif json_dict['flow_event_name'] == 'end':
 
         shared_flow_dict['total-flow-end-events'] += 1
@@ -231,6 +237,7 @@ def nDPIsrvd_worker(address, shared_flow_dict):
                 sys.stderr.write('Lost connection to {} .. reconnecting\n'
                                  .format(address[0]+':'+str(address[1])
                                          if type(address) is tuple else address))
+                time.sleep(1.0)
     except KeyboardInterrupt:
         pass
 
@@ -248,6 +255,7 @@ if __name__ == '__main__':
     shared_flow_dict['total-events']             = 0
     shared_flow_dict['total-flow-new-events']    = 0
     shared_flow_dict['total-flow-update-events'] = 0
+    shared_flow_dict['total-flow-analyse-events'] = 0
     shared_flow_dict['total-flow-end-events']    = 0
     shared_flow_dict['total-flow-idle-events']   = 0
     shared_flow_dict['total-flow-detected-events'] = 0

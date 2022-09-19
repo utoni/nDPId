@@ -8,6 +8,7 @@ import datetime
 
 sys.path.append(os.path.dirname(sys.argv[0]) + '/../../dependencies')
 sys.path.append(os.path.dirname(sys.argv[0]) + '/../share/nDPId')
+sys.path.append(os.path.dirname(sys.argv[0]))
 sys.path.append(sys.base_prefix + '/share/nDPId')
 import nDPIsrvd
 from nDPIsrvd import nDPIsrvdSocket, TermColor
@@ -62,7 +63,8 @@ class Stats:
         if current_flow is None:
             return
 
-        set_attr_from_dict(current_flow, json_dict, 'flow_tot_l4_payload_len', 0)
+        set_attr_from_dict(current_flow, json_dict, 'flow_src_tot_l4_payload_len', 0)
+        set_attr_from_dict(current_flow, json_dict, 'flow_dst_tot_l4_payload_len', 0)
         if 'ndpi' in json_dict:
             set_attr_from_dict(current_flow, json_dict['ndpi'], 'flow_risk', {})
         else:
@@ -89,7 +91,7 @@ class Stats:
 
     def updateOnCleanup(self, current_flow):
         self.total_flows += 1
-        self.expired_tot_l4_payload_len += current_flow.flow_tot_l4_payload_len
+        self.expired_tot_l4_payload_len += current_flow.flow_src_tot_l4_payload_len + current_flow.flow_dst_tot_l4_payload_len
         self.risky_flows += 1 if len(current_flow.flow_risk) > 0 else 0
         self.midstream_flows += 1 if current_flow.midstream != 0 else 0
         self.guessed_flows += 1 if current_flow.guessed != 0 else 0
@@ -114,7 +116,7 @@ class Stats:
                     flow_count += 1
                     current_flow = instances[alias][source].flows[flow_id]
 
-                    flow_tot_l4_payload_len += current_flow.flow_tot_l4_payload_len
+                    flow_tot_l4_payload_len += current_flow.flow_src_tot_l4_payload_len + current_flow.flow_dst_tot_l4_payload_len
                     risky += 1 if len(current_flow.flow_risk) > 0 else 0
                     midstream += 1 if current_flow.midstream != 0 else 0
                     guessed += 1 if current_flow.guessed != 0 else 0
@@ -182,7 +184,7 @@ def checkEventFilter(json_dict):
                    'guessed': args.guessed, 'detected': args.detected,
                    'detection-update': args.detection_update,
                    'not-detected': args.not_detected,
-                   'update': args.update, 'analysis': args.analysis}
+                   'update': args.update, 'analyse': args.analyse}
 
     if flow_events[json_dict['flow_event_name']] is True:
         return True
@@ -249,7 +251,7 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
         basic_daemon_event_prefix += ' ' * 11
         if 'flow_first_seen' in json_dict:
             first_seen = '[' + prettifyTimediff(nDPIsrvd.toSeconds(json_dict['flow_first_seen']),
-                                                nDPIsrvd.toSeconds(json_dict['thread_ts_usec']) + ']'
+                                                nDPIsrvd.toSeconds(json_dict['thread_ts_usec']) + ']')
 
     last_seen = ''
     if args.print_last_seen is True:
@@ -257,7 +259,7 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
         if current_flow is not None:
             flow_last_seen = nDPIsrvd.FlowManager.getLastPacketTime(instance, current_flow.flow_id, json_dict)
             last_seen = '[' + prettifyTimediff(nDPIsrvd.toSeconds(flow_last_seen),
-                                               nDPIsrvd.toSeconds(json_dict['thread_ts_usec']) + ']'
+                                               nDPIsrvd.toSeconds(json_dict['thread_ts_usec']) + ']')
 
     if 'daemon_event_id' in json_dict:
         if json_dict['daemon_event_name'] == 'status':
@@ -346,8 +348,8 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
     elif json_dict['flow_event_name'] == 'not-detected':
         flow_event_name += '{}{:>16}{}'.format(TermColor.WARNING + TermColor.BOLD + TermColor.BLINK,
                                                json_dict['flow_event_name'], TermColor.END)
-    elif json_dict['flow_event_name'] == 'analysis':
-        flow_event_name += '{}{:>16}{}'.format(TermColor.WARNING + TermColor.BLINK,
+    elif json_dict['flow_event_name'] == 'analyse':
+        flow_event_name += '{}{:>16}{}'.format(TermColor.WARNING,
                                                json_dict['flow_event_name'], TermColor.END)
     else:
         if json_dict['flow_event_name'] == 'new':
@@ -418,7 +420,7 @@ if __name__ == '__main__':
     argparser.add_argument('--end',        action='store_true', default=False, help='Print only end flow events.')
     argparser.add_argument('--idle',       action='store_true', default=False, help='Print only idle flow events.')
     argparser.add_argument('--update',     action='store_true', default=False, help='Print only update flow events.')
-    argparser.add_argument('--analysis',   action='store_true', default=False, help='Print only analysis flow events.')
+    argparser.add_argument('--analyse',    action='store_true', default=False, help='Print only analyse flow events.')
     argparser.add_argument('--detection',  action='store_true', default=False, help='Print only detected/detection-update flow events.')
     argparser.add_argument('--ipwhois',    action='store_true', default=False, help='Use Python-IPWhois to print additional location information.')
     args = argparser.parse_args()

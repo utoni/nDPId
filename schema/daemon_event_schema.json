@@ -13,7 +13,7 @@
         "properties": { "daemon_event_name": { "enum": [ "init", "reconnect" ] } }
     },
     "then": {
-        "required": [ "max-flows-per-thread", "max-idle-flows-per-thread", "tick-resolution", "reader-thread-count", "flow-scan-interval", "generic-max-idle-time", "icmp-max-idle-time", "udp-max-idle-time", "tcp-max-idle-time", "max-packets-per-flow-to-send", "max-packets-per-flow-to-process" ]
+        "required": [ "max-flows-per-thread", "max-idle-flows-per-thread", "reader-thread-count", "flow-scan-interval", "generic-max-idle-time", "icmp-max-idle-time", "udp-max-idle-time", "tcp-max-idle-time", "max-packets-per-flow-to-send", "max-packets-per-flow-to-process", "max-packets-per-flow-to-analyse" ]
     },
     "if": {
         "properties": { "daemon_event_name": { "enum": [ "status", "shutdown" ] } }
@@ -59,9 +59,6 @@
         "max-idle-flows-per-thread": {
             "type": "number"
         },
-        "tick-resolution": {
-            "type": "number"
-        },
         "reader-thread-count": {
             "type": "number"
         },
@@ -84,6 +81,9 @@
             "type": "number"
         },
         "max-packets-per-flow-to-send": {
+            "type": "number"
+        },
+        "max-packets-per-flow-to-analyse": {
             "type": "number"
         },
 

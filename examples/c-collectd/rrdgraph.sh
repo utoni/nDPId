@@ -2,7 +2,7 @@
 
 RRDDIR="${1}"
 OUTDIR="${2}"
-RRDARGS="--width=800 --height=400 -v Amount"
+RRDARGS="--width=800 --height=400"
 
 if [ -z "${RRDDIR}" ]; then
 	printf '%s: Missing RRD directory which contains nDPIsrvd/Collectd files.\n' "${0}"
@@ -14,7 +14,7 @@ if [ -z "${OUTDIR}" ]; then
 	exit 1
 fi
 
-if [ $(ls -al ${RRDDIR}/flow_*.rrd | wc -l) -ne 54 ]; then
+if [ $(ls -al ${RRDDIR}/gauge-flow_*.rrd | wc -l) -ne 54 ]; then
 	printf '%s: Missing some *.rrd files.\n' "${0}"
 	exit 1
 fi
@@ -25,6 +25,7 @@ if [ ! -r "${OUTDIR}/index.html" -o ! -r "${OUTDIR}/flows.html" -o ! -r "${OUTDI
 fi
 
 TIME_PAST_HOUR="--start=-3600 --end=-0"
+TIME_PAST_12HOURS="--start=-43200 --end=-0"
 TIME_PAST_DAY="--start=-86400 --end=-0"
 TIME_PAST_WEEK="--start=-604800 --end=-0"
 TIME_PAST_MONTH="--start=-2419200 --end=-0"
@@ -44,17 +45,20 @@ rrdtool_graph_print_cur_min_max_avg() {
 rrdtool_graph() {
 	TITLE="${1}"
 	shift
+	YAXIS_NAME="${1}"
+	shift
 	OUTPNG="${1}"
 	shift
 
-	rrdtool graph ${RRDARGS} -t "${TITLE} (past hour)"  -Y --start=-3600     --end=-0 "${OUTPNG}_past_hour.png"  ${*}
-	rrdtool graph ${RRDARGS} -t "${TITLE} (past day)"   -Y --start=-86400    --end=-0 "${OUTPNG}_past_day.png"   ${*}
-	rrdtool graph ${RRDARGS} -t "${TITLE} (past week)"  -Y --start=-604800   --end=-0 "${OUTPNG}_past_week.png"  ${*}
-	rrdtool graph ${RRDARGS} -t "${TITLE} (past month)" -Y --start=-2419200  --end=-0 "${OUTPNG}_past_month.png" ${*}
-	rrdtool graph ${RRDARGS} -t "${TITLE} (past year)"  -Y --start=-31536000 --end=-0 "${OUTPNG}_past_year.png"  ${*}
+	rrdtool graph ${RRDARGS} -t "${TITLE} (past hour)"     -v ${YAXIS_NAME} -Y ${TIME_PAST_HOUR}    "${OUTPNG}_past_hour.png"    ${*}
+	rrdtool graph ${RRDARGS} -t "${TITLE} (past 12 hours)" -v ${YAXIS_NAME} -Y ${TIME_PAST_12HOURS} "${OUTPNG}_past_12hours.png" ${*}
+	rrdtool graph ${RRDARGS} -t "${TITLE} (past day)"      -v ${YAXIS_NAME} -Y ${TIME_PAST_DAY}     "${OUTPNG}_past_day.png"     ${*}
+	rrdtool graph ${RRDARGS} -t "${TITLE} (past week)"     -v ${YAXIS_NAME} -Y ${TIME_PAST_WEEK}    "${OUTPNG}_past_week.png"    ${*}
+	rrdtool graph ${RRDARGS} -t "${TITLE} (past month)"    -v ${YAXIS_NAME} -Y ${TIME_PAST_MONTH}   "${OUTPNG}_past_month.png"   ${*}
+	rrdtool graph ${RRDARGS} -t "${TITLE} (past year)"     -v ${YAXIS_NAME} -Y ${TIME_PAST_YEAR}    "${OUTPNG}_past_year.png"    ${*}
 }
 
-rrdtool_graph Flows "${OUTDIR}/flows" \
+rrdtool_graph Flows Amount "${OUTDIR}/flows" \
 	DEF:flows_new=${RRDDIR}/gauge-flow_new_count.rrd:value:AVERAGE \
         DEF:flows_end=${RRDDIR}/gauge-flow_end_count.rrd:value:AVERAGE \
         DEF:flows_idle=${RRDDIR}/gauge-flow_idle_count.rrd:value:AVERAGE \
@@ -68,7 +72,7 @@ rrdtool_graph Flows "${OUTDIR}/flows" \
 	$(rrdtool_graph_print_cur_min_max_avg flows_end) \
         LINE2:flows_idle#CC7016:"Idle" \
 	$(rrdtool_graph_print_cur_min_max_avg flows_idle)
-rrdtool_graph Detections "${OUTDIR}/detections" \
+rrdtool_graph Detections Amount "${OUTDIR}/detections" \
 	DEF:flows_detected=${RRDDIR}/gauge-flow_detected_count.rrd:value:AVERAGE \
 	DEF:flows_guessed=${RRDDIR}/gauge-flow_guessed_count.rrd:value:AVERAGE \
 	DEF:flows_not_detected=${RRDDIR}/gauge-flow_not_detected_count.rrd:value:AVERAGE \
@@ -76,9 +80,9 @@ rrdtool_graph Detections "${OUTDIR}/detections" \
 	DEF:flows_risky=${RRDDIR}/gauge-flow_risky_count.rrd:value:AVERAGE \
 	$(rrdtool_graph_colorize_missing_data flows_detected) \
 	AREA:flows_detected#00bfff::STACK \
+	AREA:flows_detection_update#a1b8c4::STACK \
 	AREA:flows_guessed#ffff4d::STACK \
 	AREA:flows_not_detected#ffa64d::STACK \
-	AREA:flows_detection_update#a1b8c4::STACK \
 	AREA:flows_risky#ff4000::STACK \
 	LINE2:flows_detected#0000ff:"Detected........" \
 	$(rrdtool_graph_print_cur_min_max_avg flows_detected) \
@@ -90,13 +94,15 @@ rrdtool_graph Detections "${OUTDIR}/detections" \
 	$(rrdtool_graph_print_cur_min_max_avg flows_detection_update) \
 	LINE2:flows_risky#b32d00:"Risky..........." \
 	$(rrdtool_graph_print_cur_min_max_avg flows_risky)
-rrdtool_graph "Traffic (IN/OUT)" "${OUTDIR}/traffic" \
-        DEF:total_bytes=${RRDDIR}/gauge-flow_total_bytes.rrd:value:AVERAGE \
-	$(rrdtool_graph_colorize_missing_data total_bytes) \
-	AREA:total_bytes#bea1c4::STACK \
-        LINE2:total_bytes#92629d:"Total-Bytes-Xfer" \
-	$(rrdtool_graph_print_cur_min_max_avg total_bytes)
-rrdtool_graph Layer3-Flows "${OUTDIR}/layer3" \
+rrdtool_graph "Traffic (IN/OUT)" Bytes "${OUTDIR}/traffic" \
+	DEF:total_src_bytes=${RRDDIR}/gauge-flow_src_total_bytes.rrd:value:AVERAGE \
+	DEF:total_dst_bytes=${RRDDIR}/gauge-flow_dst_total_bytes.rrd:value:AVERAGE \
+	$(rrdtool_graph_colorize_missing_data total_src_bytes) \
+	AREA:total_src_bytes#00cc99:"Total-Bytes-Source2Dest":STACK \
+	$(rrdtool_graph_print_cur_min_max_avg total_src_bytes) \
+	STACK:total_dst_bytes#669999:"Total-Bytes-Dest2Source" \
+	$(rrdtool_graph_print_cur_min_max_avg total_dst_bytes)
+rrdtool_graph Layer3-Flows Amount "${OUTDIR}/layer3" \
         DEF:layer3_ip4=${RRDDIR}/gauge-flow_l3_ip4_count.rrd:value:AVERAGE \
 	DEF:layer3_ip6=${RRDDIR}/gauge-flow_l3_ip6_count.rrd:value:AVERAGE \
 	DEF:layer3_other=${RRDDIR}/gauge-flow_l3_other_count.rrd:value:AVERAGE \
@@ -110,7 +116,7 @@ rrdtool_graph Layer3-Flows "${OUTDIR}/layer3" \
 	$(rrdtool_graph_print_cur_min_max_avg layer3_ip6) \
 	LINE2:layer3_other#92629d:"Other" \
 	$(rrdtool_graph_print_cur_min_max_avg layer3_other)
-rrdtool_graph Layer4-Flows "${OUTDIR}/layer4" \
+rrdtool_graph Layer4-Flows Amount "${OUTDIR}/layer4" \
         DEF:layer4_tcp=${RRDDIR}/gauge-flow_l4_tcp_count.rrd:value:AVERAGE \
         DEF:layer4_udp=${RRDDIR}/gauge-flow_l4_udp_count.rrd:value:AVERAGE \
         DEF:layer4_icmp=${RRDDIR}/gauge-flow_l4_icmp_count.rrd:value:AVERAGE \
@@ -128,7 +134,7 @@ rrdtool_graph Layer4-Flows "${OUTDIR}/layer4" \
 	$(rrdtool_graph_print_cur_min_max_avg layer4_icmp) \
 	LINE2:layer4_other#83588d:"Other" \
 	$(rrdtool_graph_print_cur_min_max_avg layer4_other)
-rrdtool_graph Flow-Breeds "${OUTDIR}/breed" \
+rrdtool_graph Flow-Breeds Amount "${OUTDIR}/breed" \
 	DEF:breed_safe=${RRDDIR}/gauge-flow_breed_safe_count.rrd:value:AVERAGE \
 	DEF:breed_acceptable=${RRDDIR}/gauge-flow_breed_acceptable_count.rrd:value:AVERAGE \
 	DEF:breed_fun=${RRDDIR}/gauge-flow_breed_fun_count.rrd:value:AVERAGE \
@@ -162,7 +168,7 @@ rrdtool_graph Flow-Breeds "${OUTDIR}/breed" \
 	$(rrdtool_graph_print_cur_min_max_avg breed_unrated) \
 	LINE2:breed_unknown#ae849a:"Unknown.............." \
 	$(rrdtool_graph_print_cur_min_max_avg breed_unknown)
-rrdtool_graph Flow-Categories "${OUTDIR}/categories" \
+rrdtool_graph Flow-Categories 'Amount(SUM)' "${OUTDIR}/categories" \
 	DEF:cat_ads=${RRDDIR}/gauge-flow_category_advertisment_count.rrd:value:AVERAGE \
 	DEF:cat_chat=${RRDDIR}/gauge-flow_category_chat_count.rrd:value:AVERAGE \
 	DEF:cat_cloud=${RRDDIR}/gauge-flow_category_cloud_count.rrd:value:AVERAGE \
@@ -192,59 +198,59 @@ rrdtool_graph Flow-Categories "${OUTDIR}/categories" \
 	DEF:cat_vpn=${RRDDIR}/gauge-flow_category_vpn_count.rrd:value:AVERAGE \
 	DEF:cat_web=${RRDDIR}/gauge-flow_category_web_count.rrd:value:AVERAGE \
 	$(rrdtool_graph_colorize_missing_data cat_ads) \
-	LINE2:cat_ads#f1c232:"Advertisment..........." \
+	AREA:cat_ads#f1c232:"Advertisment..........." \
 	$(rrdtool_graph_print_cur_min_max_avg cat_ads) \
-	LINE2:cat_chat#6fa8dc:"Chat..................." \
+	STACK:cat_chat#6fa8dc:"Chat..................." \
 	$(rrdtool_graph_print_cur_min_max_avg cat_chat) \
-	LINE2:cat_cloud#2986cc:"Cloud.................." \
+	STACK:cat_cloud#2986cc:"Cloud.................." \
 	$(rrdtool_graph_print_cur_min_max_avg cat_cloud) \
-	LINE2:cat_xfer#16537e:"Data-Transfer.........." \
+	STACK:cat_xfer#16537e:"Data-Transfer.........." \
 	$(rrdtool_graph_print_cur_min_max_avg cat_xfer) \
-	LINE2:cat_db#cc0000:"Database..............." \
+	STACK:cat_db#cc0000:"Database..............." \
 	$(rrdtool_graph_print_cur_min_max_avg cat_db) \
-	LINE2:cat_dl#6a329f:"Download..............." \
+	STACK:cat_dl#6a329f:"Download..............." \
 	$(rrdtool_graph_print_cur_min_max_avg cat_dl) \
-	LINE2:cat_mail#3600cc:"Mail..................." \
+	STACK:cat_mail#3600cc:"Mail..................." \
 	$(rrdtool_graph_print_cur_min_max_avg cat_mail) \
-	LINE2:cat_fs#c90076:"File-Sharing..........." \
+	STACK:cat_fs#c90076:"File-Sharing..........." \
 	$(rrdtool_graph_print_cur_min_max_avg cat_fs) \
-	LINE2:cat_game#00ff26:"Game..................." \
+	STACK:cat_game#00ff26:"Game..................." \
 	$(rrdtool_graph_print_cur_min_max_avg cat_game) \
-	LINE2:cat_mal#f44336:"Malware................" \
+	STACK:cat_mal#f44336:"Malware................" \
 	$(rrdtool_graph_print_cur_min_max_avg cat_mal) \
-	LINE2:cat_med#ff8300:"Media.................." \
+	STACK:cat_med#ff8300:"Media.................." \
 	$(rrdtool_graph_print_cur_min_max_avg cat_med) \
-	LINE2:cat_min#ff0000:"Mining................." \
+	STACK:cat_min#ff0000:"Mining................." \
 	$(rrdtool_graph_print_cur_min_max_avg cat_min) \
-	LINE2:cat_mus#00fff0:"Music.................." \
+	STACK:cat_mus#00fff0:"Music.................." \
 	$(rrdtool_graph_print_cur_min_max_avg cat_mus) \
-	LINE2:cat_net#ddff00:"Network................" \
+	STACK:cat_net#ddff00:"Network................" \
 	$(rrdtool_graph_print_cur_min_max_avg cat_net) \
-	LINE2:cat_oth#744700:"Other.................." \
+	STACK:cat_oth#744700:"Other.................." \
 	$(rrdtool_graph_print_cur_min_max_avg cat_oth) \
-	LINE2:cat_prod#29ff00:"Productivity..........." \
+	STACK:cat_prod#29ff00:"Productivity..........." \
 	$(rrdtool_graph_print_cur_min_max_avg cat_prod) \
-	LINE2:cat_rem#b52c2c:"Remote-Access.........." \
+	STACK:cat_rem#b52c2c:"Remote-Access.........." \
 	$(rrdtool_graph_print_cur_min_max_avg cat_rem) \
-	LINE2:cat_rpc#e15a5a:"Remote-Procedure-Call.." \
+	STACK:cat_rpc#e15a5a:"Remote-Procedure-Call.." \
 	$(rrdtool_graph_print_cur_min_max_avg cat_rpc) \
-	LINE2:cat_shop#0065ff:"Shopping..............." \
+	STACK:cat_shop#0065ff:"Shopping..............." \
 	$(rrdtool_graph_print_cur_min_max_avg cat_shop) \
-	LINE2:cat_soc#8fce00:"Social-Network........." \
+	STACK:cat_soc#8fce00:"Social-Network........." \
 	$(rrdtool_graph_print_cur_min_max_avg cat_soc) \
-	LINE2:cat_soft#007a0d:"Software-Update........" \
+	STACK:cat_soft#007a0d:"Software-Update........" \
 	$(rrdtool_graph_print_cur_min_max_avg cat_soft) \
-	LINE2:cat_str#ff00b8:"Streaming.............." \
+	STACK:cat_str#ff00b8:"Streaming.............." \
 	$(rrdtool_graph_print_cur_min_max_avg cat_str) \
-	LINE2:cat_sys#f4ff00:"System................." \
+	STACK:cat_sys#f4ff00:"System................." \
 	$(rrdtool_graph_print_cur_min_max_avg cat_sys) \
-	LINE2:cat_ukn#999999:"Unknown................" \
+	STACK:cat_ukn#999999:"Unknown................" \
 	$(rrdtool_graph_print_cur_min_max_avg cat_ukn) \
-	LINE2:cat_vid#518820:"Video.................." \
+	STACK:cat_vid#518820:"Video.................." \
 	$(rrdtool_graph_print_cur_min_max_avg cat_vid) \
-	LINE2:cat_voip#ffc700:"Voice-Over-IP.........." \
+	STACK:cat_voip#ffc700:"Voice-Over-IP.........." \
 	$(rrdtool_graph_print_cur_min_max_avg cat_voip) \
-	LINE2:cat_vpn#378035:"Virtual-Private-Network" \
+	STACK:cat_vpn#378035:"Virtual-Private-Network" \
 	$(rrdtool_graph_print_cur_min_max_avg cat_vpn) \
-	LINE2:cat_web#00fffb:"Web...................." \
+	STACK:cat_web#00fffb:"Web...................." \
 	$(rrdtool_graph_print_cur_min_max_avg cat_web)

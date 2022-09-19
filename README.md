@@ -114,7 +114,7 @@ Flow Events: all events related to a flow
  2. end: a TCP connections terminates
  3. idle: a flow timed out, because there was no packet on the wire for a certain amount of time
  4. update: inform nDPIsrvd or other apps about a long-lasting flow, whose detection was finished a long time ago but is still active
- 5. analyse: provide some information about extracted features of a flow (disabled per default, enabled with `-A`)
+ 5. analyse: provide some information about extracted features of a flow (Experimental; disabled per default, enable with `-A`)
  6. guessed: `libnDPI` was not able to reliable detect a layer7 protocol and falls back to IP/Port based detection
  7. detected: `libnDPI` sucessfully detected a layer7 protocol
  8. detection-update: `libnDPI` dissected more layer7 protocol data (after detection already done)
@@ -261,7 +261,6 @@ Format: `subopt` (unit, comment): description
 
  * `max-flows-per-thread` (N, caution advised): affects max. memory usage
  * `max-idle-flows-per-thread` (N, safe): max. allowed idle flows which memory get's free'd after `flow-scan-interval`
- * `tick-resolution` (ns, untested): timestamp resolution (applies to **all** timestamps!)
  * `max-reader-threads` (N, safe): amount of packet processing threads, every thread can have a max. of `max-flows-per-thread` flows
  * `daemon-status-interval` (ms, safe): specifies how often daemon event `status` will be generated
  * `compression-scan-interval` (ms, untested): specifies how often `nDPId` should scan for inactive flows ready for compression
@@ -274,6 +273,7 @@ Format: `subopt` (unit, comment): description
  * `tcp-max-post-end-flow-time` (ms, caution advised): a TCP flow that received a FIN or RST will wait that amount of time before flow tracking will be stopped and the flow memory free'd
  * `max-packets-per-flow-to-send` (N, safe): max. `packet-flow` events that will be generated for the first N packets of each flow
  * `max-packets-per-flow-to-process` (N, caution advised): max. packets that will be processed by `libnDPI`
+ * `max-packets-per-flow-to-analyze` (N, safe): max. packets to analyze before sending an `analyse` event, requires `-A`
 
 # test
 

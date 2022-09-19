@@ -5,11 +5,18 @@ import sys
 
 sys.path.append(os.path.dirname(sys.argv[0]) + '/../../dependencies')
 sys.path.append(os.path.dirname(sys.argv[0]) + '/../share/nDPId')
-sys.path.append(os.path.dirname(sys.argv[0]) + '/../usr/share/nDPId')
+sys.path.append(os.path.dirname(sys.argv[0]))
+sys.path.append(sys.base_prefix + '/share/nDPId')
 import nDPIsrvd
 from nDPIsrvd import nDPIsrvdSocket, TermColor
 
 class Stats:
+    KEYS = [ ['init','reconnect','shutdown','status' ], \
+            [ 'new','end','idle','update', ],
+            [ 'analyse' ], \
+            [ 'guessed','detected','detection-update','not-detected' ], \
+            [ 'packet', 'packet-flow'] ]
+    ALL_KEYS = KEYS[0] + KEYS[1] + KEYS[2] + KEYS[3] + KEYS[4]
 
     def __init__(self, nDPIsrvd_sock):
         self.nsock = nDPIsrvd_sock
@@ -20,11 +27,7 @@ class Stats:
         self.print_nmb_every = self.print_dot_every * 5
 
     def resetEventCounter(self):
-        keys = ['init','reconnect','shutdown','status', \
-                'new','end','idle','update','analyse', \
-                'guessed','detected','detection-update','not-detected', \
-                'packet', 'packet-flow']
-        for k in keys:
+        for k in Stats.ALL_KEYS:
             self.event_counter[k] = 0
 
     def incrementEventCounter(self, json_dict):
@@ -52,13 +55,9 @@ class Stats:
         return True
 
     def getEventCounterStr(self):
-        keys = [ [ 'init','reconnect','shutdown','status' ], \
-                 [ 'new','end','idle','update' ], \
-                 [ 'guessed','detected','detection-update','not-detected' ], \
-                 [ 'packet', 'packet-flow' ] ]
         retval = str()
         retval += '-' * 98 + '--\n'
-        for klist in keys:
+        for klist in Stats.KEYS:
             for k in klist:
                 retval += '| {:<16}: {:<4} '.format(k, self.event_counter[k])
             retval += '\n--' + '-' * 98 + '\n'

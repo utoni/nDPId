@@ -465,7 +465,6 @@ static struct
     char * instance_alias;
     unsigned long long int max_flows_per_thread;
     unsigned long long int max_idle_flows_per_thread;
-    unsigned long long int tick_resolution;
     unsigned long long int reader_thread_count;
     unsigned long long int daemon_status_interval;
 #ifdef ENABLE_MEMORY_PROFILING
@@ -483,13 +482,12 @@ static struct
     unsigned long long int tcp_max_post_end_flow_time;
     unsigned long long int max_packets_per_flow_to_send;
     unsigned long long int max_packets_per_flow_to_process;
-    unsigned long long int max_packets_per_flow_to_analyze;
+    unsigned long long int max_packets_per_flow_to_analyse;
 } nDPId_options = {.pidfile = nDPId_PIDFILE,
                    .user = "nobody",
                    .collector_address = COLLECTOR_UNIX_SOCKET,
                    .max_flows_per_thread = nDPId_MAX_FLOWS_PER_THREAD / 2,
                    .max_idle_flows_per_thread = nDPId_MAX_IDLE_FLOWS_PER_THREAD / 2,
-                   .tick_resolution = nDPId_TICK_RESOLUTION,
                    .reader_thread_count = nDPId_MAX_READER_THREADS / 2,
                    .daemon_status_interval = nDPId_DAEMON_STATUS_INTERVAL,
 #ifdef ENABLE_MEMORY_PROFILING
@@ -507,13 +505,12 @@ static struct
                    .tcp_max_post_end_flow_time = nDPId_TCP_POST_END_FLOW_TIME,
                    .max_packets_per_flow_to_send = nDPId_PACKETS_PER_FLOW_TO_SEND,
                    .max_packets_per_flow_to_process = nDPId_PACKETS_PER_FLOW_TO_PROCESS,
-                   .max_packets_per_flow_to_analyze = nDPId_PACKETS_PER_FLOW_TO_ANALYZE};
+                   .max_packets_per_flow_to_analyse = nDPId_PACKETS_PER_FLOW_TO_ANALYZE};
 
 enum nDPId_subopts
 {
     MAX_FLOWS_PER_THREAD = 0,
     MAX_IDLE_FLOWS_PER_THREAD,
-    TICK_RESOLUTION,
     MAX_READER_THREADS,
     DAEMON_STATUS_INTERVAL,
 #ifdef ENABLE_MEMORY_PROFILING
@@ -535,7 +532,6 @@ enum nDPId_subopts
 };
 static char * const subopt_token[] = {[MAX_FLOWS_PER_THREAD] = "max-flows-per-thread",
                                       [MAX_IDLE_FLOWS_PER_THREAD] = "max-idle-flows-per-thread",
-                                      [TICK_RESOLUTION] = "tick-resolution",
                                       [MAX_READER_THREADS] = "max-reader-threads",
                                       [DAEMON_STATUS_INTERVAL] = "daemon-status-interval",
 #ifdef ENABLE_MEMORY_PROFILING
@@ -553,7 +549,7 @@ static char * const subopt_token[] = {[MAX_FLOWS_PER_THREAD] = "max-flows-per-th
                                       [TCP_MAX_POST_END_FLOW_TIME] = "tcp-max-post-end-flow-time",
                                       [MAX_PACKETS_PER_FLOW_TO_SEND] = "max-packets-per-flow-to-send",
                                       [MAX_PACKETS_PER_FLOW_TO_PROCESS] = "max-packets-per-flow-to-process",
-                                      [MAX_PACKETS_PER_FLOW_TO_ANALYZE] = "max-packets-per-flow-to-analyze",
+                                      [MAX_PACKETS_PER_FLOW_TO_ANALYZE] = "max-packets-per-flow-to-analyse",
                                       NULL};
 
 static void sighandler(int signum);
@@ -1363,15 +1359,15 @@ static int alloc_detection_data(struct nDPId_flow * const flow)
         }
 
         ndpi_init_data_analysis(&flow->flow_extended.flow_analysis->iat[FD_SRC2DST],
-                                nDPId_options.max_packets_per_flow_to_analyze);
+                                nDPId_options.max_packets_per_flow_to_analyse);
         ndpi_init_data_analysis(&flow->flow_extended.flow_analysis->iat[FD_DST2SRC],
-                                nDPId_options.max_packets_per_flow_to_analyze);
+                                nDPId_options.max_packets_per_flow_to_analyse);
         ndpi_init_data_analysis(&flow->flow_extended.flow_analysis->iat_flow,
-                                nDPId_options.max_packets_per_flow_to_analyze);
+                                nDPId_options.max_packets_per_flow_to_analyse);
         ndpi_init_data_analysis(&flow->flow_extended.flow_analysis->pktlen[FD_SRC2DST],
-                                nDPId_options.max_packets_per_flow_to_analyze);
+                                nDPId_options.max_packets_per_flow_to_analyse);
         ndpi_init_data_analysis(&flow->flow_extended.flow_analysis->pktlen[FD_DST2SRC],
-                                nDPId_options.max_packets_per_flow_to_analyze);
+                                nDPId_options.max_packets_per_flow_to_analyse);
         ndpi_init_bin(&flow->flow_extended.flow_analysis->payload_len_bin[FD_SRC2DST],
                       ndpi_bin_family8,
                       nDPId_ANALYZE_PLEN_NUM_BINS);
@@ -1652,6 +1648,10 @@ static int is_flow_update_required(struct nDPId_workflow const * const workflow,
 {
     uint64_t itime = get_l4_protocol_idle_time(flow_ext->flow_basic.l4_protocol);
 
+    if (flow_ext->flow_basic.l4_protocol != IPPROTO_TCP)
+    {
+        return flow_ext->last_flow_update + itime / 4 <= workflow->last_thread_time;
+    }
     return flow_ext->last_flow_update + itime <= workflow->last_thread_time;
 }
 
@@ -1996,7 +1996,6 @@ static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enu
             ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
                                          "max-idle-flows-per-thread",
                                          nDPId_options.max_idle_flows_per_thread);
-            ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "tick-resolution", nDPId_options.tick_resolution);
             ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
                                          "reader-thread-count",
                                          nDPId_options.reader_thread_count);
@@ -2021,6 +2020,9 @@ static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enu
             ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
                                          "max-packets-per-flow-to-process",
                                          nDPId_options.max_packets_per_flow_to_process);
+            ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
+                                         "max-packets-per-flow-to-analyse",
+                                         nDPId_options.max_packets_per_flow_to_analyse);
             break;
 
         case DAEMON_EVENT_STATUS:
@@ -3985,7 +3987,7 @@ static void ndpi_process_packet(uint8_t * const args,
     if (nDPId_options.enable_data_analysis != 0 && flow_to_process->flow_extended.flow_analysis != NULL &&
         flow_to_process->flow_extended.packets_processed[FD_SRC2DST] +
                 flow_to_process->flow_extended.packets_processed[FD_DST2SRC] <=
-            nDPId_options.max_packets_per_flow_to_analyze)
+            nDPId_options.max_packets_per_flow_to_analyse)
     {
         uint64_t tdiff_us = timer_sub(workflow->last_thread_time, last_pkt_time);
 
@@ -4002,7 +4004,7 @@ static void ndpi_process_packet(uint8_t * const args,
 
         if (flow_to_process->flow_extended.packets_processed[FD_SRC2DST] +
                 flow_to_process->flow_extended.packets_processed[FD_DST2SRC] ==
-            nDPId_options.max_packets_per_flow_to_analyze)
+            nDPId_options.max_packets_per_flow_to_analyse)
         {
             jsonize_flow_event(reader_thread, &flow_to_process->flow_extended, FLOW_EVENT_ANALYSE);
         }
@@ -4056,7 +4058,7 @@ static void ndpi_process_packet(uint8_t * const args,
                                       &flow_to_process->info.detection_data->flow,
                                       ip != NULL ? (uint8_t *)ip : (uint8_t *)ip6,
                                       ip_size,
-                                      workflow->last_thread_time,
+                                      workflow->last_thread_time / 1000,
                                       NULL);
 
     if (ndpi_is_protocol_detected(workflow->ndpi_struct, flow_to_process->flow_extended.detected_l7_protocol) != 0 &&
@@ -4673,9 +4675,6 @@ static void print_subopt_usage(void)
                 case MAX_IDLE_FLOWS_PER_THREAD:
                     fprintf(stderr, "%llu\n", nDPId_options.max_idle_flows_per_thread);
                     break;
-                case TICK_RESOLUTION:
-                    fprintf(stderr, "%llu\n", nDPId_options.tick_resolution);
-                    break;
                 case MAX_READER_THREADS:
                     fprintf(stderr, "%llu\n", nDPId_options.reader_thread_count);
                     break;
@@ -4720,7 +4719,7 @@ static void print_subopt_usage(void)
                     fprintf(stderr, "%llu\n", nDPId_options.max_packets_per_flow_to_process);
                     break;
                 case MAX_PACKETS_PER_FLOW_TO_ANALYZE:
-                    fprintf(stderr, "%llu\n", nDPId_options.max_packets_per_flow_to_analyze);
+                    fprintf(stderr, "%llu\n", nDPId_options.max_packets_per_flow_to_analyse);
                     break;
             }
         }
@@ -4899,9 +4898,6 @@ static int nDPId_parse_options(int argc, char ** argv)
                         case MAX_IDLE_FLOWS_PER_THREAD:
                             nDPId_options.max_idle_flows_per_thread = value_llu;
                             break;
-                        case TICK_RESOLUTION:
-                            nDPId_options.tick_resolution = value_llu;
-                            break;
                         case MAX_READER_THREADS:
                             nDPId_options.reader_thread_count = value_llu;
                             break;
@@ -4946,7 +4942,7 @@ static int nDPId_parse_options(int argc, char ** argv)
                             nDPId_options.max_packets_per_flow_to_process = value_llu;
                             break;
                         case MAX_PACKETS_PER_FLOW_TO_ANALYZE:
-                            nDPId_options.max_packets_per_flow_to_analyze = value_llu;
+                            nDPId_options.max_packets_per_flow_to_analyse = value_llu;
                             break;
                     }
                 }
@@ -4991,12 +4987,14 @@ static int validate_options(void)
 #ifdef ENABLE_ZLIB
     if (nDPId_options.enable_zlib_compression != 0)
     {
-        if (nDPId_options.compression_flow_inactivity < 10000 || nDPId_options.compression_scan_interval < 10000)
+        if (nDPId_options.compression_flow_inactivity < TIME_S_TO_US(6u) ||
+            nDPId_options.compression_scan_interval < TIME_S_TO_US(4u))
         {
             logger_early(1,
-                         "%s",
                          "Setting compression-scan-interval / compression-flow-inactivity "
-                         "to values lower than 10000 is not recommended.");
+                         "to values lower than %u / %u are not recommended.",
+                         TIME_S_TO_US(4u),
+                         TIME_S_TO_US(6u));
             logger_early(1, "%s", "Your CPU usage may increase heavily.");
         }
     }
@@ -5043,11 +5041,6 @@ static int validate_options(void)
                      nDPId_MAX_IDLE_FLOWS_PER_THREAD);
         retval = 1;
     }
-    if (nDPId_options.tick_resolution < 1)
-    {
-        logger_early(1, "Value not in range: tick-resolution[%llu] > 1", nDPId_options.tick_resolution);
-        retval = 1;
-    }
     if (nDPId_options.reader_thread_count < 1 || nDPId_options.reader_thread_count > nDPId_MAX_READER_THREADS)
     {
         logger_early(1,
@@ -5056,9 +5049,12 @@ static int validate_options(void)
                      nDPId_MAX_READER_THREADS);
         retval = 1;
     }
-    if (nDPId_options.flow_scan_interval < 1000)
+    if (nDPId_options.flow_scan_interval < TIME_S_TO_US(5u))
     {
-        logger_early(1, "Value not in range: idle-scan-interval[%llu] > 1000", nDPId_options.flow_scan_interval);
+        logger_early(1,
+                     "Value not in range: idle-scan-interval[%llu] > %u",
+                     nDPId_options.flow_scan_interval,
+                     TIME_S_TO_US(5u));
         retval = 1;
     }
     if (nDPId_options.flow_scan_interval >= nDPId_options.generic_max_idle_time)

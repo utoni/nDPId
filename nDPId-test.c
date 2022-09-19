@@ -236,11 +236,11 @@ static void * nDPIsrvd_mainloop_thread(void * const arg)
             if (events[i].data.ptr == mock_json_desc || events[i].data.ptr == mock_test_desc ||
                 events[i].data.ptr == mock_null_desc || events[i].data.ptr == mock_arpa_desc)
             {
-                if ((events[i].events & EPOLLHUP) != 0)
+                if ((events[i].events & EPOLLHUP) != 0 || (events[i].events & EPOLLERR) != 0)
                 {
                     goto error;
                 }
-                if (handle_data_event(epollfd, &events[i]) != 0)
+                else if (handle_data_event(epollfd, &events[i]) != 0)
                 {
                     THREAD_ERROR_GOTO(arg);
                 }

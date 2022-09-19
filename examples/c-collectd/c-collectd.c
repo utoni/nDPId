@@ -24,6 +24,12 @@
         syslog(flags, format, __VA_ARGS__);                                                                            \
     }
 
+struct flow_user_data
+{
+    nDPIsrvd_ull last_flow_src_l4_payload_len;
+    nDPIsrvd_ull last_flow_dst_l4_payload_len;
+};
+
 static int main_thread_shutdown = 0;
 static int collectd_timerfd = -1;
 static pid_t collectd_pid;
@@ -45,7 +51,8 @@ static struct
     uint64_t flow_detection_update_count;
     uint64_t flow_not_detected_count;
 
-    uint64_t flow_total_bytes;
+    uint64_t flow_src_total_bytes;
+    uint64_t flow_dst_total_bytes;
     uint64_t flow_risky_count;
 
     uint64_t flow_breed_safe_count;
@@ -264,8 +271,8 @@ static void print_collectd_exec_output(void)
     printf(COLLECTD_PUTVAL_N_FORMAT(flow_new_count) COLLECTD_PUTVAL_N_FORMAT(flow_end_count)
                COLLECTD_PUTVAL_N_FORMAT(flow_idle_count) COLLECTD_PUTVAL_N_FORMAT(flow_guessed_count)
                    COLLECTD_PUTVAL_N_FORMAT(flow_detected_count) COLLECTD_PUTVAL_N_FORMAT(flow_detection_update_count)
-                       COLLECTD_PUTVAL_N_FORMAT(flow_not_detected_count) COLLECTD_PUTVAL_N_FORMAT(flow_total_bytes)
-                           COLLECTD_PUTVAL_N_FORMAT(flow_risky_count),
+                       COLLECTD_PUTVAL_N_FORMAT(flow_not_detected_count) COLLECTD_PUTVAL_N_FORMAT(flow_src_total_bytes)
+                           COLLECTD_PUTVAL_N_FORMAT(flow_dst_total_bytes) COLLECTD_PUTVAL_N_FORMAT(flow_risky_count),
 
            COLLECTD_PUTVAL_N(flow_new_count),
            COLLECTD_PUTVAL_N(flow_end_count),
@@ -274,7 +281,8 @@ static void print_collectd_exec_output(void)
            COLLECTD_PUTVAL_N(flow_detected_count),
            COLLECTD_PUTVAL_N(flow_detection_update_count),
            COLLECTD_PUTVAL_N(flow_not_detected_count),
-           COLLECTD_PUTVAL_N(flow_total_bytes),
+           COLLECTD_PUTVAL_N(flow_src_total_bytes),
+           COLLECTD_PUTVAL_N(flow_dst_total_bytes),
            COLLECTD_PUTVAL_N(flow_risky_count));
 
     printf(COLLECTD_PUTVAL_N_FORMAT(flow_breed_safe_count) COLLECTD_PUTVAL_N_FORMAT(flow_breed_acceptable_count)
@@ -431,21 +439,6 @@ static int mainloop(int epollfd, struct nDPIsrvd_socket * const sock)
     return 0;
 }
 
-static uint64_t get_total_flow_bytes(struct nDPIsrvd_socket * const sock)
-{
-    nDPIsrvd_ull total_bytes_ull[2] = {0, 0};
-
-    if (TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_src_tot_l4_payload_len"), &total_bytes_ull[0]) == CONVERSION_OK &&
-        TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_dst_tot_l4_payload_len"), &total_bytes_ull[1]) == CONVERSION_OK)
-    {
-        return total_bytes_ull[0] + total_bytes_ull[1];
-    }
-    else
-    {
-        return 0;
-    }
-}
-
 static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_socket * const sock,
                                                             struct nDPIsrvd_instance * const instance,
                                                             struct nDPIsrvd_thread_data * const thread_data,
@@ -457,6 +450,25 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
     (void)flow;
 
     struct nDPIsrvd_json_token const * const flow_event_name = TOKEN_GET_SZ(sock, "flow_event_name");
+    struct flow_user_data * const flow_user_data = (struct flow_user_data *)flow->flow_user_data;
+
+    if (flow_user_data != NULL)
+    {
+        nDPIsrvd_ull total_bytes_ull[2] = {0, 0};
+
+        if (TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_src_tot_l4_payload_len"), &total_bytes_ull[0]) ==
+                CONVERSION_OK &&
+            TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_dst_tot_l4_payload_len"), &total_bytes_ull[1]) == CONVERSION_OK)
+        {
+            collectd_statistics.flow_src_total_bytes +=
+                total_bytes_ull[0] - flow_user_data->last_flow_src_l4_payload_len;
+            collectd_statistics.flow_dst_total_bytes +=
+                total_bytes_ull[1] - flow_user_data->last_flow_dst_l4_payload_len;
+
+            flow_user_data->last_flow_src_l4_payload_len = total_bytes_ull[0];
+            flow_user_data->last_flow_dst_l4_payload_len = total_bytes_ull[1];
+        }
+    }
 
     if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "new") != 0)
     {
@@ -497,12 +509,10 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
     else if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "end") != 0)
     {
         collectd_statistics.flow_end_count++;
-        collectd_statistics.flow_total_bytes += get_total_flow_bytes(sock);
     }
     else if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "idle") != 0)
     {
         collectd_statistics.flow_idle_count++;
-        collectd_statistics.flow_total_bytes += get_total_flow_bytes(sock);
     }
     else if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "guessed") != 0)
     {
@@ -687,7 +697,8 @@ int main(int argc, char ** argv)
 
     openlog("nDPIsrvd-collectd", LOG_CONS, LOG_DAEMON);
 
-    struct nDPIsrvd_socket * sock = nDPIsrvd_socket_init(0, 0, 0, 0, captured_json_callback, NULL, NULL);
+    struct nDPIsrvd_socket * sock =
+        nDPIsrvd_socket_init(0, 0, 0, sizeof(struct flow_user_data), captured_json_callback, NULL, NULL);
     if (sock == NULL)
     {
         LOG(LOG_DAEMON | LOG_ERR, "%s", "nDPIsrvd socket memory allocation failed!");

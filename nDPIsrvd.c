@@ -1293,12 +1293,6 @@ static int handle_data_event(int epollfd, struct epoll_event * const event)
 
     if ((event->events & EPOLLIN) == 0 && (event->events & EPOLLOUT) == 0)
     {
-#ifdef NO_MAIN
-        if ((event->events & EPOLLHUP) != 0)
-        {
-            return 1;
-        }
-#endif
         logger(1, "Can not handle event mask: %d", event->events);
         return 1;
     }
@@ -1370,7 +1364,7 @@ static int mainloop(int epollfd)
 
         for (int i = 0; i < nready; i++)
         {
-            if (events[i].events & EPOLLERR || events[i].events & EPOLLHUP)
+            if ((events[i].events & EPOLLERR) != 0 || (events[i].events & EPOLLHUP) != 0)
             {
                 if (events[i].data.fd != collector_un_sockfd && events[i].data.fd != distributor_un_sockfd &&
                     events[i].data.fd != distributor_in_sockfd)

@@ -5,7 +5,8 @@ import sys
 
 sys.path.append(os.path.dirname(sys.argv[0]) + '/../../dependencies')
 sys.path.append(os.path.dirname(sys.argv[0]) + '/../share/nDPId')
-sys.path.append(os.path.dirname(sys.argv[0]) + '/../usr/share/nDPId')
+sys.path.append(os.path.dirname(sys.argv[0]))
+sys.path.append(sys.base_prefix + '/share/nDPId')
 import nDPIsrvd
 from nDPIsrvd import nDPIsrvdSocket, TermColor
 

@@ -389,13 +389,14 @@ def tab_flow_update_graph(n, i, traces):
               inputs=[Input('tab-other-default-interval', 'n_intervals')])
 def tab_other_update_components(n):
     return [build_piechart(['Base', 'Daemon', 'Packet',
-                            'Flow New', 'Flow Update', 'Flow End', 'Flow Idle',
+                            'Flow New', 'Flow Update', 'Flow Analyse', 'Flow End', 'Flow Idle',
                             'Flow Detection', 'Flow Detection-Updates', 'Flow Guessed', 'Flow Not-Detected'],
                            [shared_flow_dict['total-base-events'],
                             shared_flow_dict['total-daemon-events'],
                             shared_flow_dict['total-packet-events'],
                             shared_flow_dict['total-flow-new-events'],
                             shared_flow_dict['total-flow-update-events'],
+                            shared_flow_dict['total-flow-analyse-events'],
                             shared_flow_dict['total-flow-end-events'],
                             shared_flow_dict['total-flow-idle-events'],
                             shared_flow_dict['total-flow-detected-events'],

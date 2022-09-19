@@ -25,7 +25,7 @@ define Package/nDPId-testing
  TITLE:=nDPId is a tiny nDPI based daemons / toolkit (nDPId source repository)
  SECTION:=net
  CATEGORY:=Network
- DEPENDS:=+libpcap +zlib +LIBNDPI_GCRYPT:libgcrypt
+ DEPENDS:=@!SMALL_FLASH @!LOW_MEMORY_FOOTPRINT +libpcap +zlib +LIBNDPI_GCRYPT:libgcrypt
  URL:=http://github.com/lnslbrty/nDPId
 endef
 
