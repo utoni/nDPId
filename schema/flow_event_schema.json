@@ -344,7 +344,7 @@
         },
         "data_analysis": {
             "type": "object",
-            "required": [ "iat", "pktlen" ],
+            "required": [ "iat", "pktlen", "bins" ],
 
             "properties": {
                 "iat": {
@@ -417,6 +417,25 @@
                         },
                         "s_to_c_stddev": {
                             "type": "number"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                "bins": {
+                    "type": "object",
+
+                    "properties": {
+                        "c_to_s": {
+                            "type": "array",
+                            "items": {
+                                "type": "number"
+                            }
+                        },
+                        "s_to_c": {
+                            "type": "array",
+                            "items": {
+                                "type": "number"
+                            }
                         }
                     },
                     "additionalProperties": false

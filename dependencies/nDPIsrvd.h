@@ -27,7 +27,7 @@
 #include <stdarg.h>
 #endif
 
-#define nDPIsrvd_MAX_JSON_TOKENS 256
+#define nDPIsrvd_MAX_JSON_TOKENS 512
 #define nDPIsrvd_JSON_KEY_STRLEN 32
 
 #define nDPIsrvd_STRLEN_SZ(s) (sizeof(s) / sizeof(s[0]) - sizeof(s[0]))
@@ -882,7 +882,7 @@ static inline enum nDPIsrvd_conversion_return token_value_to_ull(struct nDPIsrvd
     return str_value_to_ull(token->value, value);
 }
 
-static nDPIsrvd_hashkey nDPIsrvd_build_key(char const * str, int len)
+static inline nDPIsrvd_hashkey nDPIsrvd_build_key(char const * str, int len)
 {
     uint32_t hash = 5381;
     uint32_t c;
@@ -1235,7 +1235,7 @@ static inline enum nDPIsrvd_parse_return nDPIsrvd_parse_line(struct nDPIsrvd_jso
     return PARSE_OK;
 }
 
-static void nDPIsrvd_drain_buffer(struct nDPIsrvd_json_buffer * const json_buffer)
+static inline void nDPIsrvd_drain_buffer(struct nDPIsrvd_json_buffer * const json_buffer)
 {
     memmove(json_buffer->buf.ptr.raw,
             json_buffer->buf.ptr.raw + json_buffer->json_string_length,

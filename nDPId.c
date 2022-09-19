@@ -155,6 +155,7 @@ struct nDPId_flow_analysis
     struct ndpi_analyze_struct iat[FD_COUNT];
     struct ndpi_analyze_struct iat_flow;
     struct ndpi_analyze_struct pktlen[FD_COUNT];
+    struct ndpi_bin payload_len_bin[FD_COUNT];
 };
 
 /*
@@ -600,6 +601,18 @@ static int set_collector_block(struct nDPId_reader_thread * const reader_thread)
     }
 
     return 0;
+}
+
+u_int8_t plen2slot(u_int16_t plen)
+{
+    if (plen > nDPId_ANALYZE_PLEN_MAX)
+    {
+        return nDPId_ANALYZE_PLEN_NUM_BINS - 1;
+    }
+    else
+    {
+        return plen / nDPId_ANALYZE_PLEN_BIN_LEN;
+    }
 }
 
 static uint64_t get_last_pkt_time(struct nDPId_flow_basic const * const flow_basic)
@@ -1316,6 +1329,8 @@ static void free_analysis_data(struct nDPId_flow_extended * const flow_ext)
         ndpi_free_data_analysis(&flow_ext->flow_analysis->iat_flow, 0);
         ndpi_free_data_analysis(&flow_ext->flow_analysis->pktlen[FD_SRC2DST], 0);
         ndpi_free_data_analysis(&flow_ext->flow_analysis->pktlen[FD_DST2SRC], 0);
+        ndpi_free_bin(&flow_ext->flow_analysis->payload_len_bin[FD_SRC2DST]);
+        ndpi_free_bin(&flow_ext->flow_analysis->payload_len_bin[FD_DST2SRC]);
         ndpi_free(flow_ext->flow_analysis);
     }
 }
@@ -1357,6 +1372,12 @@ static int alloc_detection_data(struct nDPId_flow * const flow)
                                 nDPId_options.max_packets_per_flow_to_analyze);
         ndpi_init_data_analysis(&flow->flow_extended.flow_analysis->pktlen[FD_DST2SRC],
                                 nDPId_options.max_packets_per_flow_to_analyze);
+        ndpi_init_bin(&flow->flow_extended.flow_analysis->payload_len_bin[FD_SRC2DST],
+                      ndpi_bin_family8,
+                      nDPId_ANALYZE_PLEN_NUM_BINS);
+        ndpi_init_bin(&flow->flow_extended.flow_analysis->payload_len_bin[FD_DST2SRC],
+                      ndpi_bin_family8,
+                      nDPId_ANALYZE_PLEN_NUM_BINS);
 
         if (flow->flow_extended.flow_analysis->iat[FD_SRC2DST].values == NULL ||
             flow->flow_extended.flow_analysis->iat[FD_DST2SRC].values == NULL ||
@@ -2478,6 +2499,24 @@ static void jsonize_data_analysis(struct nDPId_reader_thread * const reader_thre
                                     "s_to_c_stddev",
                                     ndpi_data_stddev(&analysis->pktlen[FD_DST2SRC]),
                                     "%.1f");
+        ndpi_serialize_end_of_block(&workflow->ndpi_serializer);
+        ndpi_serialize_start_of_block(&workflow->ndpi_serializer, "bins");
+        ndpi_serialize_start_of_list(&workflow->ndpi_serializer, "c_to_s");
+        for (uint16_t i = 0; i < analysis->payload_len_bin[FD_SRC2DST].num_bins; ++i)
+        {
+            ndpi_serialize_string_uint32(&workflow->ndpi_serializer,
+                                         "",
+                                         analysis->payload_len_bin[FD_SRC2DST].u.bins8[i]);
+        }
+        ndpi_serialize_end_of_list(&workflow->ndpi_serializer);
+        ndpi_serialize_start_of_list(&workflow->ndpi_serializer, "s_to_c");
+        for (uint16_t i = 0; i < analysis->payload_len_bin[FD_DST2SRC].num_bins; ++i)
+        {
+            ndpi_serialize_string_uint32(&workflow->ndpi_serializer,
+                                         "",
+                                         analysis->payload_len_bin[FD_DST2SRC].u.bins8[i]);
+        }
+        ndpi_serialize_end_of_list(&workflow->ndpi_serializer);
         ndpi_serialize_end_of_block(&workflow->ndpi_serializer);
         ndpi_serialize_end_of_block(&workflow->ndpi_serializer);
     }
@@ -3957,6 +3996,9 @@ static void ndpi_process_packet(uint8_t * const args,
         }
 
         ndpi_data_add_value(&flow_to_process->flow_extended.flow_analysis->pktlen[direction], header->caplen);
+        ndpi_inc_bin(&flow_to_process->flow_extended.flow_analysis->payload_len_bin[direction],
+                     plen2slot(l4_payload_len),
+                     1);
 
         if (flow_to_process->flow_extended.packets_processed[FD_SRC2DST] +
                 flow_to_process->flow_extended.packets_processed[FD_DST2SRC] ==
