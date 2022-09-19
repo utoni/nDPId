@@ -80,7 +80,8 @@ Technical details about JSON-messages format can be obtained from related `.sche
 Those events specify the contents (key-value-pairs) of the JSON string.
 They are divided into four categories, each with a number of events.
 
-Error Events: indicates that layer2 or layer3 packet processing failed or not enough flow memory available
+## Error Events
+They are 17 distinct events, indicating that layer2 or layer3 packet processing failed or not enough flow memory available:
  1. Unknown datalink layer packet
  2. Unknown L3 protocol
  3. Unsupported datalink layer
@@ -99,17 +100,27 @@ Error Events: indicates that layer2 or layer3 packet processing failed or not en
  16. Max flows to track reached
  17. Flow memory allocation failed
 
-Daemon Events: startup/shutdown or status events as well as a reconnect event if there was a previous connection failure (collector)
+Detailed JSON-schema is available [here](schema/error_event_schema.json)
+
+## Daemon Events
+They are 4 distinct events indicating startup/shutdown or status events as well as a reconnect event if there was a previous connection failure (collector):
  1. init: `nDPId` startup
  2. reconnect: (UNIX) socket connection lost previously and was established again
  3. shutdown: `nDPId` terminates gracefully
  4. status: statistics about the daemon itself e.g. memory consumption, zLib compressions (if enabled)
 
-Packet Events: contains base64 encoded packet payload either belonging to a flow or not
+Detailed JSON-schema is available [here](schema/daemon_event_schema.json)
+
+
+## Packet Events
+They are 2 events containing base64 encoded packet payload either belonging to a flow or not:
  1. packet: does not belong to any flow
  2. packet-flow: does belong to a flow e.g. TCP/UDP or ICMP
 
-Flow Events: all events related to a flow
+Detailed JSON-schema is available [here](schema/packet_event_schema.json)
+
+## Flow Events
+They are 9 distinct events related to a flow:
  1. new: a new TCP/UDP/ICMP flow seen which will be tracked
  2. end: a TCP connections terminates
  3. idle: a flow timed out, because there was no packet on the wire for a certain amount of time
@@ -120,6 +131,7 @@ Flow Events: all events related to a flow
  8. detection-update: `libnDPI` dissected more layer7 protocol data (after detection already done)
  9. not-detected: neither detected nor guessed
 
+Detailed JSON-schema is available [here](schema/flow_event_schema.json). Also, a graphical representation of *Flow Events* timeline is available [here](schema/flow_events_diagram.png). 
 
 # Flow States
 
