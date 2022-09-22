@@ -1,0 +1,18 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [...10.12.29.101][61318] -> [.82.118.225.196][.7080] 
+         detected: [.....1] [ip4][..tcp] [...10.12.29.101][61318] -> [.82.118.225.196][.7080] [HTTP][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port, HTTP Numeric IP Address
+ detection-update: [.....1] [ip4][..tcp] [...10.12.29.101][61318] -> [.82.118.225.196][.7080] [HTTP][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port, HTTP Numeric IP Address, HTTP Suspicious Content
+          analyse: [.....1] [ip4][..tcp] [...10.12.29.101][61318] -> [.82.118.225.196][.7080] [HTTP][Web][Acceptable]
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.000|   0.931|   0.157|   0.258]
+                   [IAT(c->s)...:    0.000|   0.931|   0.273|   0.296][IAT(s->c)...:    0.000|   0.931|   0.116|   0.230]
+                   [PKTLEN(c->s):   54.000| 982.000| 197.200| 297.900][PKTLEN(s->c):   54.000|1514.000|1236.200| 521.800]
+                   [BINS(c->s)..: 7,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 3,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,3,0,0,14,0,0]
+              end: [.....1] [ip4][..tcp] [...10.12.29.101][61318] -> [.82.118.225.196][.7080] [HTTP][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port, HTTP Numeric IP Address, HTTP Suspicious Content
+     DAEMON-EVENT: shutdown

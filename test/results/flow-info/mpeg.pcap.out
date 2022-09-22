@@ -1,0 +1,8 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [.192.168.80.160][55804] -> [.46.101.157.119][...80] 
+         detected: [.....1] [ip4][..tcp] [.192.168.80.160][55804] -> [.46.101.157.119][...80] [HTTP.ntop][Network][Safe]
+ detection-update: [.....1] [ip4][..tcp] [.192.168.80.160][55804] -> [.46.101.157.119][...80] [HTTP.ntop][Media][Safe]
+              end: [.....1] [ip4][..tcp] [.192.168.80.160][55804] -> [.46.101.157.119][...80] [HTTP.ntop][Media][Safe]
+     DAEMON-EVENT: shutdown

@@ -1,0 +1,22 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [....192.168.0.2][.1550] -> [....192.168.0.1][...23] 
+         detected: [.....1] [ip4][..tcp] [....192.168.0.2][.1550] -> [....192.168.0.1][...23] [Telnet][RemoteAccess][Unsafe]
+                   RISK: Unsafe Protocol
+ detection-update: [.....1] [ip4][..tcp] [....192.168.0.2][.1550] -> [....192.168.0.1][...23] [Telnet][RemoteAccess][Unsafe]
+                   RISK: Unsafe Protocol
+ detection-update: [.....1] [ip4][..tcp] [....192.168.0.2][.1550] -> [....192.168.0.1][...23] [Telnet][RemoteAccess][Unsafe]
+                   RISK: Unsafe Protocol
+          analyse: [.....1] [ip4][..tcp] [....192.168.0.2][.1550] -> [....192.168.0.1][...23] 
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.000|   1.233|   0.125|   0.337]
+                   [IAT(c->s)...:    0.000|   1.233|   0.160|   0.383][IAT(s->c)...:    0.001|   1.107|   0.088|   0.275]
+                   [PKTLEN(c->s):   66.000| 151.000|  78.400|  23.800][PKTLEN(s->c):   66.000|  98.000|  75.800|  10.400]
+                   [BINS(c->s)..: 15,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 14,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+ detection-update: [.....1] [ip4][..tcp] [....192.168.0.2][.1550] -> [....192.168.0.1][...23] [Telnet][RemoteAccess][Unsafe]
+                   RISK: Unsafe Protocol
+              end: [.....1] [ip4][..tcp] [....192.168.0.2][.1550] -> [....192.168.0.1][...23] [Telnet][RemoteAccess][Unsafe]
+                   RISK: Unsafe Protocol
+     DAEMON-EVENT: shutdown

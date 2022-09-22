@@ -1,0 +1,16 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..udp] [..82.243.113.43][64969] -> [....192.168.1.5][40959] 
+         detected: [.....1] [ip4][..udp] [..82.243.113.43][64969] -> [....192.168.1.5][40959] [BitTorrent][Download][Acceptable]
+                   RISK: Known Proto on Non Std Port
+          analyse: [.....1] [ip4][..udp] [..82.243.113.43][64969] -> [....192.168.1.5][40959] [BitTorrent][Download][Acceptable]
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.001|   5.430|   0.412|   1.202]
+                   [IAT(c->s)...:    0.001|   4.392|   0.378|   1.031][IAT(s->c)...:    0.012|   5.430|   0.453|   1.381]
+                   [PKTLEN(c->s):   62.000|1514.000| 827.700| 634.300][PKTLEN(s->c):   62.000| 519.000| 104.300| 116.000]
+                   [BINS(c->s)..: 3,0,0,3,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0]
+                   [BINS(s->c)..: 11,1,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+             idle: [.....1] [ip4][..udp] [..82.243.113.43][64969] -> [....192.168.1.5][40959] [BitTorrent][Download][Acceptable]
+                   RISK: Known Proto on Non Std Port
+     DAEMON-EVENT: shutdown

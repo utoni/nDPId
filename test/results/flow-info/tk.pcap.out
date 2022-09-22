@@ -1,0 +1,16 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..udp] [..192.168.1.178][51954] -> [....192.168.1.1][...53] 
+         detected: [.....1] [ip4][..udp] [..192.168.1.178][51954] -> [....192.168.1.1][...53] [DNS][Network][Acceptable]
+ detection-update: [.....1] [ip4][..udp] [..192.168.1.178][51954] -> [....192.168.1.1][...53] [DNS][Network][Acceptable]
+              new: [.....2] [ip4][..udp] [..192.168.1.178][55591] -> [....192.168.1.1][...53] 
+         detected: [.....2] [ip4][..udp] [..192.168.1.178][55591] -> [....192.168.1.1][...53] [DNS][Network][Acceptable]
+ detection-update: [.....2] [ip4][..udp] [..192.168.1.178][55591] -> [....192.168.1.1][...53] [DNS][Network][Acceptable]
+              new: [.....3] [ip4][..udp] [..192.168.1.178][53820] -> [....192.168.1.1][...53] 
+         detected: [.....3] [ip4][..udp] [..192.168.1.178][53820] -> [....192.168.1.1][...53] [DNS][Network][Acceptable]
+ detection-update: [.....3] [ip4][..udp] [..192.168.1.178][53820] -> [....192.168.1.1][...53] [DNS][Network][Acceptable]
+             idle: [.....2] [ip4][..udp] [..192.168.1.178][55591] -> [....192.168.1.1][...53] [DNS][Network][Acceptable]
+             idle: [.....3] [ip4][..udp] [..192.168.1.178][53820] -> [....192.168.1.1][...53] [DNS][Network][Acceptable]
+             idle: [.....1] [ip4][..udp] [..192.168.1.178][51954] -> [....192.168.1.1][...53] [DNS][Network][Acceptable]
+     DAEMON-EVENT: shutdown

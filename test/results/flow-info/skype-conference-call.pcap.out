@@ -1,0 +1,16 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..udp] [...192.168.2.20][49282] -> [...104.46.40.49][60642] 
+         detected: [.....1] [ip4][..udp] [...192.168.2.20][49282] -> [...104.46.40.49][60642] [STUN.Skype_TeamsCall][VoIP][Acceptable]
+                   RISK: Known Proto on Non Std Port
+          analyse: [.....1] [ip4][..udp] [...192.168.2.20][49282] -> [...104.46.40.49][60642] [STUN.Skype_TeamsCall][VoIP][Acceptable]
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.000|   0.100|   0.011|   0.022]
+                   [IAT(c->s)...:    0.000|   0.055|   0.012|   0.017][IAT(s->c)...:    0.000|   0.100|   0.010|   0.027]
+                   [PKTLEN(c->s):   85.000| 957.000| 443.100| 398.500][PKTLEN(s->c):   77.000| 209.000| 156.000|  30.100]
+                   [BINS(c->s)..: 0,1,4,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 0,1,2,12,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+             idle: [.....1] [ip4][..udp] [...192.168.2.20][49282] -> [...104.46.40.49][60642] [STUN.Skype_TeamsCall][VoIP][Acceptable]
+                   RISK: Known Proto on Non Std Port
+     DAEMON-EVENT: shutdown

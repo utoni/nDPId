@@ -1,0 +1,24 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [...10.238.26.36][62092] -> [...10.220.50.76][...21] 
+         detected: [.....1] [ip4][..tcp] [...10.238.26.36][62092] -> [...10.220.50.76][...21] [FTPS][Download][Unsafe]
+                   RISK: Unsafe Protocol
+ detection-update: [.....1] [ip4][..tcp] [...10.238.26.36][62092] -> [...10.220.50.76][...21] [FTPS][Download][Unsafe]
+                   RISK: TLS (probably) Not Carrying HTTPS, Unsafe Protocol, Missing SNI TLS Extn
+ detection-update: [.....1] [ip4][..tcp] [...10.238.26.36][62092] -> [...10.220.50.76][...21] [FTPS][Download][Unsafe]
+                   RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Unsafe Protocol, Missing SNI TLS Extn
+ detection-update: [.....1] [ip4][..tcp] [...10.238.26.36][62092] -> [...10.220.50.76][...21] [FTPS][Download][Unsafe]
+                   RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Unsafe Protocol, Missing SNI TLS Extn
+          analyse: [.....1] [ip4][..tcp] [...10.238.26.36][62092] -> [...10.220.50.76][...21] 
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.000|   0.040|   0.005|   0.010]
+                   [IAT(c->s)...:    0.001|   0.035|   0.009|   0.011][IAT(s->c)...:    0.000|   0.040|   0.003|   0.009]
+                   [PKTLEN(c->s):   60.000| 384.000| 123.700| 101.500][PKTLEN(s->c):   60.000| 566.000| 195.000| 179.000]
+                   [BINS(c->s)..: 4,3,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 8,2,7,0,0,0,2,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+ detection-update: [.....1] [ip4][..tcp] [...10.238.26.36][62092] -> [...10.220.50.76][...21] [FTPS][Download][Unsafe]
+                   RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Unsafe Protocol, Missing SNI TLS Extn
+             idle: [.....1] [ip4][..tcp] [...10.238.26.36][62092] -> [...10.220.50.76][...21] [FTPS][Download][Unsafe]
+                   RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Unsafe Protocol, Missing SNI TLS Extn
+     DAEMON-EVENT: shutdown

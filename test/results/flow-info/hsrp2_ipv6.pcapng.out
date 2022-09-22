@@ -1,0 +1,22 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip6][..udp] [................................fe80::1][.2029] -> [...............................ff02::66][.2029] 
+         detected: [.....1] [ip6][..udp] [................................fe80::1][.2029] -> [...............................ff02::66][.2029] [HSRP][Network][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [.....2] [ip6][..udp] [................................fe80::2][.2029] -> [...............................ff02::66][.2029] 
+         detected: [.....2] [ip6][..udp] [................................fe80::2][.2029] -> [...............................ff02::66][.2029] [HSRP][Network][Acceptable]
+                   RISK: Known Proto on Non Std Port
+           update: [.....1] [ip6][..udp] [................................fe80::1][.2029] -> [...............................ff02::66][.2029] [HSRP][Network][Acceptable]
+                   RISK: Known Proto on Non Std Port
+           update: [.....2] [ip6][..udp] [................................fe80::2][.2029] -> [...............................ff02::66][.2029] [HSRP][Network][Acceptable]
+                   RISK: Known Proto on Non Std Port
+           update: [.....1] [ip6][..udp] [................................fe80::1][.2029] -> [...............................ff02::66][.2029] [HSRP][Network][Acceptable]
+                   RISK: Known Proto on Non Std Port
+           update: [.....2] [ip6][..udp] [................................fe80::2][.2029] -> [...............................ff02::66][.2029] [HSRP][Network][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [.....2] [ip6][..udp] [................................fe80::2][.2029] -> [...............................ff02::66][.2029] [HSRP][Network][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [.....1] [ip6][..udp] [................................fe80::1][.2029] -> [...............................ff02::66][.2029] [HSRP][Network][Acceptable]
+                   RISK: Known Proto on Non Std Port
+     DAEMON-EVENT: shutdown

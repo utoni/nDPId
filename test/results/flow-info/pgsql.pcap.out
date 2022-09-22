@@ -1,0 +1,10 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [......127.0.0.1][45930] -> [......127.0.0.1][.5432] 
+              new: [.....2] [ip4][..tcp] [......127.0.0.1][45931] -> [......127.0.0.1][.5432] 
+         detected: [.....1] [ip4][..tcp] [......127.0.0.1][45930] -> [......127.0.0.1][.5432] [PostgreSQL][Database][Acceptable]
+         detected: [.....2] [ip4][..tcp] [......127.0.0.1][45931] -> [......127.0.0.1][.5432] [PostgreSQL][Database][Acceptable]
+             idle: [.....1] [ip4][..tcp] [......127.0.0.1][45930] -> [......127.0.0.1][.5432] [PostgreSQL][Database][Acceptable]
+             idle: [.....2] [ip4][..tcp] [......127.0.0.1][45931] -> [......127.0.0.1][.5432] [PostgreSQL][Database][Acceptable]
+     DAEMON-EVENT: shutdown

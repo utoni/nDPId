@@ -1,0 +1,44 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [...192.168.1.77][60140] -> [.46.101.231.218][..443] 
+         detected: [.....1] [ip4][..tcp] [...192.168.1.77][60140] -> [.46.101.231.218][..443] [OpenVPN][VPN][Acceptable]
+                   RISK: Known Proto on Non Std Port
+          analyse: [.....1] [ip4][..tcp] [...192.168.1.77][60140] -> [.46.101.231.218][..443] [OpenVPN][VPN][Acceptable]
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.000|   0.998|   0.088|   0.234]
+                   [IAT(c->s)...:    0.000|   0.945|   0.103|   0.244][IAT(s->c)...:    0.000|   0.998|   0.077|   0.225]
+                   [PKTLEN(c->s):   66.000| 371.000| 128.600|  84.300][PKTLEN(s->c):   66.000| 222.000| 174.200|  60.300]
+                   [BINS(c->s)..: 6,5,0,0,2,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 4,1,0,0,13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+     DAEMON-EVENT: [Processed: 95 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....2] [ip4][..udp] [..192.168.43.12][41507] -> [.139.59.151.137][13680] 
+         detected: [.....2] [ip4][..udp] [..192.168.43.12][41507] -> [.139.59.151.137][13680] [OpenVPN][VPN][Acceptable]
+                   RISK: Known Proto on Non Std Port
+          analyse: [.....2] [ip4][..udp] [..192.168.43.12][41507] -> [.139.59.151.137][13680] [OpenVPN][VPN][Acceptable]
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.000|   0.196|   0.045|   0.060]
+                   [IAT(c->s)...:    0.000|   0.196|   0.044|   0.059][IAT(s->c)...:    0.000|   0.195|   0.047|   0.060]
+                   [PKTLEN(c->s):   84.000| 345.000| 106.400|  59.700][PKTLEN(s->c):   96.000| 196.000| 178.900|  22.400]
+                   [BINS(c->s)..: 0,16,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 0,1,0,0,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+             idle: [.....1] [ip4][..tcp] [...192.168.1.77][60140] -> [.46.101.231.218][..443] [OpenVPN][VPN][Acceptable]
+                   RISK: Known Proto on Non Std Port
+     DAEMON-EVENT: [Processed: 178 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 1 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....3] [ip4][..udp] [..192.168.43.18][13680] -> [.139.59.151.137][13680] 
+         detected: [.....3] [ip4][..udp] [..192.168.43.18][13680] -> [.139.59.151.137][13680] [OpenVPN][VPN][Acceptable]
+                   RISK: Known Proto on Non Std Port
+          analyse: [.....3] [ip4][..udp] [..192.168.43.18][13680] -> [.139.59.151.137][13680] [OpenVPN][VPN][Acceptable]
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.000|   2.242|   0.188|   0.537]
+                   [IAT(c->s)...:    0.000|   2.196|   0.182|   0.524][IAT(s->c)...:    0.000|   2.242|   0.194|   0.551]
+                   [PKTLEN(c->s):   84.000| 345.000| 105.900|  59.800][PKTLEN(s->c):   92.000| 196.000| 172.800|  31.100]
+                   [BINS(c->s)..: 0,16,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 0,2,0,0,13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+             idle: [.....2] [ip4][..udp] [..192.168.43.12][41507] -> [.139.59.151.137][13680] [OpenVPN][VPN][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [.....3] [ip4][..udp] [..192.168.43.18][13680] -> [.139.59.151.137][13680] [OpenVPN][VPN][Acceptable]
+                   RISK: Known Proto on Non Std Port
+     DAEMON-EVENT: shutdown

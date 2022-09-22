@@ -32,6 +32,7 @@ def set_attr_if_not_set(some_object, attr_name, value):
 class Stats:
 
     def __init__(self, nDPIsrvd_sock):
+        self.statusbar_enabled = True
         self.start_time = time.time()
         self.nsock = nDPIsrvd_sock
         self.last_status_length = 0
@@ -46,11 +47,14 @@ class Stats:
         self.json_lines    = 0
         self.spinner_state = 0
 
+    def disableStatusbar(self):
+        self.statusbar_enabled = False
+
     def updateSpinner(self):
         if self.current_time + 0.25 <= time.time():
             self.spinner_state += 1
 
-    def getSpinner(self):
+    def __getSpinner(self):
         #spinner_states = ['-', '\\', '|', '/']
         #spinner_states = ['▉', '▊', '▋', '▌', '▍', '▎', '▏', '▎', '▍', '▌', '▋', '▊', '▉']
         spinner_states = ['←', '↖', '↑', '↗', '→', '↘', '↓', '↙']
@@ -59,7 +63,7 @@ class Stats:
         #spinner_states = ['┤', '┘', '┴', '└', '├', '┌', '┬', '┐']
         return spinner_states[self.spinner_state % len(spinner_states)]
 
-    def getDataFromJson(self, json_dict, current_flow):
+    def __getDataFromJson(self, json_dict, current_flow):
         if current_flow is None:
             return
 
@@ -87,7 +91,7 @@ class Stats:
         self.json_lines += 1
         self.current_time = time.time()
         self.avg_xfer_json_bytes = self.nsock.received_bytes / (self.current_time - self.start_time)
-        self.getDataFromJson(json_dict, current_flow)
+        self.__getDataFromJson(json_dict, current_flow)
 
     def updateOnCleanup(self, current_flow):
         self.total_flows += 1
@@ -97,7 +101,7 @@ class Stats:
         self.guessed_flows += 1 if current_flow.guessed != 0 else 0
         self.not_detected_flows += 1 if current_flow.not_detected != 0 else 0
 
-    def getStatsFromFlowMgr(self):
+    def __getStatsFromFlowMgr(self):
         alias_count = 0
         source_count = 0
         flow_count = 0
@@ -138,13 +142,19 @@ class Stats:
         return '{:.2f} {}'.format(s, size_names[i])
 
     def resetStatus(self):
+        if self.statusbar_enabled is False:
+            return
+
         sys.stdout.write('\r' + str(' ' * self.last_status_length) + '\r')
         sys.stdout.flush()
 
     def printStatus(self):
+        if self.statusbar_enabled is False:
+            return
+
         alias_count, source_count, flow_count, \
         tot_l4_payload_len, \
-        risky, midstream, guessed, not_detected = self.getStatsFromFlowMgr()
+        risky, midstream, guessed, not_detected = self.__getStatsFromFlowMgr()
 
         out_str = '\r[n|tot|avg JSONs: {}|{}|{}/s] [tot l4: {}] ' \
             '[lss|srcs: {}|{}] ' \
@@ -160,7 +170,7 @@ class Stats:
                       midstream + self.midstream_flows,
                       not_detected + self.not_detected_flows,
                       guessed + self.guessed_flows,
-                      self.getSpinner())
+                      self.__getSpinner())
         self.last_status_length = len(out_str) - 1 # '\r'
 
         sys.stdout.write(out_str)
@@ -251,7 +261,7 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
         basic_daemon_event_prefix += ' ' * 11
         if 'flow_first_seen' in json_dict:
             first_seen = '[' + prettifyTimediff(nDPIsrvd.toSeconds(json_dict['flow_first_seen']),
-                                                nDPIsrvd.toSeconds(json_dict['thread_ts_usec']) + ']')
+                                                nDPIsrvd.toSeconds(json_dict['thread_ts_usec'])) + ']'
 
     last_seen = ''
     if args.print_last_seen is True:
@@ -259,7 +269,7 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
         if current_flow is not None:
             flow_last_seen = nDPIsrvd.FlowManager.getLastPacketTime(instance, current_flow.flow_id, json_dict)
             last_seen = '[' + prettifyTimediff(nDPIsrvd.toSeconds(flow_last_seen),
-                                               nDPIsrvd.toSeconds(json_dict['thread_ts_usec']) + ']')
+                                               nDPIsrvd.toSeconds(json_dict['thread_ts_usec'])) + ']'
 
     if 'daemon_event_id' in json_dict:
         if json_dict['daemon_event_name'] == 'status':
@@ -298,7 +308,7 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
         return True
 
     ndpi_proto_categ_breed = ''
-    ndpi_frisk = ''
+    next_lines = []
 
     if 'ndpi' in json_dict:
         if 'proto' in json_dict['ndpi']:
@@ -314,8 +324,9 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
             severity = 0
             cnt = 0
 
+            next_lines += ['']
             for key in json_dict['ndpi']['flow_risk']:
-                ndpi_frisk += str(json_dict['ndpi']['flow_risk'][key]['risk']) + ', '
+                next_lines[0] += str(json_dict['ndpi']['flow_risk'][key]['risk']) + ', '
                 if json_dict['ndpi']['flow_risk'][key]['severity'] == 'Low':
                     severity = max(severity, 1)
                 elif json_dict['ndpi']['flow_risk'][key]['severity'] == 'Medium':
@@ -337,7 +348,7 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
             else:
                 color = ''
 
-            ndpi_frisk = '{}{}{}: {}'.format(color, 'RISK', TermColor.END, ndpi_frisk[:-2])
+            next_lines[0] = '{}{}{}: {}'.format(color, 'RISK', TermColor.END, next_lines[0][:-2])
 
     line_suffix = ''
     flow_event_name = ''
@@ -351,6 +362,44 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
     elif json_dict['flow_event_name'] == 'analyse':
         flow_event_name += '{}{:>16}{}'.format(TermColor.WARNING,
                                                json_dict['flow_event_name'], TermColor.END)
+        if args.print_analyse_results is True:
+            next_lines = ['[min|max|avg|stddev]']
+            next_lines += ['[IAT(flow)...: {:>8.3f}|{:>8.3f}|{:>8.3f}|{:>8.3f}]'.format(
+                            nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['flow_min']),
+                            nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['flow_max']),
+                            nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['flow_avg']),
+                            nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['flow_stddev'])
+                          )]
+            next_lines += ['']
+            next_lines[-1] += '[IAT(c->s)...: {:>8.3f}|{:>8.3f}|{:>8.3f}|{:>8.3f}]'.format(
+                                    nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['c_to_s_min']),
+                                    nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['c_to_s_max']),
+                                    nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['c_to_s_avg']),
+                                    nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['c_to_s_stddev'])
+                              )
+            next_lines[-1] += '[IAT(s->c)...: {:>8.3f}|{:>8.3f}|{:>8.3f}|{:>8.3f}]'.format(
+                                    nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['s_to_c_min']),
+                                    nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['s_to_c_max']),
+                                    nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['s_to_c_avg']),
+                                    nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['s_to_c_stddev'])
+                              )
+            next_lines += ['']
+            next_lines[-1] += '[PKTLEN(c->s): {:>8.3f}|{:>8.3f}|{:>8.3f}|{:>8.3f}]'.format(
+                                  json_dict['data_analysis']['pktlen']['c_to_s_min'],
+                                  json_dict['data_analysis']['pktlen']['c_to_s_max'],
+                                  json_dict['data_analysis']['pktlen']['c_to_s_avg'],
+                                  json_dict['data_analysis']['pktlen']['c_to_s_stddev']
+                              )
+            next_lines[-1] += '[PKTLEN(s->c): {:>8.3f}|{:>8.3f}|{:>8.3f}|{:>8.3f}]'.format(
+                                  json_dict['data_analysis']['pktlen']['s_to_c_min'],
+                                  json_dict['data_analysis']['pktlen']['s_to_c_max'],
+                                  json_dict['data_analysis']['pktlen']['s_to_c_avg'],
+                                  json_dict['data_analysis']['pktlen']['s_to_c_stddev']
+                              )
+            next_lines += ['']
+            next_lines[-1] += '[BINS(c->s)..: {}]'.format(','.join([str(n) for n in json_dict['data_analysis']['bins']['c_to_s']]))
+            next_lines += ['']
+            next_lines[-1] += '[BINS(s->c)..: {}]'.format(','.join([str(n) for n in json_dict['data_analysis']['bins']['s_to_c']]))
     else:
         if json_dict['flow_event_name'] == 'new':
             line_suffix = ''
@@ -392,9 +441,9 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
     else:
         raise RuntimeError('unsupported l3 protocol: {}'.format(json_dict['l3_proto']))
 
-    if len(ndpi_frisk) > 0:
+    for line in next_lines:
         print('{}{}{}{}{:>18}{}'.format(timestamp, first_seen, last_seen,
-                                        instance_and_source, '', ndpi_frisk))
+                                        instance_and_source, '', line))
 
     stats.printStatus()
 
@@ -402,6 +451,10 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
 
 if __name__ == '__main__':
     argparser = nDPIsrvd.defaultArgumentParser('Prettify and print events using the nDPIsrvd Python interface.')
+    argparser.add_argument('--no-color', action='store_true', default=False,
+                           help='Disable all terminal colors.')
+    argparser.add_argument('--no-statusbar', action='store_true', default=False,
+                           help='Disable informational status bar.')
     argparser.add_argument('--hide-instance-info', action='store_true', default=False,
                            help='Hide instance Alias/Source prefixed every line.')
     argparser.add_argument('--print-timestamp', action='store_true', default=False,
@@ -423,7 +476,12 @@ if __name__ == '__main__':
     argparser.add_argument('--analyse',    action='store_true', default=False, help='Print only analyse flow events.')
     argparser.add_argument('--detection',  action='store_true', default=False, help='Print only detected/detection-update flow events.')
     argparser.add_argument('--ipwhois',    action='store_true', default=False, help='Use Python-IPWhois to print additional location information.')
+    argparser.add_argument('--print-analyse-results', action='store_true', default=False,
+                           help='Print detailed results of analyse events.')
     args = argparser.parse_args()
+
+    if args.no_color is True:
+        TermColor.disableColor()
 
     if args.ipwhois is True:
         import dns, ipwhois
@@ -438,6 +496,9 @@ if __name__ == '__main__':
     nsock.connect(address)
     nsock.timeout(1.0)
     stats = Stats(nsock)
+
+    if args.no_statusbar is True:
+        stats.disableStatusbar()
 
     while True:
         try:

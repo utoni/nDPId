@@ -1,0 +1,52 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [..192.168.1.178][61805] -> [....82.81.46.13][10443] 
+         detected: [.....1] [ip4][..tcp] [..192.168.1.178][61805] -> [....82.81.46.13][10443] [TLS][Web][Safe]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+ detection-update: [.....1] [ip4][..tcp] [..192.168.1.178][61805] -> [....82.81.46.13][10443] [TLS][Web][Safe]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+ detection-update: [.....1] [ip4][..tcp] [..192.168.1.178][61805] -> [....82.81.46.13][10443] [TLS.FortiClient][VPN][Safe]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+              new: [.....2] [ip4][..tcp] [..192.168.1.178][61806] -> [....82.81.46.13][10443] 
+         detected: [.....2] [ip4][..tcp] [..192.168.1.178][61806] -> [....82.81.46.13][10443] [TLS.FortiClient][VPN][Safe]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+ detection-update: [.....2] [ip4][..tcp] [..192.168.1.178][61806] -> [....82.81.46.13][10443] [TLS.FortiClient][VPN][Safe]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+ detection-update: [.....2] [ip4][..tcp] [..192.168.1.178][61806] -> [....82.81.46.13][10443] [TLS.FortiClient][VPN][Safe]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+              new: [.....3] [ip4][..tcp] [..192.168.1.178][61811] -> [....82.81.46.13][10443] 
+         detected: [.....3] [ip4][..tcp] [..192.168.1.178][61811] -> [....82.81.46.13][10443] [TLS.FortiClient][VPN][Safe]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+ detection-update: [.....3] [ip4][..tcp] [..192.168.1.178][61811] -> [....82.81.46.13][10443] [TLS.FortiClient][VPN][Safe]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+ detection-update: [.....3] [ip4][..tcp] [..192.168.1.178][61811] -> [....82.81.46.13][10443] [TLS.FortiClient][VPN][Safe]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+              new: [.....4] [ip4][..tcp] [..192.168.1.178][61812] -> [....82.81.46.13][10443] 
+         detected: [.....4] [ip4][..tcp] [..192.168.1.178][61812] -> [....82.81.46.13][10443] [TLS.FortiClient][VPN][Safe]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+ detection-update: [.....4] [ip4][..tcp] [..192.168.1.178][61812] -> [....82.81.46.13][10443] [TLS.FortiClient][VPN][Safe]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+ detection-update: [.....4] [ip4][..tcp] [..192.168.1.178][61812] -> [....82.81.46.13][10443] [TLS.FortiClient][VPN][Safe]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+              new: [.....5] [ip4][..tcp] [..192.168.1.178][61820] -> [....82.81.46.13][10443] 
+         detected: [.....5] [ip4][..tcp] [..192.168.1.178][61820] -> [....82.81.46.13][10443] [TLS.FortiClient][VPN][Safe]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+ detection-update: [.....5] [ip4][..tcp] [..192.168.1.178][61820] -> [....82.81.46.13][10443] [TLS.FortiClient][VPN][Safe]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+ detection-update: [.....5] [ip4][..tcp] [..192.168.1.178][61820] -> [....82.81.46.13][10443] [TLS.FortiClient][VPN][Safe]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+          analyse: [.....5] [ip4][..tcp] [..192.168.1.178][61820] -> [....82.81.46.13][10443] [TLS.FortiClient][VPN][Safe]
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.000|   0.495|   0.071|   0.112]
+                   [IAT(c->s)...:    0.000|   0.430|   0.061|   0.095][IAT(s->c)...:    0.000|   0.495|   0.085|   0.129]
+                   [PKTLEN(c->s):   66.000| 596.000| 163.700| 146.600][PKTLEN(s->c):   66.000|1506.000| 418.000| 468.800]
+                   [BINS(c->s)..: 9,4,1,0,1,0,0,0,0,3,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 3,5,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]
+              end: [.....1] [ip4][..tcp] [..192.168.1.178][61805] -> [....82.81.46.13][10443] 
+              end: [.....2] [ip4][..tcp] [..192.168.1.178][61806] -> [....82.81.46.13][10443] 
+              end: [.....3] [ip4][..tcp] [..192.168.1.178][61811] -> [....82.81.46.13][10443] 
+              end: [.....4] [ip4][..tcp] [..192.168.1.178][61812] -> [....82.81.46.13][10443] 
+             idle: [.....5] [ip4][..tcp] [..192.168.1.178][61820] -> [....82.81.46.13][10443] [TLS.FortiClient][VPN][Safe]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+     DAEMON-EVENT: shutdown

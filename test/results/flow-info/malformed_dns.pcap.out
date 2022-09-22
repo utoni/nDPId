@@ -1,0 +1,10 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..udp] [......127.0.0.1][50435] -> [......127.0.0.1][...53] 
+         detected: [.....1] [ip4][..udp] [......127.0.0.1][50435] -> [......127.0.0.1][...53] [DNS][Network][Acceptable]
+ detection-update: [.....1] [ip4][..udp] [......127.0.0.1][50435] -> [......127.0.0.1][...53] [DNS][Network][Acceptable]
+                   RISK: Malformed Packet
+             idle: [.....1] [ip4][..udp] [......127.0.0.1][50435] -> [......127.0.0.1][...53] [DNS][Network][Acceptable]
+                   RISK: Malformed Packet
+     DAEMON-EVENT: shutdown

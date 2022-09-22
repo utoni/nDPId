@@ -1,0 +1,44 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..udp] [....172.28.4.53][54626] -> [...172.16.5.170][...69] 
+         detected: [.....1] [ip4][..udp] [....172.28.4.53][54626] -> [...172.16.5.170][...69] [TFTP][DataTransfer][Acceptable]
+                   RISK: Malformed Packet
+              new: [.....2] [ip4][..udp] [....172.28.4.53][54632] -> [...172.16.5.170][...69] 
+         detected: [.....2] [ip4][..udp] [....172.28.4.53][54632] -> [...172.16.5.170][...69] [TFTP][DataTransfer][Acceptable]
+                   RISK: Malformed Packet
+              new: [.....3] [ip4][..udp] [..192.168.0.253][50618] -> [...192.168.0.10][...69] 
+         detected: [.....3] [ip4][..udp] [..192.168.0.253][50618] -> [...192.168.0.10][...69] [TFTP][DataTransfer][Acceptable]
+              new: [.....4] [ip4][..udp] [...192.168.0.10][.3445] -> [..192.168.0.253][50618] 
+         detected: [.....4] [ip4][..udp] [...192.168.0.10][.3445] -> [..192.168.0.253][50618] [TFTP][DataTransfer][Acceptable]
+                   RISK: Known Proto on Non Std Port
+          analyse: [.....4] [ip4][..udp] [...192.168.0.10][.3445] -> [..192.168.0.253][50618] [TFTP][DataTransfer][Acceptable]
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.000|   0.000|   0.000|   0.000]
+                   [IAT(c->s)...:    0.000|   0.000|   0.000|   0.000][IAT(s->c)...:    0.000|   0.000|   0.000|   0.000]
+                   [PKTLEN(c->s):  558.000| 558.000| 558.000|   0.000][PKTLEN(s->c):   60.000|  60.000|  60.000|   0.000]
+                   [BINS(c->s)..: 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+     DAEMON-EVENT: [Processed: 101 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 4 / 4|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....5] [ip4][..udp] [....172.28.4.53][54627] -> [...172.16.5.170][...69] 
+         detected: [.....5] [ip4][..udp] [....172.28.4.53][54627] -> [...172.16.5.170][...69] [TFTP][DataTransfer][Acceptable]
+             idle: [.....1] [ip4][..udp] [....172.28.4.53][54626] -> [...172.16.5.170][...69] [TFTP][DataTransfer][Acceptable]
+                   RISK: Malformed Packet
+             idle: [.....2] [ip4][..udp] [....172.28.4.53][54632] -> [...172.16.5.170][...69] [TFTP][DataTransfer][Acceptable]
+                   RISK: Malformed Packet
+             idle: [.....4] [ip4][..udp] [...192.168.0.10][.3445] -> [..192.168.0.253][50618] [TFTP][DataTransfer][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [.....3] [ip4][..udp] [..192.168.0.253][50618] -> [...192.168.0.10][...69] [TFTP][DataTransfer][Acceptable]
+     DAEMON-EVENT: [Processed: 102 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 1 / 5|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....6] [ip4][..udp] [....172.28.5.91][44618] -> [...172.28.5.170][...69] 
+         detected: [.....6] [ip4][..udp] [....172.28.5.91][44618] -> [...172.28.5.170][...69] [TFTP][DataTransfer][Acceptable]
+              new: [.....7] [ip4][..udp] [...172.28.5.170][62058] -> [....172.28.5.91][44618] 
+         detected: [.....7] [ip4][..udp] [...172.28.5.170][62058] -> [....172.28.5.91][44618] [TFTP][DataTransfer][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [.....7] [ip4][..udp] [...172.28.5.170][62058] -> [....172.28.5.91][44618] [TFTP][DataTransfer][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [.....5] [ip4][..udp] [....172.28.4.53][54627] -> [...172.16.5.170][...69] [TFTP][DataTransfer][Acceptable]
+             idle: [.....6] [ip4][..udp] [....172.28.5.91][44618] -> [...172.28.5.170][...69] [TFTP][DataTransfer][Acceptable]
+     DAEMON-EVENT: shutdown

@@ -1,0 +1,14 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..udp] [.......10.9.0.2][60106] -> [..104.26.11.240][..443] 
+         detected: [.....1] [ip4][..udp] [.......10.9.0.2][60106] -> [..104.26.11.240][..443] [QUIC.Cloudflare][Web][Acceptable]
+          analyse: [.....1] [ip4][..udp] [.......10.9.0.2][60106] -> [..104.26.11.240][..443] [QUIC.Cloudflare][Web][Acceptable]
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.000|   0.021|   0.006|   0.007]
+                   [IAT(c->s)...:    0.000|   0.021|   0.007|   0.007][IAT(s->c)...:    0.000|   0.020|   0.005|   0.007]
+                   [PKTLEN(c->s):   85.000|1242.000| 372.500| 477.000][PKTLEN(s->c):   85.000|1239.000| 324.200| 385.300]
+                   [BINS(c->s)..: 0,6,1,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 0,9,3,0,0,1,1,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0]
+             idle: [.....1] [ip4][..udp] [.......10.9.0.2][60106] -> [..104.26.11.240][..443] [QUIC.Cloudflare][Web][Acceptable]
+     DAEMON-EVENT: shutdown

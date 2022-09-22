@@ -1,0 +1,319 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][38077] -> [.........2400:8902::f03c:91ff:fe69:a454][..443] 
+         detected: [.....1] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][38077] -> [.........2400:8902::f03c:91ff:fe69:a454][..443] [QUIC][Web][Acceptable]
+              new: [.....2] [ip4][..udp] [..192.168.1.128][37643] -> [..71.202.41.169][..443] 
+         detected: [.....2] [ip4][..udp] [..192.168.1.128][37643] -> [..71.202.41.169][..443] [QUIC][Web][Acceptable]
+              new: [.....3] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][37876] -> [.2a05:d018:ce9:8100:cd2a:e2fd:b3be:c5ab][..443] 
+         detected: [.....3] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][37876] -> [.2a05:d018:ce9:8100:cd2a:e2fd:b3be:c5ab][..443] [QUIC][Web][Acceptable]
+              new: [.....4] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][34442] -> [.2001:4800:7817:101:be76:4eff:fe04:631d][..443] 
+         detected: [.....4] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][34442] -> [.2001:4800:7817:101:be76:4eff:fe04:631d][..443] [QUIC][Web][Acceptable]
+              new: [.....5] [ip4][..udp] [..192.168.1.128][47010] -> [...3.121.242.54][..443] 
+         detected: [.....5] [ip4][..udp] [..192.168.1.128][47010] -> [...3.121.242.54][..443] [QUIC.AmazonAWS][Cloud][Acceptable]
+              new: [.....6] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][48707] -> [..2a00:ac00:4000:400:2e0:4cff:fe68:199d][..443] 
+         detected: [.....6] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][48707] -> [..2a00:ac00:4000:400:2e0:4cff:fe68:199d][..443] [QUIC][Web][Acceptable]
+              new: [.....7] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][60346] -> [..................2001:bc8:47a4:1c25::1][..443] 
+         detected: [.....7] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][60346] -> [..................2001:bc8:47a4:1c25::1][..443] [QUIC][Web][Acceptable]
+              new: [.....8] [ip4][..udp] [..192.168.1.128][46576] -> [..40.112.191.60][.4433] 
+         detected: [.....8] [ip4][..udp] [..192.168.1.128][46576] -> [..40.112.191.60][.4433] [QUIC.Azure][Cloud][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [.....9] [ip4][..udp] [..192.168.1.128][46334] -> [..40.112.191.60][..443] 
+         detected: [.....9] [ip4][..udp] [..192.168.1.128][46334] -> [..40.112.191.60][..443] [QUIC.Azure][Cloud][Acceptable]
+              new: [....10] [ip4][..udp] [..192.168.1.128][38366] -> [.202.238.220.92][.4433] 
+         detected: [....10] [ip4][..udp] [..192.168.1.128][38366] -> [.202.238.220.92][.4433] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....11] [ip4][.icmp] [...3.121.242.54] -> [..192.168.1.128] 
+         detected: [....11] [ip4][.icmp] [...3.121.242.54] -> [..192.168.1.128] [ICMP][Network][Acceptable]
+              new: [....12] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][32957] -> [.................2606:4700:10::6816:826][.4433] 
+         detected: [....12] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][32957] -> [.................2606:4700:10::6816:826][.4433] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....13] [ip4][..udp] [..192.168.1.128][60784] -> [...3.121.242.54][.4433] 
+         detected: [....13] [ip4][..udp] [..192.168.1.128][60784] -> [...3.121.242.54][.4433] [QUIC.AmazonAWS][Cloud][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....14] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][51185] -> [..................2001:bc8:47a4:1c25::1][.4433] 
+         detected: [....14] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][51185] -> [..................2001:bc8:47a4:1c25::1][.4433] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....15] [ip4][..udp] [..192.168.1.128][34511] -> [.131.159.24.198][..443] 
+         detected: [....15] [ip4][..udp] [..192.168.1.128][34511] -> [.131.159.24.198][..443] [QUIC][Web][Acceptable]
+              new: [....16] [ip4][..udp] [..192.168.1.128][51887] -> [..51.158.105.98][..443] 
+         detected: [....16] [ip4][..udp] [..192.168.1.128][51887] -> [..51.158.105.98][..443] [QUIC][Web][Acceptable]
+              new: [....17] [ip4][..udp] [..192.168.1.128][43475] -> [..18.189.84.245][.4433] 
+         detected: [....17] [ip4][..udp] [..192.168.1.128][43475] -> [..18.189.84.245][.4433] [QUIC.AmazonAWS][Cloud][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....18] [ip4][..udp] [..192.168.1.128][49151] -> [133.242.206.244][.4433] 
+         detected: [....18] [ip4][..udp] [..192.168.1.128][49151] -> [133.242.206.244][.4433] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....19] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][39945] -> [.2a05:d018:ce9:8100:cd2a:e2fd:b3be:c5ab][.4433] 
+         detected: [....19] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][39945] -> [.2a05:d018:ce9:8100:cd2a:e2fd:b3be:c5ab][.4433] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....20] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][39624] -> [.....2001:19f0:5:c21:5400:1ff:fe33:3b96][..443] 
+         detected: [....20] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][39624] -> [.....2001:19f0:5:c21:5400:1ff:fe33:3b96][..443] [QUIC][Web][Acceptable]
+              new: [....21] [ip4][..udp] [..192.168.1.128][59171] -> [..193.190.10.98][.4433] 
+         detected: [....21] [ip4][..udp] [..192.168.1.128][59171] -> [..193.190.10.98][.4433] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....22] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][35643] -> [......................2001:19f0:4:34::1][.4433] 
+         detected: [....22] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][35643] -> [......................2001:19f0:4:34::1][.4433] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....23] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][56213] -> [.........2400:8902::f03c:91ff:fe69:a454][.4433] 
+         detected: [....23] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][56213] -> [.........2400:8902::f03c:91ff:fe69:a454][.4433] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....24] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][52080] -> [2600:1f18:2310:d230:5103:7d9e:7d75:374f][.4434] 
+         detected: [....24] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][52080] -> [2600:1f18:2310:d230:5103:7d9e:7d75:374f][.4434] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....25] [ip4][..udp] [..192.168.1.128][37661] -> [..71.202.41.169][.4433] 
+         detected: [....25] [ip4][..udp] [..192.168.1.128][37661] -> [..71.202.41.169][.4433] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....26] [ip4][..udp] [..192.168.1.128][37784] -> [..140.227.52.92][..443] 
+         detected: [....26] [ip4][..udp] [..192.168.1.128][37784] -> [..140.227.52.92][..443] [QUIC][Web][Acceptable]
+              new: [....27] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][60983] -> [..2a00:ac00:4000:400:2e0:4cff:fe68:199d][.4433] 
+         detected: [....27] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][60983] -> [..2a00:ac00:4000:400:2e0:4cff:fe68:199d][.4433] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....28] [ip4][..udp] [..192.168.1.128][49658] -> [..193.190.10.98][..443] 
+         detected: [....28] [ip4][..udp] [..192.168.1.128][49658] -> [..193.190.10.98][..443] [QUIC][Web][Acceptable]
+              new: [....29] [ip4][..udp] [..192.168.1.128][41587] -> [.131.159.24.198][.4433] 
+         detected: [....29] [ip4][..udp] [..192.168.1.128][41587] -> [.131.159.24.198][.4433] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....30] [ip4][.icmp] [..51.158.105.98] -> [..192.168.1.128] 
+         detected: [....30] [ip4][.icmp] [..51.158.105.98] -> [..192.168.1.128] [ICMP][Network][Acceptable]
+              new: [....31] [ip4][..udp] [..192.168.1.128][38933] -> [.202.238.220.92][..443] 
+         detected: [....31] [ip4][..udp] [..192.168.1.128][38933] -> [.202.238.220.92][..443] [QUIC][Web][Acceptable]
+              new: [....32] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][52271] -> [..2a00:ac00:4000:400:2e0:4cff:fe68:199d][.4434] 
+         detected: [....32] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][52271] -> [..2a00:ac00:4000:400:2e0:4cff:fe68:199d][.4434] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....33] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][51040] -> [............2604:a880:800:a1::1279:3001][.4433] 
+         detected: [....33] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][51040] -> [............2604:a880:800:a1::1279:3001][.4433] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....34] [ip4][.icmp] [.131.159.24.198] -> [..192.168.1.128] 
+         detected: [....34] [ip4][.icmp] [.131.159.24.198] -> [..192.168.1.128] [ICMP][Network][Acceptable]
+              new: [....35] [ip4][..udp] [..192.168.1.128][45250] -> [..51.158.105.98][.4433] 
+         detected: [....35] [ip4][..udp] [..192.168.1.128][45250] -> [..51.158.105.98][.4433] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....36] [ip4][..udp] [..192.168.1.128][42456] -> [133.242.206.244][..443] 
+         detected: [....36] [ip4][..udp] [..192.168.1.128][42456] -> [133.242.206.244][..443] [QUIC][Web][Acceptable]
+              new: [....37] [ip6][icmp6] [.2001:4800:7817:101:be76:4eff:fe04:631d] -> [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d] 
+         detected: [....37] [ip6][icmp6] [.2001:4800:7817:101:be76:4eff:fe04:631d] -> [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d] [ICMPV6][Network][Acceptable]
+              new: [....38] [ip4][..udp] [..192.168.1.128][50289] -> [..71.202.41.169][.4434] 
+         detected: [....38] [ip4][..udp] [..192.168.1.128][50289] -> [..71.202.41.169][.4434] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....39] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][49270] -> [..................2001:bc8:47a4:1c25::1][.4434] 
+         detected: [....39] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][49270] -> [..................2001:bc8:47a4:1c25::1][.4434] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....40] [ip4][..udp] [..192.168.1.128][34903] -> [..18.189.84.245][..443] 
+         detected: [....40] [ip4][..udp] [..192.168.1.128][34903] -> [..18.189.84.245][..443] [QUIC.AmazonAWS][Cloud][Acceptable]
+              new: [....41] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][45852] -> [.....2001:19f0:5:c21:5400:1ff:fe33:3b96][.4433] 
+         detected: [....41] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][45852] -> [.....2001:19f0:5:c21:5400:1ff:fe33:3b96][.4433] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....42] [ip4][..udp] [..192.168.1.128][45855] -> [133.242.206.244][.4434] 
+         detected: [....42] [ip4][..udp] [..192.168.1.128][45855] -> [133.242.206.244][.4434] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....43] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][46353] -> [.................2606:4700:10::6816:826][..443] 
+         detected: [....43] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][46353] -> [.................2606:4700:10::6816:826][..443] [QUIC][Web][Acceptable]
+              new: [....44] [ip4][..udp] [..192.168.1.128][53791] -> [..40.112.191.60][.4434] 
+         detected: [....44] [ip4][..udp] [..192.168.1.128][53791] -> [..40.112.191.60][.4434] [QUIC.Azure][Cloud][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....45] [ip4][..udp] [..192.168.1.128][59515] -> [..193.190.10.98][.4434] 
+         detected: [....45] [ip4][..udp] [..192.168.1.128][59515] -> [..193.190.10.98][.4434] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....46] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][49788] -> [.2001:4800:7817:101:be76:4eff:fe04:631d][.4434] 
+         detected: [....46] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][49788] -> [.2001:4800:7817:101:be76:4eff:fe04:631d][.4434] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....47] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][46242] -> [2600:1f18:2310:d230:5103:7d9e:7d75:374f][..443] 
+         detected: [....47] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][46242] -> [2600:1f18:2310:d230:5103:7d9e:7d75:374f][..443] [QUIC][Web][Acceptable]
+              new: [....48] [ip4][..udp] [..192.168.1.128][44619] -> [..140.227.52.92][.4433] 
+         detected: [....48] [ip4][..udp] [..192.168.1.128][44619] -> [..140.227.52.92][.4433] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....49] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][44243] -> [......................2001:19f0:4:34::1][.4434] 
+         detected: [....49] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][44243] -> [......................2001:19f0:4:34::1][.4434] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....50] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][38394] -> [2600:1f18:2310:d230:5103:7d9e:7d75:374f][.4433] 
+         detected: [....50] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][38394] -> [2600:1f18:2310:d230:5103:7d9e:7d75:374f][.4433] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....51] [ip6][icmp6] [.....2001:19f0:5:c21:5400:1ff:fe33:3b96] -> [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d] 
+         detected: [....51] [ip6][icmp6] [.....2001:19f0:5:c21:5400:1ff:fe33:3b96] -> [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d] [ICMPV6][Network][Acceptable]
+              new: [....52] [ip4][..udp] [..192.168.1.128][35263] -> [.202.238.220.92][.4434] 
+         detected: [....52] [ip4][..udp] [..192.168.1.128][35263] -> [.202.238.220.92][.4434] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....53] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][53760] -> [............2604:a880:800:a1::1279:3001][.4434] 
+         detected: [....53] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][53760] -> [............2604:a880:800:a1::1279:3001][.4434] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....54] [ip4][..udp] [..192.168.1.128][54570] -> [..18.189.84.245][.4434] 
+         detected: [....54] [ip4][..udp] [..192.168.1.128][54570] -> [..18.189.84.245][.4434] [QUIC.AmazonAWS][Cloud][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....55] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][44924] -> [.........2400:8902::f03c:91ff:fe69:a454][.4434] 
+         detected: [....55] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][44924] -> [.........2400:8902::f03c:91ff:fe69:a454][.4434] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....56] [ip4][..udp] [..192.168.1.128][39975] -> [.138.91.188.147][..443] 
+         detected: [....56] [ip4][..udp] [..192.168.1.128][39975] -> [.138.91.188.147][..443] [QUIC.Azure][Cloud][Acceptable]
+              new: [....57] [ip4][..udp] [..192.168.1.128][50705] -> [.138.91.188.147][.4434] 
+         detected: [....57] [ip4][..udp] [..192.168.1.128][50705] -> [.138.91.188.147][.4434] [QUIC.Azure][Cloud][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....58] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][41857] -> [.................2606:4700:10::6816:826][.4434] 
+         detected: [....58] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][41857] -> [.................2606:4700:10::6816:826][.4434] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....59] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][56073] -> [............2604:a880:800:a1::1279:3001][..443] 
+         detected: [....59] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][56073] -> [............2604:a880:800:a1::1279:3001][..443] [QUIC][Web][Acceptable]
+              new: [....60] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][43645] -> [......................2001:19f0:4:34::1][..443] 
+         detected: [....60] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][43645] -> [......................2001:19f0:4:34::1][..443] [QUIC][Web][Acceptable]
+              new: [....61] [ip4][..udp] [..192.168.1.128][48644] -> [.131.159.24.198][.4434] 
+         detected: [....61] [ip4][..udp] [..192.168.1.128][48644] -> [.131.159.24.198][.4434] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....62] [ip4][..udp] [..192.168.1.128][42468] -> [.138.91.188.147][.4433] 
+         detected: [....62] [ip4][..udp] [..192.168.1.128][42468] -> [.138.91.188.147][.4433] [QUIC.Azure][Cloud][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....63] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][38689] -> [.....2001:19f0:5:c21:5400:1ff:fe33:3b96][.4434] 
+         detected: [....63] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][38689] -> [.....2001:19f0:5:c21:5400:1ff:fe33:3b96][.4434] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....64] [ip4][..udp] [..192.168.1.128][53402] -> [...3.121.242.54][.4434] 
+         detected: [....64] [ip4][..udp] [..192.168.1.128][53402] -> [...3.121.242.54][.4434] [QUIC.AmazonAWS][Cloud][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....65] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][53140] -> [.2001:4800:7817:101:be76:4eff:fe04:631d][.4433] 
+         detected: [....65] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][53140] -> [.2001:4800:7817:101:be76:4eff:fe04:631d][.4433] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....66] [ip4][..udp] [..192.168.1.128][57926] -> [..140.227.52.92][.4434] 
+         detected: [....66] [ip4][..udp] [..192.168.1.128][57926] -> [..140.227.52.92][.4434] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....67] [ip6][icmp6] [.........2400:8902::f03c:91ff:fe69:a454] -> [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d] 
+         detected: [....67] [ip6][icmp6] [.........2400:8902::f03c:91ff:fe69:a454] -> [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d] [ICMPV6][Network][Acceptable]
+              new: [....68] [ip6][icmp6] [......................2001:19f0:4:34::1] -> [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d] 
+         detected: [....68] [ip6][icmp6] [......................2001:19f0:4:34::1] -> [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d] [ICMPV6][Network][Acceptable]
+              new: [....69] [ip4][..udp] [..192.168.1.128][43735] -> [..51.158.105.98][.4434] 
+         detected: [....69] [ip4][..udp] [..192.168.1.128][43735] -> [..51.158.105.98][.4434] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....70] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][44605] -> [.2a05:d018:ce9:8100:cd2a:e2fd:b3be:c5ab][.4434] 
+         detected: [....70] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][44605] -> [.2a05:d018:ce9:8100:cd2a:e2fd:b3be:c5ab][.4434] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [....71] [ip4][.icmp] [.202.238.220.92] -> [..192.168.1.128] 
+         detected: [....71] [ip4][.icmp] [.202.238.220.92] -> [..192.168.1.128] [ICMP][Network][Acceptable]
+              new: [....72] [ip4][.icmp] [..18.189.84.245] -> [..192.168.1.128] 
+         detected: [....72] [ip4][.icmp] [..18.189.84.245] -> [..192.168.1.128] [ICMP][Network][Acceptable]
+              new: [....73] [ip6][icmp6] [............2604:a880:800:a1::1279:3001] -> [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d] 
+         detected: [....73] [ip6][icmp6] [............2604:a880:800:a1::1279:3001] -> [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d] [ICMPV6][Network][Acceptable]
+              new: [....74] [ip4][.icmp] [..192.168.1.128] -> [..40.112.191.60] 
+         detected: [....74] [ip4][.icmp] [..192.168.1.128] -> [..40.112.191.60] [ICMP][Network][Acceptable]
+              new: [....75] [ip4][.icmp] [133.242.206.244] -> [..192.168.1.128] 
+         detected: [....75] [ip4][.icmp] [133.242.206.244] -> [..192.168.1.128] [ICMP][Network][Acceptable]
+              new: [....76] [ip4][.icmp] [..192.168.1.128] -> [..140.227.52.92] 
+         detected: [....76] [ip4][.icmp] [..192.168.1.128] -> [..140.227.52.92] [ICMP][Network][Acceptable]
+              new: [....77] [ip4][.icmp] [..192.168.1.128] -> [.138.91.188.147] 
+         detected: [....77] [ip4][.icmp] [..192.168.1.128] -> [.138.91.188.147] [ICMP][Network][Acceptable]
+             idle: [....21] [ip4][..udp] [..192.168.1.128][59171] -> [..193.190.10.98][.4433] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [.....8] [ip4][..udp] [..192.168.1.128][46576] -> [..40.112.191.60][.4433] [QUIC.Azure][Cloud][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....34] [ip4][.icmp] [.131.159.24.198] -> [..192.168.1.128] [ICMP][Network][Acceptable]
+             idle: [.....1] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][38077] -> [.........2400:8902::f03c:91ff:fe69:a454][..443] [QUIC][Web][Acceptable]
+             idle: [....46] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][49788] -> [.2001:4800:7817:101:be76:4eff:fe04:631d][.4434] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....13] [ip4][..udp] [..192.168.1.128][60784] -> [...3.121.242.54][.4433] [QUIC.AmazonAWS][Cloud][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....38] [ip4][..udp] [..192.168.1.128][50289] -> [..71.202.41.169][.4434] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....15] [ip4][..udp] [..192.168.1.128][34511] -> [.131.159.24.198][..443] [QUIC][Web][Acceptable]
+             idle: [....74] [ip4][.icmp] [..192.168.1.128] -> [..40.112.191.60] [ICMP][Network][Acceptable]
+             idle: [....17] [ip4][..udp] [..192.168.1.128][43475] -> [..18.189.84.245][.4433] [QUIC.AmazonAWS][Cloud][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....35] [ip4][..udp] [..192.168.1.128][45250] -> [..51.158.105.98][.4433] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....73] [ip6][icmp6] [............2604:a880:800:a1::1279:3001] -> [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d] [ICMPV6][Network][Acceptable]
+             idle: [....45] [ip4][..udp] [..192.168.1.128][59515] -> [..193.190.10.98][.4434] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....31] [ip4][..udp] [..192.168.1.128][38933] -> [.202.238.220.92][..443] [QUIC][Web][Acceptable]
+             idle: [....33] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][51040] -> [............2604:a880:800:a1::1279:3001][.4433] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....26] [ip4][..udp] [..192.168.1.128][37784] -> [..140.227.52.92][..443] [QUIC][Web][Acceptable]
+             idle: [....11] [ip4][.icmp] [...3.121.242.54] -> [..192.168.1.128] [ICMP][Network][Acceptable]
+             idle: [....43] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][46353] -> [.................2606:4700:10::6816:826][..443] [QUIC][Web][Acceptable]
+             idle: [....67] [ip6][icmp6] [.........2400:8902::f03c:91ff:fe69:a454] -> [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d] [ICMPV6][Network][Acceptable]
+             idle: [....19] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][39945] -> [.2a05:d018:ce9:8100:cd2a:e2fd:b3be:c5ab][.4433] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....60] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][43645] -> [......................2001:19f0:4:34::1][..443] [QUIC][Web][Acceptable]
+             idle: [....56] [ip4][..udp] [..192.168.1.128][39975] -> [.138.91.188.147][..443] [QUIC.Azure][Cloud][Acceptable]
+             idle: [.....3] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][37876] -> [.2a05:d018:ce9:8100:cd2a:e2fd:b3be:c5ab][..443] [QUIC][Web][Acceptable]
+             idle: [....22] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][35643] -> [......................2001:19f0:4:34::1][.4433] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....32] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][52271] -> [..2a00:ac00:4000:400:2e0:4cff:fe68:199d][.4434] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....52] [ip4][..udp] [..192.168.1.128][35263] -> [.202.238.220.92][.4434] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....41] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][45852] -> [.....2001:19f0:5:c21:5400:1ff:fe33:3b96][.4433] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....55] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][44924] -> [.........2400:8902::f03c:91ff:fe69:a454][.4434] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....20] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][39624] -> [.....2001:19f0:5:c21:5400:1ff:fe33:3b96][..443] [QUIC][Web][Acceptable]
+             idle: [....36] [ip4][..udp] [..192.168.1.128][42456] -> [133.242.206.244][..443] [QUIC][Web][Acceptable]
+             idle: [....69] [ip4][..udp] [..192.168.1.128][43735] -> [..51.158.105.98][.4434] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [.....5] [ip4][..udp] [..192.168.1.128][47010] -> [...3.121.242.54][..443] [QUIC.AmazonAWS][Cloud][Acceptable]
+             idle: [....75] [ip4][.icmp] [133.242.206.244] -> [..192.168.1.128] [ICMP][Network][Acceptable]
+             idle: [....28] [ip4][..udp] [..192.168.1.128][49658] -> [..193.190.10.98][..443] [QUIC][Web][Acceptable]
+             idle: [.....7] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][60346] -> [..................2001:bc8:47a4:1c25::1][..443] [QUIC][Web][Acceptable]
+             idle: [....16] [ip4][..udp] [..192.168.1.128][51887] -> [..51.158.105.98][..443] [QUIC][Web][Acceptable]
+             idle: [....62] [ip4][..udp] [..192.168.1.128][42468] -> [.138.91.188.147][.4433] [QUIC.Azure][Cloud][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....57] [ip4][..udp] [..192.168.1.128][50705] -> [.138.91.188.147][.4434] [QUIC.Azure][Cloud][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....64] [ip4][..udp] [..192.168.1.128][53402] -> [...3.121.242.54][.4434] [QUIC.AmazonAWS][Cloud][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....48] [ip4][..udp] [..192.168.1.128][44619] -> [..140.227.52.92][.4433] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....29] [ip4][..udp] [..192.168.1.128][41587] -> [.131.159.24.198][.4433] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....49] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][44243] -> [......................2001:19f0:4:34::1][.4434] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....77] [ip4][.icmp] [..192.168.1.128] -> [.138.91.188.147] [ICMP][Network][Acceptable]
+             idle: [....76] [ip4][.icmp] [..192.168.1.128] -> [..140.227.52.92] [ICMP][Network][Acceptable]
+             idle: [....53] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][53760] -> [............2604:a880:800:a1::1279:3001][.4434] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....70] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][44605] -> [.2a05:d018:ce9:8100:cd2a:e2fd:b3be:c5ab][.4434] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....54] [ip4][..udp] [..192.168.1.128][54570] -> [..18.189.84.245][.4434] [QUIC.AmazonAWS][Cloud][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....44] [ip4][..udp] [..192.168.1.128][53791] -> [..40.112.191.60][.4434] [QUIC.Azure][Cloud][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....27] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][60983] -> [..2a00:ac00:4000:400:2e0:4cff:fe68:199d][.4433] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....18] [ip4][..udp] [..192.168.1.128][49151] -> [133.242.206.244][.4433] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....37] [ip6][icmp6] [.2001:4800:7817:101:be76:4eff:fe04:631d] -> [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d] [ICMPV6][Network][Acceptable]
+             idle: [.....4] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][34442] -> [.2001:4800:7817:101:be76:4eff:fe04:631d][..443] [QUIC][Web][Acceptable]
+             idle: [.....6] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][48707] -> [..2a00:ac00:4000:400:2e0:4cff:fe68:199d][..443] [QUIC][Web][Acceptable]
+             idle: [....12] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][32957] -> [.................2606:4700:10::6816:826][.4433] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....24] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][52080] -> [2600:1f18:2310:d230:5103:7d9e:7d75:374f][.4434] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....65] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][53140] -> [.2001:4800:7817:101:be76:4eff:fe04:631d][.4433] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....59] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][56073] -> [............2604:a880:800:a1::1279:3001][..443] [QUIC][Web][Acceptable]
+             idle: [....72] [ip4][.icmp] [..18.189.84.245] -> [..192.168.1.128] [ICMP][Network][Acceptable]
+             idle: [....68] [ip6][icmp6] [......................2001:19f0:4:34::1] -> [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d] [ICMPV6][Network][Acceptable]
+             idle: [....51] [ip6][icmp6] [.....2001:19f0:5:c21:5400:1ff:fe33:3b96] -> [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d] [ICMPV6][Network][Acceptable]
+             idle: [....47] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][46242] -> [2600:1f18:2310:d230:5103:7d9e:7d75:374f][..443] [QUIC][Web][Acceptable]
+             idle: [....63] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][38689] -> [.....2001:19f0:5:c21:5400:1ff:fe33:3b96][.4434] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....10] [ip4][..udp] [..192.168.1.128][38366] -> [.202.238.220.92][.4433] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....23] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][56213] -> [.........2400:8902::f03c:91ff:fe69:a454][.4433] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....30] [ip4][.icmp] [..51.158.105.98] -> [..192.168.1.128] [ICMP][Network][Acceptable]
+             idle: [....14] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][51185] -> [..................2001:bc8:47a4:1c25::1][.4433] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....25] [ip4][..udp] [..192.168.1.128][37661] -> [..71.202.41.169][.4433] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....71] [ip4][.icmp] [.202.238.220.92] -> [..192.168.1.128] [ICMP][Network][Acceptable]
+             idle: [....50] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][38394] -> [2600:1f18:2310:d230:5103:7d9e:7d75:374f][.4433] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....61] [ip4][..udp] [..192.168.1.128][48644] -> [.131.159.24.198][.4434] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [.....9] [ip4][..udp] [..192.168.1.128][46334] -> [..40.112.191.60][..443] [QUIC.Azure][Cloud][Acceptable]
+             idle: [....39] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][49270] -> [..................2001:bc8:47a4:1c25::1][.4434] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....42] [ip4][..udp] [..192.168.1.128][45855] -> [133.242.206.244][.4434] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....58] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][41857] -> [.................2606:4700:10::6816:826][.4434] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [.....2] [ip4][..udp] [..192.168.1.128][37643] -> [..71.202.41.169][..443] [QUIC][Web][Acceptable]
+             idle: [....66] [ip4][..udp] [..192.168.1.128][57926] -> [..140.227.52.92][.4434] [QUIC][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....40] [ip4][..udp] [..192.168.1.128][34903] -> [..18.189.84.245][..443] [QUIC.AmazonAWS][Cloud][Acceptable]
+     DAEMON-EVENT: shutdown

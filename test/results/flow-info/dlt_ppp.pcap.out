@@ -1,0 +1,3 @@
+     DAEMON-EVENT: init
+      ERROR-EVENT: Unknown L3 protocol
+     DAEMON-EVENT: shutdown

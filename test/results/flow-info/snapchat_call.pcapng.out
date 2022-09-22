@@ -1,0 +1,18 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..udp] [.192.168.12.169][42083] -> [.18.184.138.142][..443] 
+         detected: [.....1] [ip4][..udp] [.192.168.12.169][42083] -> [.18.184.138.142][..443] [QUIC.AmazonAWS][Cloud][Acceptable]
+                   RISK: Missing SNI TLS Extn
+ detection-update: [.....1] [ip4][..udp] [.192.168.12.169][42083] -> [.18.184.138.142][..443] [QUIC.SnapchatCall][VoIP][Acceptable]
+                   RISK: Missing SNI TLS Extn
+          analyse: [.....1] [ip4][..udp] [.192.168.12.169][42083] -> [.18.184.138.142][..443] [QUIC.SnapchatCall][VoIP][Acceptable]
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.000|   1.447|   0.221|   0.397]
+                   [IAT(c->s)...:    0.000|   1.173|   0.201|   0.353][IAT(s->c)...:    0.000|   1.447|   0.240|   0.434]
+                   [PKTLEN(c->s):   70.000|1392.000| 285.900| 438.500][PKTLEN(s->c):   62.000|1392.000| 406.000| 489.400]
+                   [BINS(c->s)..: 4,8,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0]
+                   [BINS(s->c)..: 4,4,0,0,0,0,0,0,2,2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0]
+             idle: [.....1] [ip4][..udp] [.192.168.12.169][42083] -> [.18.184.138.142][..443] [QUIC.SnapchatCall][VoIP][Acceptable]
+                   RISK: Missing SNI TLS Extn
+     DAEMON-EVENT: shutdown

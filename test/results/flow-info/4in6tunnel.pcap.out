@@ -1,0 +1,7 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip6][....4] [22e0:1685:eda7:38cc:58bd:f3f1:aa3f:22d8] -> [................344a:ba94:152a:ac34::2a] 
+         detected: [.....1] [ip6][....4] [22e0:1685:eda7:38cc:58bd:f3f1:aa3f:22d8] -> [................344a:ba94:152a:ac34::2a] [IP_in_IP][Network][Acceptable]
+             idle: [.....1] [ip6][....4] [22e0:1685:eda7:38cc:58bd:f3f1:aa3f:22d8] -> [................344a:ba94:152a:ac34::2a] [IP_in_IP][Network][Acceptable]
+     DAEMON-EVENT: shutdown

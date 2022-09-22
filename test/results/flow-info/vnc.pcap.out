@@ -1,0 +1,28 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [..95.237.48.208][59791] -> [..192.168.2.110][.6900] 
+         detected: [.....1] [ip4][..tcp] [..95.237.48.208][59791] -> [..192.168.2.110][.6900] [VNC][RemoteAccess][Acceptable]
+                   RISK: Known Proto on Non Std Port, Desktop/File Sharing
+          analyse: [.....1] [ip4][..tcp] [..95.237.48.208][59791] -> [..192.168.2.110][.6900] [VNC][RemoteAccess][Acceptable]
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.000|   0.545|   0.058|   0.113]
+                   [IAT(c->s)...:    0.000|   0.545|   0.056|   0.133][IAT(s->c)...:    0.000|   0.310|   0.060|   0.088]
+                   [PKTLEN(c->s):   60.000|  89.000|  73.600|  11.900][PKTLEN(s->c):   54.000|  88.000|  67.100|  12.800]
+                   [BINS(c->s)..: 12,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 13,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+              new: [.....2] [ip4][..tcp] [..95.237.48.208][51559] -> [..192.168.2.110][.6900] 
+         detected: [.....2] [ip4][..tcp] [..95.237.48.208][51559] -> [..192.168.2.110][.6900] [VNC][RemoteAccess][Acceptable]
+                   RISK: Known Proto on Non Std Port, Desktop/File Sharing
+          analyse: [.....2] [ip4][..tcp] [..95.237.48.208][51559] -> [..192.168.2.110][.6900] [VNC][RemoteAccess][Acceptable]
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.000|   0.539|   0.054|   0.125]
+                   [IAT(c->s)...:    0.000|   0.539|   0.053|   0.125][IAT(s->c)...:    0.000|   0.502|   0.054|   0.126]
+                   [PKTLEN(c->s):   60.000|  89.000|  72.900|  12.000][PKTLEN(s->c):   54.000|  88.000|  68.100|  12.800]
+                   [BINS(c->s)..: 13,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 12,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+             idle: [.....2] [ip4][..tcp] [..95.237.48.208][51559] -> [..192.168.2.110][.6900] [VNC][RemoteAccess][Acceptable]
+                   RISK: Known Proto on Non Std Port, Desktop/File Sharing
+              end: [.....1] [ip4][..tcp] [..95.237.48.208][59791] -> [..192.168.2.110][.6900] [VNC][RemoteAccess][Acceptable]
+                   RISK: Known Proto on Non Std Port, Desktop/File Sharing
+     DAEMON-EVENT: shutdown

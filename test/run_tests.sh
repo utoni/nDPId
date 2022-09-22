@@ -8,6 +8,7 @@ nDPId_test_EXEC="$(realpath "${2:-"${MYDIR}/../nDPId-test"}")"
 NETCAT_EXEC="$(which nc) -q 0 -l 127.0.0.1 9000"
 JSON_VALIDATOR="$(realpath "${3:-"${MYDIR}/../examples/py-schema-validation/py-schema-validation.py"}")"
 SEMN_VALIDATOR="$(realpath "${4:-"${MYDIR}/../examples/py-semantic-validation/py-semantic-validation.py"}")"
+FLOW_INFO="$(realpath "${5:-"${MYDIR}/../examples/py-flow-info/flow-info.py"}")"
 IS_GIT=$(test -d "${MYDIR}/../.git" -o -f "${MYDIR}/../.git" && printf '1' || printf '0')
 
 function usage()
@@ -19,6 +20,7 @@ usage: ${0} [path-to-nDPI-source-root] \\
     path-to-nDPId-test-exec defaults to         ${nDPId_test_EXEC}
     path-to-nDPId-JSON-validator defaults to    ${JSON_VALIDATOR}
     path-to-nDPId-SEMANTIC-validator default to ${SEMN_VALIDATOR}
+    path-to-nDPId-flow-info defaults to         ${FLOW_INFO}
 EOF
 return 0
 }
@@ -138,6 +140,14 @@ for pcap_file in *.pcap *.pcapng *.cap; do
     fi
 done
 
+for out_file in ${MYDIR}/results/*.out; do
+    pcap_file="$(basename ${out_file%.out})"
+    if [ ! -r "${pcap_file}" ]; then
+        printf "%-${LINE_SPACES}s\t%s\n" "${pcap_file}" "[MISSING]"
+        TESTS_FAILED=$((TESTS_FAILED + 1))
+    fi
+done
+
 function validate_results()
 {
     prefix_str="${1}"
@@ -172,6 +182,54 @@ function validate_results()
 
     return 0
 }
+
+cat <<EOF
+
+--------------------
+-- Flow Info DIFF --
+--------------------
+
+EOF
+
+cd "${MYDIR}"
+for out_file in results/*.out; do
+    result_file="$(basename ${out_file})"
+    printf "%-${LINE_SPACES}s\t" "${result_file}"
+    cat "${out_file}" | grep -vE '^~~.*$' | ${NETCAT_EXEC} &
+    nc_pid=$!
+    ${FLOW_INFO} --host 127.0.0.1 --port 9000 \
+        --no-color --no-statusbar --hide-instance-info \
+        --print-analyse-results >"/tmp/nDPId-test-stdout/${result_file}.new" 2>/dev/null
+    kill -SIGTERM ${nc_pid} 2>/dev/null
+    wait ${nc_pid} 2>/dev/null
+    if [ ! -r "${MYDIR}/results/flow-info/${result_file}" ]; then
+        printf '%s\n' '[NEW]'
+        test ${IS_GIT} -eq 1 && \
+            mv -v "/tmp/nDPId-test-stdout/${result_file}.new" \
+                  "${MYDIR}/results/flow-info/${result_file}"
+        TESTS_FAILED=$((TESTS_FAILED + 1))
+    elif diff -u0 "${MYDIR}/results/flow-info/${result_file}" \
+                  "/tmp/nDPId-test-stdout/${result_file}.new" >/dev/null; then
+        printf '%s\n' '[OK]'
+        rm -f "/tmp/nDPId-test-stdout/${result_file}.new"
+    else
+        printf '%s\n' '[DIFF]'
+        diff -u0 "${MYDIR}/results/flow-info/${result_file}" \
+                 "/tmp/nDPId-test-stdout/${result_file}.new"
+        test ${IS_GIT} -eq 1 && \
+            mv -v "/tmp/nDPId-test-stdout/${result_file}.new" \
+                  "${MYDIR}/results/flow-info/${result_file}"
+        TESTS_FAILED=$((TESTS_FAILED + 1))
+    fi
+done
+
+for out_file in ${MYDIR}/results/flow-info/*.out; do
+    result_file="$(basename ${out_file})"
+    if [ ! -r "${MYDIR}/results/${result_file}" ]; then
+        printf "%-${LINE_SPACES}s\t%s\n" "${result_file}" "[MISSING]"
+        TESTS_FAILED=$((TESTS_FAILED + 1))
+    fi
+done
 
 cat <<EOF
 

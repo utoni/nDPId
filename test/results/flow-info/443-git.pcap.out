@@ -1,0 +1,16 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [...192.168.1.13][55744] -> [...140.82.114.4][..443] 
+         detected: [.....1] [ip4][..tcp] [...192.168.1.13][55744] -> [...140.82.114.4][..443] [TLS.Github][Collaborative][Acceptable]
+ detection-update: [.....1] [ip4][..tcp] [...192.168.1.13][55744] -> [...140.82.114.4][..443] [TLS.Github][Collaborative][Acceptable]
+ detection-update: [.....1] [ip4][..tcp] [...192.168.1.13][55744] -> [...140.82.114.4][..443] [TLS.Github][Collaborative][Acceptable]
+          analyse: [.....1] [ip4][..tcp] [...192.168.1.13][55744] -> [...140.82.114.4][..443] [TLS.Github][Collaborative][Acceptable]
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.000|   0.144|   0.033|   0.053]
+                   [IAT(c->s)...:    0.000|   0.143|   0.032|   0.051][IAT(s->c)...:    0.000|   0.144|   0.034|   0.055]
+                   [PKTLEN(c->s):   66.000| 583.000| 116.700| 128.900][PKTLEN(s->c):   74.000|1490.000| 618.300| 554.700]
+                   [BINS(c->s)..: 14,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 1,3,1,1,0,0,0,0,0,1,0,1,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0]
+              end: [.....1] [ip4][..tcp] [...192.168.1.13][55744] -> [...140.82.114.4][..443] [TLS.Github][Collaborative][Acceptable]
+     DAEMON-EVENT: shutdown

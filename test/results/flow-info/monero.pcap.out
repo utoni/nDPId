@@ -1,0 +1,30 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [..192.168.2.148][46838] -> [..94.23.199.191][.3333] 
+         detected: [.....1] [ip4][..tcp] [..192.168.2.148][46838] -> [..94.23.199.191][.3333] [Mining][Mining][Unsafe]
+                   RISK: Known Proto on Non Std Port, Unsafe Protocol
+              new: [.....2] [ip4][..tcp] [..192.168.2.148][53846] -> [116.211.167.195][.3333] 
+         detected: [.....2] [ip4][..tcp] [..192.168.2.148][53846] -> [116.211.167.195][.3333] [Mining][Mining][Unsafe]
+                   RISK: Known Proto on Non Std Port, Unsafe Protocol
+          analyse: [.....1] [ip4][..tcp] [..192.168.2.148][46838] -> [..94.23.199.191][.3333] [Mining][Mining][Unsafe]
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.000|  71.693|   7.500|  18.614]
+                   [IAT(c->s)...:    0.000|  71.570|   7.263|  18.348][IAT(s->c)...:    0.000|  71.693|   7.753|  18.889]
+                   [PKTLEN(c->s):   66.000|1514.000| 589.200| 677.100][PKTLEN(s->c):   66.000| 376.000| 127.500| 102.300]
+                   [BINS(c->s)..: 8,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,0,0]
+                   [BINS(s->c)..: 10,2,0,1,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+          analyse: [.....2] [ip4][..tcp] [..192.168.2.148][53846] -> [116.211.167.195][.3333] [Mining][Mining][Unsafe]
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.000| 170.525|  32.857|  51.784]
+                   [IAT(c->s)...:    0.000| 170.525|  31.821|  51.289][IAT(s->c)...:    0.000| 170.525|  33.963|  52.285]
+                   [PKTLEN(c->s):   54.000|1498.000| 239.100| 458.600][PKTLEN(s->c):   60.000| 364.000| 235.900| 139.500]
+                   [BINS(c->s)..: 12,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0]
+                   [BINS(s->c)..: 4,2,0,1,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+     DAEMON-EVENT: [Processed: 198 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 2 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+             idle: [.....2] [ip4][..tcp] [..192.168.2.148][53846] -> [116.211.167.195][.3333] [Mining][Mining][Unsafe]
+                   RISK: Known Proto on Non Std Port, Unsafe Protocol
+             idle: [.....1] [ip4][..tcp] [..192.168.2.148][46838] -> [..94.23.199.191][.3333] [Mining][Mining][Unsafe]
+                   RISK: Known Proto on Non Std Port, Unsafe Protocol
+     DAEMON-EVENT: shutdown

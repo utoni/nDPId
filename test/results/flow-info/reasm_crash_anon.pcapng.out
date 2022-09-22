@@ -1,0 +1,18 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [192.168.145.147][51218] -> [...10.209.8.148][21999] [MIDSTREAM] 
+          analyse: [.....1] [ip4][..tcp] [192.168.145.147][51218] -> [...10.209.8.148][21999] 
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.000|  30.166|   9.710|  14.065]
+                   [IAT(c->s)...:    0.000|  30.098|   6.841|  12.605][IAT(s->c)...:    0.001|  30.166|  16.723|  14.956]
+                   [PKTLEN(c->s):   68.000|  81.000|  73.100|   6.300][PKTLEN(s->c):  122.000| 793.000| 421.100| 330.000]
+                   [BINS(c->s)..: 23,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+     not-detected: [.....1] [ip4][..tcp] [192.168.145.147][51218] -> [...10.209.8.148][21999] [Unknown][Unrated]
+     DAEMON-EVENT: [Processed: 93 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 1|guessed: 0|detection-updates: 0|updates: 0]
+     DAEMON-EVENT: [Processed: 169 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 1|guessed: 0|detection-updates: 0|updates: 0]
+              end: [.....1] [ip4][..tcp] [192.168.145.147][51218] -> [...10.209.8.148][21999] [Unknown][Unrated]
+     DAEMON-EVENT: shutdown

@@ -1,0 +1,30 @@
+     DAEMON-EVENT: init
+              new: [.....1] [ip4][..tcp] [......10.0.2.15][35732] -> [..162.250.2.170][.5938] 
+         detected: [.....1] [ip4][..tcp] [......10.0.2.15][35732] -> [..162.250.2.170][.5938] [TeamViewer][RemoteAccess][Acceptable]
+          analyse: [.....1] [ip4][..tcp] [......10.0.2.15][35732] -> [..162.250.2.170][.5938] [TeamViewer][RemoteAccess][Acceptable]
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.000|   0.274|   0.067|   0.088]
+                   [IAT(c->s)...:    0.000|   0.274|   0.074|   0.092][IAT(s->c)...:    0.000|   0.256|   0.061|   0.085]
+                   [PKTLEN(c->s):   60.000|1514.000| 460.900| 544.600][PKTLEN(s->c):   54.000|1514.000| 314.200| 479.700]
+                   [BINS(c->s)..: 5,3,1,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,2,0,0]
+                   [BINS(s->c)..: 11,1,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,1,0,0]
+              new: [.....2] [ip4][..udp] [......10.0.2.15][34417] -> [..93.47.224.241][36037] 
+         detected: [.....2] [ip4][..udp] [......10.0.2.15][34417] -> [..93.47.224.241][36037] [TeamViewer][RemoteAccess][Acceptable]
+                   RISK: Known Proto on Non Std Port, Desktop/File Sharing
+          analyse: [.....2] [ip4][..udp] [......10.0.2.15][34417] -> [..93.47.224.241][36037] [TeamViewer][RemoteAccess][Acceptable]
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.000|   0.443|   0.037|   0.097]
+                   [IAT(c->s)...:    0.000|   0.000|   0.000|   0.000][IAT(s->c)...:    0.000|   0.443|   0.037|   0.097]
+                   [PKTLEN(c->s):  138.000| 138.000| 138.000|   0.000][PKTLEN(s->c):   58.000|1066.000| 463.000| 454.000]
+                   [BINS(c->s)..: 0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 4,7,4,1,2,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+           update: [.....2] [ip4][..udp] [......10.0.2.15][34417] -> [..93.47.224.241][36037] [TeamViewer][RemoteAccess][Acceptable]
+                   RISK: Known Proto on Non Std Port, Desktop/File Sharing
+     DAEMON-EVENT: [Processed: 1282 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 2 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 1]
+           update: [.....2] [ip4][..udp] [......10.0.2.15][34417] -> [..93.47.224.241][36037] [TeamViewer][RemoteAccess][Acceptable]
+                   RISK: Known Proto on Non Std Port, Desktop/File Sharing
+             idle: [.....2] [ip4][..udp] [......10.0.2.15][34417] -> [..93.47.224.241][36037] [TeamViewer][RemoteAccess][Acceptable]
+                   RISK: Known Proto on Non Std Port, Desktop/File Sharing
+             idle: [.....1] [ip4][..tcp] [......10.0.2.15][35732] -> [..162.250.2.170][.5938] [TeamViewer][RemoteAccess][Acceptable]
+     DAEMON-EVENT: shutdown

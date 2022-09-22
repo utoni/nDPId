@@ -1,0 +1,26 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [....10.10.10.49][55341] -> [...10.10.10.251][..631] 
+         detected: [.....1] [ip4][..tcp] [....10.10.10.49][55341] -> [...10.10.10.251][..631] [HTTP.IPP][System][Acceptable]
+                   RISK: Known Proto on Non Std Port, HTTP Numeric IP Address
+              new: [.....2] [ip4][..tcp] [....10.10.10.49][55342] -> [...10.10.10.251][..631] 
+         detected: [.....2] [ip4][..tcp] [....10.10.10.49][55342] -> [...10.10.10.251][..631] [HTTP.IPP][System][Acceptable]
+                   RISK: Known Proto on Non Std Port, HTTP Numeric IP Address
+          analyse: [.....2] [ip4][..tcp] [....10.10.10.49][55342] -> [...10.10.10.251][..631] [HTTP.IPP][System][Acceptable]
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.000|   0.009|   0.004|   0.004]
+                   [IAT(c->s)...:    0.000|   0.009|   0.003|   0.003][IAT(s->c)...:    0.001|   0.009|   0.006|   0.003]
+                   [PKTLEN(c->s):   66.000|2962.000|1331.700| 799.700][PKTLEN(s->c):   66.000|  91.000|  69.000|   7.300]
+                   [BINS(c->s)..: 3,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,1,1,1,0,1,0,9]
+                   [BINS(s->c)..: 11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+              new: [.....3] [ip4][..tcp] [....10.10.10.49][55343] -> [...10.10.10.251][..631] 
+         detected: [.....3] [ip4][..tcp] [....10.10.10.49][55343] -> [...10.10.10.251][..631] [HTTP.IPP][System][Acceptable]
+                   RISK: Known Proto on Non Std Port, HTTP Numeric IP Address
+              end: [.....1] [ip4][..tcp] [....10.10.10.49][55341] -> [...10.10.10.251][..631] [HTTP.IPP][System][Acceptable]
+                   RISK: Known Proto on Non Std Port, HTTP Numeric IP Address
+              end: [.....2] [ip4][..tcp] [....10.10.10.49][55342] -> [...10.10.10.251][..631] [HTTP.IPP][System][Acceptable]
+                   RISK: Known Proto on Non Std Port, HTTP Numeric IP Address
+              end: [.....3] [ip4][..tcp] [....10.10.10.49][55343] -> [...10.10.10.251][..631] [HTTP.IPP][System][Acceptable]
+                   RISK: Known Proto on Non Std Port, HTTP Numeric IP Address
+     DAEMON-EVENT: shutdown

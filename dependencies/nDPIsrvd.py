@@ -28,12 +28,12 @@ PKT_TYPE_ETH_IP6 = 0x86DD
 
 
 class TermColor:
-    HINT = '\033[33m'
+    HINT    = '\033[33m'
     WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    BOLD = '\033[1m'
-    END = '\033[0m'
-    BLINK = '\x1b[5m'
+    FAIL    = '\033[91m'
+    BOLD    = '\033[1m'
+    END     = '\033[0m'
+    BLINK   = '\x1b[5m'
 
     if USE_COLORAMA is True:
         COLOR_TUPLES = [ (Fore.BLUE, [Back.RED, Back.MAGENTA, Back.WHITE]),
@@ -52,6 +52,17 @@ class TermColor:
                          (Fore.LIGHTYELLOW_EX, [Back.LIGHTRED_EX, Back.RED]) ]
 
     @staticmethod
+    def disableColor():
+        TermColor.HINT    = ''
+        TermColor.WARNING = ''
+        TermColor.FAIL    = ''
+        TermColor.BOLD    = ''
+        TermColor.END     = ''
+        TermColor.BLINK   = ''
+        global USE_COLORAMA
+        USE_COLORAMA      = False
+
+    @staticmethod
     def calcColorHash(string):
         h = 0
         for char in string:
@@ -68,6 +79,7 @@ class TermColor:
 
     @staticmethod
     def setColorByString(string):
+        global USE_COLORAMA
         if USE_COLORAMA is True:
             fg_color, bg_color = TermColor.getColorsByHash(string)
             color_hash = TermColor.calcColorHash(string)

@@ -1,0 +1,48 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..udp] [..192.168.43.91][35966] -> [........4.2.2.4][...53] 
+         detected: [.....1] [ip4][..udp] [..192.168.43.91][35966] -> [........4.2.2.4][...53] [DNS][Network][Acceptable]
+                   RISK: Suspicious DGA Domain name
+ detection-update: [.....1] [ip4][..udp] [..192.168.43.91][35966] -> [........4.2.2.4][...53] [DNS][Network][Acceptable]
+                   RISK: Suspicious DGA Domain name
+ detection-update: [.....1] [ip4][..udp] [..192.168.43.91][35966] -> [........4.2.2.4][...53] [DNS][Network][Acceptable]
+                   RISK: Suspicious DGA Domain name, Risky Domain Name
+              new: [.....2] [ip4][..udp] [..192.168.43.91][56354] -> [........4.2.2.4][...53] 
+         detected: [.....2] [ip4][..udp] [..192.168.43.91][56354] -> [........4.2.2.4][...53] [DNS][Network][Acceptable]
+                   RISK: Suspicious DGA Domain name
+ detection-update: [.....2] [ip4][..udp] [..192.168.43.91][56354] -> [........4.2.2.4][...53] [DNS][Network][Acceptable]
+                   RISK: Suspicious DGA Domain name
+ detection-update: [.....2] [ip4][..udp] [..192.168.43.91][56354] -> [........4.2.2.4][...53] [DNS][Network][Acceptable]
+                   RISK: Suspicious DGA Domain name
+ detection-update: [.....2] [ip4][..udp] [..192.168.43.91][56354] -> [........4.2.2.4][...53] [DNS][Network][Acceptable]
+                   RISK: Suspicious DGA Domain name
+ detection-update: [.....2] [ip4][..udp] [..192.168.43.91][56354] -> [........4.2.2.4][...53] [DNS][Network][Acceptable]
+                   RISK: Suspicious DGA Domain name
+ detection-update: [.....2] [ip4][..udp] [..192.168.43.91][56354] -> [........4.2.2.4][...53] [DNS][Network][Acceptable]
+                   RISK: Suspicious DGA Domain name, Risky Domain Name
+          analyse: [.....2] [ip4][..udp] [..192.168.43.91][56354] -> [........4.2.2.4][...53] [DNS][Network][Acceptable]
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.063|   4.102|   1.074|   0.689]
+                   [IAT(c->s)...:    0.073|   1.042|   0.918|   0.283][IAT(s->c)...:    0.063|   4.102|   1.290|   0.970]
+                   [PKTLEN(c->s):   95.000| 290.000| 115.300|  44.400][PKTLEN(s->c):  126.000| 323.000| 149.500|  52.200]
+                   [BINS(c->s)..: 0,13,5,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 0,0,10,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+           update: [.....1] [ip4][..udp] [..192.168.43.91][35966] -> [........4.2.2.4][...53] [DNS][Network][Acceptable]
+                   RISK: Suspicious DGA Domain name, Risky Domain Name
+           update: [.....2] [ip4][..udp] [..192.168.43.91][56354] -> [........4.2.2.4][...53] [DNS][Network][Acceptable]
+                   RISK: Suspicious DGA Domain name, Risky Domain Name
+           update: [.....1] [ip4][..udp] [..192.168.43.91][35966] -> [........4.2.2.4][...53] [DNS][Network][Acceptable]
+                   RISK: Suspicious DGA Domain name, Risky Domain Name
+              new: [.....3] [ip4][..udp] [..192.168.43.91][46961] -> [........4.2.2.4][...53] 
+         detected: [.....3] [ip4][..udp] [..192.168.43.91][46961] -> [........4.2.2.4][...53] [DNS][Network][Acceptable]
+                   RISK: Suspicious DGA Domain name
+ detection-update: [.....3] [ip4][..udp] [..192.168.43.91][46961] -> [........4.2.2.4][...53] [DNS][Network][Acceptable]
+                   RISK: Suspicious DGA Domain name, Risky Domain Name
+             idle: [.....3] [ip4][..udp] [..192.168.43.91][46961] -> [........4.2.2.4][...53] [DNS][Network][Acceptable]
+                   RISK: Suspicious DGA Domain name, Risky Domain Name
+             idle: [.....2] [ip4][..udp] [..192.168.43.91][56354] -> [........4.2.2.4][...53] [DNS][Network][Acceptable]
+                   RISK: Suspicious DGA Domain name, Risky Domain Name
+             idle: [.....1] [ip4][..udp] [..192.168.43.91][35966] -> [........4.2.2.4][...53] [DNS][Network][Acceptable]
+                   RISK: Suspicious DGA Domain name, Risky Domain Name
+     DAEMON-EVENT: shutdown

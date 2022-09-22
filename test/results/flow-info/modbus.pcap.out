@@ -1,0 +1,14 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [192.168.110.131][.2074] -> [192.168.110.138][..502] [MIDSTREAM] 
+         detected: [.....1] [ip4][..tcp] [192.168.110.131][.2074] -> [192.168.110.138][..502] [Modbus][IoT-Scada][Acceptable]
+          analyse: [.....1] [ip4][..tcp] [192.168.110.131][.2074] -> [192.168.110.138][..502] [Modbus][IoT-Scada][Acceptable]
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.001|   1.014|   0.452|   0.497]
+                   [IAT(c->s)...:    0.001|   1.014|   0.467|   0.498][IAT(s->c)...:    0.001|   1.014|   0.438|   0.496]
+                   [PKTLEN(c->s):   66.000|  66.000|  66.000|   0.000][PKTLEN(s->c):   65.000|  65.000|  65.000|   0.000]
+                   [BINS(c->s)..: 16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+             idle: [.....1] [ip4][..tcp] [192.168.110.131][.2074] -> [192.168.110.138][..502] [Modbus][IoT-Scada][Acceptable]
+     DAEMON-EVENT: shutdown

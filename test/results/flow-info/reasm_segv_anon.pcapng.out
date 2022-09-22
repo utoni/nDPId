@@ -1,0 +1,42 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+      ERROR-EVENT: Captured packet size is smaller than expected packet size
+              new: [.....1] [ip4][..udp] [...145.76.2.236][.2152] -> [...187.96.52.85][.2152] 
+         detected: [.....1] [ip4][..udp] [...145.76.2.236][.2152] -> [...187.96.52.85][.2152] [GTP.GTP_U][Network][Acceptable]
+      ERROR-EVENT: Captured packet size is smaller than expected packet size
+      ERROR-EVENT: Captured packet size is smaller than expected packet size
+      ERROR-EVENT: Captured packet size is smaller than expected packet size
+      ERROR-EVENT: Captured packet size is smaller than expected packet size
+      ERROR-EVENT: Captured packet size is smaller than expected packet size
+      ERROR-EVENT: Captured packet size is smaller than expected packet size
+      ERROR-EVENT: Captured packet size is smaller than expected packet size
+      ERROR-EVENT: Captured packet size is smaller than expected packet size
+          analyse: [.....1] [ip4][..udp] [...145.76.2.236][.2152] -> [...187.96.52.85][.2152] [GTP.GTP_U][Network][Acceptable]
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.000|   1.859|   0.305|   0.564]
+                   [IAT(c->s)...:    0.020|   1.859|   0.592|   0.678][IAT(s->c)...:    0.000|   1.799|   0.206|   0.480]
+                   [PKTLEN(c->s):  106.000| 122.000| 113.100|   5.900][PKTLEN(s->c):   90.000|1490.000|1255.600| 472.300]
+                   [BINS(c->s)..: 0,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 0,2,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,17,0,0]
+      ERROR-EVENT: Captured packet size is smaller than expected packet size
+      ERROR-EVENT: Captured packet size is smaller than expected packet size
+      ERROR-EVENT: Captured packet size is smaller than expected packet size
+      ERROR-EVENT: Captured packet size is smaller than expected packet size
+      ERROR-EVENT: Captured packet size is smaller than expected packet size
+      ERROR-EVENT: Captured packet size is smaller than expected packet size
+      ERROR-EVENT: Captured packet size is smaller than expected packet size
+      ERROR-EVENT: Captured packet size is smaller than expected packet size
+      ERROR-EVENT: Captured packet size is smaller than expected packet size
+      ERROR-EVENT: Captured packet size is smaller than expected packet size
+      ERROR-EVENT: Captured packet size is smaller than expected packet size
+      ERROR-EVENT: Captured packet size is smaller than expected packet size
+      ERROR-EVENT: Captured packet size is smaller than expected packet size
+      ERROR-EVENT: Captured packet size is smaller than expected packet size
+      ERROR-EVENT: Captured packet size is smaller than expected packet size
+      ERROR-EVENT: Captured packet size is smaller than expected packet size
+      ERROR-EVENT: Captured packet size is smaller than expected packet size
+      ERROR-EVENT: Captured packet size is smaller than expected packet size
+      ERROR-EVENT: Captured packet size is smaller than expected packet size
+             idle: [.....1] [ip4][..udp] [...145.76.2.236][.2152] -> [...187.96.52.85][.2152] [GTP.GTP_U][Network][Acceptable]
+     DAEMON-EVENT: shutdown

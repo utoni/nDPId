@@ -1,0 +1,20 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..udp] [.192.168.220.56][56373] -> [192.168.203.167][...53] 
+         detected: [.....1] [ip4][..udp] [.192.168.220.56][56373] -> [192.168.203.167][...53] [DNS][Network][Acceptable]
+                   RISK: Suspicious DGA Domain name
+ detection-update: [.....1] [ip4][..udp] [.192.168.220.56][56373] -> [192.168.203.167][...53] [DNS][Network][Acceptable]
+                   RISK: Suspicious DGA Domain name, Risky Domain Name
+          analyse: [.....1] [ip4][..udp] [.192.168.220.56][56373] -> [192.168.203.167][...53] [DNS][Network][Acceptable]
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.004|   1.036|   0.914|   0.282]
+                   [IAT(c->s)...:    0.005|   1.036|   0.944|   0.251][IAT(s->c)...:    0.004|   1.016|   0.885|   0.305]
+                   [PKTLEN(c->s):  101.000| 215.000| 114.400|  31.200][PKTLEN(s->c):  148.000| 386.000| 178.400|  63.000]
+                   [BINS(c->s)..: 0,13,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 0,0,0,13,1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+           update: [.....1] [ip4][..udp] [.192.168.220.56][56373] -> [192.168.203.167][...53] [DNS][Network][Acceptable]
+                   RISK: Suspicious DGA Domain name, Risky Domain Name
+             idle: [.....1] [ip4][..udp] [.192.168.220.56][56373] -> [192.168.203.167][...53] [DNS][Network][Acceptable]
+                   RISK: Suspicious DGA Domain name, Risky Domain Name
+     DAEMON-EVENT: shutdown

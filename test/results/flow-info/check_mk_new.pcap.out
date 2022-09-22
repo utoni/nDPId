@@ -1,0 +1,14 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [.192.168.100.22][58998] -> [.192.168.100.50][.6556] 
+         detected: [.....1] [ip4][..tcp] [.192.168.100.22][58998] -> [.192.168.100.50][.6556] [CHECKMK][DataTransfer][Acceptable]
+          analyse: [.....1] [ip4][..tcp] [.192.168.100.22][58998] -> [.192.168.100.50][.6556] [CHECKMK][DataTransfer][Acceptable]
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.000|   0.002|   0.001|   0.001]
+                   [IAT(c->s)...:    0.000|   0.002|   0.001|   0.001][IAT(s->c)...:    0.000|   0.002|   0.001|   0.001]
+                   [PKTLEN(c->s):   66.000|  74.000|  66.500|   1.900][PKTLEN(s->c):   67.000| 568.000| 152.500| 153.600]
+                   [BINS(c->s)..: 16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 12,0,1,0,0,0,0,0,1,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+              end: [.....1] [ip4][..tcp] [.192.168.100.22][58998] -> [.192.168.100.50][.6556] [CHECKMK][DataTransfer][Acceptable]
+     DAEMON-EVENT: shutdown

@@ -1,0 +1,13 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..udp] [...172.16.1.116][.2427] -> [...172.16.1.119][.2427] 
+         detected: [.....1] [ip4][..udp] [...172.16.1.116][.2427] -> [...172.16.1.119][.2427] [MGCP][VoIP][Acceptable]
+           update: [.....1] [ip4][..udp] [...172.16.1.116][.2427] -> [...172.16.1.119][.2427] [MGCP][VoIP][Acceptable]
+     DAEMON-EVENT: [Processed: 8 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 1]
+              new: [.....2] [ip4][..udp] [...10.10.228.72][.2427] -> [....10.10.244.2][.2427] 
+         detected: [.....2] [ip4][..udp] [...10.10.228.72][.2427] -> [....10.10.244.2][.2427] [MGCP][VoIP][Acceptable]
+             idle: [.....1] [ip4][..udp] [...172.16.1.116][.2427] -> [...172.16.1.119][.2427] [MGCP][VoIP][Acceptable]
+             idle: [.....2] [ip4][..udp] [...10.10.228.72][.2427] -> [....10.10.244.2][.2427] [MGCP][VoIP][Acceptable]
+     DAEMON-EVENT: shutdown

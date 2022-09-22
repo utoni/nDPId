@@ -1,0 +1,14 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [...192.168.1.10][.4185] -> [...192.168.1.40][..102] [MIDSTREAM] 
+         detected: [.....1] [ip4][..tcp] [...192.168.1.10][.4185] -> [...192.168.1.40][..102] [s7comm][Network][Acceptable]
+          analyse: [.....1] [ip4][..tcp] [...192.168.1.10][.4185] -> [...192.168.1.40][..102] [s7comm][Network][Acceptable]
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.000|   0.009|   0.005|   0.003]
+                   [IAT(c->s)...:    0.000|   0.009|   0.004|   0.003][IAT(s->c)...:    0.003|   0.009|   0.007|   0.002]
+                   [PKTLEN(c->s):   61.000|  87.000|  72.900|  11.600][PKTLEN(s->c):   76.000| 275.000| 126.200|  51.100]
+                   [BINS(c->s)..: 17,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 2,5,3,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+             idle: [.....1] [ip4][..tcp] [...192.168.1.10][.4185] -> [...192.168.1.40][..102] [s7comm][Network][Acceptable]
+     DAEMON-EVENT: shutdown

@@ -1,0 +1,23 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [...192.168.0.20][33632] -> [....192.168.0.7][.8080] 
+         detected: [.....1] [ip4][..tcp] [...192.168.0.20][33632] -> [....192.168.0.7][.8080] [HTTP][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+     DAEMON-EVENT: [Processed: 10 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....2] [ip4][..tcp] [...192.168.0.20][33684] -> [....192.168.0.7][.8080] 
+         detected: [.....2] [ip4][..tcp] [...192.168.0.20][33684] -> [....192.168.0.7][.8080] [HTTP][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+          analyse: [.....2] [ip4][..tcp] [...192.168.0.20][33684] -> [....192.168.0.7][.8080] [HTTP][Web][Acceptable]
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.000|   0.073|   0.005|   0.018]
+                   [IAT(c->s)...:    0.000|   0.073|   0.005|   0.018][IAT(s->c)...:    0.000|   0.073|   0.005|   0.018]
+                   [PKTLEN(c->s):   54.000| 440.000|  99.800| 119.300][PKTLEN(s->c):   60.000|5894.000|2829.100|1943.500]
+                   [BINS(c->s)..: 14,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,10]
+              end: [.....1] [ip4][..tcp] [...192.168.0.20][33632] -> [....192.168.0.7][.8080] [HTTP][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              end: [.....2] [ip4][..tcp] [...192.168.0.20][33684] -> [....192.168.0.7][.8080] [HTTP][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+     DAEMON-EVENT: shutdown

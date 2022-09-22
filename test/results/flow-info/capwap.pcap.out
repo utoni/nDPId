@@ -1,0 +1,57 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12379] 
+         detected: [.....1] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12379] [CAPWAP][Network][Acceptable]
+              new: [.....2] [ip4][..udp] [..192.168.10.10][49259] -> [255.255.255.255][...53] 
+         detected: [.....2] [ip4][..udp] [..192.168.10.10][49259] -> [255.255.255.255][...53] [DNS][Network][Acceptable]
+      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type
+              new: [.....3] [ip4][..udp] [..192.168.10.10][12380] -> [255.255.255.255][.5246] 
+         detected: [.....3] [ip4][..udp] [..192.168.10.10][12380] -> [255.255.255.255][.5246] [CAPWAP][Network][Acceptable]
+              new: [.....4] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12380] 
+         detected: [.....4] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12380] [CAPWAP][Network][Acceptable]
+           update: [.....1] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12379] [CAPWAP][Network][Acceptable]
+          analyse: [.....4] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12380] [CAPWAP][Network][Acceptable]
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.000|  10.093|   0.751|   2.532]
+                   [IAT(c->s)...:    0.000|  10.093|   0.681|   2.432][IAT(s->c)...:    0.000|   9.998|   0.838|   2.646]
+                   [PKTLEN(c->s):  106.000|1499.000| 546.600| 501.400][PKTLEN(s->c):  115.000|1499.000| 473.200| 463.600]
+                   [BINS(c->s)..: 0,0,5,3,0,0,0,0,0,1,0,0,0,1,0,0,0,2,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,0,0]
+                   [BINS(s->c)..: 0,0,1,6,1,0,0,0,1,0,0,1,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0]
+              new: [.....5] [ip4][..udp] [..192.168.10.10][12380] -> [...192.168.10.9][.5247] 
+         detected: [.....5] [ip4][..udp] [..192.168.10.10][12380] -> [...192.168.10.9][.5247] [CAPWAP][Network][Acceptable]
+           update: [.....2] [ip4][..udp] [..192.168.10.10][49259] -> [255.255.255.255][...53] 
+      ERROR-EVENT: Unknown packet type
+          analyse: [.....5] [ip4][..udp] [..192.168.10.10][12380] -> [...192.168.10.9][.5247] [CAPWAP][Network][Acceptable]
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.500|   4.000|   1.016|   0.875]
+                   [IAT(c->s)...:    0.500|   4.000|   1.016|   0.875][IAT(s->c)...:    0.000|   0.000|   0.000|   0.000]
+                   [PKTLEN(c->s):  122.000| 325.000| 195.400|  58.400][PKTLEN(s->c):    0.000|   0.000|   0.000|   0.000]
+                   [BINS(c->s)..: 0,0,6,7,2,9,2,5,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+           update: [.....3] [ip4][..udp] [..192.168.10.10][12380] -> [255.255.255.255][.5246] [CAPWAP][Network][Acceptable]
+           update: [.....1] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12379] [CAPWAP][Network][Acceptable]
+           update: [.....4] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12380] [CAPWAP][Network][Acceptable]
+           update: [.....5] [ip4][..udp] [..192.168.10.10][12380] -> [...192.168.10.9][.5247] [CAPWAP][Network][Acceptable]
+           update: [.....2] [ip4][..udp] [..192.168.10.10][49259] -> [255.255.255.255][...53] 
+      ERROR-EVENT: Unknown packet type
+           update: [.....3] [ip4][..udp] [..192.168.10.10][12380] -> [255.255.255.255][.5246] [CAPWAP][Network][Acceptable]
+           update: [.....1] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12379] [CAPWAP][Network][Acceptable]
+           update: [.....4] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12380] [CAPWAP][Network][Acceptable]
+           update: [.....5] [ip4][..udp] [..192.168.10.10][12380] -> [...192.168.10.9][.5247] [CAPWAP][Network][Acceptable]
+           update: [.....2] [ip4][..udp] [..192.168.10.10][49259] -> [255.255.255.255][...53] 
+      ERROR-EVENT: Unknown packet type
+             idle: [.....1] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12379] [CAPWAP][Network][Acceptable]
+             idle: [.....2] [ip4][..udp] [..192.168.10.10][49259] -> [255.255.255.255][...53] 
+           update: [.....3] [ip4][..udp] [..192.168.10.10][12380] -> [255.255.255.255][.5246] [CAPWAP][Network][Acceptable]
+           update: [.....4] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12380] [CAPWAP][Network][Acceptable]
+           update: [.....5] [ip4][..udp] [..192.168.10.10][12380] -> [...192.168.10.9][.5247] [CAPWAP][Network][Acceptable]
+             idle: [.....3] [ip4][..udp] [..192.168.10.10][12380] -> [255.255.255.255][.5246] [CAPWAP][Network][Acceptable]
+             idle: [.....4] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12380] [CAPWAP][Network][Acceptable]
+             idle: [.....5] [ip4][..udp] [..192.168.10.10][12380] -> [...192.168.10.9][.5247] [CAPWAP][Network][Acceptable]
+     DAEMON-EVENT: shutdown

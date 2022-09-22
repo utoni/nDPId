@@ -1,0 +1,24 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [..192.168.17.53][49640] -> [.212.227.17.186][..143] 
+         detected: [.....1] [ip4][..tcp] [..192.168.17.53][49640] -> [.212.227.17.186][..143] [IMAPS][Email][Safe]
+                   RISK: Known Proto on Non Std Port
+ detection-update: [.....1] [ip4][..tcp] [..192.168.17.53][49640] -> [.212.227.17.186][..143] [IMAPS][Email][Safe]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
+ detection-update: [.....1] [ip4][..tcp] [..192.168.17.53][49640] -> [.212.227.17.186][..143] [IMAPS][Email][Safe]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
+ detection-update: [.....1] [ip4][..tcp] [..192.168.17.53][49640] -> [.212.227.17.186][..143] [IMAPS][Email][Safe]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
+          analyse: [.....1] [ip4][..tcp] [..192.168.17.53][49640] -> [.212.227.17.186][..143] 
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.000|   1.678|   0.188|   0.378]
+                   [IAT(c->s)...:    0.000|   1.487|   0.166|   0.343][IAT(s->c)...:    0.000|   1.678|   0.215|   0.416]
+                   [PKTLEN(c->s):   54.000| 372.000|  85.300|  75.500][PKTLEN(s->c):   60.000|1514.000| 459.900| 570.900]
+                   [BINS(c->s)..: 15,1,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 5,2,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0]
+ detection-update: [.....1] [ip4][..tcp] [..192.168.17.53][49640] -> [.212.227.17.186][..143] [IMAPS][Email][Safe]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
+              end: [.....1] [ip4][..tcp] [..192.168.17.53][49640] -> [.212.227.17.186][..143] [IMAPS][Email][Safe]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
+     DAEMON-EVENT: shutdown

@@ -1,0 +1,24 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [..192.168.20.18][50583] -> [...72.249.41.52][..110] 
+         detected: [.....1] [ip4][..tcp] [..192.168.20.18][50583] -> [...72.249.41.52][..110] [POPS][Email][Safe]
+                   RISK: Known Proto on Non Std Port
+ detection-update: [.....1] [ip4][..tcp] [..192.168.20.18][50583] -> [...72.249.41.52][..110] [POPS][Email][Safe]
+                   RISK: Known Proto on Non Std Port, Obsolete TLS (v1.1 or older)
+ detection-update: [.....1] [ip4][..tcp] [..192.168.20.18][50583] -> [...72.249.41.52][..110] [POPS][Email][Safe]
+                   RISK: Known Proto on Non Std Port, Obsolete TLS (v1.1 or older)
+ detection-update: [.....1] [ip4][..tcp] [..192.168.20.18][50583] -> [...72.249.41.52][..110] [POPS][Email][Safe]
+                   RISK: Known Proto on Non Std Port, Obsolete TLS (v1.1 or older)
+          analyse: [.....1] [ip4][..tcp] [..192.168.20.18][50583] -> [...72.249.41.52][..110] 
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.000|   2.072|   0.263|   0.525]
+                   [IAT(c->s)...:    0.007|   2.072|   0.337|   0.592][IAT(s->c)...:    0.000|   2.003|   0.216|   0.472]
+                   [PKTLEN(c->s):   54.000| 368.000| 104.800|  87.300][PKTLEN(s->c):   60.000|1514.000| 346.800| 513.600]
+                   [BINS(c->s)..: 9,2,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 8,4,0,0,1,1,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0]
+ detection-update: [.....1] [ip4][..tcp] [..192.168.20.18][50583] -> [...72.249.41.52][..110] [POPS][Email][Safe]
+                   RISK: Known Proto on Non Std Port, Obsolete TLS (v1.1 or older)
+              end: [.....1] [ip4][..tcp] [..192.168.20.18][50583] -> [...72.249.41.52][..110] [POPS][Email][Safe]
+                   RISK: Known Proto on Non Std Port, Obsolete TLS (v1.1 or older)
+     DAEMON-EVENT: shutdown

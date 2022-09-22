@@ -1,0 +1,75 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [192.168.149.129][36351] -> [..51.83.239.144][...80] [MIDSTREAM] 
+         detected: [.....1] [ip4][..tcp] [192.168.149.129][36351] -> [..51.83.239.144][...80] [TLS.AnyDesk][RemoteAccess][Acceptable]
+                   RISK: Known Proto on Non Std Port, Desktop/File Sharing
+              new: [.....2] [ip4][..tcp] [192.168.149.129][43535] -> [..51.83.238.219][...80] 
+         detected: [.....2] [ip4][..tcp] [192.168.149.129][43535] -> [..51.83.238.219][...80] [TLS.AnyDesk][RemoteAccess][Acceptable]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Desktop/File Sharing
+ detection-update: [.....2] [ip4][..tcp] [192.168.149.129][43535] -> [..51.83.238.219][...80] [TLS.AnyDesk][RemoteAccess][Acceptable]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Desktop/File Sharing
+ detection-update: [.....2] [ip4][..tcp] [192.168.149.129][43535] -> [..51.83.238.219][...80] [TLS.AnyDesk][RemoteAccess][Acceptable]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Desktop/File Sharing
+          analyse: [.....2] [ip4][..tcp] [192.168.149.129][43535] -> [..51.83.238.219][...80] 
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.000|   1.603|   0.177|   0.394]
+                   [IAT(c->s)...:    0.000|   1.216|   0.138|   0.310][IAT(s->c)...:    0.000|   1.603|   0.208|   0.450]
+                   [PKTLEN(c->s):   54.000|1514.000| 435.100| 567.000][PKTLEN(s->c):   60.000|1514.000| 381.600| 543.300]
+                   [BINS(c->s)..: 8,0,1,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,2,0,0]
+                   [BINS(s->c)..: 9,2,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,2,0,0,0,0,1,0,0]
+ detection-update: [.....2] [ip4][..tcp] [192.168.149.129][43535] -> [..51.83.238.219][...80] [TLS.AnyDesk][RemoteAccess][Acceptable]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Desktop/File Sharing
+     DAEMON-EVENT: [Processed: 6963 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 2 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 3|updates: 0]
+              new: [.....3] [ip4][..udp] [..192.168.1.187][59511] -> [....192.168.1.1][...53] 
+         detected: [.....3] [ip4][..udp] [..192.168.1.187][59511] -> [....192.168.1.1][...53] [DNS.AnyDesk][RemoteAccess][Acceptable]
+ detection-update: [.....3] [ip4][..udp] [..192.168.1.187][59511] -> [....192.168.1.1][...53] [DNS.AnyDesk][RemoteAccess][Acceptable]
+              new: [.....4] [ip4][..udp] [..192.168.1.187][55376] -> [....192.168.1.1][...53] 
+         detected: [.....4] [ip4][..udp] [..192.168.1.187][55376] -> [....192.168.1.1][...53] [DNS.AnyDesk][RemoteAccess][Acceptable]
+ detection-update: [.....4] [ip4][..udp] [..192.168.1.187][55376] -> [....192.168.1.1][...53] [DNS.AnyDesk][RemoteAccess][Acceptable]
+             idle: [.....1] [ip4][..tcp] [192.168.149.129][36351] -> [..51.83.239.144][...80] [TLS.AnyDesk][RemoteAccess][Acceptable]
+                   RISK: Known Proto on Non Std Port, Desktop/File Sharing
+             idle: [.....2] [ip4][..tcp] [192.168.149.129][43535] -> [..51.83.238.219][...80] [TLS.AnyDesk][RemoteAccess][Acceptable]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Desktop/File Sharing
+              new: [.....5] [ip4][..tcp] [..192.168.1.187][54164] -> [..192.168.1.178][.7070] 
+         detected: [.....5] [ip4][..tcp] [..192.168.1.187][54164] -> [..192.168.1.178][.7070] [TLS][Web][Safe]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
+ detection-update: [.....5] [ip4][..tcp] [..192.168.1.187][54164] -> [..192.168.1.178][.7070] [TLS.AnyDesk][RemoteAccess][Acceptable]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Desktop/File Sharing
+              new: [.....6] [ip4][..tcp] [..192.168.1.178][52039] -> [..192.168.1.187][.7070] 
+         detected: [.....6] [ip4][..tcp] [..192.168.1.178][52039] -> [..192.168.1.187][.7070] [TLS][Web][Safe]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
+ detection-update: [.....6] [ip4][..tcp] [..192.168.1.178][52039] -> [..192.168.1.187][.7070] [TLS.AnyDesk][RemoteAccess][Acceptable]
+                   RISK: Known Proto on Non Std Port, Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Desktop/File Sharing
+          analyse: [.....5] [ip4][..tcp] [..192.168.1.187][54164] -> [..192.168.1.178][.7070] [TLS.AnyDesk][RemoteAccess][Acceptable]
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.000|   3.022|   0.471|   0.869]
+                   [IAT(c->s)...:    0.000|   2.967|   0.489|   0.871][IAT(s->c)...:    0.000|   3.022|   0.454|   0.866]
+                   [PKTLEN(c->s):   54.000|3980.000| 462.900|1028.200][PKTLEN(s->c):   60.000|1514.000| 209.500| 377.600]
+                   [BINS(c->s)..: 6,4,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1]
+                   [BINS(s->c)..: 11,3,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]
+     DAEMON-EVENT: [Processed: 9484 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 4 / 6|skipped: 0|!detected: 0|guessed: 0|detection-updates: 7|updates: 0]
+              new: [.....7] [ip4][..tcp] [..192.168.1.128][48260] -> [195.181.174.176][..443] 
+         detected: [.....7] [ip4][..tcp] [..192.168.1.128][48260] -> [195.181.174.176][..443] [TLS][Web][Safe]
+                   RISK: Missing SNI TLS Extn
+ detection-update: [.....7] [ip4][..tcp] [..192.168.1.128][48260] -> [195.181.174.176][..443] [TLS][Web][Safe]
+                   RISK: Missing SNI TLS Extn
+ detection-update: [.....7] [ip4][..tcp] [..192.168.1.128][48260] -> [195.181.174.176][..443] [TLS.AnyDesk][RemoteAccess][Acceptable]
+                   RISK: Missing SNI TLS Extn, Desktop/File Sharing
+          analyse: [.....7] [ip4][..tcp] [..192.168.1.128][48260] -> [195.181.174.176][..443] [TLS.AnyDesk][RemoteAccess][Acceptable]
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.000|   8.445|   0.583|   2.064]
+                   [IAT(c->s)...:    0.000|   8.428|   0.592|   2.095][IAT(s->c)...:    0.000|   8.445|   0.575|   2.034]
+                   [PKTLEN(c->s):   66.000|1514.000| 430.100| 552.300][PKTLEN(s->c):   66.000|1514.000| 255.800| 413.300]
+                   [BINS(c->s)..: 8,0,2,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,2,0,0]
+                   [BINS(s->c)..: 7,4,2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0]
+              end: [.....6] [ip4][..tcp] [..192.168.1.178][52039] -> [..192.168.1.187][.7070] 
+             idle: [.....5] [ip4][..tcp] [..192.168.1.187][54164] -> [..192.168.1.178][.7070] [TLS.AnyDesk][RemoteAccess][Acceptable]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Desktop/File Sharing
+             idle: [.....4] [ip4][..udp] [..192.168.1.187][55376] -> [....192.168.1.1][...53] [DNS.AnyDesk][RemoteAccess][Acceptable]
+             idle: [.....3] [ip4][..udp] [..192.168.1.187][59511] -> [....192.168.1.1][...53] [DNS.AnyDesk][RemoteAccess][Acceptable]
+             idle: [.....7] [ip4][..tcp] [..192.168.1.128][48260] -> [195.181.174.176][..443] [TLS.AnyDesk][RemoteAccess][Acceptable]
+                   RISK: Missing SNI TLS Extn, Desktop/File Sharing
+     DAEMON-EVENT: shutdown

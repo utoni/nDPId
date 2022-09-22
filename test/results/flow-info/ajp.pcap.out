@@ -1,0 +1,22 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [...172.29.9.146][38856] -> [...172.29.9.147][.8009] 
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+         detected: [.....1] [ip4][..tcp] [...172.29.9.146][38856] -> [...172.29.9.147][.8009] [AJP][Web][Acceptable]
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+              new: [.....2] [ip4][..tcp] [...172.29.9.146][38856] -> [...172.29.9.147][.8010] 
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+         detected: [.....2] [ip4][..tcp] [...172.29.9.146][38856] -> [...172.29.9.147][.8010] [AJP][Web][Acceptable]
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+             idle: [.....1] [ip4][..tcp] [...172.29.9.146][38856] -> [...172.29.9.147][.8009] [AJP][Web][Acceptable]
+             idle: [.....2] [ip4][..tcp] [...172.29.9.146][38856] -> [...172.29.9.147][.8010] [AJP][Web][Acceptable]
+     DAEMON-EVENT: shutdown

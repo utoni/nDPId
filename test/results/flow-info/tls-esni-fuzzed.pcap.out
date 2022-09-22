@@ -1,0 +1,14 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [...192.168.1.12][49886] -> [..104.27.129.77][..443] [MIDSTREAM] 
+         detected: [.....1] [ip4][..tcp] [...192.168.1.12][49886] -> [..104.27.129.77][..443] [TLS.Cloudflare][Web][Acceptable]
+              new: [.....2] [ip4][..tcp] [...192.168.1.12][49887] -> [.104.16.125.175][..443] [MIDSTREAM] 
+         detected: [.....2] [ip4][..tcp] [...192.168.1.12][49887] -> [.104.16.125.175][..443] [TLS.Cloudflare][Web][Acceptable]
+              new: [.....3] [ip4][..tcp] [...192.168.1.12][49897] -> [..104.22.71.197][..443] [MIDSTREAM] 
+         detected: [.....3] [ip4][..tcp] [...192.168.1.12][49897] -> [..104.22.71.197][..443] [TLS.Cloudflare][Web][Acceptable]
+                   RISK: Missing SNI TLS Extn
+             idle: [.....1] [ip4][..tcp] [...192.168.1.12][49886] -> [..104.27.129.77][..443] 
+             idle: [.....3] [ip4][..tcp] [...192.168.1.12][49897] -> [..104.22.71.197][..443] 
+             idle: [.....2] [ip4][..tcp] [...192.168.1.12][49887] -> [.104.16.125.175][..443] 
+     DAEMON-EVENT: shutdown

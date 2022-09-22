@@ -1,0 +1,7 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [.192.168.43.135][12345] -> [...192.168.43.1][50999] [MIDSTREAM] 
+         detected: [.....1] [ip4][..tcp] [.192.168.43.135][12345] -> [...192.168.43.1][50999] [WebSocket][Web][Acceptable]
+             idle: [.....1] [ip4][..tcp] [.192.168.43.135][12345] -> [...192.168.43.1][50999] [WebSocket][Web][Acceptable]
+     DAEMON-EVENT: shutdown

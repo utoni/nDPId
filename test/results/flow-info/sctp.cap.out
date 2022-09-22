@@ -1,0 +1,10 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..132] [.....10.28.6.43] -> [.....10.28.6.44] 
+         detected: [.....1] [ip4][..132] [.....10.28.6.43] -> [.....10.28.6.44] [SCTP][Network][Acceptable]
+              new: [.....2] [ip4][..132] [.....10.28.6.42] -> [.....10.28.6.44] 
+         detected: [.....2] [ip4][..132] [.....10.28.6.42] -> [.....10.28.6.44] [SCTP][Network][Acceptable]
+             idle: [.....2] [ip4][..132] [.....10.28.6.42] -> [.....10.28.6.44] [SCTP][Network][Acceptable]
+             idle: [.....1] [ip4][..132] [.....10.28.6.43] -> [.....10.28.6.44] [SCTP][Network][Acceptable]
+     DAEMON-EVENT: shutdown

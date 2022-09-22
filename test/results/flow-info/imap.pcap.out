@@ -1,0 +1,16 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [......10.40.4.2][46045] -> [......10.40.3.2][..143] 
+         detected: [.....1] [ip4][..tcp] [......10.40.4.2][46045] -> [......10.40.3.2][..143] [IMAP][Email][Unsafe]
+                   RISK: Unsafe Protocol
+          analyse: [.....1] [ip4][..tcp] [......10.40.4.2][46045] -> [......10.40.3.2][..143] [IMAP][Email][Unsafe]
+                   [min|max|avg|stddev]
+                   [IAT(flow)...:    0.000|   4.331|   0.295|   1.060]
+                   [IAT(c->s)...:    0.000|   4.330|   0.254|   0.989][IAT(s->c)...:    0.000|   4.331|   0.351|   1.149]
+                   [PKTLEN(c->s):   66.000| 139.000|  75.800|  17.500][PKTLEN(s->c):   74.000| 762.000| 174.400| 181.200]
+                   [BINS(c->s)..: 18,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 5,4,1,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+             idle: [.....1] [ip4][..tcp] [......10.40.4.2][46045] -> [......10.40.3.2][..143] [IMAP][Email][Unsafe]
+                   RISK: Unsafe Protocol
+     DAEMON-EVENT: shutdown
