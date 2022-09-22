@@ -367,7 +367,6 @@ static enum nDPIsrvd_callback_return distributor_json_callback(struct nDPIsrvd_s
     struct distributor_thread_user_data * thread_stats = NULL;
     struct distributor_flow_user_data * flow_stats = NULL;
 
-    (void)thread_data;
 #if 0
     printf("Distributor: %.*s\n", (int)sock->buffer.json_string_length, sock->buffer.json_string);
 #endif

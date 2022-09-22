@@ -457,10 +457,14 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
     (void)sock;
     (void)instance;
     (void)thread_data;
-    (void)flow;
 
     struct nDPIsrvd_json_token const * const flow_event_name = TOKEN_GET_SZ(sock, "flow_event_name");
-    struct flow_user_data * const flow_user_data = (struct flow_user_data *)flow->flow_user_data;
+    struct flow_user_data * flow_user_data = NULL;
+
+    if (flow != NULL)
+    {
+        flow_user_data = (struct flow_user_data *)flow->flow_user_data;
+    }
 
     if (flow_user_data != NULL)
     {

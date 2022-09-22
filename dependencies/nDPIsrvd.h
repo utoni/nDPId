@@ -27,7 +27,7 @@
 #include <stdarg.h>
 #endif
 
-#define nDPIsrvd_MAX_JSON_TOKENS (512u + 256u)
+#define nDPIsrvd_MAX_JSON_TOKENS (512u)
 #define nDPIsrvd_JSON_KEY_STRLEN (32)
 
 #define nDPIsrvd_STRLEN_SZ(s) (sizeof(s) / sizeof(s[0]) - sizeof(s[0]))
@@ -1257,6 +1257,12 @@ static inline enum nDPIsrvd_parse_return nDPIsrvd_parse_all(struct nDPIsrvd_sock
         int key_length = 0;
         for (int current_token = 1; current_token < sock->jsmn.tokens_found; current_token++)
         {
+            if (sock->jsmn.tokens[current_token].parent >= 0 &&
+                sock->jsmn.tokens[sock->jsmn.tokens[current_token].parent].type == JSMN_ARRAY)
+            {
+                continue;
+            }
+
             if (jsmn_token_is_key(current_token) == 1)
             {
                 if (key != NULL)
