@@ -344,48 +344,36 @@
         },
         "data_analysis": {
             "type": "object",
-            "required": [ "iat", "pktlen", "bins" ],
+            "required": [ "iat", "pktlen", "bins", "directions" ],
 
             "properties": {
                 "iat": {
                     "type": "object",
 
                     "properties": {
-                        "flow_min": {
+                        "min": {
                             "type": "number"
                         },
-                        "flow_avg": {
+                        "avg": {
                             "type": "number"
                         },
-                        "flow_max": {
+                        "max": {
                             "type": "number"
                         },
-                        "flow_stddev": {
+                        "stddev": {
                             "type": "number"
                         },
-                        "c_to_s_min": {
+                        "var": {
                             "type": "number"
                         },
-                        "c_to_s_avg": {
+                        "ent": {
                             "type": "number"
                         },
-                        "c_to_s_max": {
-                            "type": "number"
-                        },
-                        "c_to_s_stddev": {
-                            "type": "number"
-                        },
-                        "s_to_c_min": {
-                            "type": "number"
-                        },
-                        "s_to_c_avg": {
-                            "type": "number"
-                        },
-                        "s_to_c_max": {
-                            "type": "number"
-                        },
-                        "s_to_c_stddev": {
-                            "type": "number"
+                        "data": {
+                            "type": "array",
+                            "items": {
+                                "type": "number"
+                            }
                         }
                     },
                     "additionalProperties": false
@@ -394,29 +382,29 @@
                     "type": "object",
 
                     "properties": {
-                        "c_to_s_min": {
+                        "min": {
                             "type": "number"
                             },
-                        "c_to_s_avg": {
+                        "avg": {
                             "type": "number"
                         },
-                        "c_to_s_max": {
+                        "max": {
                             "type": "number"
                         },
-                        "c_to_s_stddev": {
+                        "stddev": {
                             "type": "number"
                         },
-                        "s_to_c_min": {
+                        "var": {
                             "type": "number"
                         },
-                        "s_to_c_avg": {
+                        "ent": {
                             "type": "number"
                         },
-                        "s_to_c_max": {
-                            "type": "number"
-                        },
-                        "s_to_c_stddev": {
-                            "type": "number"
+                        "data": {
+                            "type": "array",
+                            "items": {
+                                "type": "number"
+                            }
                         }
                     },
                     "additionalProperties": false
@@ -439,6 +427,12 @@
                         }
                     },
                     "additionalProperties": false
+                },
+                "directions": {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
                 }
             },
             "additionalProperties": false

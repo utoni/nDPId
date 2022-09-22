@@ -152,9 +152,9 @@ enum nDPId_flow_direction
 
 struct nDPId_flow_analysis
 {
-    struct ndpi_analyze_struct iat[FD_COUNT];
-    struct ndpi_analyze_struct iat_flow;
-    struct ndpi_analyze_struct pktlen[FD_COUNT];
+    struct ndpi_analyze_struct iat;
+    struct ndpi_analyze_struct pktlen;
+    uint8_t * directions;
     struct ndpi_bin payload_len_bin[FD_COUNT];
 };
 
@@ -1320,11 +1320,9 @@ static void free_analysis_data(struct nDPId_flow_extended * const flow_ext)
 {
     if (nDPId_options.enable_data_analysis != 0 && flow_ext->flow_analysis != NULL)
     {
-        ndpi_free_data_analysis(&flow_ext->flow_analysis->iat[FD_SRC2DST], 0);
-        ndpi_free_data_analysis(&flow_ext->flow_analysis->iat[FD_DST2SRC], 0);
-        ndpi_free_data_analysis(&flow_ext->flow_analysis->iat_flow, 0);
-        ndpi_free_data_analysis(&flow_ext->flow_analysis->pktlen[FD_SRC2DST], 0);
-        ndpi_free_data_analysis(&flow_ext->flow_analysis->pktlen[FD_DST2SRC], 0);
+        ndpi_free_data_analysis(&flow_ext->flow_analysis->iat, 0);
+        ndpi_free_data_analysis(&flow_ext->flow_analysis->pktlen, 0);
+        ndpi_free(flow_ext->flow_analysis->directions);
         ndpi_free_bin(&flow_ext->flow_analysis->payload_len_bin[FD_SRC2DST]);
         ndpi_free_bin(&flow_ext->flow_analysis->payload_len_bin[FD_DST2SRC]);
         ndpi_free(flow_ext->flow_analysis);
@@ -1358,28 +1356,20 @@ static int alloc_detection_data(struct nDPId_flow * const flow)
             goto error;
         }
 
-        ndpi_init_data_analysis(&flow->flow_extended.flow_analysis->iat[FD_SRC2DST],
+        ndpi_init_data_analysis(&flow->flow_extended.flow_analysis->iat, nDPId_options.max_packets_per_flow_to_analyse);
+        ndpi_init_data_analysis(&flow->flow_extended.flow_analysis->pktlen,
                                 nDPId_options.max_packets_per_flow_to_analyse);
-        ndpi_init_data_analysis(&flow->flow_extended.flow_analysis->iat[FD_DST2SRC],
-                                nDPId_options.max_packets_per_flow_to_analyse);
-        ndpi_init_data_analysis(&flow->flow_extended.flow_analysis->iat_flow,
-                                nDPId_options.max_packets_per_flow_to_analyse);
-        ndpi_init_data_analysis(&flow->flow_extended.flow_analysis->pktlen[FD_SRC2DST],
-                                nDPId_options.max_packets_per_flow_to_analyse);
-        ndpi_init_data_analysis(&flow->flow_extended.flow_analysis->pktlen[FD_DST2SRC],
-                                nDPId_options.max_packets_per_flow_to_analyse);
-        ndpi_init_bin(&flow->flow_extended.flow_analysis->payload_len_bin[FD_SRC2DST],
-                      ndpi_bin_family8,
-                      nDPId_ANALYZE_PLEN_NUM_BINS);
-        ndpi_init_bin(&flow->flow_extended.flow_analysis->payload_len_bin[FD_DST2SRC],
-                      ndpi_bin_family8,
-                      nDPId_ANALYZE_PLEN_NUM_BINS);
+        flow->flow_extended.flow_analysis->directions = (uint8_t *)ndpi_malloc(
+            sizeof(*flow->flow_extended.flow_analysis->directions) * nDPId_options.max_packets_per_flow_to_analyse);
 
-        if (flow->flow_extended.flow_analysis->iat[FD_SRC2DST].values == NULL ||
-            flow->flow_extended.flow_analysis->iat[FD_DST2SRC].values == NULL ||
-            flow->flow_extended.flow_analysis->iat_flow.values == NULL ||
-            flow->flow_extended.flow_analysis->pktlen[FD_SRC2DST].values == NULL ||
-            flow->flow_extended.flow_analysis->pktlen[FD_DST2SRC].values == NULL)
+        if (ndpi_init_bin(&flow->flow_extended.flow_analysis->payload_len_bin[FD_SRC2DST],
+                          ndpi_bin_family8,
+                          nDPId_ANALYZE_PLEN_NUM_BINS) != 0 ||
+            ndpi_init_bin(&flow->flow_extended.flow_analysis->payload_len_bin[FD_DST2SRC],
+                          ndpi_bin_family8,
+                          nDPId_ANALYZE_PLEN_NUM_BINS) != 0 ||
+            flow->flow_extended.flow_analysis->iat.values == NULL ||
+            flow->flow_extended.flow_analysis->pktlen.values == NULL)
         {
             goto error;
         }
@@ -2430,78 +2420,38 @@ static void jsonize_data_analysis(struct nDPId_reader_thread * const reader_thre
     {
         ndpi_serialize_start_of_block(&workflow->ndpi_serializer, "data_analysis");
         ndpi_serialize_start_of_block(&workflow->ndpi_serializer, "iat");
-        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "flow_min", ndpi_data_min(&analysis->iat_flow));
-        ndpi_serialize_string_float(&workflow->ndpi_serializer,
-                                    "flow_avg",
-                                    ndpi_data_average(&analysis->iat_flow),
-                                    "%.1f");
-        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "flow_max", ndpi_data_max(&analysis->iat_flow));
-        ndpi_serialize_string_float(&workflow->ndpi_serializer,
-                                    "flow_stddev",
-                                    ndpi_data_stddev(&analysis->iat_flow),
-                                    "%.1f");
 
-        ndpi_serialize_string_uint32(&workflow->ndpi_serializer,
-                                     "c_to_s_min",
-                                     ndpi_data_min(&analysis->iat[FD_SRC2DST]));
-        ndpi_serialize_string_float(&workflow->ndpi_serializer,
-                                    "c_to_s_avg",
-                                    ndpi_data_average(&analysis->iat[FD_SRC2DST]),
-                                    "%.1f");
-        ndpi_serialize_string_uint32(&workflow->ndpi_serializer,
-                                     "c_to_s_max",
-                                     ndpi_data_max(&analysis->iat[FD_SRC2DST]));
-        ndpi_serialize_string_float(&workflow->ndpi_serializer,
-                                    "c_to_s_stddev",
-                                    ndpi_data_stddev(&analysis->iat[FD_SRC2DST]),
-                                    "%.1f");
+        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "min", ndpi_data_min(&analysis->iat));
+        ndpi_serialize_string_float(&workflow->ndpi_serializer, "avg", ndpi_data_average(&analysis->iat), "%.1f");
+        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "max", ndpi_data_max(&analysis->iat));
+        ndpi_serialize_string_float(&workflow->ndpi_serializer, "stddev", ndpi_data_stddev(&analysis->iat), "%.1f");
+        ndpi_serialize_string_float(&workflow->ndpi_serializer, "var", ndpi_data_variance(&analysis->iat), "%.1f");
+        ndpi_serialize_string_float(&workflow->ndpi_serializer, "ent", ndpi_data_entropy(&analysis->iat), "%.1f");
 
-        ndpi_serialize_string_uint32(&workflow->ndpi_serializer,
-                                     "s_to_c_min",
-                                     ndpi_data_min(&analysis->iat[FD_DST2SRC]));
-        ndpi_serialize_string_float(&workflow->ndpi_serializer,
-                                    "s_to_c_avg",
-                                    ndpi_data_average(&analysis->iat[FD_DST2SRC]),
-                                    "%.1f");
-        ndpi_serialize_string_uint32(&workflow->ndpi_serializer,
-                                     "s_to_c_max",
-                                     ndpi_data_max(&analysis->iat[FD_DST2SRC]));
-        ndpi_serialize_string_float(&workflow->ndpi_serializer,
-                                    "s_to_c_stddev",
-                                    ndpi_data_stddev(&analysis->iat[FD_DST2SRC]),
-                                    "%.1f");
+        ndpi_serialize_start_of_list(&workflow->ndpi_serializer, "data");
+        for (uint16_t i = 0; i < analysis->iat.num_values_array_len; ++i)
+        {
+            ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "", analysis->iat.values[i]);
+        }
+        ndpi_serialize_end_of_list(&workflow->ndpi_serializer);
         ndpi_serialize_end_of_block(&workflow->ndpi_serializer);
+
         ndpi_serialize_start_of_block(&workflow->ndpi_serializer, "pktlen");
-        ndpi_serialize_string_uint32(&workflow->ndpi_serializer,
-                                     "c_to_s_min",
-                                     ndpi_data_min(&analysis->pktlen[FD_SRC2DST]));
-        ndpi_serialize_string_float(&workflow->ndpi_serializer,
-                                    "c_to_s_avg",
-                                    ndpi_data_average(&analysis->pktlen[FD_SRC2DST]),
-                                    "%.1f");
-        ndpi_serialize_string_uint32(&workflow->ndpi_serializer,
-                                     "c_to_s_max",
-                                     ndpi_data_max(&analysis->pktlen[FD_SRC2DST]));
-        ndpi_serialize_string_float(&workflow->ndpi_serializer,
-                                    "c_to_s_stddev",
-                                    ndpi_data_stddev(&analysis->pktlen[FD_SRC2DST]),
-                                    "%.1f");
+        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "min", ndpi_data_min(&analysis->pktlen));
+        ndpi_serialize_string_float(&workflow->ndpi_serializer, "avg", ndpi_data_average(&analysis->pktlen), "%.1f");
+        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "max", ndpi_data_max(&analysis->pktlen));
+        ndpi_serialize_string_float(&workflow->ndpi_serializer, "stddev", ndpi_data_stddev(&analysis->pktlen), "%.1f");
+        ndpi_serialize_string_float(&workflow->ndpi_serializer, "var", ndpi_data_variance(&analysis->pktlen), "%.1f");
+        ndpi_serialize_string_float(&workflow->ndpi_serializer, "ent", ndpi_data_entropy(&analysis->pktlen), "%.1f");
 
-        ndpi_serialize_string_uint32(&workflow->ndpi_serializer,
-                                     "s_to_c_min",
-                                     ndpi_data_min(&analysis->pktlen[FD_DST2SRC]));
-        ndpi_serialize_string_float(&workflow->ndpi_serializer,
-                                    "s_to_c_avg",
-                                    ndpi_data_average(&analysis->pktlen[FD_DST2SRC]),
-                                    "%.1f");
-        ndpi_serialize_string_uint32(&workflow->ndpi_serializer,
-                                     "s_to_c_max",
-                                     ndpi_data_max(&analysis->pktlen[FD_DST2SRC]));
-        ndpi_serialize_string_float(&workflow->ndpi_serializer,
-                                    "s_to_c_stddev",
-                                    ndpi_data_stddev(&analysis->pktlen[FD_DST2SRC]),
-                                    "%.1f");
+        ndpi_serialize_start_of_list(&workflow->ndpi_serializer, "data");
+        for (uint16_t i = 0; i < analysis->pktlen.num_values_array_len; ++i)
+        {
+            ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "", analysis->pktlen.values[i]);
+        }
+        ndpi_serialize_end_of_list(&workflow->ndpi_serializer);
         ndpi_serialize_end_of_block(&workflow->ndpi_serializer);
+
         ndpi_serialize_start_of_block(&workflow->ndpi_serializer, "bins");
         ndpi_serialize_start_of_list(&workflow->ndpi_serializer, "c_to_s");
         for (uint16_t i = 0; i < analysis->payload_len_bin[FD_SRC2DST].num_bins; ++i)
@@ -2520,6 +2470,13 @@ static void jsonize_data_analysis(struct nDPId_reader_thread * const reader_thre
         }
         ndpi_serialize_end_of_list(&workflow->ndpi_serializer);
         ndpi_serialize_end_of_block(&workflow->ndpi_serializer);
+
+        ndpi_serialize_start_of_list(&workflow->ndpi_serializer, "directions");
+        for (unsigned long long int i = 0; i < nDPId_options.max_packets_per_flow_to_analyse; ++i)
+        {
+            ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "", analysis->directions[i]);
+        }
+        ndpi_serialize_end_of_list(&workflow->ndpi_serializer);
         ndpi_serialize_end_of_block(&workflow->ndpi_serializer);
     }
 }
@@ -3989,15 +3946,18 @@ static void ndpi_process_packet(uint8_t * const args,
                 flow_to_process->flow_extended.packets_processed[FD_DST2SRC] <=
             nDPId_options.max_packets_per_flow_to_analyse)
     {
+        unsigned long long int total_flow_packets = flow_to_process->flow_extended.packets_processed[FD_SRC2DST] +
+                                                    flow_to_process->flow_extended.packets_processed[FD_DST2SRC];
         uint64_t tdiff_us = timer_sub(workflow->last_thread_time, last_pkt_time);
 
         if (tdiff_us > 0)
         {
-            ndpi_data_add_value(&flow_to_process->flow_extended.flow_analysis->iat[direction], tdiff_us);
-            ndpi_data_add_value(&flow_to_process->flow_extended.flow_analysis->iat_flow, tdiff_us);
+            ndpi_data_add_value(&flow_to_process->flow_extended.flow_analysis->iat, tdiff_us);
         }
 
-        ndpi_data_add_value(&flow_to_process->flow_extended.flow_analysis->pktlen[direction], header->caplen);
+        ndpi_data_add_value(&flow_to_process->flow_extended.flow_analysis->pktlen, header->caplen);
+        flow_to_process->flow_extended.flow_analysis
+            ->directions[(total_flow_packets - 1) % nDPId_options.max_packets_per_flow_to_analyse] = direction;
         ndpi_inc_bin(&flow_to_process->flow_extended.flow_analysis->payload_len_bin[direction],
                      plen2slot(l4_payload_len),
                      1);

@@ -9,6 +9,16 @@ static int main_thread_shutdown = 0;
 static struct nDPIsrvd_socket * sock = NULL;
 
 #ifdef ENABLE_MEMORY_PROFILING
+void nDPIsrvd_memprof_log_alloc(size_t alloc_size)
+{
+    (void)alloc_size;
+}
+
+void nDPIsrvd_memprof_log_free(size_t free_size)
+{
+    (void)free_size;
+}
+
 void nDPIsrvd_memprof_log(char const * const format, ...)
 {
     va_list ap;
@@ -106,7 +116,9 @@ static void sighandler(int signum)
         if (verification_failed == 0)
         {
             fprintf(stderr, "%s\n", "Flow verification succeeded.");
-        } else {
+        }
+        else
+        {
             /* FATAL! */
             exit(EXIT_FAILURE);
         }
@@ -141,8 +153,10 @@ static enum nDPIsrvd_callback_return simple_json_callback(struct nDPIsrvd_socket
     if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "new") != 0)
     {
         printf("Instance %.*s/%.*s (HT-Key: 0x%x), Thread %d, Flow %llu new\n",
-               alias->value_length, alias->value,
-               source->value_length, source->value,
+               alias->value_length,
+               alias->value,
+               source->value_length,
+               source->value,
                instance->alias_source_key,
                flow->thread_id,
                flow->id_as_ull);
@@ -171,8 +185,10 @@ static void simple_flow_cleanup_callback(struct nDPIsrvd_socket * const sock,
 
     char const * const reason_str = nDPIsrvd_enum_to_string(reason);
     printf("Instance %.*s/%.*s (HT-Key: 0x%x), Thread %d, Flow %llu cleanup, reason: %s\n",
-           alias->value_length, alias->value,
-           source->value_length, source->value,
+           alias->value_length,
+           alias->value,
+           source->value_length,
+           source->value,
            instance->alias_source_key,
            flow->thread_id,
            flow->id_as_ull,

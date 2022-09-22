@@ -199,7 +199,7 @@ for out_file in results/*.out; do
     nc_pid=$!
     ${FLOW_INFO} --host 127.0.0.1 --port 9000 \
         --no-color --no-statusbar --hide-instance-info \
-        --print-analyse-results >"/tmp/nDPId-test-stdout/${result_file}.new" 2>/dev/null
+        --print-analyse-results >"/tmp/nDPId-test-stdout/${result_file}.new" 2>>"/tmp/nDPId-test-stderr/${result_file}"
     kill -SIGTERM ${nc_pid} 2>/dev/null
     wait ${nc_pid} 2>/dev/null
     if [ ! -r "${MYDIR}/results/flow-info/${result_file}" ]; then

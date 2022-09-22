@@ -13,12 +13,14 @@
       ERROR-EVENT: Captured packet size is smaller than expected packet size
       ERROR-EVENT: Captured packet size is smaller than expected packet size
           analyse: [.....1] [ip4][..udp] [...145.76.2.236][.2152] -> [...187.96.52.85][.2152] [GTP.GTP_U][Network][Acceptable]
-                   [min|max|avg|stddev]
-                   [IAT(flow)...:    0.000|   1.859|   0.305|   0.564]
-                   [IAT(c->s)...:    0.020|   1.859|   0.592|   0.678][IAT(s->c)...:    0.000|   1.799|   0.206|   0.480]
-                   [PKTLEN(c->s):  106.000| 122.000| 113.100|   5.900][PKTLEN(s->c):   90.000|1490.000|1255.600| 472.300]
+                   [min|max|avg|stddev|variance|entropy]
+                   [IAT.........:     0.000|    1.859|    0.305|    0.564|318078.976|    0.000]
+                   [PKTLEN......:    90.000| 1490.000|  934.200|  651.300|424215.900|    4.500]
                    [BINS(c->s)..: 0,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
                    [BINS(s->c)..: 0,2,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,17,0,0]
+                   [DIRECTIONS..: 0,0,0,1,1,1,1,1,1,1,1,1,1,0,1,0,1,1,1,1,1,1,1,0,0,0,1,1,1,0,1,1]
+                   [IATS........: 396021,83822,1376171,124,2,2,1,3,2,2,113,124,1859119,964928,439709,439658,123,2,1,1,1,121,163901,20078,1615354,1799040,121,3,155764,155637,124,0]
+                   [PKTLENS.....: 106,106,106,1490,1490,1490,1490,1490,1490,1490,1490,1490,1490,114,1490,114,1490,1490,1490,1490,1386,1490,1490,122,122,114,90,402,1178,114,90,402]
       ERROR-EVENT: Captured packet size is smaller than expected packet size
       ERROR-EVENT: Captured packet size is smaller than expected packet size
       ERROR-EVENT: Captured packet size is smaller than expected packet size

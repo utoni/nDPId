@@ -4,6 +4,8 @@
 #include <unistd.h>
 
 static void nDPIsrvd_memprof_log(char const * const format, ...);
+static void nDPIsrvd_memprof_log_alloc(size_t alloc_size);
+static void nDPIsrvd_memprof_log_free(size_t free_size);
 
 #define NO_MAIN 1
 #include "utils.c"
@@ -128,6 +130,10 @@ static pthread_mutex_t nDPId_start_mutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_mutex_t nDPIsrvd_start_mutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_mutex_t distributor_start_mutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_mutex_t log_mutex = PTHREAD_MUTEX_INITIALIZER;
+static unsigned long long int nDPIsrvd_alloc_count = 0;
+static unsigned long long int nDPIsrvd_alloc_bytes = 0;
+static unsigned long long int nDPIsrvd_free_count = 0;
+static unsigned long long int nDPIsrvd_free_bytes = 0;
 
 #define THREAD_ERROR(thread_arg)                                                                                       \
     do                                                                                                                 \
@@ -152,6 +158,18 @@ static void nDPIsrvd_memprof_log(char const * const format, ...)
     fprintf(stderr, "%s\n", "");
     pthread_mutex_unlock(&log_mutex);
     va_end(ap);
+}
+
+void nDPIsrvd_memprof_log_alloc(size_t alloc_size)
+{
+    nDPIsrvd_alloc_count++;
+    nDPIsrvd_alloc_bytes += alloc_size;
+}
+
+void nDPIsrvd_memprof_log_free(size_t free_size)
+{
+    nDPIsrvd_free_count++;
+    nDPIsrvd_free_bytes += free_size;
 }
 
 static int setup_pipe(int pipefd[PIPE_FDS])
@@ -1101,6 +1119,13 @@ int main(int argc, char ** argv)
                nDPId_return.total_active_flows,
                nDPId_return.total_idle_flows);
         return 1;
+    }
+
+    if (nDPIsrvd_alloc_bytes != nDPIsrvd_free_bytes || nDPIsrvd_alloc_count != nDPIsrvd_free_count)
+    {
+        logger(1, "%s: %s", argv[0], "nDPIsrvd.h memory leak detected.");
+        logger(1, "%s: Allocated / Free'd bytes: %llu / %llu", argv[0], nDPIsrvd_alloc_bytes, nDPIsrvd_free_bytes);
+        logger(1, "%s: Allocated / Free'd count: %llu / %llu", argv[0], nDPIsrvd_alloc_count, nDPIsrvd_free_count);
     }
 
     if (nDPId_return.cur_active_flows != 0 || nDPId_return.cur_idle_flows != 0)

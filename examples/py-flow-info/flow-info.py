@@ -363,43 +363,34 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
         flow_event_name += '{}{:>16}{}'.format(TermColor.WARNING,
                                                json_dict['flow_event_name'], TermColor.END)
         if args.print_analyse_results is True:
-            next_lines = ['[min|max|avg|stddev]']
-            next_lines += ['[IAT(flow)...: {:>8.3f}|{:>8.3f}|{:>8.3f}|{:>8.3f}]'.format(
-                            nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['flow_min']),
-                            nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['flow_max']),
-                            nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['flow_avg']),
-                            nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['flow_stddev'])
+            next_lines = ['[min|max|avg|stddev|variance|entropy]']
+            next_lines += ['[IAT.........: {:>9.3f}|{:>9.3f}|{:>9.3f}|{:>9.3f}|{:>9.3f}|{:>9.3f}]'.format(
+                            nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['min']),
+                            nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['max']),
+                            nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['avg']),
+                            nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['stddev']),
+                            nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['var']),
+                            nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['ent'])
                           )]
             next_lines += ['']
-            next_lines[-1] += '[IAT(c->s)...: {:>8.3f}|{:>8.3f}|{:>8.3f}|{:>8.3f}]'.format(
-                                    nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['c_to_s_min']),
-                                    nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['c_to_s_max']),
-                                    nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['c_to_s_avg']),
-                                    nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['c_to_s_stddev'])
-                              )
-            next_lines[-1] += '[IAT(s->c)...: {:>8.3f}|{:>8.3f}|{:>8.3f}|{:>8.3f}]'.format(
-                                    nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['s_to_c_min']),
-                                    nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['s_to_c_max']),
-                                    nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['s_to_c_avg']),
-                                    nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['s_to_c_stddev'])
-                              )
-            next_lines += ['']
-            next_lines[-1] += '[PKTLEN(c->s): {:>8.3f}|{:>8.3f}|{:>8.3f}|{:>8.3f}]'.format(
-                                  json_dict['data_analysis']['pktlen']['c_to_s_min'],
-                                  json_dict['data_analysis']['pktlen']['c_to_s_max'],
-                                  json_dict['data_analysis']['pktlen']['c_to_s_avg'],
-                                  json_dict['data_analysis']['pktlen']['c_to_s_stddev']
-                              )
-            next_lines[-1] += '[PKTLEN(s->c): {:>8.3f}|{:>8.3f}|{:>8.3f}|{:>8.3f}]'.format(
-                                  json_dict['data_analysis']['pktlen']['s_to_c_min'],
-                                  json_dict['data_analysis']['pktlen']['s_to_c_max'],
-                                  json_dict['data_analysis']['pktlen']['s_to_c_avg'],
-                                  json_dict['data_analysis']['pktlen']['s_to_c_stddev']
+            next_lines[-1] += '[PKTLEN......: {:>9.3f}|{:>9.3f}|{:>9.3f}|{:>9.3f}|{:>9.3f}|{:>9.3f}]'.format(
+                                  json_dict['data_analysis']['pktlen']['min'],
+                                  json_dict['data_analysis']['pktlen']['max'],
+                                  json_dict['data_analysis']['pktlen']['avg'],
+                                  json_dict['data_analysis']['pktlen']['stddev'],
+                                  json_dict['data_analysis']['pktlen']['var'],
+                                  json_dict['data_analysis']['pktlen']['ent']
                               )
             next_lines += ['']
             next_lines[-1] += '[BINS(c->s)..: {}]'.format(','.join([str(n) for n in json_dict['data_analysis']['bins']['c_to_s']]))
             next_lines += ['']
             next_lines[-1] += '[BINS(s->c)..: {}]'.format(','.join([str(n) for n in json_dict['data_analysis']['bins']['s_to_c']]))
+            next_lines += ['']
+            next_lines[-1] += '[DIRECTIONS..: {}]'.format(','.join([str(n) for n in json_dict['data_analysis']['directions']]))
+            next_lines += ['']
+            next_lines[-1] += '[IATS........: {}]'.format(','.join([str(n) for n in json_dict['data_analysis']['iat']['data']]))
+            next_lines += ['']
+            next_lines[-1] += '[PKTLENS.....: {}]'.format(','.join([str(n) for n in json_dict['data_analysis']['pktlen']['data']]))
     else:
         if json_dict['flow_event_name'] == 'new':
             line_suffix = ''

@@ -104,6 +104,16 @@ static struct
 } collectd_statistics = {};
 
 #ifdef ENABLE_MEMORY_PROFILING
+void nDPIsrvd_memprof_log_alloc(size_t alloc_size)
+{
+    (void)alloc_size;
+}
+
+void nDPIsrvd_memprof_log_free(size_t free_size)
+{
+    (void)free_size;
+}
+
 void nDPIsrvd_memprof_log(char const * const format, ...)
 {
     va_list ap;

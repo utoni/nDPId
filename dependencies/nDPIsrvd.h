@@ -27,8 +27,8 @@
 #include <stdarg.h>
 #endif
 
-#define nDPIsrvd_MAX_JSON_TOKENS 512
-#define nDPIsrvd_JSON_KEY_STRLEN 32
+#define nDPIsrvd_MAX_JSON_TOKENS (512u + 256u)
+#define nDPIsrvd_JSON_KEY_STRLEN (32)
 
 #define nDPIsrvd_STRLEN_SZ(s) (sizeof(s) / sizeof(s[0]) - sizeof(s[0]))
 #define TOKEN_GET_SZ(sock, key) token_get(sock, (char const *)key, nDPIsrvd_STRLEN_SZ(key))
@@ -163,6 +163,8 @@ static inline void nDPIsrvd_free(void * const freeable);
 static inline void * nDPIsrvd_uthash_malloc(size_t const size);
 static inline void nDPIsrvd_uthash_free(void * const freeable, size_t const size);
 extern void nDPIsrvd_memprof_log(char const * const format, ...);
+extern void nDPIsrvd_memprof_log_alloc(size_t);
+extern void nDPIsrvd_memprof_log_free(size_t);
 #endif
 
 typedef enum nDPIsrvd_callback_return (*json_callback)(struct nDPIsrvd_socket * const sock,
@@ -1365,6 +1367,7 @@ static inline void * nDPIsrvd_malloc(size_t const size)
     *(uint64_t *)p = size;
 #ifdef ENABLE_MEMORY_PROFILING
     nDPIsrvd_memprof_log("malloc(%zu)", size);
+    nDPIsrvd_memprof_log_alloc(size);
 #endif
 
     return (uint8_t *)p + sizeof(uint64_t);
@@ -1384,6 +1387,7 @@ static inline void nDPIsrvd_free(void * const freeable)
 #ifdef ENABLE_MEMORY_PROFILING
     size_t size = *(uint64_t *)p;
     nDPIsrvd_memprof_log("free(%zu)", size);
+    nDPIsrvd_memprof_log_free(size);
 #endif
 
     free(p);
