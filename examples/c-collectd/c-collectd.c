@@ -46,6 +46,8 @@ static struct
     uint64_t flow_new_count;
     uint64_t flow_end_count;
     uint64_t flow_idle_count;
+    uint64_t flow_update_count;
+    uint64_t flow_analyse_count;
     uint64_t flow_guessed_count;
     uint64_t flow_detected_count;
     uint64_t flow_detection_update_count;
@@ -91,17 +93,74 @@ static struct
     uint64_t flow_category_mining_count;
     uint64_t flow_category_malware_count;
     uint64_t flow_category_advertisment_count;
-    uint64_t flow_category_other_count;
     uint64_t flow_category_unknown_count;
 
     uint64_t flow_l3_ip4_count;
     uint64_t flow_l3_ip6_count;
     uint64_t flow_l3_other_count;
+
     uint64_t flow_l4_tcp_count;
     uint64_t flow_l4_udp_count;
     uint64_t flow_l4_icmp_count;
     uint64_t flow_l4_other_count;
 } collectd_statistics = {};
+
+struct json_stat_map
+{
+    char const * const json_key;
+    uint64_t * const collectd_stat;
+};
+
+static struct json_stat_map const flow_event_map[] = {{"new", &collectd_statistics.flow_new_count},
+                                                      {"end", &collectd_statistics.flow_end_count},
+                                                      {"idle", &collectd_statistics.flow_idle_count},
+                                                      {"update", &collectd_statistics.flow_update_count},
+                                                      {"analyse", &collectd_statistics.flow_analyse_count},
+                                                      {"guessed", &collectd_statistics.flow_guessed_count},
+                                                      {"detected", &collectd_statistics.flow_detected_count},
+                                                      {"detection-update",
+                                                       &collectd_statistics.flow_detection_update_count},
+                                                      {"not-detected", &collectd_statistics.flow_not_detected_count}};
+
+static struct json_stat_map const breeds_map[] = {{"Safe", &collectd_statistics.flow_breed_safe_count},
+                                                  {"Acceptable", &collectd_statistics.flow_breed_acceptable_count},
+                                                  {"Fun", &collectd_statistics.flow_breed_fun_count},
+                                                  {"Unsafe", &collectd_statistics.flow_breed_unsafe_count},
+                                                  {"Potentially Dangerous",
+                                                   &collectd_statistics.flow_breed_potentially_dangerous_count},
+                                                  {"Dangerous", &collectd_statistics.flow_breed_dangerous_count},
+                                                  {"Unrated", &collectd_statistics.flow_breed_unrated_count},
+                                                  {NULL, &collectd_statistics.flow_breed_unknown_count}};
+
+static struct json_stat_map const categories_map[] = {
+    {"Media", &collectd_statistics.flow_category_media_count},
+    {"VPN", &collectd_statistics.flow_category_vpn_count},
+    {"Email", &collectd_statistics.flow_category_email_count},
+    {"DataTransfer", &collectd_statistics.flow_category_data_transfer_count},
+    {"Web", &collectd_statistics.flow_category_web_count},
+    {"SocialNetwork", &collectd_statistics.flow_category_social_network_count},
+    {"Download-FileTransfer-FileSharing", &collectd_statistics.flow_category_download_count},
+    {"Game", &collectd_statistics.flow_category_game_count},
+    {"Chat", &collectd_statistics.flow_category_chat_count},
+    {"VoIP", &collectd_statistics.flow_category_voip_count},
+    {"Database", &collectd_statistics.flow_category_database_count},
+    {"RemoteAccess", &collectd_statistics.flow_category_remote_access_count},
+    {"Cloud", &collectd_statistics.flow_category_cloud_count},
+    {"Network", &collectd_statistics.flow_category_network_count},
+    {"Collaborative", &collectd_statistics.flow_category_collaborative_count},
+    {"RPC", &collectd_statistics.flow_category_rpc_count},
+    {"Streaming", &collectd_statistics.flow_category_streaming_count},
+    {"System", &collectd_statistics.flow_category_system_count},
+    {"SoftwareUpdate", &collectd_statistics.flow_category_software_update_count},
+    {"Music", &collectd_statistics.flow_category_music_count},
+    {"Video", &collectd_statistics.flow_category_video_count},
+    {"Shopping", &collectd_statistics.flow_category_shopping_count},
+    {"Productivity", &collectd_statistics.flow_category_productivity_count},
+    {"FileSharing", &collectd_statistics.flow_category_file_sharing_count},
+    {"Mining", &collectd_statistics.flow_category_mining_count},
+    {"Malware", &collectd_statistics.flow_category_malware_count},
+    {"Advertisement", &collectd_statistics.flow_category_advertisment_count},
+    {NULL, &collectd_statistics.flow_category_unknown_count}};
 
 #ifdef ENABLE_MEMORY_PROFILING
 void nDPIsrvd_memprof_log_alloc(size_t alloc_size)
@@ -311,59 +370,59 @@ static void print_collectd_exec_output(void)
            COLLECTD_PUTVAL_N(flow_breed_unrated_count),
            COLLECTD_PUTVAL_N(flow_breed_unknown_count));
 
-    printf(
-        COLLECTD_PUTVAL_N_FORMAT(flow_category_media_count) COLLECTD_PUTVAL_N_FORMAT(
-            flow_category_vpn_count) COLLECTD_PUTVAL_N_FORMAT(flow_category_email_count)
-            COLLECTD_PUTVAL_N_FORMAT(flow_category_data_transfer_count) COLLECTD_PUTVAL_N_FORMAT(
-                flow_category_web_count) COLLECTD_PUTVAL_N_FORMAT(flow_category_social_network_count)
-                COLLECTD_PUTVAL_N_FORMAT(flow_category_download_count) COLLECTD_PUTVAL_N_FORMAT(
-                    flow_category_game_count) COLLECTD_PUTVAL_N_FORMAT(flow_category_chat_count)
-                    COLLECTD_PUTVAL_N_FORMAT(flow_category_voip_count) COLLECTD_PUTVAL_N_FORMAT(
-                        flow_category_database_count) COLLECTD_PUTVAL_N_FORMAT(flow_category_remote_access_count)
-                        COLLECTD_PUTVAL_N_FORMAT(flow_category_cloud_count) COLLECTD_PUTVAL_N_FORMAT(
-                            flow_category_network_count) COLLECTD_PUTVAL_N_FORMAT(flow_category_collaborative_count)
-                            COLLECTD_PUTVAL_N_FORMAT(flow_category_rpc_count) COLLECTD_PUTVAL_N_FORMAT(
-                                flow_category_streaming_count) COLLECTD_PUTVAL_N_FORMAT(flow_category_system_count)
-                                COLLECTD_PUTVAL_N_FORMAT(flow_category_software_update_count) COLLECTD_PUTVAL_N_FORMAT(
-                                    flow_category_music_count) COLLECTD_PUTVAL_N_FORMAT(flow_category_video_count)
-                                    COLLECTD_PUTVAL_N_FORMAT(flow_category_shopping_count)
-                                        COLLECTD_PUTVAL_N_FORMAT(flow_category_productivity_count)
-                                            COLLECTD_PUTVAL_N_FORMAT(flow_category_file_sharing_count)
-                                                COLLECTD_PUTVAL_N_FORMAT(flow_category_mining_count)
-                                                    COLLECTD_PUTVAL_N_FORMAT(flow_category_malware_count)
-                                                        COLLECTD_PUTVAL_N_FORMAT(flow_category_advertisment_count)
-                                                            COLLECTD_PUTVAL_N_FORMAT(flow_category_other_count)
-                                                                COLLECTD_PUTVAL_N_FORMAT(flow_category_unknown_count),
+    printf(COLLECTD_PUTVAL_N_FORMAT(flow_category_media_count) COLLECTD_PUTVAL_N_FORMAT(flow_category_vpn_count)
+               COLLECTD_PUTVAL_N_FORMAT(flow_category_email_count) COLLECTD_PUTVAL_N_FORMAT(
+                   flow_category_data_transfer_count) COLLECTD_PUTVAL_N_FORMAT(flow_category_web_count)
+                   COLLECTD_PUTVAL_N_FORMAT(flow_category_social_network_count) COLLECTD_PUTVAL_N_FORMAT(
+                       flow_category_download_count) COLLECTD_PUTVAL_N_FORMAT(flow_category_game_count)
+                       COLLECTD_PUTVAL_N_FORMAT(flow_category_chat_count) COLLECTD_PUTVAL_N_FORMAT(
+                           flow_category_voip_count) COLLECTD_PUTVAL_N_FORMAT(flow_category_database_count)
+                           COLLECTD_PUTVAL_N_FORMAT(flow_category_remote_access_count) COLLECTD_PUTVAL_N_FORMAT(
+                               flow_category_cloud_count) COLLECTD_PUTVAL_N_FORMAT(flow_category_network_count)
+                               COLLECTD_PUTVAL_N_FORMAT(flow_category_collaborative_count) COLLECTD_PUTVAL_N_FORMAT(
+                                   flow_category_rpc_count) COLLECTD_PUTVAL_N_FORMAT(flow_category_streaming_count)
+                                   COLLECTD_PUTVAL_N_FORMAT(flow_category_system_count)
+                                       COLLECTD_PUTVAL_N_FORMAT(flow_category_software_update_count)
+                                           COLLECTD_PUTVAL_N_FORMAT(flow_category_music_count)
+                                               COLLECTD_PUTVAL_N_FORMAT(flow_category_video_count)
+                                                   COLLECTD_PUTVAL_N_FORMAT(flow_category_shopping_count)
+                                                       COLLECTD_PUTVAL_N_FORMAT(flow_category_productivity_count)
+                                                           COLLECTD_PUTVAL_N_FORMAT(flow_category_file_sharing_count)
+                                                               COLLECTD_PUTVAL_N_FORMAT(flow_category_mining_count)
+                                                                   COLLECTD_PUTVAL_N_FORMAT(flow_category_malware_count)
+                                                                       COLLECTD_PUTVAL_N_FORMAT(
+                                                                           flow_category_advertisment_count)
+                                                                           COLLECTD_PUTVAL_N_FORMAT(
+                                                                               flow_category_unknown_count),
 
-        COLLECTD_PUTVAL_N(flow_category_media_count),
-        COLLECTD_PUTVAL_N(flow_category_vpn_count),
-        COLLECTD_PUTVAL_N(flow_category_email_count),
-        COLLECTD_PUTVAL_N(flow_category_data_transfer_count),
-        COLLECTD_PUTVAL_N(flow_category_web_count),
-        COLLECTD_PUTVAL_N(flow_category_social_network_count),
-        COLLECTD_PUTVAL_N(flow_category_download_count),
-        COLLECTD_PUTVAL_N(flow_category_game_count),
-        COLLECTD_PUTVAL_N(flow_category_chat_count),
-        COLLECTD_PUTVAL_N(flow_category_voip_count),
-        COLLECTD_PUTVAL_N(flow_category_database_count),
-        COLLECTD_PUTVAL_N(flow_category_remote_access_count),
-        COLLECTD_PUTVAL_N(flow_category_cloud_count),
-        COLLECTD_PUTVAL_N(flow_category_network_count),
-        COLLECTD_PUTVAL_N(flow_category_collaborative_count),
-        COLLECTD_PUTVAL_N(flow_category_rpc_count),
-        COLLECTD_PUTVAL_N(flow_category_streaming_count),
-        COLLECTD_PUTVAL_N(flow_category_system_count),
-        COLLECTD_PUTVAL_N(flow_category_software_update_count),
-        COLLECTD_PUTVAL_N(flow_category_music_count),
-        COLLECTD_PUTVAL_N(flow_category_video_count),
-        COLLECTD_PUTVAL_N(flow_category_shopping_count),
-        COLLECTD_PUTVAL_N(flow_category_productivity_count),
-        COLLECTD_PUTVAL_N(flow_category_file_sharing_count),
-        COLLECTD_PUTVAL_N(flow_category_mining_count),
-        COLLECTD_PUTVAL_N(flow_category_malware_count),
-        COLLECTD_PUTVAL_N(flow_category_advertisment_count),
-        COLLECTD_PUTVAL_N(flow_category_other_count),
-        COLLECTD_PUTVAL_N(flow_category_unknown_count));
+           COLLECTD_PUTVAL_N(flow_category_media_count),
+           COLLECTD_PUTVAL_N(flow_category_vpn_count),
+           COLLECTD_PUTVAL_N(flow_category_email_count),
+           COLLECTD_PUTVAL_N(flow_category_data_transfer_count),
+           COLLECTD_PUTVAL_N(flow_category_web_count),
+           COLLECTD_PUTVAL_N(flow_category_social_network_count),
+           COLLECTD_PUTVAL_N(flow_category_download_count),
+           COLLECTD_PUTVAL_N(flow_category_game_count),
+           COLLECTD_PUTVAL_N(flow_category_chat_count),
+           COLLECTD_PUTVAL_N(flow_category_voip_count),
+           COLLECTD_PUTVAL_N(flow_category_database_count),
+           COLLECTD_PUTVAL_N(flow_category_remote_access_count),
+           COLLECTD_PUTVAL_N(flow_category_cloud_count),
+           COLLECTD_PUTVAL_N(flow_category_network_count),
+           COLLECTD_PUTVAL_N(flow_category_collaborative_count),
+           COLLECTD_PUTVAL_N(flow_category_rpc_count),
+           COLLECTD_PUTVAL_N(flow_category_streaming_count),
+           COLLECTD_PUTVAL_N(flow_category_system_count),
+           COLLECTD_PUTVAL_N(flow_category_software_update_count),
+           COLLECTD_PUTVAL_N(flow_category_music_count),
+           COLLECTD_PUTVAL_N(flow_category_video_count),
+           COLLECTD_PUTVAL_N(flow_category_shopping_count),
+           COLLECTD_PUTVAL_N(flow_category_productivity_count),
+           COLLECTD_PUTVAL_N(flow_category_file_sharing_count),
+           COLLECTD_PUTVAL_N(flow_category_mining_count),
+           COLLECTD_PUTVAL_N(flow_category_malware_count),
+           COLLECTD_PUTVAL_N(flow_category_advertisment_count),
+           COLLECTD_PUTVAL_N(flow_category_unknown_count));
 
     printf(COLLECTD_PUTVAL_N_FORMAT(flow_l3_ip4_count) COLLECTD_PUTVAL_N_FORMAT(flow_l3_ip6_count)
                COLLECTD_PUTVAL_N_FORMAT(flow_l3_other_count) COLLECTD_PUTVAL_N_FORMAT(flow_l4_tcp_count)
@@ -449,12 +508,44 @@ static int mainloop(int epollfd, struct nDPIsrvd_socket * const sock)
     return 0;
 }
 
-static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_socket * const sock,
+static void collectd_map_token_to_stat(struct nDPIsrvd_socket * const sock,
+                                       struct nDPIsrvd_json_token const * const token,
+                                       struct json_stat_map const * const map,
+                                       size_t map_length)
+{
+    size_t i, null_i = map_length;
+
+    if (token == NULL)
+    {
+        return;
+    }
+
+    for (i = 0; i < map_length; ++i)
+    {
+        if (map[i].json_key == NULL)
+        {
+            null_i = i;
+            continue;
+        }
+
+        if (TOKEN_VALUE_EQUALS(sock, token, map[i].json_key, strlen(map[i].json_key)) != 0)
+        {
+            (*map[i].collectd_stat)++;
+            return;
+        }
+    }
+
+    if (null_i < map_length)
+    {
+        (*map[null_i].collectd_stat)++;
+    }
+}
+
+static enum nDPIsrvd_callback_return collectd_json_callback(struct nDPIsrvd_socket * const sock,
                                                             struct nDPIsrvd_instance * const instance,
                                                             struct nDPIsrvd_thread_data * const thread_data,
                                                             struct nDPIsrvd_flow * const flow)
 {
-    (void)sock;
     (void)instance;
     (void)thread_data;
 
@@ -470,9 +561,10 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
     {
         nDPIsrvd_ull total_bytes_ull[2] = {0, 0};
 
-        if (TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_src_tot_l4_payload_len"), &total_bytes_ull[0]) ==
+        if (TOKEN_VALUE_TO_ULL(sock, TOKEN_GET_SZ(sock, "flow_src_tot_l4_payload_len"), &total_bytes_ull[0]) ==
                 CONVERSION_OK &&
-            TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_dst_tot_l4_payload_len"), &total_bytes_ull[1]) == CONVERSION_OK)
+            TOKEN_VALUE_TO_ULL(sock, TOKEN_GET_SZ(sock, "flow_dst_tot_l4_payload_len"), &total_bytes_ull[1]) ==
+                CONVERSION_OK)
         {
             collectd_statistics.flow_src_total_bytes +=
                 total_bytes_ull[0] - flow_user_data->last_flow_src_l4_payload_len;
@@ -484,16 +576,15 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
         }
     }
 
-    if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "new") != 0)
+    collectd_map_token_to_stat(sock, flow_event_name, flow_event_map, nDPIsrvd_ARRAY_LENGTH(flow_event_map));
+    if (TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "new") != 0)
     {
-        collectd_statistics.flow_new_count++;
-
         struct nDPIsrvd_json_token const * const l3_proto = TOKEN_GET_SZ(sock, "l3_proto");
-        if (TOKEN_VALUE_EQUALS_SZ(l3_proto, "ip4") != 0)
+        if (TOKEN_VALUE_EQUALS_SZ(sock, l3_proto, "ip4") != 0)
         {
             collectd_statistics.flow_l3_ip4_count++;
         }
-        else if (TOKEN_VALUE_EQUALS_SZ(l3_proto, "ip6") != 0)
+        else if (TOKEN_VALUE_EQUALS_SZ(sock, l3_proto, "ip6") != 0)
         {
             collectd_statistics.flow_l3_ip6_count++;
         }
@@ -503,15 +594,15 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
         }
 
         struct nDPIsrvd_json_token const * const l4_proto = TOKEN_GET_SZ(sock, "l4_proto");
-        if (TOKEN_VALUE_EQUALS_SZ(l4_proto, "tcp") != 0)
+        if (TOKEN_VALUE_EQUALS_SZ(sock, l4_proto, "tcp") != 0)
         {
             collectd_statistics.flow_l4_tcp_count++;
         }
-        else if (TOKEN_VALUE_EQUALS_SZ(l4_proto, "udp") != 0)
+        else if (TOKEN_VALUE_EQUALS_SZ(sock, l4_proto, "udp") != 0)
         {
             collectd_statistics.flow_l4_udp_count++;
         }
-        else if (TOKEN_VALUE_EQUALS_SZ(l4_proto, "icmp") != 0)
+        else if (TOKEN_VALUE_EQUALS_SZ(sock, l4_proto, "icmp") != 0)
         {
             collectd_statistics.flow_l4_icmp_count++;
         }
@@ -520,186 +611,18 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
             collectd_statistics.flow_l4_other_count++;
         }
     }
-    else if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "end") != 0)
+    else if (TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "detected") != 0)
     {
-        collectd_statistics.flow_end_count++;
-    }
-    else if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "idle") != 0)
-    {
-        collectd_statistics.flow_idle_count++;
-    }
-    else if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "guessed") != 0)
-    {
-        collectd_statistics.flow_guessed_count++;
-    }
-    else if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "detected") != 0)
-    {
-        collectd_statistics.flow_detected_count++;
-
         if (TOKEN_GET_SZ(sock, "flow_risk") != NULL)
         {
             collectd_statistics.flow_risky_count++;
         }
 
-        struct nDPIsrvd_json_token const * const breed = TOKEN_GET_SZ(sock, "breed");
-        if (TOKEN_VALUE_EQUALS_SZ(breed, "Safe") != 0)
-        {
-            collectd_statistics.flow_breed_safe_count++;
-        }
-        else if (TOKEN_VALUE_EQUALS_SZ(breed, "Acceptable") != 0)
-        {
-            collectd_statistics.flow_breed_acceptable_count++;
-        }
-        else if (TOKEN_VALUE_EQUALS_SZ(breed, "Fun") != 0)
-        {
-            collectd_statistics.flow_breed_fun_count++;
-        }
-        else if (TOKEN_VALUE_EQUALS_SZ(breed, "Unsafe") != 0)
-        {
-            collectd_statistics.flow_breed_unsafe_count++;
-        }
-        else if (TOKEN_VALUE_EQUALS_SZ(breed, "Potentially Dangerous") != 0)
-        {
-            collectd_statistics.flow_breed_potentially_dangerous_count++;
-        }
-        else if (TOKEN_VALUE_EQUALS_SZ(breed, "Dangerous") != 0)
-        {
-            collectd_statistics.flow_breed_dangerous_count++;
-        }
-        else if (TOKEN_VALUE_EQUALS_SZ(breed, "Unrated") != 0)
-        {
-            collectd_statistics.flow_breed_unrated_count++;
-        }
-        else
-        {
-            collectd_statistics.flow_breed_unknown_count++;
-        }
+        struct nDPIsrvd_json_token const * const breed = TOKEN_GET_SZ(sock, "ndpi", "breed");
+        collectd_map_token_to_stat(sock, breed, breeds_map, nDPIsrvd_ARRAY_LENGTH(breeds_map));
 
-        struct nDPIsrvd_json_token const * const category = TOKEN_GET_SZ(sock, "category");
-        if (TOKEN_VALUE_EQUALS_SZ(category, "Media") != 0)
-        {
-            collectd_statistics.flow_category_media_count++;
-        }
-        else if (TOKEN_VALUE_EQUALS_SZ(category, "VPN") != 0)
-        {
-            collectd_statistics.flow_category_vpn_count++;
-        }
-        else if (TOKEN_VALUE_EQUALS_SZ(category, "Email") != 0)
-        {
-            collectd_statistics.flow_category_email_count++;
-        }
-        else if (TOKEN_VALUE_EQUALS_SZ(category, "DataTransfer") != 0)
-        {
-            collectd_statistics.flow_category_data_transfer_count++;
-        }
-        else if (TOKEN_VALUE_EQUALS_SZ(category, "Web") != 0)
-        {
-            collectd_statistics.flow_category_web_count++;
-        }
-        else if (TOKEN_VALUE_EQUALS_SZ(category, "SocialNetwork") != 0)
-        {
-            collectd_statistics.flow_category_social_network_count++;
-        }
-        else if (TOKEN_VALUE_EQUALS_SZ(category, "Download-FileTransfer-FileSharing") != 0)
-        {
-            collectd_statistics.flow_category_download_count++;
-        }
-        else if (TOKEN_VALUE_EQUALS_SZ(category, "Game") != 0)
-        {
-            collectd_statistics.flow_category_game_count++;
-        }
-        else if (TOKEN_VALUE_EQUALS_SZ(category, "Chat") != 0)
-        {
-            collectd_statistics.flow_category_chat_count++;
-        }
-        else if (TOKEN_VALUE_EQUALS_SZ(category, "VoIP") != 0)
-        {
-            collectd_statistics.flow_category_voip_count++;
-        }
-        else if (TOKEN_VALUE_EQUALS_SZ(category, "Database") != 0)
-        {
-            collectd_statistics.flow_category_database_count++;
-        }
-        else if (TOKEN_VALUE_EQUALS_SZ(category, "RemoteAccess") != 0)
-        {
-            collectd_statistics.flow_category_remote_access_count++;
-        }
-        else if (TOKEN_VALUE_EQUALS_SZ(category, "Cloud") != 0)
-        {
-            collectd_statistics.flow_category_cloud_count++;
-        }
-        else if (TOKEN_VALUE_EQUALS_SZ(category, "Network") != 0)
-        {
-            collectd_statistics.flow_category_network_count++;
-        }
-        else if (TOKEN_VALUE_EQUALS_SZ(category, "Collaborative") != 0)
-        {
-            collectd_statistics.flow_category_collaborative_count++;
-        }
-        else if (TOKEN_VALUE_EQUALS_SZ(category, "RPC") != 0)
-        {
-            collectd_statistics.flow_category_rpc_count++;
-        }
-        else if (TOKEN_VALUE_EQUALS_SZ(category, "Streaming") != 0)
-        {
-            collectd_statistics.flow_category_streaming_count++;
-        }
-        else if (TOKEN_VALUE_EQUALS_SZ(category, "System") != 0)
-        {
-            collectd_statistics.flow_category_system_count++;
-        }
-        else if (TOKEN_VALUE_EQUALS_SZ(category, "SoftwareUpdate") != 0)
-        {
-            collectd_statistics.flow_category_software_update_count++;
-        }
-        else if (TOKEN_VALUE_EQUALS_SZ(category, "Music") != 0)
-        {
-            collectd_statistics.flow_category_music_count++;
-        }
-        else if (TOKEN_VALUE_EQUALS_SZ(category, "Video") != 0)
-        {
-            collectd_statistics.flow_category_video_count++;
-        }
-        else if (TOKEN_VALUE_EQUALS_SZ(category, "Shopping") != 0)
-        {
-            collectd_statistics.flow_category_shopping_count++;
-        }
-        else if (TOKEN_VALUE_EQUALS_SZ(category, "Productivity") != 0)
-        {
-            collectd_statistics.flow_category_productivity_count++;
-        }
-        else if (TOKEN_VALUE_EQUALS_SZ(category, "FileSharing") != 0)
-        {
-            collectd_statistics.flow_category_file_sharing_count++;
-        }
-        else if (TOKEN_VALUE_EQUALS_SZ(category, "Mining") != 0)
-        {
-            collectd_statistics.flow_category_mining_count++;
-        }
-        else if (TOKEN_VALUE_EQUALS_SZ(category, "Malware") != 0)
-        {
-            collectd_statistics.flow_category_malware_count++;
-        }
-        else if (TOKEN_VALUE_EQUALS_SZ(category, "Advertisement") != 0)
-        {
-            collectd_statistics.flow_category_advertisment_count++;
-        }
-        else if (category != NULL)
-        {
-            collectd_statistics.flow_category_other_count++;
-        }
-        else
-        {
-            collectd_statistics.flow_category_unknown_count++;
-        }
-    }
-    else if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "detection-update") != 0)
-    {
-        collectd_statistics.flow_detection_update_count++;
-    }
-    else if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "not-detected") != 0)
-    {
-        collectd_statistics.flow_not_detected_count++;
+        struct nDPIsrvd_json_token const * const category = TOKEN_GET_SZ(sock, "ndpi", "category");
+        collectd_map_token_to_stat(sock, category, categories_map, nDPIsrvd_ARRAY_LENGTH(categories_map));
     }
 
     return CALLBACK_OK;
@@ -712,7 +635,7 @@ int main(int argc, char ** argv)
     openlog("nDPIsrvd-collectd", LOG_CONS, LOG_DAEMON);
 
     struct nDPIsrvd_socket * sock =
-        nDPIsrvd_socket_init(0, 0, 0, sizeof(struct flow_user_data), captured_json_callback, NULL, NULL);
+        nDPIsrvd_socket_init(0, 0, 0, sizeof(struct flow_user_data), collectd_json_callback, NULL, NULL);
     if (sock == NULL)
     {
         LOG(LOG_DAEMON | LOG_ERR, "%s", "nDPIsrvd socket memory allocation failed!");

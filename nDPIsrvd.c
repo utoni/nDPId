@@ -717,6 +717,8 @@ static void free_remotes(int epollfd)
     {
         free_remote(epollfd, &remotes.desc[i]);
     }
+    nDPIsrvd_free(remotes.desc);
+    remotes.desc = NULL;
 }
 
 static int add_event(int epollfd, int events, int fd, void * ptr)

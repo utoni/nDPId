@@ -164,12 +164,14 @@ void nDPIsrvd_memprof_log_alloc(size_t alloc_size)
 {
     nDPIsrvd_alloc_count++;
     nDPIsrvd_alloc_bytes += alloc_size;
+    // nDPIsrvd_memprof_log("nDPIsrvd.h: malloc #%llu, %llu bytes", nDPIsrvd_alloc_count, alloc_size);
 }
 
 void nDPIsrvd_memprof_log_free(size_t free_size)
 {
     nDPIsrvd_free_count++;
     nDPIsrvd_free_bytes += free_size;
+    // nDPIsrvd_memprof_log("nDPIsrvd.h: free #%llu, %llu bytes", nDPIsrvd_free_count, free_size);
 }
 
 static int setup_pipe(int pipefd[PIPE_FDS])
@@ -288,14 +290,7 @@ error:
         drain_write_buffers_blocking(mock_arpa_desc);
     }
 
-    del_event(epollfd, mock_pipefds[PIPE_nDPIsrvd]);
-    del_event(epollfd, mock_testfds[PIPE_TEST_WRITE]);
-    del_event(epollfd, mock_nullfds[PIPE_NULL_WRITE]);
-    del_event(epollfd, mock_arpafds[PIPE_ARPA_WRITE]);
-    close(mock_pipefds[PIPE_nDPIsrvd]);
-    close(mock_testfds[PIPE_TEST_WRITE]);
-    close(mock_nullfds[PIPE_NULL_WRITE]);
-    close(mock_arpafds[PIPE_ARPA_WRITE]);
+    free_remotes(epollfd);
     close(epollfd);
 
     return NULL;
@@ -313,7 +308,7 @@ static enum nDPIsrvd_callback_return update_flow_packets_processed(struct nDPIsr
         if (flow_total_packets_processed[dir] != NULL)
         {
             nDPIsrvd_ull nmb = 0;
-            if (TOKEN_VALUE_TO_ULL(flow_total_packets_processed[dir], &nmb) != CONVERSION_OK)
+            if (TOKEN_VALUE_TO_ULL(sock, flow_total_packets_processed[dir], &nmb) != CONVERSION_OK)
             {
                 return CALLBACK_ERROR;
             }
@@ -340,7 +335,7 @@ static enum nDPIsrvd_callback_return update_flow_l4_payload_len(struct nDPIsrvd_
         if (flow_total_l4_payload_len[dir] != NULL)
         {
             nDPIsrvd_ull nmb = 0;
-            if (TOKEN_VALUE_TO_ULL(flow_total_l4_payload_len[dir], &nmb) != CONVERSION_OK)
+            if (TOKEN_VALUE_TO_ULL(sock, flow_total_l4_payload_len[dir], &nmb) != CONVERSION_OK)
             {
                 return CALLBACK_ERROR;
             }
@@ -402,7 +397,7 @@ static enum nDPIsrvd_callback_return distributor_json_callback(struct nDPIsrvd_s
             instance_stats->daemon_event_count++;
             thread_stats->daemon_event_count++;
 
-            if (TOKEN_VALUE_EQUALS_SZ(daemon_event_name, "shutdown") != 0)
+            if (TOKEN_VALUE_EQUALS_SZ(sock, daemon_event_name, "shutdown") != 0)
             {
                 struct nDPIsrvd_json_token const * const total_events_serialized =
                     TOKEN_GET_SZ(sock, "total-events-serialized");
@@ -410,7 +405,7 @@ static enum nDPIsrvd_callback_return distributor_json_callback(struct nDPIsrvd_s
                 if (total_events_serialized != NULL)
                 {
                     nDPIsrvd_ull nmb = 0;
-                    if (TOKEN_VALUE_TO_ULL(total_events_serialized, &nmb) != CONVERSION_OK)
+                    if (TOKEN_VALUE_TO_ULL(sock, total_events_serialized, &nmb) != CONVERSION_OK)
                     {
                         return CALLBACK_ERROR;
                     }
@@ -426,7 +421,7 @@ static enum nDPIsrvd_callback_return distributor_json_callback(struct nDPIsrvd_s
 
         if (flow_event_name != NULL)
         {
-            if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "new") != 0)
+            if (TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "new") != 0)
             {
                 global_stats->cur_active_flows++;
                 global_stats->flow_new_count++;
@@ -442,7 +437,7 @@ static enum nDPIsrvd_callback_return distributor_json_callback(struct nDPIsrvd_s
                     return CALLBACK_ERROR;
                 }
             }
-            if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "end") != 0)
+            if (TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "end") != 0)
             {
                 global_stats->cur_active_flows--;
                 global_stats->cur_idle_flows++;
@@ -455,7 +450,7 @@ static enum nDPIsrvd_callback_return distributor_json_callback(struct nDPIsrvd_s
                     return CALLBACK_ERROR;
                 }
             }
-            if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "idle") != 0)
+            if (TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "idle") != 0)
             {
                 global_stats->cur_active_flows--;
                 global_stats->cur_idle_flows++;
@@ -468,23 +463,23 @@ static enum nDPIsrvd_callback_return distributor_json_callback(struct nDPIsrvd_s
                     return CALLBACK_ERROR;
                 }
             }
-            if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "detected") != 0)
+            if (TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "detected") != 0)
             {
                 global_stats->flow_detected_count++;
             }
-            if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "guessed") != 0)
+            if (TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "guessed") != 0)
             {
                 global_stats->flow_guessed_count++;
             }
-            if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "not-detected") != 0)
+            if (TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "not-detected") != 0)
             {
                 global_stats->flow_not_detected_count++;
             }
-            if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "detection-update") != 0)
+            if (TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "detection-update") != 0)
             {
                 global_stats->flow_detection_update_count++;
             }
-            if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "update") != 0)
+            if (TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "update") != 0)
             {
                 global_stats->flow_update_count++;
             }

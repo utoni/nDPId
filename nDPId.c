@@ -1356,7 +1356,8 @@ static int alloc_detection_data(struct nDPId_flow * const flow)
             goto error;
         }
 
-        ndpi_init_data_analysis(&flow->flow_extended.flow_analysis->iat, nDPId_options.max_packets_per_flow_to_analyse);
+        ndpi_init_data_analysis(&flow->flow_extended.flow_analysis->iat,
+                                nDPId_options.max_packets_per_flow_to_analyse - 1 /* first packet IAT is always 0 */);
         ndpi_init_data_analysis(&flow->flow_extended.flow_analysis->pktlen,
                                 nDPId_options.max_packets_per_flow_to_analyse);
         flow->flow_extended.flow_analysis->directions = (uint8_t *)ndpi_malloc(
@@ -2429,7 +2430,7 @@ static void jsonize_data_analysis(struct nDPId_reader_thread * const reader_thre
         ndpi_serialize_string_float(&workflow->ndpi_serializer, "ent", ndpi_data_entropy(&analysis->iat), "%.1f");
 
         ndpi_serialize_start_of_list(&workflow->ndpi_serializer, "data");
-        for (uint16_t i = 0; i < analysis->iat.num_values_array_len; ++i)
+        for (uint16_t i = 0; i < ndpi_min(analysis->iat.num_data_entries, analysis->iat.num_values_array_len); ++i)
         {
             ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "", analysis->iat.values[i]);
         }
@@ -2445,7 +2446,8 @@ static void jsonize_data_analysis(struct nDPId_reader_thread * const reader_thre
         ndpi_serialize_string_float(&workflow->ndpi_serializer, "ent", ndpi_data_entropy(&analysis->pktlen), "%.1f");
 
         ndpi_serialize_start_of_list(&workflow->ndpi_serializer, "data");
-        for (uint16_t i = 0; i < analysis->pktlen.num_values_array_len; ++i)
+        for (uint16_t i = 0; i < ndpi_min(analysis->pktlen.num_data_entries, analysis->pktlen.num_values_array_len);
+             ++i)
         {
             ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "", analysis->pktlen.values[i]);
         }

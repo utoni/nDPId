@@ -366,7 +366,7 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
         return CALLBACK_OK;
     }
 
-    if (TOKEN_VALUE_EQUALS_SZ(TOKEN_GET_SZ(sock, "packet_event_name"), "packet-flow") != 0)
+    if (TOKEN_VALUE_EQUALS_SZ(sock, TOKEN_GET_SZ(sock, "packet_event_name"), "packet-flow") != 0)
     {
         struct nDPIsrvd_json_token const * const pkt = TOKEN_GET_SZ(sock, "pkt");
         if (pkt == NULL)
@@ -383,22 +383,22 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
         }
 
         nDPIsrvd_ull thread_ts_usec = 0ull;
-        perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "thread_ts_usec"), &thread_ts_usec), "thread_ts_usec");
+        perror_ull(TOKEN_VALUE_TO_ULL(sock, TOKEN_GET_SZ(sock, "thread_ts_usec"), &thread_ts_usec), "thread_ts_usec");
 
         nDPIsrvd_ull pkt_len = 0ull;
-        perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "pkt_len"), &pkt_len), "pkt_len");
+        perror_ull(TOKEN_VALUE_TO_ULL(sock, TOKEN_GET_SZ(sock, "pkt_len"), &pkt_len), "pkt_len");
 
         nDPIsrvd_ull pkt_l4_len = 0ull;
-        perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "pkt_l4_len"), &pkt_l4_len), "pkt_l4_len");
+        perror_ull(TOKEN_VALUE_TO_ULL(sock, TOKEN_GET_SZ(sock, "pkt_l4_len"), &pkt_l4_len), "pkt_l4_len");
 
         nDPIsrvd_ull pkt_l4_offset = 0ull;
-        perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "pkt_l4_offset"), &pkt_l4_offset), "pkt_l4_offset");
+        perror_ull(TOKEN_VALUE_TO_ULL(sock, TOKEN_GET_SZ(sock, "pkt_l4_offset"), &pkt_l4_offset), "pkt_l4_offset");
 
         struct packet_data pd = {.packet_ts_sec = thread_ts_usec / (1000 * 1000),
                                  .packet_ts_usec = (thread_ts_usec % (1000 * 1000)),
                                  .packet_len = pkt_len,
-                                 .base64_packet_size = pkt->value_length,
-                                 .base64_packet_const = pkt->value};
+                                 .base64_packet_size = nDPIsrvd_get_token_size(sock, pkt),
+                                 .base64_packet_const = nDPIsrvd_get_token_value(sock, pkt)};
         utarray_push_back(flow_user->packets, &pd);
     }
 
@@ -409,44 +409,44 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
         {
             nDPIsrvd_ull nmb = 0;
 
-            perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_src_tot_l4_payload_len"), &nmb),
+            perror_ull(TOKEN_VALUE_TO_ULL(sock, TOKEN_GET_SZ(sock, "flow_src_tot_l4_payload_len"), &nmb),
                        "flow_src_tot_l4_payload_len");
             flow_user->flow_tot_l4_payload_len += nmb;
 
             nmb = 0;
 
-            perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_dst_tot_l4_payload_len"), &nmb),
+            perror_ull(TOKEN_VALUE_TO_ULL(sock, TOKEN_GET_SZ(sock, "flow_dst_tot_l4_payload_len"), &nmb),
                        "flow_dst_tot_l4_payload_len");
             flow_user->flow_tot_l4_payload_len += nmb;
         }
 
-        if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "new") != 0)
+        if (TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "new") != 0)
         {
             flow_user->flow_new_seen = 1;
-            perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_datalink"), &flow_user->flow_datalink),
+            perror_ull(TOKEN_VALUE_TO_ULL(sock, TOKEN_GET_SZ(sock, "flow_datalink"), &flow_user->flow_datalink),
                        "flow_datalink");
-            perror_ull(TOKEN_VALUE_TO_ULL(TOKEN_GET_SZ(sock, "flow_max_packets"), &flow_user->flow_max_packets),
+            perror_ull(TOKEN_VALUE_TO_ULL(sock, TOKEN_GET_SZ(sock, "flow_max_packets"), &flow_user->flow_max_packets),
                        "flow_max_packets");
-            if (TOKEN_VALUE_EQUALS_SZ(TOKEN_GET_SZ(sock, "midstream"), "1") != 0)
+            if (TOKEN_VALUE_EQUALS_SZ(sock, TOKEN_GET_SZ(sock, "midstream"), "1") != 0)
             {
                 flow_user->midstream = 1;
             }
 
             return CALLBACK_OK;
         }
-        else if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "guessed") != 0)
+        else if (TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "guessed") != 0)
         {
             flow_user->guessed = 1;
             flow_user->detection_finished = 1;
         }
-        else if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "not-detected") != 0)
+        else if (TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "not-detected") != 0)
         {
             flow_user->detected = 0;
             flow_user->detection_finished = 1;
         }
-        else if (TOKEN_VALUE_EQUALS_SZ(flow_event_name, "detected") != 0)
+        else if (TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "detected") != 0)
         {
-            struct nDPIsrvd_json_token const * const flow_risk = TOKEN_GET_SZ(sock, "flow_risk");
+            struct nDPIsrvd_json_token const * const flow_risk = TOKEN_GET_SZ(sock, "ndpi", "flow_risk");
             struct nDPIsrvd_json_token const * current = NULL;
             int next_child_index = -1;
 
@@ -455,11 +455,11 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
 
             if (flow_risk != NULL)
             {
-                while ((current = token_get_next_child(sock, flow_risk, &next_child_index)) != NULL)
+                while ((current = nDPIsrvd_get_next_token(sock, flow_risk, &next_child_index)) != NULL)
                 {
                     nDPIsrvd_ull numeric_risk_value = (nDPIsrvd_ull)-1;
 
-                    if (TOKEN_KEY_TO_ULL(current, &numeric_risk_value) == CONVERSION_OK &&
+                    if (str_value_to_ull(TOKEN_GET_KEY(sock, current, NULL), &numeric_risk_value) == CONVERSION_OK &&
                         numeric_risk_value < NDPI_MAX_RISK && has_ndpi_risk(&process_risky, numeric_risk_value) != 0)
                     {
                         flow_user->risky = 1;
@@ -595,9 +595,6 @@ static void captured_flow_cleanup_callback(struct nDPIsrvd_socket * const sock,
     (void)thread_data;
     (void)reason;
 
-#ifdef VERBOSE
-    printf("flow %llu end, remaining flows: %u\n", flow->id_as_ull, sock->flow_table->hh.tbl->num_items);
-#endif
     struct flow_user_data * const ud = (struct flow_user_data *)flow->flow_user_data;
     if (ud != NULL && ud->packets != NULL)
     {
