@@ -809,6 +809,10 @@ static void * nDPId_mainloop_thread(void * const arg)
     /* Replace nDPId JSON socket fd with the one in our pipe and hope that no socket specific code-path triggered. */
     reader_threads[0].collector_sockfd = mock_pipefds[PIPE_nDPId];
     reader_threads[0].collector_sock_last_errno = 0;
+    if (set_collector_block(&reader_threads[0]) != 0)
+    {
+        goto error;
+    }
 
     pthread_mutex_lock(&nDPId_start_mutex);
 
