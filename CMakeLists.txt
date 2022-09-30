@@ -292,12 +292,13 @@ if(BUILD_EXAMPLES)
     target_compile_definitions(nDPIsrvd-json-dump PRIVATE ${NDPID_DEFS})
     target_include_directories(nDPIsrvd-json-dump PRIVATE ${NDPID_DEPS_INC})
 
+    add_executable(nDPIsrvd-analysed examples/c-analysed/c-analysed.c utils.c)
+    target_compile_definitions(nDPIsrvd-analysed PRIVATE ${NDPID_DEFS})
+    target_include_directories(nDPIsrvd-analysed PRIVATE ${NDPID_DEPS_INC})
+
     add_executable(nDPIsrvd-simple examples/c-simple/c-simple.c)
     target_compile_definitions(nDPIsrvd-simple PRIVATE ${NDPID_DEFS})
     target_include_directories(nDPIsrvd-simple PRIVATE ${NDPID_DEPS_INC})
-    target_link_libraries(nDPIsrvd-simple "${pkgcfg_lib_NDPI_ndpi}"
-                                          "${pkgcfg_lib_PCRE_pcre}" "${pkgcfg_lib_MAXMINDDB_maxminddb}"
-                                          "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}")
 
     if(ENABLE_COVERAGE)
         add_dependencies(coverage nDPIsrvd-collectd nDPIsrvd-captured nDPIsrvd-json-dump nDPIsrvd-simple)

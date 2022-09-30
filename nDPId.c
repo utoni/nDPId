@@ -156,6 +156,7 @@ struct nDPId_flow_analysis
     struct ndpi_analyze_struct pktlen;
     uint8_t * directions;
     struct ndpi_bin payload_len_bin[FD_COUNT];
+    float * entropies;
 };
 
 /*
@@ -1325,15 +1326,20 @@ static void free_analysis_data(struct nDPId_flow_extended * const flow_ext)
         ndpi_free(flow_ext->flow_analysis->directions);
         ndpi_free_bin(&flow_ext->flow_analysis->payload_len_bin[FD_SRC2DST]);
         ndpi_free_bin(&flow_ext->flow_analysis->payload_len_bin[FD_DST2SRC]);
+        ndpi_free(flow_ext->flow_analysis->entropies);
         ndpi_free(flow_ext->flow_analysis);
+        flow_ext->flow_analysis = NULL;
     }
 }
 
 static void free_detection_data(struct nDPId_flow * const flow)
 {
-    ndpi_free_flow_data(&flow->info.detection_data->flow);
-    ndpi_free(flow->info.detection_data);
-    flow->info.detection_data = NULL;
+    if (flow->info.detection_data != NULL)
+    {
+        ndpi_free_flow_data(&flow->info.detection_data->flow);
+        ndpi_free(flow->info.detection_data);
+        flow->info.detection_data = NULL;
+    }
 }
 
 static int alloc_detection_data(struct nDPId_flow * const flow)
@@ -1362,6 +1368,8 @@ static int alloc_detection_data(struct nDPId_flow * const flow)
                                 nDPId_options.max_packets_per_flow_to_analyse);
         flow->flow_extended.flow_analysis->directions = (uint8_t *)ndpi_malloc(
             sizeof(*flow->flow_extended.flow_analysis->directions) * nDPId_options.max_packets_per_flow_to_analyse);
+        flow->flow_extended.flow_analysis->entropies = (float *)ndpi_malloc(
+            sizeof(*flow->flow_extended.flow_analysis->entropies) * nDPId_options.max_packets_per_flow_to_analyse);
 
         if (ndpi_init_bin(&flow->flow_extended.flow_analysis->payload_len_bin[FD_SRC2DST],
                           ndpi_bin_family8,
@@ -1370,7 +1378,9 @@ static int alloc_detection_data(struct nDPId_flow * const flow)
                           ndpi_bin_family8,
                           nDPId_ANALYZE_PLEN_NUM_BINS) != 0 ||
             flow->flow_extended.flow_analysis->iat.values == NULL ||
-            flow->flow_extended.flow_analysis->pktlen.values == NULL)
+            flow->flow_extended.flow_analysis->pktlen.values == NULL ||
+            flow->flow_extended.flow_analysis->directions == NULL ||
+            flow->flow_extended.flow_analysis->entropies == NULL)
         {
             goto error;
         }
@@ -1379,6 +1389,7 @@ static int alloc_detection_data(struct nDPId_flow * const flow)
     return 0;
 error:
     free_detection_data(flow);
+    flow->info.detection_completed = 1;
     return 1;
 }
 
@@ -2479,6 +2490,14 @@ static void jsonize_data_analysis(struct nDPId_reader_thread * const reader_thre
             ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "", analysis->directions[i]);
         }
         ndpi_serialize_end_of_list(&workflow->ndpi_serializer);
+
+        ndpi_serialize_start_of_list(&workflow->ndpi_serializer, "entropies");
+        for (unsigned long long int i = 0; i < nDPId_options.max_packets_per_flow_to_analyse; ++i)
+        {
+            ndpi_serialize_string_float(&workflow->ndpi_serializer, "", analysis->entropies[i], "%.9f");
+        }
+        ndpi_serialize_end_of_list(&workflow->ndpi_serializer);
+
         ndpi_serialize_end_of_block(&workflow->ndpi_serializer);
     }
 }
@@ -3957,16 +3976,17 @@ static void ndpi_process_packet(uint8_t * const args,
             ndpi_data_add_value(&flow_to_process->flow_extended.flow_analysis->iat, tdiff_us);
         }
 
-        ndpi_data_add_value(&flow_to_process->flow_extended.flow_analysis->pktlen, header->caplen);
+        ndpi_data_add_value(&flow_to_process->flow_extended.flow_analysis->pktlen, ip_size);
         flow_to_process->flow_extended.flow_analysis
             ->directions[(total_flow_packets - 1) % nDPId_options.max_packets_per_flow_to_analyse] = direction;
         ndpi_inc_bin(&flow_to_process->flow_extended.flow_analysis->payload_len_bin[direction],
                      plen2slot(l4_payload_len),
                      1);
+        flow_to_process->flow_extended.flow_analysis
+            ->entropies[(total_flow_packets - 1) % nDPId_options.max_packets_per_flow_to_analyse] =
+            ndpi_entropy((ip != NULL ? (uint8_t *)ip : (uint8_t *)ip6), ip_size);
 
-        if (flow_to_process->flow_extended.packets_processed[FD_SRC2DST] +
-                flow_to_process->flow_extended.packets_processed[FD_DST2SRC] ==
-            nDPId_options.max_packets_per_flow_to_analyse)
+        if (total_flow_packets == nDPId_options.max_packets_per_flow_to_analyse)
         {
             jsonize_flow_event(reader_thread, &flow_to_process->flow_extended, FLOW_EVENT_ANALYSE);
         }
@@ -3982,7 +4002,7 @@ static void ndpi_process_packet(uint8_t * const args,
                          &flow_to_process->flow_extended,
                          PACKET_EVENT_PAYLOAD_FLOW);
 
-    if (flow_to_process->flow_extended.flow_basic.state != FS_INFO)
+    if (flow_to_process->flow_extended.flow_basic.state != FS_INFO || flow_to_process->info.detection_data == NULL)
     {
         /* Only FS_INFO goes through the whole detection process. */
         return;

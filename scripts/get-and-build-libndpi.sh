@@ -38,12 +38,14 @@ cd "$(dirname "${0}")/.."
 if [ -d ./.git ]; then
     git submodule update --init ./libnDPI
 else
-    printf '%s' '-----------------------------------'
-    printf 'WARNING: %s is supposed to be a GIT repository. But it is not.' "$(realpath $(dirname "${0}")/..)"
-    printf '%s' 'Can not clone libnDPI as GIT submodule.'
-    printf '%s' 'Falling back to Github direct download.'
-    printf 'URL: %s' "${GITHUB_FALLBACK_URL}"
-    printf '%s' '-----------------------------------'
+    set +x
+    printf '%s\n' '-----------------------------------'
+    printf 'WARNING: %s is supposed to be a GIT repository. But it is not.\n' "$(realpath $(dirname "${0}")/..)"
+    printf '%s\n' 'Can not clone libnDPI as GIT submodule.'
+    printf '%s\n' 'Falling back to Github direct download.'
+    printf 'URL: %s\n' "${GITHUB_FALLBACK_URL}"
+    printf '%s\n' '-----------------------------------'
+    set -x
     wget "${GITHUB_FALLBACK_URL}" -O ./libnDPI-github-dev.zip
     unzip ./libnDPI-github-dev.zip
     mv ./nDPI-dev ./libnDPI

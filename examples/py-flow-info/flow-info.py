@@ -363,18 +363,18 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
         flow_event_name += '{}{:>16}{}'.format(TermColor.WARNING,
                                                json_dict['flow_event_name'], TermColor.END)
         if args.print_analyse_results is True:
-            next_lines =  ['               {:>9}|{:>9}|{:>9}|{:>9}|{:>9}|{:>9}'.format(
+            next_lines =  ['               {:>9}|{:>9}|{:>9}|{:>9}|{:>15}|{:>8}'.format(
                            'min', 'max', 'avg', 'stddev', 'variance', 'entropy')]
-            next_lines += ['[IAT.........: {:>9.3f}|{:>9.3f}|{:>9.3f}|{:>9.3f}|{:>9.3f}|{:>9.3f}]'.format(
+            next_lines += ['[IAT.........: {:>9.3f}|{:>9.3f}|{:>9.3f}|{:>9.3f}|{:>15.3f}|{:>8.3f}]'.format(
                                nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['min']),
                                nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['max']),
                                nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['avg']),
                                nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['stddev']),
                                nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['var']),
-                               nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['ent'])
+                               json_dict['data_analysis']['iat']['ent']
                           )]
             next_lines += ['']
-            next_lines[-1] += '[PKTLEN......: {:>9.3f}|{:>9.3f}|{:>9.3f}|{:>9.3f}|{:>9.3f}|{:>9.3f}]'.format(
+            next_lines[-1] += '[PKTLEN......: {:>9.3f}|{:>9.3f}|{:>9.3f}|{:>9.3f}|{:>15.3f}|{:>8.3f}]'.format(
                                   json_dict['data_analysis']['pktlen']['min'],
                                   json_dict['data_analysis']['pktlen']['max'],
                                   json_dict['data_analysis']['pktlen']['avg'],
@@ -396,6 +396,12 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
             next_lines[-1] += '[IATS(ms)....: {}]'.format(iats)
             next_lines += ['']
             next_lines[-1] += '[PKTLENS.....: {}]'.format(','.join([str(n) for n in json_dict['data_analysis']['pktlen']['data']]))
+            next_lines += ['']
+            ents = ''
+            for n in json_dict['data_analysis']['entropies']:
+                ents += '{:.1f},'.format(n)
+            ents = ents[:-1]
+            next_lines[-1] += '[ENTROPIES...: {}]'.format(ents)
     else:
         if json_dict['flow_event_name'] == 'new':
             line_suffix = ''
@@ -415,6 +421,9 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
                     line_suffix += TermColor.WARNING + 'WHOIS empty' + TermColor.END
                 line_suffix += ']'
         flow_event_name += '{}{:>16}{}'.format(flow_active_color, json_dict['flow_event_name'], TermColor.END)
+
+    if args.print_hostname is True and 'ndpi' in json_dict and 'hostname' in json_dict['ndpi']:
+        line_suffix += '[{}]'.format(json_dict['ndpi']['hostname'])
 
     if json_dict['l3_proto'] == 'ip4':
         print('{}{}{}{}{}: [{:.>6}] [{}][{:.>5}] [{:.>15}]{} -> [{:.>15}]{} {}{}' \
@@ -472,6 +481,7 @@ if __name__ == '__main__':
     argparser.add_argument('--analyse',    action='store_true', default=False, help='Print only analyse flow events.')
     argparser.add_argument('--detection',  action='store_true', default=False, help='Print only detected/detection-update flow events.')
     argparser.add_argument('--ipwhois',    action='store_true', default=False, help='Use Python-IPWhois to print additional location information.')
+    argparser.add_argument('--print-hostname', action='store_true', default=False, help='Print detected hostnames if available.')
     argparser.add_argument('--print-analyse-results', action='store_true', default=False,
                            help='Print detailed results of analyse events.')
     args = argparser.parse_args()

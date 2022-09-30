@@ -675,7 +675,7 @@ static void * distributor_client_mainloop_thread(void * const arg)
                     case READ_PEER_DISCONNECT:
                         del_event(dis_epollfd, mock_testfds[PIPE_TEST_READ]);
                         pipe_read_finished = 1;
-                        continue;
+                        break;
                 }
 
                 enum nDPIsrvd_parse_return parse_ret = nDPIsrvd_parse_all(mock_sock);
@@ -712,7 +712,6 @@ static void * distributor_client_mainloop_thread(void * const arg)
                 {
                     del_event(dis_epollfd, mock_nullfds[PIPE_NULL_READ]);
                     null_read_finished = 1;
-                    continue;
                 }
 
                 printf("%.*s", (int)bytes_read, buf);
@@ -730,7 +729,6 @@ static void * distributor_client_mainloop_thread(void * const arg)
                 {
                     del_event(dis_epollfd, mock_arpafds[PIPE_ARPA_READ]);
                     arpa_read_finished = 1;
-                    continue;
                 }
 
                 /*
