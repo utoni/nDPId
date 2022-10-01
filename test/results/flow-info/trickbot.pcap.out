@@ -2,9 +2,9 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [...10.12.29.101][61318] -> [.82.118.225.196][.7080] 
-         detected: [.....1] [ip4][..tcp] [...10.12.29.101][61318] -> [.82.118.225.196][.7080] [HTTP][Web][Acceptable]
+         detected: [.....1] [ip4][..tcp] [...10.12.29.101][61318] -> [.82.118.225.196][.7080] [HTTP][Web][Acceptable][82.118.225.196]
                    RISK: Known Proto on Non Std Port, HTTP Numeric IP Address
- detection-update: [.....1] [ip4][..tcp] [...10.12.29.101][61318] -> [.82.118.225.196][.7080] [HTTP][Web][Acceptable]
+ detection-update: [.....1] [ip4][..tcp] [...10.12.29.101][61318] -> [.82.118.225.196][.7080] [HTTP][Web][Acceptable][82.118.225.196]
                    RISK: Known Proto on Non Std Port, HTTP Numeric IP Address, HTTP Suspicious Content
           analyse: [.....1] [ip4][..tcp] [...10.12.29.101][61318] -> [.82.118.225.196][.7080] [HTTP][Web][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy

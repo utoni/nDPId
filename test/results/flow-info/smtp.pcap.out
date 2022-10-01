@@ -2,7 +2,7 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [..194.7.248.153][.2127] -> [.172.16.114.207][...25] 
-         detected: [.....1] [ip4][..tcp] [..194.7.248.153][.2127] -> [.172.16.114.207][...25] [SMTP][Email][Acceptable]
+         detected: [.....1] [ip4][..tcp] [..194.7.248.153][.2127] -> [.172.16.114.207][...25] [SMTP][Email][Acceptable][pigeon.eyrie.af.mil]
           analyse: [.....1] [ip4][..tcp] [..194.7.248.153][.2127] -> [.172.16.114.207][...25] [SMTP][Email][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.055|    0.006|    0.012|        143.094|   3.200]

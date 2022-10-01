@@ -5,21 +5,21 @@
       ERROR-EVENT: Unknown packet type
       ERROR-EVENT: Unknown packet type
               new: [.....1] [ip4][..tcp] [..192.168.1.252][51110] -> [..91.143.93.242][..443] 
-         detected: [.....1] [ip4][..tcp] [..192.168.1.252][51110] -> [..91.143.93.242][..443] [TLS][Web][Safe]
+         detected: [.....1] [ip4][..tcp] [..192.168.1.252][51110] -> [..91.143.93.242][..443] [TLS][Web][Safe][www.ct7ctrgb6cr7.com]
                    RISK: Obsolete TLS (v1.1 or older)
- detection-update: [.....1] [ip4][..tcp] [..192.168.1.252][51110] -> [..91.143.93.242][..443] [TLS][Web][Safe]
+ detection-update: [.....1] [ip4][..tcp] [..192.168.1.252][51110] -> [..91.143.93.242][..443] [TLS][Web][Safe][www.ct7ctrgb6cr7.com]
                    RISK: Obsolete TLS (v1.1 or older)
       ERROR-EVENT: Unknown packet type
               new: [.....2] [ip4][..tcp] [..192.168.1.252][51111] -> [....46.59.52.31][..443] 
-         detected: [.....2] [ip4][..tcp] [..192.168.1.252][51111] -> [....46.59.52.31][..443] [TLS.Tor][VPN][Potentially Dangerous]
+         detected: [.....2] [ip4][..tcp] [..192.168.1.252][51111] -> [....46.59.52.31][..443] [TLS.Tor][VPN][Potentially Dangerous][www.e6r5p57kbafwrxj3plz.com]
                    RISK: Obsolete TLS (v1.1 or older), Suspicious DGA Domain name, Unsafe Protocol
- detection-update: [.....2] [ip4][..tcp] [..192.168.1.252][51111] -> [....46.59.52.31][..443] [TLS.Tor][VPN][Potentially Dangerous]
+ detection-update: [.....2] [ip4][..tcp] [..192.168.1.252][51111] -> [....46.59.52.31][..443] [TLS.Tor][VPN][Potentially Dangerous][www.e6r5p57kbafwrxj3plz.com]
                    RISK: Obsolete TLS (v1.1 or older), Suspicious DGA Domain name, Unsafe Protocol
       ERROR-EVENT: Unknown packet type
               new: [.....3] [ip4][..tcp] [..192.168.1.252][51112] -> [...38.229.70.53][..443] 
-         detected: [.....3] [ip4][..tcp] [..192.168.1.252][51112] -> [...38.229.70.53][..443] [TLS.Tor][VPN][Potentially Dangerous]
+         detected: [.....3] [ip4][..tcp] [..192.168.1.252][51112] -> [...38.229.70.53][..443] [TLS.Tor][VPN][Potentially Dangerous][www.q4cyamnc6mtokjurvdclt.com]
                    RISK: Obsolete TLS (v1.1 or older), Suspicious DGA Domain name, Unsafe Protocol
- detection-update: [.....3] [ip4][..tcp] [..192.168.1.252][51112] -> [...38.229.70.53][..443] [TLS.Tor][VPN][Potentially Dangerous]
+ detection-update: [.....3] [ip4][..tcp] [..192.168.1.252][51112] -> [...38.229.70.53][..443] [TLS.Tor][VPN][Potentially Dangerous][www.q4cyamnc6mtokjurvdclt.com]
                    RISK: Obsolete TLS (v1.1 or older), Suspicious DGA Domain name, Unsafe Protocol
       ERROR-EVENT: Unknown packet type
       ERROR-EVENT: Unknown packet type
@@ -36,7 +36,7 @@
       ERROR-EVENT: Unknown packet type
       ERROR-EVENT: Unknown packet type
               new: [.....5] [ip4][..udp] [..192.168.1.252][..138] -> [..192.168.1.255][..138] 
-         detected: [.....5] [ip4][..udp] [..192.168.1.252][..138] -> [..192.168.1.255][..138] [NetBIOS.SMBv1][System][Dangerous]
+         detected: [.....5] [ip4][..udp] [..192.168.1.252][..138] -> [..192.168.1.255][..138] [NetBIOS.SMBv1][System][Dangerous][endian-pc]
                    RISK: Unsafe Protocol
       ERROR-EVENT: Unknown packet type
       ERROR-EVENT: Unknown packet type
@@ -124,19 +124,19 @@
       ERROR-EVENT: Unknown packet type
               new: [.....7] [ip4][..tcp] [..192.168.1.252][51174] -> [.212.83.155.250][..443] 
               new: [.....8] [ip4][..tcp] [..192.168.1.252][51175] -> [..91.143.93.242][..443] 
-         detected: [.....7] [ip4][..tcp] [..192.168.1.252][51174] -> [.212.83.155.250][..443] [TLS][Web][Safe]
+         detected: [.....7] [ip4][..tcp] [..192.168.1.252][51174] -> [.212.83.155.250][..443] [TLS][Web][Safe][www.t3i3ru.com]
                    RISK: Obsolete TLS (v1.1 or older)
-         detected: [.....8] [ip4][..tcp] [..192.168.1.252][51175] -> [..91.143.93.242][..443] [TLS.Tor][VPN][Potentially Dangerous]
+         detected: [.....8] [ip4][..tcp] [..192.168.1.252][51175] -> [..91.143.93.242][..443] [TLS.Tor][VPN][Potentially Dangerous][www.gfu7hbxpfp.com]
                    RISK: Obsolete TLS (v1.1 or older), Suspicious DGA Domain name, Unsafe Protocol
- detection-update: [.....7] [ip4][..tcp] [..192.168.1.252][51174] -> [.212.83.155.250][..443] [TLS][Web][Safe]
+ detection-update: [.....7] [ip4][..tcp] [..192.168.1.252][51174] -> [.212.83.155.250][..443] [TLS][Web][Safe][www.t3i3ru.com]
                    RISK: Obsolete TLS (v1.1 or older)
- detection-update: [.....8] [ip4][..tcp] [..192.168.1.252][51175] -> [..91.143.93.242][..443] [TLS.Tor][VPN][Potentially Dangerous]
+ detection-update: [.....8] [ip4][..tcp] [..192.168.1.252][51175] -> [..91.143.93.242][..443] [TLS.Tor][VPN][Potentially Dangerous][www.gfu7hbxpfp.com]
                    RISK: Obsolete TLS (v1.1 or older), Suspicious DGA Domain name, Unsafe Protocol
       ERROR-EVENT: Unknown packet type
               new: [.....9] [ip4][..tcp] [..192.168.1.252][51176] -> [...38.229.70.53][..443] 
-         detected: [.....9] [ip4][..tcp] [..192.168.1.252][51176] -> [...38.229.70.53][..443] [TLS][Web][Safe]
+         detected: [.....9] [ip4][..tcp] [..192.168.1.252][51176] -> [...38.229.70.53][..443] [TLS][Web][Safe][www.jmts2id.com]
                    RISK: Obsolete TLS (v1.1 or older)
- detection-update: [.....9] [ip4][..tcp] [..192.168.1.252][51176] -> [...38.229.70.53][..443] [TLS][Web][Safe]
+ detection-update: [.....9] [ip4][..tcp] [..192.168.1.252][51176] -> [...38.229.70.53][..443] [TLS][Web][Safe][www.jmts2id.com]
                    RISK: Obsolete TLS (v1.1 or older)
           analyse: [.....8] [ip4][..tcp] [..192.168.1.252][51175] -> [..91.143.93.242][..443] [TLS.Tor][VPN][Potentially Dangerous]
                                         min|      max|      avg|   stddev|       variance| entropy
@@ -201,9 +201,9 @@
            update: [.....4] [ip4][..udp] [....192.168.1.1][17500] -> [..192.168.1.255][17500] [Dropbox][Cloud][Acceptable]
       ERROR-EVENT: Unknown packet type
               new: [....10] [ip4][..tcp] [..192.168.1.252][51185] -> [.62.210.137.230][..443] 
-         detected: [....10] [ip4][..tcp] [..192.168.1.252][51185] -> [.62.210.137.230][..443] [TLS][Web][Safe]
+         detected: [....10] [ip4][..tcp] [..192.168.1.252][51185] -> [.62.210.137.230][..443] [TLS][Web][Safe][www.6gyip7tqim7sieb.com]
                    RISK: Obsolete TLS (v1.1 or older)
- detection-update: [....10] [ip4][..tcp] [..192.168.1.252][51185] -> [.62.210.137.230][..443] [TLS][Web][Safe]
+ detection-update: [....10] [ip4][..tcp] [..192.168.1.252][51185] -> [.62.210.137.230][..443] [TLS][Web][Safe][www.6gyip7tqim7sieb.com]
                    RISK: Obsolete TLS (v1.1 or older)
       ERROR-EVENT: Unknown packet type
       ERROR-EVENT: Unknown packet type

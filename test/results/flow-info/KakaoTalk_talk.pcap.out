@@ -6,20 +6,20 @@
               new: [.....3] [ip4][..tcp] [...10.24.82.188][58916] -> [.54.255.185.236][.5222] [MIDSTREAM] 
               new: [.....4] [ip4][..tcp] [...10.24.82.188][48489] -> [203.205.147.215][...80] 
               new: [.....5] [ip4][..tcp] [.216.58.220.161][..443] -> [...10.24.82.188][56697] [MIDSTREAM] 
-         detected: [.....4] [ip4][..tcp] [...10.24.82.188][48489] -> [203.205.147.215][...80] [HTTP_Proxy.QQ][Chat][Fun]
+         detected: [.....4] [ip4][..tcp] [...10.24.82.188][48489] -> [203.205.147.215][...80] [HTTP_Proxy.QQ][Chat][Fun][hkminorshort.weixin.qq.com]
                    RISK: Known Proto on Non Std Port
- detection-update: [.....4] [ip4][..tcp] [...10.24.82.188][48489] -> [203.205.147.215][...80] [HTTP_Proxy.QQ][Download][Fun]
+ detection-update: [.....4] [ip4][..tcp] [...10.24.82.188][48489] -> [203.205.147.215][...80] [HTTP_Proxy.QQ][Download][Fun][hkminorshort.weixin.qq.com]
                    RISK: Binary App Transfer, Known Proto on Non Std Port
               new: [.....6] [ip4][..tcp] [...10.24.82.188][32968] -> [..110.76.143.50][.8080] 
-         detected: [.....6] [ip4][..tcp] [...10.24.82.188][32968] -> [..110.76.143.50][.8080] [TLS][Web][Safe]
+         detected: [.....6] [ip4][..tcp] [...10.24.82.188][32968] -> [..110.76.143.50][.8080] [TLS][Web][Safe][]
                    RISK: Known Proto on Non Std Port, Obsolete TLS (v1.1 or older)
- detection-update: [.....6] [ip4][..tcp] [...10.24.82.188][32968] -> [..110.76.143.50][.8080] [TLS.KakaoTalk][Chat][Acceptable]
+ detection-update: [.....6] [ip4][..tcp] [...10.24.82.188][32968] -> [..110.76.143.50][.8080] [TLS.KakaoTalk][Chat][Acceptable][]
                    RISK: Known Proto on Non Std Port, Self-signed Cert, Obsolete TLS (v1.1 or older), Weak TLS Cipher
               new: [.....7] [ip4][..tcp] [..139.150.0.125][..443] -> [...10.24.82.188][46947] [MIDSTREAM] 
               new: [.....8] [ip4][..tcp] [...10.24.82.188][58857] -> [..110.76.143.50][.9001] 
-         detected: [.....8] [ip4][..tcp] [...10.24.82.188][58857] -> [..110.76.143.50][.9001] [TLS][Web][Safe]
+         detected: [.....8] [ip4][..tcp] [...10.24.82.188][58857] -> [..110.76.143.50][.9001] [TLS][Web][Safe][]
                    RISK: Known Proto on Non Std Port, Obsolete TLS (v1.1 or older)
- detection-update: [.....8] [ip4][..tcp] [...10.24.82.188][58857] -> [..110.76.143.50][.9001] [TLS.KakaoTalk][Chat][Acceptable]
+ detection-update: [.....8] [ip4][..tcp] [...10.24.82.188][58857] -> [..110.76.143.50][.9001] [TLS.KakaoTalk][Chat][Acceptable][]
                    RISK: Known Proto on Non Std Port, Self-signed Cert, Obsolete TLS (v1.1 or older), Weak TLS Cipher
               new: [.....9] [ip4][..tcp] [...10.24.82.188][34686] -> [.173.194.72.188][.5228] [MIDSTREAM] 
          detected: [.....9] [ip4][..tcp] [...10.24.82.188][34686] -> [.173.194.72.188][.5228] [TLS.Google][Web][Acceptable]
@@ -80,13 +80,13 @@
               new: [....18] [ip4][..tcp] [.173.252.88.128][..443] -> [...10.24.82.188][59912] [MIDSTREAM] 
               new: [....19] [ip4][..tcp] [...10.24.82.188][59954] -> [.173.252.88.128][..443] 
               new: [....20] [ip4][..udp] [...10.24.82.188][25223] -> [.....10.188.1.1][...53] 
-         detected: [....20] [ip4][..udp] [...10.24.82.188][25223] -> [.....10.188.1.1][...53] [DNS.Facebook][SocialNetwork][Fun]
-         detected: [....19] [ip4][..tcp] [...10.24.82.188][59954] -> [.173.252.88.128][..443] [TLS.Facebook][SocialNetwork][Fun]
+         detected: [....20] [ip4][..udp] [...10.24.82.188][25223] -> [.....10.188.1.1][...53] [DNS.Facebook][SocialNetwork][Fun][mqtt.facebook.com]
+         detected: [....19] [ip4][..tcp] [...10.24.82.188][59954] -> [.173.252.88.128][..443] [TLS.Facebook][SocialNetwork][Fun][]
                    RISK: Obsolete TLS (v1.1 or older)
- detection-update: [....20] [ip4][..udp] [...10.24.82.188][25223] -> [.....10.188.1.1][...53] [DNS.Facebook][SocialNetwork][Fun]
- detection-update: [....19] [ip4][..tcp] [...10.24.82.188][59954] -> [.173.252.88.128][..443] [TLS.Facebook][SocialNetwork][Fun]
+ detection-update: [....20] [ip4][..udp] [...10.24.82.188][25223] -> [.....10.188.1.1][...53] [DNS.Facebook][SocialNetwork][Fun][mqtt.facebook.com]
+ detection-update: [....19] [ip4][..tcp] [...10.24.82.188][59954] -> [.173.252.88.128][..443] [TLS.Facebook][SocialNetwork][Fun][]
                    RISK: Obsolete TLS (v1.1 or older)
-          guessed: [....16] [ip4][..tcp] [...10.24.82.188][53974] -> [203.205.151.233][.8080] [HTTP_Proxy][Web][Acceptable]
+          guessed: [....16] [ip4][..tcp] [...10.24.82.188][53974] -> [203.205.151.233][.8080] [HTTP_Proxy][Web][Acceptable][]
              idle: [....16] [ip4][..tcp] [...10.24.82.188][53974] -> [203.205.151.233][.8080] 
           guessed: [....18] [ip4][..tcp] [.173.252.88.128][..443] -> [...10.24.82.188][59912] [TLS.Facebook][SocialNetwork][Fun]
               end: [....18] [ip4][..tcp] [.173.252.88.128][..443] -> [...10.24.82.188][59912] 
@@ -104,12 +104,12 @@
              idle: [....11] [ip4][..udp] [...10.24.82.188][10269] -> [....1.201.1.174][23047] [KakaoTalk_Voice][VoIP][Acceptable]
               end: [.....4] [ip4][..tcp] [...10.24.82.188][48489] -> [203.205.147.215][...80] [HTTP_Proxy.QQ][Download][Fun]
                    RISK: Binary App Transfer, Known Proto on Non Std Port
-          guessed: [.....2] [ip4][..tcp] [..120.28.26.242][...80] -> [...10.24.82.188][34533] [HTTP][Web][Acceptable]
+          guessed: [.....2] [ip4][..tcp] [..120.28.26.242][...80] -> [...10.24.82.188][34533] [HTTP][Web][Acceptable][]
               end: [.....2] [ip4][..tcp] [..120.28.26.242][...80] -> [...10.24.82.188][34533] 
              idle: [.....6] [ip4][..tcp] [...10.24.82.188][32968] -> [..110.76.143.50][.8080] [TLS.KakaoTalk][Chat][Acceptable]
                    RISK: Known Proto on Non Std Port, Self-signed Cert, Obsolete TLS (v1.1 or older), Weak TLS Cipher
              idle: [....14] [ip4][..tcp] [...10.24.82.188][49217] -> [.216.58.220.174][..443] [TLS.Google][Web][Acceptable]
-          guessed: [.....1] [ip4][..tcp] [...10.24.82.188][51021] -> [.103.246.57.251][.8080] [HTTP_Proxy][Web][Acceptable]
+          guessed: [.....1] [ip4][..tcp] [...10.24.82.188][51021] -> [.103.246.57.251][.8080] [HTTP_Proxy][Web][Acceptable][]
              idle: [.....1] [ip4][..tcp] [...10.24.82.188][51021] -> [.103.246.57.251][.8080] 
              idle: [.....8] [ip4][..tcp] [...10.24.82.188][58857] -> [..110.76.143.50][.9001] [TLS.KakaoTalk][Chat][Acceptable]
                    RISK: Known Proto on Non Std Port, Self-signed Cert, Obsolete TLS (v1.1 or older), Weak TLS Cipher

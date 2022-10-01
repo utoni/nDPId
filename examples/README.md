@@ -12,7 +12,6 @@ It generates CSV files from flow "analyse" events.
 
 A capture daemon suitable for low-resource devices.
 It saves flows that were guessed/undetected/risky/midstream to a PCAP file for manual analysis.
-Basicially a combination of `py-flow-undetected-to-pcap` and `py-risky-flow-to-pcap`.
 
 ## c-collectd
 

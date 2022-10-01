@@ -2,12 +2,12 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [.....10.101.0.2][.2930] -> [.....10.102.0.2][..443] 
-         detected: [.....1] [ip4][..tcp] [.....10.101.0.2][.2930] -> [.....10.102.0.2][..443] [TLS.Zattoo][Video][Fun]
+         detected: [.....1] [ip4][..tcp] [.....10.101.0.2][.2930] -> [.....10.102.0.2][..443] [TLS.Zattoo][Video][Fun][zattoo.com]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [.....1] [ip4][..tcp] [.....10.101.0.2][.2930] -> [.....10.102.0.2][..443] [TLS.Zattoo][Video][Fun]
+ detection-update: [.....1] [ip4][..tcp] [.....10.101.0.2][.2930] -> [.....10.102.0.2][..443] [TLS.Zattoo][Video][Fun][zattoo.com]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS
               new: [.....2] [ip4][..tcp] [.....10.101.0.2][.2936] -> [.....10.102.0.2][...80] 
-         detected: [.....2] [ip4][..tcp] [.....10.101.0.2][.2936] -> [.....10.102.0.2][...80] [HTTP.Zattoo][Video][Fun]
+         detected: [.....2] [ip4][..tcp] [.....10.101.0.2][.2936] -> [.....10.102.0.2][...80] [HTTP.Zattoo][Video][Fun][zattosecurehd2-f.akamaihd.net]
               end: [.....1] [ip4][..tcp] [.....10.101.0.2][.2930] -> [.....10.102.0.2][..443] 
               end: [.....2] [ip4][..tcp] [.....10.101.0.2][.2936] -> [.....10.102.0.2][...80] [HTTP.Zattoo][Video][Fun]
      DAEMON-EVENT: shutdown

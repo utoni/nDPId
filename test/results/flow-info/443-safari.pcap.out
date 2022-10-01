@@ -2,9 +2,9 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [...192.168.1.13][53031] -> [.178.62.197.130][..443] 
-         detected: [.....1] [ip4][..tcp] [...192.168.1.13][53031] -> [.178.62.197.130][..443] [TLS.ntop][Network][Safe]
- detection-update: [.....1] [ip4][..tcp] [...192.168.1.13][53031] -> [.178.62.197.130][..443] [TLS.ntop][Network][Safe]
- detection-update: [.....1] [ip4][..tcp] [...192.168.1.13][53031] -> [.178.62.197.130][..443] [TLS.ntop][Network][Safe]
+         detected: [.....1] [ip4][..tcp] [...192.168.1.13][53031] -> [.178.62.197.130][..443] [TLS.ntop][Network][Safe][www.ntop.org]
+ detection-update: [.....1] [ip4][..tcp] [...192.168.1.13][53031] -> [.178.62.197.130][..443] [TLS.ntop][Network][Safe][www.ntop.org]
+ detection-update: [.....1] [ip4][..tcp] [...192.168.1.13][53031] -> [.178.62.197.130][..443] [TLS.ntop][Network][Safe][www.ntop.org]
           analyse: [.....1] [ip4][..tcp] [...192.168.1.13][53031] -> [.178.62.197.130][..443] [TLS.ntop][Network][Safe]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.696|    0.070|    0.175|      30530.335|   2.600]

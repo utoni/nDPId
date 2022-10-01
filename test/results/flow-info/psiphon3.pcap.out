@@ -2,11 +2,11 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [..192.168.0.103][40557] -> [.104.18.151.190][..443] 
-         detected: [.....1] [ip4][..tcp] [..192.168.0.103][40557] -> [.104.18.151.190][..443] [TLS.Cloudflare][Web][Acceptable]
+         detected: [.....1] [ip4][..tcp] [..192.168.0.103][40557] -> [.104.18.151.190][..443] [TLS.Cloudflare][Web][Acceptable][]
                    RISK: Missing SNI TLS Extn
- detection-update: [.....1] [ip4][..tcp] [..192.168.0.103][40557] -> [.104.18.151.190][..443] [TLS.Cloudflare][Web][Acceptable]
+ detection-update: [.....1] [ip4][..tcp] [..192.168.0.103][40557] -> [.104.18.151.190][..443] [TLS.Cloudflare][Web][Acceptable][]
                    RISK: Missing SNI TLS Extn
- detection-update: [.....1] [ip4][..tcp] [..192.168.0.103][40557] -> [.104.18.151.190][..443] [TLS.Psiphon][VPN][Acceptable]
+ detection-update: [.....1] [ip4][..tcp] [..192.168.0.103][40557] -> [.104.18.151.190][..443] [TLS.Psiphon][VPN][Acceptable][]
                    RISK: Missing SNI TLS Extn
           analyse: [.....1] [ip4][..tcp] [..192.168.0.103][40557] -> [.104.18.151.190][..443] 
                                         min|      max|      avg|   stddev|       variance| entropy
@@ -18,7 +18,7 @@
                    [IATS(ms)....: 6.0,17.4,14.4,1.0,16.0,7.0,5.0,3.0,28.0,2.0,3.0,1.0,7.0,25.9,1.4,4.0,20.8,1.0,46.1,1.0]
                    [PKTLENS.....: 60,60,52,52,40,208,40,208,40,40,1500,1002,1500,1002,40,40,40,40,133,133,40,40,298,109,298,109,40,40,133,417,78,1048]
                    [ENTROPIES...: 4.6,4.6,4.8,4.8,4.8,5.4,4.8,5.4,4.8,4.8,7.0,7.2,7.0,7.2,4.8,4.8,4.8,4.8,5.9,5.9,4.8,4.8,7.0,6.0,7.0,6.0,4.7,4.7,6.3,7.3,5.4,7.8]
- detection-update: [.....1] [ip4][..tcp] [..192.168.0.103][40557] -> [.104.18.151.190][..443] [TLS.Psiphon][VPN][Acceptable]
+ detection-update: [.....1] [ip4][..tcp] [..192.168.0.103][40557] -> [.104.18.151.190][..443] [TLS.Psiphon][VPN][Acceptable][]
                    RISK: Missing SNI TLS Extn
               end: [.....1] [ip4][..tcp] [..192.168.0.103][40557] -> [.104.18.151.190][..443] [TLS.Psiphon][VPN][Acceptable]
                    RISK: Missing SNI TLS Extn

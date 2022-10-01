@@ -372,13 +372,14 @@ static void print_collectd_exec_output(void)
 
     printf(COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT()
                COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT()
-                   COLLECTD_PUTVAL_N_FORMAT(),
+                   COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT(),
 
            COLLECTD_PUTVAL_N(flow_breed_safe_count),
            COLLECTD_PUTVAL_N(flow_breed_acceptable_count),
            COLLECTD_PUTVAL_N(flow_breed_fun_count),
            COLLECTD_PUTVAL_N(flow_breed_unsafe_count),
            COLLECTD_PUTVAL_N(flow_breed_potentially_dangerous_count),
+           COLLECTD_PUTVAL_N(flow_breed_tracker_ads_count),
            COLLECTD_PUTVAL_N(flow_breed_dangerous_count),
            COLLECTD_PUTVAL_N(flow_breed_unrated_count),
            COLLECTD_PUTVAL_N(flow_breed_unknown_count));

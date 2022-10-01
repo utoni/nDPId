@@ -2,31 +2,31 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [.....172.16.0.1][36196] -> [..192.168.10.50][...80] 
-         detected: [.....1] [ip4][..tcp] [.....172.16.0.1][36196] -> [..192.168.10.50][...80] [HTTP][Web][Acceptable]
+         detected: [.....1] [ip4][..tcp] [.....172.16.0.1][36196] -> [..192.168.10.50][...80] [HTTP][Web][Acceptable][205.174.165.68]
                    RISK: HTTP Numeric IP Address
               new: [.....2] [ip4][..tcp] [.....172.16.0.1][36198] -> [..192.168.10.50][...80] 
-         detected: [.....2] [ip4][..tcp] [.....172.16.0.1][36198] -> [..192.168.10.50][...80] [HTTP][Web][Acceptable]
+         detected: [.....2] [ip4][..tcp] [.....172.16.0.1][36198] -> [..192.168.10.50][...80] [HTTP][Web][Acceptable][205.174.165.68]
                    RISK: HTTP Numeric IP Address
               new: [.....3] [ip4][..tcp] [.....172.16.0.1][36200] -> [..192.168.10.50][...80] 
-         detected: [.....3] [ip4][..tcp] [.....172.16.0.1][36200] -> [..192.168.10.50][...80] [HTTP][Web][Acceptable]
+         detected: [.....3] [ip4][..tcp] [.....172.16.0.1][36200] -> [..192.168.10.50][...80] [HTTP][Web][Acceptable][205.174.165.68]
                    RISK: HTTP Numeric IP Address
               new: [.....4] [ip4][..tcp] [.....172.16.0.1][36202] -> [..192.168.10.50][...80] 
-         detected: [.....4] [ip4][..tcp] [.....172.16.0.1][36202] -> [..192.168.10.50][...80] [HTTP][Web][Acceptable]
+         detected: [.....4] [ip4][..tcp] [.....172.16.0.1][36202] -> [..192.168.10.50][...80] [HTTP][Web][Acceptable][205.174.165.68]
                    RISK: HTTP Numeric IP Address
               new: [.....5] [ip4][..tcp] [.....172.16.0.1][36204] -> [..192.168.10.50][...80] 
-         detected: [.....5] [ip4][..tcp] [.....172.16.0.1][36204] -> [..192.168.10.50][...80] [HTTP][Web][Acceptable]
+         detected: [.....5] [ip4][..tcp] [.....172.16.0.1][36204] -> [..192.168.10.50][...80] [HTTP][Web][Acceptable][205.174.165.68]
                    RISK: HTTP Numeric IP Address
               new: [.....6] [ip4][..tcp] [.....172.16.0.1][36206] -> [..192.168.10.50][...80] 
-         detected: [.....6] [ip4][..tcp] [.....172.16.0.1][36206] -> [..192.168.10.50][...80] [HTTP][Web][Acceptable]
+         detected: [.....6] [ip4][..tcp] [.....172.16.0.1][36206] -> [..192.168.10.50][...80] [HTTP][Web][Acceptable][205.174.165.68]
                    RISK: HTTP Numeric IP Address
               new: [.....7] [ip4][..tcp] [.....172.16.0.1][36208] -> [..192.168.10.50][...80] 
-         detected: [.....7] [ip4][..tcp] [.....172.16.0.1][36208] -> [..192.168.10.50][...80] [HTTP][Web][Acceptable]
+         detected: [.....7] [ip4][..tcp] [.....172.16.0.1][36208] -> [..192.168.10.50][...80] [HTTP][Web][Acceptable][205.174.165.68]
                    RISK: HTTP Numeric IP Address
               new: [.....8] [ip4][..tcp] [.....172.16.0.1][36210] -> [..192.168.10.50][...80] 
-         detected: [.....8] [ip4][..tcp] [.....172.16.0.1][36210] -> [..192.168.10.50][...80] [HTTP][Web][Acceptable]
+         detected: [.....8] [ip4][..tcp] [.....172.16.0.1][36210] -> [..192.168.10.50][...80] [HTTP][Web][Acceptable][205.174.165.68]
                    RISK: HTTP Numeric IP Address
               new: [.....9] [ip4][..tcp] [.....172.16.0.1][36212] -> [..192.168.10.50][...80] 
-         detected: [.....9] [ip4][..tcp] [.....172.16.0.1][36212] -> [..192.168.10.50][...80] [HTTP][Web][Acceptable]
+         detected: [.....9] [ip4][..tcp] [.....172.16.0.1][36212] -> [..192.168.10.50][...80] [HTTP][Web][Acceptable][205.174.165.68]
                    RISK: HTTP Numeric IP Address
               end: [.....1] [ip4][..tcp] [.....172.16.0.1][36196] -> [..192.168.10.50][...80] [HTTP][Web][Acceptable]
                    RISK: HTTP Numeric IP Address

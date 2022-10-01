@@ -2,7 +2,7 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [.......10.0.0.1][57406] -> [..173.194.68.26][...25] 
-         detected: [.....1] [ip4][..tcp] [.......10.0.0.1][57406] -> [..173.194.68.26][...25] [SMTP.Google][Email][Acceptable]
+         detected: [.....1] [ip4][..tcp] [.......10.0.0.1][57406] -> [..173.194.68.26][...25] [SMTP.Google][Email][Acceptable][mx.google.com]
  detection-update: [.....1] [ip4][..tcp] [.......10.0.0.1][57406] -> [..173.194.68.26][...25] [SMTPS.Google][Email][Acceptable]
  detection-update: [.....1] [ip4][..tcp] [.......10.0.0.1][57406] -> [..173.194.68.26][...25] [SMTPS.Google][Email][Acceptable]
                    RISK: Obsolete TLS (v1.1 or older)
@@ -23,7 +23,7 @@
      DAEMON-EVENT: [Processed: 36 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 4|updates: 0]
               new: [.....2] [ip6][..tcp] [...2003:de:2016:125:fc36:8317:4e86:cb72][.7562] -> [...............2003:de:2016:120::a08:53][...25] 
-         detected: [.....2] [ip6][..tcp] [...2003:de:2016:125:fc36:8317:4e86:cb72][.7562] -> [...............2003:de:2016:120::a08:53][...25] [SMTP][Email][Acceptable]
+         detected: [.....2] [ip6][..tcp] [...2003:de:2016:125:fc36:8317:4e86:cb72][.7562] -> [...............2003:de:2016:120::a08:53][...25] [SMTP][Email][Acceptable][jw-vm08-int-dns.webernetz.net]
  detection-update: [.....2] [ip6][..tcp] [...2003:de:2016:125:fc36:8317:4e86:cb72][.7562] -> [...............2003:de:2016:120::a08:53][...25] [SMTPS][Email][Safe]
                    RISK: TLS (probably) Not Carrying HTTPS
  detection-update: [.....2] [ip6][..tcp] [...2003:de:2016:125:fc36:8317:4e86:cb72][.7562] -> [...............2003:de:2016:120::a08:53][...25] [SMTPS][Email][Safe]

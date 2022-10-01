@@ -9,28 +9,28 @@
               new: [.....6] [ip4][..udp] [.192.168.12.169][39518] -> [.35.158.183.167][..443] 
               new: [.....7] [ip4][.icmp] [.35.158.183.167] -> [.192.168.12.169] 
          detected: [.....7] [ip4][.icmp] [.35.158.183.167] -> [.192.168.12.169] [ICMP][Network][Acceptable]
-         detected: [.....5] [ip4][..udp] [.192.168.12.169][39518] -> [.35.158.183.167][.3478] [STUN.SignalVoip][VoIP][Acceptable]
-         detected: [.....4] [ip4][..udp] [.192.168.12.169][47204] -> [.35.158.183.167][.3478] [STUN.SignalVoip][VoIP][Acceptable]
-         detected: [.....1] [ip4][..udp] [.192.168.12.169][39518] -> [172.253.121.127][19302] [STUN.SignalVoip][VoIP][Acceptable]
+         detected: [.....5] [ip4][..udp] [.192.168.12.169][39518] -> [.35.158.183.167][.3478] [STUN.SignalVoip][VoIP][Acceptable][signal.org]
+         detected: [.....4] [ip4][..udp] [.192.168.12.169][47204] -> [.35.158.183.167][.3478] [STUN.SignalVoip][VoIP][Acceptable][]
+         detected: [.....1] [ip4][..udp] [.192.168.12.169][39518] -> [172.253.121.127][19302] [STUN.SignalVoip][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port
-         detected: [.....6] [ip4][..udp] [.192.168.12.169][39518] -> [.35.158.183.167][..443] [STUN.SignalVoip][VoIP][Acceptable]
+         detected: [.....6] [ip4][..udp] [.192.168.12.169][39518] -> [.35.158.183.167][..443] [STUN.SignalVoip][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port
-         detected: [.....3] [ip4][..udp] [.192.168.12.169][47204] -> [.35.158.183.167][..443] [STUN.AmazonAWS][Cloud][Acceptable]
+         detected: [.....3] [ip4][..udp] [.192.168.12.169][47204] -> [.35.158.183.167][..443] [STUN.AmazonAWS][Cloud][Acceptable][]
                    RISK: Known Proto on Non Std Port
               new: [.....8] [ip4][..udp] [.192.168.12.169][43068] -> [.35.158.183.167][.3478] 
-         detected: [.....8] [ip4][..udp] [.192.168.12.169][43068] -> [.35.158.183.167][.3478] [STUN.SignalVoip][VoIP][Acceptable]
+         detected: [.....8] [ip4][..udp] [.192.168.12.169][43068] -> [.35.158.183.167][.3478] [STUN.SignalVoip][VoIP][Acceptable][]
               new: [.....9] [ip4][..udp] [.192.168.12.169][43068] -> [.35.158.183.167][..443] 
-         detected: [.....9] [ip4][..udp] [.192.168.12.169][43068] -> [.35.158.183.167][..443] [STUN.AmazonAWS][Cloud][Acceptable]
+         detected: [.....9] [ip4][..udp] [.192.168.12.169][43068] -> [.35.158.183.167][..443] [STUN.AmazonAWS][Cloud][Acceptable][]
                    RISK: Known Proto on Non Std Port
               new: [....10] [ip4][..udp] [.192.168.12.169][43068] -> [172.253.121.127][19302] 
               new: [....11] [ip4][..udp] [.192.168.12.169][39950] -> [172.253.121.127][19302] 
               new: [....12] [ip4][..udp] [.192.168.12.169][39950] -> [.35.158.183.167][..443] 
-         detected: [....12] [ip4][..udp] [.192.168.12.169][39950] -> [.35.158.183.167][..443] [STUN.AmazonAWS][Cloud][Acceptable]
+         detected: [....12] [ip4][..udp] [.192.168.12.169][39950] -> [.35.158.183.167][..443] [STUN.AmazonAWS][Cloud][Acceptable][]
                    RISK: Known Proto on Non Std Port
               new: [....13] [ip4][..udp] [.192.168.12.169][39950] -> [.35.158.183.167][.3478] 
-         detected: [....13] [ip4][..udp] [.192.168.12.169][39950] -> [.35.158.183.167][.3478] [STUN.SignalVoip][VoIP][Acceptable]
+         detected: [....13] [ip4][..udp] [.192.168.12.169][39950] -> [.35.158.183.167][.3478] [STUN.SignalVoip][VoIP][Acceptable][]
               new: [....14] [ip4][..udp] [.192.168.12.169][43068] -> [.18.195.131.143][61156] 
-         detected: [....14] [ip4][..udp] [.192.168.12.169][43068] -> [.18.195.131.143][61156] [STUN.AmazonAWS][Cloud][Acceptable]
+         detected: [....14] [ip4][..udp] [.192.168.12.169][43068] -> [.18.195.131.143][61156] [STUN.AmazonAWS][Cloud][Acceptable][]
                    RISK: Known Proto on Non Std Port
           analyse: [....14] [ip4][..udp] [.192.168.12.169][43068] -> [.18.195.131.143][61156] [STUN.AmazonAWS][Cloud][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
@@ -43,9 +43,9 @@
                    [PKTLENS.....: 124,92,124,92,132,132,92,124,92,92,124,92,84,56,84,56,124,92,84,84,124,92,56,84,56,56,56,124,92,84,56,84]
                    [ENTROPIES...: 5.8,5.8,5.9,5.8,5.7,5.6,5.9,5.9,5.8,5.8,5.9,5.8,5.7,5.1,5.8,5.3,5.9,5.8,5.8,5.7,5.9,5.8,5.1,5.8,5.2,5.2,5.1,5.8,5.8,5.6,5.1,5.8]
            update: [.....7] [ip4][.icmp] [.35.158.183.167] -> [.192.168.12.169] [ICMP][Network][Acceptable]
-         detected: [....10] [ip4][..udp] [.192.168.12.169][43068] -> [172.253.121.127][19302] [STUN.AmazonAWS][Cloud][Acceptable]
+         detected: [....10] [ip4][..udp] [.192.168.12.169][43068] -> [172.253.121.127][19302] [STUN.AmazonAWS][Cloud][Acceptable][]
                    RISK: Known Proto on Non Std Port
-         detected: [....11] [ip4][..udp] [.192.168.12.169][39950] -> [172.253.121.127][19302] [STUN.GoogleHangoutDuo][VoIP][Acceptable]
+         detected: [....11] [ip4][..udp] [.192.168.12.169][39950] -> [172.253.121.127][19302] [STUN.GoogleHangoutDuo][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port
           analyse: [.....7] [ip4][.icmp] [.35.158.183.167] -> [.192.168.12.169] [ICMP][Network][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
@@ -67,10 +67,10 @@
            update: [.....4] [ip4][..udp] [.192.168.12.169][47204] -> [.35.158.183.167][.3478] [STUN.SignalVoip][VoIP][Acceptable]
            update: [.....5] [ip4][..udp] [.192.168.12.169][39518] -> [.35.158.183.167][.3478] [STUN.SignalVoip][VoIP][Acceptable]
               new: [....15] [ip4][..udp] [.192.168.12.169][47767] -> [172.253.121.127][19302] 
-         detected: [....15] [ip4][..udp] [.192.168.12.169][47767] -> [172.253.121.127][19302] [STUN.GoogleHangoutDuo][VoIP][Acceptable]
+         detected: [....15] [ip4][..udp] [.192.168.12.169][47767] -> [172.253.121.127][19302] [STUN.GoogleHangoutDuo][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port
               new: [....16] [ip4][..udp] [.192.168.12.169][37970] -> [172.253.121.127][19302] 
-         detected: [....16] [ip4][..udp] [.192.168.12.169][37970] -> [172.253.121.127][19302] [STUN.GoogleHangoutDuo][VoIP][Acceptable]
+         detected: [....16] [ip4][..udp] [.192.168.12.169][37970] -> [172.253.121.127][19302] [STUN.GoogleHangoutDuo][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port
               new: [....17] [ip4][..udp] [.192.168.12.169][47767] -> [.35.158.122.211][..443] 
               new: [....18] [ip4][..udp] [.192.168.12.169][37970] -> [.35.158.122.211][..443] 
@@ -78,17 +78,17 @@
               new: [....20] [ip4][..udp] [.192.168.12.169][37970] -> [.35.158.122.211][.3478] 
               new: [....21] [ip4][.icmp] [.35.158.122.211] -> [.192.168.12.169] 
          detected: [....21] [ip4][.icmp] [.35.158.122.211] -> [.192.168.12.169] [ICMP][Network][Acceptable]
-         detected: [....19] [ip4][..udp] [.192.168.12.169][47767] -> [.35.158.122.211][.3478] [STUN.SignalVoip][VoIP][Acceptable]
-         detected: [....20] [ip4][..udp] [.192.168.12.169][37970] -> [.35.158.122.211][.3478] [STUN.SignalVoip][VoIP][Acceptable]
-         detected: [....17] [ip4][..udp] [.192.168.12.169][47767] -> [.35.158.122.211][..443] [STUN.SignalVoip][VoIP][Acceptable]
+         detected: [....19] [ip4][..udp] [.192.168.12.169][47767] -> [.35.158.122.211][.3478] [STUN.SignalVoip][VoIP][Acceptable][signal.org]
+         detected: [....20] [ip4][..udp] [.192.168.12.169][37970] -> [.35.158.122.211][.3478] [STUN.SignalVoip][VoIP][Acceptable][]
+         detected: [....17] [ip4][..udp] [.192.168.12.169][47767] -> [.35.158.122.211][..443] [STUN.SignalVoip][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port
-         detected: [....18] [ip4][..udp] [.192.168.12.169][37970] -> [.35.158.122.211][..443] [STUN.AmazonAWS][Cloud][Acceptable]
+         detected: [....18] [ip4][..udp] [.192.168.12.169][37970] -> [.35.158.122.211][..443] [STUN.AmazonAWS][Cloud][Acceptable][]
                    RISK: Known Proto on Non Std Port
               new: [....22] [ip4][..udp] [.192.168.12.169][47767] -> [.18.195.131.143][54054] 
-         detected: [....22] [ip4][..udp] [.192.168.12.169][47767] -> [.18.195.131.143][54054] [STUN.SignalVoip][VoIP][Acceptable]
+         detected: [....22] [ip4][..udp] [.192.168.12.169][47767] -> [.18.195.131.143][54054] [STUN.SignalVoip][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port
               new: [....23] [ip4][..udp] [.192.168.12.169][47767] -> [.18.195.131.143][61498] 
-         detected: [....23] [ip4][..udp] [.192.168.12.169][47767] -> [.18.195.131.143][61498] [STUN.SignalVoip][VoIP][Acceptable]
+         detected: [....23] [ip4][..udp] [.192.168.12.169][47767] -> [.18.195.131.143][61498] [STUN.SignalVoip][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port
           analyse: [....23] [ip4][..udp] [.192.168.12.169][47767] -> [.18.195.131.143][61498] [STUN.SignalVoip][VoIP][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
@@ -123,7 +123,7 @@
                    RISK: Known Proto on Non Std Port
              idle: [....10] [ip4][..udp] [.192.168.12.169][43068] -> [172.253.121.127][19302] [STUN.AmazonAWS][Cloud][Acceptable]
                    RISK: Known Proto on Non Std Port
-          guessed: [.....2] [ip4][..udp] [.192.168.12.169][47204] -> [172.253.121.127][19302] [STUN.GoogleHangoutDuo][VoIP][Acceptable]
+          guessed: [.....2] [ip4][..udp] [.192.168.12.169][47204] -> [172.253.121.127][19302] [STUN.GoogleHangoutDuo][VoIP][Acceptable][]
              idle: [.....2] [ip4][..udp] [.192.168.12.169][47204] -> [172.253.121.127][19302] 
              idle: [....14] [ip4][..udp] [.192.168.12.169][43068] -> [.18.195.131.143][61156] [STUN.AmazonAWS][Cloud][Acceptable]
                    RISK: Known Proto on Non Std Port

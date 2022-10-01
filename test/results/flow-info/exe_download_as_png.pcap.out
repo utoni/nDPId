@@ -2,9 +2,9 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [....10.9.25.101][49197] -> [..185.98.87.185][...80] 
-         detected: [.....1] [ip4][..tcp] [....10.9.25.101][49197] -> [..185.98.87.185][...80] [HTTP][Web][Acceptable]
+         detected: [.....1] [ip4][..tcp] [....10.9.25.101][49197] -> [..185.98.87.185][...80] [HTTP][Web][Acceptable][185.98.87.185]
                    RISK: HTTP Numeric IP Address
- detection-update: [.....1] [ip4][..tcp] [....10.9.25.101][49197] -> [..185.98.87.185][...80] [HTTP][Web][Acceptable]
+ detection-update: [.....1] [ip4][..tcp] [....10.9.25.101][49197] -> [..185.98.87.185][...80] [HTTP][Web][Acceptable][185.98.87.185]
                    RISK: Binary App Transfer, HTTP Numeric IP Address
           analyse: [.....1] [ip4][..tcp] [....10.9.25.101][49197] -> [..185.98.87.185][...80] [HTTP][Web][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy

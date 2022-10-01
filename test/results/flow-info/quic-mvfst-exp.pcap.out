@@ -2,6 +2,6 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip6][..udp] [.2aac:cdf7:d506:7807:9092:75f:a963:f4ab][57587] -> [....3f65:ece9:fe71:6e2a:face:b00c::358e][..443] 
-         detected: [.....1] [ip6][..udp] [.2aac:cdf7:d506:7807:9092:75f:a963:f4ab][57587] -> [....3f65:ece9:fe71:6e2a:face:b00c::358e][..443] [QUIC.Facebook][SocialNetwork][Fun]
+         detected: [.....1] [ip6][..udp] [.2aac:cdf7:d506:7807:9092:75f:a963:f4ab][57587] -> [....3f65:ece9:fe71:6e2a:face:b00c::358e][..443] [QUIC.Facebook][SocialNetwork][Fun][video.fmct2-3.fna.fbcdn.net]
              idle: [.....1] [ip6][..udp] [.2aac:cdf7:d506:7807:9092:75f:a963:f4ab][57587] -> [....3f65:ece9:fe71:6e2a:face:b00c::358e][..443] [QUIC.Facebook][SocialNetwork][Fun]
      DAEMON-EVENT: shutdown

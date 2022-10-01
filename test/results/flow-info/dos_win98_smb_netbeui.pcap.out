@@ -10,17 +10,17 @@
       ERROR-EVENT: Unknown packet type
       ERROR-EVENT: Unknown packet type
               new: [.....1] [ip4][..udp] [192.168.239.129][..137] -> [..192.168.239.2][..137] 
-         detected: [.....1] [ip4][..udp] [192.168.239.129][..137] -> [..192.168.239.2][..137] [NetBIOS][System][Acceptable]
+         detected: [.....1] [ip4][..udp] [192.168.239.129][..137] -> [..192.168.239.2][..137] [NetBIOS][System][Acceptable][mdjr98]
               new: [.....2] [ip4][.icmp] [192.168.239.129] -> [......224.0.0.2] 
          detected: [.....2] [ip4][.icmp] [192.168.239.129] -> [......224.0.0.2] [ICMP][Network][Acceptable]
       ERROR-EVENT: Unknown packet type
       ERROR-EVENT: Unknown packet type
       ERROR-EVENT: Unknown packet type
               new: [.....3] [ip4][..udp] [192.168.239.129][..137] -> [192.168.239.255][..137] 
-         detected: [.....3] [ip4][..udp] [192.168.239.129][..137] -> [192.168.239.255][..137] [NetBIOS][System][Acceptable]
+         detected: [.....3] [ip4][..udp] [192.168.239.129][..137] -> [192.168.239.255][..137] [NetBIOS][System][Acceptable][mdjr98]
       ERROR-EVENT: Unknown packet type
               new: [.....4] [ip4][..udp] [192.168.239.129][..138] -> [192.168.239.255][..138] 
-         detected: [.....4] [ip4][..udp] [192.168.239.129][..138] -> [192.168.239.255][..138] [NetBIOS.SMBv1][System][Dangerous]
+         detected: [.....4] [ip4][..udp] [192.168.239.129][..138] -> [192.168.239.255][..138] [NetBIOS.SMBv1][System][Dangerous][mdjr98]
                    RISK: Unsafe Protocol
       ERROR-EVENT: Unknown packet type
       ERROR-EVENT: Unknown packet type

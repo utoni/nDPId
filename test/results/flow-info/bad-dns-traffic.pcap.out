@@ -2,24 +2,24 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [..192.168.43.91][35966] -> [........4.2.2.4][...53] 
-         detected: [.....1] [ip4][..udp] [..192.168.43.91][35966] -> [........4.2.2.4][...53] [DNS][Network][Acceptable]
+         detected: [.....1] [ip4][..udp] [..192.168.43.91][35966] -> [........4.2.2.4][...53] [DNS][Network][Acceptable][05e100a621c3620001636f6e736f6c65202873697276696d65732900.skullseclabs.org]
                    RISK: Suspicious DGA Domain name
- detection-update: [.....1] [ip4][..udp] [..192.168.43.91][35966] -> [........4.2.2.4][...53] [DNS][Network][Acceptable]
+ detection-update: [.....1] [ip4][..udp] [..192.168.43.91][35966] -> [........4.2.2.4][...53] [DNS][Network][Acceptable][958700a621c3620001636f6e736f6c65202873697276696d65732900.skullseclabs.org]
                    RISK: Suspicious DGA Domain name
- detection-update: [.....1] [ip4][..udp] [..192.168.43.91][35966] -> [........4.2.2.4][...53] [DNS][Network][Acceptable]
+ detection-update: [.....1] [ip4][..udp] [..192.168.43.91][35966] -> [........4.2.2.4][...53] [DNS][Network][Acceptable][958700a621c3620001636f6e736f6c65202873697276696d65732900.skullseclabs.org]
                    RISK: Suspicious DGA Domain name, Risky Domain Name
               new: [.....2] [ip4][..udp] [..192.168.43.91][56354] -> [........4.2.2.4][...53] 
-         detected: [.....2] [ip4][..udp] [..192.168.43.91][56354] -> [........4.2.2.4][...53] [DNS][Network][Acceptable]
+         detected: [.....2] [ip4][..udp] [..192.168.43.91][56354] -> [........4.2.2.4][...53] [DNS][Network][Acceptable][244300fdf525320021636f6d6d616e64202873697276696d65732900.skullseclabs.org]
                    RISK: Suspicious DGA Domain name
- detection-update: [.....2] [ip4][..udp] [..192.168.43.91][56354] -> [........4.2.2.4][...53] [DNS][Network][Acceptable]
+ detection-update: [.....2] [ip4][..udp] [..192.168.43.91][56354] -> [........4.2.2.4][...53] [DNS][Network][Acceptable][6b5000fdf525320021636f6d6d616e64202873697276696d65732900.skullseclabs.org]
                    RISK: Suspicious DGA Domain name
- detection-update: [.....2] [ip4][..udp] [..192.168.43.91][56354] -> [........4.2.2.4][...53] [DNS][Network][Acceptable]
+ detection-update: [.....2] [ip4][..udp] [..192.168.43.91][56354] -> [........4.2.2.4][...53] [DNS][Network][Acceptable][e18f00fdf525320021636f6d6d616e64202873697276696d65732900.skullseclabs.org]
                    RISK: Suspicious DGA Domain name
- detection-update: [.....2] [ip4][..udp] [..192.168.43.91][56354] -> [........4.2.2.4][...53] [DNS][Network][Acceptable]
+ detection-update: [.....2] [ip4][..udp] [..192.168.43.91][56354] -> [........4.2.2.4][...53] [DNS][Network][Acceptable][46b100fdf525320021636f6d6d616e64202873697276696d65732900.skullseclabs.org]
                    RISK: Suspicious DGA Domain name
- detection-update: [.....2] [ip4][..udp] [..192.168.43.91][56354] -> [........4.2.2.4][...53] [DNS][Network][Acceptable]
+ detection-update: [.....2] [ip4][..udp] [..192.168.43.91][56354] -> [........4.2.2.4][...53] [DNS][Network][Acceptable][c75900fdf525320021636f6d6d616e64202873697276696d65732900.skullseclabs.org]
                    RISK: Suspicious DGA Domain name
- detection-update: [.....2] [ip4][..udp] [..192.168.43.91][56354] -> [........4.2.2.4][...53] [DNS][Network][Acceptable]
+ detection-update: [.....2] [ip4][..udp] [..192.168.43.91][56354] -> [........4.2.2.4][...53] [DNS][Network][Acceptable][c75900fdf525320021636f6d6d616e64202873697276696d65732900.skullseclabs.org]
                    RISK: Suspicious DGA Domain name, Risky Domain Name
           analyse: [.....2] [ip4][..udp] [..192.168.43.91][56354] -> [........4.2.2.4][...53] [DNS][Network][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
@@ -38,9 +38,9 @@
            update: [.....1] [ip4][..udp] [..192.168.43.91][35966] -> [........4.2.2.4][...53] [DNS][Network][Acceptable]
                    RISK: Suspicious DGA Domain name, Risky Domain Name
               new: [.....3] [ip4][..udp] [..192.168.43.91][46961] -> [........4.2.2.4][...53] 
-         detected: [.....3] [ip4][..udp] [..192.168.43.91][46961] -> [........4.2.2.4][...53] [DNS][Network][Acceptable]
+         detected: [.....3] [ip4][..udp] [..192.168.43.91][46961] -> [........4.2.2.4][...53] [DNS][Network][Acceptable][a05700e6da83510001636f6e736f6c65202873697276696d65732900.skullseclabs.org]
                    RISK: Suspicious DGA Domain name
- detection-update: [.....3] [ip4][..udp] [..192.168.43.91][46961] -> [........4.2.2.4][...53] [DNS][Network][Acceptable]
+ detection-update: [.....3] [ip4][..udp] [..192.168.43.91][46961] -> [........4.2.2.4][...53] [DNS][Network][Acceptable][a05700e6da83510001636f6e736f6c65202873697276696d65732900.skullseclabs.org]
                    RISK: Suspicious DGA Domain name, Risky Domain Name
              idle: [.....3] [ip4][..udp] [..192.168.43.91][46961] -> [........4.2.2.4][...53] [DNS][Network][Acceptable]
                    RISK: Suspicious DGA Domain name, Risky Domain Name

@@ -4,24 +4,24 @@
               new: [.....1] [ip4][..tcp] [........8.8.8.8][..853] -> [..192.168.1.159][55856] [MIDSTREAM] 
               new: [.....2] [ip4][..tcp] [..192.168.1.159][48044] -> [........8.8.4.4][..853] 
               new: [.....3] [ip4][..tcp] [..192.168.1.159][56024] -> [........8.8.8.8][..853] 
-         detected: [.....2] [ip4][..tcp] [..192.168.1.159][48044] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Network][Fun]
+         detected: [.....2] [ip4][..tcp] [..192.168.1.159][48044] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Network][Fun][dns.google]
                    RISK: TLS (probably) Not Carrying HTTPS
-         detected: [.....3] [ip4][..tcp] [..192.168.1.159][56024] -> [........8.8.8.8][..853] [TLS.DoH_DoT][Network][Fun]
+         detected: [.....3] [ip4][..tcp] [..192.168.1.159][56024] -> [........8.8.8.8][..853] [TLS.DoH_DoT][Network][Fun][dns.google]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [.....2] [ip4][..tcp] [..192.168.1.159][48044] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Network][Fun]
+ detection-update: [.....2] [ip4][..tcp] [..192.168.1.159][48044] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Network][Fun][dns.google]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [.....2] [ip4][..tcp] [..192.168.1.159][48044] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Network][Fun]
+ detection-update: [.....2] [ip4][..tcp] [..192.168.1.159][48044] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Network][Fun][dns.google]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [.....3] [ip4][..tcp] [..192.168.1.159][56024] -> [........8.8.8.8][..853] [TLS.DoH_DoT][Network][Fun]
+ detection-update: [.....3] [ip4][..tcp] [..192.168.1.159][56024] -> [........8.8.8.8][..853] [TLS.DoH_DoT][Network][Fun][dns.google]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [.....3] [ip4][..tcp] [..192.168.1.159][56024] -> [........8.8.8.8][..853] [TLS.DoH_DoT][Network][Fun]
+ detection-update: [.....3] [ip4][..tcp] [..192.168.1.159][56024] -> [........8.8.8.8][..853] [TLS.DoH_DoT][Network][Fun][dns.google]
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [.....4] [ip4][..tcp] [..192.168.1.159][48048] -> [........8.8.4.4][..853] 
-         detected: [.....4] [ip4][..tcp] [..192.168.1.159][48048] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Network][Fun]
+         detected: [.....4] [ip4][..tcp] [..192.168.1.159][48048] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Network][Fun][dns.google]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [.....4] [ip4][..tcp] [..192.168.1.159][48048] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Network][Fun]
+ detection-update: [.....4] [ip4][..tcp] [..192.168.1.159][48048] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Network][Fun][dns.google]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [.....4] [ip4][..tcp] [..192.168.1.159][48048] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Network][Fun]
+ detection-update: [.....4] [ip4][..tcp] [..192.168.1.159][48048] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Network][Fun][dns.google]
                    RISK: TLS (probably) Not Carrying HTTPS
           analyse: [.....4] [ip4][..tcp] [..192.168.1.159][48048] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Network][Fun]
                                         min|      max|      avg|   stddev|       variance| entropy
@@ -38,9 +38,9 @@
               new: [.....6] [ip4][..tcp] [........8.8.4.4][..853] -> [..192.168.1.159][47968] [MIDSTREAM] 
            update: [.....5] [ip4][.icmp] [..192.168.1.159] -> [........8.8.8.8] [ICMP][Network][Acceptable]
               new: [.....7] [ip4][..tcp] [..192.168.1.159][48098] -> [........8.8.4.4][..853] 
-         detected: [.....7] [ip4][..tcp] [..192.168.1.159][48098] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Network][Fun]
+         detected: [.....7] [ip4][..tcp] [..192.168.1.159][48098] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Network][Fun][dns.google]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [.....7] [ip4][..tcp] [..192.168.1.159][48098] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Network][Fun]
+ detection-update: [.....7] [ip4][..tcp] [..192.168.1.159][48098] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Network][Fun][dns.google]
                    RISK: TLS (probably) Not Carrying HTTPS
           analyse: [.....7] [ip4][..tcp] [..192.168.1.159][48098] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Network][Fun]
                                         min|      max|      avg|   stddev|       variance| entropy
@@ -63,11 +63,11 @@
               end: [.....4] [ip4][..tcp] [..192.168.1.159][48048] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Network][Fun]
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [.....8] [ip4][..tcp] [..192.168.1.159][48210] -> [........8.8.4.4][..853] 
-         detected: [.....8] [ip4][..tcp] [..192.168.1.159][48210] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Network][Fun]
+         detected: [.....8] [ip4][..tcp] [..192.168.1.159][48210] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Network][Fun][dns.google]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [.....8] [ip4][..tcp] [..192.168.1.159][48210] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Network][Fun]
+ detection-update: [.....8] [ip4][..tcp] [..192.168.1.159][48210] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Network][Fun][dns.google]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [.....8] [ip4][..tcp] [..192.168.1.159][48210] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Network][Fun]
+ detection-update: [.....8] [ip4][..tcp] [..192.168.1.159][48210] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Network][Fun][dns.google]
                    RISK: TLS (probably) Not Carrying HTTPS
           analyse: [.....8] [ip4][..tcp] [..192.168.1.159][48210] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Network][Fun]
                                         min|      max|      avg|   stddev|       variance| entropy

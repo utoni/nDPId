@@ -2,7 +2,7 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [....10.2.25.102][57309] -> [..193.252.22.84][..587] 
-         detected: [.....1] [ip4][..tcp] [....10.2.25.102][57309] -> [..193.252.22.84][..587] [SMTP][Email][Acceptable]
+         detected: [.....1] [ip4][..tcp] [....10.2.25.102][57309] -> [..193.252.22.84][..587] [SMTP][Email][Acceptable][opmta1mto02nd1]
           analyse: [.....1] [ip4][..tcp] [....10.2.25.102][57309] -> [..193.252.22.84][..587] [SMTP][Email][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    3.056|    0.539|    0.774|     599161.176|   3.700]
@@ -16,7 +16,7 @@
      DAEMON-EVENT: [Processed: 626 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....2] [ip4][..tcp] [....10.3.29.101][56309] -> [.104.161.127.22][...80] 
-         detected: [.....2] [ip4][..tcp] [....10.3.29.101][56309] -> [.104.161.127.22][...80] [HTTP][Web][Acceptable]
+         detected: [.....2] [ip4][..tcp] [....10.3.29.101][56309] -> [.104.161.127.22][...80] [HTTP][Web][Acceptable][fkl.co.ke]
           analyse: [.....2] [ip4][..tcp] [....10.3.29.101][56309] -> [.104.161.127.22][...80] [HTTP][Web][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.204|    0.029|    0.060|       3581.477|   2.700]
@@ -31,8 +31,8 @@
      DAEMON-EVENT: [Processed: 834 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....3] [ip4][..tcp] [....10.4.20.102][54319] -> [107.161.178.210][...80] 
-         detected: [.....3] [ip4][..tcp] [....10.4.20.102][54319] -> [107.161.178.210][...80] [HTTP][Web][Acceptable]
- detection-update: [.....3] [ip4][..tcp] [....10.4.20.102][54319] -> [107.161.178.210][...80] [HTTP][Web][Acceptable]
+         detected: [.....3] [ip4][..tcp] [....10.4.20.102][54319] -> [107.161.178.210][...80] [HTTP][Web][Acceptable][gandhitoday.org]
+ detection-update: [.....3] [ip4][..tcp] [....10.4.20.102][54319] -> [107.161.178.210][...80] [HTTP][Web][Acceptable][gandhitoday.org]
                    RISK: Binary App Transfer
           analyse: [.....3] [ip4][..tcp] [....10.4.20.102][54319] -> [107.161.178.210][...80] [HTTP][Web][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
@@ -48,9 +48,9 @@
      DAEMON-EVENT: [Processed: 1663 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 3|skipped: 0|!detected: 0|guessed: 0|detection-updates: 1|updates: 0]
               new: [.....4] [ip4][..tcp] [....10.4.25.101][49797] -> [..77.105.36.156][...80] 
-         detected: [.....4] [ip4][..tcp] [....10.4.25.101][49797] -> [..77.105.36.156][...80] [HTTP][Web][Acceptable]
+         detected: [.....4] [ip4][..tcp] [....10.4.25.101][49797] -> [..77.105.36.156][...80] [HTTP][Web][Acceptable][filmmogzivota.rs]
                    RISK: HTTP Suspicious User-Agent
- detection-update: [.....4] [ip4][..tcp] [....10.4.25.101][49797] -> [..77.105.36.156][...80] [HTTP][Download][Acceptable]
+ detection-update: [.....4] [ip4][..tcp] [....10.4.25.101][49797] -> [..77.105.36.156][...80] [HTTP][Download][Acceptable][filmmogzivota.rs]
                    RISK: Binary App Transfer, HTTP Suspicious User-Agent
           analyse: [.....4] [ip4][..tcp] [....10.4.25.101][49797] -> [..77.105.36.156][...80] [HTTP][Download][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
@@ -65,9 +65,9 @@
               end: [.....3] [ip4][..tcp] [....10.4.20.102][54319] -> [107.161.178.210][...80] [HTTP][Web][Acceptable]
                    RISK: Binary App Transfer
               new: [.....5] [ip4][..tcp] [....10.4.25.101][49803] -> [138.197.147.101][..443] 
-         detected: [.....5] [ip4][..tcp] [....10.4.25.101][49803] -> [138.197.147.101][..443] [TLS][Web][Safe]
+         detected: [.....5] [ip4][..tcp] [....10.4.25.101][49803] -> [138.197.147.101][..443] [TLS][Web][Safe][]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
- detection-update: [.....5] [ip4][..tcp] [....10.4.25.101][49803] -> [138.197.147.101][..443] [TLS][Web][Safe]
+ detection-update: [.....5] [ip4][..tcp] [....10.4.25.101][49803] -> [138.197.147.101][..443] [TLS][Web][Safe][]
                    RISK: Self-signed Cert, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
           analyse: [.....5] [ip4][..tcp] [....10.4.25.101][49803] -> [138.197.147.101][..443] 
                                         min|      max|      avg|   stddev|       variance| entropy
@@ -79,12 +79,12 @@
                    [IATS(ms)....: 109.4,109.6,14.1,123.8,13.2,122.9,52.7,132.9,80.3,6.5,151.9,1117.1,0.1,0.2,1262.5,0.1,2.9,0.1,3.1,96.9,0.1,96.9,3.1,0.1,0.2,0.1,3.3,0.1,2.9,0.1]
                    [PKTLENS.....: 52,52,46,189,46,1418,46,133,282,46,520,46,1428,1428,1428,46,46,1428,1428,52,1428,1428,60,1428,1428,1428,1428,60,60,60,1428,1428]
                    [ENTROPIES...: 4.7,4.9,4.5,5.4,4.6,7.5,4.6,5.9,7.1,4.5,7.5,4.5,7.9,7.9,7.9,4.5,4.5,7.9,7.9,5.0,7.9,7.9,5.1,7.9,7.9,7.9,7.9,5.1,5.1,5.1,7.8,7.9]
- detection-update: [.....5] [ip4][..tcp] [....10.4.25.101][49803] -> [138.197.147.101][..443] [TLS][Web][Safe]
+ detection-update: [.....5] [ip4][..tcp] [....10.4.25.101][49803] -> [138.197.147.101][..443] [TLS][Web][Safe][]
                    RISK: Self-signed Cert, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
               new: [.....6] [ip4][..tcp] [....10.4.25.101][49804] -> [138.197.147.101][..443] 
-         detected: [.....6] [ip4][..tcp] [....10.4.25.101][49804] -> [138.197.147.101][..443] [TLS][Web][Safe]
+         detected: [.....6] [ip4][..tcp] [....10.4.25.101][49804] -> [138.197.147.101][..443] [TLS][Web][Safe][]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
- detection-update: [.....6] [ip4][..tcp] [....10.4.25.101][49804] -> [138.197.147.101][..443] [TLS][Web][Safe]
+ detection-update: [.....6] [ip4][..tcp] [....10.4.25.101][49804] -> [138.197.147.101][..443] [TLS][Web][Safe][]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
               end: [.....4] [ip4][..tcp] [....10.4.25.101][49797] -> [..77.105.36.156][...80] [HTTP][Download][Acceptable]
                    RISK: Binary App Transfer, HTTP Suspicious User-Agent

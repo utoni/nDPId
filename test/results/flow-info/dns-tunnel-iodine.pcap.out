@@ -2,8 +2,8 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [......10.0.2.30][44639] -> [......10.0.2.20][...53] 
-         detected: [.....1] [ip4][..udp] [......10.0.2.30][44639] -> [......10.0.2.20][...53] [DNS][Network][Acceptable]
- detection-update: [.....1] [ip4][..udp] [......10.0.2.30][44639] -> [......10.0.2.20][...53] [DNS][Network][Acceptable]
+         detected: [.....1] [ip4][..udp] [......10.0.2.30][44639] -> [......10.0.2.20][...53] [DNS][Network][Acceptable][vaaaakardli.pirate.sea]
+ detection-update: [.....1] [ip4][..udp] [......10.0.2.30][44639] -> [......10.0.2.20][...53] [DNS][Network][Acceptable][vaaaakardli.pirate.sea]
                    RISK: Suspicious DNS Traffic
           analyse: [.....1] [ip4][..udp] [......10.0.2.30][44639] -> [......10.0.2.20][...53] [DNS][Network][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy

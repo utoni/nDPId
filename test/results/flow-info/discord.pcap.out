@@ -1,8 +1,8 @@
      DAEMON-EVENT: init
               new: [.....1] [ip4][..tcp] [......10.0.2.15][42834] -> [162.159.128.233][..443] 
-         detected: [.....1] [ip4][..tcp] [......10.0.2.15][42834] -> [162.159.128.233][..443] [TLS.Discord][Collaborative][Fun]
- detection-update: [.....1] [ip4][..tcp] [......10.0.2.15][42834] -> [162.159.128.233][..443] [TLS.Discord][Collaborative][Fun]
- detection-update: [.....1] [ip4][..tcp] [......10.0.2.15][42834] -> [162.159.128.233][..443] [TLS.Discord][Collaborative][Fun]
+         detected: [.....1] [ip4][..tcp] [......10.0.2.15][42834] -> [162.159.128.233][..443] [TLS.Discord][Collaborative][Fun][discord.com]
+ detection-update: [.....1] [ip4][..tcp] [......10.0.2.15][42834] -> [162.159.128.233][..443] [TLS.Discord][Collaborative][Fun][discord.com]
+ detection-update: [.....1] [ip4][..tcp] [......10.0.2.15][42834] -> [162.159.128.233][..443] [TLS.Discord][Collaborative][Fun][discord.com]
                    RISK: TLS Cert Expired
      DAEMON-EVENT: [Processed: 7 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 2|updates: 0]

@@ -2,7 +2,7 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [....192.168.0.1][39236] -> [...192.168.0.20][31337] 
-         detected: [.....1] [ip4][..tcp] [....192.168.0.1][39236] -> [...192.168.0.20][31337] [HTTP][Web][Acceptable]
+         detected: [.....1] [ip4][..tcp] [....192.168.0.1][39236] -> [...192.168.0.20][31337] [HTTP][Web][Acceptable][toni.lan]
                    RISK: Known Proto on Non Std Port
               end: [.....1] [ip4][..tcp] [....192.168.0.1][39236] -> [...192.168.0.20][31337] [HTTP][Web][Acceptable]
                    RISK: Known Proto on Non Std Port

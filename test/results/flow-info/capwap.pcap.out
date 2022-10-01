@@ -4,7 +4,7 @@
               new: [.....1] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12379] 
          detected: [.....1] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12379] [CAPWAP][Network][Acceptable]
               new: [.....2] [ip4][..udp] [..192.168.10.10][49259] -> [255.255.255.255][...53] 
-         detected: [.....2] [ip4][..udp] [..192.168.10.10][49259] -> [255.255.255.255][...53] [DNS][Network][Acceptable]
+         detected: [.....2] [ip4][..udp] [..192.168.10.10][49259] -> [255.255.255.255][...53] [DNS][Network][Acceptable][cisco-capwap-controller]
       ERROR-EVENT: Unknown packet type
       ERROR-EVENT: Unknown packet type
       ERROR-EVENT: Unknown packet type

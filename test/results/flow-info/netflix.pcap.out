@@ -3,35 +3,35 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [....192.168.1.7][52929] -> [.....52.24.87.6][..443] [MIDSTREAM] 
               new: [.....2] [ip4][..udp] [....192.168.1.7][51543] -> [....192.168.1.1][...53] 
-         detected: [.....2] [ip4][..udp] [....192.168.1.7][51543] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun]
- detection-update: [.....2] [ip4][..udp] [....192.168.1.7][51543] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun]
- detection-update: [.....2] [ip4][..udp] [....192.168.1.7][51543] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun]
+         detected: [.....2] [ip4][..udp] [....192.168.1.7][51543] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun][ios.nccp.netflix.com]
+ detection-update: [.....2] [ip4][..udp] [....192.168.1.7][51543] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun][ios.nccp.netflix.com]
+ detection-update: [.....2] [ip4][..udp] [....192.168.1.7][51543] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun][ios.nccp.netflix.com]
               new: [.....3] [ip4][..udp] [....192.168.1.7][52116] -> [....192.168.1.1][...53] 
-         detected: [.....3] [ip4][..udp] [....192.168.1.7][52116] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun]
- detection-update: [.....3] [ip4][..udp] [....192.168.1.7][52116] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun]
+         detected: [.....3] [ip4][..udp] [....192.168.1.7][52116] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun][ichnaea.us-west-2.prodaa.netflix.com]
+ detection-update: [.....3] [ip4][..udp] [....192.168.1.7][52116] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun][ichnaea.us-west-2.prodaa.netflix.com]
               new: [.....4] [ip4][..tcp] [....192.168.1.7][53105] -> [..54.69.204.241][..443] 
               new: [.....5] [ip4][..tcp] [....192.168.1.7][53114] -> [...54.191.17.51][..443] 
-         detected: [.....4] [ip4][..tcp] [....192.168.1.7][53105] -> [..54.69.204.241][..443] [TLS.NetFlix][Video][Fun]
-         detected: [.....5] [ip4][..tcp] [....192.168.1.7][53114] -> [...54.191.17.51][..443] [TLS.NetFlix][Video][Fun]
+         detected: [.....4] [ip4][..tcp] [....192.168.1.7][53105] -> [..54.69.204.241][..443] [TLS.NetFlix][Video][Fun][ichnaea.netflix.com]
+         detected: [.....5] [ip4][..tcp] [....192.168.1.7][53114] -> [...54.191.17.51][..443] [TLS.NetFlix][Video][Fun][ios.nccp.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [.....6] [ip4][..tcp] [....192.168.1.7][53115] -> [...52.32.196.36][..443] 
               new: [.....7] [ip4][..tcp] [....192.168.1.7][53116] -> [...52.32.196.36][..443] 
- detection-update: [.....4] [ip4][..tcp] [....192.168.1.7][53105] -> [..54.69.204.241][..443] [TLS.NetFlix][Video][Fun]
- detection-update: [.....4] [ip4][..tcp] [....192.168.1.7][53105] -> [..54.69.204.241][..443] [TLS.NetFlix][Video][Fun]
- detection-update: [.....5] [ip4][..tcp] [....192.168.1.7][53114] -> [...54.191.17.51][..443] [TLS.NetFlix][Video][Fun]
+ detection-update: [.....4] [ip4][..tcp] [....192.168.1.7][53105] -> [..54.69.204.241][..443] [TLS.NetFlix][Video][Fun][ichnaea.netflix.com]
+ detection-update: [.....4] [ip4][..tcp] [....192.168.1.7][53105] -> [..54.69.204.241][..443] [TLS.NetFlix][Video][Fun][ichnaea.netflix.com]
+ detection-update: [.....5] [ip4][..tcp] [....192.168.1.7][53114] -> [...54.191.17.51][..443] [TLS.NetFlix][Video][Fun][ios.nccp.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [.....5] [ip4][..tcp] [....192.168.1.7][53114] -> [...54.191.17.51][..443] [TLS.NetFlix][Video][Fun]
+ detection-update: [.....5] [ip4][..tcp] [....192.168.1.7][53114] -> [...54.191.17.51][..443] [TLS.NetFlix][Video][Fun][ios.nccp.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-         detected: [.....6] [ip4][..tcp] [....192.168.1.7][53115] -> [...52.32.196.36][..443] [TLS.NetFlix][Video][Fun]
-         detected: [.....7] [ip4][..tcp] [....192.168.1.7][53116] -> [...52.32.196.36][..443] [TLS.NetFlix][Video][Fun]
- detection-update: [.....6] [ip4][..tcp] [....192.168.1.7][53115] -> [...52.32.196.36][..443] [TLS.NetFlix][Video][Fun]
- detection-update: [.....6] [ip4][..tcp] [....192.168.1.7][53115] -> [...52.32.196.36][..443] [TLS.NetFlix][Video][Fun]
- detection-update: [.....7] [ip4][..tcp] [....192.168.1.7][53116] -> [...52.32.196.36][..443] [TLS.NetFlix][Video][Fun]
- detection-update: [.....7] [ip4][..tcp] [....192.168.1.7][53116] -> [...52.32.196.36][..443] [TLS.NetFlix][Video][Fun]
+         detected: [.....6] [ip4][..tcp] [....192.168.1.7][53115] -> [...52.32.196.36][..443] [TLS.NetFlix][Video][Fun][api-global.netflix.com]
+         detected: [.....7] [ip4][..tcp] [....192.168.1.7][53116] -> [...52.32.196.36][..443] [TLS.NetFlix][Video][Fun][api-global.netflix.com]
+ detection-update: [.....6] [ip4][..tcp] [....192.168.1.7][53115] -> [...52.32.196.36][..443] [TLS.NetFlix][Video][Fun][api-global.netflix.com]
+ detection-update: [.....6] [ip4][..tcp] [....192.168.1.7][53115] -> [...52.32.196.36][..443] [TLS.NetFlix][Video][Fun][api-global.netflix.com]
+ detection-update: [.....7] [ip4][..tcp] [....192.168.1.7][53116] -> [...52.32.196.36][..443] [TLS.NetFlix][Video][Fun][api-global.netflix.com]
+ detection-update: [.....7] [ip4][..tcp] [....192.168.1.7][53116] -> [...52.32.196.36][..443] [TLS.NetFlix][Video][Fun][api-global.netflix.com]
               new: [.....8] [ip4][..tcp] [....192.168.1.7][53117] -> [...52.32.196.36][..443] 
-         detected: [.....8] [ip4][..tcp] [....192.168.1.7][53117] -> [...52.32.196.36][..443] [TLS.NetFlix][Video][Fun]
+         detected: [.....8] [ip4][..tcp] [....192.168.1.7][53117] -> [...52.32.196.36][..443] [TLS.NetFlix][Video][Fun][api-global.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [.....8] [ip4][..tcp] [....192.168.1.7][53117] -> [...52.32.196.36][..443] [TLS.NetFlix][Video][Fun]
+ detection-update: [.....8] [ip4][..tcp] [....192.168.1.7][53117] -> [...52.32.196.36][..443] [TLS.NetFlix][Video][Fun][api-global.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
           analyse: [.....4] [ip4][..tcp] [....192.168.1.7][53105] -> [..54.69.204.241][..443] [TLS.NetFlix][Video][Fun]
                                         min|      max|      avg|   stddev|       variance| entropy
@@ -53,40 +53,40 @@
                    [IATS(ms)....: 45.5,51.8,0.3,66.4,0.5,13.8,75.5,25.6,26.5,15.6,0.3,0.2,61.0,0.4,44.1,5.1,0.2,57.7,67.8,0.2,2.7,131.0,13.8,8.4,10.0,8.1,2.4,2.3,141.1,1.2,199.9]
                    [PKTLENS.....: 64,60,52,284,52,1500,1500,52,245,52,127,58,97,52,103,52,1500,728,52,1500,415,1500,52,1116,52,261,52,101,52,1436,567,52]
                    [ENTROPIES...: 4.6,5.3,5.2,5.9,5.2,7.2,7.3,5.2,7.1,5.1,6.3,5.1,6.0,5.1,6.0,5.2,7.9,7.7,5.2,7.9,7.5,7.9,5.2,7.8,5.1,7.1,5.1,6.1,5.2,7.9,7.6,5.2]
- detection-update: [.....7] [ip4][..tcp] [....192.168.1.7][53116] -> [...52.32.196.36][..443] [TLS.NetFlix][Video][Fun]
+ detection-update: [.....7] [ip4][..tcp] [....192.168.1.7][53116] -> [...52.32.196.36][..443] [TLS.NetFlix][Video][Fun][api-global.netflix.com]
               new: [.....9] [ip4][..tcp] [....192.168.1.7][53118] -> [..54.69.204.241][..443] 
-         detected: [.....9] [ip4][..tcp] [....192.168.1.7][53118] -> [..54.69.204.241][..443] [TLS.NetFlix][Video][Fun]
- detection-update: [.....9] [ip4][..tcp] [....192.168.1.7][53118] -> [..54.69.204.241][..443] [TLS.NetFlix][Video][Fun]
- detection-update: [.....9] [ip4][..tcp] [....192.168.1.7][53118] -> [..54.69.204.241][..443] [TLS.NetFlix][Video][Fun]
+         detected: [.....9] [ip4][..tcp] [....192.168.1.7][53118] -> [..54.69.204.241][..443] [TLS.NetFlix][Video][Fun][ichnaea.netflix.com]
+ detection-update: [.....9] [ip4][..tcp] [....192.168.1.7][53118] -> [..54.69.204.241][..443] [TLS.NetFlix][Video][Fun][ichnaea.netflix.com]
+ detection-update: [.....9] [ip4][..tcp] [....192.168.1.7][53118] -> [..54.69.204.241][..443] [TLS.NetFlix][Video][Fun][ichnaea.netflix.com]
               new: [....10] [ip4][..udp] [....192.168.1.7][53776] -> [239.255.255.250][.1900] 
-         detected: [....10] [ip4][..udp] [....192.168.1.7][53776] -> [239.255.255.250][.1900] [SSDP][System][Acceptable]
+         detected: [....10] [ip4][..udp] [....192.168.1.7][53776] -> [239.255.255.250][.1900] [SSDP][System][Acceptable][239.255.255.250:1900]
               new: [....11] [ip4][..tcp] [....192.168.1.7][53119] -> [..54.69.204.241][..443] 
-         detected: [....11] [ip4][..tcp] [....192.168.1.7][53119] -> [..54.69.204.241][..443] [TLS.NetFlix][Video][Fun]
- detection-update: [....11] [ip4][..tcp] [....192.168.1.7][53119] -> [..54.69.204.241][..443] [TLS.NetFlix][Video][Fun]
- detection-update: [....11] [ip4][..tcp] [....192.168.1.7][53119] -> [..54.69.204.241][..443] [TLS.NetFlix][Video][Fun]
+         detected: [....11] [ip4][..tcp] [....192.168.1.7][53119] -> [..54.69.204.241][..443] [TLS.NetFlix][Video][Fun][ichnaea.netflix.com]
+ detection-update: [....11] [ip4][..tcp] [....192.168.1.7][53119] -> [..54.69.204.241][..443] [TLS.NetFlix][Video][Fun][ichnaea.netflix.com]
+ detection-update: [....11] [ip4][..tcp] [....192.168.1.7][53119] -> [..54.69.204.241][..443] [TLS.NetFlix][Video][Fun][ichnaea.netflix.com]
               new: [....12] [ip4][....2] [....192.168.1.7] -> [239.255.255.250] 
          detected: [....12] [ip4][....2] [....192.168.1.7] -> [239.255.255.250] [IGMP][Network][Acceptable]
               new: [....13] [ip4][..udp] [....192.168.1.7][51949] -> [....192.168.1.1][...53] 
-         detected: [....13] [ip4][..udp] [....192.168.1.7][51949] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun]
- detection-update: [....13] [ip4][..udp] [....192.168.1.7][51949] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun]
+         detected: [....13] [ip4][..udp] [....192.168.1.7][51949] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun][api-global.latency.prodaa.netflix.com]
+ detection-update: [....13] [ip4][..udp] [....192.168.1.7][51949] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun][api-global.latency.prodaa.netflix.com]
               new: [....14] [ip4][..tcp] [....192.168.1.7][53132] -> [...52.89.39.139][..443] 
               new: [....15] [ip4][..tcp] [....192.168.1.7][53133] -> [...52.89.39.139][..443] 
-         detected: [....14] [ip4][..tcp] [....192.168.1.7][53132] -> [...52.89.39.139][..443] [TLS.NetFlix][Video][Fun]
+         detected: [....14] [ip4][..tcp] [....192.168.1.7][53132] -> [...52.89.39.139][..443] [TLS.NetFlix][Video][Fun][api-global.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-         detected: [....15] [ip4][..tcp] [....192.168.1.7][53133] -> [...52.89.39.139][..443] [TLS.NetFlix][Video][Fun]
+         detected: [....15] [ip4][..tcp] [....192.168.1.7][53133] -> [...52.89.39.139][..443] [TLS.NetFlix][Video][Fun][api-global.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [....14] [ip4][..tcp] [....192.168.1.7][53132] -> [...52.89.39.139][..443] [TLS.NetFlix][Video][Fun]
+ detection-update: [....14] [ip4][..tcp] [....192.168.1.7][53132] -> [...52.89.39.139][..443] [TLS.NetFlix][Video][Fun][api-global.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [....14] [ip4][..tcp] [....192.168.1.7][53132] -> [...52.89.39.139][..443] [TLS.NetFlix][Video][Fun]
+ detection-update: [....14] [ip4][..tcp] [....192.168.1.7][53132] -> [...52.89.39.139][..443] [TLS.NetFlix][Video][Fun][api-global.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [....15] [ip4][..tcp] [....192.168.1.7][53133] -> [...52.89.39.139][..443] [TLS.NetFlix][Video][Fun]
+ detection-update: [....15] [ip4][..tcp] [....192.168.1.7][53133] -> [...52.89.39.139][..443] [TLS.NetFlix][Video][Fun][api-global.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [....15] [ip4][..tcp] [....192.168.1.7][53133] -> [...52.89.39.139][..443] [TLS.NetFlix][Video][Fun]
+ detection-update: [....15] [ip4][..tcp] [....192.168.1.7][53133] -> [...52.89.39.139][..443] [TLS.NetFlix][Video][Fun][api-global.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [....16] [ip4][..tcp] [....192.168.1.7][53134] -> [...52.89.39.139][..443] 
-         detected: [....16] [ip4][..tcp] [....192.168.1.7][53134] -> [...52.89.39.139][..443] [TLS.NetFlix][Video][Fun]
+         detected: [....16] [ip4][..tcp] [....192.168.1.7][53134] -> [...52.89.39.139][..443] [TLS.NetFlix][Video][Fun][api-global.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [....16] [ip4][..tcp] [....192.168.1.7][53134] -> [...52.89.39.139][..443] [TLS.NetFlix][Video][Fun]
+ detection-update: [....16] [ip4][..tcp] [....192.168.1.7][53134] -> [...52.89.39.139][..443] [TLS.NetFlix][Video][Fun][api-global.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
           analyse: [....15] [ip4][..tcp] [....192.168.1.7][53133] -> [...52.89.39.139][..443] 
                                         min|      max|      avg|   stddev|       variance| entropy
@@ -98,15 +98,15 @@
                    [IATS(ms)....: 50.8,52.1,3.9,68.9,0.5,14.7,80.5,16.9,16.6,16.1,0.4,0.2,66.7,0.8,50.7,3.2,0.3,61.4,291.2,0.1,350.1,11.8,12.8,24.1,12.5,12.3,13.9,13.7,2.7,13.3,16.3]
                    [PKTLENS.....: 64,60,52,260,52,1500,1500,52,245,52,127,58,97,52,103,52,1500,672,52,1500,1500,52,1500,1402,52,1500,52,237,52,1500,1019,52]
                    [ENTROPIES...: 4.6,5.2,5.1,6.0,5.2,7.3,7.3,5.1,7.0,5.1,6.3,5.0,6.0,5.2,5.9,5.1,7.9,7.7,5.2,7.9,7.9,5.1,7.9,7.9,5.1,7.9,5.0,7.1,5.1,7.9,7.8,5.1]
- detection-update: [....15] [ip4][..tcp] [....192.168.1.7][53133] -> [...52.89.39.139][..443] [TLS.NetFlix][Video][Fun]
+ detection-update: [....15] [ip4][..tcp] [....192.168.1.7][53133] -> [...52.89.39.139][..443] [TLS.NetFlix][Video][Fun][api-global.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [....17] [ip4][..udp] [....192.168.1.7][57719] -> [....192.168.1.1][...53] 
-         detected: [....17] [ip4][..udp] [....192.168.1.7][57719] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun]
- detection-update: [....17] [ip4][..udp] [....192.168.1.7][57719] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun]
+         detected: [....17] [ip4][..udp] [....192.168.1.7][57719] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun][sha2.san.akam.nflximg.net]
+ detection-update: [....17] [ip4][..udp] [....192.168.1.7][57719] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun][sha2.san.akam.nflximg.net]
               new: [....18] [ip4][..tcp] [....192.168.1.7][53141] -> [..104.86.97.179][..443] 
-         detected: [....18] [ip4][..tcp] [....192.168.1.7][53141] -> [..104.86.97.179][..443] [TLS.NetFlix][Video][Fun]
- detection-update: [....18] [ip4][..tcp] [....192.168.1.7][53141] -> [..104.86.97.179][..443] [TLS.NetFlix][Video][Fun]
- detection-update: [....18] [ip4][..tcp] [....192.168.1.7][53141] -> [..104.86.97.179][..443] [TLS.NetFlix][Video][Fun]
+         detected: [....18] [ip4][..tcp] [....192.168.1.7][53141] -> [..104.86.97.179][..443] [TLS.NetFlix][Video][Fun][art-s.nflximg.net]
+ detection-update: [....18] [ip4][..tcp] [....192.168.1.7][53141] -> [..104.86.97.179][..443] [TLS.NetFlix][Video][Fun][art-s.nflximg.net]
+ detection-update: [....18] [ip4][..tcp] [....192.168.1.7][53141] -> [..104.86.97.179][..443] [TLS.NetFlix][Video][Fun][art-s.nflximg.net]
           analyse: [....18] [ip4][..tcp] [....192.168.1.7][53141] -> [..104.86.97.179][..443] [TLS.NetFlix][Video][Fun]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.040|    0.008|    0.010|        109.761|   3.900]
@@ -127,17 +127,17 @@
                    [IATS(ms)....: 49.5,50.9,4.4,54.3,2.4,1.0,53.5,43.0,42.8,12.7,0.3,0.2,57.4,5.1,49.3,4.2,0.4,50.0,75.8,32.1,2.0,0.9,5.1,4.7,0.1,7402.2,0.1,7507.8,0.9,35.7,1.0]
                    [PKTLENS.....: 64,60,52,260,52,1500,1500,52,245,52,127,58,97,52,103,52,1500,661,52,52,184,96,86,52,52,52,1500,789,52,52,1500,474]
                    [ENTROPIES...: 4.6,5.3,5.1,6.0,5.2,7.3,7.3,5.1,7.1,5.1,6.4,5.1,6.0,5.2,6.0,5.2,7.9,7.7,5.2,5.2,6.8,6.1,5.9,5.2,5.2,5.2,7.9,7.7,5.2,5.2,7.9,7.5]
- detection-update: [....14] [ip4][..tcp] [....192.168.1.7][53132] -> [...52.89.39.139][..443] [TLS.NetFlix][Video][Fun]
+ detection-update: [....14] [ip4][..tcp] [....192.168.1.7][53132] -> [...52.89.39.139][..443] [TLS.NetFlix][Video][Fun][api-global.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [....19] [ip4][..udp] [....192.168.1.7][59180] -> [....192.168.1.1][...53] 
-         detected: [....19] [ip4][..udp] [....192.168.1.7][59180] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun]
- detection-update: [....19] [ip4][..udp] [....192.168.1.7][59180] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun]
+         detected: [....19] [ip4][..udp] [....192.168.1.7][59180] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun][artwork.akam.nflximg.net]
+ detection-update: [....19] [ip4][..udp] [....192.168.1.7][59180] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun][artwork.akam.nflximg.net]
               new: [....20] [ip4][..tcp] [....192.168.1.7][53148] -> [..184.25.204.25][...80] 
               new: [....21] [ip4][..tcp] [....192.168.1.7][53149] -> [..184.25.204.25][...80] 
-         detected: [....20] [ip4][..tcp] [....192.168.1.7][53148] -> [..184.25.204.25][...80] [HTTP.NetFlix][Video][Fun]
-         detected: [....21] [ip4][..tcp] [....192.168.1.7][53149] -> [..184.25.204.25][...80] [HTTP.NetFlix][Video][Fun]
+         detected: [....20] [ip4][..tcp] [....192.168.1.7][53148] -> [..184.25.204.25][...80] [HTTP.NetFlix][Video][Fun][art-2.nflximg.net]
+         detected: [....21] [ip4][..tcp] [....192.168.1.7][53149] -> [..184.25.204.25][...80] [HTTP.NetFlix][Video][Fun][art-2.nflximg.net]
               new: [....22] [ip4][..tcp] [....192.168.1.7][53150] -> [..184.25.204.25][...80] 
-         detected: [....22] [ip4][..tcp] [....192.168.1.7][53150] -> [..184.25.204.25][...80] [HTTP.NetFlix][Video][Fun]
+         detected: [....22] [ip4][..tcp] [....192.168.1.7][53150] -> [..184.25.204.25][...80] [HTTP.NetFlix][Video][Fun][art-2.nflximg.net]
           analyse: [....21] [ip4][..tcp] [....192.168.1.7][53149] -> [..184.25.204.25][...80] [HTTP.NetFlix][Video][Fun]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.007|    1.300|    0.097|    0.230|      52797.755|   3.400]
@@ -149,10 +149,10 @@
                    [PKTLENS.....: 64,60,52,297,52,1500,1500,1500,52,52,1500,1500,52,1500,1500,1500,1500,1500,1500,1500,1500,1500,1500,1500,1500,1500,1500,1500,1500,1500,1500,80]
                    [ENTROPIES...: 4.5,5.3,5.1,5.9,5.3,7.3,7.7,7.7,5.2,5.0,7.8,7.8,5.2,7.8,7.8,7.8,7.7,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.9,7.8,7.8,7.8,7.8,7.8,5.4]
               new: [....23] [ip4][..udp] [....192.168.1.7][58102] -> [....192.168.1.1][...53] 
-         detected: [....23] [ip4][..udp] [....192.168.1.7][58102] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun]
- detection-update: [....23] [ip4][..udp] [....192.168.1.7][58102] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun]
+         detected: [....23] [ip4][..udp] [....192.168.1.7][58102] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun][appboot.netflix.com]
+ detection-update: [....23] [ip4][..udp] [....192.168.1.7][58102] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun][appboot.netflix.com]
               new: [....24] [ip4][..tcp] [....192.168.1.7][53151] -> [.54.201.191.132][...80] 
-         detected: [....24] [ip4][..tcp] [....192.168.1.7][53151] -> [.54.201.191.132][...80] [HTTP.NetFlix][Video][Fun]
+         detected: [....24] [ip4][..tcp] [....192.168.1.7][53151] -> [.54.201.191.132][...80] [HTTP.NetFlix][Video][Fun][appboot.netflix.com]
           analyse: [....24] [ip4][..tcp] [....192.168.1.7][53151] -> [.54.201.191.132][...80] [HTTP.NetFlix][Video][Fun]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.187|    0.029|    0.042|       1791.215|   4.000]
@@ -164,12 +164,12 @@
                    [PKTLENS.....: 64,60,52,365,1500,903,52,52,52,714,1500,52,1500,52,1500,52,1500,1500,52,1012,52,1500,1293,52,1500,1500,1500,1500,1500,1500,1500,64]
                    [ENTROPIES...: 4.5,5.3,5.2,5.7,6.0,6.1,5.3,5.3,5.3,6.0,5.7,5.1,6.1,5.2,5.9,5.0,5.8,5.8,5.2,5.8,5.2,5.8,5.8,5.2,5.8,5.8,5.8,5.8,5.8,5.8,5.8,5.2]
               new: [....25] [ip4][..tcp] [....192.168.1.7][53152] -> [...52.89.39.139][...80] 
-         detected: [....25] [ip4][..tcp] [....192.168.1.7][53152] -> [...52.89.39.139][...80] [HTTP.NetFlix][Video][Fun]
- detection-update: [....25] [ip4][..tcp] [....192.168.1.7][53152] -> [...52.89.39.139][...80] [HTTP.NetFlix][Video][Fun]
+         detected: [....25] [ip4][..tcp] [....192.168.1.7][53152] -> [...52.89.39.139][...80] [HTTP.NetFlix][Video][Fun][api-global.netflix.com]
+ detection-update: [....25] [ip4][..tcp] [....192.168.1.7][53152] -> [...52.89.39.139][...80] [HTTP.NetFlix][Video][Fun][api-global.netflix.com]
               new: [....26] [ip4][..udp] [....192.168.1.7][51728] -> [....192.168.1.1][...53] 
-         detected: [....26] [ip4][..udp] [....192.168.1.7][51728] -> [....192.168.1.1][...53] [DNS][Network][Acceptable]
+         detected: [....26] [ip4][..udp] [....192.168.1.7][51728] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][a803.dscg.akamai.net]
               new: [....27] [ip4][..udp] [....192.168.1.7][52347] -> [....192.168.1.1][...53] 
-         detected: [....27] [ip4][..udp] [....192.168.1.7][52347] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun]
+         detected: [....27] [ip4][..udp] [....192.168.1.7][52347] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun][ios.nccp.netflix.com]
           analyse: [....20] [ip4][..tcp] [....192.168.1.7][53148] -> [..184.25.204.25][...80] [HTTP.NetFlix][Video][Fun]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.001|    6.031|    0.428|    1.232|    1516791.529|   2.300]
@@ -180,21 +180,21 @@
                    [IATS(ms)....: 22.4,28.9,26.8,57.7,0.6,13.2,40.1,31.8,42.8,26.5,25.5,50.2,53.2,30.9,25.5,54.9,53.8,27.2,52.7,79.5,53.8,544.7,1520.0,11.6,27.4,27.3,28.8,635.4,3643.8,6030.9,1.1]
                    [PKTLENS.....: 64,60,52,298,52,1500,1500,52,1500,52,1500,1500,52,1500,1500,1500,1500,1500,1500,1500,1500,1500,80,80,80,72,64,52,52,297,1500,1500]
                    [ENTROPIES...: 4.6,5.2,5.1,5.9,5.3,7.5,7.8,5.1,7.8,5.0,7.8,7.8,5.2,7.8,7.8,7.8,7.8,7.8,7.8,7.9,7.9,7.9,5.4,5.2,5.3,5.4,5.3,5.2,5.2,5.8,7.2,7.8]
- detection-update: [....26] [ip4][..udp] [....192.168.1.7][51728] -> [....192.168.1.1][...53] [DNS][Network][Acceptable]
+ detection-update: [....26] [ip4][..udp] [....192.168.1.7][51728] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][a803.dscg.akamai.net]
               new: [....28] [ip4][..tcp] [....192.168.1.7][53153] -> [..184.25.204.24][...80] 
- detection-update: [....27] [ip4][..udp] [....192.168.1.7][52347] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun]
+ detection-update: [....27] [ip4][..udp] [....192.168.1.7][52347] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun][ios.nccp.netflix.com]
               new: [....29] [ip4][..tcp] [....192.168.1.7][53162] -> [...54.191.17.51][..443] 
-         detected: [....28] [ip4][..tcp] [....192.168.1.7][53153] -> [..184.25.204.24][...80] [HTTP.NetFlix][Video][Fun]
-         detected: [....29] [ip4][..tcp] [....192.168.1.7][53162] -> [...54.191.17.51][..443] [TLS.NetFlix][Video][Fun]
+         detected: [....28] [ip4][..tcp] [....192.168.1.7][53153] -> [..184.25.204.24][...80] [HTTP.NetFlix][Video][Fun][tp.akam.nflximg.com]
+         detected: [....29] [ip4][..tcp] [....192.168.1.7][53162] -> [...54.191.17.51][..443] [TLS.NetFlix][Video][Fun][ios.nccp.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [....28] [ip4][..tcp] [....192.168.1.7][53153] -> [..184.25.204.24][...80] [HTTP.NetFlix][Video][Fun]
+ detection-update: [....28] [ip4][..tcp] [....192.168.1.7][53153] -> [..184.25.204.24][...80] [HTTP.NetFlix][Video][Fun][tp.akam.nflximg.com]
                    RISK: HTTP Suspicious Content
- detection-update: [....29] [ip4][..tcp] [....192.168.1.7][53162] -> [...54.191.17.51][..443] [TLS.NetFlix][Video][Fun]
+ detection-update: [....29] [ip4][..tcp] [....192.168.1.7][53162] -> [...54.191.17.51][..443] [TLS.NetFlix][Video][Fun][ios.nccp.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [....29] [ip4][..tcp] [....192.168.1.7][53162] -> [...54.191.17.51][..443] [TLS.NetFlix][Video][Fun]
+ detection-update: [....29] [ip4][..tcp] [....192.168.1.7][53162] -> [...54.191.17.51][..443] [TLS.NetFlix][Video][Fun][ios.nccp.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [....30] [ip4][..tcp] [....192.168.1.7][53163] -> [..23.246.11.145][...80] 
-         detected: [....30] [ip4][..tcp] [....192.168.1.7][53163] -> [..23.246.11.145][...80] [HTTP.NetFlix][Video][Fun]
+         detected: [....30] [ip4][..tcp] [....192.168.1.7][53163] -> [..23.246.11.145][...80] [HTTP.NetFlix][Video][Fun][23.246.11.145]
                    RISK: HTTP Numeric IP Address
           analyse: [....30] [ip4][..tcp] [....192.168.1.7][53163] -> [..23.246.11.145][...80] [HTTP.NetFlix][Video][Fun]
                                         min|      max|      avg|   stddev|       variance| entropy
@@ -207,7 +207,7 @@
                    [PKTLENS.....: 64,60,52,408,567,1500,52,1500,1500,52,1500,52,1500,1500,1500,1500,1500,1500,80,1500,1500,1500,1500,64,52,1500,1500,52,1500,52,1500,1500]
                    [ENTROPIES...: 4.6,5.3,5.1,6.4,5.9,3.6,5.2,2.5,2.5,5.1,2.5,5.1,2.5,2.6,2.6,3.8,3.8,3.8,5.3,3.9,3.5,3.5,3.5,5.1,5.2,3.5,3.5,5.2,3.5,5.0,3.6,3.6]
               new: [....31] [ip4][..tcp] [....192.168.1.7][53164] -> [..23.246.10.139][...80] 
-         detected: [....31] [ip4][..tcp] [....192.168.1.7][53164] -> [..23.246.10.139][...80] [HTTP.NetFlix][Video][Fun]
+         detected: [....31] [ip4][..tcp] [....192.168.1.7][53164] -> [..23.246.10.139][...80] [HTTP.NetFlix][Video][Fun][23.246.10.139]
                    RISK: HTTP Numeric IP Address
           analyse: [....31] [ip4][..tcp] [....192.168.1.7][53164] -> [..23.246.10.139][...80] [HTTP.NetFlix][Video][Fun]
                                         min|      max|      avg|   stddev|       variance| entropy
@@ -220,7 +220,7 @@
                    [PKTLENS.....: 64,60,52,408,568,1500,1500,52,1500,52,1500,52,1500,52,1500,1500,1500,1500,1500,1500,1500,80,1500,80,1500,72,1500,64,52,1500,52,1500]
                    [ENTROPIES...: 4.5,5.2,5.0,6.4,5.8,3.6,2.5,5.1,2.6,5.0,2.5,5.0,2.6,5.0,2.6,2.6,3.3,3.8,3.8,3.8,3.8,5.3,3.9,5.3,3.5,5.3,3.5,5.1,4.9,3.5,4.9,3.6]
               new: [....32] [ip4][..tcp] [....192.168.1.7][53171] -> [...23.246.3.140][...80] 
-         detected: [....32] [ip4][..tcp] [....192.168.1.7][53171] -> [...23.246.3.140][...80] [HTTP.NetFlix][Video][Fun]
+         detected: [....32] [ip4][..tcp] [....192.168.1.7][53171] -> [...23.246.3.140][...80] [HTTP.NetFlix][Video][Fun][23.246.3.140]
                    RISK: HTTP Numeric IP Address
           analyse: [....32] [ip4][..tcp] [....192.168.1.7][53171] -> [...23.246.3.140][...80] [HTTP.NetFlix][Video][Fun]
                                         min|      max|      avg|   stddev|       variance| entropy
@@ -246,34 +246,34 @@
               new: [....34] [ip4][..tcp] [....192.168.1.7][53173] -> [..23.246.11.133][...80] 
               new: [....35] [ip4][..tcp] [....192.168.1.7][53174] -> [..23.246.11.141][...80] 
               new: [....36] [ip4][..tcp] [....192.168.1.7][53175] -> [..23.246.11.141][...80] 
-         detected: [....33] [ip4][..tcp] [....192.168.1.7][53172] -> [..23.246.11.133][...80] [HTTP.NetFlix][Video][Fun]
+         detected: [....33] [ip4][..tcp] [....192.168.1.7][53172] -> [..23.246.11.133][...80] [HTTP.NetFlix][Video][Fun][23.246.11.133]
                    RISK: HTTP Numeric IP Address
               new: [....37] [ip4][..tcp] [....192.168.1.7][53176] -> [..23.246.11.141][...80] 
               new: [....38] [ip4][..tcp] [....192.168.1.7][53177] -> [..23.246.11.141][...80] 
               new: [....39] [ip4][..tcp] [....192.168.1.7][53178] -> [..23.246.11.141][...80] 
               new: [....40] [ip4][..tcp] [....192.168.1.7][53179] -> [..23.246.11.141][...80] 
               new: [....41] [ip4][..tcp] [....192.168.1.7][53180] -> [..23.246.11.141][...80] 
-         detected: [....35] [ip4][..tcp] [....192.168.1.7][53174] -> [..23.246.11.141][...80] [HTTP.NetFlix][Video][Fun]
+         detected: [....35] [ip4][..tcp] [....192.168.1.7][53174] -> [..23.246.11.141][...80] [HTTP.NetFlix][Video][Fun][23.246.11.141]
                    RISK: HTTP Numeric IP Address
-         detected: [....34] [ip4][..tcp] [....192.168.1.7][53173] -> [..23.246.11.133][...80] [HTTP.NetFlix][Video][Fun]
+         detected: [....34] [ip4][..tcp] [....192.168.1.7][53173] -> [..23.246.11.133][...80] [HTTP.NetFlix][Video][Fun][23.246.11.133]
                    RISK: HTTP Numeric IP Address
               new: [....42] [ip4][..tcp] [....192.168.1.7][53181] -> [..23.246.11.141][...80] 
               new: [....43] [ip4][..tcp] [....192.168.1.7][53182] -> [..23.246.11.141][...80] 
-         detected: [....36] [ip4][..tcp] [....192.168.1.7][53175] -> [..23.246.11.141][...80] [HTTP.NetFlix][Video][Fun]
+         detected: [....36] [ip4][..tcp] [....192.168.1.7][53175] -> [..23.246.11.141][...80] [HTTP.NetFlix][Video][Fun][23.246.11.141]
                    RISK: HTTP Numeric IP Address
-         detected: [....40] [ip4][..tcp] [....192.168.1.7][53179] -> [..23.246.11.141][...80] [HTTP.NetFlix][Video][Fun]
+         detected: [....40] [ip4][..tcp] [....192.168.1.7][53179] -> [..23.246.11.141][...80] [HTTP.NetFlix][Video][Fun][23.246.11.141]
                    RISK: HTTP Numeric IP Address
-         detected: [....39] [ip4][..tcp] [....192.168.1.7][53178] -> [..23.246.11.141][...80] [HTTP.NetFlix][Video][Fun]
+         detected: [....39] [ip4][..tcp] [....192.168.1.7][53178] -> [..23.246.11.141][...80] [HTTP.NetFlix][Video][Fun][23.246.11.141]
                    RISK: HTTP Numeric IP Address
-         detected: [....37] [ip4][..tcp] [....192.168.1.7][53176] -> [..23.246.11.141][...80] [HTTP.NetFlix][Video][Fun]
+         detected: [....37] [ip4][..tcp] [....192.168.1.7][53176] -> [..23.246.11.141][...80] [HTTP.NetFlix][Video][Fun][23.246.11.141]
                    RISK: HTTP Numeric IP Address
-         detected: [....38] [ip4][..tcp] [....192.168.1.7][53177] -> [..23.246.11.141][...80] [HTTP.NetFlix][Video][Fun]
+         detected: [....38] [ip4][..tcp] [....192.168.1.7][53177] -> [..23.246.11.141][...80] [HTTP.NetFlix][Video][Fun][23.246.11.141]
                    RISK: HTTP Numeric IP Address
-         detected: [....41] [ip4][..tcp] [....192.168.1.7][53180] -> [..23.246.11.141][...80] [HTTP.NetFlix][Video][Fun]
+         detected: [....41] [ip4][..tcp] [....192.168.1.7][53180] -> [..23.246.11.141][...80] [HTTP.NetFlix][Video][Fun][23.246.11.141]
                    RISK: HTTP Numeric IP Address
-         detected: [....42] [ip4][..tcp] [....192.168.1.7][53181] -> [..23.246.11.141][...80] [HTTP.NetFlix][Video][Fun]
+         detected: [....42] [ip4][..tcp] [....192.168.1.7][53181] -> [..23.246.11.141][...80] [HTTP.NetFlix][Video][Fun][23.246.11.141]
                    RISK: HTTP Numeric IP Address
-         detected: [....43] [ip4][..tcp] [....192.168.1.7][53182] -> [..23.246.11.141][...80] [HTTP.NetFlix][Video][Fun]
+         detected: [....43] [ip4][..tcp] [....192.168.1.7][53182] -> [..23.246.11.141][...80] [HTTP.NetFlix][Video][Fun][23.246.11.141]
                    RISK: HTTP Numeric IP Address
           analyse: [....41] [ip4][..tcp] [....192.168.1.7][53180] -> [..23.246.11.141][...80] [HTTP.NetFlix][Video][Fun]
                                         min|      max|      avg|   stddev|       variance| entropy
@@ -395,18 +395,18 @@
                    [IATS(ms)....: 47.0,48.4,1.7,53.1,2.6,1.0,62.3,11.1,6.0,10.8,0.3,0.3,60.3,3.4,50.1,4.4,0.9,0.6,55.9,50.5,0.3,42.7,4.0,5.1,5.2,0.1,57.7,0.3,30033.4,30086.0,0.8]
                    [PKTLENS.....: 64,60,52,281,52,1500,1500,52,215,52,127,58,97,52,103,52,1402,1500,1500,52,1500,337,52,52,52,993,112,52,52,52,83,52]
                    [ENTROPIES...: 4.5,5.3,5.1,5.8,5.1,7.3,7.3,5.1,6.9,5.1,6.1,5.0,6.0,5.2,6.0,5.2,7.9,7.9,7.9,5.2,7.8,7.4,5.1,5.1,5.1,7.8,6.3,5.2,5.1,5.1,5.8,5.1]
- detection-update: [.....9] [ip4][..tcp] [....192.168.1.7][53118] -> [..54.69.204.241][..443] [TLS.NetFlix][Video][Fun]
+ detection-update: [.....9] [ip4][..tcp] [....192.168.1.7][53118] -> [..54.69.204.241][..443] [TLS.NetFlix][Video][Fun][ichnaea.netflix.com]
               new: [....44] [ip4][..tcp] [....192.168.1.7][53183] -> [...23.246.3.140][...80] 
               new: [....45] [ip4][..tcp] [....192.168.1.7][53184] -> [..23.246.11.141][...80] 
-         detected: [....45] [ip4][..tcp] [....192.168.1.7][53184] -> [..23.246.11.141][...80] [HTTP.NetFlix][Video][Fun]
+         detected: [....45] [ip4][..tcp] [....192.168.1.7][53184] -> [..23.246.11.141][...80] [HTTP.NetFlix][Video][Fun][23.246.11.141]
                    RISK: HTTP Numeric IP Address
-         detected: [....44] [ip4][..tcp] [....192.168.1.7][53183] -> [...23.246.3.140][...80] [HTTP.NetFlix][Video][Fun]
+         detected: [....44] [ip4][..tcp] [....192.168.1.7][53183] -> [...23.246.3.140][...80] [HTTP.NetFlix][Video][Fun][23.246.3.140]
                    RISK: HTTP Numeric IP Address
               new: [....46] [ip4][..tcp] [....192.168.1.7][53193] -> [...54.191.17.51][..443] 
               new: [....47] [ip4][..tcp] [....192.168.1.7][53202] -> [...54.191.17.51][..443] 
               new: [....48] [ip4][..udp] [....192.168.1.7][60962] -> [....192.168.1.1][...53] 
-         detected: [....48] [ip4][..udp] [....192.168.1.7][60962] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun]
- detection-update: [....48] [ip4][..udp] [....192.168.1.7][60962] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun]
+         detected: [....48] [ip4][..udp] [....192.168.1.7][60962] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun][ichnaea.geo.netflix.com]
+ detection-update: [....48] [ip4][..udp] [....192.168.1.7][60962] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun][ichnaea.geo.netflix.com]
               new: [....49] [ip4][..tcp] [....192.168.1.7][53203] -> [...52.37.36.252][..443] 
           analyse: [....11] [ip4][..tcp] [....192.168.1.7][53119] -> [..54.69.204.241][..443] 
                                         min|      max|      avg|   stddev|       variance| entropy
@@ -418,22 +418,22 @@
                    [IATS(ms)....: 44.9,46.3,7.4,58.2,1.8,1.0,55.8,12.1,9.9,9.3,0.3,0.2,60.5,0.1,50.8,11.5,0.5,0.2,72.1,60.9,0.3,50.8,0.4,15.7,16.9,0.1,0.1,82.9,0.3,0.1,30431.5]
                    [PKTLENS.....: 64,60,52,281,52,1500,1500,52,215,52,127,58,97,52,103,52,1402,1500,1500,52,1500,322,52,52,52,993,107,86,52,52,52,52]
                    [ENTROPIES...: 4.6,5.3,5.1,5.8,5.2,7.2,7.3,5.1,7.0,5.2,6.3,5.1,5.9,5.3,6.1,5.2,7.9,7.9,7.9,5.2,7.9,7.3,5.2,5.3,5.3,7.8,6.2,5.9,5.2,5.2,5.2,5.0]
- detection-update: [....11] [ip4][..tcp] [....192.168.1.7][53119] -> [..54.69.204.241][..443] [TLS.NetFlix][Video][Fun]
-         detected: [....46] [ip4][..tcp] [....192.168.1.7][53193] -> [...54.191.17.51][..443] [TLS.NetFlix][Video][Fun]
+ detection-update: [....11] [ip4][..tcp] [....192.168.1.7][53119] -> [..54.69.204.241][..443] [TLS.NetFlix][Video][Fun][ichnaea.netflix.com]
+         detected: [....46] [ip4][..tcp] [....192.168.1.7][53193] -> [...54.191.17.51][..443] [TLS.NetFlix][Video][Fun][ios.nccp.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-         detected: [....47] [ip4][..tcp] [....192.168.1.7][53202] -> [...54.191.17.51][..443] [TLS.NetFlix][Video][Fun]
+         detected: [....47] [ip4][..tcp] [....192.168.1.7][53202] -> [...54.191.17.51][..443] [TLS.NetFlix][Video][Fun][ios.nccp.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-         detected: [....49] [ip4][..tcp] [....192.168.1.7][53203] -> [...52.37.36.252][..443] [TLS.NetFlix][Video][Fun]
- detection-update: [....46] [ip4][..tcp] [....192.168.1.7][53193] -> [...54.191.17.51][..443] [TLS.NetFlix][Video][Fun]
+         detected: [....49] [ip4][..tcp] [....192.168.1.7][53203] -> [...52.37.36.252][..443] [TLS.NetFlix][Video][Fun][ichnaea.netflix.com]
+ detection-update: [....46] [ip4][..tcp] [....192.168.1.7][53193] -> [...54.191.17.51][..443] [TLS.NetFlix][Video][Fun][ios.nccp.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [....47] [ip4][..tcp] [....192.168.1.7][53202] -> [...54.191.17.51][..443] [TLS.NetFlix][Video][Fun]
+ detection-update: [....47] [ip4][..tcp] [....192.168.1.7][53202] -> [...54.191.17.51][..443] [TLS.NetFlix][Video][Fun][ios.nccp.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [....46] [ip4][..tcp] [....192.168.1.7][53193] -> [...54.191.17.51][..443] [TLS.NetFlix][Video][Fun]
+ detection-update: [....46] [ip4][..tcp] [....192.168.1.7][53193] -> [...54.191.17.51][..443] [TLS.NetFlix][Video][Fun][ios.nccp.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [....49] [ip4][..tcp] [....192.168.1.7][53203] -> [...52.37.36.252][..443] [TLS.NetFlix][Video][Fun]
- detection-update: [....47] [ip4][..tcp] [....192.168.1.7][53202] -> [...54.191.17.51][..443] [TLS.NetFlix][Video][Fun]
+ detection-update: [....49] [ip4][..tcp] [....192.168.1.7][53203] -> [...52.37.36.252][..443] [TLS.NetFlix][Video][Fun][ichnaea.netflix.com]
+ detection-update: [....47] [ip4][..tcp] [....192.168.1.7][53202] -> [...54.191.17.51][..443] [TLS.NetFlix][Video][Fun][ios.nccp.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [....49] [ip4][..tcp] [....192.168.1.7][53203] -> [...52.37.36.252][..443] [TLS.NetFlix][Video][Fun]
+ detection-update: [....49] [ip4][..tcp] [....192.168.1.7][53203] -> [...52.37.36.252][..443] [TLS.NetFlix][Video][Fun][ichnaea.netflix.com]
           analyse: [....46] [ip4][..tcp] [....192.168.1.7][53193] -> [...54.191.17.51][..443] 
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.266|    0.048|    0.057|       3291.764|   4.000]
@@ -444,7 +444,7 @@
                    [IATS(ms)....: 53.4,54.6,4.5,73.7,0.5,53.6,123.5,11.6,72.5,62.7,1.5,55.8,52.4,2.2,0.2,0.4,0.2,96.3,96.4,0.2,0.1,0.1,82.6,81.7,0.9,0.2,0.2,38.2,40.6,146.6,266.1]
                    [PKTLENS.....: 64,60,52,569,52,1500,1132,52,178,103,52,1044,106,52,1500,1500,1500,1500,52,1500,1500,1500,1500,52,1500,1500,1500,1500,1500,1500,1500,72]
                    [ENTROPIES...: 4.6,5.3,5.2,4.4,5.2,7.2,7.6,5.2,6.6,6.0,5.2,7.8,6.2,5.2,7.9,7.9,7.9,7.9,5.3,7.9,7.9,7.9,7.9,5.2,7.9,7.9,7.9,7.9,7.9,7.9,7.9,5.4]
- detection-update: [....46] [ip4][..tcp] [....192.168.1.7][53193] -> [...54.191.17.51][..443] [TLS.NetFlix][Video][Fun]
+ detection-update: [....46] [ip4][..tcp] [....192.168.1.7][53193] -> [...54.191.17.51][..443] [TLS.NetFlix][Video][Fun][ios.nccp.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
           analyse: [....47] [ip4][..tcp] [....192.168.1.7][53202] -> [...54.191.17.51][..443] 
                                         min|      max|      avg|   stddev|       variance| entropy
@@ -456,7 +456,7 @@
                    [IATS(ms)....: 50.8,52.1,6.3,61.1,40.7,74.7,170.4,11.8,79.4,67.6,2.0,57.4,55.8,1.7,0.8,0.2,0.2,82.5,79.7,0.2,94.6,127.5,60.6,282.5,10.6,27.6,38.0,39.9,42.9,7.7,0.7]
                    [PKTLENS.....: 64,60,52,569,52,1500,1132,52,178,103,52,1043,106,52,1500,1500,1500,1500,52,1500,387,52,52,1243,52,1500,1486,52,101,52,83,52]
                    [ENTROPIES...: 4.6,5.4,5.2,4.4,5.2,7.2,7.7,5.2,6.5,6.0,5.1,7.8,6.2,5.2,7.9,7.9,7.9,7.9,5.1,7.9,7.4,5.2,5.2,7.8,5.2,7.9,7.9,5.2,6.2,5.2,5.8,5.1]
- detection-update: [....47] [ip4][..tcp] [....192.168.1.7][53202] -> [...54.191.17.51][..443] [TLS.NetFlix][Video][Fun]
+ detection-update: [....47] [ip4][..tcp] [....192.168.1.7][53202] -> [...54.191.17.51][..443] [TLS.NetFlix][Video][Fun][ios.nccp.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
           analyse: [....49] [ip4][..tcp] [....192.168.1.7][53203] -> [...52.37.36.252][..443] 
                                         min|      max|      avg|   stddev|       variance| entropy
@@ -468,7 +468,7 @@
                    [IATS(ms)....: 69.5,71.0,2.6,55.6,49.1,64.4,167.9,331.9,332.6,26.5,0.7,0.7,87.7,0.5,60.7,8.8,7.1,0.4,81.1,62.8,0.8,0.2,0.1,68.1,67.1,0.8,0.2,0.1,111.2,109.6,2.5]
                    [PKTLENS.....: 64,60,52,281,52,1500,1500,52,215,52,127,58,97,52,103,52,1403,1500,1500,52,1500,1500,1500,1500,52,1500,1500,1500,1500,52,1500,1500]
                    [ENTROPIES...: 4.6,5.3,5.2,5.8,5.1,7.2,7.3,5.2,6.9,5.2,6.2,5.1,6.1,5.2,6.0,5.2,7.9,7.9,7.9,5.2,7.9,7.8,7.9,7.9,5.2,7.9,7.9,7.9,7.9,5.2,7.9,7.9]
- detection-update: [....49] [ip4][..tcp] [....192.168.1.7][53203] -> [...52.37.36.252][..443] [TLS.NetFlix][Video][Fun]
+ detection-update: [....49] [ip4][..tcp] [....192.168.1.7][53203] -> [...52.37.36.252][..443] [TLS.NetFlix][Video][Fun][ichnaea.netflix.com]
           analyse: [....45] [ip4][..tcp] [....192.168.1.7][53184] -> [..23.246.11.141][...80] [HTTP.NetFlix][Video][Fun]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.003|    0.472|    0.093|    0.119|      14235.635|   4.100]
@@ -490,7 +490,7 @@
                    [PKTLENS.....: 64,60,52,557,618,951,52,564,628,1500,52,1500,1500,1500,72,64,52,1500,1500,52,1500,52,1500,1500,52,1500,52,1500,64,72,64,52]
                    [ENTROPIES...: 4.5,5.2,5.2,6.2,5.8,3.9,5.1,6.2,5.7,3.2,5.1,7.9,7.8,7.8,5.3,5.2,5.1,7.8,7.8,5.1,7.8,5.0,5.9,7.8,5.1,7.8,5.0,7.8,5.0,5.2,5.1,5.1]
               new: [....50] [ip4][..tcp] [....192.168.1.7][53210] -> [..23.246.11.133][...80] 
-         detected: [....50] [ip4][..tcp] [....192.168.1.7][53210] -> [..23.246.11.133][...80] [HTTP.NetFlix][Video][Fun]
+         detected: [....50] [ip4][..tcp] [....192.168.1.7][53210] -> [..23.246.11.133][...80] [HTTP.NetFlix][Video][Fun][23.246.11.133]
                    RISK: HTTP Numeric IP Address
           analyse: [....50] [ip4][..tcp] [....192.168.1.7][53210] -> [..23.246.11.133][...80] [HTTP.NetFlix][Video][Fun]
                                         min|      max|      avg|   stddev|       variance| entropy
@@ -509,7 +509,7 @@
            update: [....19] [ip4][..udp] [....192.168.1.7][59180] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun]
            update: [....17] [ip4][..udp] [....192.168.1.7][57719] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun]
               new: [....51] [ip4][..tcp] [....192.168.1.7][53217] -> [..23.246.11.141][...80] 
-         detected: [....51] [ip4][..tcp] [....192.168.1.7][53217] -> [..23.246.11.141][...80] [HTTP.NetFlix][Video][Fun]
+         detected: [....51] [ip4][..tcp] [....192.168.1.7][53217] -> [..23.246.11.141][...80] [HTTP.NetFlix][Video][Fun][23.246.11.141]
                    RISK: HTTP Numeric IP Address
           analyse: [....51] [ip4][..tcp] [....192.168.1.7][53217] -> [..23.246.11.141][...80] [HTTP.NetFlix][Video][Fun]
                                         min|      max|      avg|   stddev|       variance| entropy
@@ -526,39 +526,39 @@
            update: [....27] [ip4][..udp] [....192.168.1.7][52347] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun]
            update: [....48] [ip4][..udp] [....192.168.1.7][60962] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun]
               new: [....52] [ip4][..udp] [....192.168.1.7][51622] -> [....192.168.1.1][...53] 
-         detected: [....52] [ip4][..udp] [....192.168.1.7][51622] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun]
- detection-update: [....52] [ip4][..udp] [....192.168.1.7][51622] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun]
- detection-update: [....52] [ip4][..udp] [....192.168.1.7][51622] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun]
+         detected: [....52] [ip4][..udp] [....192.168.1.7][51622] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun][ios.nccp.netflix.com]
+ detection-update: [....52] [ip4][..udp] [....192.168.1.7][51622] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun][ios.nccp.netflix.com]
+ detection-update: [....52] [ip4][..udp] [....192.168.1.7][51622] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun][ios.nccp.netflix.com]
               new: [....53] [ip4][..tcp] [....192.168.1.7][53238] -> [...52.32.22.214][..443] 
-         detected: [....53] [ip4][..tcp] [....192.168.1.7][53238] -> [...52.32.22.214][..443] [TLS.NetFlix][Video][Fun]
+         detected: [....53] [ip4][..tcp] [....192.168.1.7][53238] -> [...52.32.22.214][..443] [TLS.NetFlix][Video][Fun][ios.nccp.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [....53] [ip4][..tcp] [....192.168.1.7][53238] -> [...52.32.22.214][..443] [TLS.NetFlix][Video][Fun]
+ detection-update: [....53] [ip4][..tcp] [....192.168.1.7][53238] -> [...52.32.22.214][..443] [TLS.NetFlix][Video][Fun][ios.nccp.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [....53] [ip4][..tcp] [....192.168.1.7][53238] -> [...52.32.22.214][..443] [TLS.NetFlix][Video][Fun]
+ detection-update: [....53] [ip4][..tcp] [....192.168.1.7][53238] -> [...52.32.22.214][..443] [TLS.NetFlix][Video][Fun][ios.nccp.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [....54] [ip4][..udp] [....192.168.1.7][52095] -> [....192.168.1.1][...53] 
-         detected: [....54] [ip4][..udp] [....192.168.1.7][52095] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun]
- detection-update: [....54] [ip4][..udp] [....192.168.1.7][52095] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun]
+         detected: [....54] [ip4][..udp] [....192.168.1.7][52095] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun][api-global.latency.prodaa.netflix.com]
+ detection-update: [....54] [ip4][..udp] [....192.168.1.7][52095] -> [....192.168.1.1][...53] [DNS.NetFlix][Video][Fun][api-global.latency.prodaa.netflix.com]
               new: [....55] [ip4][..tcp] [....192.168.1.7][53239] -> [.....52.41.30.5][..443] 
               new: [....56] [ip4][..tcp] [....192.168.1.7][53248] -> [...52.32.22.214][..443] 
-         detected: [....55] [ip4][..tcp] [....192.168.1.7][53239] -> [.....52.41.30.5][..443] [TLS.NetFlix][Video][Fun]
-         detected: [....56] [ip4][..tcp] [....192.168.1.7][53248] -> [...52.32.22.214][..443] [TLS.NetFlix][Video][Fun]
+         detected: [....55] [ip4][..tcp] [....192.168.1.7][53239] -> [.....52.41.30.5][..443] [TLS.NetFlix][Video][Fun][api-global.netflix.com]
+         detected: [....56] [ip4][..tcp] [....192.168.1.7][53248] -> [...52.32.22.214][..443] [TLS.NetFlix][Video][Fun][ios.nccp.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [....55] [ip4][..tcp] [....192.168.1.7][53239] -> [.....52.41.30.5][..443] [TLS.NetFlix][Video][Fun]
- detection-update: [....55] [ip4][..tcp] [....192.168.1.7][53239] -> [.....52.41.30.5][..443] [TLS.NetFlix][Video][Fun]
- detection-update: [....56] [ip4][..tcp] [....192.168.1.7][53248] -> [...52.32.22.214][..443] [TLS.NetFlix][Video][Fun]
+ detection-update: [....55] [ip4][..tcp] [....192.168.1.7][53239] -> [.....52.41.30.5][..443] [TLS.NetFlix][Video][Fun][api-global.netflix.com]
+ detection-update: [....55] [ip4][..tcp] [....192.168.1.7][53239] -> [.....52.41.30.5][..443] [TLS.NetFlix][Video][Fun][api-global.netflix.com]
+ detection-update: [....56] [ip4][..tcp] [....192.168.1.7][53248] -> [...52.32.22.214][..443] [TLS.NetFlix][Video][Fun][ios.nccp.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [....56] [ip4][..tcp] [....192.168.1.7][53248] -> [...52.32.22.214][..443] [TLS.NetFlix][Video][Fun]
+ detection-update: [....56] [ip4][..tcp] [....192.168.1.7][53248] -> [...52.32.22.214][..443] [TLS.NetFlix][Video][Fun][ios.nccp.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [....57] [ip4][..tcp] [....192.168.1.7][53249] -> [.....52.41.30.5][..443] 
               new: [....58] [ip4][..tcp] [....192.168.1.7][53250] -> [.....52.41.30.5][..443] 
-         detected: [....57] [ip4][..tcp] [....192.168.1.7][53249] -> [.....52.41.30.5][..443] [TLS.NetFlix][Video][Fun]
+         detected: [....57] [ip4][..tcp] [....192.168.1.7][53249] -> [.....52.41.30.5][..443] [TLS.NetFlix][Video][Fun][api-global.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-         detected: [....58] [ip4][..tcp] [....192.168.1.7][53250] -> [.....52.41.30.5][..443] [TLS.NetFlix][Video][Fun]
+         detected: [....58] [ip4][..tcp] [....192.168.1.7][53250] -> [.....52.41.30.5][..443] [TLS.NetFlix][Video][Fun][api-global.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [....57] [ip4][..tcp] [....192.168.1.7][53249] -> [.....52.41.30.5][..443] [TLS.NetFlix][Video][Fun]
+ detection-update: [....57] [ip4][..tcp] [....192.168.1.7][53249] -> [.....52.41.30.5][..443] [TLS.NetFlix][Video][Fun][api-global.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [....58] [ip4][..tcp] [....192.168.1.7][53250] -> [.....52.41.30.5][..443] [TLS.NetFlix][Video][Fun]
+ detection-update: [....58] [ip4][..tcp] [....192.168.1.7][53250] -> [.....52.41.30.5][..443] [TLS.NetFlix][Video][Fun][api-global.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
           analyse: [....57] [ip4][..tcp] [....192.168.1.7][53249] -> [.....52.41.30.5][..443] [TLS.NetFlix][Video][Fun]
                                         min|      max|      avg|   stddev|       variance| entropy
@@ -571,12 +571,12 @@
                    [PKTLENS.....: 64,60,52,260,52,197,52,58,97,1500,550,52,52,1500,213,1500,52,545,52,991,52,425,52,1292,52,1392,52,646,52,794,52,707]
                    [ENTROPIES...: 4.5,5.3,5.1,6.0,5.2,6.5,5.1,5.2,6.0,7.9,7.6,5.1,5.2,7.9,7.0,7.8,5.1,7.6,5.1,7.8,5.2,7.5,5.1,7.8,5.2,7.9,5.1,7.7,5.1,7.8,5.1,7.7]
               new: [....59] [ip4][..udp] [....192.168.1.7][57093] -> [....192.168.1.1][...53] 
-         detected: [....59] [ip4][..udp] [....192.168.1.7][57093] -> [....192.168.1.1][...53] [DNS][Network][Acceptable]
- detection-update: [....59] [ip4][..udp] [....192.168.1.7][57093] -> [....192.168.1.1][...53] [DNS][Network][Acceptable]
+         detected: [....59] [ip4][..udp] [....192.168.1.7][57093] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][a1907.dscg.akamai.net]
+ detection-update: [....59] [ip4][..udp] [....192.168.1.7][57093] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][a1907.dscg.akamai.net]
               new: [....60] [ip4][..tcp] [....192.168.1.7][53251] -> [..184.25.204.10][...80] 
               new: [....61] [ip4][..tcp] [....192.168.1.7][53252] -> [..184.25.204.10][...80] 
-         detected: [....60] [ip4][..tcp] [....192.168.1.7][53251] -> [..184.25.204.10][...80] [HTTP.NetFlix][Video][Fun]
-         detected: [....61] [ip4][..tcp] [....192.168.1.7][53252] -> [..184.25.204.10][...80] [HTTP.NetFlix][Video][Fun]
+         detected: [....60] [ip4][..tcp] [....192.168.1.7][53251] -> [..184.25.204.10][...80] [HTTP.NetFlix][Video][Fun][art-1.nflximg.net]
+         detected: [....61] [ip4][..tcp] [....192.168.1.7][53252] -> [..184.25.204.10][...80] [HTTP.NetFlix][Video][Fun][art-1.nflximg.net]
           analyse: [....55] [ip4][..tcp] [....192.168.1.7][53239] -> [.....52.41.30.5][..443] 
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.501|    0.064|    0.122|      14766.799|   3.300]
@@ -587,7 +587,7 @@
                    [IATS(ms)....: 58.3,61.2,1.8,70.6,2.9,1.0,71.3,11.6,12.3,13.1,0.1,0.1,65.7,0.8,52.3,3.6,0.2,91.6,51.8,0.3,140.2,3.7,3.4,3.9,5.5,6.4,5.0,437.2,0.9,500.9,291.9]
                    [PKTLENS.....: 64,60,52,569,52,1500,1500,52,245,52,127,58,97,52,103,52,1500,789,52,1500,476,52,448,52,751,52,86,52,1500,672,52,1500]
                    [ENTROPIES...: 4.6,5.3,5.2,4.1,5.0,7.3,7.3,5.2,7.0,5.2,6.3,5.1,6.0,5.1,6.0,5.2,7.9,7.8,5.2,7.9,7.5,5.2,7.6,5.1,7.7,5.2,6.0,5.2,7.9,7.7,5.0,7.9]
- detection-update: [....55] [ip4][..tcp] [....192.168.1.7][53239] -> [.....52.41.30.5][..443] [TLS.NetFlix][Video][Fun]
+ detection-update: [....55] [ip4][..tcp] [....192.168.1.7][53239] -> [.....52.41.30.5][..443] [TLS.NetFlix][Video][Fun][api-global.netflix.com]
           analyse: [....61] [ip4][..tcp] [....192.168.1.7][53252] -> [..184.25.204.10][...80] [HTTP.NetFlix][Video][Fun]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.001|    0.100|    0.036|    0.022|        464.586|   4.700]

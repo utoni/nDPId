@@ -2,10 +2,10 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [.......10.8.0.1][53497] -> [.173.194.119.48][...80] 
-         detected: [.....1] [ip4][..tcp] [.......10.8.0.1][53497] -> [.173.194.119.48][...80] [HTTP.Google][Web][Acceptable]
+         detected: [.....1] [ip4][..tcp] [.......10.8.0.1][53497] -> [.173.194.119.48][...80] [HTTP.Google][Web][Acceptable][www.google.com]
                    RISK: HTTP Suspicious User-Agent
               new: [.....2] [ip4][..tcp] [.......10.8.0.1][40467] -> [.173.194.119.24][...80] 
-         detected: [.....2] [ip4][..tcp] [.......10.8.0.1][40467] -> [.173.194.119.24][...80] [HTTP.Google][Web][Acceptable]
+         detected: [.....2] [ip4][..tcp] [.......10.8.0.1][40467] -> [.173.194.119.24][...80] [HTTP.Google][Web][Acceptable][www.google.com.br]
                    RISK: HTTP Suspicious User-Agent
               new: [.....3] [ip4][..udp] [.......10.8.0.1][52257] -> [200.185.138.146][.6000] 
               new: [.....4] [ip4][..udp] [.......10.8.0.1][48890] -> [200.185.125.226][.6000] 

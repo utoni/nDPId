@@ -2,11 +2,11 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [.....10.10.10.1][..443] -> [....192.168.0.1][58842] 
-         detected: [.....1] [ip4][..tcp] [.....10.10.10.1][..443] -> [....192.168.0.1][58842] [TLS][Web][Safe]
+         detected: [.....1] [ip4][..tcp] [.....10.10.10.1][..443] -> [....192.168.0.1][58842] [TLS][Web][Safe][web.utorrent.com]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [.....1] [ip4][..tcp] [.....10.10.10.1][..443] -> [....192.168.0.1][58842] [TLS][Web][Safe]
+ detection-update: [.....1] [ip4][..tcp] [.....10.10.10.1][..443] -> [....192.168.0.1][58842] [TLS][Web][Safe][web.utorrent.com]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [.....1] [ip4][..tcp] [.....10.10.10.1][..443] -> [....192.168.0.1][58842] [TLS.BitTorrent][Download][Acceptable]
+ detection-update: [.....1] [ip4][..tcp] [.....10.10.10.1][..443] -> [....192.168.0.1][58842] [TLS.BitTorrent][Download][Acceptable][web.utorrent.com]
                    RISK: TLS (probably) Not Carrying HTTPS
              idle: [.....1] [ip4][..tcp] [.....10.10.10.1][..443] -> [....192.168.0.1][58842] 
      DAEMON-EVENT: shutdown

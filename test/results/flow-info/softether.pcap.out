@@ -10,7 +10,7 @@
      DAEMON-EVENT: [Processed: 15 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 1|updates: 3]
               new: [.....2] [ip4][..tcp] [..192.168.2.100][37504] -> [..130.158.75.45][...80] 
-         detected: [.....2] [ip4][..tcp] [..192.168.2.100][37504] -> [..130.158.75.45][...80] [HTTP.Softether][VPN][Acceptable]
+         detected: [.....2] [ip4][..tcp] [..192.168.2.100][37504] -> [..130.158.75.45][...80] [HTTP.Softether][VPN][Acceptable][x0.x0.dev.open.servers.ddns.softether-network.net]
              idle: [.....1] [ip4][..udp] [..192.168.2.100][51381] -> [..130.158.6.113][.5004] [Softether][VPN][Acceptable]
      DAEMON-EVENT: [Processed: 19 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 1|updates: 3]

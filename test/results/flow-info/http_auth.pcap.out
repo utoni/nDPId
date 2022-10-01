@@ -2,7 +2,7 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [....192.168.0.4][54337] -> [192.254.189.169][...80] 
-         detected: [.....1] [ip4][..tcp] [....192.168.0.4][54337] -> [192.254.189.169][...80] [HTTP][Web][Acceptable]
+         detected: [.....1] [ip4][..tcp] [....192.168.0.4][54337] -> [192.254.189.169][...80] [HTTP][Web][Acceptable][browserspy.dk]
           analyse: [.....1] [ip4][..tcp] [....192.168.0.4][54337] -> [192.254.189.169][...80] [HTTP][Web][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    4.862|    0.405|    1.194|    1424465.723|   2.200]

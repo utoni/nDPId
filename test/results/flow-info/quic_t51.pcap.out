@@ -2,7 +2,7 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [187.227.136.152][55356] -> [.211.247.147.90][..443] 
-         detected: [.....1] [ip4][..udp] [187.227.136.152][55356] -> [.211.247.147.90][..443] [QUIC.Google][Web][Acceptable]
+         detected: [.....1] [ip4][..udp] [187.227.136.152][55356] -> [.211.247.147.90][..443] [QUIC.Google][Web][Acceptable][www.google.com]
           analyse: [.....1] [ip4][..udp] [187.227.136.152][55356] -> [.211.247.147.90][..443] [QUIC.Google][Web][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|   19.583|    2.165|    5.210|   27140724.621|   2.500]

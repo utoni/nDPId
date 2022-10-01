@@ -1,8 +1,8 @@
      DAEMON-EVENT: init
               new: [.....1] [ip4][..tcp] [......10.0.2.15][49815] -> [..151.99.72.125][...80] 
-         detected: [.....1] [ip4][..tcp] [......10.0.2.15][49815] -> [..151.99.72.125][...80] [HTTP.WindowsUpdate][SoftwareUpdate][Safe]
+         detected: [.....1] [ip4][..tcp] [......10.0.2.15][49815] -> [..151.99.72.125][...80] [HTTP.WindowsUpdate][SoftwareUpdate][Safe][151.99.72.125]
                    RISK: HTTP Numeric IP Address
- detection-update: [.....1] [ip4][..tcp] [......10.0.2.15][49815] -> [..151.99.72.125][...80] [HTTP.WindowsUpdate][Download][Safe]
+ detection-update: [.....1] [ip4][..tcp] [......10.0.2.15][49815] -> [..151.99.72.125][...80] [HTTP.WindowsUpdate][Download][Safe][151.99.72.125]
                    RISK: Binary App Transfer, HTTP Numeric IP Address
              idle: [.....1] [ip4][..tcp] [......10.0.2.15][49815] -> [..151.99.72.125][...80] [HTTP.WindowsUpdate][Download][Safe]
                    RISK: Binary App Transfer, HTTP Numeric IP Address

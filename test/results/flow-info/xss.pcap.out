@@ -3,10 +3,10 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [..192.168.3.109][53514] -> [..192.168.3.107][...80] 
               new: [.....2] [ip4][..tcp] [..192.168.3.109][53516] -> [..192.168.3.107][...80] 
-         detected: [.....1] [ip4][..tcp] [..192.168.3.109][53514] -> [..192.168.3.107][...80] [HTTP][Web][Acceptable]
+         detected: [.....1] [ip4][..tcp] [..192.168.3.109][53514] -> [..192.168.3.107][...80] [HTTP][Web][Acceptable][192.168.3.107]
                    RISK: HTTP Numeric IP Address
              idle: [.....1] [ip4][..tcp] [..192.168.3.109][53514] -> [..192.168.3.107][...80] [HTTP][Web][Acceptable]
                    RISK: XSS Attack, HTTP Numeric IP Address
-          guessed: [.....2] [ip4][..tcp] [..192.168.3.109][53516] -> [..192.168.3.107][...80] [HTTP][Web][Acceptable]
+          guessed: [.....2] [ip4][..tcp] [..192.168.3.109][53516] -> [..192.168.3.107][...80] [HTTP][Web][Acceptable][]
              idle: [.....2] [ip4][..tcp] [..192.168.3.109][53516] -> [..192.168.3.107][...80] 
      DAEMON-EVENT: shutdown
