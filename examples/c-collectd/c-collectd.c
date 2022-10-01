@@ -1,3 +1,4 @@
+#include <arpa/inet.h>
 #include <errno.h>
 #include <signal.h>
 #include <stdio.h>
@@ -7,6 +8,8 @@
 #include <sys/epoll.h>
 #include <sys/timerfd.h>
 #include <unistd.h>
+
+#include <ndpi_typedefs.h>
 
 #include "nDPIsrvd.h"
 
@@ -28,6 +31,7 @@ struct flow_user_data
 {
     nDPIsrvd_ull last_flow_src_l4_payload_len;
     nDPIsrvd_ull last_flow_dst_l4_payload_len;
+    nDPIsrvd_ull detected_risks;
 };
 
 static int main_thread_shutdown = 0;
@@ -62,6 +66,7 @@ static struct
     uint64_t flow_breed_fun_count;
     uint64_t flow_breed_unsafe_count;
     uint64_t flow_breed_potentially_dangerous_count;
+    uint64_t flow_breed_tracker_ads_count;
     uint64_t flow_breed_dangerous_count;
     uint64_t flow_breed_unrated_count;
     uint64_t flow_breed_unknown_count;
@@ -103,6 +108,9 @@ static struct
     uint64_t flow_l4_udp_count;
     uint64_t flow_l4_icmp_count;
     uint64_t flow_l4_other_count;
+
+    nDPIsrvd_ull flow_risk_count[NDPI_MAX_RISK];
+    nDPIsrvd_ull flow_risk_unknown_count;
 } collectd_statistics = {};
 
 struct json_stat_map
@@ -128,6 +136,7 @@ static struct json_stat_map const breeds_map[] = {{"Safe", &collectd_statistics.
                                                   {"Unsafe", &collectd_statistics.flow_breed_unsafe_count},
                                                   {"Potentially Dangerous",
                                                    &collectd_statistics.flow_breed_potentially_dangerous_count},
+                                                  {"Tracker/Ads", &collectd_statistics.flow_breed_tracker_ads_count},
                                                   {"Dangerous", &collectd_statistics.flow_breed_dangerous_count},
                                                   {"Unrated", &collectd_statistics.flow_breed_unrated_count},
                                                   {NULL, &collectd_statistics.flow_breed_unknown_count}};
@@ -322,26 +331,33 @@ static int parse_options(int argc, char ** argv, struct nDPIsrvd_socket * const 
 }
 
 #ifdef GENERATE_TIMESTAMP
-#define COLLECTD_PUTVAL_N_FORMAT(name) "PUTVAL \"%s/exec-%s/gauge-" #name "\" interval=%llu %llu:%llu\n"
+#define COLLECTD_PUTVAL_PREFIX "PUTVAL \"%s/exec-%s/gauge-"
+#define COLLECTD_PUTVAL_SUFFIX "\" interval=%llu %llu:%llu\n"
 #define COLLECTD_PUTVAL_N(value)                                                                                       \
-    collectd_hostname, instance_name, collectd_interval_ull, (unsigned long long int)now,                              \
+    collectd_hostname, instance_name, #value, collectd_interval_ull, (unsigned long long int)now,                      \
+        (unsigned long long int)collectd_statistics.value
+#define COLLECTD_PUTVAL_N2(name, value)                                                                                \
+    collectd_hostname, instance_name, name, collectd_interval_ull, (unsigned long long int)now,                        \
         (unsigned long long int)collectd_statistics.value
 #else
-#define COLLECTD_PUTVAL_N_FORMAT(name) "PUTVAL \"%s/exec-%s/gauge-" #name "\" interval=%llu N:%llu\n"
+#define COLLECTD_PUTVAL_PREFIX "PUTVAL \"%s/exec-%s/gauge-"
+#define COLLECTD_PUTVAL_SUFFIX "\" interval=%llu N:%llu\n"
 #define COLLECTD_PUTVAL_N(value)                                                                                       \
-    collectd_hostname, instance_name, collectd_interval_ull, (unsigned long long int)collectd_statistics.value
+    collectd_hostname, instance_name, #value, collectd_interval_ull, (unsigned long long int)collectd_statistics.value
+#define COLLECTD_PUTVAL_N2(name, value)                                                                                \
+    collectd_hostname, instance_name, name, collectd_interval_ull, (unsigned long long int)collectd_statistics.value
 #endif
+#define COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_PREFIX "%s" COLLECTD_PUTVAL_SUFFIX
 static void print_collectd_exec_output(void)
 {
+    size_t i;
 #ifdef GENERATE_TIMESTAMP
     time_t now = time(NULL);
 #endif
 
-    printf(COLLECTD_PUTVAL_N_FORMAT(flow_new_count) COLLECTD_PUTVAL_N_FORMAT(flow_end_count)
-               COLLECTD_PUTVAL_N_FORMAT(flow_idle_count) COLLECTD_PUTVAL_N_FORMAT(flow_guessed_count)
-                   COLLECTD_PUTVAL_N_FORMAT(flow_detected_count) COLLECTD_PUTVAL_N_FORMAT(flow_detection_update_count)
-                       COLLECTD_PUTVAL_N_FORMAT(flow_not_detected_count) COLLECTD_PUTVAL_N_FORMAT(flow_src_total_bytes)
-                           COLLECTD_PUTVAL_N_FORMAT(flow_dst_total_bytes) COLLECTD_PUTVAL_N_FORMAT(flow_risky_count),
+    printf(COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT()
+               COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT()
+                   COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT(),
 
            COLLECTD_PUTVAL_N(flow_new_count),
            COLLECTD_PUTVAL_N(flow_end_count),
@@ -354,12 +370,9 @@ static void print_collectd_exec_output(void)
            COLLECTD_PUTVAL_N(flow_dst_total_bytes),
            COLLECTD_PUTVAL_N(flow_risky_count));
 
-    printf(COLLECTD_PUTVAL_N_FORMAT(flow_breed_safe_count) COLLECTD_PUTVAL_N_FORMAT(flow_breed_acceptable_count)
-               COLLECTD_PUTVAL_N_FORMAT(flow_breed_fun_count) COLLECTD_PUTVAL_N_FORMAT(flow_breed_unsafe_count)
-                   COLLECTD_PUTVAL_N_FORMAT(flow_breed_potentially_dangerous_count)
-                       COLLECTD_PUTVAL_N_FORMAT(flow_breed_dangerous_count)
-                           COLLECTD_PUTVAL_N_FORMAT(flow_breed_unrated_count)
-                               COLLECTD_PUTVAL_N_FORMAT(flow_breed_unknown_count),
+    printf(COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT()
+               COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT()
+                   COLLECTD_PUTVAL_N_FORMAT(),
 
            COLLECTD_PUTVAL_N(flow_breed_safe_count),
            COLLECTD_PUTVAL_N(flow_breed_acceptable_count),
@@ -370,30 +383,16 @@ static void print_collectd_exec_output(void)
            COLLECTD_PUTVAL_N(flow_breed_unrated_count),
            COLLECTD_PUTVAL_N(flow_breed_unknown_count));
 
-    printf(COLLECTD_PUTVAL_N_FORMAT(flow_category_media_count) COLLECTD_PUTVAL_N_FORMAT(flow_category_vpn_count)
-               COLLECTD_PUTVAL_N_FORMAT(flow_category_email_count) COLLECTD_PUTVAL_N_FORMAT(
-                   flow_category_data_transfer_count) COLLECTD_PUTVAL_N_FORMAT(flow_category_web_count)
-                   COLLECTD_PUTVAL_N_FORMAT(flow_category_social_network_count) COLLECTD_PUTVAL_N_FORMAT(
-                       flow_category_download_count) COLLECTD_PUTVAL_N_FORMAT(flow_category_game_count)
-                       COLLECTD_PUTVAL_N_FORMAT(flow_category_chat_count) COLLECTD_PUTVAL_N_FORMAT(
-                           flow_category_voip_count) COLLECTD_PUTVAL_N_FORMAT(flow_category_database_count)
-                           COLLECTD_PUTVAL_N_FORMAT(flow_category_remote_access_count) COLLECTD_PUTVAL_N_FORMAT(
-                               flow_category_cloud_count) COLLECTD_PUTVAL_N_FORMAT(flow_category_network_count)
-                               COLLECTD_PUTVAL_N_FORMAT(flow_category_collaborative_count) COLLECTD_PUTVAL_N_FORMAT(
-                                   flow_category_rpc_count) COLLECTD_PUTVAL_N_FORMAT(flow_category_streaming_count)
-                                   COLLECTD_PUTVAL_N_FORMAT(flow_category_system_count)
-                                       COLLECTD_PUTVAL_N_FORMAT(flow_category_software_update_count)
-                                           COLLECTD_PUTVAL_N_FORMAT(flow_category_music_count)
-                                               COLLECTD_PUTVAL_N_FORMAT(flow_category_video_count)
-                                                   COLLECTD_PUTVAL_N_FORMAT(flow_category_shopping_count)
-                                                       COLLECTD_PUTVAL_N_FORMAT(flow_category_productivity_count)
-                                                           COLLECTD_PUTVAL_N_FORMAT(flow_category_file_sharing_count)
-                                                               COLLECTD_PUTVAL_N_FORMAT(flow_category_mining_count)
-                                                                   COLLECTD_PUTVAL_N_FORMAT(flow_category_malware_count)
-                                                                       COLLECTD_PUTVAL_N_FORMAT(
-                                                                           flow_category_advertisment_count)
-                                                                           COLLECTD_PUTVAL_N_FORMAT(
-                                                                               flow_category_unknown_count),
+    printf(COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT()
+               COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT()
+                   COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT()
+                       COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT()
+                           COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT()
+                               COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT()
+                                   COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT()
+                                       COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT()
+                                           COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT()
+                                               COLLECTD_PUTVAL_N_FORMAT(),
 
            COLLECTD_PUTVAL_N(flow_category_media_count),
            COLLECTD_PUTVAL_N(flow_category_vpn_count),
@@ -424,10 +423,9 @@ static void print_collectd_exec_output(void)
            COLLECTD_PUTVAL_N(flow_category_advertisment_count),
            COLLECTD_PUTVAL_N(flow_category_unknown_count));
 
-    printf(COLLECTD_PUTVAL_N_FORMAT(flow_l3_ip4_count) COLLECTD_PUTVAL_N_FORMAT(flow_l3_ip6_count)
-               COLLECTD_PUTVAL_N_FORMAT(flow_l3_other_count) COLLECTD_PUTVAL_N_FORMAT(flow_l4_tcp_count)
-                   COLLECTD_PUTVAL_N_FORMAT(flow_l4_udp_count) COLLECTD_PUTVAL_N_FORMAT(flow_l4_icmp_count)
-                       COLLECTD_PUTVAL_N_FORMAT(flow_l4_other_count),
+    printf(COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT()
+               COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT()
+                   COLLECTD_PUTVAL_N_FORMAT(),
 
            COLLECTD_PUTVAL_N(flow_l3_ip4_count),
            COLLECTD_PUTVAL_N(flow_l3_ip6_count),
@@ -435,7 +433,15 @@ static void print_collectd_exec_output(void)
            COLLECTD_PUTVAL_N(flow_l4_tcp_count),
            COLLECTD_PUTVAL_N(flow_l4_udp_count),
            COLLECTD_PUTVAL_N(flow_l4_icmp_count),
-           COLLECTD_PUTVAL_N(flow_l4_other_count));
+           COLLECTD_PUTVAL_N(flow_l4_other_count),
+           COLLECTD_PUTVAL_N(flow_risk_unknown_count));
+
+    for (i = 0; i < NDPI_MAX_RISK; ++i)
+    {
+        char gauge_name[BUFSIZ];
+        snprintf(gauge_name, sizeof(gauge_name), "flow_risk_%zu_count", i);
+        printf(COLLECTD_PUTVAL_N_FORMAT(), COLLECTD_PUTVAL_N2(gauge_name, flow_risk_count[i]));
+    }
 
     memset(&collectd_statistics, 0, sizeof(collectd_statistics));
 }
@@ -611,11 +617,41 @@ static enum nDPIsrvd_callback_return collectd_json_callback(struct nDPIsrvd_sock
             collectd_statistics.flow_l4_other_count++;
         }
     }
-    else if (TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "detected") != 0)
+    else if (TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "detected") != 0 ||
+             TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "detection-update") != 0 ||
+             TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "update") != 0)
     {
-        if (TOKEN_GET_SZ(sock, "flow_risk") != NULL)
+        struct nDPIsrvd_json_token const * const flow_risk = TOKEN_GET_SZ(sock, "ndpi", "flow_risk");
+        struct nDPIsrvd_json_token const * current = NULL;
+        int next_child_index = -1;
+
+        if (flow_risk != NULL)
         {
-            collectd_statistics.flow_risky_count++;
+            if (flow_user_data->detected_risks == 0)
+            {
+                collectd_statistics.flow_risky_count++;
+            }
+
+            while ((current = nDPIsrvd_get_next_token(sock, flow_risk, &next_child_index)) != NULL)
+            {
+                nDPIsrvd_ull numeric_risk_value = (nDPIsrvd_ull)-1;
+
+                if (str_value_to_ull(TOKEN_GET_KEY(sock, current, NULL), &numeric_risk_value) == CONVERSION_OK)
+                {
+                    if ((flow_user_data->detected_risks & (1 << numeric_risk_value)) == 0)
+                    {
+                        if (numeric_risk_value < NDPI_MAX_RISK)
+                        {
+                            collectd_statistics.flow_risk_count[numeric_risk_value]++;
+                        }
+                        else
+                        {
+                            collectd_statistics.flow_risk_unknown_count++;
+                        }
+                    }
+                    flow_user_data->detected_risks |= (1 << numeric_risk_value);
+                }
+            }
         }
 
         struct nDPIsrvd_json_token const * const breed = TOKEN_GET_SZ(sock, "ndpi", "breed");

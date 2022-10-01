@@ -917,15 +917,20 @@ static inline struct nDPIsrvd_json_token const * nDPIsrvd_get_next_token(struct 
         *next_index = start->token_index;
     }
 
-    for (int i = *next_index + 2; i < sock->jsmn.tokens_found; i += 2)
+    for (int i = *next_index + 1; i < sock->jsmn.tokens_found; ++i)
     {
+        if (sock->jsmn.tokens[i].parent != start->token_index)
+        {
+            continue;
+        }
+
         if (sock->jsmn.tokens[i].type != JSMN_STRING && sock->jsmn.tokens[i].type != JSMN_PRIMITIVE)
         {
             continue;
         }
 
         size_t key_len;
-        char const * const key = nDPIsrvd_jsmn_token_to_string(sock, &sock->jsmn.tokens[i - 1], &key_len);
+        char const * const key = nDPIsrvd_jsmn_token_to_string(sock, &sock->jsmn.tokens[i], &key_len);
         if (key == NULL)
         {
             break;
@@ -1087,7 +1092,7 @@ static inline int nDPIsrvd_walk_tokens(
     jsmntok_t const * const t = &sock->jsmn.tokens[b];
     char const * const js = sock->buffer.json_string;
 
-    if (depth >= 12)
+    if (depth >= 16)
     {
         return 0;
     }

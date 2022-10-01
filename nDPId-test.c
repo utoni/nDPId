@@ -186,7 +186,7 @@ static int setup_pipe(int pipefd[PIPE_FDS])
 
 static void * nDPIsrvd_mainloop_thread(void * const arg)
 {
-    (void)arg;
+    int nDPIsrvd_shutdown = 0;
     int epollfd = create_evq();
     struct remote_desc * mock_json_desc = NULL;
     struct remote_desc * mock_test_desc = NULL;
@@ -242,7 +242,7 @@ static void * nDPIsrvd_mainloop_thread(void * const arg)
 
     pthread_mutex_lock(&nDPIsrvd_start_mutex);
 
-    while (1)
+    while (nDPIsrvd_shutdown == 0)
     {
         int nready = epoll_wait(epollfd, events, events_size, -1);
 
@@ -258,10 +258,13 @@ static void * nDPIsrvd_mainloop_thread(void * const arg)
             {
                 if ((events[i].events & EPOLLHUP) != 0 || (events[i].events & EPOLLERR) != 0)
                 {
-                    goto error;
+                    logger(1, "nDPIsrvd distributor %d connection closed", events[i].data.fd);
+                    handle_data_event(epollfd, &events[i]);
+                    nDPIsrvd_shutdown++;
                 }
                 else if (handle_data_event(epollfd, &events[i]) != 0)
                 {
+                    logger(1, "nDPIsrvd data event handler failed for distributor %d", events[i].data.fd);
                     THREAD_ERROR_GOTO(arg);
                 }
             }
@@ -303,7 +306,7 @@ static enum nDPIsrvd_callback_return update_flow_packets_processed(struct nDPIsr
         TOKEN_GET_SZ(sock, "flow_src_packets_processed"), TOKEN_GET_SZ(sock, "flow_dst_packets_processed")};
 
     flow_stats->total_packets_processed = 0;
-    for (enum nDPId_flow_direction dir = 0; dir < FD_COUNT; ++dir)
+    for (int dir = 0; dir < FD_COUNT; ++dir)
     {
         if (flow_total_packets_processed[dir] != NULL)
         {
@@ -330,7 +333,7 @@ static enum nDPIsrvd_callback_return update_flow_l4_payload_len(struct nDPIsrvd_
         TOKEN_GET_SZ(sock, "flow_src_tot_l4_payload_len"), TOKEN_GET_SZ(sock, "flow_dst_tot_l4_payload_len")};
 
     flow_stats->flow_total_l4_data_len = 0;
-    for (enum nDPId_flow_direction dir = 0; dir < FD_COUNT; ++dir)
+    for (int dir = 0; dir < FD_COUNT; ++dir)
     {
         if (flow_total_l4_payload_len[dir] != NULL)
         {

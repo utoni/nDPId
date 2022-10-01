@@ -444,7 +444,8 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
             flow_user->detected = 0;
             flow_user->detection_finished = 1;
         }
-        else if (TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "detected") != 0)
+        else if (TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "detected") != 0 ||
+                 TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "detection-update") != 0)
         {
             struct nDPIsrvd_json_token const * const flow_risk = TOKEN_GET_SZ(sock, "ndpi", "flow_risk");
             struct nDPIsrvd_json_token const * current = NULL;

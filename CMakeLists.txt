@@ -275,7 +275,8 @@ target_link_libraries(nDPId-test "${STATIC_LIBNDPI_LIB}" "${pkgcfg_lib_NDPI_ndpi
 if(BUILD_EXAMPLES)
     add_executable(nDPIsrvd-collectd examples/c-collectd/c-collectd.c)
     target_compile_definitions(nDPIsrvd-collectd PRIVATE ${NDPID_DEFS})
-    target_include_directories(nDPIsrvd-collectd PRIVATE ${NDPID_DEPS_INC})
+    target_include_directories(nDPIsrvd-collectd PRIVATE
+                               "${STATIC_LIBNDPI_INC}" "${DEFAULT_NDPI_INCLUDE}" "${CMAKE_SOURCE_DIR}" ${NDPID_DEPS_INC})
 
     add_executable(nDPIsrvd-captured examples/c-captured/c-captured.c utils.c)
     if(BUILD_NDPI)
@@ -301,10 +302,10 @@ if(BUILD_EXAMPLES)
     target_include_directories(nDPIsrvd-simple PRIVATE ${NDPID_DEPS_INC})
 
     if(ENABLE_COVERAGE)
-        add_dependencies(coverage nDPIsrvd-collectd nDPIsrvd-captured nDPIsrvd-json-dump nDPIsrvd-simple)
+        add_dependencies(coverage nDPIsrvd-analysed nDPIsrvd-collectd nDPIsrvd-captured nDPIsrvd-json-dump nDPIsrvd-simple)
     endif()
 
-    install(TARGETS nDPIsrvd-collectd nDPIsrvd-captured nDPIsrvd-json-dump nDPIsrvd-simple DESTINATION bin)
+    install(TARGETS nDPIsrvd-analysed nDPIsrvd-collectd nDPIsrvd-captured nDPIsrvd-json-dump nDPIsrvd-simple DESTINATION bin)
     install(FILES examples/c-collectd/plugin_nDPIsrvd.conf examples/c-collectd/rrdgraph.sh DESTINATION share/nDPId/nDPIsrvd-collectd)
     install(DIRECTORY examples/c-collectd/www DESTINATION share/nDPId/nDPIsrvd-collectd)
 endif()

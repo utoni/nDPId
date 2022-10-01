@@ -8,7 +8,8 @@
 #include "utils.h"
 
 #define MIN(a, b) (a > b ? b : a)
-#define BUFFER_REMAINING(siz) (NETWORK_BUFFER_MAX_SIZE - siz)
+#define BUFFER_REMAINING(siz) (NETWORK_BUFFER_MAX_SIZE / 3 - siz)
+typedef char csv_buf_t[(NETWORK_BUFFER_MAX_SIZE / 3) + 1];
 
 static int main_thread_shutdown = 0;
 static struct nDPIsrvd_socket * sock = NULL;
@@ -113,6 +114,8 @@ static void sighandler(int signum)
     struct nDPIsrvd_instance * itmp;
     int verification_failed = 0;
 
+    fflush(csv_fp);
+
     if (signum == SIGUSR1)
     {
         nDPIsrvd_flow_info(sock, nDPIsrvd_write_flow_info_cb, NULL);
@@ -141,10 +144,7 @@ static void sighandler(int signum)
     }
 }
 
-static void csv_buf_add(char csv_buf[NETWORK_BUFFER_MAX_SIZE + 1],
-                        size_t * const csv_buf_used,
-                        char const * const str,
-                        size_t siz_len)
+static void csv_buf_add(csv_buf_t buf, size_t * const csv_buf_used, char const * const str, size_t siz_len)
 {
     size_t len;
 
@@ -155,7 +155,7 @@ static void csv_buf_add(char csv_buf[NETWORK_BUFFER_MAX_SIZE + 1],
         {
             return;
         }
-        strncat(csv_buf, str, len);
+        strncat(buf, str, len);
     }
     else
     {
@@ -165,17 +165,14 @@ static void csv_buf_add(char csv_buf[NETWORK_BUFFER_MAX_SIZE + 1],
     *csv_buf_used += len;
     if (BUFFER_REMAINING(*csv_buf_used) > 0)
     {
-        csv_buf[*csv_buf_used] = ',';
+        buf[*csv_buf_used] = ',';
         (*csv_buf_used)++;
     }
-    csv_buf[*csv_buf_used] = '\0';
+    buf[*csv_buf_used] = '\0';
 }
 
-static int json_value_to_csv(struct nDPIsrvd_socket * const sock,
-                             char csv_buf[NETWORK_BUFFER_MAX_SIZE + 1],
-                             size_t * const csv_buf_used,
-                             char const * const json_key,
-                             ...)
+static int json_value_to_csv(
+    struct nDPIsrvd_socket * const sock, csv_buf_t buf, size_t * const csv_buf_used, char const * const json_key, ...)
 {
     va_list ap;
     nDPIsrvd_hashkey key;
@@ -200,16 +197,13 @@ static int json_value_to_csv(struct nDPIsrvd_socket * const sock,
         ret++;
     }
 
-    csv_buf_add(csv_buf, csv_buf_used, val, val_length);
+    csv_buf_add(buf, csv_buf_used, val, val_length);
 
     return ret;
 }
 
-static int json_array_to_csv(struct nDPIsrvd_socket * const sock,
-                             char csv_buf[NETWORK_BUFFER_MAX_SIZE + 1],
-                             size_t * const csv_buf_used,
-                             char const * const json_key,
-                             ...)
+static int json_array_to_csv(
+    struct nDPIsrvd_socket * const sock, csv_buf_t buf, size_t * const csv_buf_used, char const * const json_key, ...)
 {
     va_list ap;
     nDPIsrvd_hashkey key;
@@ -224,23 +218,23 @@ static int json_array_to_csv(struct nDPIsrvd_socket * const sock,
     if (token == NULL)
     {
         ret++;
-        csv_buf_add(csv_buf, csv_buf_used, NULL, 0);
+        csv_buf_add(buf, csv_buf_used, NULL, 0);
     }
 
     {
         struct nDPIsrvd_json_token next = {};
 
-        csv_buf_add(csv_buf, csv_buf_used, "\"", 1);
-        csv_buf[--(*csv_buf_used)] = '\0';
+        csv_buf_add(buf, csv_buf_used, "\"", 1);
+        buf[--(*csv_buf_used)] = '\0';
         while (nDPIsrvd_token_iterate(sock, token, &next) == 0)
         {
             size_t val_length = 0;
             char const * const val = TOKEN_GET_VALUE(sock, &next, &val_length);
 
-            csv_buf_add(csv_buf, csv_buf_used, val, val_length);
+            csv_buf_add(buf, csv_buf_used, val, val_length);
         }
-        csv_buf[--(*csv_buf_used)] = '\0';
-        csv_buf_add(csv_buf, csv_buf_used, "\"", 1);
+        buf[--(*csv_buf_used)] = '\0';
+        csv_buf_add(buf, csv_buf_used, "\"", 1);
     }
 
     return ret;
@@ -251,7 +245,7 @@ static enum nDPIsrvd_callback_return simple_json_callback(struct nDPIsrvd_socket
                                                           struct nDPIsrvd_thread_data * const thread_data,
                                                           struct nDPIsrvd_flow * const flow)
 {
-    char csv_buf[NETWORK_BUFFER_MAX_SIZE + 1];
+    csv_buf_t buf;
     size_t csv_buf_used = 0;
 
     (void)instance;
@@ -273,88 +267,88 @@ static enum nDPIsrvd_callback_return simple_json_callback(struct nDPIsrvd_socket
         return CALLBACK_ERROR;
     }
 
-    csv_buf[0] = '\0';
+    buf[0] = '\0';
 
-    json_value_to_csv(sock, csv_buf, &csv_buf_used, "flow_datalink", NULL);
-    json_value_to_csv(sock, csv_buf, &csv_buf_used, "l3_proto", NULL);
-    json_value_to_csv(sock, csv_buf, &csv_buf_used, "src_ip", NULL);
-    json_value_to_csv(sock, csv_buf, &csv_buf_used, "dst_ip", NULL);
-    json_value_to_csv(sock, csv_buf, &csv_buf_used, "l4_proto", NULL);
-    json_value_to_csv(sock, csv_buf, &csv_buf_used, "src_port", NULL);
-    json_value_to_csv(sock, csv_buf, &csv_buf_used, "dst_port", NULL);
+    json_value_to_csv(sock, buf, &csv_buf_used, "flow_datalink", NULL);
+    json_value_to_csv(sock, buf, &csv_buf_used, "l3_proto", NULL);
+    json_value_to_csv(sock, buf, &csv_buf_used, "src_ip", NULL);
+    json_value_to_csv(sock, buf, &csv_buf_used, "dst_ip", NULL);
+    json_value_to_csv(sock, buf, &csv_buf_used, "l4_proto", NULL);
+    json_value_to_csv(sock, buf, &csv_buf_used, "src_port", NULL);
+    json_value_to_csv(sock, buf, &csv_buf_used, "dst_port", NULL);
 
-    if (json_value_to_csv(sock, csv_buf, &csv_buf_used, "flow_state", NULL) != 0 ||
-        json_value_to_csv(sock, csv_buf, &csv_buf_used, "flow_src_packets_processed", NULL) != 0 ||
-        json_value_to_csv(sock, csv_buf, &csv_buf_used, "flow_dst_packets_processed", NULL) != 0 ||
-        json_value_to_csv(sock, csv_buf, &csv_buf_used, "flow_first_seen", NULL) != 0 ||
-        json_value_to_csv(sock, csv_buf, &csv_buf_used, "flow_src_last_pkt_time", NULL) != 0 ||
-        json_value_to_csv(sock, csv_buf, &csv_buf_used, "flow_dst_last_pkt_time", NULL) != 0 ||
-        json_value_to_csv(sock, csv_buf, &csv_buf_used, "flow_src_min_l4_payload_len", NULL) != 0 ||
-        json_value_to_csv(sock, csv_buf, &csv_buf_used, "flow_dst_min_l4_payload_len", NULL) != 0 ||
-        json_value_to_csv(sock, csv_buf, &csv_buf_used, "flow_src_max_l4_payload_len", NULL) != 0 ||
-        json_value_to_csv(sock, csv_buf, &csv_buf_used, "flow_dst_max_l4_payload_len", NULL) != 0 ||
-        json_value_to_csv(sock, csv_buf, &csv_buf_used, "flow_src_tot_l4_payload_len", NULL) != 0 ||
-        json_value_to_csv(sock, csv_buf, &csv_buf_used, "flow_dst_tot_l4_payload_len", NULL) != 0 ||
-        json_value_to_csv(sock, csv_buf, &csv_buf_used, "midstream", NULL) != 0)
+    if (json_value_to_csv(sock, buf, &csv_buf_used, "flow_state", NULL) != 0 ||
+        json_value_to_csv(sock, buf, &csv_buf_used, "flow_src_packets_processed", NULL) != 0 ||
+        json_value_to_csv(sock, buf, &csv_buf_used, "flow_dst_packets_processed", NULL) != 0 ||
+        json_value_to_csv(sock, buf, &csv_buf_used, "flow_first_seen", NULL) != 0 ||
+        json_value_to_csv(sock, buf, &csv_buf_used, "flow_src_last_pkt_time", NULL) != 0 ||
+        json_value_to_csv(sock, buf, &csv_buf_used, "flow_dst_last_pkt_time", NULL) != 0 ||
+        json_value_to_csv(sock, buf, &csv_buf_used, "flow_src_min_l4_payload_len", NULL) != 0 ||
+        json_value_to_csv(sock, buf, &csv_buf_used, "flow_dst_min_l4_payload_len", NULL) != 0 ||
+        json_value_to_csv(sock, buf, &csv_buf_used, "flow_src_max_l4_payload_len", NULL) != 0 ||
+        json_value_to_csv(sock, buf, &csv_buf_used, "flow_dst_max_l4_payload_len", NULL) != 0 ||
+        json_value_to_csv(sock, buf, &csv_buf_used, "flow_src_tot_l4_payload_len", NULL) != 0 ||
+        json_value_to_csv(sock, buf, &csv_buf_used, "flow_dst_tot_l4_payload_len", NULL) != 0 ||
+        json_value_to_csv(sock, buf, &csv_buf_used, "midstream", NULL) != 0)
     {
         return CALLBACK_ERROR;
     }
 
-    if (json_value_to_csv(sock, csv_buf, &csv_buf_used, "data_analysis", "iat", "min", NULL) != 0 ||
-        json_value_to_csv(sock, csv_buf, &csv_buf_used, "data_analysis", "iat", "avg", NULL) != 0 ||
-        json_value_to_csv(sock, csv_buf, &csv_buf_used, "data_analysis", "iat", "max", NULL) != 0 ||
-        json_value_to_csv(sock, csv_buf, &csv_buf_used, "data_analysis", "iat", "stddev", NULL) != 0 ||
-        json_value_to_csv(sock, csv_buf, &csv_buf_used, "data_analysis", "iat", "var", NULL) != 0 ||
-        json_value_to_csv(sock, csv_buf, &csv_buf_used, "data_analysis", "iat", "ent", NULL) != 0)
+    if (json_value_to_csv(sock, buf, &csv_buf_used, "data_analysis", "iat", "min", NULL) != 0 ||
+        json_value_to_csv(sock, buf, &csv_buf_used, "data_analysis", "iat", "avg", NULL) != 0 ||
+        json_value_to_csv(sock, buf, &csv_buf_used, "data_analysis", "iat", "max", NULL) != 0 ||
+        json_value_to_csv(sock, buf, &csv_buf_used, "data_analysis", "iat", "stddev", NULL) != 0 ||
+        json_value_to_csv(sock, buf, &csv_buf_used, "data_analysis", "iat", "var", NULL) != 0 ||
+        json_value_to_csv(sock, buf, &csv_buf_used, "data_analysis", "iat", "ent", NULL) != 0)
     {
         return CALLBACK_ERROR;
     }
 
-    if (json_array_to_csv(sock, csv_buf, &csv_buf_used, "data_analysis", "iat", "data", NULL) != 0)
+    if (json_array_to_csv(sock, buf, &csv_buf_used, "data_analysis", "iat", "data", NULL) != 0)
     {
         return CALLBACK_ERROR;
     }
 
-    if (json_value_to_csv(sock, csv_buf, &csv_buf_used, "data_analysis", "pktlen", "min", NULL) != 0 ||
-        json_value_to_csv(sock, csv_buf, &csv_buf_used, "data_analysis", "pktlen", "avg", NULL) != 0 ||
-        json_value_to_csv(sock, csv_buf, &csv_buf_used, "data_analysis", "pktlen", "max", NULL) != 0 ||
-        json_value_to_csv(sock, csv_buf, &csv_buf_used, "data_analysis", "pktlen", "stddev", NULL) != 0 ||
-        json_value_to_csv(sock, csv_buf, &csv_buf_used, "data_analysis", "pktlen", "var", NULL) != 0 ||
-        json_value_to_csv(sock, csv_buf, &csv_buf_used, "data_analysis", "pktlen", "ent", NULL) != 0)
+    if (json_value_to_csv(sock, buf, &csv_buf_used, "data_analysis", "pktlen", "min", NULL) != 0 ||
+        json_value_to_csv(sock, buf, &csv_buf_used, "data_analysis", "pktlen", "avg", NULL) != 0 ||
+        json_value_to_csv(sock, buf, &csv_buf_used, "data_analysis", "pktlen", "max", NULL) != 0 ||
+        json_value_to_csv(sock, buf, &csv_buf_used, "data_analysis", "pktlen", "stddev", NULL) != 0 ||
+        json_value_to_csv(sock, buf, &csv_buf_used, "data_analysis", "pktlen", "var", NULL) != 0 ||
+        json_value_to_csv(sock, buf, &csv_buf_used, "data_analysis", "pktlen", "ent", NULL) != 0)
     {
         return CALLBACK_ERROR;
     }
 
-    if (json_array_to_csv(sock, csv_buf, &csv_buf_used, "data_analysis", "pktlen", "data", NULL) != 0)
+    if (json_array_to_csv(sock, buf, &csv_buf_used, "data_analysis", "pktlen", "data", NULL) != 0)
     {
         return CALLBACK_ERROR;
     }
 
-    if (json_array_to_csv(sock, csv_buf, &csv_buf_used, "data_analysis", "bins", "c_to_s", NULL) != 0)
+    if (json_array_to_csv(sock, buf, &csv_buf_used, "data_analysis", "bins", "c_to_s", NULL) != 0)
     {
         return CALLBACK_ERROR;
     }
 
-    if (json_array_to_csv(sock, csv_buf, &csv_buf_used, "data_analysis", "bins", "s_to_c", NULL) != 0)
+    if (json_array_to_csv(sock, buf, &csv_buf_used, "data_analysis", "bins", "s_to_c", NULL) != 0)
     {
         return CALLBACK_ERROR;
     }
 
-    if (json_array_to_csv(sock, csv_buf, &csv_buf_used, "data_analysis", "directions", NULL) != 0)
+    if (json_array_to_csv(sock, buf, &csv_buf_used, "data_analysis", "directions", NULL) != 0)
     {
         return CALLBACK_ERROR;
     }
 
-    if (json_array_to_csv(sock, csv_buf, &csv_buf_used, "data_analysis", "entropies", NULL) != 0)
+    if (json_array_to_csv(sock, buf, &csv_buf_used, "data_analysis", "entropies", NULL) != 0)
     {
         return CALLBACK_ERROR;
     }
 
-    json_value_to_csv(sock, csv_buf, &csv_buf_used, "ndpi", "proto", NULL);
-    json_value_to_csv(sock, csv_buf, &csv_buf_used, "ndpi", "proto_id", NULL);
-    json_value_to_csv(sock, csv_buf, &csv_buf_used, "ndpi", "encrypted", NULL);
-    json_value_to_csv(sock, csv_buf, &csv_buf_used, "ndpi", "breed", NULL);
-    json_value_to_csv(sock, csv_buf, &csv_buf_used, "ndpi", "category", NULL);
+    json_value_to_csv(sock, buf, &csv_buf_used, "ndpi", "proto", NULL);
+    json_value_to_csv(sock, buf, &csv_buf_used, "ndpi", "proto_id", NULL);
+    json_value_to_csv(sock, buf, &csv_buf_used, "ndpi", "encrypted", NULL);
+    json_value_to_csv(sock, buf, &csv_buf_used, "ndpi", "breed", NULL);
+    json_value_to_csv(sock, buf, &csv_buf_used, "ndpi", "category", NULL);
     {
         struct nDPIsrvd_json_token const * const token = TOKEN_GET_SZ(sock, "ndpi", "confidence");
         struct nDPIsrvd_json_token const * current = NULL;
@@ -362,8 +356,8 @@ static enum nDPIsrvd_callback_return simple_json_callback(struct nDPIsrvd_socket
 
         if (token == NULL)
         {
-            csv_buf_add(csv_buf, &csv_buf_used, NULL, 0);
-            csv_buf_add(csv_buf, &csv_buf_used, NULL, 0);
+            csv_buf_add(buf, &csv_buf_used, NULL, 0);
+            csv_buf_add(buf, &csv_buf_used, NULL, 0);
         }
         else
         {
@@ -373,18 +367,47 @@ static enum nDPIsrvd_callback_return simple_json_callback(struct nDPIsrvd_socket
                 char const * const key = TOKEN_GET_KEY(sock, current, &key_length);
                 char const * const value = TOKEN_GET_VALUE(sock, current, &value_length);
 
-                csv_buf_add(csv_buf, &csv_buf_used, key, key_length);
-                csv_buf_add(csv_buf, &csv_buf_used, value, value_length);
+                csv_buf_add(buf, &csv_buf_used, key, key_length);
+                csv_buf_add(buf, &csv_buf_used, value, value_length);
             }
         }
     }
-
-    if (csv_buf_used > 0 && csv_buf[csv_buf_used - 1] == ',')
     {
-        csv_buf[--csv_buf_used] = '\0';
+        csv_buf_t risks;
+        size_t csv_risks_used = 0;
+        struct nDPIsrvd_json_token const * const flow_risk = TOKEN_GET_SZ(sock, "ndpi", "flow_risk");
+        struct nDPIsrvd_json_token const * current = NULL;
+        int next_child_index = -1;
+
+        risks[csv_risks_used++] = '"';
+        risks[csv_risks_used] = '\0';
+        if (flow_risk != NULL)
+        {
+            while ((current = nDPIsrvd_get_next_token(sock, flow_risk, &next_child_index)) != NULL)
+            {
+                size_t key_length = 0;
+                char const * const key = TOKEN_GET_KEY(sock, current, &key_length);
+
+                csv_buf_add(risks, &csv_risks_used, key, key_length);
+            }
+        }
+        if (csv_risks_used > 1)
+        {
+            risks[csv_risks_used - 1] = '"';
+        }
+        else if (BUFFER_REMAINING(csv_risks_used) > 0)
+        {
+            risks[csv_risks_used++] = '"';
+        }
+        csv_buf_add(buf, &csv_buf_used, risks, csv_risks_used);
     }
 
-    fprintf(csv_fp, "%.*s\n", (int)csv_buf_used, csv_buf);
+    if (csv_buf_used > 0 && buf[csv_buf_used - 1] == ',')
+    {
+        buf[--csv_buf_used] = '\0';
+    }
+
+    fprintf(csv_fp, "%.*s\n", (int)csv_buf_used, buf);
 
     return CALLBACK_OK;
 }
@@ -458,7 +481,7 @@ static int parse_options(int argc, char ** argv)
     csv_fp = fopen(csv_outfile, "a+");
     if (csv_fp == NULL)
     {
-        fprintf(stderr, "%s: Could not open file `%s' for appending\n", argv[0], csv_outfile);
+        fprintf(stderr, "%s: Could not open file `%s' for appending: %s\n", argv[0], csv_outfile, strerror(errno));
         return 1;
     }
 
@@ -471,7 +494,7 @@ static int parse_options(int argc, char ** argv)
                 "flow_src_tot_l4_payload_len,flow_dst_tot_l4_payload_len,midstream,iat_min,iat_avg,iat_max,iat_stddev,"
                 "iat_var,iat_ent,iat_data,pktlen_min,pktlen_avg,pktlen_max,pktlen_stddev,pktlen_var,pktlen_ent,pktlen_"
                 "data,bins_c_to_s,bins_s_to_c,directions,entropies,proto,proto_id,encrypted,breed,category,"
-                "confidence_id,confidence\n");
+                "confidence_id,confidence,risks\n");
     }
 
     if (serv_optarg == NULL)

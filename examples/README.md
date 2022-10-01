@@ -3,6 +3,11 @@
 Some ready-2-use/ready-2-extend examples/utils.
 All examples are prefixed with their used LANG.
 
+## c-analysed
+
+A feature extractor useful for ML/DL use cases.
+It generates CSV files from flow "analyse" events.
+
 ## c-captured
 
 A capture daemon suitable for low-resource devices.
