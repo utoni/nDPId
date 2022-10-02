@@ -112,11 +112,18 @@ if(ENABLE_COVERAGE)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fprofile-arcs -ftest-coverage")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
     set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} --coverage")
-    add_custom_target(coverage)
+    add_custom_target(coverage DEPENDS "${CMAKE_BINARY_DIR}/coverage_report/nDPId/index.html")
     add_custom_command(
-        TARGET  coverage
-        COMMAND "${CMAKE_SOURCE_DIR}/scripts/code-coverage.sh"
-        DEPENDS nDPId nDPIsrvd nDPId-test
+        OUTPUT "${CMAKE_BINARY_DIR}/coverage_report/nDPId/index.html"
+        COMMAND lcov --directory "${CMAKE_BINARY_DIR}" --directory "${CMAKE_SOURCE_DIR}/libnDPI" --capture --output-file "${CMAKE_BINARY_DIR}/lcov.info"
+        COMMAND genhtml -o "${CMAKE_BINARY_DIR}/coverage_report" "${CMAKE_BINARY_DIR}/lcov.info"
+        DEPENDS nDPId nDPId-test nDPIsrvd
+    )
+    add_custom_target(coverage-view)
+    add_custom_command(
+        TARGET  coverage-view
+        COMMAND cd "${CMAKE_BINARY_DIR}/coverage_report" && python3 -m http.server
+        DEPENDS "${CMAKE_BINARY_DIR}/coverage_report/nDPId/index.html"
     )
 endif()
 if(ENABLE_SANITIZER)
@@ -130,16 +137,20 @@ if(ENABLE_ZLIB)
     pkg_check_modules(ZLIB REQUIRED zlib)
 endif()
 if(NDPI_WITH_GCRYPT)
-    message(STATUS "Enable GCRYPT")
+    message(STATUS "nDPI: Enable GCRYPT")
     set(NDPI_ADDITIONAL_ARGS "${NDPI_ADDITIONAL_ARGS} --with-local-libgcrypt")
 endif()
 if(NDPI_WITH_PCRE)
-    message(STATUS "Enable PCRE")
+    message(STATUS "nDPI: Enable PCRE")
     set(NDPI_ADDITIONAL_ARGS "${NDPI_ADDITIONAL_ARGS} --with-pcre")
 endif()
 if(NDPI_WITH_MAXMINDDB)
-    message(STATUS "Enable MAXMINDDB")
+    message(STATUS "nDPI: Enable MAXMINDDB")
     set(NDPI_ADDITIONAL_ARGS "${NDPI_ADDITIONAL_ARGS} --with-maxminddb")
+endif()
+if(ENABLE_COVERAGE)
+    message(STATUS "nDPI: Enable Coverage")
+    set(NDPI_ADDITIONAL_ARGS "${NDPI_ADDITIONAL_ARGS} --enable-code-coverage")
 endif()
 
 execute_process(
@@ -274,6 +285,9 @@ target_link_libraries(nDPId-test "${STATIC_LIBNDPI_LIB}" "${pkgcfg_lib_NDPI_ndpi
 
 if(BUILD_EXAMPLES)
     add_executable(nDPIsrvd-collectd examples/c-collectd/c-collectd.c)
+    if(BUILD_NDPI)
+        add_dependencies(nDPIsrvd-collectd libnDPI)
+    endif()
     target_compile_definitions(nDPIsrvd-collectd PRIVATE ${NDPID_DEFS})
     target_include_directories(nDPIsrvd-collectd PRIVATE
                                "${STATIC_LIBNDPI_INC}" "${DEFAULT_NDPI_INCLUDE}" "${CMAKE_SOURCE_DIR}" ${NDPID_DEPS_INC})
