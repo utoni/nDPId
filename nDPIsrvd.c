@@ -232,6 +232,7 @@ static int add_to_additional_write_buffers(struct remote_desc * const remote,
                             "Buffer limit for",
                             "for reached, remote too slow: %u lines",
                             utarray_len(additional_write_buffers));
+            logger_nDPIsrvd(remote, "%s", "You can try to increase buffer limits with `-C'.");
             return -1;
         }
         else
@@ -719,6 +720,8 @@ static void free_remotes(int epollfd)
     }
     nDPIsrvd_free(remotes.desc);
     remotes.desc = NULL;
+    remotes.desc_used = 0;
+    remotes.desc_size = 0;
 }
 
 static int add_event(int epollfd, int events, int fd, void * ptr)
@@ -849,7 +852,7 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
                         "Usage: %s [-l] [-L logfile] [-c path-to-unix-sock] [-d] [-p pidfile]\n"
                         "\t[-s path-to-distributor-unix-socket] [-S distributor-host:port]\n"
                         "\t[-m max-remote-descriptors] [-u user] [-g group]\n"
-                        "\t[-C max-buffered-collector-json-lines] [-D]\n"
+                        "\t[-C max-buffered-json-lines] [-D]\n"
                         "\t[-v] [-h]\n",
                         argv[0]);
                 return 1;
@@ -1428,7 +1431,7 @@ static int mainloop(int epollfd)
                 if (fdsi.ssi_signo == SIGINT || fdsi.ssi_signo == SIGTERM || fdsi.ssi_signo == SIGQUIT)
                 {
                     nDPIsrvd_main_thread_shutdown = 1;
-                    break;
+                    continue;
                 }
             }
             else
