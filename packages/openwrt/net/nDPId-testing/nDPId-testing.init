@@ -5,7 +5,16 @@ STOP=80
 
 USE_PROCD=1
 
-NDPID_BIN="/usr/sbin/nDPId-testing"
+NDPID_SUFFIX="-testing"
+NDPISRVD_NAME="nDPIsrvd${NDPID_SUFFIX}"
+NDPISRVD_BIN="/usr/bin/${NDPISRVD_NAME}"
+NDPISRVD_ANALYSED_NAME="nDPIsrvd${NDPID_SUFFIX}-analysed"
+NDPISRVD_ANALYSED_BIN="/usr/bin/${NDPISRVD_ANALYSED_NAME}"
+NDPISRVD_CAPTURED_NAME="nDPIsrvd${NDPID_SUFFIX}-captured"
+NDPISRVD_CAPTURED_BIN="/usr/bin/${NDPISRVD_CAPTURED_NAME}"
+NDPID_NAME="nDPId${NDPID_SUFFIX}"
+NDPID_BIN="/usr/sbin/${NDPID_NAME}"
+DISTRIBUTOR_SOCKET="/var/run/${NDPID_NAME}/nDPIsrvd-distributor.sock"
 
 print_arg_bool() {
 	local cfg="$1"
@@ -31,15 +40,29 @@ print_arg_str() {
 	fi
 }
 
-start_instance() {
+start_ndpid_instance() {
 	local cfg=$1
 	local aux
 	local args
+	local netif
+	local sink
 
 	config_get_bool aux "$cfg" 'enabled' '0'
-	#[ "$aux" = 0 ] && return 1
+	if [ "$aux" -eq 0 ]; then
+		return 1
+	fi
 
 	# General
+	config_get_bool netif "$cfg" 'interface'
+	if [ -z "$netif" ]; then
+		netif='default'
+	fi
+
+	config_get sink "$cfg" 'udp_connect'
+	if [ -z "$sink" ]; then
+		sink="/var/run/${NDPID_NAME}/nDPIsrvd-collector.sock"
+	fi
+
 	args="$(print_arg_str "$cfg" 'interface' '-i')"
 	args="$args$(print_arg_bool "$cfg" 'internal_only' '-I')"
 	args="$args$(print_arg_bool "$cfg" 'external_only' '-E')"
@@ -70,8 +93,9 @@ start_instance() {
 	args="$args$(print_arg_str "$cfg" 'max_packets_per_flow_to_analyse' '-omax-packets-per-flow-to-analyse=')"
 
 	procd_open_instance
-	procd_set_param command $NDPID_BIN
-	procd_append_param command $args
+	procd_set_param command ${NDPID_BIN}
+	procd_set_param pidfile "/var/run/${NDPID_NAME}/nDPId-${netif}.pid"
+	procd_append_param command -undpi -gndpi -p"/var/run/${NDPID_NAME}/nDPId-${netif}.pid" -c"${sink}" $args
 
 	config_get_bool aux "$cfg" 'respawn' '0'
 	[ "$aux" = 1 ] && procd_set_param respawn
@@ -79,7 +103,178 @@ start_instance() {
 	procd_close_instance
 }
 
+validate_ndpid_section() {
+	uci_load_validate ${NDPID_NAME} nDPId "$1" "$2" \
+		'enabled:bool:0' \
+		'respawn:bool:0' \
+		'interface:string' \
+		'internal_only:bool:0' \
+		'external_only:bool:0' \
+		'bpf_filter:string' \
+		'udp_connect:string' \
+		'proto_file:string' \
+		'cat_file:string' \
+		'ja3_file:string' \
+		'ssl_file:string' \
+		'alias:string' \
+		'analysis:bool:0' \
+		'compression:bool:0' \
+		'max_flows_per_thread:uinteger' \
+		'max_idle_flows_per_thread:uinteger' \
+		'max_reader_threads:uinteger' \
+		'daemon_status_interval:uinteger' \
+		'compression_scan_interval:uinteger' \
+		'compression_flow_inactivity:uinteger' \
+		'flow_scan_interval:uinteger' \
+		'generic_max_idle_time:uinteger' \
+		'icmp_max_idle_time:uinteger' \
+		'udp_max_idle_time:uinteger' \
+		'tcp_max_idle_time:uinteger' \
+		'tcp_max_post_end_flow_time:uinteger' \
+		'max_packets_per_flow_to_send:uinteger' \
+		'max_packets_per_flow_to_process:uinteger' \
+		'max_packets_per_flow_to_analyse:uinteger'
+}
+
+start_ndpisrvd_instance() {
+	local cfg=$1
+	local aux
+	local args
+	local collector_sock
+
+	config_get_bool aux "$cfg" 'enabled' '0'
+	if [ "$aux" -eq 0 ]; then
+		return 1
+	fi
+
+	collector_sock="/var/run/${NDPID_NAME}/nDPIsrvd-collector.sock"
+
+	args="$(print_arg_str "$cfg" 'tcp_listen' '-S')"
+	args="$args$(print_arg_str "$cfg" 'max_remotes' '-m')"
+	args="$args$(print_arg_str "$cfg" 'max_buffered_json_lines' '-C')"
+
+	procd_open_instance
+	procd_set_param command ${NDPISRVD_BIN}
+	procd_set_param pidfile "/var/run/${NDPID_NAME}/nDPIsrvd.pid"
+	procd_append_param command -undpi -gndpi -p"/var/run/${NDPID_NAME}/nDPIsrvd.pid" -c"${collector_sock}" -s"${DISTRIBUTOR_SOCKET}" $args
+
+	config_get_bool aux "$cfg" 'respawn' '0'
+	[ "$aux" = 1 ] && procd_set_param respawn
+
+	procd_close_instance
+}
+
+validate_ndpisrvd_section() {
+	uci_load_validate ${NDPID_NAME} nDPId "$1" "$2" \
+		'enabled:bool:0' \
+		'respawn:bool:0' \
+		'tcp_listen:string' \
+		'max_remotes:uinteger' \
+		'max_buffered_json_lines:uinteger'
+}
+
+start_ndpisrvd_analysed_instance() {
+	local cfg="$1"
+	local csv_dir
+
+	config_get_bool aux "$cfg" 'enabled' '0'
+	if [ "$aux" -eq 0 ]; then
+		return 1
+	fi
+
+	config_get aux "$cfg" 'csv_dir'
+	if [ -z "$aux" ]; then
+		return 1
+	fi
+	mkdir -p "$aux"
+	chown ndpi:ndpi "$aux"
+
+	csv_dir="$(print_arg_str "$cfg" 'csv_dir' '')"
+    csv_dir="-o${csv_dir}/nDPId-analyse.csv"
+
+	procd_open_instance
+	procd_set_param command ${NDPISRVD_ANALYSED_BIN}
+	procd_set_param pidfile "/var/run/${NDPID_NAME}/nDPIsrvd-analysed.pid"
+	procd_append_param command -undpi -gndpi -p"/var/run/${NDPID_NAME}/nDPIsrvd-analysed.pid" -s"${DISTRIBUTOR_SOCKET}" ${csv_dir}
+
+	config_get_bool aux "$cfg" 'respawn' '0'
+	[ "$aux" = 1 ] && procd_set_param respawn
+
+	procd_close_instance
+}
+
+validate_ndpisrvd_analysed_section() {
+	uci_load_validate ${NDPID_NAME} nDPId "$1" "$2" \
+		'enabled:bool:0' \
+		'respawn:bool:0' \
+		'csv_dir:string'
+}
+
+start_ndpisrvd_captured_instance() {
+	local cfg="$1"
+	local args
+	local risk_args
+
+	config_get_bool aux "$cfg" 'enabled' '0'
+	if [ "$aux" -eq 0 ]; then
+		return 1
+	fi
+
+	config_get aux "$cfg" 'datadir'
+	if [ -z "$aux" ]; then
+		return 1
+	fi
+	mkdir -p "$aux"
+	chown ndpi:ndpi "$aux"
+
+	handle_capture_risks() {
+		local risk=" -R$1"
+		printf '%s' "$risk"
+	}
+	risk_args="$(config_list_foreach "$cfg" capture_risk handle_capture_risks)"
+
+	args="$(print_arg_str "$cfg" 'pcap_rotation' '-r')"
+	args="$args$(print_arg_str "$cfg" 'datadir' '-D')"
+	args="$args$(print_arg_bool "$cfg" 'capture_guessed' '-G')"
+	args="$args$(print_arg_bool "$cfg" 'capture_undetected' '-U')"
+	args="$args$(print_arg_bool "$cfg" 'capture_midstream' '-M')"
+	args="$args$(print_arg_bool "$cfg" 'ignore_empty_l4' '-E')"
+
+	procd_open_instance
+	procd_set_param command ${NDPISRVD_CAPTURED_BIN}
+	procd_set_param pidfile "/var/run/${NDPID_NAME}/nDPIsrvd-captured.pid"
+	procd_append_param command -undpi -gndpi -p"/var/run/${NDPID_NAME}/nDPIsrvd-captured.pid" -s"${DISTRIBUTOR_SOCKET}" $args ${risk_args}
+
+	config_get_bool aux "$cfg" 'respawn' '0'
+	[ "$aux" = 1 ] && procd_set_param respawn
+
+	procd_close_instance
+}
+
+validate_ndpisrvd_captured_section() {
+	uci_load_validate ${NDPID_NAME} nDPId "$1" "$2" \
+		'enabled:bool:0' \
+		'respawn:bool:0' \
+		'pcap_rotation:uinteger' \
+		'datadir:string' \
+		'capture_guessed:bool:1' \
+		'capture_undetected:bool:1' \
+		'capture_midstream:bool:1' \
+		'ignore_empty_l4:bool:1' \
+		'capture_risk:list(string)'
+}
+
 start_service() {
-	config_load nDPId-testing
-	config_foreach start_instance nDPId-testing
+	config_load ${NDPID_NAME}
+
+	user_exists ndpi 6543 || user_add ndpi 6543
+	group_exists ndpi 6543 || group_add ndpi 6543
+
+	mkdir -p "/var/run/${NDPID_NAME}"
+	chown ndpi:ndpi "/var/run/${NDPID_NAME}"
+
+	config_foreach validate_ndpisrvd_section nDPIsrvd start_ndpisrvd_instance
+	config_foreach validate_ndpisrvd_analysed_section nDPIsrvd-analysed start_ndpisrvd_analysed_instance
+	config_foreach validate_ndpisrvd_captured_section nDPIsrvd-captured start_ndpisrvd_captured_instance
+	config_foreach validate_ndpid_section nDPId start_ndpid_instance
 }

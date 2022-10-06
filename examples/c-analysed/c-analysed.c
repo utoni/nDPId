@@ -557,6 +557,20 @@ int main(int argc, char ** argv)
     }
     openlog("nDPIsrvd-analyzed", LOG_CONS, LOG_DAEMON);
 
+    errno = 0;
+    if (user != NULL && change_user_group(user, group, pidfile, csv_outfile /* :D */, NULL) != 0)
+    {
+        if (errno != 0)
+        {
+            syslog(LOG_DAEMON | LOG_ERR, "Change user/group failed: %s", strerror(errno));
+        }
+        else
+        {
+            syslog(LOG_DAEMON | LOG_ERR, "Change user/group failed.");
+        }
+        return 1;
+    }
+
     if (nDPIsrvd_set_read_timeout(sock, 180, 0) != 0)
     {
         return 1;
