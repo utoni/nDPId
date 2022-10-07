@@ -222,6 +222,7 @@ static int json_array_to_csv(
     }
 
     {
+        size_t token_count = 0;
         struct nDPIsrvd_json_token next = {};
 
         csv_buf_add(buf, csv_buf_used, "\"", 1);
@@ -232,8 +233,12 @@ static int json_array_to_csv(
             char const * const val = TOKEN_GET_VALUE(sock, &next, &val_length);
 
             csv_buf_add(buf, csv_buf_used, val, val_length);
+            token_count++;
         }
-        buf[--(*csv_buf_used)] = '\0';
+        if (token_count > 0)
+        {
+            buf[--(*csv_buf_used)] = '\0';
+        }
         csv_buf_add(buf, csv_buf_used, "\"", 1);
     }
 

@@ -2441,7 +2441,7 @@ static void jsonize_data_analysis(struct nDPId_reader_thread * const reader_thre
         ndpi_serialize_string_float(&workflow->ndpi_serializer, "ent", ndpi_data_entropy(&analysis->iat), "%.1f");
 
         ndpi_serialize_start_of_list(&workflow->ndpi_serializer, "data");
-        for (uint16_t i = 0; i < ndpi_min(analysis->iat.num_data_entries, analysis->iat.num_values_array_len); ++i)
+        for (uint16_t i = 0; i < analysis->iat.num_values_array_len; ++i)
         {
             ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "", analysis->iat.values[i]);
         }
@@ -3971,11 +3971,10 @@ static void ndpi_process_packet(uint8_t * const args,
                                                     flow_to_process->flow_extended.packets_processed[FD_DST2SRC];
         uint64_t tdiff_us = timer_sub(workflow->last_thread_time, last_pkt_time);
 
-        if (tdiff_us > 0)
+        if (total_flow_packets > 1)
         {
             ndpi_data_add_value(&flow_to_process->flow_extended.flow_analysis->iat, tdiff_us);
         }
-
         ndpi_data_add_value(&flow_to_process->flow_extended.flow_analysis->pktlen, ip_size);
         flow_to_process->flow_extended.flow_analysis
             ->directions[(total_flow_packets - 1) % nDPId_options.max_packets_per_flow_to_analyse] = direction;
@@ -3989,6 +3988,7 @@ static void ndpi_process_packet(uint8_t * const args,
         if (total_flow_packets == nDPId_options.max_packets_per_flow_to_analyse)
         {
             jsonize_flow_event(reader_thread, &flow_to_process->flow_extended, FLOW_EVENT_ANALYSE);
+            free_analysis_data(&flow_to_process->flow_extended);
         }
     }
 
@@ -5146,8 +5146,9 @@ int main(int argc, char ** argv)
     }
 
 #ifdef ENABLE_MEMORY_PROFILING
-    logger_early(0, "size/workflow...: %zu bytes", sizeof(struct nDPId_workflow));
-    logger_early(0, "size/flow.......: %zu bytes", sizeof(struct nDPId_flow) + sizeof(struct nDPId_detection_data));
+    logger_early(0, "size/workflow....: %zu bytes", sizeof(struct nDPId_workflow));
+    logger_early(0, "size/flow........: %zu bytes", sizeof(struct nDPId_flow) + sizeof(struct nDPId_detection_data));
+    logger_early(0, "size/flow-analyse: %zu bytes", sizeof(struct nDPId_flow_analysis));
 #endif
 
     if (setup_reader_threads() != 0)

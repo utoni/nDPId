@@ -38,6 +38,10 @@ Removed with commit 29c72fb30bb7d5614c0a8ebb73bee2ac7eca6608.
 
 Prints prettyfied information about flow events.
 
+## py-machine-learning
+
+Use sklearn together with CSVs created with **c-analysed** to train and predict DPI detections.
+
 ## py-flow-dashboard
 
 A realtime web based graph using Plotly/Dash.
