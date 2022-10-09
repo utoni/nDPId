@@ -55,4 +55,9 @@ else
     test ${RETVAL} -eq 0 && printf '%s\n' "You may now run examples e.g.: $(realpath --relative-to="$(pwd)" $(dirname "${0}")/../examples/py-flow-info/flow-info.py) --unix ${NROOT}/nDPIsrvd-${NSUFFIX}-distributor.sock"
 fi
 
+if [ ${RETVAL} -ne 0 ]; then
+    test -r "${NROOT}/nDPIsrvd.log" && cat "${NROOT}/nDPIsrvd.log"
+    test -r "${NROOT}/nDPId.log" && cat "${NROOT}/nDPId.log"
+fi
+
 exit ${RETVAL}
