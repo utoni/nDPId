@@ -42,6 +42,13 @@ Prints prettyfied information about flow events.
 
 Use sklearn together with CSVs created with **c-analysed** to train and predict DPI detections.
 
+Try it with: `./examples/py-machine-learning/sklearn-ml.py --csv ./ndpi-analysed.csv --proto-class tls.youtube --proto-class tls.github --proto-class tls.spotify --proto-class tls.facebook --proto-class tls.instagram --proto-class tls.doh_dot --proto-class quic --proto-class icmp`
+
+This way you should get 9 different classification classes.
+You may notice that some classes e.g. TLS protocol classifications may have a higher false-negative rate.
+
+Unfortunately, I can not provide any datasets due to some privacy concerns.
+
 ## py-flow-dashboard
 
 A realtime web based graph using Plotly/Dash.
