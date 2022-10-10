@@ -44,6 +44,21 @@ else
     set -x
     ${2} -p "${NROOT}/nDPIsrvd-${NSUFFIX}.pid" -c "${NROOT}/nDPIsrvd-${NSUFFIX}-collector.sock" -s "${NROOT}/nDPIsrvd-${NSUFFIX}-distributor.sock" -d -L "${NROOT}/nDPIsrvd.log"
     test $? -eq 0 || RETVAL=1
+
+    MAX_TRIES=10
+    while [ ! -S "${NROOT}/nDPIsrvd-${NSUFFIX}-collector.sock" -a ${MAX_TRIES} -gt 0 ]; do
+        sleep 0.5
+        MAX_TRIES=$((MAX_TRIES - 1))
+    done
+    test ${MAX_TRIES} -eq 0 && RETVAL=1
+
+    MAX_TRIES=10
+    while [ ! -S "${NROOT}/nDPIsrvd-${NSUFFIX}-distributor.sock" -a ${MAX_TRIES} -gt 0 ]; do
+        sleep 0.5
+        MAX_TRIES=$((MAX_TRIES - 1))
+    done
+    test ${MAX_TRIES} -eq 0 && RETVAL=1
+
     sudo chgrp "$(id -n -g "${NUSER}")" "${NROOT}/nDPIsrvd-${NSUFFIX}-collector.sock"
     test $? -eq 0 || RETVAL=1
     sudo chmod g+w "${NROOT}/nDPIsrvd-${NSUFFIX}-collector.sock"
