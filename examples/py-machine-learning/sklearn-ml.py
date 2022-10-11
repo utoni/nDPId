@@ -22,8 +22,8 @@ from nDPIsrvd import nDPIsrvdSocket, TermColor
 N_DIRS = 0
 N_BINS = 0
 
-ENABLE_FEATURE_IAT    = True
-ENABLE_FEATURE_PKTLEN = True
+ENABLE_FEATURE_IAT    = False
+ENABLE_FEATURE_PKTLEN = False
 ENABLE_FEATURE_DIRS   = True
 ENABLE_FEATURE_BINS   = True
 
@@ -119,15 +119,48 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
 
     #print(json_dict)
 
-    model, = global_user_data
+    model, proto_class, disable_colors = global_user_data
 
     try:
         X = getRelevantFeaturesJSON(json_dict)
         y = model.predict(X)
         s = model.score(X, y)
         p = model.predict_log_proba(X)
-        print('DPI Engine detected: {:>24}, Prediction: {:>3}, Score: {}, Probabilities: {}'.format(
-              '"' + str(json_dict['ndpi']['proto']) + '"', '"' + str(y) + '"', s, p[0]))
+
+        if y[0] <= 0:
+            y_text = 'n/a'
+        else:
+            y_text = proto_class[y[0] - 1]
+
+        color_start = ''
+        color_end = ''
+        pred_failed = False
+        if disable_colors is False:
+            if json_dict['ndpi']['proto'].lower().startswith(y_text) is True:
+                color_start = TermColor.BOLD
+                color_end = TermColor.END
+            elif y_text not in proto_class and \
+                 json_dict['ndpi']['proto'].lower() not in proto_class:
+                pass
+            else:
+                pred_failed = True
+                color_start = TermColor.FAIL + TermColor.BOLD + TermColor.BLINK
+                color_end = TermColor.END
+
+        probs = str()
+        for i in range(len(p[0])):
+            if json_dict['ndpi']['proto'].lower().startswith(proto_class[i - 1]) and disable_colors is False:
+                probs += '{}{:>2.1f}{}, '.format(TermColor.BOLD + TermColor.BLINK if pred_failed is True else '',
+                                               p[0][i], TermColor.END)
+            elif i == y[0]:
+                probs += '{}{:>2.1f}{}, '.format(color_start, p[0][i], color_end)
+            else:
+                probs += '{:>2.1f}, '.format(p[0][i])
+        probs = probs[:-2]
+
+        print('DPI Engine detected: {}{:>24}{}, Predicted: {}{:>24}{}, Score: {}, Probabilities: {}'.format(
+              color_start, json_dict['ndpi']['proto'], color_end,
+              color_start, y_text, color_end, s, probs))
     except Exception as err:
         print('Got exception `{}\'\nfor json: {}'.format(err, json_dict))
 
@@ -147,27 +180,41 @@ if __name__ == '__main__':
     argparser.add_argument('--csv', action='store', required=True,
                            help='Input CSV file generated with nDPIsrvd-analysed.')
     argparser.add_argument('--proto-class', action='append', required=True,
-                           help='nDPId protocol class of interest used for training and prediction. Can be specified multiple times. Example: tls.youtube')
+                           help='nDPId protocol class of interest used for training and prediction. ' +
+                                'Can be specified multiple times. Example: tls.youtube')
     argparser.add_argument('--generate-feature-importance', action='store_true',
                            help='Generates the permutated feature importance with matplotlib.')
-    argparser.add_argument('--enable-iat', action='store', default=True,
-                           help='Use packet (I)nter (A)rrival (T)ime for learning and prediction.')
-    argparser.add_argument('--enable-pktlen', action='store', default=False,
-                           help='Use layer 4 packet lengths for learning and prediction.')
-    argparser.add_argument('--enable-dirs', action='store', default=True,
-                           help='Use packet directions for learning and prediction.')
-    argparser.add_argument('--enable-bins', action='store', default=True,
-                           help='Use packet length distribution for learning and prediction.')
+    argparser.add_argument('--enable-iat', action='store_true', default=False,
+                           help='Enable packet (I)nter (A)rrival (T)ime for learning and prediction.')
+    argparser.add_argument('--enable-pktlen', action='store_true', default=False,
+                           help='Enable layer 4 packet lengths for learning and prediction.')
+    argparser.add_argument('--disable-dirs', action='store_true', default=False,
+                           help='Disable packet directions for learning and prediction.')
+    argparser.add_argument('--disable-bins', action='store_true', default=False,
+                           help='Disable packet length distribution for learning and prediction.')
+    argparser.add_argument('--disable-colors', action='store_true', default=False,
+                           help='Disable any coloring.')
+    argparser.add_argument('--sklearn-jobs', action='store', type=int, default=1,
+                           help='Number of sklearn processes during training.')
+    argparser.add_argument('--sklearn-estimators', action='store', type=int, default=1000,
+                           help='Number of trees in the forest.')
+    argparser.add_argument('--sklearn-min-samples-leaf', action='store', type=int, default=5,
+                           help='The minimum number of samples required to be at a leaf node.')
+    argparser.add_argument('--sklearn-class-weight', default='balanced', const='balanced', nargs='?',
+                           choices=['balanced', 'balanced_subsample'],
+                           help='Weights associated with the protocol classes.')
+    argparser.add_argument('--sklearn-max-features', default='sqrt', const='sqrt', nargs='?',
+                           choices=['sqrt', 'log2'],
+                           help='The number of features to consider when looking for the best split.')
+    argparser.add_argument('--sklearn-verbosity', action='store', type=int, default=0,
+                           help='Controls the verbosity of sklearn\'s random forest classifier.')
     args = argparser.parse_args()
     address = nDPIsrvd.validateAddress(args)
 
     ENABLE_FEATURE_IAT    = args.enable_iat
     ENABLE_FEATURE_PKTLEN = args.enable_pktlen
-    ENABLE_FEATURE_DIRS   = args.enable_dirs
-    ENABLE_FEATURE_BINS   = args.enable_bins
-
-    sys.stderr.write('Recv buffer size: {}\n'.format(nDPIsrvd.NETWORK_BUFFER_MAX_SIZE))
-    sys.stderr.write('Connecting to {} ..\n'.format(address[0]+':'+str(address[1]) if type(address) is tuple else address))
+    ENABLE_FEATURE_DIRS   = args.disable_dirs is False
+    ENABLE_FEATURE_BINS   = args.disable_bins is False
 
     numpy.set_printoptions(formatter={'float_kind': "{:.1f}".format}, sign=' ')
     numpy.seterr(divide = 'ignore')
@@ -185,12 +232,23 @@ if __name__ == '__main__':
 
         for line in reader:
             try:
+                #if isProtoClass(args.proto_class, line['proto']) > 0:
                 X += getRelevantFeaturesCSV(line)
                 y += [isProtoClass(args.proto_class, line['proto'])]
             except RuntimeError as err:
                 print('Error: `{}\'\non line: {}'.format(err, line))
 
-        model = sklearn.ensemble.RandomForestClassifier()
+        sys.stderr.write('CSV data set contains {} entries.\n'.format(len(X)))
+
+        model = sklearn.ensemble.RandomForestClassifier(bootstrap=False,
+                                                        class_weight     = args.sklearn_class_weight,
+                                                        n_jobs           = args.sklearn_jobs,
+                                                        n_estimators     = args.sklearn_estimators,
+                                                        verbose          = args.sklearn_verbosity,
+                                                        min_samples_leaf = args.sklearn_min_samples_leaf,
+                                                        max_features     = args.sklearn_max_features
+                                                       )
+        sys.stderr.write('Training model..\n')
         model.fit(X, y)
 
         if args.generate_feature_importance is True:
@@ -202,6 +260,8 @@ if __name__ == '__main__':
         print('Map["{}"] -> [{}]'.format(args.proto_class[x], x + 1))
 
     sys.stderr.write('Predicting realtime traffic..\n')
+    sys.stderr.write('Recv buffer size: {}\n'.format(nDPIsrvd.NETWORK_BUFFER_MAX_SIZE))
+    sys.stderr.write('Connecting to {} ..\n'.format(address[0]+':'+str(address[1]) if type(address) is tuple else address))
     nsock = nDPIsrvdSocket()
     nsock.connect(address)
-    nsock.loop(onJsonLineRecvd, None, (model,))
+    nsock.loop(onJsonLineRecvd, None, (model, args.proto_class, args.disable_colors))
