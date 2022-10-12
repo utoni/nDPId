@@ -334,9 +334,6 @@ install(FILES examples/py-flow-info/flow-info.py
 install(FILES examples/py-flow-dashboard/flow-dash.py
         DESTINATION bin RENAME nDPIsrvd-flow-dash.py
         PERMISSIONS OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
-install(FILES examples/py-ja3-checker/py-ja3-checker.py
-        DESTINATION bin RENAME nDPIsrvd-ja3-checker.py
-        PERMISSIONS OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
 install(FILES examples/py-json-stdout/json-stdout.py
         DESTINATION bin RENAME nDPIsrvd-json-stdout.py
         PERMISSIONS OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
@@ -345,6 +342,9 @@ install(FILES examples/py-schema-validation/py-schema-validation.py
         PERMISSIONS OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
 install(FILES examples/py-semantic-validation/py-semantic-validation.py
         DESTINATION bin RENAME nDPIsrvd-semantic-validation.py
+        PERMISSIONS OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+install(FILES examples/py-machine-learning/sklearn-random-forest.py
+        DESTINATION bin RENAME nDPIsrvd-sklearn.py
         PERMISSIONS OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
 install(FILES schema/error_event_schema.json schema/daemon_event_schema.json
               schema/flow_event_schema.json schema/packet_event_schema.json DESTINATION share/nDPId/json-schema)

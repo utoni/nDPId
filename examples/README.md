@@ -80,7 +80,3 @@ Required by `tests/run_tests.sh`
 
 Validate nDPId JSON strings against internal event semantics.
 Required by `tests/run_tests.sh`
-
-## py-ja3-checker
-
-Captures JA3 hashes from nDPIsrvd and checks them against known hashes from [ja3er.com](https://ja3er.com).

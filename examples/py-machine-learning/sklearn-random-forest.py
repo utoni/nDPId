@@ -159,7 +159,7 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
         probs = probs[:-2]
 
         print('DPI Engine detected: {}{:>24}{}, Predicted: {}{:>24}{}, Score: {}, Probabilities: {}'.format(
-              color_start, json_dict['ndpi']['proto'], color_end,
+              color_start, json_dict['ndpi']['proto'].lower(), color_end,
               color_start, y_text, color_end, s, probs))
     except Exception as err:
         print('Got exception `{}\'\nfor json: {}'.format(err, json_dict))
@@ -219,6 +219,9 @@ if __name__ == '__main__':
     numpy.set_printoptions(formatter={'float_kind': "{:.1f}".format}, sign=' ')
     numpy.seterr(divide = 'ignore')
 
+    for i in range(len(args.proto_class)):
+        args.proto_class[i] = args.proto_class[i].lower()
+
     sys.stderr.write('Learning via CSV..\n')
     with open(args.csv, newline='\n') as csvfile:
         reader = csv.DictReader(csvfile, delimiter=',', quotechar='"')
@@ -232,7 +235,6 @@ if __name__ == '__main__':
 
         for line in reader:
             try:
-                #if isProtoClass(args.proto_class, line['proto']) > 0:
                 X += getRelevantFeaturesCSV(line)
                 y += [isProtoClass(args.proto_class, line['proto'])]
             except RuntimeError as err:
