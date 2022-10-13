@@ -25,11 +25,6 @@ Tiny nDPId json dumper. Does not provide any useful funcationality besides dumpi
 
 Very tiny integration example.
 
-## ~~go-dashboard~~ (DISCONTINUED!)
-
-A discontinued tty UI nDPId dashboard.
-Removed with commit 29c72fb30bb7d5614c0a8ebb73bee2ac7eca6608.
-
 ## js-rt-analyzer
 
 [nDPId-rt-analyzer](https://gitlab.com/verzulli/ndpid-rt-analyzer.git)
@@ -58,17 +53,9 @@ Probably the most informative example.
 
 Simple Python Multiprocess example spawning two worker processes, one connecting to nDPIsrvd and one printing flow id's to STDOUT.
 
-## py-flow-undetected-to-pcap
-
-Captures and saves undetected flows to a PCAP file.
-
 ## py-json-stdout
 
 Dump received and parsed JSON strings.
-
-## py-risky-flow-to-pcap
-
-Captures and saves risky flows to a PCAP file.
 
 ## py-schema-validation
 
