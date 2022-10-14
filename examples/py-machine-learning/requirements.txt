@@ -1,3 +1,5 @@
+joblib
+tensorflow
 scikit-learn
 scipy
 matplotlib
