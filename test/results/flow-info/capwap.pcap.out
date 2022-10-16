@@ -5,12 +5,12 @@
          detected: [.....1] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12379] [CAPWAP][Network][Acceptable]
               new: [.....2] [ip4][..udp] [..192.168.10.10][49259] -> [255.255.255.255][...53] 
          detected: [.....2] [ip4][..udp] [..192.168.10.10][49259] -> [255.255.255.255][...53] [DNS][Network][Acceptable][cisco-capwap-controller]
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [1/16]
+      ERROR-EVENT: Unknown packet type [2/16]
+      ERROR-EVENT: Unknown packet type [3/16]
+      ERROR-EVENT: Unknown packet type [4/16]
+      ERROR-EVENT: Unknown packet type [5/16]
+      ERROR-EVENT: Unknown packet type [6/16]
               new: [.....3] [ip4][..udp] [..192.168.10.10][12380] -> [255.255.255.255][.5246] 
          detected: [.....3] [ip4][..udp] [..192.168.10.10][12380] -> [255.255.255.255][.5246] [CAPWAP][Network][Acceptable]
               new: [.....4] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12380] 
@@ -29,7 +29,7 @@
               new: [.....5] [ip4][..udp] [..192.168.10.10][12380] -> [...192.168.10.9][.5247] 
          detected: [.....5] [ip4][..udp] [..192.168.10.10][12380] -> [...192.168.10.9][.5247] [CAPWAP][Network][Acceptable]
            update: [.....2] [ip4][..udp] [..192.168.10.10][49259] -> [255.255.255.255][...53] 
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [1/16]
           analyse: [.....5] [ip4][..udp] [..192.168.10.10][12380] -> [...192.168.10.9][.5247] [CAPWAP][Network][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.500|    4.000|    1.016|    0.875|     765810.835|   4.600]
@@ -45,13 +45,13 @@
            update: [.....4] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12380] [CAPWAP][Network][Acceptable]
            update: [.....5] [ip4][..udp] [..192.168.10.10][12380] -> [...192.168.10.9][.5247] [CAPWAP][Network][Acceptable]
            update: [.....2] [ip4][..udp] [..192.168.10.10][49259] -> [255.255.255.255][...53] 
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [1/16]
            update: [.....3] [ip4][..udp] [..192.168.10.10][12380] -> [255.255.255.255][.5246] [CAPWAP][Network][Acceptable]
            update: [.....1] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12379] [CAPWAP][Network][Acceptable]
            update: [.....4] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12380] [CAPWAP][Network][Acceptable]
            update: [.....5] [ip4][..udp] [..192.168.10.10][12380] -> [...192.168.10.9][.5247] [CAPWAP][Network][Acceptable]
            update: [.....2] [ip4][..udp] [..192.168.10.10][49259] -> [255.255.255.255][...53] 
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [1/16]
              idle: [.....1] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12379] [CAPWAP][Network][Acceptable]
              idle: [.....2] [ip4][..udp] [..192.168.10.10][49259] -> [255.255.255.255][...53] 
            update: [.....3] [ip4][..udp] [..192.168.10.10][12380] -> [255.255.255.255][.5246] [CAPWAP][Network][Acceptable]

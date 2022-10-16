@@ -1,20 +1,20 @@
      DAEMON-EVENT: init
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-      ERROR-EVENT: Captured packet size is smaller than expected packet size
+      ERROR-EVENT: Captured packet size is smaller than expected packet size [1/16]
               new: [.....1] [ip4][..udp] [.132.190.244.12][.2152] -> [.151.121.185.44][.2152] 
          detected: [.....1] [ip4][..udp] [.132.190.244.12][.2152] -> [.151.121.185.44][.2152] [GTP.GTP_U][Network][Acceptable]
-      ERROR-EVENT: Captured packet size is smaller than expected packet size
-      ERROR-EVENT: Captured packet size is smaller than expected packet size
-      ERROR-EVENT: Captured packet size is smaller than expected packet size
-      ERROR-EVENT: Captured packet size is smaller than expected packet size
-      ERROR-EVENT: Captured packet size is smaller than expected packet size
-      ERROR-EVENT: Captured packet size is smaller than expected packet size
-      ERROR-EVENT: Captured packet size is smaller than expected packet size
-      ERROR-EVENT: Captured packet size is smaller than expected packet size
-      ERROR-EVENT: Captured packet size is smaller than expected packet size
-      ERROR-EVENT: Captured packet size is smaller than expected packet size
-      ERROR-EVENT: Captured packet size is smaller than expected packet size
-      ERROR-EVENT: Captured packet size is smaller than expected packet size
+      ERROR-EVENT: Captured packet size is smaller than expected packet size [2/16]
+      ERROR-EVENT: Captured packet size is smaller than expected packet size [3/16]
+      ERROR-EVENT: Captured packet size is smaller than expected packet size [4/16]
+      ERROR-EVENT: Captured packet size is smaller than expected packet size [5/16]
+      ERROR-EVENT: Captured packet size is smaller than expected packet size [6/16]
+      ERROR-EVENT: Captured packet size is smaller than expected packet size [7/16]
+      ERROR-EVENT: Captured packet size is smaller than expected packet size [8/16]
+      ERROR-EVENT: Captured packet size is smaller than expected packet size [9/16]
+      ERROR-EVENT: Captured packet size is smaller than expected packet size [10/16]
+      ERROR-EVENT: Captured packet size is smaller than expected packet size [11/16]
+      ERROR-EVENT: Captured packet size is smaller than expected packet size [12/16]
+      ERROR-EVENT: Captured packet size is smaller than expected packet size [13/16]
              idle: [.....1] [ip4][..udp] [.132.190.244.12][.2152] -> [.151.121.185.44][.2152] [GTP.GTP_U][Network][Acceptable]
      DAEMON-EVENT: shutdown

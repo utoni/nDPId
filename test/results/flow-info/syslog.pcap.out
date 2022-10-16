@@ -1,6 +1,6 @@
      DAEMON-EVENT: init
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [1/16]
+      ERROR-EVENT: Unknown packet type [2/16]
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [...172.20.51.54][..514] -> [..172.31.110.40][..514] 
@@ -81,10 +81,10 @@
                    RISK: Known Proto on Non Std Port
      DAEMON-EVENT: [Processed: 82 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 17|skipped: 0|!detected: 2|guessed: 0|detection-updates: 0|updates: 10]
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [1/16]
+      ERROR-EVENT: Unknown packet type [2/16]
+      ERROR-EVENT: Unknown packet type [3/16]
+      ERROR-EVENT: Unknown packet type [4/16]
      DAEMON-EVENT: [Processed: 82 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 17|skipped: 0|!detected: 2|guessed: 0|detection-updates: 0|updates: 10]
               new: [....18] [ip4][..udp] [...10.94.232.21][57374] -> [...10.94.150.21][..514] 

@@ -3,13 +3,13 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [....192.168.0.1][...68] -> [255.255.255.255][...67] 
          detected: [.....1] [ip4][..udp] [....192.168.0.1][...68] -> [255.255.255.255][...67] [DHCP][Network][Acceptable][tl-sg116e]
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [1/16]
               new: [.....2] [ip4][..tcp] [....192.168.1.6][58533] -> [.149.154.167.91][..443] [MIDSTREAM] 
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [2/16]
+      ERROR-EVENT: Unknown packet type [3/16]
+      ERROR-EVENT: Unknown packet type [4/16]
+      ERROR-EVENT: Unknown packet type [5/16]
+      ERROR-EVENT: Unknown packet type [6/16]
               new: [.....3] [ip4][..udp] [....192.168.1.6][60813] -> [....192.168.1.1][...53] 
          detected: [.....3] [ip4][..udp] [....192.168.1.6][60813] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][skypedataprdcolneu04.cloudapp.net]
  detection-update: [.....3] [ip4][..udp] [....192.168.1.6][60813] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][skypedataprdcolneu04.cloudapp.net]
@@ -32,7 +32,7 @@
  detection-update: [.....5] [ip4][..tcp] [....192.168.1.6][60533] -> [.52.113.194.132][..443] [TLS.Teams][Collaborative][Safe][teams.microsoft.com]
  detection-update: [.....4] [ip4][..tcp] [....192.168.1.6][60532] -> [...52.114.77.33][..443] [TLS.Microsoft][Cloud][Safe][mobile.pipe.aria.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [7/16]
               new: [.....6] [ip4][..tcp] [....192.168.1.6][60534] -> [.....40.126.9.5][..443] 
          detected: [.....6] [ip4][..tcp] [....192.168.1.6][60534] -> [.....40.126.9.5][..443] [TLS.Microsoft365][Collaborative][Acceptable][login.microsoftonline.com]
  detection-update: [.....6] [ip4][..tcp] [....192.168.1.6][60534] -> [.....40.126.9.5][..443] [TLS.Microsoft365][Collaborative][Acceptable][login.microsoftonline.com]
@@ -75,33 +75,33 @@
                    [PKTLENS.....: 64,52,40,254,46,1492,1492,40,1492,40,1492,257,40,198,46,133,366,109,40,40,78,1480,1047,124,46,78,40,46,46,46,1492,1055]
                    [ENTROPIES...: 4.4,4.9,4.6,5.5,4.5,7.3,7.4,4.7,7.5,4.6,7.6,7.1,4.7,6.5,4.5,6.1,7.2,5.9,4.7,4.6,5.1,7.9,7.8,6.1,4.5,5.4,4.6,4.6,4.6,4.5,7.8,7.8]
  detection-update: [.....8] [ip4][..tcp] [....192.168.1.6][60536] -> [.52.113.194.132][..443] [TLS.Teams][Collaborative][Safe][teams.microsoft.com]
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [8/16]
+      ERROR-EVENT: Unknown packet type [9/16]
               new: [.....9] [ip4][..tcp] [....192.168.1.6][60537] -> [...52.114.77.33][..443] 
          detected: [.....9] [ip4][..tcp] [....192.168.1.6][60537] -> [...52.114.77.33][..443] [TLS.Microsoft][Cloud][Safe][mobile.pipe.aria.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
  detection-update: [.....9] [ip4][..tcp] [....192.168.1.6][60537] -> [...52.114.77.33][..443] [TLS.Microsoft][Cloud][Safe][mobile.pipe.aria.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [10/16]
               new: [....10] [ip4][..udp] [....192.168.1.6][64046] -> [....192.168.1.1][...53] 
          detected: [....10] [ip4][..udp] [....192.168.1.6][64046] -> [....192.168.1.1][...53] [DNS.ntop][Network][Safe][b._dns-sd._udp.ntop.org]
               new: [....11] [ip4][..udp] [....192.168.1.6][17500] -> [255.255.255.255][17500] 
          detected: [....11] [ip4][..udp] [....192.168.1.6][17500] -> [255.255.255.255][17500] [Dropbox][Cloud][Acceptable]
               new: [....12] [ip4][..udp] [....192.168.1.6][17500] -> [..192.168.1.255][17500] 
          detected: [....12] [ip4][..udp] [....192.168.1.6][17500] -> [..192.168.1.255][17500] [Dropbox][Cloud][Acceptable]
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [11/16]
+      ERROR-EVENT: Unknown packet type [12/16]
  detection-update: [....10] [ip4][..udp] [....192.168.1.6][64046] -> [....192.168.1.1][...53] [DNS.ntop][Network][Safe][b._dns-sd._udp.ntop.org]
               new: [....13] [ip4][..udp] [........0.0.0.0][...68] -> [255.255.255.255][...67] 
          detected: [....13] [ip4][..udp] [........0.0.0.0][...68] -> [255.255.255.255][...67] [DHCP][Network][Acceptable][]
               new: [....14] [ip4][..tcp] [..93.62.150.157][..443] -> [....192.168.1.6][60512] [MIDSTREAM] 
          detected: [....14] [ip4][..tcp] [..93.62.150.157][..443] -> [....192.168.1.6][60512] [TLS][Web][Safe]
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [13/16]
               new: [....15] [ip4][..udp] [....192.168.1.6][56634] -> [....192.168.1.1][...53] 
          detected: [....15] [ip4][..udp] [....192.168.1.6][56634] -> [....192.168.1.1][...53] [DNS][ConnCheck][Acceptable][captive.apple.com.edgekey.net]
  detection-update: [....15] [ip4][..udp] [....192.168.1.6][56634] -> [....192.168.1.1][...53] [DNS][ConnCheck][Acceptable][captive.apple.com.edgekey.net]
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [14/16]
+      ERROR-EVENT: Unknown packet type [15/16]
               new: [....16] [ip4][..udp] [....192.168.1.6][51033] -> [....192.168.1.1][...53] 
          detected: [....16] [ip4][..udp] [....192.168.1.6][51033] -> [....192.168.1.1][...53] [DNS.Teams][VoIP][Safe][eu-api.asm.skype.com]
               new: [....17] [ip4][..udp] [....192.168.1.6][63106] -> [....192.168.1.1][...53] 
@@ -137,7 +137,7 @@
  detection-update: [....26] [ip4][..tcp] [....192.168.1.6][60544] -> [...52.114.76.48][..443] [TLS.Teams][Collaborative][Safe][northeurope.notifications.teams.microsoft.com]
  detection-update: [....25] [ip4][..tcp] [....192.168.1.6][60543] -> [...52.114.77.33][..443] [TLS.Microsoft][Cloud][Safe][mobile.pipe.aria.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [16/16]
               new: [....27] [ip4][..udp] [....192.168.1.6][57530] -> [....192.168.1.1][...53] 
          detected: [....27] [ip4][..udp] [....192.168.1.6][57530] -> [....192.168.1.1][...53] [DNS.Microsoft][Web][Safe][presence.services.sfb.trafficmanager.net]
  detection-update: [....27] [ip4][..udp] [....192.168.1.6][57530] -> [....192.168.1.1][...53] [DNS.Microsoft][Web][Safe][presence.services.sfb.trafficmanager.net]
@@ -181,7 +181,6 @@
               new: [....33] [ip4][..tcp] [....192.168.1.6][60548] -> [...52.114.77.33][..443] 
          detected: [....33] [ip4][..tcp] [....192.168.1.6][60548] -> [...52.114.77.33][..443] [TLS.Microsoft][Cloud][Safe][mobile.pipe.aria.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-      ERROR-EVENT: Unknown packet type
  detection-update: [....33] [ip4][..tcp] [....192.168.1.6][60548] -> [...52.114.77.33][..443] [TLS.Microsoft][Cloud][Safe][mobile.pipe.aria.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
           analyse: [....32] [ip4][..tcp] [....192.168.1.6][60547] -> [...52.114.88.59][..443] [TLS.Teams][Collaborative][Safe]
@@ -194,7 +193,6 @@
                    [IATS(ms)....: 34.2,34.3,0.3,36.9,0.0,36.6,0.0,0.2,0.2,0.1,0.0,0.1,1.0,12.0,0.3,36.0,22.7,0.2,0.2,0.1,10.4,10.3,0.6,0.6,77.1,91.7,0.0,49.1,80.4,115.1,0.2]
                    [PKTLENS.....: 64,60,52,273,1492,1492,64,52,1492,52,1492,302,52,178,145,533,103,52,121,52,90,90,52,414,52,52,1480,247,52,227,52,1139]
                    [ENTROPIES...: 4.3,5.1,4.7,5.5,7.4,7.3,4.8,4.8,7.5,4.7,7.6,7.4,4.8,6.3,6.2,7.5,5.6,4.9,6.0,4.9,5.4,5.5,4.8,7.4,4.9,5.1,7.8,7.0,5.0,6.8,4.7,7.8]
-      ERROR-EVENT: Unknown packet type
               new: [....34] [ip4][..udp] [....192.168.1.6][59403] -> [....192.168.1.1][...53] 
          detected: [....34] [ip4][..udp] [....192.168.1.6][59403] -> [....192.168.1.1][...53] [DNS.Microsoft365][Collaborative][Acceptable][substrate.office.com]
  detection-update: [....34] [ip4][..udp] [....192.168.1.6][59403] -> [....192.168.1.1][...53] [DNS.Microsoft365][Collaborative][Acceptable][substrate.office.com]
@@ -212,7 +210,6 @@
                    [PKTLENS.....: 64,52,40,257,46,1492,1492,40,1492,40,1492,181,40,198,46,366,109,40,40,133,78,561,46,78,40,46,46,440,40,342,46,345]
                    [ENTROPIES...: 4.4,5.0,4.6,5.5,4.5,7.3,7.5,4.6,7.5,4.6,7.7,6.8,4.7,6.5,4.5,7.2,6.0,4.6,4.6,6.2,5.2,7.6,4.4,5.4,4.6,4.5,4.5,7.5,4.7,7.2,4.5,7.3]
  detection-update: [....23] [ip4][..tcp] [....192.168.1.6][60542] -> [.52.113.194.132][..443] [TLS.Teams][Collaborative][Safe][config.teams.microsoft.com]
-      ERROR-EVENT: Unknown packet type
           analyse: [....35] [ip4][..tcp] [....192.168.1.6][60549] -> [...13.107.18.11][..443] 
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.540|    0.024|    0.095|       8949.939|   1.900]
@@ -264,7 +261,6 @@
                    RISK: TLS (probably) Not Carrying HTTPS
  detection-update: [....45] [ip4][..tcp] [....192.168.1.6][60555] -> [...52.114.77.33][..443] [TLS.Microsoft][Cloud][Safe][mobile.pipe.aria.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-      ERROR-EVENT: Unknown packet type
  detection-update: [....40] [ip4][..tcp] [....192.168.1.6][60551] -> [...52.114.15.45][..443] [TLS.Teams][Collaborative][Safe][trouter2-asse-a.trouter.teams.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
           analyse: [....43] [ip4][..tcp] [....192.168.1.6][60554] -> [.52.113.194.132][..443] 
@@ -279,7 +275,6 @@
                    [ENTROPIES...: 4.4,4.9,4.5,5.5,4.4,7.3,7.5,4.6,7.5,4.5,7.7,6.7,4.6,6.5,4.5,5.7,4.5,5.6,4.6,7.8,4.6,7.9,7.9,4.6,7.9,4.6,7.9,7.9,4.6,4.5,7.9,7.9]
  detection-update: [....43] [ip4][..tcp] [....192.168.1.6][60554] -> [.52.113.194.132][..443] [TLS.Teams][Collaborative][Safe][config.teams.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-      ERROR-EVENT: Unknown packet type
               new: [....47] [ip4][..tcp] [....192.168.1.6][60557] -> [.52.113.194.132][..443] 
          detected: [....47] [ip4][..tcp] [....192.168.1.6][60557] -> [.52.113.194.132][..443] [TLS.Teams][Collaborative][Safe][teams.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
@@ -300,7 +295,6 @@
                    [IATS(ms)....: 48.6,48.7,0.3,51.0,0.1,50.7,0.0,0.3,0.3,1.7,49.8,48.1,1.4,0.0,0.0,50.5,49.1,0.0,0.0,0.0,37.2,37.2,0.0,11.5,11.5,1.0,36.0,16.0,53.0,0.7,0.1]
                    [PKTLENS.....: 64,60,52,258,1492,1492,64,52,1375,52,145,103,52,1480,1480,1480,52,1480,1480,1480,1480,52,1480,1480,52,985,52,52,497,52,83,52]
                    [ENTROPIES...: 4.4,5.3,4.9,6.0,7.3,7.3,5.1,4.9,7.6,5.0,5.9,5.7,5.0,7.9,7.9,7.9,5.1,7.9,7.9,7.9,7.9,5.2,7.8,7.9,5.1,7.8,5.1,5.2,7.6,5.1,5.3,5.0]
-      ERROR-EVENT: Unknown packet type
               new: [....49] [ip4][..udp] [..192.168.1.112][57621] -> [..192.168.1.255][57621] 
          detected: [....49] [ip4][..udp] [..192.168.1.112][57621] -> [..192.168.1.255][57621] [Spotify][Music][Acceptable]
               new: [....50] [ip4][..tcp] [....192.168.1.6][60560] -> [....40.126.9.67][..443] 
@@ -311,13 +305,11 @@
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [....52] [ip4][..udp] [....192.168.1.6][54069] -> [....192.168.1.1][...53] 
          detected: [....52] [ip4][..udp] [....192.168.1.6][54069] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][api.microsoftstream.com]
-      ERROR-EVENT: Unknown packet type
  detection-update: [....52] [ip4][..udp] [....192.168.1.6][54069] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][api.microsoftstream.com]
               new: [....53] [ip4][..tcp] [....192.168.1.6][60562] -> [.104.40.187.151][..443] 
          detected: [....53] [ip4][..tcp] [....192.168.1.6][60562] -> [.104.40.187.151][..443] [TLS.Azure][Cloud][Acceptable][api.microsoftstream.com]
  detection-update: [....51] [ip4][..tcp] [....192.168.1.6][60561] -> [...52.114.77.33][..443] [TLS.Microsoft][Cloud][Safe][mobile.pipe.aria.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-      ERROR-EVENT: Unknown packet type
           analyse: [....53] [ip4][..tcp] [....192.168.1.6][60562] -> [.104.40.187.151][..443] [TLS.Azure][Cloud][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.126|    0.019|    0.032|       1006.354|   3.400]
@@ -345,10 +337,6 @@
  detection-update: [....51] [ip4][..tcp] [....192.168.1.6][60561] -> [...52.114.77.33][..443] [TLS.Microsoft][Cloud][Safe][mobile.pipe.aria.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
          detected: [....55] [ip4][..tcp] [....192.168.1.6][60563] -> [.52.169.186.119][..443] [TLS.Azure][Cloud][Acceptable][euno-1.api.microsoftstream.com]
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
               new: [....56] [ip4][..udp] [....192.168.1.6][63930] -> [....192.168.1.1][...53] 
          detected: [....56] [ip4][..udp] [....192.168.1.6][63930] -> [....192.168.1.1][...53] [DNS.Microsoft][Cloud][Safe][dc.applicationinsights.microsoft.com]
  detection-update: [....56] [ip4][..udp] [....192.168.1.6][63930] -> [....192.168.1.1][...53] [DNS.Microsoft][Cloud][Safe][dc.applicationinsights.microsoft.com]
@@ -361,7 +349,6 @@
               new: [....59] [ip4][..tcp] [....192.168.1.6][60565] -> [...52.114.108.8][..443] 
          detected: [....59] [ip4][..tcp] [....192.168.1.6][60565] -> [...52.114.108.8][..443] [TLS.Teams][Collaborative][Safe][emea.ng.msg.teams.microsoft.com]
  detection-update: [....59] [ip4][..tcp] [....192.168.1.6][60565] -> [...52.114.108.8][..443] [TLS.Teams][Collaborative][Safe][emea.ng.msg.teams.microsoft.com]
-      ERROR-EVENT: Unknown packet type
           analyse: [....59] [ip4][..tcp] [....192.168.1.6][60565] -> [...52.114.108.8][..443] [TLS.Teams][Collaborative][Safe]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.277|    0.019|    0.049|       2449.644|   2.900]
@@ -372,7 +359,6 @@
                    [IATS(ms)....: 19.2,19.3,0.2,22.0,0.0,21.8,0.0,0.2,0.2,0.2,0.0,0.2,1.1,12.3,0.3,19.9,0.0,6.3,0.0,0.6,12.0,11.4,1.5,1.4,55.0,62.1,0.0,25.5,0.0,18.4,276.9]
                    [PKTLENS.....: 64,60,52,274,1492,1492,64,52,1492,52,1492,471,52,178,145,525,103,121,52,52,90,90,52,511,52,52,1046,134,52,94,52,1335]
                    [ENTROPIES...: 4.4,5.3,4.9,5.6,7.1,7.3,5.0,5.0,7.5,4.9,7.6,7.5,4.9,6.3,6.3,7.6,5.6,5.9,5.0,4.9,5.4,5.7,5.0,7.5,5.0,5.2,7.8,6.2,5.2,5.6,5.0,7.8]
-      ERROR-EVENT: Unknown packet type
           analyse: [....26] [ip4][..tcp] [....192.168.1.6][60544] -> [...52.114.76.48][..443] [TLS.Teams][Collaborative][Safe]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    8.978|    0.329|    1.582|    2503841.415|   0.800]
@@ -384,13 +370,11 @@
                    [PKTLENS.....: 64,52,40,276,1492,1492,52,40,40,1492,1492,309,40,40,198,133,568,91,40,109,40,78,46,409,40,46,1100,46,411,415,86,78]
                    [ENTROPIES...: 4.3,4.9,4.6,5.6,7.4,7.3,4.7,4.6,4.6,7.5,7.6,7.1,4.7,4.6,6.5,6.1,7.6,5.4,4.6,5.9,4.6,5.2,4.5,7.4,4.7,4.5,7.8,4.6,7.4,7.5,5.6,5.5]
               new: [....60] [ip4][..tcp] [..151.11.50.139][.2222] -> [....192.168.1.6][54750] [MIDSTREAM] 
-      ERROR-EVENT: Unknown packet type
               new: [....61] [ip4][..tcp] [....192.168.1.6][60566] -> [.167.99.215.164][.4434] 
          detected: [....61] [ip4][..tcp] [....192.168.1.6][60566] -> [.167.99.215.164][.4434] [TLS.ntop][Network][Safe][dati.ntop.org]
                    RISK: Known Proto on Non Std Port
  detection-update: [....61] [ip4][..tcp] [....192.168.1.6][60566] -> [.167.99.215.164][.4434] [TLS.ntop][Network][Safe][dati.ntop.org]
                    RISK: Known Proto on Non Std Port
-      ERROR-EVENT: Unknown packet type
               new: [....62] [ip4][..udp] [....192.168.1.6][51681] -> [..52.114.77.136][.3478] 
               new: [....63] [ip4][..udp] [....192.168.1.6][50016] -> [.52.114.250.123][.3478] 
          detected: [....63] [ip4][..udp] [....192.168.1.6][50016] -> [.52.114.250.123][.3478] [STUN.Teams][VoIP][Safe][]
@@ -407,7 +391,6 @@
          detected: [....68] [ip4][..udp] [....192.168.1.6][50016] -> [.52.114.250.141][.3478] [STUN.Teams][VoIP][Safe][]
  detection-update: [....64] [ip4][..tcp] [....192.168.1.6][50018] -> [.52.114.250.123][..443] [TLS.Teams][Collaborative][Safe][euaz.tr.teams.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-      ERROR-EVENT: Unknown packet type
               new: [....69] [ip4][..udp] [....192.168.1.6][50017] -> [.52.114.250.141][.3478] 
          detected: [....69] [ip4][..udp] [....192.168.1.6][50017] -> [.52.114.250.141][.3478] [STUN.Teams][VoIP][Safe][]
          detected: [....67] [ip4][..tcp] [....192.168.1.6][50021] -> [.52.114.250.123][..443] [TLS.Teams][Collaborative][Safe][euaz.tr.teams.microsoft.com]
@@ -436,7 +419,6 @@
                    RISK: TLS (probably) Not Carrying HTTPS
  detection-update: [....74] [ip4][..tcp] [....192.168.1.6][60567] -> [..52.114.77.136][..443] [TLS.Teams][Collaborative][Safe][api.flightproxy.teams.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-      ERROR-EVENT: Unknown packet type
               new: [....76] [ip4][..udp] [....192.168.1.6][50016] -> [....192.168.0.4][50005] 
          detected: [....76] [ip4][..udp] [....192.168.1.6][50016] -> [....192.168.0.4][50005] [STUN.Teams][VoIP][Safe][]
                    RISK: Known Proto on Non Std Port
@@ -449,7 +431,6 @@
               new: [....79] [ip4][..udp] [..93.71.110.205][16333] -> [....192.168.1.6][50036] 
          detected: [....79] [ip4][..udp] [..93.71.110.205][16333] -> [....192.168.1.6][50036] [STUN.Skype_TeamsCall][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port
-      ERROR-EVENT: Unknown packet type
               new: [....80] [ip4][..udp] [..52.114.252.21][.3480] -> [....192.168.1.6][50036] 
          detected: [....80] [ip4][..udp] [..52.114.252.21][.3480] -> [....192.168.1.6][50036] [STUN.Skype_TeamsCall][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port
@@ -466,13 +447,9 @@
                    [IATS(ms)....: 45.0,45.1,0.2,47.4,47.2,0.2,0.0,0.1,0.0,0.1,0.0,0.1,0.0,0.1,0.0,0.1,0.0,0.0,8.0,0.0,0.0,52.4,1.2,45.6,48.6,92.2,43.7,69.1,0.3,113.5,1566.9]
                    [PKTLENS.....: 64,52,40,227,1492,52,1492,588,52,52,1492,588,52,40,588,166,40,40,40,147,46,85,46,91,40,141,224,40,71,40,46,46]
                    [ENTROPIES...: 4.4,4.9,4.5,5.4,7.5,4.6,7.4,6.2,4.7,4.7,7.7,7.0,4.7,4.5,7.6,6.6,4.4,4.5,4.5,6.4,4.5,5.8,4.6,5.4,4.6,6.4,6.9,4.5,5.4,4.4,4.6,4.6]
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
               new: [....82] [ip4][..tcp] [....192.168.1.6][60568] -> [...40.79.138.41][..443] 
          detected: [....82] [ip4][..tcp] [....192.168.1.6][60568] -> [...40.79.138.41][..443] [TLS.Azure][Cloud][Acceptable][gate.hockeyapp.net]
  detection-update: [....82] [ip4][..tcp] [....192.168.1.6][60568] -> [...40.79.138.41][..443] [TLS.Azure][Cloud][Acceptable][gate.hockeyapp.net]
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
               new: [....83] [ip4][.icmp] [..93.71.110.205] -> [....192.168.1.6] 
          detected: [....83] [ip4][.icmp] [..93.71.110.205] -> [....192.168.1.6] [ICMP][Network][Acceptable]
           analyse: [....78] [ip4][..udp] [..93.71.110.205][16332] -> [....192.168.1.6][50016] [STUN.Skype_TeamsCall][VoIP][Acceptable]

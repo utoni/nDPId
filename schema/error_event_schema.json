@@ -7,6 +7,10 @@
         "error_event_id",
         "error_event_name",
         "datalink",
+        "threshold_n",
+        "threshold_n_max",
+        "threshold_time",
+        "threshold_ts_usec",
         "global_ts_usec"
     ],
 
@@ -113,6 +117,25 @@
             "type": "number",
             "minimum": 0,
             "maximum": 292
+        },
+
+        "threshold_n": {
+            "type": "number",
+            "minimum": 1
+        },
+
+        "threshold_n_max": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 65535
+        },
+
+        "threshold_time": {
+            "type": "number"
+        },
+
+        "threshold_ts_usec": {
+            "type": "number"
         },
 
         "layer_type": {

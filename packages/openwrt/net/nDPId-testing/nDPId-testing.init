@@ -91,6 +91,8 @@ start_ndpid_instance() {
 	args="$args$(print_arg_str "$cfg" 'max_packets_per_flow_to_send' '-omax-packets-per-flow-to-send=')"
 	args="$args$(print_arg_str "$cfg" 'max_packets_per_flow_to_process' '-omax-packets-per-flow-to-process=')"
 	args="$args$(print_arg_str "$cfg" 'max_packets_per_flow_to_analyse' '-omax-packets-per-flow-to-analyse=')"
+	args="$args$(print_arg_str "$cfg" 'error_event_threshold_n' '-oerror-event-threshold-n=')"
+	args="$args$(print_arg_str "$cfg" 'error_event_threshold_time' '-oerror-event-threshold-time=')"
 
 	procd_open_instance
 	procd_set_param command ${NDPID_BIN}
@@ -133,7 +135,9 @@ validate_ndpid_section() {
 		'tcp_max_post_end_flow_time:uinteger' \
 		'max_packets_per_flow_to_send:uinteger' \
 		'max_packets_per_flow_to_process:uinteger' \
-		'max_packets_per_flow_to_analyse:uinteger'
+		'max_packets_per_flow_to_analyse:uinteger' \
+		'error_event_threshold_n:uinteger' \
+		'error_event_threshold_time:uinteger'
 }
 
 start_ndpisrvd_instance() {

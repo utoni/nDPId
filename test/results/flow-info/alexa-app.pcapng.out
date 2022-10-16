@@ -1,8 +1,8 @@
      DAEMON-EVENT: init
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [1/16]
+      ERROR-EVENT: Unknown packet type [2/16]
               new: [.....1] [ip6][icmp6] [.....................................::] -> [......................ff02::1:ffd3:fbc2] 
          detected: [.....1] [ip6][icmp6] [.....................................::] -> [......................ff02::1:ffd3:fbc2] [ICMPV6][Network][Acceptable]
               new: [.....2] [ip6][icmp6] [.....................................::] -> [...............................ff02::16] 
@@ -136,7 +136,7 @@
  detection-update: [....36] [ip4][..tcp] [..172.16.42.216][34019] -> [..54.239.24.186][..443] [TLS.AmazonAWS][Cloud][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
               new: [....40] [ip4][..udp] [..172.16.42.216][43350] -> [....172.16.42.1][...53] 
          detected: [....40] [ip4][..udp] [..172.16.42.216][43350] -> [....172.16.42.1][...53] [DNS.Amazon][Web][Acceptable][fls-na.amazon.com]
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [1/16]
           analyse: [....28] [ip4][..tcp] [..172.16.42.216][45661] -> [..52.94.232.134][..443] [TLS.Amazon][Web][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    1.016|    0.161|    0.286|      81844.249|   3.400]
@@ -226,7 +226,7 @@
               new: [....56] [ip4][..tcp] [..172.16.42.216][42144] -> [..72.21.206.135][..443] 
          detected: [....56] [ip4][..tcp] [..172.16.42.216][42144] -> [..72.21.206.135][..443] [TLS.Amazon][Web][Acceptable][fls-na.amazon.com]
  detection-update: [....56] [ip4][..tcp] [..172.16.42.216][42144] -> [..72.21.206.135][..443] [TLS.Amazon][Web][Acceptable][fls-na.amazon.com]
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [2/16]
               new: [....57] [ip4][..tcp] [..172.16.42.216][45687] -> [..52.94.232.134][..443] 
          detected: [....57] [ip4][..tcp] [..172.16.42.216][45687] -> [..52.94.232.134][..443] [TLS.Amazon][Web][Acceptable][pitangui.amazon.com]
  detection-update: [....57] [ip4][..tcp] [..172.16.42.216][45687] -> [..52.94.232.134][..443] [TLS.Amazon][Web][Acceptable][pitangui.amazon.com]
@@ -436,7 +436,7 @@
                    RISK: TLS (probably) Not Carrying HTTPS
  detection-update: [....99] [ip4][..tcp] [..172.16.42.216][44001] -> [..176.32.101.52][..443] [TLS.Amazon][Web][Acceptable][dp-gw-na-js.amazon.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [1/16]
            update: [....27] [ip4][..udp] [..172.16.42.216][54886] -> [....172.16.42.1][...53] [DNS.Amazon][Web][Acceptable]
            update: [....14] [ip4][.icmp] [....172.16.42.1] -> [..172.16.42.216] [ICMP][Network][Acceptable]
            update: [....40] [ip4][..udp] [..172.16.42.216][43350] -> [....172.16.42.1][...53] [DNS.Amazon][Web][Acceptable]

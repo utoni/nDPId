@@ -1,5 +1,5 @@
      DAEMON-EVENT: init
-      ERROR-EVENT: Packet too short
+      ERROR-EVENT: Packet too short [1/16]
               new: [.....1] [ip6][icmp6] [.....................................::] -> [......................ff02::1:ffa4:e108] 
          detected: [.....1] [ip6][icmp6] [.....................................::] -> [......................ff02::1:ffa4:e108] [ICMPV6][Network][Acceptable]
               new: [.....2] [ip6][icmp6] [..............fe80::c50d:519f:96a4:e108] -> [................................ff02::2] 

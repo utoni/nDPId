@@ -1,183 +1,60 @@
      DAEMON-EVENT: init
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [1/16]
+      ERROR-EVENT: Unknown packet type [2/16]
+      ERROR-EVENT: Unknown packet type [3/16]
+      ERROR-EVENT: Unknown packet type [4/16]
+      ERROR-EVENT: Unknown packet type [5/16]
+      ERROR-EVENT: Unknown packet type [6/16]
+      ERROR-EVENT: Unknown packet type [7/16]
+      ERROR-EVENT: Unknown packet type [8/16]
               new: [.....1] [ip4][..udp] [192.168.239.129][..137] -> [..192.168.239.2][..137] 
          detected: [.....1] [ip4][..udp] [192.168.239.129][..137] -> [..192.168.239.2][..137] [NetBIOS][System][Acceptable][mdjr98]
               new: [.....2] [ip4][.icmp] [192.168.239.129] -> [......224.0.0.2] 
          detected: [.....2] [ip4][.icmp] [192.168.239.129] -> [......224.0.0.2] [ICMP][Network][Acceptable]
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [9/16]
+      ERROR-EVENT: Unknown packet type [10/16]
+      ERROR-EVENT: Unknown packet type [11/16]
               new: [.....3] [ip4][..udp] [192.168.239.129][..137] -> [192.168.239.255][..137] 
          detected: [.....3] [ip4][..udp] [192.168.239.129][..137] -> [192.168.239.255][..137] [NetBIOS][System][Acceptable][mdjr98]
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [12/16]
               new: [.....4] [ip4][..udp] [192.168.239.129][..138] -> [192.168.239.255][..138] 
          detected: [.....4] [ip4][..udp] [192.168.239.129][..138] -> [192.168.239.255][..138] [NetBIOS.SMBv1][System][Dangerous][mdjr98]
                    RISK: Unsafe Protocol
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [13/16]
+      ERROR-EVENT: Unknown packet type [14/16]
+      ERROR-EVENT: Unknown packet type [15/16]
+      ERROR-EVENT: Unknown packet type [16/16]
            update: [.....2] [ip4][.icmp] [192.168.239.129] -> [......224.0.0.2] [ICMP][Network][Acceptable]
            update: [.....1] [ip4][..udp] [192.168.239.129][..137] -> [..192.168.239.2][..137] [NetBIOS][System][Acceptable]
            update: [.....3] [ip4][..udp] [192.168.239.129][..137] -> [192.168.239.255][..137] [NetBIOS][System][Acceptable]
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [1/16]
+      ERROR-EVENT: Unknown packet type [2/16]
+      ERROR-EVENT: Unknown packet type [3/16]
+      ERROR-EVENT: Unknown packet type [4/16]
+      ERROR-EVENT: Unknown packet type [5/16]
+      ERROR-EVENT: Unknown packet type [6/16]
+      ERROR-EVENT: Unknown packet type [7/16]
+      ERROR-EVENT: Unknown packet type [8/16]
+      ERROR-EVENT: Unknown packet type [9/16]
+      ERROR-EVENT: Unknown packet type [10/16]
+      ERROR-EVENT: Unknown packet type [11/16]
+      ERROR-EVENT: Unknown packet type [12/16]
+      ERROR-EVENT: Unknown packet type [13/16]
+      ERROR-EVENT: Unknown packet type [14/16]
+      ERROR-EVENT: Unknown packet type [15/16]
+      ERROR-EVENT: Unknown packet type [16/16]
            update: [.....4] [ip4][..udp] [192.168.239.129][..138] -> [192.168.239.255][..138] [NetBIOS.SMBv1][System][Dangerous]
                    RISK: Unsafe Protocol
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
            update: [.....2] [ip4][.icmp] [192.168.239.129] -> [......224.0.0.2] [ICMP][Network][Acceptable]
            update: [.....1] [ip4][..udp] [192.168.239.129][..137] -> [..192.168.239.2][..137] [NetBIOS][System][Acceptable]
            update: [.....3] [ip4][..udp] [192.168.239.129][..137] -> [192.168.239.255][..137] [NetBIOS][System][Acceptable]
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
            update: [.....4] [ip4][..udp] [192.168.239.129][..138] -> [192.168.239.255][..138] [NetBIOS.SMBv1][System][Dangerous]
                    RISK: Unsafe Protocol
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [1/16]
+      ERROR-EVENT: Unknown packet type [2/16]
+      ERROR-EVENT: Unknown packet type [3/16]
           analyse: [.....3] [ip4][..udp] [192.168.239.129][..137] -> [192.168.239.255][..137] [NetBIOS][System][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|   96.434|    4.235|   17.262|  297969697.948|   1.500]

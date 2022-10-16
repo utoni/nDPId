@@ -16,7 +16,7 @@
               new: [.....8] [ip4][..udp] [..192.168.1.110][.2713] -> [....192.168.1.1][...53] 
          detected: [.....8] [ip4][..udp] [..192.168.1.110][.2713] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][]
                    RISK: Malformed Packet
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [1/16]
               new: [.....9] [ip4][..udp] [....192.168.1.2][.2597] -> [....192.168.1.1][29440] 
  detection-update: [.....7] [ip4][..udp] [....192.168.1.2][.2713] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
               new: [....10] [ip4][..udp] [....192.168.1.2][.2714] -> [....192.168.1.1][...53] 
@@ -29,13 +29,13 @@
               new: [....13] [ip4][..udp] [....192.168.1.2][.2715] -> [....192.168.1.1][...53] 
          detected: [....13] [ip4][..udp] [....192.168.1.2][.2715] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
  detection-update: [....13] [ip4][..udp] [....192.168.1.2][.2715] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [1/16]
  detection-update: [....13] [ip4][..udp] [....192.168.1.2][.2715] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cyber?ity.dk]
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [2/16]
               new: [....14] [ip4][..udp] [....192.168.1.2][.2716] -> [....192.168.1.1][...53] 
          detected: [....14] [ip4][..udp] [....192.168.1.2][.2716] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][1.0.0.127.in-addr.arpa]
               new: [....15] [ip4][..udp] [....192.168.1.1][.9587] -> [....192.168.1.2][..156] 
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [3/16]
               new: [....16] [ip4][..udp] [..208.242.33.35][.5060] -> [....192.168.1.2][.5060] 
          detected: [....16] [ip4][..udp] [..208.242.33.35][.5060] -> [....192.168.1.2][.5060] [SIP][VoIP][Acceptable]
               new: [....17] [ip4][..udp] [....192.168.1.2][..138] -> [..192.168.1.251][..138] 
@@ -64,10 +64,10 @@
  detection-update: [....22] [ip4][..udp] [....192.168.1.2][.2719] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][]
                    RISK: Malformed Packet
               new: [....23] [ip4][..tcp] [....192.168.1.2][.2720] -> [..147.234.1.253][...21] 
-      ERROR-EVENT: Unknown L3 protocol
+      ERROR-EVENT: Unknown L3 protocol [1/16]
               new: [....24] [ip4][..tcp] [..147.234.1.253][...21] -> [....192.169.1.2][.2720] [MIDSTREAM] 
               new: [....25] [ip4][..tcp] [....192.168.1.2][.2679] -> [..147.234.1.253][...21] [MIDSTREAM] 
-      ERROR-EVENT: Unknown L3 protocol
+      ERROR-EVENT: Unknown L3 protocol [2/16]
               new: [....26] [ip4][..tcp] [..147.234.1.253][...21] -> [......192.2.1.2][.2720] [MIDSTREAM] 
               new: [....27] [ip4][..tcp] [..147.234.1.253][...21] -> [...192.168.1.66][.2720] [MIDSTREAM] 
               new: [....28] [ip4][..tcp] [..147.234.1.253][..120] -> [....192.168.1.2][.2720] [MIDSTREAM] 
@@ -77,19 +77,19 @@
               new: [....32] [ip4][..tcp] [..147.234.1.253][...21] -> [....192.168.1.2][.2732] [MIDSTREAM] 
               new: [....33] [ip4][..tcp] [..147.234.1.253][.1045] -> [....192.168.1.2][.2720] [MIDSTREAM] 
               new: [....34] [ip4][..tcp] [..147.234.1.253][...21] -> [...192.168.65.2][.2720] [MIDSTREAM] 
-      ERROR-EVENT: Unknown L3 protocol
+      ERROR-EVENT: Unknown L3 protocol [3/16]
               new: [....35] [ip4][..tcp] [..147.234.1.253][...21] -> [.....84.168.1.2][.2720] [MIDSTREAM] 
               new: [....36] [ip4][..tcp] [....192.112.1.2][.2720] -> [..147.234.1.253][...21] [MIDSTREAM] 
               new: [....37] [ip4][..170] [170.170.170.170] -> [170.170.170.170] 
               new: [....38] [ip4][..tcp] [....192.168.1.2][.2720] -> [..147.117.1.253][...21] [MIDSTREAM] 
               new: [....39] [ip4][..tcp] [....192.168.1.6][.2721] -> [..147.234.1.253][58999] 
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [4/16]
               new: [....40] [ip4][..tcp] [...37.115.0.253][58999] -> [....192.168.1.2][.2721] 
-      ERROR-EVENT: TCP packet smaller than expected
+      ERROR-EVENT: TCP packet smaller than expected [5/16]
               new: [....41] [ip4][..tcp] [....192.168.1.2][.2721] -> [..147.234.1.253][58999] [MIDSTREAM] 
               new: [....42] [ip4][..tcp] [..147.234.1.253][58999] -> [....192.232.1.2][.2721] [MIDSTREAM] 
               new: [....43] [ip4][..tcp] [.....37.115.0.2][.2639] -> [..147.234.1.253][...21] [MIDSTREAM] 
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [6/16]
            update: [....16] [ip4][..udp] [..208.242.33.35][.5060] -> [....192.168.1.2][.5060] [SIP][VoIP][Acceptable]
            update: [....14] [ip4][..udp] [....192.168.1.2][.2716] -> [....192.168.1.1][...53] 
            update: [....15] [ip4][..udp] [....192.168.1.1][.9587] -> [....192.168.1.2][..156] 
@@ -97,7 +97,7 @@
          detected: [....44] [ip4][..udp] [....192.168.1.2][.2722] -> [....192.136.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
               new: [....45] [ip4][..udp] [....192.168.1.2][.2722] -> [....192.168.1.1][...53] 
          detected: [....45] [ip4][..udp] [....192.168.1.2][.2722] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
            update: [.....4] [ip4][..udp] [....192.168.1.2][.2712] -> [...192.37.115.0][...53] 
            update: [.....1] [ip4][..udp] [....192.168.1.2][..137] -> [..192.168.1.255][..137] [NetBIOS][System][Acceptable]
            update: [....17] [ip4][..udp] [....192.168.1.2][..138] -> [..192.168.1.251][..138] [NetBIOS.SMBv1][System][Dangerous]
@@ -135,7 +135,7 @@
  detection-update: [....51] [ip4][..udp] [....192.168.1.2][.2725] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][1.0.0.127.in-addr.arpa]
               new: [....52] [ip4][..udp] [...192.168.1.46][...53] -> [....192.168.1.2][.2726] 
          detected: [....52] [ip4][..udp] [...192.168.1.46][...53] -> [....192.168.1.2][.2726] [DNS][Network][Acceptable][sip.cybercity.dk]
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
              idle: [.....4] [ip4][..udp] [....192.168.1.2][.2712] -> [...192.37.115.0][...53] 
           guessed: [.....2] [ip4][..udp] [....217.168.1.2][..137] -> [..192.168.1.255][..137] [NetBIOS][System][Acceptable][]
              idle: [.....2] [ip4][..udp] [....217.168.1.2][..137] -> [..192.168.1.255][..137] 
@@ -196,10 +196,10 @@
            update: [....21] [ip4][..udp] [....192.114.1.2][.2719] -> [....192.168.1.1][...53] 
               new: [....53] [ip4][..udp] [..192.168.1.202][..137] -> [..192.168.1.255][..137] 
          detected: [....53] [ip4][..udp] [..192.168.1.202][..137] -> [..192.168.1.255][..137] [NetBIOS][System][Acceptable][eci_dom]
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
               new: [....54] [ip4][..udp] [....192.168.1.2][.2732] -> [....192.168.1.1][...53] 
          detected: [....54] [ip4][..udp] [....192.168.1.2][.2732] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [2/16]
              idle: [....22] [ip4][..udp] [....192.168.1.2][.2719] -> [....192.168.1.1][...53] [DNS][Network][Acceptable]
                    RISK: Malformed Packet
              idle: [....21] [ip4][..udp] [....192.114.1.2][.2719] -> [....192.168.1.1][...53] 
@@ -238,7 +238,7 @@
              idle: [....46] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2723] [DNS][Network][Acceptable]
           guessed: [....49] [ip4][..udp] [....192.168.1.2][..137] -> [..192.168.1.255][25481] [NetBIOS][System][Acceptable][]
              idle: [....49] [ip4][..udp] [....192.168.1.2][..137] -> [..192.168.1.255][25481] 
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
               new: [....63] [ip4][..udp] [....192.168.1.2][..137] -> [..192.168.1.255][..169] 
              idle: [....50] [ip4][..udp] [....192.168.1.2][.2724] -> [...192.168.17.1][...53] 
              idle: [....48] [ip4][..udp] [....192.168.1.2][.2724] -> [....192.168.1.1][...53] 
@@ -248,7 +248,7 @@
          detected: [....64] [ip4][..udp] [....192.168.1.2][.2736] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
               new: [....65] [ip4][..udp] [....192.168.1.2][.2684] -> [....192.168.1.1][...53] 
          detected: [....65] [ip4][..udp] [....192.168.1.2][.2684] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.dybercity.dk]
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [1/16]
               new: [....66] [ip4][..udp] [....192.168.1.2][.2736] -> [...192.168.1.17][...53] 
          detected: [....66] [ip4][..udp] [....192.168.1.2][.2736] -> [...192.168.1.17][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
  detection-update: [....64] [ip4][..udp] [....192.168.1.2][.2736] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
@@ -284,7 +284,7 @@
               new: [....73] [ip4][..udp] [....192.168.1.2][.2740] -> [....192.168.1.1][...53] 
          detected: [....73] [ip4][..udp] [....192.168.1.2][.2740] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cyberci_s]
  detection-update: [....73] [ip4][..udp] [....192.168.1.2][.2740] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [1/16]
  detection-update: [....73] [ip4][..udp] [....192.168.1.2][.2740] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
                    RISK: Malformed Packet
               new: [....74] [ip4][..udp] [....192.168.1.2][..137] -> [..192.168.1.255][.8329] 
@@ -318,7 +318,7 @@
            update: [....61] [ip4][..udp] [....200.168.1.2][.2735] -> [....192.168.1.1][...53] 
            update: [....62] [ip4][..udp] [....253.168.1.1][...53] -> [....192.168.1.2][.2735] [DNS][Network][Acceptable]
            update: [....37] [ip4][..170] [170.170.170.170] -> [170.170.170.170] 
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [1/16]
               new: [....79] [ip4][..udp] [....192.168.1.2][.2743] -> [....192.168.1.1][...53] 
          detected: [....79] [ip4][..udp] [....192.168.1.2][.2743] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][1.0.0.127.in-addr.arpa]
  detection-update: [....79] [ip4][..udp] [....192.168.1.2][.2743] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][1.0.0.127.in-addr.arpa]
@@ -389,7 +389,7 @@
                    RISK: Malformed Packet
               new: [....93] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2733] 
          detected: [....93] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2733] [DNS][Network][Acceptable][1.0.0.127.in-addr.arpa]
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [1/16]
               new: [....94] [ip4][..udp] [....192.168.1.2][.2750] -> [....192.168.1.1][...53] 
          detected: [....94] [ip4][..udp] [....192.168.1.2][.2750] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.voip.brujula.net]
               new: [....95] [ip4][..udp] [....192.168.1.2][10942] -> [....192.168.1.1][...53] 
@@ -448,7 +448,7 @@
            update: [....90] [ip4][..udp] [....192.168.1.2][.2748] -> [....192.168.1.1][...53] 
            update: [....89] [ip4][..udp] [....192.168.1.2][.5060] -> [..200.68.120.81][.4932] [SIP][VoIP][Acceptable]
            update: [....91] [ip4][..udp] [....192.168.1.2][.5060] -> [..200.68.120.81][.5060] [SIP][VoIP][Acceptable]
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [1/16]
               new: [...106] [ip4][..udp] [....192.168.1.2][.2754] -> [....192.168.1.1][...53] 
               new: [...107] [ip4][..118] [....192.168.1.2] -> [..200.68.120.81] 
          detected: [...106] [ip4][..udp] [....192.168.1.2][.2754] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cyberciwy.dk]
@@ -563,13 +563,13 @@
              idle: [....79] [ip4][..udp] [....192.168.1.2][.2743] -> [....192.168.1.1][...53] [DNS][Network][Acceptable]
            update: [....85] [ip4][..240] [....192.168.1.2] -> [....192.168.1.1] 
            update: [...110] [ip4][..udp] [....192.168.1.2][.2756] -> [....192.168.1.1][...53] 
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
               new: [...118] [ip4][..udp] [.....192.22.1.2][.2760] -> [....192.168.1.1][...53] 
               new: [...119] [ip4][..udp] [....192.168.1.2][.2760] -> [....192.168.1.1][...53] 
          detected: [...119] [ip4][..udp] [....192.168.1.2][.2760] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip.eudp.sip.cybercity.dk]
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [2/16]
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [3/16]
+      ERROR-EVENT: Unknown packet type [4/16]
  detection-update: [...119] [ip4][..udp] [....192.168.1.2][.2760] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
              idle: [....81] [ip4][..udp] [....192.168.1.2][...88] -> [..192.168.1.255][..137] [NetBIOS][System][Acceptable]
              idle: [....80] [ip4][..udp] [....192.168.1.2][.2744] -> [....192.168.1.1][...53] 
@@ -607,8 +607,8 @@
                    RISK: Malformed Packet
  detection-update: [...121] [ip4][..udp] [....192.168.1.2][.2762] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.sk]
                    RISK: Malformed Packet
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown L3 protocol
+      ERROR-EVENT: Unknown packet type [1/16]
+      ERROR-EVENT: Unknown L3 protocol [2/16]
      not-detected: [....82] [ip4][..udp] [..192.168.1.170][43690] -> [170.170.170.170][43690] [Unknown][Unrated]
              idle: [....82] [ip4][..udp] [..192.168.1.170][43690] -> [170.170.170.170][43690] 
              idle: [....83] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2745] [DNS][Network][Acceptable]
@@ -616,14 +616,14 @@
            update: [...112] [ip4][..udp] [....192.168.1.2][.2640] -> [....192.168.1.1][...53] 
            update: [...114] [ip4][..udp] [.192.168.37.115][.2758] -> [....128.168.1.1][...53] 
            update: [...113] [ip4][..udp] [....192.168.1.2][.2785] -> [....192.168.1.1][...53] 
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [3/16]
               new: [...122] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2763] 
          detected: [...122] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2763] [DNS][Network][Acceptable][1.0.0.127.in-addr.arpa]
                    RISK: Malformed Packet
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [4/16]
               new: [...123] [ip4][..udp] [....192.168.1.2][.2764] -> [....192.168.1.1][...53] 
          detected: [...123] [ip4][..udp] [....192.168.1.2][.2764] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [5/16]
               new: [...124] [ip4][..udp] [....192.168.1.2][43690] -> [170.170.170.170][43690] 
  detection-update: [...123] [ip4][..udp] [....192.168.1.2][.2764] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.s?p.cibercity.dk]
  detection-update: [...123] [ip4][..udp] [....192.168.1.2][.2764] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][]
@@ -652,7 +652,7 @@
               new: [...128] [ip4][..udp] [....192.168.1.2][.2766] -> [....192.168.1.1][...53] 
          detected: [...128] [ip4][..udp] [....192.168.1.2][.2766] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
  detection-update: [...128] [ip4][..udp] [....192.168.1.2][.2766] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybe0city.dk]
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [1/16]
               new: [...129] [ip4][..udp] [....192.168.1.2][14798] -> [....192.168.1.1][...53] 
          detected: [...129] [ip4][..udp] [....192.168.1.2][14798] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
              idle: [....93] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2733] [DNS][Network][Acceptable]
@@ -680,7 +680,7 @@
  detection-update: [...130] [ip4][..udp] [....192.168.1.2][.2767] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][1.0.0.127.in-addr.arpa]
               new: [...131] [ip4][..udp] [....192.168.1.2][.2768] -> [....192.168.1.1][...53] 
          detected: [...131] [ip4][..udp] [....192.168.1.2][.2768] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
               new: [...132] [ip4][..udp] [....192.168.1.2][35536] -> [....192.168.1.1][...53] 
          detected: [...132] [ip4][..udp] [....192.168.1.2][35536] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
               new: [...133] [ip4][..udp] [.....94.168.1.2][.2768] -> [....192.168.1.1][....4] 
@@ -713,16 +713,16 @@
                    RISK: Malformed Packet
            update: [...123] [ip4][..udp] [....192.168.1.2][.2764] -> [....192.168.1.1][...53] [DNS][Network][Acceptable]
                    RISK: Malformed Packet
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [1/16]
+      ERROR-EVENT: Unknown packet type [2/16]
               new: [...136] [ip4][..127] [....192.168.1.2] -> [....192.168.1.1] 
               new: [...137] [ip4][..udp] [....192.168.1.2][.2770] -> [....192.168.1.1][...53] 
          detected: [...137] [ip4][..udp] [....192.168.1.2][.2770] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][]
                    RISK: Malformed Packet
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [3/16]
               new: [...138] [ip4][..udp] [....192.168.1.2][..137] -> [..120.168.1.255][..137] 
          detected: [...138] [ip4][..udp] [....192.168.1.2][..137] -> [..120.168.1.255][..137] [NetBIOS][System][Acceptable][eci_doma]
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [4/16]
  detection-update: [...137] [ip4][..udp] [....192.168.1.2][.2770] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][]
                    RISK: Malformed Packet
              idle: [...108] [ip4][..udp] [.....14.168.1.2][.2754] -> [....192.168.1.1][...53] 
@@ -749,7 +749,7 @@
          detected: [...139] [ip4][..udp] [...192.168.1.57][.2771] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][]
               new: [...140] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2771] 
          detected: [...140] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2771] [DNS][Network][Acceptable][1.0.0.127.in-addr.arpa]
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
               new: [...141] [ip4][..udp] [....192.168.1.2][..138] -> [..192.168.1.255][..138] 
          detected: [...141] [ip4][..udp] [....192.168.1.2][..138] -> [..192.168.1.255][..138] [NetBIOS.SMBv1][System][Dangerous][d002465]
                    RISK: Unsafe Protocol
@@ -785,7 +785,7 @@
            update: [...135] [ip4][..udp] [....192.168.1.1][..117] -> [....192.168.1.2][.2769] 
               new: [...144] [ip4][..udp] [....192.168.1.2][.2773] -> [....192.168.1.1][...53] 
          detected: [...144] [ip4][..udp] [....192.168.1.2][.2773] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][1.0.0.127.il-addr.arpa]
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
              idle: [...112] [ip4][..udp] [....192.168.1.2][.2640] -> [....192.168.1.1][...53] 
              idle: [...111] [ip4][..udp] [....192.168.1.2][.2757] -> [....192.168.1.1][...53] [DNS][Network][Acceptable]
                    RISK: Malformed Packet
@@ -836,7 +836,7 @@
          detected: [...148] [ip4][..udp] [....192.168.1.2][.2776] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
  detection-update: [...148] [ip4][..udp] [....192.168.1.2][.2776] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][]
                    RISK: Malformed Packet
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [1/16]
  detection-update: [...148] [ip4][..udp] [....192.168.1.2][.2776] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
                    RISK: Malformed Packet
           guessed: [...118] [ip4][..udp] [.....192.22.1.2][.2760] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][]
@@ -863,7 +863,7 @@
               new: [...151] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2782] 
          detected: [...151] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2782] [DNS][Network][Acceptable][1.0.0.127.in-addr.arpa]
               new: [...152] [ip4][..udp] [....192.168.1.6][.5060] -> [..212.242.33.35][.5060] 
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [1/16]
              idle: [...120] [ip4][..udp] [....192.168.1.2][.2761] -> [....192.168.1.1][...53] [DNS][Network][Acceptable]
              idle: [...121] [ip4][..udp] [....192.168.1.2][.2762] -> [....192.168.1.1][...53] 
            update: [...138] [ip4][..udp] [....192.168.1.2][..137] -> [..120.168.1.255][..137] [NetBIOS][System][Acceptable]
@@ -880,7 +880,7 @@
               new: [...153] [ip4][..udp] [....192.168.1.2][.2783] -> [....192.168.1.1][...53] 
          detected: [...153] [ip4][..udp] [....192.168.1.2][.2783] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
  detection-update: [...153] [ip4][..udp] [....192.168.1.2][.2783] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [1/16]
               new: [...154] [ip4][..udp] [......0.168.1.2][.2783] -> [....192.168.1.1][...53] 
          detected: [...154] [ip4][..udp] [......0.168.1.2][.2783] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
  detection-update: [...153] [ip4][..udp] [....192.168.1.2][.2783] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
@@ -905,7 +905,7 @@
                    RISK: Malformed Packet
               new: [...156] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.5.2][.2784] 
          detected: [...156] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.5.2][.2784] [DNS][Network][Acceptable][1.0.0.127.in-addr.aspa]
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [1/16]
              idle: [...129] [ip4][..udp] [....192.168.1.2][14798] -> [....192.168.1.1][...53] 
              idle: [...126] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2765] [DNS][Network][Acceptable]
                    RISK: Malformed Packet
@@ -939,7 +939,7 @@
            update: [...151] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2782] [DNS][Network][Acceptable]
               new: [...161] [ip4][..udp] [....192.168.1.2][.2786] -> [....192.168.1.3][...53] 
          detected: [...161] [ip4][..udp] [....192.168.1.2][.2786] -> [....192.168.1.3][...53] [DNS][Network][Acceptable][1.0.0.127.in-ad?r.arpa]
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
               new: [...162] [ip4][..udp] [..212.242.33.35][.9587] -> [....192.168.1.2][..196] 
               new: [...163] [ip4][..udp] [....192.168.1.2][.2787] -> [....192.168.3.1][...53] 
          detected: [...163] [ip4][..udp] [....192.168.1.2][.2787] -> [....192.168.3.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
@@ -971,8 +971,8 @@
                    [IATS(ms)....: 17474.8,107207.5,89874.9,17280.7,167478.6,167525.2,17335.8,73902.7,91241.1,17333.2,25.9,17725.0,29031.8,29092.7,68237.2,29272.4,29031.8,29031.6,29031.5,18604.5,279041.8,227.1,15287.5,17115.0,32679.4,257.3,76383.1,29031.1,58063.5,24495.5,17375.1]
                    [PKTLENS.....: 514,374,495,514,708,514,708,519,514,708,334,498,33,33,33,33,33,33,33,33,853,621,368,33,1104,473,363,33,33,33,466,701]
                    [ENTROPIES...: 5.8,5.8,5.8,5.8,5.8,1.5,3.4,2.9,5.8,4.1,5.8,3.2,4.1,4.1,4.1,4.1,4.1,4.1,4.1,4.1,5.8,5.8,5.7,4.1,1.5,5.8,4.6,4.1,4.0,4.1,3.3,2.3]
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: Unknown packet type [1/16]
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [2/16]
               new: [...167] [ip4][..udp] [....192.168.1.2][.2789] -> [....192.168.1.1][...53] 
          detected: [...167] [ip4][..udp] [....192.168.1.2][.2789] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
  detection-update: [...167] [ip4][..udp] [....192.168.1.2][.2789] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][]
@@ -992,14 +992,14 @@
            update: [...156] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.5.2][.2784] [DNS][Network][Acceptable]
               new: [...168] [ip4][..udp] [....192.168.1.2][.2790] -> [....192.168.1.1][...53] 
          detected: [...168] [ip4][..udp] [....192.168.1.2][.2790] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][1.0.0.127.in-addr.arpa]
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
               new: [...169] [ip4][..udp] [..212.242.33.35][.5060] -> [...192.37.115.0][.5060] 
          detected: [...169] [ip4][..udp] [..212.242.33.35][.5060] -> [...192.37.115.0][.5060] [SIP][VoIP][Acceptable]
               new: [...170] [ip4][..udp] [...192.168.79.2][.2791] -> [....192.168.1.1][...53] 
          detected: [...170] [ip4][..udp] [...192.168.79.2][.2791] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
               new: [...171] [ip4][..udp] [...192.168.1.53][.2791] -> [....192.168.1.1][...53] 
          detected: [...171] [ip4][..udp] [...192.168.1.53][.2791] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [2/16]
               new: [...172] [ip4][..udp] [....192.168.1.2][..137] -> [..192.194.1.255][..137] 
          detected: [...172] [ip4][..udp] [....192.168.1.2][..137] -> [..192.194.1.255][..137] [NetBIOS][System][Acceptable][eci_domain]
               new: [...173] [ip4][..udp] [170.170.170.170][43690] -> [170.170.170.170][43690] 
@@ -1031,7 +1031,7 @@
               new: [...177] [ip4][..udp] [....192.168.1.1][...53] -> [....240.168.1.2][.2792] 
          detected: [...177] [ip4][..udp] [....192.168.1.1][...53] -> [....240.168.1.2][.2792] [DNS][Network][Acceptable][1.0.0.127.in-a?dr.arpa]
                    RISK: Malformed Packet
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
            update: [...117] [ip4][...37] [....192.168.1.1] -> [....192.168.1.2] 
            update: [...162] [ip4][..udp] [..212.242.33.35][.9587] -> [....192.168.1.2][..196] 
            update: [....85] [ip4][..240] [....192.168.1.2] -> [....192.168.1.1] 
@@ -1105,7 +1105,7 @@
                    RISK: Malformed Packet
            update: [...159] [ip4][..udp] [....192.168.1.2][..137] -> [..192.168.1.255][35721] 
            update: [...107] [ip4][..118] [....192.168.1.2] -> [..200.68.120.81] 
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
      not-detected: [...162] [ip4][..udp] [..212.242.33.35][.9587] -> [....192.168.1.2][..196] [Unknown][Unrated]
              idle: [...162] [ip4][..udp] [..212.242.33.35][.9587] -> [....192.168.1.2][..196] 
      not-detected: [....85] [ip4][..240] [....192.168.1.2] -> [....192.168.1.1] [Unknown][Unrated]
@@ -1153,7 +1153,7 @@
          detected: [...183] [ip4][..udp] [...192.168.1.41][..137] -> [..107.168.1.255][..137] [NetBIOS][System][Acceptable][workgroup]
               new: [...184] [ip4][..udp] [.....115.0.1.41][..137] -> [..192.168.1.255][..137] 
          detected: [...184] [ip4][..udp] [.....115.0.1.41][..137] -> [..192.168.1.255][..137] [NetBIOS][System][Acceptable][workgroup]
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
              idle: [...164] [ip4][..udp] [....192.168.1.2][.2787] -> [....192.168.1.1][...53] 
              idle: [...165] [ip4][..udp] [....192.168.1.2][.2788] -> [....192.168.1.1][...53] 
              idle: [...167] [ip4][..udp] [....192.168.1.2][.2789] -> [....192.168.1.1][...53] 
@@ -1205,7 +1205,7 @@
               new: [...190] [ip4][..udp] [....192.168.1.2][.2793] -> [....192.168.1.1][...53] 
          detected: [...190] [ip4][..udp] [....192.168.1.2][.2793] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][re-.sippstar.com]
  detection-update: [...190] [ip4][..udp] [....192.168.1.2][.2793] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][reg.sip?star.com]
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
  detection-update: [...190] [ip4][..udp] [....192.168.1.2][.2793] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][reg.sippstar.com]
               new: [...191] [ip4][..udp] [....192.168.1.2][.2794] -> [..192.168.108.1][...53] 
          detected: [...191] [ip4][..udp] [....192.168.1.2][.2794] -> [..192.168.108.1][...53] [DNS][Network][Acceptable][sip.cybercity.dk]
@@ -1225,7 +1225,7 @@
          detected: [...192] [ip4][..udp] [....192.168.1.2][.2795] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][sip.cybercity.dk]
               new: [...193] [ip4][..udp] [....192.168.1.2][.2794] -> [....192.168.1.1][...53] 
          detected: [...193] [ip4][..udp] [....192.168.1.2][.2794] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][sip.cybercity.dk]
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
  detection-update: [...192] [ip4][..udp] [....192.168.1.2][.2795] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][sip.cybercity.dk]
  detection-update: [...193] [ip4][..udp] [....192.168.1.2][.2794] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][sip.cybercity.dk]
               new: [...194] [ip4][..udp] [....192.168.1.2][.2796] -> [....192.168.1.1][...53] 
@@ -1235,7 +1235,7 @@
               new: [...195] [ip4][..udp] [192.168.170.170][43690] -> [170.170.170.170][43690] 
  detection-update: [...194] [ip4][..udp] [....192.168.1.2][.2796] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
                    RISK: Malformed Packet
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [2/16]
            update: [.....1] [ip4][..udp] [....192.168.1.2][..137] -> [..192.168.1.255][..137] [NetBIOS][System][Acceptable]
            update: [...187] [ip4][..udp] [....192.168.1.2][..137] -> [..200.168.1.255][..137] [NetBIOS][System][Acceptable]
            update: [...186] [ip4][..udp] [....192.168.1.2][43690] -> [192.168.170.170][43690] 
@@ -1247,14 +1247,14 @@
  detection-update: [...197] [ip4][..udp] [....192.168.1.2][.2797] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][1.0.0.127.in-addr.arpa]
               new: [...198] [ip4][..udp] [..212.242.33.35][.5060] -> [....192.168.1.2][.5060] 
          detected: [...198] [ip4][..udp] [..212.242.33.35][.5060] -> [....192.168.1.2][.5060] [SIP][VoIP][Acceptable]
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
               new: [...199] [ip4][..udp] [....192.168.1.2][.2798] -> [....192.168.1.1][...53] 
          detected: [...199] [ip4][..udp] [....192.168.1.2][.2798] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
            update: [...166] [ip4][....0] [....192.168.1.1] -> [....192.168.1.2] 
            update: [...157] [ip4][...19] [....192.168.1.2] -> [....192.168.1.1] 
            update: [...136] [ip4][..127] [....192.168.1.2] -> [....192.168.1.1] 
            update: [....37] [ip4][..170] [170.170.170.170] -> [170.170.170.170] 
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [2/16]
               new: [...200] [ip4][..udp] [....192.168.1.2][.2799] -> [....192.168.1.1][...53] 
          detected: [...200] [ip4][..udp] [....192.168.1.2][.2799] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][1.0.0.127.in-addr.arpa]
               new: [...201] [ip4][..udp] [....192.168.1.1][...53] -> [..192.168.119.2][.2799] 
@@ -1263,7 +1263,7 @@
          detected: [...202] [ip4][..udp] [....192.168.1.2][.2800] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_s?p._udp.sip.cybercity.dk]
  detection-update: [...202] [ip4][..udp] [....192.168.1.2][.2800] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
               new: [...203] [ip4][..udp] [....192.168.1.2][.2800] -> [....192.168.1.1][...21] 
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [1/16]
            update: [...117] [ip4][...37] [....192.168.1.1] -> [....192.168.1.2] 
            update: [...188] [ip4][..udp] [....192.168.1.2][...68] -> [....192.168.1.1][...67] [DHCP][Network][Acceptable]
            update: [...183] [ip4][..udp] [...192.168.1.41][..137] -> [..107.168.1.255][..137] [NetBIOS][System][Acceptable]
@@ -1300,7 +1300,7 @@
  detection-update: [...209] [ip4][..udp] [....192.168.1.2][.2803] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][1.0.0.127.in-addr.arpa]
               new: [...210] [ip4][..udp] [....192.168.1.2][.2804] -> [....192.168.1.1][...53] 
          detected: [...210] [ip4][..udp] [....192.168.1.2][.2804] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
-      ERROR-EVENT: Unknown L3 protocol
+      ERROR-EVENT: Unknown L3 protocol [1/16]
  detection-update: [...210] [ip4][..udp] [....192.168.1.2][.2804] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cyberc?ty.dk]
              idle: [...183] [ip4][..udp] [...192.168.1.41][..137] -> [..107.168.1.255][..137] [NetBIOS][System][Acceptable]
              idle: [...184] [ip4][..udp] [.....115.0.1.41][..137] -> [..192.168.1.255][..137] [NetBIOS][System][Acceptable]
@@ -1311,8 +1311,8 @@
            update: [...197] [ip4][..udp] [....192.168.1.2][.2797] -> [....192.168.1.1][...53] [DNS][Network][Acceptable]
            update: [...199] [ip4][..udp] [....192.168.1.2][.2798] -> [....192.168.1.1][...53] 
  detection-update: [...210] [ip4][..udp] [....192.168.1.2][.2804] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: Unknown packet type [2/16]
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [3/16]
              idle: [...185] [ip4][..udp] [...192.168.1.41][..137] -> [.192.168.37.115][..137] [NetBIOS][System][Acceptable]
               new: [...211] [ip4][..udp] [....192.168.1.2][.2805] -> [....192.168.1.1][...51] 
               new: [...212] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2805] 
@@ -1335,7 +1335,7 @@
            update: [...200] [ip4][..udp] [....192.168.1.2][.2799] -> [....192.168.1.1][...53] 
            update: [...201] [ip4][..udp] [....192.168.1.1][...53] -> [..192.168.119.2][.2799] [DNS][Network][Acceptable]
            update: [...202] [ip4][..udp] [....192.168.1.2][.2800] -> [....192.168.1.1][...53] 
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [1/16]
               new: [...214] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2807] 
          detected: [...214] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2807] [DNS][Network][Acceptable][]
                    RISK: Malformed Packet
@@ -1354,7 +1354,7 @@
            update: [...204] [ip4][..udp] [....192.168.1.2][.2801] -> [....192.168.1.1][...53] [DNS][Network][Acceptable]
                    RISK: Malformed Packet
            update: [...207] [ip4][..udp] [....192.168.1.2][.2802] -> [....192.168.1.1][...53] 
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [2/16]
               new: [...217] [ip4][..udp] [....192.168.1.2][19192] -> [....192.168.1.1][...53] 
          detected: [...217] [ip4][..udp] [....192.168.1.2][19192] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
               new: [...218] [ip4][..udp] [....192.168.1.2][.2809] -> [....192.168.1.1][...53] 
@@ -1384,8 +1384,8 @@
                    RISK: Malformed Packet
               new: [...224] [ip4][..udp] [..192.168.233.1][...53] -> [....192.168.1.2][.2811] 
          detected: [...224] [ip4][..udp] [..192.168.233.1][...53] -> [....192.168.1.2][.2811] [DNS][Network][Acceptable][1.0.0.127.in-addr.arpa]
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [1/16]
+      ERROR-EVENT: Unknown packet type [2/16]
               new: [...225] [ip4][..udp] [....192.168.1.2][..137] -> [..192.168.1.255][..905] 
            update: [...149] [ip4][....0] [....192.168.1.2] -> [..192.168.1.255] 
            update: [...203] [ip4][..udp] [....192.168.1.2][.2800] -> [....192.168.1.1][...21] 
@@ -1400,7 +1400,7 @@
               new: [...226] [ip4][..udp] [....192.168.1.2][.2812] -> [....192.168.1.1][...53] 
          detected: [...226] [ip4][..udp] [....192.168.1.2][.2812] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cyaercity.dk]
  detection-update: [...226] [ip4][..udp] [....192.168.1.2][.2812] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
              idle: [...190] [ip4][..udp] [....192.168.1.2][.2793] -> [....192.168.1.1][...53] [DNS][Network][Acceptable]
              idle: [...191] [ip4][..udp] [....192.168.1.2][.2794] -> [..192.168.108.1][...53] 
            update: [...208] [ip4][..udp] [....192.168.1.2][18162] -> [....192.168.1.1][...53] 
@@ -1435,17 +1435,17 @@
               new: [...227] [ip4][..udp] [....192.168.1.2][.2813] -> [....192.168.1.1][...53] 
          detected: [...227] [ip4][..udp] [....192.168.1.2][.2813] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][1.0.0.127?in-ad_r?arpa???]
                    RISK: Malformed Packet
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [2/16]
               new: [...228] [ip4][..udp] [....192.168.1.2][.2814] -> [....192.168.1.1][...53] 
          detected: [...228] [ip4][..udp] [....192.168.1.2][.2814] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][]
                    RISK: Malformed Packet
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
-      ERROR-EVENT: Unknown packet type
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [3/16]
+      ERROR-EVENT: Unknown packet type [4/16]
+      ERROR-EVENT: Unknown packet type [5/16]
               new: [...229] [ip4][..udp] [....192.168.1.2][29440] -> [...192.168.1.37][..137] 
          detected: [...229] [ip4][..udp] [....192.168.1.2][29440] -> [...192.168.1.37][..137] [NetBIOS][System][Acceptable][]
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [6/16]
  detection-update: [...228] [ip4][..udp] [....192.168.1.2][.2814] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sib._udp.sip.cybercity.dk]
                    RISK: Malformed Packet
      not-detected: [...195] [ip4][..udp] [192.168.170.170][43690] -> [170.170.170.170][43690] [Unknown][Unrated]
@@ -1468,7 +1468,7 @@
               new: [...230] [ip4][..udp] [....192.168.1.2][.2815] -> [....192.168.1.1][...53] 
          detected: [...230] [ip4][..udp] [....192.168.1.2][.2815] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][]
                    RISK: Malformed Packet
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
               new: [...231] [ip4][..udp] [....192.168.1.2][.2816] -> [....192.168.1.1][...53] 
          detected: [...231] [ip4][..udp] [....192.168.1.2][.2816] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][?sip._udp.shp.cybercity.dk]
               new: [...232] [ip4][..udp] [....192.168.1.2][.5060] -> [.212.242.33.201][.5060] 
@@ -1484,9 +1484,9 @@
          detected: [...236] [ip4][..udp] [....192.168.1.2][30000] -> [..214.242.33.36][40392] [RTP][Media][Acceptable]
               new: [...237] [ip4][..udp] [.....81.168.1.2][30000] -> [..212.242.33.36][40392] 
          detected: [...237] [ip4][..udp] [.....81.168.1.2][30000] -> [..212.242.33.36][40392] [RTP][Media][Acceptable]
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [2/16]
  detection-update: [...231] [ip4][..udp] [....192.168.1.2][.2816] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [3/16]
              idle: [...197] [ip4][..udp] [....192.168.1.2][.2797] -> [....192.168.1.1][...53] [DNS][Network][Acceptable]
              idle: [...199] [ip4][..udp] [....192.168.1.2][.2798] -> [....192.168.1.1][...53] 
            update: [...205] [ip4][....0] [....192.168.1.2] -> [..212.242.33.35] 
@@ -1494,10 +1494,10 @@
          detected: [...238] [ip4][..udp] [....192.168.1.2][.2822] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][1.0.0.1?7.in-addr.arpa]
               new: [...239] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.234.33.35][.5060] 
          detected: [...239] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.234.33.35][.5060] [SIP][VoIP][Acceptable]
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
               new: [...240] [ip4][..udp] [....192.168.1.2][.2823] -> [....192.168.1.1][...53] 
          detected: [...240] [ip4][..udp] [....192.168.1.2][.2823] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [2/16]
  detection-update: [...240] [ip4][..udp] [....192.168.1.2][.2823] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
  detection-update: [...240] [ip4][..udp] [....192.168.1.2][.2823] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
      not-detected: [...149] [ip4][....0] [....192.168.1.2] -> [..192.168.1.255] [Unknown][Unrated]
@@ -1530,7 +1530,7 @@
               new: [...241] [ip4][..udp] [....192.168.1.2][.2824] -> [....192.168.1.1][...53] 
          detected: [...241] [ip4][..udp] [....192.168.1.2][.2824] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][1.0.0.127.in-addr.arpa]
  detection-update: [...241] [ip4][..udp] [....192.168.1.2][.2824] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][1.0.0.127.in-addr.arpa]
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
               new: [...242] [ip4][..udp] [....192.168.1.2][.2825] -> [....192.168.1.1][...53] 
          detected: [...242] [ip4][..udp] [....192.168.1.2][.2825] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
  detection-update: [...242] [ip4][..udp] [....192.168.1.2][.2825] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][]
@@ -1572,10 +1572,10 @@
          detected: [...245] [ip4][..udp] [....192.168.1.2][.2827] -> [..192.168.1.114][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
               new: [...246] [ip4][..udp] [....192.168.1.2][.2827] -> [....192.168.1.1][...53] 
          detected: [...246] [ip4][..udp] [....192.168.1.2][.2827] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercimy.v?]
-      ERROR-EVENT: Unknown packet type
+      ERROR-EVENT: Unknown packet type [1/16]
               new: [...247] [ip4][..udp] [....192.168.1.2][.2827] -> [....192.170.1.1][...53] 
          detected: [...247] [ip4][..udp] [....192.168.1.2][.2827] -> [....192.170.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cyberc?ty.dk]
-      ERROR-EVENT: Unknown L3 protocol
+      ERROR-EVENT: Unknown L3 protocol [2/16]
      not-detected: [...157] [ip4][...19] [....192.168.1.2] -> [....192.168.1.1] [Unknown][Unrated]
              idle: [...157] [ip4][...19] [....192.168.1.2] -> [....192.168.1.1] 
      not-detected: [...117] [ip4][...37] [....192.168.1.1] -> [....192.168.1.2] [Unknown][Unrated]
@@ -1614,7 +1614,7 @@
            update: [...220] [ip4][..udp] [....192.170.1.2][.2810] -> [....192.168.1.1][...53] 
               new: [...252] [ip4][..udp] [....192.168.1.2][.2829] -> [....192.168.1.1][...53] 
          detected: [...252] [ip4][..udp] [....192.168.1.2][.2829] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
               new: [...253] [ip4][..udp] [...192.168.54.2][.2829] -> [....192.168.1.1][...53] 
          detected: [...253] [ip4][..udp] [...192.168.54.2][.2829] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][]
                    RISK: Malformed Packet
@@ -1658,7 +1658,7 @@
              idle: [...222] [ip4][..udp] [....128.168.1.2][.2810] -> [....192.168.1.1][...53] 
            update: [...245] [ip4][..udp] [....192.168.1.2][.2827] -> [..192.168.1.114][...53] 
            update: [...246] [ip4][..udp] [....192.168.1.2][.2827] -> [....192.168.1.1][...53] 
-      ERROR-EVENT: nDPI IPv4/L4 payload detection failed
+      ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
               new: [...257] [ip4][..udp] [....192.168.1.2][.2832] -> [....192.168.1.1][...53] 
          detected: [...257] [ip4][..udp] [....192.168.1.2][.2832] -> [....192.168.1.1][...53] [DNS][Network][Acceptable][_sip._udp.sip.cybercity.dk]
           guessed: [....26] [ip4][..tcp] [..147.234.1.253][...21] -> [......192.2.1.2][.2720] [FTP_CONTROL][Download][Unsafe]
