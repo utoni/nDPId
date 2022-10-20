@@ -1,0 +1,27 @@
+# Maintainer: Toni Uhlig <toni@impl.cc>
+
+pkgname=nDPId-testing
+pkgver=1.0
+pkgrel=1
+pkgdesc="Tiny nDPI based deep packet inspection daemons / toolkit."
+arch=('i686' 'x86_64')
+url="https://github.com/utoni/nDPId"
+license=('GPL3')
+options=()
+
+build() {
+	cd "${srcdir}/../../.."
+	mkdir -p build-archlinux && cd build-archlinux
+	cmake .. \
+		-DCMAKE_BUILD_TYPE=RelWithDebInfo \
+		-DCMAKE_INSTALL_PREFIX="/usr/local" \
+		-DBUILD_EXAMPLES=ON \
+		-DBUILD_NDPI=ON \
+		-DENABLE_SANITIZER=ON
+	make VERBOSE=1
+}
+
+package() {
+	cd "${srcdir}/../../../build-archlinux"
+	make DESTDIR="${pkgdir}/" install
+}

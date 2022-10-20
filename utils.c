@@ -161,7 +161,7 @@ int change_user_group(char const * const user,
     pwd = getpwnam(user);
     if (pwd == NULL)
     {
-        return 1;
+        return -errno;
     }
 
     if (group != NULL)
@@ -170,7 +170,7 @@ int change_user_group(char const * const user,
         grp = getgrnam(group);
         if (grp == NULL)
         {
-            return 1;
+            return -errno;
         }
         gid = grp->gr_gid;
     }
@@ -181,17 +181,29 @@ int change_user_group(char const * const user,
 
     if (uds_collector_path != NULL)
     {
-        chmod(uds_collector_path, S_IRUSR | S_IWUSR);
-        chown(uds_collector_path, pwd->pw_uid, gid);
+        errno = 0;
+        if (chmod(uds_collector_path, S_IRUSR | S_IWUSR) != 0 ||
+            chown(uds_collector_path, pwd->pw_uid, gid) != 0)
+        {
+            return -errno;
+        }
     }
     if (uds_distributor_path != NULL)
     {
-        chmod(uds_distributor_path, S_IRUSR | S_IWUSR | S_IRGRP);
-        chown(uds_distributor_path, pwd->pw_uid, gid);
+        errno = 0;
+        if (chmod(uds_distributor_path, S_IRUSR | S_IWUSR | S_IRGRP) != 0 ||
+            chown(uds_distributor_path, pwd->pw_uid, gid) != 0)
+        {
+            return -errno;
+        }
     }
     if (pidfile != NULL)
     {
-        chown(pidfile, pwd->pw_uid, gid);
+        errno = 0;
+        if (chown(pidfile, pwd->pw_uid, gid) != 0)
+        {
+            return -errno;
+        }
     }
     return setregid(gid, gid) != 0 || setreuid(pwd->pw_uid, pwd->pw_uid);
 }
