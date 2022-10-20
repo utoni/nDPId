@@ -311,3 +311,7 @@ as part of the `git submodule`. Using `test/run_tests.sh` for other commit hashe
 will most likely result in PCAP diff's.
 
 Why not use `examples/py-flow-dashboard/flow-dash.py` to visualize nDPId's output.
+
+# Contributors
+
+Special thanks to Damiano Verzulli ([@verzulli](https://github.com/verzulli)) from [GARRLab](https://www.garrlab.it) for providing server and test infrastructure.
