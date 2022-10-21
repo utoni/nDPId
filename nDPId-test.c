@@ -293,6 +293,7 @@ error:
         drain_write_buffers_blocking(mock_arpa_desc);
     }
 
+    pthread_mutex_lock(&nDPIsrvd_start_mutex);
     free_remotes(epollfd);
     close(epollfd);
 
@@ -415,6 +416,9 @@ static enum nDPIsrvd_callback_return distributor_json_callback(struct nDPIsrvd_s
 
                     global_stats->total_events_serialized = nmb;
                 }
+
+                pthread_mutex_unlock(&nDPIsrvd_start_mutex);
+                pthread_mutex_unlock(&nDPId_start_mutex);
             }
         }
     }
@@ -853,6 +857,7 @@ static void * nDPId_mainloop_thread(void * const arg)
     }
 
 error:
+    pthread_mutex_lock(&nDPId_start_mutex);
     free_reader_threads();
     close(mock_pipefds[PIPE_nDPId]);
 

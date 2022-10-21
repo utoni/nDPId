@@ -15,8 +15,8 @@ before_script:
         netcat-openbsd python3 python3-jsonschema tree lcov
 
 after_script:
-  - cat /tmp/nDPIsrvd.log
-  - cat /tmp/nDPId.log
+  - test -r && cat /tmp/nDPIsrvd.log
+  - test -r && cat /tmp/nDPId.log
 
 build_and_test:
   script:
