@@ -1253,12 +1253,6 @@ static int handle_incoming_data(int epollfd, struct remote_desc * const current)
             {
                 if (utarray_len(additional_write_buffers) == 0)
                 {
-#if 0
-                    logger_nDPIsrvd(&remotes.desc[i],
-                                       "Distributor",
-                                       "buffer capacity threshold (%zu bytes) reached, caching JSON strings.",
-                                       remotes.desc[i].buf.used);
-#endif
                     errno = 0;
                     if (add_out_event(epollfd, &remotes.desc[i]) != 0)
                     {
