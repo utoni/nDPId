@@ -11,7 +11,7 @@
  * NOTE: Buffer size needs to keep in sync with other implementations
  *       e.g. dependencies/nDPIsrvd.py
  */
-#define NETWORK_BUFFER_MAX_SIZE 32768u /* 8192 + 8192 + 8192 + 8192 */
+#define NETWORK_BUFFER_MAX_SIZE 33792u /* 8192 + 8192 + 8192 + 8192 + 1024 */
 #define NETWORK_BUFFER_LENGTH_DIGITS 5u
 #define NETWORK_BUFFER_LENGTH_DIGITS_STR "5"
 

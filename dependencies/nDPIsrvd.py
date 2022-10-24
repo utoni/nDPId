@@ -21,7 +21,7 @@ DEFAULT_PORT = 7000
 DEFAULT_UNIX = '/tmp/ndpid-distributor.sock'
 
 NETWORK_BUFFER_MIN_SIZE = 6 # NETWORK_BUFFER_LENGTH_DIGITS + 1
-NETWORK_BUFFER_MAX_SIZE = 32768 # Please keep this value in sync with the one in config.h
+NETWORK_BUFFER_MAX_SIZE = 33792 # Please keep this value in sync with the one in config.h
 
 PKT_TYPE_ETH_IP4 = 0x0800
 PKT_TYPE_ETH_IP6 = 0x86DD
@@ -417,7 +417,13 @@ class nDPIsrvdSocket:
         index = 0
 
         for received_line in self.lines:
-            json_dict = json.loads(received_line[0].decode('ascii', errors='replace'), strict=True)
+            try:
+                json_dict = json.loads(received_line[0].decode('ascii', errors='replace'), strict=True)
+            except json.decoder.JSONDecodeError as err:
+                sys.stderr.write('\nFATAL: JSON decode failed at line "{}"\n'.format(received_line[0].decode('ascii', errors='replace')))
+                sys.stderr.write('\n{}\n'.format(str(err)))
+                retval = False
+
             instance = self.flow_mgr.getInstance(json_dict)
             if instance is None:
                 retval = False
@@ -474,7 +480,7 @@ def validateAddress(args):
     address = None
 
     if args.host is None:
-        address_tcpip = (DEFAULT_HOST, DEFAULT_PORT)
+        address_tcpip = (DEFAULT_HOST, args.port)
     else:
         address_tcpip = (args.host, args.port)
         tcp_addr_set = True

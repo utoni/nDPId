@@ -1227,7 +1227,7 @@ int main(int argc, char ** argv)
     if (THREADS_RETURNED_ERROR() != 0)
     {
         char const * which_thread = "Unknown";
-        int thread_errno;
+        int thread_errno = 0;
 
         if (nDPId_return.thread_return_value.val != 0)
         {
