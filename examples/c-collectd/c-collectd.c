@@ -14,6 +14,7 @@
 #include "nDPIsrvd.h"
 
 #define DEFAULT_COLLECTD_EXEC_INST "nDPIsrvd"
+#define ERROR_EVENT_ID_MAX 17
 //#define GENERATE_TIMESTAMP 1
 
 #define LOG(flags, format, ...)                                                                                        \
@@ -47,6 +48,9 @@ static int quiet = 0;
 
 static struct
 {
+    uint64_t json_lines;
+    uint64_t json_bytes;
+
     uint64_t flow_new_count;
     uint64_t flow_end_count;
     uint64_t flow_idle_count;
@@ -56,6 +60,18 @@ static struct
     uint64_t flow_detected_count;
     uint64_t flow_detection_update_count;
     uint64_t flow_not_detected_count;
+
+    uint64_t packet_count;
+    uint64_t packet_flow_count;
+
+    uint64_t init_count;
+    uint64_t reconnect_count;
+    uint64_t shutdown_count;
+    uint64_t status_count;
+
+    uint64_t error_count_sum;
+    uint64_t error_count[ERROR_EVENT_ID_MAX];
+    uint64_t error_unknown_count;
 
     uint64_t flow_src_total_bytes;
     uint64_t flow_dst_total_bytes;
@@ -129,6 +145,14 @@ static struct json_stat_map const flow_event_map[] = {{"new", &collectd_statisti
                                                       {"detection-update",
                                                        &collectd_statistics.flow_detection_update_count},
                                                       {"not-detected", &collectd_statistics.flow_not_detected_count}};
+
+static struct json_stat_map const packet_event_map[] = {{"packet", &collectd_statistics.packet_count},
+                                                        {"packet-flow", &collectd_statistics.packet_flow_count}};
+
+static struct json_stat_map const daemon_event_map[] = {{"init", &collectd_statistics.init_count},
+                                                        {"reconnect", &collectd_statistics.reconnect_count},
+                                                        {"shutdown", &collectd_statistics.shutdown_count},
+                                                        {"status", &collectd_statistics.status_count}};
 
 static struct json_stat_map const breeds_map[] = {{"Safe", &collectd_statistics.flow_breed_safe_count},
                                                   {"Acceptable", &collectd_statistics.flow_breed_acceptable_count},
@@ -357,18 +381,32 @@ static void print_collectd_exec_output(void)
 
     printf(COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT()
                COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT()
-                   COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT(),
+                   COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT()
+                       COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT()
+                           COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT()
+                               COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT()
+                                   COLLECTD_PUTVAL_N_FORMAT(),
 
+           COLLECTD_PUTVAL_N(json_lines),
+           COLLECTD_PUTVAL_N(json_bytes),
            COLLECTD_PUTVAL_N(flow_new_count),
            COLLECTD_PUTVAL_N(flow_end_count),
            COLLECTD_PUTVAL_N(flow_idle_count),
+           COLLECTD_PUTVAL_N(flow_update_count),
+           COLLECTD_PUTVAL_N(flow_analyse_count),
            COLLECTD_PUTVAL_N(flow_guessed_count),
            COLLECTD_PUTVAL_N(flow_detected_count),
            COLLECTD_PUTVAL_N(flow_detection_update_count),
            COLLECTD_PUTVAL_N(flow_not_detected_count),
            COLLECTD_PUTVAL_N(flow_src_total_bytes),
            COLLECTD_PUTVAL_N(flow_dst_total_bytes),
-           COLLECTD_PUTVAL_N(flow_risky_count));
+           COLLECTD_PUTVAL_N(flow_risky_count),
+           COLLECTD_PUTVAL_N(packet_count),
+           COLLECTD_PUTVAL_N(packet_flow_count),
+           COLLECTD_PUTVAL_N(init_count),
+           COLLECTD_PUTVAL_N(reconnect_count),
+           COLLECTD_PUTVAL_N(shutdown_count),
+           COLLECTD_PUTVAL_N(status_count));
 
     printf(COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT()
                COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT()
@@ -426,7 +464,7 @@ static void print_collectd_exec_output(void)
 
     printf(COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT()
                COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT()
-                   COLLECTD_PUTVAL_N_FORMAT(),
+                   COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT(),
 
            COLLECTD_PUTVAL_N(flow_l3_ip4_count),
            COLLECTD_PUTVAL_N(flow_l3_ip6_count),
@@ -435,7 +473,16 @@ static void print_collectd_exec_output(void)
            COLLECTD_PUTVAL_N(flow_l4_udp_count),
            COLLECTD_PUTVAL_N(flow_l4_icmp_count),
            COLLECTD_PUTVAL_N(flow_l4_other_count),
-           COLLECTD_PUTVAL_N(flow_risk_unknown_count));
+           COLLECTD_PUTVAL_N(flow_risk_unknown_count),
+           COLLECTD_PUTVAL_N(error_unknown_count),
+           COLLECTD_PUTVAL_N(error_count_sum));
+
+    for (i = 0; i < ERROR_EVENT_ID_MAX; ++i)
+    {
+        char gauge_name[BUFSIZ];
+        snprintf(gauge_name, sizeof(gauge_name), "error_%zu_count", i);
+        printf(COLLECTD_PUTVAL_N_FORMAT(), COLLECTD_PUTVAL_N2(gauge_name, error_count[i]));
+    }
 
     for (i = 0; i < NDPI_MAX_RISK; ++i)
     {
@@ -558,6 +605,41 @@ static enum nDPIsrvd_callback_return collectd_json_callback(struct nDPIsrvd_sock
 
     struct nDPIsrvd_json_token const * const flow_event_name = TOKEN_GET_SZ(sock, "flow_event_name");
     struct flow_user_data * flow_user_data = NULL;
+
+    collectd_statistics.json_lines++;
+    collectd_statistics.json_bytes += sock->buffer.json_string_length + NETWORK_BUFFER_LENGTH_DIGITS;
+
+    struct nDPIsrvd_json_token const * const packet_event_name = TOKEN_GET_SZ(sock, "packet_event_name");
+    if (packet_event_name != NULL)
+    {
+        collectd_map_token_to_stat(sock, packet_event_name, packet_event_map, nDPIsrvd_ARRAY_LENGTH(packet_event_map));
+    }
+
+    struct nDPIsrvd_json_token const * const daemon_event_name = TOKEN_GET_SZ(sock, "daemon_event_name");
+    if (daemon_event_name != NULL)
+    {
+        collectd_map_token_to_stat(sock, daemon_event_name, daemon_event_map, nDPIsrvd_ARRAY_LENGTH(daemon_event_map));
+    }
+
+    struct nDPIsrvd_json_token const * const error_event_id = TOKEN_GET_SZ(sock, "error_event_id");
+    if (error_event_id != NULL)
+    {
+        nDPIsrvd_ull error_event_id_ull;
+        if (TOKEN_VALUE_TO_ULL(sock, error_event_id, &error_event_id_ull) != CONVERSION_OK)
+        {
+            return CALLBACK_ERROR;
+        }
+
+        collectd_statistics.error_count_sum++;
+        if (error_event_id_ull < ERROR_EVENT_ID_MAX)
+        {
+            collectd_statistics.error_count[error_event_id_ull]++;
+        }
+        else
+        {
+            collectd_statistics.error_unknown_count++;
+        }
+    }
 
     if (flow != NULL)
     {
