@@ -197,7 +197,7 @@ int change_user_group(char const * const user,
             return -errno;
         }
     }
-    if (pidfile != NULL)
+    if (daemonize != 0 && pidfile != NULL)
     {
         errno = 0;
         if (chown(pidfile, pwd->pw_uid, gid) != 0)
