@@ -2,8 +2,8 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [255.255.255.255][.8224] -> [.255.255.255.32][.8224] 
-         detected: [.....1] [ip4][..udp] [255.255.255.255][.8224] -> [.255.255.255.32][.8224] [QUIC][Web][Acceptable]
+         detected: [.....1] [ip4][..udp] [255.255.255.255][.8224] -> [.255.255.255.32][.8224] [QUIC][Unknown][Web][Acceptable]
                    RISK: Known Proto on Non Std Port, Missing SNI TLS Extn
-             idle: [.....1] [ip4][..udp] [255.255.255.255][.8224] -> [.255.255.255.32][.8224] [QUIC][Web][Acceptable]
+             idle: [.....1] [ip4][..udp] [255.255.255.255][.8224] -> [.255.255.255.32][.8224] [QUIC][Unknown][Web][Acceptable]
                    RISK: Known Proto on Non Std Port, Missing SNI TLS Extn
      DAEMON-EVENT: shutdown

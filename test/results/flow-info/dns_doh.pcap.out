@@ -2,9 +2,9 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [....172.20.10.4][49877] -> [.104.16.248.249][..443] 
-         detected: [.....1] [ip4][..tcp] [....172.20.10.4][49877] -> [.104.16.248.249][..443] [TLS.DoH_DoT][Network][Fun][mozilla.cloudflare-dns.com]
- detection-update: [.....1] [ip4][..tcp] [....172.20.10.4][49877] -> [.104.16.248.249][..443] [TLS.DoH_DoT][Network][Fun][mozilla.cloudflare-dns.com]
-          analyse: [.....1] [ip4][..tcp] [....172.20.10.4][49877] -> [.104.16.248.249][..443] [TLS.DoH_DoT][Network][Fun]
+         detected: [.....1] [ip4][..tcp] [....172.20.10.4][49877] -> [.104.16.248.249][..443] [TLS.DoH_DoT][Cloudflare][Network][Acceptable][mozilla.cloudflare-dns.com]
+ detection-update: [.....1] [ip4][..tcp] [....172.20.10.4][49877] -> [.104.16.248.249][..443] [TLS.DoH_DoT][Cloudflare][Network][Acceptable][mozilla.cloudflare-dns.com]
+          analyse: [.....1] [ip4][..tcp] [....172.20.10.4][49877] -> [.104.16.248.249][..443] [TLS.DoH_DoT][Cloudflare][Network][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.535|    0.062|    0.130|      16944.855|   3.000]
                    [PKTLEN......:    40.000| 1340.000|  216.900|  327.300|     107137.200|   3.900]
@@ -14,5 +14,5 @@
                    [IATS(ms)....: 87.1,87.2,1.8,92.2,0.0,0.0,90.4,0.5,1.5,0.9,26.1,0.9,0.1,0.1,102.7,7.8,0.0,0.0,83.4,0.0,0.0,17.9,147.6,535.3,0.7,88.8,0.1,525.4,0.0,10.7,0.0]
                    [PKTLENS.....: 64,52,40,557,40,1340,1340,40,40,489,40,104,210,283,119,40,577,390,71,40,40,40,71,40,102,133,102,143,40,40,244,71]
                    [ENTROPIES...: 4.4,4.8,4.5,5.4,4.7,7.8,7.9,4.6,4.5,7.5,4.6,5.7,6.9,7.2,6.3,4.7,7.6,7.4,5.7,4.7,4.7,4.7,5.7,4.8,6.1,6.4,6.0,6.4,4.8,4.7,7.1,5.6]
-             idle: [.....1] [ip4][..tcp] [....172.20.10.4][49877] -> [.104.16.248.249][..443] [TLS.DoH_DoT][Network][Fun]
+             idle: [.....1] [ip4][..tcp] [....172.20.10.4][49877] -> [.104.16.248.249][..443] [TLS.DoH_DoT][Cloudflare][Network][Acceptable]
      DAEMON-EVENT: shutdown

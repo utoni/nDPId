@@ -3,8 +3,8 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip6][...41] [........2001:4f8:4:7:2e0:81ff:fe52:ffff] -> [........2001:4f8:4:7:2e0:81ff:fe52:9a6b] 
               new: [.....2] [ip6][...41] [.............................feed::beef] -> [.............................feed::cafe] 
-     not-detected: [.....1] [ip6][...41] [........2001:4f8:4:7:2e0:81ff:fe52:ffff] -> [........2001:4f8:4:7:2e0:81ff:fe52:9a6b] [Unknown][Unrated]
+     not-detected: [.....1] [ip6][...41] [........2001:4f8:4:7:2e0:81ff:fe52:ffff] -> [........2001:4f8:4:7:2e0:81ff:fe52:9a6b] [Unknown][Unknown][Unrated]
              idle: [.....1] [ip6][...41] [........2001:4f8:4:7:2e0:81ff:fe52:ffff] -> [........2001:4f8:4:7:2e0:81ff:fe52:9a6b] 
-     not-detected: [.....2] [ip6][...41] [.............................feed::beef] -> [.............................feed::cafe] [Unknown][Unrated]
+     not-detected: [.....2] [ip6][...41] [.............................feed::beef] -> [.............................feed::cafe] [Unknown][Unknown][Unrated]
              idle: [.....2] [ip6][...41] [.............................feed::beef] -> [.............................feed::cafe] 
      DAEMON-EVENT: shutdown

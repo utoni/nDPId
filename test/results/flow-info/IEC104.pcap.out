@@ -3,8 +3,8 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [...10.175.211.1][.2404] -> [..10.119.105.26][54768] [MIDSTREAM] 
               new: [.....2] [ip4][..tcp] [...10.175.211.3][.2404] -> [..10.119.105.26][54769] [MIDSTREAM] 
-         detected: [.....1] [ip4][..tcp] [...10.175.211.1][.2404] -> [..10.119.105.26][54768] [IEC60870][IoT-Scada][Acceptable]
-         detected: [.....2] [ip4][..tcp] [...10.175.211.3][.2404] -> [..10.119.105.26][54769] [IEC60870][IoT-Scada][Acceptable]
-             idle: [.....1] [ip4][..tcp] [...10.175.211.1][.2404] -> [..10.119.105.26][54768] [IEC60870][IoT-Scada][Acceptable]
-             idle: [.....2] [ip4][..tcp] [...10.175.211.3][.2404] -> [..10.119.105.26][54769] [IEC60870][IoT-Scada][Acceptable]
+         detected: [.....1] [ip4][..tcp] [...10.175.211.1][.2404] -> [..10.119.105.26][54768] [IEC60870][Unknown][IoT-Scada][Acceptable]
+         detected: [.....2] [ip4][..tcp] [...10.175.211.3][.2404] -> [..10.119.105.26][54769] [IEC60870][Unknown][IoT-Scada][Acceptable]
+             idle: [.....1] [ip4][..tcp] [...10.175.211.1][.2404] -> [..10.119.105.26][54768] [IEC60870][Unknown][IoT-Scada][Acceptable]
+             idle: [.....2] [ip4][..tcp] [...10.175.211.3][.2404] -> [..10.119.105.26][54769] [IEC60870][Unknown][IoT-Scada][Acceptable]
      DAEMON-EVENT: shutdown

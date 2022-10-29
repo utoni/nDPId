@@ -2,8 +2,8 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [.82.178.111.221][.5060] -> [....45.58.148.2][.8888] 
-         detected: [.....1] [ip4][..tcp] [.82.178.111.221][.5060] -> [....45.58.148.2][.8888] [HTTP][Web][Acceptable][45.58.148.2]
+         detected: [.....1] [ip4][..tcp] [.82.178.111.221][.5060] -> [....45.58.148.2][.8888] [HTTP][Unknown][Web][Acceptable][45.58.148.2]
                    RISK: Known Proto on Non Std Port, HTTP Numeric IP Address
-             idle: [.....1] [ip4][..tcp] [.82.178.111.221][.5060] -> [....45.58.148.2][.8888] [HTTP][Web][Acceptable]
+             idle: [.....1] [ip4][..tcp] [.82.178.111.221][.5060] -> [....45.58.148.2][.8888] [HTTP][Unknown][Web][Acceptable]
                    RISK: Known Proto on Non Std Port, HTTP Numeric IP Address
      DAEMON-EVENT: shutdown

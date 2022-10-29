@@ -2,8 +2,8 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [143.225.229.181][35287] -> [....74.208.5.28][..110] 
-         detected: [.....1] [ip4][..tcp] [143.225.229.181][35287] -> [....74.208.5.28][..110] [POP3][Email][Unsafe]
+         detected: [.....1] [ip4][..tcp] [143.225.229.181][35287] -> [....74.208.5.28][..110] [POP3][Unknown][Email][Unsafe]
                    RISK: Unsafe Protocol
-              end: [.....1] [ip4][..tcp] [143.225.229.181][35287] -> [....74.208.5.28][..110] [POP3][Email][Unsafe]
+              end: [.....1] [ip4][..tcp] [143.225.229.181][35287] -> [....74.208.5.28][..110] [POP3][Unknown][Email][Unsafe]
                    RISK: Unsafe Protocol
      DAEMON-EVENT: shutdown

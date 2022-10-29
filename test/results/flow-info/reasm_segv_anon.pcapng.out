@@ -3,7 +3,7 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
       ERROR-EVENT: Captured packet size is smaller than expected packet size [1/16]
               new: [.....1] [ip4][..udp] [...145.76.2.236][.2152] -> [...187.96.52.85][.2152] 
-         detected: [.....1] [ip4][..udp] [...145.76.2.236][.2152] -> [...187.96.52.85][.2152] [GTP.GTP_U][Network][Acceptable]
+         detected: [.....1] [ip4][..udp] [...145.76.2.236][.2152] -> [...187.96.52.85][.2152] [GTP.GTP_U][Unknown][Network][Acceptable]
       ERROR-EVENT: Captured packet size is smaller than expected packet size [2/16]
       ERROR-EVENT: Captured packet size is smaller than expected packet size [3/16]
       ERROR-EVENT: Captured packet size is smaller than expected packet size [4/16]
@@ -12,7 +12,7 @@
       ERROR-EVENT: Captured packet size is smaller than expected packet size [7/16]
       ERROR-EVENT: Captured packet size is smaller than expected packet size [8/16]
       ERROR-EVENT: Captured packet size is smaller than expected packet size [9/16]
-          analyse: [.....1] [ip4][..udp] [...145.76.2.236][.2152] -> [...187.96.52.85][.2152] [GTP.GTP_U][Network][Acceptable]
+          analyse: [.....1] [ip4][..udp] [...145.76.2.236][.2152] -> [...187.96.52.85][.2152] [GTP.GTP_U][Unknown][Network][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    1.859|    0.305|    0.564|     318078.976|   3.100]
                    [PKTLEN......:    76.000| 1476.000|  920.200|  651.300|     424215.900|   4.500]
@@ -29,5 +29,5 @@
       ERROR-EVENT: Captured packet size is smaller than expected packet size [14/16]
       ERROR-EVENT: Captured packet size is smaller than expected packet size [15/16]
       ERROR-EVENT: Captured packet size is smaller than expected packet size [16/16]
-             idle: [.....1] [ip4][..udp] [...145.76.2.236][.2152] -> [...187.96.52.85][.2152] [GTP.GTP_U][Network][Acceptable]
+             idle: [.....1] [ip4][..udp] [...145.76.2.236][.2152] -> [...187.96.52.85][.2152] [GTP.GTP_U][Unknown][Network][Acceptable]
      DAEMON-EVENT: shutdown

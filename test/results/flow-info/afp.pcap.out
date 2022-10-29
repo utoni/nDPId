@@ -2,6 +2,6 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [..192.168.27.57][64987] -> [.192.168.27.139][..548] [MIDSTREAM] 
-         detected: [.....1] [ip4][..tcp] [..192.168.27.57][64987] -> [.192.168.27.139][..548] [AFP][DataTransfer][Acceptable]
-             idle: [.....1] [ip4][..tcp] [..192.168.27.57][64987] -> [.192.168.27.139][..548] [AFP][DataTransfer][Acceptable]
+         detected: [.....1] [ip4][..tcp] [..192.168.27.57][64987] -> [.192.168.27.139][..548] [AFP][Unknown][DataTransfer][Acceptable]
+             idle: [.....1] [ip4][..tcp] [..192.168.27.57][64987] -> [.192.168.27.139][..548] [AFP][Unknown][DataTransfer][Acceptable]
      DAEMON-EVENT: shutdown

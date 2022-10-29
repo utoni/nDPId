@@ -2,11 +2,11 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [.192.168.12.169][42083] -> [.18.184.138.142][..443] 
-         detected: [.....1] [ip4][..udp] [.192.168.12.169][42083] -> [.18.184.138.142][..443] [QUIC.AmazonAWS][Cloud][Acceptable]
+         detected: [.....1] [ip4][..udp] [.192.168.12.169][42083] -> [.18.184.138.142][..443] [QUIC][AmazonAWS][Web][Acceptable]
                    RISK: Missing SNI TLS Extn
- detection-update: [.....1] [ip4][..udp] [.192.168.12.169][42083] -> [.18.184.138.142][..443] [QUIC.SnapchatCall][VoIP][Acceptable]
+ detection-update: [.....1] [ip4][..udp] [.192.168.12.169][42083] -> [.18.184.138.142][..443] [QUIC.SnapchatCall][AmazonAWS][VoIP][Acceptable]
                    RISK: Missing SNI TLS Extn
-          analyse: [.....1] [ip4][..udp] [.192.168.12.169][42083] -> [.18.184.138.142][..443] [QUIC.SnapchatCall][VoIP][Acceptable]
+          analyse: [.....1] [ip4][..udp] [.192.168.12.169][42083] -> [.18.184.138.142][..443] [QUIC.SnapchatCall][AmazonAWS][VoIP][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    1.447|    0.221|    0.397|     157833.134|   3.200]
                    [PKTLEN......:    48.000| 1378.000|  331.900|  468.500|     219532.900|   3.900]
@@ -16,6 +16,6 @@
                    [IATS(ms)....: 16.8,0.1,30.4,0.1,24.2,5.1,0.0,0.0,20.3,29.1,5.5,0.1,0.0,0.2,2.1,54.4,0.0,0.0,507.6,1447.3,48.7,53.5,57.9,1172.7,3.3,7.5,379.7,803.5,440.1,1155.7,589.8]
                    [PKTLENS.....: 1378,1378,1378,1378,611,64,1378,48,414,56,72,66,66,66,187,86,48,48,48,72,337,289,337,289,72,56,56,72,56,72,72,72]
                    [ENTROPIES...: 2.2,7.7,4.7,4.0,7.7,5.2,7.8,5.4,7.4,5.4,5.7,5.6,5.7,5.6,6.8,6.0,5.3,5.3,5.2,5.5,7.4,7.2,7.4,7.2,5.6,5.4,5.3,5.7,5.1,5.6,5.6,5.7]
-             idle: [.....1] [ip4][..udp] [.192.168.12.169][42083] -> [.18.184.138.142][..443] [QUIC.SnapchatCall][VoIP][Acceptable]
+             idle: [.....1] [ip4][..udp] [.192.168.12.169][42083] -> [.18.184.138.142][..443] [QUIC.SnapchatCall][AmazonAWS][VoIP][Acceptable]
                    RISK: Missing SNI TLS Extn
      DAEMON-EVENT: shutdown

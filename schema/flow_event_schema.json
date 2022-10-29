@@ -230,6 +230,12 @@
                 "proto_id": {
                     "type": "string"
                 },
+                "proto_by_ip": {
+                    "type": "string"
+                },
+                "proto_by_ip_id": {
+                    "type": "number"
+                },
                 "category": {
                     "type": "string"
                 },
@@ -282,6 +288,9 @@
                 "hostname": {
                     "type": "string"
                 },
+                "collectd": {
+                    "type": "object"
+                },
                 "dhcp": {
                     "type": "object"
                 },
@@ -292,6 +301,9 @@
                     "type": "object"
                 },
                 "mdns": {
+                    "type": "object"
+                },
+                "natpmp": {
                     "type": "object"
                 },
                 "ntp": {
@@ -330,6 +342,9 @@
                 "ftp": {
                     "type": "object"
                 },
+                "snmp": {
+                    "type": "object"
+                },
                 "ssh": {
                     "type": "object"
                 },
@@ -337,6 +352,15 @@
                     "type": "object"
                 },
                 "softether": {
+                    "type": "object"
+                },
+                "tftp": {
+                    "type": "object"
+                },
+                "tivoconnect": {
+                    "type": "object"
+                },
+                "rsh": {
                     "type": "object"
                 }
             },

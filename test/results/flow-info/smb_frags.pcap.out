@@ -2,8 +2,8 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [.10.202.211.125][54120] -> [.....10.202.7.8][..445] 
-         detected: [.....1] [ip4][..tcp] [.10.202.211.125][54120] -> [.....10.202.7.8][..445] [NetBIOS.SMBv1][System][Dangerous][]
+         detected: [.....1] [ip4][..tcp] [.10.202.211.125][54120] -> [.....10.202.7.8][..445] [NetBIOS.SMBv1][Unknown][System][Dangerous][]
                    RISK: Known Proto on Non Std Port, SMB Insecure Vers, Unsafe Protocol
-              end: [.....1] [ip4][..tcp] [.10.202.211.125][54120] -> [.....10.202.7.8][..445] [NetBIOS.SMBv1][System][Dangerous]
+              end: [.....1] [ip4][..tcp] [.10.202.211.125][54120] -> [.....10.202.7.8][..445] [NetBIOS.SMBv1][Unknown][System][Dangerous]
                    RISK: Known Proto on Non Std Port, SMB Insecure Vers, Unsafe Protocol
      DAEMON-EVENT: shutdown

@@ -2,6 +2,6 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [...172.31.3.224][42835] -> [.216.58.212.100][..443] 
-          guessed: [.....1] [ip4][..tcp] [...172.31.3.224][42835] -> [.216.58.212.100][..443] [TLS.Google][Web][Acceptable]
+          guessed: [.....1] [ip4][..tcp] [...172.31.3.224][42835] -> [.216.58.212.100][..443] [TLS][Google][Web][Safe]
               end: [.....1] [ip4][..tcp] [...172.31.3.224][42835] -> [.216.58.212.100][..443] 
      DAEMON-EVENT: shutdown

@@ -2,20 +2,20 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [..61.68.110.153][53045] -> [..212.32.214.39][61457] 
-         detected: [.....1] [ip4][..udp] [..61.68.110.153][53045] -> [..212.32.214.39][61457] [DTLS][Web][Safe]
+         detected: [.....1] [ip4][..udp] [..61.68.110.153][53045] -> [..212.32.214.39][61457] [DTLS][Unknown][Web][Safe]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
- detection-update: [.....1] [ip4][..udp] [..61.68.110.153][53045] -> [..212.32.214.39][61457] [DTLS][Web][Safe]
+ detection-update: [.....1] [ip4][..udp] [..61.68.110.153][53045] -> [..212.32.214.39][61457] [DTLS][Unknown][Web][Safe]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
-           update: [.....1] [ip4][..udp] [..61.68.110.153][53045] -> [..212.32.214.39][61457] [DTLS][Web][Safe]
+           update: [.....1] [ip4][..udp] [..61.68.110.153][53045] -> [..212.32.214.39][61457] [DTLS][Unknown][Web][Safe]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
-           update: [.....1] [ip4][..udp] [..61.68.110.153][53045] -> [..212.32.214.39][61457] [DTLS][Web][Safe]
+           update: [.....1] [ip4][..udp] [..61.68.110.153][53045] -> [..212.32.214.39][61457] [DTLS][Unknown][Web][Safe]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
-           update: [.....1] [ip4][..udp] [..61.68.110.153][53045] -> [..212.32.214.39][61457] [DTLS][Web][Safe]
+           update: [.....1] [ip4][..udp] [..61.68.110.153][53045] -> [..212.32.214.39][61457] [DTLS][Unknown][Web][Safe]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
-           update: [.....1] [ip4][..udp] [..61.68.110.153][53045] -> [..212.32.214.39][61457] [DTLS][Web][Safe]
+           update: [.....1] [ip4][..udp] [..61.68.110.153][53045] -> [..212.32.214.39][61457] [DTLS][Unknown][Web][Safe]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
-           update: [.....1] [ip4][..udp] [..61.68.110.153][53045] -> [..212.32.214.39][61457] [DTLS][Web][Safe]
+           update: [.....1] [ip4][..udp] [..61.68.110.153][53045] -> [..212.32.214.39][61457] [DTLS][Unknown][Web][Safe]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
-             idle: [.....1] [ip4][..udp] [..61.68.110.153][53045] -> [..212.32.214.39][61457] [DTLS][Web][Safe]
+             idle: [.....1] [ip4][..udp] [..61.68.110.153][53045] -> [..212.32.214.39][61457] [DTLS][Unknown][Web][Safe]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
      DAEMON-EVENT: shutdown

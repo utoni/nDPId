@@ -2,9 +2,9 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] 
-         detected: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Network][Acceptable]
+         detected: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Unknown][Network][Acceptable]
                    RISK: Malformed Packet
-          analyse: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Network][Acceptable]
+          analyse: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Unknown][Network][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.999|   13.999|    1.420|    2.297|    5274800.751|   4.200]
                    [PKTLEN......:   112.000|  112.000|  112.000|    0.000|          0.000|   5.000]
@@ -14,60 +14,60 @@
                    [IATS(ms)....: 998.8,1000.0,1000.1,1000.0,1000.1,1000.1,1000.0,1000.0,1000.0,1000.1,1000.0,1000.0,1000.0,999.9,13999.4,1001.2,1001.2,1001.0,1001.0,1001.1,1001.1,1001.0,1000.9,1000.9,1000.9,1001.1,1001.1,1001.0,1001.0,1001.0,1001.0]
                    [PKTLENS.....: 112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112]
                    [ENTROPIES...: 5.6,5.6,5.7,5.7,5.7,5.6,5.6,5.6,5.6,5.6,5.6,5.7,5.7,5.6,5.7,5.7,5.7,5.7,5.6,5.7,5.6,5.7,5.6,5.7,5.6,5.7,5.6,5.6,5.7,5.7,5.7,5.7]
-           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Network][Acceptable]
+           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Unknown][Network][Acceptable]
                    RISK: Malformed Packet
-           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Network][Acceptable]
+           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Unknown][Network][Acceptable]
                    RISK: Malformed Packet
-           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Network][Acceptable]
+           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Unknown][Network][Acceptable]
                    RISK: Malformed Packet
-           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Network][Acceptable]
+           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Unknown][Network][Acceptable]
                    RISK: Malformed Packet
-           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Network][Acceptable]
+           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Unknown][Network][Acceptable]
                    RISK: Malformed Packet
-           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Network][Acceptable]
+           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Unknown][Network][Acceptable]
                    RISK: Malformed Packet
-           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Network][Acceptable]
+           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Unknown][Network][Acceptable]
                    RISK: Malformed Packet
-           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Network][Acceptable]
+           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Unknown][Network][Acceptable]
                    RISK: Malformed Packet
-           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Network][Acceptable]
+           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Unknown][Network][Acceptable]
                    RISK: Malformed Packet
-           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Network][Acceptable]
+           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Unknown][Network][Acceptable]
                    RISK: Malformed Packet
-           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Network][Acceptable]
+           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Unknown][Network][Acceptable]
                    RISK: Malformed Packet
-           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Network][Acceptable]
+           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Unknown][Network][Acceptable]
                    RISK: Malformed Packet
      DAEMON-EVENT: [Processed: 251 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 12]
-           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Network][Acceptable]
+           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Unknown][Network][Acceptable]
                    RISK: Malformed Packet
-           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Network][Acceptable]
+           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Unknown][Network][Acceptable]
                    RISK: Malformed Packet
-           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Network][Acceptable]
+           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Unknown][Network][Acceptable]
                    RISK: Malformed Packet
-           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Network][Acceptable]
+           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Unknown][Network][Acceptable]
                    RISK: Malformed Packet
-           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Network][Acceptable]
+           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Unknown][Network][Acceptable]
                    RISK: Malformed Packet
-           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Network][Acceptable]
+           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Unknown][Network][Acceptable]
                    RISK: Malformed Packet
-           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Network][Acceptable]
+           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Unknown][Network][Acceptable]
                    RISK: Malformed Packet
-           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Network][Acceptable]
+           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Unknown][Network][Acceptable]
                    RISK: Malformed Packet
-           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Network][Acceptable]
+           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Unknown][Network][Acceptable]
                    RISK: Malformed Packet
-           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Network][Acceptable]
+           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Unknown][Network][Acceptable]
                    RISK: Malformed Packet
-           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Network][Acceptable]
+           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Unknown][Network][Acceptable]
                    RISK: Malformed Packet
-           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Network][Acceptable]
+           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Unknown][Network][Acceptable]
                    RISK: Malformed Packet
-           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Network][Acceptable]
+           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Unknown][Network][Acceptable]
                    RISK: Malformed Packet
-           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Network][Acceptable]
+           update: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Unknown][Network][Acceptable]
                    RISK: Malformed Packet
-             idle: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Network][Acceptable]
+             idle: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Unknown][Network][Acceptable]
                    RISK: Malformed Packet
      DAEMON-EVENT: shutdown

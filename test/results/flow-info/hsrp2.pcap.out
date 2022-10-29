@@ -2,9 +2,9 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [..10.52.220.125][.1985] -> [....224.0.0.102][.1985] 
-         detected: [.....1] [ip4][..udp] [..10.52.220.125][.1985] -> [....224.0.0.102][.1985] [HSRP][Network][Acceptable]
+         detected: [.....1] [ip4][..udp] [..10.52.220.125][.1985] -> [....224.0.0.102][.1985] [HSRP][Unknown][Network][Acceptable]
               new: [.....2] [ip4][..udp] [..10.52.253.125][.1985] -> [....224.0.0.102][.1985] 
-         detected: [.....2] [ip4][..udp] [..10.52.253.125][.1985] -> [....224.0.0.102][.1985] [HSRP][Network][Acceptable]
-             idle: [.....2] [ip4][..udp] [..10.52.253.125][.1985] -> [....224.0.0.102][.1985] [HSRP][Network][Acceptable]
-             idle: [.....1] [ip4][..udp] [..10.52.220.125][.1985] -> [....224.0.0.102][.1985] [HSRP][Network][Acceptable]
+         detected: [.....2] [ip4][..udp] [..10.52.253.125][.1985] -> [....224.0.0.102][.1985] [HSRP][Unknown][Network][Acceptable]
+             idle: [.....2] [ip4][..udp] [..10.52.253.125][.1985] -> [....224.0.0.102][.1985] [HSRP][Unknown][Network][Acceptable]
+             idle: [.....1] [ip4][..udp] [..10.52.220.125][.1985] -> [....224.0.0.102][.1985] [HSRP][Unknown][Network][Acceptable]
      DAEMON-EVENT: shutdown

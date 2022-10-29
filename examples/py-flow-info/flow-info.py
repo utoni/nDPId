@@ -314,6 +314,9 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
         if 'proto' in json_dict['ndpi']:
             ndpi_proto_categ_breed += '[' + str(json_dict['ndpi']['proto']) + ']'
 
+        if 'proto_by_ip' in json_dict['ndpi']:
+            ndpi_proto_categ_breed += '[' + str(json_dict['ndpi']['proto_by_ip']) + ']'
+
         if 'category' in json_dict['ndpi']:
             ndpi_proto_categ_breed += '[' + str(json_dict['ndpi']['category']) + ']'
 

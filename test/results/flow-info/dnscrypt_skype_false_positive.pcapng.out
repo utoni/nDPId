@@ -2,9 +2,9 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [..192.168.2.100][46858] -> [.212.47.228.136][..443] 
-         detected: [.....1] [ip4][..udp] [..192.168.2.100][46858] -> [.212.47.228.136][..443] [DNScrypt][Network][Safe]
+         detected: [.....1] [ip4][..udp] [..192.168.2.100][46858] -> [.212.47.228.136][..443] [DNScrypt][Unknown][Network][Acceptable]
      DAEMON-EVENT: [Processed: 2 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-           update: [.....1] [ip4][..udp] [..192.168.2.100][46858] -> [.212.47.228.136][..443] [DNScrypt][Network][Safe]
-             idle: [.....1] [ip4][..udp] [..192.168.2.100][46858] -> [.212.47.228.136][..443] [DNScrypt][Network][Safe]
+           update: [.....1] [ip4][..udp] [..192.168.2.100][46858] -> [.212.47.228.136][..443] [DNScrypt][Unknown][Network][Acceptable]
+             idle: [.....1] [ip4][..udp] [..192.168.2.100][46858] -> [.212.47.228.136][..443] [DNScrypt][Unknown][Network][Acceptable]
      DAEMON-EVENT: shutdown

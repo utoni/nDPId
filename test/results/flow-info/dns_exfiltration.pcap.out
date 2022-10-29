@@ -2,11 +2,11 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [.192.168.220.56][56373] -> [192.168.203.167][...53] 
-         detected: [.....1] [ip4][..udp] [.192.168.220.56][56373] -> [192.168.203.167][...53] [DNS][Network][Acceptable][e1aa8f8fdb1bbe8d5e04952141f7d4f82c7e3b06dcc8b87fad7a.19e4d098dc8c618f8d81cfeb02]
+         detected: [.....1] [ip4][..udp] [.192.168.220.56][56373] -> [192.168.203.167][...53] [DNS][Unknown][Network][Acceptable][e1aa8f8fdb1bbe8d5e04952141f7d4f82c7e3b06dcc8b87fad7a.19e4d098dc8c618f8d81cfeb02]
                    RISK: Suspicious DGA Domain name
- detection-update: [.....1] [ip4][..udp] [.192.168.220.56][56373] -> [192.168.203.167][...53] [DNS][Network][Acceptable][e1aa8f8fdb1bbe8d5e04952141f7d4f82c7e3b06dcc8b87fad7a.19e4d098dc8c618f8d81cfeb02]
+ detection-update: [.....1] [ip4][..udp] [.192.168.220.56][56373] -> [192.168.203.167][...53] [DNS][Unknown][Network][Acceptable][e1aa8f8fdb1bbe8d5e04952141f7d4f82c7e3b06dcc8b87fad7a.19e4d098dc8c618f8d81cfeb02]
                    RISK: Suspicious DGA Domain name, Risky Domain Name
-          analyse: [.....1] [ip4][..udp] [.192.168.220.56][56373] -> [192.168.203.167][...53] [DNS][Network][Acceptable]
+          analyse: [.....1] [ip4][..udp] [.192.168.220.56][56373] -> [192.168.203.167][...53] [DNS][Unknown][Network][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.004|    1.036|    0.914|    0.282|      79410.348|   4.800]
                    [PKTLEN......:    87.000|  372.000|  132.400|   59.100|       3497.900|   4.900]
@@ -16,8 +16,8 @@
                    [IATS(ms)....: 170.6,1035.5,866.5,1015.3,1015.6,4.6,4.0,1010.0,1010.4,1009.2,1009.1,1008.5,1008.4,1009.5,1009.4,1008.0,1008.1,1008.7,1008.6,1009.8,1009.8,1010.0,1010.1,1009.0,1008.9,1008.5,1008.4,1007.7,1007.8,1008.8,1008.7]
                    [PKTLENS.....: 201,372,152,272,122,179,87,134,87,134,87,142,87,134,87,144,87,144,87,142,87,134,87,144,87,144,87,144,87,134,87,134]
                    [ENTROPIES...: 4.7,4.7,4.8,4.8,4.7,4.9,4.7,4.9,4.6,4.8,4.6,4.9,4.6,4.8,4.6,4.9,4.6,4.8,4.6,4.8,4.6,4.8,4.7,4.9,4.6,4.9,4.6,4.9,4.7,4.8,4.5,4.9]
-           update: [.....1] [ip4][..udp] [.192.168.220.56][56373] -> [192.168.203.167][...53] [DNS][Network][Acceptable]
+           update: [.....1] [ip4][..udp] [.192.168.220.56][56373] -> [192.168.203.167][...53] [DNS][Unknown][Network][Acceptable]
                    RISK: Suspicious DGA Domain name, Risky Domain Name
-             idle: [.....1] [ip4][..udp] [.192.168.220.56][56373] -> [192.168.203.167][...53] [DNS][Network][Acceptable]
+             idle: [.....1] [ip4][..udp] [.192.168.220.56][56373] -> [192.168.203.167][...53] [DNS][Unknown][Network][Acceptable]
                    RISK: Suspicious DGA Domain name, Risky Domain Name
      DAEMON-EVENT: shutdown

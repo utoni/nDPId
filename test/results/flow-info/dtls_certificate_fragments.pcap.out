@@ -2,10 +2,10 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [.10.186.198.149][39347] -> [..35.210.59.134][44443] 
-         detected: [.....1] [ip4][..udp] [.10.186.198.149][39347] -> [..35.210.59.134][44443] [DTLS.GoogleCloud][Cloud][Acceptable]
+         detected: [.....1] [ip4][..udp] [.10.186.198.149][39347] -> [..35.210.59.134][44443] [DTLS][GoogleCloud][Web][Safe]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
- detection-update: [.....1] [ip4][..udp] [.10.186.198.149][39347] -> [..35.210.59.134][44443] [DTLS.GoogleCloud][Cloud][Acceptable]
+ detection-update: [.....1] [ip4][..udp] [.10.186.198.149][39347] -> [..35.210.59.134][44443] [DTLS][GoogleCloud][Web][Safe]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
-             idle: [.....1] [ip4][..udp] [.10.186.198.149][39347] -> [..35.210.59.134][44443] [DTLS.GoogleCloud][Cloud][Acceptable]
+             idle: [.....1] [ip4][..udp] [.10.186.198.149][39347] -> [..35.210.59.134][44443] [DTLS][GoogleCloud][Web][Safe]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
      DAEMON-EVENT: shutdown

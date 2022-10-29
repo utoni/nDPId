@@ -1,7 +1,7 @@
      DAEMON-EVENT: init
               new: [.....1] [ip4][..tcp] [......10.0.2.15][35732] -> [..162.250.2.170][.5938] 
-         detected: [.....1] [ip4][..tcp] [......10.0.2.15][35732] -> [..162.250.2.170][.5938] [TeamViewer][RemoteAccess][Acceptable]
-          analyse: [.....1] [ip4][..tcp] [......10.0.2.15][35732] -> [..162.250.2.170][.5938] [TeamViewer][RemoteAccess][Acceptable]
+         detected: [.....1] [ip4][..tcp] [......10.0.2.15][35732] -> [..162.250.2.170][.5938] [TeamViewer][Unknown][RemoteAccess][Acceptable]
+          analyse: [.....1] [ip4][..tcp] [......10.0.2.15][35732] -> [..162.250.2.170][.5938] [TeamViewer][Unknown][RemoteAccess][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.274|    0.067|    0.088|       7794.386|   3.800]
                    [PKTLEN......:    40.000| 1500.000|  369.000|  516.400|     266637.300|   3.800]
@@ -12,9 +12,9 @@
                    [PKTLENS.....: 60,44,46,77,40,106,40,1500,418,40,40,88,46,187,46,1500,1276,46,1118,40,1129,1141,40,480,96,40,88,40,1500,415,40,40]
                    [ENTROPIES...: 4.6,4.7,4.3,4.6,4.6,4.0,4.6,7.6,7.3,4.5,4.5,4.9,4.3,3.9,4.4,7.7,7.8,4.4,7.7,4.7,7.5,7.7,4.7,6.5,4.6,4.7,3.8,4.6,7.6,7.4,4.7,4.7]
               new: [.....2] [ip4][..udp] [......10.0.2.15][34417] -> [..93.47.224.241][36037] 
-         detected: [.....2] [ip4][..udp] [......10.0.2.15][34417] -> [..93.47.224.241][36037] [TeamViewer][RemoteAccess][Acceptable]
+         detected: [.....2] [ip4][..udp] [......10.0.2.15][34417] -> [..93.47.224.241][36037] [TeamViewer][Unknown][RemoteAccess][Acceptable]
                    RISK: Known Proto on Non Std Port, Desktop/File Sharing
-          analyse: [.....2] [ip4][..udp] [......10.0.2.15][34417] -> [..93.47.224.241][36037] [TeamViewer][RemoteAccess][Acceptable]
+          analyse: [.....2] [ip4][..udp] [......10.0.2.15][34417] -> [..93.47.224.241][36037] [TeamViewer][Unknown][RemoteAccess][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.443|    0.037|    0.097|       9363.771|   2.600]
                    [PKTLEN......:    44.000| 1052.000|  438.800|  450.400|     202865.500|   4.200]
@@ -24,13 +24,13 @@
                    [IATS(ms)....: 12.3,12.3,0.1,40.7,3.9,3.2,6.6,81.8,9.0,0.1,7.4,9.2,442.9,41.9,345.1,0.1,0.0,0.0,0.0,0.0,0.0,2.0,0.1,0.0,9.6,0.1,0.0,51.0,58.8,0.1,0.0]
                    [PKTLENS.....: 124,124,492,1052,48,84,76,76,76,177,104,52,52,76,76,1052,1052,1052,1052,1052,1052,1052,1052,1052,1052,168,104,104,44,225,117,71]
                    [ENTROPIES...: 2.7,2.7,0.8,0.4,3.9,2.8,3.1,3.0,3.3,4.1,4.0,4.0,3.9,3.1,3.2,0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.4,4.1,3.9,5.5,4.0,3.9,4.2,4.7]
-           update: [.....2] [ip4][..udp] [......10.0.2.15][34417] -> [..93.47.224.241][36037] [TeamViewer][RemoteAccess][Acceptable]
+           update: [.....2] [ip4][..udp] [......10.0.2.15][34417] -> [..93.47.224.241][36037] [TeamViewer][Unknown][RemoteAccess][Acceptable]
                    RISK: Known Proto on Non Std Port, Desktop/File Sharing
      DAEMON-EVENT: [Processed: 1282 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 2 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 1]
-           update: [.....2] [ip4][..udp] [......10.0.2.15][34417] -> [..93.47.224.241][36037] [TeamViewer][RemoteAccess][Acceptable]
+           update: [.....2] [ip4][..udp] [......10.0.2.15][34417] -> [..93.47.224.241][36037] [TeamViewer][Unknown][RemoteAccess][Acceptable]
                    RISK: Known Proto on Non Std Port, Desktop/File Sharing
-             idle: [.....2] [ip4][..udp] [......10.0.2.15][34417] -> [..93.47.224.241][36037] [TeamViewer][RemoteAccess][Acceptable]
+             idle: [.....2] [ip4][..udp] [......10.0.2.15][34417] -> [..93.47.224.241][36037] [TeamViewer][Unknown][RemoteAccess][Acceptable]
                    RISK: Known Proto on Non Std Port, Desktop/File Sharing
-             idle: [.....1] [ip4][..tcp] [......10.0.2.15][35732] -> [..162.250.2.170][.5938] [TeamViewer][RemoteAccess][Acceptable]
+             idle: [.....1] [ip4][..tcp] [......10.0.2.15][35732] -> [..162.250.2.170][.5938] [TeamViewer][Unknown][RemoteAccess][Acceptable]
      DAEMON-EVENT: shutdown

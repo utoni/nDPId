@@ -2,6 +2,6 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [..192.168.2.100][52157] -> [..139.45.193.10][27018] 
-         detected: [.....1] [ip4][..udp] [..192.168.2.100][52157] -> [..139.45.193.10][27018] [Steam][Game][Fun]
-             idle: [.....1] [ip4][..udp] [..192.168.2.100][52157] -> [..139.45.193.10][27018] [Steam][Game][Fun]
+         detected: [.....1] [ip4][..udp] [..192.168.2.100][52157] -> [..139.45.193.10][27018] [Steam][Unknown][Game][Fun]
+             idle: [.....1] [ip4][..udp] [..192.168.2.100][52157] -> [..139.45.193.10][27018] [Steam][Unknown][Game][Fun]
      DAEMON-EVENT: shutdown

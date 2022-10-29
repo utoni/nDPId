@@ -2,6 +2,6 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [....192.168.1.2][35990] -> [.24.224.190.149][39262] 
-         detected: [.....1] [ip4][..udp] [....192.168.1.2][35990] -> [.24.224.190.149][39262] [Skype_Teams][VoIP][Acceptable]
-             idle: [.....1] [ip4][..udp] [....192.168.1.2][35990] -> [.24.224.190.149][39262] [Skype_Teams][VoIP][Acceptable]
+         detected: [.....1] [ip4][..udp] [....192.168.1.2][35990] -> [.24.224.190.149][39262] [Skype_Teams][Unknown][VoIP][Acceptable]
+             idle: [.....1] [ip4][..udp] [....192.168.1.2][35990] -> [.24.224.190.149][39262] [Skype_Teams][Unknown][VoIP][Acceptable]
      DAEMON-EVENT: shutdown

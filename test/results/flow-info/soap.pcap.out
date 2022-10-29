@@ -3,14 +3,14 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [..192.168.2.100][50100] -> [...23.2.213.165][...80] 
               new: [.....2] [ip4][..tcp] [..192.168.2.100][50100] -> [...23.2.213.165][.4176] [MIDSTREAM] 
-         detected: [.....2] [ip4][..tcp] [..192.168.2.100][50100] -> [...23.2.213.165][.4176] [HTTP.SOAP][Cloud][Acceptable][go.microsoft.com]
+         detected: [.....2] [ip4][..tcp] [..192.168.2.100][50100] -> [...23.2.213.165][.4176] [HTTP.SOAP][Unknown][Cloud][Acceptable][go.microsoft.com]
                    RISK: Known Proto on Non Std Port
      DAEMON-EVENT: [Processed: 15 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 2 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....3] [ip4][..tcp] [..185.32.192.30][...80] -> [.85.154.114.113][56028] 
-         detected: [.....3] [ip4][..tcp] [..185.32.192.30][...80] -> [.85.154.114.113][56028] [SOAP][RPC][Acceptable]
-             idle: [.....3] [ip4][..tcp] [..185.32.192.30][...80] -> [.85.154.114.113][56028] [SOAP][RPC][Acceptable]
+         detected: [.....3] [ip4][..tcp] [..185.32.192.30][...80] -> [.85.154.114.113][56028] [SOAP][Unknown][RPC][Acceptable]
+             idle: [.....3] [ip4][..tcp] [..185.32.192.30][...80] -> [.85.154.114.113][56028] [SOAP][Unknown][RPC][Acceptable]
              idle: [.....2] [ip4][..tcp] [..192.168.2.100][50100] -> [...23.2.213.165][.4176] 
-          guessed: [.....1] [ip4][..tcp] [..192.168.2.100][50100] -> [...23.2.213.165][...80] [HTTP][Web][Acceptable][]
+          guessed: [.....1] [ip4][..tcp] [..192.168.2.100][50100] -> [...23.2.213.165][...80] [HTTP][Unknown][Web][Acceptable][]
               end: [.....1] [ip4][..tcp] [..192.168.2.100][50100] -> [...23.2.213.165][...80] 
      DAEMON-EVENT: shutdown

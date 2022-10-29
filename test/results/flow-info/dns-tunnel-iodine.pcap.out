@@ -2,10 +2,10 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [......10.0.2.30][44639] -> [......10.0.2.20][...53] 
-         detected: [.....1] [ip4][..udp] [......10.0.2.30][44639] -> [......10.0.2.20][...53] [DNS][Network][Acceptable][vaaaakardli.pirate.sea]
- detection-update: [.....1] [ip4][..udp] [......10.0.2.30][44639] -> [......10.0.2.20][...53] [DNS][Network][Acceptable][vaaaakardli.pirate.sea]
+         detected: [.....1] [ip4][..udp] [......10.0.2.30][44639] -> [......10.0.2.20][...53] [DNS][Unknown][Network][Acceptable][vaaaakardli.pirate.sea]
+ detection-update: [.....1] [ip4][..udp] [......10.0.2.30][44639] -> [......10.0.2.20][...53] [DNS][Unknown][Network][Acceptable][vaaaakardli.pirate.sea]
                    RISK: Suspicious DNS Traffic
-          analyse: [.....1] [ip4][..udp] [......10.0.2.30][44639] -> [......10.0.2.20][...53] [DNS][Network][Acceptable]
+          analyse: [.....1] [ip4][..udp] [......10.0.2.30][44639] -> [......10.0.2.20][...53] [DNS][Unknown][Network][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    1.003|    0.162|    0.368|     135658.824|   2.400]
                    [PKTLEN......:    68.000| 1462.000|  232.600|  286.600|      82112.700|   4.400]
@@ -15,6 +15,6 @@
                    [IATS(ms)....: 0.1,0.9,1.1,5.8,5.7,0.4,0.3,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.3,0.6,0.4,0.2,0.3,0.5,0.4,0.2,0.2,1001.7,1002.3,1001.5,1003.0,1002.5]
                    [PKTLENS.....: 68,89,89,130,74,123,109,152,118,170,124,182,104,142,120,174,74,82,74,81,74,79,309,1078,309,1462,309,309,309,309,309,309]
                    [ENTROPIES...: 4.2,4.5,4.8,4.9,4.0,5.1,4.6,4.8,4.7,4.8,5.5,5.9,5.1,5.4,5.6,5.9,4.1,4.4,4.1,4.3,4.0,4.3,4.1,7.5,3.3,7.6,4.1,4.1,4.1,4.1,4.1,4.1]
-             idle: [.....1] [ip4][..udp] [......10.0.2.30][44639] -> [......10.0.2.20][...53] [DNS][Network][Acceptable]
+             idle: [.....1] [ip4][..udp] [......10.0.2.30][44639] -> [......10.0.2.20][...53] [DNS][Unknown][Network][Acceptable]
                    RISK: Suspicious DNS Traffic
      DAEMON-EVENT: shutdown

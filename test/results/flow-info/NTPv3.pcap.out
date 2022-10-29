@@ -2,6 +2,6 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [.175.144.140.29][..123] -> [.....78.46.76.2][...80] 
-         detected: [.....1] [ip4][..udp] [.175.144.140.29][..123] -> [.....78.46.76.2][...80] [NTP][System][Acceptable]
-             idle: [.....1] [ip4][..udp] [.175.144.140.29][..123] -> [.....78.46.76.2][...80] [NTP][System][Acceptable]
+         detected: [.....1] [ip4][..udp] [.175.144.140.29][..123] -> [.....78.46.76.2][...80] [NTP][Unknown][System][Acceptable]
+             idle: [.....1] [ip4][..udp] [.175.144.140.29][..123] -> [.....78.46.76.2][...80] [NTP][Unknown][System][Acceptable]
      DAEMON-EVENT: shutdown

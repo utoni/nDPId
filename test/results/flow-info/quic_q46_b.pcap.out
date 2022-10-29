@@ -2,6 +2,6 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [..172.27.69.216][45530] -> [.110.231.134.35][..443] 
-         detected: [.....1] [ip4][..udp] [..172.27.69.216][45530] -> [.110.231.134.35][..443] [QUIC.YouTubeUpload][Media][Fun][upload.youtube.com]
-             idle: [.....1] [ip4][..udp] [..172.27.69.216][45530] -> [.110.231.134.35][..443] [QUIC.YouTubeUpload][Media][Fun]
+         detected: [.....1] [ip4][..udp] [..172.27.69.216][45530] -> [.110.231.134.35][..443] [QUIC.YouTubeUpload][Unknown][Media][Fun][upload.youtube.com]
+             idle: [.....1] [ip4][..udp] [..172.27.69.216][45530] -> [.110.231.134.35][..443] [QUIC.YouTubeUpload][Unknown][Media][Fun]
      DAEMON-EVENT: shutdown

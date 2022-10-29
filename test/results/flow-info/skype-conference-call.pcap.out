@@ -2,9 +2,9 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [...192.168.2.20][49282] -> [...104.46.40.49][60642] 
-         detected: [.....1] [ip4][..udp] [...192.168.2.20][49282] -> [...104.46.40.49][60642] [STUN.Skype_TeamsCall][VoIP][Acceptable][]
+         detected: [.....1] [ip4][..udp] [...192.168.2.20][49282] -> [...104.46.40.49][60642] [STUN.Skype_TeamsCall][Azure][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port
-          analyse: [.....1] [ip4][..udp] [...192.168.2.20][49282] -> [...104.46.40.49][60642] [STUN.Skype_TeamsCall][VoIP][Acceptable]
+          analyse: [.....1] [ip4][..udp] [...192.168.2.20][49282] -> [...104.46.40.49][60642] [STUN.Skype_TeamsCall][Azure][VoIP][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.100|    0.011|    0.022|        503.840|   3.000]
                    [PKTLEN......:    63.000|  943.000|  285.500|  317.000|     100457.800|   4.300]
@@ -14,6 +14,6 @@
                    [IATS(ms)....: 7.3,44.5,54.5,0.2,54.9,0.3,10.3,20.1,24.4,100.1,0.3,0.1,0.2,0.1,0.2,0.2,0.1,0.2,0.2,0.2,0.1,2.8,14.7,0.4,0.2,0.2,0.3,0.2,0.2,0.2,3.7]
                    [PKTLENS.....: 132,132,100,100,132,100,136,138,131,123,195,63,155,155,155,155,155,155,155,155,155,155,100,71,943,943,943,943,943,943,155,121]
                    [ENTROPIES...: 5.5,5.4,5.7,5.6,5.4,5.7,5.6,6.5,6.5,6.4,6.8,5.2,6.5,6.5,6.6,6.6,6.5,6.5,6.4,6.6,6.5,6.5,5.6,5.6,7.8,7.8,7.8,7.8,7.8,7.8,6.6,6.3]
-             idle: [.....1] [ip4][..udp] [...192.168.2.20][49282] -> [...104.46.40.49][60642] [STUN.Skype_TeamsCall][VoIP][Acceptable]
+             idle: [.....1] [ip4][..udp] [...192.168.2.20][49282] -> [...104.46.40.49][60642] [STUN.Skype_TeamsCall][Azure][VoIP][Acceptable]
                    RISK: Known Proto on Non Std Port
      DAEMON-EVENT: shutdown

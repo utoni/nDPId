@@ -2,9 +2,9 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [.....17.2.0.124][.2034] -> [.....17.2.0.161][.1719] 
-         detected: [.....1] [ip4][..udp] [.....17.2.0.124][.2034] -> [.....17.2.0.161][.1719] [H323][VoIP][Acceptable]
+         detected: [.....1] [ip4][..udp] [.....17.2.0.124][.2034] -> [.....17.2.0.161][.1719] [H323][Apple][VoIP][Acceptable]
               new: [.....2] [ip4][..tcp] [.....17.2.0.124][.3032] -> [.....17.2.0.122][.1720] [MIDSTREAM] 
-         detected: [.....2] [ip4][..tcp] [.....17.2.0.124][.3032] -> [.....17.2.0.122][.1720] [H323][VoIP][Acceptable]
-             idle: [.....1] [ip4][..udp] [.....17.2.0.124][.2034] -> [.....17.2.0.161][.1719] [H323][VoIP][Acceptable]
-             idle: [.....2] [ip4][..tcp] [.....17.2.0.124][.3032] -> [.....17.2.0.122][.1720] [H323][VoIP][Acceptable]
+         detected: [.....2] [ip4][..tcp] [.....17.2.0.124][.3032] -> [.....17.2.0.122][.1720] [H323][Apple][VoIP][Acceptable]
+             idle: [.....1] [ip4][..udp] [.....17.2.0.124][.2034] -> [.....17.2.0.161][.1719] [H323][Apple][VoIP][Acceptable]
+             idle: [.....2] [ip4][..tcp] [.....17.2.0.124][.3032] -> [.....17.2.0.122][.1720] [H323][Apple][VoIP][Acceptable]
      DAEMON-EVENT: shutdown

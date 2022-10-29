@@ -2,6 +2,6 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [......10.0.2.15][40226] -> [....10.0.72.139][.1521] 
-          guessed: [.....1] [ip4][..tcp] [......10.0.2.15][40226] -> [....10.0.72.139][.1521] [Oracle][Database][Acceptable]
+          guessed: [.....1] [ip4][..tcp] [......10.0.2.15][40226] -> [....10.0.72.139][.1521] [Oracle][Unknown][Database][Acceptable]
              idle: [.....1] [ip4][..tcp] [......10.0.2.15][40226] -> [....10.0.72.139][.1521] 
      DAEMON-EVENT: shutdown

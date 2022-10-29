@@ -2,10 +2,10 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [...192.168.1.13][53096] -> [.178.62.197.130][..443] 
-         detected: [.....1] [ip4][..tcp] [...192.168.1.13][53096] -> [.178.62.197.130][..443] [TLS.ntop][Network][Safe][www.ntop.org]
- detection-update: [.....1] [ip4][..tcp] [...192.168.1.13][53096] -> [.178.62.197.130][..443] [TLS.ntop][Network][Safe][www.ntop.org]
- detection-update: [.....1] [ip4][..tcp] [...192.168.1.13][53096] -> [.178.62.197.130][..443] [TLS.ntop][Network][Safe][www.ntop.org]
-          analyse: [.....1] [ip4][..tcp] [...192.168.1.13][53096] -> [.178.62.197.130][..443] [TLS.ntop][Network][Safe]
+         detected: [.....1] [ip4][..tcp] [...192.168.1.13][53096] -> [.178.62.197.130][..443] [TLS.ntop][Unknown][Network][Safe][www.ntop.org]
+ detection-update: [.....1] [ip4][..tcp] [...192.168.1.13][53096] -> [.178.62.197.130][..443] [TLS.ntop][Unknown][Network][Safe][www.ntop.org]
+ detection-update: [.....1] [ip4][..tcp] [...192.168.1.13][53096] -> [.178.62.197.130][..443] [TLS.ntop][Unknown][Network][Safe][www.ntop.org]
+          analyse: [.....1] [ip4][..tcp] [...192.168.1.13][53096] -> [.178.62.197.130][..443] [TLS.ntop][Unknown][Network][Safe]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    1.656|    0.130|    0.404|     163175.268|   2.000]
                    [PKTLEN......:    52.000| 1492.000|  518.700|  610.400|     372566.000|   4.000]
@@ -15,5 +15,5 @@
                    [IATS(ms)....: 38.5,38.6,1.8,40.0,4.1,0.1,0.0,42.3,0.0,2.1,40.7,0.0,38.7,0.0,193.8,0.1,0.2,231.1,10.0,47.0,1655.7,0.1,1655.7,0.2,0.0,0.2,0.2,0.1,0.3,0.1,0.2]
                    [PKTLENS.....: 64,60,52,569,52,1492,1492,126,52,52,137,318,101,52,52,221,298,82,52,82,52,1492,1492,52,1492,1016,52,1492,1492,52,1492,1016]
                    [ENTROPIES...: 4.4,5.4,4.9,5.2,5.1,7.4,7.5,6.3,5.0,5.0,6.1,7.2,6.2,5.1,5.1,6.9,7.2,5.7,5.2,5.8,4.9,7.9,7.9,5.0,7.9,7.8,5.0,7.9,7.9,4.9,7.9,7.8]
-              end: [.....1] [ip4][..tcp] [...192.168.1.13][53096] -> [.178.62.197.130][..443] [TLS.ntop][Network][Safe]
+              end: [.....1] [ip4][..tcp] [...192.168.1.13][53096] -> [.178.62.197.130][..443] [TLS.ntop][Unknown][Network][Safe]
      DAEMON-EVENT: shutdown

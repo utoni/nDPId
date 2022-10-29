@@ -2,17 +2,17 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [...172.16.238.1][58395] -> [.172.16.238.168][...22] 
-         detected: [.....1] [ip4][..tcp] [...172.16.238.1][58395] -> [.172.16.238.168][...22] [SSH][RemoteAccess][Acceptable]
+         detected: [.....1] [ip4][..tcp] [...172.16.238.1][58395] -> [.172.16.238.168][...22] [SSH][Unknown][RemoteAccess][Acceptable]
                    RISK: SSH Obsolete Cli Vers/Cipher
- detection-update: [.....1] [ip4][..tcp] [...172.16.238.1][58395] -> [.172.16.238.168][...22] [SSH][RemoteAccess][Acceptable]
+ detection-update: [.....1] [ip4][..tcp] [...172.16.238.1][58395] -> [.172.16.238.168][...22] [SSH][Unknown][RemoteAccess][Acceptable]
                    RISK: SSH Obsolete Cli Vers/Cipher
- detection-update: [.....1] [ip4][..tcp] [...172.16.238.1][58395] -> [.172.16.238.168][...22] [SSH][RemoteAccess][Acceptable]
+ detection-update: [.....1] [ip4][..tcp] [...172.16.238.1][58395] -> [.172.16.238.168][...22] [SSH][Unknown][RemoteAccess][Acceptable]
                    RISK: SSH Obsolete Cli Vers/Cipher, SSH Obsolete Ser Vers/Cipher
- detection-update: [.....1] [ip4][..tcp] [...172.16.238.1][58395] -> [.172.16.238.168][...22] [SSH][RemoteAccess][Acceptable]
+ detection-update: [.....1] [ip4][..tcp] [...172.16.238.1][58395] -> [.172.16.238.168][...22] [SSH][Unknown][RemoteAccess][Acceptable]
                    RISK: SSH Obsolete Cli Vers/Cipher, SSH Obsolete Ser Vers/Cipher
- detection-update: [.....1] [ip4][..tcp] [...172.16.238.1][58395] -> [.172.16.238.168][...22] [SSH][RemoteAccess][Acceptable]
+ detection-update: [.....1] [ip4][..tcp] [...172.16.238.1][58395] -> [.172.16.238.168][...22] [SSH][Unknown][RemoteAccess][Acceptable]
                    RISK: SSH Obsolete Cli Vers/Cipher, SSH Obsolete Ser Vers/Cipher
-          analyse: [.....1] [ip4][..tcp] [...172.16.238.1][58395] -> [.172.16.238.168][...22] [SSH][RemoteAccess][Acceptable]
+          analyse: [.....1] [ip4][..tcp] [...172.16.238.1][58395] -> [.172.16.238.168][...22] [SSH][Unknown][RemoteAccess][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    2.907|    0.395|    0.889|     789856.780|   2.500]
                    [PKTLEN......:    52.000|  956.000|  158.700|  230.100|      52961.800|   4.100]
@@ -22,6 +22,6 @@
                    [IATS(ms)....: 0.0,0.0,8.1,8.1,0.3,0.8,0.5,0.1,1.5,1.6,0.3,1.8,1.6,1.6,14.7,13.1,1.8,42.3,40.5,0.2,0.3,0.4,0.3,40.6,51.2,91.6,2632.3,2632.6,1868.8,1869.1,2907.1]
                    [PKTLENS.....: 64,60,52,73,52,73,52,956,52,836,52,76,204,52,196,772,52,68,52,100,52,100,52,116,52,132,52,196,52,132,52,196]
                    [ENTROPIES...: 4.5,5.0,4.9,5.4,4.9,5.4,4.9,5.1,4.9,5.2,4.9,4.4,6.5,5.0,6.7,7.5,4.9,4.5,4.8,6.0,4.9,6.0,4.9,6.3,4.9,6.4,4.9,6.8,4.9,6.3,4.9,6.8]
-              end: [.....1] [ip4][..tcp] [...172.16.238.1][58395] -> [.172.16.238.168][...22] [SSH][RemoteAccess][Acceptable]
+              end: [.....1] [ip4][..tcp] [...172.16.238.1][58395] -> [.172.16.238.168][...22] [SSH][Unknown][RemoteAccess][Acceptable]
                    RISK: SSH Obsolete Cli Vers/Cipher, SSH Obsolete Ser Vers/Cipher
      DAEMON-EVENT: shutdown

@@ -1,0 +1,14 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [195.181.174.176][..443] -> [..192.168.1.128][48260] 
+         detected: [.....1] [ip4][..tcp] [195.181.174.176][..443] -> [..192.168.1.128][48260] [TLS.AnyDesk][Unknown][RemoteAccess][Acceptable][]
+                   RISK: Missing SNI TLS Extn, Desktop/File Sharing, Uncommon TLS ALPN
+ detection-update: [.....1] [ip4][..tcp] [195.181.174.176][..443] -> [..192.168.1.128][48260] [TLS.AnyDesk][Unknown][RemoteAccess][Acceptable][]
+                   RISK: Missing SNI TLS Extn, Desktop/File Sharing, Uncommon TLS ALPN
+              new: [.....2] [ip4][..tcp] [..192.168.1.128][59754] -> [..192.168.1.181][.7070] 
+         detected: [.....2] [ip4][..tcp] [..192.168.1.128][59754] -> [..192.168.1.181][.7070] [TLS][Unknown][Web][Safe][]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
+             idle: [.....1] [ip4][..tcp] [195.181.174.176][..443] -> [..192.168.1.128][48260] 
+             idle: [.....2] [ip4][..tcp] [..192.168.1.128][59754] -> [..192.168.1.181][.7070] 
+     DAEMON-EVENT: shutdown

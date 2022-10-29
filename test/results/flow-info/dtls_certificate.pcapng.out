@@ -2,8 +2,8 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [..191.62.60.190][..443] -> [.163.205.15.180][38876] 
-         detected: [.....1] [ip4][..udp] [..191.62.60.190][..443] -> [.163.205.15.180][38876] [DTLS.WindowsUpdate][SoftwareUpdate][Safe]
+         detected: [.....1] [ip4][..udp] [..191.62.60.190][..443] -> [.163.205.15.180][38876] [DTLS.WindowsUpdate][Unknown][SoftwareUpdate][Safe]
                    RISK: TLS Cert Expired
-             idle: [.....1] [ip4][..udp] [..191.62.60.190][..443] -> [.163.205.15.180][38876] [DTLS.WindowsUpdate][SoftwareUpdate][Safe]
+             idle: [.....1] [ip4][..udp] [..191.62.60.190][..443] -> [.163.205.15.180][38876] [DTLS.WindowsUpdate][Unknown][SoftwareUpdate][Safe]
                    RISK: TLS Cert Expired
      DAEMON-EVENT: shutdown
