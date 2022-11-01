@@ -371,6 +371,7 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
         struct nDPIsrvd_json_token const * const pkt = TOKEN_GET_SZ(sock, "pkt");
         if (pkt == NULL)
         {
+            syslog(LOG_DAEMON | LOG_ERR, "%s", "No packet data available.");
             return CALLBACK_ERROR;
         }
         if (flow_user->packets == NULL)
@@ -379,6 +380,7 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
         }
         if (flow_user->packets == NULL)
         {
+            syslog(LOG_DAEMON | LOG_ERR, "%s", "Memory allocation for captured packets failed.");
             return CALLBACK_ERROR;
         }
 
@@ -499,6 +501,7 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
 #endif
                 if (packet_write_pcap_file(flow_user->packets, flow_user->flow_datalink, pcap_filename) != 0)
                 {
+                    syslog(LOG_DAEMON | LOG_ERR, "Could not packet data to pcap file %s", pcap_filename);
                     return CALLBACK_ERROR;
                 }
             }
@@ -773,29 +776,39 @@ static int parse_options(int argc, char ** argv)
 
 static int mainloop(void)
 {
-    sigset_t sigusr1_block;
-
-    sigemptyset(&sigusr1_block);
-    sigaddset(&sigusr1_block, SIGUSR1);
+    enum nDPIsrvd_read_return read_ret = READ_OK;
 
     while (main_thread_shutdown == 0)
     {
-        sigprocmask(SIG_BLOCK, &sigusr1_block, NULL);
-        errno = 0;
-        enum nDPIsrvd_read_return read_ret = nDPIsrvd_read(sock);
+        read_ret = nDPIsrvd_read(sock);
+        if (errno == EINTR)
+        {
+            continue;
+        }
+        if (read_ret == READ_TIMEOUT)
+        {
+            syslog(LOG_DAEMON,
+                   "No data received during the last %llu second(s).\n",
+                   (long long unsigned int)sock->read_timeout.tv_sec);
+            continue;
+        }
         if (read_ret != READ_OK)
         {
-            syslog(LOG_DAEMON | LOG_ERR, "nDPIsrvd read failed with: %s", nDPIsrvd_enum_to_string(read_ret));
-            return 1;
+            syslog(LOG_DAEMON | LOG_ERR, "Could not read from socket: %s", nDPIsrvd_enum_to_string(read_ret));
+            break;
         }
 
         enum nDPIsrvd_parse_return parse_ret = nDPIsrvd_parse_all(sock);
         if (parse_ret != PARSE_NEED_MORE_DATA)
         {
-            syslog(LOG_DAEMON | LOG_ERR, "nDPIsrvd parse failed with: %s", nDPIsrvd_enum_to_string(parse_ret));
-            return 1;
+            syslog(LOG_DAEMON | LOG_ERR, "Could not parse json string: %s", nDPIsrvd_enum_to_string(parse_ret));
+            break;
         }
-        sigprocmask(SIG_UNBLOCK, &sigusr1_block, NULL);
+    }
+
+    if (main_thread_shutdown == 0 && read_ret != READ_OK)
+    {
+        return 1;
     }
 
     return 0;
@@ -819,8 +832,7 @@ int main(int argc, char ** argv)
     printf("Recv buffer size: %u\n", NETWORK_BUFFER_MAX_SIZE);
     printf("Connecting to `%s'..\n", serv_optarg);
 
-    enum nDPIsrvd_connect_return connect_ret = nDPIsrvd_connect(sock);
-    if (connect_ret != CONNECT_OK)
+    if (nDPIsrvd_connect(sock) != CONNECT_OK)
     {
         fprintf(stderr, "%s: nDPIsrvd socket connect to %s failed!\n", argv[0], serv_optarg);
         nDPIsrvd_socket_free(&sock);

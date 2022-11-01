@@ -523,13 +523,47 @@ static int parse_options(int argc, char ** argv)
     return 0;
 }
 
+static int mainloop(void)
+{
+    enum nDPIsrvd_read_return read_ret = READ_OK;
+
+    while (main_thread_shutdown == 0)
+    {
+        read_ret = nDPIsrvd_read(sock);
+        if (errno == EINTR)
+        {
+            continue;
+        }
+        if (read_ret == READ_TIMEOUT)
+        {
+            printf("No data received during the last %llu second(s).\n",
+                   (long long unsigned int)sock->read_timeout.tv_sec);
+            continue;
+        }
+        if (read_ret != READ_OK)
+        {
+            printf("Could not read from socket: %s\n", nDPIsrvd_enum_to_string(read_ret));
+            break;
+        }
+
+        enum nDPIsrvd_parse_return parse_ret = nDPIsrvd_parse_all(sock);
+        if (parse_ret != PARSE_NEED_MORE_DATA)
+        {
+            printf("Could not parse json string: %s\n", nDPIsrvd_enum_to_string(parse_ret));
+            break;
+        }
+    }
+
+    if (main_thread_shutdown == 0 && read_ret != READ_OK)
+    {
+        return 1;
+    }
+
+    return 0;
+}
+
 int main(int argc, char ** argv)
 {
-    signal(SIGUSR1, sighandler);
-    signal(SIGINT, sighandler);
-    signal(SIGTERM, sighandler);
-    signal(SIGPIPE, sighandler);
-
     sock = nDPIsrvd_socket_init(0, 0, 0, 0, simple_json_callback, NULL, NULL);
     if (sock == NULL)
     {
@@ -581,41 +615,11 @@ int main(int argc, char ** argv)
         return 1;
     }
 
-    enum nDPIsrvd_read_return read_ret = READ_OK;
-    while (main_thread_shutdown == 0)
-    {
-        read_ret = nDPIsrvd_read(sock);
-        if (errno == EINTR)
-        {
-            continue;
-        }
-        if (read_ret == READ_TIMEOUT)
-        {
-            printf("No data received during the last %llu second(s).\n",
-                   (long long unsigned int)sock->read_timeout.tv_sec);
-            continue;
-        }
-        if (read_ret != READ_OK)
-        {
-            break;
-        }
-
-        enum nDPIsrvd_parse_return parse_ret = nDPIsrvd_parse_all(sock);
-        if (parse_ret != PARSE_NEED_MORE_DATA)
-        {
-            printf("Could not parse json string: %s\n", nDPIsrvd_enum_to_string(parse_ret));
-            break;
-        }
-    }
-
-    if (main_thread_shutdown == 0 && read_ret != READ_OK)
-    {
-        printf("Parse read %s\n", nDPIsrvd_enum_to_string(read_ret));
-    }
+    int retval = mainloop();
 
     nDPIsrvd_socket_free(&sock);
     daemonize_shutdown(pidfile);
     closelog();
 
-    return read_ret;
+    return retval;
 }
