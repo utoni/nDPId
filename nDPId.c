@@ -5109,7 +5109,7 @@ static int validate_options(void)
         else
         {
             nDPId_options.instance_alias = strdup(hname);
-            logger_early(0, "No instance alias given, using your hostname '%s'", nDPId_options.instance_alias);
+            logger_early(1, "No instance alias given, using your hostname '%s'", nDPId_options.instance_alias);
             if (nDPId_options.instance_alias == NULL)
             {
                 retval = 1;

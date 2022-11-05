@@ -57,7 +57,7 @@ jobs:
       - name: Configure nDPId
         run: |
           mkdir build && cd build
-          cmake .. -DENABLE_COVERAGE=ON -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DENABLE_SANITIZER=ON ${{ matrix.ndpid_zlib }} ${{ matrix.ndpid_gcrypt }}
+          cmake .. -DENABLE_SYSTEMD=ON -DENABLE_COVERAGE=ON -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DENABLE_SANITIZER=ON ${{ matrix.ndpid_zlib }} ${{ matrix.ndpid_gcrypt }}
       - name: Build nDPId
         run: |
           make -C build all VERBOSE=1
@@ -81,7 +81,14 @@ jobs:
           make -C ./build dist
       - name: CPack DEB
         run: |
-          cd ./build && cpack -G DEB && cd ..
+          cd ./build && cpack -G DEB && sudo dpkg -i nDPId-*.deb && cd ..
+      - name: systemd test
+        run: |
+          sudo systemctl daemon-reload
+          sudo systemctl enable ndpid@lo
+          sudo systemctl start ndpid@lo
+          sudo systemctl status ndpisrvd.service ndpid@lo.service
+          sudo systemctl stop ndpid@lo
       - name: Build against libnDPI-${{ matrix.ndpi_min_version }}
         run: |
           mkdir build-local-ndpi && cd build-local-ndpi

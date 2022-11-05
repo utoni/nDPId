@@ -23,12 +23,18 @@ build_and_test:
     # static linked build
     - mkdir build-cmake-submodule
     - cd build-cmake-submodule
-    - env CMAKE_C_FLAGS='-Werror' cmake .. -DENABLE_COVERAGE=ON -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DENABLE_SANITIZER=ON -DENABLE_ZLIB=ON
+    - env CMAKE_C_FLAGS='-Werror' cmake .. -DENABLE_SYSTEMD=ON -DENABLE_COVERAGE=ON -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DENABLE_SANITIZER=ON -DENABLE_ZLIB=ON
     - make libnDPI
     - tree libnDPI
     - make install VERBOSE=1 DESTDIR="$(realpath ../_install)"
     - cpack -G DEB
+    - sudo dpkg -i nDPId-*.deb
     - cd ..
+    - test -x /bin/systemctl && sudo systemctl daemon-reload
+    - test -x /bin/systemctl && sudo systemctl enable ndpid@lo
+    - test -x /bin/systemctl && sudo systemctl start ndpid@lo
+    - test -x /bin/systemctl && sudo systemctl status ndpisrvd.service ndpid@lo.service
+    - test -x /bin/systemctl && sudo systemctl stop ndpid@lo
     - ./test/run_tests.sh ./libnDPI ./build-cmake-submodule/nDPId-test
     # generate coverage report
     - make -C ./build-cmake-submodule coverage

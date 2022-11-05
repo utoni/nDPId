@@ -1,0 +1,11 @@
+[Unit]
+Description=nDPIsrvd Service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/nDPIsrvd -l -c /var/run/ndpisrvd-collector
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

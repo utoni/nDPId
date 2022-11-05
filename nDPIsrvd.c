@@ -95,7 +95,8 @@ static struct
     int bufferbloat_fallback_to_blocking;
 } nDPIsrvd_options = {.max_remote_descriptors = nDPIsrvd_MAX_REMOTE_DESCRIPTORS,
                       .max_write_buffers = nDPIsrvd_MAX_WRITE_BUFFERS,
-                      .bufferbloat_fallback_to_blocking = 1};
+                      .bufferbloat_fallback_to_blocking = 1,
+                      .user = "nobody"};
 
 static void logger_nDPIsrvd(struct remote_desc const * const remote,
                             char const * const prefix,
@@ -1599,11 +1600,13 @@ int main(int argc, char ** argv)
     }
 
     errno = 0;
-    if (nDPIsrvd_options.user != NULL && change_user_group(nDPIsrvd_options.user,
-                                                           nDPIsrvd_options.group,
-                                                           nDPIsrvd_options.pidfile,
-                                                           nDPIsrvd_options.collector_un_sockpath,
-                                                           nDPIsrvd_options.distributor_un_sockpath) != 0)
+    if (nDPIsrvd_options.user != NULL &&
+        change_user_group(nDPIsrvd_options.user,
+                          nDPIsrvd_options.group,
+                          nDPIsrvd_options.pidfile,
+                          nDPIsrvd_options.collector_un_sockpath,
+                          nDPIsrvd_options.distributor_un_sockpath) != 0 &&
+        errno != EPERM)
     {
         if (errno != 0)
         {
