@@ -2340,11 +2340,10 @@ static void serialize_and_send(struct nDPId_reader_thread * const reader_thread)
 }
 
 /* Slightly modified code from: https://en.wikibooks.org/wiki/Algorithm_Implementation/Miscellaneous/Base64 */
-static char const * const base64_ret_strings[] = {"Success", "Buffer too small"};
-static int base64encode(uint8_t const * const data_buf,
-                        size_t dataLength,
-                        char * const result,
-                        size_t * const resultSize)
+static void base64encode(uint8_t const * const data_buf,
+                         size_t dataLength,
+                         char * const result,
+                         size_t * const resultSize)
 {
     const char base64chars[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
     const uint8_t * data = (const uint8_t *)data_buf;
@@ -2353,6 +2352,8 @@ static int base64encode(uint8_t const * const data_buf,
     uint32_t n = 0;
     int padCount = dataLength % 3;
     uint8_t n0, n1, n2, n3;
+
+    *resultSize = 0;
 
     /* increment over the length of the string, three characters at a time */
     for (x = 0; x < dataLength; x += 3)
@@ -2382,15 +2383,11 @@ static int base64encode(uint8_t const * const data_buf,
          * if we have one byte available, then its encoding is spread
          * out over two characters
          */
-        if (resultIndex >= *resultSize)
+        if (resultIndex + 1 >= *resultSize - padCount - 1)
         {
-            return 1; /* indicate failure: buffer too small */
+            break;
         }
         result[resultIndex++] = base64chars[n0];
-        if (resultIndex >= *resultSize)
-        {
-            return 1; /* indicate failure: buffer too small */
-        }
         result[resultIndex++] = base64chars[n1];
 
         /*
@@ -2399,9 +2396,9 @@ static int base64encode(uint8_t const * const data_buf,
          */
         if ((x + 1) < dataLength)
         {
-            if (resultIndex >= *resultSize)
+            if (resultIndex >= *resultSize - padCount - 1)
             {
-                return 1; /* indicate failure: buffer too small */
+                break;
             }
             result[resultIndex++] = base64chars[n2];
         }
@@ -2412,9 +2409,9 @@ static int base64encode(uint8_t const * const data_buf,
          */
         if ((x + 2) < dataLength)
         {
-            if (resultIndex >= *resultSize)
+            if (resultIndex >= *resultSize - padCount - 1)
             {
-                return 1; /* indicate failure: buffer too small */
+                break;
             }
             result[resultIndex++] = base64chars[n3];
         }
@@ -2428,21 +2425,12 @@ static int base64encode(uint8_t const * const data_buf,
     {
         for (; padCount < 3; padCount++)
         {
-            if (resultIndex >= *resultSize)
-            {
-                return 1; /* indicate failure: buffer too small */
-            }
             result[resultIndex++] = '=';
         }
     }
-    if (resultIndex >= *resultSize)
-    {
-        return 1; /* indicate failure: buffer too small */
-    }
 
-    result[resultIndex] = 0;
+    result[resultIndex] = '\0';
     *resultSize = resultIndex;
-    return 0; /* indicate success */
 }
 
 static void jsonize_data_analysis(struct nDPId_reader_thread * const reader_thread,
@@ -2584,36 +2572,39 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
                                      get_l4_protocol_idle_time_external(flow_ext->flow_basic.l4_protocol));
     }
 
-    char base64_data[NETWORK_BUFFER_MAX_SIZE];
-    size_t base64_data_len = sizeof(base64_data);
-    int base64_retval = base64encode(packet, header->caplen, base64_data, &base64_data_len);
-
-    ndpi_serialize_string_boolean(&workflow->ndpi_serializer, "pkt_oversize", base64_data_len > sizeof(base64_data));
-    ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_caplen", header->caplen);
-    ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_type", pkt_type);
-    ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_l3_offset", pkt_l3_offset);
-    ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_l4_offset", pkt_l4_offset);
-    ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_len", header->caplen);
-    ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_l4_len", pkt_l4_len);
-    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "thread_ts_usec", workflow->last_thread_time);
-
-    if (base64_retval == 0 && base64_data_len > 0)
+    size_t const serializer_buffer_len = ndpi_serializer_get_buffer_len(&workflow->ndpi_serializer);
+    if (serializer_buffer_len < NETWORK_BUFFER_MAX_SIZE)
     {
-        if (ndpi_serialize_string_binary(&workflow->ndpi_serializer, "pkt", base64_data, base64_data_len) != 0)
+        char base64_data[NETWORK_BUFFER_MAX_SIZE - serializer_buffer_len];
+        size_t base64_data_len = sizeof(base64_data);
+        base64encode(packet, header->caplen, base64_data, &base64_data_len);
+
+        ndpi_serialize_string_boolean(&workflow->ndpi_serializer, "pkt_oversize", header->caplen > base64_data_len);
+        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_caplen", header->caplen);
+        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_type", pkt_type);
+        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_l3_offset", pkt_l3_offset);
+        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_l4_offset", pkt_l4_offset);
+        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_len", header->caplen);
+        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_l4_len", pkt_l4_len);
+        ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "thread_ts_usec", workflow->last_thread_time);
+
+        if (base64_data_len > 0)
+        {
+            if (ndpi_serialize_string_binary(&workflow->ndpi_serializer, "pkt", base64_data, base64_data_len) != 0)
+            {
+                logger(1,
+                       "[%8llu, %zu] JSON serializing base64 packet buffer failed",
+                       reader_thread->workflow->packets_captured,
+                       reader_thread->array_index);
+            }
+        }
+        else
         {
             logger(1,
-                   "[%8llu, %zu] JSON serializing base64 packet buffer failed",
+                   "[%8llu, %zu] Base64 encoding failed.",
                    reader_thread->workflow->packets_captured,
                    reader_thread->array_index);
         }
-    }
-    else
-    {
-        logger(1,
-               "[%8llu, %zu] Base64 encoding failed with: %s.",
-               reader_thread->workflow->packets_captured,
-               reader_thread->array_index,
-               base64_ret_strings[base64_retval]);
     }
     serialize_and_send(reader_thread);
 }
