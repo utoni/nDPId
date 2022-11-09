@@ -372,7 +372,7 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
         if (pkt == NULL)
         {
             syslog(LOG_DAEMON | LOG_ERR, "%s", "No packet data available.");
-            syslog(LOG_DAEMON | LOG_ERR, "JSON String: \"%.*s\"", nDPIsrvd_json_buffer_length(sock), nDPIsrvd_json_buffer_string(sock));
+            syslog(LOG_DAEMON | LOG_ERR, "JSON String: '%.*s'", nDPIsrvd_json_buffer_length(sock), nDPIsrvd_json_buffer_string(sock));
             return CALLBACK_OK;
         }
         if (flow_user->packets == NULL)

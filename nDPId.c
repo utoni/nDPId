@@ -2353,8 +2353,6 @@ static void base64encode(uint8_t const * const data_buf,
     int padCount = dataLength % 3;
     uint8_t n0, n1, n2, n3;
 
-    *resultSize = 0;
-
     /* increment over the length of the string, three characters at a time */
     for (x = 0; x < dataLength; x += 3)
     {
@@ -2584,7 +2582,7 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
         ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_type", pkt_type);
         ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_l3_offset", pkt_l3_offset);
         ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_l4_offset", pkt_l4_offset);
-        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_len", header->caplen);
+        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_len", header->len);
         ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_l4_len", pkt_l4_len);
         ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "thread_ts_usec", workflow->last_thread_time);
 

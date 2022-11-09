@@ -826,7 +826,6 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
                 }
                 break;
             case 'u':
-                free(nDPIsrvd_options.user);
                 nDPIsrvd_options.user = strdup(optarg);
                 break;
             case 'g':

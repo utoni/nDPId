@@ -1647,7 +1647,7 @@ static inline void nDPIsrvd_flow_info(struct nDPIsrvd_socket const * const sock,
 
 static inline int nDPIsrvd_json_buffer_length(struct nDPIsrvd_socket const * const sock)
 {
-    return (int)sock->buffer.json_string_length;
+    return (int)sock->buffer.json_string_length - NETWORK_BUFFER_LENGTH_DIGITS;
 }
 
 static inline char const *nDPIsrvd_json_buffer_string(struct nDPIsrvd_socket const * const sock)
