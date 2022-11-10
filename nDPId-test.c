@@ -1129,7 +1129,7 @@ int main(int argc, char ** argv)
 
     nDPIsrvd_options.max_write_buffers = 32;
     nDPId_options.enable_data_analysis = 1;
-    nDPId_options.max_packets_per_flow_to_send = 3;
+    nDPId_options.max_packets_per_flow_to_send = 5;
 #ifdef ENABLE_ZLIB
     /*
      * zLib compression is forced enabled for testing.

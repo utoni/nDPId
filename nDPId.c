@@ -2570,21 +2570,21 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
                                      get_l4_protocol_idle_time_external(flow_ext->flow_basic.l4_protocol));
     }
 
+    ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_caplen", header->caplen);
+    ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_type", pkt_type);
+    ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_l3_offset", pkt_l3_offset);
+    ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_l4_offset", pkt_l4_offset);
+    ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_len", header->len);
+    ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_l4_len", pkt_l4_len);
+    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "thread_ts_usec", workflow->last_thread_time);
+
     size_t const serializer_buffer_len = ndpi_serializer_get_buffer_len(&workflow->ndpi_serializer);
-    if (serializer_buffer_len < NETWORK_BUFFER_MAX_SIZE)
+    size_t const required_len = NETWORK_BUFFER_MAX_SIZE - nDPIsrvd_STRLEN_SZ("pkt") - sizeof(':') - sizeof('"') * 4;
+    if (serializer_buffer_len < required_len)
     {
-        char base64_data[NETWORK_BUFFER_MAX_SIZE - serializer_buffer_len];
+        char base64_data[required_len - serializer_buffer_len];
         size_t base64_data_len = sizeof(base64_data);
         base64encode(packet, header->caplen, base64_data, &base64_data_len);
-
-        ndpi_serialize_string_boolean(&workflow->ndpi_serializer, "pkt_oversize", header->caplen > base64_data_len);
-        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_caplen", header->caplen);
-        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_type", pkt_type);
-        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_l3_offset", pkt_l3_offset);
-        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_l4_offset", pkt_l4_offset);
-        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_len", header->len);
-        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_l4_len", pkt_l4_len);
-        ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "thread_ts_usec", workflow->last_thread_time);
 
         if (base64_data_len > 0)
         {
@@ -2603,6 +2603,16 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
                    reader_thread->workflow->packets_captured,
                    reader_thread->array_index);
         }
+    }
+    else
+    {
+        logger(1,
+               "[%8llu, %zu] Could not append base64 encoded raw packet data to the serializer (%zu bytes occupied), "
+               "because the network buffer (%zu bytes) is too small. Consider increasing NETWORK_BUFFER_MAX_SIZEK.",
+               reader_thread->workflow->packets_captured,
+               reader_thread->array_index,
+               serializer_buffer_len,
+               required_len);
     }
     serialize_and_send(reader_thread);
 }

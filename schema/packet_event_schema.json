@@ -6,7 +6,6 @@
         "packet_id",
         "packet_event_id",
         "packet_event_name",
-        "pkt_oversize",
         "pkt_caplen",
         "pkt_type",
         "pkt_l3_offset",
@@ -85,9 +84,6 @@
             "type": "number",
             "minimum": 0,
             "maximum": 65535
-        },
-        "pkt_oversize": {
-            "type": "boolean"
         },
         "pkt_l3_offset": {
             "type": "number",
