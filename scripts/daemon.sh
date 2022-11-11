@@ -7,11 +7,15 @@ NROOT="${NROOT:-/tmp}"
 NUSER="${NUSER:-$(id -u -n)}"
 NSUFFIX="${NSUFFIX:-daemon-test}"
 nDPId_THREADS="${nDPId_THREADS:-4}"
+nDPId_ARGS="${nDPId_ARGS:-}"
+nDPIsrvd_ARGS="${nDPIsrvd_ARGS:-}"
 
 if [ x"${1}" = x -o x"${2}" = x ]; then
     printf '%s\n' "usage: ${0} [nDPId-path] [nDPIsrvd-path]" >&2
-    printf '\n\t%s=%s\n' 'env NUSER'   "${NUSER}" >&2
-    printf   '\t%s=%s\n' 'env NSUFFIX' "${NSUFFIX}" >&2
+    printf '\n\t%s=%s\n' 'env NUSER'         "${NUSER}" >&2
+    printf   '\t%s=%s\n' 'env NSUFFIX'       "${NSUFFIX}" >&2
+    printf   '\t%s=%s\n' 'env nDPId_ARGS'    "${nDPId_ARGS}" >&2
+    printf   '\t%s=%s\n' 'env nDPIsrvd_ARGS' "${nDPIsrvd_ARGS}" >&2
     exit 1
 fi
 
@@ -42,7 +46,7 @@ if [ -r "${NROOT}/nDPId-${NSUFFIX}.pid" -o -r "${NROOT}/nDPIsrvd-${NSUFFIX}.pid"
     printf '%s\n' "daemons stopped" >&2
 else
     set -x
-    ${2} -p "${NROOT}/nDPIsrvd-${NSUFFIX}.pid" -c "${NROOT}/nDPIsrvd-${NSUFFIX}-collector.sock" -s "${NROOT}/nDPIsrvd-${NSUFFIX}-distributor.sock" -d -L "${NROOT}/nDPIsrvd.log"
+    sudo ${2} -p "${NROOT}/nDPIsrvd-${NSUFFIX}.pid" -c "${NROOT}/nDPIsrvd-${NSUFFIX}-collector.sock" -s "${NROOT}/nDPIsrvd-${NSUFFIX}-distributor.sock" -d -u "${NUSER}" -L "${NROOT}/nDPIsrvd.log" ${nDPIsrvd_ARGS}
     test $? -eq 0 || RETVAL=1
 
     MAX_TRIES=10
@@ -63,7 +67,7 @@ else
     test $? -eq 0 || RETVAL=1
     sudo chmod g+w "${NROOT}/nDPIsrvd-${NSUFFIX}-collector.sock"
     test $? -eq 0 || RETVAL=1
-    sudo ${1} -p "${NROOT}/nDPId-${NSUFFIX}.pid" -c "${NROOT}/nDPIsrvd-${NSUFFIX}-collector.sock" -d -u "${NUSER}" -L "${NROOT}/nDPId.log" -o max-reader-threads=${nDPId_THREADS}
+    sudo ${1} -p "${NROOT}/nDPId-${NSUFFIX}.pid" -c "${NROOT}/nDPIsrvd-${NSUFFIX}-collector.sock" -d -u "${NUSER}" -L "${NROOT}/nDPId.log" -o max-reader-threads=${nDPId_THREADS} ${nDPId_ARGS}
     test $? -eq 0 || RETVAL=1
     set +x
     printf '%s\n' "daemons started" >&2
