@@ -9,6 +9,7 @@ NETCAT_EXEC="$(which nc) -q 0 -l 127.0.0.1 9000"
 JSON_VALIDATOR="$(realpath "${3:-"${MYDIR}/../examples/py-schema-validation/py-schema-validation.py"}")"
 SEMN_VALIDATOR="$(realpath "${4:-"${MYDIR}/../examples/py-semantic-validation/py-semantic-validation.py"}")"
 FLOW_INFO="$(realpath "${5:-"${MYDIR}/../examples/py-flow-info/flow-info.py"}")"
+NDPISRVD_ANALYSED="$(realpath "${6:-"$(dirname ${nDPId_test_EXEC})/nDPIsrvd-analysed"}")"
 IS_GIT=$(test -d "${MYDIR}/../.git" -o -f "${MYDIR}/../.git" && printf '1' || printf '0')
 
 function usage()
@@ -21,6 +22,7 @@ usage: ${0} [path-to-nDPI-source-root] \\
     path-to-nDPId-JSON-validator defaults to    ${JSON_VALIDATOR}
     path-to-nDPId-SEMANTIC-validator default to ${SEMN_VALIDATOR}
     path-to-nDPId-flow-info defaults to         ${FLOW_INFO}
+    path-to-nDPIsrvd-analysed defaults to       ${NDPISRVD_ANALYSED}
 EOF
 return 0
 }
@@ -28,6 +30,9 @@ return 0
 test -z "$(which flock)" && { printf '%s\n' 'flock not found'; exit 1; }
 test -z "$(which pkill)" && { printf '%s\n' 'pkill not found'; exit 1; }
 test -z "$(which nc)" && { printf '%s\n' 'nc not found'; exit 1; }
+test -z "$(which ss)" && { printf '%s\n' 'ss not found'; exit 1; }
+test -z "$(which cat)" && { printf '%s\n' 'cat not found'; exit 1; }
+test -z "$(which grep)" && { printf '%s\n' 'grep not found'; exit 1; }
 
 if [ $# -eq 0 -a -x "${MYDIR}/../libnDPI/tests/pcap" ]; then
     nDPI_SOURCE_ROOT="${MYDIR}/../libnDPI"
@@ -230,6 +235,58 @@ for out_file in ${MYDIR}/results/flow-info/*.out; do
         TESTS_FAILED=$((TESTS_FAILED + 1))
     fi
 done
+
+cat <<EOF
+
+-----------------------
+-- Flow Analyse DIFF --
+-----------------------
+
+EOF
+
+if [ -x "${NDPISRVD_ANALYSED}" ]; then
+    cd "${MYDIR}"
+    for out_file in results/*.out; do
+        result_file="$(basename ${out_file})"
+        printf "%-${LINE_SPACES}s\t" "${result_file}"
+        cat "${out_file}" | grep -vE '^~~.*$' | ${NETCAT_EXEC} &
+        nc_pid=$!
+        while ! ss -4 -t -n -l | grep -q '127.0.0.1:9000'; do sleep 0.5; printf '%s\n' 'Waiting until socket 127.0.0.1:9000 is available..' >>"/tmp/nDPId-test-stderr/${result_file}"; done
+        ${NDPISRVD_ANALYSED} -s '127.0.0.1:9000' -o "/tmp/nDPId-test-stdout/${result_file}.csv.new" 2>>"/tmp/nDPId-test-stderr/${result_file}" 1>&2
+        kill -SIGTERM ${nc_pid} 2>/dev/null
+        wait ${nc_pid} 2>/dev/null
+        if [ ! -r "${MYDIR}/results/flow-analyse/${result_file}" ]; then
+            printf '%s\n' '[NEW]'
+            test ${IS_GIT} -eq 1 && \
+                mv -v "/tmp/nDPId-test-stdout/${result_file}.csv.new" \
+                      "${MYDIR}/results/flow-analyse/${result_file}"
+            TESTS_FAILED=$((TESTS_FAILED + 1))
+        elif diff -u0 "${MYDIR}/results/flow-analyse/${result_file}" \
+                      "/tmp/nDPId-test-stdout/${result_file}.csv.new" >/dev/null; then
+            printf '%s\n' '[OK]'
+            rm -f "/tmp/nDPId-test-stdout/${result_file}.csv.new"
+        else
+            printf '%s\n' '[DIFF]'
+            diff -u0 "${MYDIR}/results/flow-analyse/${result_file}" \
+                     "/tmp/nDPId-test-stdout/${result_file}.csv.new"
+            test ${IS_GIT} -eq 1 && \
+                mv -v "/tmp/nDPId-test-stdout/${result_file}.csv.new" \
+                      "${MYDIR}/results/flow-analyse/${result_file}"
+            cat "/tmp/nDPId-test-stderr/${result_file}"
+            TESTS_FAILED=$((TESTS_FAILED + 1))
+        fi
+    done
+
+    for out_file in ${MYDIR}/results/flow-analyse/*.out; do
+        result_file="$(basename ${out_file})"
+        if [ ! -r "${MYDIR}/results/${result_file}" ]; then
+            printf "%-${LINE_SPACES}s\t%s\n" "${result_file}" "[MISSING]"
+            TESTS_FAILED=$((TESTS_FAILED + 1))
+        fi
+    done
+else
+    printf '%s\n' "Not found or not executable: ${NDPISRVD_ANALYSED}"
+fi
 
 cat <<EOF
 

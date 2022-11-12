@@ -12,11 +12,11 @@ before_script:
         build-essential make cmake binutils gcc autoconf automake \
         libtool pkg-config git \
         libpcap-dev libgpg-error-dev libjson-c-dev zlib1g-dev \
-        netcat-openbsd python3 python3-jsonschema tree lcov
+        netcat-openbsd python3 python3-jsonschema tree lcov iproute2
 
 after_script:
-  - test -r && cat /tmp/nDPIsrvd.log
-  - test -r && cat /tmp/nDPId.log
+  - test -r /tmp/nDPIsrvd.log && cat /tmp/nDPIsrvd.log
+  - test -r /tmp/nDPId.log && cat /tmp/nDPId.log
 
 build_and_test:
   script:

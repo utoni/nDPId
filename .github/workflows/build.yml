@@ -45,7 +45,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install autoconf automake cmake libtool pkg-config gettext libjson-c-dev flex bison libpcap-dev zlib1g-dev
-          sudo apt-get install ${{ matrix.compiler }} lcov
+          sudo apt-get install ${{ matrix.compiler }} lcov iproute2
       - name: Install Ubuntu Prerequisites (libgcrypt)
         if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=ON')
         run: |
@@ -83,6 +83,7 @@ jobs:
         run: |
           cd ./build && cpack -G DEB && sudo dpkg -i nDPId-*.deb && cd ..
       - name: systemd test
+        if: startsWith(matrix.os, 'ubuntu-latest') && startsWith(matrix.compiler, 'default-cc')
         run: |
           sudo systemctl daemon-reload
           sudo systemctl enable ndpid@lo

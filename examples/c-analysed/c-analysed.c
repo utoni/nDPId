@@ -150,7 +150,7 @@ static void csv_buf_add(csv_buf_t buf, size_t * const csv_buf_used, char const *
 
     if (siz_len > 0 && str != NULL)
     {
-        len = MIN(BUFFER_REMAINING(*csv_buf_used), siz_len - 1);
+        len = MIN(BUFFER_REMAINING(*csv_buf_used), siz_len);
         if (len == 0)
         {
             return;
@@ -620,6 +620,9 @@ int main(int argc, char ** argv)
     nDPIsrvd_socket_free(&sock);
     daemonize_shutdown(pidfile);
     closelog();
+
+    fflush(csv_fp);
+    fclose(csv_fp);
 
     return retval;
 }

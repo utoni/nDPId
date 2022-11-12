@@ -512,6 +512,9 @@ if __name__ == '__main__':
     while True:
         try:
             nsock.loop(onJsonLineRecvd, onFlowCleanup, stats)
+        except nDPIsrvd.SocketConnectionBroken as err:
+            sys.stderr.write('\n{}\n'.format(err))
+            break
         except KeyboardInterrupt:
             print('\n\nKeyboard Interrupt: cleaned up {} flows.'.format(len(nsock.shutdown())))
             break
