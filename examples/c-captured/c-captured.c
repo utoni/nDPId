@@ -389,7 +389,7 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
         perror_ull(TOKEN_VALUE_TO_ULL(sock, TOKEN_GET_SZ(sock, "thread_ts_usec"), &thread_ts_usec), "thread_ts_usec");
 
         nDPIsrvd_ull pkt_len = 0ull;
-        perror_ull(TOKEN_VALUE_TO_ULL(sock, TOKEN_GET_SZ(sock, "pkt_len"), &pkt_len), "pkt_len");
+        perror_ull(TOKEN_VALUE_TO_ULL(sock, TOKEN_GET_SZ(sock, "pkt_caplen"), &pkt_len), "pkt_caplen");
 
         nDPIsrvd_ull pkt_l4_len = 0ull;
         perror_ull(TOKEN_VALUE_TO_ULL(sock, TOKEN_GET_SZ(sock, "pkt_l4_len"), &pkt_l4_len), "pkt_l4_len");

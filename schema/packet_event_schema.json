@@ -110,8 +110,7 @@
         },
         "pkt_len": {
             "type": "number",
-            "minimum": 0,
-            "maximum": 65535
+            "minimum": 0
         },
         "pkt": {
             "type": "string"
