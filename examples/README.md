@@ -7,6 +7,7 @@ All examples are prefixed with their used LANG.
 
 A feature extractor useful for ML/DL use cases.
 It generates CSV files from flow "analyse" events.
+Used also by `tests/run_tests.sh` if available.
 
 ## c-captured
 
@@ -23,7 +24,7 @@ Tiny nDPId json dumper. Does not provide any useful funcationality besides dumpi
 
 ## c-simple
 
-Very tiny integration example.
+Integration example that verifies flow timeouts on SIGUSR1.
 
 ## js-rt-analyzer
 
@@ -31,7 +32,8 @@ Very tiny integration example.
 
 ## py-flow-info
 
-Prints prettyfied information about flow events.
+Console friendly, colorful, prettyfied event printer.
+Required by `tests/run_tests.sh`
 
 ## py-machine-learning
 
@@ -55,7 +57,7 @@ Simple Python Multiprocess example spawning two worker processes, one connecting
 
 ## py-json-stdout
 
-Dump received and parsed JSON strings.
+Dump received and parsed JSON objects.
 
 ## py-schema-validation
 

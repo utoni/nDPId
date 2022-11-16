@@ -210,8 +210,7 @@ Of course, both `ncat` and `nDPId` need to point to the same UNIX-socket (`nDPId
 You also need to provide `nDPId` some real-traffic. You can capture your own traffic, with something similar to:
 
 ```shell
-ncat -U /tmp/listen.sock -l -k
-#socat UNIX-Listen:/tmp/listen.sock,fork - # does the same as `ncat`
+socat -u UNIX-Listen:/tmp/listen.sock,fork - # does the same as `ncat`
 sudo chown nobody:nobody /tmp/listen.sock # default `nDPId` user/group, see `-u` and `-g`
 sudo ./nDPId -c /tmp/listen.sock -l
 ```
@@ -219,8 +218,7 @@ sudo ./nDPId -c /tmp/listen.sock -l
 `nDPId` supports also UDP collector endpoints:
 
 ```shell
-ncat -u 127.0.0.1 7000 -l -k
-#socat UDP-Listen:7000,fork - # does the same as `ncat`
+nc -d -u 127.0.0.1 7000 -l -k
 sudo ./nDPId -c 127.0.0.1:7000 -l
 ```
 
