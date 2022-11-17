@@ -54,6 +54,11 @@ jobs:
         if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.ndpid_zlib, '-DENABLE_ZLIB=ON')
         run: |
           sudo apt-get install zlib1g-dev
+      - name: Checking Network Buffer Size
+        run: |
+          C_VAL=$(cat config.h | sed -n 's/^#define\s\+NETWORK_BUFFER_MAX_SIZE\s\+\([0-9]\+\).*$/\1/gp')
+          PY_VAL=$(cat dependencies/nDPIsrvd.py | sed -n 's/^NETWORK_BUFFER_MAX_SIZE = \([0-9]\+\).*$/\1/gp')
+          test ${C_VAL} = ${PY_VAL}
       - name: Configure nDPId
         run: |
           mkdir build && cd build
