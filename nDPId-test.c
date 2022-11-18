@@ -1141,13 +1141,13 @@ int main(int argc, char ** argv)
     nDPId_options.memory_profiling_log_interval = (unsigned long long int)-1;
     nDPId_options.reader_thread_count = 1; /* Please do not change this! Generating meaningful pcap diff's relies on a
                                               single reader thread! */
-    nDPId_options.instance_alias = strdup("nDPId-test");
+    set_cmdarg(&nDPId_options.instance_alias, "nDPId-test");
     if (access(argv[1], R_OK) != 0)
     {
         logger(1, "%s: pcap file `%s' does not exist or is not readable", argv[0], argv[1]);
         return 1;
     }
-    nDPId_options.pcap_file_or_interface = strdup(argv[1]);
+    set_cmdarg(&nDPId_options.pcap_file_or_interface, argv[1]);
     if (validate_options() != 0)
     {
         return 1;

@@ -6,6 +6,7 @@
 #include <pwd.h>
 #include <stdarg.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #ifndef NO_MAIN
 #include <syslog.h>
@@ -20,6 +21,42 @@ static char const * app_name = NULL;
 static int daemonize = 0;
 static int log_to_console = 0;
 static int log_to_file_fd = -1;
+
+void set_cmdarg(struct cmdarg * const ca, char const * const val)
+{
+    if (ca == NULL || val == NULL)
+    {
+        return;
+    }
+
+    free(ca->value);
+    ca->value = strdup(val);
+}
+
+char const * get_cmdarg(struct cmdarg const * const ca)
+{
+    if (ca == NULL)
+    {
+        return NULL;
+    }
+
+    if (ca->value != NULL)
+    {
+        return ca->value;
+    }
+
+    return ca->default_value;
+}
+
+int is_cmdarg_set(struct cmdarg const * const ca)
+{
+    if (ca == NULL)
+    {
+        return 0;
+    }
+
+    return ca->value != NULL;
+}
 
 void daemonize_enable(void)
 {
@@ -182,8 +219,7 @@ int change_user_group(char const * const user,
     if (uds_collector_path != NULL)
     {
         errno = 0;
-        if (chmod(uds_collector_path, S_IRUSR | S_IWUSR) != 0 ||
-            chown(uds_collector_path, pwd->pw_uid, gid) != 0)
+        if (chmod(uds_collector_path, S_IRUSR | S_IWUSR) != 0 || chown(uds_collector_path, pwd->pw_uid, gid) != 0)
         {
             return -errno;
         }

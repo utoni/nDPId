@@ -3,6 +3,23 @@
 
 #include <stdarg.h>
 
+#define CMDARG(_default_value)                                                                                         \
+    {                                                                                                                  \
+        .value = NULL, .default_value = (_default_value)                                                               \
+    }
+
+struct cmdarg
+{
+    char * value;
+    char const * const default_value;
+};
+
+void set_cmdarg(struct cmdarg * const ca, char const * const val);
+
+char const * get_cmdarg(struct cmdarg const * const ca);
+
+int is_cmdarg_set(struct cmdarg const * const ca);
+
 int is_path_absolute(char const * const prefix, char const * const path);
 
 void daemonize_enable(void);

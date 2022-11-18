@@ -70,6 +70,7 @@ jobs:
         run: |
           ./build/nDPId-test || test $? -eq 1
           ./build/nDPId -h || test $? -eq 1
+          ./build/nDPIsrvd -h || test $? -eq 1
       - name: Test DIFF
         if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=OFF')
         run: |

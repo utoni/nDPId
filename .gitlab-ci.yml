@@ -53,6 +53,7 @@ build_and_test:
     - cd ..
     - ./build/nDPId-test || test $? -eq 1
     - ./build/nDPId -h || test $? -eq 1
+    - ./build/nDPIsrvd -h || test $? -eq 1
     # dameon start/stop test
     - NUSER=nobody make -C ./build daemon VERBOSE=1
     - NUSER=nobody make -C ./build daemon VERBOSE=1

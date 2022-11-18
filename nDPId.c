@@ -441,27 +441,27 @@ static MT_VALUE(zlib_compression_bytes, uint64_t) = MT_INIT(0);
 static struct
 {
     /* opts */
-    char * pcap_file_or_interface;
+    struct cmdarg pcap_file_or_interface;
+    struct cmdarg bpf_str;
+    struct cmdarg pidfile;
+    struct cmdarg user;
+    struct cmdarg group;
+    struct cmdarg custom_protocols_file;
+    struct cmdarg custom_categories_file;
+    struct cmdarg custom_ja3_file;
+    struct cmdarg custom_sha1_file;
+    struct cmdarg collector_address;
+    struct cmdarg instance_alias;
     union nDPId_ip pcap_dev_ip4, pcap_dev_ip6;
     union nDPId_ip pcap_dev_netmask4, pcap_dev_netmask6;
     union nDPId_ip pcap_dev_subnet4, pcap_dev_subnet6;
     uint8_t process_internal_initial_direction;
     uint8_t process_external_initial_direction;
-    char * bpf_str;
-    char pidfile[UNIX_PATH_MAX];
-    char * user;
-    char * group;
-    char * custom_protocols_file;
-    char * custom_categories_file;
-    char * custom_ja3_file;
-    char * custom_sha1_file;
-    char collector_address[UNIX_PATH_MAX];
 #ifdef ENABLE_ZLIB
     uint8_t enable_zlib_compression;
 #endif
     uint8_t enable_data_analysis;
     /* subopts */
-    char * instance_alias;
     unsigned long long int max_flows_per_thread;
     unsigned long long int max_idle_flows_per_thread;
     unsigned long long int reader_thread_count;
@@ -484,9 +484,17 @@ static struct
     unsigned long long int max_packets_per_flow_to_analyse;
     unsigned long long int error_event_threshold_n;
     unsigned long long int error_event_threshold_time;
-} nDPId_options = {.pidfile = nDPId_PIDFILE,
-                   .user = "nobody",
-                   .collector_address = COLLECTOR_UNIX_SOCKET,
+} nDPId_options = {.pcap_file_or_interface = CMDARG(NULL),
+                   .bpf_str = CMDARG(NULL),
+                   .pidfile = CMDARG(nDPId_PIDFILE),
+                   .user = CMDARG(DEFAULT_CHUSER),
+                   .group = CMDARG(NULL),
+                   .custom_protocols_file = CMDARG(NULL),
+                   .custom_categories_file = CMDARG(NULL),
+                   .custom_ja3_file = CMDARG(NULL),
+                   .custom_sha1_file = CMDARG(NULL),
+                   .collector_address = CMDARG(COLLECTOR_UNIX_SOCKET),
+                   .instance_alias = CMDARG(NULL),
                    .max_flows_per_thread = nDPId_MAX_FLOWS_PER_THREAD / 2,
                    .max_idle_flows_per_thread = nDPId_MAX_IDLE_FLOWS_PER_THREAD / 2,
                    .reader_thread_count = nDPId_MAX_READER_THREADS / 2,
@@ -986,7 +994,7 @@ static int get_ip6_address_and_netmask(char const * const ifa_name, size_t ifnam
 
             logger(0,
                    "%s IPv6 address/prefix netmask subnet: %s/%u %s %s",
-                   nDPId_options.pcap_file_or_interface,
+                   get_cmdarg(&nDPId_options.pcap_file_or_interface),
                    addr6,
                    plen,
                    netmask6,
@@ -1053,7 +1061,7 @@ static int get_ip4_address_and_netmask(char const * const ifa_name, size_t ifnam
         void * ssubn = &nDPId_options.pcap_dev_subnet4.v4.ip;
         logger(0,
                "%s IPv4 address netmask subnet: %s %s %s",
-               nDPId_options.pcap_file_or_interface,
+               get_cmdarg(&nDPId_options.pcap_file_or_interface),
                inet_ntop(AF_INET, saddr, addr, sizeof(addr)),
                inet_ntop(AF_INET, snetm, netm, sizeof(netm)),
                inet_ntop(AF_INET, ssubn, subn, sizeof(subn)));
@@ -1236,10 +1244,10 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
         return NULL;
     }
 
-    if (nDPId_options.bpf_str != NULL)
+    if (is_cmdarg_set(&nDPId_options.bpf_str) != 0)
     {
         struct bpf_program fp;
-        if (pcap_compile(workflow->pcap_handle, &fp, nDPId_options.bpf_str, 1, PCAP_NETMASK_UNKNOWN) != 0)
+        if (pcap_compile(workflow->pcap_handle, &fp, get_cmdarg(&nDPId_options.bpf_str), 1, PCAP_NETMASK_UNKNOWN) != 0)
         {
             logger_early(1, "pcap_compile: %s", pcap_geterr(workflow->pcap_handle));
             free_workflow(&workflow);
@@ -1292,21 +1300,21 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     NDPI_PROTOCOL_BITMASK protos;
     NDPI_BITMASK_SET_ALL(protos);
     ndpi_set_protocol_detection_bitmask2(workflow->ndpi_struct, &protos);
-    if (nDPId_options.custom_protocols_file != NULL)
+    if (is_cmdarg_set(&nDPId_options.custom_protocols_file) != 0)
     {
-        ndpi_load_protocols_file(workflow->ndpi_struct, nDPId_options.custom_protocols_file);
+        ndpi_load_protocols_file(workflow->ndpi_struct, get_cmdarg(&nDPId_options.custom_protocols_file));
     }
-    if (nDPId_options.custom_categories_file != NULL)
+    if (is_cmdarg_set(&nDPId_options.custom_categories_file) != 0)
     {
-        ndpi_load_categories_file(workflow->ndpi_struct, nDPId_options.custom_categories_file, NULL);
+        ndpi_load_categories_file(workflow->ndpi_struct, get_cmdarg(&nDPId_options.custom_categories_file), NULL);
     }
-    if (nDPId_options.custom_ja3_file != NULL)
+    if (is_cmdarg_set(&nDPId_options.custom_ja3_file) != 0)
     {
-        ndpi_load_malicious_ja3_file(workflow->ndpi_struct, nDPId_options.custom_ja3_file);
+        ndpi_load_malicious_ja3_file(workflow->ndpi_struct, get_cmdarg(&nDPId_options.custom_ja3_file));
     }
-    if (nDPId_options.custom_sha1_file != NULL)
+    if (is_cmdarg_set(&nDPId_options.custom_sha1_file) != 0)
     {
-        ndpi_load_malicious_sha1_file(workflow->ndpi_struct, nDPId_options.custom_sha1_file);
+        ndpi_load_malicious_sha1_file(workflow->ndpi_struct, get_cmdarg(&nDPId_options.custom_sha1_file));
     }
     ndpi_finalize_initialization(workflow->ndpi_struct);
 
@@ -1484,28 +1492,30 @@ static int setup_reader_threads(void)
         return 1;
     }
 
-    if (nDPId_options.pcap_file_or_interface == NULL)
+    if (is_cmdarg_set(&nDPId_options.pcap_file_or_interface) == 0)
     {
-        nDPId_options.pcap_file_or_interface = get_default_pcapdev(pcap_error_buffer);
-        if (nDPId_options.pcap_file_or_interface == NULL)
+        char * const pcapdev = get_default_pcapdev(pcap_error_buffer);
+        set_cmdarg(&nDPId_options.pcap_file_or_interface, pcapdev);
+        free(pcapdev);
+        if (is_cmdarg_set(&nDPId_options.pcap_file_or_interface) == 0)
         {
             logger_early(1, "pcap_lookupdev: %.*s", (int)PCAP_ERRBUF_SIZE, pcap_error_buffer);
             return 1;
         }
-        logger_early(0, "Capturing packets from default device: %s", nDPId_options.pcap_file_or_interface);
+        logger_early(0, "Capturing packets from default device: %s", get_cmdarg(&nDPId_options.pcap_file_or_interface));
     }
 
     errno = 0;
-    if (access(nDPId_options.pcap_file_or_interface, R_OK) != 0 && errno == ENOENT)
+    if (access(get_cmdarg(&nDPId_options.pcap_file_or_interface), R_OK) != 0 && errno == ENOENT)
     {
         errno = 0;
-        if (get_ip_netmask_from_pcap_dev(nDPId_options.pcap_file_or_interface) != 0)
+        if (get_ip_netmask_from_pcap_dev(get_cmdarg(&nDPId_options.pcap_file_or_interface)) != 0)
         {
             if (errno != 0)
             {
                 logger_early(1,
                              "Could not get netmask for pcap device %s: %s",
-                             nDPId_options.pcap_file_or_interface,
+                             get_cmdarg(&nDPId_options.pcap_file_or_interface),
                              strerror(errno));
             }
             return 1;
@@ -1527,7 +1537,7 @@ static int setup_reader_threads(void)
 
     for (unsigned long long int i = 0; i < nDPId_options.reader_thread_count; ++i)
     {
-        reader_threads[i].workflow = init_workflow(nDPId_options.pcap_file_or_interface);
+        reader_threads[i].workflow = init_workflow(get_cmdarg(&nDPId_options.pcap_file_or_interface));
         if (reader_threads[i].workflow == NULL)
         {
             return 1;
@@ -1981,8 +1991,10 @@ static void jsonize_basic(struct nDPId_reader_thread * const reader_thread, int 
         ndpi_serialize_string_int32(&workflow->ndpi_serializer, "thread_id", reader_thread->array_index);
     }
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "packet_id", workflow->packets_captured);
-    ndpi_serialize_string_string(&workflow->ndpi_serializer, "source", nDPId_options.pcap_file_or_interface);
-    ndpi_serialize_string_string(&workflow->ndpi_serializer, "alias", nDPId_options.instance_alias);
+    ndpi_serialize_string_string(&workflow->ndpi_serializer,
+                                 "source",
+                                 get_cmdarg(&nDPId_options.pcap_file_or_interface));
+    ndpi_serialize_string_string(&workflow->ndpi_serializer, "alias", get_cmdarg(&nDPId_options.instance_alias));
 }
 
 static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enum daemon_event event)
@@ -2232,7 +2244,7 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
                        "[%8llu, %zu] Reconnected to nDPIsrvd Collector at %s",
                        workflow->packets_captured,
                        reader_thread->array_index,
-                       nDPId_options.collector_address);
+                       get_cmdarg(&nDPId_options.collector_address));
                 jsonize_daemon(reader_thread, DAEMON_EVENT_RECONNECT);
             }
         }
@@ -2244,7 +2256,7 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
                        "[%8llu, %zu] Could not connect to nDPIsrvd Collector at %s, will try again later. Error: %s",
                        workflow->packets_captured,
                        reader_thread->array_index,
-                       nDPId_options.collector_address,
+                       get_cmdarg(&nDPId_options.collector_address),
                        (reader_thread->collector_sock_last_errno != 0
                             ? strerror(reader_thread->collector_sock_last_errno)
                             : "Internal Error."));
@@ -2275,7 +2287,7 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
                        workflow->packets_captured,
                        reader_thread->array_index,
                        (collector_address.raw.sa_family == AF_UNIX ? "Connection" : "Datagram"),
-                       nDPId_options.collector_address);
+                       get_cmdarg(&nDPId_options.collector_address));
             }
             reader_thread->collector_sock_last_errno = saved_errno;
         }
@@ -2302,7 +2314,7 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
                            "[%8llu, %zu] Send data (blocking I/O) to nDPIsrvd Collector at %s failed: %s",
                            workflow->packets_captured,
                            reader_thread->array_index,
-                           nDPId_options.collector_address,
+                           get_cmdarg(&nDPId_options.collector_address),
                            strerror(saved_errno));
                     reader_thread->collector_sock_last_errno = saved_errno;
                     break;
@@ -4476,7 +4488,7 @@ static void * processing_thread(void * const ndpi_thread_arg)
         logger(1,
                "Thread %zu: Could not connect to nDPIsrvd Collector at %s, will try again later. Error: %s",
                reader_thread->array_index,
-               nDPId_options.collector_address,
+               get_cmdarg(&nDPId_options.collector_address),
                (reader_thread->collector_sock_last_errno != 0 ? strerror(reader_thread->collector_sock_last_errno)
                                                               : "Internal Error."));
     }
@@ -4516,30 +4528,33 @@ static int start_reader_threads(void)
         return 1;
     }
 
-    if (daemonize_with_pidfile(nDPId_options.pidfile) != 0)
+    if (daemonize_with_pidfile(get_cmdarg(&nDPId_options.pidfile)) != 0)
     {
         return 1;
     }
 
     errno = 0;
-    if (nDPId_options.user != NULL &&
-        change_user_group(nDPId_options.user, nDPId_options.group, nDPId_options.pidfile, NULL, NULL) != 0 &&
+    if (change_user_group(get_cmdarg(&nDPId_options.user),
+                          get_cmdarg(&nDPId_options.group),
+                          get_cmdarg(&nDPId_options.pidfile),
+                          NULL,
+                          NULL) != 0 &&
         errno != EPERM)
     {
         if (errno != 0)
         {
             logger(1,
                    "Change user/group to %s/%s failed: %s",
-                   (nDPId_options.user != NULL ? nDPId_options.user : "-"),
-                   (nDPId_options.group != NULL ? nDPId_options.group : "-"),
+                   get_cmdarg(&nDPId_options.user),
+                   get_cmdarg(&nDPId_options.group),
                    strerror(errno));
         }
         else
         {
             logger(1,
                    "Change user/group to %s/%s failed.",
-                   (nDPId_options.user != NULL ? nDPId_options.user : "-"),
-                   (nDPId_options.group != NULL ? nDPId_options.group : "-"));
+                   get_cmdarg(&nDPId_options.user),
+                   get_cmdarg(&nDPId_options.group));
         }
         return 1;
     }
@@ -4816,10 +4831,8 @@ static void print_subopt_usage(void)
     } while (1);
 }
 
-static int nDPId_parse_options(int argc, char ** argv)
+static void print_usage(char const * const arg0)
 {
-    int opt;
-
     static char const usage[] =
         "Usage: %s "
         "[-i pcap-file/interface] [-I] [-E] [-B bpf-filter]\n"
@@ -4844,9 +4857,12 @@ static int nDPId_parse_options(int argc, char ** argv)
         "\t-l\tLog all messages to stderr.\n"
         "\t-L\tLog all messages to a log file.\n"
         "\t-c\tPath to a UNIX socket (nDPIsrvd Collector) or a custom UDP endpoint.\n"
-        "\t-d\tForking into background after initialization.\n"
+        "\t  \tDefault: %s\n"
+        "\t-d\tFork into background after initialization.\n"
         "\t-p\tWrite the daemon PID to the given file path.\n"
+        "\t  \tDefault: %s\n"
         "\t-u\tChange UID to the numeric value of user.\n"
+        "\t  \tDefault: %s\n"
         "\t-g\tChange GID to the numeric value of group.\n"
         "\t-P\tLoad a nDPI custom protocols file.\n"
         "\t-C\tLoad a nDPI custom categories file.\n"
@@ -4867,13 +4883,24 @@ static int nDPId_parse_options(int argc, char ** argv)
         "\t-o\t(Carefully) Tune some daemon options. See subopts below.\n"
         "\t-v\tversion\n"
         "\t-h\tthis\n\n";
+    fprintf(stderr,
+            usage,
+            arg0,
+            get_cmdarg(&nDPId_options.collector_address),
+            get_cmdarg(&nDPId_options.pidfile),
+            get_cmdarg(&nDPId_options.user));
+}
+
+static int nDPId_parse_options(int argc, char ** argv)
+{
+    int opt;
 
     while ((opt = getopt(argc, argv, "i:IEB:lL:c:dp:u:g:P:C:J:S:a:Azo:vh")) != -1)
     {
         switch (opt)
         {
             case 'i':
-                nDPId_options.pcap_file_or_interface = strdup(optarg);
+                set_cmdarg(&nDPId_options.pcap_file_or_interface, optarg);
                 break;
             case 'I':
                 nDPId_options.process_internal_initial_direction = 1;
@@ -4882,7 +4909,7 @@ static int nDPId_parse_options(int argc, char ** argv)
                 nDPId_options.process_external_initial_direction = 1;
                 break;
             case 'B':
-                nDPId_options.bpf_str = strdup(optarg);
+                set_cmdarg(&nDPId_options.bpf_str, optarg);
                 break;
             case 'l':
                 enable_console_logger();
@@ -4894,36 +4921,34 @@ static int nDPId_parse_options(int argc, char ** argv)
                 }
                 break;
             case 'c':
-                strncpy(nDPId_options.collector_address, optarg, sizeof(nDPId_options.collector_address) - 1);
-                nDPId_options.collector_address[sizeof(nDPId_options.collector_address) - 1] = '\0';
+                set_cmdarg(&nDPId_options.collector_address, optarg);
                 break;
             case 'd':
                 daemonize_enable();
                 break;
             case 'p':
-                strncpy(nDPId_options.pidfile, optarg, sizeof(nDPId_options.pidfile) - 1);
-                nDPId_options.pidfile[sizeof(nDPId_options.pidfile) - 1] = '\0';
+                set_cmdarg(&nDPId_options.pidfile, optarg);
                 break;
             case 'u':
-                nDPId_options.user = strdup(optarg);
+                set_cmdarg(&nDPId_options.user, optarg);
                 break;
             case 'g':
-                nDPId_options.group = strdup(optarg);
+                set_cmdarg(&nDPId_options.group, optarg);
                 break;
             case 'P':
-                nDPId_options.custom_protocols_file = strdup(optarg);
+                set_cmdarg(&nDPId_options.custom_protocols_file, optarg);
                 break;
             case 'C':
-                nDPId_options.custom_categories_file = strdup(optarg);
+                set_cmdarg(&nDPId_options.custom_categories_file, optarg);
                 break;
             case 'J':
-                nDPId_options.custom_ja3_file = strdup(optarg);
+                set_cmdarg(&nDPId_options.custom_ja3_file, optarg);
                 break;
             case 'S':
-                nDPId_options.custom_sha1_file = strdup(optarg);
+                set_cmdarg(&nDPId_options.custom_sha1_file, optarg);
                 break;
             case 'a':
-                nDPId_options.instance_alias = strdup(optarg);
+                set_cmdarg(&nDPId_options.instance_alias, optarg);
                 break;
             case 'A':
                 nDPId_options.enable_data_analysis = 1;
@@ -4950,7 +4975,7 @@ static int nDPId_parse_options(int argc, char ** argv)
                     {
                         logger_early(1, "Missing value for `%s'", subopt_token[subopt]);
                         fprintf(stderr, "%s", "\n");
-                        fprintf(stderr, usage, argv[0]);
+                        print_usage(argv[0]);
                         print_subopt_usage();
                         return 1;
                     }
@@ -4958,7 +4983,7 @@ static int nDPId_parse_options(int argc, char ** argv)
                     {
                         logger_early(1, "Invalid subopt: %s", value);
                         fprintf(stderr, "%s", "\n");
-                        fprintf(stderr, usage, argv[0]);
+                        print_usage(argv[0]);
                         print_subopt_usage();
                         return 1;
                     }
@@ -5045,7 +5070,7 @@ static int nDPId_parse_options(int argc, char ** argv)
             case 'h':
             default:
                 fprintf(stderr, "%s\n", get_nDPId_version());
-                fprintf(stderr, usage, argv[0]);
+                print_usage(argv[0]);
                 print_subopt_usage();
                 return 1;
         }
@@ -5055,7 +5080,7 @@ static int nDPId_parse_options(int argc, char ** argv)
     {
         logger_early(1, "%s", "Unexpected argument after options");
         fprintf(stderr, "%s", "\n");
-        fprintf(stderr, usage, argv[0]);
+        print_usage(argv[0]);
         print_subopt_usage();
         return 1;
     }
@@ -5090,12 +5115,12 @@ static int validate_options(void)
         }
     }
 #endif
-    if (nDPIsrvd_setup_address(&collector_address, nDPId_options.collector_address) != 0)
+    if (nDPIsrvd_setup_address(&collector_address, get_cmdarg(&nDPId_options.collector_address)) != 0)
     {
         retval = 1;
-        logger_early(1, "Collector socket invalid address: %s.", nDPId_options.collector_address);
+        logger_early(1, "Collector socket invalid address: %s.", get_cmdarg(&nDPId_options.collector_address));
     }
-    if (nDPId_options.instance_alias == NULL)
+    if (is_cmdarg_set(&nDPId_options.instance_alias) == 0)
     {
         char hname[256];
 
@@ -5107,9 +5132,11 @@ static int validate_options(void)
         }
         else
         {
-            nDPId_options.instance_alias = strdup(hname);
-            logger_early(1, "No instance alias given, using your hostname '%s'", nDPId_options.instance_alias);
-            if (nDPId_options.instance_alias == NULL)
+            set_cmdarg(&nDPId_options.instance_alias, hname);
+            logger_early(1,
+                         "No instance alias given, using your hostname '%s'",
+                         get_cmdarg(&nDPId_options.instance_alias));
+            if (is_cmdarg_set(&nDPId_options.instance_alias) == 0)
             {
                 retval = 1;
             }
@@ -5285,7 +5312,7 @@ int main(int argc, char ** argv)
     }
     free_reader_threads();
 
-    daemonize_shutdown(nDPId_options.pidfile);
+    daemonize_shutdown(get_cmdarg(&nDPId_options.pidfile));
     logger(0, "%s", "Bye.");
     shutdown_logging();
 
