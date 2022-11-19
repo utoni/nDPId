@@ -41,12 +41,15 @@ _______________________   |                                 |   ________________
 
 ```
 where:
+
 * `nDPId` capture traffic, extract traffic data (with libnDPI) and send a JSON-serialized output stream to an already existing UNIX-socket;
 * `nDPIsrvd`:
+
     * create and manage an "incoming" UNIX-socket (ref [1] above), to fetch data from a local `nDPId`;
     * apply a filtering logic to received data to select "flow_event_id" related JSONs;
     * create and manage an "outgoing" UNIX or TCP socket (ref [2] above) to relay matched events
-    to connected clients
+      to connected clients
+
 * `consumers` are common/custom applications being able to receive selected flows/events, via both UNIX-socket or TCP-socket.
 
 
@@ -78,58 +81,62 @@ Technical details about JSON-messages format can be obtained from related `.sche
 
 `nDPId` generates JSON strings whereas each string is assigned to a certain event.
 Those events specify the contents (key-value-pairs) of the JSON string.
-They are divided into four categories, each with a number of events.
+They are divided into four categories, each with a number of subevents.
 
 ## Error Events
 They are 17 distinct events, indicating that layer2 or layer3 packet processing failed or not enough flow memory available:
- 1. Unknown datalink layer packet
- 2. Unknown L3 protocol
- 3. Unsupported datalink layer
- 4. Packet too short
- 5. Unknown packet type
- 6. Packet header invalid
- 7. IP4 packet too short
- 8. Packet smaller than IP4 header:
- 9. nDPI IPv4/L4 payload detection failed
- 10. IP6 packet too short
- 11. Packet smaller than IP6 header
- 12. nDPI IPv6/L4 payload detection failed
- 13. TCP packet smaller than expected
- 14. UDP packet smaller than expected
- 15. Captured packet size is smaller than expected packet size
- 16. Max flows to track reached
- 17. Flow memory allocation failed
+
+1. Unknown datalink layer packet
+2. Unknown L3 protocol
+3. Unsupported datalink layer
+4. Packet too short
+5. Unknown packet type
+6. Packet header invalid
+7. IP4 packet too short
+8. Packet smaller than IP4 header:
+9. nDPI IPv4/L4 payload detection failed
+10. IP6 packet too short
+11. Packet smaller than IP6 header
+12. nDPI IPv6/L4 payload detection failed
+13. TCP packet smaller than expected
+14. UDP packet smaller than expected
+15. Captured packet size is smaller than expected packet size
+16. Max flows to track reached
+17. Flow memory allocation failed
 
 Detailed JSON-schema is available [here](schema/error_event_schema.json)
 
 ## Daemon Events
-They are 4 distinct events indicating startup/shutdown or status events as well as a reconnect event if there was a previous connection failure (collector):
- 1. init: `nDPId` startup
- 2. reconnect: (UNIX) socket connection lost previously and was established again
- 3. shutdown: `nDPId` terminates gracefully
- 4. status: statistics about the daemon itself e.g. memory consumption, zLib compressions (if enabled)
+There are 4 distinct events indicating startup/shutdown or status events as well as a reconnect event if there was a previous connection failure (collector):
+
+1. init: `nDPId` startup
+2. reconnect: (UNIX) socket connection lost previously and was established again
+3. shutdown: `nDPId` terminates gracefully
+4. status: statistics about the daemon itself e.g. memory consumption, zLib compressions (if enabled)
 
 Detailed JSON-schema is available [here](schema/daemon_event_schema.json)
 
 
 ## Packet Events
-They are 2 events containing base64 encoded packet payload either belonging to a flow or not:
- 1. packet: does not belong to any flow
- 2. packet-flow: does belong to a flow e.g. TCP/UDP or ICMP
+There are 2 events containing base64 encoded packet payload either belonging to a flow or not:
+
+1. packet: does not belong to any flow
+2. packet-flow: does belong to a flow e.g. TCP/UDP or ICMP
 
 Detailed JSON-schema is available [here](schema/packet_event_schema.json)
 
 ## Flow Events
-They are 9 distinct events related to a flow:
- 1. new: a new TCP/UDP/ICMP flow seen which will be tracked
- 2. end: a TCP connections terminates
- 3. idle: a flow timed out, because there was no packet on the wire for a certain amount of time
- 4. update: inform nDPIsrvd or other apps about a long-lasting flow, whose detection was finished a long time ago but is still active
- 5. analyse: provide some information about extracted features of a flow (Experimental; disabled per default, enable with `-A`)
- 6. guessed: `libnDPI` was not able to reliable detect a layer7 protocol and falls back to IP/Port based detection
- 7. detected: `libnDPI` sucessfully detected a layer7 protocol
- 8. detection-update: `libnDPI` dissected more layer7 protocol data (after detection already done)
- 9. not-detected: neither detected nor guessed
+There are 9 distinct events related to a flow:
+
+1. new: a new TCP/UDP/ICMP flow seen which will be tracked
+2. end: a TCP connections terminates
+3. idle: a flow timed out, because there was no packet on the wire for a certain amount of time
+4. update: inform nDPIsrvd or other apps about a long-lasting flow, whose detection was finished a long time ago but is still active
+5. analyse: provide some information about extracted features of a flow (Experimental; disabled per default, enable with `-A`)
+6. guessed: `libnDPI` was not able to reliable detect a layer7 protocol and falls back to IP/Port based detection
+7. detected: `libnDPI` sucessfully detected a layer7 protocol
+8. detection-update: `libnDPI` dissected more layer7 protocol data (after detection already done)
+9. not-detected: neither detected nor guessed
 
 Detailed JSON-schema is available [here](schema/flow_event_schema.json). Also, a graphical representation of *Flow Events* timeline is available [here](schema/flow_events_diagram.png). 
 
