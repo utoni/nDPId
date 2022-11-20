@@ -1452,8 +1452,8 @@ static int mainloop(int epollfd)
         }
     }
 
-    close(signalfd);
     free_remotes(epollfd);
+    close(signalfd);
 
     return 0;
 }

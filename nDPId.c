@@ -2221,7 +2221,7 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
                      (int)json_str_len,
                      json_str);
 
-    if (s_ret < 0 || s_ret == (int)sizeof(newline_json_str))
+    if (s_ret < 0 || s_ret >= (int)sizeof(newline_json_str))
     {
         logger(1,
                "[%8llu, %zu] JSON buffer prepare failed: snprintf returned %d, buffer size %zu",
@@ -2229,6 +2229,15 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
                reader_thread->array_index,
                s_ret,
                sizeof(newline_json_str));
+        if (s_ret >= (int)sizeof(newline_json_str))
+        {
+            logger(1,
+                   "[%8llu, %zu] JSON string: %.*s...",
+                   workflow->packets_captured,
+                   reader_thread->array_index,
+                   ndpi_min(512, NETWORK_BUFFER_MAX_SIZE),
+                   newline_json_str);
+        }
         return;
     }
 
