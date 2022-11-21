@@ -29,15 +29,19 @@ jobs:
         include:
           - compiler: "default-cc"
             os: "ubuntu-latest"
+            sanitizer: "-DENABLE_SANITIZER=ON"
           - compiler: "clang-12"
             os: "ubuntu-latest"
+            sanitizer: "-DENABLE_SANITIZER_THREAD=ON"
           - compiler: "gcc-10"
             os: "ubuntu-latest"
+            sanitizer: "-DENABLE_SANITIZER=ON"
           - compiler: "gcc-7"
-            os: "ubuntu-latest"
+            os: "ubuntu-18.04"
+            sanitizer: "-DENABLE_SANITIZER=ON"
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - name: Install Ubuntu Prerequisites
@@ -62,7 +66,7 @@ jobs:
       - name: Configure nDPId
         run: |
           mkdir build && cd build
-          cmake .. -DENABLE_SYSTEMD=ON -DENABLE_COVERAGE=ON -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DENABLE_SANITIZER=ON ${{ matrix.ndpid_zlib }} ${{ matrix.ndpid_gcrypt }}
+          cmake .. -DENABLE_SYSTEMD=ON -DENABLE_COVERAGE=ON -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON ${{ matrix.sanitizer }} ${{ matrix.ndpid_zlib }} ${{ matrix.ndpid_gcrypt }}
       - name: Build nDPId
         run: |
           make -C build all VERBOSE=1

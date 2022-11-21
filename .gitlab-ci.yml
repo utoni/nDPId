@@ -9,7 +9,7 @@ before_script:
   - >
       apt-get install -y -qq \
         coreutils sudo \
-        build-essential make cmake binutils gcc autoconf automake \
+        build-essential make cmake binutils gcc clang autoconf automake \
         libtool pkg-config git \
         libpcap-dev libgpg-error-dev libjson-c-dev zlib1g-dev \
         netcat-openbsd python3 python3-jsonschema tree lcov iproute2
@@ -24,6 +24,14 @@ build_and_test:
     - PY_VAL=$(cat dependencies/nDPIsrvd.py | sed -n 's/^NETWORK_BUFFER_MAX_SIZE = \([0-9]\+\).*$/\1/gp')
     - test ${C_VAL} = ${PY_VAL}
     # static linked build
+    - mkdir build-clang-tsan
+    - cd build-clang-tsan
+    - env CMAKE_C_FLAGS='-Werror' CMAKE_C_COMPILER='clang' cmake .. -DBUILD_EXAMPLES=OFF -DBUILD_NDPI=ON -DENABLE_SANITIZER_THREAD=ON -DENABLE_ZLIB=ON
+    - make libnDPI
+    - tree libnDPI
+    - make install VERBOSE=1 DESTDIR="$(realpath ./_install)"
+    - ../test/run_tests.sh ../libnDPI ./_install/usr/local/bin/nDPId-test
+    - cd ..
     - mkdir build-cmake-submodule
     - cd build-cmake-submodule
     - env CMAKE_C_FLAGS='-Werror' cmake .. -DENABLE_SYSTEMD=ON -DENABLE_COVERAGE=ON -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DENABLE_SANITIZER=ON -DENABLE_ZLIB=ON
