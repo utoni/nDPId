@@ -3,6 +3,7 @@
 set -e
 
 LINE_SPACES=${LINE_SPACES:-48}
+STRACE_EXEC="${STRACE_EXEC}"
 MYDIR="$(realpath "$(dirname ${0})")"
 nDPId_test_EXEC="$(realpath "${2:-"${MYDIR}/../nDPId-test"}")"
 NETCAT_EXEC="$(which nc) -q 0 -l 127.0.0.1 9000"
@@ -111,7 +112,12 @@ for pcap_file in *.pcap *.pcapng *.cap; do
 
     printf "%-${LINE_SPACES}s\t" "${pcap_file}"
 
-    ${nDPId_test_EXEC} "${pcap_file}" \
+    if [ ! -z "${STRACE_EXEC}" ]; then
+        STRACE_CMD="${STRACE_EXEC} -f -e decode-fds=path,socket,dev,pidfd -s 1024 -o /tmp/nDPId-test-stderr/${pcap_file}.strace.out"
+    else
+        STRACE_CMD=""
+    fi
+    ${STRACE_CMD} ${nDPId_test_EXEC} "${pcap_file}" \
         >"/tmp/nDPId-test-stdout/${pcap_file}.out.new" \
         2>>"/tmp/nDPId-test-stderr/${pcap_file}.out"
     nDPId_test_RETVAL=$?

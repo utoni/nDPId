@@ -3,7 +3,8 @@
 
 # Disclaimer
 
-Please protect the privacy of others.
+Please respect&protect the privacy of others.
+
 The purpose of this software is not to spy on others, but to detect network anomalies and malicious traffic.
 
 # Abstract
@@ -46,7 +47,7 @@ where:
 * `nDPIsrvd`:
 
     * create and manage an "incoming" UNIX-socket (ref [1] above), to fetch data from a local `nDPId`;
-    * apply a filtering logic to received data to select "flow_event_id" related JSONs;
+    * apply a buffering logic to received data;
     * create and manage an "outgoing" UNIX or TCP socket (ref [2] above) to relay matched events
       to connected clients
 
