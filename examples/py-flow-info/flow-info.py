@@ -312,15 +312,35 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
 
     if 'ndpi' in json_dict:
         if 'proto' in json_dict['ndpi']:
+            if args.ignore_protocol is not None:
+                for proto in args.ignore_protocol:
+                    if json_dict['ndpi']['proto'].lower().startswith(proto.lower()) is True:
+                        stats.printStatus()
+                        return True
             ndpi_proto_categ_breed += '[' + str(json_dict['ndpi']['proto']) + ']'
 
         if 'proto_by_ip' in json_dict['ndpi']:
+            if args.ignore_ip_protocol is not None:
+                for proto in args.ignore_ip_protocol:
+                    if json_dict['ndpi']['proto_by_ip'].lower().startswith(proto.lower()) is True:
+                        stats.printStatus()
+                        return True
             ndpi_proto_categ_breed += '[' + str(json_dict['ndpi']['proto_by_ip']) + ']'
 
         if 'category' in json_dict['ndpi']:
+            if args.ignore_category is not None:
+                for cat in args.ignore_category:
+                    if json_dict['ndpi']['category'].lower().startswith(cat.lower()) is True:
+                        stats.printStatus()
+                        return True
             ndpi_proto_categ_breed += '[' + str(json_dict['ndpi']['category']) + ']'
 
         if 'breed' in json_dict['ndpi']:
+            if args.ignore_breed is not None:
+                for breed in args.ignore_breed:
+                    if json_dict['ndpi']['breed'].lower().startswith(breed.lower()) is True:
+                        stats.printStatus()
+                        return True
             ndpi_proto_categ_breed += '[' + str(json_dict['ndpi']['breed']) + ']'
 
         if 'flow_risk' in json_dict['ndpi']:
@@ -425,8 +445,14 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
                 line_suffix += ']'
         flow_event_name += '{}{:>16}{}'.format(flow_active_color, json_dict['flow_event_name'], TermColor.END)
 
-    if args.print_hostname is True and 'ndpi' in json_dict and 'hostname' in json_dict['ndpi']:
-        line_suffix += '[{}]'.format(json_dict['ndpi']['hostname'])
+    if 'ndpi' in json_dict and 'hostname' in json_dict['ndpi']:
+        if args.ignore_hostname is not None:
+            for hostname in args.ignore_hostname:
+                if json_dict['ndpi']['hostname'].lower().endswith(hostname.lower()) is True:
+                    stats.printStatus()
+                    return True
+        if args.print_hostname is True:
+            line_suffix += '[{}]'.format(json_dict['ndpi']['hostname'])
 
     if json_dict['l3_proto'] == 'ip4':
         print('{}{}{}{}{}: [{:.>6}] [{}][{:.>5}] [{:.>15}]{} -> [{:.>15}]{} {}{}' \
@@ -482,11 +508,16 @@ if __name__ == '__main__':
     argparser.add_argument('--idle',       action='store_true', default=False, help='Print only idle flow events.')
     argparser.add_argument('--update',     action='store_true', default=False, help='Print only update flow events.')
     argparser.add_argument('--analyse',    action='store_true', default=False, help='Print only analyse flow events.')
-    argparser.add_argument('--detection',  action='store_true', default=False, help='Print only detected/detection-update flow events.')
+    argparser.add_argument('--detection',  action='store_true', default=False, help='Print only detected/guessed/not-detected flow events.')
     argparser.add_argument('--ipwhois',    action='store_true', default=False, help='Use Python-IPWhois to print additional location information.')
     argparser.add_argument('--print-hostname', action='store_true', default=False, help='Print detected hostnames if available.')
     argparser.add_argument('--print-analyse-results', action='store_true', default=False,
                            help='Print detailed results of analyse events.')
+    argparser.add_argument('--ignore-protocol', action='append', help='Ignore printing lines with a certain protocol.')
+    argparser.add_argument('--ignore-ip-protocol', action='append', help='Ignore printing lines with a certain IP protocol.')
+    argparser.add_argument('--ignore-category', action='append', help='Ignore printing lines with a certain category.')
+    argparser.add_argument('--ignore-breed', action='append', help='Ignore printing lines with a certain breed.')
+    argparser.add_argument('--ignore-hostname', action='append', help='Ignore printing lines with a certain hostname.')
     args = argparser.parse_args()
 
     if args.no_color is True:
@@ -495,6 +526,11 @@ if __name__ == '__main__':
     if args.ipwhois is True:
         import dns, ipwhois
         whois_db = dict()
+
+    if args.detection is True:
+        args.detected = True
+        args.guessed = True
+        args.not_detected = True
 
     address = nDPIsrvd.validateAddress(args)
 
