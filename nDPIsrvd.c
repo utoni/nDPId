@@ -1185,8 +1185,9 @@ static int handle_collector_protocol(int epollfd, struct remote_desc * const cur
     {
         logger_nDPIsrvd(current,
                         "BUG: Collector connection",
-                        "invalid JSON string: %.*s",
-                        (int)current->event_collector_un.json_bytes,
+                        "invalid JSON string: %.*s...",
+                        (int)current->event_collector_un.json_bytes > 512 ? 512
+                                                                          : (int)current->event_collector_un.json_bytes,
                         json_read_buffer->buf.ptr.text);
         disconnect_client(epollfd, current);
         return 1;

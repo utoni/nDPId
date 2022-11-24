@@ -62,6 +62,10 @@
 #error "Invalid value for nDPId_FLOW_SCAN_INTERVAL"
 #endif
 
+#if (nDPId_PACKETS_PLEN_MAX * 3) /* base64 encoded! */ > NETWORK_BUFFER_MAX_SIZE
+#error "Invalid value for nDPId_PACKETS_PLEN_MAX"
+#endif
+
 /* MIPS* does not support Compare and Swap. Use traditional locking as fallback. */
 #if !defined(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4) || !defined(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_8)
 #define MT_VALUE(name, type)                                                                                           \
@@ -2402,7 +2406,7 @@ static void base64encode(uint8_t const * const data_buf,
          * if we have one byte available, then its encoding is spread
          * out over two characters
          */
-        if (resultIndex + 1 >= *resultSize - padCount - 1)
+        if (resultIndex + 2 >= *resultSize - padCount - 1)
         {
             break;
         }
@@ -2415,7 +2419,7 @@ static void base64encode(uint8_t const * const data_buf,
          */
         if ((x + 1) < dataLength)
         {
-            if (resultIndex >= *resultSize - padCount - 1)
+            if (resultIndex + 1 >= *resultSize - padCount - 1)
             {
                 break;
             }
@@ -2428,7 +2432,7 @@ static void base64encode(uint8_t const * const data_buf,
          */
         if ((x + 2) < dataLength)
         {
-            if (resultIndex >= *resultSize - padCount - 1)
+            if (resultIndex + 1 >= *resultSize - padCount - 1)
             {
                 break;
             }
@@ -2599,28 +2603,16 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_l4_len", pkt_l4_len);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "thread_ts_usec", workflow->last_thread_time);
 
-    size_t const serializer_buffer_len = ndpi_serializer_get_buffer_len(&workflow->ndpi_serializer);
-    size_t const required_len = NETWORK_BUFFER_MAX_SIZE - nDPIsrvd_STRLEN_SZ("pkt") - sizeof(':') - sizeof('"') * 4;
-    if (serializer_buffer_len < required_len)
-    {
-        char base64_data[required_len - serializer_buffer_len];
-        size_t base64_data_len = sizeof(base64_data);
-        base64encode(packet, header->caplen, base64_data, &base64_data_len);
+    char base64_data[nDPId_PACKETS_PLEN_MAX];
+    size_t base64_data_len = sizeof(base64_data);
+    base64encode(packet, header->caplen, base64_data, &base64_data_len);
 
-        if (base64_data_len > 0)
-        {
-            if (ndpi_serialize_string_binary(&workflow->ndpi_serializer, "pkt", base64_data, base64_data_len) != 0)
-            {
-                logger(1,
-                       "[%8llu, %zu] JSON serializing base64 packet buffer failed",
-                       reader_thread->workflow->packets_captured,
-                       reader_thread->array_index);
-            }
-        }
-        else
+    if (base64_data_len > 0)
+    {
+        if (ndpi_serialize_string_binary(&workflow->ndpi_serializer, "pkt", base64_data, base64_data_len) != 0)
         {
             logger(1,
-                   "[%8llu, %zu] Base64 encoding failed.",
+                   "[%8llu, %zu] JSON serializing base64 packet buffer failed",
                    reader_thread->workflow->packets_captured,
                    reader_thread->array_index);
         }
@@ -2628,12 +2620,9 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
     else
     {
         logger(1,
-               "[%8llu, %zu] Could not append base64 encoded raw packet data to the serializer (%zu bytes occupied), "
-               "because the network buffer (%zu bytes) is too small. Consider increasing NETWORK_BUFFER_MAX_SIZEK.",
+               "[%8llu, %zu] Base64 encoding failed.",
                reader_thread->workflow->packets_captured,
-               reader_thread->array_index,
-               serializer_buffer_len,
-               required_len);
+               reader_thread->array_index);
     }
     serialize_and_send(reader_thread);
 }
