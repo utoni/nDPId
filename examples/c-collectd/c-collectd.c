@@ -484,11 +484,11 @@ static void print_collectd_exec_output(void)
         printf(COLLECTD_PUTVAL_N_FORMAT(), COLLECTD_PUTVAL_N2(gauge_name, error_count[i]));
     }
 
-    for (i = 0; i < NDPI_MAX_RISK; ++i)
+    for (i = 1; i < NDPI_MAX_RISK; ++i)
     {
         char gauge_name[BUFSIZ];
-        snprintf(gauge_name, sizeof(gauge_name), "flow_risk_%zu_count", i);
-        printf(COLLECTD_PUTVAL_N_FORMAT(), COLLECTD_PUTVAL_N2(gauge_name, flow_risk_count[i]));
+        snprintf(gauge_name, sizeof(gauge_name), "flow_risk_%zu_count", i - 1);
+        printf(COLLECTD_PUTVAL_N_FORMAT(), COLLECTD_PUTVAL_N2(gauge_name, flow_risk_count[i - 1]));
     }
 
     memset(&collectd_statistics, 0, sizeof(collectd_statistics));
@@ -723,16 +723,17 @@ static enum nDPIsrvd_callback_return collectd_json_callback(struct nDPIsrvd_sock
                 {
                     if ((flow_user_data->detected_risks & (1 << numeric_risk_value)) == 0)
                     {
-                        if (numeric_risk_value < NDPI_MAX_RISK)
+                        if (numeric_risk_value < NDPI_MAX_RISK && numeric_risk_value > 0)
                         {
-                            collectd_statistics.flow_risk_count[numeric_risk_value]++;
+                            collectd_statistics.flow_risk_count[numeric_risk_value - 1]++;
                         }
                         else
                         {
                             collectd_statistics.flow_risk_unknown_count++;
                         }
+
+                        flow_user_data->detected_risks |= (1 << (numeric_risk_value - 1));
                     }
-                    flow_user_data->detected_risks |= (1 << numeric_risk_value);
                 }
             }
         }
@@ -749,6 +750,7 @@ static enum nDPIsrvd_callback_return collectd_json_callback(struct nDPIsrvd_sock
 
 int main(int argc, char ** argv)
 {
+    enum nDPIsrvd_connect_return connect_ret;
     int retval = 1, epollfd = -1;
 
     openlog("nDPIsrvd-collectd", LOG_CONS, LOG_DAEMON);
@@ -785,7 +787,7 @@ int main(int argc, char ** argv)
             strerror(errno));
     }
 
-    enum nDPIsrvd_connect_return connect_ret = nDPIsrvd_connect(sock);
+    connect_ret = nDPIsrvd_connect(sock);
     if (connect_ret != CONNECT_OK)
     {
         LOG(LOG_DAEMON | LOG_ERR, "nDPIsrvd socket connect to %s failed!", serv_optarg);
@@ -837,6 +839,11 @@ int main(int argc, char ** argv)
 
     LOG(LOG_DAEMON | LOG_NOTICE, "%s", "Initialization succeeded.");
     retval = mainloop(epollfd, sock);
+
+    if (getenv("COLLECTD_INTERVAL") == NULL)
+    {
+        print_collectd_exec_output();
+    }
 
 failure:
     nDPIsrvd_socket_free(&sock);

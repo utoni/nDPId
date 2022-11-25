@@ -274,7 +274,7 @@ rrdtool_graph Events 'Amouunt' "${OUTDIR}/events" \
 	DEF:shutdown=${RRDDIR}/gauge-shutdown_count.rrd:value:AVERAGE \
 	DEF:status=${RRDDIR}/gauge-status_count.rrd:value:AVERAGE \
 	DEF:packet=${RRDDIR}/gauge-packet_count.rrd:value:AVERAGE \
-	DEF:packet_flow=${RRDDIR}/gauge-init_count.rrd:value:AVERAGE \
+	DEF:packet_flow=${RRDDIR}/gauge-packet_flow_count.rrd:value:AVERAGE \
 	DEF:new=${RRDDIR}/gauge-flow_new_count.rrd:value:AVERAGE \
 	DEF:end=${RRDDIR}/gauge-flow_end_count.rrd:value:AVERAGE \
 	DEF:idle=${RRDDIR}/gauge-flow_idle_count.rrd:value:AVERAGE \

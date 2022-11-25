@@ -11,6 +11,7 @@ JSON_VALIDATOR="$(realpath "${3:-"${MYDIR}/../examples/py-schema-validation/py-s
 SEMN_VALIDATOR="$(realpath "${4:-"${MYDIR}/../examples/py-semantic-validation/py-semantic-validation.py"}")"
 FLOW_INFO="$(realpath "${5:-"${MYDIR}/../examples/py-flow-info/flow-info.py"}")"
 NDPISRVD_ANALYSED="$(realpath "${6:-"$(dirname ${nDPId_test_EXEC})/nDPIsrvd-analysed"}")"
+NDPISRVD_COLLECTD="$(realpath "${6:-"$(dirname ${nDPId_test_EXEC})/nDPIsrvd-collectd"}")"
 IS_GIT=$(test -d "${MYDIR}/../.git" -o -f "${MYDIR}/../.git" && printf '1' || printf '0')
 
 function usage()
@@ -24,6 +25,7 @@ usage: ${0} [path-to-nDPI-source-root] \\
     path-to-nDPId-SEMANTIC-validator default to ${SEMN_VALIDATOR}
     path-to-nDPId-flow-info defaults to         ${FLOW_INFO}
     path-to-nDPIsrvd-analysed defaults to       ${NDPISRVD_ANALYSED}
+    path-to-nDPIsrvd-collectd defaults to       ${NDPISRVD_COLLECTD}
 EOF
 return 0
 }
@@ -292,6 +294,58 @@ if [ -x "${NDPISRVD_ANALYSED}" ]; then
     done
 else
     printf '%s\n' "Not found or not executable: ${NDPISRVD_ANALYSED}"
+fi
+
+cat <<EOF
+
+------------------------------
+-- Collectd Statistics DIFF --
+------------------------------
+
+EOF
+
+if [ -x "${NDPISRVD_COLLECTD}" ]; then
+    cd "${MYDIR}"
+    for out_file in results/*.out; do
+        result_file="$(basename ${out_file})"
+        printf "%-${LINE_SPACES}s\t" "${result_file}"
+        cat "${out_file}" | grep -vE '^~~.*$' | ${NETCAT_EXEC} &
+        nc_pid=$!
+        while ! ss -4 -t -n -l | grep -q '127.0.0.1:9000'; do sleep 0.5; printf '%s\n' 'Waiting until socket 127.0.0.1:9000 is available..' >>"/tmp/nDPId-test-stderr/${result_file}"; done
+        ${NDPISRVD_COLLECTD} -s '127.0.0.1:9000' 2>>"/tmp/nDPId-test-stderr/${result_file}" 1>"/tmp/nDPId-test-stdout/${result_file}.stats.new"
+        kill -SIGTERM ${nc_pid} 2>/dev/null
+        wait ${nc_pid} 2>/dev/null
+        if [ ! -r "${MYDIR}/results/collectd-stats/${result_file}" ]; then
+            printf '%s\n' '[NEW]'
+            test ${IS_GIT} -eq 1 && \
+                mv -v "/tmp/nDPId-test-stdout/${result_file}.stats.new" \
+                      "${MYDIR}/results/collectd-stats/${result_file}"
+            TESTS_FAILED=$((TESTS_FAILED + 1))
+        elif diff -u0 "${MYDIR}/results/collectd-stats/${result_file}" \
+                      "/tmp/nDPId-test-stdout/${result_file}.stats.new" >/dev/null; then
+            printf '%s\n' '[OK]'
+            rm -f "/tmp/nDPId-test-stdout/${result_file}.stats.new"
+        else
+            printf '%s\n' '[DIFF]'
+            diff -u0 "${MYDIR}/results/collectd-stats/${result_file}" \
+                     "/tmp/nDPId-test-stdout/${result_file}.stats.new"
+            test ${IS_GIT} -eq 1 && \
+                mv -v "/tmp/nDPId-test-stdout/${result_file}.stats.new" \
+                      "${MYDIR}/results/collectd-stats/${result_file}"
+            cat "/tmp/nDPId-test-stderr/${result_file}"
+            TESTS_FAILED=$((TESTS_FAILED + 1))
+        fi
+    done
+
+    for out_file in ${MYDIR}/results/collectd-stats/*.out; do
+        result_file="$(basename ${out_file})"
+        if [ ! -r "${MYDIR}/results/${result_file}" ]; then
+            printf "%-${LINE_SPACES}s\t%s\n" "${result_file}" "[MISSING]"
+            TESTS_FAILED=$((TESTS_FAILED + 1))
+        fi
+    done
+else
+    printf '%s\n' "Not found or not executable: ${NDPISRVD_COLLECTD}"
 fi
 
 cat <<EOF
