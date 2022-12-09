@@ -86,7 +86,7 @@ add_custom_command(
 add_custom_target(daemon)
 add_custom_command(
     TARGET  daemon
-    COMMAND env nDPIsrvd_ARGS='-C 1024' "${CMAKE_SOURCE_DIR}/scripts/daemon.sh" "$<TARGET_FILE:nDPId>" "$<TARGET_FILE:nDPIsrvd>"
+    COMMAND "${CMAKE_SOURCE_DIR}/scripts/daemon.sh" "$<TARGET_FILE:nDPId>" "$<TARGET_FILE:nDPIsrvd>"
     DEPENDS nDPId nDPIsrvd
 )
 
@@ -172,7 +172,8 @@ set(NDPID_DEFS -DJSMN_STATIC=1 -DJSMN_STRICT=1 -DJSMN_PARENT_LINKS=1)
 set(NDPID_DEPS_INC "${CMAKE_SOURCE_DIR}"
                    "${CMAKE_SOURCE_DIR}/dependencies"
                    "${CMAKE_SOURCE_DIR}/dependencies/jsmn"
-                   "${CMAKE_SOURCE_DIR}/dependencies/uthash/src")
+                   "${CMAKE_SOURCE_DIR}/dependencies/uthash/src"
+		   )
 if(ENABLE_MEMORY_PROFILING)
     message(WARNING "ENABLE_MEMORY_PROFILING should not be used in production environments.")
     add_definitions("-DENABLE_MEMORY_PROFILING=1"
@@ -260,7 +261,7 @@ else()
     set(DEFAULT_NDPI_INCLUDE ${NDPI_INCLUDE_DIRS})
 endif()
 
-find_package(PCAP "1.8.1" REQUIRED)
+find_package(PCAP "1.6.0" REQUIRED)
 
 target_compile_options(nDPId PRIVATE "-pthread")
 target_compile_definitions(nDPId PRIVATE -D_GNU_SOURCE=1 -DGIT_VERSION=\"${GIT_VERSION}\" ${NDPID_DEFS} ${ZLIB_DEFS})
@@ -316,11 +317,20 @@ if(BUILD_EXAMPLES)
     target_compile_definitions(nDPIsrvd-simple PRIVATE ${NDPID_DEFS})
     target_include_directories(nDPIsrvd-simple PRIVATE ${NDPID_DEPS_INC})
 
+
+    pkg_check_modules(GLIB REQUIRED glib-2.0)
+    pkg_check_modules(RdKafka REQUIRED rdkafka)
+    add_executable(nDPIsrvd-kafka examples/c-kafka/c-kafka.c)
+    target_compile_definitions(nDPIsrvd-kafka PRIVATE ${NDPID_DEFS})
+    target_include_directories(nDPIsrvd-kafka PRIVATE
+                               "${GLIB_INCLUDE_DIRS}" "${RdKafka_INCLUDE_DIR}" ${NDPID_DEPS_INC})
+    target_link_libraries(nDPIsrvd-kafka "${GLIB_LIBRARIES}" rdkafka)
+
     if(ENABLE_COVERAGE)
-        add_dependencies(coverage nDPIsrvd-analysed nDPIsrvd-collectd nDPIsrvd-captured nDPIsrvd-json-dump nDPIsrvd-simple)
+        add_dependencies(coverage nDPIsrvd-analysed nDPIsrvd-collectd nDPIsrvd-captured nDPIsrvd-json-dump nDPIsrvd-simple nDPIsrvd-kafka)
     endif()
 
-    install(TARGETS nDPIsrvd-analysed nDPIsrvd-collectd nDPIsrvd-captured nDPIsrvd-json-dump nDPIsrvd-simple DESTINATION bin)
+    install(TARGETS nDPIsrvd-analysed nDPIsrvd-collectd nDPIsrvd-captured nDPIsrvd-json-dump nDPIsrvd-simple nDPIsrvd-kafka DESTINATION bin)
     install(FILES examples/c-collectd/plugin_nDPIsrvd.conf examples/c-collectd/rrdgraph.sh DESTINATION share/nDPId/nDPIsrvd-collectd)
     install(DIRECTORY examples/c-collectd/www DESTINATION share/nDPId/nDPIsrvd-collectd)
 endif()
