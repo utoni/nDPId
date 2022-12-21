@@ -184,18 +184,18 @@ if __name__ == '__main__':
                            help='Save the trained model to a file.')
     argparser.add_argument('--csv', action='store',
                            help='Input CSV file generated with nDPIsrvd-analysed.')
-    argparser.add_argument('--proto-class', action='append', required=True,
+    argparser.add_argument('--proto-class', action='append', required=False,
                            help='nDPId protocol class of interest used for training and prediction. ' +
                                 'Can be specified multiple times. Example: tls.youtube')
     argparser.add_argument('--generate-feature-importance', action='store_true',
                            help='Generates the permutated feature importance with matplotlib.')
-    argparser.add_argument('--enable-iat', action='store_true', default=False,
+    argparser.add_argument('--enable-iat', action='store_true', default=None,
                            help='Enable packet (I)nter (A)rrival (T)ime for learning and prediction.')
-    argparser.add_argument('--enable-pktlen', action='store_true', default=False,
+    argparser.add_argument('--enable-pktlen', action='store_true', default=None,
                            help='Enable layer 4 packet lengths for learning and prediction.')
-    argparser.add_argument('--disable-dirs', action='store_true', default=False,
+    argparser.add_argument('--disable-dirs', action='store_true', default=None,
                            help='Disable packet directions for learning and prediction.')
-    argparser.add_argument('--disable-bins', action='store_true', default=False,
+    argparser.add_argument('--disable-bins', action='store_true', default=None,
                            help='Disable packet length distribution for learning and prediction.')
     argparser.add_argument('--disable-colors', action='store_true', default=False,
                            help='Disable any coloring.')
@@ -224,20 +224,44 @@ if __name__ == '__main__':
         sys.stderr.write('{}: `--generate-feature-importance` requires `--csv`.\n'.format(sys.argv[0]))
         sys.exit(1)
 
-    ENABLE_FEATURE_IAT    = args.enable_iat
-    ENABLE_FEATURE_PKTLEN = args.enable_pktlen
-    ENABLE_FEATURE_DIRS   = args.disable_dirs is False
-    ENABLE_FEATURE_BINS   = args.disable_bins is False
+    if args.proto_class is None or len(args.proto_class) == 0:
+        if args.csv is None and args.load_model is None:
+            sys.stderr.write('{}: `--proto-class` missing, no useful classification can be performed.\n'.format(sys.argv[0]))
+    else:
+        if args.load_model is not None:
+            sys.stderr.write('{}: `--proto-class` set, but you want to load an existing model.\n'.format(sys.argv[0]))
+            sys.exit(1)
+
+    if args.load_model is not None:
+        if args.enable_iat is not None:
+            sys.stderr.write('{}: `--enable-iat` set, but you want to load an existing model.\n'.format(sys.argv[0]))
+            sys.exit(1)
+        if args.enable_pktlen is not None:
+            sys.stderr.write('{}: `--enable-pktlen` set, but you want to load an existing model.\n'.format(sys.argv[0]))
+            sys.exit(1)
+        if args.disable_dirs is not None:
+            sys.stderr.write('{}: `--disable-dirs` set, but you want to load an existing model.\n'.format(sys.argv[0]))
+            sys.exit(1)
+        if args.disable_bins is not None:
+            sys.stderr.write('{}: `--disable-bins` set, but you want to load an existing model.\n'.format(sys.argv[0]))
+            sys.exit(1)
+
+    ENABLE_FEATURE_IAT    = args.enable_iat if args.enable_iat is not None else ENABLE_FEATURE_IAT
+    ENABLE_FEATURE_PKTLEN = args.enable_pktlen if args.enable_pktlen is not None else ENABLE_FEATURE_PKTLEN
+    ENABLE_FEATURE_DIRS   = args.disable_dirs if args.disable_dirs is not None else ENABLE_FEATURE_DIRS
+    ENABLE_FEATURE_BINS   = args.disable_bins if args.disable_bins is not None else ENABLE_FEATURE_BINS
 
     numpy.set_printoptions(formatter={'float_kind': "{:.1f}".format}, sign=' ')
     numpy.seterr(divide = 'ignore')
 
-    for i in range(len(args.proto_class)):
-        args.proto_class[i] = args.proto_class[i].lower()
+    if args.proto_class is not None:
+        for i in range(len(args.proto_class)):
+            args.proto_class[i] = args.proto_class[i].lower()
 
     if args.load_model is not None:
         sys.stderr.write('Loading model from {}\n'.format(args.load_model))
-        model = joblib.load(args.load_model)
+        model, options = joblib.load(args.load_model)
+        ENABLE_FEATURE_IAT, ENABLE_FEATURE_PKTLEN, ENABLE_FEATURE_DIRS, ENABLE_FEATURE_BINS, args.proto_class = options
 
     if args.csv is not None:
         sys.stderr.write('Learning via CSV..\n')
@@ -269,6 +293,7 @@ if __name__ == '__main__':
                                                                 min_samples_leaf = args.sklearn_min_samples_leaf,
                                                                 max_features     = args.sklearn_max_features
                                                                )
+                options = (ENABLE_FEATURE_IAT, ENABLE_FEATURE_PKTLEN, ENABLE_FEATURE_DIRS, ENABLE_FEATURE_BINS, args.proto_class)
             sys.stderr.write('Training model..\n')
             model.fit(X, y)
 
@@ -278,8 +303,12 @@ if __name__ == '__main__':
 
     if args.save_model is not None:
         sys.stderr.write('Saving model to {}\n'.format(args.save_model))
-        joblib.dump(model, args.save_model)
+        joblib.dump([model, options], args.save_model)
 
+    print('ENABLE_FEATURE_PKTLEN: {}'.format(ENABLE_FEATURE_PKTLEN))
+    print('ENABLE_FEATURE_BINS..: {}'.format(ENABLE_FEATURE_BINS))
+    print('ENABLE_FEATURE_DIRS..: {}'.format(ENABLE_FEATURE_DIRS))
+    print('ENABLE_FEATURE_IAT...: {}'.format(ENABLE_FEATURE_IAT))
     print('Map[*] -> [0]')
     for x in range(len(args.proto_class)):
         print('Map["{}"] -> [{}]'.format(args.proto_class[x], x + 1))
