@@ -57,9 +57,8 @@ DEST_INSTALL="${DEST_INSTALL:-$(realpath ./install)}"
 MAKE_PROGRAM="${MAKE_PROGRAM:-make -j4}"
 HOST_ARG="--host=${HOST_TRIPLET}"
 ./autogen.sh --enable-option-checking=fatal \
-    --prefix="${DEST_INSTALL}" --exec-prefix="${DEST_INSTALL}" \
-    --includedir="${DEST_INSTALL}/include" --libdir="${DEST_INSTALL}/lib" \
+    --prefix="/" \
     --with-only-libndpi ${HOST_ARG} ${ADDITIONAL_ARGS}
-${MAKE_PROGRAM} install
+${MAKE_PROGRAM} install DESTDIR="${DEST_INSTALL}"
 
 rm -f "${LOCKFILE}"

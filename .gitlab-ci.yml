@@ -18,7 +18,7 @@ after_script:
   - test -r /tmp/nDPIsrvd.log && cat /tmp/nDPIsrvd.log
   - test -r /tmp/nDPId.log && cat /tmp/nDPId.log
 
-build_and_test:
+build_and_test_static_libndpi_tsan:
   script:
     - C_VAL=$(cat config.h | sed -n 's/^#define\s\+NETWORK_BUFFER_MAX_SIZE\s\+\([0-9]\+\).*$/\1/gp')
     - PY_VAL=$(cat dependencies/nDPIsrvd.py | sed -n 's/^NETWORK_BUFFER_MAX_SIZE = \([0-9]\+\).*$/\1/gp')
@@ -29,9 +29,17 @@ build_and_test:
     - env CMAKE_C_FLAGS='-Werror' CMAKE_C_COMPILER='clang' cmake .. -DBUILD_EXAMPLES=OFF -DBUILD_NDPI=ON -DENABLE_SANITIZER_THREAD=ON -DENABLE_ZLIB=ON
     - make libnDPI
     - tree libnDPI
-    - make install VERBOSE=1 DESTDIR="$(realpath ./_install)"
-    - ../test/run_tests.sh ../libnDPI ./_install/usr/local/bin/nDPId-test
+    - make install VERBOSE=1 DESTDIR="$(realpath ../_install)"
     - cd ..
+    - ./test/run_tests.sh ./libnDPI ./_install/usr/local/bin/nDPId-test
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - _install/
+  stage: build_and_test
+
+build_and_test_static_libndpi:
+  script:
     - mkdir build-cmake-submodule
     - cd build-cmake-submodule
     - env CMAKE_C_FLAGS='-Werror' cmake .. -DENABLE_SYSTEMD=ON -DENABLE_COVERAGE=ON -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DENABLE_SANITIZER=ON -DENABLE_ZLIB=ON
@@ -52,13 +60,29 @@ build_and_test:
     - >
       if ldd build/nDPId | grep -qoEi libndpi; then \
       echo 'nDPId linked against a static libnDPI should not contain a shared linked libnDPI.' >&2; false; fi
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - _install/
+  stage: build_and_test
+
+build_dynamic_libndpi:
+  script:
     # pkg-config dynamic linked build
+    - git clone https://github.com/ntop/nDPI.git
+    - cd nDPI
+    - ./autogen.sh --prefix="$(realpath ../_install)" --enable-option-checking=fatal
+    - make install V=s
+    - cd ..
+    - tree ./_install
     - mkdir build
     - cd build
-    - export PKG_CONFIG_PATH="$(realpath ../build-cmake-submodule/libnDPI/lib/pkgconfig)"
+    - export CMAKE_PREFIX_PATH="$(realpath ../_install)"
     - env CMAKE_C_FLAGS='-Werror' cmake .. -DBUILD_EXAMPLES=ON -DENABLE_SANITIZER=ON -DENABLE_MEMORY_PROFILING=ON -DENABLE_ZLIB=ON
     - make all VERBOSE=1
+    - make install VERBOSE=1 DESTDIR="$(realpath ../_install)"
     - cd ..
+    - tree ./_install
     - ./build/nDPId-test || test $? -eq 1
     - ./build/nDPId -h || test $? -eq 1
     - ./build/nDPIsrvd -h || test $? -eq 1
