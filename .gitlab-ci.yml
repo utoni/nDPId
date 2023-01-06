@@ -31,7 +31,8 @@ build_and_test_static_libndpi_tsan:
     # static linked build
     - mkdir build-clang-tsan
     - cd build-clang-tsan
-    - env CMAKE_C_FLAGS='-Werror' CMAKE_C_COMPILER='clang' cmake .. -DBUILD_EXAMPLES=OFF -DBUILD_NDPI=ON -DENABLE_SANITIZER_THREAD=ON -DENABLE_ZLIB=ON
+    - env CMAKE_C_FLAGS='-Werror' CMAKE_C_COMPILER='clang' cmake .. -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DENABLE_SANITIZER_THREAD=ON -DENABLE_ZLIB=ON
+    - make distclean-libnDPI
     - make libnDPI
     - tree libnDPI
     - make install VERBOSE=1 DESTDIR="$(realpath ../_install)"
@@ -47,7 +48,8 @@ build_and_test_static_libndpi:
   script:
     - mkdir build-cmake-submodule
     - cd build-cmake-submodule
-    - env CMAKE_C_FLAGS='-Werror' cmake .. -DENABLE_SYSTEMD=ON -DENABLE_COVERAGE=ON -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DENABLE_SANITIZER=ON -DENABLE_ZLIB=ON
+    - env CMAKE_C_FLAGS='-Werror' cmake .. -DENABLE_SYSTEMD=ON -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DENABLE_ZLIB=ON
+    - make distclean-libnDPI
     - make libnDPI
     - tree libnDPI
     - make install VERBOSE=1 DESTDIR="$(realpath ../_install)"
@@ -59,6 +61,27 @@ build_and_test_static_libndpi:
     - test -x /bin/systemctl && sudo systemctl start ndpid@lo
     - test -x /bin/systemctl && sudo systemctl status ndpisrvd.service ndpid@lo.service
     - test -x /bin/systemctl && sudo systemctl stop ndpid@lo
+    - ./test/run_tests.sh ./libnDPI ./build-cmake-submodule/nDPId-test
+    - >
+      if ldd ./build-cmake-submodule/nDPId | grep -qoEi libndpi; then \
+      echo 'nDPId linked against a static libnDPI should not contain a shared linked libnDPI.' >&2; false; fi
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - build-cmake-submodule/*.deb
+      - _install/
+  stage: build_and_test
+
+build_and_test_static_libndpi_coverage:
+  script:
+    - mkdir build-cmake-submodule
+    - cd build-cmake-submodule
+    - env CMAKE_C_FLAGS='-Werror' cmake .. -DENABLE_SYSTEMD=ON -DENABLE_COVERAGE=ON -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DENABLE_SANITIZER=ON -DENABLE_ZLIB=ON
+    - make distclean-libnDPI
+    - make libnDPI
+    - tree libnDPI
+    - make install VERBOSE=1 DESTDIR="$(realpath ../_install)"
+    - cd ..
     - ./test/run_tests.sh ./libnDPI ./build-cmake-submodule/nDPId-test
     # generate coverage report
     - make -C ./build-cmake-submodule coverage

@@ -216,6 +216,10 @@ if(BUILD_NDPI)
     add_custom_target(clean-libnDPI
         COMMAND rm -rf ${CMAKE_BINARY_DIR}/libnDPI ${CMAKE_BINARY_DIR}/libnDPI-prefix
     )
+    add_custom_target(distclean-libnDPI
+        COMMAND cd ${CMAKE_SOURCE_DIR}/libnDPI && git clean -df . && git clean -dfX .
+    )
+    add_dependencies(distclean-libnDPI clean-libnDPI)
 
     set(STATIC_LIBNDPI_INSTALLDIR "${CMAKE_BINARY_DIR}/libnDPI")
     add_dependencies(nDPId libnDPI)
@@ -332,26 +336,28 @@ endif()
 
 install(TARGETS nDPId DESTINATION sbin)
 install(TARGETS nDPIsrvd nDPId-test DESTINATION bin)
-install(FILES dependencies/nDPIsrvd.py examples/py-flow-dashboard/plotly_dash.py
-        DESTINATION share/nDPId)
-install(FILES examples/py-flow-info/flow-info.py
-        DESTINATION bin RENAME nDPIsrvd-flow-info.py
-        PERMISSIONS OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
-install(FILES examples/py-flow-dashboard/flow-dash.py
-        DESTINATION bin RENAME nDPIsrvd-flow-dash.py
-        PERMISSIONS OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
-install(FILES examples/py-json-stdout/json-stdout.py
-        DESTINATION bin RENAME nDPIsrvd-json-stdout.py
-        PERMISSIONS OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
-install(FILES examples/py-schema-validation/py-schema-validation.py
-        DESTINATION bin RENAME nDPIsrvd-schema-validation.py
-        PERMISSIONS OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
-install(FILES examples/py-semantic-validation/py-semantic-validation.py
-        DESTINATION bin RENAME nDPIsrvd-semantic-validation.py
-        PERMISSIONS OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
-install(FILES examples/py-machine-learning/sklearn-random-forest.py
-        DESTINATION bin RENAME nDPIsrvd-sklearn.py
-        PERMISSIONS OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+if(BUILD_EXAMPLES)
+    install(FILES dependencies/nDPIsrvd.py examples/py-flow-dashboard/plotly_dash.py
+            DESTINATION share/nDPId)
+    install(FILES examples/py-flow-info/flow-info.py
+            DESTINATION bin RENAME nDPIsrvd-flow-info.py
+            PERMISSIONS OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+    install(FILES examples/py-flow-dashboard/flow-dash.py
+            DESTINATION bin RENAME nDPIsrvd-flow-dash.py
+            PERMISSIONS OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+    install(FILES examples/py-json-stdout/json-stdout.py
+            DESTINATION bin RENAME nDPIsrvd-json-stdout.py
+            PERMISSIONS OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+    install(FILES examples/py-schema-validation/py-schema-validation.py
+            DESTINATION bin RENAME nDPIsrvd-schema-validation.py
+            PERMISSIONS OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+    install(FILES examples/py-semantic-validation/py-semantic-validation.py
+            DESTINATION bin RENAME nDPIsrvd-semantic-validation.py
+            PERMISSIONS OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+    install(FILES examples/py-machine-learning/sklearn-random-forest.py
+            DESTINATION bin RENAME nDPIsrvd-sklearn.py
+            PERMISSIONS OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+endif()
 install(FILES schema/error_event_schema.json schema/daemon_event_schema.json
               schema/flow_event_schema.json schema/packet_event_schema.json DESTINATION share/nDPId/json-schema)
 
