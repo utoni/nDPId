@@ -60,7 +60,6 @@
               new: [.....5] [ip4][..udp] [...10.200.3.125][51170] -> [..147.92.169.90][29070] 
          detected: [.....5] [ip4][..udp] [...10.200.3.125][51170] -> [..147.92.169.90][29070] [LineCall][Line][VoIP][Acceptable]
            update: [.....4] [ip4][..udp] [...10.200.3.125][51161] -> [..147.92.169.90][29070] [LineCall][Line][VoIP][Acceptable]
-           update: [.....5] [ip4][..udp] [...10.200.3.125][51170] -> [..147.92.169.90][29070] [LineCall][Line][VoIP][Acceptable]
              idle: [.....2] [ip4][..tcp] [...10.200.3.125][57841] -> [.147.92.165.194][..443] [TLS][Line][Web][Safe]
               end: [.....3] [ip4][..tcp] [...10.200.3.125][58160] -> [.147.92.242.232][..443] [TLS.Line][Line][Chat][Acceptable]
                    RISK: TLS (probably) Not Carrying HTTPS

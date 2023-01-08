@@ -7,7 +7,6 @@
          detected: [.....2] [ip4][..udp] [..192.168.1.100][58818] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][91.252.30.192.in-addr.arpa]
  detection-update: [.....2] [ip4][..udp] [..192.168.1.100][58818] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][100.1.168.192.in-addr.arpa]
  detection-update: [.....2] [ip4][..udp] [..192.168.1.100][58818] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][100.1.168.192.in-addr.arpa]
-                   RISK: Suspicious DNS Traffic
               new: [.....3] [ip4][..tcp] [..80.239.186.26][..443] -> [..192.168.1.100][.3476] [MIDSTREAM] 
               new: [.....4] [ip4][..udp] [..192.168.1.100][58831] -> [..192.168.1.254][...53] 
          detected: [.....4] [ip4][..udp] [..192.168.1.100][58831] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][254.1.168.192.in-addr.arpa]
@@ -53,6 +52,8 @@
                    [ENTROPIES...: 4.6,4.9,4.7,5.8,4.5,5.3,4.7,5.1,4.6,5.2,4.7,5.1,4.7,5.1,4.6,5.2,4.6,5.2,4.6,5.1,4.7,5.2,4.7,5.1,4.7,5.1,4.7,5.2,4.7,5.2,4.7,5.1]
               new: [....16] [ip4][..tcp] [..192.168.1.100][.3512] -> [..12.129.222.54][...80] 
          detected: [....16] [ip4][..tcp] [..192.168.1.100][.3512] -> [..12.129.222.54][...80] [HTTP.WorldOfWarcraft][Unknown][Game][Fun][us.scan.worldofwarcraft.com]
+ detection-update: [....16] [ip4][..tcp] [..192.168.1.100][.3512] -> [..12.129.222.54][...80] [HTTP.WorldOfWarcraft][Unknown][Game][Fun][us.scan.worldofwarcraft.com]
+                   RISK: HTTP Suspicious User-Agent
               new: [....17] [ip4][..tcp] [..192.168.1.100][.3492] -> [...2.228.46.104][..443] [MIDSTREAM] 
               new: [....18] [ip4][..tcp] [..192.168.1.100][.3489] -> [...2.228.46.104][..443] [MIDSTREAM] 
               new: [....19] [ip4][..tcp] [..192.168.1.100][.3490] -> [...2.228.46.104][..443] [MIDSTREAM] 
@@ -189,7 +190,7 @@
               end: [....41] [ip4][..tcp] [..192.168.1.100][.3524] -> [..80.239.186.26][...80] [HTTP][Unknown][Web][Acceptable]
               end: [....42] [ip4][..tcp] [..192.168.1.100][.3525] -> [..80.239.186.40][...80] [HTTP][Unknown][Web][Acceptable]
               end: [....43] [ip4][..tcp] [..192.168.1.100][.3526] -> [..80.239.186.40][...80] [HTTP][Unknown][Web][Acceptable]
-     not-detected: [.....6] [ip4][..udp] [..173.194.40.22][..443] -> [..192.168.1.100][53568] [Unknown][Google][Unrated]
+          guessed: [.....6] [ip4][..udp] [..173.194.40.22][..443] -> [..192.168.1.100][53568] [QUIC][Google][Web][Acceptable]
              idle: [.....6] [ip4][..udp] [..173.194.40.22][..443] -> [..192.168.1.100][53568] 
           guessed: [....34] [ip4][..udp] [..192.168.1.100][53146] -> [...5.42.180.154][.1119] [Starcraft][Starcraft][Game][Fun]
              idle: [....34] [ip4][..udp] [..192.168.1.100][53146] -> [...5.42.180.154][.1119] 
@@ -203,9 +204,9 @@
           guessed: [.....5] [ip4][..tcp] [..80.239.186.40][..443] -> [..192.168.1.100][.3478] [TLS][Unknown][Web][Safe]
               end: [.....5] [ip4][..tcp] [..80.239.186.40][..443] -> [..192.168.1.100][.3478] 
              idle: [.....2] [ip4][..udp] [..192.168.1.100][58818] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable]
-                   RISK: Suspicious DNS Traffic
              idle: [.....4] [ip4][..udp] [..192.168.1.100][58831] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable]
              idle: [.....7] [ip4][..udp] [..192.168.1.100][58844] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable]
              idle: [.....9] [ip4][..udp] [..192.168.1.100][58851] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable]
               end: [....16] [ip4][..tcp] [..192.168.1.100][.3512] -> [..12.129.222.54][...80] [HTTP.WorldOfWarcraft][Unknown][Game][Fun]
+                   RISK: HTTP Suspicious User-Agent
      DAEMON-EVENT: shutdown

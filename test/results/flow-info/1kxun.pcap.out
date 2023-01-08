@@ -126,6 +126,10 @@
               new: [....37] [ip4][..tcp] [..192.168.115.8][49606] -> [.106.185.35.110][...80] 
          detected: [....36] [ip4][..tcp] [..192.168.115.8][49605] -> [.106.185.35.110][...80] [HTTP.1kxun][Unknown][Streaming][Fun][jp.kankan.1kxun.mobi]
          detected: [....37] [ip4][..tcp] [..192.168.115.8][49606] -> [.106.185.35.110][...80] [HTTP.1kxun][Unknown][Streaming][Fun][jp.kankan.1kxun.mobi]
+ detection-update: [....36] [ip4][..tcp] [..192.168.115.8][49605] -> [.106.185.35.110][...80] [HTTP.1kxun][Unknown][Streaming][Fun][jp.kankan.1kxun.mobi]
+                   RISK: HTTP Suspicious User-Agent
+ detection-update: [....37] [ip4][..tcp] [..192.168.115.8][49606] -> [.106.185.35.110][...80] [HTTP.1kxun][Unknown][Streaming][Fun][jp.kankan.1kxun.mobi]
+                   RISK: HTTP Suspicious User-Agent
           analyse: [....37] [ip4][..tcp] [..192.168.115.8][49606] -> [.106.185.35.110][...80] [HTTP.1kxun][Unknown][Streaming][Fun]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.147|    0.015|    0.033|       1100.854|   2.600]
@@ -164,6 +168,8 @@
          detected: [....48] [ip4][..udp] [....192.168.5.9][58456] -> [....224.0.0.252][.5355] [LLMNR][Unknown][Network][Acceptable]
          detected: [....46] [ip4][..tcp] [..192.168.115.8][49612] -> [.183.131.48.145][...80] [HTTP][Unknown][Web][Acceptable][183.131.48.145]
                    RISK: HTTP Numeric IP Address
+ detection-update: [....46] [ip4][..tcp] [..192.168.115.8][49612] -> [.183.131.48.145][...80] [HTTP][Unknown][Web][Acceptable][183.131.48.145]
+                   RISK: HTTP Suspicious User-Agent, HTTP Numeric IP Address
               new: [....49] [ip4][..tcp] [..192.168.115.8][49613] -> [.183.131.48.144][...80] 
           analyse: [....41] [ip4][..tcp] [..192.168.115.8][49609] -> [..42.120.51.152][.8080] [HTTP][Unknown][Web][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
@@ -178,7 +184,7 @@
          detected: [....49] [ip4][..tcp] [..192.168.115.8][49613] -> [.183.131.48.144][...80] [HTTP][Unknown][Web][Acceptable][183.131.48.144]
                    RISK: HTTP Numeric IP Address
  detection-update: [....49] [ip4][..tcp] [..192.168.115.8][49613] -> [.183.131.48.144][...80] [HTTP][Unknown][Media][Acceptable][183.131.48.144]
-                   RISK: HTTP Numeric IP Address
+                   RISK: HTTP Suspicious User-Agent, HTTP Numeric IP Address
               new: [....50] [ip4][..udp] [.192.168.101.33][55485] -> [239.255.255.250][.1900] 
          detected: [....50] [ip4][..udp] [.192.168.101.33][55485] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
               new: [....51] [ip4][..udp] [....192.168.5.9][55484] -> [239.255.255.250][.1900] 
@@ -395,7 +401,7 @@
            update: [....53] [ip4][..udp] [...192.168.5.49][61548] -> [....224.0.0.252][.5355] [LLMNR][Unknown][Network][Acceptable]
            update: [....33] [ip6][..udp] [..............fe80::e98f:bae2:19f7:6b0f][54888] -> [..............................ff02::1:3][.5355] [LLMNR][Unknown][Network][Acceptable]
      DAEMON-EVENT: [Processed: 1439 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 129 / 129|skipped: 0|!detected: 0|guessed: 0|detection-updates: 11|updates: 38]
+     DAEMON-EVENT: [Flows][active: 129 / 129|skipped: 0|!detected: 0|guessed: 0|detection-updates: 14|updates: 38]
               new: [...130] [ip4][..tcp] [..192.168.2.126][60962] -> [..172.104.93.92][.1234] [MIDSTREAM] 
          detected: [...130] [ip4][..tcp] [..192.168.2.126][60962] -> [..172.104.93.92][.1234] [HTTP.1kxun][Unknown][Streaming][Fun][ws.1kxun.mobi]
                    RISK: Known Proto on Non Std Port
@@ -498,7 +504,9 @@
              idle: [....20] [ip4][..udp] [...192.168.3.95][58779] -> [....224.0.0.252][.5355] [LLMNR][Unknown][Network][Acceptable]
              idle: [....15] [ip4][..tcp] [..192.168.115.8][49597] -> [.106.185.35.110][...80] [HTTP.1kxun][Unknown][Streaming][Fun]
              idle: [....36] [ip4][..tcp] [..192.168.115.8][49605] -> [.106.185.35.110][...80] [HTTP.1kxun][Unknown][Streaming][Fun]
+                   RISK: HTTP Suspicious User-Agent
              idle: [....37] [ip4][..tcp] [..192.168.115.8][49606] -> [.106.185.35.110][...80] [HTTP.1kxun][Unknown][Streaming][Fun]
+                   RISK: HTTP Suspicious User-Agent
              idle: [....25] [ip4][..tcp] [..192.168.115.8][49598] -> [.222.73.254.167][...80] [HTTP.1kxun][Unknown][Streaming][Fun]
           guessed: [....17] [ip4][..tcp] [...192.168.5.16][53622] -> [.192.168.115.75][..443] [TLS][Unknown][Web][Safe]
               end: [....17] [ip4][..tcp] [...192.168.5.16][53622] -> [.192.168.115.75][..443] 
@@ -545,9 +553,9 @@
           guessed: [...101] [ip4][..tcp] [.119.235.235.84][..443] -> [...192.168.5.16][53406] [TLS][Line][Web][Safe]
              idle: [...101] [ip4][..tcp] [.119.235.235.84][..443] -> [...192.168.5.16][53406] 
               end: [....46] [ip4][..tcp] [..192.168.115.8][49612] -> [.183.131.48.145][...80] [HTTP][Unknown][Web][Acceptable]
-                   RISK: HTTP Numeric IP Address
+                   RISK: HTTP Suspicious User-Agent, HTTP Numeric IP Address
              idle: [....49] [ip4][..tcp] [..192.168.115.8][49613] -> [.183.131.48.144][...80] [HTTP][Unknown][Media][Acceptable]
-                   RISK: HTTP Numeric IP Address
+                   RISK: HTTP Suspicious User-Agent, HTTP Numeric IP Address
              idle: [....24] [ip4][..udp] [..192.168.115.8][52723] -> [.....168.95.1.1][...53] [DNS.1kxun][Unknown][Network][Fun]
      not-detected: [....89] [ip6][..udp] [................fe80::4e5e:cff:feea:365][.5678] -> [................................ff02::1][.5678] [Unknown][Unknown][Unrated]
              idle: [....89] [ip6][..udp] [................fe80::4e5e:cff:feea:365][.5678] -> [................................ff02::1][.5678] 

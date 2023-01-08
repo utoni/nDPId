@@ -5,17 +5,23 @@
               new: [.....2] [ip4][..tcp] [.192.168.178.20][39312] -> [...24.105.29.21][...80] 
          detected: [.....1] [ip4][..tcp] [.192.168.178.20][39309] -> [..12.129.222.53][...80] [HTTP.WorldOfWarcraft][Unknown][Game][Fun][us.scan.worldofwarcraft.com]
          detected: [.....2] [ip4][..tcp] [.192.168.178.20][39312] -> [...24.105.29.21][...80] [HTTP.WorldOfWarcraft][Starcraft][Game][Fun][launcher.worldofwarcraft.com]
+ detection-update: [.....1] [ip4][..tcp] [.192.168.178.20][39309] -> [..12.129.222.53][...80] [HTTP.WorldOfWarcraft][Unknown][Game][Fun][us.scan.worldofwarcraft.com]
+                   RISK: HTTP Suspicious User-Agent
+ detection-update: [.....2] [ip4][..tcp] [.192.168.178.20][39312] -> [...24.105.29.21][...80] [HTTP.WorldOfWarcraft][Starcraft][Game][Fun][launcher.worldofwarcraft.com]
+                   RISK: HTTP Suspicious User-Agent
               new: [.....3] [ip4][..tcp] [.192.168.178.20][39329] -> [.12.129.228.153][.3724] 
          detected: [.....3] [ip4][..tcp] [.192.168.178.20][39329] -> [.12.129.228.153][.3724] [WorldOfWarcraft][Unknown][Game][Fun]
               new: [.....4] [ip4][..tcp] [.192.168.178.20][39364] -> [.12.129.228.153][.3724] 
          detected: [.....4] [ip4][..tcp] [.192.168.178.20][39364] -> [.12.129.228.153][.3724] [WorldOfWarcraft][Unknown][Game][Fun]
      DAEMON-EVENT: [Processed: 82 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 4 / 4|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+     DAEMON-EVENT: [Flows][active: 4 / 4|skipped: 0|!detected: 0|guessed: 0|detection-updates: 2|updates: 0]
               new: [.....5] [ip4][..tcp] [.192.168.178.20][39593] -> [.12.129.228.152][.3724] 
          detected: [.....5] [ip4][..tcp] [.192.168.178.20][39593] -> [.12.129.228.152][.3724] [WorldOfWarcraft][Unknown][Game][Fun]
              idle: [.....3] [ip4][..tcp] [.192.168.178.20][39329] -> [.12.129.228.153][.3724] [WorldOfWarcraft][Unknown][Game][Fun]
              idle: [.....4] [ip4][..tcp] [.192.168.178.20][39364] -> [.12.129.228.153][.3724] [WorldOfWarcraft][Unknown][Game][Fun]
              idle: [.....5] [ip4][..tcp] [.192.168.178.20][39593] -> [.12.129.228.152][.3724] [WorldOfWarcraft][Unknown][Game][Fun]
               end: [.....1] [ip4][..tcp] [.192.168.178.20][39309] -> [..12.129.222.53][...80] [HTTP.WorldOfWarcraft][Unknown][Game][Fun]
+                   RISK: HTTP Suspicious User-Agent
               end: [.....2] [ip4][..tcp] [.192.168.178.20][39312] -> [...24.105.29.21][...80] [HTTP.WorldOfWarcraft][Starcraft][Game][Fun]
+                   RISK: HTTP Suspicious User-Agent
      DAEMON-EVENT: shutdown

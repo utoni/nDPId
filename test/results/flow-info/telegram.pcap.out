@@ -92,7 +92,6 @@
               new: [....27] [ip4][..udp] [...192.168.1.77][47127] -> [....192.168.1.1][...53] 
          detected: [....27] [ip4][..udp] [...192.168.1.77][47127] -> [....192.168.1.1][...53] [DNS.GoogleServices][Unknown][Network][Acceptable][www.googletagservices.com]
  detection-update: [....27] [ip4][..udp] [...192.168.1.77][47127] -> [....192.168.1.1][...53] [DNS.GoogleServices][Unknown][Network][Acceptable][www.googletagservices.com]
-                   RISK: Suspicious DNS Traffic
           analyse: [....25] [ip4][..udp] [...192.168.1.77][23174] -> [...192.168.1.52][31480] 
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.042|    1.999|    0.261|    0.473|     223426.380|   3.600]
@@ -117,7 +116,6 @@
               new: [....32] [ip4][..udp] [...192.168.1.77][.5812] -> [....192.168.1.1][...53] 
          detected: [....32] [ip4][..udp] [...192.168.1.77][.5812] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][pixel.wp.com]
  detection-update: [....32] [ip4][..udp] [...192.168.1.77][.5812] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][pixel.wp.com]
-                   RISK: Suspicious DNS Traffic
               new: [....33] [ip4][..udp] [...192.168.1.77][54595] -> [....192.168.1.1][...53] 
          detected: [....33] [ip4][..udp] [...192.168.1.77][54595] -> [....192.168.1.1][...53] [DNS.ntop][Unknown][Network][Safe][b._dns-sd._udp.ntop.org]
  detection-update: [.....3] [ip4][..udp] [...192.168.1.53][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable][_googlecast._tcp.local]
@@ -184,7 +182,6 @@
  detection-update: [....48] [ip4][..udp] [...192.168.1.77][49533] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][e4518.dscx.akamaiedge.net]
  detection-update: [....47] [ip4][..udp] [...192.168.1.77][58615] -> [....192.168.1.1][...53] [DNS.Dropbox][Unknown][Network][Acceptable][telemetry.dropbox.com]
              idle: [....32] [ip4][..udp] [...192.168.1.77][.5812] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
-                   RISK: Suspicious DNS Traffic
              idle: [....16] [ip4][..udp] [...192.168.1.77][61120] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
              idle: [....28] [ip4][..udp] [........0.0.0.0][...68] -> [255.255.255.255][...67] [DHCP][Unknown][Network][Acceptable]
              idle: [.....1] [ip4][..udp] [....192.168.0.1][...68] -> [255.255.255.255][...67] [DHCP][Unknown][Network][Acceptable]
@@ -196,7 +193,6 @@
              idle: [....24] [ip4][..udp] [...192.168.1.77][23174] -> [....91.108.16.4][..538] [Telegram][Telegram][Chat][Acceptable]
              idle: [....23] [ip4][..udp] [...192.168.1.77][23174] -> [.....91.108.8.8][..538] [Telegram][Telegram][Chat][Acceptable]
              idle: [....27] [ip4][..udp] [...192.168.1.77][47127] -> [....192.168.1.1][...53] [DNS.GoogleServices][Unknown][Network][Acceptable]
-                   RISK: Suspicious DNS Traffic
              idle: [....18] [ip6][..udp] [...............fe80::4dc:edec:5b0c:a661][.5353] -> [...............................ff02::fb][.5353] 
              idle: [....10] [ip4][..udp] [...192.168.1.77][17500] -> [..192.168.1.255][17500] [Dropbox][Unknown][Cloud][Acceptable]
              idle: [....15] [ip4][..udp] [...192.168.1.75][57916] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable]

@@ -280,7 +280,6 @@ if [ -x "${NDPISRVD_ANALYSED}" ]; then
             test ${IS_GIT} -eq 1 && \
                 mv -v "/tmp/nDPId-test-stdout/${result_file}.csv.new" \
                       "${MYDIR}/results/flow-analyse/${result_file}"
-            cat "/tmp/nDPId-test-stderr/${result_file}"
             TESTS_FAILED=$((TESTS_FAILED + 1))
         fi
     done
@@ -332,7 +331,6 @@ if [ -x "${NDPISRVD_COLLECTD}" ]; then
             test ${IS_GIT} -eq 1 && \
                 mv -v "/tmp/nDPId-test-stdout/${result_file}.stats.new" \
                       "${MYDIR}/results/collectd-stats/${result_file}"
-            cat "/tmp/nDPId-test-stderr/${result_file}"
             TESTS_FAILED=$((TESTS_FAILED + 1))
         fi
     done

@@ -3,6 +3,8 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [....192.168.1.7][51207] -> [..46.44.253.187][...80] 
          detected: [.....1] [ip4][..tcp] [....192.168.1.7][51207] -> [..46.44.253.187][...80] [HTTP.Ookla][Unknown][Network][Safe][]
+ detection-update: [.....1] [ip4][..tcp] [....192.168.1.7][51207] -> [..46.44.253.187][...80] [HTTP.Ookla][Unknown][Network][Safe][]
+                   RISK: HTTP Suspicious User-Agent
               new: [.....2] [ip4][..tcp] [....192.168.1.7][51215] -> [..46.44.253.187][.8080] 
          detected: [.....2] [ip4][..tcp] [....192.168.1.7][51215] -> [..46.44.253.187][.8080] [Ookla][Unknown][Network][Safe]
           analyse: [.....2] [ip4][..tcp] [....192.168.1.7][51215] -> [..46.44.253.187][.8080] [Ookla][Unknown][Network][Safe]
@@ -17,4 +19,5 @@
                    [ENTROPIES...: 4.5,5.3,5.1,5.2,5.2,5.5,5.1,5.4,5.5,5.0,5.4,5.5,5.1,5.5,5.5,5.1,5.4,5.6,5.1,5.4,5.6,5.1,5.5,5.5,5.0,5.5,5.6,5.1,5.5,5.5,5.0,5.4]
               end: [.....2] [ip4][..tcp] [....192.168.1.7][51215] -> [..46.44.253.187][.8080] [Ookla][Unknown][Network][Safe]
               end: [.....1] [ip4][..tcp] [....192.168.1.7][51207] -> [..46.44.253.187][...80] [HTTP.Ookla][Unknown][Network][Safe]
+                   RISK: HTTP Suspicious User-Agent
      DAEMON-EVENT: shutdown
