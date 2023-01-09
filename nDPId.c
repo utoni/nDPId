@@ -2406,7 +2406,7 @@ static void base64encode(uint8_t const * const data_buf,
          * if we have one byte available, then its encoding is spread
          * out over two characters
          */
-        if (resultIndex + 2 >= *resultSize - padCount - 1)
+        if (resultIndex + 2 >= *resultSize - (3 - padCount))
         {
             break;
         }
@@ -2419,7 +2419,7 @@ static void base64encode(uint8_t const * const data_buf,
          */
         if ((x + 1) < dataLength)
         {
-            if (resultIndex + 1 >= *resultSize - padCount - 1)
+            if (resultIndex + 1 >= *resultSize - (3 - padCount))
             {
                 break;
             }
@@ -2432,7 +2432,7 @@ static void base64encode(uint8_t const * const data_buf,
          */
         if ((x + 2) < dataLength)
         {
-            if (resultIndex + 1 >= *resultSize - padCount - 1)
+            if (resultIndex + 1 >= *resultSize - (3 - padCount))
             {
                 break;
             }

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import base64
 import os
 import sys
 
@@ -73,6 +74,24 @@ class SemanticValidationException(Exception):
         else:
             return 'Flow ID {}: {}'.format(self.current_flow.flow_id, self.text)
 
+def verifyFlows(nsock, instance):
+    invalid_flows = nsock.verify()
+    if len(invalid_flows) > 0:
+        invalid_flows_str = ''
+        for flow_id in invalid_flows:
+            flow = instance.flows[flow_id]
+            try:
+                l4_proto = flow.l4_proto
+            except AttributeError:
+                l4_proto = 'n/a'
+            invalid_flows_str += '{} proto[{},{}] ts[{} + {} < {}] diff[{}], '.format(flow_id, l4_proto, flow.flow_idle_time,
+                                                         flow.flow_last_seen, flow.flow_idle_time,
+                                                         instance.most_recent_flow_time,
+                                                         instance.most_recent_flow_time -
+                                                         (flow.flow_last_seen + flow.flow_idle_time))
+
+        raise SemanticValidationException(None, 'Flow Manager verification failed for: {}'.format(invalid_flows_str[:-2]))
+
 def onFlowCleanup(instance, current_flow, global_user_data):
     if type(instance) is not nDPIsrvd.Instance:
         raise SemanticValidationException(current_flow,
@@ -100,28 +119,14 @@ def onFlowCleanup(instance, current_flow, global_user_data):
     except AttributeError:
         l4_proto = 'n/a'
 
-    invalid_flows = stats.nsock.verify()
-    if len(invalid_flows) > 0:
-        invalid_flows_str = ''
-        for flow_id in invalid_flows:
-            flow = instance.flows[flow_id]
-            try:
-                l4_proto = flow.l4_proto
-            except AttributeError:
-                l4_proto = 'n/a'
-            invalid_flows_str += '{} proto[{},{}] ts[{} + {} < {}] diff[{}], '.format(flow_id, l4_proto, flow.flow_idle_time,
-                                                         flow.flow_last_seen, flow.flow_idle_time,
-                                                         instance.most_recent_flow_time,
-                                                         instance.most_recent_flow_time -
-                                                         (flow.flow_last_seen + flow.flow_idle_time))
-
-        raise SemanticValidationException(None, 'Flow Manager verification failed for: {}'.format(invalid_flows_str[:-2]))
+    verifyFlows(stats.nsock, instance)
 
     return True
 
 def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
     _, stats = global_user_data
     stats.incrementEventCounter(json_dict)
+    verifyFlows(stats.nsock, instance)
 
     if type(instance) is not nDPIsrvd.Instance:
         raise SemanticValidationException(current_flow,
@@ -213,6 +218,8 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
         pass
 
     if 'packet_event_name' in json_dict:
+        base64.b64decode(json_dict['pkt'], validate=True)
+
         if json_dict['packet_event_name'] == 'packet-flow':
             if lowest_possible_packet_id > json_dict['packet_id']:
                 raise SemanticValidationException(current_flow,
@@ -342,6 +349,10 @@ if __name__ == '__main__':
         sys.stderr.write('\n{}\n'.format(err))
     except KeyboardInterrupt:
         print()
+    except Exception as e:
+        for failed_line in nsock.failed_lines:
+            sys.stderr.write('Affected JSON line: {}\n'.format(failed_line[0]))
+        raise(e)
 
     sys.stderr.write('\nEvent counter:\n' + stats.getEventCounterStr() + '\n')
     if args.strict is True:

@@ -22,6 +22,7 @@ DEFAULT_UNIX = '/tmp/ndpid-distributor.sock'
 
 NETWORK_BUFFER_MIN_SIZE = 6 # NETWORK_BUFFER_LENGTH_DIGITS + 1
 NETWORK_BUFFER_MAX_SIZE = 33792 # Please keep this value in sync with the one in config.h
+nDPId_PACKETS_PLEN_MAX = 8192 # Please keep this value in sync with the one in config.h
 
 PKT_TYPE_ETH_IP4 = 0x0800
 PKT_TYPE_ETH_IP6 = 0x86DD
@@ -361,6 +362,7 @@ class nDPIsrvdSocket:
         self.msglen = 0
         self.digitlen = 0
         self.lines = []
+        self.failed_lines = []
 
     def timeout(self, timeout):
         self.sock.settimeout(timeout)
@@ -414,31 +416,39 @@ class nDPIsrvdSocket:
 
     def parse(self, callback_json, callback_flow_cleanup, global_user_data):
         retval = True
-        index = 0
 
         for received_line in self.lines:
             try:
                 json_dict = json.loads(received_line[0].decode('ascii', errors='replace'), strict=True)
-            except json.decoder.JSONDecodeError as err:
-                sys.stderr.write('\nFATAL: JSON decode failed at line "{}"\n'.format(received_line[0].decode('ascii', errors='replace')))
-                sys.stderr.write('\n{}\n'.format(str(err)))
-                retval = False
+            except json.decoder.JSONDecodeError as e:
+                self.failed_lines += [received_line]
+                self.lines = self.lines[1:]
+                raise(e)
 
             instance = self.flow_mgr.getInstance(json_dict)
             if instance is None:
+                self.failed_lines += [received_line]
                 retval = False
                 continue
 
-            if callback_json(json_dict, instance, self.flow_mgr.getFlow(instance, json_dict), global_user_data) is not True:
-                retval = False
+            try:
+                if callback_json(json_dict, instance, self.flow_mgr.getFlow(instance, json_dict), global_user_data) is not True:
+                    self.failed_lines += [received_line]
+                    retval = False
+            except Exception as e:
+                    self.failed_lines += [received_line]
+                    self.lines = self.lines[1:]
+                    raise(e)
+
             for _, flow in self.flow_mgr.getFlowsToCleanup(instance, json_dict).items():
                 if callback_flow_cleanup is None:
                     pass
                 elif callback_flow_cleanup(instance, flow, global_user_data) is not True:
+                    self.failed_lines += [received_line]
+                    self.lines = self.lines[1:]
                     retval = False
-            index += 1
 
-        self.lines = self.lines[index:]
+            self.lines = self.lines[1:]
 
         return retval
 
@@ -462,6 +472,8 @@ class nDPIsrvdSocket:
         return self.flow_mgr.doShutdown().items()
 
     def verify(self):
+        if len(self.failed_lines) > 0:
+            raise nDPIsrvdException('Failed lines > 0: {}'.format(len(self.failed_lines)))
         return self.flow_mgr.verifyFlows()
 
 def defaultArgumentParser(desc='nDPIsrvd Python Interface',

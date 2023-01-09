@@ -20,8 +20,13 @@ after_script:
 
 build_and_test_static_libndpi_tsan:
   script:
+    # test for NETWORK_BUFFER_MAX_SIZE C and Python value equality
     - C_VAL=$(cat config.h | sed -n 's/^#define\s\+NETWORK_BUFFER_MAX_SIZE\s\+\([0-9]\+\).*$/\1/gp')
     - PY_VAL=$(cat dependencies/nDPIsrvd.py | sed -n 's/^NETWORK_BUFFER_MAX_SIZE = \([0-9]\+\).*$/\1/gp')
+    - test ${C_VAL} = ${PY_VAL}
+    # test for nDPId_PACKETS_PLEN_MAX C and Python value equality
+    - C_VAL=$(cat config.h | sed -n 's/^#define\s\+nDPId_PACKETS_PLEN_MAX\s\+\([0-9]\+\).*$/\1/gp')
+    - PY_VAL=$(cat dependencies/nDPIsrvd.py | sed -n 's/^nDPId_PACKETS_PLEN_MAX = \([0-9]\+\).*$/\1/gp')
     - test ${C_VAL} = ${PY_VAL}
     # static linked build
     - mkdir build-clang-tsan
