@@ -91,6 +91,7 @@ build_and_test_static_libndpi_coverage:
   artifacts:
     expire_in: 1 week
     paths:
+      - build-cmake-submodule/coverage_report
       - _install/
   stage: build_and_test
 
