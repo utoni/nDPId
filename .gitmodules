@@ -6,3 +6,6 @@
 [submodule "examples/js-rt-analyzer"]
 	path = examples/js-rt-analyzer
 	url = https://gitlab.com/verzulli/ndpid-rt-analyzer.git
+[submodule "examples/js-rt-analyzer-frontend"]
+	path = examples/js-rt-analyzer-frontend
+	url = git@gitlab.com:verzulli/ndpid-rt-analyzer-frontend.git

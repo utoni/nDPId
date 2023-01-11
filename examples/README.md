@@ -30,6 +30,10 @@ Integration example that verifies flow timeouts on SIGUSR1.
 
 [nDPId-rt-analyzer](https://gitlab.com/verzulli/ndpid-rt-analyzer.git)
 
+## js-rt-analyzer-frontend
+
+[nDPId-rt-analyzer-frontend](https://gitlab.com/verzulli/ndpid-rt-analyzer-frontend.git)
+
 ## py-flow-info
 
 Console friendly, colorful, prettyfied event printer.
@@ -44,7 +48,8 @@ Try it with: `./examples/py-machine-learning/sklearn_random_forest.py --csv ./nd
 This way you should get 9 different classification classes.
 You may notice that some classes e.g. TLS protocol classifications may have a higher false-negative rate.
 Unfortunately, I can not provide any datasets due to some privacy concerns.
-But you can use a [pre-trained model](https://drive.google.com/file/d/1KEwbP-Gx7KJr54wNoa63I56VI4USCAPL/view?usp=sharing) with `--load-model` and the aformentioned parameters.
+
+But you can use a [pre-trained model](https://drive.google.com/file/d/1KEwbP-Gx7KJr54wNoa63I56VI4USCAPL/view?usp=sharing) with `--load-model`.
 
 ## py-flow-dashboard
 
