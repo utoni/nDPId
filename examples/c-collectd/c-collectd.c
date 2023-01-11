@@ -125,7 +125,7 @@ static struct
     uint64_t flow_l4_icmp_count;
     uint64_t flow_l4_other_count;
 
-    nDPIsrvd_ull flow_risk_count[NDPI_MAX_RISK];
+    nDPIsrvd_ull flow_risk_count[NDPI_MAX_RISK - 1];
     nDPIsrvd_ull flow_risk_unknown_count;
 } collectd_statistics = {};
 
@@ -484,11 +484,11 @@ static void print_collectd_exec_output(void)
         printf(COLLECTD_PUTVAL_N_FORMAT(), COLLECTD_PUTVAL_N2(gauge_name, error_count[i]));
     }
 
-    for (i = 1; i < NDPI_MAX_RISK; ++i)
+    for (i = 0; i < NDPI_MAX_RISK - 1; ++i)
     {
         char gauge_name[BUFSIZ];
-        snprintf(gauge_name, sizeof(gauge_name), "flow_risk_%zu_count", i - 1);
-        printf(COLLECTD_PUTVAL_N_FORMAT(), COLLECTD_PUTVAL_N2(gauge_name, flow_risk_count[i - 1]));
+        snprintf(gauge_name, sizeof(gauge_name), "flow_risk_%zu_count", i + 1);
+        printf(COLLECTD_PUTVAL_N_FORMAT(), COLLECTD_PUTVAL_N2(gauge_name, flow_risk_count[i]));
     }
 
     memset(&collectd_statistics, 0, sizeof(collectd_statistics));

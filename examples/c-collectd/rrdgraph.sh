@@ -3,6 +3,7 @@
 RRDDIR="${1}"
 OUTDIR="${2}"
 RRDARGS="--width=800 --height=400"
+REQUIRED_RRDCNT=106
 
 if [ -z "${RRDDIR}" ]; then
 	printf '%s: Missing RRD directory which contains nDPIsrvd/Collectd files.\n' "${0}"
@@ -14,8 +15,8 @@ if [ -z "${OUTDIR}" ]; then
 	exit 1
 fi
 
-if [ $(ls -al ${RRDDIR}/gauge-flow_*.rrd | wc -l) -ne 105 ]; then
-	printf '%s: Missing some *.rrd files.\n' "${0}"
+if [ $(ls -al ${RRDDIR}/gauge-flow_*.rrd | wc -l) -ne ${REQUIRED_RRDCNT} ]; then
+	printf '%s: Missing some *.rrd files. Expected: %s, Got: %s\n' "${0}" "${REQUIRED_RRDCNT}" "$(ls -al ${RRDDIR}/gauge-flow_*.rrd | wc -l)"
 	exit 1
 fi
 
@@ -375,7 +376,6 @@ rrdtool_graph Error-Events 'Amouunt' "${OUTDIR}/error_events" \
 	STACK:error_unknown#4060bf:"Unknown-error............................................" \
 	$(rrdtool_graph_print_cur_min_max_avg error_unknown)
 rrdtool_graph Risky-Events 'Amouunt' "${OUTDIR}/risky_events" \
-	DEF:risk_0=${RRDDIR}/gauge-flow_risk_0_count.rrd:value:AVERAGE \
 	DEF:risk_1=${RRDDIR}/gauge-flow_risk_1_count.rrd:value:AVERAGE \
 	DEF:risk_2=${RRDDIR}/gauge-flow_risk_2_count.rrd:value:AVERAGE \
 	DEF:risk_3=${RRDDIR}/gauge-flow_risk_3_count.rrd:value:AVERAGE \
@@ -423,102 +423,107 @@ rrdtool_graph Risky-Events 'Amouunt' "${OUTDIR}/risky_events" \
 	DEF:risk_45=${RRDDIR}/gauge-flow_risk_45_count.rrd:value:AVERAGE \
 	DEF:risk_46=${RRDDIR}/gauge-flow_risk_46_count.rrd:value:AVERAGE \
 	DEF:risk_47=${RRDDIR}/gauge-flow_risk_47_count.rrd:value:AVERAGE \
+	DEF:risk_48=${RRDDIR}/gauge-flow_risk_48_count.rrd:value:AVERAGE \
+	DEF:risk_49=${RRDDIR}/gauge-flow_risk_49_count.rrd:value:AVERAGE \
 	DEF:risk_unknown=${RRDDIR}/gauge-flow_risk_unknown_count.rrd:value:AVERAGE \
-	$(rrdtool_graph_colorize_missing_data risk_0) \
-	AREA:risk_0#ff0000:"XSS-Attack..............................................." \
+	$(rrdtool_graph_colorize_missing_data risk_1) \
+	AREA:risk_1#ff0000:"XSS-Attack..............................................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_1) \
-	STACK:risk_1#ff5500:"SQL-Injection............................................" \
+	STACK:risk_2#ff5500:"SQL-Injection............................................" \
 	$(rrdtool_graph_print_cur_min_max_avg risk_2) \
-	STACK:risk_2#ffaa00:"RCE-Injection............................................" \
+	STACK:risk_3#ffaa00:"RCE-Injection............................................" \
 	$(rrdtool_graph_print_cur_min_max_avg risk_3) \
-	STACK:risk_3#ffff00:"Binary-App-Transfer......................................" \
+	STACK:risk_4#ffff00:"Binary-App-Transfer......................................" \
 	$(rrdtool_graph_print_cur_min_max_avg risk_4) \
-	STACK:risk_4#aaff00:"Known-Proto-on-Non-Std-Port.............................." \
+	STACK:risk_5#aaff00:"Known-Proto-on-Non-Std-Port.............................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_5) \
-	STACK:risk_5#55ff00:"Self-signed-Cert........................................." \
+	STACK:risk_6#55ff00:"Self-signed-Cert........................................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_6) \
-	STACK:risk_6#00ff55:"Obsolete-TLS-v1.1-or-older..............................." \
+	STACK:risk_7#00ff55:"Obsolete-TLS-v1.1-or-older..............................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_7) \
-	STACK:risk_7#00ffaa:"Weak-TLS-Cipher.........................................." \
+	STACK:risk_8#00ffaa:"Weak-TLS-Cipher.........................................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_8) \
-	STACK:risk_8#00ffff:"TLS-Cert-Expired........................................." \
+	STACK:risk_9#00ffff:"TLS-Cert-Expired........................................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_9) \
-	STACK:risk_9#00aaff:"TLS-Cert-Mismatch........................................" \
+	STACK:risk_10#00aaff:"TLS-Cert-Mismatch........................................" \
 	$(rrdtool_graph_print_cur_min_max_avg risk_10) \
-	STACK:risk_10#0055ff:"HTTP-Suspicious-User-Agent..............................." \
+	STACK:risk_11#0055ff:"HTTP-Suspicious-User-Agent..............................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_11) \
-	STACK:risk_11#0000ff:"HTTP-Numeric-IP-Address.................................." \
+	STACK:risk_12#0000ff:"HTTP-Numeric-IP-Address.................................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_12) \
-	STACK:risk_12#5500ff:"HTTP-Suspicious-URL......................................" \
+	STACK:risk_13#5500ff:"HTTP-Suspicious-URL......................................" \
 	$(rrdtool_graph_print_cur_min_max_avg risk_13) \
-	STACK:risk_13#aa00ff:"HTTP-Suspicious-Header..................................." \
+	STACK:risk_14#aa00ff:"HTTP-Suspicious-Header..................................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_14) \
-	STACK:risk_14#ff00ff:"TLS-probably-Not-Carrying-HTTPS.........................." \
+	STACK:risk_15#ff00ff:"TLS-probably-Not-Carrying-HTTPS.........................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_15) \
-	STACK:risk_15#ff00aa:"Suspicious-DGA-Domain-name..............................." \
+	STACK:risk_16#ff00aa:"Suspicious-DGA-Domain-name..............................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_16) \
-	STACK:risk_16#ff0055:"Malformed-Packet........................................." \
+	STACK:risk_17#ff0055:"Malformed-Packet........................................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_17) \
-	STACK:risk_17#602020:"SSH-Obsolete-Client-Version/Cipher......................." \
+	STACK:risk_18#602020:"SSH-Obsolete-Client-Version/Cipher......................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_18) \
-	STACK:risk_18#603a20:"SSH-Obsolete-Server-Version/Cipher......................." \
+	STACK:risk_19#603a20:"SSH-Obsolete-Server-Version/Cipher......................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_19) \
-	STACK:risk_19#605520:"SMB-Insecure-Version....................................." \
+	STACK:risk_20#605520:"SMB-Insecure-Version....................................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_20) \
-	STACK:risk_20#506020:"TLS-Suspicious-ESNI-Usage................................" \
+	STACK:risk_21#506020:"TLS-Suspicious-ESNI-Usage................................" \
 	$(rrdtool_graph_print_cur_min_max_avg risk_21) \
-	STACK:risk_21#356020:"Unsafe-Protocol.........................................." \
+	STACK:risk_22#356020:"Unsafe-Protocol.........................................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_22) \
-	STACK:risk_22#206025:"Suspicious-DNS-Traffic..................................." \
+	STACK:risk_23#206025:"Suspicious-DNS-Traffic..................................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_23) \
-	STACK:risk_23#206040:"Missing-SNI-TLS-Extension................................" \
+	STACK:risk_24#206040:"Missing-SNI-TLS-Extension................................" \
 	$(rrdtool_graph_print_cur_min_max_avg risk_24) \
-	STACK:risk_24#20605a:"HTTP-Suspicious-Content.................................." \
+	STACK:risk_25#20605a:"HTTP-Suspicious-Content.................................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_25) \
-	STACK:risk_25#204a60:"Risky-ASN................................................" \
+	STACK:risk_26#204a60:"Risky-ASN................................................" \
 	$(rrdtool_graph_print_cur_min_max_avg risk_26) \
-	STACK:risk_26#203060:"Risky-Domain-Name........................................" \
+	STACK:risk_27#203060:"Risky-Domain-Name........................................" \
 	$(rrdtool_graph_print_cur_min_max_avg risk_27) \
-	STACK:risk_27#2a2060:"Malicious-JA3-Fingerprint................................" \
+	STACK:risk_28#2a2060:"Malicious-JA3-Fingerprint................................" \
 	$(rrdtool_graph_print_cur_min_max_avg risk_28) \
-	STACK:risk_28#452060:"Malicious-SSL-Cert/SHA1-Fingerprint......................" \
+	STACK:risk_29#452060:"Malicious-SSL-Cert/SHA1-Fingerprint......................" \
 	$(rrdtool_graph_print_cur_min_max_avg risk_29) \
-	STACK:risk_29#602060:"Desktop/File-Sharing....................................." \
+	STACK:risk_30#602060:"Desktop/File-Sharing....................................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_30) \
-	STACK:risk_30#602045:"Uncommon-TLS-ALPN........................................" \
+	STACK:risk_31#602045:"Uncommon-TLS-ALPN........................................" \
 	$(rrdtool_graph_print_cur_min_max_avg risk_31) \
-	STACK:risk_31#df2020:"TLS-Cert-Validity-Too-Long..............................." \
+	STACK:risk_32#df2020:"TLS-Cert-Validity-Too-Long..............................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_32) \
-	STACK:risk_32#df6020:"TLS-Suspicious-Extension................................." \
+	STACK:risk_33#df6020:"TLS-Suspicious-Extension................................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_33) \
-	STACK:risk_33#df9f20:"TLS-Fatal-Alert.........................................." \
+	STACK:risk_34#df9f20:"TLS-Fatal-Alert.........................................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_34) \
-	STACK:risk_34#dfdf20:"Suspicious-Entropy......................................." \
+	STACK:risk_35#dfdf20:"Suspicious-Entropy......................................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_35) \
-	STACK:risk_35#9fdf20:"Clear-Text-Credentials..................................." \
+	STACK:risk_36#9fdf20:"Clear-Text-Credentials..................................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_36) \
-	STACK:risk_36#60df20:"Large-DNS-Packet........................................." \
+	STACK:risk_37#60df20:"Large-DNS-Packet........................................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_37) \
-	STACK:risk_37#20df20:"Fragmented-DNS-Message..................................." \
+	STACK:risk_38#20df20:"Fragmented-DNS-Message..................................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_38) \
-	STACK:risk_38#20df60:"Text-With-Non-Printable-Chars............................" \
+	STACK:risk_39#20df60:"Text-With-Non-Printable-Chars............................" \
 	$(rrdtool_graph_print_cur_min_max_avg risk_39) \
-	STACK:risk_39#20df9f:"Possible-Exploit........................................." \
+	STACK:risk_40#20df9f:"Possible-Exploit........................................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_40) \
-	STACK:risk_40#20dfdf:"TLS-Cert-About-To-Expire................................." \
+	STACK:risk_41#20dfdf:"TLS-Cert-About-To-Expire................................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_41) \
-	STACK:risk_41#209fdf:"IDN-Domain-Name.........................................." \
+	STACK:risk_42#209fdf:"IDN-Domain-Name.........................................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_42) \
-	STACK:risk_42#2060df:"Error-Code..............................................." \
+	STACK:risk_43#2060df:"Error-Code..............................................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_43) \
-	STACK:risk_43#2020df:"Crawler/Bot.............................................." \
+	STACK:risk_44#2020df:"Crawler/Bot.............................................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_44) \
-	STACK:risk_44#6020df:"Anonymous-Subscriber....................................." \
+	STACK:risk_45#6020df:"Anonymous-Subscriber....................................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_45) \
-	STACK:risk_45#9f20df:"Unidirectional-Traffic..................................." \
+	STACK:risk_46#9f20df:"Unidirectional-Traffic..................................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_46) \
-	STACK:risk_46#df20df:"HTTP-Obsolete-Server....................................." \
+	STACK:risk_47#df20df:"HTTP-Obsolete-Server....................................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_47) \
-	STACK:risk_47#df209f:"Unknown.................................................." \
-	$(rrdtool_graph_print_cur_min_max_avg risk_unknown) \
-	STACK:risk_unknown#df2060:"Unknown.................................................."
+	STACK:risk_48#df68df:"Periodic-Flow............................................" \
+	$(rrdtool_graph_print_cur_min_max_avg risk_48) \
+	STACK:risk_49#dfffdf:"Minor-Issues............................................." \
+	$(rrdtool_graph_print_cur_min_max_avg risk_49) \
+	STACK:risk_unknown#df2060:"Unknown.................................................." \
+	$(rrdtool_graph_print_cur_min_max_avg risk_unknown)
