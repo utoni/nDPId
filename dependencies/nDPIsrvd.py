@@ -421,6 +421,7 @@ class nDPIsrvdSocket:
             try:
                 json_dict = json.loads(received_line[0].decode('ascii', errors='replace'), strict=True)
             except json.decoder.JSONDecodeError as e:
+                json_dict = dict()
                 self.failed_lines += [received_line]
                 self.lines = self.lines[1:]
                 raise(e)

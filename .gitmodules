@@ -8,4 +8,4 @@
 	url = https://gitlab.com/verzulli/ndpid-rt-analyzer.git
 [submodule "examples/js-rt-analyzer-frontend"]
 	path = examples/js-rt-analyzer-frontend
-	url = git@gitlab.com:verzulli/ndpid-rt-analyzer-frontend.git
+	url = https://gitlab.com/verzulli/ndpid-rt-analyzer-frontend.git

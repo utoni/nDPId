@@ -53,7 +53,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+          submodules: false
+          fetch-depth: 1
 
       - name: Build
         uses: openwrt/gh-action-sdk@master
