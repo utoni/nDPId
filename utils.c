@@ -144,6 +144,12 @@ int daemonize_with_pidfile(char const * const pidfile)
 
     if (daemonize != 0)
     {
+        if (pidfile == NULL)
+        {
+            logger_early(1, "%s", "Missing pidfile.");
+            return 1;
+        }
+
         if (is_daemon_running(pidfile, ps) != 0)
         {
             logger_early(1, "Pidfile %s found and daemon %s still running", pidfile, ps);
