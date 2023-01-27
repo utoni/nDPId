@@ -235,6 +235,10 @@ def onFlowCleanup(instance, current_flow, global_user_data):
 def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
     stats = global_user_data
     stats.update(json_dict, current_flow)
+
+    if 'packet_event_id' in json_dict:
+        return True
+
     stats.resetStatus()
 
     instance_and_source = ''
