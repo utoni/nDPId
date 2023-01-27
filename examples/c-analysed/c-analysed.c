@@ -148,7 +148,7 @@ static void csv_buf_add(csv_buf_t buf, size_t * const csv_buf_used, char const *
 {
     size_t len;
 
-    if (siz_len > 1 && str != NULL)
+    if (siz_len > 0 && str != NULL)
     {
         len = MIN(BUFFER_REMAINING(*csv_buf_used), siz_len);
         if (len == 0)
@@ -564,8 +564,6 @@ static int mainloop(void)
 
 int main(int argc, char ** argv)
 {
-    init_logging("nDPIsrvd-analysed");
-
     sock = nDPIsrvd_socket_init(0, 0, 0, 0, simple_json_callback, NULL, NULL);
     if (sock == NULL)
     {
