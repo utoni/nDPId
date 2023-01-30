@@ -280,7 +280,7 @@ if __name__ == '__main__':
                     X += getRelevantFeaturesCSV(line)
                     y += [isProtoClass(args.proto_class, line['proto'])]
                 except RuntimeError as err:
-                    print('Error: `{}\'\non line: {}'.format(err, line))
+                    print('Error: `{}\'\non line {}: {}'.format(err, reader.line_num - 1, line))
 
             sys.stderr.write('CSV data set contains {} entries.\n'.format(len(X)))
 
