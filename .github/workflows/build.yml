@@ -29,19 +29,20 @@ jobs:
         include:
           - compiler: "default-cc"
             os: "ubuntu-latest"
-            sanitizer: ""
-          - compiler: "default-cc"
-            os: "ubuntu-latest"
             sanitizer: "-DENABLE_SANITIZER=ON"
+            coverage: "-DENABLE_COVERAGE=ON"
           - compiler: "clang-12"
             os: "ubuntu-latest"
             sanitizer: "-DENABLE_SANITIZER_THREAD=ON"
+            coverage: "-DENABLE_COVERAGE=ON"
           - compiler: "gcc-10"
             os: "ubuntu-latest"
             sanitizer: "-DENABLE_SANITIZER=ON"
+            coverage: "-DENABLE_COVERAGE=OFF"
           - compiler: "gcc-7"
             os: "ubuntu-18.04"
             sanitizer: "-DENABLE_SANITIZER=ON"
+            coverage: "-DENABLE_COVERAGE=OFF"
 
     steps:
       - uses: actions/checkout@v3
@@ -70,14 +71,14 @@ jobs:
       - name: Configure nDPId
         run: |
           mkdir build && cd build
-          cmake .. -DENABLE_SYSTEMD=ON -DENABLE_COVERAGE=ON -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON ${{ matrix.sanitizer }} ${{ matrix.ndpid_zlib }} ${{ matrix.ndpid_gcrypt }}
+          cmake .. -DENABLE_SYSTEMD=ON -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON ${{ matrix.coverage }} ${{ matrix.sanitizer }} ${{ matrix.ndpid_zlib }} ${{ matrix.ndpid_gcrypt }}
       - name: Build nDPId
         run: |
           make -C build all VERBOSE=1
       - name: Build single nDPId executable (invoke CC directly)
-        if: !startsWith(matrix.sanitizer, '-DENABLE_SANITIZER') && startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=OFF') && startsWith(matrix.ndpid_zlib, '-DENABLE_ZLIB=ON')
+        if: startsWith(matrix.coverage, '-DENABLE_COVERAGE=OFF') && startsWith(matrix.sanitizer, '-DENABLE_SANITIZER=ON') && startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=OFF') && startsWith(matrix.ndpid_zlib, '-DENABLE_ZLIB=ON')
         run: |
-          cc nDPId.c utils.c -I./build/libnDPI/include/ndpi -I. -I./dependencies -I./dependencies/jsmn -I./dependencies/uthash/include -o /tmp/a.out -lpcap ./build/libnDPI/lib/libndpi.a -pthread -lm -lz
+          cc -fsanitize=address -fsanitize=undefined -fno-sanitize=alignment -fsanitize=enum -fsanitize=leak nDPId.c utils.c -I./build/libnDPI/include/ndpi -I. -I./dependencies -I./dependencies/jsmn -I./dependencies/uthash/include -o /tmp/a.out -lpcap ./build/libnDPI/lib/libndpi.a -pthread -lm -lz
       - name: Test EXEC
         run: |
           ./build/nDPId-test || test $? -eq 1
@@ -92,6 +93,7 @@ jobs:
           make -C ./build daemon VERBOSE=1
           make -C ./build daemon VERBOSE=1
       - name: Coverage
+        if: startsWith(matrix.coverage, '-DENABLE_COVERAGE=ON')
         run: |
           make -C ./build coverage
       - name: Dist
@@ -116,6 +118,6 @@ jobs:
           echo "wget returned: ${WGET_RET}"
           test $WGET_RET -ne 8 || echo "::warning file=nDPId.c::New libnDPI release required to build against release tarball."
           test $WGET_RET -ne 0 || { tar -xzvf ${{ matrix.ndpi_min_version }}.tar.gz && cd nDPI-${{ matrix.ndpi_min_version }} && ./autogen.sh --prefix=/usr --with-only-libndpi CC=${{ matrix.compiler }} CXX=false CFLAGS='-Werror' && sudo make install && cd .. ; }
-          test $WGET_RET -ne 0 || { echo "running cmake .."; cmake .. -DENABLE_COVERAGE=ON -DBUILD_EXAMPLES=ON -DBUILD_NDPI=OFF -DENABLE_SANITIZER=ON ${{ matrix.ndpi_min_version }} ; }
+          test $WGET_RET -ne 0 || { echo "running cmake .."; cmake .. -DBUILD_EXAMPLES=ON -DBUILD_NDPI=OFF -DENABLE_SANITIZER=OFF ${{ matrix.coverage }} ${{ matrix.ndpi_min_version }} ; }
           test $WGET_RET -ne 0 || { echo "running make .."; make all VERBOSE=1 ; }
           test $WGET_RET -eq 0 -o $WGET_RET -eq 8
