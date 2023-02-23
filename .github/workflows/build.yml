@@ -25,8 +25,11 @@ jobs:
         os: ["ubuntu-latest", "ubuntu-18.04"]
         ndpid_gcrypt: ["-DNDPI_WITH_GCRYPT=OFF", "-DNDPI_WITH_GCRYPT=ON"]
         ndpid_zlib: ["-DENABLE_ZLIB=OFF", "-DENABLE_ZLIB=ON"]
-        ndpi_min_version: ["4.5"]
+        ndpi_min_version: ["4.6"]
         include:
+          - compiler: "default-cc"
+            os: "ubuntu-latest"
+            sanitizer: ""
           - compiler: "default-cc"
             os: "ubuntu-latest"
             sanitizer: "-DENABLE_SANITIZER=ON"
@@ -71,6 +74,10 @@ jobs:
       - name: Build nDPId
         run: |
           make -C build all VERBOSE=1
+      - name: Build single nDPId executable (invoke CC directly)
+        if: !startsWith(matrix.sanitizer, '-DENABLE_SANITIZER') && startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=OFF') && startsWith(matrix.ndpid_zlib, '-DENABLE_ZLIB=ON')
+        run: |
+          cc nDPId.c utils.c -I./build/libnDPI/include/ndpi -I. -I./dependencies -I./dependencies/jsmn -I./dependencies/uthash/include -o /tmp/a.out -lpcap ./build/libnDPI/lib/libndpi.a -pthread -lm -lz
       - name: Test EXEC
         run: |
           ./build/nDPId-test || test $? -eq 1
