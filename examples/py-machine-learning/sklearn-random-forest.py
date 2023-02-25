@@ -168,6 +168,9 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
     return True
 
 def isProtoClass(proto_class, line):
+    if type(proto_class) != list or type(line) != str:
+        raise TypeError('Invalid type: {}/{}.'.format(type(proto_class), type(line)))
+
     s = line.lower()
 
     for x in range(len(proto_class)):
@@ -278,9 +281,19 @@ if __name__ == '__main__':
             for line in reader:
                 try:
                     X += getRelevantFeaturesCSV(line)
-                    y += [isProtoClass(args.proto_class, line['proto'])]
                 except RuntimeError as err:
-                    print('Error: `{}\'\non line {}: {}'.format(err, reader.line_num - 1, line))
+                    print('Runtime Error: `{}\'\non line {}: {}'.format(err, reader.line_num - 1, line))
+                    continue
+                except TypeError as err:
+                    print('Type Error: `{}\'\non line {}: {}'.format(err, reader.line_num - 1, line))
+                    continue
+
+                try:
+                    y += [isProtoClass(args.proto_class, line['proto'])]
+                except TypeError as err:
+                    X.pop()
+                    print('Type Error: `{}\'\non line {}: {}'.format(err, reader.line_num - 1, line))
+                    continue
 
             sys.stderr.write('CSV data set contains {} entries.\n'.format(len(X)))
 

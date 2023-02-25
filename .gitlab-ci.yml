@@ -65,6 +65,7 @@ build_and_test_static_libndpi:
     - >
       if ldd ./build-cmake-submodule/nDPId | grep -qoEi libndpi; then \
       echo 'nDPId linked against a static libnDPI should not contain a shared linked libnDPI.' >&2; false; fi
+    - cc nDPId.c utils.c -I./build-cmake-submodule/libnDPI/include/ndpi -I. -I./dependencies -I./dependencies/jsmn -I./dependencies/uthash/include -o /tmp/a.out -lpcap ./build-cmake-submodule/libnDPI/lib/libndpi.a -pthread -lm -lz
   artifacts:
     expire_in: 1 week
     paths:

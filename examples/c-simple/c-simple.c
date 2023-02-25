@@ -253,14 +253,20 @@ int main(int argc, char ** argv)
         enum nDPIsrvd_parse_return parse_ret = nDPIsrvd_parse_all(sock);
         if (parse_ret != PARSE_NEED_MORE_DATA)
         {
-            printf("Could not parse json string: %s\n", nDPIsrvd_enum_to_string(parse_ret));
+            printf("Could not parse json string %s: %.*s\n",
+                   nDPIsrvd_enum_to_string(parse_ret),
+                   nDPIsrvd_json_buffer_length(sock),
+                   nDPIsrvd_json_buffer_string(sock));
             break;
         }
     }
 
     if (main_thread_shutdown == 0 && read_ret != READ_OK)
     {
-        printf("Parse read %s\n", nDPIsrvd_enum_to_string(read_ret));
+        printf("Parse read %s at JSON: %.*s\n",
+               nDPIsrvd_enum_to_string(read_ret),
+               nDPIsrvd_json_buffer_length(sock),
+               nDPIsrvd_json_buffer_string(sock));
     }
 
     return 1;
