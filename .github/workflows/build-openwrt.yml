@@ -7,7 +7,7 @@ on:
       - tmp
   pull_request:
     branches:
-      - master
+      - main
     types: [opened, synchronize, reopened]
   release:
     types: [created]
@@ -57,7 +57,7 @@ jobs:
           fetch-depth: 1
 
       - name: Build
-        uses: openwrt/gh-action-sdk@master
+        uses: openwrt/gh-action-sdk@main
         env:
           ARCH: ${{ matrix.arch }}
           FEED_DIR: ${{ github.workspace }}/packages/openwrt
