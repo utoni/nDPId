@@ -6,7 +6,6 @@
         "packet_id",
         "error_event_id",
         "error_event_name",
-        "datalink",
         "threshold_n",
         "threshold_n_max",
         "threshold_time",
@@ -111,12 +110,6 @@
                 "Max flows to track reached",
                 "Flow memory allocation failed"
             ]
-        },
-
-        "datalink": {
-            "type": "number",
-            "minimum": 0,
-            "maximum": 292
         },
 
         "threshold_n": {

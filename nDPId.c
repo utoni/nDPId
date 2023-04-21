@@ -2595,6 +2595,7 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
                                      get_l4_protocol_idle_time_external(flow_ext->flow_basic.l4_protocol));
     }
 
+    ndpi_serialize_string_int32(&workflow->ndpi_serializer, "pkt_datalink", pcap_datalink(reader_thread->workflow->pcap_handle));
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_caplen", header->caplen);
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_type", pkt_type);
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_l3_offset", pkt_l3_offset);
@@ -2931,9 +2932,6 @@ __attribute__((format(printf, 3, 4))) static void jsonize_error_eventf(struct nD
     {
         ndpi_serialize_string_string(&workflow->ndpi_serializer, ev, error_event_name_table[ERROR_EVENT_INVALID]);
     }
-    ndpi_serialize_string_int32(&reader_thread->workflow->ndpi_serializer,
-                                "datalink",
-                                pcap_datalink(reader_thread->workflow->pcap_handle));
     ndpi_serialize_string_uint32(&reader_thread->workflow->ndpi_serializer, "threshold_n", workflow->error_count);
     ndpi_serialize_string_uint32(&reader_thread->workflow->ndpi_serializer,
                                  "threshold_n_max",
@@ -3555,10 +3553,10 @@ static void ndpi_process_packet(uint8_t * const args,
     if (workflow->last_global_time < time_us)
     {
         workflow->last_global_time = time_us;
-        if (workflow->last_thread_time == 0)
-        {
-            workflow->last_thread_time = time_us;
-        }
+    }
+    if (workflow->last_thread_time == 0)
+    {
+        workflow->last_thread_time = time_us;
     }
 
     do_periodically_work(reader_thread);

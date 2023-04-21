@@ -6,6 +6,7 @@
         "packet_id",
         "packet_event_id",
         "packet_event_name",
+        "pkt_datalink",
         "pkt_caplen",
         "pkt_type",
         "pkt_l3_offset",
@@ -74,6 +75,11 @@
         "flow_idle_time": {
             "type": "number",
             "minimum": 1
+        },
+        "pkt_datalink": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 292
         },
         "pkt_caplen": {
             "type": "number",
