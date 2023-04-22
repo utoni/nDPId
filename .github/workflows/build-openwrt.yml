@@ -59,7 +59,7 @@ jobs:
       - name: Build
         uses: openwrt/gh-action-sdk@main
         env:
-          ARCH: ${{ matrix.arch }}
+          ARCH: ${{ matrix.arch }}-snapshot
           FEED_DIR: ${{ github.workspace }}/packages/openwrt
           FEEDNAME: ndpid_openwrt_packages_ci
           PACKAGES: nDPId-testing
