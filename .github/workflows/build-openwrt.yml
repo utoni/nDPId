@@ -20,9 +20,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - arch: arc_archs
-            target: archs38-generic
-
           - arch: arm_cortex-a9_vfpv3-d16
             target: mvebu-cortexa9
 
@@ -34,9 +31,6 @@ jobs:
 
           - arch: powerpc_464fp
             target: apm821xx-nand
-
-          - arch: powerpc_8540
-            target: mpc85xx-p1010
 
           - arch: aarch64_cortex-a53
             target: mvebu-cortexa53

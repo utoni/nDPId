@@ -22,7 +22,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: ["ubuntu-latest", "ubuntu-18.04"]
+        os: ["ubuntu-latest", "ubuntu-20.04"]
         ndpid_gcrypt: ["-DNDPI_WITH_GCRYPT=OFF", "-DNDPI_WITH_GCRYPT=ON"]
         ndpid_zlib: ["-DENABLE_ZLIB=OFF", "-DENABLE_ZLIB=ON"]
         ndpi_min_version: ["4.6"]
@@ -40,7 +40,7 @@ jobs:
             sanitizer: "-DENABLE_SANITIZER=ON"
             coverage: "-DENABLE_COVERAGE=OFF"
           - compiler: "gcc-7"
-            os: "ubuntu-18.04"
+            os: "ubuntu-20.04"
             sanitizer: "-DENABLE_SANITIZER=ON"
             coverage: "-DENABLE_COVERAGE=OFF"
 
