@@ -1,0 +1,7 @@
+     DAEMON-EVENT: init
+              new: [.....1] [ip4][..udp] [......10.0.2.15][59751] -> [.......10.0.2.3][...53] 
+         detected: [.....1] [ip4][..udp] [......10.0.2.15][59751] -> [.......10.0.2.3][...53] [DNS.BitTorrent][Unknown][Network][Acceptable][utorrent.com]
+                   RISK: Unidirectional Traffic
+ detection-update: [.....1] [ip4][..udp] [......10.0.2.15][59751] -> [.......10.0.2.3][...53] [DNS.BitTorrent][Unknown][Network][Acceptable][utorrent.com]
+             idle: [.....1] [ip4][..udp] [......10.0.2.15][59751] -> [.......10.0.2.3][...53] [DNS.BitTorrent][Unknown][Network][Acceptable]
+     DAEMON-EVENT: shutdown

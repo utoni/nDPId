@@ -278,6 +278,12 @@
                         },
                         "6": {
                             "type": "string"
+                        },
+                        "7": {
+                            "type": "string"
+                        },
+                        "8": {
+                            "type": "string"
                         }
                     },
                     "additionalProperties": false

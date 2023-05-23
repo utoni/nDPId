@@ -1,0 +1,78 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..udp] [..192.168.1.109][57833] -> [.216.58.212.101][..443] 
+         detected: [.....1] [ip4][..udp] [..192.168.1.109][57833] -> [.216.58.212.101][..443] [QUIC.GMail][Google][Email][Acceptable][mail.google.com]
+                   RISK: Unidirectional Traffic
+          analyse: [.....1] [ip4][..udp] [..192.168.1.109][57833] -> [.216.58.212.101][..443] [QUIC.GMail][Google][Email][Acceptable]
+                                        min|      max|      avg|   stddev|       variance| entropy
+                   [IAT.........:     0.000|    3.198|    0.584|    0.964|     929164.558|   3.400]
+                   [PKTLEN......:    47.000| 1378.000|  309.100|  382.900|     146578.800|   4.100]
+                   [BINS(c->s)..: 0,8,0,1,1,1,1,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0]
+                   [BINS(s->c)..: 4,4,0,0,1,1,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0]
+                   [DIRECTIONS..: 0,0,1,0,1,1,0,1,0,0,1,1,0,0,1,1,1,0,0,0,0,1,1,1,1,0,1,0,0,1,1,0]
+                   [IATS(ms)....: 46.0,60.1,14.8,65.4,2.5,93.4,168.1,168.1,622.7,681.3,0.0,58.0,3119.1,3197.6,0.0,0.0,54.1,25.5,1951.1,28.6,2034.7,28.3,0.0,0.0,56.9,470.8,496.4,2190.2,2289.8,44.7,126.0]
+                   [PKTLENS.....: 1378,464,1378,65,60,711,68,711,65,200,494,56,68,180,156,55,87,68,65,241,149,63,57,226,47,74,201,65,1176,63,744,455]
+                   [ENTROPIES...: 4.8,7.5,7.8,5.7,5.5,7.7,5.7,7.7,5.7,6.9,7.5,5.4,5.8,6.9,6.6,5.4,6.0,5.7,5.6,7.1,6.6,5.5,5.4,7.0,5.1,5.8,6.9,5.6,7.9,5.4,7.8,7.6]
+     DAEMON-EVENT: [Processed: 413 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....2] [ip4][..udp] [.......10.0.0.4][40134] -> [.......10.0.0.3][.6121] 
+         detected: [.....2] [ip4][..udp] [.......10.0.0.4][40134] -> [.......10.0.0.3][.6121] [QUIC][Unknown][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port, Missing SNI TLS Extn, Unidirectional Traffic
+             idle: [.....1] [ip4][..udp] [..192.168.1.109][57833] -> [.216.58.212.101][..443] [QUIC.GMail][Google][Email][Acceptable]
+                   RISK: Unidirectional Traffic
+     DAEMON-EVENT: [Processed: 419 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 1 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....3] [ip4][..udp] [..192.168.1.105][45669] -> [...172.217.16.4][..443] 
+         detected: [.....3] [ip4][..udp] [..192.168.1.105][45669] -> [...172.217.16.4][..443] [QUIC.Google][Google][Web][Acceptable][www.google.com]
+                   RISK: Unidirectional Traffic
+              new: [.....4] [ip4][..udp] [..192.168.1.105][40461] -> [...172.217.16.3][..443] 
+              new: [.....5] [ip4][..udp] [..192.168.1.105][34438] -> [.216.58.210.238][..443] 
+         detected: [.....5] [ip4][..udp] [..192.168.1.105][34438] -> [.216.58.210.238][..443] [QUIC.YouTube][Google][Media][Fun][www.youtube.com]
+                   RISK: Unidirectional Traffic
+              new: [.....6] [ip4][..udp] [..192.168.1.105][48445] -> [.216.58.214.110][..443] 
+         detected: [.....6] [ip4][..udp] [..192.168.1.105][48445] -> [.216.58.214.110][..443] [QUIC.YouTube][Google][Media][Fun][i.ytimg.com]
+                   RISK: Unidirectional Traffic
+              new: [.....7] [ip4][..udp] [..192.168.1.105][40030] -> [.216.58.201.227][..443] 
+         detected: [.....7] [ip4][..udp] [..192.168.1.105][40030] -> [.216.58.201.227][..443] [QUIC.Google][Google][Web][Acceptable][fonts.gstatic.com]
+                   RISK: Unidirectional Traffic
+              new: [.....8] [ip4][..udp] [..192.168.1.105][55934] -> [.216.58.201.238][..443] 
+         detected: [.....8] [ip4][..udp] [..192.168.1.105][55934] -> [.216.58.201.238][..443] [QUIC.YouTube][Google][Media][Fun][s.ytimg.com]
+                   RISK: Unidirectional Traffic
+              new: [.....9] [ip4][..udp] [..192.168.1.105][53817] -> [.216.58.210.225][..443] 
+         detected: [.....9] [ip4][..udp] [..192.168.1.105][53817] -> [.216.58.210.225][..443] [QUIC.YouTube][Google][Media][Fun][yt3.ggpht.com]
+                   RISK: Unidirectional Traffic
+             idle: [.....2] [ip4][..udp] [.......10.0.0.4][40134] -> [.......10.0.0.3][.6121] [QUIC][Unknown][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port, Missing SNI TLS Extn, Unidirectional Traffic
+     DAEMON-EVENT: [Processed: 449 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 7 / 9|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [....10] [ip4][..udp] [..192.168.1.109][35236] -> [.216.58.210.206][..443] 
+         detected: [....10] [ip4][..udp] [..192.168.1.109][35236] -> [.216.58.210.206][..443] [QUIC.YouTube][Google][Media][Fun][www.youtube.com]
+                   RISK: Unidirectional Traffic
+          analyse: [....10] [ip4][..udp] [..192.168.1.109][35236] -> [.216.58.210.206][..443] [QUIC.YouTube][Google][Media][Fun]
+                                        min|      max|      avg|   stddev|       variance| entropy
+                   [IAT.........:     0.000|    0.829|    0.062|    0.199|      39440.069|   2.000]
+                   [PKTLEN......:    61.000| 1378.000|  857.800|  620.800|     385421.500|   4.500]
+                   [BINS(c->s)..: 0,8,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0]
+                   [BINS(s->c)..: 0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,16,0,0,0,0,0]
+                   [DIRECTIONS..: 0,0,1,1,0,0,1,0,1,1,1,0,1,1,1,0,0,1,1,0,1,1,1,0,1,0,1,1,1,0,1,1]
+                   [IATS(ms)....: 0.6,35.4,0.0,40.5,0.1,24.0,26.0,16.8,0.1,0.5,35.5,51.7,0.4,0.0,26.6,25.6,828.6,0.0,803.2,0.6,0.4,0.2,0.8,0.2,0.4,0.2,0.3,0.2,0.5,0.3,0.2]
+                   [PKTLENS.....: 1378,373,1378,1378,1378,369,65,68,1378,61,61,71,1378,1378,1174,68,65,1378,1378,68,1378,1378,1378,68,1378,68,1378,1378,1378,68,1378,1378]
+                   [ENTROPIES...: 5.1,7.4,7.6,2.6,5.4,7.4,5.3,5.5,7.9,5.5,5.5,5.7,7.9,7.9,7.8,5.6,5.6,7.9,7.9,5.7,7.9,7.9,7.9,5.6,7.9,5.7,7.9,7.8,7.9,5.6,7.9,7.9]
+             idle: [.....7] [ip4][..udp] [..192.168.1.105][40030] -> [.216.58.201.227][..443] [QUIC.Google][Google][Web][Acceptable]
+                   RISK: Unidirectional Traffic
+          guessed: [.....4] [ip4][..udp] [..192.168.1.105][40461] -> [...172.217.16.3][..443] [QUIC][Google][Web][Acceptable]
+             idle: [.....4] [ip4][..udp] [..192.168.1.105][40461] -> [...172.217.16.3][..443] 
+             idle: [.....6] [ip4][..udp] [..192.168.1.105][48445] -> [.216.58.214.110][..443] [QUIC.YouTube][Google][Media][Fun]
+                   RISK: Unidirectional Traffic
+             idle: [.....5] [ip4][..udp] [..192.168.1.105][34438] -> [.216.58.210.238][..443] [QUIC.YouTube][Google][Media][Fun]
+                   RISK: Unidirectional Traffic
+             idle: [.....3] [ip4][..udp] [..192.168.1.105][45669] -> [...172.217.16.4][..443] [QUIC.Google][Google][Web][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [....10] [ip4][..udp] [..192.168.1.109][35236] -> [.216.58.210.206][..443] [QUIC.YouTube][Google][Media][Fun]
+                   RISK: Unidirectional Traffic
+             idle: [.....9] [ip4][..udp] [..192.168.1.105][53817] -> [.216.58.210.225][..443] [QUIC.YouTube][Google][Media][Fun]
+                   RISK: Unidirectional Traffic
+             idle: [.....8] [ip4][..udp] [..192.168.1.105][55934] -> [.216.58.201.238][..443] [QUIC.YouTube][Google][Media][Fun]
+                   RISK: Unidirectional Traffic
+     DAEMON-EVENT: shutdown

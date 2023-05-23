@@ -1,0 +1,8 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..udp] [.192.168.13.203][40739] -> [..192.168.13.57][56515] 
+         detected: [.....1] [ip4][..udp] [.192.168.13.203][40739] -> [..192.168.13.57][56515] [DTLS][Unknown][Web][Safe]
+                   RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Unidirectional Traffic
+             idle: [.....1] [ip4][..udp] [.192.168.13.203][40739] -> [..192.168.13.57][56515] 
+     DAEMON-EVENT: shutdown

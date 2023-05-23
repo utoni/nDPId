@@ -1,0 +1,14 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..udp] [.......10.2.3.2][..500] -> [.......10.3.4.4][..500] 
+         detected: [.....1] [ip4][..udp] [.......10.2.3.2][..500] -> [.......10.3.4.4][..500] [IPSec][Unknown][VPN][Safe]
+                   RISK: Unidirectional Traffic
+              new: [.....2] [ip4][...51] [.......10.2.3.2] -> [.......10.3.4.4] 
+         detected: [.....2] [ip4][...51] [.......10.2.3.2] -> [.......10.3.4.4] [IPSec][Unknown][VPN][Safe]
+                   RISK: Unidirectional Traffic
+             idle: [.....1] [ip4][..udp] [.......10.2.3.2][..500] -> [.......10.3.4.4][..500] [IPSec][Unknown][VPN][Safe]
+                   RISK: Unidirectional Traffic
+             idle: [.....2] [ip4][...51] [.......10.2.3.2] -> [.......10.3.4.4] [IPSec][Unknown][VPN][Safe]
+                   RISK: Unidirectional Traffic
+     DAEMON-EVENT: shutdown

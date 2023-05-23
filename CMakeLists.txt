@@ -214,12 +214,8 @@ if(BUILD_NDPI)
         BUILD_IN_SOURCE 1)
 
     add_custom_target(clean-libnDPI
-        COMMAND rm -rf ${CMAKE_BINARY_DIR}/libnDPI ${CMAKE_BINARY_DIR}/libnDPI-prefix
+        COMMAND test -r ${CMAKE_SOURCE_DIR}/libnDPI/Makefile && rm -rf ${CMAKE_BINARY_DIR}/libnDPI && git submodule deinit ${CMAKE_SOURCE_DIR}/libnDPI || true
     )
-    add_custom_target(distclean-libnDPI
-        COMMAND cd ${CMAKE_SOURCE_DIR}/libnDPI && git clean -df . && git clean -dfX .
-    )
-    add_dependencies(distclean-libnDPI clean-libnDPI)
 
     set(STATIC_LIBNDPI_INSTALLDIR "${CMAKE_BINARY_DIR}/libnDPI")
     add_dependencies(nDPId libnDPI)

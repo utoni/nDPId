@@ -1,7 +1,0 @@
-     DAEMON-EVENT: init
-     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1] [ip6][..udp] [................2bc6:b5ac:cb3b:676b::18][..443] -> [3dba:3762:c186:e122:89b0:5170:a86c:ecff][53129] 
-          guessed: [.....1] [ip6][..udp] [................2bc6:b5ac:cb3b:676b::18][..443] -> [3dba:3762:c186:e122:89b0:5170:a86c:ecff][53129] [QUIC][Unknown][Web][Acceptable]
-             idle: [.....1] [ip6][..udp] [................2bc6:b5ac:cb3b:676b::18][..443] -> [3dba:3762:c186:e122:89b0:5170:a86c:ecff][53129] 
-     DAEMON-EVENT: shutdown

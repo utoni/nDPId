@@ -1,0 +1,55 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [..192.168.1.178][61805] -> [....82.81.46.13][10443] 
+         detected: [.....1] [ip4][..tcp] [..192.168.1.178][61805] -> [....82.81.46.13][10443] [TLS][Unknown][Web][Safe][82.81.46.13]
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, TLS (probably) Not Carrying HTTPS
+ detection-update: [.....1] [ip4][..tcp] [..192.168.1.178][61805] -> [....82.81.46.13][10443] [TLS][Unknown][Web][Safe][82.81.46.13]
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, TLS (probably) Not Carrying HTTPS
+ detection-update: [.....1] [ip4][..tcp] [..192.168.1.178][61805] -> [....82.81.46.13][10443] [TLS.FortiClient][Unknown][VPN][Safe][82.81.46.13]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+              new: [.....2] [ip4][..tcp] [..192.168.1.178][61806] -> [....82.81.46.13][10443] 
+         detected: [.....2] [ip4][..tcp] [..192.168.1.178][61806] -> [....82.81.46.13][10443] [TLS.FortiClient][Unknown][VPN][Safe][82.81.46.13]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+ detection-update: [.....2] [ip4][..tcp] [..192.168.1.178][61806] -> [....82.81.46.13][10443] [TLS.FortiClient][Unknown][VPN][Safe][82.81.46.13]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+ detection-update: [.....2] [ip4][..tcp] [..192.168.1.178][61806] -> [....82.81.46.13][10443] [TLS.FortiClient][Unknown][VPN][Safe][82.81.46.13]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+              new: [.....3] [ip4][..tcp] [..192.168.1.178][61811] -> [....82.81.46.13][10443] 
+         detected: [.....3] [ip4][..tcp] [..192.168.1.178][61811] -> [....82.81.46.13][10443] [TLS.FortiClient][Unknown][VPN][Safe][82.81.46.13]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+ detection-update: [.....3] [ip4][..tcp] [..192.168.1.178][61811] -> [....82.81.46.13][10443] [TLS.FortiClient][Unknown][VPN][Safe][82.81.46.13]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+ detection-update: [.....3] [ip4][..tcp] [..192.168.1.178][61811] -> [....82.81.46.13][10443] [TLS.FortiClient][Unknown][VPN][Safe][82.81.46.13]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+              new: [.....4] [ip4][..tcp] [..192.168.1.178][61812] -> [....82.81.46.13][10443] 
+         detected: [.....4] [ip4][..tcp] [..192.168.1.178][61812] -> [....82.81.46.13][10443] [TLS.FortiClient][Unknown][VPN][Safe][82.81.46.13]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+ detection-update: [.....4] [ip4][..tcp] [..192.168.1.178][61812] -> [....82.81.46.13][10443] [TLS.FortiClient][Unknown][VPN][Safe][82.81.46.13]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+ detection-update: [.....4] [ip4][..tcp] [..192.168.1.178][61812] -> [....82.81.46.13][10443] [TLS.FortiClient][Unknown][VPN][Safe][82.81.46.13]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+              new: [.....5] [ip4][..tcp] [..192.168.1.178][61820] -> [....82.81.46.13][10443] 
+         detected: [.....5] [ip4][..tcp] [..192.168.1.178][61820] -> [....82.81.46.13][10443] [TLS.FortiClient][Unknown][VPN][Safe][82.81.46.13]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+ detection-update: [.....5] [ip4][..tcp] [..192.168.1.178][61820] -> [....82.81.46.13][10443] [TLS.FortiClient][Unknown][VPN][Safe][82.81.46.13]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+ detection-update: [.....5] [ip4][..tcp] [..192.168.1.178][61820] -> [....82.81.46.13][10443] [TLS.FortiClient][Unknown][VPN][Safe][82.81.46.13]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+          analyse: [.....5] [ip4][..tcp] [..192.168.1.178][61820] -> [....82.81.46.13][10443] [TLS.FortiClient][Unknown][VPN][Safe]
+                                        min|      max|      avg|   stddev|       variance| entropy
+                   [IAT.........:     0.000|    0.495|    0.071|    0.112|      12454.003|   3.700]
+                   [PKTLEN......:    52.000| 1492.000|  253.000|  343.000|     117623.000|   4.100]
+                   [BINS(c->s)..: 9,4,1,0,1,0,0,0,0,3,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 3,5,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]
+                   [DIRECTIONS..: 0,1,0,0,1,1,1,0,0,1,0,0,1,0,0,1,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1]
+                   [IATS(ms)....: 62.6,62.7,2.3,64.5,19.9,1.9,84.0,11.2,85.3,74.2,429.6,495.0,65.4,84.5,160.2,75.7,71.6,6.3,142.9,0.6,65.6,0.3,0.2,2.9,4.0,0.0,64.2,57.2,0.4,4.0,0.1]
+                   [PKTLENS.....: 64,60,52,365,52,1492,1033,52,210,294,52,582,827,52,348,923,52,343,99,52,99,52,99,52,99,117,103,99,52,99,111,111]
+                   [ENTROPIES...: 4.4,5.3,5.0,6.1,5.2,7.1,7.7,5.1,6.7,7.2,5.0,7.6,7.7,5.1,7.4,7.8,5.1,7.4,6.0,5.2,6.1,5.2,6.1,5.1,6.0,6.2,6.0,6.2,5.1,6.1,6.2,6.3]
+              end: [.....1] [ip4][..tcp] [..192.168.1.178][61805] -> [....82.81.46.13][10443] 
+              end: [.....2] [ip4][..tcp] [..192.168.1.178][61806] -> [....82.81.46.13][10443] 
+              end: [.....3] [ip4][..tcp] [..192.168.1.178][61811] -> [....82.81.46.13][10443] 
+              end: [.....4] [ip4][..tcp] [..192.168.1.178][61812] -> [....82.81.46.13][10443] 
+             idle: [.....5] [ip4][..tcp] [..192.168.1.178][61820] -> [....82.81.46.13][10443] [TLS.FortiClient][Unknown][VPN][Safe]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+     DAEMON-EVENT: shutdown

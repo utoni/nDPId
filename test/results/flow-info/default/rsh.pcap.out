@@ -1,0 +1,14 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [......127.0.0.1][.1023] -> [......127.0.0.1][..514] 
+         detected: [.....1] [ip4][..tcp] [......127.0.0.1][.1023] -> [......127.0.0.1][..514] [RSH][Unknown][RemoteAccess][Unsafe]
+                   RISK: Unsafe Protocol, Clear-Text Credentials
+              new: [.....2] [ip4][..tcp] [......127.0.0.1][.1021] -> [......127.0.0.1][..514] 
+         detected: [.....2] [ip4][..tcp] [......127.0.0.1][.1021] -> [......127.0.0.1][..514] [RSH][Unknown][RemoteAccess][Unsafe]
+                   RISK: Unsafe Protocol, Clear-Text Credentials
+              end: [.....2] [ip4][..tcp] [......127.0.0.1][.1021] -> [......127.0.0.1][..514] [RSH][Unknown][RemoteAccess][Unsafe]
+                   RISK: Unsafe Protocol, Clear-Text Credentials
+              end: [.....1] [ip4][..tcp] [......127.0.0.1][.1023] -> [......127.0.0.1][..514] [RSH][Unknown][RemoteAccess][Unsafe]
+                   RISK: Unsafe Protocol, Clear-Text Credentials
+     DAEMON-EVENT: shutdown

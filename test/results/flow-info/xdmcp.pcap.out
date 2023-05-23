@@ -1,7 +1,0 @@
-     DAEMON-EVENT: init
-     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1] [ip4][..udp] [.......10.1.2.2][61426] -> [.......10.1.2.4][..177] 
-         detected: [.....1] [ip4][..udp] [.......10.1.2.2][61426] -> [.......10.1.2.4][..177] [XDMCP][Unknown][RemoteAccess][Acceptable]
-             idle: [.....1] [ip4][..udp] [.......10.1.2.2][61426] -> [.......10.1.2.4][..177] [XDMCP][Unknown][RemoteAccess][Acceptable]
-     DAEMON-EVENT: shutdown

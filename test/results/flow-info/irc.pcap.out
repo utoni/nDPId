@@ -1,9 +1,0 @@
-     DAEMON-EVENT: init
-     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1] [ip4][..tcp] [.10.180.156.249][45921] -> [...38.229.70.20][.8000] 
-         detected: [.....1] [ip4][..tcp] [.10.180.156.249][45921] -> [...38.229.70.20][.8000] [IRC][Unknown][Chat][Unsafe]
-                   RISK: Known Proto on Non Std Port, Unsafe Protocol
-             idle: [.....1] [ip4][..tcp] [.10.180.156.249][45921] -> [...38.229.70.20][.8000] [IRC][Unknown][Chat][Unsafe]
-                   RISK: Known Proto on Non Std Port, Unsafe Protocol
-     DAEMON-EVENT: shutdown

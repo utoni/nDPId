@@ -1,0 +1,9 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..udp] [.74.125.134.127][19305] -> [....10.89.61.13][56406] 
+         detected: [.....1] [ip4][..udp] [.74.125.134.127][19305] -> [....10.89.61.13][56406] [STUN.GoogleHangoutDuo][Google][VoIP][Acceptable][]
+                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+             idle: [.....1] [ip4][..udp] [.74.125.134.127][19305] -> [....10.89.61.13][56406] [STUN.GoogleHangoutDuo][Google][VoIP][Acceptable]
+                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+     DAEMON-EVENT: shutdown

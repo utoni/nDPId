@@ -1,0 +1,24 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [..192.168.11.11][51587] -> [.173.194.35.191][..443] [MIDSTREAM] 
+         detected: [.....1] [ip4][..tcp] [..192.168.11.11][51587] -> [.173.194.35.191][..443] [TLS.Google][Google][Web][Acceptable][www.google.it]
+                   RISK: Obsolete TLS (v1.1 or older), Unidirectional Traffic
+              new: [.....2] [ip4][..tcp] [..192.168.11.11][51590] -> [.173.194.35.191][..443] [MIDSTREAM] 
+         detected: [.....2] [ip4][..tcp] [..192.168.11.11][51590] -> [.173.194.35.191][..443] [TLS][Google][Web][Safe][]
+                   RISK: Obsolete TLS (v1.1 or older), Unidirectional Traffic
+              new: [.....3] [ip4][..tcp] [..192.168.11.11][51589] -> [.173.194.35.191][..443] [MIDSTREAM] 
+         detected: [.....3] [ip4][..tcp] [..192.168.11.11][51589] -> [.173.194.35.191][..443] [TLS][Google][Web][Safe][]
+                   RISK: Obsolete TLS (v1.1 or older), Unidirectional Traffic
+              new: [.....4] [ip4][..tcp] [..192.168.11.11][51588] -> [.173.194.35.191][..443] [MIDSTREAM] 
+         detected: [.....4] [ip4][..tcp] [..192.168.11.11][51588] -> [.173.194.35.191][..443] [TLS][Google][Web][Safe][]
+                   RISK: Obsolete TLS (v1.1 or older), Unidirectional Traffic
+              new: [.....5] [ip4][..tcp] [..192.168.11.11][51591] -> [.173.194.35.191][..443] [MIDSTREAM] 
+         detected: [.....5] [ip4][..tcp] [..192.168.11.11][51591] -> [.173.194.35.191][..443] [TLS][Google][Web][Safe][]
+                   RISK: Obsolete TLS (v1.1 or older), Unidirectional Traffic
+             idle: [.....1] [ip4][..tcp] [..192.168.11.11][51587] -> [.173.194.35.191][..443] 
+             idle: [.....4] [ip4][..tcp] [..192.168.11.11][51588] -> [.173.194.35.191][..443] 
+             idle: [.....3] [ip4][..tcp] [..192.168.11.11][51589] -> [.173.194.35.191][..443] 
+             idle: [.....2] [ip4][..tcp] [..192.168.11.11][51590] -> [.173.194.35.191][..443] 
+             idle: [.....5] [ip4][..tcp] [..192.168.11.11][51591] -> [.173.194.35.191][..443] 
+     DAEMON-EVENT: shutdown

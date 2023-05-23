@@ -1,0 +1,29 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..udp] [...192.168.2.27][51925] -> [.172.217.23.111][..443] 
+         detected: [.....1] [ip4][..udp] [...192.168.2.27][51925] -> [.172.217.23.111][..443] [QUIC.YouTubeUpload][Google][Media][Fun][upload.youtube.com]
+                   RISK: Unidirectional Traffic
+              new: [.....2] [ip4][..tcp] [...192.168.2.27][57452] -> [.172.217.23.111][..443] 
+         detected: [.....2] [ip4][..tcp] [...192.168.2.27][57452] -> [.172.217.23.111][..443] [TLS.YouTubeUpload][Google][Media][Fun][upload.youtube.com]
+ detection-update: [.....2] [ip4][..tcp] [...192.168.2.27][57452] -> [.172.217.23.111][..443] [TLS.YouTubeUpload][Google][Media][Fun][upload.youtube.com]
+ detection-update: [.....2] [ip4][..tcp] [...192.168.2.27][57452] -> [.172.217.23.111][..443] [TLS.YouTubeUpload][Google][Media][Fun][upload.youtube.com]
+              new: [.....3] [ip4][..udp] [...192.168.2.27][62232] -> [.172.217.23.111][..443] 
+         detected: [.....3] [ip4][..udp] [...192.168.2.27][62232] -> [.172.217.23.111][..443] [QUIC.YouTubeUpload][Google][Media][Fun][upload.youtube.com]
+                   RISK: Unidirectional Traffic
+          analyse: [.....1] [ip4][..udp] [...192.168.2.27][51925] -> [.172.217.23.111][..443] [QUIC.YouTubeUpload][Google][Media][Fun]
+                                        min|      max|      avg|   stddev|       variance| entropy
+                   [IAT.........:     0.000|    1.883|    0.207|    0.510|     259988.193|   2.400]
+                   [PKTLEN......:    44.000| 1378.000|  767.800|  621.300|     386013.800|   4.400]
+                   [BINS(c->s)..: 0,6,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,0,0,0,0,0]
+                   [BINS(s->c)..: 4,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0]
+                   [DIRECTIONS..: 0,1,1,0,0,0,1,1,0,0,1,1,1,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [IATS(ms)....: 56.1,1.0,59.8,1.8,0.4,60.9,0.1,57.5,0.4,30.7,1096.9,0.5,1126.8,0.7,1825.8,1883.1,71.2,0.1,128.5,3.3,2.8,0.4,0.7,1.0,1.1,1.2,1.1,1.2,1.1,1.2,1.2]
+                   [PKTLENS.....: 1378,1378,1378,66,1378,410,1378,59,69,66,58,44,597,69,63,330,64,140,44,69,373,1378,1378,1378,1378,1378,1378,1378,1378,1378,1378,1378]
+                   [ENTROPIES...: 2.6,7.5,7.4,5.3,4.6,7.4,7.9,5.4,5.7,5.8,5.5,5.0,7.7,5.6,5.7,7.3,5.5,6.6,5.0,5.7,7.5,7.9,7.9,7.9,7.9,7.9,7.9,7.9,7.9,7.9,7.8,7.9]
+             idle: [.....2] [ip4][..tcp] [...192.168.2.27][57452] -> [.172.217.23.111][..443] 
+             idle: [.....1] [ip4][..udp] [...192.168.2.27][51925] -> [.172.217.23.111][..443] [QUIC.YouTubeUpload][Google][Media][Fun]
+                   RISK: Unidirectional Traffic
+             idle: [.....3] [ip4][..udp] [...192.168.2.27][62232] -> [.172.217.23.111][..443] [QUIC.YouTubeUpload][Google][Media][Fun]
+                   RISK: Unidirectional Traffic
+     DAEMON-EVENT: shutdown

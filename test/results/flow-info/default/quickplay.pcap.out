@@ -1,0 +1,110 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [..10.54.169.250][50668] -> [...120.28.35.41][...80] [MIDSTREAM] 
+         detected: [.....1] [ip4][..tcp] [..10.54.169.250][50668] -> [...120.28.35.41][...80] [HTTP][Unknown][Streaming][Acceptable][api-singtelhawk.quickplay.com]
+                   RISK: Unidirectional Traffic
+              new: [.....2] [ip4][..tcp] [..10.54.169.250][50669] -> [...120.28.35.41][...80] [MIDSTREAM] 
+         detected: [.....2] [ip4][..tcp] [..10.54.169.250][50669] -> [...120.28.35.41][...80] [HTTP][Unknown][Streaming][Acceptable][api-singtelhawk.quickplay.com]
+                   RISK: Unidirectional Traffic
+              new: [.....3] [ip4][..tcp] [..10.54.169.250][33064] -> [....120.28.5.18][...80] [MIDSTREAM] 
+         detected: [.....3] [ip4][..tcp] [..10.54.169.250][33064] -> [....120.28.5.18][...80] [HTTP][Unknown][Streaming][Acceptable][api-singtelhawk.quickplay.com]
+                   RISK: Unidirectional Traffic
+              new: [.....4] [ip4][..tcp] [..10.54.169.250][52285] -> [..173.252.74.22][...80] [MIDSTREAM] 
+         detected: [.....4] [ip4][..tcp] [..10.54.169.250][52285] -> [..173.252.74.22][...80] [HTTP.Facebook][Facebook][SocialNetwork][Fun][www.facebook.com]
+                   RISK: Unidirectional Traffic
+              new: [.....5] [ip4][..tcp] [..10.54.169.250][52288] -> [..173.252.74.22][...80] [MIDSTREAM] 
+         detected: [.....5] [ip4][..tcp] [..10.54.169.250][52288] -> [..173.252.74.22][...80] [HTTP.Facebook][Facebook][SocialNetwork][Fun][www.facebook.com]
+                   RISK: Unidirectional Traffic
+              new: [.....6] [ip4][..tcp] [..10.54.169.250][33277] -> [..120.28.26.231][...80] [MIDSTREAM] 
+         detected: [.....6] [ip4][..tcp] [..10.54.169.250][33277] -> [..120.28.26.231][...80] [HTTP.Google][Unknown][Web][Acceptable][clients3.google.com]
+                   RISK: Unidirectional Traffic
+              new: [.....7] [ip4][..tcp] [..10.54.169.250][44793] -> [....31.13.68.49][...80] [MIDSTREAM] 
+         detected: [.....7] [ip4][..tcp] [..10.54.169.250][44793] -> [....31.13.68.49][...80] [HTTP.Facebook][Facebook][SocialNetwork][Fun][www.facebook.com]
+                   RISK: Unidirectional Traffic
+              new: [.....8] [ip4][..tcp] [..10.54.169.250][44256] -> [....120.28.5.41][...80] [MIDSTREAM] 
+         detected: [.....8] [ip4][..tcp] [..10.54.169.250][44256] -> [....120.28.5.41][...80] [HTTP][Unknown][Streaming][Acceptable][play-singtelhawk.quickplay.com]
+                   RISK: Unidirectional Traffic
+              new: [.....9] [ip4][..tcp] [..10.54.169.250][52007] -> [...120.28.35.40][...80] [MIDSTREAM] 
+         detected: [.....9] [ip4][..tcp] [..10.54.169.250][52007] -> [...120.28.35.40][...80] [HTTP][Unknown][Streaming][Acceptable][vod-singtelhawk.quickplay.com]
+                   RISK: Unidirectional Traffic
+              new: [....10] [ip4][..tcp] [..10.54.169.250][54883] -> [203.205.151.160][...80] [MIDSTREAM] 
+         detected: [....10] [ip4][..tcp] [..10.54.169.250][54883] -> [203.205.151.160][...80] [HTTP_Proxy.QQ][Unknown][Chat][Fun][hkextshort.weixin.qq.com]
+                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+              new: [....11] [ip4][..tcp] [..10.54.169.250][52009] -> [...120.28.35.40][...80] [MIDSTREAM] 
+         detected: [....11] [ip4][..tcp] [..10.54.169.250][52009] -> [...120.28.35.40][...80] [HTTP][Unknown][Streaming][Acceptable][vod-singtelhawk.quickplay.com]
+                   RISK: Unidirectional Traffic
+              new: [....12] [ip4][..tcp] [..10.54.169.250][42761] -> [203.205.129.101][...80] [MIDSTREAM] 
+         detected: [....12] [ip4][..tcp] [..10.54.169.250][42761] -> [203.205.129.101][...80] [HTTP_Proxy.QQ][Tencent][Chat][Fun][hkextshort.weixin.qq.com]
+                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+              new: [....13] [ip4][..tcp] [..10.54.169.250][54885] -> [203.205.151.160][...80] [MIDSTREAM] 
+         detected: [....13] [ip4][..tcp] [..10.54.169.250][54885] -> [203.205.151.160][...80] [HTTP_Proxy.QQ][Unknown][Chat][Fun][hkextshort.weixin.qq.com]
+                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+ detection-update: [....12] [ip4][..tcp] [..10.54.169.250][42761] -> [203.205.129.101][...80] [HTTP_Proxy.QQ][Tencent][Download][Fun][hkextshort.weixin.qq.com]
+                   RISK: Binary App Transfer, Known Proto on Non Std Port
+ detection-update: [....13] [ip4][..tcp] [..10.54.169.250][54885] -> [203.205.151.160][...80] [HTTP_Proxy.QQ][Unknown][Download][Fun][hkextshort.weixin.qq.com]
+                   RISK: Binary App Transfer, Known Proto on Non Std Port
+              new: [....14] [ip4][..tcp] [..10.54.169.250][42762] -> [203.205.129.101][...80] [MIDSTREAM] 
+         detected: [....14] [ip4][..tcp] [..10.54.169.250][42762] -> [203.205.129.101][...80] [HTTP_Proxy.QQ][Tencent][Chat][Fun][hkextshort.weixin.qq.com]
+                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+ detection-update: [....14] [ip4][..tcp] [..10.54.169.250][42762] -> [203.205.129.101][...80] [HTTP_Proxy.QQ][Tencent][Download][Fun][hkextshort.weixin.qq.com]
+                   RISK: Binary App Transfer, Known Proto on Non Std Port
+          analyse: [....11] [ip4][..tcp] [..10.54.169.250][52009] -> [...120.28.35.40][...80] [HTTP][Unknown][Streaming][Acceptable]
+                                        min|      max|      avg|   stddev|       variance| entropy
+                   [IAT.........:     0.183|    5.871|    2.460|    1.331|    1772261.736|   4.700]
+                   [PKTLEN......:    60.000| 1440.000|  640.400|  347.900|     121006.600|   4.800]
+                   [BINS(c->s)..: 0,0,0,0,0,0,0,0,0,0,0,0,0,13,1,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 1,0,0,1,0,1,0,0,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,1,2,0,0,0,0,0,2,0,0,0,0]
+                   [DIRECTIONS..: 0,1,0,1,0,0,1,0,0,1,0,1,0,1,0,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0]
+                   [IATS(ms)....: 2337.9,2470.8,5776.6,5871.2,324.6,2084.5,1689.1,182.6,2170.3,2013.3,645.6,519.6,2223.7,2353.5,480.9,4401.9,3911.8,3909.7,3936.6,2356.5,2338.3,2620.0,2626.5,2264.1,2270.5,2391.5,2349.5,2604.5,2642.0,2224.9,2252.1]
+                   [PKTLENS.....: 484,1440,484,224,569,486,1232,569,486,838,571,60,488,1252,569,486,142,486,642,486,1108,486,1192,486,332,486,1440,486,946,486,564,486]
+                   [ENTROPIES...: 5.9,7.9,6.0,7.1,5.9,5.9,7.8,5.9,5.9,7.7,6.0,5.0,6.0,7.8,6.0,5.9,6.6,5.9,7.7,6.0,7.8,5.9,7.8,6.0,7.3,5.9,7.9,5.9,7.8,5.9,7.6,5.9]
+              new: [....15] [ip4][..tcp] [..10.54.169.250][35670] -> [203.205.147.215][...80] [MIDSTREAM] 
+         detected: [....15] [ip4][..tcp] [..10.54.169.250][35670] -> [203.205.147.215][...80] [HTTP_Proxy.QQ][Tencent][Chat][Fun][hkminorshort.weixin.qq.com]
+                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+ detection-update: [....15] [ip4][..tcp] [..10.54.169.250][35670] -> [203.205.147.215][...80] [HTTP_Proxy.QQ][Tencent][Download][Fun][hkminorshort.weixin.qq.com]
+                   RISK: Binary App Transfer, Known Proto on Non Std Port
+              new: [....16] [ip4][..tcp] [..10.54.169.250][56381] -> [..54.179.140.65][...80] [MIDSTREAM] 
+         detected: [....16] [ip4][..tcp] [..10.54.169.250][56381] -> [..54.179.140.65][...80] [HTTP.Xiaomi][AmazonAWS][Web][Acceptable][api.account.xiaomi.com]
+                   RISK: Unidirectional Traffic
+              new: [....17] [ip4][..tcp] [..10.54.169.250][52017] -> [...120.28.35.40][...80] [MIDSTREAM] 
+         detected: [....17] [ip4][..tcp] [..10.54.169.250][52017] -> [...120.28.35.40][...80] [HTTP][Unknown][Streaming][Acceptable][vod-singtelhawk.quickplay.com]
+                   RISK: Unidirectional Traffic
+              end: [....13] [ip4][..tcp] [..10.54.169.250][54885] -> [203.205.151.160][...80] [HTTP_Proxy.QQ][Unknown][Download][Fun]
+                   RISK: Binary App Transfer, Known Proto on Non Std Port
+              new: [....18] [ip4][..tcp] [..10.54.169.250][52018] -> [...120.28.35.40][...80] [MIDSTREAM] 
+         detected: [....18] [ip4][..tcp] [..10.54.169.250][52018] -> [...120.28.35.40][...80] [HTTP][Unknown][Streaming][Acceptable][vod-singtelhawk.quickplay.com]
+                   RISK: Unidirectional Traffic
+              new: [....19] [ip4][..tcp] [..10.54.169.250][52019] -> [...120.28.35.40][...80] [MIDSTREAM] 
+         detected: [....19] [ip4][..tcp] [..10.54.169.250][52019] -> [...120.28.35.40][...80] [HTTP][Unknown][Streaming][Acceptable][vod-singtelhawk.quickplay.com]
+                   RISK: Unidirectional Traffic
+              new: [....20] [ip4][..tcp] [..10.54.169.250][52021] -> [...120.28.35.40][...80] [MIDSTREAM] 
+         detected: [....20] [ip4][..tcp] [..10.54.169.250][52021] -> [...120.28.35.40][...80] [HTTP][Unknown][Streaming][Acceptable][vod-singtelhawk.quickplay.com]
+                   RISK: Unidirectional Traffic
+              new: [....21] [ip4][..tcp] [..10.54.169.250][52022] -> [...120.28.35.40][...80] [MIDSTREAM] 
+         detected: [....21] [ip4][..tcp] [..10.54.169.250][52022] -> [...120.28.35.40][...80] [HTTP][Unknown][Streaming][Acceptable][vod-singtelhawk.quickplay.com]
+                   RISK: Unidirectional Traffic
+             idle: [.....1] [ip4][..tcp] [..10.54.169.250][50668] -> [...120.28.35.41][...80] [HTTP][Unknown][Streaming][Acceptable]
+             idle: [.....2] [ip4][..tcp] [..10.54.169.250][50669] -> [...120.28.35.41][...80] [HTTP][Unknown][Streaming][Acceptable]
+             idle: [.....7] [ip4][..tcp] [..10.54.169.250][44793] -> [....31.13.68.49][...80] [HTTP.Facebook][Facebook][SocialNetwork][Fun]
+             idle: [....10] [ip4][..tcp] [..10.54.169.250][54883] -> [203.205.151.160][...80] 
+             idle: [....12] [ip4][..tcp] [..10.54.169.250][42761] -> [203.205.129.101][...80] [HTTP_Proxy.QQ][Tencent][Download][Fun]
+                   RISK: Binary App Transfer, Known Proto on Non Std Port
+             idle: [....14] [ip4][..tcp] [..10.54.169.250][42762] -> [203.205.129.101][...80] [HTTP_Proxy.QQ][Tencent][Download][Fun]
+                   RISK: Binary App Transfer, Known Proto on Non Std Port
+             idle: [.....3] [ip4][..tcp] [..10.54.169.250][33064] -> [....120.28.5.18][...80] 
+             idle: [.....6] [ip4][..tcp] [..10.54.169.250][33277] -> [..120.28.26.231][...80] [HTTP.Google][Unknown][Web][Acceptable]
+             idle: [....16] [ip4][..tcp] [..10.54.169.250][56381] -> [..54.179.140.65][...80] [HTTP.Xiaomi][AmazonAWS][Web][Acceptable]
+             idle: [.....9] [ip4][..tcp] [..10.54.169.250][52007] -> [...120.28.35.40][...80] 
+             idle: [....11] [ip4][..tcp] [..10.54.169.250][52009] -> [...120.28.35.40][...80] [HTTP][Unknown][Streaming][Acceptable]
+             idle: [....17] [ip4][..tcp] [..10.54.169.250][52017] -> [...120.28.35.40][...80] 
+             idle: [....18] [ip4][..tcp] [..10.54.169.250][52018] -> [...120.28.35.40][...80] 
+              end: [....19] [ip4][..tcp] [..10.54.169.250][52019] -> [...120.28.35.40][...80] [HTTP][Unknown][Streaming][Acceptable]
+             idle: [....20] [ip4][..tcp] [..10.54.169.250][52021] -> [...120.28.35.40][...80] 
+             idle: [....21] [ip4][..tcp] [..10.54.169.250][52022] -> [...120.28.35.40][...80] 
+             idle: [.....4] [ip4][..tcp] [..10.54.169.250][52285] -> [..173.252.74.22][...80] [HTTP.Facebook][Facebook][SocialNetwork][Fun]
+             idle: [.....5] [ip4][..tcp] [..10.54.169.250][52288] -> [..173.252.74.22][...80] [HTTP.Facebook][Facebook][SocialNetwork][Fun]
+             idle: [....15] [ip4][..tcp] [..10.54.169.250][35670] -> [203.205.147.215][...80] [HTTP_Proxy.QQ][Tencent][Download][Fun]
+                   RISK: Binary App Transfer, Known Proto on Non Std Port
+             idle: [.....8] [ip4][..tcp] [..10.54.169.250][44256] -> [....120.28.5.41][...80] 
+     DAEMON-EVENT: shutdown

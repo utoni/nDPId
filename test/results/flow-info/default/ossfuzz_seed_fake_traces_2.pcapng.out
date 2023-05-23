@@ -1,0 +1,18 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [.172.26.235.166][55630] -> [...172.30.92.62][..119] 
+              new: [.....2] [ip4][..tcp] [.192.168.190.20][55630] -> [..192.168.190.5][..119] 
+         detected: [.....1] [ip4][..tcp] [.172.26.235.166][55630] -> [...172.30.92.62][..119] [Usenet][Unknown][Web][Acceptable]
+         detected: [.....2] [ip4][..tcp] [.192.168.190.20][55630] -> [..192.168.190.5][..119] [Usenet][Unknown][Web][Acceptable]
+     DAEMON-EVENT: [Processed: 12 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 2 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....3] [ip4][..udp] [..10.147.205.42][43462] -> [..10.45.123.132][51820] 
+              new: [.....4] [ip4][..udp] [.......10.9.0.1][43462] -> [.......10.9.0.2][51820] 
+         detected: [.....4] [ip4][..udp] [.......10.9.0.1][43462] -> [.......10.9.0.2][51820] [WireGuard][Unknown][VPN][Acceptable]
+             idle: [.....1] [ip4][..tcp] [.172.26.235.166][55630] -> [...172.30.92.62][..119] [Usenet][Unknown][Web][Acceptable]
+             idle: [.....2] [ip4][..tcp] [.192.168.190.20][55630] -> [..192.168.190.5][..119] [Usenet][Unknown][Web][Acceptable]
+          guessed: [.....3] [ip4][..udp] [..10.147.205.42][43462] -> [..10.45.123.132][51820] [WireGuard][Unknown][VPN][Acceptable]
+             idle: [.....3] [ip4][..udp] [..10.147.205.42][43462] -> [..10.45.123.132][51820] 
+             idle: [.....4] [ip4][..udp] [.......10.9.0.1][43462] -> [.......10.9.0.2][51820] [WireGuard][Unknown][VPN][Acceptable]
+     DAEMON-EVENT: shutdown

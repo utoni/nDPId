@@ -1,0 +1,118 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [..192.168.180.2][47699] -> [.64.233.184.188][.5228] 
+              new: [.....2] [ip4][..udp] [..192.168.180.2][38472] -> [........8.8.8.8][...53] 
+         detected: [.....2] [ip4][..udp] [..192.168.180.2][38472] -> [........8.8.8.8][...53] [DNS.OCS][Google][Network][Fun][ocu03.labgency.ws]
+                   RISK: Unidirectional Traffic
+              new: [.....3] [ip4][..udp] [..192.168.180.2][40097] -> [........8.8.8.8][...53] 
+         detected: [.....3] [ip4][..udp] [..192.168.180.2][40097] -> [........8.8.8.8][...53] [DNS.Crashlytics][Google][Network][Acceptable][settings.crashlytics.com]
+                   RISK: Unidirectional Traffic
+              new: [.....4] [ip4][..udp] [..192.168.180.2][.1291] -> [........8.8.8.8][...53] 
+         detected: [.....4] [ip4][..udp] [..192.168.180.2][.1291] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][api.eu01.capptain.com]
+                   RISK: Unidirectional Traffic
+              new: [.....5] [ip4][..tcp] [..192.168.180.2][48250] -> [.178.248.208.54][...80] 
+              new: [.....6] [ip4][..tcp] [..192.168.180.2][39263] -> [..23.21.230.199][..443] 
+              new: [.....7] [ip4][..tcp] [..192.168.180.2][53356] -> [137.135.129.206][...80] 
+         detected: [.....5] [ip4][..tcp] [..192.168.180.2][48250] -> [.178.248.208.54][...80] [HTTP.OCS][OCS][Media][Fun][ocu03.labgency.ws]
+                   RISK: Unidirectional Traffic
+         detected: [.....7] [ip4][..tcp] [..192.168.180.2][53356] -> [137.135.129.206][...80] [HTTP][Azure][Web][Acceptable][api.eu01.capptain.com]
+                   RISK: HTTP Susp User-Agent, Unidirectional Traffic
+              new: [.....8] [ip4][..tcp] [..192.168.180.2][44959] -> [137.135.129.206][...80] 
+         detected: [.....8] [ip4][..tcp] [..192.168.180.2][44959] -> [137.135.129.206][...80] [HTTP][Azure][Web][Acceptable][api.eu01.capptain.com]
+                   RISK: HTTP Susp User-Agent, Unidirectional Traffic
+              new: [.....9] [ip4][..udp] [..192.168.180.2][48770] -> [........8.8.8.8][...53] 
+         detected: [.....9] [ip4][..udp] [..192.168.180.2][48770] -> [........8.8.8.8][...53] [DNS.PlayStore][Google][Network][Safe][android.clients.google.com]
+                   RISK: Unidirectional Traffic
+              new: [....10] [ip4][..tcp] [..192.168.180.2][41223] -> [..216.58.208.46][..443] 
+         detected: [....10] [ip4][..tcp] [..192.168.180.2][41223] -> [..216.58.208.46][..443] [TLS][Google][Web][Safe][]
+                   RISK: Obsolete TLS (v1.1 or older), Unidirectional Traffic
+         detected: [.....6] [ip4][..tcp] [..192.168.180.2][39263] -> [..23.21.230.199][..443] [TLS.Crashlytics][AmazonAWS][DataTransfer][Acceptable][settings.crashlytics.com]
+                   RISK: Obsolete TLS (v1.1 or older), Unidirectional Traffic
+              new: [....11] [ip4][..udp] [..192.168.180.2][.3621] -> [........8.8.8.8][...53] 
+         detected: [....11] [ip4][..udp] [..192.168.180.2][.3621] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][xmpp.device06.eu01.capptain.com]
+                   RISK: Unidirectional Traffic
+              new: [....12] [ip4][..tcp] [..192.168.180.2][46166] -> [.137.135.131.52][.5122] 
+              new: [....13] [ip4][..tcp] [..192.168.180.2][49881] -> [.178.248.208.54][...80] 
+              new: [....14] [ip4][..udp] [..192.168.180.2][.2589] -> [........8.8.8.8][...53] 
+         detected: [....14] [ip4][..udp] [..192.168.180.2][.2589] -> [........8.8.8.8][...53] [DNS.OCS][Google][Network][Fun][ocs.labgency.ws]
+                   RISK: Unidirectional Traffic
+         detected: [....13] [ip4][..tcp] [..192.168.180.2][49881] -> [.178.248.208.54][...80] [HTTP.OCS][OCS][Media][Fun][ocu03.labgency.ws]
+                   RISK: Unidirectional Traffic
+              new: [....15] [ip4][..tcp] [..192.168.180.2][36680] -> [.178.248.208.54][..443] 
+         detected: [....15] [ip4][..tcp] [..192.168.180.2][36680] -> [.178.248.208.54][..443] [TLS.OCS][OCS][Media][Fun][ocs.labgency.ws]
+                   RISK: Obsolete TLS (v1.1 or older), Unidirectional Traffic
+          analyse: [....13] [ip4][..tcp] [..192.168.180.2][49881] -> [.178.248.208.54][...80] [HTTP.OCS][OCS][Media][Fun]
+                                        min|      max|      avg|   stddev|       variance| entropy
+                   [IAT.........:     0.000|    0.929|    0.088|    0.173|      29794.175|   3.500]
+                   [PKTLEN......:    52.000|  715.000|   83.100|  113.800|      12942.200|   4.500]
+                   [BINS(c->s)..: 31,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [DIRECTIONS..: 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [IATS(ms)....: 83.8,14.3,246.9,0.6,0.5,68.4,1.8,71.5,0.5,5.4,4.1,41.7,146.0,90.8,71.1,77.4,63.4,3.7,80.5,1.7,86.1,0.6,67.3,32.6,43.3,386.6,73.7,2.5,928.6,31.7,2.1]
+                   [PKTLENS.....: 60,52,715,64,72,72,80,72,72,72,72,72,64,52,64,64,64,52,52,52,52,64,64,64,64,52,52,64,64,52,64,64]
+                   [ENTROPIES...: 4.5,5.1,6.0,5.1,5.2,5.2,5.2,5.2,5.3,5.2,5.2,5.2,5.2,5.1,5.2,5.2,5.1,5.2,5.1,5.1,5.0,5.1,5.2,5.1,5.2,5.1,5.2,5.2,5.2,5.0,5.1,5.1]
+              new: [....16] [ip4][..tcp] [..192.168.180.2][32946] -> [.64.233.184.188][..443] 
+         detected: [....16] [ip4][..tcp] [..192.168.180.2][32946] -> [.64.233.184.188][..443] [TLS.GoogleServices][Google][Web][Acceptable][mtalk.google.com]
+                   RISK: TLS (probably) Not Carrying HTTPS, Unidirectional Traffic
+              new: [....17] [ip4][..udp] [..192.168.180.2][11793] -> [........8.8.8.8][...53] 
+         detected: [....17] [ip4][..udp] [..192.168.180.2][11793] -> [........8.8.8.8][...53] [DNS.GoogleServices][Google][Network][Acceptable][play.googleapis.com]
+                   RISK: Unidirectional Traffic
+              new: [....18] [ip4][..tcp] [..192.168.180.2][47803] -> [..64.233.166.95][..443] 
+         detected: [....18] [ip4][..tcp] [..192.168.180.2][47803] -> [..64.233.166.95][..443] [TLS][Google][Web][Safe][]
+                   RISK: Obsolete TLS (v1.1 or older), Unidirectional Traffic
+           update: [....14] [ip4][..udp] [..192.168.180.2][.2589] -> [........8.8.8.8][...53] 
+           update: [.....3] [ip4][..udp] [..192.168.180.2][40097] -> [........8.8.8.8][...53] 
+           update: [.....4] [ip4][..udp] [..192.168.180.2][.1291] -> [........8.8.8.8][...53] 
+           update: [....11] [ip4][..udp] [..192.168.180.2][.3621] -> [........8.8.8.8][...53] 
+           update: [.....2] [ip4][..udp] [..192.168.180.2][38472] -> [........8.8.8.8][...53] 
+           update: [.....9] [ip4][..udp] [..192.168.180.2][48770] -> [........8.8.8.8][...53] 
+              new: [....19] [ip4][..udp] [..192.168.180.2][24245] -> [........8.8.8.8][...53] 
+         detected: [....19] [ip4][..udp] [..192.168.180.2][24245] -> [........8.8.8.8][...53] [DNS.OCS][Google][Network][Fun][www.ocs.fr]
+                   RISK: Unidirectional Traffic
+              new: [....20] [ip4][..tcp] [..192.168.180.2][42590] -> [178.248.208.210][...80] 
+         detected: [....20] [ip4][..tcp] [..192.168.180.2][42590] -> [178.248.208.210][...80] [HTTP.OCS][OCS][Media][Fun][www.ocs.fr]
+                   RISK: HTTP Susp User-Agent, Unidirectional Traffic
+          analyse: [....20] [ip4][..tcp] [..192.168.180.2][42590] -> [178.248.208.210][...80] [HTTP.OCS][OCS][Media][Fun]
+                                        min|      max|      avg|   stddev|       variance| entropy
+                   [IAT.........:     0.000|    0.079|    0.027|    0.030|        875.550|   4.000]
+                   [PKTLEN......:    52.000|  204.000|   63.900|   26.300|        690.500|   4.900]
+                   [BINS(c->s)..: 31,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [DIRECTIONS..: 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [IATS(ms)....: 71.4,1.5,54.8,1.1,3.6,59.9,0.6,0.1,5.3,64.8,1.7,1.5,79.5,5.5,58.4,1.8,64.6,2.0,67.5,26.5,42.9,26.0,65.4,1.0,48.6,1.3,2.0,1.3,75.5,1.4,4.8]
+                   [PKTLENS.....: 60,52,204,52,52,52,52,52,64,64,64,64,72,64,64,72,72,72,64,64,64,52,52,52,52,52,52,52,52,52,64,72]
+                   [ENTROPIES...: 4.6,5.0,5.9,5.2,5.1,5.2,5.2,5.2,5.2,5.2,5.2,5.2,5.3,5.2,5.3,5.3,5.4,5.3,5.3,5.3,5.3,5.2,5.2,5.2,5.1,5.2,5.2,5.1,5.2,5.2,5.3,5.3]
+           update: [....17] [ip4][..udp] [..192.168.180.2][11793] -> [........8.8.8.8][...53] 
+             idle: [....20] [ip4][..tcp] [..192.168.180.2][42590] -> [178.248.208.210][...80] [HTTP.OCS][OCS][Media][Fun]
+                   RISK: HTTP Susp User-Agent, Unidirectional Traffic
+              end: [.....8] [ip4][..tcp] [..192.168.180.2][44959] -> [137.135.129.206][...80] 
+          guessed: [....12] [ip4][..tcp] [..192.168.180.2][46166] -> [.137.135.131.52][.5122] [Azure][Azure][Cloud][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [....12] [ip4][..tcp] [..192.168.180.2][46166] -> [.137.135.131.52][.5122] 
+          guessed: [.....1] [ip4][..tcp] [..192.168.180.2][47699] -> [.64.233.184.188][.5228] [Google][Google][Web][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [.....1] [ip4][..tcp] [..192.168.180.2][47699] -> [.64.233.184.188][.5228] 
+              end: [.....6] [ip4][..tcp] [..192.168.180.2][39263] -> [..23.21.230.199][..443] [TLS.Crashlytics][AmazonAWS][DataTransfer][Acceptable]
+                   RISK: Obsolete TLS (v1.1 or older), Unidirectional Traffic
+              end: [.....7] [ip4][..tcp] [..192.168.180.2][53356] -> [137.135.129.206][...80] 
+             idle: [....15] [ip4][..tcp] [..192.168.180.2][36680] -> [.178.248.208.54][..443] [TLS.OCS][OCS][Media][Fun]
+                   RISK: Obsolete TLS (v1.1 or older), Unidirectional Traffic
+             idle: [....14] [ip4][..udp] [..192.168.180.2][.2589] -> [........8.8.8.8][...53] 
+             idle: [....16] [ip4][..tcp] [..192.168.180.2][32946] -> [.64.233.184.188][..443] [TLS.GoogleServices][Google][Web][Acceptable]
+                   RISK: TLS (probably) Not Carrying HTTPS, Unidirectional Traffic
+              end: [....13] [ip4][..tcp] [..192.168.180.2][49881] -> [.178.248.208.54][...80] [HTTP.OCS][OCS][Media][Fun]
+                   RISK: Unidirectional Traffic
+             idle: [.....3] [ip4][..udp] [..192.168.180.2][40097] -> [........8.8.8.8][...53] 
+             idle: [.....4] [ip4][..udp] [..192.168.180.2][.1291] -> [........8.8.8.8][...53] 
+             idle: [.....5] [ip4][..tcp] [..192.168.180.2][48250] -> [.178.248.208.54][...80] 
+              end: [....10] [ip4][..tcp] [..192.168.180.2][41223] -> [..216.58.208.46][..443] [TLS][Google][Web][Safe]
+                   RISK: Obsolete TLS (v1.1 or older), Unidirectional Traffic
+             idle: [....18] [ip4][..tcp] [..192.168.180.2][47803] -> [..64.233.166.95][..443] [TLS][Google][Web][Safe]
+                   RISK: Obsolete TLS (v1.1 or older), Unidirectional Traffic
+             idle: [....17] [ip4][..udp] [..192.168.180.2][11793] -> [........8.8.8.8][...53] 
+             idle: [....11] [ip4][..udp] [..192.168.180.2][.3621] -> [........8.8.8.8][...53] 
+             idle: [.....2] [ip4][..udp] [..192.168.180.2][38472] -> [........8.8.8.8][...53] 
+             idle: [.....9] [ip4][..udp] [..192.168.180.2][48770] -> [........8.8.8.8][...53] 
+             idle: [....19] [ip4][..udp] [..192.168.180.2][24245] -> [........8.8.8.8][...53] 
+     DAEMON-EVENT: shutdown

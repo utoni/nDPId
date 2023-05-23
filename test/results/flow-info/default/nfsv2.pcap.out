@@ -1,0 +1,49 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..udp] [....139.25.22.2][.3289] -> [..139.25.22.102][..111] 
+         detected: [.....1] [ip4][..udp] [....139.25.22.2][.3289] -> [..139.25.22.102][..111] [NFS][Unknown][DataTransfer][Acceptable]
+                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+              new: [.....2] [ip4][..udp] [....139.25.22.2][..671] -> [..139.25.22.102][.1048] 
+         detected: [.....2] [ip4][..udp] [....139.25.22.2][..671] -> [..139.25.22.102][.1048] [NFS][Unknown][DataTransfer][Acceptable]
+                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+              new: [.....3] [ip4][..udp] [....139.25.22.2][.3291] -> [..139.25.22.102][..111] 
+         detected: [.....3] [ip4][..udp] [....139.25.22.2][.3291] -> [..139.25.22.102][..111] [NFS][Unknown][DataTransfer][Acceptable]
+                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+              new: [.....4] [ip4][..udp] [....139.25.22.2][.3292] -> [..139.25.22.102][.2049] 
+         detected: [.....4] [ip4][..udp] [....139.25.22.2][.3292] -> [..139.25.22.102][.2049] [NFS][Unknown][DataTransfer][Acceptable]
+                   RISK: Unidirectional Traffic
+              new: [.....5] [ip4][..udp] [....139.25.22.2][.1023] -> [..139.25.22.102][.2049] 
+         detected: [.....5] [ip4][..udp] [....139.25.22.2][.1023] -> [..139.25.22.102][.2049] [NFS][Unknown][DataTransfer][Acceptable]
+                   RISK: Unidirectional Traffic
+          analyse: [.....5] [ip4][..udp] [....139.25.22.2][.1023] -> [..139.25.22.102][.2049] [NFS][Unknown][DataTransfer][Acceptable]
+                                        min|      max|      avg|   stddev|       variance| entropy
+                   [IAT.........:     0.000|    0.040|    0.006|    0.010|        101.769|   3.300]
+                   [PKTLEN......:    56.000|  200.000|  133.500|   43.100|       1860.800|   4.900]
+                   [BINS(c->s)..: 0,0,0,5,9,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 6,1,0,5,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [DIRECTIONS..: 0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1]
+                   [IATS(ms)....: 0.0,0.0,0.0,40.0,40.0,0.0,0.0,0.0,10.0,10.0,0.0,0.0,0.0,0.0,0.0,10.0,10.0,10.0,10.0,0.0,0.0,0.0,0.0,10.0,10.0,0.0,0.0,0.0,0.0,10.0,10.0]
+                   [PKTLENS.....: 152,124,152,76,160,56,160,56,192,156,152,124,152,124,160,156,184,124,160,156,160,56,160,56,160,156,160,56,200,56,152,124]
+                   [ENTROPIES...: 3.4,3.5,3.4,3.5,3.3,3.3,3.3,3.3,3.3,3.3,3.4,3.3,3.4,3.5,3.3,3.3,3.7,3.4,3.3,3.4,3.4,3.3,3.4,3.2,3.3,3.4,3.4,3.3,3.2,3.2,3.4,3.5]
+              new: [.....6] [ip4][..udp] [....139.25.22.2][.3293] -> [..139.25.22.102][..111] 
+         detected: [.....6] [ip4][..udp] [....139.25.22.2][.3293] -> [..139.25.22.102][..111] [NFS][Unknown][DataTransfer][Acceptable]
+                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+              new: [.....7] [ip4][..udp] [....139.25.22.2][..686] -> [..139.25.22.102][.1048] 
+         detected: [.....7] [ip4][..udp] [....139.25.22.2][..686] -> [..139.25.22.102][.1048] [NFS][Unknown][DataTransfer][Acceptable]
+                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+             idle: [.....4] [ip4][..udp] [....139.25.22.2][.3292] -> [..139.25.22.102][.2049] [NFS][Unknown][DataTransfer][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [.....1] [ip4][..udp] [....139.25.22.2][.3289] -> [..139.25.22.102][..111] [NFS][Unknown][DataTransfer][Acceptable]
+                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+             idle: [.....3] [ip4][..udp] [....139.25.22.2][.3291] -> [..139.25.22.102][..111] [NFS][Unknown][DataTransfer][Acceptable]
+                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+             idle: [.....6] [ip4][..udp] [....139.25.22.2][.3293] -> [..139.25.22.102][..111] [NFS][Unknown][DataTransfer][Acceptable]
+                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+             idle: [.....2] [ip4][..udp] [....139.25.22.2][..671] -> [..139.25.22.102][.1048] [NFS][Unknown][DataTransfer][Acceptable]
+                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+             idle: [.....7] [ip4][..udp] [....139.25.22.2][..686] -> [..139.25.22.102][.1048] [NFS][Unknown][DataTransfer][Acceptable]
+                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+             idle: [.....5] [ip4][..udp] [....139.25.22.2][.1023] -> [..139.25.22.102][.2049] [NFS][Unknown][DataTransfer][Acceptable]
+                   RISK: Unidirectional Traffic
+     DAEMON-EVENT: shutdown

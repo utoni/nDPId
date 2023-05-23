@@ -1,0 +1,12 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [.....10.10.10.1][.1883] -> [....192.168.0.1][41892] 
+         detected: [.....1] [ip4][..tcp] [.....10.10.10.1][.1883] -> [....192.168.0.1][41892] [MQTT][Unknown][RPC][Acceptable]
+              new: [.....2] [ip4][..tcp] [..100.67.35.238][35035] -> [..51.137.28.239][.1883] [MIDSTREAM] 
+         detected: [.....2] [ip4][..tcp] [..100.67.35.238][35035] -> [..51.137.28.239][.1883] [MQTT][Azure][RPC][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [.....2] [ip4][..tcp] [..100.67.35.238][35035] -> [..51.137.28.239][.1883] [MQTT][Azure][RPC][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [.....1] [ip4][..tcp] [.....10.10.10.1][.1883] -> [....192.168.0.1][41892] [MQTT][Unknown][RPC][Acceptable]
+     DAEMON-EVENT: shutdown

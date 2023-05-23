@@ -35,8 +35,17 @@ EOF
 set -x
 
 cd "$(dirname "${0}")/.."
-if [ -d ./.git ]; then
-    git submodule update --init ./libnDPI
+if [ -d ./.git -o -f ./.git ]; then
+    LINES_CHANGED="$(git --no-pager diff ./libnDPI | wc -l)"
+    if [ ${LINES_CHANGED} -eq 0 ]; then
+        git submodule update --progress --init ./libnDPI
+    else
+        set +x
+        printf '%s\n' '-----------------------------------'
+        printf 'WARNING: %s changes in source tree %s, no GIT update will be done!\n' "${LINES_CHANGED}" "$(realpath $(dirname "${0}")/../libnDPI)"
+        printf '%s\n' '-----------------------------------'
+        set -x
+    fi
 else
     set +x
     printf '%s\n' '-----------------------------------'
@@ -52,7 +61,7 @@ else
 fi
 
 cd ./libnDPI
-test -r Makefile && make distclean
+test ! -r Makefile || { make distclean || true; }
 DEST_INSTALL="${DEST_INSTALL:-$(realpath ./install)}"
 MAKE_PROGRAM="${MAKE_PROGRAM:-make -j4}"
 HOST_ARG="--host=${HOST_TRIPLET}"

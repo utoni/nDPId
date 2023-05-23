@@ -1,0 +1,172 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [.......10.8.0.1][53497] -> [.173.194.119.48][...80] 
+         detected: [.....1] [ip4][..tcp] [.......10.8.0.1][53497] -> [.173.194.119.48][...80] [HTTP.Google][Google][Web][Acceptable][www.google.com]
+                   RISK: HTTP Susp User-Agent
+              new: [.....2] [ip4][..tcp] [.......10.8.0.1][40467] -> [.173.194.119.24][...80] 
+         detected: [.....2] [ip4][..tcp] [.......10.8.0.1][40467] -> [.173.194.119.24][...80] [HTTP.Google][Google][Web][Acceptable][www.google.com.br]
+                   RISK: HTTP Susp User-Agent
+              new: [.....3] [ip4][..udp] [.......10.8.0.1][52257] -> [200.185.138.146][.6000] 
+              new: [.....4] [ip4][..udp] [.......10.8.0.1][48890] -> [200.185.125.226][.6000] 
+              new: [.....5] [ip4][..udp] [.......10.8.0.1][51569] -> [.200.194.148.67][.6000] 
+              new: [.....6] [ip4][..udp] [.......10.8.0.1][41438] -> [.200.194.141.66][.6000] 
+              new: [.....7] [ip4][..udp] [.......10.8.0.1][42620] -> [.200.194.148.66][.6000] 
+              new: [.....8] [ip4][..udp] [.......10.8.0.1][43641] -> [.200.194.148.68][.6000] 
+              new: [.....9] [ip4][..udp] [.......10.8.0.1][34687] -> [.200.194.141.68][.6000] 
+              new: [....10] [ip4][..udp] [.......10.8.0.1][39221] -> [.200.194.137.67][.6000] 
+              new: [....11] [ip4][..udp] [.......10.8.0.1][53354] -> [.200.194.137.66][.6000] 
+              new: [....12] [ip4][..udp] [.......10.8.0.1][59959] -> [.200.194.137.68][.6000] 
+              new: [....13] [ip4][..udp] [.......10.8.0.1][37985] -> [.200.194.129.67][.6000] 
+              new: [....14] [ip4][..udp] [.......10.8.0.1][48666] -> [.200.194.129.66][.6000] 
+              new: [....15] [ip4][..udp] [.......10.8.0.1][47714] -> [.200.194.129.68][.6000] 
+              new: [....16] [ip4][..udp] [.......10.8.0.1][43979] -> [.200.194.132.66][.6000] 
+              new: [....17] [ip4][..udp] [.......10.8.0.1][48563] -> [.200.194.141.67][.6000] 
+              new: [....18] [ip4][..udp] [.......10.8.0.1][39185] -> [.200.194.132.67][.6000] 
+              new: [....19] [ip4][..udp] [.......10.8.0.1][52726] -> [.200.194.132.68][.6000] 
+              new: [....20] [ip4][..udp] [.......10.8.0.1][56128] -> [.200.194.133.66][.6000] 
+              new: [....21] [ip4][..udp] [.......10.8.0.1][57004] -> [.200.194.133.67][.6000] 
+              new: [....22] [ip4][..udp] [.......10.8.0.1][53059] -> [.200.194.133.68][.6000] 
+              new: [....23] [ip4][..udp] [.......10.8.0.1][36552] -> [.200.194.136.66][.6000] 
+              new: [....24] [ip4][..udp] [.......10.8.0.1][43934] -> [.200.194.136.68][.6000] 
+              new: [....25] [ip4][..udp] [.......10.8.0.1][47346] -> [.200.194.134.66][.6000] 
+              new: [....26] [ip4][..udp] [.......10.8.0.1][59098] -> [.200.194.134.68][.6000] 
+              new: [....27] [ip4][..udp] [.......10.8.0.1][50175] -> [.200.194.149.67][.6000] 
+              new: [....28] [ip4][..udp] [.......10.8.0.1][36577] -> [.200.194.149.68][.6000] 
+              new: [....29] [ip4][..udp] [.......10.8.0.1][60013] -> [.200.194.136.67][.6000] 
+              new: [....30] [ip4][..udp] [.......10.8.0.1][33356] -> [.200.194.149.66][.6000] 
+              new: [....31] [ip4][..udp] [.......10.8.0.1][40058] -> [.200.194.134.67][.6000] 
+         detected: [.....3] [ip4][..udp] [.......10.8.0.1][52257] -> [200.185.138.146][.6000] [EAQ][Unknown][Network][Acceptable]
+         detected: [.....4] [ip4][..udp] [.......10.8.0.1][48890] -> [200.185.125.226][.6000] [EAQ][Unknown][Network][Acceptable]
+         detected: [.....5] [ip4][..udp] [.......10.8.0.1][51569] -> [.200.194.148.67][.6000] [EAQ][Unknown][Network][Acceptable]
+         detected: [.....7] [ip4][..udp] [.......10.8.0.1][42620] -> [.200.194.148.66][.6000] [EAQ][Unknown][Network][Acceptable]
+         detected: [.....8] [ip4][..udp] [.......10.8.0.1][43641] -> [.200.194.148.68][.6000] [EAQ][Unknown][Network][Acceptable]
+         detected: [....16] [ip4][..udp] [.......10.8.0.1][43979] -> [.200.194.132.66][.6000] [EAQ][Unknown][Network][Acceptable]
+         detected: [....18] [ip4][..udp] [.......10.8.0.1][39185] -> [.200.194.132.67][.6000] [EAQ][Unknown][Network][Acceptable]
+         detected: [....19] [ip4][..udp] [.......10.8.0.1][52726] -> [.200.194.132.68][.6000] [EAQ][Unknown][Network][Acceptable]
+           update: [.....4] [ip4][..udp] [.......10.8.0.1][48890] -> [200.185.125.226][.6000] [EAQ][Unknown][Network][Acceptable]
+           update: [.....7] [ip4][..udp] [.......10.8.0.1][42620] -> [.200.194.148.66][.6000] [EAQ][Unknown][Network][Acceptable]
+           update: [.....9] [ip4][..udp] [.......10.8.0.1][34687] -> [.200.194.141.68][.6000] 
+           update: [....11] [ip4][..udp] [.......10.8.0.1][53354] -> [.200.194.137.66][.6000] 
+           update: [....10] [ip4][..udp] [.......10.8.0.1][39221] -> [.200.194.137.67][.6000] 
+           update: [.....5] [ip4][..udp] [.......10.8.0.1][51569] -> [.200.194.148.67][.6000] [EAQ][Unknown][Network][Acceptable]
+           update: [.....6] [ip4][..udp] [.......10.8.0.1][41438] -> [.200.194.141.66][.6000] 
+           update: [....12] [ip4][..udp] [.......10.8.0.1][59959] -> [.200.194.137.68][.6000] 
+           update: [.....8] [ip4][..udp] [.......10.8.0.1][43641] -> [.200.194.148.68][.6000] [EAQ][Unknown][Network][Acceptable]
+           update: [.....3] [ip4][..udp] [.......10.8.0.1][52257] -> [200.185.138.146][.6000] [EAQ][Unknown][Network][Acceptable]
+           update: [....17] [ip4][..udp] [.......10.8.0.1][48563] -> [.200.194.141.67][.6000] 
+           update: [....19] [ip4][..udp] [.......10.8.0.1][52726] -> [.200.194.132.68][.6000] [EAQ][Unknown][Network][Acceptable]
+           update: [....14] [ip4][..udp] [.......10.8.0.1][48666] -> [.200.194.129.66][.6000] 
+           update: [....21] [ip4][..udp] [.......10.8.0.1][57004] -> [.200.194.133.67][.6000] 
+           update: [....23] [ip4][..udp] [.......10.8.0.1][36552] -> [.200.194.136.66][.6000] 
+           update: [....22] [ip4][..udp] [.......10.8.0.1][53059] -> [.200.194.133.68][.6000] 
+           update: [....25] [ip4][..udp] [.......10.8.0.1][47346] -> [.200.194.134.66][.6000] 
+           update: [....18] [ip4][..udp] [.......10.8.0.1][39185] -> [.200.194.132.67][.6000] [EAQ][Unknown][Network][Acceptable]
+           update: [....15] [ip4][..udp] [.......10.8.0.1][47714] -> [.200.194.129.68][.6000] 
+           update: [....20] [ip4][..udp] [.......10.8.0.1][56128] -> [.200.194.133.66][.6000] 
+           update: [....24] [ip4][..udp] [.......10.8.0.1][43934] -> [.200.194.136.68][.6000] 
+           update: [....16] [ip4][..udp] [.......10.8.0.1][43979] -> [.200.194.132.66][.6000] [EAQ][Unknown][Network][Acceptable]
+           update: [....13] [ip4][..udp] [.......10.8.0.1][37985] -> [.200.194.129.67][.6000] 
+         detected: [.....6] [ip4][..udp] [.......10.8.0.1][41438] -> [.200.194.141.66][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+         detected: [.....9] [ip4][..udp] [.......10.8.0.1][34687] -> [.200.194.141.68][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+         detected: [....10] [ip4][..udp] [.......10.8.0.1][39221] -> [.200.194.137.67][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+         detected: [....11] [ip4][..udp] [.......10.8.0.1][53354] -> [.200.194.137.66][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+         detected: [....12] [ip4][..udp] [.......10.8.0.1][59959] -> [.200.194.137.68][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+         detected: [....13] [ip4][..udp] [.......10.8.0.1][37985] -> [.200.194.129.67][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+           update: [....26] [ip4][..udp] [.......10.8.0.1][59098] -> [.200.194.134.68][.6000] 
+           update: [....28] [ip4][..udp] [.......10.8.0.1][36577] -> [.200.194.149.68][.6000] 
+           update: [....30] [ip4][..udp] [.......10.8.0.1][33356] -> [.200.194.149.66][.6000] 
+           update: [....29] [ip4][..udp] [.......10.8.0.1][60013] -> [.200.194.136.67][.6000] 
+           update: [....27] [ip4][..udp] [.......10.8.0.1][50175] -> [.200.194.149.67][.6000] 
+           update: [....31] [ip4][..udp] [.......10.8.0.1][40058] -> [.200.194.134.67][.6000] 
+         detected: [....14] [ip4][..udp] [.......10.8.0.1][48666] -> [.200.194.129.66][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+         detected: [....15] [ip4][..udp] [.......10.8.0.1][47714] -> [.200.194.129.68][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+         detected: [....17] [ip4][..udp] [.......10.8.0.1][48563] -> [.200.194.141.67][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+         detected: [....20] [ip4][..udp] [.......10.8.0.1][56128] -> [.200.194.133.66][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+         detected: [....21] [ip4][..udp] [.......10.8.0.1][57004] -> [.200.194.133.67][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+         detected: [....23] [ip4][..udp] [.......10.8.0.1][36552] -> [.200.194.136.66][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+         detected: [....22] [ip4][..udp] [.......10.8.0.1][53059] -> [.200.194.133.68][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+         detected: [....24] [ip4][..udp] [.......10.8.0.1][43934] -> [.200.194.136.68][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+         detected: [....25] [ip4][..udp] [.......10.8.0.1][47346] -> [.200.194.134.66][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+         detected: [....26] [ip4][..udp] [.......10.8.0.1][59098] -> [.200.194.134.68][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+         detected: [....27] [ip4][..udp] [.......10.8.0.1][50175] -> [.200.194.149.67][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+         detected: [....28] [ip4][..udp] [.......10.8.0.1][36577] -> [.200.194.149.68][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+         detected: [....29] [ip4][..udp] [.......10.8.0.1][60013] -> [.200.194.136.67][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+         detected: [....30] [ip4][..udp] [.......10.8.0.1][33356] -> [.200.194.149.66][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+         detected: [....31] [ip4][..udp] [.......10.8.0.1][40058] -> [.200.194.134.67][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [....17] [ip4][..udp] [.......10.8.0.1][48563] -> [.200.194.141.67][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [....19] [ip4][..udp] [.......10.8.0.1][52726] -> [.200.194.132.68][.6000] [EAQ][Unknown][Network][Acceptable]
+             idle: [.....4] [ip4][..udp] [.......10.8.0.1][48890] -> [200.185.125.226][.6000] [EAQ][Unknown][Network][Acceptable]
+             idle: [....14] [ip4][..udp] [.......10.8.0.1][48666] -> [.200.194.129.66][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [.....7] [ip4][..udp] [.......10.8.0.1][42620] -> [.200.194.148.66][.6000] [EAQ][Unknown][Network][Acceptable]
+             idle: [....21] [ip4][..udp] [.......10.8.0.1][57004] -> [.200.194.133.67][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [....23] [ip4][..udp] [.......10.8.0.1][36552] -> [.200.194.136.66][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+              end: [.....2] [ip4][..tcp] [.......10.8.0.1][40467] -> [.173.194.119.24][...80] [HTTP.Google][Google][Web][Acceptable]
+                   RISK: HTTP Susp User-Agent
+             idle: [....26] [ip4][..udp] [.......10.8.0.1][59098] -> [.200.194.134.68][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [....28] [ip4][..udp] [.......10.8.0.1][36577] -> [.200.194.149.68][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [....22] [ip4][..udp] [.......10.8.0.1][53059] -> [.200.194.133.68][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [.....9] [ip4][..udp] [.......10.8.0.1][34687] -> [.200.194.141.68][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [....11] [ip4][..udp] [.......10.8.0.1][53354] -> [.200.194.137.66][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [....25] [ip4][..udp] [.......10.8.0.1][47346] -> [.200.194.134.66][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [....18] [ip4][..udp] [.......10.8.0.1][39185] -> [.200.194.132.67][.6000] [EAQ][Unknown][Network][Acceptable]
+             idle: [....10] [ip4][..udp] [.......10.8.0.1][39221] -> [.200.194.137.67][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [.....5] [ip4][..udp] [.......10.8.0.1][51569] -> [.200.194.148.67][.6000] [EAQ][Unknown][Network][Acceptable]
+              end: [.....1] [ip4][..tcp] [.......10.8.0.1][53497] -> [.173.194.119.48][...80] [HTTP.Google][Google][Web][Acceptable]
+                   RISK: HTTP Susp User-Agent
+             idle: [.....6] [ip4][..udp] [.......10.8.0.1][41438] -> [.200.194.141.66][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [....12] [ip4][..udp] [.......10.8.0.1][59959] -> [.200.194.137.68][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [....30] [ip4][..udp] [.......10.8.0.1][33356] -> [.200.194.149.66][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [....15] [ip4][..udp] [.......10.8.0.1][47714] -> [.200.194.129.68][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [....29] [ip4][..udp] [.......10.8.0.1][60013] -> [.200.194.136.67][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [.....8] [ip4][..udp] [.......10.8.0.1][43641] -> [.200.194.148.68][.6000] [EAQ][Unknown][Network][Acceptable]
+             idle: [.....3] [ip4][..udp] [.......10.8.0.1][52257] -> [200.185.138.146][.6000] [EAQ][Unknown][Network][Acceptable]
+             idle: [....20] [ip4][..udp] [.......10.8.0.1][56128] -> [.200.194.133.66][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [....24] [ip4][..udp] [.......10.8.0.1][43934] -> [.200.194.136.68][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [....16] [ip4][..udp] [.......10.8.0.1][43979] -> [.200.194.132.66][.6000] [EAQ][Unknown][Network][Acceptable]
+             idle: [....27] [ip4][..udp] [.......10.8.0.1][50175] -> [.200.194.149.67][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [....13] [ip4][..udp] [.......10.8.0.1][37985] -> [.200.194.129.67][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [....31] [ip4][..udp] [.......10.8.0.1][40058] -> [.200.194.134.67][.6000] [EAQ][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+     DAEMON-EVENT: shutdown

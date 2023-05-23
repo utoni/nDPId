@@ -1,0 +1,11 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..udp] [..192.168.1.168][65311] -> [........8.8.8.8][...53] 
+         detected: [.....1] [ip4][..udp] [..192.168.1.168][65311] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][gmr02c.16.0.fhkfhsdkfhsk.tunnel.example.com]
+                   RISK: Unidirectional Traffic
+ detection-update: [.....1] [ip4][..udp] [..192.168.1.168][65311] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][gmr02c.16.0.fhkfhsdkfhsk.tunnel.example.com]
+                   RISK: Error Code
+             idle: [.....1] [ip4][..udp] [..192.168.1.168][65311] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable]
+                   RISK: Error Code
+     DAEMON-EVENT: shutdown

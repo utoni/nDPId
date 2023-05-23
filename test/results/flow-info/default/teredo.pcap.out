@@ -1,0 +1,29 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..udp] [..10.112.16.106][52513] -> [..194.136.28.76][.3544] 
+         detected: [.....1] [ip4][..udp] [..10.112.16.106][52513] -> [..194.136.28.76][.3544] [Teredo][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+              new: [.....2] [ip4][..udp] [...10.112.16.89][60381] -> [..194.136.28.76][.3544] 
+         detected: [.....2] [ip4][..udp] [...10.112.16.89][60381] -> [..194.136.28.76][.3544] [Teredo][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+              new: [.....3] [ip4][..udp] [...10.112.16.92][63448] -> [..194.136.28.76][.3544] 
+         detected: [.....3] [ip4][..udp] [...10.112.16.92][63448] -> [..194.136.28.76][.3544] [Teredo][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+              new: [.....4] [ip4][..udp] [...10.112.16.64][56154] -> [..194.136.28.76][.3544] 
+         detected: [.....4] [ip4][..udp] [...10.112.16.64][56154] -> [..194.136.28.76][.3544] [Teredo][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+              new: [.....5] [ip4][..udp] [...10.112.16.67][51812] -> [..194.136.28.76][.3544] 
+         detected: [.....5] [ip4][..udp] [...10.112.16.67][51812] -> [..194.136.28.76][.3544] [Teredo][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [.....5] [ip4][..udp] [...10.112.16.67][51812] -> [..194.136.28.76][.3544] [Teredo][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [.....4] [ip4][..udp] [...10.112.16.64][56154] -> [..194.136.28.76][.3544] [Teredo][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [.....2] [ip4][..udp] [...10.112.16.89][60381] -> [..194.136.28.76][.3544] [Teredo][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [.....1] [ip4][..udp] [..10.112.16.106][52513] -> [..194.136.28.76][.3544] [Teredo][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [.....3] [ip4][..udp] [...10.112.16.92][63448] -> [..194.136.28.76][.3544] [Teredo][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+     DAEMON-EVENT: shutdown

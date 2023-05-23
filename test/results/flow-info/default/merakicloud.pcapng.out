@@ -1,0 +1,33 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..udp] [...2.36.234.133][47301] -> [..209.206.59.34][.7351] 
+         detected: [.....1] [ip4][..udp] [...2.36.234.133][47301] -> [..209.206.59.34][.7351] [MerakiCloud][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+           update: [.....1] [ip4][..udp] [...2.36.234.133][47301] -> [..209.206.59.34][.7351] [MerakiCloud][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+           update: [.....1] [ip4][..udp] [...2.36.234.133][47301] -> [..209.206.59.34][.7351] [MerakiCloud][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+           update: [.....1] [ip4][..udp] [...2.36.234.133][47301] -> [..209.206.59.34][.7351] [MerakiCloud][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+           update: [.....1] [ip4][..udp] [...2.36.234.133][47301] -> [..209.206.59.34][.7351] [MerakiCloud][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+          analyse: [.....1] [ip4][..udp] [...2.36.234.133][47301] -> [..209.206.59.34][.7351] [MerakiCloud][Unknown][Network][Acceptable]
+                                        min|      max|      avg|   stddev|       variance| entropy
+                   [IAT.........:     0.185|   25.011|   16.136|   11.214|  125752330.682|   4.400]
+                   [PKTLEN......:    74.000|  183.000|  129.700|   43.400|       1881.800|   4.900]
+                   [BINS(c->s)..: 0,0,0,11,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 0,11,0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [DIRECTIONS..: 0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,1,0,1,0,1,0,1,0,1,0,0,1]
+                   [IATS(ms)....: 185.1,25000.8,24997.1,25000.2,25005.1,25000.7,24996.1,25000.6,25010.6,25000.6,24997.5,25000.7,24998.6,25000.7,24997.3,25000.4,25005.7,25000.6,25008.6,6242.6,6445.4,200.9,201.8,201.0,201.1,200.0,200.0,199.9,199.0,17753.5,17954.0]
+                   [PKTLENS.....: 140,74,140,74,140,74,140,74,140,74,140,74,140,74,140,74,140,74,140,74,176,183,176,183,176,183,176,183,176,183,140,74]
+                   [ENTROPIES...: 5.8,4.6,5.8,4.6,5.8,4.6,5.8,4.6,5.8,4.7,5.9,4.6,5.8,4.7,5.8,4.6,5.8,4.6,5.8,4.7,6.5,6.5,6.4,6.6,6.5,6.6,6.5,6.5,6.5,6.6,5.8,4.7]
+           update: [.....1] [ip4][..udp] [...2.36.234.133][47301] -> [..209.206.59.34][.7351] [MerakiCloud][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+           update: [.....1] [ip4][..udp] [...2.36.234.133][47301] -> [..209.206.59.34][.7351] [MerakiCloud][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+           update: [.....1] [ip4][..udp] [...2.36.234.133][47301] -> [..209.206.59.34][.7351] [MerakiCloud][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [.....1] [ip4][..udp] [...2.36.234.133][47301] -> [..209.206.59.34][.7351] [MerakiCloud][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+     DAEMON-EVENT: shutdown

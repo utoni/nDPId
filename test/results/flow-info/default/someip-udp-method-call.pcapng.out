@@ -1,0 +1,14 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..udp] [....192.168.0.1][49190] -> [......224.0.0.1][49190] 
+         detected: [.....1] [ip4][..udp] [....192.168.0.1][49190] -> [......224.0.0.1][49190] [SOMEIP][Unknown][RPC][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              new: [.....2] [ip4][..udp] [..192.168.0.125][49191] -> [....192.168.0.1][49201] 
+         detected: [.....2] [ip4][..udp] [..192.168.0.125][49191] -> [....192.168.0.1][49201] [SOMEIP][Unknown][RPC][Acceptable]
+                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+             idle: [.....2] [ip4][..udp] [..192.168.0.125][49191] -> [....192.168.0.1][49201] [SOMEIP][Unknown][RPC][Acceptable]
+                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+             idle: [.....1] [ip4][..udp] [....192.168.0.1][49190] -> [......224.0.0.1][49190] [SOMEIP][Unknown][RPC][Acceptable]
+                   RISK: Known Proto on Non Std Port
+     DAEMON-EVENT: shutdown

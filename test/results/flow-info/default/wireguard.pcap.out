@@ -1,0 +1,13 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..udp] [.......10.9.0.1][43462] -> [.......10.9.0.2][51820] 
+         detected: [.....1] [ip4][..udp] [.......10.9.0.1][43462] -> [.......10.9.0.2][51820] [WireGuard][Unknown][VPN][Acceptable]
+           update: [.....1] [ip4][..udp] [.......10.9.0.1][43462] -> [.......10.9.0.2][51820] [WireGuard][Unknown][VPN][Acceptable]
+     DAEMON-EVENT: [Processed: 22 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 1]
+              new: [.....2] [ip4][..udp] [139.162.192.157][51820] -> [...192.168.0.14][36116] 
+         detected: [.....2] [ip4][..udp] [139.162.192.157][51820] -> [...192.168.0.14][36116] [WireGuard][Unknown][VPN][Acceptable]
+             idle: [.....2] [ip4][..udp] [139.162.192.157][51820] -> [...192.168.0.14][36116] [WireGuard][Unknown][VPN][Acceptable]
+             idle: [.....1] [ip4][..udp] [.......10.9.0.1][43462] -> [.......10.9.0.2][51820] [WireGuard][Unknown][VPN][Acceptable]
+     DAEMON-EVENT: shutdown

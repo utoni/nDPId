@@ -1,9 +1,0 @@
-     DAEMON-EVENT: init
-     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1] [ip6][..tcp] [.............2a00:d40:1:3:192:12:193:11][44724] -> [.......................2a00:800:1010::1][...21] 
-         detected: [.....1] [ip6][..tcp] [.............2a00:d40:1:3:192:12:193:11][44724] -> [.......................2a00:800:1010::1][...21] [FTP_CONTROL][Unknown][Download][Unsafe]
-                   RISK: Unsafe Protocol
-              end: [.....1] [ip6][..tcp] [.............2a00:d40:1:3:192:12:193:11][44724] -> [.......................2a00:800:1010::1][...21] [FTP_CONTROL][Unknown][Download][Unsafe]
-                   RISK: Unsafe Protocol
-     DAEMON-EVENT: shutdown
