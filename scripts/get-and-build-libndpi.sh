@@ -2,7 +2,17 @@
 
 set -e
 
+GIT_EXEC="$(command -v git || printf '%s' "")"
+WGET_EXEC="$(command -v wget || printf '%s' "")"
+UNZIP_EXEC="$(command -v unzip || printf '%s' "")"
+MAKE_EXEC="$(command -v make || printf '%s' "")"
+
 GITHUB_FALLBACK_URL='https://github.com/ntop/nDPI/archive/refs/heads/dev.zip'
+
+if [ -z "${GIT_EXEC}" -o -z "${WGET_EXEC}" -o -z "${UNZIP_EXEC}" -o -z "${MAKE_EXEC}" ]; then
+    printf '%s\n' "Required Executables missing: git, wget, unzip, make" >&2
+    exit 1
+fi
 
 LOCKFILE="$(realpath "${0}").lock"
 touch "${LOCKFILE}"
@@ -35,10 +45,13 @@ EOF
 set -x
 
 cd "$(dirname "${0}")/.."
+
+GIT_SUCCESS=0
 if [ -d ./.git -o -f ./.git ]; then
-    LINES_CHANGED="$(git --no-pager diff ./libnDPI | wc -l)"
+    GIT_SUCCESS=1
+    LINES_CHANGED="$(git --no-pager diff ./libnDPI 2>/dev/null | wc -l || printf '0')"
     if [ ${LINES_CHANGED} -eq 0 ]; then
-        git submodule update --progress --init ./libnDPI
+        git submodule update --progress --init ./libnDPI || { GIT_SUCCESS=0; true; }
     else
         set +x
         printf '%s\n' '-----------------------------------'
@@ -46,7 +59,9 @@ if [ -d ./.git -o -f ./.git ]; then
         printf '%s\n' '-----------------------------------'
         set -x
     fi
-else
+fi
+
+if [ ${GIT_SUCCESS} -eq 0 ]; then
     set +x
     printf '%s\n' '-----------------------------------'
     printf 'WARNING: %s is supposed to be a GIT repository. But it is not.\n' "$(realpath $(dirname "${0}")/..)"
@@ -57,6 +72,7 @@ else
     set -x
     wget "${GITHUB_FALLBACK_URL}" -O ./libnDPI-github-dev.zip
     unzip ./libnDPI-github-dev.zip
+    rm -rf ./libnDPI
     mv ./nDPI-dev ./libnDPI
 fi
 

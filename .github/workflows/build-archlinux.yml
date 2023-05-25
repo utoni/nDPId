@@ -1,0 +1,31 @@
+name: ArchLinux PKGBUILD
+
+on:
+  push:
+    branches:
+      - main
+      - tmp
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened]
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: false
+          fetch-depth: 1
+      - name: Prepare for ArchLinux packaging
+        run: |
+          sudo chmod -R 0777 .
+          mv -v packages/archlinux packages/ndpid-testing
+      - uses: 2m/arch-pkgbuild-builder@v1.16
+        with:
+          debug: true
+          target: 'pkgbuild'
+          pkgname: 'packages/ndpid-testing'

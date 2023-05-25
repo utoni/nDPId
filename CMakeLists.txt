@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.12.4)
 project(nDPId C)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11")
 if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
     message(FATAL_ERROR "In-source builds are not allowed.\n"
                         "Please remove ${PROJECT_SOURCE_DIR}/CMakeCache.txt\n"
@@ -239,7 +241,19 @@ endif()
 if(STATIC_LIBNDPI_INSTALLDIR OR BUILD_NDPI)
     add_definitions("-DLIBNDPI_STATIC=1")
     set(STATIC_LIBNDPI_INC "${STATIC_LIBNDPI_INSTALLDIR}/include/ndpi")
-    set(STATIC_LIBNDPI_LIB "${STATIC_LIBNDPI_INSTALLDIR}/lib/libndpi.a")
+    if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+        if(EXISTS "${STATIC_LIBNDPI_INSTALLDIR}/lib64")
+            set(STATIC_LIBNDPI_LIB "${STATIC_LIBNDPI_INSTALLDIR}/lib64/libndpi.a")
+        else()
+            set(STATIC_LIBNDPI_LIB "${STATIC_LIBNDPI_INSTALLDIR}/lib/libndpi.a")
+        endif()
+    else()
+        if(EXISTS "${STATIC_LIBNDPI_INSTALLDIR}/lib32")
+            set(STATIC_LIBNDPI_LIB "${STATIC_LIBNDPI_INSTALLDIR}/lib32/libndpi.a")
+        else()
+            set(STATIC_LIBNDPI_LIB "${STATIC_LIBNDPI_INSTALLDIR}/lib/libndpi.a")
+        endif()
+    endif()
 
     if(STATIC_LIBNDPI_INSTALLDIR AND NOT BUILD_NDPI)
         if(NOT EXISTS "${STATIC_LIBNDPI_INC}" OR NOT EXISTS "${STATIC_LIBNDPI_LIB}")
@@ -249,9 +263,13 @@ if(STATIC_LIBNDPI_INSTALLDIR OR BUILD_NDPI)
     endif()
 
     unset(DEFAULT_NDPI_INCLUDE CACHE)
+    unset(pkgcfg_lib_NDPI_ndpi CACHE)
 else()
     if(NOT NDPI_NO_PKGCONFIG)
-        pkg_check_modules(NDPI REQUIRED libndpi>=4.5.0)
+        pkg_check_modules(NDPI REQUIRED libndpi>=4.6.0)
+        if(NOT pkgcfg_lib_NDPI_ndpi)
+            find_package(NDPI "4.6.0" REQUIRED)
+        endif()
 
         unset(STATIC_LIBNDPI_INC CACHE)
         unset(STATIC_LIBNDPI_LIB CACHE)
@@ -260,12 +278,15 @@ else()
     set(DEFAULT_NDPI_INCLUDE ${NDPI_INCLUDE_DIRS})
 endif()
 
-find_package(PCAP "1.8.1" REQUIRED)
+pkg_check_modules(PCAP REQUIRED libpcap>=1.8.1)
+if(NOT pkgcfg_lib_PCAP_pcap)
+    find_package(PCAP "1.8.1" REQUIRED)
+endif()
 
 target_compile_options(nDPId PRIVATE "-pthread")
 target_compile_definitions(nDPId PRIVATE -D_GNU_SOURCE=1 -DGIT_VERSION=\"${GIT_VERSION}\" ${NDPID_DEFS} ${ZLIB_DEFS})
 target_include_directories(nDPId PRIVATE "${STATIC_LIBNDPI_INC}" "${DEFAULT_NDPI_INCLUDE}" ${NDPID_DEPS_INC})
-target_link_libraries(nDPId "${STATIC_LIBNDPI_LIB}" "${pkgcfg_lib_NDPI_ndpi}"
+target_link_libraries(nDPId "${STATIC_LIBNDPI_LIB}" "${pkgcfg_lib_PCAP_pcap}" "${pkgcfg_lib_NDPI_ndpi}"
                             "${pkgcfg_lib_PCRE_pcre}" "${pkgcfg_lib_MAXMINDDB_maxminddb}" "${pkgcfg_lib_ZLIB_z}"
                             "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}" "${LIBM_LIB}"
                             "-pthread")
@@ -279,7 +300,7 @@ target_compile_definitions(nDPId-test PRIVATE -D_GNU_SOURCE=1 -DNO_MAIN=1 -DGIT_
                                               ${NDPID_DEFS} ${ZLIB_DEFS} ${NDPID_TEST_MPROF_DEFS})
 target_include_directories(nDPId-test PRIVATE
                            "${STATIC_LIBNDPI_INC}" "${DEFAULT_NDPI_INCLUDE}" ${NDPID_DEPS_INC})
-target_link_libraries(nDPId-test "${STATIC_LIBNDPI_LIB}" "${pkgcfg_lib_NDPI_ndpi}"
+target_link_libraries(nDPId-test "${STATIC_LIBNDPI_LIB}" "${pkgcfg_lib_PCAP_pcap}" "${pkgcfg_lib_NDPI_ndpi}"
                                  "${pkgcfg_lib_PCRE_pcre}" "${pkgcfg_lib_MAXMINDDB_maxminddb}" "${pkgcfg_lib_ZLIB_z}"
                                  "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}" "${LIBM_LIB}"
                                  "-pthread")
@@ -300,7 +321,7 @@ if(BUILD_EXAMPLES)
     target_compile_definitions(nDPIsrvd-captured PRIVATE ${NDPID_DEFS})
     target_include_directories(nDPIsrvd-captured PRIVATE
                                "${STATIC_LIBNDPI_INC}" "${DEFAULT_NDPI_INCLUDE}" "${CMAKE_SOURCE_DIR}" ${NDPID_DEPS_INC})
-    target_link_libraries(nDPIsrvd-captured "${pkgcfg_lib_NDPI_ndpi}"
+    target_link_libraries(nDPIsrvd-captured "${pkgcfg_lib_PCAP_pcap}" "${pkgcfg_lib_NDPI_ndpi}"
                                             "${pkgcfg_lib_PCRE_pcre}" "${pkgcfg_lib_MAXMINDDB_maxminddb}"
                                             "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}")
 

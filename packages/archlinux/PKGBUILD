@@ -1,12 +1,14 @@
 # Maintainer: Toni Uhlig <toni@impl.cc>
 
-pkgname=nDPId-testing
+pkgname=ndpid-testing
 pkgver=1.0
 pkgrel=1
 pkgdesc="Tiny nDPI based deep packet inspection daemons / toolkit."
 arch=('i686' 'x86_64')
 url="https://github.com/utoni/nDPId"
 license=('GPL3')
+depends=('libpcap')
+makedepends=('cmake' 'make' 'gcc' 'wget' 'unzip')
 options=()
 
 build() {

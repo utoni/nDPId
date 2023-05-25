@@ -10,7 +10,7 @@ before_script:
       apt-get install -y -qq \
         coreutils sudo \
         build-essential make cmake binutils gcc clang autoconf automake \
-        libtool pkg-config git \
+        libtool pkg-config git wget unzip \
         libpcap-dev libgpg-error-dev libjson-c-dev zlib1g-dev \
         netcat-openbsd python3 python3-jsonschema tree lcov iproute2
 
