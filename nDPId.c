@@ -5104,7 +5104,7 @@ static int validate_options(void)
         {
             logger_early(1,
                          "Setting compression-scan-interval / compression-flow-inactivity "
-                         "to values lower than %u / %u are not recommended.",
+                         "to values lower than %llu / %llu are not recommended.",
                          TIME_S_TO_US(4u),
                          TIME_S_TO_US(6u));
             logger_early(1, "%s", "Your CPU usage may increase heavily.");
@@ -5166,7 +5166,7 @@ static int validate_options(void)
     if (nDPId_options.flow_scan_interval < TIME_S_TO_US(5u))
     {
         logger_early(1,
-                     "Value not in range: idle-scan-interval[%llu] > %u",
+                     "Value not in range: idle-scan-interval[%llu] > %llu",
                      nDPId_options.flow_scan_interval,
                      TIME_S_TO_US(5u));
         retval = 1;
