@@ -27,8 +27,8 @@ jobs:
           sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
           yum -y update
           yum -y install curl gpg
-          curl 'https://packages.ntop.org/centos-stable/ntop.repo' > /etc/yum.repos.d/ntop.repo
-          curl 'https://packages.ntop.org/centos-stable/RPM-GPG-KEY-deri' | gpg --import
+          curl 'https://packages.ntop.org/centos/ntop.repo' > /etc/yum.repos.d/ntop.repo
+          curl 'https://packages.ntop.org/centos/RPM-GPG-KEY-deri' | gpg --import
           yum -y install yum-utils dnf-plugins-core epel-release
           dnf config-manager --set-enabled powertools
           yum -y update

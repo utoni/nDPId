@@ -49,8 +49,8 @@
 #define DLT_DSA_TAG_EDSA 285
 #endif
 
-#if ((NDPI_MAJOR == 4 && NDPI_MINOR < 4) || NDPI_MAJOR < 4) && NDPI_API_VERSION < 6336
-#error "nDPI >= 4.4.0 or API version >= 6336 required"
+#if ((NDPI_MAJOR == 4 && NDPI_MINOR < 8) || NDPI_MAJOR < 4) && NDPI_API_VERSION < 7001
+#error "nDPI >= 4.8.0 or API version >= 7001 required"
 #endif
 
 #if nDPId_MAX_READER_THREADS <= 0
@@ -1210,7 +1210,7 @@ static void ndpi_debug_printf(unsigned int proto,
                               ...)
 {
     va_list vl;
-    int written, is_log_err;
+    int written, is_log_err = 0;
     char buf[128];
     struct nDPId_workflow * const workflow = (struct nDPId_workflow *)ndpi_get_user_data(ndpi_struct);
 
