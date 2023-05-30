@@ -1,10 +1,21 @@
+From 8d0316396dbbce65b62c80b9d38c2afc0ce52c0a Mon Sep 17 00:00:00 2001
+From: lns <matzeton@googlemail.com>
+Date: Tue, 30 May 2023 11:19:22 +0200
+Subject: [PATCH] Allow in-source builds required for OpenWrt toolchain.
+
+Signed-off-by: lns <matzeton@googlemail.com>
+---
+ CMakeLists.txt | 7 -------
+ 1 file changed, 7 deletions(-)
+
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 9045237..83f72b3 100644
+index dbd7037b..6caf1174 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -1,12 +1,5 @@
- cmake_minimum_required(VERSION 3.12.4)
+@@ -2,13 +2,6 @@ cmake_minimum_required(VERSION 3.12.4)
  project(nDPId C)
+ set(CMAKE_C_STANDARD 11)
+ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11")
 -if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
 -    message(FATAL_ERROR "In-source builds are not allowed.\n"
 -                        "Please remove ${PROJECT_SOURCE_DIR}/CMakeCache.txt\n"
@@ -15,3 +26,6 @@ index 9045237..83f72b3 100644
  set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
  find_package(PkgConfig REQUIRED)
  
+-- 
+2.40.1
+
