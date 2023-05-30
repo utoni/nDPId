@@ -262,6 +262,8 @@ struct nDPId_workflow
     unsigned long long int total_skipped_flows;
     unsigned long long int total_l4_payload_len;
 
+    unsigned long long int libnDPI_errors;
+
     unsigned long long int total_not_detected_flows;
     unsigned long long int total_guessed_flows;
     unsigned long long int total_detected_flows;
@@ -1198,6 +1200,55 @@ static void log_memory_usage(struct nDPId_reader_thread const * const reader_thr
 }
 #endif
 
+static void ndpi_debug_printf(unsigned int proto,
+                              struct ndpi_detection_module_struct * ndpi_struct,
+                              ndpi_log_level_t log_level,
+                              const char * file_name,
+                              const char * func_name,
+                              unsigned int line_number,
+                              const char * format,
+                              ...)
+{
+    va_list vl;
+    int written, is_log_err;
+    char buf[128];
+    struct nDPId_workflow * const workflow = (struct nDPId_workflow *)ndpi_get_user_data(ndpi_struct);
+
+    va_start(vl, format);
+    if ((written = vsnprintf(buf, nDPIsrvd_ARRAY_LENGTH(buf), format, vl)) >= (int)nDPIsrvd_ARRAY_LENGTH(buf))
+    {
+        logger(1,
+               "[libnDPI] Logging failure due to buffer size; current: %zu, required: %d",
+               nDPIsrvd_ARRAY_LENGTH(buf),
+               written);
+    }
+    va_end(vl);
+
+    switch (log_level)
+    {
+        case NDPI_LOG_ERROR:
+            workflow->libnDPI_errors++;
+            is_log_err = 1;
+            break;
+        case NDPI_LOG_TRACE:
+            is_log_err = 1;
+            break;
+        case NDPI_LOG_DEBUG:
+        case NDPI_LOG_DEBUG_EXTRA:
+            is_log_err = 0;
+            break;
+    }
+
+    logger(is_log_err,
+           "[libnDPI@%s.%s.%u] protocol %u.%s: %s",
+           file_name,
+           func_name,
+           line_number,
+           proto,
+           ndpi_get_proto_name(ndpi_struct, proto),
+           buf);
+}
+
 static struct nDPId_workflow * init_workflow(char const * const file_or_device)
 {
     char pcap_error_buffer[PCAP_ERRBUF_SIZE];
@@ -1275,6 +1326,10 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
         free_workflow(&workflow);
         return NULL;
     }
+
+    ndpi_set_user_data(workflow->ndpi_struct, workflow);
+    set_ndpi_debug_function(workflow->ndpi_struct, ndpi_debug_printf);
+    ndpi_set_log_level(workflow->ndpi_struct, NDPI_LOG_DEBUG_EXTRA);
 
     workflow->total_skipped_flows = 0;
     workflow->total_active_flows = 0;
@@ -2595,7 +2650,9 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
                                      get_l4_protocol_idle_time_external(flow_ext->flow_basic.l4_protocol));
     }
 
-    ndpi_serialize_string_int32(&workflow->ndpi_serializer, "pkt_datalink", pcap_datalink(reader_thread->workflow->pcap_handle));
+    ndpi_serialize_string_int32(&workflow->ndpi_serializer,
+                                "pkt_datalink",
+                                pcap_datalink(reader_thread->workflow->pcap_handle));
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_caplen", header->caplen);
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_type", pkt_type);
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_l3_offset", pkt_l3_offset);
@@ -3112,7 +3169,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
                 return 1;
             }
 
-            struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const * const) & packet[eth_offset];
+            struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const * const)&packet[eth_offset];
             *ip_offset = sizeof(struct ndpi_chdlc);
             *layer3_type = ntohs(chdlc->proto_code);
             break;
@@ -3137,7 +3194,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
 
             if (packet[0] == 0x0f || packet[0] == 0x8f)
             {
-                struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const * const) & packet[eth_offset];
+                struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const * const)&packet[eth_offset];
                 *ip_offset = sizeof(struct ndpi_chdlc); /* CHDLC_OFF = 4 */
                 *layer3_type = ntohs(chdlc->proto_code);
             }
@@ -3181,7 +3238,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
             }
 
             struct ndpi_radiotap_header const * const radiotap =
-                (struct ndpi_radiotap_header const * const) & packet[eth_offset];
+                (struct ndpi_radiotap_header const * const)&packet[eth_offset];
             uint16_t radio_len = radiotap->len;
 
             /* Check Bad FCS presence */

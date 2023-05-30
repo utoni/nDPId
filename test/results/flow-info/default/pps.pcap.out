@@ -137,7 +137,7 @@
          detected: [....49] [ip4][..tcp] [..117.79.81.135][...80] -> [..192.168.115.8][50443] [HTTP][Unknown][Web][Acceptable][]
                    RISK: HTTP Susp User-Agent, Unidirectional Traffic
               new: [....50] [ip4][..tcp] [..192.168.115.8][50482] -> [.140.205.243.64][...80] [MIDSTREAM] 
-         detected: [....50] [ip4][..tcp] [..192.168.115.8][50482] -> [.140.205.243.64][...80] [HTTP][Unknown][Web][Acceptable][cmc.tanx.com]
+         detected: [....50] [ip4][..tcp] [..192.168.115.8][50482] -> [.140.205.243.64][...80] [HTTP][Alibaba][Web][Acceptable][cmc.tanx.com]
                    RISK: Unidirectional Traffic
               new: [....51] [ip4][..tcp] [..192.168.115.8][50483] -> [.202.108.14.219][...80] [MIDSTREAM] 
          detected: [....51] [ip4][..tcp] [..192.168.115.8][50483] -> [.202.108.14.219][...80] [HTTP][Unknown][Streaming][Acceptable][msg.71.am]
@@ -492,7 +492,7 @@
              idle: [....35] [ip4][..udp] [..192.168.115.8][22793] -> [119.188.133.182][17788] [PPStream][Unknown][Streaming][Fun]
                    RISK: Unidirectional Traffic
               end: [....68] [ip4][..tcp] [..192.168.115.8][50497] -> [.123.125.112.49][...80] [HTTP][Unknown][Web][Acceptable]
-             idle: [....50] [ip4][..tcp] [..192.168.115.8][50482] -> [.140.205.243.64][...80] [HTTP][Unknown][Web][Acceptable]
+             idle: [....50] [ip4][..tcp] [..192.168.115.8][50482] -> [.140.205.243.64][...80] [HTTP][Alibaba][Web][Acceptable]
      not-detected: [....18] [ip4][..udp] [..192.168.115.8][22793] -> [..61.227.170.88][20227] [Unknown][Unknown][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....18] [ip4][..udp] [..192.168.115.8][22793] -> [..61.227.170.88][20227] 

@@ -410,6 +410,6 @@ char const * get_nDPId_version(void)
            "unknown"
 #endif
            "\n"
-           "(C) 2020-2022 Toni Uhlig\n"
+           "(C) 2020-2023 Toni Uhlig\n"
            "Please report any BUG to toni@impl.cc\n";
 }
