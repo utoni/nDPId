@@ -1,6 +1,27 @@
+/*
+ *
+ * Copyright (C) 2011-22 - ntop.org
+ *
+ * nDPI is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * nDPI is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with nDPI.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+#ifndef WIN32
 #include <arpa/inet.h>
-#include <errno.h>
 #include <netinet/in.h>
+#endif
+#include <errno.h>
 #include <ndpi_api.h>
 #include <ndpi_main.h>
 #include <ndpi_typedefs.h>
@@ -12,6 +33,11 @@
 #include <string.h>
 #include <unistd.h>
 
+#ifdef WIN32
+#include <windows.h>
+#endif
+
+//#define VERBOSE 1
 #define MAX_FLOW_ROOTS_PER_THREAD 2048
 #define MAX_IDLE_FLOWS_PER_THREAD 64
 #define TICK_RESOLUTION 1000
@@ -47,12 +73,19 @@ struct nDPI_flow_info {
   union {
     struct {
       uint32_t src;
+      uint32_t pad_00[3];
       uint32_t dst;
+      uint32_t pad_01[3];
     } v4;
     struct {
       uint64_t src[2];
       uint64_t dst[2];
     } v6;
+
+    struct {
+      uint32_t src[4];
+      uint32_t dst[4];
+    } u32;
   } ip_tuple;
 
   unsigned long long int total_l4_data_len;
@@ -65,23 +98,20 @@ struct nDPI_flow_info {
   uint8_t detection_completed:1;
   uint8_t tls_client_hello_seen:1;
   uint8_t tls_server_hello_seen:1;
-  uint8_t reserved_00:2;
+  uint8_t flow_info_printed:1;
+  uint8_t reserved_00:1;
   uint8_t l4_protocol;
 
   struct ndpi_proto detected_l7_protocol;
   struct ndpi_proto guessed_protocol;
 
   struct ndpi_flow_struct * ndpi_flow;
-  struct ndpi_id_struct * ndpi_src;
-  struct ndpi_id_struct * ndpi_dst;
 };
 
 struct nDPI_workflow {
   pcap_t * pcap_handle;
 
-  uint8_t error_or_eof:1;
-  uint8_t reserved_00:7;
-  uint8_t reserved_01[3];
+  volatile long int error_or_eof;
 
   unsigned long long int packets_captured;
   unsigned long long int packets_processed;
@@ -107,13 +137,13 @@ struct nDPI_workflow {
 struct nDPI_reader_thread {
   struct nDPI_workflow * workflow;
   pthread_t thread_id;
-  int array_index;
+  uint32_t array_index;
 };
 
 static struct nDPI_reader_thread reader_threads[MAX_READER_THREADS] = {};
 static int reader_thread_count = MAX_READER_THREADS;
-static int main_thread_shutdown = 0;
-static uint32_t flow_id = 0;
+static volatile long int main_thread_shutdown = 0;
+static volatile long int flow_id = 0;
 
 static void free_workflow(struct nDPI_workflow ** const workflow);
 
@@ -121,7 +151,10 @@ static struct nDPI_workflow * init_workflow(char const * const file_or_device)
 {
   char pcap_error_buffer[PCAP_ERRBUF_SIZE];
   struct nDPI_workflow * workflow = (struct nDPI_workflow *)ndpi_calloc(1, sizeof(*workflow));
-
+  const char *bpfFilter = "ip or ip6";
+  static struct bpf_program bpf_code;
+  static struct bpf_program *bpf_cfilter = NULL;
+  
   if (workflow == NULL) {
     return NULL;
   }
@@ -129,16 +162,31 @@ static struct nDPI_workflow * init_workflow(char const * const file_or_device)
   if (access(file_or_device, R_OK) != 0 && errno == ENOENT) {
     workflow->pcap_handle = pcap_open_live(file_or_device, /* 1536 */ 65535, 1, 250, pcap_error_buffer);
   } else {
+#ifdef WIN32
+    workflow->pcap_handle = pcap_open_offline(file_or_device, pcap_error_buffer);
+#else
     workflow->pcap_handle = pcap_open_offline_with_tstamp_precision(file_or_device, PCAP_TSTAMP_PRECISION_MICRO,
 								    pcap_error_buffer);
+#endif
   }
 
   if (workflow->pcap_handle == NULL) {
-    fprintf(stderr, "pcap_open_live / pcap_open_offline_with_tstamp_precision: %.*s\n",
+    fprintf(stderr, "pcap_open_live / pcap_open_offline: %.*s\n",
 	    (int) PCAP_ERRBUF_SIZE, pcap_error_buffer);
     free_workflow(&workflow);
     return NULL;
   }
+
+  if(pcap_compile(workflow->pcap_handle, &bpf_code, bpfFilter, 1, 0xFFFFFF00) < 0) {
+    printf("pcap_compile error: '%s'\n", pcap_geterr(workflow->pcap_handle));
+    exit(-1);
+  }
+
+  bpf_cfilter = &bpf_code;
+
+  if(pcap_setfilter(workflow->pcap_handle, bpf_cfilter) < 0) {
+    printf("pcap_setfilter error: '%s'\n", pcap_geterr(workflow->pcap_handle));
+  }  
 
   ndpi_init_prefs init_prefs = ndpi_no_prefs;
   workflow->ndpi_struct = ndpi_init_detection_module(init_prefs);
@@ -175,8 +223,6 @@ static void ndpi_flow_info_freer(void * const node)
 {
   struct nDPI_flow_info * const flow = (struct nDPI_flow_info *)node;
 
-  ndpi_free(flow->ndpi_dst);
-  ndpi_free(flow->ndpi_src);
   ndpi_flow_free(flow->ndpi_flow);
   ndpi_free(flow);
 }
@@ -289,7 +335,7 @@ static void print_packet_info(struct nDPI_reader_thread const * const reader_thr
   char buf[256];
   int used = 0, ret;
 
-  ret = snprintf(buf, sizeof(buf), "[%8llu, %d, %4u] %4u bytes: ",
+  ret = ndpi_snprintf(buf, sizeof(buf), "[%8llu, %d, %4u] %4u bytes: ",
 		 workflow->packets_captured, reader_thread->array_index,
 		 flow->flow_id, header->caplen);
   if (ret > 0) {
@@ -297,9 +343,9 @@ static void print_packet_info(struct nDPI_reader_thread const * const reader_thr
   }
 
   if (ip_tuple_to_string(flow, src_addr_str, sizeof(src_addr_str), dst_addr_str, sizeof(dst_addr_str)) != 0) {
-    ret = snprintf(buf + used, sizeof(buf) - used, "IP[%s -> %s]", src_addr_str, dst_addr_str);
+    ret = ndpi_snprintf(buf + used, sizeof(buf) - used, "IP[%s -> %s]", src_addr_str, dst_addr_str);
   } else {
-    ret = snprintf(buf + used, sizeof(buf) - used, "IP[ERROR]");
+    ret = ndpi_snprintf(buf + used, sizeof(buf) - used, "IP[ERROR]");
   }
   if (ret > 0) {
     used += ret;
@@ -307,24 +353,24 @@ static void print_packet_info(struct nDPI_reader_thread const * const reader_thr
 
   switch (flow->l4_protocol) {
   case IPPROTO_UDP:
-    ret = snprintf(buf + used, sizeof(buf) - used, " -> UDP[%u -> %u, %u bytes]",
+    ret = ndpi_snprintf(buf + used, sizeof(buf) - used, " -> UDP[%u -> %u, %u bytes]",
 		   flow->src_port, flow->dst_port, l4_data_len);
     break;
   case IPPROTO_TCP:
-    ret = snprintf(buf + used, sizeof(buf) - used, " -> TCP[%u -> %u, %u bytes]",
+    ret = ndpi_snprintf(buf + used, sizeof(buf) - used, " -> TCP[%u -> %u, %u bytes]",
 		   flow->src_port, flow->dst_port, l4_data_len);
     break;
   case IPPROTO_ICMP:
-    ret = snprintf(buf + used, sizeof(buf) - used, " -> ICMP");
+    ret = ndpi_snprintf(buf + used, sizeof(buf) - used, " -> ICMP");
     break;
   case IPPROTO_ICMPV6:
-    ret = snprintf(buf + used, sizeof(buf) - used, " -> ICMP6");
+    ret = ndpi_snprintf(buf + used, sizeof(buf) - used, " -> ICMP6");
     break;
   case IPPROTO_HOPOPTS:
-    ret = snprintf(buf + used, sizeof(buf) - used, " -> ICMP6 Hop-By-Hop");
+    ret = ndpi_snprintf(buf + used, sizeof(buf) - used, " -> ICMP6 Hop-By-Hop");
     break;
   default:
-    ret = snprintf(buf + used, sizeof(buf) - used, " -> Unknown[0x%X]", flow->l4_protocol);
+    ret = ndpi_snprintf(buf + used, sizeof(buf) - used, " -> Unknown[0x%X]", flow->l4_protocol);
     break;
   }
   if (ret > 0) {
@@ -335,60 +381,72 @@ static void print_packet_info(struct nDPI_reader_thread const * const reader_thr
 }
 #endif
 
-static int ip_tuples_equal(struct nDPI_flow_info const * const A,
-                           struct nDPI_flow_info const * const B)
+static int ip_tuples_compare(struct nDPI_flow_info const * const A, struct nDPI_flow_info const * const B)
 {
-  if (A->l3_type == L3_IP && B->l3_type == L3_IP6) {
-    return A->ip_tuple.v4.src == B->ip_tuple.v4.src &&
-      A->ip_tuple.v4.dst == B->ip_tuple.v4.dst;
-  } else if (A->l3_type == L3_IP6 && B->l3_type == L3_IP6) {
-    return A->ip_tuple.v6.src[0] == B->ip_tuple.v6.src[0] &&
-      A->ip_tuple.v6.src[1] == B->ip_tuple.v6.src[1] &&
-      A->ip_tuple.v6.dst[0] == B->ip_tuple.v6.dst[0] &&
-      A->ip_tuple.v6.dst[1] == B->ip_tuple.v6.dst[1];
+  // generate a warning if the enum changes
+  switch (A->l3_type)
+  {
+    case L3_IP:
+    case L3_IP6:
+      break;
   }
-  return 0;
-}
 
-static int ip_tuples_compare(struct nDPI_flow_info const * const A,
-                             struct nDPI_flow_info const * const B)
-{
-  if (A->l3_type == L3_IP && B->l3_type == L3_IP6) {
-    if (A->ip_tuple.v4.src < B->ip_tuple.v4.src ||
-	A->ip_tuple.v4.dst < B->ip_tuple.v4.dst)
-      {
-	return -1;
-      }
-    if (A->ip_tuple.v4.src > B->ip_tuple.v4.src ||
-	A->ip_tuple.v4.dst > B->ip_tuple.v4.dst)
-      {
-	return 1;
-      }
-  } else if (A->l3_type == L3_IP6 && B->l3_type == L3_IP6) {
-    if ((A->ip_tuple.v6.src[0] < B->ip_tuple.v6.src[0] &&
-	 A->ip_tuple.v6.src[1] < B->ip_tuple.v6.src[1]) ||
-	(A->ip_tuple.v6.dst[0] < B->ip_tuple.v6.dst[0] &&
-	 A->ip_tuple.v6.dst[1] < B->ip_tuple.v6.dst[1]))
-      {
-	return -1;
-      }
-    if ((A->ip_tuple.v6.src[0] > B->ip_tuple.v6.src[0] &&
-	 A->ip_tuple.v6.src[1] > B->ip_tuple.v6.src[1]) ||
-	(A->ip_tuple.v6.dst[0] > B->ip_tuple.v6.dst[0] &&
-	 A->ip_tuple.v6.dst[1] > B->ip_tuple.v6.dst[1]))
-      {
-	return 1;
-      }
-  }
-  if (A->src_port < B->src_port ||
-      A->dst_port < B->dst_port)
+  if (A->l3_type == L3_IP && B->l3_type == L3_IP)
+  {
+    if (A->ip_tuple.v4.src < B->ip_tuple.v4.src)
     {
       return -1;
-    } else if (A->src_port > B->src_port ||
-               A->dst_port > B->dst_port)
+    }
+    if (A->ip_tuple.v4.src > B->ip_tuple.v4.src)
     {
       return 1;
     }
+    if (A->ip_tuple.v4.dst < B->ip_tuple.v4.dst)
+    {
+      return -1;
+    }
+    if (A->ip_tuple.v4.dst > B->ip_tuple.v4.dst)
+    {
+      return 1;
+    }
+  }
+  else if (A->l3_type == L3_IP6 && B->l3_type == L3_IP6)
+  {
+    if (A->ip_tuple.v6.src[0] < B->ip_tuple.v6.src[0] && A->ip_tuple.v6.src[1] < B->ip_tuple.v6.src[1])
+    {
+      return -1;
+    }
+    if (A->ip_tuple.v6.src[0] > B->ip_tuple.v6.src[0] && A->ip_tuple.v6.src[1] > B->ip_tuple.v6.src[1])
+    {
+      return 1;
+    }
+    if (A->ip_tuple.v6.dst[0] < B->ip_tuple.v6.dst[0] && A->ip_tuple.v6.dst[1] < B->ip_tuple.v6.dst[1])
+    {
+      return -1;
+    }
+    if (A->ip_tuple.v6.dst[0] > B->ip_tuple.v6.dst[0] && A->ip_tuple.v6.dst[1] > B->ip_tuple.v6.dst[1])
+    {
+      return 1;
+    }
+  }
+
+  if (A->src_port < B->src_port)
+  {
+    return -1;
+  }
+  if (A->src_port > B->src_port)
+  {
+    return 1;
+  }
+  if (A->dst_port < B->dst_port)
+  {
+    return -1;
+  }
+  if (A->dst_port > B->dst_port)
+  {
+    return 1;
+  }
+
   return 0;
 }
 
@@ -437,13 +495,6 @@ static int ndpi_workflow_node_cmp(void const * const A, void const * const B) {
     return(1);
   }
 
-  if (ip_tuples_equal(flow_info_a, flow_info_b) != 0 &&
-      flow_info_a->src_port == flow_info_b->src_port &&
-      flow_info_a->dst_port == flow_info_b->dst_port)
-    {
-      return(0);
-    }
-
   return ip_tuples_compare(flow_info_a, flow_info_b);
 }
 
@@ -485,10 +536,6 @@ static void ndpi_process_packet(uint8_t * const args,
   void * tree_result;
   struct nDPI_flow_info * flow_to_process;
 
-  int direction_changed = 0;
-  struct ndpi_id_struct * ndpi_src;
-  struct ndpi_id_struct * ndpi_dst;
-
   const struct ndpi_ethhdr * ethernet;
   const struct ndpi_iphdr * ip;
   struct ndpi_ipv6hdr * ip6;
@@ -502,7 +549,7 @@ static void ndpi_process_packet(uint8_t * const args,
   uint16_t l4_len = 0;
 
   uint16_t type;
-  int thread_index = INITIAL_THREAD_HASH; // generated with `dd if=/dev/random bs=1024 count=1 |& hd'
+  uint32_t thread_index = INITIAL_THREAD_HASH; // generated with `dd if=/dev/random bs=1024 count=1 |& hd'
 
   if (reader_thread == NULL) {
     return;
@@ -686,7 +733,7 @@ static void ndpi_process_packet(uint8_t * const args,
   workflow->total_l4_data_len += l4_len;
 
 #ifdef VERBOSE
-  print_packet_info(reader_thread, header, l4_data_len, &flow);
+  print_packet_info(reader_thread, header, l4_len, &flow);
 #endif
 
   /* calculate flow hash for btree find, search(insert) */
@@ -712,27 +759,38 @@ static void ndpi_process_packet(uint8_t * const args,
   tree_result = ndpi_tfind(&flow, &workflow->ndpi_flows_active[hashed_index], ndpi_workflow_node_cmp);
   if (tree_result == NULL) {
     /* flow not found in btree: switch src <-> dst and try to find it again */
-    uint64_t orig_src_ip[2] = { flow.ip_tuple.v6.src[0], flow.ip_tuple.v6.src[1] };
-    uint64_t orig_dst_ip[2] = { flow.ip_tuple.v6.dst[0], flow.ip_tuple.v6.dst[1] };
+    uint32_t orig_src_ip[4] = { flow.ip_tuple.u32.src[0], flow.ip_tuple.u32.src[1],
+                                flow.ip_tuple.u32.src[2], flow.ip_tuple.u32.src[3] };
+    uint32_t orig_dst_ip[4] = { flow.ip_tuple.u32.dst[0], flow.ip_tuple.u32.dst[1],
+                                flow.ip_tuple.u32.dst[2], flow.ip_tuple.u32.dst[3] };
     uint16_t orig_src_port = flow.src_port;
     uint16_t orig_dst_port = flow.dst_port;
 
-    flow.ip_tuple.v6.src[0] = orig_dst_ip[0];
-    flow.ip_tuple.v6.src[1] = orig_dst_ip[1];
-    flow.ip_tuple.v6.dst[0] = orig_src_ip[0];
-    flow.ip_tuple.v6.dst[1] = orig_src_ip[1];
+    flow.ip_tuple.u32.src[0] = orig_dst_ip[0];
+    flow.ip_tuple.u32.src[1] = orig_dst_ip[1];
+    flow.ip_tuple.u32.src[2] = orig_dst_ip[2];
+    flow.ip_tuple.u32.src[3] = orig_dst_ip[3];
+
+    flow.ip_tuple.u32.dst[0] = orig_src_ip[0];
+    flow.ip_tuple.u32.dst[1] = orig_src_ip[1];
+    flow.ip_tuple.u32.dst[2] = orig_src_ip[2];
+    flow.ip_tuple.u32.dst[3] = orig_src_ip[3];
+
     flow.src_port = orig_dst_port;
     flow.dst_port = orig_src_port;
 
     tree_result = ndpi_tfind(&flow, &workflow->ndpi_flows_active[hashed_index], ndpi_workflow_node_cmp);
-    if (tree_result != NULL) {
-      direction_changed = 1;
-    }
 
-    flow.ip_tuple.v6.src[0] = orig_src_ip[0];
-    flow.ip_tuple.v6.src[1] = orig_src_ip[1];
-    flow.ip_tuple.v6.dst[0] = orig_dst_ip[0];
-    flow.ip_tuple.v6.dst[1] = orig_dst_ip[1];
+    flow.ip_tuple.u32.src[0] = orig_src_ip[0];
+    flow.ip_tuple.u32.src[1] = orig_src_ip[1];
+    flow.ip_tuple.u32.src[2] = orig_src_ip[2];
+    flow.ip_tuple.u32.src[3] = orig_src_ip[3];
+
+    flow.ip_tuple.u32.dst[0] = orig_dst_ip[0];
+    flow.ip_tuple.u32.dst[1] = orig_dst_ip[1];
+    flow.ip_tuple.u32.dst[2] = orig_dst_ip[2];
+    flow.ip_tuple.u32.dst[3] = orig_dst_ip[3];
+
     flow.src_port = orig_src_port;
     flow.dst_port = orig_dst_port;
   }
@@ -753,10 +811,8 @@ static void ndpi_process_packet(uint8_t * const args,
       return;
     }
 
-    workflow->cur_active_flows++;
-    workflow->total_active_flows++;
     memcpy(flow_to_process, &flow, sizeof(*flow_to_process));
-    flow_to_process->flow_id = flow_id++;
+    flow_to_process->flow_id = __sync_fetch_and_add(&flow_id, 1);
 
     flow_to_process->ndpi_flow = (struct ndpi_flow_struct *)ndpi_flow_malloc(SIZEOF_FLOW_STRUCT);
     if (flow_to_process->ndpi_flow == NULL) {
@@ -766,20 +822,6 @@ static void ndpi_process_packet(uint8_t * const args,
     }
     memset(flow_to_process->ndpi_flow, 0, SIZEOF_FLOW_STRUCT);
 
-    flow_to_process->ndpi_src = (struct ndpi_id_struct *)ndpi_calloc(1, SIZEOF_ID_STRUCT);
-    if (flow_to_process->ndpi_src == NULL) {
-      fprintf(stderr, "[%8llu, %d, %4u] Not enough memory for src id struct\n",
-	      workflow->packets_captured, reader_thread->array_index, flow_to_process->flow_id);
-      return;
-    }
-
-    flow_to_process->ndpi_dst = (struct ndpi_id_struct *)ndpi_calloc(1, SIZEOF_ID_STRUCT);
-    if (flow_to_process->ndpi_dst == NULL) {
-      fprintf(stderr, "[%8llu, %d, %4u] Not enough memory for dst id struct\n",
-	      workflow->packets_captured, reader_thread->array_index, flow_to_process->flow_id);
-      return;
-    }
-
     printf("[%8llu, %d, %4u] new %sflow\n", workflow->packets_captured, thread_index,
 	   flow_to_process->flow_id,
 	   (flow_to_process->is_midstream_flow != 0 ? "midstream-" : ""));
@@ -788,18 +830,10 @@ static void ndpi_process_packet(uint8_t * const args,
       return;
     }
 
-    ndpi_src = flow_to_process->ndpi_src;
-    ndpi_dst = flow_to_process->ndpi_dst;
+    workflow->cur_active_flows++;
+    workflow->total_active_flows++;
   } else {
     flow_to_process = *(struct nDPI_flow_info **)tree_result;
-
-    if (direction_changed != 0) {
-      ndpi_src = flow_to_process->ndpi_dst;
-      ndpi_dst = flow_to_process->ndpi_src;
-    } else {
-      ndpi_src = flow_to_process->ndpi_src;
-      ndpi_dst = flow_to_process->ndpi_dst;
-    }
   }
 
   flow_to_process->packets_processed++;
@@ -850,17 +884,19 @@ static void ndpi_process_packet(uint8_t * const args,
   flow_to_process->detected_l7_protocol =
     ndpi_detection_process_packet(workflow->ndpi_struct, flow_to_process->ndpi_flow,
 				  ip != NULL ? (uint8_t *)ip : (uint8_t *)ip6,
-				  ip_size, time_ms, ndpi_src, ndpi_dst);
+				  ip_size, time_ms, NULL);
 
   if (ndpi_is_protocol_detected(workflow->ndpi_struct,
 				flow_to_process->detected_l7_protocol) != 0 &&
       flow_to_process->detection_completed == 0)
     {
       if (flow_to_process->detected_l7_protocol.master_protocol != NDPI_PROTOCOL_UNKNOWN ||
-	  flow_to_process->detected_l7_protocol.app_protocol != NDPI_PROTOCOL_UNKNOWN) {
-	flow_to_process->detection_completed = 1;
-	workflow->detected_flow_protocols++;
-	printf("[%8llu, %d, %4d][DETECTED] protocol: %s | app protocol: %s | category: %s\n",
+          flow_to_process->detected_l7_protocol.app_protocol != NDPI_PROTOCOL_UNKNOWN)
+      {
+        flow_to_process->detection_completed = 1;
+        workflow->detected_flow_protocols++;
+
+        printf("[%8llu, %d, %4d][DETECTED] protocol: %s | app protocol: %s | category: %s\n",
 	       workflow->packets_captured,
 	       reader_thread->array_index,
 	       flow_to_process->flow_id,
@@ -885,43 +921,61 @@ static void ndpi_process_packet(uint8_t * const args,
        * EoE - End of Example
        */
 
+      if (flow_to_process->flow_info_printed == 0)
+      {
+        char const * const flow_info = ndpi_get_flow_info(flow_to_process->ndpi_flow, &flow_to_process->detected_l7_protocol);
+        if (flow_info != NULL)
+        {
+          printf("[%8llu, %d, %4d] info: %s\n",
+            workflow->packets_captured,
+            reader_thread->array_index,
+            flow_to_process->flow_id,
+            flow_info);
+          flow_to_process->flow_info_printed = 1;
+        }
+      }
+
       if (flow_to_process->detected_l7_protocol.master_protocol == NDPI_PROTOCOL_TLS ||
 	  flow_to_process->detected_l7_protocol.app_protocol == NDPI_PROTOCOL_TLS)
         {
 	  if (flow_to_process->tls_client_hello_seen == 0 &&
-	      flow_to_process->ndpi_flow->l4.tcp.tls.hello_processed != 0)
+	      flow_to_process->ndpi_flow->protos.tls_quic.hello_processed != 0)
             {
 	      uint8_t unknown_tls_version = 0;
-	      printf("[%8llu, %d, %4d][TLS-CLIENT-HELLO] version: %s | sni: %s | alpn: %s\n",
+	      char buf_ver[16];
+	      printf("[%8llu, %d, %4d][TLS-CLIENT-HELLO] version: %s | sni: %s | (advertised) ALPNs: %s\n",
 		     workflow->packets_captured,
 		     reader_thread->array_index,
 		     flow_to_process->flow_id,
-		     ndpi_ssl_version2str(flow_to_process->ndpi_flow,
-					  flow_to_process->ndpi_flow->protos.tls_quic_stun.tls_quic.ssl_version,
+		     ndpi_ssl_version2str(buf_ver, sizeof(buf_ver),
+					  flow_to_process->ndpi_flow->protos.tls_quic.ssl_version,
 					  &unknown_tls_version),
-		     flow_to_process->ndpi_flow->protos.tls_quic_stun.tls_quic.client_requested_server_name,
-		     (flow_to_process->ndpi_flow->protos.tls_quic_stun.tls_quic.alpn != NULL ?
-		      flow_to_process->ndpi_flow->protos.tls_quic_stun.tls_quic.alpn : "-"));
+		     flow_to_process->ndpi_flow->host_server_name,
+		     (flow_to_process->ndpi_flow->protos.tls_quic.advertised_alpns != NULL ?
+		      flow_to_process->ndpi_flow->protos.tls_quic.advertised_alpns : "-"));
 	      flow_to_process->tls_client_hello_seen = 1;
             }
 	  if (flow_to_process->tls_server_hello_seen == 0 &&
-	      flow_to_process->ndpi_flow->l4.tcp.tls.certificate_processed != 0)
+	      flow_to_process->ndpi_flow->tls_quic.certificate_processed != 0)
             {
 	      uint8_t unknown_tls_version = 0;
+	      char buf_ver[16];
 	      printf("[%8llu, %d, %4d][TLS-SERVER-HELLO] version: %s | common-name(s): %.*s | "
 		     "issuer: %s | subject: %s\n",
 		     workflow->packets_captured,
 		     reader_thread->array_index,
 		     flow_to_process->flow_id,
-		     ndpi_ssl_version2str(flow_to_process->ndpi_flow,
-					  flow_to_process->ndpi_flow->protos.tls_quic_stun.tls_quic.ssl_version,
+		     ndpi_ssl_version2str(buf_ver, sizeof(buf_ver),
+					  flow_to_process->ndpi_flow->protos.tls_quic.ssl_version,
 					  &unknown_tls_version),
-		     flow_to_process->ndpi_flow->protos.tls_quic_stun.tls_quic.server_names_len,
-		     flow_to_process->ndpi_flow->protos.tls_quic_stun.tls_quic.server_names,
-		     (flow_to_process->ndpi_flow->protos.tls_quic_stun.tls_quic.issuerDN != NULL ?
-		      flow_to_process->ndpi_flow->protos.tls_quic_stun.tls_quic.issuerDN : "-"),
-		     (flow_to_process->ndpi_flow->protos.tls_quic_stun.tls_quic.subjectDN != NULL ?
-		      flow_to_process->ndpi_flow->protos.tls_quic_stun.tls_quic.subjectDN : "-"));
+		     (flow_to_process->ndpi_flow->protos.tls_quic.server_names_len == 0 ?
+		      1 : flow_to_process->ndpi_flow->protos.tls_quic.server_names_len),
+		     (flow_to_process->ndpi_flow->protos.tls_quic.server_names == NULL ?
+		      "-" : flow_to_process->ndpi_flow->protos.tls_quic.server_names),
+		     (flow_to_process->ndpi_flow->protos.tls_quic.issuerDN != NULL ?
+		      flow_to_process->ndpi_flow->protos.tls_quic.issuerDN : "-"),
+		     (flow_to_process->ndpi_flow->protos.tls_quic.subjectDN != NULL ?
+		      flow_to_process->ndpi_flow->protos.tls_quic.subjectDN : "-"));
 	      flow_to_process->tls_server_hello_seen = 1;
             }
         }
@@ -938,7 +992,7 @@ static void run_pcap_loop(struct nDPI_reader_thread const * const reader_thread)
 
       fprintf(stderr, "Error while reading pcap file: '%s'\n",
 	      pcap_geterr(reader_thread->workflow->pcap_handle));
-      reader_thread->workflow->error_or_eof = 1;
+      __sync_fetch_and_add(&reader_thread->workflow->error_or_eof, 1);
     }
   }
 }
@@ -957,16 +1011,16 @@ static void * processing_thread(void * const ndpi_thread_arg)
   struct nDPI_reader_thread const * const reader_thread =
     (struct nDPI_reader_thread *)ndpi_thread_arg;
 
-  printf("Starting ThreadID %d\n", reader_thread->array_index);
+  printf("Starting Thread %d\n", reader_thread->array_index);
   run_pcap_loop(reader_thread);
-  reader_thread->workflow->error_or_eof = 1;
+  __sync_fetch_and_add(&reader_thread->workflow->error_or_eof, 1);
   return NULL;
 }
 
 static int processing_threads_error_or_eof(void)
 {
   for (int i = 0; i < reader_thread_count; ++i) {
-    if (reader_threads[i].workflow->error_or_eof == 0) {
+    if (__sync_fetch_and_add(&reader_threads[i].workflow->error_or_eof, 0) == 0) {
       return 0;
     }
   }
@@ -975,6 +1029,7 @@ static int processing_threads_error_or_eof(void)
 
 static int start_reader_threads(void)
 {
+#ifndef WIN32
   sigset_t thread_signal_set, old_signal_set;
 
   sigfillset(&thread_signal_set);
@@ -984,6 +1039,7 @@ static int start_reader_threads(void)
     fprintf(stderr, "pthread_sigmask: %s\n", strerror(errno));
     return 1;
   }
+#endif
 
   for (int i = 0; i < reader_thread_count; ++i) {
     reader_threads[i].array_index = i;
@@ -1011,6 +1067,7 @@ static int start_reader_threads(void)
 
 static int stop_reader_threads(void)
 {
+  unsigned long long int total_packets_captured = 0;
   unsigned long long int total_packets_processed = 0;
   unsigned long long int total_l4_data_len = 0;
   unsigned long long int total_flows_captured = 0;
@@ -1028,6 +1085,10 @@ static int stop_reader_threads(void)
       continue;
     }
 
+    if (pthread_join(reader_threads[i].thread_id, NULL) != 0) {
+      fprintf(stderr, "pthread_join: %s\n", strerror(errno));
+    }
+
     total_packets_processed += reader_threads[i].workflow->packets_processed;
     total_l4_data_len += reader_threads[i].workflow->total_l4_data_len;
     total_flows_captured += reader_threads[i].workflow->total_active_flows;
@@ -1040,26 +1101,24 @@ static int stop_reader_threads(void)
 	   reader_threads[i].workflow->total_l4_data_len, reader_threads[i].workflow->total_active_flows,
 	   reader_threads[i].workflow->total_idle_flows, reader_threads[i].workflow->detected_flow_protocols);
   }
+
   /* total packets captured: same value for all threads as packet2thread distribution happens later */
-  printf("Total packets captured.: %llu\n",
-	 reader_threads[0].workflow->packets_captured);
-  printf("Total packets processed: %llu\n", total_packets_processed);
-  printf("Total layer4 data size.: %llu\n", total_l4_data_len);
-  printf("Total flows captured...: %llu\n", total_flows_captured);
-  printf("Total flows timed out..: %llu\n", total_flows_idle);
-  printf("Total flows detected...: %llu\n", total_flows_detected);
+  total_packets_captured = reader_threads[0].workflow->packets_captured;
 
   for (int i = 0; i < reader_thread_count; ++i) {
     if (reader_threads[i].workflow == NULL) {
       continue;
     }
 
-    if (pthread_join(reader_threads[i].thread_id, NULL) != 0) {
-      fprintf(stderr, "pthread_join: %s\n", strerror(errno));
-    }
-
     free_workflow(&reader_threads[i].workflow);
   }
+
+  printf("Total packets captured.: %llu\n", total_packets_captured);
+  printf("Total packets processed: %llu\n", total_packets_processed);
+  printf("Total layer4 data size.: %llu\n", total_l4_data_len);
+  printf("Total flows captured...: %llu\n", total_flows_captured);
+  printf("Total flows timed out..: %llu\n", total_flows_idle);
+  printf("Total flows detected...: %llu\n", total_flows_detected);
 
   return 0;
 }
@@ -1068,12 +1127,8 @@ static void sighandler(int signum)
 {
   fprintf(stderr, "Received SIGNAL %d\n", signum);
 
-  if (main_thread_shutdown == 0) {
-    main_thread_shutdown = 1;
-    if (stop_reader_threads() != 0) {
-      fprintf(stderr, "Failed to stop reader threads!\n");
-      exit(EXIT_FAILURE);
-    }
+  if (__sync_fetch_and_add(&main_thread_shutdown, 0) == 0) {
+    __sync_fetch_and_add(&main_thread_shutdown, 1);
   } else {
     fprintf(stderr, "Reader threads are already shutting down, please be patient.\n");
   }
@@ -1082,16 +1137,19 @@ static void sighandler(int signum)
 int main(int argc, char ** argv)
 {
   if (argc == 0) {
+    printf("usage: ndpiSimpleIntegration Mdevice name>\n");
     return 1;
   }
-
+  
   printf("usage: %s [PCAP-FILE-OR-INTERFACE]\n"
 	 "----------------------------------\n"
 	 "nDPI version: %s\n"
 	 " API version: %u\n"
+	 "libgcrypt...: %s\n"
 	 "----------------------------------\n",
 	 argv[0],
-	 ndpi_revision(), ndpi_get_api_version());
+	 ndpi_revision(), ndpi_get_api_version(),
+	 (ndpi_get_gcrypt_version() == NULL ? "-" : ndpi_get_gcrypt_version()));
 
   if (setup_reader_threads((argc >= 2 ? argv[1] : NULL)) != 0) {
     fprintf(stderr, "%s: setup_reader_threads failed\n", argv[0]);
@@ -1105,11 +1163,11 @@ int main(int argc, char ** argv)
 
   signal(SIGINT, sighandler);
   signal(SIGTERM, sighandler);
-  while (main_thread_shutdown == 0 && processing_threads_error_or_eof() == 0) {
+  while (__sync_fetch_and_add(&main_thread_shutdown, 0) == 0 && processing_threads_error_or_eof() == 0) {
     sleep(1);
   }
 
-  if (main_thread_shutdown == 0 && stop_reader_threads() != 0) {
+  if (stop_reader_threads() != 0) {
     fprintf(stderr, "%s: stop_reader_threads\n", argv[0]);
     return 1;
   }
