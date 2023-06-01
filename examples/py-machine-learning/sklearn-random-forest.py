@@ -206,7 +206,7 @@ if __name__ == '__main__':
                            help='Number of sklearn processes during training.')
     argparser.add_argument('--sklearn-estimators', action='store', type=int, default=1000,
                            help='Number of trees in the forest.')
-    argparser.add_argument('--sklearn-min-samples-leaf', action='store', type=int, default=5,
+    argparser.add_argument('--sklearn-min-samples-leaf', action='store', type=int, default=0.0001,
                            help='The minimum number of samples required to be at a leaf node.')
     argparser.add_argument('--sklearn-class-weight', default='balanced', const='balanced', nargs='?',
                            choices=['balanced', 'balanced_subsample'],

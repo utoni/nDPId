@@ -54,6 +54,11 @@ PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_category_file_sharing_count" interval
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_category_mining_count" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_category_malware_count" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_category_advertisment_count" interval=60 N:0
+PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_category_banned_site_count" interval=60 N:0
+PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_category_site_unavail_count" interval=60 N:0
+PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_category_allowed_site_count" interval=60 N:0
+PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_category_antimalware_count" interval=60 N:0
+PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_category_crypto_currency_count" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_category_unknown_count" interval=60 N:4
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_l3_ip4_count" interval=60 N:21
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_l3_ip6_count" interval=60 N:0

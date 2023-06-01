@@ -1,0 +1,13 @@
+     DAEMON-EVENT: init
+              new: [.....1] [ip4][..tcp] [......10.0.2.15][37810] -> [185.159.159.148][..443] 
+         detected: [.....1] [ip4][..tcp] [......10.0.2.15][37810] -> [185.159.159.148][..443] [TLS.ProtonVPN][Unknown][VPN][Acceptable][vpn-api.proton.me]
+ detection-update: [.....1] [ip4][..tcp] [......10.0.2.15][37810] -> [185.159.159.148][..443] [TLS.ProtonVPN][Unknown][VPN][Acceptable][vpn-api.proton.me]
+ detection-update: [.....1] [ip4][..tcp] [......10.0.2.15][37810] -> [185.159.159.148][..443] [TLS.ProtonVPN][Unknown][VPN][Acceptable][vpn-api.proton.me]
+                   RISK: TLS Cert Expired
+              new: [.....2] [ip4][..udp] [......10.0.2.15][57701] -> [....217.23.3.76][..443] 
+         detected: [.....2] [ip4][..udp] [......10.0.2.15][57701] -> [....217.23.3.76][..443] [WireGuard][ProtonVPN][VPN][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [.....2] [ip4][..udp] [......10.0.2.15][57701] -> [....217.23.3.76][..443] [WireGuard][ProtonVPN][VPN][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [.....1] [ip4][..tcp] [......10.0.2.15][37810] -> [185.159.159.148][..443] 
+     DAEMON-EVENT: shutdown

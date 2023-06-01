@@ -1,7 +1,15 @@
 cmake_minimum_required(VERSION 3.12.4)
 project(nDPId C)
+if(CMAKE_COMPILER_IS_GNUCXX)
+    execute_process(COMMAND ${CMAKE_C_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION)
+    if (GCC_VERSION VERSION_GREATER 4.7 OR GCC_VERSION VERSION_EQUAL 4.7)
+        message(STATUS "${CMAKE_C_COMPILER} supports C11 standard.")
+   else ()
+        message(FATAL_ERROR "C Compiler with C11 standard needed. Therefore a gcc compiler with a version equal or higher than 4.7 is needed.")
+   endif()
+endif(CMAKE_COMPILER_IS_GNUCXX)
 set(CMAKE_C_STANDARD 11)
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c11 -D_DEFAULT_SOURCE=1 -D_GNU_SOURCE=1")
 if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
     message(FATAL_ERROR "In-source builds are not allowed.\n"
                         "Please remove ${PROJECT_SOURCE_DIR}/CMakeCache.txt\n"
@@ -216,7 +224,11 @@ if(BUILD_NDPI)
         BUILD_IN_SOURCE 1)
 
     add_custom_target(clean-libnDPI
-        COMMAND test -r ${CMAKE_SOURCE_DIR}/libnDPI/Makefile && rm -rf ${CMAKE_BINARY_DIR}/libnDPI && git submodule deinit ${CMAKE_SOURCE_DIR}/libnDPI || true
+        COMMAND ${CMAKE_BUILD_TOOL} clean
+        COMMAND test -r ${CMAKE_SOURCE_DIR}/libnDPI/Makefile
+        COMMAND rm -rf ${CMAKE_BINARY_DIR}/libnDPI
+        COMMAND rm -f ${CMAKE_BINARY_DIR}/libnDPI-prefix/src/libnDPI-stamp/libnDPI-configure
+        COMMAND git submodule deinit -f ${CMAKE_SOURCE_DIR}/libnDPI
     )
 
     set(STATIC_LIBNDPI_INSTALLDIR "${CMAKE_BINARY_DIR}/libnDPI")
@@ -266,7 +278,7 @@ if(STATIC_LIBNDPI_INSTALLDIR OR BUILD_NDPI)
     unset(pkgcfg_lib_NDPI_ndpi CACHE)
 else()
     if(NOT NDPI_NO_PKGCONFIG)
-        pkg_check_modules(NDPI REQUIRED libndpi>=4.8.0)
+        pkg_check_modules(NDPI REQUIRED libndpi>=4.7.0)
         if(NOT pkgcfg_lib_NDPI_ndpi)
             find_package(NDPI "4.8.0" REQUIRED)
         endif()

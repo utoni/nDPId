@@ -200,6 +200,11 @@ rrdtool_graph Flow-Categories 'Amount(SUM)' "${OUTDIR}/categories" \
 	DEF:cat_voip=${RRDDIR}/gauge-flow_category_voip_count.rrd:value:AVERAGE \
 	DEF:cat_vpn=${RRDDIR}/gauge-flow_category_vpn_count.rrd:value:AVERAGE \
 	DEF:cat_web=${RRDDIR}/gauge-flow_category_web_count.rrd:value:AVERAGE \
+	DEF:cat_banned=${RRDDIR}/gauge-flow_category_web_count.rrd:value:AVERAGE \
+	DEF:cat_unavail=${RRDDIR}/gauge-flow_category_web_count.rrd:value:AVERAGE \
+	DEF:cat_allowed=${RRDDIR}/gauge-flow_category_web_count.rrd:value:AVERAGE \
+	DEF:cat_antimal=${RRDDIR}/gauge-flow_category_web_count.rrd:value:AVERAGE \
+	DEF:cat_crypto=${RRDDIR}/gauge-flow_category_web_count.rrd:value:AVERAGE \
 	$(rrdtool_graph_colorize_missing_data cat_ads) \
 	AREA:cat_ads#f1c232:"Advertisment..........." \
 	$(rrdtool_graph_print_cur_min_max_avg cat_ads) \
@@ -256,7 +261,17 @@ rrdtool_graph Flow-Categories 'Amount(SUM)' "${OUTDIR}/categories" \
 	STACK:cat_vpn#378035:"Virtual-Private-Network" \
 	$(rrdtool_graph_print_cur_min_max_avg cat_vpn) \
 	STACK:cat_web#00fffb:"Web...................." \
-	$(rrdtool_graph_print_cur_min_max_avg cat_web)
+	$(rrdtool_graph_print_cur_min_max_avg cat_web) \
+	STACK:cat_banned#ff1010:"Banned Sites..........." \
+	$(rrdtool_graph_print_cur_min_max_avg cat_banned) \
+	STACK:cat_unavail#ff1010:"Sites Unavailable......" \
+	$(rrdtool_graph_print_cur_min_max_avg cat_unavail) \
+	STACK:cat_allowed#ff1010:"Allowed Sites.........." \
+	$(rrdtool_graph_print_cur_min_max_avg cat_allowed) \
+	STACK:cat_antimal#ff1010:"Antimalware............" \
+	$(rrdtool_graph_print_cur_min_max_avg cat_antimal) \
+	STACK:cat_crypto#afaf00:"Crypto Currency........" \
+	$(rrdtool_graph_print_cur_min_max_avg cat_crypto)
 rrdtool_graph JSON 'Lines' "${OUTDIR}/json_lines" \
 	DEF:json_lines=${RRDDIR}/gauge-json_lines.rrd:value:AVERAGE \
 	$(rrdtool_graph_colorize_missing_data json_lines) \

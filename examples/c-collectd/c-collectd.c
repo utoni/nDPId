@@ -114,6 +114,11 @@ static struct
     uint64_t flow_category_mining_count;
     uint64_t flow_category_malware_count;
     uint64_t flow_category_advertisment_count;
+    uint64_t flow_category_banned_site_count;
+    uint64_t flow_category_site_unavail_count;
+    uint64_t flow_category_allowed_site_count;
+    uint64_t flow_category_antimalware_count;
+    uint64_t flow_category_crypto_currency_count;
     uint64_t flow_category_unknown_count;
 
     uint64_t flow_l3_ip4_count;
@@ -193,6 +198,11 @@ static struct json_stat_map const categories_map[] = {
     {"Mining", &collectd_statistics.flow_category_mining_count},
     {"Malware", &collectd_statistics.flow_category_malware_count},
     {"Advertisement", &collectd_statistics.flow_category_advertisment_count},
+    {"Banned_Site", &collectd_statistics.flow_category_banned_site_count},
+    {"Site_Unavailable", &collectd_statistics.flow_category_site_unavail_count},
+    {"Allowed_Site", &collectd_statistics.flow_category_allowed_site_count},
+    {"Antimalware", &collectd_statistics.flow_category_antimalware_count},
+    {"Crypto_Currency", &collectd_statistics.flow_category_crypto_currency_count},
     {NULL, &collectd_statistics.flow_category_unknown_count}};
 
 #ifdef ENABLE_MEMORY_PROFILING
@@ -431,7 +441,9 @@ static void print_collectd_exec_output(void)
                                    COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT()
                                        COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT()
                                            COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT()
-                                               COLLECTD_PUTVAL_N_FORMAT(),
+                                               COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT()
+                                                   COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT()
+                                                       COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT(),
 
            COLLECTD_PUTVAL_N(flow_category_media_count),
            COLLECTD_PUTVAL_N(flow_category_vpn_count),
@@ -460,6 +472,11 @@ static void print_collectd_exec_output(void)
            COLLECTD_PUTVAL_N(flow_category_mining_count),
            COLLECTD_PUTVAL_N(flow_category_malware_count),
            COLLECTD_PUTVAL_N(flow_category_advertisment_count),
+           COLLECTD_PUTVAL_N(flow_category_banned_site_count),
+           COLLECTD_PUTVAL_N(flow_category_site_unavail_count),
+           COLLECTD_PUTVAL_N(flow_category_allowed_site_count),
+           COLLECTD_PUTVAL_N(flow_category_antimalware_count),
+           COLLECTD_PUTVAL_N(flow_category_crypto_currency_count),
            COLLECTD_PUTVAL_N(flow_category_unknown_count));
 
     printf(COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT() COLLECTD_PUTVAL_N_FORMAT()

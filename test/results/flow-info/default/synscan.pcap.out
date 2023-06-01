@@ -4683,11 +4683,11 @@
           guessed: [....19] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][..139] [NetBIOS][Unknown][System][Acceptable][]
                    RISK: Unidirectional Traffic
              idle: [....19] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][..139] 
-          guessed: [..1788] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][.8333] [Mining][Unknown][Mining][Unsafe]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+          guessed: [..1788] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][.8333] [BITCOIN][Unknown][Crypto_Currency][Acceptable]
+                   RISK: Unidirectional Traffic
              idle: [..1788] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][.8333] 
-          guessed: [..1869] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][.8333] [Mining][Unknown][Mining][Unsafe]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+          guessed: [..1869] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][.8333] [BITCOIN][Unknown][Crypto_Currency][Acceptable]
+                   RISK: Unidirectional Traffic
              idle: [..1869] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][.8333] 
           guessed: [...193] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][.2190] [TiVoConnect][Unknown][Network][Fun]
                    RISK: Unidirectional Traffic
