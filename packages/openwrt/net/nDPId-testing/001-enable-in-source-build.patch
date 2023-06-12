@@ -1,21 +1,21 @@
-From 8d0316396dbbce65b62c80b9d38c2afc0ce52c0a Mon Sep 17 00:00:00 2001
-From: lns <matzeton@googlemail.com>
-Date: Tue, 30 May 2023 11:19:22 +0200
+From a9e21c707e5edaf1db14b3dd78d5cc397ebc624c Mon Sep 17 00:00:00 2001
+From: Toni Uhlig <matzeton@googlemail.com>
+Date: Mon, 12 Jun 2023 19:54:31 +0200
 Subject: [PATCH] Allow in-source builds required for OpenWrt toolchain.
 
-Signed-off-by: lns <matzeton@googlemail.com>
+Signed-off-by: Toni Uhlig <matzeton@googlemail.com>
 ---
  CMakeLists.txt | 7 -------
  1 file changed, 7 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index dbd7037b..6caf1174 100644
+index 43f8f31b..b88f0f0c 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -2,13 +2,6 @@ cmake_minimum_required(VERSION 3.12.4)
- project(nDPId C)
+@@ -10,13 +10,6 @@ if(CMAKE_COMPILER_IS_GNUCXX)
+ endif(CMAKE_COMPILER_IS_GNUCXX)
  set(CMAKE_C_STANDARD 11)
- set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11")
+ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c11 -D_DEFAULT_SOURCE=1 -D_GNU_SOURCE=1")
 -if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
 -    message(FATAL_ERROR "In-source builds are not allowed.\n"
 -                        "Please remove ${PROJECT_SOURCE_DIR}/CMakeCache.txt\n"
@@ -27,5 +27,5 @@ index dbd7037b..6caf1174 100644
  find_package(PkgConfig REQUIRED)
  
 -- 
-2.40.1
+2.30.2
 
