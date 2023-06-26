@@ -26,6 +26,10 @@ if [ ! -z "${CC}" ]; then
     HOST_TRIPLET="$(${CC} ${CFLAGS} -dumpmachine)"
 fi
 
+if [ ! -z "${MAKEFLAGS}" ]; then
+    MAKEFLAGS="-${MAKEFLAGS}"
+fi
+
 cat <<EOF
 ------ environment variables ------
 HOST_TRIPLET=${HOST_TRIPLET}
@@ -38,6 +42,7 @@ CFLAGS=${CFLAGS:-}
 LDFLAGS=${LDFLAGS:-}
 ADDITIONAL_ARGS=${ADDITIONAL_ARGS:-}
 MAKE_PROGRAM=${MAKE_PROGRAM:-}
+MAKEFLAGS=${MAKEFLAGS}
 DEST_INSTALL=${DEST_INSTALL:-}
 -----------------------------------
 EOF
@@ -84,6 +89,6 @@ HOST_ARG="--host=${HOST_TRIPLET}"
 ./autogen.sh --enable-option-checking=fatal \
     --prefix="/" \
     --with-only-libndpi ${HOST_ARG} ${ADDITIONAL_ARGS}
-${MAKE_PROGRAM} install DESTDIR="${DEST_INSTALL}"
+${MAKE_PROGRAM} ${MAKEFLAGS} install DESTDIR="${DEST_INSTALL}"
 
 rm -f "${LOCKFILE}"

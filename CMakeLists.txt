@@ -225,10 +225,8 @@ if(BUILD_NDPI)
 
     add_custom_target(clean-libnDPI
         COMMAND ${CMAKE_BUILD_TOOL} clean
-        COMMAND test -r ${CMAKE_SOURCE_DIR}/libnDPI/Makefile
         COMMAND rm -rf ${CMAKE_BINARY_DIR}/libnDPI
         COMMAND rm -f ${CMAKE_BINARY_DIR}/libnDPI-prefix/src/libnDPI-stamp/libnDPI-configure
-        COMMAND git submodule deinit -f ${CMAKE_SOURCE_DIR}/libnDPI
     )
 
     set(STATIC_LIBNDPI_INSTALLDIR "${CMAKE_BINARY_DIR}/libnDPI")

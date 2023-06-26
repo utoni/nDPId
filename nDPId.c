@@ -49,8 +49,8 @@
 #define DLT_DSA_TAG_EDSA 285
 #endif
 
-#if ((NDPI_MAJOR == 4 && NDPI_MINOR < 8) || NDPI_MAJOR < 4) && NDPI_API_VERSION < 7001
-#error "nDPI >= 4.8.0 or API version >= 7001 required"
+#if ((NDPI_MAJOR == 4 && NDPI_MINOR < 7) || NDPI_MAJOR < 4) && NDPI_API_VERSION < 7001
+#error "nDPI >= 4.7.0 or API version >= 7001 required"
 #endif
 
 #if nDPId_MAX_READER_THREADS <= 0
