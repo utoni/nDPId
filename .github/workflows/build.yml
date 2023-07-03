@@ -14,7 +14,7 @@ on:
 
 jobs:
   test:
-    name: ${{ matrix.os }} ${{ matrix.gcrypt }}
+    name: ${{ matrix.os }} ${{ matrix.compiler }}
     runs-on: ${{ matrix.os }}
     env:
       CMAKE_C_COMPILER: ${{ matrix.compiler }}

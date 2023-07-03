@@ -41,6 +41,11 @@ Required by `tests/run_tests.sh`
 
 ## py-machine-learning
 
+Contains:
+
+1. Classification via Random Forests and SciLearn
+2. Anomaly Detection via Autoencoder and Keras (Work-In-Progress!)
+
 Use sklearn together with CSVs created with **c-analysed** to train and predict DPI detections.
 
 Try it with: `./examples/py-machine-learning/sklearn_random_forest.py --csv ./ndpi-analysed.csv --proto-class tls.youtube --proto-class tls.github --proto-class tls.spotify --proto-class tls.facebook --proto-class tls.instagram --proto-class tls.doh_dot --proto-class quic --proto-class icmp`

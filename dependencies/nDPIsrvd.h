@@ -35,8 +35,6 @@
 #define nDPIsrvd_ARRAY_LENGTH(s) (sizeof(s) / sizeof(s[0]))
 #define nDPIsrvd_STRLEN_SZ(s) (sizeof(s) / sizeof(s[0]) - sizeof(s[0]))
 #define TOKEN_GET_SZ(sock, ...) nDPIsrvd_get_token(sock, __VA_ARGS__, NULL)
-#define TOKEN_GET_VALUE_SZ(sock, value_length, ...)                                                                    \
-    nDPIsrvd_get_token_value(sock, TOKEN_GET_SZ(sock, __VA_ARGS__, NULL))
 #define TOKEN_VALUE_EQUALS(sock, token, string_to_check, string_to_check_length)                                       \
     nDPIsrvd_token_value_equals(sock, token, string_to_check, string_to_check_length)
 #define TOKEN_VALUE_EQUALS_SZ(sock, token, string_to_check)                                                            \
