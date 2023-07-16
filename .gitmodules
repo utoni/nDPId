@@ -9,3 +9,6 @@
 [submodule "examples/js-rt-analyzer-frontend"]
 	path = examples/js-rt-analyzer-frontend
 	url = https://gitlab.com/verzulli/ndpid-rt-analyzer-frontend.git
+[submodule "examples/cxx-graph"]
+	path = examples/cxx-graph
+	url = https://github.com/utoni/nDPId-Graph.git

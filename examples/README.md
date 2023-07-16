@@ -26,6 +26,10 @@ Tiny nDPId json dumper. Does not provide any useful funcationality besides dumpi
 
 Integration example that verifies flow timeouts on SIGUSR1.
 
+## cxx-graph
+
+A standalone GLFW/OpenGL application that draws statistical data using ImWeb/ImPlot/ImGui.
+
 ## js-rt-analyzer
 
 [nDPId-rt-analyzer](https://gitlab.com/verzulli/ndpid-rt-analyzer.git)
