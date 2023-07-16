@@ -355,9 +355,9 @@ static void * nDPIsrvd_mainloop_thread(void * const arg)
     {
         errno = 0;
         int nready = epoll_wait(epollfd, events, events_size, -1);
-
-        if (nready < 0)
+        if (nready < 0 && errno != EINTR)
         {
+            logger(1, "%s", "nDPIsrvd epoll wait failed.");
             THREAD_ERROR_GOTO(arg);
         }
 
