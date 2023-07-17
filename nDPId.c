@@ -4944,6 +4944,26 @@ static void print_usage(char const * const arg0)
             get_cmdarg(&nDPId_options.user));
 }
 
+static void nDPId_print_deps_version(FILE * const out)
+{
+    fprintf(out,
+            "----------------------------------\n"
+            "nDPI version: %s\n"
+            " API version: %u\n"
+            "pcap version: %s\n"
+            "----------------------------------\n",
+            ndpi_revision(),
+            ndpi_get_api_version(),
+            pcap_lib_version() + strlen("libpcap version "));
+    if (ndpi_get_gcrypt_version() != NULL)
+    {
+        fprintf(out,
+                "gcrypt version: %s\n"
+                "----------------------------------\n",
+                ndpi_get_gcrypt_version());
+    }
+}
+
 static int nDPId_parse_options(int argc, char ** argv)
 {
     int opt;
@@ -5119,6 +5139,7 @@ static int nDPId_parse_options(int argc, char ** argv)
             }
             case 'v':
                 fprintf(stderr, "%s", get_nDPId_version());
+                nDPId_print_deps_version(stderr);
                 return 1;
             case 'h':
             default:
@@ -5290,7 +5311,7 @@ static int validate_options(void)
 #ifndef NO_MAIN
 int main(int argc, char ** argv)
 {
-    if (argc == 0)
+    if (argc == 0 || stdout == NULL || stderr == NULL)
     {
         return 1;
     }
@@ -5309,22 +5330,8 @@ int main(int argc, char ** argv)
 
     log_app_info();
 
-    printf(
-        "----------------------------------\n"
-        "nDPI version: %s\n"
-        " API version: %u\n"
-        "pcap version: %s\n"
-        "----------------------------------\n",
-        ndpi_revision(),
-        ndpi_get_api_version(),
-        pcap_lib_version() + strlen("libpcap version "));
-    if (ndpi_get_gcrypt_version() != NULL)
-    {
-        printf(
-            "gcrypt version: %s\n"
-            "----------------------------------\n",
-            ndpi_get_gcrypt_version());
-    }
+    nDPId_print_deps_version(stdout);
+
     if (NDPI_API_VERSION != ndpi_get_api_version())
     {
         logger_early(1,
