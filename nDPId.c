@@ -4947,11 +4947,15 @@ static void print_usage(char const * const arg0)
 static void nDPId_print_deps_version(FILE * const out)
 {
     fprintf(out,
-            "----------------------------------\n"
+            "------------------------------------------------------\n"
+#ifdef LIBNDPI_STATIC
+            "nDPI version: %s (statically linked)\n"
+#else
             "nDPI version: %s\n"
+#endif
             " API version: %u\n"
             "pcap version: %s\n"
-            "----------------------------------\n",
+            "------------------------------------------------------\n",
             ndpi_revision(),
             ndpi_get_api_version(),
             pcap_lib_version() + strlen("libpcap version "));
