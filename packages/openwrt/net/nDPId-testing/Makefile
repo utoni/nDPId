@@ -42,6 +42,15 @@ config NDPID_TESTING_COLLECTD_SUPPORT
    help
      This option enables collectd to gather nDPId statistics via plugin-exec.
      Disabled by default.
+
+config NDPID_TESTING_LIBNDPI_COMMIT_HASH
+   string "libnDPI commit hash"
+   depends on PACKAGE_nDPId-testing
+   default ""
+   help
+     Set the desired libnDPI git commit hash you want to link nDPId against.
+     Leave empty to use the dev branch.
+     Disabled by default.
 endef
 
 CMAKE_OPTIONS += -DBUILD_EXAMPLES=ON
@@ -60,30 +69,29 @@ ifneq ($(CONFIG_LIBNDPI_GCRYPT),)
 CMAKE_OPTIONS += -DNDPI_WIDTH_GCRYPT=ON
 endif
 
-ifdef NDPID_TESTING_COLLECTD_SUPPORT
+ifdef CONFIG_NDPID_TESTING_COLLECTD_SUPPORT
 define Package/nDPId-testing/install-collectd-files
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/nDPIsrvd-collectd $(1)/usr/bin/nDPIsrvd-testing-collectd
 endef
 endif
 
-define Build/Prepare
-	@echo 'tar: $(DL_DIR)/$(PKG_SOURCE)'
-	@echo 'PKG_DIRECTORY=$(PKG_DIRECTORY)'
-	@echo 'PKG_SOURCE_SUBDIR=$(PKG_SOURCE_SUBDIR)'
-	tar \
-		--exclude-tag-all='gcov.css' \
-		--exclude-tag-all='cmake_install.cmake' \
-		--exclude='libnDPI-*.tar' \
-		--exclude='nDPId-*.tar.bz2' \
-		--exclude='libnDPI' \
-		--exclude='test' \
-		--exclude-vcs \
-		--exclude-vcs-ignores \
-		--transform 's,^,$(PKG_SOURCE_SUBDIR)/,' \
-		-czf "$(DL_DIR)/$(PKG_SOURCE)" -C "$(PKG_DIRECTORY)" .
-	tar -tzf "$(DL_DIR)/$(PKG_SOURCE)"
-	$(PKG_UNPACK)
-	cd '$(PKG_BUILD_DIR)' && patch -p1 < $(PKG_BUILD_DIR)/packages/openwrt/net/nDPId-testing/001-enable-in-source-build.patch
+ifdef CONFIG_NDPID_TESTING_LIBNDPI_COMMIT_HASH
+define Package/nDPId-testing/get-and-build-libndpi
+	@echo 'Using commit hash: $(CONFIG_NDPID_TESTING_LIBNDPI_COMMIT_HASH)'
+	env \
+		CC="$(TARGET_CC)" \
+		AR="$(TARGET_AR)" \
+		RANLIB="$(TARGET_RANLIB)" \
+		CFLAGS="$(TARGET_CFLAGS)" \
+		CPPFLAGS="$(TARGET_CPPFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
+		MAKE_PROGRAM="$(MAKE)" \
+		NDPI_COMMIT_HASH=$(CONFIG_NDPID_TESTING_LIBNDPI_COMMIT_HASH) \
+		$(PKG_BUILD_DIR)/scripts/get-and-build-libndpi.sh
+endef
+else
+define Package/nDPId-testing/get-and-build-libndpi
+	@echo 'Using dev branch.'
 	env \
 		CC="$(TARGET_CC)" \
 		AR="$(TARGET_AR)" \
@@ -93,6 +101,19 @@ define Build/Prepare
 		LDFLAGS="$(TARGET_LDFLAGS)" \
 		MAKE_PROGRAM="$(MAKE)" \
 		$(PKG_BUILD_DIR)/scripts/get-and-build-libndpi.sh
+endef
+endif
+
+define Build/Prepare
+	@echo 'tar: $(DL_DIR)/$(PKG_SOURCE)'
+	@echo 'pwd: $(shell pwd)'
+	@echo 'PKG_DIRECTORY=$(PKG_DIRECTORY)'
+	@echo 'PKG_SOURCE_SUBDIR=$(PKG_SOURCE_SUBDIR)'
+	cd '$(PKG_DIRECTORY)' && git archive --prefix '$(PKG_SOURCE_SUBDIR)/' -o '$(DL_DIR)/new_$(PKG_SOURCE)' HEAD
+	mv '$(DL_DIR)/new_$(PKG_SOURCE)' '$(DL_DIR)/$(PKG_SOURCE)'; \
+	$(PKG_UNPACK)
+	cd '$(PKG_BUILD_DIR)' && patch -p1 < $(PKG_BUILD_DIR)/packages/openwrt/net/nDPId-testing/001-enable-in-source-build.patch
+	$(call Package/nDPId-testing/get-and-build-libndpi)
 endef
 
 define Package/nDPId-testing/install
@@ -112,7 +133,7 @@ define Package/nDPId-testing/install
 	$(INSTALL_DIR) $(1)/etc/config
 	$(INSTALL_CONF) $(PKG_NAME).config $(1)/etc/config/$(PKG_NAME)
 
-	$(call Package/nDPId-testing/install-collectd-files)
+	$(call Package/nDPId-testing/install-collectd-files,$(1))
 endef
 
 $(eval $(call BuildPackage,nDPId-testing))

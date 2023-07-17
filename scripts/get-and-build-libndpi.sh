@@ -7,7 +7,12 @@ WGET_EXEC="$(command -v wget || printf '%s' "")"
 UNZIP_EXEC="$(command -v unzip || printf '%s' "")"
 MAKE_EXEC="$(command -v make || printf '%s' "")"
 
-GITHUB_FALLBACK_URL='https://github.com/ntop/nDPI/archive/refs/heads/dev.zip'
+if [ -z "${NDPI_COMMIT_HASH}" ]; then
+    NDPI_COMMIT_HASH="dev"
+    GITHUB_FALLBACK_URL='https://github.com/ntop/nDPI/archive/refs/heads/dev.zip'
+else
+    GITHUB_FALLBACK_URL="https://github.com/ntop/nDPI/archive/${NDPI_COMMIT_HASH}.zip"
+fi
 
 if [ -z "${GIT_EXEC}" -o -z "${WGET_EXEC}" -o -z "${UNZIP_EXEC}" -o -z "${MAKE_EXEC}" ]; then
     printf '%s\n' "Required Executables missing: git, wget, unzip, make" >&2
@@ -44,6 +49,7 @@ ADDITIONAL_ARGS=${ADDITIONAL_ARGS:-}
 MAKE_PROGRAM=${MAKE_PROGRAM:-}
 MAKEFLAGS=${MAKEFLAGS}
 DEST_INSTALL=${DEST_INSTALL:-}
+NDPI_COMMIT_HASH=${NDPI_COMMIT_HASH:-}
 -----------------------------------
 EOF
 
@@ -75,10 +81,10 @@ if [ ${GIT_SUCCESS} -eq 0 ]; then
     printf 'URL: %s\n' "${GITHUB_FALLBACK_URL}"
     printf '%s\n' '-----------------------------------'
     set -x
-    wget "${GITHUB_FALLBACK_URL}" -O ./libnDPI-github-dev.zip
-    unzip ./libnDPI-github-dev.zip
+    wget "${GITHUB_FALLBACK_URL}" -O ./libnDPI-github-${NDPI_COMMIT_HASH}.zip
+    unzip ./libnDPI-github-${NDPI_COMMIT_HASH}.zip
     rm -rf ./libnDPI
-    mv ./nDPI-dev ./libnDPI
+    mv ./nDPI-${NDPI_COMMIT_HASH} ./libnDPI
 fi
 
 cd ./libnDPI
