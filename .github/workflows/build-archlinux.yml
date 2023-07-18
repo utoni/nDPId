@@ -29,3 +29,8 @@ jobs:
           debug: true
           target: 'pkgbuild'
           pkgname: 'packages/ndpid-testing'
+      - name: Upload PKG
+        uses: actions/upload-artifact@v3
+        with:
+          name: nDPId-archlinux-packages
+          path: packages/ndpid-testing/*.pkg.tar.zst

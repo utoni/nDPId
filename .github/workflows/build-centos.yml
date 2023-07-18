@@ -32,7 +32,7 @@ jobs:
           yum -y install yum-utils dnf-plugins-core epel-release
           dnf config-manager --set-enabled powertools
           yum -y update
-          yum -y install gcc gcc-c++ autoconf automake make cmake flex bison gettext pkg-config libtool ndpi-dev libpcap-devel zlib-devel python3.8 git wget unzip /usr/lib64/libasan.so.5.0.0 /usr/lib64/libubsan.so.1.0.0
+          yum -y install rpm-build gcc gcc-c++ autoconf automake make cmake flex bison gettext pkg-config libtool ndpi-dev libpcap-devel zlib-devel python3.8 git wget unzip /usr/lib64/libasan.so.5.0.0 /usr/lib64/libubsan.so.1.0.0
           repoquery -l ndpi-dev
       - name: Configure nDPId
         run: |
@@ -41,6 +41,14 @@ jobs:
       - name: Build nDPId
         run: |
           make -C build all VERBOSE=1
+      - name: CPack RPM
+        run: |
+          cd ./build && cpack -G RPM && cd ..
+      - name: Upload RPM
+        uses: actions/upload-artifact@v3
+        with:
+          name: nDPId-centos-packages
+          path: build/*.rpm
       - name: Upload on Failure
         uses: actions/upload-artifact@v3
         if: failure()

@@ -59,7 +59,7 @@ jobs:
           PACKAGES: nDPId-testing
 
       - name: Store packages
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
-          name: ${{ matrix.arch}}-packages
+          name: nDPId-${{ matrix.arch}}-${{ matrix.target }}
           path: bin/packages/${{ matrix.arch }}/ndpid_openwrt_packages_ci/*.ipk

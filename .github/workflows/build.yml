@@ -102,6 +102,11 @@ jobs:
       - name: CPack DEB
         run: |
           cd ./build && cpack -G DEB && sudo dpkg -i nDPId-*.deb && cd ..
+      - name: Upload DEB
+        uses: actions/upload-artifact@v3
+        with:
+          name: nDPId-debian-packages
+          path: build/*.deb
       - name: systemd test
         if: startsWith(matrix.os, 'ubuntu-latest') && startsWith(matrix.compiler, 'default-cc')
         run: |
