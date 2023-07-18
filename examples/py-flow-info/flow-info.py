@@ -458,6 +458,21 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
         if args.print_hostname is True:
             line_suffix += '[{}]'.format(json_dict['ndpi']['hostname'])
 
+    if args.print_bytes is not None:
+        if len(ndpi_proto_categ_breed) != 0 or len(line_suffix) != 0:
+            line_suffix += ' '
+        src_color = ''
+        dst_color = ''
+        tot_color = ''
+        if json_dict['flow_src_tot_l4_payload_len'] >= 1 * 1024 * 1024:
+            tot_color = src_color = TermColor.HINT
+        if json_dict['flow_dst_tot_l4_payload_len'] >= 1 * 1024 * 1024:
+            tot_color = dst_color = TermColor.HINT
+        line_suffix += '[' + src_color + Stats.prettifyBytes(json_dict['flow_src_tot_l4_payload_len']) + TermColor.END + ']' \
+                       '[' + dst_color + Stats.prettifyBytes(json_dict['flow_dst_tot_l4_payload_len']) + TermColor.END +']' \
+                       '[' + tot_color + Stats.prettifyBytes(json_dict['flow_src_tot_l4_payload_len'] + \
+                                                             json_dict['flow_dst_tot_l4_payload_len']) + TermColor.END + ']'
+
     if json_dict['l3_proto'] == 'ip4':
         print('{}{}{}{}{}: [{:.>6}] [{}][{:.>5}] [{:.>15}]{} -> [{:.>15}]{} {}{}' \
               ''.format(timestamp, first_seen, last_seen, instance_and_source, flow_event_name, 
@@ -501,6 +516,8 @@ if __name__ == '__main__':
                            help='Print first seen flow time diff.')
     argparser.add_argument('--print-last-seen', action='store_true', default=False,
                            help='Print last seen flow time diff.')
+    argparser.add_argument('--print-bytes', action='store_true', default=False,
+                           help='Print received/transmitted source/dest bytes for every flow.')
     argparser.add_argument('--guessed',    action='store_true', default=False, help='Print only guessed flow events.')
     argparser.add_argument('--not-detected', action='store_true', default=False, help='Print only undetected flow events.')
     argparser.add_argument('--detected',   action='store_true', default=False, help='Print only detected flow events.')
