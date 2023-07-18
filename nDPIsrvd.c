@@ -301,6 +301,7 @@ static void logger_nDPIsrvd(struct remote_desc const * const remote,
 
 static int drain_main_buffer(struct remote_desc * const remote)
 {
+    ssize_t bytes_written;
     struct nDPIsrvd_write_buffer * const write_buffer = get_write_buffer(remote);
 
     if (write_buffer == NULL)
@@ -314,7 +315,7 @@ static int drain_main_buffer(struct remote_desc * const remote)
     }
 
     errno = 0;
-    ssize_t bytes_written = write(remote->fd, write_buffer->buf.ptr.raw, write_buffer->buf.used);
+    while ((bytes_written = write(remote->fd, write_buffer->buf.ptr.raw, write_buffer->buf.used)) < 0 && errno == EINTR) { errno = 0; }
     if (errno == EAGAIN)
     {
         return 0;
@@ -358,8 +359,9 @@ static int drain_write_buffers(struct remote_desc * const remote)
     while (utarray_len(additional_write_buffers) > 0)
     {
         struct nDPIsrvd_write_buffer * buf = (struct nDPIsrvd_write_buffer *)utarray_front(additional_write_buffers);
-        ssize_t written = write(remote->fd, buf->buf.ptr.raw + buf->written, buf->buf.used - buf->written);
+        ssize_t written;
 
+        while ((written = write(remote->fd, buf->buf.ptr.raw + buf->written, buf->buf.used - buf->written)) < 0 && errno == EINTR) {}
         switch (written)
         {
             case -1:
@@ -732,6 +734,7 @@ static void free_remotes(int epollfd)
 
 static int add_event(int epollfd, int events, int fd, void * ptr)
 {
+    int retval;
     struct epoll_event event = {};
 
     if (ptr != NULL)
@@ -744,7 +747,8 @@ static int add_event(int epollfd, int events, int fd, void * ptr)
     }
     event.events = events;
 
-    return epoll_ctl(epollfd, EPOLL_CTL_ADD, fd, &event);
+    while ((retval = epoll_ctl(epollfd, EPOLL_CTL_ADD, fd, &event)) != 0 && errno == EINTR) {}
+    return retval;
 }
 
 static int add_in_event_fd(int epollfd, int fd)
@@ -759,12 +763,14 @@ static int add_in_event(int epollfd, struct remote_desc * const remote)
 
 static int mod_event(int epollfd, int events, int fd, void * ptr)
 {
+    int retval;
     struct epoll_event event = {};
 
     event.data.ptr = ptr;
     event.events = events;
 
-    return epoll_ctl(epollfd, EPOLL_CTL_MOD, fd, &event);
+    while ((retval = epoll_ctl(epollfd, EPOLL_CTL_MOD, fd, &event)) != 0 && errno == EINTR) {}
+    return retval;
 }
 
 static int add_out_event(int epollfd, struct remote_desc * const remote)
@@ -779,7 +785,10 @@ static int del_out_event(int epollfd, struct remote_desc * const remote)
 
 static int del_event(int epollfd, int fd)
 {
-    return epoll_ctl(epollfd, EPOLL_CTL_DEL, fd, NULL);
+    int retval;
+
+    while ((retval = epoll_ctl(epollfd, EPOLL_CTL_DEL, fd, NULL)) != 0 && errno == EINTR) {}
+    return retval;
 }
 
 static void disconnect_client(int epollfd, struct remote_desc * const remote)
@@ -931,7 +940,9 @@ static struct remote_desc * accept_remote(int server_fd,
                                           struct sockaddr * const sockaddr,
                                           socklen_t * const addrlen)
 {
-    int client_fd = accept(server_fd, sockaddr, addrlen);
+    int client_fd;
+
+    while ((client_fd = accept(server_fd, sockaddr, addrlen)) < 0 && errno == EINTR) {}
     if (client_fd < 0)
     {
         logger(1, "Accept failed: %s", strerror(errno));
@@ -1227,9 +1238,11 @@ static int handle_incoming_data(int epollfd, struct remote_desc * const current)
     else
     {
         errno = 0;
-        ssize_t bytes_read = read(current->fd,
+        ssize_t bytes_read;
+
+        while ((bytes_read = read(current->fd,
                                   json_read_buffer->buf.ptr.raw + json_read_buffer->buf.used,
-                                  json_read_buffer->buf.max - json_read_buffer->buf.used);
+                                  json_read_buffer->buf.max - json_read_buffer->buf.used)) < 0 && errno == EINTR) {}
         if (bytes_read < 0 || errno != 0)
         {
             logger_nDPIsrvd(current, "Could not read remote", ": %s", strerror(errno));

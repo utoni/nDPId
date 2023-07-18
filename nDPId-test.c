@@ -360,6 +360,10 @@ static void * nDPIsrvd_mainloop_thread(void * const arg)
             logger(1, "%s", "nDPIsrvd epoll wait failed.");
             THREAD_ERROR_GOTO(arg);
         }
+        else if (errno == EINTR)
+        {
+            continue;
+        }
 
         for (int i = 0; i < nready; i++)
         {
@@ -374,7 +378,8 @@ static void * nDPIsrvd_mainloop_thread(void * const arg)
                     if (remote == mock_json_desc)
                     {
                         remote_desc_name = "Mock JSON";
-                        do {
+                        do
+                        {
                             if (mock_test_desc->fd >= 0)
                                 drain_write_buffers_blocking(mock_test_desc);
                             if (mock_buff_desc->fd >= 0)
@@ -905,6 +910,10 @@ static void * distributor_client_mainloop_thread(void * const arg)
         {
             logger(1, "%s", "Distributor epoll wait failed.");
             THREAD_ERROR_GOTO(trv);
+        }
+        else if (nready < 0 && errno == EINTR)
+        {
+            continue;
         }
 
         for (int i = 0; i < nready; i++)
