@@ -154,7 +154,7 @@
               new: [....55] [ip4][..udp] [...192.168.5.57][59648] -> [239.255.255.250][.1900] 
          detected: [....55] [ip4][..udp] [...192.168.5.57][59648] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
  detection-update: [....54] [ip4][..tcp] [..192.168.115.8][50486] -> [...77.234.40.96][...80] [HTTP.Cybersec][AVAST][Download][Safe][bcu.ff.avast.com]
-                   RISK: HTTP Susp User-Agent, HTTP Obsolete Server
+                   RISK: Binary App Transfer, HTTP Susp User-Agent, HTTP Obsolete Server
               new: [....56] [ip4][..tcp] [..192.168.115.8][50487] -> [.202.108.14.219][...80] [MIDSTREAM] 
          detected: [....56] [ip4][..tcp] [..192.168.115.8][50487] -> [.202.108.14.219][...80] [HTTP][Unknown][Streaming][Acceptable][msg.71.am]
                    RISK: Unidirectional Traffic
@@ -362,7 +362,7 @@
                    RISK: Unidirectional Traffic
              idle: [....22] [ip4][..udp] [..192.168.115.8][22793] -> [.222.26.193.119][.7133] 
              idle: [....54] [ip4][..tcp] [..192.168.115.8][50486] -> [...77.234.40.96][...80] [HTTP.Cybersec][AVAST][Download][Safe]
-                   RISK: HTTP Susp User-Agent, HTTP Obsolete Server
+                   RISK: Binary App Transfer, HTTP Susp User-Agent, HTTP Obsolete Server
      not-detected: [....25] [ip4][..udp] [..192.168.115.8][22793] -> [.115.157.62.243][29006] [Unknown][Unknown][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....25] [ip4][..udp] [..192.168.115.8][22793] -> [.115.157.62.243][29006] 

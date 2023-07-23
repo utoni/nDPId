@@ -2,8 +2,9 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [......10.0.2.15][50835] -> [125.209.252.210][20610] 
-         detected: [.....1] [ip4][..udp] [......10.0.2.15][50835] -> [125.209.252.210][20610] [LineCall][Unknown][VoIP][Acceptable]
-          analyse: [.....1] [ip4][..udp] [......10.0.2.15][50835] -> [125.209.252.210][20610] [LineCall][Unknown][VoIP][Acceptable]
+         detected: [.....1] [ip4][..udp] [......10.0.2.15][50835] -> [125.209.252.210][20610] [LineCall][Line][VoIP][Acceptable]
+                   RISK: Unidirectional Traffic
+          analyse: [.....1] [ip4][..udp] [......10.0.2.15][50835] -> [125.209.252.210][20610] [LineCall][Line][VoIP][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.602|    0.105|    0.182|      33194.353|   3.400]
                    [PKTLEN......:    58.000|  900.000|  171.300|  234.500|      54984.500|   4.100]
@@ -45,9 +46,11 @@
                    [IATS(ms)....: 237.3,237.6,1.0,239.7,1.4,0.0,0.0,239.9,3.7,241.4,238.7,278.5,277.4,237.5,0.0,0.0,237.6,7029.5,7306.4,276.8,237.6,0.7,0.0,238.3,524.4,801.6,277.2,237.7,0.0,0.0,237.7]
                    [PKTLENS.....: 52,52,40,557,46,1500,1500,381,40,133,314,335,46,581,46,224,75,40,335,46,613,46,224,75,40,335,46,612,46,224,75,40]
                    [ENTROPIES...: 4.5,4.9,4.8,4.8,4.5,7.2,7.5,7.4,4.8,6.2,7.2,7.3,4.5,7.6,4.5,7.0,5.7,4.8,7.4,4.4,7.6,4.6,7.0,5.8,4.6,7.3,4.5,7.6,4.5,7.0,5.7,4.7]
-             idle: [.....1] [ip4][..udp] [......10.0.2.15][50835] -> [125.209.252.210][20610] [LineCall][Unknown][VoIP][Acceptable]
+             idle: [.....1] [ip4][..udp] [......10.0.2.15][50835] -> [125.209.252.210][20610] [LineCall][Line][VoIP][Acceptable]
+                   RISK: Unidirectional Traffic
               new: [.....4] [ip4][..udp] [...10.200.3.125][51161] -> [..147.92.169.90][29070] 
          detected: [.....4] [ip4][..udp] [...10.200.3.125][51161] -> [..147.92.169.90][29070] [LineCall][Line][VoIP][Acceptable]
+                   RISK: Unidirectional Traffic
           analyse: [.....4] [ip4][..udp] [...10.200.3.125][51161] -> [..147.92.169.90][29070] [LineCall][Line][VoIP][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.225|    0.016|    0.051|       2613.605|   1.500]
@@ -60,10 +63,14 @@
                    [ENTROPIES...: 7.8,7.2,7.6,7.6,7.6,7.7,7.7,7.6,7.5,7.6,7.6,7.6,7.6,7.6,7.7,7.6,7.6,7.7,5.3,6.7,7.5,7.6,7.7,7.6,7.6,7.6,7.7,7.6,7.6,7.7,7.7,7.6]
               new: [.....5] [ip4][..udp] [...10.200.3.125][51170] -> [..147.92.169.90][29070] 
          detected: [.....5] [ip4][..udp] [...10.200.3.125][51170] -> [..147.92.169.90][29070] [LineCall][Line][VoIP][Acceptable]
+                   RISK: Unidirectional Traffic
            update: [.....4] [ip4][..udp] [...10.200.3.125][51161] -> [..147.92.169.90][29070] [LineCall][Line][VoIP][Acceptable]
+                   RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..tcp] [...10.200.3.125][57841] -> [.147.92.165.194][..443] [TLS][Line][Web][Safe]
               end: [.....3] [ip4][..tcp] [...10.200.3.125][58160] -> [.147.92.242.232][..443] [TLS.Line][Line][Chat][Acceptable]
                    RISK: TLS (probably) Not Carrying HTTPS
              idle: [.....4] [ip4][..udp] [...10.200.3.125][51161] -> [..147.92.169.90][29070] [LineCall][Line][VoIP][Acceptable]
+                   RISK: Unidirectional Traffic
              idle: [.....5] [ip4][..udp] [...10.200.3.125][51170] -> [..147.92.169.90][29070] [LineCall][Line][VoIP][Acceptable]
+                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

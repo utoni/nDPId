@@ -586,9 +586,14 @@ static void jsonize_flow_detection_event(struct nDPId_reader_thread * const read
 
 static int set_collector_nonblock(struct nDPId_reader_thread * const reader_thread)
 {
-    int current_flags = fcntl(reader_thread->collector_sockfd, F_GETFL, 0);
+    int current_flags;
 
-    if (current_flags == -1 || fcntl(reader_thread->collector_sockfd, F_SETFL, current_flags | O_NONBLOCK) == -1)
+    while ((current_flags = fcntl(reader_thread->collector_sockfd, F_GETFL, 0)) == -1 && errno == EINTR) {}
+    if (current_flags == -1) {
+    }
+
+    while ((current_flags = fcntl(reader_thread->collector_sockfd, F_SETFL, current_flags | O_NONBLOCK)) == -1 && errno == EINTR) {}
+    if (current_flags == -1)
     {
         reader_thread->collector_sock_last_errno = errno;
         logger(1,
@@ -1318,7 +1323,7 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
         pcap_freecode(&fp);
     }
 
-    ndpi_init_prefs init_prefs = ndpi_no_prefs;
+    ndpi_init_prefs init_prefs = ndpi_no_prefs | ndpi_dont_load_gambling_list;
     workflow->ndpi_struct = ndpi_init_detection_module(init_prefs);
     if (workflow->ndpi_struct == NULL)
     {

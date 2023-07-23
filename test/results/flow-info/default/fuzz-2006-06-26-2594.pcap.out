@@ -1786,15 +1786,11 @@
  detection-update: [...231] [ip4][..udp] [....192.168.1.2][.2816] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udq.sip.cybercity.dk]
                    RISK: Text With Non-Printable Chars, Unidirectional Traffic
               new: [...233] [ip4][..udp] [....192.168.1.3][30000] -> [..212.242.33.36][40392] 
-         detected: [...233] [ip4][..udp] [....192.168.1.3][30000] -> [..212.242.33.36][40392] [RTP][Unknown][Media][Acceptable]
               new: [...234] [ip4][..udp] [....192.168.1.2][30000] -> [....37.115.0.36][40392] 
-         detected: [...234] [ip4][..udp] [....192.168.1.2][30000] -> [....37.115.0.36][40392] [RTP][Unknown][Media][Acceptable]
               new: [...235] [ip4][..udp] [....192.168.1.2][30000] -> [..212.242.33.36][40392] 
          detected: [...235] [ip4][..udp] [....192.168.1.2][30000] -> [..212.242.33.36][40392] [RTP][Unknown][Media][Acceptable]
               new: [...236] [ip4][..udp] [....192.168.1.2][30000] -> [..214.242.33.36][40392] 
-         detected: [...236] [ip4][..udp] [....192.168.1.2][30000] -> [..214.242.33.36][40392] [RTP][Unknown][Media][Acceptable]
               new: [...237] [ip4][..udp] [.....81.168.1.2][30000] -> [..212.242.33.36][40392] 
-         detected: [...237] [ip4][..udp] [.....81.168.1.2][30000] -> [..212.242.33.36][40392] [RTP][Unknown][Media][Acceptable]
       ERROR-EVENT: Unknown packet type [2/16]
  detection-update: [...231] [ip4][..udp] [....192.168.1.2][.2816] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cybercity.dk]
                    RISK: Text With Non-Printable Chars, Unidirectional Traffic
@@ -1891,11 +1887,11 @@
            update: [...230] [ip4][..udp] [....192.168.1.2][.2815] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
                    RISK: Malformed Packet, Error Code, Unidirectional Traffic
            update: [...231] [ip4][..udp] [....192.168.1.2][.2816] -> [....192.168.1.1][...53] 
-           update: [...237] [ip4][..udp] [.....81.168.1.2][30000] -> [..212.242.33.36][40392] [RTP][Unknown][Media][Acceptable]
-           update: [...233] [ip4][..udp] [....192.168.1.3][30000] -> [..212.242.33.36][40392] [RTP][Unknown][Media][Acceptable]
+           update: [...237] [ip4][..udp] [.....81.168.1.2][30000] -> [..212.242.33.36][40392] 
+           update: [...233] [ip4][..udp] [....192.168.1.3][30000] -> [..212.242.33.36][40392] 
            update: [...235] [ip4][..udp] [....192.168.1.2][30000] -> [..212.242.33.36][40392] [RTP][Unknown][Media][Acceptable]
-           update: [...236] [ip4][..udp] [....192.168.1.2][30000] -> [..214.242.33.36][40392] [RTP][Unknown][Media][Acceptable]
-           update: [...234] [ip4][..udp] [....192.168.1.2][30000] -> [....37.115.0.36][40392] [RTP][Unknown][Media][Acceptable]
+           update: [...236] [ip4][..udp] [....192.168.1.2][30000] -> [..214.242.33.36][40392] 
+           update: [...234] [ip4][..udp] [....192.168.1.2][30000] -> [....37.115.0.36][40392] 
               new: [...245] [ip4][..udp] [....192.168.1.2][.2827] -> [..192.168.1.114][...53] 
          detected: [...245] [ip4][..udp] [....192.168.1.2][.2827] -> [..192.168.1.114][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cybercity.dk]
                    RISK: Unidirectional Traffic
@@ -1992,11 +1988,11 @@
            update: [...229] [ip4][..udp] [....192.168.1.2][29440] -> [...192.168.1.37][..137] [NetBIOS][Unknown][System][Acceptable]
                    RISK: Unidirectional Traffic
            update: [...225] [ip4][..udp] [....192.168.1.2][..137] -> [..192.168.1.255][..905] 
-           update: [...237] [ip4][..udp] [.....81.168.1.2][30000] -> [..212.242.33.36][40392] [RTP][Unknown][Media][Acceptable]
-           update: [...233] [ip4][..udp] [....192.168.1.3][30000] -> [..212.242.33.36][40392] [RTP][Unknown][Media][Acceptable]
+           update: [...237] [ip4][..udp] [.....81.168.1.2][30000] -> [..212.242.33.36][40392] 
+           update: [...233] [ip4][..udp] [....192.168.1.3][30000] -> [..212.242.33.36][40392] 
            update: [...235] [ip4][..udp] [....192.168.1.2][30000] -> [..212.242.33.36][40392] [RTP][Unknown][Media][Acceptable]
-           update: [...236] [ip4][..udp] [....192.168.1.2][30000] -> [..214.242.33.36][40392] [RTP][Unknown][Media][Acceptable]
-           update: [...234] [ip4][..udp] [....192.168.1.2][30000] -> [....37.115.0.36][40392] [RTP][Unknown][Media][Acceptable]
+           update: [...236] [ip4][..udp] [....192.168.1.2][30000] -> [..214.242.33.36][40392] 
+           update: [...234] [ip4][..udp] [....192.168.1.2][30000] -> [....37.115.0.36][40392] 
  detection-update: [...254] [ip4][..udp] [....192.168.1.2][.2830] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][sip.cybercity.dk]
               new: [...256] [ip4][..udp] [....192.168.1.2][.2831] -> [....192.168.1.1][...53] 
          detected: [...256] [ip4][..udp] [....192.168.1.2][.2831] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][1.0.0.127.in-addr.arpa]
@@ -2112,18 +2108,26 @@
           guessed: [....32] [ip4][..tcp] [..147.234.1.253][...21] -> [....192.168.1.2][.2732] [FTP_CONTROL][Unknown][Download][Unsafe]
                    RISK: Unsafe Protocol, Unidirectional Traffic
              idle: [....32] [ip4][..tcp] [..147.234.1.253][...21] -> [....192.168.1.2][.2732] 
-             idle: [...237] [ip4][..udp] [.....81.168.1.2][30000] -> [..212.242.33.36][40392] [RTP][Unknown][Media][Acceptable]
+     not-detected: [...237] [ip4][..udp] [.....81.168.1.2][30000] -> [..212.242.33.36][40392] [Unknown][Unknown][Unrated]
+                   RISK: Unidirectional Traffic
+             idle: [...237] [ip4][..udp] [.....81.168.1.2][30000] -> [..212.242.33.36][40392] 
      not-detected: [....28] [ip4][..tcp] [..147.234.1.253][..120] -> [....192.168.1.2][.2720] [Unknown][Unknown][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....28] [ip4][..tcp] [..147.234.1.253][..120] -> [....192.168.1.2][.2720] 
              idle: [...235] [ip4][..udp] [....192.168.1.2][30000] -> [..212.242.33.36][40392] [RTP][Unknown][Media][Acceptable]
-             idle: [...233] [ip4][..udp] [....192.168.1.3][30000] -> [..212.242.33.36][40392] [RTP][Unknown][Media][Acceptable]
-             idle: [...236] [ip4][..udp] [....192.168.1.2][30000] -> [..214.242.33.36][40392] [RTP][Unknown][Media][Acceptable]
+     not-detected: [...233] [ip4][..udp] [....192.168.1.3][30000] -> [..212.242.33.36][40392] [Unknown][Unknown][Unrated]
+                   RISK: Unidirectional Traffic
+             idle: [...233] [ip4][..udp] [....192.168.1.3][30000] -> [..212.242.33.36][40392] 
+     not-detected: [...236] [ip4][..udp] [....192.168.1.2][30000] -> [..214.242.33.36][40392] [Unknown][Unknown][Unrated]
+                   RISK: Unidirectional Traffic
+             idle: [...236] [ip4][..udp] [....192.168.1.2][30000] -> [..214.242.33.36][40392] 
           guessed: [....18] [ip4][..tcp] [....192.168.1.2][.2717] -> [..147.137.21.94][..445] [SMBv23][Unknown][System][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....18] [ip4][..tcp] [....192.168.1.2][.2717] -> [..147.137.21.94][..445] 
              idle: [...247] [ip4][..udp] [....192.168.1.2][.2827] -> [....192.170.1.1][...53] 
-             idle: [...234] [ip4][..udp] [....192.168.1.2][30000] -> [....37.115.0.36][40392] [RTP][Unknown][Media][Acceptable]
+     not-detected: [...234] [ip4][..udp] [....192.168.1.2][30000] -> [....37.115.0.36][40392] [Unknown][Unknown][Unrated]
+                   RISK: Unidirectional Traffic
+             idle: [...234] [ip4][..udp] [....192.168.1.2][30000] -> [....37.115.0.36][40392] 
           guessed: [....24] [ip4][..tcp] [..147.234.1.253][...21] -> [....192.169.1.2][.2720] [FTP_CONTROL][Unknown][Download][Unsafe]
                    RISK: Unsafe Protocol, Unidirectional Traffic
              idle: [....24] [ip4][..tcp] [..147.234.1.253][...21] -> [....192.169.1.2][.2720] 
