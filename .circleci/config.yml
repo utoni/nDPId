@@ -1,0 +1,19 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: ubuntu:latest
+    steps:
+      - checkout
+      - run: export DEBIAN_FRONTEND=noninteractive
+      - run: apt-get update -qq
+      - run: |
+          env DEBIAN_FRONTEND=noninteractive \
+          apt-get install -y -qq \
+          coreutils wget git unzip make cmake binutils gcc g++ autoconf automake flex bison texinfo \
+          libtool pkg-config gettext libjson-c-dev flex bison libpcap-dev zlib1g-dev
+      - run: |
+          cmake -S . -B build -DENABLE_SYSTEMD=ON -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON
+      - run: |
+          cmake --build build --verbose
