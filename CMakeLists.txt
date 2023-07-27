@@ -288,9 +288,9 @@ else()
     set(DEFAULT_NDPI_INCLUDE ${NDPI_INCLUDE_DIRS})
 endif()
 
-pkg_check_modules(PCAP REQUIRED libpcap>=1.8.1)
+pkg_check_modules(PCAP REQUIRED libpcap>=1.9.0) # no *.pc file before 1.9.0
 if(NOT pkgcfg_lib_PCAP_pcap)
-    find_package(PCAP "1.8.1" REQUIRED)
+    find_package(PCAP "1.9.0" REQUIRED)
 endif()
 
 target_compile_options(nDPId PRIVATE "-pthread")
