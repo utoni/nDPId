@@ -131,15 +131,25 @@ class Stats:
                risky, midstream, guessed, not_detected
 
     @staticmethod
-    def prettifyBytes(bytes_received):
-        size_names = ['B', 'KB', 'MB', 'GB', 'TB']
+    def prettifyBytes(bytes_received, is_byte_unit = True):
+        if not is_byte_unit:
+            size_names = ['', 'K', 'M', 'G', 'T']
+            divisor = 1000
+        else:
+            size_names = ['B', 'KiB', 'MiB', 'GiB', 'TiB']
+            divisor = 1024
+
         if bytes_received == 0:
             i = 0
         else:
-            i = min(int(math.floor(math.log(bytes_received, 1024))), len(size_names) - 1)
-        p = math.pow(1024, i)
+            i = min(int(math.floor(math.log(bytes_received, divisor))), len(size_names) - 1)
+        p = math.pow(divisor, i)
         s = round(bytes_received / p, 2)
-        return '{:.2f} {}'.format(s, size_names[i])
+
+        if not is_byte_unit:
+            return '{:.0f}{}'.format(s, ' ' + size_names[i] if len(size_names[i]) > 0 else size_names[i])
+        else:
+            return '{:.2f} {}'.format(s, size_names[i])
 
     def resetStatus(self):
         if self.statusbar_enabled is False:
@@ -458,7 +468,7 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
         if args.print_hostname is True:
             line_suffix += '[{}]'.format(json_dict['ndpi']['hostname'])
 
-    if args.print_bytes is not None:
+    if args.print_bytes is True:
         if len(ndpi_proto_categ_breed) != 0 or len(line_suffix) != 0:
             line_suffix += ' '
         src_color = ''
@@ -472,6 +482,12 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
                        '[' + dst_color + Stats.prettifyBytes(json_dict['flow_dst_tot_l4_payload_len']) + TermColor.END +']' \
                        '[' + tot_color + Stats.prettifyBytes(json_dict['flow_src_tot_l4_payload_len'] + \
                                                              json_dict['flow_dst_tot_l4_payload_len']) + TermColor.END + ']'
+
+    if args.print_packets is True:
+        if len(ndpi_proto_categ_breed) != 0 or len(line_suffix) != 0:
+            line_suffix += ' '
+        line_suffix += '[' + Stats.prettifyBytes(json_dict['flow_src_packets_processed'], False) + ']' \
+                       '[' + Stats.prettifyBytes(json_dict['flow_dst_packets_processed'], False) + ']'
 
     if json_dict['l3_proto'] == 'ip4':
         print('{}{}{}{}{}: [{:.>6}] [{}][{:.>5}] [{:.>15}]{} -> [{:.>15}]{} {}{}' \
@@ -518,6 +534,8 @@ if __name__ == '__main__':
                            help='Print last seen flow time diff.')
     argparser.add_argument('--print-bytes', action='store_true', default=False,
                            help='Print received/transmitted source/dest bytes for every flow.')
+    argparser.add_argument('--print-packets', action='store_true', default=False,
+                           help='Print received/transmitted source/dest packets for every flow.')
     argparser.add_argument('--guessed',    action='store_true', default=False, help='Print only guessed flow events.')
     argparser.add_argument('--not-detected', action='store_true', default=False, help='Print only undetected flow events.')
     argparser.add_argument('--detected',   action='store_true', default=False, help='Print only detected flow events.')
