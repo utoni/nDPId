@@ -22,29 +22,90 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: ["ubuntu-latest", "ubuntu-20.04"]
-        ndpid_gcrypt: ["-DNDPI_WITH_GCRYPT=OFF", "-DNDPI_WITH_GCRYPT=ON"]
-        ndpid_zlib: ["-DENABLE_ZLIB=OFF", "-DENABLE_ZLIB=ON"]
-        ndpi_min_version: ["4.8"]
         include:
-          - compiler: "default-cc"
+          - compiler: "gcc"
             os: "ubuntu-latest"
+            ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
+            ndpid_zlib: "-DENABLE_ZLIB=ON"
+            sanitizer: "-DENABLE_SANITIZER=OFF -DENABLE_SANITIZER_THREAD=OFF"
+            coverage: "-DENABLE_COVERAGE=OFF"
+            upload: true
+            upload_suffix: ""
+            ndpi_min_version: "4.8"
+          - compiler: "gcc"
+            os: "ubuntu-latest"
+            ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=ON"
+            ndpid_zlib: "-DENABLE_ZLIB=ON"
+            sanitizer: "-DENABLE_SANITIZER=OFF -DENABLE_SANITIZER_THREAD=OFF"
+            coverage: "-DENABLE_COVERAGE=OFF"
+            upload: true
+            upload_suffix: "-host-gcrypt"
+            ndpi_min_version: "4.8"
+          - compiler: "clang"
+            os: "ubuntu-latest"
+            ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
+            ndpid_zlib: "-DENABLE_ZLIB=OFF"
+            sanitizer: "-DENABLE_SANITIZER=OFF -DENABLE_SANITIZER_THREAD=OFF"
+            coverage: "-DENABLE_COVERAGE=OFF"
+            upload: true
+            upload_suffix: "-no-zlib"
+            ndpi_min_version: "4.8"
+          - compiler: "gcc"
+            os: "ubuntu-latest"
+            ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
+            ndpid_zlib: "-DENABLE_ZLIB=ON"
             sanitizer: "-DENABLE_SANITIZER=ON"
             coverage: "-DENABLE_COVERAGE=ON"
+            upload: false
+            ndpi_min_version: "4.8"
+          - compiler: "clang"
+            os: "ubuntu-latest"
+            ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
+            ndpid_zlib: "-DENABLE_ZLIB=ON"
+            sanitizer: "-DENABLE_SANITIZER=ON" 
+            coverage: "-DENABLE_COVERAGE=ON"
+            upload: false
+            ndpi_min_version: "4.8"
           - compiler: "clang-12"
             os: "ubuntu-latest"
+            ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
+            ndpid_zlib: "-DENABLE_ZLIB=ON"
             sanitizer: "-DENABLE_SANITIZER_THREAD=ON"
             coverage: "-DENABLE_COVERAGE=ON"
+            upload: false
+            ndpi_min_version: "4.8"
           - compiler: "gcc-10"
             os: "ubuntu-latest"
+            ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
+            ndpid_zlib: "-DENABLE_ZLIB=OFF"
             sanitizer: "-DENABLE_SANITIZER=ON"
             coverage: "-DENABLE_COVERAGE=OFF"
+            upload: false
+            ndpi_min_version: "4.8"
           - compiler: "gcc-7"
             os: "ubuntu-20.04"
+            ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
+            ndpid_zlib: "-DENABLE_ZLIB=ON"
             sanitizer: "-DENABLE_SANITIZER=ON"
             coverage: "-DENABLE_COVERAGE=OFF"
+            upload: false
+            ndpi_min_version: "4.8"
 
     steps:
+      - name: Print Matrix
+        run: |
+          echo '----------------------------------------'
+          echo '| OS.......: ${{ matrix.os }}'
+          echo '| CC.......: ${{ matrix.compiler }}'
+          echo '|---------------------------------------'
+          echo '| GCRYPT...: ${{ matrix.ndpid_gcrypt }}'
+          echo '| ZLIB.....: ${{ matrix.ndpid_zlib }}'
+          echo '|---------------------------------------'
+          echo '| SANITIZER: ${{ matrix.sanitizer }}'
+          echo '| COVERAGE.: ${{ matrix.coverage }}'
+          echo '|---------------------------------------'
+          echo '| UPLOAD...: ${{ matrix.upload }}'
+          echo '----------------------------------------'
       - uses: actions/checkout@v3
         with:
           submodules: false
@@ -97,18 +158,20 @@ jobs:
         run: |
           make -C ./build coverage
       - name: Dist
+        if: matrix.upload == false
         run: |
           make -C ./build dist
       - name: CPack DEB
         run: |
           cd ./build && cpack -G DEB && sudo dpkg -i nDPId-*.deb && cd ..
       - name: Upload DEB
+        if: matrix.upload
         uses: actions/upload-artifact@v3
         with:
-          name: nDPId-debian-packages
+          name: nDPId-debian-packages_${{ matrix.compiler }}${{ matrix.upload_suffix }}
           path: build/*.deb
       - name: systemd test
-        if: startsWith(matrix.os, 'ubuntu-latest') && startsWith(matrix.compiler, 'default-cc')
+        if: startsWith(matrix.os, 'ubuntu-latest') && startsWith(matrix.compiler, 'gcc')
         run: |
           sudo systemctl daemon-reload
           sudo systemctl enable ndpid@lo
@@ -116,6 +179,7 @@ jobs:
           sudo systemctl status ndpisrvd.service ndpid@lo.service
           sudo systemctl show ndpisrvd.service ndpid@lo.service -p SubState,ActiveState
       - name: Build against libnDPI-${{ matrix.ndpi_min_version }}
+        if: matrix.upload == false
         run: |
           mkdir build-local-ndpi && cd build-local-ndpi
           WGET_RET=0
