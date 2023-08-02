@@ -241,6 +241,14 @@ static int thread_wait(struct thread_condition * const tc)
     return ret;
 }
 
+static int thread_block_signals()
+{
+    sigset_t blocked_signals;
+
+    sigfillset(&blocked_signals);
+    return pthread_sigmask(SIG_BLOCK, &blocked_signals, NULL);
+}
+
 static int thread_signal(struct thread_condition * const tc)
 {
     int ret = 0;
@@ -293,6 +301,11 @@ static void * nDPIsrvd_mainloop_thread(void * const arg)
     size_t const events_size = sizeof(events) / sizeof(events[0]);
 
     logger(0, "nDPIsrvd thread started, init..");
+
+    if (thread_block_signals() != 0)
+    {
+        logger(1, "nDPIsrvd block signals failed: %s", strerror(errno));
+    }
 
     errno = 0;
     epollfd = create_evq();
@@ -857,6 +870,11 @@ static void * distributor_client_mainloop_thread(void * const arg)
 
     logger(0, "Distributor thread started, init..");
 
+    if (thread_block_signals() != 0)
+    {
+        logger(1, "Distributor block signals failed: %s", strerror(errno));
+    }
+
     errno = 0;
     if (mock_sock == NULL || mock_buff == NULL || mock_null == NULL)
     {
@@ -1169,6 +1187,11 @@ static void * nDPId_mainloop_thread(void * const arg)
     struct thread_return_value * const trr = &nrv->thread_return_value;
 
     logger(0, "nDPId thread started, init..");
+
+    if (thread_block_signals() != 0)
+    {
+        logger(1, "nDPId block signals failed: %s", strerror(errno));
+    }
 
     if (setup_reader_threads() != 0)
     {
