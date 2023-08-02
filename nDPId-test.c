@@ -292,6 +292,8 @@ static void * nDPIsrvd_mainloop_thread(void * const arg)
     struct epoll_event events[32];
     size_t const events_size = sizeof(events) / sizeof(events[0]);
 
+    logger(0, "nDPIsrvd thread started, init..");
+
     errno = 0;
     epollfd = create_evq();
     if (epollfd < 0)
@@ -348,6 +350,7 @@ static void * nDPIsrvd_mainloop_thread(void * const arg)
         THREAD_ERROR_GOTO(arg);
     }
 
+    logger(0, "nDPIsrvd thread init done");
     thread_signal(&start_condition);
     thread_wait(&start_condition);
 
@@ -852,6 +855,8 @@ static void * distributor_client_mainloop_thread(void * const arg)
     struct distributor_global_user_data * buff_stats;
     int * mock_null_shutdown_events;
 
+    logger(0, "Distributor thread started, init..");
+
     errno = 0;
     if (mock_sock == NULL || mock_buff == NULL || mock_null == NULL)
     {
@@ -900,6 +905,7 @@ static void * distributor_client_mainloop_thread(void * const arg)
     mock_null_shutdown_events = (int *)mock_null->global_user_data;
     *mock_null_shutdown_events = 0;
 
+    logger(0, "Distributor thread init done");
     thread_signal(&start_condition);
     thread_wait(&start_condition);
 
@@ -1162,6 +1168,8 @@ static void * nDPId_mainloop_thread(void * const arg)
     struct nDPId_return_value * const nrv = (struct nDPId_return_value *)arg;
     struct thread_return_value * const trr = &nrv->thread_return_value;
 
+    logger(0, "nDPId thread started, init..");
+
     if (setup_reader_threads() != 0)
     {
         THREAD_ERROR(trr);
@@ -1176,6 +1184,7 @@ static void * nDPId_mainloop_thread(void * const arg)
         goto error;
     }
 
+    logger(0, "nDPId thread initialize done");
     thread_signal(&start_condition);
     thread_wait(&start_condition);
 
