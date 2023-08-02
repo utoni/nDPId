@@ -738,7 +738,7 @@ static enum nDPIsrvd_callback_return collectd_json_callback(struct nDPIsrvd_sock
 
                 if (str_value_to_ull(TOKEN_GET_KEY(sock, current, NULL), &numeric_risk_value) == CONVERSION_OK)
                 {
-                    if ((flow_user_data->detected_risks & (1 << numeric_risk_value)) == 0)
+                    if ((flow_user_data->detected_risks & (1ull << numeric_risk_value)) == 0)
                     {
                         if (numeric_risk_value < NDPI_MAX_RISK && numeric_risk_value > 0)
                         {
@@ -749,7 +749,7 @@ static enum nDPIsrvd_callback_return collectd_json_callback(struct nDPIsrvd_sock
                             collectd_statistics.flow_risk_unknown_count++;
                         }
 
-                        flow_user_data->detected_risks |= (1 << (numeric_risk_value - 1));
+                        flow_user_data->detected_risks |= (1ull << (numeric_risk_value - 1));
                     }
                 }
             }

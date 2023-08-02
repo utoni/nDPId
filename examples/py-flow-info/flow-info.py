@@ -469,23 +469,23 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
             line_suffix += '[{}]'.format(json_dict['ndpi']['hostname'])
 
     if args.print_bytes is True:
-        if len(ndpi_proto_categ_breed) != 0 or len(line_suffix) != 0:
-            line_suffix += ' '
         src_color = ''
         dst_color = ''
         tot_color = ''
         if json_dict['flow_src_tot_l4_payload_len'] >= 1 * 1024 * 1024:
             tot_color = src_color = TermColor.HINT
+            if json_dict['flow_src_tot_l4_payload_len'] >= 1 * 1024 * 1024 * 1024:
+                src_color += TermColor.BOLD + TermColor.BLINK
         if json_dict['flow_dst_tot_l4_payload_len'] >= 1 * 1024 * 1024:
             tot_color = dst_color = TermColor.HINT
+            if json_dict['flow_dst_tot_l4_payload_len'] >= 1 * 1024 * 1024 * 1024:
+                dst_color += TermColor.BOLD + TermColor.BLINK
         line_suffix += '[' + src_color + Stats.prettifyBytes(json_dict['flow_src_tot_l4_payload_len']) + TermColor.END + ']' \
                        '[' + dst_color + Stats.prettifyBytes(json_dict['flow_dst_tot_l4_payload_len']) + TermColor.END +']' \
                        '[' + tot_color + Stats.prettifyBytes(json_dict['flow_src_tot_l4_payload_len'] + \
                                                              json_dict['flow_dst_tot_l4_payload_len']) + TermColor.END + ']'
 
     if args.print_packets is True:
-        if len(ndpi_proto_categ_breed) != 0 or len(line_suffix) != 0:
-            line_suffix += ' '
         line_suffix += '[' + Stats.prettifyBytes(json_dict['flow_src_packets_processed'], False) + ']' \
                        '[' + Stats.prettifyBytes(json_dict['flow_dst_packets_processed'], False) + ']'
 

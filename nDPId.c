@@ -5349,6 +5349,14 @@ int main(int argc, char ** argv)
                      NDPI_API_VERSION,
                      ndpi_get_api_version());
     }
+    if (sizeof(struct ndpi_flow_struct) != ndpi_detection_get_sizeof_ndpi_flow_struct())
+    {
+        logger_early(1,
+                     "FATAL: nDPI flow struct size inconsistent; expected %zu bytes, got %u bytes.",
+                     sizeof(struct ndpi_flow_struct),
+                     ndpi_detection_get_sizeof_ndpi_flow_struct());
+        return 1;
+    }
 
 #ifdef ENABLE_MEMORY_PROFILING
     logger_early(0, "size/workflow....: %zu bytes", sizeof(struct nDPId_workflow));
