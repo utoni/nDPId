@@ -1,6 +1,7 @@
 [![Build](https://github.com/utoni/nDPId/actions/workflows/build.yml/badge.svg)](https://github.com/utoni/nDPId/actions/workflows/build.yml)
 [![Gitlab-CI](https://gitlab.com/utoni/nDPId/badges/main/pipeline.svg)](https://gitlab.com/utoni/nDPId/-/pipelines)
 [![Circle-CI](https://circleci.com/gh/utoni/nDPId.svg?style=shield "Circle-CI")](https://app.circleci.com/pipelines/github/utoni/nDPId)
+![Docker Automated build](https://img.shields.io/docker/automated/utoni/ndpid)
 
 # References
 
