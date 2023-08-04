@@ -23,6 +23,8 @@ find_package(PkgConfig REQUIRED)
 set(CPACK_PACKAGE_CONTACT "toni@impl.cc")
 set(CPACK_DEBIAN_PACKAGE_NAME "nDPId")
 set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
+set(CPACK_DEBIAN_DEBUGINFO_PACKAGE ON)
+set(CPACK_STRIP_FILES ON)
 set(CPACK_PACKAGE_VERSION_MAJOR 1)
 set(CPACK_PACKAGE_VERSION_MINOR 5)
 set(CPACK_PACKAGE_VERSION_PATCH 0)
@@ -361,6 +363,16 @@ if(ENABLE_SYSTEMD)
     install(FILES packages/systemd/ndpid@.service DESTINATION lib/systemd/system)
 endif()
 
+install(FILES config.h
+              dependencies/nDPIsrvd.h
+              dependencies/jsmn/jsmn.h
+              dependencies/uthash/src/utarray.h
+              dependencies/uthash/src/uthash.h
+              dependencies/uthash/src/utlist.h
+              dependencies/uthash/src/utringbuffer.h
+              dependencies/uthash/src/utstack.h
+              dependencies/uthash/src/utstring.h
+        DESTINATION include/nDPId)
 install(TARGETS nDPId DESTINATION sbin)
 install(TARGETS nDPIsrvd nDPId-test DESTINATION bin)
 if(BUILD_EXAMPLES)
