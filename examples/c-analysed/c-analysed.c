@@ -55,6 +55,12 @@ static void nDPIsrvd_write_flow_info_cb(struct nDPIsrvd_socket const * sock,
     (void)instance;
     (void)user_data;
 
+    if (flow == NULL || thread_data == NULL)
+    {
+        fprintf(stderr, "%s\n", "[WriteFlowInfoCallback] BUG: Internal error.");
+        return;
+    }
+
     fprintf(stderr,
             "[Thread %2d][Flow %5llu][ptr: "
 #ifdef __LP64__

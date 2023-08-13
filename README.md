@@ -1,6 +1,12 @@
 [![Build](https://github.com/utoni/nDPId/actions/workflows/build.yml/badge.svg)](https://github.com/utoni/nDPId/actions/workflows/build.yml)
 [![Gitlab-CI](https://gitlab.com/utoni/nDPId/badges/main/pipeline.svg)](https://gitlab.com/utoni/nDPId/-/pipelines)
 [![Circle-CI](https://circleci.com/gh/utoni/nDPId.svg?style=shield "Circle-CI")](https://app.circleci.com/pipelines/github/utoni/nDPId)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=lnslbrty_nDPId&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=lnslbrty_nDPId)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=lnslbrty_nDPId&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=lnslbrty_nDPId)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=lnslbrty_nDPId&metric=bugs)](https://sonarcloud.io/summary/new_code?id=lnslbrty_nDPId)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=lnslbrty_nDPId&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=lnslbrty_nDPId)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=lnslbrty_nDPId&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=lnslbrty_nDPId)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=lnslbrty_nDPId&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=lnslbrty_nDPId)
 ![Docker Automated build](https://img.shields.io/docker/automated/utoni/ndpid)
 
 # References

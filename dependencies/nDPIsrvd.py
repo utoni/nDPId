@@ -182,7 +182,6 @@ class FlowManager:
         if alias not in self.instances:
             self.instances[alias] = dict()
         if source not in self.instances[alias]:
-            self.instances[alias][source] = dict()
             self.instances[alias][source] = Instance(alias, source)
 
         self.instances[alias][source].setMostRecentFlowTimeFromJSON(json_dict)

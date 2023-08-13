@@ -1,0 +1,45 @@
+on:
+  push:
+    branches:
+      - main
+      - tmp
+  pull_request:
+      types: [opened, synchronize, reopened]
+
+name: Sonarcloud Scan
+jobs:
+  sonarcloud:
+    runs-on: ubuntu-latest
+    env:
+      BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 1
+    - name: Install sonar-scanner and build-wrapper
+      uses: SonarSource/sonarcloud-github-c-cpp@v2
+    - name: Install Prerequisites
+      run: |
+        sudo apt-get update
+        sudo apt-get install autoconf automake cmake libtool pkg-config gettext libjson-c-dev flex bison libpcap-dev zlib1g-dev
+    - name: Run build-wrapper
+      run: |
+        mkdir build
+        cmake -S . -B build -DBUILD_NDPI=ON -DDENABLE_ZLIB=ON -DNDPI_WITH_GCRYPT=OFF
+        build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} cmake --build build/ --config Release
+    - name: Run tests
+      run: |
+        ./test/run_tests.sh ./libnDPI ./build/nDPId-test
+    - name: Run sonar-scanner
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: |
+        sonar-scanner \
+            --define sonar.branch.name=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}} \
+            --define sonar.cfamily.build-wrapper-output="${{ env.BUILD_WRAPPER_OUT_DIR }}" \
+            --define sonar.organization=lnslbrty \
+            --define sonar.projectKey=lnslbrty_nDPId \
+            --define sonar.exclusions=dependencies/uthash/tests/** \
+            --define sonar.verbose=true \
+            --define sonar.python.version=3.8

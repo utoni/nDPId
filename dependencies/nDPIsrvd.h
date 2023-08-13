@@ -479,7 +479,7 @@ static inline int nDPIsrvd_set_read_timeout(struct nDPIsrvd_socket * const sock,
 {
     struct timeval tv = {.tv_sec = seconds, .tv_usec = micro_seconds};
 
-    if (sock->fd < 0)
+    if (sock == NULL || sock->fd < 0)
     {
         return 1;
     }
@@ -559,7 +559,7 @@ static inline void nDPIsrvd_cleanup_instance(struct nDPIsrvd_socket * const sock
     struct nDPIsrvd_thread_data * current_thread_data;
     struct nDPIsrvd_thread_data * ttmp;
 
-    if (instance != NULL)
+    if (sock != NULL && instance != NULL)
     {
 #ifdef ENABLE_MEMORY_PROFILING
         nDPIsrvd_memprof_log("Cleaning up instance 0x%x.", instance->alias_source_key);

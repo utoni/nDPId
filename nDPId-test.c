@@ -475,6 +475,11 @@ static enum nDPIsrvd_callback_return update_flow_packets_processed(struct nDPIsr
     struct nDPIsrvd_json_token const * const flow_total_packets_processed[FD_COUNT] = {
         TOKEN_GET_SZ(sock, "flow_src_packets_processed"), TOKEN_GET_SZ(sock, "flow_dst_packets_processed")};
 
+    if (sock == NULL)
+    {
+        return CALLBACK_ERROR;
+    }
+
     if (sock->flow_user_data_size > 0)
     {
         flow_stats->total_packets_processed = 0;
