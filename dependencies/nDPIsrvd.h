@@ -252,9 +252,9 @@ static inline void nDPIsrvd_socket_free(struct nDPIsrvd_socket ** const sock);
 #define WHITESPACE 64
 #define EQUALS 65
 #define INVALID 66
-static inline int nDPIsrvd_base64decode(char * in, size_t inLen, unsigned char * out, size_t * outLen)
+static inline int nDPIsrvd_base64decode(char const * in, size_t inLen, unsigned char * out, size_t * outLen)
 {
-    char * end = in + inLen;
+    char const * end = in + inLen;
     char iter = 0;
     uint32_t buf = 0;
     size_t len = 0;
