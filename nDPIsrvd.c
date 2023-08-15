@@ -1422,7 +1422,7 @@ static int mainloop(int epollfd)
                 {
                     logger(1, "Epoll event error: %s", (errno != 0 ? strerror(errno) : "unknown"));
                 }
-                continue;
+                break;
             }
 
             if (events[i].data.fd == collector_un_sockfd || events[i].data.fd == distributor_un_sockfd ||
