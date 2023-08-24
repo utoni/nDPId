@@ -589,10 +589,12 @@ static int set_collector_nonblock(struct nDPId_reader_thread * const reader_thre
     int current_flags;
 
     while ((current_flags = fcntl(reader_thread->collector_sockfd, F_GETFL, 0)) == -1 && errno == EINTR) {}
-    if (current_flags == -1) {
-    }
+    if (current_flags == -1) {}
 
-    while ((current_flags = fcntl(reader_thread->collector_sockfd, F_SETFL, current_flags | O_NONBLOCK)) == -1 && errno == EINTR) {}
+    while ((current_flags = fcntl(reader_thread->collector_sockfd, F_SETFL, current_flags | O_NONBLOCK)) == -1 &&
+           errno == EINTR)
+    {
+    }
     if (current_flags == -1)
     {
         reader_thread->collector_sock_last_errno = errno;
@@ -2425,12 +2427,12 @@ static void serialize_and_send(struct nDPId_reader_thread * const reader_thread)
 }
 
 /* Slightly modified code from: https://en.wikibooks.org/wiki/Algorithm_Implementation/Miscellaneous/Base64 */
-static void base64encode(uint8_t const * const data_buf,
+static int base64_encode(uint8_t const * const data_buf,
                          size_t dataLength,
                          char * const result,
                          size_t * const resultSize)
 {
-    const char base64chars[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    static const char base64chars[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
     const uint8_t * data = (const uint8_t *)data_buf;
     size_t resultIndex = 0;
     size_t x;
@@ -2446,15 +2448,11 @@ static void base64encode(uint8_t const * const data_buf,
                                        // conversion to uint32_t, resulting to 0
 
         if ((x + 1) < dataLength)
-        {
             n += ((uint32_t)data[x + 1]) << 8; // parenthesis needed, compiler depending on flags can do the shifting
                                                // before conversion to uint32_t, resulting to 0
-        }
 
         if ((x + 2) < dataLength)
-        {
             n += data[x + 2];
-        }
 
         /* this 24-bit number gets separated into four 6-bit numbers */
         n0 = (uint8_t)(n >> 18) & 63;
@@ -2466,11 +2464,11 @@ static void base64encode(uint8_t const * const data_buf,
          * if we have one byte available, then its encoding is spread
          * out over two characters
          */
-        if (resultIndex + 2 >= *resultSize - (3 - padCount))
-        {
-            break;
-        }
+        if (resultIndex >= *resultSize)
+            return 1; /* indicate failure: buffer too small */
         result[resultIndex++] = base64chars[n0];
+        if (resultIndex >= *resultSize)
+            return 1; /* indicate failure: buffer too small */
         result[resultIndex++] = base64chars[n1];
 
         /*
@@ -2479,10 +2477,8 @@ static void base64encode(uint8_t const * const data_buf,
          */
         if ((x + 1) < dataLength)
         {
-            if (resultIndex + 1 >= *resultSize - (3 - padCount))
-            {
-                break;
-            }
+            if (resultIndex >= *resultSize)
+                return 1; /* indicate failure: buffer too small */
             result[resultIndex++] = base64chars[n2];
         }
 
@@ -2492,10 +2488,8 @@ static void base64encode(uint8_t const * const data_buf,
          */
         if ((x + 2) < dataLength)
         {
-            if (resultIndex + 1 >= *resultSize - (3 - padCount))
-            {
-                break;
-            }
+            if (resultIndex >= *resultSize)
+                return 1; /* indicate failure: buffer too small */
             result[resultIndex++] = base64chars[n3];
         }
     }
@@ -2508,12 +2502,16 @@ static void base64encode(uint8_t const * const data_buf,
     {
         for (; padCount < 3; padCount++)
         {
+            if (resultIndex >= *resultSize)
+                return 1; /* indicate failure: buffer too small */
             result[resultIndex++] = '=';
         }
     }
-
-    result[resultIndex] = '\0';
+    if (resultIndex >= *resultSize)
+        return 1; /* indicate failure: buffer too small */
+    result[resultIndex] = 0;
     *resultSize = resultIndex;
+    return 0; /* indicate success */
 }
 
 static void jsonize_data_analysis(struct nDPId_reader_thread * const reader_thread,
@@ -2666,11 +2664,19 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_l4_len", pkt_l4_len);
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "thread_ts_usec", workflow->last_thread_time);
 
-    char base64_data[nDPId_PACKETS_PLEN_MAX];
+    char base64_data[nDPId_PACKETS_PLEN_MAX * 4];
     size_t base64_data_len = sizeof(base64_data);
-    base64encode(packet, header->caplen, base64_data, &base64_data_len);
-
-    if (base64_data_len > 0)
+    if (base64_encode(packet,
+                      (header->caplen > nDPId_PACKETS_PLEN_MAX ? nDPId_PACKETS_PLEN_MAX : header->caplen),
+                      base64_data,
+                      &base64_data_len) != 0)
+    {
+        logger(1,
+               "[%8llu, %zu] Base64 encoding failed.",
+               reader_thread->workflow->packets_captured,
+               reader_thread->array_index);
+    }
+    else if (base64_data_len > 0)
     {
         if (ndpi_serialize_string_binary(&workflow->ndpi_serializer, "pkt", base64_data, base64_data_len) != 0)
         {
@@ -2679,13 +2685,6 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
                    reader_thread->workflow->packets_captured,
                    reader_thread->array_index);
         }
-    }
-    else
-    {
-        logger(1,
-               "[%8llu, %zu] Base64 encoding failed.",
-               reader_thread->workflow->packets_captured,
-               reader_thread->array_index);
     }
     serialize_and_send(reader_thread);
 }

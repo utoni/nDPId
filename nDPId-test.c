@@ -603,6 +603,71 @@ static enum nDPIsrvd_callback_return distributor_json_callback(struct nDPIsrvd_s
     }
 
     {
+        struct nDPIsrvd_json_token const * const packet_event_name = TOKEN_GET_SZ(sock, "packet_event_name");
+
+        if (packet_event_name != NULL)
+        {
+            struct nDPIsrvd_json_token const * const pkt = TOKEN_GET_SZ(sock, "pkt");
+            struct nDPIsrvd_json_token const * const packet_id = TOKEN_GET_SZ(sock, "packet_id");
+
+            if (pkt == NULL || packet_id == NULL)
+            {
+                logger(1, "%s", "Missing base64 packet data");
+                goto callback_error;
+            }
+
+            nDPIsrvd_ull pkt_id = 0ull;
+            TOKEN_VALUE_TO_ULL(sock, packet_id, &pkt_id);
+            if (pkt_id == 0ull)
+            {
+                logger(1, "%s", "Missing packet id");
+                goto callback_error;
+            }
+
+            nDPIsrvd_ull src_len = nDPIsrvd_get_token_size(sock, pkt);
+            char const * const encoded_base64_buf = nDPIsrvd_get_token_value(sock, pkt);
+            if (src_len == 0 || encoded_base64_buf == NULL)
+            {
+                logger(1, "Missing base64 packet data for packet id: %llu", pkt_id);
+                goto callback_error;
+            }
+
+            unsigned char out_buf[8192];
+            size_t out_len = sizeof(out_buf);
+            if (nDPIsrvd_base64decode(encoded_base64_buf, src_len, out_buf, &out_len) != 0 || out_len == 0)
+            {
+                logger(1, "Decoding base64 packet data failed for packet id: %llu", pkt_id);
+                logger(1, "Affected base64 packet data (%llu bytes): %.*s", src_len, (int)src_len, encoded_base64_buf);
+                goto callback_error;
+            }
+
+            char base64_data[nDPId_PACKETS_PLEN_MAX * 4];
+            size_t base64_data_len = sizeof(base64_data);
+            if (base64_encode(out_buf, out_len, base64_data, &base64_data_len) != 0)
+            {
+                logger(1, "Encoding previously decoded base64 packet data failed for packet id: %llu", pkt_id);
+                goto callback_error;
+            }
+
+            unsigned char test_buf[8192];
+            size_t test_len = sizeof(test_buf);
+            if (nDPIsrvd_base64decode(base64_data, base64_data_len, test_buf, &test_len) != 0 || test_len == 0)
+            {
+                logger(1, "Re-decoding base64 packet data failed for packet id: %llu", pkt_id);
+                goto callback_error;
+            }
+
+            if (out_len != test_len || memcmp(out_buf, test_buf, out_len) != 0)
+            {
+                logger(1,
+                       "Re-decoded base64 packet data differs from data decoded from JSON for packet id: %llu",
+                       pkt_id);
+                goto callback_error;
+            }
+        }
+    }
+
+    {
         struct nDPIsrvd_json_token const * const flow_event_name = TOKEN_GET_SZ(sock, "flow_event_name");
 
         if (flow_event_name != NULL)
@@ -1282,6 +1347,135 @@ static int thread_wait_for_termination(pthread_t thread, time_t wait_time_secs, 
     return 1;
 }
 
+static int base64_selftest()
+{
+    const char encoded_buf[] =
+        "YDjgxTWgeJS0JASgCABFABi9tLtAAG0G2Ic0qHBDwKgCZAG7qo4aJ6Tg8cI7hVAYCASApwAAFgMDGJACAABVAwNk4H0AwVcaoxmhfP+LwJ/"
+        "ozXfcwVjP0gYb2nL2/TIuiiC0IwAA09uHhjDKb5jvbNMiEUTKv+mJ726ydLSPOT+wwcAwAAANAAUAAAAXAAD/"
+        "AQABAAsAD8kAD8YACckwggnFMIIHraADAgECAhMzALaK/kHkK/"
+        "0TofK4AAAAtor+"
+        "MA0GCSqGSIb3DQEBDAUAMFkxCzAJBgNVBAYTAlVTMR4wHAYDVQQKExVNaWNyb3NvZnQgQ29ycG9yYXRpb24xKjAoBgNVBAMTIU1pY3Jvc29mdC"
+        "BBenVyZSBUTFMgSXNzdWluZyBDQSAwNjAeFw0yMzA2MDYxOTIwNTZaFw0yNDA1MzExOTIwNTZaMHIxCzAJBgNVBAYTAlVTMQswCQYDVQQIEwJX"
+        "QTEQMA4GA1UEBxMHUmVkbW9uZDEeMBwGA1UEChMVTWljcm9zb2Z0IENvcnBvcmF0aW9uMSQwIgYDVQQDDBsqLmV2ZW50cy5kYXRhLm1pY3Jvc2"
+        "9mdC5jb20wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCdw/"
+        "K44npKYmJOAyZRaA4KKVq2gRnM+Z3WtwG8k1fl8NJR4xR3lWGDnzhqdKB85o3WzvJS/2yXjM9ODdhWUz7iCPysNOoGq3jKntcoaaoWm/"
+        "rUzG+G7r5LXeBrQMEAZ+f8+wqgzvbJN3z3WNV6CyqzaIsDnii0Ny6J3qN9cu0LabPZDpiybeNiOS2JUmSBUwQpYIAUoYb28D3nu+"
+        "oDNSZD2ypYHIcU9NNEuMROEVlMRnGVYerMd93vq2DNb45Bxhyeu+10/upTNUeKARISgI1dFVh1hbwKGf/"
+        "A2RCrxqtRJ5hg0bVwYB+"
+        "tNaPCZrxnJiQGLhEDiks8UGEOpBu64la9AgMBAAGjggVrMIIFZzCCAX0GCisGAQQB1nkCBAIEggFtBIIBaQFnAHUAdv+IPwq2+"
+        "5VRwmHM9Ye6NLSkzbsp3GhCCp/mZ0xaOnQAAAGIkjD4TAAABAMARjBEAiB7C4siVQQ8jtwsO0UGH6/"
+        "iTflZhnk4YsHp2dt1vNbrEQIgUO2o0Xu2lMG7o047mAtOsozoGIxkDrs1nSzu3HjiEK0AdgDatr9rP7W2Ip+bwrtca+"
+        "hwkXFsu1GEhTS9pD0wSNf7qwAAAYiSMPi2AAAEAwBHMEUCIGs7NBT/"
+        "cxqu8lHHeofcUbjtsEyxdCSM+TZYuiGkkJc9AiEAkH5j20YlRriEKT2gf2XEl8kxmUm1w9b3x/"
+        "ej7iEPQZ8AdgDuzdBk1dsazsVct520zROiModGfLzs3sNRSFlGcR+1mwAAAYiSMPhzAAAEAwBHMEUCIQDKNva6HXz8Y8j9EBs5ogB+"
+        "kN6fmu0TVt4lyYHFPR8GIgIgdaaxL0rbxon3+jSXgQhL2T/"
+        "Pm6rmwMzdSPK0dlXeQjEwJwYJKwYBBAGCNxUKBBowGDAKBggrBgEFBQcDAjAKBggrBgEFBQcDATA8BgkrBgEEAYI3FQcELzAtBiUrBgEEAYI3F"
+        "QiHvdcbgefrRoKBnS6O0AyH8NodXYKE5WmC86c+"
+        "AgFkAgEmMIGuBggrBgEFBQcBAQSBoTCBnjBtBggrBgEFBQcwAoZhaHR0cDovL3d3dy5taWNyb3NvZnQuY29tL3BraW9wcy9jZXJ0cy9NaWNyb3"
+        "NvZnQlMjBBenVyZSUyMFRMUyUyMElzc3VpbmclMjBDQSUyMDA2JTIwLSUyMHhzaWduLmNydDAtBggrBgEFBQcwAYYhaHR0cDovL29uZW9jc3Au"
+        "bWljcm9zb2Z0LmNvbS9vY3NwMB0GA1UdDgQWBBSgrq/a22chE4wNaQLZexgsZwaT4DAOBgNVHQ8BAf8EBAMCBaAwggF/"
+        "BgNVHREEggF2MIIBcoIbKi5ldmVudHMuZGF0YS5taWNyb3NvZnQuY29tghlldmVudHMuZGF0YS5taWNyb3NvZnQuY29tghkqLnBpcGUuYXJpYS"
+        "5taWNyb3NvZnQuY29tgg5waXBlLnNreXBlLmNvbYIQKi5waXBlLnNreXBlLmNvbYIiKi5tb2JpbGUuZXZlbnRzLmRhdGEubWljcm9zb2Z0LmNv"
+        "bYIgbW9iaWxlLmV2ZW50cy5kYXRhLm1pY3Jvc29mdC5jb22CFSouZXZlbnRzLmRhdGEubXNuLmNvbYITZXZlbnRzLmRhdGEubXNuLmNvbYIUKi"
+        "5ldmVudHMuZGF0YS5tc24uY26CEmV2ZW50cy5kYXRhLm1zbi5jboIRb2NhLm1pY3Jvc29mdC5jb22CFHdhdHNvbi5taWNyb3NvZnQuY29tghsq"
+        "LnZvcnRleC5kYXRhLm1pY3Jvc29mdC5jb22CGXZvcnRleC5kYXRhLm1pY3Jvc29mdC5jb20wDAYDVR0TAQH/"
+        "BAIwADBkBgNVHR8EXTBbMFmgV6BVhlNodHRwOi8vd3d3Lm1pY3Jvc29mdC5jb20vcGtpb3BzL2NybC9NaWNyb3NvZnQlMjBBenVyZSUyMFRMUy"
+        "UyMElzc3VpbmclMjBDQSUyMDA2LmNybDBmBgNVHSAEXzBdMFEGDCsGAQQBgjdMg30BATBBMD8GCCsGAQUFBwIBFjNodHRwOi8vd3d3Lm1pY3Jv"
+        "c29mdC5jb20vcGtpb3BzL0RvY3MvUmVwb3NpdG9yeS5odG0wCAYGZ4EMAQICMB8GA1UdIwQYMBaAFNXBZzrCo530d1JbWRI4KeZVaLulMB0GA1"
+        "UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATANBgkqhkiG9w0BAQwFAAOCAgEAjx4AB+gsiOX0hu6puwc/"
+        "6BMI1Oc9UDJvMrOKQ9BIUlGZSJCQHWnMs43FAEhWlNiSE41rwNzJkreSdI90IwNc1DMWs2bskVWvZ8pDVXpu12/"
+        "xngr9yGw1HaKSbZoAcMa1o4qx2ctORe9kbOhYR+jEv7sle5xTEIKgYw7lDM91+/"
+        "VCrLJPD1NJWQHWeWKm4c201ZuZtEMBPQps8AaOFSKteJoBsF+Mn/le89ibBwxv6X/"
+        "OEPG+96YfStbK3VtsGIa6LGulS1lHtZYneQXUCRciQ4myDujQjBbPUPhHSwydUlgE4f/"
+        "aF7WDun5fOOaogFUE9dHbXHi67Ap79FMc224AcdmLG32dzso2x1DWac8aV5M1nTP8NQ7xdlfzIYHegZo5G6/"
+        "epEb+AKbXxYkXu1Pe2nvrt2rpuJ63qbuJ8HmcFYg/o/K5EFpTcaCuj80aLo6/JHUrMEWxsG3IEb9b7ULLmd7e8MMpZr/A5kV/"
+        "ND3WIOqvvCrTnDh8tvMeZxRxfH+bG9Y+"
+        "4a3elV5UH9OFCmZJd6FGlZW8MIzCgGGtEoQfD5rnc0WZhaWt3TfUp14pIYqdP2Xe5G2FSyKku0Br3W52c7bEqp8U3a9bUOeOieech3rRnqN/"
+        "M5eeKrWlFRZ3fKpGVsaaZqt8pqHxZ+wdmsNzng73LaO+V0dap19CvNRvzXoABfcwggXzMIIE26ADAgECAhAC55Fx+4Ah6T/"
+        "i2YODTFDAMA0GCSqGSIb3DQEBDAUAMGExCzAJBgNVBAYTAlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2Vyd"
+        "C5jb20xIDAeBgNVBAMTF0RpZ2lDZXJ0IEdsb2JhbCBSb290IEcyMB4XDTIwMDcyOTEyMzAwMFoXDTI0MDYyNzIzNTk1OVowWTELMAkGA1UEBhM"
+        "CVVMxHjAcBgNVBAoTFU1pY3Jvc29mdCBDb3Jwb3JhdGlvbjEqMCgGA1UEAxMhTWljcm9zb2Z0IEF6dXJlIFRMUyBJc3N1aW5nIENBIDA2MIICI"
+        "jANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAtUYBGXnpvHcoFRIa49zgfm6g0WQUfh7um9MLFGLiP/"
+        "7P5dvCMTP7kKKkM6qPH3+NaOyQvl2Ts9pCTMi2J2wACcMJbWV5kE4iLrwt9/VuNN5mAxiLB1F3djf1v+VwamK4/"
+        "Z3bdb3lgeQwxPwiVaixghfR/iRhvraumHJ+cCNhv/"
+        "g5331OGeGUDEa1+9JtdwFUgoJh9mCpG9X7mVF5Sd3Vo2NFhXM86iJ+"
+        "BLHZ9HLLX6k7VTNoww2cg4TvVtVhbQDWGvX3DuQ5vQqQlegAtMMOPW6RQQOpC4F8HFF4vmZeK7U7tYbS+"
+        "W2DRVn9JnNy0Gx0GXHUGSZZgFbbrUpmAGK+uqXkQtMop3yqC0dwtADl+XokHRCCzlcNpZ6E3zoamzklbwCuMa2NxYAg/5fwJBpZ9oKe5GboGT/"
+        "Tc9BaGB2LzirADSyxF8UnAdQ9M1KcTwSIZWTZ+u3S7w8bWnBJCwW40l9xggcS/W87M/u4Q64PJ2yYKOGXG6grafn/"
+        "ZpVHcExO76nj6CXxqVegHJzIuaPcn89SCoPxIvl9MJR6Aax2Jr9JrrQ3ahXu9DXvCMw34tdrauOP9vhmVmBdWiMOYCMPAhF0NS6NC7RFWwmoUs"
+        "zNIgemnYJmnuYiguvJJrLZhgG7tKI3Av3lfod7aRLx558EEePPBb/"
+        "0XEaqvLnuLvVzZwMCAwEAAaOCAa0wggGpMB0GA1UdDgQWBBTVwWc6wqOd9HdSW1kSOCnmVWi7pTAfBgNVHSMEGDAWgBROIlQgGJXm427mD/"
+        "r6uRLtBhePOTAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMBIGA1UdEwEB/"
+        "wQIMAYBAf8CAQAwdgYIKwYBBQUHAQEEajBoMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQAYIKwYBBQUHMAKGNGh0dHA"
+        "6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEdsb2JhbFJvb3RHMi5jcnQwewYDVR0fBHQwcjA3oDWgM4YxaHR0cDovL2NybDMuZGlna"
+        "WNlcnQuY29tL0RpZ2lDZXJ0R2xvYmFsUm9vdEcyLmNybDA3oDWgM4YxaHR0cDovL2NybDQuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0R2xvYmFsUm9"
+        "vdEcyLmNybDAdBgNVHSAEFjAUMAgGBmeBDAECATAIBgZngQwBAgIwEAYJKwYBBAGCNxUBBAMCAQAwDQYJKoZIhvcNAQEMBQADggEBAHahZz3d8"
+        "Hx6xyL/x6yLGP743baZ6IYOOAX6sDYtQrkg5A6BxRJMYpKoX2Vh8DE+Ouo+MMJQ8cJRG/7bpp3k/"
+        "8Fi1e1ua3Ela75xLkGEwM894beg9nBdEcEkUCRjg7gAXtEgABRboTMN+VSgMcq/"
+        "zfM6I99gZykdz2yTEAicJ52TtBKBe8wBGOM6p1qSivbUNOY0hSi3GjyQe/mHBGUaEEnCmzp8RWLUG3S2ukz/fBjGWvjvdZI9QVk+A/"
+        "WPnX2QulY4nzPT3DFrL4Gvb2Ks9wFi/"
+        "QYxeUepOHLzLib8fJNB4jYgy8ytCfCo+lj6sshfK+"
+        "Ija8ugj7jEoThGffxlnyYWAAb1AQAG8TCCBu0KAQCgggbmMIIG4gYJKwYBBQUHMAEBBIIG0zCCBs8wgcWiFgQU3kaDwuMF9+"
+        "39W8asodx2uf1KakgYDzIwMjMwODEyMDI1MjQ3WjCBmTCBljBMMAkGBSsOAwIaBQAEFA3VWiJfjSNU4yV2Hu4NOGL0Op57BBTVwWc6wqOd9HdS"
+        "W1kSOCnmVWi7pQITMwC2iv5B5Cv9E6HyuAAAALaK/"
+        "oAAGA8yMDIzMDgxMjAxMDgyMlqgERgPMjAyMzA4MjAwMTI4MjJaoSAwHjAcBgkrBgEEAYI3FQQEDxcNMjMwODE2MDExODIyWjANBgkqhkiG9w0"
+        "BAQsFAAOCAQEAXwyqYXuW7QmyjSg7VuAeStfNNygOSRsEa0bWdoZzlmwOKNLKr/"
+        "h5Q214JapF5oHboYV6y1hXv84bjnwmvUtZxUhuZDuDw6bKIyaiA1OmJGDwWYvqDTcTOBtxHmblGwxYsvY4/"
+        "Wlm5RaAgnP07coVKsyVB6MFSoG7wi94+UiQXUd5VQdEzy2HsMSKGg5WJL3uCDrQH8NASRCN9aYaS6AQBpxWZ6Fd4zVXgRew/"
+        "DPCNHcNyRMRl4nWLIu627kh0szsP6l5jmrK1z7szWBx3t//"
+        "Y5Q6haO749B95wg5xzxfVzV9tWd74Yx7vMYLMUt8NwPXMetwungUr7oWlHZocbUVlqCCBO8wggTrMIIE5zCCAs+"
+        "gAwIBAgITMwDNSPseuGuzUqjVugAAAM1I+"
+        "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";
+
+    size_t encoded_len = strlen(encoded_buf);
+    unsigned char decoded_buf[nDPId_PACKETS_PLEN_MAX];
+    size_t decoded_len = sizeof(decoded_buf);
+    if (nDPIsrvd_base64decode(encoded_buf, encoded_len, decoded_buf, &decoded_len) != 0)
+    {
+        logger(1, "base64_selftest: Could not decode test buffer of size %zu bytes", encoded_len);
+        return 1;
+    }
+
+    char base64_data[nDPId_PACKETS_PLEN_MAX * 4];
+    size_t base64_data_len = sizeof(base64_data);
+    if (base64_encode(decoded_buf, decoded_len, base64_data, &base64_data_len) != 0)
+    {
+        logger(1, "base64_selftest: Re-encoding base64 buffer failed");
+        return 1;
+    }
+
+    if (base64_data_len != encoded_len)
+    {
+        logger(1,
+               "base64_selftest: Re-encoded base64 buffer size differs: %zu bytes != %zu bytes",
+               base64_data_len,
+               encoded_len);
+        return 1;
+    }
+
+    return strncmp(base64_data, encoded_buf, base64_data_len) != 0;
+}
+
 #define THREADS_RETURNED_ERROR()                                                                                       \
     (nDPId_return.thread_return_value.val != 0 || nDPIsrvd_return.val != 0 ||                                          \
      distributor_return.thread_return_value.val != 0)
@@ -1295,6 +1489,11 @@ int main(int argc, char ** argv)
 
     init_logging("nDPId-test");
     log_app_info();
+
+    if (base64_selftest() != 0)
+    {
+        return 1;
+    }
 
     if (signal(SIGPIPE, SIG_IGN) == SIG_ERR)
     {
