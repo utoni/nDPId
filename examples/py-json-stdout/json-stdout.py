@@ -15,7 +15,7 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
     return True
 
 if __name__ == '__main__':
-    argparser = nDPIsrvd.defaultArgumentParser()
+    argparser = nDPIsrvd.defaultArgumentParser('Plain and simple nDPIsrvd JSON event printer with filter capabilities.', True)
     args = argparser.parse_args()
     address = nDPIsrvd.validateAddress(args)
 
@@ -23,5 +23,6 @@ if __name__ == '__main__':
     sys.stderr.write('Connecting to {} ..\n'.format(address[0]+':'+str(address[1]) if type(address) is tuple else address))
 
     nsock = nDPIsrvdSocket()
+    nDPIsrvd.prepareJsonFilter(args, nsock)
     nsock.connect(address)
     nsock.loop(onJsonLineRecvd, None, None)

@@ -120,11 +120,26 @@ class Stats:
                     flow_count += 1
                     current_flow = instances[alias][source].flows[flow_id]
 
-                    flow_tot_l4_payload_len += current_flow.flow_src_tot_l4_payload_len + current_flow.flow_dst_tot_l4_payload_len
-                    risky += 1 if len(current_flow.flow_risk) > 0 else 0
-                    midstream += 1 if current_flow.midstream != 0 else 0
-                    guessed += 1 if current_flow.guessed != 0 else 0
-                    not_detected = 1 if current_flow.not_detected != 0 else 0
+                    try:
+                        flow_src_tot_l4_payload_len = current_flow.flow_src_tot_l4_payload_len
+                        flow_dst_tot_l4_payload_len = current_flow.flow_dst_tot_l4_payload_len
+                        flow_risk = current_flow.flow_risk
+                        midstream = current_flow.midstream
+                        guessed = current_flow.guessed
+                        not_detected = current_flow.not_detected
+                    except AttributeError:
+                        flow_src_tot_l4_payload_len = 0
+                        flow_dst_tot_l4_payload_len = 0
+                        flow_risk = []
+                        midstream = 0
+                        guessed = 0
+                        not_detected = 0
+
+                    flow_tot_l4_payload_len += flow_src_tot_l4_payload_len + flow_dst_tot_l4_payload_len
+                    risky += 1 if len(flow_risk) > 0 else 0
+                    midstream += 1 if midstream != 0 else 0
+                    guessed += 1 if guessed != 0 else 0
+                    not_detected = 1 if not_detected != 0 else 0
 
         return alias_count, source_count, flow_count, \
                flow_tot_l4_payload_len, \
@@ -519,7 +534,7 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
     return True
 
 if __name__ == '__main__':
-    argparser = nDPIsrvd.defaultArgumentParser('Prettify and print events using the nDPIsrvd Python interface.')
+    argparser = nDPIsrvd.defaultArgumentParser('Prettify and print events using the nDPIsrvd Python interface.', True)
     argparser.add_argument('--no-color', action='store_true', default=False,
                            help='Disable all terminal colors.')
     argparser.add_argument('--no-statusbar', action='store_true', default=False,
@@ -577,6 +592,7 @@ if __name__ == '__main__':
     sys.stderr.write('Connecting to {} ..\n'.format(address[0]+':'+str(address[1]) if type(address) is tuple else address))
 
     nsock = nDPIsrvdSocket()
+    nDPIsrvd.prepareJsonFilter(args, nsock)
     nsock.connect(address)
     nsock.timeout(1.0)
     stats = Stats(nsock)
