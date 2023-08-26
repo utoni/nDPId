@@ -665,7 +665,7 @@ static void syslog_event(struct nDPIsrvd_socket * const sock,
     }
     if (src_port != NULL && dst_port != NULL)
     {
-        size_t src_port_len, dst_port_len;
+        size_t src_port_len = 0, dst_port_len = 0;
         char const * const tmp_src_port_str = TOKEN_GET_VALUE(sock, src_port, &src_port_len);
         char const * const tmp_dst_port_str = TOKEN_GET_VALUE(sock, dst_port, &dst_port_len);
         if (tmp_src_port_str != NULL && tmp_dst_port_str != NULL)

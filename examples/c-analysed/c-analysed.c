@@ -8,7 +8,8 @@
 #include "utils.h"
 
 #define MIN(a, b) (a > b ? b : a)
-#define BUFFER_REMAINING(siz) (NETWORK_BUFFER_MAX_SIZE / 3 - siz)
+#define BUFFER_MAX (NETWORK_BUFFER_MAX_SIZE / 3)
+#define BUFFER_REMAINING(siz) (BUFFER_MAX - siz)
 typedef char csv_buf_t[(NETWORK_BUFFER_MAX_SIZE / 3) + 1];
 
 static int main_thread_shutdown = 0;
@@ -155,7 +156,7 @@ static void csv_buf_add(csv_buf_t buf, size_t * const csv_buf_used, char const *
         {
             return;
         }
-        strncat(buf, str, len);
+        snprintf(buf + *csv_buf_used, BUFFER_MAX - len, "%.*s", (int)len, str);
     }
     else
     {
