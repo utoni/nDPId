@@ -212,6 +212,7 @@
              idle: [....37] [ip4][..tcp] [...10.24.82.188][49217] -> [.216.58.220.174][..443] [TLS][Google][Web][Safe]
                    RISK: Unidirectional Traffic
           guessed: [....13] [ip4][..tcp] [...10.24.82.188][51021] -> [.103.246.57.251][.8080] [HTTP_Proxy][Unknown][Web][Acceptable][]
+                   RISK: Fully encrypted flow
              idle: [....13] [ip4][..tcp] [...10.24.82.188][51021] -> [.103.246.57.251][.8080] 
               end: [....20] [ip4][..tcp] [...10.24.82.188][37821] -> [.210.103.240.15][..443] 
              idle: [....28] [ip4][..udp] [...10.24.82.188][14650] -> [.....10.188.1.1][...53] [DNS][Unknown][Network][Acceptable]

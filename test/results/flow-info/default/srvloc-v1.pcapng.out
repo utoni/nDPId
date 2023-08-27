@@ -1,0 +1,14 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..udp] [.23.220.116.175][..427] -> [.192.168.199.71][57782] 
+         detected: [.....1] [ip4][..udp] [.23.220.116.175][..427] -> [.192.168.199.71][57782] [Service_Location_Protocol][Unknown][RPC][Acceptable]
+                   RISK: Unidirectional Traffic
+              new: [.....2] [ip4][..udp] [..250.83.105.78][51708] -> [.172.30.246.115][..427] 
+         detected: [.....2] [ip4][..udp] [..250.83.105.78][51708] -> [.172.30.246.115][..427] [Service_Location_Protocol][Unknown][RPC][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [.....1] [ip4][..udp] [.23.220.116.175][..427] -> [.192.168.199.71][57782] [Service_Location_Protocol][Unknown][RPC][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [.....2] [ip4][..udp] [..250.83.105.78][51708] -> [.172.30.246.115][..427] [Service_Location_Protocol][Unknown][RPC][Acceptable]
+                   RISK: Unidirectional Traffic
+     DAEMON-EVENT: shutdown

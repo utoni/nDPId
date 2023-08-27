@@ -1325,7 +1325,7 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
         pcap_freecode(&fp);
     }
 
-    ndpi_init_prefs init_prefs = ndpi_no_prefs | ndpi_dont_load_gambling_list;
+    ndpi_init_prefs init_prefs = ndpi_no_prefs;
     workflow->ndpi_struct = ndpi_init_detection_module(init_prefs);
     if (workflow->ndpi_struct == NULL)
     {
