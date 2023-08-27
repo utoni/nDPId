@@ -50,6 +50,7 @@ MAKE_PROGRAM=${MAKE_PROGRAM:-}
 MAKEFLAGS=${MAKEFLAGS}
 DEST_INSTALL=${DEST_INSTALL:-}
 NDPI_COMMIT_HASH=${NDPI_COMMIT_HASH:-}
+FORCE_GIT_UPDATE=${FORCE_GIT_UPDATE:-}
 -----------------------------------
 EOF
 
@@ -60,7 +61,14 @@ cd "$(dirname "${0}")/.."
 GIT_SUCCESS=0
 if [ -d ./.git -o -f ./.git ]; then
     GIT_SUCCESS=1
-    LINES_CHANGED="$(git --no-pager diff ./libnDPI 2>/dev/null | wc -l || printf '0')"
+
+    if [ ! -z "${FORCE_GIT_UPDATE}" ]; then
+        git submodule deinit --force -- ./libnDPI || { GIT_SUCCESS=0; true; }
+        LINES_CHANGED=0
+    else
+        LINES_CHANGED="$(git --no-pager diff ./libnDPI 2>/dev/null | wc -l || printf '0')"
+    fi
+
     if [ ${LINES_CHANGED} -eq 0 ]; then
         git submodule update --progress --init ./libnDPI || { GIT_SUCCESS=0; true; }
     else

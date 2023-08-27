@@ -31,7 +31,7 @@ build_and_test_static_libndpi_tsan:
     # static linked build
     - mkdir build-clang-tsan
     - cd build-clang-tsan
-    - env CMAKE_C_FLAGS='-Werror' CMAKE_C_COMPILER='clang' cmake .. -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DENABLE_SANITIZER_THREAD=ON -DENABLE_ZLIB=ON
+    - env CMAKE_C_FLAGS='-Werror' CMAKE_C_COMPILER='clang' cmake .. -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DBUILD_NDPI_FORCE_GIT_UPDATE=ON -DENABLE_SANITIZER_THREAD=ON -DENABLE_ZLIB=ON
     - make clean-libnDPI
     - make libnDPI
     - tree libnDPI
@@ -48,7 +48,7 @@ build_and_test_static_libndpi:
   script:
     - mkdir build-cmake-submodule
     - cd build-cmake-submodule
-    - env CMAKE_C_FLAGS='-Werror' cmake .. -DENABLE_SYSTEMD=ON -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DENABLE_ZLIB=ON
+    - env CMAKE_C_FLAGS='-Werror' cmake .. -DENABLE_SYSTEMD=ON -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DBUILD_NDPI_FORCE_GIT_UPDATE=ON -DENABLE_ZLIB=ON
     - make clean-libnDPI
     - make libnDPI
     - tree libnDPI
@@ -77,7 +77,7 @@ build_and_test_static_libndpi_coverage:
   script:
     - mkdir build-cmake-submodule
     - cd build-cmake-submodule
-    - env CMAKE_C_FLAGS='-Werror' cmake .. -DENABLE_SYSTEMD=ON -DENABLE_COVERAGE=ON -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DENABLE_SANITIZER=ON -DENABLE_ZLIB=ON
+    - env CMAKE_C_FLAGS='-Werror' cmake .. -DENABLE_SYSTEMD=ON -DENABLE_COVERAGE=ON -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DBUILD_NDPI_FORCE_GIT_UPDATE=ON -DENABLE_SANITIZER=ON -DENABLE_ZLIB=ON
     - make clean-libnDPI
     - make libnDPI
     - tree libnDPI

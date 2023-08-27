@@ -61,6 +61,7 @@ option(ENABLE_SYSTEMD "Install systemd components." OFF)
 option(BUILD_EXAMPLES "Build C examples." ON)
 option(BUILD_NDPI "Clone and build nDPI from github." OFF)
 if(BUILD_NDPI)
+    option(BUILD_NDPI_FORCE_GIT_UPDATE "Forcefully instruments nDPI build script to update the git submodule." OFF)
     unset(NDPI_NO_PKGCONFIG CACHE)
     unset(STATIC_LIBNDPI_INSTALLDIR CACHE)
 else()
@@ -219,6 +220,7 @@ if(BUILD_NDPI)
             ADDITIONAL_ARGS=${NDPI_ADDITIONAL_ARGS}
             MAKE_PROGRAM=${CMAKE_MAKE_PROGRAM}
             DEST_INSTALL=${CMAKE_BINARY_DIR}/libnDPI
+            FORCE_GIT_UPDATE=${BUILD_NDPI_FORCE_GIT_UPDATE}
             ${CMAKE_CURRENT_SOURCE_DIR}/scripts/get-and-build-libndpi.sh
         BUILD_BYPRODUCTS ${CMAKE_BINARY_DIR}/libnDPI/lib/libndpi.a
         BUILD_COMMAND ""
