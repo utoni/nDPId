@@ -28,6 +28,8 @@ ENABLE_FEATURE_PKTLEN = False
 ENABLE_FEATURE_DIRS   = True
 ENABLE_FEATURE_BINS   = True
 
+PROTO_CLASSES = None
+
 def getFeatures(json):
     return [json['flow_src_packets_processed'],
             json['flow_dst_packets_processed'],
@@ -107,6 +109,18 @@ def plotPermutatedImportance(model, X, y):
     fig.tight_layout()
     matplotlib.pyplot.show()
 
+def isProtoClass(proto_class, line):
+    if type(proto_class) != list or type(line) != str:
+        raise TypeError('Invalid type: {}/{}.'.format(type(proto_class), type(line)))
+
+    s = line.lower()
+
+    for x in range(len(proto_class)):
+        if s.startswith(proto_class[x].lower()) is True:
+            return x + 1
+
+    return 0
+
 def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
     if 'flow_event_name' not in json_dict:
         return True
@@ -125,7 +139,6 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
     try:
         X = getRelevantFeaturesJSON(json_dict)
         y = model.predict(X)
-        s = model.score(X, y)
         p = model.predict_log_proba(X)
 
         if y[0] <= 0:
@@ -145,7 +158,7 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
                 pass
             else:
                 pred_failed = True
-                color_start = TermColor.FAIL + TermColor.BOLD + TermColor.BLINK
+                color_start = TermColor.WARNING + TermColor.BOLD
                 color_end = TermColor.END
 
         probs = str()
@@ -159,25 +172,23 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
                 probs += '{:>2.1f}, '.format(p[0][i])
         probs = probs[:-2]
 
-        print('DPI Engine detected: {}{:>24}{}, Predicted: {}{:>24}{}, Score: {}, Probabilities: {}'.format(
+        print('DPI Engine detected: {}{:>24}{}, Predicted: {}{:>24}{}, Probabilities: {}'.format(
               color_start, json_dict['ndpi']['proto'].lower(), color_end,
-              color_start, y_text, color_end, s, probs))
+              color_start, y_text, color_end, probs))
+
+        if pred_failed is True:
+            pclass = isProtoClass(args.proto_class, json_dict['ndpi']['proto'].lower())
+            if pclass == 0:
+                msg = 'false positive'
+            else:
+                msg = 'false negative'
+
+            print('{:>46} {}{}{}'.format('[-]', TermColor.FAIL + TermColor.BOLD + TermColor.BLINK, msg, TermColor.END))
+
     except Exception as err:
         print('Got exception `{}\'\nfor json: {}'.format(err, json_dict))
 
     return True
-
-def isProtoClass(proto_class, line):
-    if type(proto_class) != list or type(line) != str:
-        raise TypeError('Invalid type: {}/{}.'.format(type(proto_class), type(line)))
-
-    s = line.lower()
-
-    for x in range(len(proto_class)):
-        if s.startswith(proto_class[x].lower()) is True:
-            return x + 1
-
-    return 0
 
 if __name__ == '__main__':
     argparser = nDPIsrvd.defaultArgumentParser()
@@ -214,6 +225,8 @@ if __name__ == '__main__':
     argparser.add_argument('--sklearn-max-features', default='sqrt', const='sqrt', nargs='?',
                            choices=['sqrt', 'log2'],
                            help='The number of features to consider when looking for the best split.')
+    argparser.add_argument('--sklearn-max-depth', action='store', type=int, default=128,
+                           help='The maximum depth of a tree.')
     argparser.add_argument('--sklearn-verbosity', action='store', type=int, default=0,
                            help='Controls the verbosity of sklearn\'s random forest classifier.')
     args = argparser.parse_args()
@@ -236,6 +249,9 @@ if __name__ == '__main__':
             sys.exit(1)
 
     if args.load_model is not None:
+        sys.stderr.write('{}: You are loading an existing model file. ' \
+                         'Some --sklearn-* command line parameters won\'t have any effect!\n'.format(sys.argv[0]))
+
         if args.enable_iat is not None:
             sys.stderr.write('{}: `--enable-iat` set, but you want to load an existing model.\n'.format(sys.argv[0]))
             sys.exit(1)
@@ -253,6 +269,7 @@ if __name__ == '__main__':
     ENABLE_FEATURE_PKTLEN = args.enable_pktlen if args.enable_pktlen is not None else ENABLE_FEATURE_PKTLEN
     ENABLE_FEATURE_DIRS   = args.disable_dirs if args.disable_dirs is not None else ENABLE_FEATURE_DIRS
     ENABLE_FEATURE_BINS   = args.disable_bins if args.disable_bins is not None else ENABLE_FEATURE_BINS
+    PROTO_CLASSES         = args.proto_class
 
     numpy.set_printoptions(formatter={'float_kind': "{:.1f}".format}, sign=' ')
     numpy.seterr(divide = 'ignore')
@@ -304,7 +321,8 @@ if __name__ == '__main__':
                                                                 n_estimators     = args.sklearn_estimators,
                                                                 verbose          = args.sklearn_verbosity,
                                                                 min_samples_leaf = args.sklearn_min_samples_leaf,
-                                                                max_features     = args.sklearn_max_features
+                                                                max_features     = args.sklearn_max_features,
+                                                                max_depth        = args.sklearn_max_depth
                                                                )
                 options = (ENABLE_FEATURE_IAT, ENABLE_FEATURE_PKTLEN, ENABLE_FEATURE_DIRS, ENABLE_FEATURE_BINS, args.proto_class)
             sys.stderr.write('Training model..\n')
