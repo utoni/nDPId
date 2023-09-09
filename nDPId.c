@@ -50,7 +50,7 @@
 #endif
 
 #if ((NDPI_MAJOR == 4 && NDPI_MINOR < 7) || NDPI_MAJOR < 4) && NDPI_API_VERSION < 7001
-#error "nDPI >= 4.7.0 or API version >= 7001 required"
+#error "nDPI > 4.6.0 or API version >= 7001 required"
 #endif
 
 #if nDPId_MAX_READER_THREADS <= 0
@@ -2084,6 +2084,12 @@ static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enu
     }
 
     jsonize_basic(reader_thread, 1);
+#ifndef PKG_VERSION
+    ndpi_serialize_string_string(&workflow->ndpi_serializer, "version", "unknown");
+#else
+    ndpi_serialize_string_string(&workflow->ndpi_serializer, "version", PKG_VERSION);
+#endif
+    ndpi_serialize_string_string(&workflow->ndpi_serializer, "ndpi_version", ndpi_revision());
 
     switch (event)
     {

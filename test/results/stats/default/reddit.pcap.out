@@ -1,5 +1,5 @@
 PUTVAL "localhost/exec-nDPIsrvd/gauge-json_lines" interval=60 N:588
-PUTVAL "localhost/exec-nDPIsrvd/gauge-json_bytes" interval=60 N:558903
+PUTVAL "localhost/exec-nDPIsrvd/gauge-json_bytes" interval=60 N:559068
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_new_count" interval=60 N:60
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_end_count" interval=60 N:23
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_idle_count" interval=60 N:37

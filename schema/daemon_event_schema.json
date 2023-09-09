@@ -7,7 +7,9 @@
         "packet_id",
         "daemon_event_id",
         "daemon_event_name",
-        "global_ts_usec"
+        "global_ts_usec",
+        "version",
+        "ndpi_version"
     ],
     "if": {
         "properties": { "daemon_event_name": { "enum": [ "init", "reconnect" ] } }
@@ -51,6 +53,12 @@
                 "shutdown",
                 "status"
             ]
+        },
+        "version": {
+            "type": "string"
+        },
+        "ndpi_version": {
+            "type": "string"
         },
 
         "max-flows-per-thread": {
