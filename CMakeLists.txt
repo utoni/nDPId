@@ -31,6 +31,13 @@ set(CPACK_PACKAGE_VERSION_PATCH 0)
 
 include(CPack)
 include(CheckFunctionExists)
+include(CheckEpoll)
+
+check_epoll(HAS_EPOLL)
+if(HAS_EPOLL)
+    set(EPOLL_DEFS "-DENABLE_EPOLL=1")
+    set(EPOLL_SRCS "nio.c")
+endif()
 
 if(NOT MATH_FUNCTION_EXISTS AND NOT NEED_LINKING_AGAINST_LIBM)
     CHECK_FUNCTION_EXISTS(log2f MATH_FUNCTION_EXISTS)
@@ -86,8 +93,8 @@ else()
     unset(NDPI_WITH_MAXMINDDB CACHE)
 endif()
 
-add_executable(nDPId nDPId.c utils.c)
-add_executable(nDPIsrvd nDPIsrvd.c utils.c)
+add_executable(nDPId nDPId.c ${EPOLL_SRCS} utils.c)
+add_executable(nDPIsrvd nDPIsrvd.c ${EPOLL_SRCS} utils.c)
 add_executable(nDPId-test nDPId-test.c)
 
 add_custom_target(dist)
@@ -298,20 +305,20 @@ if(NOT pkgcfg_lib_PCAP_pcap)
 endif()
 
 target_compile_options(nDPId PRIVATE "-pthread")
-target_compile_definitions(nDPId PRIVATE -D_GNU_SOURCE=1 -DGIT_VERSION=\"${GIT_VERSION}\" ${NDPID_DEFS} ${ZLIB_DEFS})
+target_compile_definitions(nDPId PRIVATE -D_GNU_SOURCE=1 -DGIT_VERSION=\"${GIT_VERSION}\" ${NDPID_DEFS} ${EPOLL_DEFS} ${ZLIB_DEFS})
 target_include_directories(nDPId PRIVATE "${STATIC_LIBNDPI_INC}" "${DEFAULT_NDPI_INCLUDE}" ${NDPID_DEPS_INC})
 target_link_libraries(nDPId "${STATIC_LIBNDPI_LIB}" "${pkgcfg_lib_PCAP_pcap}" "${pkgcfg_lib_NDPI_ndpi}"
                             "${pkgcfg_lib_PCRE_pcre}" "${pkgcfg_lib_MAXMINDDB_maxminddb}" "${pkgcfg_lib_ZLIB_z}"
                             "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}" "${LIBM_LIB}"
                             "-pthread")
 
-target_compile_definitions(nDPIsrvd PRIVATE -D_GNU_SOURCE=1 -DGIT_VERSION=\"${GIT_VERSION}\" ${NDPID_DEFS})
+target_compile_definitions(nDPIsrvd PRIVATE -D_GNU_SOURCE=1 -DGIT_VERSION=\"${GIT_VERSION}\" ${NDPID_DEFS} ${EPOLL_DEFS})
 target_include_directories(nDPIsrvd PRIVATE ${NDPID_DEPS_INC})
 
 target_include_directories(nDPId-test PRIVATE ${NDPID_DEPS_INC})
 target_compile_options(nDPId-test PRIVATE "-Wno-unused-function" "-pthread")
 target_compile_definitions(nDPId-test PRIVATE -D_GNU_SOURCE=1 -DNO_MAIN=1 -DGIT_VERSION=\"${GIT_VERSION}\"
-                                              ${NDPID_DEFS} ${ZLIB_DEFS} ${NDPID_TEST_MPROF_DEFS})
+                                              ${NDPID_DEFS} ${EPOLL_DEFS} ${ZLIB_DEFS} ${NDPID_TEST_MPROF_DEFS})
 target_include_directories(nDPId-test PRIVATE
                            "${STATIC_LIBNDPI_INC}" "${DEFAULT_NDPI_INCLUDE}" ${NDPID_DEPS_INC})
 target_link_libraries(nDPId-test "${STATIC_LIBNDPI_LIB}" "${pkgcfg_lib_PCAP_pcap}" "${pkgcfg_lib_NDPI_ndpi}"

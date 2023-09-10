@@ -10,6 +10,7 @@ static void nDPIsrvd_memprof_log_free(size_t free_size);
 //#define VERBOSE_MEMORY_PROFILING 1
 #define NO_MAIN 1
 #include "utils.c"
+#include "nio.c"
 #include "nDPIsrvd.c"
 #include "nDPId.c"
 
