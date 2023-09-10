@@ -173,11 +173,15 @@ jobs:
       - name: systemd test
         if: startsWith(matrix.os, 'ubuntu-latest') && startsWith(matrix.compiler, 'gcc')
         run: |
+          ip -c address
           sudo systemctl daemon-reload
           sudo systemctl enable ndpid@lo
-          sudo systemctl --wait start ndpid@lo
+          SYSTEMD_RET=0
+          sudo systemctl --wait start ndpid@lo || { SYSTEMD_RET=$?; true; }
+          echo "systemctl returned: ${SYSTEMD_RET}"
           sudo systemctl status ndpisrvd.service ndpid@lo.service
           sudo systemctl show ndpisrvd.service ndpid@lo.service -p SubState,ActiveState
+          test $SYSTEMD_RET -ne 0 && false
       - name: Build against libnDPI-${{ matrix.ndpi_min_version }}
         if: matrix.upload == false
         run: |
