@@ -6,6 +6,7 @@
 #include <netinet/udp.h>
 #include <pcap/pcap.h>
 #include <signal.h>
+#include <stdbool.h> // ndpi_typedefs.h
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -937,10 +938,13 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
                     syslog_event(sock, flow, "midstream");
             }
 
-            if (capture_mode != 0 && (flow_user->packets == NULL || flow_user->flow_max_packets == 0 ||
-                                      utarray_len(flow_user->packets) == 0))
+            if ((flow_user->packets == NULL || flow_user->flow_max_packets == 0 ||
+                 utarray_len(flow_user->packets) == 0))
             {
-                syslog(LOG_DAEMON | LOG_ERR, "Flow %llu: No packets captured.", flow->id_as_ull);
+                if (logging_mode != 0)
+                {
+                    syslog(LOG_DAEMON | LOG_ERR, "Flow %llu: No packets captured.", flow->id_as_ull);
+                }
             }
             else if (capture_mode != 0)
             {
