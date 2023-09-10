@@ -175,7 +175,7 @@ jobs:
         run: |
           sudo systemctl daemon-reload
           sudo systemctl enable ndpid@lo
-          sudo systemctl start ndpid@lo
+          sudo systemctl --wait start ndpid@lo
           sudo systemctl status ndpisrvd.service ndpid@lo.service
           sudo systemctl show ndpisrvd.service ndpid@lo.service -p SubState,ActiveState
       - name: Build against libnDPI-${{ matrix.ndpi_min_version }}
