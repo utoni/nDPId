@@ -176,12 +176,10 @@ jobs:
           ip -c address
           sudo systemctl daemon-reload
           sudo systemctl enable ndpid@lo
-          SYSTEMD_RET=0
-          sudo systemctl --wait start ndpid@lo || { SYSTEMD_RET=$?; true; }
-          echo "systemctl returned: ${SYSTEMD_RET}"
+          sudo systemctl start ndpid@lo
+          SYSTEMCTL_RET=3; while (( $SYSTEMCTL_RET == 3 )); do systemctl is-active ndpid@lo.service; SYSTEMCTL_RET=$?; sleep 1; done
           sudo systemctl status ndpisrvd.service ndpid@lo.service
           sudo systemctl show ndpisrvd.service ndpid@lo.service -p SubState,ActiveState
-          test $SYSTEMD_RET -ne 0 && false
       - name: Build against libnDPI-${{ matrix.ndpi_min_version }}
         if: matrix.upload == false
         run: |
