@@ -5,6 +5,7 @@ After=network.target
 [Service]
 Type=simple
 ExecStart=/usr/bin/nDPIsrvd -l -c /var/run/ndpisrvd-collector
+ExecStopPost=/bin/rm -f /var/run/ndpisrvd-collector
 Restart=on-failure
 
 [Install]

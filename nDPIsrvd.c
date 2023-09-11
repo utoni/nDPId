@@ -315,7 +315,10 @@ static int drain_main_buffer(struct remote_desc * const remote)
     }
 
     errno = 0;
-    while ((bytes_written = write(remote->fd, write_buffer->buf.ptr.raw, write_buffer->buf.used)) < 0 && errno == EINTR) { errno = 0; }
+    while ((bytes_written = write(remote->fd, write_buffer->buf.ptr.raw, write_buffer->buf.used)) < 0 && errno == EINTR)
+    {
+        errno = 0;
+    }
     if (errno == EAGAIN)
     {
         return 0;
@@ -361,7 +364,10 @@ static int drain_write_buffers(struct remote_desc * const remote)
         struct nDPIsrvd_write_buffer * buf = (struct nDPIsrvd_write_buffer *)utarray_front(additional_write_buffers);
         ssize_t written;
 
-        while ((written = write(remote->fd, buf->buf.ptr.raw + buf->written, buf->buf.used - buf->written)) < 0 && errno == EINTR) {}
+        while ((written = write(remote->fd, buf->buf.ptr.raw + buf->written, buf->buf.used - buf->written)) < 0 &&
+               errno == EINTR)
+        {
+        }
         switch (written)
         {
             case -1:
@@ -1242,7 +1248,10 @@ static int handle_incoming_data(int epollfd, struct remote_desc * const current)
 
         while ((bytes_read = read(current->fd,
                                   json_read_buffer->buf.ptr.raw + json_read_buffer->buf.used,
-                                  json_read_buffer->buf.max - json_read_buffer->buf.used)) < 0 && errno == EINTR) {}
+                                  json_read_buffer->buf.max - json_read_buffer->buf.used)) < 0 &&
+               errno == EINTR)
+        {
+        }
         if (bytes_read < 0 || errno != 0)
         {
             logger_nDPIsrvd(current, "Could not read remote", ": %s", strerror(errno));
@@ -1600,7 +1609,13 @@ int main(int argc, char ** argv)
         case 1:
             goto error;
         case 2:
-            unlink(get_cmdarg(&nDPIsrvd_options.collector_un_sockpath));
+            if (unlink(get_cmdarg(&nDPIsrvd_options.collector_un_sockpath)) != 0)
+            {
+                logger(1,
+                       "Could not unlink `%s': %s",
+                       get_cmdarg(&nDPIsrvd_options.collector_un_sockpath),
+                       strerror(errno));
+            }
             goto error;
         case 3:
             goto error_unlink_sockets;
@@ -1666,8 +1681,14 @@ int main(int argc, char ** argv)
     close_event_queue(epollfd);
 
 error_unlink_sockets:
-    unlink(get_cmdarg(&nDPIsrvd_options.collector_un_sockpath));
-    unlink(get_cmdarg(&nDPIsrvd_options.distributor_un_sockpath));
+    if (unlink(get_cmdarg(&nDPIsrvd_options.collector_un_sockpath)) != 0)
+    {
+        logger(1, "Could not unlink `%s': %s", get_cmdarg(&nDPIsrvd_options.collector_un_sockpath), strerror(errno));
+    }
+    if (unlink(get_cmdarg(&nDPIsrvd_options.distributor_un_sockpath)) != 0)
+    {
+        logger(1, "Could not unlink `%s': %s", get_cmdarg(&nDPIsrvd_options.distributor_un_sockpath), strerror(errno));
+    }
 error:
     close(collector_un_sockfd);
     close(distributor_un_sockfd);
