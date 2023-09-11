@@ -62,7 +62,7 @@ GIT_SUCCESS=0
 if [ -d ./.git -o -f ./.git ]; then
     GIT_SUCCESS=1
 
-    if [ ! -z "${FORCE_GIT_UPDATE}" ]; then
+    if [ ! -z "${FORCE_GIT_UPDATE}" -a "${FORCE_GIT_UPDATE}" != "OFF" ]; then
         git submodule deinit --force -- ./libnDPI || { GIT_SUCCESS=0; true; }
         LINES_CHANGED=0
     else

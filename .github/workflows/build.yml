@@ -178,8 +178,9 @@ jobs:
           sudo systemctl enable ndpid@lo
           sudo systemctl start ndpid@lo
           SYSTEMCTL_RET=3; while (( $SYSTEMCTL_RET == 3 )); do systemctl is-active ndpid@lo.service; SYSTEMCTL_RET=$?; sleep 1; done
-          sudo systemctl status ndpisrvd.service ndpid@lo.service
-          sudo systemctl show ndpisrvd.service ndpid@lo.service -p SubState,ActiveState
+          sudo systemctl status ndpisrvd.service ndpid@lo.service || true
+          sudo systemctl show ndpisrvd.service ndpid@lo.service -p SubState,ActiveState || true
+          journalctl --no-tail --no-pager -u ndpisrvd.service -u ndpid@lo.service
       - name: Build against libnDPI-${{ matrix.ndpi_min_version }}
         if: matrix.upload == false
         run: |
