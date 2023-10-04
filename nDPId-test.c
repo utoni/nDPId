@@ -439,6 +439,12 @@ static void * nDPIsrvd_mainloop_thread(void * const arg)
                 {
                     if (handle_data_event(epollfd, &events[i]) != 0)
                     {
+                        if (mock_arpa_desc == events[i].data.ptr)
+                        {
+                            // arpa mock does not care about shutdown events
+                            disconnect_client(epollfd, mock_arpa_desc);
+                            continue;
+                        }
                         logger(1, "%s", "nDPIsrvd data event handler failed");
                         THREAD_ERROR_GOTO(arg);
                     }
