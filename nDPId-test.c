@@ -1477,12 +1477,123 @@ static int base64_selftest()
     return strncmp(base64_data, encoded_buf, base64_data_len) != 0;
 }
 
+static int nio_selftest()
+{
+    struct nio io;
+
+    nio_init(&io);
+
+#ifdef ENABLE_EPOLL
+    logger(0, "%s", "Using epoll for nio");
+#else
+    logger(0, "%s", "Using poll for nio");
+#endif
+
+#ifdef ENABLE_EPOLL
+    if (nio_use_epoll(&io, 5) != NIO_ERROR_SUCCESS)
+#else
+    if (nio_use_poll(&io, 3) != NIO_ERROR_SUCCESS)
+#endif
+    {
+        logger(1, "%s", "Could not use poll/epoll for nio");
+        goto error;
+    }
+
+    int pipefds[2];
+    int rv = pipe(pipefds);
+    if (rv < 0)
+    {
+        logger(1, "Could not create a pipe: %s", strerror(errno));
+        goto error;
+    }
+
+    if (nio_add_fd(&io, pipefds[1], NIO_EVENT_OUTPUT, NULL) != NIO_ERROR_SUCCESS ||
+        nio_add_fd(&io, pipefds[0], NIO_EVENT_INPUT, NULL) != NIO_ERROR_SUCCESS)
+    {
+        logger(1, "%s", "Could not add pipe fds to nio");
+        goto error;
+    }
+
+    if (fcntl_add_flags(pipefds[1], O_NONBLOCK) != 0 || fcntl_add_flags(pipefds[0], O_NONBLOCK) != 0)
+    {
+        logger(1, "%s", "Could not set pipe fds to O_NONBLOCK");
+        goto error;
+    }
+
+    char const wbuf[] = "AAAA";
+    size_t const wlen = strnlen(wbuf, sizeof(wbuf));
+    write(pipefds[1], wbuf, wlen);
+
+    if (nio_run(&io, 1000) != NIO_ERROR_SUCCESS)
+    {
+        logger(1, "%s", "Event notification failed");
+        goto error;
+    }
+
+    if (nio_can_output(&io, 0) != NIO_ERROR_SUCCESS)
+    {
+        logger(1, "%s", "Pipe fd (write) can not output");
+        goto error;
+    }
+
+    if (nio_has_input(&io, 1) != NIO_ERROR_SUCCESS)
+    {
+        logger(1, "%s", "Pipe fd (read) has no input");
+        goto error;
+    }
+
+    if (nio_is_valid(&io, 0) != NIO_ERROR_SUCCESS || nio_is_valid(&io, 1) != NIO_ERROR_SUCCESS ||
+        nio_has_error(&io, 0) == NIO_ERROR_SUCCESS || nio_has_error(&io, 1) == NIO_ERROR_SUCCESS)
+    {
+        logger(1, "%s", "Event validation failed");
+        goto error;
+    }
+
+    char rbuf[4];
+    if (read(pipefds[0], rbuf, sizeof(rbuf)) != sizeof(rbuf) || strncmp(rbuf, wbuf, wlen) != 0)
+    {
+        logger(1, "%s", "Buffer receive failed");
+        goto error;
+    }
+
+    if (nio_run(&io, 1000) != NIO_ERROR_SUCCESS)
+    {
+        logger(1, "%s", "Event notification failed");
+        goto error;
+    }
+
+    if (nio_can_output(&io, 0) != NIO_ERROR_SUCCESS)
+    {
+        logger(1, "%s", "Pipe fd (write) can not output");
+        goto error;
+    }
+
+    if (nio_has_input(&io, 1) == NIO_ERROR_SUCCESS)
+    {
+        logger(1, "%s", "Pipe fd (read) has input");
+        goto error;
+    }
+
+    if (nio_is_valid(&io, 0) != NIO_ERROR_SUCCESS || nio_is_valid(&io, 1) == NIO_ERROR_SUCCESS ||
+        nio_has_error(&io, 0) == NIO_ERROR_SUCCESS || nio_has_error(&io, 1) == NIO_ERROR_SUCCESS)
+    {
+        logger(1, "%s", "Event validation failed");
+        goto error;
+    }
+
+    nio_free(&io);
+    return 0;
+error:
+    nio_free(&io);
+    return 1;
+}
+
 #define THREADS_RETURNED_ERROR()                                                                                       \
     (nDPId_return.thread_return_value.val != 0 || nDPIsrvd_return.val != 0 ||                                          \
      distributor_return.thread_return_value.val != 0)
 int main(int argc, char ** argv)
 {
-    if (argc != 2)
+    if (argc != 1 && argc != 2)
     {
         usage(argv[0]);
         return 1;
@@ -1491,14 +1602,23 @@ int main(int argc, char ** argv)
     init_logging("nDPId-test");
     log_app_info();
 
-    if (base64_selftest() != 0)
+    if (signal(SIGPIPE, SIG_IGN) == SIG_ERR)
     {
         return 1;
     }
 
-    if (signal(SIGPIPE, SIG_IGN) == SIG_ERR)
+    if (argc == 1)
     {
-        return 1;
+        int retval = 0;
+
+        usage(argv[0]);
+        logger(1, "%s", "No pcap file provided. Running selftest mode.");
+
+        retval += base64_selftest();
+        retval += nio_selftest();
+
+        logger(1, "Selftest returned: %d", retval);
+        return retval;
     }
 
     nDPIsrvd_options.max_write_buffers = 32;

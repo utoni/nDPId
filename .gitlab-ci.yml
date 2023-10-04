@@ -37,6 +37,7 @@ build_and_test_static_libndpi_tsan:
     - tree libnDPI
     - make install VERBOSE=1 DESTDIR="$(realpath ../_install)"
     - cd ..
+    - ./_install/usr/local/bin/nDPId-test
     - ./test/run_tests.sh ./libnDPI ./_install/usr/local/bin/nDPId-test
   artifacts:
     expire_in: 1 week
@@ -61,6 +62,7 @@ build_and_test_static_libndpi:
     - test -x /bin/systemctl && sudo systemctl start ndpid@lo
     - test -x /bin/systemctl && sudo systemctl status ndpisrvd.service ndpid@lo.service
     - test -x /bin/systemctl && sudo systemctl stop ndpid@lo
+    - ./build-cmake-submodule/nDPId-test
     - ./test/run_tests.sh ./libnDPI ./build-cmake-submodule/nDPId-test
     - >
       if ldd ./build-cmake-submodule/nDPId | grep -qoEi libndpi; then \
@@ -83,6 +85,7 @@ build_and_test_static_libndpi_coverage:
     - tree libnDPI
     - make install VERBOSE=1 DESTDIR="$(realpath ../_install)"
     - cd ..
+    - ./build-cmake-submodule/nDPId-test
     - ./test/run_tests.sh ./libnDPI ./build-cmake-submodule/nDPId-test
     # generate coverage report
     - make -C ./build-cmake-submodule coverage || true
@@ -113,7 +116,7 @@ build_dynamic_libndpi:
     - make install VERBOSE=1 DESTDIR="$(realpath ../_install)"
     - cd ..
     - tree ./_install
-    - ./build/nDPId-test || test $? -eq 1
+    - ./build/nDPId-test
     - ./build/nDPId -h || test $? -eq 1
     - ./build/nDPIsrvd -h || test $? -eq 1
     # dameon start/stop test

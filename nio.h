@@ -15,7 +15,7 @@ enum
     NIO_EVENT_INVALID = 0,
     NIO_EVENT_INPUT = 1,
     NIO_EVENT_OUTPUT = 2,
-    NIO_EVENT_ERROR = 3,
+    NIO_EVENT_ERROR = 4,
 };
 
 struct nio
