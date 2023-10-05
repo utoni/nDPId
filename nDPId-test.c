@@ -1454,7 +1454,7 @@ static int base64_selftest()
         "0hr4QS1hduMHTwKBXqjb4CGVJbxoc+S/7hjTHGDqWhHCpq9+4SQxcR6MVp65BVNMdGJRLMiHAkUWvivJW4DOanO//"
         "36RFuMQEAQEAUMabZOvBbAa1KSTcWbL5ZGc/YPxLofmSTDMxf+KmqSukiR3yVasPbv5J6Hx2zCATM9pR9VRArg==";
 
-    size_t encoded_len = strlen(encoded_buf);
+    size_t encoded_len = strnlen(encoded_buf, sizeof(encoded_buf));
     unsigned char decoded_buf[nDPId_PACKETS_PLEN_MAX];
     size_t decoded_len = sizeof(decoded_buf);
     if (nDPIsrvd_base64decode(encoded_buf, encoded_len, decoded_buf, &decoded_len) != 0)

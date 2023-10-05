@@ -104,7 +104,7 @@ int main(void)
                            json_bytes - json_start,
                            tokens,
                            sizeof(tokens) / sizeof(tokens[0]));
-            if (r < 0 || tokens[0].type != JSMN_OBJECT)
+            if (r < 1 || tokens[0].type != JSMN_OBJECT)
             {
                 fprintf(stderr, "JSON parsing failed with return value %d at position %u\n", r, parser.pos);
                 fprintf(stderr, "JSON string: '%.*s'\n", (int)(json_bytes - json_start), (char *)(buf + json_start));

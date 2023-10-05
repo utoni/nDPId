@@ -1354,7 +1354,10 @@ int main(int argc, char ** argv)
         }
         return 1;
     }
-    chmod(datadir, S_IRWXU);
+    if (datadir != NULL)
+    {
+        chmod(datadir, S_IRWXU);
+    }
 
     if (nDPIsrvd_set_read_timeout(sock, 180, 0) != 0)
     {

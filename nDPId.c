@@ -4252,7 +4252,7 @@ static void ndpi_process_packet(uint8_t * const args,
         free_detection_data(flow_to_process);
 
         flow_to_process->flow_extended.flow_basic.state = FS_FINISHED;
-        struct nDPId_flow * const flow = (struct nDPId_flow *)flow_to_process;
+        struct nDPId_flow * const flow = flow_to_process;
         flow->flow_extended.detected_l7_protocol = detected_l7_protocol;
         flow->finished.risk = risk;
         flow->finished.confidence = confidence;

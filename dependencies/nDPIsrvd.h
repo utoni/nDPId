@@ -672,7 +672,7 @@ static inline int nDPIsrvd_setup_address(struct nDPIsrvd_address * const address
             }
             if (destination[0] == '[')
             {
-                if (*(last_colon - 1) != ']')
+                if (last_colon > destination && *(last_colon - 1) != ']')
                 {
                     return 1;
                 }
@@ -1645,11 +1645,21 @@ static inline void nDPIsrvd_flow_info(struct nDPIsrvd_socket const * const sock,
 
 static inline int nDPIsrvd_json_buffer_length(struct nDPIsrvd_socket const * const sock)
 {
+    if (sock == NULL)
+    {
+        return 0;
+    }
+
     return (int)sock->buffer.json_string_length - NETWORK_BUFFER_LENGTH_DIGITS;
 }
 
 static inline char const *nDPIsrvd_json_buffer_string(struct nDPIsrvd_socket const * const sock)
 {
+    if (sock == NULL)
+    {
+        return NULL;
+    }
+
     return sock->buffer.json_string;
 }
 
