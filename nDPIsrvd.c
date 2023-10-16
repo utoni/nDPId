@@ -1095,8 +1095,7 @@ static int new_connection(struct nio * const io, int eventfd)
     errno = 0;
     if (add_in_event(io, current) != NIO_SUCCESS)
     {
-        logger(1, "Error adding input event to %d: %s", current->fd,
-               (errno != 0 ? strerror(errno) : "Internal Error"));
+        logger(1, "Error adding input event to %d: %s", current->fd, (errno != 0 ? strerror(errno) : "Internal Error"));
         disconnect_client(io, current);
         return 1;
     }
@@ -1271,7 +1270,7 @@ static int handle_incoming_data(struct nio * const io, struct remote_desc * cons
                         logger_nDPIsrvd(&remotes.desc[i],
                                         "Could not add event to",
                                         ", disconnecting: %s",
-                                        strerror(errno));
+                                        (errno != 0 ? strerror(errno) : "Internal Error"));
                         disconnect_client(io, &remotes.desc[i]);
                         continue;
                     }
@@ -1476,7 +1475,8 @@ static int setup_event_queue(struct nio * const io)
     errno = 0;
     if (add_in_event_fd(io, collector_un_sockfd) != 0)
     {
-        logger(1, "Error adding collector UNIX socket fd to event I/O: %s",
+        logger(1,
+               "Error adding collector UNIX socket fd to event I/O: %s",
                (errno != 0 ? strerror(errno) : "Internal Error"));
         return -1;
     }
@@ -1484,7 +1484,8 @@ static int setup_event_queue(struct nio * const io)
     errno = 0;
     if (add_in_event_fd(io, distributor_un_sockfd) != 0)
     {
-        logger(1, "Error adding distributor UNIX socket fd to event I/O: %s",
+        logger(1,
+               "Error adding distributor UNIX socket fd to event I/O: %s",
                (errno != 0 ? strerror(errno) : "Internal Error"));
         return -1;
     }
@@ -1494,7 +1495,8 @@ static int setup_event_queue(struct nio * const io)
         errno = 0;
         if (add_in_event_fd(io, distributor_in_sockfd) != 0)
         {
-            logger(1, "Error adding distributor TCP/IP socket fd to event I/O: %s",
+            logger(1,
+                   "Error adding distributor TCP/IP socket fd to event I/O: %s",
                    (errno != 0 ? strerror(errno) : "Internal Error"));
             return -1;
         }

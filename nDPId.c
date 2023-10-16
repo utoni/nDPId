@@ -4530,6 +4530,8 @@ static void run_pcap_loop(struct nDPId_reader_thread * const reader_thread)
                     }
                 }
             }
+
+            nio_free(&io);
         }
     }
 }
