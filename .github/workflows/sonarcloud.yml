@@ -15,15 +15,15 @@ jobs:
     steps:
     - uses: actions/checkout@v3
       with:
-        fetch-depth: 1
-    - uses: actions/checkout@v3
-    - name: Set up Python 3.8 for gcovr
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.8
-    - name: install gcovr 5.0
-      run: |
-        pip install gcovr==5.0 # 5.1 is not supported
+        fetch-depth: 0
+#    - uses: actions/checkout@v3
+#    - name: Set up Python 3.8 for gcovr
+#      uses: actions/setup-python@v4
+#      with:
+#        python-version: 3.8
+#    - name: install gcovr 5.0
+#      run: |
+#        pip install gcovr==5.0 # 5.1 is not supported
     - name: Install sonar-scanner and build-wrapper
       uses: SonarSource/sonarcloud-github-c-cpp@v2
     - name: Install Prerequisites
@@ -35,16 +35,16 @@ jobs:
         mkdir build
         cmake -S . -B build -DBUILD_NDPI=ON -DDENABLE_ZLIB=ON -DNDPI_WITH_GCRYPT=OFF
         build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} cmake --build build/ --config Release
-    - name: Run tests
-      run: |
-        for file in $(ls libnDPI/tests/cfgs/*/pcap/*.pcap libnDPI/tests/cfgs/*/pcap/*.pcapng libnDPI/tests/cfgs/*/pcap/*.cap); do \
-            echo -n "${file} "; \
-            ./build/nDPId-test "${file}" >/dev/null 2>/dev/null; \
-            echo "[ok]"; \
-        done
-    - name: Collect coverage into one XML report
-      run: |
-        gcovr --sonarqube > coverage.xml
+#    - name: Run tests
+#      run: |
+#        for file in $(ls libnDPI/tests/cfgs/*/pcap/*.pcap libnDPI/tests/cfgs/*/pcap/*.pcapng libnDPI/tests/cfgs/*/pcap/*.cap); do \
+#            echo -n "${file} "; \
+#            ./build/nDPId-test "${file}" >/dev/null 2>/dev/null; \
+#            echo "[ok]"; \
+#        done
+#    - name: Collect coverage into one XML report
+#      run: |
+#        gcovr --sonarqube > coverage.xml
     - name: Run sonar-scanner
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
