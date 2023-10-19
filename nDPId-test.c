@@ -917,7 +917,7 @@ static enum nDPIsrvd_callback_return distributor_json_printer(struct nDPIsrvd_so
 static void * distributor_client_mainloop_thread(void * const arg)
 {
     struct nio io;
-    int signalfd;
+    int signalfd = -1;
     struct distributor_return_value * const drv = (struct distributor_return_value *)arg;
     struct thread_return_value * const trv = &drv->thread_return_value;
     struct nDPIsrvd_socket * mock_sock = nDPIsrvd_socket_init(sizeof(struct distributor_global_user_data),
