@@ -6,7 +6,8 @@ LINE_SPACES=${LINE_SPACES:-48}
 STRACE_EXEC="${STRACE_EXEC}"
 MYDIR="$(realpath "$(dirname ${0})")"
 nDPId_test_EXEC="$(realpath "${2:-"${MYDIR}/../nDPId-test"}")"
-NETCAT_EXEC="$(which nc) -q 0 -l 127.0.0.1 9000"
+NETCAT_SOCK="/tmp/ndpid-run-tests.sock"
+NETCAT_EXEC="$(which nc) -q 0 -Ul ${NETCAT_SOCK}"
 JSON_VALIDATOR="$(realpath "${3:-"${MYDIR}/../examples/py-schema-validation/py-schema-validation.py"}")"
 SEMN_VALIDATOR="$(realpath "${4:-"${MYDIR}/../examples/py-semantic-validation/py-semantic-validation.py"}")"
 FLOW_INFO="$(realpath "${5:-"${MYDIR}/../examples/py-flow-info/flow-info.py"}")"
@@ -238,7 +239,7 @@ for out_file in results/*/*.out; do
     printf "%-${LINE_SPACES}s\t" "${out_name}"
     cat "${out_file}" | grep -vE '^~~.*$' | ${NETCAT_EXEC} &
     nc_pid=$!
-    ${FLOW_INFO} --host 127.0.0.1 --port 9000 \
+    ${FLOW_INFO} --unix "${NETCAT_SOCK}" \
         --no-color --no-statusbar --hide-instance-info \
         --print-analyse-results --print-hostname >"${stdout_file}" 2>>"${stderr_file}"
     kill -SIGTERM ${nc_pid} 2>/dev/null
@@ -300,10 +301,11 @@ if [ -x "${NDPISRVD_ANALYSED}" ]; then
         printf "%-${LINE_SPACES}s\t" "${out_name}"
         cat "${out_file}" | grep -vE '^~~.*$' | ${NETCAT_EXEC} &
         nc_pid=$!
-        while ! ss -4 -t -n -l | grep -q '127.0.0.1:9000'; do sleep 0.5; printf '%s\n' 'Waiting until socket 127.0.0.1:9000 is available..' >>"${stderr_file}"; done
-        ${NDPISRVD_ANALYSED} -s '127.0.0.1:9000' -o "${stdout_file}" 2>>"${stderr_file}" 1>&2
+        while ! ss -x -t -n -l | grep -q "${NETCAT_SOCK}"; do sleep 0.1; printf '%s\n' "Waiting until socket ${NETCAT_SOCK} is available.." >>"${stderr_file}"; done
+        ${NDPISRVD_ANALYSED} -s "${NETCAT_SOCK}" -o "${stdout_file}" 2>>"${stderr_file}" 1>&2
         kill -SIGTERM ${nc_pid} 2>/dev/null
         wait ${nc_pid} 2>/dev/null
+        while ss -x -t -n -l | grep -q "${NETCAT_SOCK}"; do sleep 0.1; printf '%s\n' "Waiting until socket ${NETCAT_SOCK} is not available anymore.." >>"${stderr_file}"; done
         if [ ! -r "${result_file}" ]; then
             printf '%s\n' '[NEW]'
             test ${IS_GIT} -eq 1 && \
@@ -363,10 +365,11 @@ if [ -x "${NDPISRVD_COLLECTD}" ]; then
         printf "%-${LINE_SPACES}s\t" "${out_name}"
         cat "${out_file}" | grep -vE '^~~.*$' | ${NETCAT_EXEC} &
         nc_pid=$!
-        while ! ss -4 -t -n -l | grep -q '127.0.0.1:9000'; do sleep 0.5; printf '%s\n' 'Waiting until socket 127.0.0.1:9000 is available..' >>"${stderr_file}"; done
-        ${NDPISRVD_COLLECTD} -s '127.0.0.1:9000' 2>>"${stderr_file}" 1>"${stdout_file}"
+        while ! ss -x -t -n -l | grep -q "${NETCAT_SOCK}"; do sleep 0.1; printf '%s\n' "Waiting until socket ${NETCAT_SOCK} is available.." >>"${stderr_file}"; done
+        ${NDPISRVD_COLLECTD} -s "${NETCAT_SOCK}" 2>>"${stderr_file}" 1>"${stdout_file}"
         kill -SIGTERM ${nc_pid} 2>/dev/null
         wait ${nc_pid} 2>/dev/null
+        while ss -x -t -n -l | grep -q "${NETCAT_SOCK}"; do sleep 0.1; printf '%s\n' "Waiting until socket ${NETCAT_SOCK} is not available anymore.." >>"${stderr_file}"; done
         if [ ! -r "${result_file}" ]; then
             printf '%s\n' '[NEW]'
             test ${IS_GIT} -eq 1 && \
@@ -426,14 +429,14 @@ for out_file in results/*/*.out; do
         TESTS_FAILED=$((TESTS_FAILED + 1))
     else
         validate_results "SCHEMA  " "${pcap_cfg}" "${out_name%.out}" "${out_file}" \
-            "${JSON_VALIDATOR} --host 127.0.0.1 --port 9000"
+            "${JSON_VALIDATOR} --unix ${NETCAT_SOCK}"
         if [ $? -ne 0 ]; then
             TESTS_FAILED=$((TESTS_FAILED + 1))
             continue
         fi
 
         validate_results "SEMANTIC" "${pcap_cfg}" "${out_name%.out}" "${out_file}" \
-            "${SEMN_VALIDATOR} --host 127.0.0.1 --port 9000 --strict"
+            "${SEMN_VALIDATOR} --unix ${NETCAT_SOCK} --strict"
         if [ $? -ne 0 ]; then
             TESTS_FAILED=$((TESTS_FAILED + 1))
             continue
