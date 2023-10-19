@@ -352,7 +352,7 @@ void vlogger(int is_error, char const * const format, va_list ap)
     {
         if (is_error == 0)
         {
-            vsyslog(LOG_DAEMON, format, ap);
+            vsyslog(LOG_DAEMON | LOG_INFO, format, ap);
         }
         else
         {

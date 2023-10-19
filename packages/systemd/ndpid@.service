@@ -5,7 +5,7 @@ Requires=ndpisrvd.service
 
 [Service]
 Type=simple
-ExecStart=/usr/sbin/nDPId -i %i -l -A -z -c /var/run/ndpisrvd-collector
+ExecStart=/usr/sbin/nDPId -i %i -A -z -c /var/run/ndpisrvd-collector
 Restart=on-failure
 
 [Install]
