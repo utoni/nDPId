@@ -430,7 +430,13 @@ static int handle_outgoing_data(int epollfd, struct remote_desc * const remote)
     }
     if (utarray_len(additional_write_buffers) == 0)
     {
-        return del_out_event(epollfd, remote);
+        struct nDPIsrvd_write_buffer * const write_buffer = get_write_buffer(remote);
+
+        if (write_buffer->buf.used == 0) {
+            return del_out_event(epollfd, remote);
+        } else {
+            return drain_main_buffer(remote);
+        }
     }
 
     return 0;
