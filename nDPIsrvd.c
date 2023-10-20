@@ -435,9 +435,12 @@ static int handle_outgoing_data(struct nio * const io, struct remote_desc * cons
     {
         struct nDPIsrvd_write_buffer * const write_buffer = get_write_buffer(remote);
 
-        if (write_buffer->buf.used == 0) {
+        if (write_buffer->buf.used == 0)
+        {
             return set_in_event(io, remote);
-        } else {
+        }
+        else
+        {
             return drain_main_buffer(remote);
         }
     }
@@ -1441,10 +1444,18 @@ static int mainloop(struct nio * const io)
                 s = read(signalfd, &fdsi, sizeof(struct signalfd_siginfo));
                 if (s != sizeof(struct signalfd_siginfo))
                 {
-                    logger(1,
-                           "Invalid signal fd read size. Got %zd, wanted %zu bytes.",
-                           s,
-                           sizeof(struct signalfd_siginfo));
+                    if (s < 0)
+                    {
+                        logger(1, "Read from signal fd returned: %s", strerror(errno));
+                        nDPIsrvd_main_thread_shutdown = 1;
+                    }
+                    else
+                    {
+                        logger(1,
+                               "Invalid signal fd read size. Got %zd, wanted %zu bytes.",
+                               s,
+                               sizeof(struct signalfd_siginfo));
+                    }
                     continue;
                 }
 
