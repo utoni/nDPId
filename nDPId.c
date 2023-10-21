@@ -4415,6 +4415,7 @@ static void run_pcap_loop(struct nDPId_reader_thread * const reader_thread)
             {
                 logger(1, "%s", "Event I/O poll/epoll setup failed");
                 MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
+                nio_free(&io);
                 return;
             }
 
@@ -4425,6 +4426,7 @@ static void run_pcap_loop(struct nDPId_reader_thread * const reader_thread)
                        "Could not add pcap fd to event queue: %s",
                        (errno != 0 ? strerror(errno) : "Internal Error"));
                 MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
+                nio_free(&io);
                 return;
             }
             errno = 0;
@@ -4434,6 +4436,7 @@ static void run_pcap_loop(struct nDPId_reader_thread * const reader_thread)
                        "Could not add signal fd to event queue: %s",
                        (errno != 0 ? strerror(errno) : "Internal Error"));
                 MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
+                nio_free(&io);
                 return;
             }
 
@@ -4519,6 +4522,7 @@ static void run_pcap_loop(struct nDPId_reader_thread * const reader_thread)
                                 break;
                             case PCAP_ERROR_BREAK:
                                 MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
+                                nio_free(&io);
                                 return;
                             default:
                                 break;
