@@ -923,7 +923,9 @@ static enum nDPIsrvd_callback_return distributor_json_printer(struct nDPIsrvd_so
 static void * distributor_client_mainloop_thread(void * const arg)
 {
     struct nio io;
+#if !defined(__FreeBSD__) && !defined(__APPLE__)
     int signalfd = -1;
+#endif
     struct distributor_return_value * const drv = (struct distributor_return_value *)arg;
     struct thread_return_value * const trv = &drv->thread_return_value;
     struct nDPIsrvd_socket * mock_sock = nDPIsrvd_socket_init(sizeof(struct distributor_global_user_data),
@@ -960,12 +962,14 @@ static void * distributor_client_mainloop_thread(void * const arg)
         THREAD_ERROR_GOTO(trv);
     }
 
+#if !defined(__FreeBSD__) && !defined(__APPLE__)
     signalfd = setup_signalfd(&io);
     if (signalfd < 0)
     {
         logger(1, "Distributor signal fd setup failed: %s", strerror(errno));
         THREAD_ERROR_GOTO(trv);
     }
+#endif
 
     if (thread_block_signals() != 0)
     {
@@ -1159,6 +1163,7 @@ static void * distributor_client_mainloop_thread(void * const arg)
                  * I am just here to trigger some IP code paths.
                  */
             }
+#if !defined(__FreeBSD__) && !defined(__APPLE__)
             else if (fd == signalfd)
             {
                 struct signalfd_siginfo fdsi;
@@ -1178,6 +1183,7 @@ static void * distributor_client_mainloop_thread(void * const arg)
                     THREAD_ERROR_GOTO(trv);
                 }
             }
+#endif
             else
             {
                 logger(1,
@@ -1251,7 +1257,9 @@ static void * distributor_client_mainloop_thread(void * const arg)
     }
 
 error:
+#if !defined(__FreeBSD__) && !defined(__APPLE__)
     del_event(&io, signalfd);
+#endif
     del_event(&io, mock_testfds[PIPE_TEST_READ]);
     del_event(&io, mock_bufffds[PIPE_BUFFER_READ]);
     del_event(&io, mock_nullfds[PIPE_NULL_READ]);
@@ -1260,7 +1268,9 @@ error:
     close(mock_bufffds[PIPE_BUFFER_READ]);
     close(mock_nullfds[PIPE_NULL_READ]);
     close(mock_arpafds[PIPE_ARPA_READ]);
+#if !defined(__FreeBSD__) && !defined(__APPLE__)
     close(signalfd);
+#endif
     nio_free(&io);
 
     nDPIsrvd_socket_free(&mock_sock);
@@ -1351,6 +1361,7 @@ static void usage(char const * const arg0)
 
 static int thread_wait_for_termination(pthread_t thread, time_t wait_time_secs, struct thread_return_value * const trv)
 {
+#if !defined(__FreeBSD__) && !defined(__APPLE__)
     struct timespec ts;
 
     if (clock_gettime(CLOCK_REALTIME, &ts) == -1)
@@ -1370,6 +1381,11 @@ static int thread_wait_for_termination(pthread_t thread, time_t wait_time_secs, 
     }
 
     return 1;
+#else
+    (void)wait_time_secs;
+
+    return pthread_join(thread, (void **)&trv) != 0;
+#endif
 }
 
 static int base64_selftest()

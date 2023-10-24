@@ -56,6 +56,8 @@ __attribute__((format(printf, 2, 3))) void logger(int is_error, char const * con
 
 __attribute__((format(printf, 2, 3))) void logger_early(int is_error, char const * const format, ...);
 
+int set_fd_cloexec(int fd);
+
 char const * get_nDPId_version(void);
 
 #endif

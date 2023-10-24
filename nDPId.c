@@ -1,3 +1,6 @@
+#if defined(__FreeBSD__) || defined(__APPLE__)
+#include <sys/types.h>
+#endif
 #include <arpa/inet.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -17,7 +20,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/ioctl.h>
+#if !defined(__FreeBSD__) && !defined(__APPLE__)
 #include <sys/signalfd.h>
+#endif
 #include <sys/un.h>
 #include <unistd.h>
 #ifdef ENABLE_ZLIB
@@ -929,10 +934,17 @@ static void get_ip6_from_sockaddr(struct sockaddr_in6 const * const saddr, union
     switch (saddr->sin6_family)
     {
         case AF_INET6:
+#if defined(__FreeBSD__) || defined(__APPLE__)
+            dest->v6.ip_u32[0] = saddr->sin6_addr.__u6_addr.__u6_addr32[0];
+            dest->v6.ip_u32[1] = saddr->sin6_addr.__u6_addr.__u6_addr32[1];
+            dest->v6.ip_u32[2] = saddr->sin6_addr.__u6_addr.__u6_addr32[2];
+            dest->v6.ip_u32[3] = saddr->sin6_addr.__u6_addr.__u6_addr32[3];
+#else
             dest->v6.ip_u32[0] = saddr->sin6_addr.s6_addr32[0];
             dest->v6.ip_u32[1] = saddr->sin6_addr.s6_addr32[1];
             dest->v6.ip_u32[2] = saddr->sin6_addr.s6_addr32[2];
             dest->v6.ip_u32[3] = saddr->sin6_addr.s6_addr32[3];
+#endif
             break;
         default:
             return;
@@ -996,7 +1008,11 @@ static int get_ip6_address_and_netmask(char const * const ifa_name, size_t ifnam
             memset(&sap.sin6_addr.s6_addr, 0xFF, plen / 8);
             if (plen < 128 && (plen % 32) != 0)
             {
+#if defined(__FreeBSD__) || defined(__APPLE__)
+                sap.sin6_addr.__u6_addr.__u6_addr32[plen / 32] = 0xFFFFFFFF << (32 - (plen % 32));
+#else
                 sap.sin6_addr.s6_addr32[plen / 32] = 0xFFFFFFFF << (32 - (plen % 32));
+#endif
             }
             inet_ntop(AF_INET6, &sap.sin6_addr, netmask6, sizeof(netmask6));
             sap.sin6_family = AF_INET6;
@@ -1028,30 +1044,51 @@ static int get_ip4_address_and_netmask(char const * const ifa_name, size_t ifnam
 {
     int retval = 0;
     int sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_IP);
+#if defined(__FreeBSD__) || defined(__APPLE__)
+    struct ifaliasreq ifr;
+#else
     struct ifreq ifr;
+#endif
 
     if (sock < 0)
     {
         retval = 1;
         goto error;
     }
+#if defined(__FreeBSD__) || defined(__APPLE__)
+    if (ifnamelen >= sizeof(ifr.ifra_name))
+#else
     if (ifnamelen >= sizeof(ifr.ifr_name))
+#endif
     {
         retval = 1;
         goto error;
     }
 
     memset(&ifr, 0, sizeof(ifr));
+#if defined(__FreeBSD__) || defined(__APPLE__)
+    memcpy(ifr.ifra_name, ifa_name, ifnamelen);
+    ifr.ifra_name[ifnamelen] = '\0';
+    if (ioctl(sock, SIOCAIFADDR, &ifr) == -1)
+#else
     memcpy(ifr.ifr_name, ifa_name, ifnamelen);
     ifr.ifr_name[ifnamelen] = '\0';
     ifr.ifr_netmask.sa_family = AF_INET;
     if (ioctl(sock, SIOCGIFNETMASK, &ifr) == -1)
+#endif
     {
         retval = 1;
         goto error;
     }
+#if defined(__FreeBSD__) || defined(__APPLE__)
+    get_ip4_from_sockaddr((struct sockaddr_in *)&ifr.ifra_mask, &nDPId_options.pcap_dev_netmask4);
+#else
     get_ip4_from_sockaddr((struct sockaddr_in *)&ifr.ifr_netmask, &nDPId_options.pcap_dev_netmask4);
+#endif
 
+#if defined(__FreeBSD__) || defined(__APPLE__)
+    get_ip4_from_sockaddr((struct sockaddr_in *)&ifr.ifra_addr, &nDPId_options.pcap_dev_ip4);
+#else
     memset(&ifr, 0, sizeof(ifr));
     memcpy(ifr.ifr_name, ifa_name, ifnamelen);
     ifr.ifr_name[ifnamelen] = '\0';
@@ -1062,6 +1099,7 @@ static int get_ip4_address_and_netmask(char const * const ifa_name, size_t ifnam
         goto error;
     }
     get_ip4_from_sockaddr((struct sockaddr_in *)&ifr.ifr_netmask, &nDPId_options.pcap_dev_ip4);
+#endif
 
     ip_netmask_to_subnet(&nDPId_options.pcap_dev_ip4,
                          &nDPId_options.pcap_dev_netmask4,
@@ -2245,8 +2283,8 @@ static int connect_to_collector(struct nDPId_reader_thread * const reader_thread
     }
 
     int sock_type = (collector_address.raw.sa_family == AF_UNIX ? SOCK_STREAM : SOCK_DGRAM);
-    reader_thread->collector_sockfd = socket(collector_address.raw.sa_family, sock_type | SOCK_CLOEXEC, 0);
-    if (reader_thread->collector_sockfd < 0)
+    reader_thread->collector_sockfd = socket(collector_address.raw.sa_family, sock_type, 0);
+    if (reader_thread->collector_sockfd < 0 || set_fd_cloexec(reader_thread->collector_sockfd) < 0)
     {
         reader_thread->collector_sock_last_errno = errno;
         return 1;
@@ -3458,7 +3496,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
                     break;
                 case ETHERTYPE_PAE: /* 802.1X Authentication */
                     return 1;
-                case ETH_P_ARP: /* ARP */
+                case ETHERTYPE_ARP: /* ARP */
                     return 1;
                 default:
                     if (is_error_event_threshold(reader_thread->workflow) == 0)
@@ -4274,6 +4312,7 @@ static void get_current_time(struct timeval * const tval)
     gettimeofday(tval, NULL);
 }
 
+#if !defined(__FreeBSD__) && !defined(__APPLE__)
 static void ndpi_log_flow_walker(void const * const A, ndpi_VISIT which, int depth, void * const user_data)
 {
     struct nDPId_reader_thread const * const reader_thread = (struct nDPId_reader_thread *)user_data;
@@ -4358,6 +4397,7 @@ static void log_all_flows(struct nDPId_reader_thread const * const reader_thread
         ndpi_twalk(workflow->ndpi_flows_active[scan_index], ndpi_log_flow_walker, (void *)reader_thread);
     }
 }
+#endif
 
 static void run_pcap_loop(struct nDPId_reader_thread * const reader_thread)
 {
@@ -4380,6 +4420,7 @@ static void run_pcap_loop(struct nDPId_reader_thread * const reader_thread)
         }
         else
         {
+#if !defined(__FreeBSD__) && !defined(__APPLE__)
             sigset_t thread_signal_set, old_signal_set;
             sigfillset(&thread_signal_set);
             if (pthread_sigmask(SIG_BLOCK, &thread_signal_set, &old_signal_set) != 0)
@@ -4392,13 +4433,14 @@ static void run_pcap_loop(struct nDPId_reader_thread * const reader_thread)
             sigaddset(&thread_signal_set, SIGINT);
             sigaddset(&thread_signal_set, SIGTERM);
             sigaddset(&thread_signal_set, SIGUSR1);
-            int signal_fd = signalfd(-1, &thread_signal_set, SFD_NONBLOCK | SFD_CLOEXEC);
-            if (signal_fd < 0)
+            int signal_fd = signalfd(-1, &thread_signal_set, SFD_NONBLOCK);
+            if (signal_fd < 0 || set_fd_cloexec(signal_fd) < 0)
             {
                 logger(1, "signalfd: %s", strerror(errno));
                 MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
                 return;
             }
+#endif
 
             int pcap_fd = pcap_get_selectable_fd(reader_thread->workflow->pcap_handle);
             if (pcap_fd < 0)
@@ -4433,6 +4475,7 @@ static void run_pcap_loop(struct nDPId_reader_thread * const reader_thread)
                 nio_free(&io);
                 return;
             }
+#if !defined(__FreeBSD__) && !defined(__APPLE__)
             errno = 0;
             if (nio_add_fd(&io, signal_fd, NIO_EVENT_INPUT, NULL) != NIO_SUCCESS)
             {
@@ -4443,6 +4486,7 @@ static void run_pcap_loop(struct nDPId_reader_thread * const reader_thread)
                 nio_free(&io);
                 return;
             }
+#endif
 
             int const timeout_ms = 1000; /* TODO: Configurable? */
             struct timeval tval_before_epoll, tval_after_epoll;
@@ -4482,6 +4526,7 @@ static void run_pcap_loop(struct nDPId_reader_thread * const reader_thread)
 
                     int fd = nio_get_fd(&io, i);
 
+#if !defined(__FreeBSD__) && !defined(__APPLE__)
                     if (fd == signal_fd)
                     {
                         struct signalfd_siginfo fdsi;
@@ -4513,7 +4558,9 @@ static void run_pcap_loop(struct nDPId_reader_thread * const reader_thread)
                             logger(1, "Received signal %d (%s)", fdsi.ssi_signo, signame);
                         }
                     }
-                    else if (fd == pcap_fd)
+                    else
+#endif
+                        if (fd == pcap_fd)
                     {
                         switch (pcap_dispatch(
                             reader_thread->workflow->pcap_handle, -1, ndpi_process_packet, (uint8_t *)reader_thread))

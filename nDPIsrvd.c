@@ -9,7 +9,9 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
+#if !defined(__FreeBSD__) && !defined(__APPLE__)
 #include <sys/signalfd.h>
+#endif
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -43,15 +45,19 @@ struct remote_desc
         {
             struct sockaddr_un peer;
             unsigned long long int json_bytes;
+#if !defined(__FreeBSD__) && !defined(__APPLE__)
             pid_t pid;
+#endif
 
             struct nDPIsrvd_json_buffer main_read_buffer;
         } event_collector_un;
         struct
         {
             struct sockaddr_un peer;
+#if !defined(__FreeBSD__) && !defined(__APPLE__)
             pid_t pid;
             char * user_name;
+#endif
 
             struct nDPIsrvd_write_buffer main_write_buffer;
             UT_array * additional_write_buffers;
@@ -79,7 +85,7 @@ static int collector_un_sockfd = -1;
 static int distributor_un_sockfd = -1;
 static int distributor_in_sockfd = -1;
 static struct nDPIsrvd_address distributor_in_address = {
-    .raw.sa_family = 0xFFFF,
+    .raw.sa_family = (sa_family_t)0xFFFF,
 };
 
 static struct
@@ -278,12 +284,16 @@ static void logger_nDPIsrvd(struct remote_desc const * const remote,
     switch (remote->sock_type)
     {
         case DISTRIBUTOR_UN:
+#if !defined(__FreeBSD__) && !defined(__APPLE__)
             logger(1,
                    "%s PID %d (User: %s) %s",
                    prefix,
                    remote->event_distributor_un.pid,
                    remote->event_distributor_un.user_name,
                    logbuf);
+#else
+            logger(1, "%s %s", prefix, logbuf);
+#endif
             break;
         case DISTRIBUTOR_IN:
             logger(1,
@@ -295,7 +305,11 @@ static void logger_nDPIsrvd(struct remote_desc const * const remote,
                    logbuf);
             break;
         case COLLECTOR_UN:
+#if !defined(__FreeBSD__) && !defined(__APPLE__)
             logger(1, "%s PID %d %s", prefix, remote->event_collector_un.pid, logbuf);
+#else
+            logger(1, "%s %s", prefix, logbuf);
+#endif
             break;
     }
 
@@ -476,7 +490,8 @@ static int create_listen_sockets(void)
 {
     collector_un_sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
     distributor_un_sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
-    if (collector_un_sockfd < 0 || distributor_un_sockfd < 0)
+    if (collector_un_sockfd < 0 || distributor_un_sockfd < 0 || set_fd_cloexec(collector_un_sockfd) < 0 ||
+        set_fd_cloexec(distributor_un_sockfd) < 0)
     {
         logger(1, "Error creating UNIX socket: %s", strerror(errno));
         return 1;
@@ -485,7 +500,7 @@ static int create_listen_sockets(void)
     if (is_cmdarg_set(&nDPIsrvd_options.distributor_in_address) != 0)
     {
         distributor_in_sockfd = socket(distributor_in_address.raw.sa_family, SOCK_STREAM, 0);
-        if (distributor_in_sockfd < 0)
+        if (distributor_in_sockfd < 0 || set_fd_cloexec(distributor_in_sockfd) < 0)
         {
             logger(1, "Error creating TCP/IP socket: %s", strerror(errno));
             return 1;
@@ -719,7 +734,9 @@ static void free_remote(struct nio * const io, struct remote_desc * remote)
                     utarray_free(remote->event_distributor_un.additional_write_buffers);
                 }
                 nDPIsrvd_buffer_free(&remote->event_distributor_un.main_write_buffer.buf);
+#if !defined(__FreeBSD__) && !defined(__APPLE__)
                 free(remote->event_distributor_un.user_name);
+#endif
                 break;
             case DISTRIBUTOR_IN:
                 if (errno != 0)
@@ -938,7 +955,7 @@ static struct remote_desc * accept_remote(int server_fd,
     int client_fd;
 
     while ((client_fd = accept(server_fd, sockaddr, addrlen)) < 0 && errno == EINTR) {}
-    if (client_fd < 0)
+    if (client_fd < 0 || set_fd_cloexec(client_fd) < 0)
     {
         logger(1, "Accept failed: %s", strerror(errno));
         return NULL;
@@ -1008,6 +1025,7 @@ static int new_connection(struct nio * const io, int eventfd)
                 return 1;
             }
 
+#if !defined(__FreeBSD__) && !defined(__APPLE__)
             struct ucred ucred = {};
             socklen_t ucred_len = sizeof(ucred);
             if (getsockopt(current->fd, SOL_SOCKET, SO_PEERCRED, &ucred, &ucred_len) == -1)
@@ -1015,8 +1033,8 @@ static int new_connection(struct nio * const io, int eventfd)
                 logger(1, "Error getting credentials from UNIX socket: %s", strerror(errno));
                 return 1;
             }
-
             current->event_collector_un.pid = ucred.pid;
+#endif
 
             logger_nDPIsrvd(current, "New collector connection from", "");
             break;
@@ -1026,6 +1044,7 @@ static int new_connection(struct nio * const io, int eventfd)
             {
                 current->event_distributor_un.peer = sockaddr.saddr_distributor_un;
 
+#if !defined(__FreeBSD__) && !defined(__APPLE__)
                 struct ucred ucred = {};
                 socklen_t ucred_len = sizeof(ucred);
                 if (getsockopt(current->fd, SOL_SOCKET, SO_PEERCRED, &ucred, &ucred_len) == -1)
@@ -1050,6 +1069,7 @@ static int new_connection(struct nio * const io, int eventfd)
 
                 current->event_distributor_un.pid = ucred.pid;
                 current->event_distributor_un.user_name = strdup(pwres->pw_name);
+#endif
             }
             else
             {
@@ -1354,6 +1374,7 @@ static int handle_data_event(struct nio * const io, int index)
     }
 }
 
+#if !defined(__FreeBSD__) && !defined(__APPLE__)
 static int setup_signalfd(struct nio * const io)
 {
     sigset_t mask;
@@ -1386,10 +1407,13 @@ static int setup_signalfd(struct nio * const io)
 
     return sfd;
 }
+#endif
 
 static int mainloop(struct nio * const io)
 {
+#if !defined(__FreeBSD__) && !defined(__APPLE__)
     int signalfd = setup_signalfd(io);
+#endif
 
     while (nDPIsrvd_main_thread_shutdown == 0)
     {
@@ -1436,6 +1460,7 @@ static int mainloop(struct nio * const io)
                     continue;
                 }
             }
+#if !defined(__FreeBSD__) && !defined(__APPLE__)
             else if (fd == signalfd)
             {
                 struct signalfd_siginfo fdsi;
@@ -1465,6 +1490,7 @@ static int mainloop(struct nio * const io)
                     continue;
                 }
             }
+#endif
             else
             {
                 /* Incoming data / Outoing data ready to receive / send. */
@@ -1478,7 +1504,9 @@ static int mainloop(struct nio * const io)
 
     free_remotes(io);
     nio_free(io);
+#if !defined(__FreeBSD__) && !defined(__APPLE__)
     close(signalfd);
+#endif
 
     return 0;
 }
@@ -1638,7 +1666,7 @@ int main(int argc, char ** argv)
                    "everyone with access to the device/network. You've been warned!");
             break;
         case AF_UNIX:
-        case 0xFFFF:
+        case (sa_family_t)0xFFFF:
             break;
     }
 
