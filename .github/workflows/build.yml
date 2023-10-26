@@ -186,8 +186,7 @@ jobs:
           test ${C_VAL} = ${PY_VAL}
       - name: Configure nDPId
         run: |
-          mkdir build && cd build
-          PKG_CONFIG_PATH="${{ matrix.pkg_config_path }}" cmake .. -DCMAKE_C_COMPILER="$CMAKE_C_COMPILER" -DCMAKE_C_FLAGS="$CMAKE_C_FLAGS" -DCMAKE_MODULE_LINKER_FLAGS="$CMAKE_MODULE_LINKER_FLAGS" -DCMAKE_C_EXE_LINKER_FLAGS="$CMAKE_C_EXE_LINKER_FLAGS" \
+          cmake -S . -B build -DCMAKE_C_COMPILER="$CMAKE_C_COMPILER" -DCMAKE_C_FLAGS="$CMAKE_C_FLAGS" -DCMAKE_MODULE_LINKER_FLAGS="$CMAKE_MODULE_LINKER_FLAGS" -DCMAKE_C_EXE_LINKER_FLAGS="$CMAKE_C_EXE_LINKER_FLAGS" \
             -DENABLE_SYSTEMD=ON \
             ${{ matrix.poll }} ${{ matrix.coverage }} ${{ matrix.sanitizer }} ${{ matrix.ndpi_build }} \
             ${{ matrix.ndpid_examples }} ${{ matrix.ndpid_zlib }} ${{ matrix.ndpid_gcrypt }}
@@ -252,12 +251,12 @@ jobs:
           test $WGET_RET -ne 0 || { tar -xzvf ${{ matrix.ndpi_min_version }}.tar.gz && \
                 cd nDPI-${{ matrix.ndpi_min_version }} && \
                 ./autogen.sh --prefix=/usr --with-only-libndpi CC="${{ matrix.compiler }}" CXX=false \
-                    CFLAGS="$CMAKE_C_FLAGS" install && cd .. ; }
-          test $WGET_RET -ne 0 || { echo "running cmake .."; \
-                PKG_CONFIG_PATH="${{ matrix.pkg_config_path }}" cmake .. -DCMAKE_C_COMPILER="$CMAKE_C_COMPILER" -DCMAKE_C_FLAGS="$CMAKE_C_FLAGS" \
+                    CFLAGS="$CMAKE_C_FLAGS" && make && sudo make install; cd ..; }
+          test $WGET_RET -ne 0 || { echo "::info file=CMakeLists.txt::Running CMake.."; \
+                cmake -S .. -DCMAKE_C_COMPILER="$CMAKE_C_COMPILER" -DCMAKE_C_FLAGS="$CMAKE_C_FLAGS" \
                     -DCMAKE_C_EXE_LINKER_FLAGS="$CMAKE_C_EXE_LINKER_FLAGS" \
                     -DBUILD_NDPI=OFF -DENABLE_SANITIZER=OFF \
                     ${{ matrix.poll }} ${{ matrix.coverage }} \
-                    ${{ matrix.ndpid_examples }} ${{ matrix.ndpi_min_version }}; }
-          test $WGET_RET -ne 0 || { echo "running make .."; cmake --build . --verbose; }
+                    ${{ matrix.ndpid_examples }}; }
+          test $WGET_RET -ne 0 || { echo "::info file=CMakeLists.txt:Running Make.."; cmake --build . --verbose; }
           test $WGET_RET -eq 0 -o $WGET_RET -eq 8
