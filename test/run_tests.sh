@@ -138,7 +138,7 @@ for pcap_file in cfgs/*/pcap/*.pcap cfgs/*/pcap/*.pcapng cfgs/*/pcap/*.cap; do
     else
         STRACE_CMD=""
     fi
-    ${STRACE_CMD} ${nDPId_test_EXEC} "${pcap_file}" \
+    timeout --foreground -k 3 -s SIGINT 60 ${STRACE_CMD} ${nDPId_test_EXEC} "${pcap_file}" \
         >${stdout_file} \
         2>>${stderr_file}
     nDPId_test_RETVAL=$?
@@ -164,6 +164,7 @@ for pcap_file in cfgs/*/pcap/*.pcap cfgs/*/pcap/*.pcapng cfgs/*/pcap/*.cap; do
         printf '%s\n' '----------------------------------------'
         printf '%s\n' "-- STDERR of ${pcap_file}: ${stderr_file}"
         cat "${stderr_file}"
+        test -r "/tmp/nDPId-test-stderr/${pcap_name}.strace.out" && cat "/tmp/nDPId-test-stderr/${pcap_name}.strace.out"
         TESTS_FAILED=$((TESTS_FAILED + 1))
     fi
 done
