@@ -1069,7 +1069,7 @@ static int get_ip4_address_and_netmask(char const * const ifa_name, size_t ifnam
 #if defined(__FreeBSD__) || defined(__APPLE__)
     memcpy(ifr.ifra_name, ifa_name, ifnamelen);
     ifr.ifra_name[ifnamelen] = '\0';
-    if (ioctl(sock, SIOCAIFADDR, &ifr) == -1)
+    if (ioctl(sock, SIOCGIFALIAS, &ifr) == -1)
 #else
     memcpy(ifr.ifr_name, ifa_name, ifnamelen);
     ifr.ifr_name[ifnamelen] = '\0';
