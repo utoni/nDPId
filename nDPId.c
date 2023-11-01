@@ -434,7 +434,6 @@ static struct nDPId_reader_thread reader_threads[nDPId_MAX_READER_THREADS] = {};
 static struct nDPIsrvd_address collector_address;
 static MT_VALUE(nDPId_main_thread_shutdown, int) = MT_INIT(0);
 static MT_VALUE(global_flow_id, uint64_t) = MT_INIT(1);
-static int ip4_interface_avail = 0, ip6_interface_avail = 0;
 
 #ifdef ENABLE_MEMORY_PROFILING
 static MT_VALUE(ndpi_memory_alloc_count, uint64_t) = MT_INIT(0);
@@ -1040,72 +1039,14 @@ error:
     return retval;
 }
 
-static int get_ip4_address_and_netmask(char const * const ifa_name, size_t ifnamelen)
+static void get_ip4_address_and_netmask(struct ifaddrs const * const ifaddr)
 {
-    int retval = 0;
-    int sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_IP);
-#if defined(__FreeBSD__) || defined(__APPLE__)
-    struct ifaliasreq ifr;
-#else
-    struct ifreq ifr;
-#endif
-
-    if (sock < 0)
-    {
-        retval = 1;
-        goto error;
-    }
-#if defined(__FreeBSD__) || defined(__APPLE__)
-    if (ifnamelen >= sizeof(ifr.ifra_name))
-#else
-    if (ifnamelen >= sizeof(ifr.ifr_name))
-#endif
-    {
-        retval = 1;
-        goto error;
-    }
-
-    memset(&ifr, 0, sizeof(ifr));
-#if defined(__FreeBSD__) || defined(__APPLE__)
-    memcpy(ifr.ifra_name, ifa_name, ifnamelen);
-    ifr.ifra_name[ifnamelen] = '\0';
-    if (ioctl(sock, SIOCGIFALIAS, &ifr) == -1)
-#else
-    memcpy(ifr.ifr_name, ifa_name, ifnamelen);
-    ifr.ifr_name[ifnamelen] = '\0';
-    ifr.ifr_netmask.sa_family = AF_INET;
-    if (ioctl(sock, SIOCGIFNETMASK, &ifr) == -1)
-#endif
-    {
-        retval = 1;
-        goto error;
-    }
-#if defined(__FreeBSD__) || defined(__APPLE__)
-    get_ip4_from_sockaddr((struct sockaddr_in *)&ifr.ifra_mask, &nDPId_options.pcap_dev_netmask4);
-#else
-    get_ip4_from_sockaddr((struct sockaddr_in *)&ifr.ifr_netmask, &nDPId_options.pcap_dev_netmask4);
-#endif
-
-#if defined(__FreeBSD__) || defined(__APPLE__)
-    get_ip4_from_sockaddr((struct sockaddr_in *)&ifr.ifra_addr, &nDPId_options.pcap_dev_ip4);
-#else
-    memset(&ifr, 0, sizeof(ifr));
-    memcpy(ifr.ifr_name, ifa_name, ifnamelen);
-    ifr.ifr_name[ifnamelen] = '\0';
-    ifr.ifr_addr.sa_family = AF_INET;
-    if (ioctl(sock, SIOCGIFADDR, &ifr) == -1)
-    {
-        retval = 1;
-        goto error;
-    }
-    get_ip4_from_sockaddr((struct sockaddr_in *)&ifr.ifr_netmask, &nDPId_options.pcap_dev_ip4);
-#endif
-
+    get_ip4_from_sockaddr((struct sockaddr_in *)ifaddr->ifa_netmask, &nDPId_options.pcap_dev_netmask4);
+    get_ip4_from_sockaddr((struct sockaddr_in *)ifaddr->ifa_addr, &nDPId_options.pcap_dev_ip4);
     ip_netmask_to_subnet(&nDPId_options.pcap_dev_ip4,
                          &nDPId_options.pcap_dev_netmask4,
                          &nDPId_options.pcap_dev_subnet4,
                          L3_IP);
-
     {
         char addr[INET_ADDRSTRLEN];
         char netm[INET_ADDRSTRLEN];
@@ -1120,15 +1061,12 @@ static int get_ip4_address_and_netmask(char const * const ifa_name, size_t ifnam
                inet_ntop(AF_INET, snetm, netm, sizeof(netm)),
                inet_ntop(AF_INET, ssubn, subn, sizeof(subn)));
     }
-
-error:
-    close(sock);
-    return retval;
 }
 
 static int get_ip_netmask_from_pcap_dev(char const * const pcap_dev)
 {
     int retval = 0, found_dev = 0;
+    int ip4_interface_avail = 0, ip6_interface_avail = 0;
     struct ifaddrs * ifaddrs = NULL;
     struct ifaddrs * ifa;
 
@@ -1151,10 +1089,7 @@ static int get_ip_netmask_from_pcap_dev(char const * const pcap_dev)
             switch (ifa->ifa_addr->sa_family)
             {
                 case AF_INET:
-                    if (ip4_interface_avail == 0 && get_ip4_address_and_netmask(ifa->ifa_name, ifnamelen) != 0)
-                    {
-                        retval = 1;
-                    }
+                    get_ip4_address_and_netmask(ifa);
                     ip4_interface_avail = 1;
                     break;
                 case AF_INET6:
@@ -1624,6 +1559,8 @@ static int setup_reader_threads(void)
                              "Could not get netmask for pcap device %s: %s",
                              get_cmdarg(&nDPId_options.pcap_file_or_interface),
                              strerror(errno));
+            } else {
+                logger_early(1, "Unexpected error while retrieving netmask for pcap device %s", get_cmdarg(&nDPId_options.pcap_file_or_interface));
             }
             return 1;
         }
