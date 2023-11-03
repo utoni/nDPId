@@ -18,6 +18,10 @@ It saves flows that were guessed/undetected/risky/midstream to a PCAP file for m
 
 A collecd-exec compatible middleware that gathers statistic values from nDPId.
 
+## c-notifyd
+
+A notification daemon that sends information about suspicious flow events to DBUS.
+
 ## c-json-stdout
 
 Tiny nDPId json dumper. Does not provide any useful funcationality besides dumping parsed JSON objects.

@@ -399,14 +399,19 @@ static inline void nDPIsrvd_buffer_free(struct nDPIsrvd_buffer * const buffer)
     buffer->max = 0;
 }
 
+static inline void nDPIsrvd_json_buffer_reset(struct nDPIsrvd_json_buffer * const json_buffer)
+{
+    json_buffer->json_string_start = 0ul;
+    json_buffer->json_string_length = 0ull;
+    json_buffer->json_string = NULL;
+}
+
 static inline int nDPIsrvd_json_buffer_init(struct nDPIsrvd_json_buffer * const json_buffer, size_t json_buffer_size)
 {
     int ret = nDPIsrvd_buffer_init(&json_buffer->buf, json_buffer_size);
     if (ret == 0)
     {
-        json_buffer->json_string_start = 0ul;
-        json_buffer->json_string_length = 0ull;
-        json_buffer->json_string = NULL;
+        nDPIsrvd_json_buffer_reset(json_buffer);
     }
 
     return ret;
@@ -415,9 +420,7 @@ static inline int nDPIsrvd_json_buffer_init(struct nDPIsrvd_json_buffer * const 
 static inline void nDPIsrvd_json_buffer_free(struct nDPIsrvd_json_buffer * const json_buffer)
 {
     nDPIsrvd_buffer_free(&json_buffer->buf);
-    json_buffer->json_string_start = 0ul;
-    json_buffer->json_string_length = 0ull;
-    json_buffer->json_string = NULL;
+    nDPIsrvd_json_buffer_reset(json_buffer);
 }
 
 static inline struct nDPIsrvd_socket * nDPIsrvd_socket_init(size_t global_user_data_size,
@@ -468,7 +471,6 @@ static inline struct nDPIsrvd_socket * nDPIsrvd_socket_init(size_t global_user_d
 
     return sock;
 error:
-    nDPIsrvd_json_buffer_free(&sock->buffer);
     nDPIsrvd_socket_free(&sock);
     return NULL;
 }
@@ -585,25 +587,56 @@ static inline void nDPIsrvd_cleanup_instance(struct nDPIsrvd_socket * const sock
     }
 }
 
-static inline void nDPIsrvd_socket_free(struct nDPIsrvd_socket ** const sock)
+static inline void nDPIsrvd_socket_close(struct nDPIsrvd_socket * const sock)
 {
     struct nDPIsrvd_instance * current_instance;
     struct nDPIsrvd_instance * itmp;
     struct nDPIsrvd_json_token * current_json_token;
     struct nDPIsrvd_json_token * jtmp;
 
-    if (sock == NULL || *sock == NULL)
+    if (sock == NULL)
     {
         return;
     }
 
-    if ((*sock)->json.token_table != NULL)
+    if (sock->json.token_table != NULL)
     {
-        HASH_ITER(hh, (*sock)->json.token_table, current_json_token, jtmp)
+        HASH_ITER(hh, sock->json.token_table, current_json_token, jtmp)
         {
-            HASH_DEL((*sock)->json.token_table, current_json_token);
+            HASH_DEL(sock->json.token_table, current_json_token);
         }
-        (*sock)->json.token_table = NULL;
+    }
+
+    if (sock->json.tokens != NULL)
+    {
+        utarray_clear(sock->json.tokens);
+    }
+
+    if (sock->instance_table != NULL)
+    {
+        HASH_ITER(hh, sock->instance_table, current_instance, itmp)
+        {
+            nDPIsrvd_cleanup_instance(sock, current_instance, CLEANUP_REASON_APP_SHUTDOWN);
+        }
+    }
+
+    nDPIsrvd_json_buffer_reset(&sock->buffer);
+    close(sock->fd);
+    sock->fd = -1;
+}
+
+static inline void nDPIsrvd_socket_free(struct nDPIsrvd_socket ** const sock)
+{
+    if (sock == NULL)
+    {
+        return;
+    }
+
+    nDPIsrvd_socket_close(*sock);
+
+    if (*sock == NULL)
+    {
+        return;
     }
 
     if ((*sock)->json.tokens != NULL)
@@ -611,15 +644,11 @@ static inline void nDPIsrvd_socket_free(struct nDPIsrvd_socket ** const sock)
         utarray_free((*sock)->json.tokens);
     }
 
-    HASH_ITER(hh, (*sock)->instance_table, current_instance, itmp)
-    {
-        nDPIsrvd_cleanup_instance(*sock, current_instance, CLEANUP_REASON_APP_SHUTDOWN);
-    }
+    (*sock)->json.tokens = NULL;
+    (*sock)->json.token_table = NULL;
     (*sock)->instance_table = NULL;
-
     nDPIsrvd_json_buffer_free(&(*sock)->buffer);
     nDPIsrvd_free(*sock);
-
     *sock = NULL;
 }
 
@@ -1653,7 +1682,7 @@ static inline int nDPIsrvd_json_buffer_length(struct nDPIsrvd_socket const * con
     return (int)sock->buffer.json_string_length - NETWORK_BUFFER_LENGTH_DIGITS;
 }
 
-static inline char const *nDPIsrvd_json_buffer_string(struct nDPIsrvd_socket const * const sock)
+static inline char const * nDPIsrvd_json_buffer_string(struct nDPIsrvd_socket const * const sock)
 {
     if (sock == NULL)
     {

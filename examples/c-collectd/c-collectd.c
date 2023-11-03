@@ -1,4 +1,4 @@
-#include <arpa/inet.h>
+#include <arpa/inet.h> // ndpi_typedefs.h
 #include <errno.h>
 #include <signal.h>
 #include <stdbool.h> // ndpi_typedefs.h
