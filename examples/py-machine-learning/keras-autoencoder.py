@@ -89,7 +89,7 @@ def get_autoencoder(load_from_file=None):
     decoder_submodel = autoencoder.layers[2]
     return encoder_submodel, decoder_submodel, autoencoder
 
-def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
+def on_json_line(json_dict, instance, current_flow, global_user_data):
     if 'packet_event_name' not in json_dict:
         return True
 
@@ -138,13 +138,13 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
 
     return True
 
-def nDPIsrvd_worker(address, shared_shutdown_event, shared_training_event, shared_packet_list):
+def ndpisrvd_worker(address, shared_shutdown_event, shared_training_event, shared_packet_list):
     nsock = nDPIsrvdSocket()
 
     try:
         nsock.connect(address)
         print_dots = 1
-        nsock.loop(onJsonLineRecvd, None, (shared_shutdown_event, shared_training_event, shared_packet_list, print_dots))
+        nsock.loop(on_json_line, None, (shared_shutdown_event, shared_training_event, shared_packet_list, print_dots))
     except nDPIsrvd.SocketConnectionBroken as err:
         sys.stderr.write('\nnDPIsrvd-Worker Socket Error: {}\n'.format(err))
     except KeyboardInterrupt:
@@ -158,11 +158,11 @@ def nDPIsrvd_worker(address, shared_shutdown_event, shared_training_event, share
 def keras_worker(load_model, save_model, shared_shutdown_event, shared_training_event, shared_packet_queue, shared_plot_queue):
     shared_training_event.set()
     try:
-        encoder, decoder, autoencoder = get_autoencoder(load_model)
+        encoder, _, autoencoder = get_autoencoder(load_model)
     except Exception as err:
         sys.stderr.write('Could not load Keras model from file: {}\n'.format(str(err)))
         sys.stderr.flush()
-        encoder, decoder, autoencoder = get_autoencoder()
+        encoder, _, autoencoder = get_autoencoder()
     autoencoder.summary()
     tensorboard = TensorBoard(log_dir=TB_LOGPATH, histogram_freq=1)
     early_stopping = EarlyStopping(monitor='val_loss', min_delta=0.0001, patience=ES_PATIENCE, restore_best_weights=True, start_from_epoch=0, verbose=0, mode='auto')
@@ -213,7 +213,7 @@ def keras_worker(load_model, save_model, shared_shutdown_event, shared_training_
 
     try:
         shared_shutdown_event.set()
-    except:
+    except Exception:
         pass
 
 def plot_animate(i, shared_plot_queue, ax, xs, ys):
@@ -345,7 +345,7 @@ if __name__ == '__main__':
     shared_packet_queue = mgr.JoinableQueue()
     shared_plot_queue = mgr.JoinableQueue()
 
-    nDPIsrvd_job = mp.Process(target=nDPIsrvd_worker, args=(
+    nDPIsrvd_job = mp.Process(target=ndpisrvd_worker, args=(
                                                             address,
                                                             shared_shutdown_event,
                                                             shared_training_event,

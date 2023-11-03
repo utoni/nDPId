@@ -168,13 +168,13 @@ static unsigned long long int nDPIsrvd_free_bytes = 0;
     do                                                                                                                 \
     {                                                                                                                  \
         ((struct thread_return_value *)thread_arg)->val = (errno != 0 ? errno : 1);                                    \
-    } while (0);
+    } while (0)
 #define THREAD_ERROR_GOTO(thread_arg)                                                                                  \
     do                                                                                                                 \
     {                                                                                                                  \
         THREAD_ERROR(thread_arg);                                                                                      \
         goto error;                                                                                                    \
-    } while (0);
+    } while (0)
 
 static void nDPIsrvd_memprof_log(char const * const format, ...)
 {
@@ -384,82 +384,78 @@ static void * nDPIsrvd_mainloop_thread(void * const arg)
         {
             struct remote_desc * remote = (struct remote_desc *)nio_get_ptr(&io, i);
 
-            if (remote == mock_json_desc || remote == mock_test_desc ||
-                remote == mock_buff_desc || remote == mock_null_desc ||
-                remote == mock_arpa_desc)
+            if (remote != mock_json_desc && remote != mock_test_desc && remote != mock_buff_desc &&
+                remote != mock_null_desc && remote != mock_arpa_desc)
             {
-                if (nio_has_error(&io, i) == NIO_SUCCESS)
+                logger(1, "nDPIsrvd epoll returned unexpected event data: %p", remote);
+                THREAD_ERROR_GOTO(arg);
+            }
+
+            if (nio_has_error(&io, i) == NIO_SUCCESS)
+            {
+                char const * remote_desc_name;
+                if (remote == mock_json_desc)
                 {
-                    char const * remote_desc_name;
-                    if (remote == mock_json_desc)
+                    remote_desc_name = "Mock JSON";
+                    do
                     {
-                        remote_desc_name = "Mock JSON";
-                        do
-                        {
-                            if (mock_test_desc->fd >= 0)
-                                drain_write_buffers_blocking(mock_test_desc);
-                            if (mock_buff_desc->fd >= 0)
-                                drain_write_buffers_blocking(mock_buff_desc);
-                            if (mock_null_desc->fd >= 0)
-                                drain_write_buffers_blocking(mock_null_desc);
-                            if (mock_arpa_desc->fd >= 0)
-                                drain_write_buffers_blocking(mock_arpa_desc);
-                        } while (handle_data_event(&io, i) == 0);
-                    }
-                    else if (remote == mock_test_desc)
-                    {
-                        remote_desc_name = "Mock Test";
-                    }
-                    else if (remote == mock_buff_desc)
-                    {
-                        remote_desc_name = "Mock Buffer";
-                    }
-                    else if (remote == mock_null_desc)
-                    {
-                        remote_desc_name = "Mock NULL";
-                    }
-                    else if (remote == mock_arpa_desc)
-                    {
-                        remote_desc_name = "Mock ARPA";
-                    }
-                    else
-                    {
-                        remote_desc_name = "UNKNOWN";
-                    }
-                    nDPIsrvd_distributor_disconnects++;
-                    logger(1,
-                           "nDPIsrvd distributor '%s' connection closed (%d/%d)",
-                           remote_desc_name,
-                           nDPIsrvd_distributor_disconnects,
-                           nDPIsrvd_distributor_expected_disconnects);
-                    free_remote(&io, remote);
+                        if (mock_test_desc->fd >= 0)
+                            drain_write_buffers_blocking(mock_test_desc);
+                        if (mock_buff_desc->fd >= 0)
+                            drain_write_buffers_blocking(mock_buff_desc);
+                        if (mock_null_desc->fd >= 0)
+                            drain_write_buffers_blocking(mock_null_desc);
+                        if (mock_arpa_desc->fd >= 0)
+                            drain_write_buffers_blocking(mock_arpa_desc);
+                    } while (handle_data_event(&io, i) == 0);
+                }
+                else if (remote == mock_test_desc)
+                {
+                    remote_desc_name = "Mock Test";
+                }
+                else if (remote == mock_buff_desc)
+                {
+                    remote_desc_name = "Mock Buffer";
+                }
+                else if (remote == mock_null_desc)
+                {
+                    remote_desc_name = "Mock NULL";
+                }
+                else if (remote == mock_arpa_desc)
+                {
+                    remote_desc_name = "Mock ARPA";
                 }
                 else
                 {
-                    if (handle_data_event(&io, i) != 0)
-                    {
-                        if (mock_arpa_desc == remote)
-                        {
-                            // arpa mock does not care about shutdown events
-                            free_remote(&io, mock_arpa_desc);
-                            nDPIsrvd_distributor_disconnects++;
-                            logger(1,
-                                   "nDPIsrvd distributor '%s' connection closed (%d/%d)",
-                                   "Mock ARPA",
-                                   nDPIsrvd_distributor_disconnects,
-                                   nDPIsrvd_distributor_expected_disconnects);
-                            continue;
-                        }
-                        logger(1, "%s", "nDPIsrvd data event handler failed");
-                        THREAD_ERROR_GOTO(arg);
-                    }
+                    remote_desc_name = "UNKNOWN";
                 }
+                nDPIsrvd_distributor_disconnects++;
+                logger(1,
+                       "nDPIsrvd distributor '%s' connection closed (%d/%d)",
+                       remote_desc_name,
+                       nDPIsrvd_distributor_disconnects,
+                       nDPIsrvd_distributor_expected_disconnects);
+                free_remote(&io, remote);
             }
             else
             {
-                logger(1,
-                       "nDPIsrvd epoll returned unexpected event data: %p", remote);
-                THREAD_ERROR_GOTO(arg);
+                if (handle_data_event(&io, i) != 0)
+                {
+                    if (mock_arpa_desc == remote)
+                    {
+                        // arpa mock does not care about shutdown events
+                        free_remote(&io, mock_arpa_desc);
+                        nDPIsrvd_distributor_disconnects++;
+                        logger(1,
+                               "nDPIsrvd distributor '%s' connection closed (%d/%d)",
+                               "Mock ARPA",
+                               nDPIsrvd_distributor_disconnects,
+                               nDPIsrvd_distributor_expected_disconnects);
+                        continue;
+                    }
+                    logger(1, "%s", "nDPIsrvd data event handler failed");
+                    THREAD_ERROR_GOTO(arg);
+                }
             }
         }
     }
@@ -1186,8 +1182,7 @@ static void * distributor_client_mainloop_thread(void * const arg)
 #endif
             else
             {
-                logger(1,
-                       "Distributor epoll returned unexpected event data: %p", nio_get_ptr(&io, i));
+                logger(1, "Distributor epoll returned unexpected event data: %p", nio_get_ptr(&io, i));
                 THREAD_ERROR_GOTO(trv);
             }
         }
@@ -1621,8 +1616,7 @@ static int nio_selftest()
         goto error;
     }
 
-    if (nio_del_fd(&io, pipefds[0]) != NIO_SUCCESS
-        || nio_del_fd(&io, pipefds[1]) != NIO_SUCCESS)
+    if (nio_del_fd(&io, pipefds[0]) != NIO_SUCCESS || nio_del_fd(&io, pipefds[1]) != NIO_SUCCESS)
     {
         logger(1, "%s", "Event delete failed");
         goto error;

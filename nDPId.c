@@ -155,7 +155,7 @@ enum nDPId_flow_state
 enum nDPId_flow_direction
 {
     FD_SRC2DST = 0,
-    FD_DST2SRC = 1,
+    FD_DST2SRC,
     FD_COUNT
 };
 
@@ -1066,7 +1066,8 @@ static void get_ip4_address_and_netmask(struct ifaddrs const * const ifaddr)
 static int get_ip_netmask_from_pcap_dev(char const * const pcap_dev)
 {
     int retval = 0, found_dev = 0;
-    int ip4_interface_avail = 0, ip6_interface_avail = 0;
+    int ip4_interface_avail = 0;
+    int ip6_interface_avail = 0;
     struct ifaddrs * ifaddrs = NULL;
     struct ifaddrs * ifa;
 
