@@ -441,7 +441,13 @@ static void * nDPIsrvd_mainloop_thread(void * const arg)
                         if (mock_arpa_desc == remote)
                         {
                             // arpa mock does not care about shutdown events
-                            disconnect_client(&io, mock_arpa_desc);
+                            free_remote(&io, mock_arpa_desc);
+                            nDPIsrvd_distributor_disconnects++;
+                            logger(1,
+                                   "nDPIsrvd distributor '%s' connection closed (%d/%d)",
+                                   "Mock ARPA",
+                                   nDPIsrvd_distributor_disconnects,
+                                   nDPIsrvd_distributor_expected_disconnects);
                             continue;
                         }
                         logger(1, "%s", "nDPIsrvd data event handler failed");
