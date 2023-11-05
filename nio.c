@@ -280,7 +280,7 @@ int nio_run(struct nio * io, int timeout)
     return NIO_SUCCESS;
 }
 
-int nio_check(struct nio * io, int index, int events)
+int nio_check(struct nio * io, int index, int event_flags)
 {
     if (nio_is_valid(io, index) != NIO_SUCCESS)
         return NIO_ERROR_INTERNAL;
@@ -290,16 +290,16 @@ int nio_check(struct nio * io, int index, int events)
     {
         uint32_t epoll_events = 0;
 
-        if ((events & NIO_EVENT_INPUT) != 0)
+        if ((event_flags & NIO_EVENT_INPUT) != 0)
             epoll_events |= EPOLLIN;
-        if ((events & NIO_EVENT_OUTPUT) != 0)
+        if ((event_flags & NIO_EVENT_OUTPUT) != 0)
             epoll_events |= EPOLLOUT;
-        if ((events & NIO_EVENT_ERROR) != 0)
+        if ((event_flags & NIO_EVENT_ERROR) != 0)
             epoll_events |= EPOLLERR | EPOLLHUP;
         if (epoll_events == 0)
             return NIO_ERROR_INTERNAL;
 
-        struct epoll_event * const events = (struct epoll_event *)io->events;
+        struct epoll_event const * const events = (struct epoll_event *)io->events;
         if ((events[index].events & epoll_events) == 0)
             return NIO_ERROR_INTERNAL;
 
@@ -311,11 +311,11 @@ int nio_check(struct nio * io, int index, int events)
     {
         short int poll_events = 0;
 
-        if ((events & NIO_EVENT_INPUT) != 0)
+        if ((event_flags & NIO_EVENT_INPUT) != 0)
             poll_events |= POLLIN;
-        if ((events & NIO_EVENT_OUTPUT) != 0)
+        if ((event_flags & NIO_EVENT_OUTPUT) != 0)
             poll_events |= POLLOUT;
-        if ((events & NIO_EVENT_ERROR) != 0)
+        if ((event_flags & NIO_EVENT_ERROR) != 0)
             poll_events |= POLLERR | POLLHUP;
         if (poll_events == 0)
             return NIO_ERROR_INTERNAL;
@@ -341,10 +341,9 @@ int nio_is_valid(struct nio * io, int index)
     }
     else
 #endif
-        if (io->poll_max_fds > 0)
+        if (io->poll_max_fds > 0 && io->poll_fds[io->poll_fds_set[index]].fd >= 0)
     {
-        if (io->poll_fds[io->poll_fds_set[index]].fd >= 0)
-            return NIO_SUCCESS;
+        return NIO_SUCCESS;
     }
 
     return NIO_ERROR_INTERNAL;
@@ -358,7 +357,7 @@ int nio_get_fd(struct nio * io, int index)
 #ifdef ENABLE_EPOLL
     if (io->epoll_fd >= 0)
     {
-        struct epoll_event * const events = (struct epoll_event *)io->events;
+        struct epoll_event const * const events = (struct epoll_event *)io->events;
 
         return events[index].data.fd;
     }

@@ -46,7 +46,7 @@ int nio_del_fd(struct nio * io, int fd);
 
 int nio_run(struct nio * io, int timeout);
 
-static inline int nio_get_nready(struct nio * io)
+static inline int nio_get_nready(struct nio const * const io)
 {
     return io->nready;
 }
