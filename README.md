@@ -22,7 +22,7 @@ The purpose of this software is not to spy on others, but to detect network anom
 # Abstract
 
 nDPId is a set of daemons and tools to capture, process and classify network traffic.
-It's minimal dependencies (besides a half-way modern c library and POSIX threads) are libnDPI (**>**4.6.0 or current github dev branch) and libpcap.
+It's minimal dependencies (besides a half-way modern c library and POSIX threads) are libnDPI (>=4.8.0 or current github dev branch) and libpcap.
 
 The daemon `nDPId` is capable of multithreading for packet processing, but w/o mutexes for performance reasons.
 Instead synchronization is achieved by a packet distribution mechanism.
