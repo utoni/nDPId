@@ -166,6 +166,11 @@
               new: [....55] [ip4][..udp] [192.168.188.149][45665] -> [..72.165.61.176][27017] 
          detected: [....55] [ip4][..udp] [192.168.188.149][45665] -> [..72.165.61.176][27017] [Steam][Unknown][Game][Fun]
                    RISK: Unidirectional Traffic
+     DAEMON-EVENT: [Processed: 104 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 55 / 55|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [....56] [ip4][..udp] [...118.105.60.5][14963] -> [....2.95.26.169][27036] 
+         detected: [....56] [ip4][..udp] [...118.105.60.5][14963] -> [....2.95.26.169][27036] [Steam][Unknown][Game][Fun]
+                   RISK: Unidirectional Traffic
              idle: [....37] [ip4][..udp] [192.168.188.149][45665] -> [...81.171.115.7][27017] [Steam][Unknown][Game][Fun]
                    RISK: Unidirectional Traffic
              idle: [.....6] [ip4][..udp] [192.168.188.149][45665] -> [...81.171.115.8][27017] [Steam][Unknown][Game][Fun]
@@ -275,5 +280,21 @@
              idle: [....13] [ip4][..udp] [192.168.188.149][45665] -> [..146.66.152.14][27019] [Steam][Steam][Game][Fun]
                    RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..udp] [192.168.188.149][45665] -> [..146.66.152.12][27019] [Steam][Steam][Game][Fun]
+                   RISK: Unidirectional Traffic
+     DAEMON-EVENT: [Processed: 105 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 1 / 56|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [....57] [ip4][..udp] [245.111.219.147][27380] -> [104.191.198.151][27036] 
+         detected: [....57] [ip4][..udp] [245.111.219.147][27380] -> [104.191.198.151][27036] [Steam][Unknown][Game][Fun]
+                   RISK: Unidirectional Traffic
+             idle: [....56] [ip4][..udp] [...118.105.60.5][14963] -> [....2.95.26.169][27036] [Steam][Unknown][Game][Fun]
+                   RISK: Unidirectional Traffic
+     DAEMON-EVENT: [Processed: 106 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 1 / 57|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [....58] [ip4][..udp] [...98.10.157.76][10595] -> [164.144.140.184][27036] 
+         detected: [....58] [ip4][..udp] [...98.10.157.76][10595] -> [164.144.140.184][27036] [Steam][Unknown][Game][Fun]
+                   RISK: Unidirectional Traffic
+             idle: [....57] [ip4][..udp] [245.111.219.147][27380] -> [104.191.198.151][27036] [Steam][Unknown][Game][Fun]
+                   RISK: Unidirectional Traffic
+             idle: [....58] [ip4][..udp] [...98.10.157.76][10595] -> [164.144.140.184][27036] [Steam][Unknown][Game][Fun]
                    RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

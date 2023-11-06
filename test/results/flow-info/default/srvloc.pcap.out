@@ -2300,7 +2300,7 @@
      DAEMON-EVENT: [Processed: 352 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 346|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 57]
               new: [...347] [ip4][..udp] [.172.206.191.39][55684] -> [..165.144.84.62][..427] 
-         detected: [...347] [ip4][..udp] [.172.206.191.39][55684] -> [..165.144.84.62][..427] [Service_Location_Protocol][Unknown][RPC][Acceptable]
+         detected: [...347] [ip4][..udp] [.172.206.191.39][55684] -> [..165.144.84.62][..427] [Service_Location_Protocol][Azure][RPC][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [...346] [ip4][..udp] [206.240.152.225][52955] -> [..90.145.180.58][..427] [Service_Location_Protocol][Unknown][RPC][Acceptable]
                    RISK: Unidirectional Traffic
@@ -2309,7 +2309,7 @@
               new: [...348] [ip4][..udp] [..175.206.31.84][52553] -> [..69.109.187.54][..427] 
          detected: [...348] [ip4][..udp] [..175.206.31.84][52553] -> [..69.109.187.54][..427] [Service_Location_Protocol][Unknown][RPC][Acceptable]
                    RISK: Unidirectional Traffic
-             idle: [...347] [ip4][..udp] [.172.206.191.39][55684] -> [..165.144.84.62][..427] [Service_Location_Protocol][Unknown][RPC][Acceptable]
+             idle: [...347] [ip4][..udp] [.172.206.191.39][55684] -> [..165.144.84.62][..427] [Service_Location_Protocol][Azure][RPC][Acceptable]
                    RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 354 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 348|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 57]

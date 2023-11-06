@@ -40,7 +40,7 @@
                    RISK: Unidirectional Traffic
       ERROR-EVENT: Unknown packet type [1/16]
  detection-update: [....13] [ip4][..udp] [....192.168.1.2][.2715] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cyber?ity.dk]
-                   RISK: Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [2/16]
               new: [....14] [ip4][..udp] [....192.168.1.2][.2716] -> [....192.168.1.1][...53] 
          detected: [....14] [ip4][..udp] [....192.168.1.2][.2716] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][1.0.0.127.in-addr.arpa]
@@ -74,7 +74,7 @@
            update: [.....5] [ip4][..udp] [....192.168.1.2][.2712] -> [....192.168.1.1][49973] 
               new: [....21] [ip4][..udp] [....192.114.1.2][.2719] -> [....192.168.1.1][...53] 
          detected: [....21] [ip4][..udp] [....192.114.1.2][.2719] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][ftp.ecite?e.com]
-                   RISK: Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
               new: [....22] [ip4][..udp] [....192.168.1.2][.2719] -> [....192.168.1.1][...53] 
          detected: [....22] [ip4][..udp] [....192.168.1.2][.2719] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][ftp.ecitele.com]
                    RISK: Unidirectional Traffic
@@ -92,6 +92,8 @@
               new: [....30] [ip4][..tcp] [..147.234.1.249][.2069] -> [....192.168.1.2][.2720] [MIDSTREAM] 
               new: [....31] [ip4][..tcp] [..147.234.1.253][...21] -> [....192.168.1.2][.2208] [MIDSTREAM] 
               new: [....32] [ip4][..tcp] [..147.234.1.253][...21] -> [....192.168.1.2][.2732] [MIDSTREAM] 
+         detected: [....32] [ip4][..tcp] [..147.234.1.253][...21] -> [....192.168.1.2][.2732] [Protobuf][Unknown][Network][Safe]
+                   RISK: Unidirectional Traffic
               new: [....33] [ip4][..tcp] [..147.234.1.253][.1045] -> [....192.168.1.2][.2720] [MIDSTREAM] 
               new: [....34] [ip4][..tcp] [..147.234.1.253][...21] -> [...192.168.65.2][.2720] [MIDSTREAM] 
       ERROR-EVENT: Unknown L3 protocol [3/16]
@@ -144,9 +146,9 @@
               new: [....47] [ip4][..udp] [....192.168.1.2][.2724] -> [....192.168.1.1][.9587] 
               new: [....48] [ip4][..udp] [....192.168.1.2][.2724] -> [....192.168.1.1][...53] 
          detected: [....48] [ip4][..udp] [....192.168.1.2][.2724] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp._s?.cybercity.dk]
-                   RISK: Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
  detection-update: [....48] [ip4][..udp] [....192.168.1.2][.2724] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][]
-                   RISK: Malformed Packet, Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected, Unidirectional Traffic
               new: [....49] [ip4][..udp] [....192.168.1.2][..137] -> [..192.168.1.255][25481] 
               new: [....50] [ip4][..udp] [....192.168.1.2][.2724] -> [...192.168.17.1][...53] 
          detected: [....50] [ip4][..udp] [....192.168.1.2][.2724] -> [...192.168.17.1][...53] [DNS][Unknown][Network][Acceptable][_zip._udp.sip.cybercity.dk]
@@ -354,12 +356,12 @@
  detection-update: [....72] [ip4][..udp] [....192.168.1.2][.2739] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][1.0.0.127.in-addr.arpa]
               new: [....73] [ip4][..udp] [....192.168.1.2][.2740] -> [....192.168.1.1][...53] 
          detected: [....73] [ip4][..udp] [....192.168.1.2][.2740] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cyberci_s]
-                   RISK: Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
  detection-update: [....73] [ip4][..udp] [....192.168.1.2][.2740] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cybercity.dk]
-                   RISK: Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
       ERROR-EVENT: Unknown packet type [1/16]
  detection-update: [....73] [ip4][..udp] [....192.168.1.2][.2740] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cybercity.dk]
-                   RISK: Malformed Packet, Unidirectional Traffic
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected, Unidirectional Traffic
               new: [....74] [ip4][..udp] [....192.168.1.2][..137] -> [..192.168.1.255][.8329] 
               new: [....75] [ip4][..udp] [....192.168.1.2][.2741] -> [....192.168.1.1][...53] 
          detected: [....75] [ip4][..udp] [....192.168.1.2][.2741] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][1.0.0.127.in-addr.arpa]
@@ -435,7 +437,7 @@
               new: [....85] [ip4][..240] [....192.168.1.2] -> [....192.168.1.1] 
               new: [....86] [ip4][..udp] [...192.168.1.34][.2746] -> [....192.168.1.1][...53] 
          detected: [....86] [ip4][..udp] [...192.168.1.34][.2746] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp._s?p.brvjula.net]
-                   RISK: Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
              idle: [....60] [ip4][..udp] [....172.168.1.2][.2734] -> [....192.168.1.1][...53] 
              idle: [....57] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2733] [DNS][Unknown][Network][Acceptable]
                    RISK: Unidirectional Traffic
@@ -476,7 +478,7 @@
  detection-update: [....90] [ip4][..udp] [....192.168.1.2][.2748] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cybercity.dk]
                    RISK: Unidirectional Traffic
  detection-update: [....90] [ip4][..udp] [....192.168.1.2][.2748] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][]
-                   RISK: Malformed Packet, Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected, Unidirectional Traffic
           guessed: [....63] [ip4][..udp] [....192.168.1.2][..137] -> [..192.168.1.255][..169] [NetBIOS][Unknown][System][Acceptable][]
              idle: [....63] [ip4][..udp] [....192.168.1.2][..137] -> [..192.168.1.255][..169] 
              idle: [....61] [ip4][..udp] [....200.168.1.2][.2735] -> [....192.168.1.1][...53] 
@@ -501,7 +503,7 @@
  detection-update: [....94] [ip4][..udp] [....192.168.1.2][.2750] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.voip.brujula.net]
                    RISK: Malformed Packet, Unidirectional Traffic
  detection-update: [....94] [ip4][..udp] [....192.168.1.2][.2750] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.vo_s]
-                   RISK: Malformed Packet, Unidirectional Traffic
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected, Unidirectional Traffic
            update: [....81] [ip4][..udp] [....192.168.1.2][...88] -> [..192.168.1.255][..137] [NetBIOS][Unknown][System][Acceptable]
            update: [....74] [ip4][..udp] [....192.168.1.2][..137] -> [..192.168.1.255][.8329] 
            update: [....65] [ip4][..udp] [....192.168.1.2][.2684] -> [....192.168.1.1][...53] 
@@ -516,7 +518,7 @@
                    RISK: Malformed Packet, Unidirectional Traffic
               new: [....97] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2751] 
          detected: [....97] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2751] [DNS][Unknown][Network][Acceptable][]
-                   RISK: Malformed Packet, Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected, Unidirectional Traffic
               new: [....98] [ip4][..udp] [....192.168.1.2][.2752] -> [....192.168.1.1][...53] 
          detected: [....98] [ip4][..udp] [....192.168.1.2][.2752] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cybercity.dk]
                    RISK: Unidirectional Traffic
@@ -603,7 +605,7 @@
              idle: [....70] [ip4][..udp] [....192.168.1.2][.2738] -> [....192.168.1.1][...53] 
            update: [....96] [ip4][..udp] [...192.168.1.18][.2751] -> [....192.168.1.1][...53] 
            update: [....97] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2751] [DNS][Unknown][Network][Acceptable]
-                   RISK: Malformed Packet, Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected, Unidirectional Traffic
            update: [....98] [ip4][..udp] [....192.168.1.2][.2752] -> [....192.168.1.1][...53] 
      DAEMON-EVENT: [Processed: 241 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 63 / 109|skipped: 0|!detected: 6|guessed: 4|detection-updates: 26|updates: 178]
@@ -611,9 +613,9 @@
          detected: [...110] [ip4][..udp] [....192.168.1.2][.2756] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cybercity.dk]
                    RISK: Unidirectional Traffic
  detection-update: [...110] [ip4][..udp] [....192.168.1.2][.2756] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_?ip._udp.sip.cybercit?.dk]
-                   RISK: Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
  detection-update: [...110] [ip4][..udp] [....192.168.1.2][.2756] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cybercity.dk]
-                   RISK: Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
           guessed: [....74] [ip4][..udp] [....192.168.1.2][..137] -> [..192.168.1.255][.8329] [NetBIOS][Unknown][System][Acceptable][]
              idle: [....74] [ip4][..udp] [....192.168.1.2][..137] -> [..192.168.1.255][.8329] 
              idle: [....72] [ip4][..udp] [....192.168.1.2][.2739] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
@@ -651,7 +653,7 @@
          detected: [...111] [ip4][..udp] [....192.168.1.2][.2757] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][1.v.0.127.in-addr.arpa]
                    RISK: Unidirectional Traffic
  detection-update: [...111] [ip4][..udp] [....192.168.1.2][.2757] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][]
-                   RISK: Malformed Packet
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected
           analyse: [.....1] [ip4][..udp] [....192.168.1.2][..137] -> [..192.168.1.255][..137] [NetBIOS][Unknown][System][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.742|   47.495|   20.018|   22.628|  512023754.441|   3.900]
@@ -675,7 +677,7 @@
            update: [...106] [ip4][..udp] [....192.168.1.2][.2754] -> [....192.168.1.1][...53] 
               new: [...112] [ip4][..udp] [....192.168.1.2][.2640] -> [....192.168.1.1][...53] 
          detected: [...112] [ip4][..udp] [....192.168.1.2][.2640] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][]
-                   RISK: Malformed Packet, Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected, Unidirectional Traffic
               new: [...113] [ip4][..udp] [....192.168.1.2][.2785] -> [....192.168.1.1][...53] 
          detected: [...113] [ip4][..udp] [....192.168.1.2][.2785] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._tdp.sip.cybercity.dk]
                    RISK: Unidirectional Traffic
@@ -694,7 +696,7 @@
            update: [....80] [ip4][..udp] [....192.168.1.2][.2744] -> [....192.168.1.1][...53] 
            update: [....96] [ip4][..udp] [...192.168.1.18][.2751] -> [....192.168.1.1][...53] 
            update: [....97] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2751] [DNS][Unknown][Network][Acceptable]
-                   RISK: Malformed Packet, Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected, Unidirectional Traffic
            update: [....98] [ip4][..udp] [....192.168.1.2][.2752] -> [....192.168.1.1][...53] 
            update: [...109] [ip4][..udp] [....192.168.1.2][.2755] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
               new: [...116] [ip4][..udp] [....192.168.1.2][.2759] -> [....192.168.1.1][...53] 
@@ -742,7 +744,7 @@
            update: [...104] [ip4][..udp] [....192.168.1.2][.2753] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
            update: [...106] [ip4][..udp] [....192.168.1.2][.2754] -> [....192.168.1.1][...53] 
            update: [...111] [ip4][..udp] [....192.168.1.2][.2757] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
-                   RISK: Malformed Packet
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected
            update: [....89] [ip4][..udp] [....192.168.1.2][.5060] -> [..200.68.120.81][.4932] [SIP][Unknown][VoIP][Acceptable]
                    RISK: Unidirectional Traffic
            update: [....91] [ip4][..udp] [....192.168.1.2][.5060] -> [..200.68.120.81][.5060] [SIP][Unknown][VoIP][Acceptable]
@@ -781,9 +783,9 @@
       ERROR-EVENT: Unknown packet type [5/16]
               new: [...124] [ip4][..udp] [....192.168.1.2][43690] -> [170.170.170.170][43690] 
  detection-update: [...123] [ip4][..udp] [....192.168.1.2][.2764] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.s?p.cibercity.dk]
-                   RISK: Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
  detection-update: [...123] [ip4][..udp] [....192.168.1.2][.2764] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][]
-                   RISK: Malformed Packet, Text With Non-Printable Chars, Error Code, Unidirectional Traffic
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected, Error Code, Unidirectional Traffic
              idle: [....87] [ip4][..udp] [....192.168.1.2][.2747] -> [.....67.168.1.1][...53] 
              idle: [....84] [ip4][..udp] [....192.168.1.2][.2746] -> [....192.168.1.1][...53] 
              idle: [....88] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2747] [DNS][Unknown][Network][Acceptable]
@@ -794,7 +796,7 @@
            update: [...108] [ip4][..udp] [.....14.168.1.2][.2754] -> [....192.168.1.1][...53] 
            update: [....96] [ip4][..udp] [...192.168.1.18][.2751] -> [....192.168.1.1][...53] 
            update: [....97] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2751] [DNS][Unknown][Network][Acceptable]
-                   RISK: Malformed Packet, Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected, Unidirectional Traffic
            update: [....98] [ip4][..udp] [....192.168.1.2][.2752] -> [....192.168.1.1][...53] 
            update: [...109] [ip4][..udp] [....192.168.1.2][.2755] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
            update: [...110] [ip4][..udp] [....192.168.1.2][.2756] -> [....192.168.1.1][...53] 
@@ -836,7 +838,7 @@
            update: [...104] [ip4][..udp] [....192.168.1.2][.2753] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
            update: [...106] [ip4][..udp] [....192.168.1.2][.2754] -> [....192.168.1.1][...53] 
            update: [...111] [ip4][..udp] [....192.168.1.2][.2757] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
-                   RISK: Malformed Packet
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected
            update: [...119] [ip4][..udp] [....192.168.1.2][.2760] -> [....192.168.1.1][...53] 
            update: [....91] [ip4][..udp] [....192.168.1.2][.5060] -> [..200.68.120.81][.5060] [SIP][Unknown][VoIP][Acceptable]
                    RISK: Unidirectional Traffic
@@ -863,7 +865,7 @@
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
              idle: [...101] [ip4][..udp] [....192.168.1.2][.2752] -> [....102.168.1.1][...53] 
              idle: [....97] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2751] [DNS][Unknown][Network][Acceptable]
-                   RISK: Malformed Packet, Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected, Unidirectional Traffic
              idle: [....96] [ip4][..udp] [...192.168.1.18][.2751] -> [....192.168.1.1][...53] 
              idle: [....98] [ip4][..udp] [....192.168.1.2][.2752] -> [....192.168.1.1][...53] 
              idle: [...102] [ip4][..udp] [.....192.98.1.2][.2752] -> [.....25.168.1.1][...53] 
@@ -887,7 +889,7 @@
            update: [...122] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2763] [DNS][Unknown][Network][Acceptable]
                    RISK: Malformed Packet, Unidirectional Traffic
            update: [...123] [ip4][..udp] [....192.168.1.2][.2764] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
-                   RISK: Malformed Packet, Text With Non-Printable Chars, Error Code, Unidirectional Traffic
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected, Error Code, Unidirectional Traffic
       ERROR-EVENT: Unknown packet type [1/16]
       ERROR-EVENT: Unknown packet type [2/16]
               new: [...136] [ip4][..127] [....192.168.1.2] -> [....192.168.1.1] 
@@ -912,7 +914,7 @@
            update: [...109] [ip4][..udp] [....192.168.1.2][.2755] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
            update: [...110] [ip4][..udp] [....192.168.1.2][.2756] -> [....192.168.1.1][...53] 
            update: [...111] [ip4][..udp] [....192.168.1.2][.2757] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
-                   RISK: Malformed Packet
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected
            update: [...115] [ip4][..udp] [....192.168.1.2][.2758] -> [....192.168.1.1][...53] 
            update: [...116] [ip4][..udp] [....192.168.1.2][.2759] -> [....192.168.1.1][...53] 
            update: [...119] [ip4][..udp] [....192.168.1.2][.2760] -> [....192.168.1.1][...53] 
@@ -938,16 +940,16 @@
            update: [...131] [ip4][..udp] [....192.168.1.2][.2768] -> [....192.168.1.1][...53] 
               new: [...142] [ip4][..udp] [....192.168.1.2][.2772] -> [....192.168.1.1][...53] 
          detected: [...142] [ip4][..udp] [....192.168.1.2][.2772] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][]
-                   RISK: Malformed Packet, Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected, Unidirectional Traffic
  detection-update: [...142] [ip4][..udp] [....192.168.1.2][.2772] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][]
-                   RISK: Malformed Packet, Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected, Unidirectional Traffic
  detection-update: [...142] [ip4][..udp] [....192.168.1.2][.2772] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip]
-                   RISK: Malformed Packet, Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected, Unidirectional Traffic
               new: [...143] [ip4][..udp] [....192.168.1.2][.2772] -> [....192.184.1.1][...53] 
          detected: [...143] [ip4][..udp] [....192.168.1.2][.2772] -> [....192.184.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cybercity.dk]
                    RISK: Unidirectional Traffic
  detection-update: [...142] [ip4][..udp] [....192.168.1.2][.2772] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][]
-                   RISK: Malformed Packet, Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected, Unidirectional Traffic
              idle: [...110] [ip4][..udp] [....192.168.1.2][.2756] -> [....192.168.1.1][...53] 
            update: [...124] [ip4][..udp] [....192.168.1.2][43690] -> [170.170.170.170][43690] 
            update: [...133] [ip4][..udp] [.....94.168.1.2][.2768] -> [....192.168.1.1][....4] 
@@ -958,7 +960,7 @@
            update: [...122] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2763] [DNS][Unknown][Network][Acceptable]
                    RISK: Malformed Packet, Unidirectional Traffic
            update: [...123] [ip4][..udp] [....192.168.1.2][.2764] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
-                   RISK: Malformed Packet, Text With Non-Printable Chars, Error Code, Unidirectional Traffic
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected, Error Code, Unidirectional Traffic
            update: [...132] [ip4][..udp] [....192.168.1.2][35536] -> [....192.168.1.1][...53] 
            update: [...134] [ip4][..udp] [....192.168.1.2][.2769] -> [....192.168.1.1][...53] 
            update: [...113] [ip4][..udp] [....192.168.1.2][.2785] -> [....192.168.1.1][...53] 
@@ -969,7 +971,7 @@
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
              idle: [...112] [ip4][..udp] [....192.168.1.2][.2640] -> [....192.168.1.1][...53] 
              idle: [...111] [ip4][..udp] [....192.168.1.2][.2757] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
-                   RISK: Malformed Packet
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected
              idle: [...113] [ip4][..udp] [....192.168.1.2][.2785] -> [....192.168.1.1][...53] 
            update: [...117] [ip4][...37] [....192.168.1.1] -> [....192.168.1.2] 
            update: [...138] [ip4][..udp] [....192.168.1.2][..137] -> [..120.168.1.255][..137] [NetBIOS][Unknown][System][Acceptable]
@@ -994,12 +996,12 @@
  detection-update: [...145] [ip4][..udp] [....192.168.1.2][.2774] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cybercity.dk]
                    RISK: Malformed Packet, Unidirectional Traffic
  detection-update: [...145] [ip4][..udp] [....192.168.1.2][.2774] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][]
-                   RISK: Malformed Packet, Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected, Unidirectional Traffic
               new: [...146] [ip4][..udp] [....192.168.9.2][.2774] -> [....192.168.1.1][...53] 
          detected: [...146] [ip4][..udp] [....192.168.9.2][.2774] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cybercity.dk]
                    RISK: Unidirectional Traffic
  detection-update: [...145] [ip4][..udp] [....192.168.1.2][.2774] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cybercity.dk]
-                   RISK: Malformed Packet, Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected, Unidirectional Traffic
           guessed: [...114] [ip4][..udp] [.192.168.37.115][.2758] -> [....128.168.1.1][...53] [DNS][Unknown][Network][Acceptable][]
                    RISK: Malformed Packet, Unidirectional Traffic
              idle: [...114] [ip4][..udp] [.192.168.37.115][.2758] -> [....128.168.1.1][...53] 
@@ -1013,19 +1015,19 @@
                    RISK: Unidirectional Traffic
               new: [...147] [ip4][..udp] [....192.168.1.2][.2775] -> [....192.168.1.1][...53] 
          detected: [...147] [ip4][..udp] [....192.168.1.2][.2775] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][1.0.0.127.in-aqd?.arpa]
-                   RISK: Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
  detection-update: [...147] [ip4][..udp] [....192.168.1.2][.2775] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][1.0.0.127.in-addr.arpa]
-                   RISK: Text With Non-Printable Chars
+                   RISK: Non-Printable/Invalid Chars Detected
              idle: [...116] [ip4][..udp] [....192.168.1.2][.2759] -> [....192.168.1.1][...53] 
            update: [...142] [ip4][..udp] [....192.168.1.2][.2772] -> [....192.168.1.1][...53] 
               new: [...148] [ip4][..udp] [....192.168.1.2][.2776] -> [....192.168.1.1][...53] 
          detected: [...148] [ip4][..udp] [....192.168.1.2][.2776] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cybercity.dk]
                    RISK: Unidirectional Traffic
  detection-update: [...148] [ip4][..udp] [....192.168.1.2][.2776] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][]
-                   RISK: Malformed Packet, Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected, Unidirectional Traffic
       ERROR-EVENT: Unknown packet type [1/16]
  detection-update: [...148] [ip4][..udp] [....192.168.1.2][.2776] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cybercity.dk]
-                   RISK: Malformed Packet, Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected, Unidirectional Traffic
           guessed: [...118] [ip4][..udp] [.....192.22.1.2][.2760] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][]
                    RISK: Malformed Packet, Unidirectional Traffic
              idle: [...118] [ip4][..udp] [.....192.22.1.2][.2760] -> [....192.168.1.1][...53] 
@@ -1037,7 +1039,7 @@
            update: [...122] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2763] [DNS][Unknown][Network][Acceptable]
                    RISK: Malformed Packet, Unidirectional Traffic
            update: [...123] [ip4][..udp] [....192.168.1.2][.2764] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
-                   RISK: Malformed Packet, Text With Non-Printable Chars, Error Code, Unidirectional Traffic
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected, Error Code, Unidirectional Traffic
            update: [...132] [ip4][..udp] [....192.168.1.2][35536] -> [....192.168.1.1][...53] 
            update: [...134] [ip4][..udp] [....192.168.1.2][.2769] -> [....192.168.1.1][...53] 
            update: [...143] [ip4][..udp] [....192.168.1.2][.2772] -> [....192.184.1.1][...53] 
@@ -1083,7 +1085,7 @@
              idle: [...122] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2763] [DNS][Unknown][Network][Acceptable]
                    RISK: Malformed Packet, Unidirectional Traffic
              idle: [...123] [ip4][..udp] [....192.168.1.2][.2764] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
-                   RISK: Malformed Packet, Text With Non-Printable Chars, Error Code, Unidirectional Traffic
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected, Error Code, Unidirectional Traffic
            update: [...141] [ip4][..udp] [....192.168.1.2][..138] -> [..192.168.1.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous]
                    RISK: Unsafe Protocol
            update: [...130] [ip4][..udp] [....192.168.1.2][.2767] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
@@ -1094,7 +1096,7 @@
            update: [...142] [ip4][..udp] [....192.168.1.2][.2772] -> [....192.168.1.1][...53] 
            update: [...146] [ip4][..udp] [....192.168.9.2][.2774] -> [....192.168.1.1][...53] 
            update: [...147] [ip4][..udp] [....192.168.1.2][.2775] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
-                   RISK: Text With Non-Printable Chars
+                   RISK: Non-Printable/Invalid Chars Detected
               new: [...155] [ip4][..udp] [....192.168.1.2][.2784] -> [....192.168.1.1][...53] 
          detected: [...155] [ip4][..udp] [....192.168.1.2][.2784] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][]
                    RISK: Malformed Packet, Unidirectional Traffic
@@ -1140,7 +1142,7 @@
                    RISK: Unidirectional Traffic
               new: [...161] [ip4][..udp] [....192.168.1.2][.2786] -> [....192.168.1.3][...53] 
          detected: [...161] [ip4][..udp] [....192.168.1.2][.2786] -> [....192.168.1.3][...53] [DNS][Unknown][Network][Acceptable][1.0.0.127.in-ad?r.arpa]
-                   RISK: Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
               new: [...162] [ip4][..udp] [..212.242.33.35][.9587] -> [....192.168.1.2][..196] 
               new: [...163] [ip4][..udp] [....192.168.1.2][.2787] -> [....192.168.3.1][...53] 
@@ -1148,11 +1150,11 @@
                    RISK: Unidirectional Traffic
               new: [...164] [ip4][..udp] [....192.168.1.2][.2787] -> [....192.168.1.1][...53] 
          detected: [...164] [ip4][..udp] [....192.168.1.2][.2787] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cybercity.dk]
-                   RISK: Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
  detection-update: [...164] [ip4][..udp] [....192.168.1.2][.2787] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.?ip.kybermity.dk]
-                   RISK: Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
  detection-update: [...164] [ip4][..udp] [....192.168.1.2][.2787] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cybercity.dk]
-                   RISK: Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
      not-detected: [...133] [ip4][..udp] [.....94.168.1.2][.2768] -> [....192.168.1.1][....4] [Unknown][Unknown][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...133] [ip4][..udp] [.....94.168.1.2][.2768] -> [....192.168.1.1][....4] 
@@ -1199,7 +1201,7 @@
            update: [...142] [ip4][..udp] [....192.168.1.2][.2772] -> [....192.168.1.1][...53] 
            update: [...146] [ip4][..udp] [....192.168.9.2][.2774] -> [....192.168.1.1][...53] 
            update: [...147] [ip4][..udp] [....192.168.1.2][.2775] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
-                   RISK: Text With Non-Printable Chars
+                   RISK: Non-Printable/Invalid Chars Detected
            update: [...155] [ip4][..udp] [....192.168.1.2][.2784] -> [....192.168.1.1][...53] 
            update: [...156] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.5.2][.2784] [DNS][Unknown][Network][Acceptable]
                    RISK: Unidirectional Traffic
@@ -1245,13 +1247,13 @@
            update: [...159] [ip4][..udp] [....192.168.1.2][..137] -> [..192.168.1.255][35721] 
               new: [...175] [ip4][..udp] [....192.168.1.2][.2791] -> [...192.168.67.1][...53] 
          detected: [...175] [ip4][..udp] [....192.168.1.2][.2791] -> [...192.168.67.1][...53] [DNS][Unknown][Network][Acceptable][]
-                   RISK: Malformed Packet, Unidirectional Traffic
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected, Unidirectional Traffic
               new: [...176] [ip4][..udp] [....192.168.1.2][.2792] -> [....192.168.1.1][...53] 
          detected: [...176] [ip4][..udp] [....192.168.1.2][.2792] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][1.0.0.127.in-addr.arpa]
                    RISK: Unidirectional Traffic
               new: [...177] [ip4][..udp] [....192.168.1.1][...53] -> [....240.168.1.2][.2792] 
          detected: [...177] [ip4][..udp] [....192.168.1.1][...53] -> [....240.168.1.2][.2792] [DNS][Unknown][Network][Acceptable][1.0.0.127.in-a?dr.arpa]
-                   RISK: Malformed Packet, Text With Non-Printable Chars
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
            update: [...117] [ip4][...37] [....192.168.1.1] -> [....192.168.1.2] 
            update: [...162] [ip4][..udp] [..212.242.33.35][.9587] -> [....192.168.1.2][..196] 
@@ -1272,7 +1274,7 @@
            update: [...154] [ip4][..udp] [......0.168.1.2][.2783] -> [....192.168.1.1][...53] 
            update: [...145] [ip4][..udp] [....192.168.1.2][.2774] -> [....192.168.1.1][...53] 
            update: [...147] [ip4][..udp] [....192.168.1.2][.2775] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
-                   RISK: Text With Non-Printable Chars
+                   RISK: Non-Printable/Invalid Chars Detected
            update: [...148] [ip4][..udp] [....192.168.1.2][.2776] -> [....192.168.1.1][...53] 
            update: [...172] [ip4][..udp] [....192.168.1.2][..137] -> [..192.194.1.255][..137] [NetBIOS][Unknown][System][Acceptable]
            update: [...150] [ip4][..udp] [...192.168.33.2][.2782] -> [....192.168.1.1][...53] 
@@ -1301,7 +1303,7 @@
              idle: [...152] [ip4][..udp] [....192.168.1.6][.5060] -> [..212.242.33.35][.5060] 
              idle: [...145] [ip4][..udp] [....192.168.1.2][.2774] -> [....192.168.1.1][...53] 
              idle: [...147] [ip4][..udp] [....192.168.1.2][.2775] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
-                   RISK: Text With Non-Printable Chars
+                   RISK: Non-Printable/Invalid Chars Detected
              idle: [...148] [ip4][..udp] [....192.168.1.2][.2776] -> [....192.168.1.1][...53] 
              idle: [...151] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2782] [DNS][Unknown][Network][Acceptable]
                    RISK: Unidirectional Traffic
@@ -1333,7 +1335,7 @@
            update: [...176] [ip4][..udp] [....192.168.1.2][.2792] -> [....192.168.1.1][...53] 
            update: [...158] [ip4][..udp] [....200.168.1.2][.2785] -> [....192.168.1.1][...53] 
            update: [...177] [ip4][..udp] [....192.168.1.1][...53] -> [....240.168.1.2][.2792] [DNS][Unknown][Network][Acceptable]
-                   RISK: Malformed Packet, Text With Non-Printable Chars
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected
            update: [...159] [ip4][..udp] [....192.168.1.2][..137] -> [..192.168.1.255][35721] 
            update: [...107] [ip4][..118] [....192.168.1.2] -> [..200.68.120.81] 
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
@@ -1376,7 +1378,7 @@
            update: [...171] [ip4][..udp] [...192.168.1.53][.2791] -> [....192.168.1.1][...53] 
            update: [...176] [ip4][..udp] [....192.168.1.2][.2792] -> [....192.168.1.1][...53] 
            update: [...177] [ip4][..udp] [....192.168.1.1][...53] -> [....240.168.1.2][.2792] [DNS][Unknown][Network][Acceptable]
-                   RISK: Malformed Packet, Text With Non-Printable Chars
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected
            update: [....37] [ip4][..170] [170.170.170.170] -> [170.170.170.170] 
               new: [...180] [ip4][..udp] [...192.168.1.41][..138] -> [..192.168.1.255][..138] 
          detected: [...180] [ip4][..udp] [...192.168.1.41][..138] -> [..192.168.1.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][lab111]
@@ -1418,7 +1420,7 @@
                    RISK: Unidirectional Traffic
            update: [...176] [ip4][..udp] [....192.168.1.2][.2792] -> [....192.168.1.1][...53] 
            update: [...177] [ip4][..udp] [....192.168.1.1][...53] -> [....240.168.1.2][.2792] [DNS][Unknown][Network][Acceptable]
-                   RISK: Malformed Packet, Text With Non-Printable Chars
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected
               new: [...188] [ip4][..udp] [....192.168.1.2][...68] -> [....192.168.1.1][...67] 
          detected: [...188] [ip4][..udp] [....192.168.1.2][...68] -> [....192.168.1.1][...67] [DHCP][Unknown][Network][Acceptable][d002465]
                    RISK: Unidirectional Traffic
@@ -1427,7 +1429,7 @@
                    RISK: Unidirectional Traffic
              idle: [...176] [ip4][..udp] [....192.168.1.2][.2792] -> [....192.168.1.1][...53] 
              idle: [...177] [ip4][..udp] [....192.168.1.1][...53] -> [....240.168.1.2][.2792] [DNS][Unknown][Network][Acceptable]
-                   RISK: Malformed Packet, Text With Non-Printable Chars
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected
      not-detected: [...107] [ip4][..118] [....192.168.1.2] -> [..200.68.120.81] [Unknown][Unknown][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...107] [ip4][..118] [....192.168.1.2] -> [..200.68.120.81] 
@@ -1451,10 +1453,10 @@
          detected: [...190] [ip4][..udp] [....192.168.1.2][.2793] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][re-.sippstar.com]
                    RISK: Unidirectional Traffic
  detection-update: [...190] [ip4][..udp] [....192.168.1.2][.2793] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][reg.sip?star.com]
-                   RISK: Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
  detection-update: [...190] [ip4][..udp] [....192.168.1.2][.2793] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][reg.sippstar.com]
-                   RISK: Text With Non-Printable Chars
+                   RISK: Non-Printable/Invalid Chars Detected
               new: [...191] [ip4][..udp] [....192.168.1.2][.2794] -> [..192.168.108.1][...53] 
          detected: [...191] [ip4][..udp] [....192.168.1.2][.2794] -> [..192.168.108.1][...53] [DNS][Unknown][Network][Acceptable][sip.cybercity.dk]
                    RISK: Unidirectional Traffic
@@ -1486,10 +1488,10 @@
          detected: [...194] [ip4][..udp] [....192.168.1.2][.2796] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cybercity.ak]
                    RISK: Unidirectional Traffic
  detection-update: [...194] [ip4][..udp] [....192.168.1.2][.2796] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][]
-                   RISK: Malformed Packet, Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected, Unidirectional Traffic
               new: [...195] [ip4][..udp] [192.168.170.170][43690] -> [170.170.170.170][43690] 
  detection-update: [...194] [ip4][..udp] [....192.168.1.2][.2796] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cybercity.dk]
-                   RISK: Malformed Packet, Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected, Unidirectional Traffic
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [2/16]
            update: [.....1] [ip4][..udp] [....192.168.1.2][..137] -> [..192.168.1.255][..137] [NetBIOS][Unknown][System][Acceptable]
            update: [...187] [ip4][..udp] [....192.168.1.2][..137] -> [..200.168.1.255][..137] [NetBIOS][Unknown][System][Acceptable]
@@ -1499,8 +1501,9 @@
                    RISK: Malformed Packet, Unidirectional Traffic
               new: [...197] [ip4][..udp] [....192.168.1.2][.2797] -> [....192.168.1.1][...53] 
          detected: [...197] [ip4][..udp] [....192.168.1.2][.2797] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][1.0.0.127.in-addr.arp_]
-                   RISK: Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
  detection-update: [...197] [ip4][..udp] [....192.168.1.2][.2797] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][1.0.0.127.in-addr.arpa]
+                   RISK: Non-Printable/Invalid Chars Detected
               new: [...198] [ip4][..udp] [..212.242.33.35][.5060] -> [....192.168.1.2][.5060] 
          detected: [...198] [ip4][..udp] [..212.242.33.35][.5060] -> [....192.168.1.2][.5060] [SIP][Unknown][VoIP][Acceptable]
                    RISK: Unidirectional Traffic
@@ -1521,9 +1524,9 @@
                    RISK: Unidirectional Traffic
               new: [...202] [ip4][..udp] [....192.168.1.2][.2800] -> [....192.168.1.1][...53] 
          detected: [...202] [ip4][..udp] [....192.168.1.2][.2800] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_s?p._udp.sip.cybercity.dk]
-                   RISK: Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
  detection-update: [...202] [ip4][..udp] [....192.168.1.2][.2800] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cybercity.dk]
-                   RISK: Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
               new: [...203] [ip4][..udp] [....192.168.1.2][.2800] -> [....192.168.1.1][...21] 
       ERROR-EVENT: Unknown packet type [1/16]
            update: [...117] [ip4][...37] [....192.168.1.1] -> [....192.168.1.2] 
@@ -1539,13 +1542,13 @@
                    RISK: Unsafe Protocol
            update: [...189] [ip4][..udp] [...192.168.1.41][..138] -> [..192.168.1.255][..394] 
            update: [...190] [ip4][..udp] [....192.168.1.2][.2793] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
-                   RISK: Text With Non-Printable Chars
+                   RISK: Non-Printable/Invalid Chars Detected
            update: [...191] [ip4][..udp] [....192.168.1.2][.2794] -> [..192.168.108.1][...53] 
               new: [...204] [ip4][..udp] [....192.168.1.2][.2801] -> [....192.168.1.1][...53] 
          detected: [...204] [ip4][..udp] [....192.168.1.2][.2801] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][1.0.0.127.in-addr.arpa]
                    RISK: Unidirectional Traffic
  detection-update: [...204] [ip4][..udp] [....192.168.1.2][.2801] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][]
-                   RISK: Malformed Packet, Text With Non-Printable Chars
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected
               new: [...205] [ip4][....0] [....192.168.1.2] -> [..212.242.33.35] 
               new: [...206] [ip4][..udp] [....192.168.1.2][.2568] -> [....192.168.1.1][...53] 
          detected: [...206] [ip4][..udp] [....192.168.1.2][.2568] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cybercity.dk]
@@ -1573,7 +1576,7 @@
                    RISK: Unidirectional Traffic
       ERROR-EVENT: Unknown L3 protocol [1/16]
  detection-update: [...210] [ip4][..udp] [....192.168.1.2][.2804] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cyberc?ty.dk]
-                   RISK: Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
              idle: [...183] [ip4][..udp] [...192.168.1.41][..137] -> [..107.168.1.255][..137] [NetBIOS][Unknown][System][Acceptable]
              idle: [...184] [ip4][..udp] [.....115.0.1.41][..137] -> [..192.168.1.255][..137] [NetBIOS][Unknown][System][Acceptable]
              idle: [...181] [ip4][..udp] [.192.184.189.41][..137] -> [..192.168.1.255][..137] [NetBIOS][Unknown][System][Acceptable]
@@ -1582,9 +1585,10 @@
            update: [...198] [ip4][..udp] [..212.242.33.35][.5060] -> [....192.168.1.2][.5060] [SIP][Unknown][VoIP][Acceptable]
                    RISK: Unidirectional Traffic
            update: [...197] [ip4][..udp] [....192.168.1.2][.2797] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
+                   RISK: Non-Printable/Invalid Chars Detected
            update: [...199] [ip4][..udp] [....192.168.1.2][.2798] -> [....192.168.1.1][...53] 
  detection-update: [...210] [ip4][..udp] [....192.168.1.2][.2804] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cybercity.dk]
-                   RISK: Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
       ERROR-EVENT: Unknown packet type [2/16]
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [3/16]
              idle: [...185] [ip4][..udp] [...192.168.1.41][..137] -> [.192.168.37.115][..137] [NetBIOS][Unknown][System][Acceptable]
@@ -1595,15 +1599,15 @@
                    RISK: Unidirectional Traffic
               new: [...213] [ip4][..udp] [....192.168.1.2][.2806] -> [....192.168.1.1][...53] 
          detected: [...213] [ip4][..udp] [....192.168.1.2][.2806] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sim._udp.sip.c_ber_itm.dk]
-                   RISK: Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
  detection-update: [...213] [ip4][..udp] [....192.168.1.2][.2806] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.c4bercity.dk]
-                   RISK: Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
  detection-update: [...213] [ip4][..udp] [....192.168.1.2][.2806] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cybercity.dk]
-                   RISK: Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
  detection-update: [...213] [ip4][..udp] [....192.168.1.2][.2806] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cxbercity.dk]
-                   RISK: Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
  detection-update: [...213] [ip4][..udp] [....192.168.1.2][.2806] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cybercity.qk]
-                   RISK: Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
              idle: [...182] [ip4][..udp] [...192.168.1.41][..137] -> [..192.168.1.255][..137] [NetBIOS][Unknown][System][Acceptable]
              idle: [...187] [ip4][..udp] [....192.168.1.2][..137] -> [..200.168.1.255][..137] [NetBIOS][Unknown][System][Acceptable]
      not-detected: [...186] [ip4][..udp] [....192.168.1.2][43690] -> [192.168.170.170][43690] [Unknown][Unknown][Unrated]
@@ -1614,7 +1618,7 @@
            update: [...189] [ip4][..udp] [...192.168.1.41][..138] -> [..192.168.1.255][..394] 
            update: [...203] [ip4][..udp] [....192.168.1.2][.2800] -> [....192.168.1.1][...21] 
            update: [...190] [ip4][..udp] [....192.168.1.2][.2793] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
-                   RISK: Text With Non-Printable Chars
+                   RISK: Non-Printable/Invalid Chars Detected
            update: [...191] [ip4][..udp] [....192.168.1.2][.2794] -> [..192.168.108.1][...53] 
            update: [...200] [ip4][..udp] [....192.168.1.2][.2799] -> [....192.168.1.1][...53] 
            update: [...201] [ip4][..udp] [....192.168.1.1][...53] -> [..192.168.119.2][.2799] [DNS][Unknown][Network][Acceptable]
@@ -1623,7 +1627,7 @@
       ERROR-EVENT: Unknown packet type [1/16]
               new: [...214] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2807] 
          detected: [...214] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2807] [DNS][Unknown][Network][Acceptable][]
-                   RISK: Malformed Packet, Unidirectional Traffic
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected, Unidirectional Traffic
               new: [...215] [ip4][..udp] [....192.168.1.2][.2808] -> [....192.168.1.1][38709] 
               new: [...216] [ip4][..udp] [....192.168.1.2][.2808] -> [....192.168.1.1][...53] 
          detected: [...216] [ip4][..udp] [....192.168.1.2][.2808] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cybercity.dk]
@@ -1639,7 +1643,7 @@
            update: [...194] [ip4][..udp] [....192.168.1.2][.2796] -> [....192.168.1.1][...53] 
            update: [...196] [ip4][..udp] [....192.168.1.2][.2796] -> [..192.168.1.129][...53] 
            update: [...204] [ip4][..udp] [....192.168.1.2][.2801] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
-                   RISK: Malformed Packet, Text With Non-Printable Chars
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected
            update: [...207] [ip4][..udp] [....192.168.1.2][.2802] -> [....192.168.1.1][...53] 
       ERROR-EVENT: Unknown packet type [2/16]
               new: [...217] [ip4][..udp] [....192.168.1.2][19192] -> [....192.168.1.1][...53] 
@@ -1671,6 +1675,7 @@
            update: [...198] [ip4][..udp] [..212.242.33.35][.5060] -> [....192.168.1.2][.5060] [SIP][Unknown][VoIP][Acceptable]
                    RISK: Unidirectional Traffic
            update: [...197] [ip4][..udp] [....192.168.1.2][.2797] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
+                   RISK: Non-Printable/Invalid Chars Detected
            update: [...199] [ip4][..udp] [....192.168.1.2][.2798] -> [....192.168.1.1][...53] 
            update: [...209] [ip4][..udp] [....192.168.1.2][.2803] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
            update: [...210] [ip4][..udp] [....192.168.1.2][.2804] -> [....192.168.1.1][...53] 
@@ -1686,7 +1691,7 @@
            update: [...149] [ip4][....0] [....192.168.1.2] -> [..192.168.1.255] 
            update: [...203] [ip4][..udp] [....192.168.1.2][.2800] -> [....192.168.1.1][...21] 
            update: [...190] [ip4][..udp] [....192.168.1.2][.2793] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
-                   RISK: Text With Non-Printable Chars
+                   RISK: Non-Printable/Invalid Chars Detected
            update: [...191] [ip4][..udp] [....192.168.1.2][.2794] -> [..192.168.108.1][...53] 
            update: [...200] [ip4][..udp] [....192.168.1.2][.2799] -> [....192.168.1.1][...53] 
            update: [...201] [ip4][..udp] [....192.168.1.1][...53] -> [..192.168.119.2][.2799] [DNS][Unknown][Network][Acceptable]
@@ -1703,7 +1708,7 @@
                    RISK: Unidirectional Traffic
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
              idle: [...190] [ip4][..udp] [....192.168.1.2][.2793] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
-                   RISK: Text With Non-Printable Chars
+                   RISK: Non-Printable/Invalid Chars Detected
              idle: [...191] [ip4][..udp] [....192.168.1.2][.2794] -> [..192.168.108.1][...53] 
            update: [...208] [ip4][..udp] [....192.168.1.2][18162] -> [....192.168.1.1][...53] 
            update: [...195] [ip4][..udp] [192.168.170.170][43690] -> [170.170.170.170][43690] 
@@ -1720,14 +1725,15 @@
            update: [...194] [ip4][..udp] [....192.168.1.2][.2796] -> [....192.168.1.1][...53] 
            update: [...196] [ip4][..udp] [....192.168.1.2][.2796] -> [..192.168.1.129][...53] 
            update: [...197] [ip4][..udp] [....192.168.1.2][.2797] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
+                   RISK: Non-Printable/Invalid Chars Detected
            update: [...199] [ip4][..udp] [....192.168.1.2][.2798] -> [....192.168.1.1][...53] 
            update: [...204] [ip4][..udp] [....192.168.1.2][.2801] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
-                   RISK: Malformed Packet, Text With Non-Printable Chars
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected
            update: [...207] [ip4][..udp] [....192.168.1.2][.2802] -> [....192.168.1.1][...53] 
            update: [...209] [ip4][..udp] [....192.168.1.2][.2803] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
            update: [...210] [ip4][..udp] [....192.168.1.2][.2804] -> [....192.168.1.1][...53] 
            update: [...214] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2807] [DNS][Unknown][Network][Acceptable]
-                   RISK: Malformed Packet, Unidirectional Traffic
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected, Unidirectional Traffic
            update: [...216] [ip4][..udp] [....192.168.1.2][.2808] -> [....192.168.1.1][...53] 
            update: [...217] [ip4][..udp] [....192.168.1.2][19192] -> [....192.168.1.1][...53] 
            update: [...218] [ip4][..udp] [....192.168.1.2][.2809] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
@@ -1737,7 +1743,7 @@
            update: [...220] [ip4][..udp] [....192.170.1.2][.2810] -> [....192.168.1.1][...53] 
               new: [...227] [ip4][..udp] [....192.168.1.2][.2813] -> [....192.168.1.1][...53] 
          detected: [...227] [ip4][..udp] [....192.168.1.2][.2813] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][1.0.0.127?in-ad_r?arpa???]
-                   RISK: Malformed Packet, Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected, Unidirectional Traffic
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [2/16]
               new: [...228] [ip4][..udp] [....192.168.1.2][.2814] -> [....192.168.1.1][...53] 
@@ -1779,12 +1785,12 @@
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
               new: [...231] [ip4][..udp] [....192.168.1.2][.2816] -> [....192.168.1.1][...53] 
          detected: [...231] [ip4][..udp] [....192.168.1.2][.2816] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][?sip._udp.shp.cybercity.dk]
-                   RISK: Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
               new: [...232] [ip4][..udp] [....192.168.1.2][.5060] -> [.212.242.33.201][.5060] 
          detected: [...232] [ip4][..udp] [....192.168.1.2][.5060] -> [.212.242.33.201][.5060] [SIP][Unknown][VoIP][Acceptable]
                    RISK: Unidirectional Traffic
  detection-update: [...231] [ip4][..udp] [....192.168.1.2][.2816] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udq.sip.cybercity.dk]
-                   RISK: Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
               new: [...233] [ip4][..udp] [....192.168.1.3][30000] -> [..212.242.33.36][40392] 
               new: [...234] [ip4][..udp] [....192.168.1.2][30000] -> [....37.115.0.36][40392] 
               new: [...235] [ip4][..udp] [....192.168.1.2][30000] -> [..212.242.33.36][40392] 
@@ -1793,14 +1799,15 @@
               new: [...237] [ip4][..udp] [.....81.168.1.2][30000] -> [..212.242.33.36][40392] 
       ERROR-EVENT: Unknown packet type [2/16]
  detection-update: [...231] [ip4][..udp] [....192.168.1.2][.2816] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cybercity.dk]
-                   RISK: Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [3/16]
              idle: [...197] [ip4][..udp] [....192.168.1.2][.2797] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
+                   RISK: Non-Printable/Invalid Chars Detected
              idle: [...199] [ip4][..udp] [....192.168.1.2][.2798] -> [....192.168.1.1][...53] 
            update: [...205] [ip4][....0] [....192.168.1.2] -> [..212.242.33.35] 
               new: [...238] [ip4][..udp] [....192.168.1.2][.2822] -> [....192.168.1.1][...53] 
          detected: [...238] [ip4][..udp] [....192.168.1.2][.2822] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][1.0.0.1?7.in-addr.arpa]
-                   RISK: Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
               new: [...239] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.234.33.35][.5060] 
          detected: [...239] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.234.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
                    RISK: Unidirectional Traffic
@@ -1810,9 +1817,9 @@
                    RISK: Unidirectional Traffic
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [2/16]
  detection-update: [...240] [ip4][..udp] [....192.168.1.2][.2823] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cybercity.dk]
-                   RISK: Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
  detection-update: [...240] [ip4][..udp] [....192.168.1.2][.2823] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cybercity.dk]
-                   RISK: Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
      not-detected: [...149] [ip4][....0] [....192.168.1.2] -> [..192.168.1.255] [Unknown][Unknown][Unrated]
              idle: [...149] [ip4][....0] [....192.168.1.2] -> [..192.168.1.255] 
      not-detected: [...203] [ip4][..udp] [....192.168.1.2][.2800] -> [....192.168.1.1][...21] [Unknown][Unknown][Unrated]
@@ -1830,12 +1837,12 @@
            update: [...206] [ip4][..udp] [....192.168.1.2][.2568] -> [....192.168.1.1][...53] 
            update: [...222] [ip4][..udp] [....128.168.1.2][.2810] -> [....192.168.1.1][...53] 
            update: [...204] [ip4][..udp] [....192.168.1.2][.2801] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
-                   RISK: Malformed Packet, Text With Non-Printable Chars
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected
            update: [...207] [ip4][..udp] [....192.168.1.2][.2802] -> [....192.168.1.1][...53] 
            update: [...209] [ip4][..udp] [....192.168.1.2][.2803] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
            update: [...210] [ip4][..udp] [....192.168.1.2][.2804] -> [....192.168.1.1][...53] 
            update: [...214] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2807] [DNS][Unknown][Network][Acceptable]
-                   RISK: Malformed Packet, Unidirectional Traffic
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected, Unidirectional Traffic
            update: [...216] [ip4][..udp] [....192.168.1.2][.2808] -> [....192.168.1.1][...53] 
            update: [...217] [ip4][..udp] [....192.168.1.2][19192] -> [....192.168.1.1][...53] 
            update: [...218] [ip4][..udp] [....192.168.1.2][.2809] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
@@ -1854,11 +1861,11 @@
  detection-update: [...242] [ip4][..udp] [....192.168.1.2][.2825] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][]
                    RISK: Malformed Packet, Unidirectional Traffic
  detection-update: [...242] [ip4][..udp] [....192.168.1.2][.2825] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cybercity.dk]
-                   RISK: Malformed Packet, Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected, Unidirectional Traffic
              idle: [...208] [ip4][..udp] [....192.168.1.2][18162] -> [....192.168.1.1][...53] 
              idle: [...206] [ip4][..udp] [....192.168.1.2][.2568] -> [....192.168.1.1][...53] 
              idle: [...204] [ip4][..udp] [....192.168.1.2][.2801] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
-                   RISK: Malformed Packet, Text With Non-Printable Chars
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected
              idle: [...207] [ip4][..udp] [....192.168.1.2][.2802] -> [....192.168.1.1][...53] 
            update: [...211] [ip4][..udp] [....192.168.1.2][.2805] -> [....192.168.1.1][...51] 
            update: [...212] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2805] [DNS][Unknown][Network][Acceptable]
@@ -1877,9 +1884,9 @@
                    RISK: Unsafe Protocol
               new: [...244] [ip4][..udp] [....192.168.1.2][.2826] -> [....192.168.1.1][...53] 
          detected: [...244] [ip4][..udp] [....192.168.1.2][.2826] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][1.?.0.127.in-addr.arpa]
-                   RISK: Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
  detection-update: [...244] [ip4][..udp] [....192.168.1.2][.2826] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][1.0.0.127.in-addr.arpa]
-                   RISK: Text With Non-Printable Chars
+                   RISK: Non-Printable/Invalid Chars Detected
              idle: [...209] [ip4][..udp] [....192.168.1.2][.2803] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
              idle: [...210] [ip4][..udp] [....192.168.1.2][.2804] -> [....192.168.1.1][...53] 
            update: [...232] [ip4][..udp] [....192.168.1.2][.5060] -> [.212.242.33.201][.5060] [SIP][Unknown][VoIP][Acceptable]
@@ -1897,11 +1904,11 @@
                    RISK: Unidirectional Traffic
               new: [...246] [ip4][..udp] [....192.168.1.2][.2827] -> [....192.168.1.1][...53] 
          detected: [...246] [ip4][..udp] [....192.168.1.2][.2827] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cybercimy.v?]
-                   RISK: Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
       ERROR-EVENT: Unknown packet type [1/16]
               new: [...247] [ip4][..udp] [....192.168.1.2][.2827] -> [....192.170.1.1][...53] 
          detected: [...247] [ip4][..udp] [....192.168.1.2][.2827] -> [....192.170.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cyberc?ty.dk]
-                   RISK: Text With Non-Printable Chars, Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
       ERROR-EVENT: Unknown L3 protocol [2/16]
      not-detected: [...157] [ip4][...19] [....192.168.1.2] -> [....192.168.1.1] [Unknown][Unknown][Unrated]
                    RISK: Unidirectional Traffic
@@ -1932,7 +1939,7 @@
              idle: [...215] [ip4][..udp] [....192.168.1.2][.2808] -> [....192.168.1.1][38709] 
              idle: [...213] [ip4][..udp] [....192.168.1.2][.2806] -> [....192.168.1.1][...53] 
              idle: [...214] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2807] [DNS][Unknown][Network][Acceptable]
-                   RISK: Malformed Packet, Unidirectional Traffic
+                   RISK: Malformed Packet, Non-Printable/Invalid Chars Detected, Unidirectional Traffic
              idle: [...216] [ip4][..udp] [....192.168.1.2][.2808] -> [....192.168.1.1][...53] 
            update: [.....1] [ip4][..udp] [....192.168.1.2][..137] -> [..192.168.1.255][..137] [NetBIOS][Unknown][System][Acceptable]
            update: [...198] [ip4][..udp] [..212.242.33.35][.5060] -> [....192.168.1.2][.5060] [SIP][Unknown][VoIP][Acceptable]
@@ -1984,7 +1991,7 @@
                    RISK: Malformed Packet, Error Code, Unidirectional Traffic
            update: [...231] [ip4][..udp] [....192.168.1.2][.2816] -> [....192.168.1.1][...53] 
            update: [...244] [ip4][..udp] [....192.168.1.2][.2826] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
-                   RISK: Text With Non-Printable Chars
+                   RISK: Non-Printable/Invalid Chars Detected
            update: [...229] [ip4][..udp] [....192.168.1.2][29440] -> [...192.168.1.37][..137] [NetBIOS][Unknown][System][Acceptable]
                    RISK: Unidirectional Traffic
            update: [...225] [ip4][..udp] [....192.168.1.2][..137] -> [..192.168.1.255][..905] 
@@ -2062,7 +2069,7 @@
              idle: [...241] [ip4][..udp] [....192.168.1.2][.2824] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
              idle: [...242] [ip4][..udp] [....192.168.1.2][.2825] -> [....192.168.1.1][...53] 
              idle: [...244] [ip4][..udp] [....192.168.1.2][.2826] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
-                   RISK: Text With Non-Printable Chars
+                   RISK: Non-Printable/Invalid Chars Detected
              idle: [...246] [ip4][..udp] [....192.168.1.2][.2827] -> [....192.168.1.1][...53] 
              idle: [...245] [ip4][..udp] [....192.168.1.2][.2827] -> [..192.168.1.114][...53] 
              idle: [...248] [ip4][..udp] [....192.168.1.2][.2828] -> [....192.168.1.1][...53] 
@@ -2105,9 +2112,8 @@
           guessed: [....34] [ip4][..tcp] [..147.234.1.253][...21] -> [...192.168.65.2][.2720] [FTP_CONTROL][Unknown][Download][Unsafe]
                    RISK: Unsafe Protocol, Unidirectional Traffic
              idle: [....34] [ip4][..tcp] [..147.234.1.253][...21] -> [...192.168.65.2][.2720] 
-          guessed: [....32] [ip4][..tcp] [..147.234.1.253][...21] -> [....192.168.1.2][.2732] [FTP_CONTROL][Unknown][Download][Unsafe]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
-             idle: [....32] [ip4][..tcp] [..147.234.1.253][...21] -> [....192.168.1.2][.2732] 
+             idle: [....32] [ip4][..tcp] [..147.234.1.253][...21] -> [....192.168.1.2][.2732] [Protobuf][Unknown][Network][Safe]
+                   RISK: Unidirectional Traffic
      not-detected: [...237] [ip4][..udp] [.....81.168.1.2][30000] -> [..212.242.33.36][40392] [Unknown][Unknown][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...237] [ip4][..udp] [.....81.168.1.2][30000] -> [..212.242.33.36][40392] 

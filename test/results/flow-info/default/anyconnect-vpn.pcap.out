@@ -30,11 +30,11 @@
  detection-update: [....11] [ip4][..udp] [.....10.0.0.227][62322] -> [....75.75.76.76][...53] [DNS][Unknown][Network][Acceptable][vco.pandion.viasat.com]
               new: [....12] [ip4][..tcp] [.....10.0.0.227][56918] -> [....8.37.102.91][..443] 
          detected: [....12] [ip4][..tcp] [.....10.0.0.227][56918] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe][]
-                   RISK: Missing SNI TLS Extn
+                   RISK: Missing SNI TLS Extn, ALPN/SNI Mismatch
  detection-update: [....12] [ip4][..tcp] [.....10.0.0.227][56918] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe][]
-                   RISK: Weak TLS Cipher, Missing SNI TLS Extn
+                   RISK: Weak TLS Cipher, Missing SNI TLS Extn, ALPN/SNI Mismatch
  detection-update: [....12] [ip4][..tcp] [.....10.0.0.227][56918] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe][]
-                   RISK: Weak TLS Cipher, Missing SNI TLS Extn
+                   RISK: Weak TLS Cipher, Missing SNI TLS Extn, ALPN/SNI Mismatch
               new: [....13] [ip4][..tcp] [.....10.0.0.227][56915] -> [..52.37.243.173][..443] [MIDSTREAM] 
          detected: [....13] [ip4][..tcp] [.....10.0.0.227][56915] -> [..52.37.243.173][..443] [TLS][AmazonAWS][Web][Safe]
                    RISK: Unidirectional Traffic
@@ -43,11 +43,11 @@
                    RISK: Unidirectional Traffic
               new: [....15] [ip4][..tcp] [.....10.0.0.227][56919] -> [....8.37.102.91][..443] 
          detected: [....15] [ip4][..tcp] [.....10.0.0.227][56919] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe][]
-                   RISK: Missing SNI TLS Extn
+                   RISK: Missing SNI TLS Extn, ALPN/SNI Mismatch
  detection-update: [....15] [ip4][..tcp] [.....10.0.0.227][56919] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe][]
-                   RISK: Weak TLS Cipher, Missing SNI TLS Extn
+                   RISK: Weak TLS Cipher, Missing SNI TLS Extn, ALPN/SNI Mismatch
  detection-update: [....15] [ip4][..tcp] [.....10.0.0.227][56919] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe][]
-                   RISK: Weak TLS Cipher, Missing SNI TLS Extn
+                   RISK: Weak TLS Cipher, Missing SNI TLS Extn, ALPN/SNI Mismatch
           analyse: [....15] [ip4][..tcp] [.....10.0.0.227][56919] -> [....8.37.102.91][..443] 
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.072|    0.021|    0.022|        465.190|   4.000]
@@ -59,7 +59,7 @@
                    [PKTLENS.....: 64,56,52,219,52,1500,52,1500,1500,52,52,1500,1167,52,52,1500,1500,1319,52,52,663,52,127,52,1161,52,345,697,105,52,52,52]
                    [ENTROPIES...: 4.3,5.1,4.8,5.5,4.8,7.3,4.8,7.1,7.2,4.9,4.8,7.4,5.9,4.8,4.8,6.8,7.2,7.5,4.7,4.8,7.6,4.7,6.2,4.8,7.8,4.9,7.3,7.7,5.8,4.9,4.8,4.8]
  detection-update: [....15] [ip4][..tcp] [.....10.0.0.227][56919] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe][]
-                   RISK: Weak TLS Cipher, Missing SNI TLS Extn
+                   RISK: Weak TLS Cipher, Missing SNI TLS Extn, ALPN/SNI Mismatch
               new: [....16] [ip4][..udp] [.....10.0.0.227][63107] -> [....75.75.76.76][...53] 
          detected: [....16] [ip4][..udp] [.....10.0.0.227][63107] -> [....75.75.76.76][...53] [DNS][Unknown][Network][Acceptable][local]
                    RISK: Unidirectional Traffic
@@ -259,7 +259,9 @@
               new: [....68] [ip4][..udp] [.....10.0.0.149][.5353] -> [....224.0.0.251][.5353] 
          detected: [....68] [ip4][..udp] [.....10.0.0.149][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable][_googlezone._tcp.local]
  detection-update: [....68] [ip4][..udp] [.....10.0.0.149][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable][79d88e83-725c-b71b-bad0-5862d5b22386._googlezone._tcp.local]
+                   RISK: Susp DNS Traffic
  detection-update: [....68] [ip4][..udp] [.....10.0.0.149][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable][_googlezone._tcp.local]
+                   RISK: Susp DNS Traffic
               new: [....69] [ip4][.icmp] [.......10.0.0.1] -> [......224.0.0.1] 
          detected: [....69] [ip4][.icmp] [.......10.0.0.1] -> [......224.0.0.1] [ICMP][Unknown][Network][Acceptable]
              idle: [....57] [ip4][..udp] [.....10.0.0.227][57547] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable]
@@ -295,6 +297,7 @@
                    RISK: Error Code
              idle: [.....5] [ip6][icmp6] [..............fe80::2e7e:81ff:feb0:4aa1] -> [................................ff02::1] [ICMPV6][Unknown][Network][Acceptable]
              idle: [....68] [ip4][..udp] [.....10.0.0.149][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable]
+                   RISK: Susp DNS Traffic
              idle: [....18] [ip4][..udp] [.....10.0.0.213][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable]
              idle: [....35] [ip4][..udp] [.....10.0.0.227][59222] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable]
                    RISK: Error Code
@@ -324,7 +327,7 @@
                    RISK: Unidirectional Traffic
               end: [....12] [ip4][..tcp] [.....10.0.0.227][56918] -> [....8.37.102.91][..443] 
               end: [....15] [ip4][..tcp] [.....10.0.0.227][56919] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe]
-                   RISK: Weak TLS Cipher, Missing SNI TLS Extn
+                   RISK: Weak TLS Cipher, Missing SNI TLS Extn, ALPN/SNI Mismatch
              idle: [....38] [ip4][..tcp] [.....10.0.0.227][56929] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
           guessed: [....53] [ip4][..tcp] [.....10.0.0.227][56874] -> [.74.125.197.188][..443] [TLS][Google][Web][Safe]

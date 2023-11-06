@@ -3,10 +3,10 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [..192.168.2.148][46838] -> [..94.23.199.191][.3333] 
          detected: [.....1] [ip4][..tcp] [..192.168.2.148][46838] -> [..94.23.199.191][.3333] [Mining][Unknown][Mining][Unsafe]
-                   RISK: Known Proto on Non Std Port, Unsafe Protocol
+                   RISK: Unsafe Protocol
               new: [.....2] [ip4][..tcp] [..192.168.2.148][53846] -> [116.211.167.195][.3333] 
          detected: [.....2] [ip4][..tcp] [..192.168.2.148][53846] -> [116.211.167.195][.3333] [Mining][Unknown][Mining][Unsafe]
-                   RISK: Known Proto on Non Std Port, Unsafe Protocol
+                   RISK: Unsafe Protocol
           analyse: [.....1] [ip4][..tcp] [..192.168.2.148][46838] -> [..94.23.199.191][.3333] [Mining][Unknown][Mining][Unsafe]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|   71.693|    7.500|   18.614|  346464978.993|   2.400]
@@ -30,7 +30,7 @@
      DAEMON-EVENT: [Processed: 198 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 2 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
              idle: [.....2] [ip4][..tcp] [..192.168.2.148][53846] -> [116.211.167.195][.3333] [Mining][Unknown][Mining][Unsafe]
-                   RISK: Known Proto on Non Std Port, Unsafe Protocol
+                   RISK: Unsafe Protocol
              idle: [.....1] [ip4][..tcp] [..192.168.2.148][46838] -> [..94.23.199.191][.3333] [Mining][Unknown][Mining][Unsafe]
-                   RISK: Known Proto on Non Std Port, Unsafe Protocol
+                   RISK: Unsafe Protocol
      DAEMON-EVENT: shutdown

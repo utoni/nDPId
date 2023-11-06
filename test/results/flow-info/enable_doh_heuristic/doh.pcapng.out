@@ -3,9 +3,9 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [..192.168.1.253][35996] -> [........1.1.1.1][..443] 
          detected: [.....1] [ip4][..tcp] [..192.168.1.253][35996] -> [........1.1.1.1][..443] [TLS][Unknown][Web][Safe][]
-                   RISK: Missing SNI TLS Extn
+                   RISK: Missing SNI TLS Extn, ALPN/SNI Mismatch
  detection-update: [.....1] [ip4][..tcp] [..192.168.1.253][35996] -> [........1.1.1.1][..443] [TLS][Unknown][Web][Safe][]
-                   RISK: Missing SNI TLS Extn
+                   RISK: Missing SNI TLS Extn, ALPN/SNI Mismatch
           analyse: [.....1] [ip4][..tcp] [..192.168.1.253][35996] -> [........1.1.1.1][..443] [TLS][Unknown][Web][Safe]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|   15.360|    2.496|    5.583|   31170844.688|   2.400]
@@ -17,5 +17,5 @@
                    [PKTLENS.....: 60,52,46,301,46,1500,46,1500,46,256,46,104,126,136,108,46,46,111,46,71,46,46,371,71,46,46,46,46,46,46,46,46]
                    [ENTROPIES...: 4.4,4.4,4.2,5.9,4.1,7.8,4.1,7.9,4.1,7.1,4.1,5.9,6.2,6.4,6.0,4.1,4.1,6.2,4.1,5.5,4.1,4.1,7.4,5.5,4.1,4.1,4.2,4.1,4.1,4.1,4.2,4.1]
              idle: [.....1] [ip4][..tcp] [..192.168.1.253][35996] -> [........1.1.1.1][..443] [TLS][Unknown][Web][Safe]
-                   RISK: Missing SNI TLS Extn
+                   RISK: Missing SNI TLS Extn, ALPN/SNI Mismatch
      DAEMON-EVENT: shutdown

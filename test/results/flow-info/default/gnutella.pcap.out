@@ -5633,8 +5633,8 @@
      not-detected: [...441] [ip4][..udp] [......10.0.2.15][28681] -> [.36.237.199.108][56040] [Unknown][Unknown][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...441] [ip4][..udp] [......10.0.2.15][28681] -> [.36.237.199.108][56040] 
-          guessed: [...700] [ip4][..udp] [......10.0.2.15][28681] -> [...91.206.27.26][.6578] [Tor][Tor][VPN][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+     not-detected: [...700] [ip4][..udp] [......10.0.2.15][28681] -> [...91.206.27.26][.6578] [Unknown][Unknown][Unrated]
+                   RISK: Unidirectional Traffic
              idle: [...700] [ip4][..udp] [......10.0.2.15][28681] -> [...91.206.27.26][.6578] 
              idle: [...511] [ip4][..udp] [......10.0.2.15][28681] -> [...68.47.223.27][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol, Unidirectional Traffic
@@ -7035,7 +7035,7 @@
               new: [...801] [ip6][icmp6] [..............fe80::c50d:519f:96a4:e108] -> [...............................ff02::16] 
          detected: [...801] [ip6][icmp6] [..............fe80::c50d:519f:96a4:e108] -> [...............................ff02::16] [ICMPV6][Unknown][Network][Acceptable]
      DAEMON-EVENT: [Processed: 3882 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 169 / 801|skipped: 0|!detected: 310|guessed: 2|detection-updates: 5|updates: 2519]
+     DAEMON-EVENT: [Flows][active: 169 / 801|skipped: 0|!detected: 311|guessed: 1|detection-updates: 5|updates: 2519]
      not-detected: [....52] [ip4][..tcp] [......10.0.2.15][50212] -> [...95.17.124.40][.6776] [Unknown][Unknown][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....52] [ip4][..tcp] [......10.0.2.15][50212] -> [...95.17.124.40][.6776] 

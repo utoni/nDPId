@@ -196,7 +196,7 @@
      DAEMON-EVENT: [Processed: 38 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 4 / 27|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 32]
               new: [....28] [ip4][..udp] [...168.144.64.5][62047] -> [..136.125.67.96][..443] 
-         detected: [....28] [ip4][..udp] [...168.144.64.5][62047] -> [..136.125.67.96][..443] [QUIC.Google][Google][Web][Acceptable][beacons4.gvt2.com]
+         detected: [....28] [ip4][..udp] [...168.144.64.5][62047] -> [..136.125.67.96][..443] [QUIC.Google][Unknown][Web][Acceptable][beacons4.gvt2.com]
                    RISK: Unidirectional Traffic
            update: [....25] [ip4][..udp] [...168.144.64.5][63736] -> [.213.188.47.247][..443] [QUIC.YouTube][Unknown][Media][Fun]
                    RISK: Unidirectional Traffic
@@ -210,7 +210,7 @@
                    RISK: Unidirectional Traffic
              idle: [....25] [ip4][..udp] [...168.144.64.5][63736] -> [.213.188.47.247][..443] [QUIC.YouTube][Unknown][Media][Fun]
                    RISK: Unidirectional Traffic
-             idle: [....28] [ip4][..udp] [...168.144.64.5][62047] -> [..136.125.67.96][..443] [QUIC.Google][Google][Web][Acceptable]
+             idle: [....28] [ip4][..udp] [...168.144.64.5][62047] -> [..136.125.67.96][..443] [QUIC.Google][Unknown][Web][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....27] [ip4][..udp] [...168.144.64.5][49324] -> [..35.194.157.47][..443] [QUIC.GoogleCloud][GoogleCloud][Advertisement][Acceptable]
                    RISK: Unidirectional Traffic

@@ -23,9 +23,9 @@
  detection-update: [.....5] [ip4][..udp] [....10.200.2.11][57632] -> [........8.8.8.8][...53] [DNS.PlayStore][Google][Network][Safe][android.clients.google.com]
               new: [.....6] [ip4][..udp] [....10.200.2.11][42790] -> [........8.8.8.8][...53] 
          detected: [.....6] [ip4][..udp] [....10.200.2.11][42790] -> [........8.8.8.8][...53] [DNS.Teams][Google][Network][Safe][_.teams.microsoft.com]
-                   RISK: Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
  detection-update: [.....6] [ip4][..udp] [....10.200.2.11][42790] -> [........8.8.8.8][...53] [DNS.Teams][Google][Network][Safe][_.teams.microsoft.com]
-                   RISK: Error Code
+                   RISK: Non-Printable/Invalid Chars Detected, Error Code
               new: [.....7] [ip4][..udp] [....10.200.2.11][44198] -> [........8.8.8.8][...53] 
          detected: [.....7] [ip4][..udp] [....10.200.2.11][44198] -> [........8.8.8.8][...53] [DNS.Google][Google][Network][Acceptable][wide-youtube.l.google.com]
                    RISK: Unidirectional Traffic
@@ -51,6 +51,6 @@
              idle: [.....8] [ip4][..udp] [....10.200.2.11][52541] -> [........8.8.8.8][...53] [DNS.AppleSiri][Google][Network][Acceptable]
              idle: [.....3] [ip4][..udp] [....10.200.2.11][57051] -> [........8.8.8.8][...53] [DNS.Teams][Google][Network][Safe]
              idle: [.....6] [ip4][..udp] [....10.200.2.11][42790] -> [........8.8.8.8][...53] [DNS.Teams][Google][Network][Safe]
-                   RISK: Error Code
+                   RISK: Non-Printable/Invalid Chars Detected, Error Code
              idle: [....10] [ip4][..udp] [....10.200.2.11][44883] -> [........8.8.8.8][...53] [DNS.Instagram][Google][Network][Fun]
      DAEMON-EVENT: shutdown

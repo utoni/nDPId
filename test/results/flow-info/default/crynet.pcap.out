@@ -23,8 +23,27 @@
               new: [.....4] [ip4][..udp] [..192.168.2.100][55645] -> [...78.159.98.94][28375] 
          detected: [.....4] [ip4][..udp] [..192.168.2.100][55645] -> [...78.159.98.94][28375] [CryNetwork][Unknown][Game][Fun]
                    RISK: Unidirectional Traffic
+             idle: [.....3] [ip4][..udp] [..192.168.2.100][56970] -> [..84.16.230.222][28665] [CryNetwork][Unknown][Game][Fun]
+                   RISK: Unidirectional Traffic
+     DAEMON-EVENT: [Processed: 60 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 1 / 4|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....5] [ip4][..udp] [..192.168.2.100][60751] -> [..84.16.248.143][30098] 
+         detected: [.....5] [ip4][..udp] [..192.168.2.100][60751] -> [..84.16.248.143][30098] [CryNetwork][Unknown][Game][Fun]
+                   RISK: Unidirectional Traffic
              idle: [.....4] [ip4][..udp] [..192.168.2.100][55645] -> [...78.159.98.94][28375] [CryNetwork][Unknown][Game][Fun]
                    RISK: Unidirectional Traffic
-             idle: [.....3] [ip4][..udp] [..192.168.2.100][56970] -> [..84.16.230.222][28665] [CryNetwork][Unknown][Game][Fun]
+              new: [.....6] [ip4][..udp] [..192.168.2.100][60224] -> [.78.159.106.139][28343] 
+         detected: [.....6] [ip4][..udp] [..192.168.2.100][60224] -> [.78.159.106.139][28343] [CryNetwork][Unknown][Game][Fun]
+                   RISK: Unidirectional Traffic
+             idle: [.....5] [ip4][..udp] [..192.168.2.100][60751] -> [..84.16.248.143][30098] [CryNetwork][Unknown][Game][Fun]
+                   RISK: Unidirectional Traffic
+     DAEMON-EVENT: [Processed: 90 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 1 / 6|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....7] [ip4][..udp] [..192.168.2.100][55460] -> [.78.159.118.143][21931] 
+         detected: [.....7] [ip4][..udp] [..192.168.2.100][55460] -> [.78.159.118.143][21931] [CryNetwork][Unknown][Game][Fun]
+                   RISK: Unidirectional Traffic
+             idle: [.....6] [ip4][..udp] [..192.168.2.100][60224] -> [.78.159.106.139][28343] [CryNetwork][Unknown][Game][Fun]
+                   RISK: Unidirectional Traffic
+             idle: [.....7] [ip4][..udp] [..192.168.2.100][55460] -> [.78.159.118.143][21931] [CryNetwork][Unknown][Game][Fun]
                    RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown
