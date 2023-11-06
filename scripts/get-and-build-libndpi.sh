@@ -32,7 +32,9 @@ if [ ! -z "${CC}" ]; then
 fi
 
 if [ ! -z "${MAKEFLAGS}" ]; then
-    MAKEFLAGS="-${MAKEFLAGS}"
+    case "$(uname -s)" in
+        Linux*) MAKEFLAGS="-${MAKEFLAGS}" ;;
+    esac
 fi
 
 cat <<EOF
@@ -102,7 +104,7 @@ MAKE_PROGRAM="${MAKE_PROGRAM:-make -j4}"
 HOST_ARG="--host=${HOST_TRIPLET}"
 ./autogen.sh --enable-option-checking=fatal \
     --prefix="/" \
-    --with-only-libndpi ${HOST_ARG} ${ADDITIONAL_ARGS}
+    --with-only-libndpi ${HOST_ARG} ${ADDITIONAL_ARGS} || { cat config.log | grep -v '^|'; false; }
 ${MAKE_PROGRAM} ${MAKEFLAGS} install DESTDIR="${DEST_INSTALL}"
 
 rm -f "${LOCKFILE}"

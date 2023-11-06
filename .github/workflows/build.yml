@@ -18,13 +18,17 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       CMAKE_C_COMPILER: ${{ matrix.compiler }}
-      CMAKE_C_FLAGS: -Werror
+      CMAKE_C_FLAGS: -Werror ${{ matrix.cflags }}
+      CMAKE_C_EXE_LINKER_FLAGS: ${{ matrix.ldflags }}
+      CMAKE_MODULE_LINKER_FLAGS: ${{ matrix.ldflags }}
     strategy:
       fail-fast: true
       matrix:
         include:
           - compiler: "gcc"
             os: "ubuntu-latest"
+            ndpi_build: "-DBUILD_NDPI=ON"
+            ndpid_examples: "-DBUILD_EXAMPLES=ON"
             ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
             ndpid_zlib: "-DENABLE_ZLIB=ON"
             sanitizer: "-DENABLE_SANITIZER=OFF -DENABLE_SANITIZER_THREAD=OFF"
@@ -35,6 +39,8 @@ jobs:
             ndpi_min_version: "4.8"
           - compiler: "gcc"
             os: "ubuntu-latest"
+            ndpi_build: "-DBUILD_NDPI=ON"
+            ndpid_examples: "-DBUILD_EXAMPLES=ON"
             ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=ON"
             ndpid_zlib: "-DENABLE_ZLIB=ON"
             sanitizer: "-DENABLE_SANITIZER=OFF -DENABLE_SANITIZER_THREAD=OFF"
@@ -45,6 +51,8 @@ jobs:
             ndpi_min_version: "4.8"
           - compiler: "clang"
             os: "ubuntu-latest"
+            ndpi_build: "-DBUILD_NDPI=ON"
+            ndpid_examples: "-DBUILD_EXAMPLES=ON"
             ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
             ndpid_zlib: "-DENABLE_ZLIB=OFF"
             sanitizer: "-DENABLE_SANITIZER=OFF -DENABLE_SANITIZER_THREAD=OFF"
@@ -55,6 +63,8 @@ jobs:
             ndpi_min_version: "4.8"
           - compiler: "gcc"
             os: "ubuntu-latest"
+            ndpi_build: "-DBUILD_NDPI=ON"
+            ndpid_examples: "-DBUILD_EXAMPLES=ON"
             ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
             ndpid_zlib: "-DENABLE_ZLIB=ON"
             sanitizer: "-DENABLE_SANITIZER=ON"
@@ -64,24 +74,30 @@ jobs:
             ndpi_min_version: "4.8"
           - compiler: "clang"
             os: "ubuntu-latest"
+            ndpi_build: "-DBUILD_NDPI=ON"
+            ndpid_examples: "-DBUILD_EXAMPLES=ON"
             ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
             ndpid_zlib: "-DENABLE_ZLIB=ON"
             sanitizer: "-DENABLE_SANITIZER=ON" 
-            coverage: "-DENABLE_COVERAGE=ON"
+            coverage: "-DENABLE_COVERAGE=OFF"
             poll: "-DFORCE_POLL=OFF"
             upload: false
             ndpi_min_version: "4.8"
           - compiler: "clang-12"
             os: "ubuntu-latest"
+            ndpi_build: "-DBUILD_NDPI=ON"
+            ndpid_examples: "-DBUILD_EXAMPLES=ON"
             ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
             ndpid_zlib: "-DENABLE_ZLIB=ON"
             sanitizer: "-DENABLE_SANITIZER_THREAD=ON"
-            coverage: "-DENABLE_COVERAGE=ON"
-            poll: "-DFORCE_POLL=OFF"
+            coverage: "-DENABLE_COVERAGE=OFF"
+            poll:
             upload: false
             ndpi_min_version: "4.8"
           - compiler: "gcc-10"
             os: "ubuntu-latest"
+            ndpi_build: "-DBUILD_NDPI=ON"
+            ndpid_examples: "-DBUILD_EXAMPLES=ON"
             ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
             ndpid_zlib: "-DENABLE_ZLIB=OFF"
             sanitizer: "-DENABLE_SANITIZER=ON"
@@ -91,11 +107,25 @@ jobs:
             ndpi_min_version: "4.8"
           - compiler: "gcc-7"
             os: "ubuntu-20.04"
+            ndpi_build: "-DBUILD_NDPI=ON"
+            ndpid_examples: "-DBUILD_EXAMPLES=ON"
             ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
             ndpid_zlib: "-DENABLE_ZLIB=ON"
             sanitizer: "-DENABLE_SANITIZER=ON"
             coverage: "-DENABLE_COVERAGE=OFF"
             poll: "-DFORCE_POLL=OFF"
+            upload: false
+            ndpi_min_version: "4.8"
+          - compiler: "cc"
+            os: "macOS-latest"
+            ndpi_build: "-DBUILD_NDPI=OFF"
+            ndpid_examples: "-DBUILD_EXAMPLES=OFF"
+            ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
+            ndpid_zlib: "-DENABLE_ZLIB=ON"
+            examples: "-DBUILD_EXAMPLES=OFF"
+            sanitizer: "-DENABLE_SANITIZER=OFF"
+            coverage: "-DENABLE_COVERAGE=OFF"
+            poll:
             upload: false
             ndpi_min_version: "4.8"
 
@@ -105,9 +135,13 @@ jobs:
           echo '----------------------------------------'
           echo '| OS.......: ${{ matrix.os }}'
           echo '| CC.......: ${{ matrix.compiler }}'
+          echo "| CFLAGS...: $CMAKE_C_FLAGS"
+          echo "| LDFLAGS..: $CMAKE_C_EXE_LINKER_FLAGS"
           echo '|---------------------------------------'
+          echo '| nDPI min.: ${{ matrix.ndpi_min_version }}'
           echo '| GCRYPT...: ${{ matrix.ndpid_gcrypt }}'
           echo '| ZLIB.....: ${{ matrix.ndpid_zlib }}'
+          echo '| ForcePoll: ${{ matrix.poll }}'
           echo '|---------------------------------------'
           echo '| SANITIZER: ${{ matrix.sanitizer }}'
           echo '| COVERAGE.: ${{ matrix.coverage }}'
@@ -118,6 +152,19 @@ jobs:
         with:
           submodules: false
           fetch-depth: 1
+      - name: Install MacOS Prerequisites
+        if: startsWith(matrix.os, 'macOS')
+        run: |
+          brew install coreutils flock automake make unzip
+          wget 'https://www.tcpdump.org/release/libpcap-1.10.4.tar.gz'
+          tar -xzvf libpcap-1.10.4.tar.gz
+          cd libpcap-1.10.4
+          ./configure && make install
+          cd ..
+          wget 'https://github.com/ntop/nDPI/archive/refs/heads/dev.zip' -O libndpi-dev.zip
+          unzip libndpi-dev.zip
+          cd nDPI-dev
+          ./autogen.sh --prefix=/usr/local --with-only-libndpi && make install
       - name: Install Ubuntu Prerequisites
         if: startsWith(matrix.os, 'ubuntu')
         run: |
@@ -139,13 +186,15 @@ jobs:
           test ${C_VAL} = ${PY_VAL}
       - name: Configure nDPId
         run: |
-          mkdir build && cd build
-          cmake .. -DENABLE_SYSTEMD=ON -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON ${{ matrix.poll }} ${{ matrix.coverage }} ${{ matrix.sanitizer }} ${{ matrix.ndpid_zlib }} ${{ matrix.ndpid_gcrypt }}
+          cmake -S . -B build -DCMAKE_C_COMPILER="$CMAKE_C_COMPILER" -DCMAKE_C_FLAGS="$CMAKE_C_FLAGS" -DCMAKE_MODULE_LINKER_FLAGS="$CMAKE_MODULE_LINKER_FLAGS" -DCMAKE_C_EXE_LINKER_FLAGS="$CMAKE_C_EXE_LINKER_FLAGS" \
+            -DENABLE_SYSTEMD=ON \
+            ${{ matrix.poll }} ${{ matrix.coverage }} ${{ matrix.sanitizer }} ${{ matrix.ndpi_build }} \
+            ${{ matrix.ndpid_examples }} ${{ matrix.ndpid_zlib }} ${{ matrix.ndpid_gcrypt }}
       - name: Build nDPId
         run: |
-          make -C build all VERBOSE=1
+          cmake --build build --verbose
       - name: Build single nDPId executable (invoke CC directly)
-        if: startsWith(matrix.coverage, '-DENABLE_COVERAGE=OFF') && startsWith(matrix.sanitizer, '-DENABLE_SANITIZER=ON') && startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=OFF') && startsWith(matrix.ndpid_zlib, '-DENABLE_ZLIB=ON')
+        if: (endsWith(matrix.compiler, 'gcc') || endsWith(matrix.compiler, 'clang')) && startsWith(matrix.coverage, '-DENABLE_COVERAGE=OFF') && startsWith(matrix.sanitizer, '-DENABLE_SANITIZER=ON') && startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=OFF') && startsWith(matrix.ndpid_zlib, '-DENABLE_ZLIB=ON')
         run: |
           cc -fsanitize=address -fsanitize=undefined -fno-sanitize=alignment -fsanitize=enum -fsanitize=leak nDPId.c nio.c utils.c -I./build/libnDPI/include/ndpi -I. -I./dependencies -I./dependencies/jsmn -I./dependencies/uthash/include -o /tmp/a.out -lpcap ./build/libnDPI/lib/libndpi.a -pthread -lm -lz
       - name: Test EXEC
@@ -154,10 +203,11 @@ jobs:
           ./build/nDPId -h || test $? -eq 1
           ./build/nDPIsrvd -h || test $? -eq 1
       - name: Test DIFF
-        if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=OFF')
+        if: startsWith(matrix.os, 'macOS') == false && startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=OFF')
         run: |
           ./test/run_tests.sh ./libnDPI ./build/nDPId-test
       - name: Daemon
+        if: endsWith(matrix.compiler, 'gcc') || endsWith(matrix.compiler, 'clang')
         run: |
           make -C ./build daemon VERBOSE=1
           make -C ./build daemon VERBOSE=1
@@ -166,20 +216,21 @@ jobs:
         run: |
           make -C ./build coverage
       - name: Dist
-        if: matrix.upload == false
+        if: startsWith(matrix.os, 'macOS') == false && matrix.upload == false
         run: |
           make -C ./build dist
       - name: CPack DEB
+        if: startsWith(matrix.os, 'macOS') == false
         run: |
           cd ./build && cpack -G DEB && sudo dpkg -i nDPId-*.deb && cd ..
       - name: Upload DEB
-        if: matrix.upload
+        if: startsWith(matrix.os, 'macOS') == false && matrix.upload
         uses: actions/upload-artifact@v3
         with:
           name: nDPId-debian-packages_${{ matrix.compiler }}${{ matrix.upload_suffix }}
           path: build/*.deb
-      - name: systemd test
-        if: startsWith(matrix.os, 'ubuntu-latest') && startsWith(matrix.compiler, 'gcc')
+      - name: Test systemd
+        if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.compiler, 'gcc')
         run: |
           ip -c address
           sudo systemctl daemon-reload
@@ -190,14 +241,22 @@ jobs:
           sudo systemctl show ndpisrvd.service ndpid@lo.service -p SubState,ActiveState || true
           journalctl --no-tail --no-pager -u ndpisrvd.service -u ndpid@lo.service
       - name: Build against libnDPI-${{ matrix.ndpi_min_version }}
-        if: matrix.upload == false
+        if: matrix.upload == false && startsWith(matrix.os, 'ubuntu')
         run: |
           mkdir build-local-ndpi && cd build-local-ndpi
           WGET_RET=0
           wget 'https://github.com/ntop/nDPI/archive/refs/tags/${{ matrix.ndpi_min_version }}.tar.gz' || { WGET_RET=$?; true; }
           echo "wget returned: ${WGET_RET}"
           test $WGET_RET -ne 8 || echo "::warning file=nDPId.c::New libnDPI release required to build against release tarball."
-          test $WGET_RET -ne 0 || { tar -xzvf ${{ matrix.ndpi_min_version }}.tar.gz && cd nDPI-${{ matrix.ndpi_min_version }} && ./autogen.sh --prefix=/usr --with-only-libndpi CC=${{ matrix.compiler }} CXX=false CFLAGS='-Werror' && sudo make install && cd .. ; }
-          test $WGET_RET -ne 0 || { echo "running cmake .."; cmake .. -DBUILD_EXAMPLES=ON -DBUILD_NDPI=OFF -DENABLE_SANITIZER=OFF ${{ matrix.poll }} ${{ matrix.coverage }} ${{ matrix.ndpi_min_version }} ; }
-          test $WGET_RET -ne 0 || { echo "running make .."; make all VERBOSE=1 ; }
+          test $WGET_RET -ne 0 || { tar -xzvf ${{ matrix.ndpi_min_version }}.tar.gz && \
+                cd nDPI-${{ matrix.ndpi_min_version }} && \
+                ./autogen.sh --prefix=/usr --with-only-libndpi CC="${{ matrix.compiler }}" CXX=false \
+                    CFLAGS="$CMAKE_C_FLAGS" && make && sudo make install; cd ..; }
+          test $WGET_RET -ne 0 || { echo "::info file=CMakeLists.txt::Running CMake.."; \
+                cmake -S .. -DCMAKE_C_COMPILER="$CMAKE_C_COMPILER" -DCMAKE_C_FLAGS="$CMAKE_C_FLAGS" \
+                    -DCMAKE_C_EXE_LINKER_FLAGS="$CMAKE_C_EXE_LINKER_FLAGS" \
+                    -DBUILD_NDPI=OFF -DENABLE_SANITIZER=OFF \
+                    ${{ matrix.poll }} ${{ matrix.coverage }} \
+                    ${{ matrix.ndpid_examples }}; }
+          test $WGET_RET -ne 0 || { echo "::info file=CMakeLists.txt:Running Make.."; cmake --build . --verbose; }
           test $WGET_RET -eq 0 -o $WGET_RET -eq 8

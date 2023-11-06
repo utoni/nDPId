@@ -27,7 +27,15 @@ if [ -r "${NROOT}/nDPId-${NSUFFIX}.pid" -o -r "${NROOT}/nDPIsrvd-${NSUFFIX}.pid"
 
     if [ x"${nDPId_PID}" != x ]; then
         sudo kill "${nDPId_PID}" 2>/dev/null || true
-        while ps -p "${nDPId_PID}" > /dev/null; do sleep 1; done
+
+        MAX_TRIES=10
+        while ps -p "${nDPId_PID}" > /dev/null; do
+            test ${MAX_TRIES} -gt 0 || break
+            sleep 1
+            MAX_TRIES=$((MAX_TRIES - 1))
+        done
+        test ${MAX_TRIES} -eq 0 && { RETVAL=1; printf '%s\n' 'Error: nDPId not started' >&2; }
+
         rm -f "${NROOT}/nDPId-${NSUFFIX}.pid"
     else
         printf '%s\n' "${1} not started .." >&2
@@ -36,7 +44,15 @@ if [ -r "${NROOT}/nDPId-${NSUFFIX}.pid" -o -r "${NROOT}/nDPIsrvd-${NSUFFIX}.pid"
 
     if [ x"${nDPIsrvd_PID}" != x ]; then
         kill "${nDPIsrvd_PID}" 2>/dev/null || true
-        while ps -p "${nDPIsrvd_PID}" > /dev/null; do sleep 1; done
+
+        MAX_TRIES=10
+        while ps -p "${nDPIsrvd_PID}" > /dev/null; do
+            test ${MAX_TRIES} -gt 0 || break
+            sleep 1
+            MAX_TRIES=$((MAX_TRIES - 1))
+        done
+        test ${MAX_TRIES} -eq 0 && { RETVAL=1; printf '%s\n' 'Error: nDPIsrvd not started' >&2; }
+
         rm -f "${NROOT}/nDPIsrvd-${NSUFFIX}.pid" "${NROOT}/nDPIsrvd-${NSUFFIX}-collector.sock" "${NROOT}/nDPIsrvd-${NSUFFIX}-distributor.sock"
     else
         printf '%s\n' "${2} not started .." >&2
@@ -54,14 +70,14 @@ else
         sleep 0.5
         MAX_TRIES=$((MAX_TRIES - 1))
     done
-    test ${MAX_TRIES} -eq 0 && RETVAL=1
+    test ${MAX_TRIES} -eq 0 && { RETVAL=1; printf '%s\n' 'Error: nDPIsrvd collector socket not available' >&2; }
 
     MAX_TRIES=10
     while [ ! -S "${NROOT}/nDPIsrvd-${NSUFFIX}-distributor.sock" -a ${MAX_TRIES} -gt 0 ]; do
         sleep 0.5
         MAX_TRIES=$((MAX_TRIES - 1))
     done
-    test ${MAX_TRIES} -eq 0 && RETVAL=1
+    test ${MAX_TRIES} -eq 0 && { RETVAL=1; printf '%s\n' 'Error: nDPIsrvd distributor socket not available' >&2; }
 
     sudo chgrp "$(id -n -g "${NUSER}")" "${NROOT}/nDPIsrvd-${NSUFFIX}-collector.sock"
     test $? -eq 0 || RETVAL=1

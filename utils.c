@@ -141,6 +141,7 @@ int is_path_absolute(char const * const prefix, char const * const path)
 int daemonize_with_pidfile(char const * const pidfile)
 {
     pid_str ps = {};
+    int nullfd;
 
     if (daemonize != 0)
     {
@@ -156,10 +157,42 @@ int daemonize_with_pidfile(char const * const pidfile)
             return 1;
         }
 
-        if (daemon(0, 0) != 0)
+        nullfd = open("/dev/null", O_NONBLOCK, O_WRONLY);
+        if (nullfd < 0 || dup2(nullfd, STDIN_FILENO) < 0 || dup2(nullfd, STDOUT_FILENO) < 0 ||
+            dup2(nullfd, STDERR_FILENO) < 0)
         {
-            logger_early(1, "daemon: %s", strerror(errno));
+            logger_early(1, "Opening /dev/null or replacing stdin/stdout/stderr failed: %s", strerror(errno));
             return 1;
+        }
+
+        // For compatiblity reasons, we use the UNIX double fork() technique.
+
+        switch (fork())
+        {
+            case 0:
+                break;
+            case -1:
+                logger_early(1, "Could not fork (first time): %s", strerror(errno));
+                return 1;
+            default:
+                exit(0);
+        }
+
+        if (chdir("/") < 0 || setsid() < 0)
+        {
+            logger_early(1, "chdir() / setsid() failed: %s", strerror(errno));
+            return 1;
+        }
+
+        switch (fork())
+        {
+            case 0:
+                break;
+            case -1:
+                logger_early(1, "Could not fork (second time): %s", strerror(errno));
+                return 1;
+            default:
+                exit(0);
         }
 
         if (create_pidfile(pidfile) != 0)
@@ -399,6 +432,17 @@ __attribute__((format(printf, 2, 3))) void logger_early(int is_error, char const
     va_end(ap);
 
     log_to_console = old_log_to_console;
+}
+
+int set_fd_cloexec(int fd)
+{
+    int flags = fcntl(fd, F_GETFD, 0);
+
+    if (flags < 0)
+    {
+        return -1;
+    }
+    return fcntl(fd, F_SETFD, FD_CLOEXEC);
 }
 
 char const * get_nDPId_version(void)
