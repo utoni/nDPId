@@ -92,7 +92,10 @@ static struct
     struct cmdarg group;
     nDPIsrvd_ull max_remote_descriptors;
     nDPIsrvd_ull max_write_buffers;
-    int bufferbloat_fallback_to_blocking;
+    uint8_t bufferbloat_fallback_to_blocking;
+#ifdef ENABLE_EPOLL
+    uint8_t use_poll;
+#endif
 } nDPIsrvd_options = {.pidfile = CMDARG(nDPIsrvd_PIDFILE),
                       .collector_un_sockpath = CMDARG(COLLECTOR_UNIX_SOCKET),
                       .distributor_un_sockpath = CMDARG(DISTRIBUTOR_UNIX_SOCKET),
@@ -796,6 +799,13 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
             case 'c':
                 set_cmdarg(&nDPIsrvd_options.collector_un_sockpath, optarg);
                 break;
+            case 'e':
+#ifdef ENABLE_EPOLL
+                nDPIsrvd_options.use_poll = 1;
+#else
+                logger_early(1, "%s", "nDPIsrvd was built w/o epoll() support, poll() is already the default");
+#endif
+                break;
             case 'd':
                 daemonize_enable();
                 break;
@@ -838,7 +848,7 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
             default:
                 fprintf(stderr, "%s\n", get_nDPId_version());
                 fprintf(stderr,
-                        "Usage: %s [-l] [-L logfile] [-c path-to-unix-sock] [-d] [-p pidfile]\n"
+                        "Usage: %s [-l] [-L logfile] [-c path-to-unix-sock] [-e] [-d] [-p pidfile]\n"
                         "\t[-s path-to-distributor-unix-socket] [-S distributor-host:port]\n"
                         "\t[-m max-remote-descriptors] [-u user] [-g group]\n"
                         "\t[-C max-buffered-json-lines] [-D]\n"
@@ -847,6 +857,8 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
                         "\t-L\tLog all messages to a log file.\n"
                         "\t-c\tPath to a listening UNIX socket (nDPIsrvd Collector).\n"
                         "\t  \tDefault: %s\n"
+                        "\t-e\tUse poll() instead of epoll().\n"
+                        "\t  \tDefault: epoll() on Linux, poll() otherwise\n"
                         "\t-d\tFork into background after initialization.\n"
                         "\t-p\tWrite the daemon PID to the given file path.\n"
                         "\t  \tDefault: %s\n"
@@ -1463,9 +1475,10 @@ static int mainloop(struct nio * const io)
 static int setup_event_queue(struct nio * const io)
 {
 #ifdef ENABLE_EPOLL
-    if (nio_use_epoll(io, 32) != NIO_SUCCESS)
+    if ((nDPIsrvd_options.use_poll == 0 && nio_use_epoll(io, 32) != NIO_SUCCESS)
+        || (nDPIsrvd_options.use_poll != 0 && nio_use_poll(io, nDPIsrvd_MAX_REMOTE_DESCRIPTORS) != NIO_SUCCESS))
 #else
-    if (nio_use_poll(io, 32) != NIO_SUCCESS)
+    if (nio_use_poll(io, nDPIsrvd_MAX_REMOTE_DESCRIPTORS) != NIO_SUCCESS)
 #endif
     {
         logger(1, "%s", "Event I/O poll/epoll setup failed");

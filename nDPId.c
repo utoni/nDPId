@@ -467,6 +467,9 @@ static struct
     uint8_t enable_zlib_compression;
 #endif
     uint8_t enable_data_analysis;
+#ifdef ENABLE_EPOLL
+    uint8_t use_poll;
+#endif
     /* subopts */
     unsigned long long int max_flows_per_thread;
     unsigned long long int max_idle_flows_per_thread;
@@ -4408,9 +4411,10 @@ static void run_pcap_loop(struct nDPId_reader_thread * const reader_thread)
             struct nio io;
             nio_init(&io);
 #ifdef ENABLE_EPOLL
-            if (nio_use_epoll(&io, 32) != 0)
+            if ((nDPId_options.use_poll == 0 && nio_use_epoll(&io, 32) != NIO_SUCCESS)
+                || (nDPId_options.use_poll != 0 && nio_use_poll(&io, nDPIsrvd_MAX_REMOTE_DESCRIPTORS) != NIO_SUCCESS))
 #else
-            if (nio_use_poll(&io, 32) != 0)
+            if (nio_use_poll(&io, nDPIsrvd_MAX_REMOTE_DESCRIPTORS) != NIO_SUCCESS)
 #endif
             {
                 logger(1, "%s", "Event I/O poll/epoll setup failed");
@@ -4908,7 +4912,7 @@ static void print_usage(char const * const arg0)
         "Usage: %s "
         "[-i pcap-file/interface] [-I] [-E] [-B bpf-filter]\n"
         "\t  \t"
-        "[-l] [-L logfile] [-c address] "
+        "[-l] [-L logfile] [-c address] [-e]"
         "[-d] [-p pidfile]\n"
         "\t  \t"
         "[-u user] [-g group] "
@@ -4929,6 +4933,8 @@ static void print_usage(char const * const arg0)
         "\t-L\tLog all messages to a log file.\n"
         "\t-c\tPath to a UNIX socket (nDPIsrvd Collector) or a custom UDP endpoint.\n"
         "\t  \tDefault: %s\n"
+        "\t-e\tUse poll() instead of epoll().\n"
+        "\t  \tDefault: epoll() on Linux, poll() otherwise\n"
         "\t-d\tFork into background after initialization.\n"
         "\t-p\tWrite the daemon PID to the given file path.\n"
         "\t  \tDefault: %s\n"
@@ -4990,7 +4996,7 @@ static int nDPId_parse_options(int argc, char ** argv)
 {
     int opt;
 
-    while ((opt = getopt(argc, argv, "i:IEB:lL:c:dp:u:g:P:C:J:S:a:Azo:vh")) != -1)
+    while ((opt = getopt(argc, argv, "i:IEB:lL:c:edp:u:g:P:C:J:S:a:Azo:vh")) != -1)
     {
         switch (opt)
         {
@@ -5017,6 +5023,13 @@ static int nDPId_parse_options(int argc, char ** argv)
                 break;
             case 'c':
                 set_cmdarg(&nDPId_options.collector_address, optarg);
+                break;
+            case 'e':
+#ifdef ENABLE_EPOLL
+                nDPId_options.use_poll = 1;
+#else
+                logger_early(1, "%s", "nDPId was built w/o epoll() support, poll() is already the default");
+#endif
                 break;
             case 'd':
                 daemonize_enable();

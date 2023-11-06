@@ -311,7 +311,7 @@ static void * nDPIsrvd_mainloop_thread(void * const arg)
 #ifdef ENABLE_EPOLL
     if (nio_use_epoll(&io, 32) != NIO_SUCCESS)
 #else
-    if (nio_use_poll(&io, 32) != NIO_SUCCESS)
+    if (nio_use_poll(&io, nDPIsrvd_MAX_REMOTE_DESCRIPTORS) != NIO_SUCCESS)
 #endif
     {
         logger(1, "%s", "Error creating nDPIsrvd poll/epoll event I/O");
