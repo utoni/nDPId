@@ -16,7 +16,6 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/epoll.h>
 #include <sys/ioctl.h>
 #include <sys/signalfd.h>
 #include <sys/un.h>
@@ -27,6 +26,7 @@
 
 #include "config.h"
 #include "nDPIsrvd.h"
+#include "nio.h"
 #include "utils.h"
 
 #ifndef UNIX_PATH_MAX
@@ -467,6 +467,9 @@ static struct
     uint8_t enable_zlib_compression;
 #endif
     uint8_t enable_data_analysis;
+#ifdef ENABLE_EPOLL
+    uint8_t use_poll;
+#endif
     /* subopts */
     unsigned long long int max_flows_per_thread;
     unsigned long long int max_idle_flows_per_thread;
@@ -4405,52 +4408,56 @@ static void run_pcap_loop(struct nDPId_reader_thread * const reader_thread)
                 return;
             }
 
-            int epoll_fd = epoll_create1(EPOLL_CLOEXEC);
-            if (epoll_fd < 0)
+            struct nio io;
+            nio_init(&io);
+#ifdef ENABLE_EPOLL
+            if ((nDPId_options.use_poll == 0 && nio_use_epoll(&io, 32) != NIO_SUCCESS)
+                || (nDPId_options.use_poll != 0 && nio_use_poll(&io, nDPIsrvd_MAX_REMOTE_DESCRIPTORS) != NIO_SUCCESS))
+#else
+            if (nio_use_poll(&io, nDPIsrvd_MAX_REMOTE_DESCRIPTORS) != NIO_SUCCESS)
+#endif
             {
-                logger(1, "Got an invalid epoll fd: %s", strerror(errno));
+                logger(1, "%s", "Event I/O poll/epoll setup failed");
                 MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
+                nio_free(&io);
                 return;
             }
 
-            struct epoll_event event = {};
-            event.events = EPOLLIN;
-
-            event.data.fd = pcap_fd;
-            if (epoll_ctl(epoll_fd, EPOLL_CTL_ADD, pcap_fd, &event) != 0)
+            errno = 0;
+            if (nio_add_fd(&io, pcap_fd, NIO_EVENT_INPUT, NULL) != NIO_SUCCESS)
             {
-                logger(1, "Could not add pcap fd %d to epoll fd %d: %s", pcap_fd, epoll_fd, strerror(errno));
+                logger(1,
+                       "Could not add pcap fd to event queue: %s",
+                       (errno != 0 ? strerror(errno) : "Internal Error"));
                 MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
+                nio_free(&io);
                 return;
             }
-            event.data.fd = signal_fd;
-            if (epoll_ctl(epoll_fd, EPOLL_CTL_ADD, signal_fd, &event) != 0)
+            errno = 0;
+            if (nio_add_fd(&io, signal_fd, NIO_EVENT_INPUT, NULL) != NIO_SUCCESS)
             {
-                logger(1, "Could not add signal fd %d to epoll fd %d: %s", signal_fd, epoll_fd, strerror(errno));
+                logger(1,
+                       "Could not add signal fd to event queue: %s",
+                       (errno != 0 ? strerror(errno) : "Internal Error"));
                 MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
+                nio_free(&io);
                 return;
             }
 
-            struct epoll_event events[32];
-            size_t const events_size = sizeof(events) / sizeof(events[0]);
             int const timeout_ms = 1000; /* TODO: Configurable? */
-            int nready;
             struct timeval tval_before_epoll, tval_after_epoll;
             while (MT_GET_AND_ADD(nDPId_main_thread_shutdown, 0) == 0 && processing_threads_error_or_eof() == 0)
             {
                 get_current_time(&tval_before_epoll);
                 errno = 0;
-                nready = epoll_wait(epoll_fd, events, events_size, timeout_ms);
-                if (errno != 0)
+                if (nio_run(&io, timeout_ms) != NIO_SUCCESS)
                 {
-                    if (errno == EINTR)
-                    {
-                        continue;
-                    }
-                    logger(1, "Epoll returned error: %s", strerror(errno));
+                    logger(1, "Event I/O returned error: %s", strerror(errno));
                     MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
                     break;
                 }
+
+                int nready = nio_get_nready(&io);
 
                 if (nready == 0)
                 {
@@ -4467,13 +4474,15 @@ static void run_pcap_loop(struct nDPId_reader_thread * const reader_thread)
 
                 for (int i = 0; i < nready; ++i)
                 {
-                    if ((events[i].events & EPOLLERR) != 0)
+                    if (nio_has_error(&io, i) == NIO_SUCCESS)
                     {
-                        logger(1, "%s", "Epoll error event");
+                        logger(1, "%s", "Event I/O error");
                         MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
                     }
 
-                    if (events[i].data.fd == signal_fd)
+                    int fd = nio_get_fd(&io, i);
+
+                    if (fd == signal_fd)
                     {
                         struct signalfd_siginfo fdsi;
                         if (read(signal_fd, &fdsi, sizeof(fdsi)) != sizeof(fdsi))
@@ -4504,7 +4513,7 @@ static void run_pcap_loop(struct nDPId_reader_thread * const reader_thread)
                             logger(1, "Received signal %d (%s)", fdsi.ssi_signo, signame);
                         }
                     }
-                    else if (events[i].data.fd == pcap_fd)
+                    else if (fd == pcap_fd)
                     {
                         switch (pcap_dispatch(
                             reader_thread->workflow->pcap_handle, -1, ndpi_process_packet, (uint8_t *)reader_thread))
@@ -4517,6 +4526,7 @@ static void run_pcap_loop(struct nDPId_reader_thread * const reader_thread)
                                 break;
                             case PCAP_ERROR_BREAK:
                                 MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
+                                nio_free(&io);
                                 return;
                             default:
                                 break;
@@ -4524,10 +4534,12 @@ static void run_pcap_loop(struct nDPId_reader_thread * const reader_thread)
                     }
                     else
                     {
-                        logger(1, "Unknown event data 0x%llx returned", (unsigned long long int)events[i].data.u64);
+                        logger(1, "Unknown event descriptor or data returned: %p", nio_get_ptr(&io, i));
                     }
                 }
             }
+
+            nio_free(&io);
         }
     }
 }
@@ -4900,7 +4912,7 @@ static void print_usage(char const * const arg0)
         "Usage: %s "
         "[-i pcap-file/interface] [-I] [-E] [-B bpf-filter]\n"
         "\t  \t"
-        "[-l] [-L logfile] [-c address] "
+        "[-l] [-L logfile] [-c address] [-e]"
         "[-d] [-p pidfile]\n"
         "\t  \t"
         "[-u user] [-g group] "
@@ -4921,6 +4933,8 @@ static void print_usage(char const * const arg0)
         "\t-L\tLog all messages to a log file.\n"
         "\t-c\tPath to a UNIX socket (nDPIsrvd Collector) or a custom UDP endpoint.\n"
         "\t  \tDefault: %s\n"
+        "\t-e\tUse poll() instead of epoll().\n"
+        "\t  \tDefault: epoll() on Linux, poll() otherwise\n"
         "\t-d\tFork into background after initialization.\n"
         "\t-p\tWrite the daemon PID to the given file path.\n"
         "\t  \tDefault: %s\n"
@@ -4982,7 +4996,7 @@ static int nDPId_parse_options(int argc, char ** argv)
 {
     int opt;
 
-    while ((opt = getopt(argc, argv, "i:IEB:lL:c:dp:u:g:P:C:J:S:a:Azo:vh")) != -1)
+    while ((opt = getopt(argc, argv, "i:IEB:lL:c:edp:u:g:P:C:J:S:a:Azo:vh")) != -1)
     {
         switch (opt)
         {
@@ -5009,6 +5023,13 @@ static int nDPId_parse_options(int argc, char ** argv)
                 break;
             case 'c':
                 set_cmdarg(&nDPId_options.collector_address, optarg);
+                break;
+            case 'e':
+#ifdef ENABLE_EPOLL
+                nDPId_options.use_poll = 1;
+#else
+                logger_early(1, "%s", "nDPId was built w/o epoll() support, poll() is already the default");
+#endif
                 break;
             case 'd':
                 daemonize_enable();
