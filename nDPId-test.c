@@ -627,9 +627,9 @@ static enum nDPIsrvd_callback_return distributor_json_callback(struct nDPIsrvd_s
                 goto callback_error;
             }
 
-            nDPIsrvd_ull pkt_id = 0ull;
+            nDPIsrvd_ull pkt_id = 0ULL;
             TOKEN_VALUE_TO_ULL(sock, packet_id, &pkt_id);
-            if (pkt_id == 0ull)
+            if (pkt_id == 0ULL)
             {
                 logger(1, "%s", "Missing packet id");
                 goto callback_error;

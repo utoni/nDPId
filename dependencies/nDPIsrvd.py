@@ -369,7 +369,7 @@ class nDPIsrvdSocket:
                 sys.stderr.write('Error while evaluating expression "{}"\n'.format(jf.filter_string))
                 raise err
 
-            if type(json_filter_retval) != bool:
+            if not isinstance(json_filter_retval, bool):
                 print()
                 sys.stderr.write('Error while evaluating expression "{}"\n'.format(jf.filter_string))
                 raise nDPIsrvdException('JSON Filter returned an invalid type: expected bool, got {}'.format(type(json_filter_retval)))

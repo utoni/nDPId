@@ -21,7 +21,7 @@ enum dbus_level
 
 static char const * const flow_severities[] = {"Low", "Medium", "High", "Severe", "Critical", "Emergency"};
 static char const * const flow_breeds[] = {
-    "Safe", "Acceptable", "Fun", "Unsafe", "Potentially Dangerous", "Tracker/Ads", "Dangerous", "Unrated", "???"};
+    "Safe", "Acceptable", "Fun", "Unsafe", "Potentially Dangerous", "Tracker\\/Ads", "Dangerous", "Unrated", "???"};
 static char const * const flow_categories[] = {"Unspecified",
                                                "Media",
                                                "VPN",

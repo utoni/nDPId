@@ -273,8 +273,7 @@ def plot_worker(shared_shutdown_event, shared_plot_queue):
         ys2 = []
         ys3 = []
         ys4 = []
-        x = 0
-        a = ani.FuncAnimation(fig, plot_animate, fargs=(shared_plot_queue, (ax1, ax2, ax3, ax4), xs, (ys1, ys2, ys3, ys4)), interval=1000, cache_frame_data=False)
+        ani.FuncAnimation(fig, plot_animate, fargs=(shared_plot_queue, (ax1, ax2, ax3, ax4), xs, (ys1, ys2, ys3, ys4)), interval=1000, cache_frame_data=False)
         plt.subplots_adjust(left=0.05, right=0.95, top=0.95, bottom=0.05)
         plt.margins(x=0, y=0)
         plt.show()

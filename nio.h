@@ -53,7 +53,7 @@ static inline int nio_get_nready(struct nio const * const io)
 
 int nio_check(struct nio * io, int index, int events);
 
-int nio_is_valid(struct nio * io, int index);
+int nio_is_valid(struct nio const * const io, int index);
 
 int nio_get_fd(struct nio * io, int index);
 

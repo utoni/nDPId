@@ -666,7 +666,8 @@ static void syslog_event(struct nDPIsrvd_socket * const sock,
     }
     if (src_port != NULL && dst_port != NULL)
     {
-        size_t src_port_len = 0, dst_port_len = 0;
+        size_t src_port_len = 0;
+        size_t dst_port_len = 0;
         char const * const tmp_src_port_str = TOKEN_GET_VALUE(sock, src_port, &src_port_len);
         char const * const tmp_dst_port_str = TOKEN_GET_VALUE(sock, dst_port, &dst_port_len);
         if (tmp_src_port_str != NULL && tmp_dst_port_str != NULL)
@@ -938,8 +939,8 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
                     syslog_event(sock, flow, "midstream");
             }
 
-            if ((flow_user->packets == NULL || flow_user->flow_max_packets == 0 ||
-                 utarray_len(flow_user->packets) == 0))
+            if (flow_user->packets == NULL || flow_user->flow_max_packets == 0 ||
+                utarray_len(flow_user->packets) == 0)
             {
                 if (logging_mode != 0)
                 {

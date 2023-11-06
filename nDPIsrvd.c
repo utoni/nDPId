@@ -384,6 +384,7 @@ static int drain_write_buffers(struct remote_desc * const remote)
         while ((written = write(remote->fd, buf->buf.ptr.raw + buf->written, buf->buf.used - buf->written)) < 0 &&
                errno == EINTR)
         {
+            // Retry if interrupted by a signal.
         }
         switch (written)
         {
@@ -447,7 +448,7 @@ static int handle_outgoing_data(struct nio * const io, struct remote_desc * cons
     }
     if (utarray_len(additional_write_buffers) == 0)
     {
-        struct nDPIsrvd_write_buffer * const write_buffer = get_write_buffer(remote);
+        struct nDPIsrvd_write_buffer const * const write_buffer = get_write_buffer(remote);
 
         if (write_buffer->buf.used == 0)
         {
@@ -1261,6 +1262,7 @@ static int handle_incoming_data(struct nio * const io, struct remote_desc * cons
                                   json_read_buffer->buf.max - json_read_buffer->buf.used)) < 0 &&
                errno == EINTR)
         {
+            // Retry if interrupted by a signal.
         }
         if (bytes_read < 0 || errno != 0)
         {

@@ -1,12 +1,11 @@
 FROM ubuntu:22.04 AS builder
 
 WORKDIR /root
-
-RUN env DEBIAN_FRONTEND=noninteractive apt-get -y update && apt-get install -y --no-install-recommends autoconf automake build-essential ca-certificates wget unzip git make cmake pkg-config libpcap-dev autoconf libtool
-RUN env DEBIAN_FRONTEND=noninteractive apt-get clean
-RUN env DEBIAN_FRONTEND=noninteractive apt-get autoclean
+RUN apt-get -y update && apt-get install -y --no-install-recommends autoconf automake build-essential ca-certificates wget unzip git make cmake pkg-config libpcap-dev autoconf libtool && apt-get clean
 RUN git clone https://github.com/utoni/nDPId.git
-RUN cd nDPId && mkdir -p build && cd build && cmake .. -DBUILD_NDPI=ON && make
+
+WORKDIR /root/nDPId
+RUN cmake -S . -B build -DBUILD_NDPI=ON && cmake --build build --verbose
 
 FROM ubuntu:22.04
 USER root
@@ -15,9 +14,7 @@ WORKDIR /
 COPY --from=builder /root/nDPId/build/nDPId /usr/sbin/nDPId
 COPY --from=builder /root/nDPId/build/nDPIsrvd /usr/bin/nDPIsrvd
 
-RUN env DEBIAN_FRONTEND=noninteractive apt-get -y update && apt-get install -y --no-install-recommends libpcap-dev
-RUN env DEBIAN_FRONTEND=noninteractive apt-get clean
-RUN env DEBIAN_FRONTEND=noninteractive apt-get autoclean
+RUN apt-get -y update && apt-get install -y --no-install-recommends libpcap-dev && apt-get clean
 
 USER nobody
 RUN /usr/bin/nDPIsrvd -h || { RC=$?; test ${RC} -eq 1; }

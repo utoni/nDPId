@@ -1560,8 +1560,12 @@ static int setup_reader_threads(void)
                              "Could not get netmask for pcap device %s: %s",
                              get_cmdarg(&nDPId_options.pcap_file_or_interface),
                              strerror(errno));
-            } else {
-                logger_early(1, "Unexpected error while retrieving netmask for pcap device %s", get_cmdarg(&nDPId_options.pcap_file_or_interface));
+            }
+            else
+            {
+                logger_early(1,
+                             "Unexpected error while retrieving netmask for pcap device %s",
+                             get_cmdarg(&nDPId_options.pcap_file_or_interface));
             }
             return 1;
         }
@@ -2661,15 +2665,13 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
                reader_thread->workflow->packets_captured,
                reader_thread->array_index);
     }
-    else if (base64_data_len > 0)
+    else if (base64_data_len > 0 &&
+             ndpi_serialize_string_binary(&workflow->ndpi_serializer, "pkt", base64_data, (uint16_t)base64_data_len) != 0)
     {
-        if (ndpi_serialize_string_binary(&workflow->ndpi_serializer, "pkt", base64_data, base64_data_len) != 0)
-        {
-            logger(1,
-                   "[%8llu, %zu] JSON serializing base64 packet buffer failed",
-                   reader_thread->workflow->packets_captured,
-                   reader_thread->array_index);
-        }
+        logger(1,
+               "[%8llu, %zu] JSON serializing base64 packet buffer failed",
+               reader_thread->workflow->packets_captured,
+               reader_thread->array_index);
     }
     serialize_and_send(reader_thread);
 }
@@ -4391,8 +4393,8 @@ static void run_pcap_loop(struct nDPId_reader_thread * const reader_thread)
             struct nio io;
             nio_init(&io);
 #ifdef ENABLE_EPOLL
-            if ((nDPId_options.use_poll == 0 && nio_use_epoll(&io, 32) != NIO_SUCCESS)
-                || (nDPId_options.use_poll != 0 && nio_use_poll(&io, nDPIsrvd_MAX_REMOTE_DESCRIPTORS) != NIO_SUCCESS))
+            if ((nDPId_options.use_poll == 0 && nio_use_epoll(&io, 32) != NIO_SUCCESS) ||
+                (nDPId_options.use_poll != 0 && nio_use_poll(&io, nDPIsrvd_MAX_REMOTE_DESCRIPTORS) != NIO_SUCCESS))
 #else
             if (nio_use_poll(&io, nDPIsrvd_MAX_REMOTE_DESCRIPTORS) != NIO_SUCCESS)
 #endif
