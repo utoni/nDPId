@@ -7,6 +7,8 @@
 #include "utstring.h"
 #include "utils.h"
 
+#define SLEEP_TIME_IN_S (3)
+
 struct flow_user_data
 {
     nDPIsrvd_ull detected_risks;
@@ -253,12 +255,20 @@ static enum nDPIsrvd_callback_return notifyd_json_callback(struct nDPIsrvd_socke
         }
 
         {
+            size_t flow_srcip_len = 0;
+            size_t flow_dstip_len = 0;
             size_t flow_breed_len = 0;
             size_t flow_category_len = 0;
+            size_t flow_hostname_len = 0;
+
+            char const * const flow_srcip = TOKEN_GET_VALUE(sock, TOKEN_GET_SZ(sock, "src_ip"), &flow_srcip_len);
+            char const * const flow_dstip = TOKEN_GET_VALUE(sock, TOKEN_GET_SZ(sock, "dst_ip"), &flow_dstip_len);
             char const * const flow_breed_str =
                 TOKEN_GET_VALUE(sock, TOKEN_GET_SZ(sock, "ndpi", "breed"), &flow_breed_len);
             char const * const flow_category_str =
                 TOKEN_GET_VALUE(sock, TOKEN_GET_SZ(sock, "ndpi", "category"), &flow_category_len);
+            char const * const flow_hostname =
+                TOKEN_GET_VALUE(sock, TOKEN_GET_SZ(sock, "ndpi", "hostname"), &flow_hostname_len);
 
             if (flow_breed_str != NULL && flow_breed_len != 0 && flow_category_str != NULL && flow_category_len != 0)
             {
@@ -276,7 +286,13 @@ static enum nDPIsrvd_callback_return notifyd_json_callback(struct nDPIsrvd_socke
                     notifyf(DBUS_CRITICAL,
                             "Flow Notification",
                             5000,
-                            "Breed: '%.*s', Category: '%.*s'\n%s",
+                            "%.*s -> %.*s (%.*s)\nBreed: '%.*s', Category: '%.*s'\n%s",
+                            (int)flow_srcip_len,
+                            flow_srcip,
+                            (int)flow_dstip_len,
+                            flow_dstip,
+                            (flow_hostname_len > 0 ? (int)flow_hostname_len : 1),
+                            (flow_hostname_len > 0 ? flow_hostname : "-"),
                             (int)flow_breed_len,
                             flow_breed_str,
                             (int)flow_category_len,
@@ -292,7 +308,17 @@ static enum nDPIsrvd_callback_return notifyd_json_callback(struct nDPIsrvd_socke
             }
             else if (desired_severity_found != 0)
             {
-                notifyf(DBUS_CRITICAL, "Risky Flow", 5000, "%s", utstring_body(&risks));
+                notifyf(DBUS_CRITICAL,
+                        "Risky Flow",
+                        5000,
+                        "%.*s -> %.*s (%.*s)\n%s",
+                        (int)flow_srcip_len,
+                        flow_srcip,
+                        (int)flow_dstip_len,
+                        flow_dstip,
+                        (flow_hostname_len > 0 ? (int)flow_hostname_len : 1),
+                        (flow_hostname_len > 0 ? flow_hostname : "-"),
+                        utstring_body(&risks));
             }
         }
 
@@ -547,6 +573,10 @@ int main(int argc, char ** argv)
     {
         if (nDPIsrvd_connect(sock) != CONNECT_OK)
         {
+            if (main_thread_shutdown != 0)
+            {
+                break;
+            }
             if (previous_connect_succeeded != 0)
             {
                 notifyf(DBUS_CRITICAL, "nDPIsrvd-notifyd", 3000, "nDPIsrvd socket connect to %s failed!", serv_optarg);
@@ -554,7 +584,7 @@ int main(int argc, char ** argv)
                 previous_connect_succeeded = 0;
             }
             nDPIsrvd_socket_close(sock);
-            sleep(1);
+            sleep(SLEEP_TIME_IN_S);
             continue;
         }
         previous_connect_succeeded = 1;
@@ -581,6 +611,8 @@ int main(int argc, char ** argv)
             }
             if (read_ret != READ_OK)
             {
+                notifyf(DBUS_CRITICAL, "nDPIsrvd-notifyd", 3000, "nDPIsrvd socket read from %s failed!", serv_optarg);
+                syslog(LOG_DAEMON | LOG_ERR, "nDPIsrvd socket read from %s failed!", serv_optarg);
                 break;
             }
 
@@ -598,6 +630,10 @@ int main(int argc, char ** argv)
 
         nDPIsrvd_socket_close(sock);
         notifyf(DBUS_NORMAL, "nDPIsrvd-notifyd", 3000, "Disconnected from '%s'.", serv_optarg);
+        if (main_thread_shutdown == 0)
+        {
+            sleep(SLEEP_TIME_IN_S);
+        }
     } while (main_thread_shutdown == 0);
 
 failure:
