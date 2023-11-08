@@ -14,11 +14,7 @@
          detected: [.....4] [ip4][..tcp] [....141.81.0.10][62717] -> [....141.81.0.23][44818] [EthernetIP][Unknown][Network][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..tcp] [....141.81.0.10][50275] -> [....141.81.0.83][44818] [EthernetIP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....4] [ip4][..tcp] [....141.81.0.10][62717] -> [....141.81.0.23][44818] [EthernetIP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..tcp] [....141.81.0.63][44818] -> [....141.81.0.10][52593] [EthernetIP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....3] [ip4][..tcp] [....141.81.0.10][52594] -> [....141.81.0.43][44818] [EthernetIP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

@@ -5,5 +5,4 @@
          detected: [.....1] [ip6][..udp] [2e4a:774d:26fd:7f9b:785b:2d1b:4f8a:63c7][50339] -> [3bcc:9991:faba:bae1:cd2a:e2fd:b3be:c5ab][..443] [QUIC][Unknown][Web][Acceptable][quic.aiortc.org]
                    RISK: Unidirectional Traffic
              idle: [.....1] [ip6][..udp] [2e4a:774d:26fd:7f9b:785b:2d1b:4f8a:63c7][50339] -> [3bcc:9991:faba:bae1:cd2a:e2fd:b3be:c5ab][..443] [QUIC][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

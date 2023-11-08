@@ -20,6 +20,7 @@
          detected: [.....2] [ip4][..tcp] [...10.200.3.125][57841] -> [.147.92.165.194][..443] [TLS][Line][Web][Safe]
                    RISK: Unidirectional Traffic
               new: [.....3] [ip4][..tcp] [...10.200.3.125][58160] -> [.147.92.242.232][..443] 
+ detection-update: [.....2] [ip4][..tcp] [...10.200.3.125][57841] -> [.147.92.165.194][..443] [TLS][Line][Web][Safe]
          detected: [.....3] [ip4][..tcp] [...10.200.3.125][58160] -> [.147.92.242.232][..443] [TLS.Line][Line][Chat][Acceptable][uts-front.line-apps.com]
                    RISK: TLS (probably) Not Carrying HTTPS
  detection-update: [.....3] [ip4][..tcp] [...10.200.3.125][58160] -> [.147.92.242.232][..443] [TLS.Line][Line][Chat][Acceptable][uts-front.line-apps.com]
@@ -47,7 +48,6 @@
                    [PKTLENS.....: 52,52,40,557,46,1500,1500,381,40,133,314,335,46,581,46,224,75,40,335,46,613,46,224,75,40,335,46,612,46,224,75,40]
                    [ENTROPIES...: 4.5,4.9,4.8,4.8,4.5,7.2,7.5,7.4,4.8,6.2,7.2,7.3,4.5,7.6,4.5,7.0,5.7,4.8,7.4,4.4,7.6,4.6,7.0,5.8,4.6,7.3,4.5,7.6,4.5,7.0,5.7,4.7]
              idle: [.....1] [ip4][..udp] [......10.0.2.15][50835] -> [125.209.252.210][20610] [LineCall][Line][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [.....4] [ip4][..udp] [...10.200.3.125][51161] -> [..147.92.169.90][29070] 
          detected: [.....4] [ip4][..udp] [...10.200.3.125][51161] -> [..147.92.169.90][29070] [LineCall][Line][VoIP][Acceptable]
                    RISK: Unidirectional Traffic
@@ -65,12 +65,9 @@
          detected: [.....5] [ip4][..udp] [...10.200.3.125][51170] -> [..147.92.169.90][29070] [LineCall][Line][VoIP][Acceptable]
                    RISK: Unidirectional Traffic
            update: [.....4] [ip4][..udp] [...10.200.3.125][51161] -> [..147.92.169.90][29070] [LineCall][Line][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..tcp] [...10.200.3.125][57841] -> [.147.92.165.194][..443] [TLS][Line][Web][Safe]
               end: [.....3] [ip4][..tcp] [...10.200.3.125][58160] -> [.147.92.242.232][..443] [TLS.Line][Line][Chat][Acceptable]
                    RISK: TLS (probably) Not Carrying HTTPS
              idle: [.....4] [ip4][..udp] [...10.200.3.125][51161] -> [..147.92.169.90][29070] [LineCall][Line][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....5] [ip4][..udp] [...10.200.3.125][51170] -> [..147.92.169.90][29070] [LineCall][Line][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

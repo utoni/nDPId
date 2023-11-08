@@ -19,7 +19,6 @@
          detected: [.....5] [ip4][..tcp] [.10.111.111.111][.5555] -> [.......10.0.0.1][.1433] [MsSQL-TDS][Unknown][Database][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..tcp] [.10.111.111.111][.1111] -> [.......10.0.0.1][.1433] [MsSQL-TDS][Unknown][Database][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [.....6] [ip4][..tcp] [.10.111.111.111][.6666] -> [.......10.0.0.1][.1433] [MIDSTREAM] 
               new: [.....7] [ip4][..tcp] [.10.111.111.111][.7777] -> [.......10.0.0.1][.1433] [MIDSTREAM] 
          detected: [.....7] [ip4][..tcp] [.10.111.111.111][.7777] -> [.......10.0.0.1][.1433] [MsSQL-TDS][Unknown][Database][Acceptable]
@@ -42,26 +41,16 @@
          detected: [....12] [ip4][..tcp] [.10.111.111.111][33333] -> [.......10.0.0.1][.1433] [MsSQL-TDS][Unknown][Database][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....10] [ip4][..tcp] [.10.111.111.111][11111] -> [.......10.0.0.1][.1433] [MsSQL-TDS][Unknown][Database][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....3] [ip4][..tcp] [.10.111.111.111][.3333] -> [.......10.0.0.1][.1433] [MsSQL-TDS][Unknown][Database][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....5] [ip4][..tcp] [.10.111.111.111][.5555] -> [.......10.0.0.1][.1433] [MsSQL-TDS][Unknown][Database][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....7] [ip4][..tcp] [.10.111.111.111][.7777] -> [.......10.0.0.1][.1433] [MsSQL-TDS][Unknown][Database][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....11] [ip4][..tcp] [.10.111.111.111][22222] -> [.......10.0.0.1][.1433] [MsSQL-TDS][Unknown][Database][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....9] [ip4][..tcp] [.10.111.111.111][.9999] -> [.......10.0.0.1][.1433] [MsSQL-TDS][Unknown][Database][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..tcp] [.10.111.111.111][.2222] -> [.......10.0.0.1][.1433] [MsSQL-TDS][Unknown][Database][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....4] [ip4][..tcp] [.10.111.111.111][.4444] -> [.......10.0.0.1][.1433] [MsSQL-TDS][Unknown][Database][Acceptable]
-                   RISK: Unidirectional Traffic
           guessed: [.....6] [ip4][..tcp] [.10.111.111.111][.6666] -> [.......10.0.0.1][.1433] [MsSQL-TDS][Unknown][Database][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [.....6] [ip4][..tcp] [.10.111.111.111][.6666] -> [.......10.0.0.1][.1433] 
              idle: [....12] [ip4][..tcp] [.10.111.111.111][33333] -> [.......10.0.0.1][.1433] [MsSQL-TDS][Unknown][Database][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....8] [ip4][..tcp] [.10.111.111.111][.8888] -> [.......10.0.0.1][.1433] [MsSQL-TDS][Unknown][Database][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

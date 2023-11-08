@@ -10,5 +10,6 @@
           guessed: [.....1] [ip4][..tcp] [..52.41.135.135][..443] -> [..192.168.26.22][51817] [TLS][AmazonAWS][Web][Safe]
                    RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..tcp] [..52.41.135.135][..443] -> [..192.168.26.22][51817] 
-             idle: [.....2] [ip4][..tcp] [..35.234.85.218][..443] -> [..192.168.26.22][51949] 
+             idle: [.....2] [ip4][..tcp] [..35.234.85.218][..443] -> [..192.168.26.22][51949] [TLS.RiotGames][GoogleCloud][Game][Fun]
+                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

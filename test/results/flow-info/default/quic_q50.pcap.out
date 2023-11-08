@@ -5,5 +5,4 @@
          detected: [.....1] [ip4][..udp] [248.144.129.147][39203] -> [184.151.193.237][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable][www.googletagmanager.com]
                    RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..udp] [248.144.129.147][39203] -> [184.151.193.237][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

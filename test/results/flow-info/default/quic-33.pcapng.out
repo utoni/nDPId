@@ -5,5 +5,5 @@
          detected: [.....1] [ip6][..udp] [....................................::1][51430] -> [....................................::1][.4443] [QUIC][Unknown][Web][Acceptable][]
                    RISK: Known Proto on Non Std Port, Missing SNI TLS Extn, Unidirectional Traffic, ALPN/SNI Mismatch
              idle: [.....1] [ip6][..udp] [....................................::1][51430] -> [....................................::1][.4443] [QUIC][Unknown][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, Missing SNI TLS Extn, Unidirectional Traffic, ALPN/SNI Mismatch
+                   RISK: Known Proto on Non Std Port, Missing SNI TLS Extn, ALPN/SNI Mismatch
      DAEMON-EVENT: shutdown

@@ -90,6 +90,8 @@
          detected: [....25] [ip4][..tcp] [..192.168.1.121][53428] -> [...52.98.163.18][..443] [TLS][Outlook][Web][Safe]
                    RISK: Unidirectional Traffic
  detection-update: [....23] [ip4][..udp] [..192.168.1.121][51998] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][235.33.22.2.in-addr.arpa]
+ detection-update: [....24] [ip4][..tcp] [..192.168.1.121][53429] -> [...52.98.163.18][..443] [TLS][Outlook][Web][Safe]
+ detection-update: [....25] [ip4][..tcp] [..192.168.1.121][53428] -> [...52.98.163.18][..443] [TLS][Outlook][Web][Safe]
           analyse: [....24] [ip4][..tcp] [..192.168.1.121][53429] -> [...52.98.163.18][..443] [TLS][Outlook][Web][Safe]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.067|    0.004|    0.014|        198.149|   1.700]
@@ -146,6 +148,7 @@
               new: [....35] [ip4][..tcp] [.130.211.33.145][..443] -> [..192.168.1.121][53432] [MIDSTREAM] 
          detected: [....35] [ip4][..tcp] [.130.211.33.145][..443] -> [..192.168.1.121][53432] [TLS][GoogleCloud][Web][Safe]
                    RISK: Unidirectional Traffic
+ detection-update: [....35] [ip4][..tcp] [.130.211.33.145][..443] -> [..192.168.1.121][53432] [TLS][GoogleCloud][Web][Safe]
              idle: [....11] [ip4][..udp] [..192.168.1.121][65492] -> [........8.8.8.8][...53] [DNS.Azure][Google][Network][Acceptable]
              idle: [.....8] [ip4][....2] [..192.168.1.139] -> [....224.0.0.251] [IGMP][Unknown][Network][Acceptable]
              idle: [.....7] [ip4][....2] [..192.168.1.139] -> [......224.0.0.2] [IGMP][Unknown][Network][Acceptable]
@@ -157,17 +160,13 @@
              idle: [.....9] [ip4][..udp] [..192.168.1.121][55567] -> [........8.8.8.8][...53] [DNS.Microsoft][Google][Network][Safe]
              idle: [....16] [ip4][..udp] [..192.168.1.121][55578] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable]
              idle: [....28] [ip4][..udp] [..192.168.1.121][50288] -> [..17.253.54.251][..123] [NTP][Apple][System][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....6] [ip4][..udp] [..192.168.1.121][.5353] -> [..192.168.1.139][.5353] [MDNS][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
-             idle: [.....4] [ip4][..udp] [..192.168.1.139][.5353] -> [....224.0.0.251][.5353] 
+             idle: [.....4] [ip4][..udp] [..192.168.1.139][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable]
              idle: [....10] [ip4][..udp] [..192.168.1.121][53884] -> [........8.8.8.8][...53] [DNS.Microsoft][Google][Network][Safe]
              idle: [....23] [ip4][..udp] [..192.168.1.121][51998] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable]
              idle: [....15] [ip4][..udp] [..192.168.1.121][58161] -> [........8.8.8.8][...53] [DNS.Microsoft][Google][Network][Safe]
              idle: [....34] [ip4][..udp] [..192.168.1.121][56865] -> [..17.253.54.251][..123] [NTP][Apple][System][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....31] [ip4][..udp] [..192.168.1.121][65099] -> [..17.253.54.251][..123] [NTP][Apple][System][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....3] [ip4][..udp] [..192.168.1.121][52251] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable]
                    RISK: Error Code
              idle: [....25] [ip4][..tcp] [..192.168.1.121][53428] -> [...52.98.163.18][..443] [TLS][Outlook][Web][Safe]
@@ -175,18 +174,25 @@
           guessed: [.....1] [ip4][..tcp] [..192.168.1.121][52746] -> [...52.149.21.60][..443] [TLS][Azure][Web][Safe]
              idle: [.....1] [ip4][..tcp] [..192.168.1.121][52746] -> [...52.149.21.60][..443] 
              idle: [....17] [ip4][..udp] [..192.168.1.121][54561] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable]
-              end: [....12] [ip4][..tcp] [..192.168.1.121][53910] -> [...40.113.10.47][..443] 
-              end: [....13] [ip4][..tcp] [..192.168.1.121][53911] -> [...40.113.10.47][..443] 
-              end: [....26] [ip4][..tcp] [..192.168.1.121][53914] -> [...40.113.10.47][..443] 
-              end: [....27] [ip4][..tcp] [..192.168.1.121][53915] -> [...40.113.10.47][..443] 
-              end: [....29] [ip4][..tcp] [..192.168.1.121][53916] -> [...40.113.10.47][..443] 
-              end: [....30] [ip4][..tcp] [..192.168.1.121][53917] -> [...40.113.10.47][..443] 
-              end: [....32] [ip4][..tcp] [..192.168.1.121][53918] -> [...40.113.10.47][..443] 
-              end: [....33] [ip4][..tcp] [..192.168.1.121][53919] -> [...40.113.10.47][..443] 
+              end: [....12] [ip4][..tcp] [..192.168.1.121][53910] -> [...40.113.10.47][..443] [TLS.Microsoft][Azure][Cloud][Safe]
+                   RISK: TLS Cert Validity Too Long
+              end: [....13] [ip4][..tcp] [..192.168.1.121][53911] -> [...40.113.10.47][..443] [TLS.Microsoft][Azure][Cloud][Safe]
+                   RISK: TLS Cert Validity Too Long
+              end: [....26] [ip4][..tcp] [..192.168.1.121][53914] -> [...40.113.10.47][..443] [TLS.Microsoft][Azure][Cloud][Safe]
+                   RISK: TLS Cert Validity Too Long
+              end: [....27] [ip4][..tcp] [..192.168.1.121][53915] -> [...40.113.10.47][..443] [TLS.Microsoft][Azure][Cloud][Safe]
+                   RISK: TLS Cert Validity Too Long
+              end: [....29] [ip4][..tcp] [..192.168.1.121][53916] -> [...40.113.10.47][..443] [TLS.Microsoft][Azure][Cloud][Safe]
+                   RISK: TLS Cert Validity Too Long
+              end: [....30] [ip4][..tcp] [..192.168.1.121][53917] -> [...40.113.10.47][..443] [TLS.Microsoft][Azure][Cloud][Safe]
+                   RISK: TLS Cert Validity Too Long
+              end: [....32] [ip4][..tcp] [..192.168.1.121][53918] -> [...40.113.10.47][..443] [TLS.Microsoft][Azure][Cloud][Safe]
+                   RISK: TLS Cert Validity Too Long
+              end: [....33] [ip4][..tcp] [..192.168.1.121][53919] -> [...40.113.10.47][..443] [TLS.Microsoft][Azure][Cloud][Safe]
+                   RISK: TLS Cert Validity Too Long
              idle: [....22] [ip4][..udp] [..192.168.1.121][49216] -> [..17.253.54.251][..123] [NTP][Apple][System][Acceptable]
-                   RISK: Unidirectional Traffic
-             idle: [....35] [ip4][..tcp] [.130.211.33.145][..443] -> [..192.168.1.121][53432] 
-             idle: [.....5] [ip6][..udp] [..............fe80::1059:a858:f9e7:cf94][.5353] -> [...............................ff02::fb][.5353] 
+             idle: [....35] [ip4][..tcp] [.130.211.33.145][..443] -> [..192.168.1.121][53432] [TLS][GoogleCloud][Web][Safe]
+             idle: [.....5] [ip6][..udp] [..............fe80::1059:a858:f9e7:cf94][.5353] -> [...............................ff02::fb][.5353] [MDNS][Unknown][Network][Acceptable]
               end: [....20] [ip4][..tcp] [..192.168.1.121][53905] -> [..140.82.113.26][..443] [TLS][Github][Web][Safe]
      not-detected: [.....2] [ip4][..tcp] [..192.168.1.121][52721] -> [..192.168.1.139][55367] [Unknown][Unknown][Unrated]
              idle: [.....2] [ip4][..tcp] [..192.168.1.121][52721] -> [..192.168.1.139][55367] 

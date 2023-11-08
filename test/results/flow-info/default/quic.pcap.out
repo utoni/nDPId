@@ -20,7 +20,6 @@
          detected: [.....2] [ip4][..udp] [.......10.0.0.4][40134] -> [.......10.0.0.3][.6121] [QUIC][Unknown][Web][Acceptable]
                    RISK: Known Proto on Non Std Port, Missing SNI TLS Extn, Unidirectional Traffic
              idle: [.....1] [ip4][..udp] [..192.168.1.109][57833] -> [.216.58.212.101][..443] [QUIC.GMail][Google][Email][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 419 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....3] [ip4][..udp] [..192.168.1.105][45669] -> [...172.217.16.4][..443] 
@@ -43,7 +42,7 @@
          detected: [.....9] [ip4][..udp] [..192.168.1.105][53817] -> [.216.58.210.225][..443] [QUIC.YouTube][Google][Media][Fun][yt3.ggpht.com]
                    RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..udp] [.......10.0.0.4][40134] -> [.......10.0.0.3][.6121] [QUIC][Unknown][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, Missing SNI TLS Extn, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port, Missing SNI TLS Extn
      DAEMON-EVENT: [Processed: 449 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 7 / 9|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [....10] [ip4][..udp] [..192.168.1.109][35236] -> [.216.58.210.206][..443] 
@@ -60,19 +59,12 @@
                    [PKTLENS.....: 1378,373,1378,1378,1378,369,65,68,1378,61,61,71,1378,1378,1174,68,65,1378,1378,68,1378,1378,1378,68,1378,68,1378,1378,1378,68,1378,1378]
                    [ENTROPIES...: 5.1,7.4,7.6,2.6,5.4,7.4,5.3,5.5,7.9,5.5,5.5,5.7,7.9,7.9,7.8,5.6,5.6,7.9,7.9,5.7,7.9,7.9,7.9,5.6,7.9,5.7,7.9,7.8,7.9,5.6,7.9,7.9]
              idle: [.....7] [ip4][..udp] [..192.168.1.105][40030] -> [.216.58.201.227][..443] [QUIC.Google][Google][Web][Acceptable]
-                   RISK: Unidirectional Traffic
           guessed: [.....4] [ip4][..udp] [..192.168.1.105][40461] -> [...172.217.16.3][..443] [QUIC][Google][Web][Acceptable]
              idle: [.....4] [ip4][..udp] [..192.168.1.105][40461] -> [...172.217.16.3][..443] 
              idle: [.....6] [ip4][..udp] [..192.168.1.105][48445] -> [.216.58.214.110][..443] [QUIC.YouTube][Google][Media][Fun]
-                   RISK: Unidirectional Traffic
              idle: [.....5] [ip4][..udp] [..192.168.1.105][34438] -> [.216.58.210.238][..443] [QUIC.YouTube][Google][Media][Fun]
-                   RISK: Unidirectional Traffic
              idle: [.....3] [ip4][..udp] [..192.168.1.105][45669] -> [...172.217.16.4][..443] [QUIC.Google][Google][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....10] [ip4][..udp] [..192.168.1.109][35236] -> [.216.58.210.206][..443] [QUIC.YouTube][Google][Media][Fun]
-                   RISK: Unidirectional Traffic
              idle: [.....9] [ip4][..udp] [..192.168.1.105][53817] -> [.216.58.210.225][..443] [QUIC.YouTube][Google][Media][Fun]
-                   RISK: Unidirectional Traffic
              idle: [.....8] [ip4][..udp] [..192.168.1.105][55934] -> [.216.58.201.238][..443] [QUIC.YouTube][Google][Media][Fun]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

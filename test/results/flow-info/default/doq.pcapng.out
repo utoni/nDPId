@@ -8,7 +8,6 @@
          detected: [.....2] [ip6][icmp6] [....................................::1] -> [....................................::1] [ICMPV6][Unknown][Network][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [.....2] [ip6][icmp6] [....................................::1] -> [....................................::1] [ICMPV6][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....1] [ip6][..udp] [....................................::1][47826] -> [....................................::1][..784] [QUIC.DoH_DoT][Unknown][Network][Acceptable]
-                   RISK: Missing SNI TLS Extn, Unidirectional Traffic
+                   RISK: Missing SNI TLS Extn
      DAEMON-EVENT: shutdown

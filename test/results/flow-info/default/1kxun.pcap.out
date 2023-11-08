@@ -209,6 +209,8 @@
               new: [....59] [ip4][..tcp] [...192.168.5.16][53624] -> [.68.233.253.133][...80] 
          detected: [....59] [ip4][..tcp] [...192.168.5.16][53624] -> [.68.233.253.133][...80] [HTTP][Unknown][Web][Acceptable][api.magicansoft.com]
               new: [....60] [ip6][..udp] [...............fe80::4e5e:cff:fe9a:ec54][.5678] -> [................................ff02::1][.5678] 
+ detection-update: [....59] [ip4][..tcp] [...192.168.5.16][53624] -> [.68.233.253.133][...80] [HTTP][Unknown][Web][Acceptable][api.magicansoft.com]
+                   RISK: Error Code
               new: [....61] [ip4][..tcp] [..192.168.115.8][49581] -> [.64.233.189.128][...80] [MIDSTREAM] 
               new: [....62] [ip6][..udp] [..............fe80::5d92:62a8:ebde:1319][63659] -> [..............................ff02::1:3][.5355] 
          detected: [....62] [ip6][..udp] [..............fe80::5d92:62a8:ebde:1319][63659] -> [..............................ff02::1:3][.5355] [LLMNR][Unknown][Network][Acceptable]
@@ -298,6 +300,7 @@
          detected: [...106] [ip4][..tcp] [...192.168.5.16][53580] -> [....31.13.87.36][..443] [TLS][Facebook][Web][Safe]
                    RISK: Unidirectional Traffic
               new: [...107] [ip4][..tcp] [...192.168.5.16][53626] -> [.192.168.115.75][..443] 
+ detection-update: [...106] [ip4][..tcp] [...192.168.5.16][53580] -> [....31.13.87.36][..443] [TLS][Facebook][Web][Safe]
          detected: [...107] [ip4][..tcp] [...192.168.5.16][53626] -> [.192.168.115.75][..443] [TLS][Unknown][Web][Safe][192.168.115.75]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, TLS (probably) Not Carrying HTTPS
  detection-update: [...107] [ip4][..tcp] [...192.168.5.16][53626] -> [.192.168.115.75][..443] [TLS][Unknown][Web][Safe][192.168.115.75]
@@ -317,6 +320,7 @@
               new: [...113] [ip4][..tcp] [.....31.13.87.1][..443] -> [...192.168.5.16][53578] [MIDSTREAM] 
          detected: [...113] [ip4][..tcp] [.....31.13.87.1][..443] -> [...192.168.5.16][53578] [TLS][Facebook][Web][Safe]
                    RISK: Unidirectional Traffic
+ detection-update: [...113] [ip4][..tcp] [.....31.13.87.1][..443] -> [...192.168.5.16][53578] [TLS][Facebook][Web][Safe]
               new: [...114] [ip6][..udp] [..............fe80::5d92:62a8:ebde:1319][61172] -> [..............................ff02::1:3][.5355] 
          detected: [...114] [ip6][..udp] [..............fe80::5d92:62a8:ebde:1319][61172] -> [..............................ff02::1:3][.5355] [LLMNR][Unknown][Network][Acceptable]
               new: [...115] [ip4][..udp] [..192.168.3.236][59730] -> [....224.0.0.252][.5355] 
@@ -390,7 +394,6 @@
            update: [....51] [ip4][..udp] [....192.168.5.9][55484] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable]
            update: [....50] [ip4][..udp] [.192.168.101.33][55485] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable]
            update: [....55] [ip4][..udp] [...192.168.5.16][...68] -> [..192.168.119.1][...67] [DHCP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....54] [ip4][..udp] [...192.168.5.49][51704] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable]
            update: [....35] [ip4][..udp] [...192.168.5.67][..138] -> [192.168.255.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous]
                    RISK: Unsafe Protocol
@@ -408,16 +411,22 @@
            update: [....33] [ip6][..udp] [..............fe80::e98f:bae2:19f7:6b0f][54888] -> [..............................ff02::1:3][.5355] [LLMNR][Unknown][Network][Acceptable]
                    RISK: Non-Printable/Invalid Chars Detected
      DAEMON-EVENT: [Processed: 1032 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 129 / 129|skipped: 0|!detected: 0|guessed: 0|detection-updates: 11|updates: 38]
+     DAEMON-EVENT: [Flows][active: 129 / 129|skipped: 0|!detected: 0|guessed: 0|detection-updates: 14|updates: 38]
               new: [...130] [ip4][..tcp] [..192.168.2.126][60962] -> [..172.104.93.92][.1234] [MIDSTREAM] 
          detected: [...130] [ip4][..tcp] [..192.168.2.126][60962] -> [..172.104.93.92][.1234] [HTTP.1kxun][Unknown][Streaming][Fun][ws.1kxun.mobi]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
+ detection-update: [...130] [ip4][..tcp] [..192.168.2.126][60962] -> [..172.104.93.92][.1234] [HTTP.1kxun][Unknown][Streaming][Fun][ws.1kxun.mobi]
+                   RISK: Known Proto on Non Std Port
               new: [...131] [ip4][..tcp] [..192.168.2.126][60972] -> [..172.104.93.92][.1234] [MIDSTREAM] 
          detected: [...131] [ip4][..tcp] [..192.168.2.126][60972] -> [..172.104.93.92][.1234] [HTTP.1kxun][Unknown][Streaming][Fun][ws.1kxun.mobi]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
+ detection-update: [...131] [ip4][..tcp] [..192.168.2.126][60972] -> [..172.104.93.92][.1234] [HTTP.1kxun][Unknown][Streaming][Fun][ws.1kxun.mobi]
+                   RISK: Known Proto on Non Std Port
               new: [...132] [ip4][..tcp] [..192.168.2.126][60984] -> [..172.104.93.92][.1234] [MIDSTREAM] 
          detected: [...132] [ip4][..tcp] [..192.168.2.126][60984] -> [..172.104.93.92][.1234] [HTTP.1kxun][Unknown][Streaming][Fun][ws.1kxun.mobi]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
+ detection-update: [...132] [ip4][..tcp] [..192.168.2.126][60984] -> [..172.104.93.92][.1234] [HTTP.1kxun][Unknown][Streaming][Fun][ws.1kxun.mobi]
+                   RISK: Known Proto on Non Std Port
               new: [...133] [ip4][..tcp] [..192.168.2.126][47230] -> [..161.117.13.29][...80] [MIDSTREAM] 
          detected: [...133] [ip4][..tcp] [..192.168.2.126][47230] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Streaming][Fun][kankan.1kxun.mobi]
                    RISK: Unidirectional Traffic
@@ -426,6 +435,7 @@
                    RISK: Unidirectional Traffic
  detection-update: [...133] [ip4][..tcp] [..192.168.2.126][47230] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Download][Fun][kankan.1kxun.mobi]
                    RISK: Binary App Transfer
+ detection-update: [...134] [ip4][..tcp] [..192.168.2.126][41134] -> [.129.226.107.77][...80] [HTTP.QQ][Tencent][Chat][Fun][cgi.connect.qq.com]
               new: [...135] [ip4][..tcp] [..192.168.2.126][47246] -> [..161.117.13.29][...80] [MIDSTREAM] 
          detected: [...135] [ip4][..tcp] [..192.168.2.126][47246] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Streaming][Fun][kankan.1kxun.com]
                    RISK: Unidirectional Traffic
@@ -450,8 +460,8 @@
              idle: [....51] [ip4][..udp] [....192.168.5.9][55484] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable]
              idle: [....50] [ip4][..udp] [.192.168.101.33][55485] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable]
              idle: [.....3] [ip4][..udp] [...192.168.5.44][51389] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable]
-             idle: [...113] [ip4][..tcp] [.....31.13.87.1][..443] -> [...192.168.5.16][53578] 
-             idle: [...106] [ip4][..tcp] [...192.168.5.16][53580] -> [....31.13.87.36][..443] 
+             idle: [...113] [ip4][..tcp] [.....31.13.87.1][..443] -> [...192.168.5.16][53578] [TLS][Facebook][Web][Safe]
+             idle: [...106] [ip4][..tcp] [...192.168.5.16][53580] -> [....31.13.87.36][..443] [TLS][Facebook][Web][Safe]
      not-detected: [....66] [ip6][..udp] [.......2001:b020:6::c2a0:bbff:fe73:eb57][62976] -> [................................ff02::1][62976] [Unknown][Unknown][Unrated]
              idle: [....66] [ip6][..udp] [.......2001:b020:6::c2a0:bbff:fe73:eb57][62976] -> [................................ff02::1][62976] 
      not-detected: [....23] [ip6][..udp] [..2001:b030:214:100:c2a0:bbff:fe73:eb47][62976] -> [................................ff02::1][62976] [Unknown][Unknown][Unrated]
@@ -470,7 +480,6 @@
              idle: [....94] [ip4][..udp] [..192.168.119.2][43786] -> [255.255.255.255][.5678] 
              idle: [....85] [ip4][..udp] [...192.168.5.50][50030] -> [....224.0.0.252][.5355] [LLMNR][Unknown][Network][Acceptable]
              idle: [....55] [ip4][..udp] [...192.168.5.16][...68] -> [..192.168.119.1][...67] [DHCP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....54] [ip4][..udp] [...192.168.5.49][51704] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable]
              idle: [.....2] [ip4][..udp] [...192.168.5.57][55809] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable]
              idle: [...103] [ip6][..udp] [...............fe80::9bd:81dd:2fdc:5750][64568] -> [..............................ff02::1:3][.5355] [LLMNR][Unknown][Network][Acceptable]
@@ -498,7 +507,7 @@
      not-detected: [....42] [ip4][..udp] [.192.168.10.110][60480] -> [255.255.255.255][62976] [Unknown][Unknown][Unrated]
              idle: [....42] [ip4][..udp] [.192.168.10.110][60480] -> [255.255.255.255][62976] 
              idle: [....73] [ip4][..udp] [...192.168.5.41][54470] -> [....224.0.0.252][.5355] [LLMNR][Unknown][Network][Acceptable]
-             idle: [....76] [ip4][..udp] [...192.168.5.64][.5353] -> [....224.0.0.251][.5353] 
+             idle: [....76] [ip4][..udp] [...192.168.5.64][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable]
              idle: [...102] [ip4][..udp] [...192.168.5.37][54506] -> [....224.0.0.252][.5355] [LLMNR][Unknown][Network][Acceptable]
              idle: [....12] [ip4][..udp] [...192.168.5.47][60267] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable]
              idle: [....67] [ip4][..udp] [...192.168.5.45][59789] -> [192.168.255.255][..137] [NetBIOS][Unknown][System][Acceptable]
@@ -583,7 +592,6 @@
      not-detected: [....60] [ip6][..udp] [...............fe80::4e5e:cff:fe9a:ec54][.5678] -> [................................ff02::1][.5678] [Unknown][Unknown][Unrated]
              idle: [....60] [ip6][..udp] [...............fe80::4e5e:cff:fe9a:ec54][.5678] -> [................................ff02::1][.5678] 
              idle: [...119] [ip4][..udp] [...192.168.5.16][..123] -> [..17.253.26.125][..123] [NTP][Apple][System][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....16] [ip4][..udp] [..192.168.115.8][52723] -> [........8.8.8.8][...53] [DNS.1kxun][Google][Network][Fun]
           guessed: [....57] [ip4][..tcp] [..192.168.115.8][49596] -> [..203.66.182.87][..443] [TLS][Unknown][Web][Safe]
              idle: [....57] [ip4][..tcp] [..192.168.115.8][49596] -> [..203.66.182.87][..443] 
@@ -604,18 +612,26 @@
              idle: [....86] [ip4][..udp] [.59.120.208.212][32768] -> [255.255.255.255][.1947] 
              idle: [...115] [ip4][..udp] [..192.168.3.236][59730] -> [....224.0.0.252][.5355] [LLMNR][Unknown][Network][Acceptable]
              idle: [....84] [ip6][..udp] [...............fe80::9bd:81dd:2fdc:5750][.1900] -> [................................ff02::c][.1900] [SSDP][Unknown][System][Acceptable]
+ detection-update: [...136] [ip4][..tcp] [..192.168.2.126][47262] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Streaming][Fun][kankan.1kxun.com]
+ detection-update: [...135] [ip4][..tcp] [..192.168.2.126][47246] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Streaming][Fun][kankan.1kxun.com]
               new: [...137] [ip4][..tcp] [..192.168.2.126][47272] -> [..161.117.13.29][...80] [MIDSTREAM] 
          detected: [...137] [ip4][..tcp] [..192.168.2.126][47272] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Streaming][Fun][messages.1kxun.mobi]
                    RISK: Unidirectional Traffic
               new: [...138] [ip4][..tcp] [..192.168.2.126][38834] -> [..119.45.78.184][...80] [MIDSTREAM] 
          detected: [...138] [ip4][..tcp] [..192.168.2.126][38834] -> [..119.45.78.184][...80] [HTTP.QQ][Tencent][Chat][Fun][pingma.qq.com]
                    RISK: HTTP Susp User-Agent, Unidirectional Traffic
+ detection-update: [...137] [ip4][..tcp] [..192.168.2.126][47272] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Streaming][Fun][messages.1kxun.mobi]
+ detection-update: [...138] [ip4][..tcp] [..192.168.2.126][38834] -> [..119.45.78.184][...80] [HTTP.QQ][Tencent][Chat][Fun][pingma.qq.com]
+                   RISK: HTTP Susp User-Agent, Error Code
               new: [...139] [ip4][..tcp] [..192.168.2.126][60148] -> [.172.105.121.82][...80] [MIDSTREAM] 
          detected: [...139] [ip4][..tcp] [..192.168.2.126][60148] -> [.172.105.121.82][...80] [HTTP.1kxun][Unknown][Streaming][Fun][pic.1kxun.com]
                    RISK: Unidirectional Traffic
+ detection-update: [...139] [ip4][..tcp] [..192.168.2.126][60148] -> [.172.105.121.82][...80] [HTTP.1kxun][Unknown][Streaming][Fun][pic.1kxun.com]
               new: [...140] [ip4][..tcp] [..192.168.2.126][49242] -> [.172.104.119.80][...80] [MIDSTREAM] 
          detected: [...140] [ip4][..tcp] [..192.168.2.126][49242] -> [.172.104.119.80][...80] [HTTP.1kxun][Unknown][Streaming][Fun][android.yingshi.tcclick.1kxun.com]
                    RISK: Unidirectional Traffic
+ detection-update: [...140] [ip4][..tcp] [..192.168.2.126][49242] -> [.172.104.119.80][...80] [HTTP.1kxun][Unknown][Streaming][Fun][android.yingshi.tcclick.1kxun.com]
+                   RISK: Error Code
               new: [...141] [ip4][..tcp] [..192.168.2.126][46184] -> [.172.105.121.82][...80] [MIDSTREAM] 
          detected: [...141] [ip4][..tcp] [..192.168.2.126][46184] -> [.172.105.121.82][...80] [HTTP.1kxun][Unknown][Streaming][Fun][pic.1kxun.com]
                    RISK: Unidirectional Traffic
@@ -628,6 +644,10 @@
               new: [...144] [ip4][..tcp] [..192.168.2.126][46212] -> [.172.105.121.82][...80] [MIDSTREAM] 
          detected: [...144] [ip4][..tcp] [..192.168.2.126][46212] -> [.172.105.121.82][...80] [HTTP.1kxun][Unknown][Streaming][Fun][pic.1kxun.com]
                    RISK: Unidirectional Traffic
+ detection-update: [...141] [ip4][..tcp] [..192.168.2.126][46184] -> [.172.105.121.82][...80] [HTTP.1kxun][Unknown][Streaming][Fun][pic.1kxun.com]
+ detection-update: [...144] [ip4][..tcp] [..192.168.2.126][46212] -> [.172.105.121.82][...80] [HTTP.1kxun][Unknown][Streaming][Fun][pic.1kxun.com]
+ detection-update: [...142] [ip4][..tcp] [..192.168.2.126][46170] -> [.172.105.121.82][...80] [HTTP.1kxun][Unknown][Streaming][Fun][pic.1kxun.com]
+ detection-update: [...143] [ip4][..tcp] [..192.168.2.126][46200] -> [.172.105.121.82][...80] [HTTP.1kxun][Unknown][Streaming][Fun][pic.1kxun.com]
           analyse: [...142] [ip4][..tcp] [..192.168.2.126][46170] -> [.172.105.121.82][...80] [HTTP.1kxun][Unknown][Streaming][Fun]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.895|    0.069|    0.184|      33990.969|   2.200]
@@ -641,9 +661,11 @@
               new: [...145] [ip4][..tcp] [..192.168.2.126][35200] -> [...103.29.71.30][...80] [MIDSTREAM] 
          detected: [...145] [ip4][..tcp] [..192.168.2.126][35200] -> [...103.29.71.30][...80] [HTTP.1kxun][Unknown][Streaming][Fun][release.bigdata.1kxun.com]
                    RISK: Unidirectional Traffic
+ detection-update: [...145] [ip4][..tcp] [..192.168.2.126][35200] -> [...103.29.71.30][...80] [HTTP.1kxun][Unknown][Streaming][Fun][release.bigdata.1kxun.com]
               new: [...146] [ip4][..tcp] [..192.168.2.126][45380] -> [..161.117.13.29][...80] [MIDSTREAM] 
          detected: [...146] [ip4][..tcp] [..192.168.2.126][45380] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Streaming][Fun][mangaweb.1kxun.mobi]
                    RISK: Unidirectional Traffic
+ detection-update: [...146] [ip4][..tcp] [..192.168.2.126][45380] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Streaming][Fun][mangaweb.1kxun.mobi]
               new: [...147] [ip4][..tcp] [..192.168.2.126][45388] -> [..161.117.13.29][...80] [MIDSTREAM] 
          detected: [...147] [ip4][..tcp] [..192.168.2.126][45388] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Streaming][Fun][mangaweb.1kxun.mobi]
                    RISK: Unidirectional Traffic
@@ -662,9 +684,16 @@
               new: [...152] [ip4][..tcp] [..192.168.2.126][45424] -> [..161.117.13.29][...80] [MIDSTREAM] 
          detected: [...152] [ip4][..tcp] [..192.168.2.126][45424] -> [..161.117.13.29][...80] [HTTP][Alibaba][Streaming][Acceptable][tcad.wedolook.com]
                    RISK: Unidirectional Traffic
+ detection-update: [...147] [ip4][..tcp] [..192.168.2.126][45388] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Streaming][Fun][mangaweb.1kxun.mobi]
+ detection-update: [...148] [ip4][..tcp] [..192.168.2.126][45398] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Streaming][Fun][mangaweb.1kxun.mobi]
+ detection-update: [...149] [ip4][..tcp] [..192.168.2.126][45414] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Streaming][Fun][mangaweb.1kxun.mobi]
+ detection-update: [...151] [ip4][..tcp] [..192.168.2.126][45422] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Streaming][Fun][mangaweb.1kxun.mobi]
+ detection-update: [...150] [ip4][..tcp] [..192.168.2.126][45416] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Streaming][Fun][mangaweb.1kxun.mobi]
+ detection-update: [...152] [ip4][..tcp] [..192.168.2.126][45424] -> [..161.117.13.29][...80] [HTTP][Alibaba][Streaming][Acceptable][tcad.wedolook.com]
               new: [...153] [ip4][..tcp] [..192.168.2.126][41390] -> [....18.64.79.37][...80] [MIDSTREAM] 
          detected: [...153] [ip4][..tcp] [..192.168.2.126][41390] -> [....18.64.79.37][...80] [HTTP.Google][AmazonAWS][Web][Acceptable][google.open-js.com]
                    RISK: Unidirectional Traffic
+ detection-update: [...153] [ip4][..tcp] [..192.168.2.126][41390] -> [....18.64.79.37][...80] [HTTP.Google][AmazonAWS][Web][Acceptable][google.open-js.com]
           analyse: [...146] [ip4][..tcp] [..192.168.2.126][45380] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Streaming][Fun]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.409|    0.085|    0.132|      17528.007|   3.300]
@@ -681,12 +710,15 @@
               new: [...155] [ip4][..tcp] [..192.168.2.126][38354] -> [.142.250.186.34][...80] [MIDSTREAM] 
          detected: [...155] [ip4][..tcp] [..192.168.2.126][38354] -> [.142.250.186.34][...80] [HTTP.Google][Google][Advertisement][Acceptable][pagead2.googlesyndication.com]
                    RISK: Unidirectional Traffic
+ detection-update: [...155] [ip4][..tcp] [..192.168.2.126][38354] -> [.142.250.186.34][...80] [HTTP.Google][Google][Advertisement][Acceptable][pagead2.googlesyndication.com]
               new: [...156] [ip4][..tcp] [..192.168.2.126][36732] -> [142.250.186.174][...80] [MIDSTREAM] 
          detected: [...156] [ip4][..tcp] [..192.168.2.126][36732] -> [142.250.186.174][...80] [HTTP.Google][Google][Advertisement][Acceptable][www.google-analytics.com]
                    RISK: Unidirectional Traffic
+ detection-update: [...156] [ip4][..tcp] [..192.168.2.126][36732] -> [142.250.186.174][...80] [HTTP.Google][Google][Advertisement][Acceptable][www.google-analytics.com]
               new: [...157] [ip4][..tcp] [..192.168.2.126][49354] -> [.14.136.136.108][...80] [MIDSTREAM] 
          detected: [...157] [ip4][..tcp] [..192.168.2.126][49354] -> [.14.136.136.108][...80] [HTTP.1kxun][Unknown][Streaming][Fun][hkbn.content.1kxun.com]
                    RISK: Unidirectional Traffic
+ detection-update: [...157] [ip4][..tcp] [..192.168.2.126][49354] -> [.14.136.136.108][...80] [HTTP.1kxun][Unknown][Streaming][Fun][hkbn.content.1kxun.com]
               new: [...158] [ip4][..tcp] [..192.168.2.126][49372] -> [.14.136.136.108][...80] [MIDSTREAM] 
          detected: [...158] [ip4][..tcp] [..192.168.2.126][49372] -> [.14.136.136.108][...80] [HTTP.1kxun][Unknown][Streaming][Fun][hkbn.content.1kxun.com]
                    RISK: Unidirectional Traffic
@@ -702,6 +734,11 @@
               new: [...162] [ip4][..tcp] [..192.168.2.126][49396] -> [.14.136.136.108][...80] [MIDSTREAM] 
          detected: [...162] [ip4][..tcp] [..192.168.2.126][49396] -> [.14.136.136.108][...80] [HTTP.1kxun][Unknown][Streaming][Fun][hkbn.content.1kxun.com]
                    RISK: Unidirectional Traffic
+ detection-update: [...158] [ip4][..tcp] [..192.168.2.126][49372] -> [.14.136.136.108][...80] [HTTP.1kxun][Unknown][Streaming][Fun][hkbn.content.1kxun.com]
+ detection-update: [...161] [ip4][..tcp] [..192.168.2.126][49412] -> [.14.136.136.108][...80] [HTTP.1kxun][Unknown][Streaming][Fun][hkbn.content.1kxun.com]
+ detection-update: [...159] [ip4][..tcp] [..192.168.2.126][49370] -> [.14.136.136.108][...80] [HTTP.1kxun][Unknown][Streaming][Fun][hkbn.content.1kxun.com]
+ detection-update: [...162] [ip4][..tcp] [..192.168.2.126][49396] -> [.14.136.136.108][...80] [HTTP.1kxun][Unknown][Streaming][Fun][hkbn.content.1kxun.com]
+ detection-update: [...160] [ip4][..tcp] [..192.168.2.126][49380] -> [.14.136.136.108][...80] [HTTP.1kxun][Unknown][Streaming][Fun][hkbn.content.1kxun.com]
           analyse: [...160] [ip4][..tcp] [..192.168.2.126][49380] -> [.14.136.136.108][...80] [HTTP.1kxun][Unknown][Streaming][Fun]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.887|    0.071|    0.171|      29312.068|   2.600]
@@ -725,6 +762,7 @@
               new: [...163] [ip4][..tcp] [..192.168.2.126][44368] -> [..172.217.18.98][...80] [MIDSTREAM] 
          detected: [...163] [ip4][..tcp] [..192.168.2.126][44368] -> [..172.217.18.98][...80] [HTTP.GoogleServices][Google][Web][Acceptable][www.googletagservices.com]
                    RISK: Unidirectional Traffic
+ detection-update: [...163] [ip4][..tcp] [..192.168.2.126][44368] -> [..172.217.18.98][...80] [HTTP.GoogleServices][Google][Web][Acceptable][www.googletagservices.com]
               new: [...164] [ip4][..tcp] [..192.168.2.126][50140] -> [..161.117.13.29][...80] [MIDSTREAM] 
          detected: [...164] [ip4][..tcp] [..192.168.2.126][50140] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Streaming][Fun][mangaweb.1kxun.mobi]
                    RISK: Unidirectional Traffic
@@ -740,6 +778,7 @@
               new: [...168] [ip4][..tcp] [..192.168.2.126][50176] -> [..161.117.13.29][...80] [MIDSTREAM] 
          detected: [...168] [ip4][..tcp] [..192.168.2.126][50176] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Streaming][Fun][mangaweb.1kxun.mobi]
                    RISK: Unidirectional Traffic
+ detection-update: [...164] [ip4][..tcp] [..192.168.2.126][50140] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Streaming][Fun][mangaweb.1kxun.mobi]
           analyse: [...150] [ip4][..tcp] [..192.168.2.126][45416] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Streaming][Fun]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    6.045|    1.047|    1.982|    3926937.043|   3.000]
@@ -750,6 +789,10 @@
                    [IATS(ms)....: 188.5,0.0,1.4,179.4,1.4,0.7,0.4,2.4,0.7,270.1,0.1,0.0,0.6,0.0,3892.8,3428.9,186.1,186.3,192.6,209.0,367.2,352.3,5253.8,5339.0,3.6,6045.0,5959.1,0.4,0.5,194.9,189.4]
                    [PKTLENS.....: 486,2932,2932,8692,2932,7252,1492,1492,14452,1492,2932,2932,7252,7252,4078,803,695,805,1511,807,1401,803,1516,1065,2932,1130,1155,1492,1492,1575,1166,1083]
                    [ENTROPIES...: 5.9,7.8,7.9,8.0,7.9,8.0,7.9,7.9,8.0,7.9,7.9,7.9,8.0,8.0,8.0,5.9,6.4,5.9,7.5,5.9,6.2,5.9,6.5,5.8,6.5,6.8,5.8,6.4,7.8,7.9,5.8,6.9]
+ detection-update: [...165] [ip4][..tcp] [..192.168.2.126][50148] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Streaming][Fun][mangaweb.1kxun.mobi]
+ detection-update: [...166] [ip4][..tcp] [..192.168.2.126][50164] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Streaming][Fun][mangaweb.1kxun.mobi]
+ detection-update: [...167] [ip4][..tcp] [..192.168.2.126][50166] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Streaming][Fun][mangaweb.1kxun.mobi]
+ detection-update: [...168] [ip4][..tcp] [..192.168.2.126][50176] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Streaming][Fun][mangaweb.1kxun.mobi]
               new: [...169] [ip4][..tcp] [..192.168.2.126][38326] -> [.172.105.121.82][...80] [MIDSTREAM] 
          detected: [...169] [ip4][..tcp] [..192.168.2.126][38326] -> [.172.105.121.82][...80] [HTTP.1kxun][Unknown][Streaming][Fun][pic.1kxun.com]
                    RISK: Unidirectional Traffic
@@ -759,9 +802,13 @@
               new: [...171] [ip4][..tcp] [..192.168.2.126][38316] -> [.172.105.121.82][...80] [MIDSTREAM] 
          detected: [...171] [ip4][..tcp] [..192.168.2.126][38316] -> [.172.105.121.82][...80] [HTTP.1kxun][Unknown][Streaming][Fun][pic.1kxun.com]
                    RISK: Unidirectional Traffic
+ detection-update: [...169] [ip4][..tcp] [..192.168.2.126][38326] -> [.172.105.121.82][...80] [HTTP.1kxun][Unknown][Streaming][Fun][pic.1kxun.com]
+ detection-update: [...170] [ip4][..tcp] [..192.168.2.126][38314] -> [.172.105.121.82][...80] [HTTP.1kxun][Unknown][Streaming][Fun][pic.1kxun.com]
+ detection-update: [...171] [ip4][..tcp] [..192.168.2.126][38316] -> [.172.105.121.82][...80] [HTTP.1kxun][Unknown][Streaming][Fun][pic.1kxun.com]
               new: [...172] [ip4][..tcp] [..192.168.2.126][59324] -> [.104.117.221.10][...80] [MIDSTREAM] 
          detected: [...172] [ip4][..tcp] [..192.168.2.126][59324] -> [.104.117.221.10][...80] [HTTP][Unknown][Web][Acceptable][m.vpon.com]
                    RISK: Unidirectional Traffic
+ detection-update: [...172] [ip4][..tcp] [..192.168.2.126][59324] -> [.104.117.221.10][...80] [HTTP][Unknown][Web][Acceptable][m.vpon.com]
               new: [...173] [ip4][..tcp] [..192.168.2.126][56094] -> [....3.72.69.158][...80] [MIDSTREAM] 
          detected: [...173] [ip4][..tcp] [..192.168.2.126][56094] -> [....3.72.69.158][...80] [HTTP][AmazonAWS][Web][Acceptable][setting.rayjump.com]
                    RISK: Unidirectional Traffic
@@ -771,18 +818,24 @@
               new: [...175] [ip4][..tcp] [..192.168.2.126][56096] -> [....3.72.69.158][...80] [MIDSTREAM] 
          detected: [...175] [ip4][..tcp] [..192.168.2.126][56096] -> [....3.72.69.158][...80] [HTTP][AmazonAWS][Web][Acceptable][setting.rayjump.com]
                    RISK: Unidirectional Traffic
+ detection-update: [...173] [ip4][..tcp] [..192.168.2.126][56094] -> [....3.72.69.158][...80] [HTTP][AmazonAWS][Web][Acceptable][setting.rayjump.com]
+ detection-update: [...174] [ip4][..tcp] [..192.168.2.126][56098] -> [....3.72.69.158][...80] [HTTP][AmazonAWS][Web][Acceptable][setting.rayjump.com]
+ detection-update: [...175] [ip4][..tcp] [..192.168.2.126][56096] -> [....3.72.69.158][...80] [HTTP][AmazonAWS][Web][Acceptable][setting.rayjump.com]
               new: [...176] [ip4][..tcp] [..192.168.2.126][56104] -> [....3.72.69.158][...80] [MIDSTREAM] 
          detected: [...176] [ip4][..tcp] [..192.168.2.126][56104] -> [....3.72.69.158][...80] [HTTP][AmazonAWS][Web][Acceptable][setting.rayjump.com]
                    RISK: Unidirectional Traffic
+ detection-update: [...176] [ip4][..tcp] [..192.168.2.126][56104] -> [....3.72.69.158][...80] [HTTP][AmazonAWS][Web][Acceptable][setting.rayjump.com]
               new: [...177] [ip4][..tcp] [..192.168.2.126][43266] -> [....18.64.79.58][...80] [MIDSTREAM] 
          detected: [...177] [ip4][..tcp] [..192.168.2.126][43266] -> [....18.64.79.58][...80] [HTTP][AmazonAWS][Web][Acceptable][net.rayjump.com]
                    RISK: Unidirectional Traffic
               new: [...178] [ip4][..tcp] [..192.168.2.126][56826] -> [...8.209.97.107][...80] [MIDSTREAM] 
          detected: [...178] [ip4][..tcp] [..192.168.2.126][56826] -> [...8.209.97.107][...80] [HTTP][Alibaba][Web][Acceptable][analytics.rayjump.com]
                    RISK: Unidirectional Traffic
+ detection-update: [...178] [ip4][..tcp] [..192.168.2.126][56826] -> [...8.209.97.107][...80] [HTTP][Alibaba][Web][Acceptable][analytics.rayjump.com]
               new: [...179] [ip4][..tcp] [..192.168.2.126][43272] -> [....18.64.79.58][...80] [MIDSTREAM] 
          detected: [...179] [ip4][..tcp] [..192.168.2.126][43272] -> [....18.64.79.58][...80] [HTTP][AmazonAWS][Web][Acceptable][net.rayjump.com]
                    RISK: Unidirectional Traffic
+ detection-update: [...179] [ip4][..tcp] [..192.168.2.126][43272] -> [....18.64.79.58][...80] [HTTP][AmazonAWS][Web][Acceptable][net.rayjump.com]
               new: [...180] [ip4][..tcp] [..192.168.2.126][58758] -> [.202.153.196.53][...80] [MIDSTREAM] 
          detected: [...180] [ip4][..tcp] [..192.168.2.126][58758] -> [.202.153.196.53][...80] [HTTP][Unknown][Web][Acceptable][tw.api.vpon.com]
                    RISK: Unidirectional Traffic
@@ -798,15 +851,22 @@
               new: [...184] [ip4][..tcp] [..192.168.2.126][36636] -> [...18.64.103.30][...80] [MIDSTREAM] 
          detected: [...184] [ip4][..tcp] [..192.168.2.126][36636] -> [...18.64.103.30][...80] [HTTP][AmazonAWS][Web][Acceptable][hybird.rayjump.com]
                    RISK: Unidirectional Traffic
+ detection-update: [...182] [ip4][..tcp] [..192.168.2.126][35664] -> [.....18.66.2.90][...80] [HTTP][AmazonAWS][Web][Acceptable][cdn.liftoff.io]
               new: [...185] [ip4][..tcp] [..192.168.2.126][36640] -> [...18.64.103.30][...80] [MIDSTREAM] 
          detected: [...185] [ip4][..tcp] [..192.168.2.126][36640] -> [...18.64.103.30][...80] [HTTP][AmazonAWS][Web][Acceptable][hybird.rayjump.com]
                    RISK: Unidirectional Traffic
               new: [...186] [ip4][..tcp] [..192.168.2.126][36654] -> [...18.64.103.30][...80] [MIDSTREAM] 
          detected: [...186] [ip4][..tcp] [..192.168.2.126][36654] -> [...18.64.103.30][...80] [HTTP][AmazonAWS][Web][Acceptable][hybird.rayjump.com]
                    RISK: Unidirectional Traffic
+ detection-update: [...184] [ip4][..tcp] [..192.168.2.126][36636] -> [...18.64.103.30][...80] [HTTP][AmazonAWS][Web][Acceptable][hybird.rayjump.com]
+ detection-update: [...185] [ip4][..tcp] [..192.168.2.126][36640] -> [...18.64.103.30][...80] [HTTP][AmazonAWS][Web][Acceptable][hybird.rayjump.com]
+ detection-update: [...186] [ip4][..tcp] [..192.168.2.126][36654] -> [...18.64.103.30][...80] [HTTP][AmazonAWS][Web][Acceptable][hybird.rayjump.com]
               new: [...187] [ip4][..tcp] [..192.168.2.126][36660] -> [...18.64.103.30][...80] [MIDSTREAM] 
          detected: [...187] [ip4][..tcp] [..192.168.2.126][36660] -> [...18.64.103.30][...80] [HTTP][AmazonAWS][Web][Acceptable][hybird.rayjump.com]
                    RISK: Unidirectional Traffic
+ detection-update: [...187] [ip4][..tcp] [..192.168.2.126][36660] -> [...18.64.103.30][...80] [HTTP][AmazonAWS][Web][Acceptable][hybird.rayjump.com]
+ detection-update: [...180] [ip4][..tcp] [..192.168.2.126][58758] -> [.202.153.196.53][...80] [HTTP][Unknown][Web][Acceptable][tw.api.vpon.com]
+ detection-update: [...181] [ip4][..tcp] [..192.168.2.126][58760] -> [.202.153.196.53][...80] [HTTP][Unknown][Web][Acceptable][tw.api.vpon.com]
               new: [...188] [ip4][..tcp] [..192.168.2.126][37100] -> [..52.29.177.177][...80] [MIDSTREAM] 
          detected: [...188] [ip4][..tcp] [..192.168.2.126][37100] -> [..52.29.177.177][...80] [HTTP][AmazonAWS][Web][Acceptable][]
                    RISK: HTTP Susp User-Agent, Unidirectional Traffic
@@ -823,24 +883,34 @@
                    RISK: Unidirectional Traffic
  detection-update: [...190] [ip4][..tcp] [..192.168.2.126][42566] -> [...35.156.44.13][...80] [HTTP][AmazonAWS][Web][Acceptable][de01.rayjump.com]
                    RISK: Unidirectional Traffic
+ detection-update: [...189] [ip4][..tcp] [..192.168.2.126][42554] -> [...35.156.44.13][...80] [HTTP][AmazonAWS][Web][Acceptable][de01.rayjump.com]
+ detection-update: [...188] [ip4][..tcp] [..192.168.2.126][37100] -> [..52.29.177.177][...80] [HTTP][AmazonAWS][Web][Acceptable][adx-tk.rayjump.com]
+ detection-update: [...190] [ip4][..tcp] [..192.168.2.126][42566] -> [...35.156.44.13][...80] [HTTP][AmazonAWS][Web][Acceptable][de01.rayjump.com]
+ detection-update: [...191] [ip4][..tcp] [..192.168.2.126][41940] -> [....18.64.79.50][...80] [HTTP][AmazonAWS][Web][Acceptable][tknet-cdn.rayjump.com]
               new: [...192] [ip4][..tcp] [..192.168.2.126][54810] -> [..18.233.123.55][...80] [MIDSTREAM] 
          detected: [...192] [ip4][..tcp] [..192.168.2.126][54810] -> [..18.233.123.55][...80] [HTTP][AmazonAWS][Web][Acceptable][impression-east.liftoff.io]
                    RISK: Unidirectional Traffic
               new: [...193] [ip4][..tcp] [..192.168.2.126][40204] -> [...18.235.204.9][...80] [MIDSTREAM] 
          detected: [...193] [ip4][..tcp] [..192.168.2.126][40204] -> [...18.235.204.9][...80] [HTTP][AmazonAWS][Web][Acceptable][adexp.liftoff.io]
                    RISK: Unidirectional Traffic
+ detection-update: [...192] [ip4][..tcp] [..192.168.2.126][54810] -> [..18.233.123.55][...80] [HTTP][AmazonAWS][Web][Acceptable][impression-east.liftoff.io]
+ detection-update: [...193] [ip4][..tcp] [..192.168.2.126][40204] -> [...18.235.204.9][...80] [HTTP][AmazonAWS][Web][Acceptable][adexp.liftoff.io]
               new: [...194] [ip4][..tcp] [..192.168.2.126][53416] -> [.172.217.16.142][...80] [MIDSTREAM] 
          detected: [...194] [ip4][..tcp] [..192.168.2.126][53416] -> [.172.217.16.142][...80] [HTTP.Google][Google][Web][Acceptable][play.google.com]
                    RISK: Unidirectional Traffic
               new: [...195] [ip4][..tcp] [..192.168.2.126][33042] -> [...3.122.190.70][...80] [MIDSTREAM] 
          detected: [...195] [ip4][..tcp] [..192.168.2.126][33042] -> [...3.122.190.70][...80] [HTTP][AmazonAWS][Web][Acceptable][click.liftoff.io]
                    RISK: Unidirectional Traffic
+ detection-update: [...194] [ip4][..tcp] [..192.168.2.126][53416] -> [.172.217.16.142][...80] [HTTP.Google][Google][Web][Acceptable][play.google.com]
+ detection-update: [...195] [ip4][..tcp] [..192.168.2.126][33042] -> [...3.122.190.70][...80] [HTTP][AmazonAWS][Web][Acceptable][click.liftoff.io]
               new: [...196] [ip4][..tcp] [..192.168.2.126][35426] -> [..8.209.112.118][...80] [MIDSTREAM] 
          detected: [...196] [ip4][..tcp] [..192.168.2.126][35426] -> [..8.209.112.118][...80] [HTTP][Alibaba][Web][Acceptable][analytics.rayjump.com]
                    RISK: Unidirectional Traffic
+ detection-update: [...196] [ip4][..tcp] [..192.168.2.126][35426] -> [..8.209.112.118][...80] [HTTP][Alibaba][Web][Acceptable][analytics.rayjump.com]
               new: [...197] [ip4][..tcp] [..192.168.2.126][51686] -> [....18.64.79.64][...80] [MIDSTREAM] 
          detected: [...197] [ip4][..tcp] [..192.168.2.126][51686] -> [....18.64.79.64][...80] [HTTP][AmazonAWS][Web][Acceptable][net.rayjump.com]
                    RISK: Unidirectional Traffic
+ detection-update: [...197] [ip4][..tcp] [..192.168.2.126][51686] -> [....18.64.79.64][...80] [HTTP][AmazonAWS][Web][Acceptable][net.rayjump.com]
              idle: [...147] [ip4][..tcp] [..192.168.2.126][45388] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Streaming][Fun]
              idle: [...148] [ip4][..tcp] [..192.168.2.126][45398] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Streaming][Fun]
              idle: [...163] [ip4][..tcp] [..192.168.2.126][44368] -> [..172.217.18.98][...80] [HTTP.GoogleServices][Google][Web][Acceptable]
@@ -849,12 +919,13 @@
              idle: [...150] [ip4][..tcp] [..192.168.2.126][45416] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Streaming][Fun]
              idle: [...151] [ip4][..tcp] [..192.168.2.126][45422] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Streaming][Fun]
              idle: [...152] [ip4][..tcp] [..192.168.2.126][45424] -> [..161.117.13.29][...80] [HTTP][Alibaba][Streaming][Acceptable]
-             idle: [...154] [ip4][..tcp] [..192.168.2.126][51888] -> [.119.28.164.143][...80] 
+             idle: [...154] [ip4][..tcp] [..192.168.2.126][51888] -> [.119.28.164.143][...80] [HTTP][Tencent][Web][Acceptable]
+                   RISK: Unidirectional Traffic
              idle: [...192] [ip4][..tcp] [..192.168.2.126][54810] -> [..18.233.123.55][...80] [HTTP][AmazonAWS][Web][Acceptable]
              idle: [...184] [ip4][..tcp] [..192.168.2.126][36636] -> [...18.64.103.30][...80] [HTTP][AmazonAWS][Web][Acceptable]
              idle: [...185] [ip4][..tcp] [..192.168.2.126][36640] -> [...18.64.103.30][...80] [HTTP][AmazonAWS][Web][Acceptable]
              idle: [...186] [ip4][..tcp] [..192.168.2.126][36654] -> [...18.64.103.30][...80] [HTTP][AmazonAWS][Web][Acceptable]
-             idle: [...187] [ip4][..tcp] [..192.168.2.126][36660] -> [...18.64.103.30][...80] 
+             idle: [...187] [ip4][..tcp] [..192.168.2.126][36660] -> [...18.64.103.30][...80] [HTTP][AmazonAWS][Web][Acceptable]
              idle: [...180] [ip4][..tcp] [..192.168.2.126][58758] -> [.202.153.196.53][...80] [HTTP][Unknown][Web][Acceptable]
              idle: [...181] [ip4][..tcp] [..192.168.2.126][58760] -> [.202.153.196.53][...80] [HTTP][Unknown][Web][Acceptable]
              idle: [...170] [ip4][..tcp] [..192.168.2.126][38314] -> [.172.105.121.82][...80] [HTTP.1kxun][Unknown][Streaming][Fun]
@@ -870,7 +941,8 @@
              idle: [...140] [ip4][..tcp] [..192.168.2.126][49242] -> [.172.104.119.80][...80] [HTTP.1kxun][Unknown][Streaming][Fun]
                    RISK: Error Code
              idle: [...161] [ip4][..tcp] [..192.168.2.126][49412] -> [.14.136.136.108][...80] [HTTP.1kxun][Unknown][Streaming][Fun]
-             idle: [...177] [ip4][..tcp] [..192.168.2.126][43266] -> [....18.64.79.58][...80] 
+             idle: [...177] [ip4][..tcp] [..192.168.2.126][43266] -> [....18.64.79.58][...80] [HTTP][AmazonAWS][Web][Acceptable]
+                   RISK: Unidirectional Traffic
              idle: [...179] [ip4][..tcp] [..192.168.2.126][43272] -> [....18.64.79.58][...80] [HTTP][AmazonAWS][Web][Acceptable]
              idle: [...164] [ip4][..tcp] [..192.168.2.126][50140] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Streaming][Fun]
              idle: [...165] [ip4][..tcp] [..192.168.2.126][50148] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Streaming][Fun]
@@ -902,7 +974,8 @@
              idle: [...138] [ip4][..tcp] [..192.168.2.126][38834] -> [..119.45.78.184][...80] [HTTP.QQ][Tencent][Chat][Fun]
                    RISK: HTTP Susp User-Agent, Error Code
              idle: [...182] [ip4][..tcp] [..192.168.2.126][35664] -> [.....18.66.2.90][...80] [HTTP][AmazonAWS][Web][Acceptable]
-             idle: [...183] [ip4][..tcp] [..192.168.2.126][35666] -> [.....18.66.2.90][...80] 
+             idle: [...183] [ip4][..tcp] [..192.168.2.126][35666] -> [.....18.66.2.90][...80] [HTTP.MpegDash][AmazonAWS][Media][Fun]
+                   RISK: Unidirectional Traffic
              idle: [...142] [ip4][..tcp] [..192.168.2.126][46170] -> [.172.105.121.82][...80] [HTTP.1kxun][Unknown][Streaming][Fun]
              idle: [...141] [ip4][..tcp] [..192.168.2.126][46184] -> [.172.105.121.82][...80] [HTTP.1kxun][Unknown][Streaming][Fun]
              idle: [...133] [ip4][..tcp] [..192.168.2.126][47230] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Download][Fun]

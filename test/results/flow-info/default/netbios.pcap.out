@@ -62,14 +62,11 @@
            update: [.....3] [ip4][..udp] [.......10.0.5.9][..138] -> [.....10.0.5.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous]
                    RISK: Unsafe Protocol
              idle: [.....8] [ip4][..udp] [......10.0.4.24][..137] -> [.....10.0.4.165][..137] [NetBIOS][Unknown][System][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....7] [ip4][..udp] [.....10.0.4.165][..137] -> [.....10.0.5.255][..137] [NetBIOS][Unknown][System][Acceptable]
              idle: [.....2] [ip4][..udp] [.....10.0.5.233][..137] -> [.....10.0.5.255][..137] [NetBIOS][Unknown][System][Acceptable]
              idle: [....11] [ip4][..udp] [.......10.0.5.1][..137] -> [......10.0.4.24][..137] [NetBIOS][Unknown][System][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....14] [ip4][..udp] [......10.0.4.14][..137] -> [.....10.0.5.255][..137] [NetBIOS][Unknown][System][Acceptable]
              idle: [....13] [ip4][..udp] [.....10.0.5.233][..137] -> [......10.0.4.24][..137] [NetBIOS][Unknown][System][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....10] [ip4][..udp] [......10.0.4.24][..137] -> [.....10.0.5.255][..137] [NetBIOS][Unknown][System][Acceptable]
              idle: [.....9] [ip4][..udp] [......10.0.4.66][..137] -> [.....10.0.5.255][..137] [NetBIOS][Unknown][System][Acceptable]
              idle: [.....6] [ip4][..udp] [.....10.0.4.101][..137] -> [.....10.0.5.255][..137] [NetBIOS][Unknown][System][Acceptable]
@@ -79,9 +76,7 @@
              idle: [.....3] [ip4][..udp] [.......10.0.5.9][..138] -> [.....10.0.5.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous]
                    RISK: Unsafe Protocol
              idle: [.....5] [ip4][..udp] [......10.0.1.87][57836] -> [......10.0.4.24][..137] [NetBIOS][Unknown][System][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....15] [ip4][..udp] [......10.0.1.87][57921] -> [......10.0.4.24][..137] [NetBIOS][Unknown][System][Acceptable]
-                   RISK: Unidirectional Traffic
           guessed: [.....4] [ip4][..tcp] [......10.0.4.24][..139] -> [.....10.0.4.131][.1398] [NetBIOS][Unknown][System][Acceptable][]
              idle: [.....4] [ip4][..tcp] [......10.0.4.24][..139] -> [.....10.0.4.131][.1398] 
      DAEMON-EVENT: shutdown

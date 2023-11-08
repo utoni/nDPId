@@ -4,5 +4,6 @@
               new: [.....1] [ip4][..udp] [....10.1.67.250][41335] -> [.....10.1.66.20][...53] 
          detected: [.....1] [ip4][..udp] [....10.1.67.250][41335] -> [.....10.1.66.20][...53] [DNS][Unknown][Network][Acceptable][ckaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]
                    RISK: Unidirectional Traffic
-             idle: [.....1] [ip4][..udp] [....10.1.67.250][41335] -> [.....10.1.66.20][...53] 
+             idle: [.....1] [ip4][..udp] [....10.1.67.250][41335] -> [.....10.1.66.20][...53] [DNS][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

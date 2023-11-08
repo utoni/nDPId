@@ -7,7 +7,10 @@
                    RISK: Unidirectional Traffic
          detected: [.....2] [ip4][..tcp] [..192.168.1.146][...80] -> [..192.168.1.103][.1044] [HTTP][Unknown][Web][Acceptable][]
                    RISK: HTTP Susp User-Agent, Unidirectional Traffic
+ detection-update: [.....2] [ip4][..tcp] [..192.168.1.146][...80] -> [..192.168.1.103][.1044] [HTTP][Unknown][Web][Acceptable][]
+                   RISK: HTTP Susp User-Agent, Error Code, Unidirectional Traffic
               end: [.....2] [ip4][..tcp] [..192.168.1.146][...80] -> [..192.168.1.103][.1044] [HTTP][Unknown][Web][Acceptable]
                    RISK: HTTP Susp User-Agent, Error Code, Unidirectional Traffic
-              end: [.....1] [ip4][..tcp] [....192.168.0.1][.1044] -> [.....10.10.10.1][...80] 
+              end: [.....1] [ip4][..tcp] [....192.168.0.1][.1044] -> [.....10.10.10.1][...80] [HTTP][Unknown][Web][Acceptable]
+                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

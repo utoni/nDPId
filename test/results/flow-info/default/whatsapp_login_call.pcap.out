@@ -4,6 +4,7 @@
               new: [.....1] [ip4][..tcp] [....192.168.2.4][49199] -> [..17.172.100.70][..993] [MIDSTREAM] 
          detected: [.....1] [ip4][..tcp] [....192.168.2.4][49199] -> [..17.172.100.70][..993] [IMAPS][Apple][Email][Safe]
                    RISK: Unidirectional Traffic
+ detection-update: [.....1] [ip4][..tcp] [....192.168.2.4][49199] -> [..17.172.100.70][..993] [IMAPS][Apple][Email][Safe]
               new: [.....2] [ip4][..tcp] [....192.168.2.4][49166] -> [..17.154.66.121][..443] [MIDSTREAM] 
               new: [.....3] [ip4][..tcp] [....192.168.2.4][49163] -> [..17.154.66.111][..443] [MIDSTREAM] 
               new: [.....4] [ip4][..tcp] [....192.168.2.4][49169] -> [..17.173.66.102][..443] [MIDSTREAM] 
@@ -33,7 +34,7 @@
          detected: [....16] [ip4][..tcp] [....192.168.2.4][49193] -> [..17.110.229.14][.5223] [ApplePush][Apple][Cloud][Acceptable]
                    RISK: Unidirectional Traffic
          detected: [....14] [ip4][..tcp] [....192.168.2.4][49202] -> [.184.173.179.37][.5222] [WhatsApp][Unknown][Chat][Acceptable]
-          analyse: [....13] [ip4][..tcp] [....192.168.2.4][49201] -> [..17.178.104.12][..443] 
+          analyse: [....13] [ip4][..tcp] [....192.168.2.4][49201] -> [..17.178.104.12][..443] [TLS.Apple][Apple][Web][Safe]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.712|    0.120|    0.179|      32210.293|   3.400]
                    [PKTLEN......:    40.000| 1480.000|  432.900|  595.100|     354099.200|   3.800]
@@ -144,21 +145,13 @@
  detection-update: [....45] [ip6][..udp] [...............fe80::c42c:3ff:fe60:6a64][.5353] -> [...............................ff02::fb][.5353] [MDNS][Unknown][Network][Acceptable][lucas-imac.local]
  detection-update: [....43] [ip6][..udp] [................fe80::da30:62ff:fe56:1c][.5353] -> [...............................ff02::fb][.5353] [MDNS][Unknown][Network][Acceptable][lucas-imac.local]
            update: [....23] [ip4][..udp] [....192.168.2.4][51518] -> [...31.13.100.14][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....24] [ip4][..udp] [....192.168.2.4][51518] -> [....31.13.70.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....25] [ip4][..udp] [....192.168.2.4][51518] -> [....31.13.64.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....26] [ip4][..udp] [....192.168.2.4][51518] -> [....31.13.85.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....30] [ip4][..udp] [....192.168.2.4][51518] -> [....31.13.73.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....27] [ip4][..udp] [....192.168.2.4][51518] -> [....31.13.91.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....28] [ip4][..udp] [....192.168.2.4][51518] -> [...31.13.79.192][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....29] [ip4][..udp] [....192.168.2.4][51518] -> [....31.13.93.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....46] [ip4][..udp] [....192.168.2.4][52794] -> [....31.13.73.48][.3478] 
          detected: [....46] [ip4][..udp] [....192.168.2.4][52794] -> [....31.13.73.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
                    RISK: Unidirectional Traffic
@@ -202,11 +195,10 @@
                    [PKTLENS.....: 72,72,72,72,72,134,124,306,167,54,232,134,228,212,103,134,151,54,172,156,161,172,156,134,114,140,205,140,209,54,134,171]
                    [ENTROPIES...: 5.6,5.6,5.6,5.5,5.6,6.3,6.4,7.3,6.7,5.2,7.0,6.6,7.1,7.0,6.2,6.5,6.6,5.2,6.7,6.6,6.7,6.7,6.7,6.4,6.3,6.5,6.9,6.5,6.9,5.2,6.6,6.7]
            update: [....39] [ip4][..udp] [....192.168.2.4][51518] -> [..91.253.176.65][.9344] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
            update: [....40] [ip4][.icmp] [....192.168.2.4] -> [..91.253.176.65] [ICMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....38] [ip4][..udp] [....192.168.2.4][51518] -> [...1.194.90.191][60312] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
               new: [....56] [ip4][..tcp] [....192.168.2.4][49197] -> [..17.167.142.39][..443] [MIDSTREAM] 
            update: [....41] [ip4][..udp] [........0.0.0.0][...68] -> [255.255.255.255][...67] [DHCP][Unknown][Network][Acceptable]
            update: [....42] [ip4][..udp] [169.254.166.207][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable]
@@ -214,21 +206,13 @@
            update: [....44] [ip4][..udp] [....192.168.2.1][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable]
            update: [....11] [ip4][..udp] [....192.168.2.4][51897] -> [....192.168.2.1][...53] [DNS.Apple][Unknown][Network][Safe]
            update: [....23] [ip4][..udp] [....192.168.2.4][51518] -> [...31.13.100.14][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....24] [ip4][..udp] [....192.168.2.4][51518] -> [....31.13.70.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....25] [ip4][..udp] [....192.168.2.4][51518] -> [....31.13.64.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....26] [ip4][..udp] [....192.168.2.4][51518] -> [....31.13.85.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....30] [ip4][..udp] [....192.168.2.4][51518] -> [....31.13.73.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....27] [ip4][..udp] [....192.168.2.4][51518] -> [....31.13.91.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....28] [ip4][..udp] [....192.168.2.4][51518] -> [...31.13.79.192][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....29] [ip4][..udp] [....192.168.2.4][51518] -> [....31.13.93.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....12] [ip4][..udp] [....192.168.2.4][52190] -> [....192.168.2.1][...53] [DNS.WhatsApp][Unknown][Network][Acceptable]
            update: [....43] [ip6][..udp] [................fe80::da30:62ff:fe56:1c][.5353] -> [...............................ff02::fb][.5353] [MDNS][Unknown][Network][Acceptable]
               new: [....57] [ip4][..tcp] [....192.168.2.4][49205] -> [..17.173.66.102][..443] 
@@ -273,97 +257,70 @@
           guessed: [.....4] [ip4][..tcp] [....192.168.2.4][49169] -> [..17.173.66.102][..443] [TLS][Apple][Web][Safe]
               end: [.....4] [ip4][..tcp] [....192.168.2.4][49169] -> [..17.173.66.102][..443] 
            update: [....50] [ip4][..udp] [....192.168.2.4][52794] -> [..173.252.114.1][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....49] [ip4][..udp] [....192.168.2.4][52794] -> [..179.60.192.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....46] [ip4][..udp] [....192.168.2.4][52794] -> [....31.13.73.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....47] [ip4][..udp] [....192.168.2.4][52794] -> [....31.13.93.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....51] [ip4][..udp] [....192.168.2.4][52794] -> [....31.13.90.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....52] [ip4][..udp] [....192.168.2.4][52794] -> [....31.13.74.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....53] [ip4][..udp] [....192.168.2.4][52794] -> [....31.13.84.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....48] [ip4][..udp] [....192.168.2.4][52794] -> [...31.13.79.192][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....55] [ip4][..udp] [....192.168.2.4][52794] -> [..91.253.176.65][.9665] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
            update: [....33] [ip4][..udp] [....192.168.2.1][17500] -> [..192.168.2.255][17500] [Dropbox][Unknown][Cloud][Acceptable]
            update: [....54] [ip4][..udp] [....192.168.2.4][52794] -> [...1.194.90.191][51727] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
            update: [....34] [ip4][..udp] [....192.168.2.1][57621] -> [..192.168.2.255][57621] [Spotify][Unknown][Music][Fun]
            update: [....39] [ip4][..udp] [....192.168.2.4][51518] -> [..91.253.176.65][.9344] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
            update: [....40] [ip4][.icmp] [....192.168.2.4] -> [..91.253.176.65] [ICMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....38] [ip4][..udp] [....192.168.2.4][51518] -> [...1.194.90.191][60312] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
              idle: [....41] [ip4][..udp] [........0.0.0.0][...68] -> [255.255.255.255][...67] [DHCP][Unknown][Network][Acceptable]
              idle: [.....1] [ip4][..tcp] [....192.168.2.4][49199] -> [..17.172.100.70][..993] [IMAPS][Apple][Email][Safe]
           guessed: [....35] [ip4][..tcp] [....192.168.2.4][49194] -> [..93.62.150.157][..443] [TLS][Unknown][Web][Safe]
               end: [....35] [ip4][..tcp] [....192.168.2.4][49194] -> [..93.62.150.157][..443] 
              idle: [....50] [ip4][..udp] [....192.168.2.4][52794] -> [..173.252.114.1][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....49] [ip4][..udp] [....192.168.2.4][52794] -> [..179.60.192.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....42] [ip4][..udp] [169.254.166.207][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable]
           guessed: [....31] [ip4][..tcp] [....192.168.2.4][49164] -> [..17.167.142.31][..443] [TLS][Apple][Web][Safe]
               end: [....31] [ip4][..tcp] [....192.168.2.4][49164] -> [..17.167.142.31][..443] 
           guessed: [....56] [ip4][..tcp] [....192.168.2.4][49197] -> [..17.167.142.39][..443] [TLS][Apple][Web][Safe]
               end: [....56] [ip4][..tcp] [....192.168.2.4][49197] -> [..17.167.142.39][..443] 
              idle: [....48] [ip4][..udp] [....192.168.2.4][52794] -> [...31.13.79.192][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....53] [ip4][..udp] [....192.168.2.4][52794] -> [....31.13.84.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....52] [ip4][..udp] [....192.168.2.4][52794] -> [....31.13.74.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....51] [ip4][..udp] [....192.168.2.4][52794] -> [....31.13.90.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....47] [ip4][..udp] [....192.168.2.4][52794] -> [....31.13.93.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....46] [ip4][..udp] [....192.168.2.4][52794] -> [....31.13.73.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
           guessed: [....36] [ip4][..tcp] [....192.168.2.4][49198] -> [..17.167.142.13][..443] [TLS][Apple][Web][Safe]
               end: [....36] [ip4][..tcp] [....192.168.2.4][49198] -> [..17.167.142.13][..443] 
           guessed: [....37] [ip4][..tcp] [....192.168.2.4][49200] -> [..17.167.142.13][..443] [TLS][Apple][Web][Safe]
               end: [....37] [ip4][..tcp] [....192.168.2.4][49200] -> [..17.167.142.13][..443] 
              idle: [....55] [ip4][..udp] [....192.168.2.4][52794] -> [..91.253.176.65][.9665] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
              idle: [....33] [ip4][..udp] [....192.168.2.1][17500] -> [..192.168.2.255][17500] [Dropbox][Unknown][Cloud][Acceptable]
              idle: [....45] [ip6][..udp] [...............fe80::c42c:3ff:fe60:6a64][.5353] -> [...............................ff02::fb][.5353] [MDNS][Unknown][Network][Acceptable]
               end: [....14] [ip4][..tcp] [....192.168.2.4][49202] -> [.184.173.179.37][.5222] [WhatsApp][Unknown][Chat][Acceptable]
              idle: [....54] [ip4][..udp] [....192.168.2.4][52794] -> [...1.194.90.191][51727] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
              idle: [....16] [ip4][..tcp] [....192.168.2.4][49193] -> [..17.110.229.14][.5223] [ApplePush][Apple][Cloud][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....44] [ip4][..udp] [....192.168.2.1][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable]
              idle: [....34] [ip4][..udp] [....192.168.2.1][57621] -> [..192.168.2.255][57621] [Spotify][Unknown][Music][Fun]
              idle: [....39] [ip4][..udp] [....192.168.2.4][51518] -> [..91.253.176.65][.9344] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
              idle: [....11] [ip4][..udp] [....192.168.2.4][51897] -> [....192.168.2.1][...53] [DNS.Apple][Unknown][Network][Safe]
               end: [....13] [ip4][..tcp] [....192.168.2.4][49201] -> [..17.178.104.12][..443] [TLS.Apple][Apple][Web][Safe]
                    RISK: TLS (probably) Not Carrying HTTPS
              idle: [....29] [ip4][..udp] [....192.168.2.4][51518] -> [....31.13.93.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....28] [ip4][..udp] [....192.168.2.4][51518] -> [...31.13.79.192][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....27] [ip4][..udp] [....192.168.2.4][51518] -> [....31.13.91.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....30] [ip4][..udp] [....192.168.2.4][51518] -> [....31.13.73.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....26] [ip4][..udp] [....192.168.2.4][51518] -> [....31.13.85.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....25] [ip4][..udp] [....192.168.2.4][51518] -> [....31.13.64.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....24] [ip4][..udp] [....192.168.2.4][51518] -> [....31.13.70.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....23] [ip4][..udp] [....192.168.2.4][51518] -> [...31.13.100.14][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....12] [ip4][..udp] [....192.168.2.4][52190] -> [....192.168.2.1][...53] [DNS.WhatsApp][Unknown][Network][Acceptable]
              idle: [....40] [ip4][.icmp] [....192.168.2.4] -> [..91.253.176.65] [ICMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
           guessed: [....32] [ip4][..tcp] [....192.168.2.4][49167] -> [...17.172.100.8][..443] [TLS][Apple][Web][Safe]
               end: [....32] [ip4][..tcp] [....192.168.2.4][49167] -> [...17.172.100.8][..443] 
           guessed: [....22] [ip4][..tcp] [....192.168.2.4][49180] -> [..17.172.100.59][..443] [TLS][Apple][Web][Safe]
@@ -372,7 +329,7 @@
               end: [....21] [ip4][..tcp] [....192.168.2.4][49181] -> [..17.172.100.37][..443] 
              idle: [....43] [ip6][..udp] [................fe80::da30:62ff:fe56:1c][.5353] -> [...............................ff02::fb][.5353] [MDNS][Unknown][Network][Acceptable]
              idle: [....38] [ip4][..udp] [....192.168.2.4][51518] -> [...1.194.90.191][60312] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
               end: [....17] [ip4][..tcp] [....192.168.2.4][49204] -> [..17.173.66.102][..443] [TLS.AppleStore][Apple][SoftwareUpdate][Safe]
                    RISK: TLS (probably) Not Carrying HTTPS
              idle: [....57] [ip4][..tcp] [....192.168.2.4][49205] -> [..17.173.66.102][..443] [TLS.AppleStore][Apple][SoftwareUpdate][Safe]

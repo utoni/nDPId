@@ -5,5 +5,5 @@
          detected: [.....1] [ip4][..tcp] [..192.168.1.178][54399] -> [...85.222.142.6][..443] [TLS.Salesforce][Unknown][Cloud][Safe][help.salesforce.com]
  detection-update: [.....1] [ip4][..tcp] [..192.168.1.178][54399] -> [...85.222.142.6][..443] [TLS.Salesforce][Unknown][Cloud][Safe][help.salesforce.com]
  detection-update: [.....1] [ip4][..tcp] [..192.168.1.178][54399] -> [...85.222.142.6][..443] [TLS.Salesforce][Unknown][Cloud][Safe][help.salesforce.com]
-             idle: [.....1] [ip4][..tcp] [..192.168.1.178][54399] -> [...85.222.142.6][..443] 
+             idle: [.....1] [ip4][..tcp] [..192.168.1.178][54399] -> [...85.222.142.6][..443] [TLS.Salesforce][Unknown][Cloud][Safe]
      DAEMON-EVENT: shutdown

@@ -5,5 +5,4 @@
          detected: [.....1] [ip4][..udp] [..51.120.20.202][49241] -> [..72.119.217.29][..443] [QUIC.DoH_DoT][Azure][Network][Acceptable][dns.google.com]
                    RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..udp] [..51.120.20.202][49241] -> [..72.119.217.29][..443] [QUIC.DoH_DoT][Azure][Network][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

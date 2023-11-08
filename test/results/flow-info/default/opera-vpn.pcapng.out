@@ -851,5 +851,5 @@
              idle: [....59] [ip4][..tcp] [...192.168.1.29][51463] -> [..77.111.247.69][..443] [TLS.OperaVPN][Unknown][VPN][Acceptable]
              idle: [....60] [ip4][..tcp] [...192.168.1.29][51464] -> [..77.111.247.69][..443] [TLS.OperaVPN][Unknown][VPN][Acceptable]
               end: [....61] [ip4][..tcp] [...192.168.1.29][51465] -> [..77.111.247.69][..443] [TLS.OperaVPN][Unknown][VPN][Acceptable]
-             idle: [....62] [ip4][..tcp] [...192.168.1.29][51466] -> [..77.111.247.69][..443] 
+             idle: [....62] [ip4][..tcp] [...192.168.1.29][51466] -> [..77.111.247.69][..443] [TLS.OperaVPN][Unknown][VPN][Acceptable]
      DAEMON-EVENT: shutdown

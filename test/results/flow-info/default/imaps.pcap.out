@@ -15,6 +15,8 @@
                    RISK: TLS (probably) Not Carrying HTTPS
  detection-update: [.....2] [ip4][..tcp] [....192.168.0.1][51529] -> [.....10.10.10.1][..993] [IMAPS][Unknown][Email][Safe]
                    RISK: TLS (probably) Not Carrying HTTPS
-             idle: [.....1] [ip4][..tcp] [....192.168.1.8][50506] -> [.167.99.215.164][..993] 
-             idle: [.....2] [ip4][..tcp] [....192.168.0.1][51529] -> [.....10.10.10.1][..993] 
+             idle: [.....1] [ip4][..tcp] [....192.168.1.8][50506] -> [.167.99.215.164][..993] [IMAPS.ntop][Unknown][Email][Safe]
+                   RISK: TLS (probably) Not Carrying HTTPS
+             idle: [.....2] [ip4][..tcp] [....192.168.0.1][51529] -> [.....10.10.10.1][..993] [IMAPS][Unknown][Email][Safe]
+                   RISK: TLS (probably) Not Carrying HTTPS
      DAEMON-EVENT: shutdown

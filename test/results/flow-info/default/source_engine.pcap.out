@@ -10,108 +10,86 @@
          detected: [.....2] [ip4][..udp] [.174.134.158.83][47464] -> [206.125.246.217][27015] [Source_Engine][Unknown][Game][Fun]
                    RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..udp] [.222.204.159.87][20595] -> [206.125.246.211][27015] [Source_Engine][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 2 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....3] [ip4][..udp] [237.117.185.247][41251] -> [206.125.246.219][27015] 
          detected: [.....3] [ip4][..udp] [237.117.185.247][41251] -> [206.125.246.219][27015] [Source_Engine][Unknown][Game][Fun]
                    RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..udp] [.174.134.158.83][47464] -> [206.125.246.217][27015] [Source_Engine][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 3 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 3|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....4] [ip4][..udp] [.252.187.173.26][42155] -> [206.125.246.211][27015] 
          detected: [.....4] [ip4][..udp] [.252.187.173.26][42155] -> [206.125.246.211][27015] [Source_Engine][Unknown][Game][Fun]
                    RISK: Unidirectional Traffic
              idle: [.....3] [ip4][..udp] [237.117.185.247][41251] -> [206.125.246.219][27015] [Source_Engine][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 4 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 4|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....5] [ip4][..udp] [167.166.182.152][53321] -> [206.125.246.212][27015] 
          detected: [.....5] [ip4][..udp] [167.166.182.152][53321] -> [206.125.246.212][27015] [Source_Engine][Unknown][Game][Fun]
                    RISK: Unidirectional Traffic
              idle: [.....4] [ip4][..udp] [.252.187.173.26][42155] -> [206.125.246.211][27015] [Source_Engine][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
               new: [.....6] [ip4][..udp] [.151.182.246.17][52464] -> [206.125.246.217][27015] 
          detected: [.....6] [ip4][..udp] [.151.182.246.17][52464] -> [206.125.246.217][27015] [Source_Engine][Unknown][Game][Fun]
                    RISK: Unidirectional Traffic
            update: [.....5] [ip4][..udp] [167.166.182.152][53321] -> [206.125.246.212][27015] [Source_Engine][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
               new: [.....7] [ip4][..udp] [197.114.186.247][64888] -> [206.125.246.213][27015] 
          detected: [.....7] [ip4][..udp] [197.114.186.247][64888] -> [206.125.246.213][27015] [Source_Engine][Unknown][Game][Fun]
                    RISK: Unidirectional Traffic
              idle: [.....5] [ip4][..udp] [167.166.182.152][53321] -> [206.125.246.212][27015] [Source_Engine][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
            update: [.....6] [ip4][..udp] [.151.182.246.17][52464] -> [206.125.246.217][27015] [Source_Engine][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
               new: [.....8] [ip4][..udp] [197.114.186.247][38846] -> [206.125.246.222][27015] 
          detected: [.....8] [ip4][..udp] [197.114.186.247][38846] -> [206.125.246.222][27015] [Source_Engine][Unknown][Game][Fun]
                    RISK: Unidirectional Traffic
              idle: [.....6] [ip4][..udp] [.151.182.246.17][52464] -> [206.125.246.217][27015] [Source_Engine][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
              idle: [.....7] [ip4][..udp] [197.114.186.247][64888] -> [206.125.246.213][27015] [Source_Engine][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 8 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 8|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 2]
               new: [.....9] [ip4][..udp] [237.117.153.178][24647] -> [206.125.246.215][27015] 
          detected: [.....9] [ip4][..udp] [237.117.153.178][24647] -> [206.125.246.215][27015] [Source_Engine][Unknown][Game][Fun]
                    RISK: Unidirectional Traffic
            update: [.....8] [ip4][..udp] [197.114.186.247][38846] -> [206.125.246.222][27015] [Source_Engine][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
               new: [....10] [ip4][..udp] [.252.141.177.26][21572] -> [206.125.246.216][27015] 
          detected: [....10] [ip4][..udp] [.252.141.177.26][21572] -> [206.125.246.216][27015] [Source_Engine][Unknown][Game][Fun]
                    RISK: Unidirectional Traffic
            update: [.....8] [ip4][..udp] [197.114.186.247][38846] -> [206.125.246.222][27015] [Source_Engine][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
            update: [.....9] [ip4][..udp] [237.117.153.178][24647] -> [206.125.246.215][27015] [Source_Engine][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
               new: [....11] [ip4][..udp] [165.165.117.188][48822] -> [206.125.246.211][27015] 
          detected: [....11] [ip4][..udp] [165.165.117.188][48822] -> [206.125.246.211][27015] [Source_Engine][Unknown][Game][Fun]
                    RISK: Unidirectional Traffic
              idle: [....10] [ip4][..udp] [.252.141.177.26][21572] -> [206.125.246.216][27015] [Source_Engine][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
              idle: [.....8] [ip4][..udp] [197.114.186.247][38846] -> [206.125.246.222][27015] [Source_Engine][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
              idle: [.....9] [ip4][..udp] [237.117.153.178][24647] -> [206.125.246.215][27015] [Source_Engine][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 11 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 11|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 5]
               new: [....12] [ip4][..udp] [.140.151.209.84][.8335] -> [206.125.246.214][27015] 
          detected: [....12] [ip4][..udp] [.140.151.209.84][.8335] -> [206.125.246.214][27015] [Source_Engine][Unknown][Game][Fun]
                    RISK: Unidirectional Traffic
              idle: [....11] [ip4][..udp] [165.165.117.188][48822] -> [206.125.246.211][27015] [Source_Engine][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
               new: [....13] [ip4][..udp] [197.114.186.247][41194] -> [206.125.246.214][27015] 
          detected: [....13] [ip4][..udp] [197.114.186.247][41194] -> [206.125.246.214][27015] [Source_Engine][Unknown][Game][Fun]
                    RISK: Unidirectional Traffic
              idle: [....12] [ip4][..udp] [.140.151.209.84][.8335] -> [206.125.246.214][27015] [Source_Engine][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 13 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 13|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 5]
               new: [....14] [ip4][..udp] [222.158.181.242][58235] -> [206.125.246.222][27015] 
          detected: [....14] [ip4][..udp] [222.158.181.242][58235] -> [206.125.246.222][27015] [Source_Engine][Unknown][Game][Fun]
                    RISK: Unidirectional Traffic
              idle: [....13] [ip4][..udp] [197.114.186.247][41194] -> [206.125.246.214][27015] [Source_Engine][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
               new: [....15] [ip4][..udp] [237.139.153.112][.3722] -> [206.125.246.219][27015] 
          detected: [....15] [ip4][..udp] [237.139.153.112][.3722] -> [206.125.246.219][27015] [Source_Engine][Unknown][Game][Fun]
                    RISK: Unidirectional Traffic
              idle: [....14] [ip4][..udp] [222.158.181.242][58235] -> [206.125.246.222][27015] [Source_Engine][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 15 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 15|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 5]
               new: [....16] [ip4][..udp] [118.149.186.147][21285] -> [206.125.246.214][27015] 
          detected: [....16] [ip4][..udp] [118.149.186.147][21285] -> [206.125.246.214][27015] [Source_Engine][Unknown][Game][Fun]
                    RISK: Unidirectional Traffic
              idle: [....15] [ip4][..udp] [237.139.153.112][.3722] -> [206.125.246.219][27015] [Source_Engine][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 16 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 16|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 5]
               new: [....17] [ip4][..udp] [.151.182.246.17][17890] -> [206.125.246.221][27015] 
          detected: [....17] [ip4][..udp] [.151.182.246.17][17890] -> [206.125.246.221][27015] [Source_Engine][Unknown][Game][Fun]
                    RISK: Unidirectional Traffic
              idle: [....16] [ip4][..udp] [118.149.186.147][21285] -> [206.125.246.214][27015] [Source_Engine][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
              idle: [....17] [ip4][..udp] [.151.182.246.17][17890] -> [206.125.246.221][27015] [Source_Engine][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

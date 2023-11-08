@@ -8,5 +8,6 @@
                    RISK: TLS (probably) Not Carrying HTTPS
  detection-update: [.....1] [ip4][..tcp] [.....10.10.10.1][..443] -> [....192.168.0.1][58842] [TLS.BitTorrent][Unknown][Download][Acceptable][web.utorrent.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-             idle: [.....1] [ip4][..tcp] [.....10.10.10.1][..443] -> [....192.168.0.1][58842] 
+             idle: [.....1] [ip4][..tcp] [.....10.10.10.1][..443] -> [....192.168.0.1][58842] [TLS.BitTorrent][Unknown][Download][Acceptable]
+                   RISK: TLS (probably) Not Carrying HTTPS
      DAEMON-EVENT: shutdown

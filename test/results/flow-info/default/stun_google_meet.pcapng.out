@@ -7,6 +7,10 @@
               new: [.....2] [ip4][..udp] [.192.168.12.156][45400] -> [.74.125.128.127][19302] 
          detected: [.....2] [ip4][..udp] [.192.168.12.156][45400] -> [.74.125.128.127][19302] [STUN][Google][Network][Acceptable][]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
+ detection-update: [.....1] [ip4][..udp] [.192.168.12.156][38152] -> [.74.125.128.127][19302] [STUN][Google][Network][Acceptable][]
+                   RISK: Known Proto on Non Std Port
+ detection-update: [.....2] [ip4][..udp] [.192.168.12.156][45400] -> [.74.125.128.127][19302] [STUN][Google][Network][Acceptable][]
+                   RISK: Known Proto on Non Std Port
               new: [.....3] [ip4][..udp] [.192.168.12.156][38152] -> [..142.250.82.76][19305] 
          detected: [.....3] [ip4][..udp] [.192.168.12.156][38152] -> [..142.250.82.76][19305] [STUN.GoogleHangoutDuo][Google][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
@@ -54,15 +58,13 @@
                    [PKTLENS.....: 152,92,144,92,144,92,144,92,144,92,144,92,144,92,144,92,144,92,144,92,144,92,144,92,144,92,144,92,144,92,144,92]
                    [ENTROPIES...: 6.0,5.6,6.1,5.6,6.0,5.5,6.0,5.6,6.1,5.7,5.9,5.8,6.1,5.6,6.0,5.6,6.1,5.6,6.0,5.6,6.0,5.6,6.0,5.6,6.1,5.6,6.0,5.7,6.0,5.7,6.0,5.7]
              idle: [.....4] [ip4][..udp] [.192.168.12.156][45400] -> [..142.250.82.76][19305] [STUN.GoogleHangoutDuo][Google][VoIP][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
              idle: [.....6] [ip4][..udp] [.192.168.12.156][45400] -> [..142.250.82.76][.3478] [STUN.GoogleHangoutDuo][Google][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..udp] [.192.168.12.156][45400] -> [.74.125.128.127][19302] [STUN.GoogleHangoutDuo][Google][Network][Acceptable]
                    RISK: Known Proto on Non Std Port
              idle: [.....3] [ip4][..udp] [.192.168.12.156][38152] -> [..142.250.82.76][19305] [STUN.GoogleHangoutDuo][Google][VoIP][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
              idle: [.....5] [ip4][..udp] [.192.168.12.156][38152] -> [..142.250.82.76][.3478] [STUN.GoogleHangoutDuo][Google][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..udp] [.192.168.12.156][38152] -> [.74.125.128.127][19302] [STUN.GoogleHangoutDuo][Google][Network][Acceptable]
                    RISK: Known Proto on Non Std Port
      DAEMON-EVENT: shutdown

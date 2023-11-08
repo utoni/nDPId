@@ -101,11 +101,12 @@
               new: [....18] [ip4][..tcp] [....23.57.24.16][..443] -> [...192.168.2.17][57016] [MIDSTREAM] 
          detected: [....18] [ip4][..tcp] [....23.57.24.16][..443] -> [...192.168.2.17][57016] [TLS][Unknown][Web][Safe]
                    RISK: Unidirectional Traffic
+ detection-update: [....18] [ip4][..tcp] [....23.57.24.16][..443] -> [...192.168.2.17][57016] [TLS][Unknown][Web][Safe]
               new: [....19] [ip4][..tcp] [...192.168.2.17][57027] -> [...13.35.253.42][..443] 
          detected: [....19] [ip4][..tcp] [...192.168.2.17][57027] -> [...13.35.253.42][..443] [TLS.Signal][AmazonAWS][Chat][Fun][cdn.signal.org]
  detection-update: [....19] [ip4][..tcp] [...192.168.2.17][57027] -> [...13.35.253.42][..443] [TLS.Signal][AmazonAWS][Chat][Fun][cdn.signal.org]
  detection-update: [....19] [ip4][..tcp] [...192.168.2.17][57027] -> [...13.35.253.42][..443] [TLS.Signal][AmazonAWS][Chat][Fun][cdn.signal.org]
-          analyse: [....19] [ip4][..tcp] [...192.168.2.17][57027] -> [...13.35.253.42][..443] 
+          analyse: [....19] [ip4][..tcp] [...192.168.2.17][57027] -> [...13.35.253.42][..443] [TLS.Signal][AmazonAWS][Chat][Fun]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.043|    0.012|    0.016|        257.340|   3.700]
                    [PKTLEN......:    52.000| 1492.000|  498.200|  608.000|     369644.200|   4.000]
@@ -120,8 +121,7 @@
               end: [.....8] [ip4][..tcp] [...192.168.2.17][56996] -> [.17.248.146.144][..443] [TLS][Apple][Web][Safe]
                    RISK: Unidirectional Traffic
              idle: [....16] [ip4][.icmp] [...192.168.2.17] -> [....192.168.2.1] [ICMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
-              end: [....18] [ip4][..tcp] [....23.57.24.16][..443] -> [...192.168.2.17][57016] 
+              end: [....18] [ip4][..tcp] [....23.57.24.16][..443] -> [...192.168.2.17][57016] [TLS][Unknown][Web][Safe]
               end: [.....4] [ip4][..tcp] [...192.168.2.17][57018] -> [....23.57.24.16][..443] [TLS.AppleiTunes][Unknown][Streaming][Fun]
               end: [....11] [ip4][..tcp] [...192.168.2.17][57022] -> [....23.57.24.16][..443] [TLS.AppleiTunes][Unknown][Streaming][Fun]
               end: [.....5] [ip4][..tcp] [...192.168.2.17][57019] -> [.34.225.240.173][..443] [TLS.Signal][AmazonAWS][Chat][Fun]
@@ -132,9 +132,10 @@
              idle: [....15] [ip4][..tcp] [...192.168.2.17][57025] -> [....35.169.3.40][..443] [TLS.Signal][AmazonAWS][Chat][Fun]
              idle: [....17] [ip4][..tcp] [...192.168.2.17][57026] -> [....35.169.3.40][..443] [TLS.Signal][AmazonAWS][Chat][Fun]
               end: [.....9] [ip4][..tcp] [...192.168.2.17][57017] -> [...2.18.232.118][..443] [TLS][Unknown][Web][Safe]
-                   RISK: Unidirectional Traffic
-              end: [.....3] [ip4][..tcp] [...192.168.2.17][49226] -> [.34.225.240.173][..443] 
-             idle: [....10] [ip4][..tcp] [...192.168.2.17][49227] -> [....35.169.3.40][..443] 
+              end: [.....3] [ip4][..tcp] [...192.168.2.17][49226] -> [.34.225.240.173][..443] [TLS.Signal][AmazonAWS][Chat][Fun]
+                   RISK: TLS (probably) Not Carrying HTTPS
+             idle: [....10] [ip4][..tcp] [...192.168.2.17][49227] -> [....35.169.3.40][..443] [TLS.Signal][AmazonAWS][Chat][Fun]
+                   RISK: TLS (probably) Not Carrying HTTPS
              idle: [....19] [ip4][..tcp] [...192.168.2.17][57027] -> [...13.35.253.42][..443] [TLS.Signal][AmazonAWS][Chat][Fun]
              idle: [....12] [ip4][..udp] [...192.168.2.17][56263] -> [....192.168.2.1][...53] [DNS.Signal][Unknown][Network][Fun]
              idle: [.....2] [ip4][..udp] [...192.168.2.17][60793] -> [....192.168.2.1][...53] [DNS][Unknown][Network][Acceptable]

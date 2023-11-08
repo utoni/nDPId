@@ -29,7 +29,6 @@
       ERROR-EVENT: Unknown packet type [16/16]
            update: [.....2] [ip4][.icmp] [192.168.239.129] -> [......224.0.0.2] [ICMP][Unknown][Network][Acceptable]
            update: [.....1] [ip4][..udp] [192.168.239.129][..137] -> [..192.168.239.2][..137] [NetBIOS][Unknown][System][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....3] [ip4][..udp] [192.168.239.129][..137] -> [192.168.239.255][..137] [NetBIOS][Unknown][System][Acceptable]
       ERROR-EVENT: Unknown packet type [1/16]
       ERROR-EVENT: Unknown packet type [2/16]
@@ -51,7 +50,6 @@
                    RISK: Unsafe Protocol
            update: [.....2] [ip4][.icmp] [192.168.239.129] -> [......224.0.0.2] [ICMP][Unknown][Network][Acceptable]
            update: [.....1] [ip4][..udp] [192.168.239.129][..137] -> [..192.168.239.2][..137] [NetBIOS][Unknown][System][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....3] [ip4][..udp] [192.168.239.129][..137] -> [192.168.239.255][..137] [NetBIOS][Unknown][System][Acceptable]
            update: [.....4] [ip4][..udp] [192.168.239.129][..138] -> [192.168.239.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous]
                    RISK: Unsafe Protocol
@@ -71,7 +69,6 @@
              idle: [.....2] [ip4][.icmp] [192.168.239.129] -> [......224.0.0.2] [ICMP][Unknown][Network][Acceptable]
              idle: [.....3] [ip4][..udp] [192.168.239.129][..137] -> [192.168.239.255][..137] [NetBIOS][Unknown][System][Acceptable]
              idle: [.....1] [ip4][..udp] [192.168.239.129][..137] -> [..192.168.239.2][..137] [NetBIOS][Unknown][System][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....4] [ip4][..udp] [192.168.239.129][..138] -> [192.168.239.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous]
                    RISK: Unsafe Protocol
      DAEMON-EVENT: shutdown

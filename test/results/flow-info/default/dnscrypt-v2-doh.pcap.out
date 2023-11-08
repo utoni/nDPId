@@ -174,8 +174,8 @@
              idle: [....19] [ip4][..tcp] [.......10.0.0.1][59026] -> [....85.5.93.230][..443] [TLS.DoH_DoT][Unknown][Network][Acceptable]
              idle: [....23] [ip4][..tcp] [.......10.0.0.1][52176] -> [136.144.215.158][..443] [TLS.DoH_DoT][Unknown][Network][Acceptable]
              idle: [....22] [ip4][..tcp] [.......10.0.0.1][33338] -> [.....45.90.28.0][..443] [TLS.DoH_DoT][Unknown][Network][Acceptable]
-             idle: [.....1] [ip4][..tcp] [.......10.0.0.1][53674] -> [..139.99.222.72][..443] 
-             idle: [.....2] [ip4][..tcp] [.......10.0.0.1][53676] -> [..139.99.222.72][..443] 
+             idle: [.....1] [ip4][..tcp] [.......10.0.0.1][53674] -> [..139.99.222.72][..443] [TLS.DoH_DoT][Unknown][Network][Acceptable]
+             idle: [.....2] [ip4][..tcp] [.......10.0.0.1][53676] -> [..139.99.222.72][..443] [TLS.DoH_DoT][Unknown][Network][Acceptable]
              idle: [....15] [ip4][..tcp] [.......10.0.0.1][36012] -> [..149.56.228.45][..453] [TLS.DoH_DoT][Unknown][Network][Acceptable]
                    RISK: Known Proto on Non Std Port
              idle: [.....7] [ip4][..tcp] [.......10.0.0.1][37530] -> [167.114.220.125][..453] [TLS.DoH_DoT][Unknown][Network][Acceptable]

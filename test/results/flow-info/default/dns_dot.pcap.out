@@ -6,5 +6,6 @@
                    RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
  detection-update: [.....1] [ip4][..tcp] [..192.168.1.185][58290] -> [........8.8.8.8][..853] [TLS.DoH_DoT][Google][Network][Acceptable][]
                    RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
-             idle: [.....1] [ip4][..tcp] [..192.168.1.185][58290] -> [........8.8.8.8][..853] 
+             idle: [.....1] [ip4][..tcp] [..192.168.1.185][58290] -> [........8.8.8.8][..853] [TLS.DoH_DoT][Google][Network][Acceptable]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
      DAEMON-EVENT: shutdown

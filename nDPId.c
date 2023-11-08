@@ -237,7 +237,7 @@ struct nDPId_flow
     {
         struct
         {
-            uint8_t detection_completed : 1;
+            uint8_t detection_completed : 1; // Flow was detected. Detection updates may still occur.
             uint8_t reserved_00 : 7;
             uint8_t reserved_01[1];
 #ifdef ENABLE_ZLIB
@@ -510,7 +510,17 @@ static struct
                    .instance_alias = CMDARG(NULL),
                    .max_flows_per_thread = nDPId_MAX_FLOWS_PER_THREAD / 2,
                    .max_idle_flows_per_thread = nDPId_MAX_IDLE_FLOWS_PER_THREAD / 2,
-                   .reader_thread_count = nDPId_MAX_READER_THREADS / 2,
+#ifdef CROSS_COMPILATION
+                   /*
+                    * We are assuming that in the cross compilation case
+                    * our target system is an embedded one with not much memory available.
+                    * To further reduce memory consumption caused by allocating nDPId / nDPI workflows per thread,
+                    * we set the default reader thread count to two.
+                    */
+                   .reader_thread_count = 2,
+#else
+                   .reader_thread_count = nDPId_MAX_READER_THREADS / 3,
+#endif
                    .daemon_status_interval = nDPId_DAEMON_STATUS_INTERVAL,
 #ifdef ENABLE_MEMORY_PROFILING
                    .memory_profiling_log_interval = nDPId_MEMORY_PROFILING_LOG_INTERVAL,
@@ -2666,7 +2676,8 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
                reader_thread->array_index);
     }
     else if (base64_data_len > 0 &&
-             ndpi_serialize_string_binary(&workflow->ndpi_serializer, "pkt", base64_data, (uint16_t)base64_data_len) != 0)
+             ndpi_serialize_string_binary(&workflow->ndpi_serializer, "pkt", base64_data, (uint16_t)base64_data_len) !=
+                 0)
     {
         logger(1,
                "[%8llu, %zu] JSON serializing base64 packet buffer failed",
@@ -2721,7 +2732,7 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
             }
             if (flow_ext->flow_basic.state == FS_FINISHED)
             {
-                struct nDPId_flow * const flow = (struct nDPId_flow *)flow_ext;
+                struct nDPId_flow const * const flow = (struct nDPId_flow *)flow_ext;
 
                 ndpi_serialize_start_of_block(&workflow->ndpi_serializer, "ndpi");
                 ndpi_serialize_proto(workflow->ndpi_struct,
@@ -2730,6 +2741,21 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
                                      flow->finished.confidence,
                                      flow->flow_extended.detected_l7_protocol);
                 ndpi_serialize_end_of_block(&workflow->ndpi_serializer);
+            }
+            else if (flow_ext->flow_basic.state == FS_INFO)
+            {
+                struct nDPId_flow const * const flow = (struct nDPId_flow *)flow_ext;
+
+                if (flow->info.detection_completed != 0)
+                {
+                    ndpi_serialize_start_of_block(&workflow->ndpi_serializer, "ndpi");
+                    ndpi_serialize_proto(workflow->ndpi_struct,
+                                         &workflow->ndpi_serializer,
+                                         flow->info.detection_data->flow.risk,
+                                         flow->info.detection_data->flow.confidence,
+                                         flow->flow_extended.detected_l7_protocol);
+                    ndpi_serialize_end_of_block(&workflow->ndpi_serializer);
+                }
             }
             break;
 
@@ -3069,7 +3095,8 @@ static uint32_t calculate_ndpi_flow_struct_hash(struct ndpi_flow_struct const * 
      */
     uint32_t hash = murmur3_32((uint8_t const *)&ndpi_flow->protos, sizeof(ndpi_flow->protos), nDPId_FLOW_STRUCT_SEED);
     hash += ndpi_flow->category;
-    hash += ndpi_flow->risk;
+    hash += (ndpi_flow->risk & 0xFFFFFFFF) + (ndpi_flow->risk >> 32); // nDPI Risks are u64's (might change in the
+                                                                      // future)
     hash += ndpi_flow->confidence;
 
     const size_t protocol_bitmask_size = sizeof(ndpi_flow->excluded_protocol_bitmask.fds_bits) /
@@ -4218,9 +4245,27 @@ static void ndpi_process_packet(uint8_t * const args,
 
     if (flow_to_process->info.detection_data->flow.num_processed_pkts ==
             nDPId_options.max_packets_per_flow_to_process ||
-        (flow_to_process->info.detection_completed == 1 &&
+        (ndpi_is_protocol_detected(workflow->ndpi_struct, flow_to_process->flow_extended.detected_l7_protocol) != 0 &&
          ndpi_extra_dissection_possible(workflow->ndpi_struct, &flow_to_process->info.detection_data->flow) == 0))
     {
+        /*
+         * The following needs to be done, because a successful classification may happen after the first packet.
+         * If there is no further extra dissection possible for this protocol, we may be saving an invalid risk.
+         */
+        if (ndpi_isset_risk(workflow->ndpi_struct,
+                            &flow_to_process->info.detection_data->flow,
+                            NDPI_UNIDIRECTIONAL_TRAFFIC) != 0 &&
+            ((flow_to_process->flow_extended.packets_processed[FD_SRC2DST] > 0 &&
+              flow_to_process->flow_extended.packets_processed[FD_DST2SRC] > 0) ||
+             (flow_to_process->flow_extended.packets_processed[FD_SRC2DST] +
+                  flow_to_process->flow_extended.packets_processed[FD_DST2SRC] ==
+              1)))
+        {
+            ndpi_unset_risk(workflow->ndpi_struct,
+                            &flow_to_process->info.detection_data->flow,
+                            NDPI_UNIDIRECTIONAL_TRAFFIC);
+        }
+
         struct ndpi_proto detected_l7_protocol = flow_to_process->flow_extended.detected_l7_protocol;
         if (ndpi_is_protocol_detected(workflow->ndpi_struct, detected_l7_protocol) == 0)
         {

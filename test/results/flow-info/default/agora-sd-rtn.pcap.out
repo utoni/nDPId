@@ -14,9 +14,7 @@
          detected: [.....4] [ip4][..udp] [..192.168.2.100][44131] -> [.104.166.161.19][.8130] [SD-RTN][Unknown][Media][Acceptable][104-166-161-19.edge.agora.io]
                    RISK: Unidirectional Traffic
            update: [.....2] [ip4][..udp] [..192.168.2.100][35778] -> [.104.166.161.75][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....1] [ip4][..udp] [..192.168.2.100][35778] -> [.23.248.186.179][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [.....5] [ip4][..udp] [..192.168.2.100][44131] -> [....128.1.77.66][.8130] 
          detected: [.....5] [ip4][..udp] [..192.168.2.100][44131] -> [....128.1.77.66][.8130] [SD-RTN][Unknown][Media][Acceptable][128-1-77-66.edge.agora.io]
                    RISK: Unidirectional Traffic
@@ -27,32 +25,20 @@
          detected: [.....7] [ip4][..udp] [..192.168.2.100][46798] -> [.23.248.186.179][.8130] [SD-RTN][Unknown][Media][Acceptable][23-248-186-179.edge.agora.io]
                    RISK: Unidirectional Traffic
            update: [.....2] [ip4][..udp] [..192.168.2.100][35778] -> [.104.166.161.75][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....3] [ip4][..udp] [..192.168.2.100][44131] -> [.104.166.161.75][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....4] [ip4][..udp] [..192.168.2.100][44131] -> [.104.166.161.19][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....1] [ip4][..udp] [..192.168.2.100][35778] -> [.23.248.186.179][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....5] [ip4][..udp] [..192.168.2.100][44131] -> [....128.1.77.66][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [.....8] [ip4][..udp] [..192.168.2.100][44131] -> [.23.248.186.180][.8130] 
          detected: [.....8] [ip4][..udp] [..192.168.2.100][44131] -> [.23.248.186.180][.8130] [SD-RTN][Unknown][Media][Acceptable][23-248-186-180.edge.agora.io]
                    RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..udp] [..192.168.2.100][35778] -> [.104.166.161.75][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..udp] [..192.168.2.100][35778] -> [.23.248.186.179][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....3] [ip4][..udp] [..192.168.2.100][44131] -> [.104.166.161.75][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....4] [ip4][..udp] [..192.168.2.100][44131] -> [.104.166.161.19][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....6] [ip4][..udp] [..192.168.2.100][44131] -> [.23.248.186.179][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....5] [ip4][..udp] [..192.168.2.100][44131] -> [....128.1.77.66][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....7] [ip4][..udp] [..192.168.2.100][46798] -> [.23.248.186.179][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 120 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 6 / 8|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 12]
               new: [.....9] [ip4][..udp] [..192.168.2.100][40393] -> [.23.248.186.179][.8130] 
@@ -65,17 +51,11 @@
          detected: [....11] [ip4][..udp] [..192.168.2.100][40393] -> [.104.166.161.75][.8130] [SD-RTN][Unknown][Media][Acceptable][104-166-161-75.edge.agora.io]
                    RISK: Unidirectional Traffic
              idle: [.....4] [ip4][..udp] [..192.168.2.100][44131] -> [.104.166.161.19][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....3] [ip4][..udp] [..192.168.2.100][44131] -> [.104.166.161.75][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....8] [ip4][..udp] [..192.168.2.100][44131] -> [.23.248.186.180][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....6] [ip4][..udp] [..192.168.2.100][44131] -> [.23.248.186.179][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....5] [ip4][..udp] [..192.168.2.100][44131] -> [....128.1.77.66][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....7] [ip4][..udp] [..192.168.2.100][46798] -> [.23.248.186.179][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....12] [ip4][..udp] [..192.168.2.100][55322] -> [.104.166.161.75][.8130] 
          detected: [....12] [ip4][..udp] [..192.168.2.100][55322] -> [.104.166.161.75][.8130] [SD-RTN][Unknown][Media][Acceptable][104-166-161-75.edge.agora.io]
                    RISK: Unidirectional Traffic
@@ -86,25 +66,16 @@
          detected: [....14] [ip4][..udp] [..192.168.2.100][55322] -> [.193.118.52.182][.8130] [SD-RTN][Unknown][Media][Acceptable][193-118-52-182.edge.agora.io]
                    RISK: Unidirectional Traffic
            update: [....10] [ip4][..udp] [..192.168.2.100][47453] -> [.23.248.186.179][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....11] [ip4][..udp] [..192.168.2.100][40393] -> [.104.166.161.75][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....9] [ip4][..udp] [..192.168.2.100][40393] -> [.23.248.186.179][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 210 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 6 / 14|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 15]
              idle: [....10] [ip4][..udp] [..192.168.2.100][47453] -> [.23.248.186.179][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....13] [ip4][..udp] [..192.168.2.100][55322] -> [..128.1.233.218][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....11] [ip4][..udp] [..192.168.2.100][40393] -> [.104.166.161.75][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....9] [ip4][..udp] [..192.168.2.100][40393] -> [.23.248.186.179][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....14] [ip4][..udp] [..192.168.2.100][55322] -> [.193.118.52.182][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....12] [ip4][..udp] [..192.168.2.100][55322] -> [.104.166.161.75][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....15] [ip4][..udp] [..192.168.2.100][55322] -> [..128.1.193.223][.8130] 
          detected: [....15] [ip4][..udp] [..192.168.2.100][55322] -> [..128.1.193.223][.8130] [SD-RTN][Unknown][Media][Acceptable][128-1-193-223.edge.agora.io]
                    RISK: Unidirectional Traffic
@@ -112,23 +83,17 @@
          detected: [....16] [ip4][..udp] [..192.168.2.100][55322] -> [.23.248.186.180][.8130] [SD-RTN][Unknown][Media][Acceptable][23-248-186-180.edge.agora.io]
                    RISK: Unidirectional Traffic
            update: [....12] [ip4][..udp] [..192.168.2.100][55322] -> [.104.166.161.75][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....17] [ip4][..udp] [..192.168.2.100][55322] -> [..128.1.193.224][.8130] 
          detected: [....17] [ip4][..udp] [..192.168.2.100][55322] -> [..128.1.193.224][.8130] [SD-RTN][Unknown][Media][Acceptable][128-1-193-224.edge.agora.io]
                    RISK: Unidirectional Traffic
            update: [....15] [ip4][..udp] [..192.168.2.100][55322] -> [..128.1.193.223][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....18] [ip4][..udp] [..192.168.2.100][55322] -> [.23.248.186.179][.8130] 
          detected: [....18] [ip4][..udp] [..192.168.2.100][55322] -> [.23.248.186.179][.8130] [SD-RTN][Unknown][Media][Acceptable][23-248-186-179.edge.agora.io]
                    RISK: Unidirectional Traffic
              idle: [....16] [ip4][..udp] [..192.168.2.100][55322] -> [.23.248.186.180][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....15] [ip4][..udp] [..192.168.2.100][55322] -> [..128.1.193.223][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....12] [ip4][..udp] [..192.168.2.100][55322] -> [.104.166.161.75][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....17] [ip4][..udp] [..192.168.2.100][55322] -> [..128.1.193.224][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 285 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 2 / 18|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 19]
               new: [....19] [ip4][..udp] [..192.168.2.100][47805] -> [..128.1.193.223][.8130] 
@@ -138,9 +103,7 @@
          detected: [....20] [ip4][..udp] [..192.168.2.100][47805] -> [.202.226.25.166][.8130] [SD-RTN][Unknown][Media][Acceptable][202-226-25-166.edge.agora.io]
                    RISK: Unidirectional Traffic
              idle: [....18] [ip4][..udp] [..192.168.2.100][55322] -> [.23.248.186.179][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....17] [ip4][..udp] [..192.168.2.100][55322] -> [..128.1.193.224][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....21] [ip4][..udp] [..192.168.2.100][47805] -> [103.104.168.244][.8130] 
          detected: [....21] [ip4][..udp] [..192.168.2.100][47805] -> [103.104.168.244][.8130] [SD-RTN][Unknown][Media][Acceptable][103-104-168-244.edge.agora.io]
                    RISK: Unidirectional Traffic
@@ -157,32 +120,20 @@
          detected: [....25] [ip4][..udp] [..192.168.2.100][55094] -> [..128.1.193.223][.8130] [SD-RTN][Unknown][Media][Acceptable][128-1-193-223.edge.agora.io]
                    RISK: Unidirectional Traffic
            update: [....22] [ip4][..udp] [..192.168.2.100][47805] -> [.199.190.44.135][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....21] [ip4][..udp] [..192.168.2.100][47805] -> [103.104.168.244][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....19] [ip4][..udp] [..192.168.2.100][47805] -> [..128.1.193.223][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....20] [ip4][..udp] [..192.168.2.100][47805] -> [.202.226.25.166][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....26] [ip4][..udp] [..192.168.2.100][47805] -> [.23.248.186.180][.8130] 
          detected: [....26] [ip4][..udp] [..192.168.2.100][47805] -> [.23.248.186.180][.8130] [SD-RTN][Unknown][Media][Acceptable][23-248-186-180.edge.agora.io]
                    RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 400 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 8 / 26|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 23]
              idle: [....25] [ip4][..udp] [..192.168.2.100][55094] -> [..128.1.193.223][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....22] [ip4][..udp] [..192.168.2.100][47805] -> [.199.190.44.135][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....26] [ip4][..udp] [..192.168.2.100][47805] -> [.23.248.186.180][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....24] [ip4][..udp] [..192.168.2.100][47805] -> [.23.248.186.179][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....21] [ip4][..udp] [..192.168.2.100][47805] -> [103.104.168.244][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....23] [ip4][..udp] [..192.168.2.100][47805] -> [..128.1.193.224][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....19] [ip4][..udp] [..192.168.2.100][47805] -> [..128.1.193.223][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....20] [ip4][..udp] [..192.168.2.100][47805] -> [.202.226.25.166][.8130] [SD-RTN][Unknown][Media][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

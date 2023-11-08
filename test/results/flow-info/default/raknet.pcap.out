@@ -35,51 +35,36 @@
                    RISK: Unidirectional Traffic
               new: [....11] [ip4][..udp] [..192.168.2.100][44501] -> [.148.153.35.205][59935] 
            update: [.....8] [ip4][..udp] [..192.168.2.100][60690] -> [.148.153.35.205][60028] [RakNet][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
            update: [....10] [ip4][..udp] [..192.168.2.100][44501] -> [.148.153.35.205][60031] [RakNet][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
            update: [.....9] [ip4][..udp] [.148.153.35.205][60005] -> [..192.168.2.100][32951] [RakNet][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
            update: [.....3] [ip4][..udp] [..192.168.2.100][32951] -> [.148.153.35.205][60021] [RakNet][Unknown][Game][Fun]
            update: [.....4] [ip4][..udp] [.148.153.35.205][60022] -> [..192.168.2.100][32951] [RakNet][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
            update: [.....5] [ip4][..udp] [..192.168.2.100][32952] -> [.148.153.35.205][60021] [RakNet][Unknown][Game][Fun]
                    RISK: Unidirectional Traffic
            update: [.....7] [ip4][..udp] [..192.168.2.100][32953] -> [.148.153.35.205][60021] [RakNet][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
            update: [.....6] [ip4][..udp] [.148.153.35.205][60025] -> [..192.168.2.100][32951] [RakNet][Unknown][Game][Fun]
                    RISK: Unidirectional Traffic
            update: [.....8] [ip4][..udp] [..192.168.2.100][60690] -> [.148.153.35.205][60028] [RakNet][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
            update: [....11] [ip4][..udp] [..192.168.2.100][44501] -> [.148.153.35.205][59935] 
            update: [....10] [ip4][..udp] [..192.168.2.100][44501] -> [.148.153.35.205][60031] [RakNet][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
            update: [.....9] [ip4][..udp] [.148.153.35.205][60005] -> [..192.168.2.100][32951] [RakNet][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
            update: [.....3] [ip4][..udp] [..192.168.2.100][32951] -> [.148.153.35.205][60021] [RakNet][Unknown][Game][Fun]
            update: [.....4] [ip4][..udp] [.148.153.35.205][60022] -> [..192.168.2.100][32951] [RakNet][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
            update: [.....5] [ip4][..udp] [..192.168.2.100][32952] -> [.148.153.35.205][60021] [RakNet][Unknown][Game][Fun]
                    RISK: Unidirectional Traffic
            update: [.....7] [ip4][..udp] [..192.168.2.100][32953] -> [.148.153.35.205][60021] [RakNet][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
            update: [.....6] [ip4][..udp] [.148.153.35.205][60025] -> [..192.168.2.100][32951] [RakNet][Unknown][Game][Fun]
                    RISK: Unidirectional Traffic
          detected: [....11] [ip4][..udp] [..192.168.2.100][44501] -> [.148.153.35.205][59935] [RakNet][Unknown][Game][Fun]
                    RISK: Unidirectional Traffic
              idle: [.....8] [ip4][..udp] [..192.168.2.100][60690] -> [.148.153.35.205][60028] [RakNet][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
              idle: [....10] [ip4][..udp] [..192.168.2.100][44501] -> [.148.153.35.205][60031] [RakNet][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
              idle: [.....9] [ip4][..udp] [.148.153.35.205][60005] -> [..192.168.2.100][32951] [RakNet][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
              idle: [.....3] [ip4][..udp] [..192.168.2.100][32951] -> [.148.153.35.205][60021] [RakNet][Unknown][Game][Fun]
              idle: [.....5] [ip4][..udp] [..192.168.2.100][32952] -> [.148.153.35.205][60021] [RakNet][Unknown][Game][Fun]
                    RISK: Unidirectional Traffic
              idle: [.....4] [ip4][..udp] [.148.153.35.205][60022] -> [..192.168.2.100][32951] [RakNet][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
              idle: [.....7] [ip4][..udp] [..192.168.2.100][32953] -> [.148.153.35.205][60021] [RakNet][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
              idle: [.....6] [ip4][..udp] [.148.153.35.205][60025] -> [..192.168.2.100][32951] [RakNet][Unknown][Game][Fun]
                    RISK: Unidirectional Traffic
            update: [....11] [ip4][..udp] [..192.168.2.100][44501] -> [.148.153.35.205][59935] [RakNet][Unknown][Game][Fun]
@@ -90,5 +75,4 @@
              idle: [....11] [ip4][..udp] [..192.168.2.100][44501] -> [.148.153.35.205][59935] [RakNet][Unknown][Game][Fun]
                    RISK: Unidirectional Traffic
              idle: [....12] [ip4][..udp] [.148.153.35.205][43582] -> [..192.168.2.100][44501] [RakNet][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

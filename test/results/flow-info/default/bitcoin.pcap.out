@@ -66,15 +66,9 @@
      DAEMON-EVENT: [Processed: 621 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 6 / 6|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
              idle: [.....3] [ip4][..tcp] [..192.168.1.142][55348] -> [..74.89.181.229][.8333] [BITCOIN][Unknown][Crypto_Currency][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....5] [ip4][..tcp] [..192.168.1.142][55400] -> [.195.218.16.178][.8333] [BITCOIN][Unknown][Crypto_Currency][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....6] [ip4][..tcp] [..192.168.1.142][55487] -> [.184.58.165.119][.8333] [BITCOIN][Unknown][Crypto_Currency][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....4] [ip4][..tcp] [..192.168.1.142][55383] -> [....66.68.83.22][.8333] [BITCOIN][Unknown][Crypto_Currency][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..tcp] [..192.168.1.142][55317] -> [188.165.213.169][.8333] [BITCOIN][Unknown][Crypto_Currency][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..tcp] [..192.168.1.142][55328] -> [..69.118.54.122][.8333] [BITCOIN][Unknown][Crypto_Currency][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

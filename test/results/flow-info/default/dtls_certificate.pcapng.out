@@ -5,5 +5,5 @@
          detected: [.....1] [ip4][..udp] [..191.62.60.190][..443] -> [.163.205.15.180][38876] [DTLS.WindowsUpdate][Unknown][SoftwareUpdate][Safe]
                    RISK: TLS Cert Expired, Unidirectional Traffic
              idle: [.....1] [ip4][..udp] [..191.62.60.190][..443] -> [.163.205.15.180][38876] [DTLS.WindowsUpdate][Unknown][SoftwareUpdate][Safe]
-                   RISK: TLS Cert Expired, Unidirectional Traffic
+                   RISK: TLS Cert Expired
      DAEMON-EVENT: shutdown

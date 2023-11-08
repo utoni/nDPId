@@ -3,5 +3,5 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [.....10.10.10.1][..443] -> [....192.168.0.1][33063] 
          detected: [.....1] [ip4][..tcp] [.....10.10.10.1][..443] -> [....192.168.0.1][33063] [TLS][Unknown][Web][Safe][]
-              end: [.....1] [ip4][..tcp] [.....10.10.10.1][..443] -> [....192.168.0.1][33063] 
+              end: [.....1] [ip4][..tcp] [.....10.10.10.1][..443] -> [....192.168.0.1][33063] [TLS][Unknown][Web][Safe]
      DAEMON-EVENT: shutdown

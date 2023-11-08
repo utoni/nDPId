@@ -4,6 +4,7 @@
               new: [.....1] [ip4][..tcp] [..192.30.252.91][..443] -> [..192.168.1.100][.3213] [MIDSTREAM] 
          detected: [.....1] [ip4][..tcp] [..192.30.252.91][..443] -> [..192.168.1.100][.3213] [TLS][Github][Web][Safe]
                    RISK: Unidirectional Traffic
+ detection-update: [.....1] [ip4][..tcp] [..192.30.252.91][..443] -> [..192.168.1.100][.3213] [TLS][Github][Web][Safe]
               new: [.....2] [ip4][..udp] [..192.168.1.100][58818] -> [..192.168.1.254][...53] 
          detected: [.....2] [ip4][..udp] [..192.168.1.100][58818] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][91.252.30.192.in-addr.arpa]
                    RISK: Unidirectional Traffic
@@ -64,6 +65,8 @@
               new: [....16] [ip4][..tcp] [..192.168.1.100][.3512] -> [..12.129.222.54][...80] 
          detected: [....16] [ip4][..tcp] [..192.168.1.100][.3512] -> [..12.129.222.54][...80] [HTTP.WorldOfWarcraft][Unknown][Game][Fun][us.scan.worldofwarcraft.com]
                    RISK: HTTP Susp User-Agent
+ detection-update: [....16] [ip4][..tcp] [..192.168.1.100][.3512] -> [..12.129.222.54][...80] [HTTP.WorldOfWarcraft][Unknown][Game][Fun][us.scan.worldofwarcraft.com]
+                   RISK: HTTP Susp User-Agent, HTTP Obsolete Server
               new: [....17] [ip4][..tcp] [..192.168.1.100][.3492] -> [...2.228.46.104][..443] [MIDSTREAM] 
               new: [....18] [ip4][..tcp] [..192.168.1.100][.3489] -> [...2.228.46.104][..443] [MIDSTREAM] 
               new: [....19] [ip4][..tcp] [..192.168.1.100][.3490] -> [...2.228.46.104][..443] [MIDSTREAM] 
@@ -172,8 +175,8 @@
              idle: [....47] [ip4][..tcp] [..192.168.1.100][.3529] -> [...2.228.46.112][...80] [HTTP][Unknown][Web][Acceptable]
              idle: [....48] [ip4][..tcp] [..192.168.1.100][.3530] -> [...2.228.46.112][...80] [HTTP][Unknown][Web][Acceptable]
              idle: [....49] [ip4][..tcp] [..192.168.1.100][.3531] -> [...2.228.46.112][...80] [HTTP][Unknown][Web][Acceptable]
-             idle: [....50] [ip4][..tcp] [..192.168.1.100][.3532] -> [...2.228.46.112][...80] 
-             idle: [....51] [ip4][..tcp] [..192.168.1.100][.3533] -> [...2.228.46.112][...80] 
+             idle: [....50] [ip4][..tcp] [..192.168.1.100][.3532] -> [...2.228.46.112][...80] [HTTP][Unknown][Web][Acceptable]
+             idle: [....51] [ip4][..tcp] [..192.168.1.100][.3533] -> [...2.228.46.112][...80] [HTTP][Unknown][Web][Acceptable]
           guessed: [....52] [ip4][..tcp] [..192.168.1.100][.3534] -> [...2.228.46.112][...80] [HTTP][Unknown][Web][Acceptable][]
                    RISK: Unidirectional Traffic
              idle: [....52] [ip4][..tcp] [..192.168.1.100][.3534] -> [...2.228.46.112][...80] 
@@ -188,7 +191,7 @@
               end: [....17] [ip4][..tcp] [..192.168.1.100][.3492] -> [...2.228.46.104][..443] [TLS][Unknown][Web][Safe]
              idle: [....14] [ip4][..udp] [..192.168.1.100][60026] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable]
                    RISK: Susp DGA Domain name, Risky Domain Name
-             idle: [.....1] [ip4][..tcp] [..192.30.252.91][..443] -> [..192.168.1.100][.3213] 
+             idle: [.....1] [ip4][..tcp] [..192.30.252.91][..443] -> [..192.168.1.100][.3213] [TLS][Github][Web][Safe]
           guessed: [....37] [ip4][..udp] [..192.168.1.100][.6113] -> [213.248.127.166][.1119] [Starcraft][Unknown][Game][Fun]
              idle: [....37] [ip4][..udp] [..192.168.1.100][.6113] -> [213.248.127.166][.1119] 
           guessed: [....36] [ip4][..udp] [..192.168.1.100][.6113] -> [213.248.127.212][.1119] [Starcraft][Unknown][Game][Fun]

@@ -499,18 +499,14 @@
               end: [....43] [ip4][..tcp] [..192.168.1.184][56645] -> [.185.219.133.62][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
               end: [....46] [ip4][..tcp] [..192.168.1.184][56650] -> [.35.228.250.140][30303] [ETHEREUM][GoogleCloud][Crypto_Currency][Acceptable]
              idle: [....50] [ip4][..udp] [..192.168.1.184][30303] -> [.18.219.167.159][30303] [ETHEREUM][AmazonAWS][Crypto_Currency][Acceptable]
-                   RISK: Unidirectional Traffic
               end: [....68] [ip4][..tcp] [..192.168.1.184][56679] -> [..35.228.158.52][30303] [ETHEREUM][GoogleCloud][Crypto_Currency][Acceptable]
               end: [....65] [ip4][..tcp] [..192.168.1.184][56674] -> [...94.68.55.162][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
               end: [....34] [ip4][..tcp] [..192.168.1.184][56635] -> [.162.228.29.160][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
               end: [....70] [ip4][..tcp] [..192.168.1.184][56681] -> [207.180.206.216][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
               end: [....56] [ip4][..tcp] [..192.168.1.184][56662] -> [..35.229.232.19][30303] [ETHEREUM][GoogleCloud][Crypto_Currency][Acceptable]
              idle: [....37] [ip4][..udp] [..192.168.1.184][30303] -> [.35.180.246.169][30301] [ETHEREUM][AmazonAWS][Crypto_Currency][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....29] [ip4][..udp] [..192.168.1.184][30303] -> [..54.36.160.211][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....60] [ip4][..udp] [..192.168.1.184][30303] -> [..106.12.39.168][30333] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....74] [ip4][..tcp] [..192.168.1.184][56686] -> [.206.189.107.35][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
               end: [....13] [ip4][..tcp] [..192.168.1.184][56615] -> [.35.158.244.151][30303] [ETHEREUM][AmazonAWS][Crypto_Currency][Acceptable]
           guessed: [....42] [ip4][..tcp] [..192.168.1.184][56644] -> [..13.230.108.42][30303] [ETHEREUM][AmazonAWS][Crypto_Currency][Acceptable]
@@ -521,29 +517,21 @@
               end: [....20] [ip4][..tcp] [..192.168.1.184][56624] -> [....89.38.99.34][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
               end: [....49] [ip4][..tcp] [..192.168.1.184][56654] -> [..85.214.108.52][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
              idle: [.....3] [ip4][..udp] [...3.112.138.57][25516] -> [..192.168.1.184][30303] [ETHEREUM][AmazonAWS][Crypto_Currency][Acceptable]
-                   RISK: Unidirectional Traffic
               end: [....10] [ip4][..tcp] [..192.168.1.184][56610] -> [..165.22.107.33][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
              idle: [.....1] [ip4][..udp] [...87.14.222.25][56693] -> [..192.168.1.184][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
-                   RISK: Unidirectional Traffic
               end: [....53] [ip4][..tcp] [..192.168.1.184][56658] -> [.157.230.152.87][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
               end: [....40] [ip4][..tcp] [..192.168.1.184][56642] -> [..178.62.10.218][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
               end: [....41] [ip4][..tcp] [..192.168.1.184][56643] -> [..178.62.29.183][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
               end: [....61] [ip4][..tcp] [..192.168.1.184][56670] -> [..167.86.122.50][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
              idle: [....31] [ip4][..udp] [..192.168.1.184][30303] -> [..111.229.0.180][20182] [ETHEREUM][Tencent][Crypto_Currency][Acceptable]
-                   RISK: Unidirectional Traffic
               end: [....23] [ip4][..tcp] [..192.168.1.184][56627] -> [..34.255.23.113][30303] [ETHEREUM][AmazonAWS][Crypto_Currency][Acceptable]
               end: [....15] [ip4][..tcp] [..192.168.1.184][56618] -> [.52.231.165.108][30303] [ETHEREUM][Azure][Crypto_Currency][Acceptable]
               end: [....64] [ip4][..tcp] [..192.168.1.184][56673] -> [..78.47.147.155][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
              idle: [....71] [ip4][..udp] [..192.168.1.184][30303] -> [..167.86.122.50][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....32] [ip4][..udp] [..192.168.1.184][30303] -> [...209.97.143.1][50000] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....5] [ip4][..udp] [..192.168.1.184][30303] -> [.52.231.165.108][30303] [ETHEREUM][Azure][Crypto_Currency][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..udp] [...60.191.32.71][30303] -> [..192.168.1.184][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....58] [ip4][..udp] [183.129.242.164][.1024] -> [..192.168.1.184][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
-                   RISK: Unidirectional Traffic
               end: [....22] [ip4][..tcp] [..192.168.1.184][56626] -> [178.128.195.220][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
              idle: [....51] [ip4][..tcp] [..192.168.1.184][56655] -> [.202.112.28.106][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
           guessed: [....21] [ip4][..tcp] [..192.168.1.184][56625] -> [.....5.1.83.226][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
@@ -560,19 +548,15 @@
               end: [....57] [ip4][..tcp] [..192.168.1.184][56663] -> [124.217.235.180][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
               end: [....47] [ip4][..tcp] [..192.168.1.184][56651] -> [..138.201.12.87][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
              idle: [....26] [ip4][..udp] [..192.168.1.184][30303] -> [...128.0.51.140][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
-                   RISK: Unidirectional Traffic
               end: [....44] [ip4][..tcp] [..192.168.1.184][56646] -> [..172.105.94.62][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
               end: [....48] [ip4][..tcp] [..192.168.1.184][56652] -> [..176.9.136.209][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
              idle: [....59] [ip4][..udp] [..192.168.1.184][30303] -> [.202.112.28.106][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
-                   RISK: Unidirectional Traffic
               end: [....18] [ip4][..tcp] [..192.168.1.184][56622] -> [..18.138.108.67][30303] [ETHEREUM][ETHEREUM][Crypto_Currency][Acceptable]
               end: [....19] [ip4][..tcp] [..192.168.1.184][56623] -> [...18.138.81.28][30303] [ETHEREUM][AmazonAWS][Crypto_Currency][Acceptable]
              idle: [.....9] [ip4][..tcp] [..192.168.1.184][56612] -> [...66.42.82.246][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
              idle: [.....4] [ip4][..udp] [..192.168.1.184][30303] -> [....3.209.45.79][30303] [ETHEREUM][ETHEREUM][Crypto_Currency][Acceptable]
-                   RISK: Unidirectional Traffic
               end: [....11] [ip4][..tcp] [..192.168.1.184][56611] -> [..104.42.217.25][30303] [ETHEREUM][Azure][Crypto_Currency][Acceptable]
              idle: [.....7] [ip4][..udp] [..192.168.1.184][30303] -> [...34.97.172.22][30303] [ETHEREUM][GoogleCloud][Crypto_Currency][Acceptable]
-                   RISK: Unidirectional Traffic
               end: [....63] [ip4][..tcp] [..192.168.1.184][56672] -> [139.162.255.210][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
               end: [....16] [ip4][..tcp] [..192.168.1.184][56620] -> [191.234.162.198][30303] [ETHEREUM][Azure][Crypto_Currency][Acceptable]
               end: [....45] [ip4][..tcp] [..192.168.1.184][56647] -> [.182.162.161.61][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
@@ -582,11 +566,9 @@
               end: [....17] [ip4][..tcp] [..192.168.1.184][56621] -> [..52.187.207.27][30303] [ETHEREUM][Azure][Crypto_Currency][Acceptable]
              idle: [....67] [ip4][..tcp] [..192.168.1.184][56678] -> [..13.251.14.199][30303] [ETHEREUM][AmazonAWS][Crypto_Currency][Acceptable]
              idle: [.....6] [ip4][..udp] [..192.168.1.184][30303] -> [..18.138.108.67][30303] [ETHEREUM][ETHEREUM][Crypto_Currency][Acceptable]
-                   RISK: Unidirectional Traffic
               end: [....66] [ip4][..tcp] [..192.168.1.184][56675] -> [..35.235.37.216][30303] [ETHEREUM][GoogleCloud][Crypto_Currency][Acceptable]
               end: [....72] [ip4][..tcp] [..192.168.1.184][56684] -> [...51.83.237.44][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
              idle: [.....8] [ip4][..udp] [..192.168.1.184][30303] -> [...66.42.82.246][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
-                   RISK: Unidirectional Traffic
               end: [....62] [ip4][..tcp] [..192.168.1.184][56671] -> [..86.107.243.62][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
              idle: [....73] [ip4][..tcp] [..192.168.1.184][56685] -> [...88.99.93.219][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]
               end: [....12] [ip4][..tcp] [..192.168.1.184][56613] -> [.162.243.160.83][30303] [ETHEREUM][Unknown][Crypto_Currency][Acceptable]

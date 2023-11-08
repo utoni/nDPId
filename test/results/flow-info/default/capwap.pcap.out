@@ -18,7 +18,6 @@
          detected: [.....4] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12380] [CAPWAP][Unknown][Network][Acceptable]
                    RISK: Unidirectional Traffic
            update: [.....1] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12379] [CAPWAP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
           analyse: [.....4] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12380] [CAPWAP][Unknown][Network][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|   10.093|    0.703|    2.456|    6029719.372|   1.600]
@@ -32,7 +31,7 @@
               new: [.....5] [ip4][..udp] [..192.168.10.10][12380] -> [...192.168.10.9][.5247] 
          detected: [.....5] [ip4][..udp] [..192.168.10.10][12380] -> [...192.168.10.9][.5247] [CAPWAP][Unknown][Network][Acceptable]
                    RISK: Unidirectional Traffic
-           update: [.....2] [ip4][..udp] [..192.168.10.10][49259] -> [255.255.255.255][...53] 
+           update: [.....2] [ip4][..udp] [..192.168.10.10][49259] -> [255.255.255.255][...53] [DNS][Unknown][Network][Acceptable]
       ERROR-EVENT: Unknown packet type [1/16]
           analyse: [.....5] [ip4][..udp] [..192.168.10.10][12380] -> [...192.168.10.9][.5247] [CAPWAP][Unknown][Network][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
@@ -46,33 +45,22 @@
                    [ENTROPIES...: 4.3,4.8,5.2,4.7,4.9,4.8,4.4,5.0,5.1,4.6,4.4,4.4,4.8,5.0,4.6,4.9,4.9,5.0,4.6,4.9,4.4,4.9,4.8,5.1,4.9,4.8,5.0,4.7,4.3,4.9,4.9,4.7]
            update: [.....3] [ip4][..udp] [..192.168.10.10][12380] -> [255.255.255.255][.5246] [CAPWAP][Unknown][Network][Acceptable]
            update: [.....1] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12379] [CAPWAP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....4] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12380] [CAPWAP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....5] [ip4][..udp] [..192.168.10.10][12380] -> [...192.168.10.9][.5247] [CAPWAP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
-           update: [.....2] [ip4][..udp] [..192.168.10.10][49259] -> [255.255.255.255][...53] 
+           update: [.....2] [ip4][..udp] [..192.168.10.10][49259] -> [255.255.255.255][...53] [DNS][Unknown][Network][Acceptable]
       ERROR-EVENT: Unknown packet type [1/16]
            update: [.....3] [ip4][..udp] [..192.168.10.10][12380] -> [255.255.255.255][.5246] [CAPWAP][Unknown][Network][Acceptable]
            update: [.....1] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12379] [CAPWAP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....4] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12380] [CAPWAP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....5] [ip4][..udp] [..192.168.10.10][12380] -> [...192.168.10.9][.5247] [CAPWAP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
-           update: [.....2] [ip4][..udp] [..192.168.10.10][49259] -> [255.255.255.255][...53] 
+           update: [.....2] [ip4][..udp] [..192.168.10.10][49259] -> [255.255.255.255][...53] [DNS][Unknown][Network][Acceptable]
       ERROR-EVENT: Unknown packet type [1/16]
              idle: [.....1] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12379] [CAPWAP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
-             idle: [.....2] [ip4][..udp] [..192.168.10.10][49259] -> [255.255.255.255][...53] 
+             idle: [.....2] [ip4][..udp] [..192.168.10.10][49259] -> [255.255.255.255][...53] [DNS][Unknown][Network][Acceptable]
            update: [.....3] [ip4][..udp] [..192.168.10.10][12380] -> [255.255.255.255][.5246] [CAPWAP][Unknown][Network][Acceptable]
            update: [.....4] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12380] [CAPWAP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....5] [ip4][..udp] [..192.168.10.10][12380] -> [...192.168.10.9][.5247] [CAPWAP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....3] [ip4][..udp] [..192.168.10.10][12380] -> [255.255.255.255][.5246] [CAPWAP][Unknown][Network][Acceptable]
              idle: [.....4] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12380] [CAPWAP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....5] [ip4][..udp] [..192.168.10.10][12380] -> [...192.168.10.9][.5247] [CAPWAP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

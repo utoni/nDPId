@@ -37,7 +37,7 @@
          detected: [....10] [ip4][..tcp] [...192.168.0.17][53934] -> [...54.230.93.53][..443] [TLS.Viber][AmazonAWS][Chat][Fun][dl-media.viber.com]
  detection-update: [....10] [ip4][..tcp] [...192.168.0.17][53934] -> [...54.230.93.53][..443] [TLS.Viber][AmazonAWS][Chat][Fun][dl-media.viber.com]
  detection-update: [....10] [ip4][..tcp] [...192.168.0.17][53934] -> [...54.230.93.53][..443] [TLS.Viber][AmazonAWS][Chat][Fun][dl-media.viber.com]
-          analyse: [....10] [ip4][..tcp] [...192.168.0.17][53934] -> [...54.230.93.53][..443] 
+          analyse: [....10] [ip4][..tcp] [...192.168.0.17][53934] -> [...54.230.93.53][..443] [TLS.Viber][AmazonAWS][Chat][Fun]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.048|    0.009|    0.015|        217.133|   3.300]
                    [PKTLEN......:    52.000| 1500.000|  714.100|  673.400|     453425.200|   4.300]
@@ -130,35 +130,30 @@
      DAEMON-EVENT: [Flows][active: 26 / 26|skipped: 0|!detected: 0|guessed: 0|detection-updates: 20|updates: 4]
               new: [....27] [ip4][..tcp] [..192.168.2.100][48690] -> [...52.0.252.145][.4244] 
          detected: [....27] [ip4][..tcp] [..192.168.2.100][48690] -> [...52.0.252.145][.4244] [Viber][Viber][VoIP][Fun]
-              end: [.....5] [ip4][..tcp] [...192.168.0.17][36986] -> [..54.69.166.226][..443] 
+              end: [.....5] [ip4][..tcp] [...192.168.0.17][36986] -> [..54.69.166.226][..443] [TLS][AmazonAWS][Web][Safe]
               end: [.....6] [ip4][..tcp] [...192.168.0.17][36988] -> [..54.69.166.226][..443] [TLS][AmazonAWS][Web][Safe]
           guessed: [....11] [ip4][..udp] [...192.168.0.17][41993] -> [.172.217.23.106][..443] [QUIC][Google][Web][Acceptable]
              idle: [....11] [ip4][..udp] [...192.168.0.17][41993] -> [.172.217.23.106][..443] 
              idle: [....19] [ip4][..udp] [...192.168.0.17][47171] -> [....18.201.4.32][.7985] [Viber][AmazonAWS][VoIP][Fun]
-                   RISK: Unidirectional Traffic
              idle: [....20] [ip4][..udp] [...192.168.0.17][47171] -> [....18.201.4.32][.7987] [Viber][AmazonAWS][VoIP][Fun]
-                   RISK: Unidirectional Traffic
-             idle: [.....8] [ip4][..tcp] [...192.168.0.17][57520] -> [...54.230.93.96][..443] 
+             idle: [.....8] [ip4][..tcp] [...192.168.0.17][57520] -> [...54.230.93.96][..443] [TLS.Viber][AmazonAWS][Chat][Fun]
              idle: [....26] [ip4][.icmp] [...192.168.0.17] -> [...192.168.0.15] [ICMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....17] [ip4][..tcp] [...192.168.0.17][55746] -> [..151.101.1.130][..443] [TLS][Unknown][Web][Safe]
           guessed: [.....1] [ip4][..tcp] [...192.168.0.17][33208] -> [...52.0.253.101][.4244] [Viber][Viber][VoIP][Fun]
              idle: [.....1] [ip4][..tcp] [...192.168.0.17][33208] -> [...52.0.253.101][.4244] 
              idle: [....10] [ip4][..tcp] [...192.168.0.17][53934] -> [...54.230.93.53][..443] [TLS.Viber][AmazonAWS][Chat][Fun]
              idle: [....15] [ip6][icmp6] [..............fe80::3207:4dff:fea3:5fa7] -> [................................ff02::2] [ICMPV6][Unknown][Network][Acceptable]
-             idle: [....14] [ip4][..udp] [...192.168.0.17][.5353] -> [....224.0.0.251][.5353] 
+             idle: [....14] [ip4][..udp] [...192.168.0.17][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable]
              idle: [.....3] [ip4][..udp] [...192.168.0.17][35283] -> [...192.168.0.15][...53] [DNS.ADS_Analytic_Track][Unknown][Network][Tracker/Ads]
              idle: [....12] [ip4][..udp] [...192.168.0.17][35331] -> [...192.168.0.15][...53] [DNS.Google][Unknown][Network][Acceptable]
              idle: [.....7] [ip4][..udp] [...192.168.0.17][37418] -> [...192.168.0.15][...53] [DNS.Viber][Unknown][Network][Fun]
              idle: [.....2] [ip4][..udp] [...192.168.0.17][45743] -> [...192.168.0.15][...53] [DNS.Facebook][Unknown][Network][Fun]
           guessed: [....18] [ip4][..tcp] [...192.168.0.17][45424] -> [....18.201.4.32][..443] [TLS][AmazonAWS][Web][Safe]
               end: [....18] [ip4][..tcp] [...192.168.0.17][45424] -> [....18.201.4.32][..443] 
-              end: [....21] [ip4][..tcp] [...192.168.0.17][49048] -> [..54.187.91.182][..443] 
+              end: [....21] [ip4][..tcp] [...192.168.0.17][49048] -> [..54.187.91.182][..443] [TLS][AmazonAWS][Web][Safe]
              idle: [....25] [ip4][..udp] [...192.168.0.17][50097] -> [...192.168.0.15][...53] [DNS.Google][Unknown][Network][Acceptable]
              idle: [....23] [ip4][..udp] [...192.168.0.17][38190] -> [.....18.201.4.3][.7985] [Viber][AmazonAWS][VoIP][Fun]
-                   RISK: Unidirectional Traffic
              idle: [....24] [ip4][..udp] [...192.168.0.17][38190] -> [.....18.201.4.3][.7987] [Viber][AmazonAWS][VoIP][Fun]
-                   RISK: Unidirectional Traffic
              idle: [....13] [ip4][..tcp] [...192.168.0.17][43702] -> [..172.217.23.78][..443] [TLS.Google][Google][Web][Acceptable]
              idle: [....16] [ip4][..udp] [...192.168.0.17][44376] -> [...192.168.0.15][...53] [DNS][Unknown][Network][Acceptable]
              idle: [.....4] [ip4][..udp] [...192.168.0.17][62872] -> [...192.168.0.15][...53] [DNS][Unknown][Network][Acceptable]
@@ -175,7 +170,6 @@
          detected: [....29] [ip4][..tcp] [..192.168.2.100][42900] -> [..44.192.202.74][.4244] [Viber][AmazonAWS][VoIP][Fun]
                    RISK: Unidirectional Traffic
              idle: [....29] [ip4][..tcp] [..192.168.2.100][42900] -> [..44.192.202.74][.4244] [Viber][AmazonAWS][VoIP][Fun]
-                   RISK: Unidirectional Traffic
               end: [....28] [ip4][..tcp] [..192.168.2.100][41184] -> [.....52.0.252.2][.5242] [Viber][Viber][VoIP][Fun]
              idle: [....27] [ip4][..tcp] [..192.168.2.100][48690] -> [...52.0.252.145][.4244] [Viber][Viber][VoIP][Fun]
      DAEMON-EVENT: shutdown

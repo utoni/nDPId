@@ -5,5 +5,5 @@
          detected: [.....1] [ip4][..udp] [...192.168.56.1][55880] -> [.192.168.56.198][.4443] [QUIC][Unknown][Web][Acceptable][]
                    RISK: Known Proto on Non Std Port, Missing SNI TLS Extn, Unidirectional Traffic, ALPN/SNI Mismatch
              idle: [.....1] [ip4][..udp] [...192.168.56.1][55880] -> [.192.168.56.198][.4443] [QUIC][Unknown][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, Missing SNI TLS Extn, Unidirectional Traffic, ALPN/SNI Mismatch
+                   RISK: Known Proto on Non Std Port, Missing SNI TLS Extn, ALPN/SNI Mismatch
      DAEMON-EVENT: shutdown

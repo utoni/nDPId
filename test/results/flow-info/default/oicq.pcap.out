@@ -8,196 +8,153 @@
          detected: [.....2] [ip4][..udp] [..90.147.69.210][51884] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..udp] [..90.147.69.210][60213] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 2 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....3] [ip4][..udp] [..90.147.69.210][52991] -> [....58.60.10.45][.8000] 
          detected: [.....3] [ip4][..udp] [..90.147.69.210][52991] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..udp] [..90.147.69.210][51884] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 3 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 3|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....4] [ip4][..udp] [..90.147.69.210][60288] -> [....58.60.10.45][.8000] 
          detected: [.....4] [ip4][..udp] [..90.147.69.210][60288] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [.....3] [ip4][..udp] [..90.147.69.210][52991] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [.....5] [ip4][..udp] [..90.147.69.210][56476] -> [....58.60.10.45][.8000] 
          detected: [.....5] [ip4][..udp] [..90.147.69.210][56476] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [.....4] [ip4][..udp] [..90.147.69.210][60288] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 5 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 5|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....6] [ip4][..udp] [..90.147.69.210][63120] -> [....58.60.10.45][.8000] 
          detected: [.....6] [ip4][..udp] [..90.147.69.210][63120] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [.....5] [ip4][..udp] [..90.147.69.210][56476] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 6 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 6|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....7] [ip4][..udp] [..90.147.69.210][65276] -> [....58.60.10.45][.8000] 
          detected: [.....7] [ip4][..udp] [..90.147.69.210][65276] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [.....6] [ip4][..udp] [..90.147.69.210][63120] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [.....8] [ip4][..udp] [..90.147.69.210][64916] -> [....58.60.10.45][.8000] 
          detected: [.....8] [ip4][..udp] [..90.147.69.210][64916] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [.....7] [ip4][..udp] [..90.147.69.210][65276] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 8 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 8|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....9] [ip4][..udp] [..90.147.69.210][49340] -> [....58.60.10.45][.8000] 
          detected: [.....9] [ip4][..udp] [..90.147.69.210][49340] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [.....8] [ip4][..udp] [..90.147.69.210][64916] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 9 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 9|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [....10] [ip4][..udp] [..90.147.69.210][58434] -> [....58.60.10.45][.8000] 
          detected: [....10] [ip4][..udp] [..90.147.69.210][58434] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [.....9] [ip4][..udp] [..90.147.69.210][49340] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....11] [ip4][..udp] [..90.147.69.210][55338] -> [....58.60.10.45][.8000] 
          detected: [....11] [ip4][..udp] [..90.147.69.210][55338] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....10] [ip4][..udp] [..90.147.69.210][58434] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 11 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 11|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [....12] [ip4][..udp] [..90.147.69.210][54233] -> [....58.60.10.45][.8000] 
          detected: [....12] [ip4][..udp] [..90.147.69.210][54233] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....11] [ip4][..udp] [..90.147.69.210][55338] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 12 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 12|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [....13] [ip4][..udp] [..90.147.69.210][55774] -> [....58.60.10.45][.8000] 
          detected: [....13] [ip4][..udp] [..90.147.69.210][55774] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....12] [ip4][..udp] [..90.147.69.210][54233] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....14] [ip4][..udp] [..90.147.69.210][52663] -> [....58.60.10.45][.8000] 
          detected: [....14] [ip4][..udp] [..90.147.69.210][52663] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....13] [ip4][..udp] [..90.147.69.210][55774] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 14 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 14|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [....15] [ip4][..udp] [..90.147.69.210][58797] -> [....58.60.10.45][.8000] 
          detected: [....15] [ip4][..udp] [..90.147.69.210][58797] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....14] [ip4][..udp] [..90.147.69.210][52663] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 15 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 15|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [....16] [ip4][..udp] [..90.147.69.210][50315] -> [....58.60.10.45][.8000] 
          detected: [....16] [ip4][..udp] [..90.147.69.210][50315] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....15] [ip4][..udp] [..90.147.69.210][58797] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....17] [ip4][..udp] [..90.147.69.210][65163] -> [....58.60.10.45][.8000] 
          detected: [....17] [ip4][..udp] [..90.147.69.210][65163] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....16] [ip4][..udp] [..90.147.69.210][50315] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 17 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 17|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [....18] [ip4][..udp] [..90.147.69.210][59802] -> [....58.60.10.45][.8000] 
          detected: [....18] [ip4][..udp] [..90.147.69.210][59802] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....17] [ip4][..udp] [..90.147.69.210][65163] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....19] [ip4][..udp] [..90.147.69.210][60434] -> [....58.60.10.45][.8000] 
          detected: [....19] [ip4][..udp] [..90.147.69.210][60434] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....18] [ip4][..udp] [..90.147.69.210][59802] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 19 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 19|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [....20] [ip4][..udp] [..90.147.69.210][60436] -> [....58.60.10.45][.8000] 
          detected: [....20] [ip4][..udp] [..90.147.69.210][60436] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
                    RISK: Unidirectional Traffic
            update: [....19] [ip4][..udp] [..90.147.69.210][60434] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....21] [ip4][..udp] [..90.147.69.210][57677] -> [....58.60.10.45][.8000] 
          detected: [....21] [ip4][..udp] [..90.147.69.210][57677] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
                    RISK: Unidirectional Traffic
            update: [....19] [ip4][..udp] [..90.147.69.210][60434] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....20] [ip4][..udp] [..90.147.69.210][60436] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....22] [ip4][..udp] [..90.147.69.210][61686] -> [....58.60.10.45][.8000] 
          detected: [....22] [ip4][..udp] [..90.147.69.210][61686] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....19] [ip4][..udp] [..90.147.69.210][60434] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....21] [ip4][..udp] [..90.147.69.210][57677] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....20] [ip4][..udp] [..90.147.69.210][60436] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....23] [ip4][..udp] [..90.147.69.210][54462] -> [....58.60.10.45][.8000] 
          detected: [....23] [ip4][..udp] [..90.147.69.210][54462] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....20] [ip4][..udp] [..90.147.69.210][60436] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....21] [ip4][..udp] [..90.147.69.210][57677] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....22] [ip4][..udp] [..90.147.69.210][61686] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....24] [ip4][..udp] [..90.147.69.210][64415] -> [....58.60.10.45][.8000] 
          detected: [....24] [ip4][..udp] [..90.147.69.210][64415] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....21] [ip4][..udp] [..90.147.69.210][57677] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....22] [ip4][..udp] [..90.147.69.210][61686] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....23] [ip4][..udp] [..90.147.69.210][54462] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....25] [ip4][..udp] [..90.147.69.210][57872] -> [....58.60.10.45][.8000] 
          detected: [....25] [ip4][..udp] [..90.147.69.210][57872] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....23] [ip4][..udp] [..90.147.69.210][54462] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....24] [ip4][..udp] [..90.147.69.210][64415] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....26] [ip4][..udp] [..90.147.69.210][59394] -> [....58.60.10.45][.8000] 
          detected: [....26] [ip4][..udp] [..90.147.69.210][59394] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....24] [ip4][..udp] [..90.147.69.210][64415] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....25] [ip4][..udp] [..90.147.69.210][57872] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....27] [ip4][..udp] [..90.147.69.210][49199] -> [....58.60.10.45][.8000] 
          detected: [....27] [ip4][..udp] [..90.147.69.210][49199] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
                    RISK: Unidirectional Traffic
            update: [....25] [ip4][..udp] [..90.147.69.210][57872] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....26] [ip4][..udp] [..90.147.69.210][59394] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 27 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 3 / 27|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 12]
               new: [....28] [ip4][..udp] [..90.147.69.210][61163] -> [....58.60.10.45][.8000] 
          detected: [....28] [ip4][..udp] [..90.147.69.210][61163] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....25] [ip4][..udp] [..90.147.69.210][57872] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....26] [ip4][..udp] [..90.147.69.210][59394] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....27] [ip4][..udp] [..90.147.69.210][49199] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....29] [ip4][..udp] [..90.147.69.210][64420] -> [....58.60.10.45][.8000] 
          detected: [....29] [ip4][..udp] [..90.147.69.210][64420] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....29] [ip4][..udp] [..90.147.69.210][64420] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....28] [ip4][..udp] [..90.147.69.210][61163] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....26] [ip4][..udp] [..90.147.69.210][59394] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....27] [ip4][..udp] [..90.147.69.210][49199] -> [....58.60.10.45][.8000] [OICQ][Unknown][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

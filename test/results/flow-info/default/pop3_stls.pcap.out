@@ -10,7 +10,7 @@
                    RISK: Obsolete TLS (v1.1 or older), Unsafe Protocol
  detection-update: [.....1] [ip4][..tcp] [..192.168.20.18][50583] -> [...72.249.41.52][..110] [POPS][Unknown][Email][Safe]
                    RISK: Obsolete TLS (v1.1 or older), Unsafe Protocol
-          analyse: [.....1] [ip4][..tcp] [..192.168.20.18][50583] -> [...72.249.41.52][..110] 
+          analyse: [.....1] [ip4][..tcp] [..192.168.20.18][50583] -> [...72.249.41.52][..110] [POPS][Unknown][Email][Safe]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    2.072|    0.263|    0.525|     275477.529|   3.300]
                    [PKTLEN......:    40.000| 1500.000|  234.500|  417.000|     173868.900|   3.700]

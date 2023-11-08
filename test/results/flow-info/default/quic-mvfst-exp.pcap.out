@@ -5,5 +5,4 @@
          detected: [.....1] [ip6][..udp] [.2aac:cdf7:d506:7807:9092:75f:a963:f4ab][57587] -> [....3f65:ece9:fe71:6e2a:face:b00c::358e][..443] [QUIC.FbookReelStory][Unknown][SocialNetwork][Fun][video.fmct2-3.fna.fbcdn.net]
                    RISK: Unidirectional Traffic
              idle: [.....1] [ip6][..udp] [.2aac:cdf7:d506:7807:9092:75f:a963:f4ab][57587] -> [....3f65:ece9:fe71:6e2a:face:b00c::358e][..443] [QUIC.FbookReelStory][Unknown][SocialNetwork][Fun]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

@@ -13,8 +13,11 @@
               new: [.....3] [ip4][..tcp] [..192.168.2.140][56011] -> [...170.33.9.230][...80] 
          detected: [.....3] [ip4][..tcp] [..192.168.2.140][56011] -> [...170.33.9.230][...80] [HTTP][Alibaba][Web][Acceptable][www.love.xn--55qx5d]
                    RISK: IDN Domain Name
+ detection-update: [.....3] [ip4][..tcp] [..192.168.2.140][56011] -> [...170.33.9.230][...80] [HTTP][Alibaba][Web][Acceptable][www.love.xn--55qx5d]
+                   RISK: IDN Domain Name, Error Code
              idle: [.....1] [ip4][..udp] [..192.168.2.140][45520] -> [....192.168.2.1][...53] [DNS.Spotify][Unknown][Network][Fun]
-             idle: [.....2] [ip4][..udp] [..192.168.2.140][60156] -> [....192.168.2.1][...53] 
+             idle: [.....2] [ip4][..udp] [..192.168.2.140][60156] -> [....192.168.2.1][...53] [DNS][Unknown][Network][Acceptable]
+                   RISK: IDN Domain Name, Error Code
               end: [.....3] [ip4][..tcp] [..192.168.2.140][56011] -> [...170.33.9.230][...80] [HTTP][Alibaba][Web][Acceptable]
                    RISK: IDN Domain Name, Error Code
      DAEMON-EVENT: shutdown

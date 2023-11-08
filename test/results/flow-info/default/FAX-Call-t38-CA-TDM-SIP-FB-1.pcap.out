@@ -36,7 +36,6 @@
                    [PKTLENS.....: 200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200]
                    [ENTROPIES...: 1.7,1.7,1.7,1.7,1.7,1.7,1.7,1.7,1.7,1.7,1.7,2.4,2.4,2.4,2.5,2.4,2.5,2.5,2.5,2.5,2.5,2.4,2.4,2.4,2.4,2.5,2.5,2.5,2.5,2.4,2.4,2.5]
            update: [.....1] [ip4][..udp] [....10.35.40.22][.2944] -> [.....10.23.1.42][.2944] [Megaco][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
           analyse: [.....3] [ip4][..udp] [....10.35.40.25][.5060] -> [...10.35.40.200][.5060] [SIP][Unknown][VoIP][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|   27.628|    2.809|    6.896|   47549159.309|   2.500]
@@ -49,20 +48,12 @@
                    [ENTROPIES...: 5.7,5.7,5.6,5.6,5.6,5.6,5.7,5.7,5.6,5.6,5.7,5.7,5.6,5.6,5.8,5.8,5.6,5.6,5.6,5.6,5.7,5.7,5.7,5.7,5.6,5.6,5.6,5.6,5.6,5.6,5.7,5.7]
            update: [.....5] [ip4][..udp] [...10.35.60.100][15580] -> [.....10.23.1.52][16756] [RTP][Unknown][Media][Acceptable]
            update: [.....4] [ip4][..udp] [138.132.169.101][.5060] -> [192.168.100.219][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....2] [ip4][..udp] [....10.35.60.72][.5060] -> [...10.35.60.100][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....3] [ip4][..udp] [....10.35.40.25][.5060] -> [...10.35.40.200][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....1] [ip4][..udp] [....10.35.40.22][.2944] -> [.....10.23.1.42][.2944] [Megaco][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....5] [ip4][..udp] [...10.35.60.100][15580] -> [.....10.23.1.52][16756] [RTP][Unknown][Media][Acceptable]
              idle: [.....1] [ip4][..udp] [....10.35.40.22][.2944] -> [.....10.23.1.42][.2944] [Megaco][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....4] [ip4][..udp] [138.132.169.101][.5060] -> [192.168.100.219][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....3] [ip4][..udp] [....10.35.40.25][.5060] -> [...10.35.40.200][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..udp] [....10.35.60.72][.5060] -> [...10.35.60.100][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

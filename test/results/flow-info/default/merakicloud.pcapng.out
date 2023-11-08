@@ -5,13 +5,9 @@
          detected: [.....1] [ip4][..udp] [...2.36.234.133][47301] -> [..209.206.59.34][.7351] [MerakiCloud][Unknown][Network][Acceptable]
                    RISK: Unidirectional Traffic
            update: [.....1] [ip4][..udp] [...2.36.234.133][47301] -> [..209.206.59.34][.7351] [MerakiCloud][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....1] [ip4][..udp] [...2.36.234.133][47301] -> [..209.206.59.34][.7351] [MerakiCloud][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....1] [ip4][..udp] [...2.36.234.133][47301] -> [..209.206.59.34][.7351] [MerakiCloud][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....1] [ip4][..udp] [...2.36.234.133][47301] -> [..209.206.59.34][.7351] [MerakiCloud][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
           analyse: [.....1] [ip4][..udp] [...2.36.234.133][47301] -> [..209.206.59.34][.7351] [MerakiCloud][Unknown][Network][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.185|   25.011|   16.136|   11.214|  125752330.682|   4.400]
@@ -23,11 +19,7 @@
                    [PKTLENS.....: 140,74,140,74,140,74,140,74,140,74,140,74,140,74,140,74,140,74,140,74,176,183,176,183,176,183,176,183,176,183,140,74]
                    [ENTROPIES...: 5.8,4.6,5.8,4.6,5.8,4.6,5.8,4.6,5.8,4.7,5.9,4.6,5.8,4.7,5.8,4.6,5.8,4.6,5.8,4.7,6.5,6.5,6.4,6.6,6.5,6.6,6.5,6.5,6.5,6.6,5.8,4.7]
            update: [.....1] [ip4][..udp] [...2.36.234.133][47301] -> [..209.206.59.34][.7351] [MerakiCloud][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....1] [ip4][..udp] [...2.36.234.133][47301] -> [..209.206.59.34][.7351] [MerakiCloud][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....1] [ip4][..udp] [...2.36.234.133][47301] -> [..209.206.59.34][.7351] [MerakiCloud][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..udp] [...2.36.234.133][47301] -> [..209.206.59.34][.7351] [MerakiCloud][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

@@ -6,6 +6,8 @@
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Unidirectional Traffic
  detection-update: [.....1] [ip4][..udp] [185.196.113.239][50257] -> [223.116.105.247][44443] [DTLS][Unknown][Web][Safe]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
+ detection-update: [.....1] [ip4][..udp] [185.196.113.239][50257] -> [223.116.105.247][44443] [DTLS][Unknown][Web][Safe]
+                   RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
              idle: [.....1] [ip4][..udp] [185.196.113.239][50257] -> [223.116.105.247][44443] [DTLS][Unknown][Web][Safe]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
      DAEMON-EVENT: shutdown

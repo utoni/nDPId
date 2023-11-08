@@ -5,5 +5,5 @@
          detected: [.....1] [ip4][..tcp] [...172.28.5.170][63840] -> [....172.28.4.26][.8554] [RTSP][Unknown][Media][Fun]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
              idle: [.....1] [ip4][..tcp] [...172.28.5.170][63840] -> [....172.28.4.26][.8554] [RTSP][Unknown][Media][Fun]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
      DAEMON-EVENT: shutdown

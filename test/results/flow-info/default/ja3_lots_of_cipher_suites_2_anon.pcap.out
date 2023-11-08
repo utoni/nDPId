@@ -18,5 +18,4 @@
       ERROR-EVENT: Captured packet size is smaller than expected packet size [12/16]
       ERROR-EVENT: Captured packet size is smaller than expected packet size [13/16]
              idle: [.....1] [ip4][..udp] [.132.190.244.12][.2152] -> [.151.121.185.44][.2152] [GTP.GTP_U][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

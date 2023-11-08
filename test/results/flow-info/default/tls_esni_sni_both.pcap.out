@@ -11,6 +11,8 @@
                    RISK: TLS (probably) Not Carrying HTTPS, TLS Susp ESNI Usage
  detection-update: [.....2] [ip4][..tcp] [...192.168.1.21][55514] -> [..104.17.175.85][..443] [TLS][Cloudflare][Web][Safe][you-think-thats-normal-tls-traffic-youre-seeing.com]
                    RISK: TLS (probably) Not Carrying HTTPS, TLS Susp ESNI Usage
-              end: [.....1] [ip4][..tcp] [...192.168.1.21][55500] -> [..104.17.175.85][..443] 
-              end: [.....2] [ip4][..tcp] [...192.168.1.21][55514] -> [..104.17.175.85][..443] 
+              end: [.....1] [ip4][..tcp] [...192.168.1.21][55500] -> [..104.17.175.85][..443] [TLS][Cloudflare][Web][Safe]
+                   RISK: TLS (probably) Not Carrying HTTPS, TLS Susp ESNI Usage
+              end: [.....2] [ip4][..tcp] [...192.168.1.21][55514] -> [..104.17.175.85][..443] [TLS][Cloudflare][Web][Safe]
+                   RISK: TLS (probably) Not Carrying HTTPS, TLS Susp ESNI Usage
      DAEMON-EVENT: shutdown

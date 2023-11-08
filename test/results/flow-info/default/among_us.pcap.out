@@ -5,5 +5,4 @@
          detected: [.....1] [ip4][..udp] [.......10.0.0.1][64260] -> [172.105.251.170][22023] [AmongUs][Unknown][Game][Fun]
                    RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..udp] [.......10.0.0.1][64260] -> [172.105.251.170][22023] [AmongUs][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

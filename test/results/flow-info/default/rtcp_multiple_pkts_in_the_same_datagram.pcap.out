@@ -5,5 +5,4 @@
          detected: [.....1] [ip4][..udp] [..217.12.244.34][25963] -> [..217.12.247.98][31601] [RTCP][Unknown][VoIP][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..udp] [..217.12.244.34][25963] -> [..217.12.247.98][31601] [RTCP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

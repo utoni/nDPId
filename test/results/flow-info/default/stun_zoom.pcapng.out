@@ -4,6 +4,8 @@
               new: [.....1] [ip4][..udp] [.192.168.43.169][48854] -> [.134.224.90.111][.8801] 
          detected: [.....1] [ip4][..udp] [.192.168.43.169][48854] -> [.134.224.90.111][.8801] [STUN][Zoom][Network][Acceptable][]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
+ detection-update: [.....1] [ip4][..udp] [.192.168.43.169][48854] -> [.134.224.90.111][.8801] [STUN][Zoom][Network][Acceptable][]
+                   RISK: Known Proto on Non Std Port
  detection-update: [.....1] [ip4][..udp] [.192.168.43.169][48854] -> [.134.224.90.111][.8801] [DTLS][Zoom][Safe]
                    RISK: Known Proto on Non Std Port, Missing SNI TLS Extn
               new: [.....2] [ip4][..udp] [.192.168.43.169][53065] -> [.134.224.90.111][.8801] 
@@ -13,6 +15,8 @@
                    RISK: Known Proto on Non Std Port, Missing SNI TLS Extn
  detection-update: [.....1] [ip4][..udp] [.192.168.43.169][48854] -> [.134.224.90.111][.8801] [DTLS.Zoom][Zoom][Video][Acceptable]
                    RISK: Known Proto on Non Std Port, Missing SNI TLS Extn
+ detection-update: [.....2] [ip4][..udp] [.192.168.43.169][53065] -> [.134.224.90.111][.8801] [STUN][Zoom][Network][Acceptable][]
+                   RISK: Known Proto on Non Std Port
           analyse: [.....2] [ip4][..udp] [.192.168.43.169][53065] -> [.134.224.90.111][.8801] [STUN][Zoom][Network][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.194|    0.048|    0.051|       2615.352|   4.100]

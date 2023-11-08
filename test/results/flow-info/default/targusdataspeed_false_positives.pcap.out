@@ -2,9 +2,15 @@
               new: [.....1] [ip4][..udp] [......10.0.2.15][23994] -> [..79.164.55.123][.5001] 
          detected: [.....1] [ip4][..udp] [......10.0.2.15][23994] -> [..79.164.55.123][.5001] [BitTorrent][Unknown][Download][Acceptable]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
+ detection-update: [.....1] [ip4][..udp] [......10.0.2.15][23994] -> [..79.164.55.123][.5001] [BitTorrent][Unknown][Download][Acceptable]
+                   RISK: Known Proto on Non Std Port
               new: [.....2] [ip4][..udp] [......10.0.2.15][23994] -> [...89.64.45.227][.5201] 
          detected: [.....2] [ip4][..udp] [......10.0.2.15][23994] -> [...89.64.45.227][.5201] [BitTorrent][Unknown][Download][Acceptable]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
-             idle: [.....2] [ip4][..udp] [......10.0.2.15][23994] -> [...89.64.45.227][.5201] 
-             idle: [.....1] [ip4][..udp] [......10.0.2.15][23994] -> [..79.164.55.123][.5001] 
+ detection-update: [.....2] [ip4][..udp] [......10.0.2.15][23994] -> [...89.64.45.227][.5201] [BitTorrent][Unknown][Download][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [.....2] [ip4][..udp] [......10.0.2.15][23994] -> [...89.64.45.227][.5201] [BitTorrent][Unknown][Download][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [.....1] [ip4][..udp] [......10.0.2.15][23994] -> [..79.164.55.123][.5001] [BitTorrent][Unknown][Download][Acceptable]
+                   RISK: Known Proto on Non Std Port
      DAEMON-EVENT: shutdown

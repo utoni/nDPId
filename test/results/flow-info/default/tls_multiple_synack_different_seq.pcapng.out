@@ -5,5 +5,5 @@
          detected: [.....1] [ip4][..tcp] [.....10.10.10.1][..443] -> [....192.168.0.1][59927] [TLS.AmazonAWS][Unknown][Cloud][Acceptable][bolt-prod-s3-eu-west-1.s3.eu-west-1.amazonaws.com]
  detection-update: [.....1] [ip4][..tcp] [.....10.10.10.1][..443] -> [....192.168.0.1][59927] [TLS.AmazonAWS][Unknown][Cloud][Acceptable][bolt-prod-s3-eu-west-1.s3.eu-west-1.amazonaws.com]
  detection-update: [.....1] [ip4][..tcp] [.....10.10.10.1][..443] -> [....192.168.0.1][59927] [TLS.AmazonAWS][Unknown][Cloud][Acceptable][bolt-prod-s3-eu-west-1.s3.eu-west-1.amazonaws.com]
-             idle: [.....1] [ip4][..tcp] [.....10.10.10.1][..443] -> [....192.168.0.1][59927] 
+             idle: [.....1] [ip4][..tcp] [.....10.10.10.1][..443] -> [....192.168.0.1][59927] [TLS.AmazonAWS][Unknown][Cloud][Acceptable]
      DAEMON-EVENT: shutdown

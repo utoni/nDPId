@@ -5,5 +5,4 @@
          detected: [.....1] [ip4][..udp] [..172.29.42.236][38292] -> [.153.20.183.203][..443] [QUIC.Google][Unknown][Web][Acceptable][play.google.com]
                    RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..udp] [..172.29.42.236][38292] -> [.153.20.183.203][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

@@ -23,13 +23,9 @@
          detected: [.....7] [ip4][..tcp] [..172.16.17.102][47980] -> [..172.16.16.106][.9300] [Elasticsearch][Unknown][System][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [.....7] [ip4][..tcp] [..172.16.17.102][47980] -> [..172.16.16.106][.9300] [Elasticsearch][Unknown][System][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....6] [ip4][..tcp] [..172.16.17.102][48028] -> [..172.16.16.106][.9300] [Elasticsearch][Unknown][System][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..tcp] [..172.16.17.102][48038] -> [..172.16.16.106][.9300] [Elasticsearch][Unknown][System][Acceptable]
              idle: [.....5] [ip4][..tcp] [..172.16.16.107][.9300] -> [..172.16.17.102][40298] [Elasticsearch][Unknown][System][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....4] [ip4][..tcp] [..172.16.16.107][.9300] -> [..172.16.17.102][40342] [Elasticsearch][Unknown][System][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....3] [ip4][..tcp] [..172.16.16.107][33288] -> [..172.16.17.102][.9300] [Elasticsearch][Unknown][System][Acceptable]
      DAEMON-EVENT: shutdown

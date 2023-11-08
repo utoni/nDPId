@@ -38,7 +38,6 @@
                    RISK: Unidirectional Traffic
               new: [.....6] [ip4][..tcp] [........8.8.4.4][..853] -> [..192.168.1.159][47968] [MIDSTREAM] 
            update: [.....5] [ip4][.icmp] [..192.168.1.159] -> [........8.8.8.8] [ICMP][Google][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [.....7] [ip4][..tcp] [..192.168.1.159][48098] -> [........8.8.4.4][..853] 
          detected: [.....7] [ip4][..tcp] [..192.168.1.159][48098] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable][dns.google]
                    RISK: TLS (probably) Not Carrying HTTPS
@@ -55,13 +54,13 @@
                    [PKTLENS.....: 60,60,52,569,52,199,52,103,52,211,52,551,52,211,52,551,52,211,52,551,52,211,52,551,52,211,52,211,551,52,52,551]
                    [ENTROPIES...: 4.2,4.9,4.8,6.2,4.7,6.1,4.8,5.5,4.8,6.8,4.7,7.5,4.8,6.8,4.8,7.5,4.8,6.7,4.9,7.6,4.9,6.7,4.8,7.6,4.9,6.8,4.9,6.8,7.6,4.9,4.9,7.6]
            update: [.....5] [ip4][.icmp] [..192.168.1.159] -> [........8.8.8.8] [ICMP][Google][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....5] [ip4][.icmp] [..192.168.1.159] -> [........8.8.8.8] [ICMP][Google][Network][Acceptable]
-                   RISK: Unidirectional Traffic
           guessed: [.....1] [ip4][..tcp] [........8.8.8.8][..853] -> [..192.168.1.159][55856] [DoH_DoT][Google][Network][Acceptable]
               end: [.....1] [ip4][..tcp] [........8.8.8.8][..853] -> [..192.168.1.159][55856] 
-              end: [.....3] [ip4][..tcp] [..192.168.1.159][56024] -> [........8.8.8.8][..853] 
-              end: [.....2] [ip4][..tcp] [..192.168.1.159][48044] -> [........8.8.4.4][..853] 
+              end: [.....3] [ip4][..tcp] [..192.168.1.159][56024] -> [........8.8.8.8][..853] [TLS.DoH_DoT][Google][Network][Acceptable]
+                   RISK: TLS (probably) Not Carrying HTTPS
+              end: [.....2] [ip4][..tcp] [..192.168.1.159][48044] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable]
+                   RISK: TLS (probably) Not Carrying HTTPS
           guessed: [.....6] [ip4][..tcp] [........8.8.4.4][..853] -> [..192.168.1.159][47968] [DoH_DoT][Google][Network][Acceptable]
               end: [.....6] [ip4][..tcp] [........8.8.4.4][..853] -> [..192.168.1.159][47968] 
               end: [.....4] [ip4][..tcp] [..192.168.1.159][48048] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable]

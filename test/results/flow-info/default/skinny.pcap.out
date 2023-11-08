@@ -94,16 +94,12 @@
          detected: [.....9] [ip4][.icmp] [.192.168.195.50] -> [.192.168.195.58] [ICMP][Unknown][Network][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [.....9] [ip4][.icmp] [.192.168.195.50] -> [.192.168.195.58] [ICMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..tcp] [.192.168.195.58][49399] -> [.192.168.193.12][.2000] [CiscoSkinny][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..tcp] [.192.168.193.12][.2000] -> [.192.168.195.50][51532] [CiscoSkinny][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....5] [ip4][..udp] [.192.168.195.50][17726] -> [.192.168.193.24][.9399] [RTP][Unknown][Media][Acceptable]
              idle: [.....7] [ip4][..udp] [.192.168.195.50][17732] -> [.192.168.193.24][.9400] [RTP][Unknown][Media][Acceptable]
              idle: [.....3] [ip4][..udp] [.192.168.195.58][32150] -> [.192.168.193.24][.9395] [RTP][Unknown][Media][Acceptable]
              idle: [.....6] [ip4][..udp] [.192.168.195.58][32152] -> [.192.168.193.24][.9396] [RTP][Unknown][Media][Acceptable]
              idle: [.....4] [ip4][..udp] [.192.168.195.58][32144] -> [.192.168.195.50][17718] [RTP][Unknown][Media][Acceptable]
              idle: [.....8] [ip4][..tcp] [.192.168.195.58][50917] -> [.....10.16.2.25][.2000] [CiscoSkinny][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

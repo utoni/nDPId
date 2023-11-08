@@ -5,5 +5,4 @@
          detected: [.....1] [ip4][..udp] [.......10.9.0.1][41436] -> [.......10.9.0.2][..443] [QUIC][Unknown][Web][Acceptable][localhost]
                    RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..udp] [.......10.9.0.1][41436] -> [.......10.9.0.2][..443] [QUIC][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

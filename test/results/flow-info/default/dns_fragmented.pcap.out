@@ -127,7 +127,8 @@
              idle: [....16] [ip6][..udp] [..2001:470:1f0b:16b0:20c:29ff:fe7c:a4cb][55729] -> [..................2001:470:765b::a25:53][...53] [DNS][Unknown][Network][Acceptable]
                    RISK: Large DNS Packet (512+ bytes), Fragmented DNS Message
              idle: [....20] [ip6][..udp] [..2001:470:1f0b:16b0:20c:29ff:fe7c:a4cb][54590] -> [...................2606:4700:4700::1111][...53] [DNS][Cloudflare][Network][Acceptable]
-             idle: [....13] [ip6][..udp] [..2001:470:1f0b:16b0:20c:29ff:fe7c:a4cb][52814] -> [...................2606:4700:4700::1111][...53] 
+             idle: [....13] [ip6][..udp] [..2001:470:1f0b:16b0:20c:29ff:fe7c:a4cb][52814] -> [...................2606:4700:4700::1111][...53] [DNS][Cloudflare][Network][Acceptable]
+                   RISK: Error Code
              idle: [....12] [ip6][..udp] [..2001:470:1f0b:16b0:20c:29ff:fe7c:a4cb][48758] -> [...................2606:4700:4700::1111][...53] [DNS][Cloudflare][Network][Acceptable]
              idle: [....14] [ip6][..udp] [..2001:470:1f0b:16b0:20c:29ff:fe7c:a4cb][42344] -> [............................2620:fe::fe][...53] [DNS][Unknown][Network][Acceptable]
              idle: [....17] [ip4][..udp] [....194.247.5.6][51791] -> [.193.24.227.238][...53] [DNS][Unknown][Network][Acceptable]

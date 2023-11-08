@@ -21,9 +21,6 @@
          detected: [.....3] [ip4][..udp] [....192.168.1.7][53859] -> [..216.58.205.66][..443] [QUIC.Google][Google][Advertisement][Acceptable][googleads.g.doubleclick.net]
                    RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..udp] [....192.168.1.7][56074] -> [..216.58.198.33][..443] [QUIC.YouTube][Google][Media][Fun]
-                   RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..udp] [....192.168.1.7][54997] -> [..216.58.205.66][..443] [QUIC.Google][Google][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....3] [ip4][..udp] [....192.168.1.7][53859] -> [..216.58.205.66][..443] [QUIC.Google][Google][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

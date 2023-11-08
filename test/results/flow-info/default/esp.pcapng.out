@@ -8,7 +8,5 @@
          detected: [.....2] [ip4][...50] [.......10.2.3.2] -> [.......10.3.4.4] [IPSec][Unknown][VPN][Safe]
                    RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..udp] [.......10.2.3.2][..500] -> [.......10.3.4.4][..500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
              idle: [.....2] [ip4][...50] [.......10.2.3.2] -> [.......10.3.4.4] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

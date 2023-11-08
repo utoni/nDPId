@@ -8,7 +8,7 @@
                    RISK: Unsafe Protocol
  detection-update: [.....1] [ip4][..tcp] [....192.168.0.2][.1550] -> [....192.168.0.1][...23] [Telnet][Unknown][RemoteAccess][Unsafe]
                    RISK: Unsafe Protocol
-          analyse: [.....1] [ip4][..tcp] [....192.168.0.2][.1550] -> [....192.168.0.1][...23] 
+          analyse: [.....1] [ip4][..tcp] [....192.168.0.2][.1550] -> [....192.168.0.1][...23] [Telnet][Unknown][RemoteAccess][Unsafe]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    1.233|    0.125|    0.337|     113396.253|   2.200]
                    [PKTLEN......:    52.000|  137.000|   63.200|   18.800|        354.000|   4.900]

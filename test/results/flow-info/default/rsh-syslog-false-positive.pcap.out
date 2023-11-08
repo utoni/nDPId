@@ -7,5 +7,4 @@
       ERROR-EVENT: Captured packet size is smaller than expected packet size [1/16]
       ERROR-EVENT: Captured packet size is smaller than expected packet size [2/16]
              idle: [.....1] [ip4][..tcp] [..172.31.78.129][.9039] -> [..172.29.43.201][..514] [Syslog][Unknown][System][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

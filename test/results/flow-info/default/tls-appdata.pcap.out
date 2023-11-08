@@ -4,13 +4,15 @@
               new: [.....1] [ip4][..tcp] [.179.60.195.173][..443] -> [..192.168.2.100][60636] [MIDSTREAM] 
          detected: [.....1] [ip4][..tcp] [.179.60.195.173][..443] -> [..192.168.2.100][60636] [TLS][Facebook][Web][Safe]
                    RISK: Unidirectional Traffic
+ detection-update: [.....1] [ip4][..tcp] [.179.60.195.173][..443] -> [..192.168.2.100][60636] [TLS][Facebook][Web][Safe]
      DAEMON-EVENT: [Processed: 6 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+     DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 1|updates: 0]
               new: [.....2] [ip4][..tcp] [..192.168.2.100][58976] -> [...52.223.198.7][..443] [MIDSTREAM] 
          detected: [.....2] [ip4][..tcp] [..192.168.2.100][58976] -> [...52.223.198.7][..443] [TLS][Twitch][Web][Safe]
                    RISK: Unidirectional Traffic
-              end: [.....1] [ip4][..tcp] [.179.60.195.173][..443] -> [..192.168.2.100][60636] 
-          analyse: [.....2] [ip4][..tcp] [..192.168.2.100][58976] -> [...52.223.198.7][..443] 
+ detection-update: [.....2] [ip4][..tcp] [..192.168.2.100][58976] -> [...52.223.198.7][..443] [TLS][Twitch][Web][Safe]
+              end: [.....1] [ip4][..tcp] [.179.60.195.173][..443] -> [..192.168.2.100][60636] [TLS][Facebook][Web][Safe]
+          analyse: [.....2] [ip4][..tcp] [..192.168.2.100][58976] -> [...52.223.198.7][..443] [TLS][Twitch][Web][Safe]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|   15.956|    1.031|    3.918|   15346982.453|   1.000]
                    [PKTLEN......:    40.000| 2944.000| 1129.200| 1252.100|    1567845.600|   4.000]
@@ -22,10 +24,10 @@
                    [ENTROPIES...: 7.9,5.5,4.7,7.9,7.9,5.0,7.9,4.9,4.9,7.9,7.9,5.0,4.9,4.9,5.0,7.9,5.5,4.6,7.9,7.9,4.9,7.9,4.9,7.9,7.9,5.6,4.5,7.9,7.9,4.9,7.9,4.9]
  detection-update: [.....2] [ip4][..tcp] [..192.168.2.100][58976] -> [...52.223.198.7][..443] [TLS][Twitch][Web][Safe]
      DAEMON-EVENT: [Processed: 45 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 1 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 1|updates: 0]
+     DAEMON-EVENT: [Flows][active: 1 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 3|updates: 0]
      DAEMON-EVENT: [Processed: 75 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 1 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 1|updates: 0]
+     DAEMON-EVENT: [Flows][active: 1 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 3|updates: 0]
      DAEMON-EVENT: [Processed: 105 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 1 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 1|updates: 0]
+     DAEMON-EVENT: [Flows][active: 1 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 3|updates: 0]
              idle: [.....2] [ip4][..tcp] [..192.168.2.100][58976] -> [...52.223.198.7][..443] [TLS][Twitch][Web][Safe]
      DAEMON-EVENT: shutdown

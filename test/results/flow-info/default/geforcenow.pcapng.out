@@ -8,7 +8,7 @@
                    RISK: Known Proto on Non Std Port
  detection-update: [.....1] [ip4][..tcp] [..192.168.1.245][57490] -> [..80.84.167.206][49100] [TLS.GeForceNow][Nvidia][Game][Fun][80-84-167-206.cloudmatchbeta.nvidiagrid.net]
                    RISK: Known Proto on Non Std Port
-          analyse: [.....1] [ip4][..tcp] [..192.168.1.245][57490] -> [..80.84.167.206][49100] 
+          analyse: [.....1] [ip4][..tcp] [..192.168.1.245][57490] -> [..80.84.167.206][49100] [TLS.GeForceNow][Nvidia][Game][Fun]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.047|    0.015|    0.018|        312.463|   3.900]
                    [PKTLEN......:    52.000| 2948.000| 1089.800| 1283.500|    1647314.500|   4.000]
@@ -23,6 +23,8 @@
               new: [.....2] [ip4][..udp] [..192.168.1.245][52441] -> [..80.84.167.206][18452] 
          detected: [.....2] [ip4][..udp] [..192.168.1.245][52441] -> [..80.84.167.206][18452] [STUN][Nvidia][Network][Acceptable][]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
+ detection-update: [.....2] [ip4][..udp] [..192.168.1.245][52441] -> [..80.84.167.206][18452] [STUN][Nvidia][Network][Acceptable][]
+                   RISK: Known Proto on Non Std Port
  detection-update: [.....2] [ip4][..udp] [..192.168.1.245][52441] -> [..80.84.167.206][18452] [DTLS][Nvidia][Safe]
                    RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
  detection-update: [.....2] [ip4][..udp] [..192.168.1.245][52441] -> [..80.84.167.206][18452] [DTLS.GeForceNow][Nvidia][Game][Fun]

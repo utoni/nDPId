@@ -5,5 +5,4 @@
          detected: [.....1] [ip4][..tcp] [.192.168.43.135][12345] -> [...192.168.43.1][50999] [WebSocket][Unknown][Web][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..tcp] [.192.168.43.135][12345] -> [...192.168.43.1][50999] [WebSocket][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

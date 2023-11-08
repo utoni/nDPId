@@ -10,7 +10,7 @@
                    RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
  detection-update: [.....1] [ip4][..tcp] [..192.168.17.53][49640] -> [.212.227.17.186][..143] [IMAPS][Unknown][Email][Safe]
                    RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
-          analyse: [.....1] [ip4][..tcp] [..192.168.17.53][49640] -> [.212.227.17.186][..143] 
+          analyse: [.....1] [ip4][..tcp] [..192.168.17.53][49640] -> [.212.227.17.186][..143] [IMAPS][Unknown][Email][Safe]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    1.678|    0.188|    0.378|     143010.873|   3.300]
                    [PKTLEN......:    40.000| 1500.000|  235.200|  424.600|     180326.200|   3.600]

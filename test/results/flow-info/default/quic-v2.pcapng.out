@@ -5,5 +5,5 @@
          detected: [.....1] [ip6][..udp] [....................................::1][42086] -> [....................................::1][.4443] [QUIC][Unknown][Web][Acceptable][test]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
              idle: [.....1] [ip6][..udp] [....................................::1][42086] -> [....................................::1][.4443] [QUIC][Unknown][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
      DAEMON-EVENT: shutdown

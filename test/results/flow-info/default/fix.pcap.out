@@ -88,27 +88,15 @@
                    [PKTLENS.....: 91,52,112,52,91,52,91,52,137,52,91,52,91,52,112,52,91,52,112,52,91,52,91,52,137,52,91,52,133,52,91,52]
                    [ENTROPIES...: 5.6,5.1,5.5,5.1,5.5,5.1,5.4,5.1,6.3,5.1,5.4,5.2,5.5,5.2,5.4,5.2,5.4,5.1,5.6,5.2,5.4,5.2,5.4,5.1,6.5,5.2,5.5,5.1,5.5,5.2,5.5,5.2]
              idle: [.....3] [ip4][..tcp] [..208.245.107.3][.4000] -> [...192.168.0.20][45578] [FIX][Unknown][RPC][Safe]
-                   RISK: Unidirectional Traffic
              idle: [.....5] [ip4][..tcp] [..208.245.107.3][.4000] -> [...192.168.0.20][45584] [FIX][Unknown][RPC][Safe]
-                   RISK: Unidirectional Traffic
              idle: [.....8] [ip4][..tcp] [.....8.17.22.31][.4000] -> [...192.168.0.20][40918] [FIX][Unknown][RPC][Safe]
-                   RISK: Unidirectional Traffic
              idle: [....12] [ip4][..tcp] [.....8.17.22.31][.4000] -> [...192.168.0.20][40928] [FIX][Unknown][RPC][Safe]
-                   RISK: Unidirectional Traffic
              idle: [....11] [ip4][..tcp] [..217.192.86.32][.4000] -> [...192.168.0.20][53330] [FIX][Unknown][RPC][Safe]
-                   RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..tcp] [.....8.17.22.31][.4000] -> [...192.168.0.20][43594] [FIX][Unknown][RPC][Safe]
-                   RISK: Unidirectional Traffic
              idle: [.....4] [ip4][..tcp] [.....8.17.22.31][.4000] -> [...192.168.0.20][47952] [FIX][Unknown][RPC][Safe]
-                   RISK: Unidirectional Traffic
              idle: [.....6] [ip4][..tcp] [.....8.17.22.31][.4000] -> [...192.168.0.20][47962] [FIX][Unknown][RPC][Safe]
-                   RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..tcp] [.....8.17.22.31][.4000] -> [...192.168.0.20][47968] [FIX][Unknown][RPC][Safe]
-                   RISK: Unidirectional Traffic
              idle: [.....9] [ip4][..tcp] [..208.245.107.3][.4000] -> [...192.168.0.20][38646] [FIX][Unknown][RPC][Safe]
-                   RISK: Unidirectional Traffic
              idle: [.....7] [ip4][..tcp] [..208.245.107.3][.4000] -> [...192.168.0.20][38652] [FIX][Unknown][RPC][Safe]
-                   RISK: Unidirectional Traffic
              idle: [....10] [ip4][..tcp] [..208.245.107.3][.4000] -> [...192.168.0.20][39094] [FIX][Unknown][RPC][Safe]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

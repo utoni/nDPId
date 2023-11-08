@@ -5,5 +5,4 @@
          detected: [.....1] [ip4][..udp] [..172.27.69.216][45530] -> [.110.231.134.35][..443] [QUIC.YouTubeUpload][Unknown][Media][Fun][upload.youtube.com]
                    RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..udp] [..172.27.69.216][45530] -> [.110.231.134.35][..443] [QUIC.YouTubeUpload][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

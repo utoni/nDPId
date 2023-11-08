@@ -22,15 +22,10 @@
          detected: [.....6] [ip6][..udp] [................................bbbb::1][33499] -> [................................bbbb::3][.5683] [COAP][Unknown][RPC][Safe]
                    RISK: Unidirectional Traffic
              idle: [.....1] [ip6][..udp] [..2001:da8:215:1171:a10b:cb48:8f83:57f6][61043] -> [....................2001:620:8:35d9::10][.5683] [COAP][Unknown][RPC][Safe]
-                   RISK: Unidirectional Traffic
              idle: [.....2] [ip6][..udp] [..2001:da8:215:1171:a10b:cb48:8f83:57f6][61044] -> [....................2001:620:8:35d9::10][.5683] [COAP][Unknown][RPC][Safe]
-                   RISK: Unidirectional Traffic
              idle: [.....3] [ip6][..udp] [..2001:da8:215:1171:a10b:cb48:8f83:57f6][61045] -> [....................2001:620:8:35d9::10][.5683] [COAP][Unknown][RPC][Safe]
-                   RISK: Unidirectional Traffic
              idle: [.....4] [ip6][..udp] [..2001:da8:215:1171:a10b:cb48:8f83:57f6][61046] -> [....................2001:620:8:35d9::10][.5683] [COAP][Unknown][RPC][Safe]
-                   RISK: Unidirectional Traffic
              idle: [.....5] [ip6][..udp] [..2001:da8:215:1171:a10b:cb48:8f83:57f6][61047] -> [....................2001:620:8:35d9::10][.5683] [COAP][Unknown][RPC][Safe]
-                   RISK: Unidirectional Traffic
               new: [.....7] [ip6][..udp] [................................bbbb::1][50250] -> [................................bbbb::3][.5683] 
          detected: [.....7] [ip6][..udp] [................................bbbb::1][50250] -> [................................bbbb::3][.5683] [COAP][Unknown][RPC][Safe]
                    RISK: Unidirectional Traffic
@@ -38,20 +33,15 @@
          detected: [.....8] [ip6][..udp] [................................bbbb::1][46819] -> [................................bbbb::3][.5683] [COAP][Unknown][RPC][Safe]
                    RISK: Unidirectional Traffic
              idle: [.....6] [ip6][..udp] [................................bbbb::1][33499] -> [................................bbbb::3][.5683] [COAP][Unknown][RPC][Safe]
-                   RISK: Unidirectional Traffic
            update: [.....7] [ip6][..udp] [................................bbbb::1][50250] -> [................................bbbb::3][.5683] [COAP][Unknown][RPC][Safe]
-                   RISK: Unidirectional Traffic
            update: [.....8] [ip6][..udp] [................................bbbb::1][46819] -> [................................bbbb::3][.5683] [COAP][Unknown][RPC][Safe]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 19 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 2 / 8|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 2]
               new: [.....9] [ip4][..tcp] [...192.168.56.1][53522] -> [.192.168.56.101][17501] [MIDSTREAM] 
          detected: [.....9] [ip4][..tcp] [...192.168.56.1][53522] -> [.192.168.56.101][17501] [MQTT][Unknown][RPC][Acceptable]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
              idle: [.....7] [ip6][..udp] [................................bbbb::1][50250] -> [................................bbbb::3][.5683] [COAP][Unknown][RPC][Safe]
-                   RISK: Unidirectional Traffic
              idle: [.....8] [ip6][..udp] [................................bbbb::1][46819] -> [................................bbbb::3][.5683] [COAP][Unknown][RPC][Safe]
-                   RISK: Unidirectional Traffic
               new: [....10] [ip4][..tcp] [...192.168.56.1][53523] -> [.192.168.56.101][17501] [MIDSTREAM] 
          detected: [....10] [ip4][..tcp] [...192.168.56.1][53523] -> [.192.168.56.101][17501] [MQTT][Unknown][RPC][Acceptable]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
@@ -154,19 +144,15 @@
                    [PKTLENS.....: 127,50,128,51,123,46,123,46,126,49,123,46,122,45,127,50,125,48,129,52,126,49,124,47,125,48,129,52,124,47,128,51]
                    [ENTROPIES...: 5.6,5.1,5.6,5.1,5.5,5.1,5.5,5.1,5.6,5.1,5.5,5.1,5.5,5.0,5.6,5.2,5.6,5.1,5.7,5.3,5.6,5.1,5.6,5.1,5.5,5.1,5.6,5.2,5.5,5.0,5.6,5.2]
              idle: [....12] [ip4][..udp] [...192.168.56.1][50311] -> [.192.168.56.101][17500] [Dropbox][Unknown][Cloud][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....15] [ip4][..udp] [...192.168.56.1][50312] -> [.192.168.56.101][17500] [Dropbox][Unknown][Cloud][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....14] [ip4][..udp] [...192.168.56.1][50318] -> [.192.168.56.101][17500] [Dropbox][Unknown][Cloud][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....16] [ip4][..udp] [...192.168.56.1][50319] -> [.192.168.56.101][17500] [Dropbox][Unknown][Cloud][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....9] [ip4][..tcp] [...192.168.56.1][53522] -> [.192.168.56.101][17501] [MQTT][Unknown][RPC][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
              idle: [....10] [ip4][..tcp] [...192.168.56.1][53523] -> [.192.168.56.101][17501] [MQTT][Unknown][RPC][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
              idle: [....13] [ip4][..tcp] [.192.168.56.101][17501] -> [...192.168.56.1][53524] [MQTT][Unknown][RPC][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
              idle: [....11] [ip4][..tcp] [...192.168.56.1][53528] -> [.192.168.56.101][17501] [MQTT][Unknown][RPC][Acceptable]
                    RISK: Known Proto on Non Std Port
      DAEMON-EVENT: shutdown

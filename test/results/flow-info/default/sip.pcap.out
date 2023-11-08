@@ -5,32 +5,21 @@
          detected: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
                    RISK: Unidirectional Traffic
            update: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [.....2] [ip4][..udp] [....192.168.1.2][.5060] -> [..200.68.120.81][.5060] 
          detected: [.....2] [ip4][..udp] [....192.168.1.2][.5060] -> [..200.68.120.81][.5060] [SIP][Unknown][VoIP][Acceptable]
                    RISK: Unidirectional Traffic
            update: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....2] [ip4][..udp] [....192.168.1.2][.5060] -> [..200.68.120.81][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....2] [ip4][..udp] [....192.168.1.2][.5060] -> [..200.68.120.81][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 43 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 2 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 9]
            update: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....2] [ip4][..udp] [....192.168.1.2][.5060] -> [..200.68.120.81][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
           analyse: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.026|  279.042|   42.751|   57.874| 3349363405.357|   4.000]
@@ -42,44 +31,28 @@
                    [PKTLENS.....: 495,514,708,334,374,495,514,708,519,495,514,708,519,495,514,708,334,498,33,33,33,33,33,33,33,33,33,853,853,853,621,368]
                    [ENTROPIES...: 5.7,5.7,5.7,5.7,5.7,5.7,5.8,5.7,5.7,5.7,5.7,5.7,5.7,5.7,5.7,5.7,5.7,5.6,4.1,4.1,4.1,4.1,4.1,4.1,4.0,4.1,4.1,5.7,5.7,5.7,5.8,5.7]
            update: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....2] [ip4][..udp] [....192.168.1.2][.5060] -> [..200.68.120.81][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..udp] [....192.168.1.2][.5060] -> [..200.68.120.81][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 68 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 17]
            update: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [.....3] [ip4][..udp] [....192.168.1.2][30000] -> [..212.242.33.36][40392] 
          detected: [.....3] [ip4][..udp] [....192.168.1.2][30000] -> [..212.242.33.36][40392] [RTP][Unknown][Media][Acceptable]
               new: [.....4] [ip4][..udp] [....192.168.1.2][30001] -> [..212.242.33.36][40393] 
          detected: [.....4] [ip4][..udp] [....192.168.1.2][30001] -> [..212.242.33.36][40393] [RTCP][Unknown][VoIP][Acceptable]
                    RISK: Unidirectional Traffic
            update: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....3] [ip4][..udp] [....192.168.1.2][30000] -> [..212.242.33.36][40392] [RTP][Unknown][Media][Acceptable]
            update: [.....4] [ip4][..udp] [....192.168.1.2][30001] -> [..212.242.33.36][40393] [RTCP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....3] [ip4][..udp] [....192.168.1.2][30000] -> [..212.242.33.36][40392] [RTP][Unknown][Media][Acceptable]
              idle: [.....4] [ip4][..udp] [....192.168.1.2][30001] -> [..212.242.33.36][40393] [RTCP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

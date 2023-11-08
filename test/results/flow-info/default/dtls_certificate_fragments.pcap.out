@@ -5,11 +5,13 @@
          detected: [.....1] [ip4][..udp] [.10.186.198.149][39347] -> [..35.210.59.134][44443] [DTLS][GoogleCloud][Web][Safe]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Unidirectional Traffic
  detection-update: [.....1] [ip4][..udp] [.10.186.198.149][39347] -> [..35.210.59.134][44443] [DTLS][GoogleCloud][Web][Safe]
+                   RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
+ detection-update: [.....1] [ip4][..udp] [.10.186.198.149][39347] -> [..35.210.59.134][44443] [DTLS][GoogleCloud][Web][Safe]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
  detection-update: [.....1] [ip4][..udp] [.10.186.198.149][39347] -> [..35.210.59.134][44443] [DTLS][GoogleCloud][Web][Safe]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, TLS Cert About To Expire
      DAEMON-EVENT: [Processed: 20 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 2|updates: 0]
+     DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 3|updates: 0]
               new: [.....2] [ip4][..udp] [...192.168.1.26][43594] -> [.104.153.87.149][50001] 
          detected: [.....2] [ip4][..udp] [...192.168.1.26][43594] -> [.104.153.87.149][50001] [DTLS][Discord][Web][Safe]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Unidirectional Traffic

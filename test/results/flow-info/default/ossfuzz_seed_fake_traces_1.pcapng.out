@@ -40,20 +40,19 @@
                    RISK: Unidirectional Traffic
              idle: [.....7] [ip4][..udp] [......127.0.0.1][..100] -> [......127.0.0.1][..200] [Steam][Unknown][Game][Fun]
              idle: [.....4] [ip4][..tcp] [..192.168.1.128][....1] -> [121.254.200.130][.1119] [Starcraft][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic, TCP Connection Issues
+                   RISK: TCP Connection Issues
              idle: [.....6] [ip4][..tcp] [..192.168.1.128][....1] -> [.12.129.236.254][.1119] [Starcraft][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic, TCP Connection Issues
+                   RISK: TCP Connection Issues
              idle: [.....3] [ip4][..tcp] [..192.168.1.128][....1] -> [.12.129.206.130][.1119] [Starcraft][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic, TCP Connection Issues
+                   RISK: TCP Connection Issues
              idle: [.....5] [ip4][..tcp] [..192.168.1.128][....1] -> [....202.9.66.76][.1119] [Starcraft][Starcraft][Game][Fun]
-                   RISK: Unidirectional Traffic, TCP Connection Issues
+                   RISK: TCP Connection Issues
      DAEMON-EVENT: [Processed: 17 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 8|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 3]
               new: [.....9] [ip4][..tcp] [..192.168.1.128][....1] -> [........1.2.3.4][...10] [MIDSTREAM] 
          detected: [.....9] [ip4][..tcp] [..192.168.1.128][....1] -> [........1.2.3.4][...10] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol, Unidirectional Traffic, TCP Connection Issues
              idle: [.....8] [ip4][..udp] [......127.0.0.1][17788] -> [......127.0.0.1][17788] [PPStream][Unknown][Streaming][Fun]
-                   RISK: Unidirectional Traffic
               new: [....10] [ip4][..tcp] [..192.168.1.128][....1] -> [........1.2.3.4][...11] [MIDSTREAM] 
          detected: [....10] [ip4][..tcp] [..192.168.1.128][....1] -> [........1.2.3.4][...11] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol, Unidirectional Traffic, TCP Connection Issues

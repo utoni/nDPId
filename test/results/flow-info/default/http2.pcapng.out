@@ -5,5 +5,4 @@
          detected: [.....1] [ip4][..tcp] [......127.0.0.1][37824] -> [......127.0.0.1][29518] [HTTP2][Unknown][Web][Safe]
                    RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..tcp] [......127.0.0.1][37824] -> [......127.0.0.1][29518] [HTTP2][Unknown][Web][Safe]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

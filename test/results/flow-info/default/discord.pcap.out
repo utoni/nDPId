@@ -24,23 +24,18 @@
               new: [.....7] [ip4][..udp] [..192.168.2.100][56271] -> [...66.22.237.11][50004] 
          detected: [.....7] [ip4][..udp] [..192.168.2.100][56271] -> [...66.22.237.11][50004] [Discord][Discord][Collaborative][Fun]
                    RISK: Unidirectional Traffic
-             idle: [.....1] [ip4][..tcp] [......10.0.2.15][42834] -> [162.159.128.233][..443] 
+             idle: [.....1] [ip4][..tcp] [......10.0.2.15][42834] -> [162.159.128.233][..443] [TLS.Discord][Cloudflare][Collaborative][Fun]
+                   RISK: TLS Cert Expired
      DAEMON-EVENT: [Processed: 19 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 6 / 7|skipped: 0|!detected: 0|guessed: 0|detection-updates: 2|updates: 0]
               new: [.....8] [ip4][..udp] [..192.168.2.100][57955] -> [..66.22.196.173][50004] 
          detected: [.....8] [ip4][..udp] [..192.168.2.100][57955] -> [..66.22.196.173][50004] [Discord][Discord][Collaborative][Fun]
              idle: [.....7] [ip4][..udp] [..192.168.2.100][56271] -> [...66.22.237.11][50004] [Discord][Discord][Collaborative][Fun]
-                   RISK: Unidirectional Traffic
              idle: [.....6] [ip4][..udp] [..192.168.2.100][56271] -> [....66.22.241.5][50004] [Discord][Discord][Collaborative][Fun]
-                   RISK: Unidirectional Traffic
              idle: [.....5] [ip4][..udp] [..192.168.2.100][56271] -> [....66.22.241.7][50004] [Discord][Discord][Collaborative][Fun]
-                   RISK: Unidirectional Traffic
              idle: [.....4] [ip4][..udp] [..192.168.2.100][56271] -> [..66.22.237.138][50004] [Discord][Discord][Collaborative][Fun]
-                   RISK: Unidirectional Traffic
              idle: [.....3] [ip4][..udp] [..192.168.2.100][56271] -> [..66.22.244.139][50004] [Discord][Discord][Collaborative][Fun]
-                   RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..udp] [..192.168.2.100][56271] -> [..66.22.244.154][50004] [Discord][Discord][Collaborative][Fun]
-                   RISK: Unidirectional Traffic
               new: [.....9] [ip4][..udp] [..192.168.2.100][64837] -> [.35.214.238.161][50001] 
          detected: [.....9] [ip4][..udp] [..192.168.2.100][64837] -> [.35.214.238.161][50001] [Discord][GoogleCloud][Collaborative][Fun]
               new: [....10] [ip4][..udp] [..192.168.2.100][55085] -> [..66.22.196.173][50004] 

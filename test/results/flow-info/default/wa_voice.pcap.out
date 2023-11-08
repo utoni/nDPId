@@ -133,42 +133,34 @@
          detected: [....28] [ip4][.icmp] [...192.168.2.12] -> [...91.252.56.51] [ICMP][Unknown][Network][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [.....3] [ip4][..tcp] [...192.168.2.12][49354] -> [...17.242.60.84][.5223] [ApplePush][Apple][Cloud][Acceptable]
-                   RISK: Unidirectional Traffic
      not-detected: [....25] [ip4][..tcp] [...192.168.2.12][49352] -> [169.254.162.244][49159] [Unknown][Unknown][Unrated]
              idle: [....25] [ip4][..tcp] [...192.168.2.12][49352] -> [169.254.162.244][49159] 
               end: [....21] [ip4][..tcp] [...192.168.2.12][50504] -> [..157.240.20.52][..443] [TLS.WhatsApp][WhatsApp][Chat][Acceptable]
              idle: [....22] [ip4][..udp] [........0.0.0.0][...68] -> [255.255.255.255][...67] [DHCP][Unknown][Network][Acceptable]
              idle: [....23] [ip4][..udp] [...91.252.56.51][32704] -> [...192.168.2.12][56328] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
              idle: [....27] [ip4][..udp] [...192.168.2.12][57546] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable]
              idle: [.....6] [ip4][..udp] [...192.168.2.12][55296] -> [....192.168.2.1][...53] [DNS.WhatsAppFiles][Unknown][Network][Acceptable]
-             idle: [....13] [ip6][..udp] [...............fe80::414:409d:8afd:9f05][.5353] -> [...............................ff02::fb][.5353] 
+             idle: [....13] [ip6][..udp] [...............fe80::414:409d:8afd:9f05][.5353] -> [...............................ff02::fb][.5353] [MDNS][Unknown][Network][Acceptable]
              idle: [.....8] [ip4][..udp] [....192.168.2.1][17500] -> [..192.168.2.255][17500] [Dropbox][Unknown][Cloud][Acceptable]
              idle: [.....1] [ip4][..udp] [...192.168.2.12][51431] -> [....192.168.2.1][...53] [DNS.Google][Unknown][Network][Acceptable]
               end: [.....9] [ip4][..tcp] [...17.171.47.85][..443] -> [...192.168.2.12][50502] [TLS][Apple][Web][Safe]
-                   RISK: Unidirectional Traffic
              idle: [....10] [ip4][..udp] [169.254.162.244][50384] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable]
              idle: [....18] [ip4][..udp] [...192.168.2.12][56328] -> [.157.240.196.62][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....16] [ip4][..udp] [...192.168.2.12][56328] -> [.157.240.193.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
-             idle: [....12] [ip4][..udp] [...192.168.2.12][.5353] -> [....224.0.0.251][.5353] 
+             idle: [....12] [ip4][..udp] [...192.168.2.12][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable]
              idle: [.....4] [ip4][..udp] [....192.168.2.1][57621] -> [..192.168.2.255][57621] [Spotify][Unknown][Music][Fun]
              idle: [....24] [ip4][..udp] [...192.168.2.12][56328] -> [.....1.60.78.64][64282] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
              idle: [....26] [ip4][..udp] [...192.168.2.12][50191] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable]
              idle: [.....7] [ip4][..tcp] [...192.168.2.12][50503] -> [....31.13.86.51][..443] [TLS.WhatsAppFiles][WhatsApp][Download][Acceptable]
              idle: [....19] [ip4][..udp] [...192.168.2.12][64716] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable]
              idle: [....11] [ip4][..udp] [....192.168.2.1][50384] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable]
              idle: [....28] [ip4][.icmp] [...192.168.2.12] -> [...91.252.56.51] [ICMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....20] [ip4][..udp] [...192.168.2.12][60549] -> [....192.168.2.1][...53] [DNS.WhatsApp][Unknown][Network][Acceptable]
              idle: [.....5] [ip4][..tcp] [...192.168.2.12][49355] -> [..157.240.20.53][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
              idle: [....17] [ip4][..udp] [...192.168.2.12][56328] -> [..179.60.192.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..udp] [...192.168.2.12][60765] -> [....192.168.2.1][...53] [DNS.WhatsApp][Unknown][Network][Acceptable]
              idle: [....15] [ip4][..udp] [...192.168.2.12][56328] -> [..185.60.216.51][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....14] [ip4][..udp] [...192.168.2.12][56328] -> [....31.13.86.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

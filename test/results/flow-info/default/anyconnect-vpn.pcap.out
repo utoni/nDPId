@@ -6,6 +6,8 @@
               new: [.....3] [ip4][..tcp] [.....10.0.0.227][56320] -> [.....10.0.0.149][.8009] [MIDSTREAM] 
          detected: [.....3] [ip4][..tcp] [.....10.0.0.227][56320] -> [.....10.0.0.149][.8009] [TLS][Unknown][Web][Safe]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
+ detection-update: [.....3] [ip4][..tcp] [.....10.0.0.227][56320] -> [.....10.0.0.149][.8009] [TLS][Unknown][Web][Safe]
+                   RISK: Known Proto on Non Std Port
               new: [.....4] [ip4][....2] [.......10.0.0.1] -> [......224.0.0.1] 
          detected: [.....4] [ip4][....2] [.......10.0.0.1] -> [......224.0.0.1] [IGMP][Unknown][Network][Acceptable]
               new: [.....5] [ip6][icmp6] [..............fe80::2e7e:81ff:feb0:4aa1] -> [................................ff02::1] 
@@ -41,6 +43,8 @@
               new: [....14] [ip4][..tcp] [.....10.0.0.227][56914] -> [..52.37.243.173][..443] [MIDSTREAM] 
          detected: [....14] [ip4][..tcp] [.....10.0.0.227][56914] -> [..52.37.243.173][..443] [TLS][AmazonAWS][Web][Safe]
                    RISK: Unidirectional Traffic
+ detection-update: [....13] [ip4][..tcp] [.....10.0.0.227][56915] -> [..52.37.243.173][..443] [TLS][AmazonAWS][Web][Safe]
+ detection-update: [....14] [ip4][..tcp] [.....10.0.0.227][56914] -> [..52.37.243.173][..443] [TLS][AmazonAWS][Web][Safe]
               new: [....15] [ip4][..tcp] [.....10.0.0.227][56919] -> [....8.37.102.91][..443] 
          detected: [....15] [ip4][..tcp] [.....10.0.0.227][56919] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe][]
                    RISK: Missing SNI TLS Extn, ALPN/SNI Mismatch
@@ -48,7 +52,7 @@
                    RISK: Weak TLS Cipher, Missing SNI TLS Extn, ALPN/SNI Mismatch
  detection-update: [....15] [ip4][..tcp] [.....10.0.0.227][56919] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe][]
                    RISK: Weak TLS Cipher, Missing SNI TLS Extn, ALPN/SNI Mismatch
-          analyse: [....15] [ip4][..tcp] [.....10.0.0.227][56919] -> [....8.37.102.91][..443] 
+          analyse: [....15] [ip4][..tcp] [.....10.0.0.227][56919] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.072|    0.021|    0.022|        465.190|   4.000]
                    [PKTLEN......:    52.000| 1500.000|  490.700|  597.200|     356597.600|   4.000]
@@ -98,6 +102,7 @@
               new: [....29] [ip4][..tcp] [.....10.0.0.227][56910] -> [...35.201.124.9][..443] [MIDSTREAM] 
          detected: [....29] [ip4][..tcp] [.....10.0.0.227][56910] -> [...35.201.124.9][..443] [TLS][GoogleCloud][Web][Safe]
                    RISK: Unidirectional Traffic
+ detection-update: [....29] [ip4][..tcp] [.....10.0.0.227][56910] -> [...35.201.124.9][..443] [TLS][GoogleCloud][Web][Safe]
               new: [....30] [ip4][..tcp] [.....10.0.0.227][56921] -> [....8.37.96.194][.4287] 
          detected: [....30] [ip4][..tcp] [.....10.0.0.227][56921] -> [....8.37.96.194][.4287] [TLS][Unknown][Web][Safe][]
                    RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
@@ -153,7 +158,7 @@
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
  detection-update: [....38] [ip4][..tcp] [.....10.0.0.227][56929] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe][]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
-          analyse: [....38] [ip4][..tcp] [.....10.0.0.227][56929] -> [....8.37.102.91][..443] 
+          analyse: [....38] [ip4][..tcp] [.....10.0.0.227][56929] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.138|    0.023|    0.032|       1035.918|   3.600]
                    [PKTLEN......:    52.000| 1500.000|  517.300|  619.300|     383541.000|   4.000]
@@ -180,6 +185,7 @@
               new: [....43] [ip4][..tcp] [.....10.0.0.227][56879] -> [..52.10.115.210][..443] [MIDSTREAM] 
          detected: [....43] [ip4][..tcp] [.....10.0.0.227][56879] -> [..52.10.115.210][..443] [TLS][AmazonAWS][Web][Safe]
                    RISK: Unidirectional Traffic
+ detection-update: [....43] [ip4][..tcp] [.....10.0.0.227][56879] -> [..52.10.115.210][..443] [TLS][AmazonAWS][Web][Safe]
               new: [....44] [ip4][..tcp] [.....10.0.0.227][56886] -> [..17.57.144.116][.5223] [MIDSTREAM] 
               new: [....45] [ip4][..udp] [.....10.0.0.227][60341] -> [....75.75.75.75][...53] 
          detected: [....45] [ip4][..udp] [.....10.0.0.227][60341] -> [....75.75.75.75][...53] [DNS.Apple][Unknown][Network][Safe][www.apple.com]
@@ -231,6 +237,8 @@
                    RISK: Unidirectional Traffic
  detection-update: [....58] [ip4][..udp] [.....10.0.0.227][54107] -> [....8.37.102.91][..443] [DTLS][Unknown][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older)
+ detection-update: [....58] [ip4][..udp] [.....10.0.0.227][54107] -> [....8.37.102.91][..443] [DTLS][Unknown][Web][Safe]
+                   RISK: Obsolete TLS (v1.1 or older)
               new: [....60] [ip4][..udp] [.....10.0.0.227][52595] -> [.......10.0.0.1][..192] 
               new: [....61] [ip4][..udp] [.....10.0.0.151][.1900] -> [.....10.0.0.227][57547] 
          detected: [....61] [ip4][..udp] [.....10.0.0.151][.1900] -> [.....10.0.0.227][57547] [SSDP][Unknown][System][Acceptable][]
@@ -254,7 +262,6 @@
          detected: [....67] [ip4][..udp] [.....10.0.0.227][..137] -> [.....10.0.0.255][..137] [NetBIOS][Unknown][System][Acceptable][lp-rkerur-osx]
            update: [.....5] [ip6][icmp6] [..............fe80::2e7e:81ff:feb0:4aa1] -> [................................ff02::1] [ICMPV6][Unknown][Network][Acceptable]
            update: [....17] [ip4][.icmp] [.....10.0.0.227] -> [....75.75.76.76] [ICMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....23] [ip6][icmp6] [...............fe80::408:3e45:3abc:1552] -> [...............................ff02::16] [ICMPV6][Unknown][Network][Acceptable]
               new: [....68] [ip4][..udp] [.....10.0.0.149][.5353] -> [....224.0.0.251][.5353] 
          detected: [....68] [ip4][..udp] [.....10.0.0.149][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable][_googlezone._tcp.local]
@@ -269,7 +276,6 @@
           guessed: [.....1] [ip4][..tcp] [.....10.0.0.227][56885] -> [...184.25.56.53][...80] [HTTP][Unknown][Web][Acceptable][]
               end: [.....1] [ip4][..tcp] [.....10.0.0.227][56885] -> [...184.25.56.53][...80] 
              idle: [....61] [ip4][..udp] [.....10.0.0.151][.1900] -> [.....10.0.0.227][57547] [SSDP][Unknown][System][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....24] [ip4][..tcp] [.....10.0.0.227][56917] -> [...184.25.56.77][...80] [HTTP][Unknown][ConnCheck][Acceptable]
              idle: [....69] [ip4][.icmp] [.......10.0.0.1] -> [......224.0.0.1] [ICMP][Unknown][Network][Acceptable]
              idle: [....21] [ip4][....2] [.....10.0.0.213] -> [....224.0.0.251] [IGMP][Unknown][Network][Acceptable]
@@ -277,20 +283,19 @@
              idle: [.....6] [ip4][....2] [.....10.0.0.149] -> [....224.0.0.251] [IGMP][Unknown][Network][Acceptable]
              idle: [.....4] [ip4][....2] [.......10.0.0.1] -> [......224.0.0.1] [IGMP][Unknown][Network][Acceptable]
              idle: [....67] [ip4][..udp] [.....10.0.0.227][..137] -> [.....10.0.0.255][..137] [NetBIOS][Unknown][System][Acceptable]
-             idle: [....29] [ip4][..tcp] [.....10.0.0.227][56910] -> [...35.201.124.9][..443] 
-             idle: [....31] [ip4][..udp] [.....10.0.0.227][64972] -> [....75.75.75.75][...53] 
+             idle: [....29] [ip4][..tcp] [.....10.0.0.227][56910] -> [...35.201.124.9][..443] [TLS][GoogleCloud][Web][Safe]
+             idle: [....31] [ip4][..udp] [.....10.0.0.227][64972] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable]
+                   RISK: Error Code
              idle: [....66] [ip4][..udp] [.....10.0.0.149][51382] -> [.....10.0.0.227][57547] [SSDP][Unknown][System][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....26] [ip4][..udp] [.....10.0.0.227][54851] -> [....75.75.76.76][...53] [DNS][Unknown][Network][Acceptable]
                    RISK: Error Code
              idle: [....22] [ip4][..udp] [.....10.0.0.227][.5353] -> [.....10.0.0.213][.5353] [MDNS][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....16] [ip4][..udp] [.....10.0.0.227][63107] -> [....75.75.76.76][...53] [DNS][Unknown][Network][Acceptable]
                    RISK: Error Code
              idle: [....34] [ip4][..udp] [.....10.0.0.227][52879] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable]
                    RISK: Error Code
              idle: [.....9] [ip4][..udp] [.....10.0.0.227][52879] -> [....75.75.76.76][...53] [DNS][Unknown][Network][Acceptable]
-             idle: [....43] [ip4][..tcp] [.....10.0.0.227][56879] -> [..52.10.115.210][..443] 
+             idle: [....43] [ip4][..tcp] [.....10.0.0.227][56879] -> [..52.10.115.210][..443] [TLS][AmazonAWS][Web][Safe]
              idle: [....58] [ip4][..udp] [.....10.0.0.227][54107] -> [....8.37.102.91][..443] [DTLS][Unknown][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older)
              idle: [....36] [ip4][..udp] [.....10.0.0.227][57017] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable]
@@ -306,34 +311,32 @@
              idle: [....33] [ip4][..udp] [.....10.0.0.227][57261] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable]
                    RISK: Error Code
              idle: [....17] [ip4][.icmp] [.....10.0.0.227] -> [....75.75.76.76] [ICMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....3] [ip4][..tcp] [.....10.0.0.227][56320] -> [.....10.0.0.149][.8009] [TLS][Unknown][Web][Safe]
                    RISK: Known Proto on Non Std Port
              idle: [....10] [ip4][..udp] [.....10.0.0.227][61387] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable]
              idle: [....64] [ip4][..udp] [.....10.0.0.149][49816] -> [.....10.0.0.227][57547] [SSDP][Unknown][System][Acceptable]
-                   RISK: Unidirectional Traffic
               end: [....44] [ip4][..tcp] [.....10.0.0.227][56886] -> [..17.57.144.116][.5223] [TLS][Apple][Web][Safe]
                    RISK: Known Proto on Non Std Port
              idle: [....30] [ip4][..tcp] [.....10.0.0.227][56921] -> [....8.37.96.194][.4287] [TLS][Unknown][Web][Safe]
                    RISK: Known Proto on Non Std Port, Self-signed Cert, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, TLS Cert About To Expire
              idle: [....23] [ip6][icmp6] [...............fe80::408:3e45:3abc:1552] -> [...............................ff02::16] [ICMPV6][Unknown][Network][Acceptable]
-             idle: [....32] [ip4][..udp] [.....10.0.0.227][61613] -> [....75.75.75.75][...53] 
+             idle: [....32] [ip4][..udp] [.....10.0.0.227][61613] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable]
+                   RISK: Error Code
              idle: [....47] [ip4][..udp] [.....10.0.0.227][59582] -> [....75.75.75.75][...53] [DNS.ApplePush][Unknown][Network][Acceptable]
              idle: [....59] [ip4][..udp] [.....10.0.0.149][50081] -> [.....10.0.0.227][57547] [SSDP][Unknown][System][Acceptable]
-                   RISK: Unidirectional Traffic
           guessed: [....51] [ip4][..tcp] [.....10.0.0.227][56871] -> [...8.37.103.196][..443] [TLS][Unknown][Web][Safe]
               end: [....51] [ip4][..tcp] [.....10.0.0.227][56871] -> [...8.37.103.196][..443] 
              idle: [....65] [ip4][..udp] [.....10.0.0.149][48166] -> [.....10.0.0.227][57547] [SSDP][Unknown][System][Acceptable]
-                   RISK: Unidirectional Traffic
-              end: [....12] [ip4][..tcp] [.....10.0.0.227][56918] -> [....8.37.102.91][..443] 
+              end: [....12] [ip4][..tcp] [.....10.0.0.227][56918] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe]
+                   RISK: Weak TLS Cipher, Missing SNI TLS Extn, ALPN/SNI Mismatch
               end: [....15] [ip4][..tcp] [.....10.0.0.227][56919] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe]
                    RISK: Weak TLS Cipher, Missing SNI TLS Extn, ALPN/SNI Mismatch
              idle: [....38] [ip4][..tcp] [.....10.0.0.227][56929] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
           guessed: [....53] [ip4][..tcp] [.....10.0.0.227][56874] -> [.74.125.197.188][..443] [TLS][Google][Web][Safe]
               end: [....53] [ip4][..tcp] [.....10.0.0.227][56874] -> [.74.125.197.188][..443] 
-             idle: [....14] [ip4][..tcp] [.....10.0.0.227][56914] -> [..52.37.243.173][..443] 
-             idle: [....13] [ip4][..tcp] [.....10.0.0.227][56915] -> [..52.37.243.173][..443] 
+             idle: [....14] [ip4][..tcp] [.....10.0.0.227][56914] -> [..52.37.243.173][..443] [TLS][AmazonAWS][Web][Safe]
+             idle: [....13] [ip4][..tcp] [.....10.0.0.227][56915] -> [..52.37.243.173][..443] [TLS][AmazonAWS][Web][Safe]
           guessed: [....39] [ip4][..tcp] [.....10.0.0.227][56865] -> [.....10.0.0.149][.8008] [CiscoVPN][Unknown][VPN][Acceptable]
               end: [....39] [ip4][..tcp] [.....10.0.0.227][56865] -> [.....10.0.0.149][.8008] 
           guessed: [.....2] [ip4][..tcp] [.....10.0.0.227][56916] -> [.....10.0.0.151][.8009] [AJP][Unknown][Web][Acceptable]
@@ -355,7 +358,6 @@
              idle: [....52] [ip4][..udp] [.....10.0.0.227][58074] -> [....75.75.75.75][...53] [DNS.Outlook][Unknown][Network][Acceptable]
               end: [....28] [ip4][..tcp] [.....10.0.0.227][56920] -> [...99.86.34.156][..443] [TLS.Slack][AmazonAWS][Collaborative][Acceptable]
              idle: [....55] [ip4][..udp] [.....10.0.0.149][38616] -> [.....10.0.0.227][61328] [SSDP][Unknown][System][Acceptable]
-                   RISK: Unidirectional Traffic
           guessed: [....37] [ip4][..tcp] [.....10.0.0.227][56881] -> [.162.222.43.153][..443] [TLS][Unknown][Web][Safe]
              idle: [....37] [ip4][..tcp] [.....10.0.0.227][56881] -> [.162.222.43.153][..443] 
              idle: [....49] [ip4][..udp] [.....10.0.0.227][51990] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable]
@@ -363,7 +365,6 @@
              idle: [....54] [ip4][..udp] [.....10.0.0.227][61328] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable]
              idle: [....11] [ip4][..udp] [.....10.0.0.227][62322] -> [....75.75.76.76][...53] [DNS][Unknown][Network][Acceptable]
              idle: [....56] [ip4][..udp] [.....10.0.0.151][.1900] -> [.....10.0.0.227][61328] [SSDP][Unknown][System][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....45] [ip4][..udp] [.....10.0.0.227][60341] -> [....75.75.75.75][...53] [DNS.Apple][Unknown][Network][Safe]
              idle: [....42] [ip4][..udp] [.....10.0.0.227][62427] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable]
              idle: [.....8] [ip4][....2] [.....10.0.0.149] -> [239.255.255.250] [IGMP][Unknown][Network][Acceptable]

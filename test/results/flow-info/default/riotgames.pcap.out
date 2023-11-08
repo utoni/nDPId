@@ -10,56 +10,47 @@
          detected: [.....2] [ip4][..udp] [..192.168.2.100][48526] -> [213.179.216.242][50004] [Discord][Discord][Collaborative][Fun]
                    RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..udp] [..192.168.2.100][59956] -> [...162.249.72.1][.7194] [RiotGames][RiotGames][Game][Fun]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 17 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....3] [ip4][..udp] [..192.168.2.100][62854] -> [...162.249.72.1][.8181] 
          detected: [.....3] [ip4][..udp] [..192.168.2.100][62854] -> [...162.249.72.1][.8181] [RiotGames][RiotGames][Game][Fun]
                    RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..udp] [..192.168.2.100][48526] -> [213.179.216.242][50004] [Discord][Discord][Collaborative][Fun]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 19 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 3|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....4] [ip4][..udp] [..192.168.2.100][54231] -> [....43.229.65.1][.7998] 
          detected: [.....4] [ip4][..udp] [..192.168.2.100][54231] -> [....43.229.65.1][.7998] [RiotGames][RiotGames][Game][Fun]
                    RISK: Unidirectional Traffic
              idle: [.....3] [ip4][..udp] [..192.168.2.100][62854] -> [...162.249.72.1][.8181] [RiotGames][RiotGames][Game][Fun]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 21 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 4|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....5] [ip4][..udp] [..192.168.2.100][58106] -> [...162.249.72.1][.8181] 
          detected: [.....5] [ip4][..udp] [..192.168.2.100][58106] -> [...162.249.72.1][.8181] [RiotGames][RiotGames][Game][Fun]
                    RISK: Unidirectional Traffic
              idle: [.....4] [ip4][..udp] [..192.168.2.100][54231] -> [....43.229.65.1][.7998] [RiotGames][RiotGames][Game][Fun]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 23 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 5|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....6] [ip4][..udp] [..192.168.2.100][50004] -> [...162.249.72.1][.8181] 
          detected: [.....6] [ip4][..udp] [..192.168.2.100][50004] -> [...162.249.72.1][.8181] [RiotGames][RiotGames][Game][Fun]
                    RISK: Unidirectional Traffic
              idle: [.....5] [ip4][..udp] [..192.168.2.100][58106] -> [...162.249.72.1][.8181] [RiotGames][RiotGames][Game][Fun]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 25 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 6|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....7] [ip4][..udp] [..192.168.2.100][63038] -> [....43.229.65.1][.7998] 
          detected: [.....7] [ip4][..udp] [..192.168.2.100][63038] -> [....43.229.65.1][.7998] [RiotGames][RiotGames][Game][Fun]
                    RISK: Unidirectional Traffic
              idle: [.....6] [ip4][..udp] [..192.168.2.100][50004] -> [...162.249.72.1][.8181] [RiotGames][RiotGames][Game][Fun]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 27 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 7|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....8] [ip4][..udp] [..192.168.2.100][61099] -> [....66.22.241.8][50004] 
          detected: [.....8] [ip4][..udp] [..192.168.2.100][61099] -> [....66.22.241.8][50004] [Discord][Discord][Collaborative][Fun]
                    RISK: Unidirectional Traffic
              idle: [.....7] [ip4][..udp] [..192.168.2.100][63038] -> [....43.229.65.1][.7998] [RiotGames][RiotGames][Game][Fun]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 29 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 8|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....9] [ip4][..udp] [..192.168.2.100][49298] -> [...162.249.72.1][.7194] 
          detected: [.....9] [ip4][..udp] [..192.168.2.100][49298] -> [...162.249.72.1][.7194] [RiotGames][RiotGames][Game][Fun]
                    RISK: Unidirectional Traffic
              idle: [.....8] [ip4][..udp] [..192.168.2.100][61099] -> [....66.22.241.8][50004] [Discord][Discord][Collaborative][Fun]
-                   RISK: Unidirectional Traffic
              idle: [.....9] [ip4][..udp] [..192.168.2.100][49298] -> [...162.249.72.1][.7194] [RiotGames][RiotGames][Game][Fun]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

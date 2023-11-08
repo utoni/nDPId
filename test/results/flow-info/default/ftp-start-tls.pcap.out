@@ -10,7 +10,7 @@
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Unsafe Protocol, Missing SNI TLS Extn
  detection-update: [.....1] [ip4][..tcp] [...10.238.26.36][62092] -> [...10.220.50.76][...21] [FTPS][Unknown][Download][Unsafe]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Unsafe Protocol, Missing SNI TLS Extn
-          analyse: [.....1] [ip4][..tcp] [...10.238.26.36][62092] -> [...10.220.50.76][...21] 
+          analyse: [.....1] [ip4][..tcp] [...10.238.26.36][62092] -> [...10.220.50.76][...21] [FTPS][Unknown][Download][Unsafe]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.040|    0.005|    0.010|         91.331|   3.200]
                    [PKTLEN......:    46.000|  552.000|  160.900|  164.200|      26956.400|   4.400]

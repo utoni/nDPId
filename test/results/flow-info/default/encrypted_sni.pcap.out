@@ -10,7 +10,10 @@
               new: [.....3] [ip4][..tcp] [...192.168.1.12][49897] -> [..104.22.71.197][..443] [MIDSTREAM] 
          detected: [.....3] [ip4][..tcp] [...192.168.1.12][49897] -> [..104.22.71.197][..443] [TLS][Cloudflare][Web][Safe][]
                    RISK: Unidirectional Traffic
-             idle: [.....1] [ip4][..tcp] [...192.168.1.12][49886] -> [..104.27.129.77][..443] 
-             idle: [.....3] [ip4][..tcp] [...192.168.1.12][49897] -> [..104.22.71.197][..443] 
-             idle: [.....2] [ip4][..tcp] [...192.168.1.12][49887] -> [.104.16.125.175][..443] 
+             idle: [.....1] [ip4][..tcp] [...192.168.1.12][49886] -> [..104.27.129.77][..443] [TLS][Cloudflare][Web][Safe]
+                   RISK: Unidirectional Traffic
+             idle: [.....3] [ip4][..tcp] [...192.168.1.12][49897] -> [..104.22.71.197][..443] [TLS][Cloudflare][Web][Safe]
+                   RISK: Unidirectional Traffic
+             idle: [.....2] [ip4][..tcp] [...192.168.1.12][49887] -> [.104.16.125.175][..443] [TLS][Cloudflare][Web][Safe]
+                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

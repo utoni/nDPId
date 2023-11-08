@@ -5,5 +5,4 @@
          detected: [.....1] [ip4][..tcp] [...10.201.9.245][50957] -> [....10.201.9.11][.3868] [Diameter][Unknown][Network][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..tcp] [...10.201.9.245][50957] -> [....10.201.9.11][.3868] [Diameter][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

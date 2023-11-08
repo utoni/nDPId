@@ -16,9 +16,14 @@
               new: [.....5] [ip4][..tcp] [..192.168.11.11][51591] -> [.173.194.35.191][..443] [MIDSTREAM] 
          detected: [.....5] [ip4][..tcp] [..192.168.11.11][51591] -> [.173.194.35.191][..443] [TLS][Google][Web][Safe][]
                    RISK: Obsolete TLS (v1.1 or older), Unidirectional Traffic
-             idle: [.....1] [ip4][..tcp] [..192.168.11.11][51587] -> [.173.194.35.191][..443] 
-             idle: [.....4] [ip4][..tcp] [..192.168.11.11][51588] -> [.173.194.35.191][..443] 
-             idle: [.....3] [ip4][..tcp] [..192.168.11.11][51589] -> [.173.194.35.191][..443] 
-             idle: [.....2] [ip4][..tcp] [..192.168.11.11][51590] -> [.173.194.35.191][..443] 
-             idle: [.....5] [ip4][..tcp] [..192.168.11.11][51591] -> [.173.194.35.191][..443] 
+             idle: [.....1] [ip4][..tcp] [..192.168.11.11][51587] -> [.173.194.35.191][..443] [TLS.Google][Google][Web][Acceptable]
+                   RISK: Obsolete TLS (v1.1 or older), Unidirectional Traffic
+             idle: [.....4] [ip4][..tcp] [..192.168.11.11][51588] -> [.173.194.35.191][..443] [TLS][Google][Web][Safe]
+                   RISK: Obsolete TLS (v1.1 or older), Unidirectional Traffic
+             idle: [.....3] [ip4][..tcp] [..192.168.11.11][51589] -> [.173.194.35.191][..443] [TLS][Google][Web][Safe]
+                   RISK: Obsolete TLS (v1.1 or older), Unidirectional Traffic
+             idle: [.....2] [ip4][..tcp] [..192.168.11.11][51590] -> [.173.194.35.191][..443] [TLS][Google][Web][Safe]
+                   RISK: Obsolete TLS (v1.1 or older), Unidirectional Traffic
+             idle: [.....5] [ip4][..tcp] [..192.168.11.11][51591] -> [.173.194.35.191][..443] [TLS][Google][Web][Safe]
+                   RISK: Obsolete TLS (v1.1 or older), Unidirectional Traffic
      DAEMON-EVENT: shutdown

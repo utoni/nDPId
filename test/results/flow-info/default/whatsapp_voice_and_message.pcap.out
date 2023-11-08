@@ -52,21 +52,13 @@
                    [PKTLENS.....: 60,40,40,214,40,118,40,545,70,40,40,63,40,40,65,40,62,121,40,285,40,62,64,40,94,40,58,91,40,209,40,40]
                    [ENTROPIES...: 4.5,4.7,4.8,6.6,4.6,6.1,4.7,7.6,5.6,4.6,4.6,5.4,4.6,4.8,5.5,4.6,5.3,6.3,4.6,7.2,4.5,5.4,5.5,4.6,5.9,4.7,5.4,5.9,4.6,7.0,4.8,4.7]
            update: [.....5] [ip4][..udp] [.......10.8.0.1][53620] -> [..173.252.121.1][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....6] [ip4][..udp] [.......10.8.0.1][53620] -> [..179.60.192.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....2] [ip4][..udp] [.......10.8.0.1][53620] -> [....31.13.84.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....3] [ip4][..udp] [.......10.8.0.1][53620] -> [....31.13.74.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....4] [ip4][..udp] [.......10.8.0.1][53620] -> [....31.13.64.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....9] [ip4][..udp] [.......10.8.0.1][53620] -> [....31.13.73.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....7] [ip4][..udp] [.......10.8.0.1][53620] -> [...31.13.79.192][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....8] [ip4][..udp] [.......10.8.0.1][53620] -> [....31.13.93.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....12] [ip4][..tcp] [.......10.8.0.1][49721] -> [..158.85.58.109][.5222] 
          detected: [....12] [ip4][..tcp] [.......10.8.0.1][49721] -> [..158.85.58.109][.5222] [WhatsApp][Unknown][Chat][Acceptable]
           analyse: [....12] [ip4][..tcp] [.......10.8.0.1][49721] -> [..158.85.58.109][.5222] [WhatsApp][Unknown][Chat][Acceptable]
@@ -80,21 +72,13 @@
                    [PKTLENS.....: 60,40,40,214,40,118,40,294,70,40,63,40,65,40,62,121,40,62,285,40,40,40,209,98,40,99,40,165,40,62,40,76]
                    [ENTROPIES...: 4.5,4.7,4.7,6.8,4.7,6.1,4.7,7.2,5.5,4.7,5.6,4.7,5.5,4.7,5.5,6.4,4.7,5.5,7.2,4.7,4.9,4.9,6.9,6.1,4.7,6.0,4.8,6.7,4.8,5.4,4.8,5.7]
            update: [.....5] [ip4][..udp] [.......10.8.0.1][53620] -> [..173.252.121.1][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....6] [ip4][..udp] [.......10.8.0.1][53620] -> [..179.60.192.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....2] [ip4][..udp] [.......10.8.0.1][53620] -> [....31.13.84.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....3] [ip4][..udp] [.......10.8.0.1][53620] -> [....31.13.74.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....4] [ip4][..udp] [.......10.8.0.1][53620] -> [....31.13.64.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....9] [ip4][..udp] [.......10.8.0.1][53620] -> [....31.13.73.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....7] [ip4][..udp] [.......10.8.0.1][53620] -> [...31.13.79.192][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....8] [ip4][..udp] [.......10.8.0.1][53620] -> [....31.13.93.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....13] [ip4][..tcp] [.......10.8.0.1][51570] -> [...158.85.5.199][..443] 
          detected: [....13] [ip4][..tcp] [.......10.8.0.1][51570] -> [...158.85.5.199][..443] [WhatsApp][Unknown][Chat][Acceptable]
              idle: [....13] [ip4][..tcp] [.......10.8.0.1][51570] -> [...158.85.5.199][..443] [WhatsApp][Unknown][Chat][Acceptable]
@@ -102,20 +86,12 @@
               end: [.....1] [ip4][..tcp] [.......10.8.0.1][35480] -> [.184.173.179.46][..443] [WhatsApp][Unknown][Chat][Acceptable]
               end: [....11] [ip4][..tcp] [.......10.8.0.1][42241] -> [173.192.222.189][.5222] [WhatsApp][Unknown][Chat][Acceptable]
              idle: [.....5] [ip4][..udp] [.......10.8.0.1][53620] -> [..173.252.121.1][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....6] [ip4][..udp] [.......10.8.0.1][53620] -> [..179.60.192.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....8] [ip4][..udp] [.......10.8.0.1][53620] -> [....31.13.93.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....7] [ip4][..udp] [.......10.8.0.1][53620] -> [...31.13.79.192][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....9] [ip4][..udp] [.......10.8.0.1][53620] -> [....31.13.73.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....4] [ip4][..udp] [.......10.8.0.1][53620] -> [....31.13.64.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....3] [ip4][..udp] [.......10.8.0.1][53620] -> [....31.13.74.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..udp] [.......10.8.0.1][53620] -> [....31.13.84.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               end: [....12] [ip4][..tcp] [.......10.8.0.1][49721] -> [..158.85.58.109][.5222] [WhatsApp][Unknown][Chat][Acceptable]
      DAEMON-EVENT: shutdown

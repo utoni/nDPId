@@ -4,5 +4,5 @@
               new: [.....1] [ip4][..tcp] [..88.14.137.195][..443] -> [196.234.165.216][37658] 
          detected: [.....1] [ip4][..tcp] [..88.14.137.195][..443] -> [196.234.165.216][37658] [TLS.FbookReelStory][Unknown][SocialNetwork][Fun][video.fmct2-3.fna.fbcdn.net]
  detection-update: [.....1] [ip4][..tcp] [..88.14.137.195][..443] -> [196.234.165.216][37658] [TLS.FbookReelStory][Unknown][SocialNetwork][Fun][video.fmct2-3.fna.fbcdn.net]
-             idle: [.....1] [ip4][..tcp] [..88.14.137.195][..443] -> [196.234.165.216][37658] 
+             idle: [.....1] [ip4][..tcp] [..88.14.137.195][..443] -> [196.234.165.216][37658] [TLS.FbookReelStory][Unknown][SocialNetwork][Fun]
      DAEMON-EVENT: shutdown

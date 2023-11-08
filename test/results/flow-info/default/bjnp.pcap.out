@@ -32,23 +32,13 @@
          detected: [....10] [ip4][..udp] [192.168.185.141][50089] -> [....192.168.1.9][.8612] [BJNP][Unknown][System][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..udp] [192.168.185.141][50087] -> [...192.168.1.17][.8612] [BJNP][Unknown][System][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....10] [ip4][..udp] [192.168.185.141][50089] -> [....192.168.1.9][.8612] [BJNP][Unknown][System][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....9] [ip4][..udp] [192.168.185.141][50089] -> [....192.168.1.8][.8612] [BJNP][Unknown][System][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....8] [ip4][..udp] [192.168.185.141][50089] -> [....192.168.1.7][.8612] [BJNP][Unknown][System][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....7] [ip4][..udp] [192.168.185.141][50089] -> [....192.168.1.6][.8612] [BJNP][Unknown][System][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....6] [ip4][..udp] [192.168.185.141][50089] -> [....192.168.1.5][.8612] [BJNP][Unknown][System][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....5] [ip4][..udp] [192.168.185.141][50089] -> [....192.168.1.4][.8612] [BJNP][Unknown][System][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....4] [ip4][..udp] [192.168.185.141][50089] -> [....192.168.1.3][.8612] [BJNP][Unknown][System][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....3] [ip4][..udp] [192.168.185.141][50089] -> [....192.168.1.2][.8612] [BJNP][Unknown][System][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..udp] [192.168.185.141][50089] -> [....192.168.1.1][.8612] [BJNP][Unknown][System][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

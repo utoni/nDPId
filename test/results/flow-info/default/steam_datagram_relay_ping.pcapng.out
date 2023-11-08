@@ -5,5 +5,4 @@
          detected: [.....1] [ip4][..udp] [..192.168.2.100][52157] -> [..139.45.193.10][27018] [Steam][Unknown][Game][Fun]
                    RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..udp] [..192.168.2.100][52157] -> [..139.45.193.10][27018] [Steam][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

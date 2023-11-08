@@ -21,7 +21,5 @@
                    [ENTROPIES...: 4.9,4.6,5.1,4.6,5.4,4.6,4.9,4.6,5.2,4.6,5.4,4.6,4.9,4.6,5.1,4.5,5.4,4.6,4.9,4.6,5.1,4.6,5.5,4.5,4.8,4.5,5.1,4.6,5.5,4.6,4.9,4.6]
              idle: [.....2] [ip4][..tcp] [......127.0.1.1][.5672] -> [......127.0.0.1][44204] [AMQP][Unknown][RPC][Acceptable]
              idle: [.....1] [ip4][..tcp] [......127.0.0.1][44205] -> [......127.0.1.1][.5672] [AMQP][Unknown][RPC][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....3] [ip4][..tcp] [......127.0.0.1][44206] -> [......127.0.1.1][.5672] [AMQP][Unknown][RPC][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

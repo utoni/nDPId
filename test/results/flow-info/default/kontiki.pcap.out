@@ -32,19 +32,15 @@
                    [PKTLENS.....: 32,32,32,48,56,245,499,232,204,118,1269,1269,1269,1269,44,1269,1269,1269,1269,1269,44,1269,1269,1269,1269,1269,1269,44,1269,1269,1269,1269]
                    [ENTROPIES...: 4.3,4.4,4.4,4.8,5.1,6.3,7.3,7.0,6.9,6.2,7.9,7.8,7.8,7.8,4.9,7.8,7.8,7.8,7.8,7.8,4.9,7.9,7.8,7.8,7.8,7.9,7.8,4.9,7.8,7.8,7.9,7.9]
              idle: [.....8] [ip4][.icmp] [...4.79.219.125] -> [....10.25.32.59] [ICMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....7] [ip4][.icmp] [216.168.241.157] -> [....10.25.32.59] [ICMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....3] [ip4][..udp] [....10.25.32.59][19948] -> [..64.200.148.86][.8888] [Kontiki][Unknown][Media][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
              idle: [.....6] [ip4][.icmp] [.....10.25.32.3] -> [....10.25.32.59] [ICMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....4] [ip4][.icmp] [...10.25.249.14] -> [....10.25.32.59] [ICMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
      not-detected: [.....1] [ip4][..udp] [....10.25.32.59][19948] -> [255.255.255.255][19948] [Unknown][Unknown][Unrated]
              idle: [.....1] [ip4][..udp] [....10.25.32.59][19948] -> [255.255.255.255][19948] 
      not-detected: [.....2] [ip4][..udp] [....10.25.32.59][19948] -> [..64.200.148.82][.1948] [Unknown][Unknown][Unrated]
              idle: [.....2] [ip4][..udp] [....10.25.32.59][19948] -> [..64.200.148.82][.1948] 
              idle: [.....5] [ip4][..udp] [....10.25.32.59][19948] -> [..64.200.148.88][...80] [Kontiki][Unknown][Media][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
      DAEMON-EVENT: shutdown

@@ -5,5 +5,4 @@
          detected: [.....1] [ip6][....4] [22e0:1685:eda7:38cc:58bd:f3f1:aa3f:22d8] -> [................344a:ba94:152a:ac34::2a] [IP_in_IP][Unknown][Network][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [.....1] [ip6][....4] [22e0:1685:eda7:38cc:58bd:f3f1:aa3f:22d8] -> [................344a:ba94:152a:ac34::2a] [IP_in_IP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

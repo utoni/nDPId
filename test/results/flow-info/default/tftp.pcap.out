@@ -33,7 +33,6 @@
              idle: [.....4] [ip4][..udp] [...192.168.0.10][.3445] -> [..192.168.0.253][50618] [TFTP][Unknown][DataTransfer][Acceptable]
                    RISK: Known Proto on Non Std Port
              idle: [.....3] [ip4][..udp] [..192.168.0.253][50618] -> [...192.168.0.10][...69] [TFTP][Unknown][DataTransfer][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 102 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 5|skipped: 0|!detected: 0|guessed: 2|detection-updates: 0|updates: 0]
               new: [.....6] [ip4][..udp] [....172.28.5.91][44618] -> [...172.28.5.170][...69] 
@@ -45,7 +44,5 @@
              idle: [.....7] [ip4][..udp] [...172.28.5.170][62058] -> [....172.28.5.91][44618] [TFTP][Unknown][DataTransfer][Acceptable]
                    RISK: Known Proto on Non Std Port
              idle: [.....5] [ip4][..udp] [....172.28.4.53][54627] -> [...172.16.5.170][...69] [TFTP][Unknown][DataTransfer][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....6] [ip4][..udp] [....172.28.5.91][44618] -> [...172.28.5.170][...69] [TFTP][Unknown][DataTransfer][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

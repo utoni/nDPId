@@ -38,47 +38,28 @@
          detected: [....12] [ip4][..udp] [......10.1.12.2][.1096] -> [.......10.5.3.1][...88] [Kerberos][Unknown][Network][Acceptable]
                    RISK: Unidirectional Traffic
            update: [.....1] [ip4][..udp] [......10.1.12.2][.1061] -> [.......10.5.3.1][...88] [Kerberos][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....2] [ip4][..udp] [......10.1.12.2][.1065] -> [.......10.5.3.1][...88] [Kerberos][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....3] [ip4][..udp] [......10.1.12.2][.1067] -> [.......10.5.3.1][...88] [Kerberos][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....4] [ip4][..udp] [......10.1.12.2][.1068] -> [.......10.5.3.1][...88] [Kerberos][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....5] [ip4][..udp] [......10.1.12.2][.1069] -> [.......10.5.3.1][...88] [Kerberos][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....6] [ip4][..udp] [......10.1.12.2][.1074] -> [.......10.5.3.1][...88] [Kerberos][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....7] [ip4][..udp] [......10.1.12.2][.1076] -> [.......10.5.3.1][...88] [Kerberos][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 24 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 12 / 12|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 7]
               new: [....13] [ip4][..tcp] [..192.168.10.12][44256] -> [...192.168.10.3][...88] 
          detected: [....13] [ip4][..tcp] [..192.168.10.12][44256] -> [...192.168.10.3][...88] [Kerberos][Unknown][Network][Acceptable]
  detection-update: [....13] [ip4][..tcp] [..192.168.10.12][44256] -> [...192.168.10.3][...88] [Kerberos][Unknown][Network][Acceptable]
              idle: [.....1] [ip4][..udp] [......10.1.12.2][.1061] -> [.......10.5.3.1][...88] [Kerberos][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..udp] [......10.1.12.2][.1065] -> [.......10.5.3.1][...88] [Kerberos][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....3] [ip4][..udp] [......10.1.12.2][.1067] -> [.......10.5.3.1][...88] [Kerberos][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....4] [ip4][..udp] [......10.1.12.2][.1068] -> [.......10.5.3.1][...88] [Kerberos][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....5] [ip4][..udp] [......10.1.12.2][.1069] -> [.......10.5.3.1][...88] [Kerberos][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....6] [ip4][..udp] [......10.1.12.2][.1074] -> [.......10.5.3.1][...88] [Kerberos][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....7] [ip4][..udp] [......10.1.12.2][.1076] -> [.......10.5.3.1][...88] [Kerberos][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....8] [ip4][..udp] [......10.1.12.2][.1084] -> [.......10.5.3.1][...88] [Kerberos][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....9] [ip4][..udp] [......10.1.12.2][.1089] -> [.......10.5.3.1][...88] [Kerberos][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....10] [ip4][..udp] [......10.1.12.2][.1090] -> [.......10.5.3.1][...88] [Kerberos][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....11] [ip4][..udp] [......10.1.12.2][.1092] -> [.......10.5.3.1][...88] [Kerberos][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....12] [ip4][..udp] [......10.1.12.2][.1096] -> [.......10.5.3.1][...88] [Kerberos][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               end: [....13] [ip4][..tcp] [..192.168.10.12][44256] -> [...192.168.10.3][...88] [Kerberos][Unknown][Network][Acceptable]
      DAEMON-EVENT: shutdown

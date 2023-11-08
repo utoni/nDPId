@@ -5,5 +5,4 @@
          detected: [.....1] [ip4][..tcp] [........1.1.1.1][48502] -> [........2.2.2.2][..443] [HAProxy][Unknown][Web][Safe]
                    RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..tcp] [........1.1.1.1][48502] -> [........2.2.2.2][..443] [HAProxy][Unknown][Web][Safe]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

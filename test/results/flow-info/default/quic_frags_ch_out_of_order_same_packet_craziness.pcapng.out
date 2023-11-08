@@ -8,7 +8,6 @@
          detected: [.....2] [ip4][..udp] [..147.196.90.42][61647] -> [..177.86.46.206][..443] [QUIC.Google][Unknown][Web][Acceptable][sb-ssl.google.com]
                    RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..udp] [.133.205.75.230][56528] -> [.208.229.157.81][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 8 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....3] [ip4][..udp] [...168.144.64.5][55376] -> [.212.22.246.243][..443] 
@@ -24,30 +23,21 @@
          detected: [.....6] [ip4][..udp] [...168.144.64.5][59827] -> [..37.47.218.224][..443] [QUIC.Google][Unknown][Advertisement][Acceptable][www.googleadservices.com]
                    RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..udp] [..147.196.90.42][61647] -> [..177.86.46.206][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [.....7] [ip4][..udp] [...168.144.64.5][51053] -> [241.138.147.133][..443] 
          detected: [.....7] [ip4][..udp] [...168.144.64.5][51053] -> [241.138.147.133][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable][content-autofill.googleapis.com]
            update: [.....3] [ip4][..udp] [...168.144.64.5][55376] -> [.212.22.246.243][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....4] [ip4][..udp] [...168.144.64.5][64964] -> [.133.202.76.105][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....6] [ip4][..udp] [...168.144.64.5][59827] -> [..37.47.218.224][..443] [QUIC.Google][Unknown][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....5] [ip4][..udp] [...168.144.64.5][55844] -> [..112.1.105.138][..443] [QUIC.PlayStore][Unknown][SoftwareUpdate][Safe]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 17 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 5 / 7|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 4]
               new: [.....8] [ip4][..udp] [..10.117.78.100][44252] -> [.251.236.18.198][..443] 
          detected: [.....8] [ip4][..udp] [..10.117.78.100][44252] -> [.251.236.18.198][..443] [QUIC.Google][Unknown][Web][Acceptable][accounts.google.com]
              idle: [.....3] [ip4][..udp] [...168.144.64.5][55376] -> [.212.22.246.243][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....4] [ip4][..udp] [...168.144.64.5][64964] -> [.133.202.76.105][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....6] [ip4][..udp] [...168.144.64.5][59827] -> [..37.47.218.224][..443] [QUIC.Google][Unknown][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....7] [ip4][..udp] [...168.144.64.5][51053] -> [241.138.147.133][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable]
              idle: [.....5] [ip4][..udp] [...168.144.64.5][55844] -> [..112.1.105.138][..443] [QUIC.PlayStore][Unknown][SoftwareUpdate][Safe]
-                   RISK: Unidirectional Traffic
               new: [.....9] [ip4][..udp] [..10.117.78.100][55273] -> [202.152.155.121][..443] 
          detected: [.....9] [ip4][..udp] [..10.117.78.100][55273] -> [202.152.155.121][..443] [QUIC.Google][Unknown][Web][Acceptable][clients4.google.com]
                    RISK: Unidirectional Traffic
@@ -70,20 +60,14 @@
                    RISK: Unidirectional Traffic
              idle: [.....8] [ip4][..udp] [..10.117.78.100][44252] -> [.251.236.18.198][..443] [QUIC.Google][Unknown][Web][Acceptable]
              idle: [.....9] [ip4][..udp] [..10.117.78.100][55273] -> [202.152.155.121][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....15] [ip4][..udp] [...168.144.64.5][51456] -> [102.194.207.179][..443] 
          detected: [....15] [ip4][..udp] [...168.144.64.5][51456] -> [102.194.207.179][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable][clientservices.googleapis.com]
                    RISK: Unidirectional Traffic
            update: [....12] [ip4][..udp] [...168.144.64.5][50482] -> [121.209.126.161][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
            update: [....13] [ip4][..udp] [...168.144.64.5][62652] -> [.158.146.215.30][..443] [QUIC.Google][Unknown][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....14] [ip4][..udp] [...168.144.64.5][63136] -> [...9.65.169.252][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
            update: [....11] [ip4][..udp] [...168.144.64.5][53431] -> [...128.248.24.1][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....10] [ip4][..udp] [...168.144.64.5][53404] -> [113.250.137.243][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....16] [ip4][..udp] [...168.144.64.5][63163] -> [113.250.137.243][..443] 
          detected: [....16] [ip4][..udp] [...168.144.64.5][63163] -> [113.250.137.243][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable][update.googleapis.com]
                    RISK: Unidirectional Traffic
@@ -97,23 +81,14 @@
          detected: [....19] [ip4][..udp] [...168.144.64.5][60896] -> [.45.228.175.189][..443] [QUIC.Google][Unknown][Web][Acceptable][www.google.com]
                    RISK: Unidirectional Traffic
            update: [....17] [ip4][..udp] [...168.144.64.5][54016] -> [...153.98.28.78][..443] [QUIC.DoH_DoT][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....12] [ip4][..udp] [...168.144.64.5][50482] -> [121.209.126.161][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
            update: [....13] [ip4][..udp] [...168.144.64.5][62652] -> [.158.146.215.30][..443] [QUIC.Google][Unknown][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....14] [ip4][..udp] [...168.144.64.5][63136] -> [...9.65.169.252][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
            update: [....16] [ip4][..udp] [...168.144.64.5][63163] -> [113.250.137.243][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....11] [ip4][..udp] [...168.144.64.5][53431] -> [...128.248.24.1][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....18] [ip4][..udp] [...168.144.64.5][51248] -> [..99.42.133.245][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....10] [ip4][..udp] [...168.144.64.5][53404] -> [113.250.137.243][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....15] [ip4][..udp] [...168.144.64.5][51456] -> [102.194.207.179][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....20] [ip4][..udp] [...168.144.64.5][60551] -> [...128.248.24.1][..443] 
          detected: [....20] [ip4][..udp] [...168.144.64.5][60551] -> [...128.248.24.1][..443] [QUIC.Google][Unknown][Web][Acceptable][beacons.gvt2.com]
                    RISK: Unidirectional Traffic
@@ -121,68 +96,41 @@
          detected: [....21] [ip4][..udp] [...168.144.64.5][56488] -> [..177.86.46.206][..443] [QUIC.YouTube][Unknown][Media][Fun][www.youtube.com]
                    RISK: Unidirectional Traffic
              idle: [....11] [ip4][..udp] [...168.144.64.5][53431] -> [...128.248.24.1][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....10] [ip4][..udp] [...168.144.64.5][53404] -> [113.250.137.243][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....17] [ip4][..udp] [...168.144.64.5][54016] -> [...153.98.28.78][..443] [QUIC.DoH_DoT][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....12] [ip4][..udp] [...168.144.64.5][50482] -> [121.209.126.161][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
            update: [....13] [ip4][..udp] [...168.144.64.5][62652] -> [.158.146.215.30][..443] [QUIC.Google][Unknown][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....14] [ip4][..udp] [...168.144.64.5][63136] -> [...9.65.169.252][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
            update: [....16] [ip4][..udp] [...168.144.64.5][63163] -> [113.250.137.243][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....19] [ip4][..udp] [...168.144.64.5][60896] -> [.45.228.175.189][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....18] [ip4][..udp] [...168.144.64.5][51248] -> [..99.42.133.245][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....15] [ip4][..udp] [...168.144.64.5][51456] -> [102.194.207.179][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....22] [ip4][..udp] [...168.144.64.5][49153] -> [...153.98.28.78][..443] 
          detected: [....22] [ip4][..udp] [...168.144.64.5][49153] -> [...153.98.28.78][..443] [QUIC.DoH_DoT][Unknown][Network][Acceptable][dns.google]
                    RISK: Unidirectional Traffic
              idle: [....12] [ip4][..udp] [...168.144.64.5][50482] -> [121.209.126.161][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
              idle: [....13] [ip4][..udp] [...168.144.64.5][62652] -> [.158.146.215.30][..443] [QUIC.Google][Unknown][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....14] [ip4][..udp] [...168.144.64.5][63136] -> [...9.65.169.252][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
            update: [....20] [ip4][..udp] [...168.144.64.5][60551] -> [...128.248.24.1][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....23] [ip4][..udp] [...168.144.64.5][51296] -> [...128.248.24.1][..443] 
          detected: [....23] [ip4][..udp] [...168.144.64.5][51296] -> [...128.248.24.1][..443] [QUIC.Google][Unknown][Web][Acceptable][beacons.gcp.gvt2.com]
                    RISK: Unidirectional Traffic
              idle: [....17] [ip4][..udp] [...168.144.64.5][54016] -> [...153.98.28.78][..443] [QUIC.DoH_DoT][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....16] [ip4][..udp] [...168.144.64.5][63163] -> [113.250.137.243][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....18] [ip4][..udp] [...168.144.64.5][51248] -> [..99.42.133.245][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....15] [ip4][..udp] [...168.144.64.5][51456] -> [102.194.207.179][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....19] [ip4][..udp] [...168.144.64.5][60896] -> [.45.228.175.189][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....22] [ip4][..udp] [...168.144.64.5][49153] -> [...153.98.28.78][..443] [QUIC.DoH_DoT][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....21] [ip4][..udp] [...168.144.64.5][56488] -> [..177.86.46.206][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
            update: [....20] [ip4][..udp] [...168.144.64.5][60551] -> [...128.248.24.1][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....24] [ip4][..udp] [...168.144.64.5][57767] -> [....76.83.40.87][..443] 
          detected: [....24] [ip4][..udp] [...168.144.64.5][57767] -> [....76.83.40.87][..443] [QUIC.YouTube][Unknown][Media][Fun][r11---sn-vh5ouxa-hjuk.googlevideo.com]
                    RISK: Unidirectional Traffic
              idle: [....23] [ip4][..udp] [...168.144.64.5][51296] -> [...128.248.24.1][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....19] [ip4][..udp] [...168.144.64.5][60896] -> [.45.228.175.189][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....22] [ip4][..udp] [...168.144.64.5][49153] -> [...153.98.28.78][..443] [QUIC.DoH_DoT][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....21] [ip4][..udp] [...168.144.64.5][56488] -> [..177.86.46.206][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
              idle: [....20] [ip4][..udp] [...168.144.64.5][60551] -> [...128.248.24.1][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....25] [ip4][..udp] [...168.144.64.5][63736] -> [.213.188.47.247][..443] 
          detected: [....25] [ip4][..udp] [...168.144.64.5][63736] -> [.213.188.47.247][..443] [QUIC.YouTube][Unknown][Media][Fun][r4---sn-vh5ouxa-hjud.googlevideo.com]
                    RISK: Unidirectional Traffic
@@ -192,31 +140,23 @@
          detected: [....27] [ip4][..udp] [...168.144.64.5][49324] -> [..35.194.157.47][..443] [QUIC.GoogleCloud][GoogleCloud][Advertisement][Acceptable][pagead2.googlesyndication.com]
                    RISK: Unidirectional Traffic
            update: [....24] [ip4][..udp] [...168.144.64.5][57767] -> [....76.83.40.87][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 38 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 4 / 27|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 32]
               new: [....28] [ip4][..udp] [...168.144.64.5][62047] -> [..136.125.67.96][..443] 
          detected: [....28] [ip4][..udp] [...168.144.64.5][62047] -> [..136.125.67.96][..443] [QUIC.Google][Unknown][Web][Acceptable][beacons4.gvt2.com]
                    RISK: Unidirectional Traffic
            update: [....25] [ip4][..udp] [...168.144.64.5][63736] -> [.213.188.47.247][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
            update: [....27] [ip4][..udp] [...168.144.64.5][49324] -> [..35.194.157.47][..443] [QUIC.GoogleCloud][GoogleCloud][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....26] [ip4][..udp] [...168.144.64.5][52273] -> [244.214.160.219][..443] [QUIC.YouTube][Unknown][Media][Fun]
            update: [....24] [ip4][..udp] [...168.144.64.5][57767] -> [....76.83.40.87][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
               new: [....29] [ip4][..udp] [...168.144.64.5][64976] -> [..220.80.126.73][..443] 
          detected: [....29] [ip4][..udp] [...168.144.64.5][64976] -> [..220.80.126.73][..443] [QUIC.YouTube][Unknown][Media][Fun][r1---sn-hju7enel.googlevideo.com]
                    RISK: Unidirectional Traffic
              idle: [....25] [ip4][..udp] [...168.144.64.5][63736] -> [.213.188.47.247][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
              idle: [....28] [ip4][..udp] [...168.144.64.5][62047] -> [..136.125.67.96][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....27] [ip4][..udp] [...168.144.64.5][49324] -> [..35.194.157.47][..443] [QUIC.GoogleCloud][GoogleCloud][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....26] [ip4][..udp] [...168.144.64.5][52273] -> [244.214.160.219][..443] [QUIC.YouTube][Unknown][Media][Fun]
              idle: [....24] [ip4][..udp] [...168.144.64.5][57767] -> [....76.83.40.87][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
               new: [....30] [ip4][..udp] [...168.144.64.5][61209] -> [..35.194.157.47][..443] 
          detected: [....30] [ip4][..udp] [...168.144.64.5][61209] -> [..35.194.157.47][..443] [QUIC.GoogleCloud][GoogleCloud][Advertisement][Acceptable][www.googleadservices.com]
                    RISK: Unidirectional Traffic
@@ -224,20 +164,15 @@
          detected: [....31] [ip4][..udp] [...168.144.64.5][50540] -> [...99.45.60.254][..443] [QUIC.YouTube][Unknown][Media][Fun][i.ytimg.com]
                    RISK: Unidirectional Traffic
            update: [....29] [ip4][..udp] [...168.144.64.5][64976] -> [..220.80.126.73][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
            update: [....30] [ip4][..udp] [...168.144.64.5][61209] -> [..35.194.157.47][..443] [QUIC.GoogleCloud][GoogleCloud][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 42 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 3 / 31|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 38]
               new: [....32] [ip4][..udp] [...168.144.64.5][60809] -> [...9.65.169.252][..443] 
          detected: [....32] [ip4][..udp] [...168.144.64.5][60809] -> [...9.65.169.252][..443] [QUIC.YouTube][Unknown][Media][Fun][suggestqueries-clients6.youtube.com]
                    RISK: Unidirectional Traffic
            update: [....29] [ip4][..udp] [...168.144.64.5][64976] -> [..220.80.126.73][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
            update: [....30] [ip4][..udp] [...168.144.64.5][61209] -> [..35.194.157.47][..443] [QUIC.GoogleCloud][GoogleCloud][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....31] [ip4][..udp] [...168.144.64.5][50540] -> [...99.45.60.254][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
               new: [....33] [ip4][..udp] [...168.144.64.5][55637] -> [.169.81.163.225][..443] 
          detected: [....33] [ip4][..udp] [...168.144.64.5][55637] -> [.169.81.163.225][..443] [QUIC.YouTube][Unknown][Media][Fun][r3---sn-hju7enel.googlevideo.com]
                    RISK: Unidirectional Traffic
@@ -245,30 +180,20 @@
          detected: [....34] [ip4][..udp] [...168.144.64.5][53127] -> [113.250.137.243][..443] [QUIC.Google][Unknown][Cloud][Acceptable][b1.nel.goog]
                    RISK: Unidirectional Traffic
              idle: [....29] [ip4][..udp] [...168.144.64.5][64976] -> [..220.80.126.73][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
              idle: [....30] [ip4][..udp] [...168.144.64.5][61209] -> [..35.194.157.47][..443] [QUIC.GoogleCloud][GoogleCloud][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....31] [ip4][..udp] [...168.144.64.5][50540] -> [...99.45.60.254][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
            update: [....32] [ip4][..udp] [...168.144.64.5][60809] -> [...9.65.169.252][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
            update: [....33] [ip4][..udp] [...168.144.64.5][55637] -> [.169.81.163.225][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
               new: [....35] [ip4][..udp] [...168.144.64.5][50073] -> [.152.128.87.238][..443] 
          detected: [....35] [ip4][..udp] [...168.144.64.5][50073] -> [.152.128.87.238][..443] [QUIC.YouTube][Unknown][Media][Fun][r3---sn-vh5ouxa-hjud.googlevideo.com]
                    RISK: Unidirectional Traffic
              idle: [....32] [ip4][..udp] [...168.144.64.5][60809] -> [...9.65.169.252][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
              idle: [....33] [ip4][..udp] [...168.144.64.5][55637] -> [.169.81.163.225][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
            update: [....34] [ip4][..udp] [...168.144.64.5][53127] -> [113.250.137.243][..443] [QUIC.Google][Unknown][Cloud][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....36] [ip4][..udp] [.192.168.254.11][59048] -> [.251.236.18.198][..443] 
          detected: [....36] [ip4][..udp] [.192.168.254.11][59048] -> [.251.236.18.198][..443] [QUIC.Google][Unknown][Web][Acceptable][accounts.google.com]
              idle: [....34] [ip4][..udp] [...168.144.64.5][53127] -> [113.250.137.243][..443] [QUIC.Google][Unknown][Cloud][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....35] [ip4][..udp] [...168.144.64.5][50073] -> [.152.128.87.238][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
               new: [....37] [ip4][..udp] [.192.168.254.11][38331] -> [.93.100.151.221][..443] 
          detected: [....37] [ip4][..udp] [.192.168.254.11][38331] -> [.93.100.151.221][..443] [QUIC.DataSaver][Unknown][Web][Fun][litepages.googlezip.net]
                    RISK: Unidirectional Traffic
@@ -283,21 +208,15 @@
                    RISK: Unidirectional Traffic
            update: [....36] [ip4][..udp] [.192.168.254.11][59048] -> [.251.236.18.198][..443] [QUIC.Google][Unknown][Web][Acceptable]
            update: [....35] [ip4][..udp] [...168.144.64.5][50073] -> [.152.128.87.238][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
               new: [....41] [ip4][..udp] [.192.168.254.11][35124] -> [..168.78.153.39][..443] 
          detected: [....41] [ip4][..udp] [.192.168.254.11][35124] -> [..168.78.153.39][..443] [QUIC][Unknown][Web][Acceptable][s-img.adskeeper.co.uk]
                    RISK: Unidirectional Traffic
              idle: [....35] [ip4][..udp] [...168.144.64.5][50073] -> [.152.128.87.238][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
            update: [....38] [ip4][..udp] [.192.168.254.11][45652] -> [.170.196.90.126][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....37] [ip4][..udp] [.192.168.254.11][38331] -> [.93.100.151.221][..443] [QUIC.DataSaver][Unknown][Web][Fun]
-                   RISK: Unidirectional Traffic
            update: [....36] [ip4][..udp] [.192.168.254.11][59048] -> [.251.236.18.198][..443] [QUIC.Google][Unknown][Web][Acceptable]
            update: [....40] [ip4][..udp] [.192.168.254.11][54692] -> [.171.182.169.23][..443] [QUIC][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....39] [ip4][..udp] [.192.168.254.11][43427] -> [..98.251.203.81][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....42] [ip4][..udp] [.192.168.254.11][51075] -> [.117.148.117.30][..443] 
          detected: [....42] [ip4][..udp] [.192.168.254.11][51075] -> [.117.148.117.30][..443] [QUIC.Google][Unknown][Advertisement][Acceptable][pagead2.googlesyndication.com]
                    RISK: Unidirectional Traffic
@@ -306,49 +225,34 @@
                    RISK: Unidirectional Traffic
              idle: [....36] [ip4][..udp] [.192.168.254.11][59048] -> [.251.236.18.198][..443] [QUIC.Google][Unknown][Web][Acceptable]
            update: [....38] [ip4][..udp] [.192.168.254.11][45652] -> [.170.196.90.126][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....41] [ip4][..udp] [.192.168.254.11][35124] -> [..168.78.153.39][..443] [QUIC][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....37] [ip4][..udp] [.192.168.254.11][38331] -> [.93.100.151.221][..443] [QUIC.DataSaver][Unknown][Web][Fun]
-                   RISK: Unidirectional Traffic
            update: [....40] [ip4][..udp] [.192.168.254.11][54692] -> [.171.182.169.23][..443] [QUIC][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....39] [ip4][..udp] [.192.168.254.11][43427] -> [..98.251.203.81][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....44] [ip4][..udp] [...168.144.64.5][62818] -> [113.250.137.243][..443] 
          detected: [....44] [ip4][..udp] [...168.144.64.5][62818] -> [113.250.137.243][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable][clientservices.googleapis.com]
                    RISK: Unidirectional Traffic
              idle: [....38] [ip4][..udp] [.192.168.254.11][45652] -> [.170.196.90.126][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....37] [ip4][..udp] [.192.168.254.11][38331] -> [.93.100.151.221][..443] [QUIC.DataSaver][Unknown][Web][Fun]
-                   RISK: Unidirectional Traffic
              idle: [....39] [ip4][..udp] [.192.168.254.11][43427] -> [..98.251.203.81][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....45] [ip4][..udp] [...168.144.64.5][56425] -> [..125.136.204.4][..443] 
          detected: [....45] [ip4][..udp] [...168.144.64.5][56425] -> [..125.136.204.4][..443] [QUIC.YouTube][Unknown][Media][Fun][r1---sn-vh5ouxa-hjuk.googlevideo.com]
                    RISK: Unidirectional Traffic
              idle: [....40] [ip4][..udp] [.192.168.254.11][54692] -> [.171.182.169.23][..443] [QUIC][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 57 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 5 / 45|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 57]
               new: [....46] [ip4][..udp] [...168.144.64.5][59622] -> [...153.98.28.78][..443] 
          detected: [....46] [ip4][..udp] [...168.144.64.5][59622] -> [...153.98.28.78][..443] [QUIC.DoH_DoT][Unknown][Network][Acceptable][dns.google]
                    RISK: Unidirectional Traffic
              idle: [....44] [ip4][..udp] [...168.144.64.5][62818] -> [113.250.137.243][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....41] [ip4][..udp] [.192.168.254.11][35124] -> [..168.78.153.39][..443] [QUIC][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....42] [ip4][..udp] [.192.168.254.11][51075] -> [.117.148.117.30][..443] [QUIC.Google][Unknown][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....43] [ip4][..udp] [.192.168.254.11][49689] -> [.87.179.155.149][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....45] [ip4][..udp] [...168.144.64.5][56425] -> [..125.136.204.4][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
               new: [....47] [ip4][..udp] [...168.144.64.5][50552] -> [108.171.138.182][..443] 
          detected: [....47] [ip4][..udp] [...168.144.64.5][50552] -> [108.171.138.182][..443] [QUIC.Google][Unknown][Web][Acceptable][beacons.gvt2.com]
                    RISK: Unidirectional Traffic
              idle: [....45] [ip4][..udp] [...168.144.64.5][56425] -> [..125.136.204.4][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
               new: [....48] [ip4][..udp] [...168.144.64.5][56844] -> [113.250.137.243][..443] 
          detected: [....48] [ip4][..udp] [...168.144.64.5][56844] -> [113.250.137.243][..443] [QUIC.Google][Unknown][Cloud][Acceptable][b1.nel.goog]
                    RISK: Unidirectional Traffic
@@ -356,11 +260,8 @@
          detected: [....49] [ip4][..udp] [...168.144.64.5][58414] -> [...153.98.28.78][..443] [QUIC.DoH_DoT][Unknown][Network][Acceptable][dns.google]
                    RISK: Unidirectional Traffic
            update: [....48] [ip4][..udp] [...168.144.64.5][56844] -> [113.250.137.243][..443] [QUIC.Google][Unknown][Cloud][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....47] [ip4][..udp] [...168.144.64.5][50552] -> [108.171.138.182][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....46] [ip4][..udp] [...168.144.64.5][59622] -> [...153.98.28.78][..443] [QUIC.DoH_DoT][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....50] [ip4][..udp] [...168.144.64.5][61341] -> [.16.232.218.117][..443] 
          detected: [....50] [ip4][..udp] [...168.144.64.5][61341] -> [.16.232.218.117][..443] [QUIC.YouTube][Unknown][Media][Fun][r9---sn-vh5ouxa-hjuk.googlevideo.com]
                    RISK: Unidirectional Traffic
@@ -368,68 +269,44 @@
          detected: [....51] [ip4][..udp] [...168.144.64.5][56683] -> [113.250.137.243][..443] [QUIC.Google][Unknown][Cloud][Acceptable][b1.nel.goog]
                    RISK: Unidirectional Traffic
            update: [....49] [ip4][..udp] [...168.144.64.5][58414] -> [...153.98.28.78][..443] [QUIC.DoH_DoT][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....48] [ip4][..udp] [...168.144.64.5][56844] -> [113.250.137.243][..443] [QUIC.Google][Unknown][Cloud][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....47] [ip4][..udp] [...168.144.64.5][50552] -> [108.171.138.182][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....46] [ip4][..udp] [...168.144.64.5][59622] -> [...153.98.28.78][..443] [QUIC.DoH_DoT][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....52] [ip4][..udp] [...168.144.64.5][64700] -> [.16.232.218.117][..443] 
          detected: [....52] [ip4][..udp] [...168.144.64.5][64700] -> [.16.232.218.117][..443] [QUIC.YouTube][Unknown][Media][Fun][r9---sn-vh5ouxa-hjuk.googlevideo.com]
                    RISK: Unidirectional Traffic
              idle: [....48] [ip4][..udp] [...168.144.64.5][56844] -> [113.250.137.243][..443] [QUIC.Google][Unknown][Cloud][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....47] [ip4][..udp] [...168.144.64.5][50552] -> [108.171.138.182][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....46] [ip4][..udp] [...168.144.64.5][59622] -> [...153.98.28.78][..443] [QUIC.DoH_DoT][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....49] [ip4][..udp] [...168.144.64.5][58414] -> [...153.98.28.78][..443] [QUIC.DoH_DoT][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....50] [ip4][..udp] [...168.144.64.5][61341] -> [.16.232.218.117][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
            update: [....51] [ip4][..udp] [...168.144.64.5][56683] -> [113.250.137.243][..443] [QUIC.Google][Unknown][Cloud][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....53] [ip4][..udp] [...168.144.64.5][60936] -> [...9.65.169.252][..443] 
          detected: [....53] [ip4][..udp] [...168.144.64.5][60936] -> [...9.65.169.252][..443] [QUIC.YouTube][Unknown][Media][Fun][suggestqueries-clients6.youtube.com]
                    RISK: Unidirectional Traffic
            update: [....49] [ip4][..udp] [...168.144.64.5][58414] -> [...153.98.28.78][..443] [QUIC.DoH_DoT][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....50] [ip4][..udp] [...168.144.64.5][61341] -> [.16.232.218.117][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
            update: [....51] [ip4][..udp] [...168.144.64.5][56683] -> [113.250.137.243][..443] [QUIC.Google][Unknown][Cloud][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....52] [ip4][..udp] [...168.144.64.5][64700] -> [.16.232.218.117][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
               new: [....54] [ip4][..udp] [...168.144.64.5][59965] -> [..22.12.150.194][..443] 
          detected: [....54] [ip4][..udp] [...168.144.64.5][59965] -> [..22.12.150.194][..443] [QUIC.YouTube][Unknown][Media][Fun][r1---sn-vh5ouxa-hju6.googlevideo.com]
                    RISK: Unidirectional Traffic
              idle: [....49] [ip4][..udp] [...168.144.64.5][58414] -> [...153.98.28.78][..443] [QUIC.DoH_DoT][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....55] [ip4][..udp] [...168.144.64.5][64693] -> [113.250.137.243][..443] 
          detected: [....55] [ip4][..udp] [...168.144.64.5][64693] -> [113.250.137.243][..443] [QUIC.Google][Unknown][Cloud][Acceptable][b1.nel.goog]
                    RISK: Unidirectional Traffic
              idle: [....50] [ip4][..udp] [...168.144.64.5][61341] -> [.16.232.218.117][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
              idle: [....51] [ip4][..udp] [...168.144.64.5][56683] -> [113.250.137.243][..443] [QUIC.Google][Unknown][Cloud][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....54] [ip4][..udp] [...168.144.64.5][59965] -> [..22.12.150.194][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
            update: [....53] [ip4][..udp] [...168.144.64.5][60936] -> [...9.65.169.252][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
            update: [....52] [ip4][..udp] [...168.144.64.5][64700] -> [.16.232.218.117][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
               new: [....56] [ip4][..udp] [...168.144.64.5][59680] -> [.117.148.117.30][..443] 
          detected: [....56] [ip4][..udp] [...168.144.64.5][59680] -> [.117.148.117.30][..443] [QUIC.Google][Unknown][Advertisement][Acceptable][googleads.g.doubleclick.net]
                    RISK: Unidirectional Traffic
              idle: [....54] [ip4][..udp] [...168.144.64.5][59965] -> [..22.12.150.194][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
              idle: [....53] [ip4][..udp] [...168.144.64.5][60936] -> [...9.65.169.252][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
              idle: [....55] [ip4][..udp] [...168.144.64.5][64693] -> [113.250.137.243][..443] [QUIC.Google][Unknown][Cloud][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....52] [ip4][..udp] [...168.144.64.5][64700] -> [.16.232.218.117][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
               new: [....57] [ip4][..udp] [...168.144.64.5][57565] -> [217.254.108.174][..443] 
          detected: [....57] [ip4][..udp] [...168.144.64.5][57565] -> [217.254.108.174][..443] [QUIC.YouTube][Unknown][Media][Fun][r2---sn-vh5ouxa-hjuk.googlevideo.com]
                    RISK: Unidirectional Traffic
@@ -442,47 +319,33 @@
          detected: [....59] [ip4][..udp] [...168.144.64.5][49860] -> [113.250.137.243][..443] [QUIC.Google][Unknown][Cloud][Acceptable][b1.nel.goog]
                    RISK: Unidirectional Traffic
            update: [....56] [ip4][..udp] [...168.144.64.5][59680] -> [.117.148.117.30][..443] [QUIC.Google][Unknown][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....57] [ip4][..udp] [...168.144.64.5][57565] -> [217.254.108.174][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
            update: [....58] [ip4][..udp] [...168.144.64.5][52387] -> [..143.52.137.18][..443] [QUIC.Google][Unknown][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....60] [ip4][..udp] [...168.144.64.5][60949] -> [185.186.183.185][..443] 
          detected: [....60] [ip4][..udp] [...168.144.64.5][60949] -> [185.186.183.185][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable][content-autofill.googleapis.com]
                    RISK: Unidirectional Traffic
            update: [....56] [ip4][..udp] [...168.144.64.5][59680] -> [.117.148.117.30][..443] [QUIC.Google][Unknown][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....57] [ip4][..udp] [...168.144.64.5][57565] -> [217.254.108.174][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
            update: [....58] [ip4][..udp] [...168.144.64.5][52387] -> [..143.52.137.18][..443] [QUIC.Google][Unknown][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....59] [ip4][..udp] [...168.144.64.5][49860] -> [113.250.137.243][..443] [QUIC.Google][Unknown][Cloud][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....61] [ip4][..udp] [...168.144.64.5][57735] -> [..137.238.249.2][..443] 
          detected: [....61] [ip4][..udp] [...168.144.64.5][57735] -> [..137.238.249.2][..443] [QUIC.Google][Unknown][Advertisement][Acceptable][ade.googlesyndication.com]
                    RISK: Unidirectional Traffic
              idle: [....56] [ip4][..udp] [...168.144.64.5][59680] -> [.117.148.117.30][..443] [QUIC.Google][Unknown][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....57] [ip4][..udp] [...168.144.64.5][57565] -> [217.254.108.174][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
              idle: [....60] [ip4][..udp] [...168.144.64.5][60949] -> [185.186.183.185][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....58] [ip4][..udp] [...168.144.64.5][52387] -> [..143.52.137.18][..443] [QUIC.Google][Unknown][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....59] [ip4][..udp] [...168.144.64.5][49860] -> [113.250.137.243][..443] [QUIC.Google][Unknown][Cloud][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 73 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 61|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 82]
               new: [....62] [ip4][..udp] [..52.187.20.175][50588] -> [.208.229.157.81][..443] 
          detected: [....62] [ip4][..udp] [..52.187.20.175][50588] -> [.208.229.157.81][..443] [QUIC.GoogleServices][Azure][Web][Acceptable][update.googleapis.com]
                    RISK: Unidirectional Traffic
              idle: [....61] [ip4][..udp] [...168.144.64.5][57735] -> [..137.238.249.2][..443] [QUIC.Google][Unknown][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....63] [ip4][..udp] [..52.187.20.175][61089] -> [..99.42.133.245][..443] 
          detected: [....63] [ip4][..udp] [..52.187.20.175][61089] -> [..99.42.133.245][..443] [QUIC.GoogleServices][Azure][Web][Acceptable][clientservices.googleapis.com]
                    RISK: Unidirectional Traffic
            update: [....62] [ip4][..udp] [..52.187.20.175][50588] -> [.208.229.157.81][..443] [QUIC.GoogleServices][Azure][Web][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....64] [ip4][..udp] [..52.187.20.175][49880] -> [.208.229.157.81][..443] 
          detected: [....64] [ip4][..udp] [..52.187.20.175][49880] -> [.208.229.157.81][..443] [QUIC.GoogleServices][Azure][Web][Acceptable][update.googleapis.com]
                    RISK: Unidirectional Traffic
@@ -492,18 +355,14 @@
          detected: [....65] [ip4][..udp] [159.117.176.124][58337] -> [.208.229.157.81][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable][clientservices.googleapis.com]
                    RISK: Unidirectional Traffic
              idle: [....62] [ip4][..udp] [..52.187.20.175][50588] -> [.208.229.157.81][..443] [QUIC.GoogleServices][Azure][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....64] [ip4][..udp] [..52.187.20.175][49880] -> [.208.229.157.81][..443] [QUIC.GoogleServices][Azure][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....63] [ip4][..udp] [..52.187.20.175][61089] -> [..99.42.133.245][..443] [QUIC.GoogleServices][Azure][Web][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 89 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 65|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 83]
               new: [....66] [ip4][..udp] [159.117.176.124][49867] -> [...198.74.29.79][..443] 
          detected: [....66] [ip4][..udp] [159.117.176.124][49867] -> [...198.74.29.79][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable][content-autofill.googleapis.com]
                    RISK: Unidirectional Traffic
              idle: [....65] [ip4][..udp] [159.117.176.124][58337] -> [.208.229.157.81][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 93 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 66|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 83]
               new: [....67] [ip4][..udp] [..52.187.20.175][58123] -> [..118.89.218.46][..443] 
@@ -513,32 +372,25 @@
          detected: [....68] [ip4][..udp] [..52.187.20.175][63507] -> [121.209.126.161][..443] [QUIC.Google][Azure][Web][Acceptable][clients2.googleusercontent.com]
                    RISK: Unidirectional Traffic
              idle: [....66] [ip4][..udp] [159.117.176.124][49867] -> [...198.74.29.79][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....69] [ip4][..udp] [..52.187.20.175][57066] -> [108.171.138.182][..443] 
          detected: [....69] [ip4][..udp] [..52.187.20.175][57066] -> [108.171.138.182][..443] [QUIC.GoogleServices][Azure][Web][Acceptable][clientservices.googleapis.com]
                    RISK: Unidirectional Traffic
            update: [....67] [ip4][..udp] [..52.187.20.175][58123] -> [..118.89.218.46][..443] [QUIC.Google][Tencent][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....68] [ip4][..udp] [..52.187.20.175][63507] -> [121.209.126.161][..443] [QUIC.Google][Azure][Web][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 102 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 3 / 69|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 85]
               new: [....70] [ip4][..udp] [..52.187.20.175][52512] -> [..196.245.61.64][..443] 
          detected: [....70] [ip4][..udp] [..52.187.20.175][52512] -> [..196.245.61.64][..443] [QUIC.GoogleServices][Azure][Web][Acceptable][safebrowsing.googleapis.com]
                    RISK: Unidirectional Traffic
              idle: [....67] [ip4][..udp] [..52.187.20.175][58123] -> [..118.89.218.46][..443] [QUIC.Google][Tencent][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....68] [ip4][..udp] [..52.187.20.175][63507] -> [121.209.126.161][..443] [QUIC.Google][Azure][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....69] [ip4][..udp] [..52.187.20.175][57066] -> [108.171.138.182][..443] [QUIC.GoogleServices][Azure][Web][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 106 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 70|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 85]
               new: [....71] [ip4][..udp] [..52.187.20.175][51619] -> [.208.229.157.81][..443] 
          detected: [....71] [ip4][..udp] [..52.187.20.175][51619] -> [.208.229.157.81][..443] [QUIC.GoogleServices][Azure][Web][Acceptable][clientservices.googleapis.com]
                    RISK: Unidirectional Traffic
              idle: [....70] [ip4][..udp] [..52.187.20.175][52512] -> [..196.245.61.64][..443] [QUIC.GoogleServices][Azure][Web][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 110 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 71|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 85]
               new: [....72] [ip4][..udp] [...168.144.64.5][58703] -> [.93.100.151.221][..443] 
@@ -560,22 +412,15 @@
          detected: [....77] [ip4][..udp] [...168.144.64.5][58429] -> [....38.57.8.121][..443] [QUIC.Google][Unknown][Advertisement][Acceptable][static.doubleclick.net]
                    RISK: Unidirectional Traffic
              idle: [....71] [ip4][..udp] [..52.187.20.175][51619] -> [.208.229.157.81][..443] [QUIC.GoogleServices][Azure][Web][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....78] [ip4][..udp] [...168.144.64.5][55479] -> [113.250.137.243][..443] 
          detected: [....78] [ip4][..udp] [...168.144.64.5][55479] -> [113.250.137.243][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable][clientservices.googleapis.com]
                    RISK: Unidirectional Traffic
            update: [....73] [ip4][..udp] [...168.144.64.5][55066] -> [...128.248.24.1][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....75] [ip4][..udp] [...168.144.64.5][65391] -> [...128.248.24.1][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....72] [ip4][..udp] [...168.144.64.5][58703] -> [.93.100.151.221][..443] [QUIC.PlayStore][Unknown][SoftwareUpdate][Safe]
-                   RISK: Unidirectional Traffic
            update: [....76] [ip4][..udp] [...168.144.64.5][58832] -> [.117.148.117.30][..443] [QUIC.Google][Unknown][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....74] [ip4][..udp] [...168.144.64.5][61886] -> [....65.33.51.74][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....77] [ip4][..udp] [...168.144.64.5][58429] -> [....38.57.8.121][..443] [QUIC.Google][Unknown][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....79] [ip4][..udp] [...168.144.64.5][60934] -> [...128.248.24.1][..443] 
          detected: [....79] [ip4][..udp] [...168.144.64.5][60934] -> [...128.248.24.1][..443] [QUIC.Google][Unknown][Web][Acceptable][beacons.gcp.gvt2.com]
                    RISK: Unidirectional Traffic
@@ -589,21 +434,13 @@
          detected: [....82] [ip4][..udp] [...168.144.64.5][63925] -> [...39.227.72.32][..443] [QUIC.Google][Unknown][Web][Acceptable][beacons2.gvt2.com]
                    RISK: Unidirectional Traffic
            update: [....79] [ip4][..udp] [...168.144.64.5][60934] -> [...128.248.24.1][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....73] [ip4][..udp] [...168.144.64.5][55066] -> [...128.248.24.1][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....75] [ip4][..udp] [...168.144.64.5][65391] -> [...128.248.24.1][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....72] [ip4][..udp] [...168.144.64.5][58703] -> [.93.100.151.221][..443] [QUIC.PlayStore][Unknown][SoftwareUpdate][Safe]
-                   RISK: Unidirectional Traffic
            update: [....76] [ip4][..udp] [...168.144.64.5][58832] -> [.117.148.117.30][..443] [QUIC.Google][Unknown][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....74] [ip4][..udp] [...168.144.64.5][61886] -> [....65.33.51.74][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....78] [ip4][..udp] [...168.144.64.5][55479] -> [113.250.137.243][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....77] [ip4][..udp] [...168.144.64.5][58429] -> [....38.57.8.121][..443] [QUIC.Google][Unknown][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....83] [ip4][..udp] [...168.144.64.5][49926] -> [.103.179.40.184][..443] 
          detected: [....83] [ip4][..udp] [...168.144.64.5][49926] -> [.103.179.40.184][..443] [QUIC.YouTube][Unknown][Media][Fun][r5---sn-vh5ouxa-hju6.googlevideo.com]
                    RISK: Unidirectional Traffic
@@ -614,42 +451,25 @@
          detected: [....85] [ip4][..udp] [...168.144.64.5][57398] -> [..137.238.249.2][..443] [QUIC.Google][Unknown][Advertisement][Acceptable][www.googleadservices.com]
                    RISK: Unidirectional Traffic
            update: [....79] [ip4][..udp] [...168.144.64.5][60934] -> [...128.248.24.1][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....73] [ip4][..udp] [...168.144.64.5][55066] -> [...128.248.24.1][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....75] [ip4][..udp] [...168.144.64.5][65391] -> [...128.248.24.1][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....72] [ip4][..udp] [...168.144.64.5][58703] -> [.93.100.151.221][..443] [QUIC.PlayStore][Unknown][SoftwareUpdate][Safe]
-                   RISK: Unidirectional Traffic
            update: [....80] [ip4][..udp] [...168.144.64.5][59785] -> [...128.248.24.1][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....76] [ip4][..udp] [...168.144.64.5][58832] -> [.117.148.117.30][..443] [QUIC.Google][Unknown][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....81] [ip4][..udp] [...168.144.64.5][59327] -> [...153.98.28.78][..443] [QUIC.DoH_DoT][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....74] [ip4][..udp] [...168.144.64.5][61886] -> [....65.33.51.74][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....78] [ip4][..udp] [...168.144.64.5][55479] -> [113.250.137.243][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....82] [ip4][..udp] [...168.144.64.5][63925] -> [...39.227.72.32][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....77] [ip4][..udp] [...168.144.64.5][58429] -> [....38.57.8.121][..443] [QUIC.Google][Unknown][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....86] [ip4][..udp] [...168.144.64.5][64497] -> [102.194.207.179][..443] 
          detected: [....86] [ip4][..udp] [...168.144.64.5][64497] -> [102.194.207.179][..443] [QUIC.Google][Unknown][Web][Acceptable][beacons.gvt2.com]
                    RISK: Unidirectional Traffic
              idle: [....73] [ip4][..udp] [...168.144.64.5][55066] -> [...128.248.24.1][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....75] [ip4][..udp] [...168.144.64.5][65391] -> [...128.248.24.1][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....72] [ip4][..udp] [...168.144.64.5][58703] -> [.93.100.151.221][..443] [QUIC.PlayStore][Unknown][SoftwareUpdate][Safe]
-                   RISK: Unidirectional Traffic
              idle: [....76] [ip4][..udp] [...168.144.64.5][58832] -> [.117.148.117.30][..443] [QUIC.Google][Unknown][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....74] [ip4][..udp] [...168.144.64.5][61886] -> [....65.33.51.74][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....77] [ip4][..udp] [...168.144.64.5][58429] -> [....38.57.8.121][..443] [QUIC.Google][Unknown][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....87] [ip4][..udp] [...168.144.64.5][55572] -> [.117.148.117.30][..443] 
          detected: [....87] [ip4][..udp] [...168.144.64.5][55572] -> [.117.148.117.30][..443] [QUIC.Google][Unknown][Advertisement][Acceptable][googleads.g.doubleclick.net]
                    RISK: Unidirectional Traffic
@@ -660,121 +480,86 @@
          detected: [....89] [ip4][..udp] [...168.144.64.5][54449] -> [102.194.207.179][..443] [QUIC.Google][Unknown][Web][Acceptable][beacons3.gvt2.com]
                    RISK: Unidirectional Traffic
              idle: [....79] [ip4][..udp] [...168.144.64.5][60934] -> [...128.248.24.1][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....78] [ip4][..udp] [...168.144.64.5][55479] -> [113.250.137.243][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....86] [ip4][..udp] [...168.144.64.5][64497] -> [102.194.207.179][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....83] [ip4][..udp] [...168.144.64.5][49926] -> [.103.179.40.184][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
            update: [....85] [ip4][..udp] [...168.144.64.5][57398] -> [..137.238.249.2][..443] [QUIC.Google][Unknown][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....88] [ip4][..udp] [...168.144.64.5][58956] -> [...128.248.24.1][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....84] [ip4][..udp] [...168.144.64.5][56384] -> [.117.148.117.30][..443] [QUIC.Google][Unknown][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....80] [ip4][..udp] [...168.144.64.5][59785] -> [...128.248.24.1][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....81] [ip4][..udp] [...168.144.64.5][59327] -> [...153.98.28.78][..443] [QUIC.DoH_DoT][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....82] [ip4][..udp] [...168.144.64.5][63925] -> [...39.227.72.32][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....87] [ip4][..udp] [...168.144.64.5][55572] -> [.117.148.117.30][..443] [QUIC.Google][Unknown][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....90] [ip4][..udp] [...168.144.64.5][60342] -> [.93.100.151.221][..443] 
          detected: [....90] [ip4][..udp] [...168.144.64.5][60342] -> [.93.100.151.221][..443] [QUIC.YouTube][Unknown][Media][Fun][suggestqueries-clients6.youtube.com]
                    RISK: Unidirectional Traffic
              idle: [....86] [ip4][..udp] [...168.144.64.5][64497] -> [102.194.207.179][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....83] [ip4][..udp] [...168.144.64.5][49926] -> [.103.179.40.184][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
              idle: [....85] [ip4][..udp] [...168.144.64.5][57398] -> [..137.238.249.2][..443] [QUIC.Google][Unknown][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....88] [ip4][..udp] [...168.144.64.5][58956] -> [...128.248.24.1][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....89] [ip4][..udp] [...168.144.64.5][54449] -> [102.194.207.179][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....84] [ip4][..udp] [...168.144.64.5][56384] -> [.117.148.117.30][..443] [QUIC.Google][Unknown][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....80] [ip4][..udp] [...168.144.64.5][59785] -> [...128.248.24.1][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....81] [ip4][..udp] [...168.144.64.5][59327] -> [...153.98.28.78][..443] [QUIC.DoH_DoT][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....82] [ip4][..udp] [...168.144.64.5][63925] -> [...39.227.72.32][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....87] [ip4][..udp] [...168.144.64.5][55572] -> [.117.148.117.30][..443] [QUIC.Google][Unknown][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 129 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 90|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 119]
               new: [....91] [ip4][..udp] [...168.144.64.5][65186] -> [...9.65.169.252][..443] 
          detected: [....91] [ip4][..udp] [...168.144.64.5][65186] -> [...9.65.169.252][..443] [QUIC.YouTube][Unknown][Media][Fun][www.youtube.com]
                    RISK: Unidirectional Traffic
              idle: [....90] [ip4][..udp] [...168.144.64.5][60342] -> [.93.100.151.221][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
               new: [....92] [ip4][..udp] [...168.144.64.5][52942] -> [.93.100.151.221][..443] 
          detected: [....92] [ip4][..udp] [...168.144.64.5][52942] -> [.93.100.151.221][..443] [QUIC.Google][Unknown][Web][Acceptable][clients2.google.com]
                    RISK: Unidirectional Traffic
              idle: [....91] [ip4][..udp] [...168.144.64.5][65186] -> [...9.65.169.252][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
               new: [....93] [ip4][..udp] [..52.187.20.175][62114] -> [...198.74.29.79][..443] 
          detected: [....93] [ip4][..udp] [..52.187.20.175][62114] -> [...198.74.29.79][..443] [QUIC.GoogleServices][Azure][Web][Acceptable][safebrowsing.googleapis.com]
                    RISK: Unidirectional Traffic
              idle: [....92] [ip4][..udp] [...168.144.64.5][52942] -> [.93.100.151.221][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 135 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 93|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 119]
               new: [....94] [ip4][..udp] [...168.144.64.5][55561] -> [..35.194.157.47][..443] 
          detected: [....94] [ip4][..udp] [...168.144.64.5][55561] -> [..35.194.157.47][..443] [QUIC.GoogleCloud][GoogleCloud][Advertisement][Acceptable][googleads.g.doubleclick.net]
                    RISK: Unidirectional Traffic
              idle: [....93] [ip4][..udp] [..52.187.20.175][62114] -> [...198.74.29.79][..443] [QUIC.GoogleServices][Azure][Web][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....95] [ip4][..udp] [159.117.176.124][61202] -> [...198.74.29.79][..443] 
          detected: [....95] [ip4][..udp] [159.117.176.124][61202] -> [...198.74.29.79][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable][safebrowsing.googleapis.com]
                    RISK: Unidirectional Traffic
              idle: [....94] [ip4][..udp] [...168.144.64.5][55561] -> [..35.194.157.47][..443] [QUIC.GoogleCloud][GoogleCloud][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 140 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 95|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 119]
               new: [....96] [ip4][..udp] [159.117.176.124][49521] -> [...128.248.24.1][..443] 
          detected: [....96] [ip4][..udp] [159.117.176.124][49521] -> [...128.248.24.1][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable][clientservices.googleapis.com]
                    RISK: Unidirectional Traffic
            update: [....95] [ip4][..udp] [159.117.176.124][61202] -> [...198.74.29.79][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 144 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 2 / 96|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 120]
               new: [....97] [ip4][..udp] [...168.144.64.5][49217] -> [185.186.183.185][..443] 
          detected: [....97] [ip4][..udp] [...168.144.64.5][49217] -> [185.186.183.185][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable][safebrowsing.googleapis.com]
                    RISK: Unidirectional Traffic
              idle: [....95] [ip4][..udp] [159.117.176.124][61202] -> [...198.74.29.79][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....96] [ip4][..udp] [159.117.176.124][49521] -> [...128.248.24.1][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....98] [ip4][..udp] [..52.187.20.175][61286] -> [...198.74.29.79][..443] 
          detected: [....98] [ip4][..udp] [..52.187.20.175][61286] -> [...198.74.29.79][..443] [QUIC.GoogleServices][Azure][Web][Acceptable][safebrowsing.googleapis.com]
                    RISK: Unidirectional Traffic
            update: [....97] [ip4][..udp] [...168.144.64.5][49217] -> [185.186.183.185][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 149 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 2 / 98|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 121]
               new: [....99] [ip4][..udp] [..52.187.20.175][53260] -> [102.194.207.179][..443] 
          detected: [....99] [ip4][..udp] [..52.187.20.175][53260] -> [102.194.207.179][..443] [QUIC.GoogleServices][Azure][Web][Acceptable][clientservices.googleapis.com]
                    RISK: Unidirectional Traffic
              idle: [....97] [ip4][..udp] [...168.144.64.5][49217] -> [185.186.183.185][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....98] [ip4][..udp] [..52.187.20.175][61286] -> [...198.74.29.79][..443] [QUIC.GoogleServices][Azure][Web][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...100] [ip4][..udp] [...168.144.64.5][50023] -> [..76.231.104.92][..443] 
          detected: [...100] [ip4][..udp] [...168.144.64.5][50023] -> [..76.231.104.92][..443] [QUIC.YouTube][Unknown][Media][Fun][www.youtube.com]
                    RISK: Unidirectional Traffic
            update: [....99] [ip4][..udp] [..52.187.20.175][53260] -> [102.194.207.179][..443] [QUIC.GoogleServices][Azure][Web][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...101] [ip4][..udp] [...168.144.64.5][65360] -> [....65.33.51.74][..443] 
          detected: [...101] [ip4][..udp] [...168.144.64.5][65360] -> [....65.33.51.74][..443] [QUIC.Google][Unknown][Advertisement][Acceptable][googleads.g.doubleclick.net]
                    RISK: Unidirectional Traffic
              idle: [...100] [ip4][..udp] [...168.144.64.5][50023] -> [..76.231.104.92][..443] [QUIC.YouTube][Unknown][Media][Fun]
-                   RISK: Unidirectional Traffic
              idle: [....99] [ip4][..udp] [..52.187.20.175][53260] -> [102.194.207.179][..443] [QUIC.GoogleServices][Azure][Web][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...102] [ip4][..udp] [159.117.176.124][64134] -> [..207.121.63.92][..443] 
          detected: [...102] [ip4][..udp] [159.117.176.124][64134] -> [..207.121.63.92][..443] [QUIC.Google][Unknown][Web][Acceptable][www.google.com]
                    RISK: Unidirectional Traffic
@@ -782,30 +567,24 @@
          detected: [...103] [ip4][..udp] [..52.187.20.175][61484] -> [202.152.155.121][..443] [QUIC.Google][Azure][Web][Acceptable][ogs.google.com]
                    RISK: Unidirectional Traffic
            update: [...101] [ip4][..udp] [...168.144.64.5][65360] -> [....65.33.51.74][..443] [QUIC.Google][Unknown][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...104] [ip4][..udp] [159.117.176.124][51856] -> [.16.205.123.234][..443] 
          detected: [...104] [ip4][..udp] [159.117.176.124][51856] -> [.16.205.123.234][..443] [QUIC.WhatsAppFiles][Unknown][Download][Acceptable][media.fmct2-1.fna.whatsapp.net]
                    RISK: Unidirectional Traffic
              idle: [...101] [ip4][..udp] [...168.144.64.5][65360] -> [....65.33.51.74][..443] [QUIC.Google][Unknown][Advertisement][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 164 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 3 / 104|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 123]
               new: [...105] [ip4][..udp] [...168.144.64.5][54120] -> [...153.98.28.78][..443] 
          detected: [...105] [ip4][..udp] [...168.144.64.5][54120] -> [...153.98.28.78][..443] [QUIC.DoH_DoT][Unknown][Network][Acceptable][dns.google]
                    RISK: Unidirectional Traffic
              idle: [...102] [ip4][..udp] [159.117.176.124][64134] -> [..207.121.63.92][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [...103] [ip4][..udp] [..52.187.20.175][61484] -> [202.152.155.121][..443] [QUIC.Google][Azure][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [...104] [ip4][..udp] [159.117.176.124][51856] -> [.16.205.123.234][..443] [QUIC.WhatsAppFiles][Unknown][Download][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 165 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 105|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 123]
               new: [...106] [ip4][..udp] [...168.144.64.5][52396] -> [...153.98.28.78][..443] 
          detected: [...106] [ip4][..udp] [...168.144.64.5][52396] -> [...153.98.28.78][..443] [QUIC.DoH_DoT][Unknown][Network][Acceptable][dns.google]
                    RISK: Unidirectional Traffic
              idle: [...105] [ip4][..udp] [...168.144.64.5][54120] -> [...153.98.28.78][..443] [QUIC.DoH_DoT][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 166 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 106|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 123]
               new: [...107] [ip4][..udp] [...168.144.64.5][50224] -> [....126.3.93.89][..443] 
@@ -815,7 +594,6 @@
          detected: [...108] [ip4][..udp] [...168.144.64.5][62719] -> [..31.219.210.96][..443] [QUIC.Google][Unknown][Web][Acceptable][lh4.googleusercontent.com]
                    RISK: Unidirectional Traffic
              idle: [...106] [ip4][..udp] [...168.144.64.5][52396] -> [...153.98.28.78][..443] [QUIC.DoH_DoT][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...109] [ip4][..udp] [...168.144.64.5][58351] -> [.193.68.169.100][..443] 
          detected: [...109] [ip4][..udp] [...168.144.64.5][58351] -> [.193.68.169.100][..443] [QUIC.Google][Unknown][Web][Acceptable][www.gstatic.com]
                    RISK: Unidirectional Traffic
@@ -829,22 +607,15 @@
          detected: [...112] [ip4][..udp] [...168.144.64.5][50423] -> [.144.237.113.58][..443] [QUIC.Google][Unknown][Web][Acceptable][www.google.com]
                    RISK: Unidirectional Traffic
              idle: [...110] [ip4][..udp] [...168.144.64.5][57319] -> [....7.71.118.27][..443] [QUIC.PlayStore][Unknown][SoftwareUpdate][Safe]
-                   RISK: Unidirectional Traffic
              idle: [...107] [ip4][..udp] [...168.144.64.5][50224] -> [....126.3.93.89][..443] [QUIC.GoogleServices][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [...108] [ip4][..udp] [...168.144.64.5][62719] -> [..31.219.210.96][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [...109] [ip4][..udp] [...168.144.64.5][58351] -> [.193.68.169.100][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [...111] [ip4][..udp] [...168.144.64.5][60919] -> [.53.101.228.200][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 178 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 112|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 123]
               new: [...113] [ip4][..udp] [...168.144.64.5][59206] -> [..76.231.104.92][..443] 
          detected: [...113] [ip4][..udp] [...168.144.64.5][59206] -> [..76.231.104.92][..443] [QUIC.Google][Unknown][Web][Acceptable][ogs.google.com]
                    RISK: Unidirectional Traffic
              idle: [...113] [ip4][..udp] [...168.144.64.5][59206] -> [..76.231.104.92][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [...112] [ip4][..udp] [...168.144.64.5][50423] -> [.144.237.113.58][..443] [QUIC.Google][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

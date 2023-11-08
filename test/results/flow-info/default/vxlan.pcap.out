@@ -49,21 +49,12 @@
                    [PKTLENS.....: 110,102,420,102,102,102,166,267,102,102,285,102,102,102,102,102,102,102,102,102,102,102,102,102,102,102,102,102,102,102,102,102]
                    [ENTROPIES...: 5.3,5.6,6.2,5.6,5.6,5.6,6.3,6.9,5.6,5.6,7.0,5.6,5.6,5.6,5.6,5.6,5.6,5.6,5.6,5.6,5.6,5.6,5.5,5.6,5.6,5.6,5.6,5.6,5.6,5.6,5.6,5.7]
              idle: [.....5] [ip4][..udp] [...192.168.22.4][60351] -> [...192.168.22.5][.4789] [VXLAN][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....6] [ip4][..udp] [...192.168.22.5][50251] -> [...192.168.22.4][.4789] [VXLAN][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....8] [ip4][..udp] [...192.168.22.5][36286] -> [...192.168.22.4][.4789] [VXLAN][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..udp] [...192.168.22.4][60887] -> [...192.168.22.5][.4789] [VXLAN][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....7] [ip4][..udp] [...192.168.22.4][40646] -> [...192.168.22.5][.4789] [VXLAN][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....3] [ip4][..udp] [...192.168.22.4][49762] -> [...192.168.22.5][.4789] [VXLAN][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....9] [ip4][..udp] [...192.168.22.4][60230] -> [...192.168.22.5][.4789] [VXLAN][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....4] [ip4][..udp] [...192.168.22.5][60230] -> [...192.168.22.4][.4789] [VXLAN][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..udp] [...192.168.22.5][43866] -> [...192.168.22.4][.4789] [VXLAN][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

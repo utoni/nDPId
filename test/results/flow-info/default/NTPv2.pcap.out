@@ -5,5 +5,4 @@
          detected: [.....1] [ip4][..udp] [..208.104.95.10][..123] -> [.....78.46.76.2][...80] [NTP][Unknown][System][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..udp] [..208.104.95.10][..123] -> [.....78.46.76.2][...80] [NTP][Unknown][System][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

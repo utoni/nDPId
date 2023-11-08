@@ -8,7 +8,5 @@
          detected: [.....2] [ip4][..132] [.....10.28.6.42] -> [.....10.28.6.44] [SCTP][Unknown][Network][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..132] [.....10.28.6.42] -> [.....10.28.6.44] [SCTP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..132] [.....10.28.6.43] -> [.....10.28.6.44] [SCTP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

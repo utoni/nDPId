@@ -68,13 +68,9 @@
  detection-update: [.....6] [ip4][..udp] [..192.168.1.105][49112] -> [..192.168.1.254][...53] [DNS.Dropbox][Unknown][Network][Acceptable][client-cf.dropbox.com]
  detection-update: [.....7] [ip4][..udp] [..192.168.1.105][50789] -> [..192.168.1.254][...53] [DNS.Dropbox][Unknown][Network][Acceptable][d.dropbox.com]
              idle: [.....1] [ip4][..udp] [...192.168.56.1][50311] -> [.192.168.56.101][17500] [Dropbox][Unknown][Cloud][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....3] [ip4][..udp] [...192.168.56.1][50312] -> [.192.168.56.101][17500] [Dropbox][Unknown][Cloud][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..udp] [...192.168.56.1][50318] -> [.192.168.56.101][17500] [Dropbox][Unknown][Cloud][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....4] [ip4][..udp] [...192.168.56.1][50319] -> [.192.168.56.101][17500] [Dropbox][Unknown][Cloud][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [.....8] [ip4][..udp] [..192.168.1.105][36173] -> [..192.168.1.254][...53] 
          detected: [.....8] [ip4][..udp] [..192.168.1.105][36173] -> [..192.168.1.254][...53] [DNS.Dropbox][Unknown][Network][Acceptable][log.getdropbox.com]
                    RISK: Unidirectional Traffic

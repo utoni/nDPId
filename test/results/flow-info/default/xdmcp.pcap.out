@@ -5,5 +5,4 @@
          detected: [.....1] [ip4][..udp] [.......10.1.2.2][61426] -> [.......10.1.2.4][..177] [XDMCP][Unknown][RemoteAccess][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..udp] [.......10.1.2.2][61426] -> [.......10.1.2.4][..177] [XDMCP][Unknown][RemoteAccess][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

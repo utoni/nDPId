@@ -8,7 +8,5 @@
          detected: [.....2] [ip4][..udp] [.183.23.159.144][37787] -> [.108.140.147.22][..443] [QUIC][Azure][Web][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..udp] [.183.23.159.144][37787] -> [.108.140.147.22][..443] [QUIC][Azure][Web][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..udp] [.152.14.223.145][57113] -> [...71.98.228.93][..443] [QUIC][Unknown][Web][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

@@ -11,14 +11,17 @@
               new: [.....2] [ip4][..udp] [..192.168.2.100][36845] -> [....192.168.2.1][.5351] 
          detected: [.....2] [ip4][..udp] [..192.168.2.100][36845] -> [....192.168.2.1][.5351] [NAT-PMP][Unknown][Network][Acceptable]
                    RISK: Unidirectional Traffic
-             idle: [.....1] [ip4][..udp] [..192.168.1.128][36852] -> [..192.168.1.254][.5351] 
+             idle: [.....1] [ip4][..udp] [..192.168.1.128][36852] -> [..192.168.1.254][.5351] [NAT-PMP][Unknown][Network][Acceptable]
               new: [.....3] [ip4][..udp] [..192.168.2.100][59817] -> [....192.168.2.1][.5351] 
          detected: [.....3] [ip4][..udp] [..192.168.2.100][59817] -> [....192.168.2.1][.5351] [NAT-PMP][Unknown][Network][Acceptable]
                    RISK: Unidirectional Traffic
               new: [.....4] [ip4][..udp] [..192.168.2.100][35763] -> [....192.168.2.1][.5351] 
          detected: [.....4] [ip4][..udp] [..192.168.2.100][35763] -> [....192.168.2.1][.5351] [NAT-PMP][Unknown][Network][Acceptable]
                    RISK: Unidirectional Traffic
-             idle: [.....3] [ip4][..udp] [..192.168.2.100][59817] -> [....192.168.2.1][.5351] 
-             idle: [.....4] [ip4][..udp] [..192.168.2.100][35763] -> [....192.168.2.1][.5351] 
-             idle: [.....2] [ip4][..udp] [..192.168.2.100][36845] -> [....192.168.2.1][.5351] 
+             idle: [.....3] [ip4][..udp] [..192.168.2.100][59817] -> [....192.168.2.1][.5351] [NAT-PMP][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [.....4] [ip4][..udp] [..192.168.2.100][35763] -> [....192.168.2.1][.5351] [NAT-PMP][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [.....2] [ip4][..udp] [..192.168.2.100][36845] -> [....192.168.2.1][.5351] [NAT-PMP][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

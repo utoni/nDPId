@@ -8,7 +8,6 @@
          detected: [.....2] [ip4][..udp] [.198.235.24.166][56883] -> [..90.147.69.222][47808] [BACnet][Unknown][IoT-Scada][Safe]
                    RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..udp] [....65.49.20.98][53234] -> [..90.147.69.219][47808] [BACnet][Unknown][IoT-Scada][Safe]
-                   RISK: Unidirectional Traffic
               new: [.....3] [ip4][..udp] [...64.62.197.26][36992] -> [..90.147.69.221][47808] 
          detected: [.....3] [ip4][..udp] [...64.62.197.26][36992] -> [..90.147.69.221][47808] [BACnet][Unknown][IoT-Scada][Safe]
                    RISK: Unidirectional Traffic
@@ -16,59 +15,45 @@
          detected: [.....4] [ip4][..udp] [..64.62.197.166][36664] -> [..90.147.69.213][47808] [BACnet][Unknown][IoT-Scada][Safe]
                    RISK: Unidirectional Traffic
            update: [.....2] [ip4][..udp] [.198.235.24.166][56883] -> [..90.147.69.222][47808] [BACnet][Unknown][IoT-Scada][Safe]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 4 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 3 / 4|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 1]
               new: [.....5] [ip4][..udp] [..198.235.24.39][54587] -> [..90.147.69.210][47808] 
          detected: [.....5] [ip4][..udp] [..198.235.24.39][54587] -> [..90.147.69.210][47808] [BACnet][Unknown][IoT-Scada][Safe]
                    RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..udp] [.198.235.24.166][56883] -> [..90.147.69.222][47808] [BACnet][Unknown][IoT-Scada][Safe]
-                   RISK: Unidirectional Traffic
              idle: [.....4] [ip4][..udp] [..64.62.197.166][36664] -> [..90.147.69.213][47808] [BACnet][Unknown][IoT-Scada][Safe]
-                   RISK: Unidirectional Traffic
              idle: [.....3] [ip4][..udp] [...64.62.197.26][36992] -> [..90.147.69.221][47808] [BACnet][Unknown][IoT-Scada][Safe]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 5 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 5|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 1]
               new: [.....6] [ip4][..udp] [.167.94.138.111][27041] -> [..90.147.69.212][47808] 
          detected: [.....6] [ip4][..udp] [.167.94.138.111][27041] -> [..90.147.69.212][47808] [BACnet][Unknown][IoT-Scada][Safe]
                    RISK: Unidirectional Traffic
              idle: [.....5] [ip4][..udp] [..198.235.24.39][54587] -> [..90.147.69.210][47808] [BACnet][Unknown][IoT-Scada][Safe]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 6 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 6|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 1]
               new: [.....7] [ip4][..udp] [162.142.125.140][63852] -> [..90.147.69.217][47808] 
          detected: [.....7] [ip4][..udp] [162.142.125.140][63852] -> [..90.147.69.217][47808] [BACnet][Unknown][IoT-Scada][Safe]
                    RISK: Unidirectional Traffic
              idle: [.....6] [ip4][..udp] [.167.94.138.111][27041] -> [..90.147.69.212][47808] [BACnet][Unknown][IoT-Scada][Safe]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 7 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 7|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 1]
               new: [.....8] [ip4][..udp] [..198.235.24.45][51922] -> [..90.147.69.219][47808] 
          detected: [.....8] [ip4][..udp] [..198.235.24.45][51922] -> [..90.147.69.219][47808] [BACnet][Unknown][IoT-Scada][Safe]
                    RISK: Unidirectional Traffic
              idle: [.....7] [ip4][..udp] [162.142.125.140][63852] -> [..90.147.69.217][47808] [BACnet][Unknown][IoT-Scada][Safe]
-                   RISK: Unidirectional Traffic
               new: [.....9] [ip4][..udp] [162.142.125.132][29782] -> [..90.147.69.219][47808] 
          detected: [.....9] [ip4][..udp] [162.142.125.132][29782] -> [..90.147.69.219][47808] [BACnet][Unknown][IoT-Scada][Safe]
                    RISK: Unidirectional Traffic
            update: [.....8] [ip4][..udp] [..198.235.24.45][51922] -> [..90.147.69.219][47808] [BACnet][Unknown][IoT-Scada][Safe]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 9 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 2 / 9|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 2]
               new: [....10] [ip4][..udp] [204.172.177.255][47808] -> [204.172.177.159][47808] 
          detected: [....10] [ip4][..udp] [204.172.177.255][47808] -> [204.172.177.159][47808] [BACnet][Unknown][IoT-Scada][Safe]
                    RISK: Unidirectional Traffic
              idle: [.....9] [ip4][..udp] [162.142.125.132][29782] -> [..90.147.69.219][47808] [BACnet][Unknown][IoT-Scada][Safe]
-                   RISK: Unidirectional Traffic
              idle: [.....8] [ip4][..udp] [..198.235.24.45][51922] -> [..90.147.69.219][47808] [BACnet][Unknown][IoT-Scada][Safe]
-                   RISK: Unidirectional Traffic
            update: [....10] [ip4][..udp] [204.172.177.255][47808] -> [204.172.177.159][47808] [BACnet][Unknown][IoT-Scada][Safe]
-                   RISK: Unidirectional Traffic
            update: [....10] [ip4][..udp] [204.172.177.255][47808] -> [204.172.177.159][47808] [BACnet][Unknown][IoT-Scada][Safe]
-                   RISK: Unidirectional Traffic
            update: [....10] [ip4][..udp] [204.172.177.255][47808] -> [204.172.177.159][47808] [BACnet][Unknown][IoT-Scada][Safe]
-                   RISK: Unidirectional Traffic
              idle: [....10] [ip4][..udp] [204.172.177.255][47808] -> [204.172.177.159][47808] [BACnet][Unknown][IoT-Scada][Safe]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown
