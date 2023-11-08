@@ -213,6 +213,9 @@ set(NDPID_DEPS_INC "${CMAKE_SOURCE_DIR}"
                    "${CMAKE_SOURCE_DIR}/dependencies"
                    "${CMAKE_SOURCE_DIR}/dependencies/jsmn"
                    "${CMAKE_SOURCE_DIR}/dependencies/uthash/src")
+if(CMAKE_CROSSCOMPILING)
+    add_definitions("-DCROSS_COMPILATION=1")
+endif()
 if(ENABLE_MEMORY_PROFILING)
     message(WARNING "ENABLE_MEMORY_PROFILING should not be used in production environments.")
     add_definitions("-DENABLE_MEMORY_PROFILING=1"

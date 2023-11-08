@@ -2744,7 +2744,21 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
             }
             else if (flow_ext->flow_basic.state == FS_INFO)
             {
-                struct nDPId_flow const * const flow = (struct nDPId_flow *)flow_ext;
+                struct nDPId_flow * const flow = (struct nDPId_flow *)flow_ext;
+
+#ifdef ENABLE_ZLIB
+                if (nDPId_options.enable_zlib_compression != 0 && flow->info.detection_data_compressed_size > 0)
+                {
+                    workflow->current_compression_diff -= flow->info.detection_data_compressed_size;
+                    int ret = detection_data_inflate(flow);
+                    if (ret <= 0)
+                    {
+                        workflow->current_compression_diff += flow->info.detection_data_compressed_size;
+                        logger(1, "zLib decompression failed with error code: %d", ret);
+                        return;
+                    }
+                }
+#endif
 
                 if (flow->info.detection_completed != 0)
                 {
