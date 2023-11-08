@@ -12,7 +12,6 @@
          detected: [.....5] [ip4][..udp] [........0.0.0.0][...68] -> [255.255.255.255][...67] [DHCP][Unknown][Network][Acceptable][msedgewin10]
               new: [.....6] [ip4][..udp] [.......10.0.2.2][...67] -> [......10.0.2.15][...68] 
          detected: [.....6] [ip4][..udp] [.......10.0.2.2][...67] -> [......10.0.2.15][...68] [DHCP][Unknown][Network][Acceptable][]
-                   RISK: Unidirectional Traffic
               new: [.....7] [ip6][..udp] [..............fe80::c50d:519f:96a4:e108][..546] -> [..............................ff02::1:2][..547] 
          detected: [.....7] [ip6][..udp] [..............fe80::c50d:519f:96a4:e108][..546] -> [..............................ff02::1:2][..547] [DHCPV6][Unknown][Network][Acceptable]
               new: [.....8] [ip4][....2] [......10.0.2.15] -> [.....224.0.0.22] 
@@ -60,10 +59,8 @@
            update: [.....1] [ip6][icmp6] [.....................................::] -> [......................ff02::1:ffa4:e108] [ICMPV6][Unknown][Network][Acceptable]
               new: [....26] [ip4][..udp] [......10.0.2.15][57619] -> [.......10.0.2.2][.5351] 
          detected: [....26] [ip4][..udp] [......10.0.2.15][57619] -> [.......10.0.2.2][.5351] [NAT-PMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....27] [ip4][..udp] [......10.0.2.15][57620] -> [.......10.0.2.2][.5351] 
          detected: [....27] [ip4][..udp] [......10.0.2.15][57620] -> [.......10.0.2.2][.5351] [NAT-PMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....28] [ip4][..tcp] [......10.0.2.15][50190] -> [..80.140.63.147][29545] 
               new: [....29] [ip4][..tcp] [......10.0.2.15][50191] -> [.207.38.163.228][.6778] 
               new: [....30] [ip4][..tcp] [......10.0.2.15][50192] -> [....45.65.87.24][16201] 
@@ -72,7 +69,6 @@
               new: [....33] [ip4][..tcp] [......10.0.2.15][50195] -> [162.157.143.201][29762] 
               new: [....34] [ip4][..udp] [......10.0.2.15][57621] -> [.......10.0.2.2][.5351] 
          detected: [....34] [ip4][..udp] [......10.0.2.15][57621] -> [.......10.0.2.2][.5351] [NAT-PMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....35] [ip4][..tcp] [......10.0.2.15][50196] -> [...218.250.6.59][12556] 
               new: [....36] [ip4][..tcp] [......10.0.2.15][50197] -> [..118.168.15.71][.3931] 
               new: [....37] [ip4][..tcp] [......10.0.2.15][50198] -> [..86.129.196.84][.9915] 
@@ -81,7 +77,6 @@
               new: [....40] [ip4][..tcp] [......10.0.2.15][50201] -> [..78.122.93.185][.6346] 
               new: [....41] [ip4][..udp] [......10.0.2.15][57622] -> [.......10.0.2.2][.5351] 
          detected: [....41] [ip4][..udp] [......10.0.2.15][57622] -> [.......10.0.2.2][.5351] [NAT-PMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
          detected: [....38] [ip4][..tcp] [......10.0.2.15][50199] -> [...47.147.52.21][36728] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
          detected: [....35] [ip4][..tcp] [......10.0.2.15][50196] -> [...218.250.6.59][12556] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -148,16 +143,16 @@
               new: [....84] [ip4][..tcp] [......10.0.2.15][50243] -> [176.138.129.252][27962] 
               new: [....85] [ip4][..udp] [......10.0.2.15][28681] -> [..85.138.20.110][.6346] 
          detected: [....85] [ip4][..udp] [......10.0.2.15][28681] -> [..85.138.20.110][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [....86] [ip4][..udp] [......10.0.2.15][28681] -> [..74.210.244.72][.6346] 
          detected: [....86] [ip4][..udp] [......10.0.2.15][28681] -> [..74.210.244.72][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [....87] [ip4][..udp] [......10.0.2.15][28681] -> [..92.131.85.245][31743] 
          detected: [....87] [ip4][..udp] [......10.0.2.15][28681] -> [..92.131.85.245][31743] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [....88] [ip4][..udp] [......10.0.2.15][28681] -> [.....81.50.24.2][17874] 
          detected: [....88] [ip4][..udp] [......10.0.2.15][28681] -> [.....81.50.24.2][17874] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
            update: [....15] [ip4][..udp] [......10.0.2.15][63957] -> [239.255.255.250][.3702] [WSD][Unknown][Network][Acceptable]
            update: [....19] [ip4][..udp] [......10.0.2.15][63964] -> [239.255.255.250][.3702] [WSD][Unknown][Network][Acceptable]
            update: [.....5] [ip4][..udp] [........0.0.0.0][...68] -> [255.255.255.255][...67] [DHCP][Unknown][Network][Acceptable]
@@ -182,78 +177,77 @@
               new: [....94] [ip4][..tcp] [......10.0.2.15][50249] -> [.86.208.180.181][45883] 
               new: [....95] [ip4][.icmp] [.......10.0.2.2] -> [......10.0.2.15] 
          detected: [....95] [ip4][.icmp] [.......10.0.2.2] -> [......10.0.2.15] [ICMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
          detected: [....94] [ip4][..tcp] [......10.0.2.15][50249] -> [.86.208.180.181][45883] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
               new: [....96] [ip4][..udp] [......10.0.2.15][28681] -> [.88.160.214.137][.6346] 
          detected: [....96] [ip4][..udp] [......10.0.2.15][28681] -> [.88.160.214.137][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [....97] [ip4][..udp] [......10.0.2.15][28681] -> [..24.78.134.188][49046] 
          detected: [....97] [ip4][..udp] [......10.0.2.15][28681] -> [..24.78.134.188][49046] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [....98] [ip4][..udp] [......10.0.2.15][28681] -> [.203.222.14.170][23332] 
          detected: [....98] [ip4][..udp] [......10.0.2.15][28681] -> [.203.222.14.170][23332] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [....99] [ip4][..udp] [......10.0.2.15][28681] -> [....114.38.9.82][24223] 
          detected: [....99] [ip4][..udp] [......10.0.2.15][28681] -> [....114.38.9.82][24223] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...100] [ip4][..udp] [......10.0.2.15][28681] -> [220.133.122.217][23458] 
          detected: [...100] [ip4][..udp] [......10.0.2.15][28681] -> [220.133.122.217][23458] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...101] [ip4][..udp] [......10.0.2.15][28681] -> [123.205.126.102][.5193] 
          detected: [...101] [ip4][..udp] [......10.0.2.15][28681] -> [123.205.126.102][.5193] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...102] [ip4][..udp] [......10.0.2.15][28681] -> [.218.164.39.233][20855] 
          detected: [...102] [ip4][..udp] [......10.0.2.15][28681] -> [.218.164.39.233][20855] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...103] [ip4][..udp] [......10.0.2.15][28681] -> [.220.134.167.82][.5820] 
          detected: [...103] [ip4][..udp] [......10.0.2.15][28681] -> [.220.134.167.82][.5820] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...104] [ip4][..udp] [......10.0.2.15][28681] -> [..42.98.115.128][23458] 
          detected: [...104] [ip4][..udp] [......10.0.2.15][28681] -> [..42.98.115.128][23458] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...105] [ip4][..udp] [......10.0.2.15][28681] -> [...219.85.11.85][10722] 
          detected: [...105] [ip4][..udp] [......10.0.2.15][28681] -> [...219.85.11.85][10722] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...106] [ip4][..udp] [......10.0.2.15][28681] -> [..114.39.154.69][.4832] 
          detected: [...106] [ip4][..udp] [......10.0.2.15][28681] -> [..114.39.154.69][.4832] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...107] [ip4][..udp] [......10.0.2.15][28681] -> [..202.151.63.59][.7624] 
          detected: [...107] [ip4][..udp] [......10.0.2.15][28681] -> [..202.151.63.59][.7624] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...108] [ip4][..udp] [......10.0.2.15][28681] -> [112.119.242.110][.7922] 
          detected: [...108] [ip4][..udp] [......10.0.2.15][28681] -> [112.119.242.110][.7922] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...109] [ip4][..udp] [......10.0.2.15][28681] -> [...88.169.2.153][52414] 
          detected: [...109] [ip4][..udp] [......10.0.2.15][28681] -> [...88.169.2.153][52414] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...110] [ip4][..udp] [......10.0.2.15][28681] -> [..195.132.75.56][56009] 
          detected: [...110] [ip4][..udp] [......10.0.2.15][28681] -> [..195.132.75.56][56009] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...111] [ip4][..udp] [......10.0.2.15][28681] -> [..90.65.141.157][.6346] 
          detected: [...111] [ip4][..udp] [......10.0.2.15][28681] -> [..90.65.141.157][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...112] [ip4][..udp] [......10.0.2.15][28681] -> [.36.239.213.146][21750] 
          detected: [...112] [ip4][..udp] [......10.0.2.15][28681] -> [.36.239.213.146][21750] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...113] [ip4][..udp] [......10.0.2.15][28681] -> [105.101.132.146][57746] 
          detected: [...113] [ip4][..udp] [......10.0.2.15][28681] -> [105.101.132.146][57746] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...114] [ip4][..udp] [......10.0.2.15][28681] -> [....86.23.75.69][.6346] 
          detected: [...114] [ip4][..udp] [......10.0.2.15][28681] -> [....86.23.75.69][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...115] [ip4][..udp] [......10.0.2.15][28681] -> [...154.3.42.104][11804] 
          detected: [...115] [ip4][..udp] [......10.0.2.15][28681] -> [...154.3.42.104][11804] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...116] [ip4][..udp] [......10.0.2.15][28681] -> [.124.44.190.145][10170] 
          detected: [...116] [ip4][..udp] [......10.0.2.15][28681] -> [.124.44.190.145][10170] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...117] [ip4][..udp] [......10.0.2.15][28681] -> [200.120.243.143][.6346] 
          detected: [...117] [ip4][..udp] [......10.0.2.15][28681] -> [200.120.243.143][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...118] [ip4][..udp] [......10.0.2.15][28681] -> [...5.180.62.100][46385] 
          detected: [...118] [ip4][..udp] [......10.0.2.15][28681] -> [...5.180.62.100][46385] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
          detected: [....93] [ip4][..tcp] [......10.0.2.15][50248] -> [109.214.154.216][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
               new: [...119] [ip4][..tcp] [......10.0.2.15][50250] -> [...27.94.154.53][.6346] 
@@ -269,58 +263,58 @@
                    RISK: Unsafe Protocol
               new: [...124] [ip4][..udp] [......10.0.2.15][28681] -> [...170.254.19.6][24180] 
          detected: [...124] [ip4][..udp] [......10.0.2.15][28681] -> [...170.254.19.6][24180] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...125] [ip4][..udp] [......10.0.2.15][28681] -> [..83.92.178.182][57302] 
          detected: [...125] [ip4][..udp] [......10.0.2.15][28681] -> [..83.92.178.182][57302] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...126] [ip4][..udp] [......10.0.2.15][28681] -> [..91.69.159.133][28000] 
          detected: [...126] [ip4][..udp] [......10.0.2.15][28681] -> [..91.69.159.133][28000] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...127] [ip4][..udp] [......10.0.2.15][28681] -> [.176.191.49.159][.1024] 
          detected: [...127] [ip4][..udp] [......10.0.2.15][28681] -> [.176.191.49.159][.1024] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...128] [ip4][..udp] [......10.0.2.15][28681] -> [..77.141.219.27][37580] 
          detected: [...128] [ip4][..udp] [......10.0.2.15][28681] -> [..77.141.219.27][37580] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...129] [ip4][..udp] [......10.0.2.15][28681] -> [.176.138.50.179][29411] 
          detected: [...129] [ip4][..udp] [......10.0.2.15][28681] -> [.176.138.50.179][29411] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...130] [ip4][..udp] [......10.0.2.15][28681] -> [..119.224.95.97][46356] 
          detected: [...130] [ip4][..udp] [......10.0.2.15][28681] -> [..119.224.95.97][46356] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...131] [ip4][..udp] [......10.0.2.15][28681] -> [.86.225.140.186][.6346] 
          detected: [...131] [ip4][..udp] [......10.0.2.15][28681] -> [.86.225.140.186][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...132] [ip4][..udp] [......10.0.2.15][28681] -> [...79.86.173.45][.6346] 
          detected: [...132] [ip4][..udp] [......10.0.2.15][28681] -> [...79.86.173.45][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...133] [ip4][..udp] [......10.0.2.15][28681] -> [.91.175.220.161][15721] 
          detected: [...133] [ip4][..udp] [......10.0.2.15][28681] -> [.91.175.220.161][15721] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...134] [ip4][..udp] [......10.0.2.15][28681] -> [...78.231.73.14][.6346] 
          detected: [...134] [ip4][..udp] [......10.0.2.15][28681] -> [...78.231.73.14][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...135] [ip4][..udp] [......10.0.2.15][28681] -> [.193.250.99.158][.6346] 
          detected: [...135] [ip4][..udp] [......10.0.2.15][28681] -> [.193.250.99.158][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...136] [ip4][..udp] [......10.0.2.15][28681] -> [.80.236.247.120][16047] 
          detected: [...136] [ip4][..udp] [......10.0.2.15][28681] -> [.80.236.247.120][16047] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...137] [ip4][..udp] [......10.0.2.15][28681] -> [...82.65.70.197][21693] 
          detected: [...137] [ip4][..udp] [......10.0.2.15][28681] -> [...82.65.70.197][21693] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...138] [ip4][..udp] [......10.0.2.15][28681] -> [167.114.170.156][23844] 
          detected: [...138] [ip4][..udp] [......10.0.2.15][28681] -> [167.114.170.156][23844] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...139] [ip4][..udp] [......10.0.2.15][28681] -> [165.169.226.142][.6346] 
          detected: [...139] [ip4][..udp] [......10.0.2.15][28681] -> [165.169.226.142][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...140] [ip4][..udp] [......10.0.2.15][28681] -> [.77.197.111.186][.6346] 
          detected: [...140] [ip4][..udp] [......10.0.2.15][28681] -> [.77.197.111.186][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...141] [ip4][..udp] [......10.0.2.15][28681] -> [..172.97.199.14][.6346] 
          detected: [...141] [ip4][..udp] [......10.0.2.15][28681] -> [..172.97.199.14][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...142] [ip4][..tcp] [......10.0.2.15][50255] -> [..36.236.203.37][52165] 
               new: [...143] [ip4][..tcp] [......10.0.2.15][50256] -> [.36.233.201.161][.2886] 
               new: [...144] [ip4][..tcp] [......10.0.2.15][50257] -> [...219.70.48.23][.3054] 
@@ -347,202 +341,202 @@
            update: [.....1] [ip6][icmp6] [.....................................::] -> [......................ff02::1:ffa4:e108] [ICMPV6][Unknown][Network][Acceptable]
               new: [...154] [ip4][..udp] [......10.0.2.15][28681] -> [174.115.111.224][51984] 
          detected: [...154] [ip4][..udp] [......10.0.2.15][28681] -> [174.115.111.224][51984] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...155] [ip4][..udp] [......10.0.2.15][28681] -> [.88.168.182.103][.6346] 
          detected: [...155] [ip4][..udp] [......10.0.2.15][28681] -> [.88.168.182.103][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...156] [ip4][..udp] [......10.0.2.15][28681] -> [..86.244.228.86][10131] 
          detected: [...156] [ip4][..udp] [......10.0.2.15][28681] -> [..86.244.228.86][10131] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...157] [ip4][..udp] [......10.0.2.15][28681] -> [.86.227.162.150][.6346] 
          detected: [...157] [ip4][..udp] [......10.0.2.15][28681] -> [.86.227.162.150][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...158] [ip4][..udp] [......10.0.2.15][28681] -> [.118.166.226.70][.6346] 
          detected: [...158] [ip4][..udp] [......10.0.2.15][28681] -> [.118.166.226.70][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...159] [ip4][..udp] [......10.0.2.15][28681] -> [176.163.231.160][.6346] 
          detected: [...159] [ip4][..udp] [......10.0.2.15][28681] -> [176.163.231.160][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...160] [ip4][..udp] [......10.0.2.15][28681] -> [...83.150.49.35][32448] 
          detected: [...160] [ip4][..udp] [......10.0.2.15][28681] -> [...83.150.49.35][32448] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...161] [ip4][..udp] [......10.0.2.15][28681] -> [..213.120.26.86][29946] 
          detected: [...161] [ip4][..udp] [......10.0.2.15][28681] -> [..213.120.26.86][29946] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...162] [ip4][..udp] [......10.0.2.15][28681] -> [.88.123.159.111][44729] 
          detected: [...162] [ip4][..udp] [......10.0.2.15][28681] -> [.88.123.159.111][44729] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...163] [ip4][..udp] [......10.0.2.15][28681] -> [.88.126.160.158][.6346] 
          detected: [...163] [ip4][..udp] [......10.0.2.15][28681] -> [.88.126.160.158][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...164] [ip4][..udp] [......10.0.2.15][28681] -> [.142.197.219.85][26234] 
          detected: [...164] [ip4][..udp] [......10.0.2.15][28681] -> [.142.197.219.85][26234] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...165] [ip4][..udp] [......10.0.2.15][28681] -> [...86.75.43.182][43502] 
          detected: [...165] [ip4][..udp] [......10.0.2.15][28681] -> [...86.75.43.182][43502] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...166] [ip4][..udp] [......10.0.2.15][28681] -> [..90.59.253.186][15555] 
          detected: [...166] [ip4][..udp] [......10.0.2.15][28681] -> [..90.59.253.186][15555] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...167] [ip4][..udp] [......10.0.2.15][28681] -> [..93.29.107.176][20363] 
          detected: [...167] [ip4][..udp] [......10.0.2.15][28681] -> [..93.29.107.176][20363] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...168] [ip4][..udp] [......10.0.2.15][28681] -> [...89.157.59.43][56919] 
          detected: [...168] [ip4][..udp] [......10.0.2.15][28681] -> [...89.157.59.43][56919] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...169] [ip4][..udp] [......10.0.2.15][28681] -> [...91.162.52.93][34799] 
          detected: [...169] [ip4][..udp] [......10.0.2.15][28681] -> [...91.162.52.93][34799] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...170] [ip4][..udp] [......10.0.2.15][28681] -> [....67.193.8.52][38584] 
          detected: [...170] [ip4][..udp] [......10.0.2.15][28681] -> [....67.193.8.52][38584] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...171] [ip4][..udp] [......10.0.2.15][28681] -> [196.217.132.111][25394] 
          detected: [...171] [ip4][..udp] [......10.0.2.15][28681] -> [196.217.132.111][25394] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...172] [ip4][..udp] [......10.0.2.15][28681] -> [..87.69.142.133][15471] 
          detected: [...172] [ip4][..udp] [......10.0.2.15][28681] -> [..87.69.142.133][15471] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...173] [ip4][..udp] [......10.0.2.15][28681] -> [..121.99.222.36][44988] 
          detected: [...173] [ip4][..udp] [......10.0.2.15][28681] -> [..121.99.222.36][44988] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...174] [ip4][..udp] [......10.0.2.15][28681] -> [..196.74.159.56][29271] 
          detected: [...174] [ip4][..udp] [......10.0.2.15][28681] -> [..196.74.159.56][29271] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...175] [ip4][..udp] [......10.0.2.15][28681] -> [...115.69.62.99][.6346] 
          detected: [...175] [ip4][..udp] [......10.0.2.15][28681] -> [...115.69.62.99][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...176] [ip4][..udp] [......10.0.2.15][28681] -> [....41.99.164.4][.6346] 
          detected: [...176] [ip4][..udp] [......10.0.2.15][28681] -> [....41.99.164.4][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...177] [ip4][..udp] [......10.0.2.15][28681] -> [.69.157.183.106][.6346] 
          detected: [...177] [ip4][..udp] [......10.0.2.15][28681] -> [.69.157.183.106][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...178] [ip4][..udp] [......10.0.2.15][28681] -> [....83.46.253.7][.6346] 
          detected: [...178] [ip4][..udp] [......10.0.2.15][28681] -> [....83.46.253.7][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...179] [ip4][..udp] [......10.0.2.15][28681] -> [.178.51.146.115][.6346] 
          detected: [...179] [ip4][..udp] [......10.0.2.15][28681] -> [.178.51.146.115][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...180] [ip4][..udp] [......10.0.2.15][28681] -> [...66.131.24.72][30711] 
          detected: [...180] [ip4][..udp] [......10.0.2.15][28681] -> [...66.131.24.72][30711] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...181] [ip4][..udp] [......10.0.2.15][28681] -> [...66.177.5.135][.6346] 
          detected: [...181] [ip4][..udp] [......10.0.2.15][28681] -> [...66.177.5.135][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...182] [ip4][..udp] [......10.0.2.15][28681] -> [....73.3.103.37][35589] 
          detected: [...182] [ip4][..udp] [......10.0.2.15][28681] -> [....73.3.103.37][35589] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...183] [ip4][..udp] [......10.0.2.15][28681] -> [..91.172.15.182][37829] 
          detected: [...183] [ip4][..udp] [......10.0.2.15][28681] -> [..91.172.15.182][37829] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...184] [ip4][..udp] [......10.0.2.15][28681] -> [..86.239.62.213][.6346] 
          detected: [...184] [ip4][..udp] [......10.0.2.15][28681] -> [..86.239.62.213][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...185] [ip4][..udp] [......10.0.2.15][28681] -> [.109.132.196.58][.6346] 
          detected: [...185] [ip4][..udp] [......10.0.2.15][28681] -> [.109.132.196.58][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...186] [ip4][..udp] [......10.0.2.15][28681] -> [..91.182.44.202][30277] 
          detected: [...186] [ip4][..udp] [......10.0.2.15][28681] -> [..91.182.44.202][30277] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...187] [ip4][..udp] [......10.0.2.15][28681] -> [....92.88.92.56][21009] 
          detected: [...187] [ip4][..udp] [......10.0.2.15][28681] -> [....92.88.92.56][21009] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...188] [ip4][..udp] [......10.0.2.15][28681] -> [..83.134.107.32][38836] 
          detected: [...188] [ip4][..udp] [......10.0.2.15][28681] -> [..83.134.107.32][38836] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...189] [ip4][..udp] [......10.0.2.15][28681] -> [115.195.105.243][.6346] 
          detected: [...189] [ip4][..udp] [......10.0.2.15][28681] -> [115.195.105.243][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...190] [ip4][..udp] [......10.0.2.15][28681] -> [165.169.195.227][.6346] 
          detected: [...190] [ip4][..udp] [......10.0.2.15][28681] -> [165.169.195.227][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...191] [ip4][..udp] [......10.0.2.15][28681] -> [.190.153.143.54][65535] 
          detected: [...191] [ip4][..udp] [......10.0.2.15][28681] -> [.190.153.143.54][65535] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...192] [ip4][..udp] [......10.0.2.15][28681] -> [.....92.8.59.80][35192] 
          detected: [...192] [ip4][..udp] [......10.0.2.15][28681] -> [.....92.8.59.80][35192] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...193] [ip4][..udp] [......10.0.2.15][28681] -> [..188.44.126.74][54633] 
          detected: [...193] [ip4][..udp] [......10.0.2.15][28681] -> [..188.44.126.74][54633] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...194] [ip4][..udp] [......10.0.2.15][28681] -> [176.150.126.156][16471] 
          detected: [...194] [ip4][..udp] [......10.0.2.15][28681] -> [176.150.126.156][16471] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...195] [ip4][..udp] [......10.0.2.15][28681] -> [.177.231.151.16][.6346] 
          detected: [...195] [ip4][..udp] [......10.0.2.15][28681] -> [.177.231.151.16][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...196] [ip4][..udp] [......10.0.2.15][28681] -> [..88.127.72.106][.6346] 
          detected: [...196] [ip4][..udp] [......10.0.2.15][28681] -> [..88.127.72.106][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...197] [ip4][..udp] [......10.0.2.15][28681] -> [.208.92.106.151][32476] 
          detected: [...197] [ip4][..udp] [......10.0.2.15][28681] -> [.208.92.106.151][32476] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...198] [ip4][..udp] [......10.0.2.15][28681] -> [..58.182.171.50][15180] 
          detected: [...198] [ip4][..udp] [......10.0.2.15][28681] -> [..58.182.171.50][15180] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...199] [ip4][..udp] [......10.0.2.15][28681] -> [..114.73.129.26][53585] 
          detected: [...199] [ip4][..udp] [......10.0.2.15][28681] -> [..114.73.129.26][53585] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...200] [ip4][..udp] [......10.0.2.15][28681] -> [.138.199.16.123][52993] 
          detected: [...200] [ip4][..udp] [......10.0.2.15][28681] -> [.138.199.16.123][52993] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...201] [ip4][..udp] [......10.0.2.15][28681] -> [.85.170.209.214][46210] 
          detected: [...201] [ip4][..udp] [......10.0.2.15][28681] -> [.85.170.209.214][46210] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...202] [ip4][..udp] [......10.0.2.15][28681] -> [.176.134.139.39][.6346] 
          detected: [...202] [ip4][..udp] [......10.0.2.15][28681] -> [.176.134.139.39][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...203] [ip4][..udp] [......10.0.2.15][28681] -> [.120.156.204.38][54832] 
          detected: [...203] [ip4][..udp] [......10.0.2.15][28681] -> [.120.156.204.38][54832] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...204] [ip4][..udp] [......10.0.2.15][28681] -> [..84.126.240.32][45313] 
          detected: [...204] [ip4][..udp] [......10.0.2.15][28681] -> [..84.126.240.32][45313] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...205] [ip4][..udp] [......10.0.2.15][28681] -> [..96.29.197.138][.6346] 
          detected: [...205] [ip4][..udp] [......10.0.2.15][28681] -> [..96.29.197.138][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...206] [ip4][..udp] [......10.0.2.15][28681] -> [213.166.132.204][11194] 
          detected: [...206] [ip4][..udp] [......10.0.2.15][28681] -> [213.166.132.204][11194] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...207] [ip4][..udp] [......10.0.2.15][28681] -> [.81.242.191.215][.6346] 
          detected: [...207] [ip4][..udp] [......10.0.2.15][28681] -> [.81.242.191.215][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...208] [ip4][..udp] [......10.0.2.15][28681] -> [..81.249.64.215][25058] 
          detected: [...208] [ip4][..udp] [......10.0.2.15][28681] -> [..81.249.64.215][25058] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...209] [ip4][..udp] [......10.0.2.15][28681] -> [..91.179.98.234][.6346] 
          detected: [...209] [ip4][..udp] [......10.0.2.15][28681] -> [..91.179.98.234][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...210] [ip4][..udp] [......10.0.2.15][28681] -> [.41.100.120.146][12838] 
          detected: [...210] [ip4][..udp] [......10.0.2.15][28681] -> [.41.100.120.146][12838] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...211] [ip4][..udp] [......10.0.2.15][28681] -> [..186.93.139.92][.6346] 
          detected: [...211] [ip4][..udp] [......10.0.2.15][28681] -> [..186.93.139.92][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...212] [ip4][..udp] [......10.0.2.15][28681] -> [...36.233.3.223][12848] 
          detected: [...212] [ip4][..udp] [......10.0.2.15][28681] -> [...36.233.3.223][12848] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...213] [ip4][..udp] [......10.0.2.15][28681] -> [....5.180.62.37][.6346] 
          detected: [...213] [ip4][..udp] [......10.0.2.15][28681] -> [....5.180.62.37][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...214] [ip4][..udp] [......10.0.2.15][28681] -> [.91.169.215.227][26820] 
          detected: [...214] [ip4][..udp] [......10.0.2.15][28681] -> [.91.169.215.227][26820] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...215] [ip4][..udp] [......10.0.2.15][28681] -> [...78.159.27.22][17563] 
          detected: [...215] [ip4][..udp] [......10.0.2.15][28681] -> [...78.159.27.22][17563] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...216] [ip4][..udp] [......10.0.2.15][28681] -> [.212.68.248.153][27223] 
          detected: [...216] [ip4][..udp] [......10.0.2.15][28681] -> [.212.68.248.153][27223] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...217] [ip4][..udp] [......10.0.2.15][28681] -> [.126.117.45.151][19323] 
          detected: [...217] [ip4][..udp] [......10.0.2.15][28681] -> [.126.117.45.151][19323] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...218] [ip4][..udp] [......10.0.2.15][28681] -> [.176.155.52.115][53956] 
          detected: [...218] [ip4][..udp] [......10.0.2.15][28681] -> [.176.155.52.115][53956] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...219] [ip4][..udp] [......10.0.2.15][28681] -> [...76.30.86.144][53821] 
          detected: [...219] [ip4][..udp] [......10.0.2.15][28681] -> [...76.30.86.144][53821] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...220] [ip4][..udp] [......10.0.2.15][28681] -> [.113.252.86.162][.9239] 
               new: [...221] [ip4][..tcp] [......10.0.2.15][50267] -> [.113.252.86.162][.9239] 
          detected: [...221] [ip4][..tcp] [......10.0.2.15][50267] -> [.113.252.86.162][.9239] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -581,64 +575,64 @@
               new: [...245] [ip4][..tcp] [......10.0.2.15][50289] -> [.74.195.236.249][18557] 
               new: [...246] [ip4][..udp] [......10.0.2.15][28681] -> [...96.65.68.194][35481] 
          detected: [...246] [ip4][..udp] [......10.0.2.15][28681] -> [...96.65.68.194][35481] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...247] [ip4][..udp] [......10.0.2.15][28681] -> [..181.84.178.16][60262] 
          detected: [...247] [ip4][..udp] [......10.0.2.15][28681] -> [..181.84.178.16][60262] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...248] [ip4][..udp] [......10.0.2.15][28681] -> [..66.30.221.181][12012] 
          detected: [...248] [ip4][..udp] [......10.0.2.15][28681] -> [..66.30.221.181][12012] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...249] [ip4][..udp] [......10.0.2.15][28681] -> [..45.88.117.218][.6909] 
          detected: [...249] [ip4][..udp] [......10.0.2.15][28681] -> [..45.88.117.218][.6909] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...250] [ip4][..udp] [......10.0.2.15][28681] -> [..51.68.153.214][26253] 
          detected: [...250] [ip4][..udp] [......10.0.2.15][28681] -> [..51.68.153.214][26253] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...251] [ip4][..udp] [......10.0.2.15][28681] -> [.185.203.218.92][56962] 
          detected: [...251] [ip4][..udp] [......10.0.2.15][28681] -> [.185.203.218.92][56962] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...252] [ip4][..udp] [......10.0.2.15][28681] -> [..72.140.120.41][47739] 
          detected: [...252] [ip4][..udp] [......10.0.2.15][28681] -> [..72.140.120.41][47739] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...253] [ip4][..udp] [......10.0.2.15][28681] -> [.193.37.255.130][61616] 
          detected: [...253] [ip4][..udp] [......10.0.2.15][28681] -> [.193.37.255.130][61616] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...254] [ip4][..udp] [......10.0.2.15][28681] -> [..88.120.73.215][24562] 
          detected: [...254] [ip4][..udp] [......10.0.2.15][28681] -> [..88.120.73.215][24562] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...255] [ip4][..udp] [......10.0.2.15][28681] -> [..80.61.221.246][30577] 
          detected: [...255] [ip4][..udp] [......10.0.2.15][28681] -> [..80.61.221.246][30577] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...256] [ip4][..udp] [......10.0.2.15][28681] -> [.96.246.156.126][50297] 
          detected: [...256] [ip4][..udp] [......10.0.2.15][28681] -> [.96.246.156.126][50297] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...257] [ip4][..udp] [......10.0.2.15][28681] -> [.82.181.251.218][36368] 
          detected: [...257] [ip4][..udp] [......10.0.2.15][28681] -> [.82.181.251.218][36368] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...258] [ip4][..udp] [......10.0.2.15][28681] -> [...24.26.216.95][13889] 
          detected: [...258] [ip4][..udp] [......10.0.2.15][28681] -> [...24.26.216.95][13889] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...259] [ip4][..udp] [......10.0.2.15][28681] -> [103.232.107.100][43508] 
          detected: [...259] [ip4][..udp] [......10.0.2.15][28681] -> [103.232.107.100][43508] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...260] [ip4][..udp] [......10.0.2.15][28681] -> [.46.128.114.107][.6578] 
          detected: [...260] [ip4][..udp] [......10.0.2.15][28681] -> [.46.128.114.107][.6578] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...261] [ip4][..udp] [......10.0.2.15][28681] -> [..60.241.48.194][21301] 
          detected: [...261] [ip4][..udp] [......10.0.2.15][28681] -> [..60.241.48.194][21301] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...262] [ip4][..udp] [......10.0.2.15][28681] -> [....89.75.52.19][46010] 
          detected: [...262] [ip4][..udp] [......10.0.2.15][28681] -> [....89.75.52.19][46010] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...263] [ip4][..udp] [......10.0.2.15][28681] -> [..82.217.176.52][.7446] 
          detected: [...263] [ip4][..udp] [......10.0.2.15][28681] -> [..82.217.176.52][.7446] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...264] [ip4][..udp] [......10.0.2.15][28681] -> [...95.10.205.67][11603] 
          detected: [...264] [ip4][..udp] [......10.0.2.15][28681] -> [...95.10.205.67][11603] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...265] [ip4][..udp] [......10.0.2.15][28681] -> [203.220.198.244][.1194] 
          detected: [...265] [ip4][..udp] [......10.0.2.15][28681] -> [203.220.198.244][.1194] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...266] [ip4][..tcp] [......10.0.2.15][50290] -> [....73.89.249.8][50649] 
               new: [...267] [ip4][..tcp] [......10.0.2.15][50291] -> [..200.7.155.210][28365] 
               new: [...268] [ip4][..tcp] [......10.0.2.15][50292] -> [...95.10.205.67][11603] 
@@ -743,73 +737,73 @@
            update: [....24] [ip6][..udp] [..............fe80::c50d:519f:96a4:e108][50435] -> [..............................ff02::1:3][.5355] [LLMNR][Unknown][Network][Acceptable]
               new: [...305] [ip4][..udp] [......10.0.2.15][28681] -> [..88.168.175.31][.6346] 
          detected: [...305] [ip4][..udp] [......10.0.2.15][28681] -> [..88.168.175.31][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...306] [ip4][..udp] [......10.0.2.15][28681] -> [..41.249.63.200][22582] 
          detected: [...306] [ip4][..udp] [......10.0.2.15][28681] -> [..41.249.63.200][22582] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...307] [ip4][..udp] [......10.0.2.15][28681] -> [..72.201.208.57][38617] 
          detected: [...307] [ip4][..udp] [......10.0.2.15][28681] -> [..72.201.208.57][38617] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...308] [ip4][..udp] [......10.0.2.15][28681] -> [...81.205.91.45][40137] 
          detected: [...308] [ip4][..udp] [......10.0.2.15][28681] -> [...81.205.91.45][40137] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...309] [ip4][..udp] [......10.0.2.15][28681] -> [.47.220.186.140][27641] 
          detected: [...309] [ip4][..udp] [......10.0.2.15][28681] -> [.47.220.186.140][27641] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...310] [ip4][..udp] [......10.0.2.15][28681] -> [.118.240.69.199][.6348] 
          detected: [...310] [ip4][..udp] [......10.0.2.15][28681] -> [.118.240.69.199][.6348] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...311] [ip4][..udp] [......10.0.2.15][28681] -> [.109.132.188.98][62851] 
          detected: [...311] [ip4][..udp] [......10.0.2.15][28681] -> [.109.132.188.98][62851] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...312] [ip4][..udp] [......10.0.2.15][28681] -> [..24.167.201.53][47282] 
          detected: [...312] [ip4][..udp] [......10.0.2.15][28681] -> [..24.167.201.53][47282] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...313] [ip4][..udp] [......10.0.2.15][28681] -> [..176.99.176.20][.6346] 
          detected: [...313] [ip4][..udp] [......10.0.2.15][28681] -> [..176.99.176.20][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...314] [ip4][..udp] [......10.0.2.15][28681] -> [..71.237.202.91][16117] 
          detected: [...314] [ip4][..udp] [......10.0.2.15][28681] -> [..71.237.202.91][16117] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...315] [ip4][..udp] [......10.0.2.15][28681] -> [...92.217.84.16][20223] 
          detected: [...315] [ip4][..udp] [......10.0.2.15][28681] -> [...92.217.84.16][20223] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...316] [ip4][..udp] [......10.0.2.15][28681] -> [....94.54.66.82][63637] 
          detected: [...316] [ip4][..udp] [......10.0.2.15][28681] -> [....94.54.66.82][63637] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...317] [ip4][..udp] [......10.0.2.15][28681] -> [...96.236.205.7][34794] 
          detected: [...317] [ip4][..udp] [......10.0.2.15][28681] -> [...96.236.205.7][34794] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...318] [ip4][..udp] [......10.0.2.15][28681] -> [173.183.183.110][59920] 
          detected: [...318] [ip4][..udp] [......10.0.2.15][28681] -> [173.183.183.110][59920] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...319] [ip4][..udp] [......10.0.2.15][28681] -> [..164.132.10.25][55302] 
          detected: [...319] [ip4][..udp] [......10.0.2.15][28681] -> [..164.132.10.25][55302] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...320] [ip4][..udp] [......10.0.2.15][28681] -> [185.236.200.137][48142] 
          detected: [...320] [ip4][..udp] [......10.0.2.15][28681] -> [185.236.200.137][48142] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...321] [ip4][..udp] [......10.0.2.15][28681] -> [188.165.203.190][21995] 
          detected: [...321] [ip4][..udp] [......10.0.2.15][28681] -> [188.165.203.190][21995] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...322] [ip4][..udp] [......10.0.2.15][28681] -> [..45.88.117.219][.6909] 
          detected: [...322] [ip4][..udp] [......10.0.2.15][28681] -> [..45.88.117.219][.6909] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...323] [ip4][..udp] [......10.0.2.15][28681] -> [.96.246.156.126][56070] 
          detected: [...323] [ip4][..udp] [......10.0.2.15][28681] -> [.96.246.156.126][56070] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...324] [ip4][..udp] [......10.0.2.15][28681] -> [.73.250.179.237][20848] 
          detected: [...324] [ip4][..udp] [......10.0.2.15][28681] -> [.73.250.179.237][20848] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...325] [ip4][..udp] [......10.0.2.15][28681] -> [..83.160.143.48][37036] 
          detected: [...325] [ip4][..udp] [......10.0.2.15][28681] -> [..83.160.143.48][37036] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...326] [ip4][..udp] [......10.0.2.15][28681] -> [..100.1.231.138][56558] 
          detected: [...326] [ip4][..udp] [......10.0.2.15][28681] -> [..100.1.231.138][56558] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...327] [ip4][..udp] [......10.0.2.15][28681] -> [...84.28.53.225][44859] 
          detected: [...327] [ip4][..udp] [......10.0.2.15][28681] -> [...84.28.53.225][44859] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
           analyse: [...239] [ip4][..tcp] [......10.0.2.15][50285] -> [..75.133.101.93][52367] [Gnutella][Unknown][Download][Potentially Dangerous]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    8.796|    0.767|    2.113|    4465727.373|   2.600]
@@ -842,20 +836,20 @@
                    [ENTROPIES...: 4.5,4.7,4.5,5.8,4.5,5.8,5.6,4.6,7.1,4.4,6.7,7.3,4.7,5.3,4.6,7.4,4.6,5.8,4.5,4.7,4.5,4.7,4.5,4.7,4.5,4.7,4.4,4.7,4.5,4.7,4.5,4.6]
               new: [...328] [ip4][..udp] [......10.0.2.15][28681] -> [.203.220.105.27][19260] 
          detected: [...328] [ip4][..udp] [......10.0.2.15][28681] -> [.203.220.105.27][19260] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...329] [ip4][..udp] [......10.0.2.15][28681] -> [..92.117.249.98][.6815] 
          detected: [...329] [ip4][..udp] [......10.0.2.15][28681] -> [..92.117.249.98][.6815] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...330] [ip4][..udp] [......10.0.2.15][28681] -> [....82.64.44.11][.1352] 
          detected: [...330] [ip4][..udp] [......10.0.2.15][28681] -> [....82.64.44.11][.1352] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...331] [ip4][..udp] [......10.0.2.15][28681] -> [..45.31.152.112][26851] 
          detected: [...331] [ip4][..udp] [......10.0.2.15][28681] -> [..45.31.152.112][26851] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
            update: [....95] [ip4][.icmp] [.......10.0.2.2] -> [......10.0.2.15] [ICMP][Unknown][Network][Acceptable]
               new: [...332] [ip4][..udp] [......10.0.2.15][28681] -> [213.229.111.224][.4876] 
          detected: [...332] [ip4][..udp] [......10.0.2.15][28681] -> [213.229.111.224][.4876] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
          detected: [...267] [ip4][..tcp] [......10.0.2.15][50291] -> [..200.7.155.210][28365] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
            update: [....54] [ip4][..udp] [......10.0.2.15][57623] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable]
@@ -864,13 +858,9 @@
            update: [.....3] [ip6][icmp6] [..............fe80::c50d:519f:96a4:e108] -> [...............................ff02::16] [ICMPV6][Unknown][Network][Acceptable]
            update: [.....1] [ip6][icmp6] [.....................................::] -> [......................ff02::1:ffa4:e108] [ICMPV6][Unknown][Network][Acceptable]
            update: [....26] [ip4][..udp] [......10.0.2.15][57619] -> [.......10.0.2.2][.5351] [NAT-PMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....27] [ip4][..udp] [......10.0.2.15][57620] -> [.......10.0.2.2][.5351] [NAT-PMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....34] [ip4][..udp] [......10.0.2.15][57621] -> [.......10.0.2.2][.5351] [NAT-PMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....41] [ip4][..udp] [......10.0.2.15][57622] -> [.......10.0.2.2][.5351] [NAT-PMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...333] [ip4][..tcp] [......10.0.2.15][50327] -> [.69.118.162.229][46906] 
               new: [...334] [ip4][..tcp] [......10.0.2.15][50328] -> [..189.147.72.83][26108] 
          detected: [...333] [ip4][..tcp] [......10.0.2.15][50327] -> [.69.118.162.229][46906] [HTTP.Gnutella][Unknown][Download][Potentially Dangerous][69.118.162.229]
@@ -884,7 +874,7 @@
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol
               new: [...336] [ip4][..udp] [......10.0.2.15][28681] -> [...80.7.252.192][.6888] 
          detected: [...336] [ip4][..udp] [......10.0.2.15][28681] -> [...80.7.252.192][.6888] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
           analyse: [...276] [ip4][..tcp] [......10.0.2.15][50300] -> [..188.61.52.183][11852] [Gnutella][Unknown][Download][Potentially Dangerous]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|   13.802|    1.828|    3.934|   15478358.540|   2.800]
@@ -1003,52 +993,51 @@
                    RISK: Unsafe Protocol
               new: [...337] [ip4][..udp] [......10.0.2.15][28681] -> [..24.116.64.132][51227] 
          detected: [...337] [ip4][..udp] [......10.0.2.15][28681] -> [..24.116.64.132][51227] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...338] [ip4][..udp] [......10.0.2.15][28681] -> [221.198.205.196][20778] 
          detected: [...338] [ip4][..udp] [......10.0.2.15][28681] -> [221.198.205.196][20778] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...339] [ip4][..udp] [......10.0.2.15][28681] -> [..87.123.54.234][54130] 
          detected: [...339] [ip4][..udp] [......10.0.2.15][28681] -> [..87.123.54.234][54130] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...340] [ip4][..udp] [......10.0.2.15][28681] -> [.38.142.119.234][49732] 
          detected: [...340] [ip4][..udp] [......10.0.2.15][28681] -> [.38.142.119.234][49732] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...341] [ip4][..udp] [......10.0.2.15][28681] -> [..24.129.233.60][19990] 
          detected: [...341] [ip4][..udp] [......10.0.2.15][28681] -> [..24.129.233.60][19990] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...342] [ip4][..udp] [......10.0.2.15][28681] -> [..98.208.26.154][.4994] 
          detected: [...342] [ip4][..udp] [......10.0.2.15][28681] -> [..98.208.26.154][.4994] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...343] [ip4][..udp] [......10.0.2.15][28681] -> [..89.212.91.155][.5195] 
          detected: [...343] [ip4][..udp] [......10.0.2.15][28681] -> [..89.212.91.155][.5195] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...344] [ip4][..udp] [......10.0.2.15][28681] -> [.207.38.163.228][.6778] 
          detected: [...344] [ip4][..udp] [......10.0.2.15][28681] -> [.207.38.163.228][.6778] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...345] [ip4][..tcp] [......10.0.2.15][50330] -> [.69.118.162.229][46906] 
          detected: [...345] [ip4][..tcp] [......10.0.2.15][50330] -> [.69.118.162.229][46906] [HTTP.Gnutella][Unknown][Download][Potentially Dangerous][69.118.162.229]
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol
               new: [...346] [ip4][..udp] [......10.0.2.15][28681] -> [..76.226.85.105][.6346] 
          detected: [...346] [ip4][..udp] [......10.0.2.15][28681] -> [..76.226.85.105][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...347] [ip4][..udp] [......10.0.2.15][28681] -> [..176.10.169.10][12799] 
          detected: [...347] [ip4][..udp] [......10.0.2.15][28681] -> [..176.10.169.10][12799] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...348] [ip4][..udp] [......10.0.2.15][28681] -> [...84.197.97.94][.1360] 
          detected: [...348] [ip4][..udp] [......10.0.2.15][28681] -> [...84.197.97.94][.1360] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...349] [ip4][.icmp] [...84.197.97.94] -> [......10.0.2.15] 
          detected: [...349] [ip4][.icmp] [...84.197.97.94] -> [......10.0.2.15] [ICMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...350] [ip4][..udp] [......10.0.2.15][28681] -> [..99.250.253.99][11819] 
          detected: [...350] [ip4][..udp] [......10.0.2.15][28681] -> [..99.250.253.99][11819] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...351] [ip4][..udp] [......10.0.2.15][28681] -> [..187.37.87.189][.6346] 
          detected: [...351] [ip4][..udp] [......10.0.2.15][28681] -> [..187.37.87.189][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...352] [ip4][..udp] [......10.0.2.15][28681] -> [.176.191.49.159][.6346] 
          detected: [...352] [ip4][..udp] [......10.0.2.15][28681] -> [.176.191.49.159][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
              idle: [.....4] [ip6][icmp6] [..............fe80::c50d:519f:96a4:e108] -> [................................ff02::1] [ICMPV6][Unknown][Network][Acceptable]
              idle: [.....1] [ip6][icmp6] [.....................................::] -> [......................ff02::1:ffa4:e108] [ICMPV6][Unknown][Network][Acceptable]
            update: [....95] [ip4][.icmp] [.......10.0.2.2] -> [......10.0.2.15] [ICMP][Unknown][Network][Acceptable]
@@ -1197,22 +1186,22 @@
                    [ENTROPIES...: 4.6,4.8,4.6,5.8,4.5,5.6,5.6,4.6,5.6,7.7,4.7,4.7,4.9,4.6,6.3,4.5,5.9,4.5,7.8,4.3,4.8,6.2,4.8,5.5,4.6,6.6,4.7,4.8,4.6,6.2,4.6,4.9]
               new: [...353] [ip4][..udp] [......10.0.2.15][28681] -> [195.181.151.217][25282] 
          detected: [...353] [ip4][..udp] [......10.0.2.15][28681] -> [195.181.151.217][25282] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...354] [ip4][..udp] [......10.0.2.15][28681] -> [.80.236.247.120][.1032] 
          detected: [...354] [ip4][..udp] [......10.0.2.15][28681] -> [.80.236.247.120][.1032] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...355] [ip4][..udp] [......10.0.2.15][28681] -> [.181.118.53.212][29998] 
          detected: [...355] [ip4][..udp] [......10.0.2.15][28681] -> [.181.118.53.212][29998] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...356] [ip4][..udp] [......10.0.2.15][28681] -> [.63.228.175.169][.1936] 
          detected: [...356] [ip4][..udp] [......10.0.2.15][28681] -> [.63.228.175.169][.1936] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...357] [ip4][..udp] [......10.0.2.15][28681] -> [...98.35.85.238][32173] 
          detected: [...357] [ip4][..udp] [......10.0.2.15][28681] -> [...98.35.85.238][32173] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...358] [ip4][..udp] [......10.0.2.15][28681] -> [.47.224.174.174][.6346] 
          detected: [...358] [ip4][..udp] [......10.0.2.15][28681] -> [.47.224.174.174][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
              idle: [.....3] [ip6][icmp6] [..............fe80::c50d:519f:96a4:e108] -> [...............................ff02::16] [ICMPV6][Unknown][Network][Acceptable]
              idle: [.....2] [ip6][icmp6] [..............fe80::c50d:519f:96a4:e108] -> [................................ff02::2] [ICMPV6][Unknown][Network][Acceptable]
            update: [...247] [ip4][..udp] [......10.0.2.15][28681] -> [..181.84.178.16][60262] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -1333,40 +1322,36 @@
                    RISK: Unsafe Protocol
            update: [...349] [ip4][.icmp] [...84.197.97.94] -> [......10.0.2.15] [ICMP][Unknown][Network][Acceptable]
            update: [....26] [ip4][..udp] [......10.0.2.15][57619] -> [.......10.0.2.2][.5351] [NAT-PMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....27] [ip4][..udp] [......10.0.2.15][57620] -> [.......10.0.2.2][.5351] [NAT-PMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....34] [ip4][..udp] [......10.0.2.15][57621] -> [.......10.0.2.2][.5351] [NAT-PMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....41] [ip4][..udp] [......10.0.2.15][57622] -> [.......10.0.2.2][.5351] [NAT-PMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...360] [ip4][..udp] [......10.0.2.15][28681] -> [..198.58.218.12][47912] 
          detected: [...360] [ip4][..udp] [......10.0.2.15][28681] -> [..198.58.218.12][47912] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...361] [ip4][..udp] [......10.0.2.15][28681] -> [..86.129.196.84][.9915] 
          detected: [...361] [ip4][..udp] [......10.0.2.15][28681] -> [..86.129.196.84][.9915] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...362] [ip4][..udp] [......10.0.2.15][28681] -> [190.192.210.182][.6754] 
          detected: [...362] [ip4][..udp] [......10.0.2.15][28681] -> [190.192.210.182][.6754] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...363] [ip4][..udp] [......10.0.2.15][28681] -> [...81.205.91.45][38297] 
          detected: [...363] [ip4][..udp] [......10.0.2.15][28681] -> [...81.205.91.45][38297] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...364] [ip4][..udp] [......10.0.2.15][28681] -> [194.163.180.126][10825] 
          detected: [...364] [ip4][..udp] [......10.0.2.15][28681] -> [194.163.180.126][10825] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...365] [ip4][..udp] [......10.0.2.15][28681] -> [..188.23.24.213][18561] 
          detected: [...365] [ip4][..udp] [......10.0.2.15][28681] -> [..188.23.24.213][18561] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...366] [ip4][..udp] [......10.0.2.15][28681] -> [....94.8.55.158][51140] 
          detected: [...366] [ip4][..udp] [......10.0.2.15][28681] -> [....94.8.55.158][51140] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...367] [ip4][..udp] [......10.0.2.15][28681] -> [.149.28.163.175][49956] 
          detected: [...367] [ip4][..udp] [......10.0.2.15][28681] -> [.149.28.163.175][49956] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...368] [ip4][..udp] [......10.0.2.15][28681] -> [...47.147.52.21][36728] 
          detected: [...368] [ip4][..udp] [......10.0.2.15][28681] -> [...47.147.52.21][36728] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
            update: [...338] [ip4][..udp] [......10.0.2.15][28681] -> [221.198.205.196][20778] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
            update: [...134] [ip4][..udp] [......10.0.2.15][28681] -> [...78.231.73.14][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -1892,13 +1877,9 @@
            update: [...360] [ip4][..udp] [......10.0.2.15][28681] -> [..198.58.218.12][47912] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
            update: [....26] [ip4][..udp] [......10.0.2.15][57619] -> [.......10.0.2.2][.5351] [NAT-PMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....27] [ip4][..udp] [......10.0.2.15][57620] -> [.......10.0.2.2][.5351] [NAT-PMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....34] [ip4][..udp] [......10.0.2.15][57621] -> [.......10.0.2.2][.5351] [NAT-PMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....41] [ip4][..udp] [......10.0.2.15][57622] -> [.......10.0.2.2][.5351] [NAT-PMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [...326] [ip4][..udp] [......10.0.2.15][28681] -> [..100.1.231.138][56558] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
               new: [...369] [ip4][..udp] [......10.0.2.15][28681] -> [.89.187.171.240][.6346] 
@@ -2047,19 +2028,19 @@
                    RISK: Unsafe Protocol
               new: [...370] [ip4][..udp] [......10.0.2.15][28681] -> [..91.172.56.198][11984] 
          detected: [...370] [ip4][..udp] [......10.0.2.15][28681] -> [..91.172.56.198][11984] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...371] [ip4][..udp] [......10.0.2.15][28681] -> [.109.131.202.24][44748] 
          detected: [...371] [ip4][..udp] [......10.0.2.15][28681] -> [.109.131.202.24][44748] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...372] [ip4][..udp] [......10.0.2.15][28681] -> [.91.179.185.126][.6346] 
          detected: [...372] [ip4][..udp] [......10.0.2.15][28681] -> [.91.179.185.126][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...373] [ip4][..udp] [......10.0.2.15][28681] -> [..88.122.233.15][11488] 
          detected: [...373] [ip4][..udp] [......10.0.2.15][28681] -> [..88.122.233.15][11488] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...374] [ip4][..udp] [......10.0.2.15][28681] -> [....62.35.190.5][18604] 
          detected: [...374] [ip4][..udp] [......10.0.2.15][28681] -> [....62.35.190.5][18604] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
              idle: [....21] [ip4][..udp] [......10.0.2.15][55708] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable]
              idle: [.....9] [ip4][..udp] [......10.0.2.15][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable]
               end: [...267] [ip4][..tcp] [......10.0.2.15][50291] -> [..200.7.155.210][28365] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -2233,13 +2214,9 @@
               new: [...398] [ip4][..udp] [......10.0.2.15][28681] -> [.62.102.148.166][31332] 
               new: [...399] [ip4][..udp] [......10.0.2.15][28681] -> [.175.39.219.223][31728] 
              idle: [....26] [ip4][..udp] [......10.0.2.15][57619] -> [.......10.0.2.2][.5351] [NAT-PMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....27] [ip4][..udp] [......10.0.2.15][57620] -> [.......10.0.2.2][.5351] [NAT-PMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....34] [ip4][..udp] [......10.0.2.15][57621] -> [.......10.0.2.2][.5351] [NAT-PMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....41] [ip4][..udp] [......10.0.2.15][57622] -> [.......10.0.2.2][.5351] [NAT-PMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [...247] [ip4][..udp] [......10.0.2.15][28681] -> [..181.84.178.16][60262] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
            update: [...307] [ip4][..udp] [......10.0.2.15][28681] -> [..72.201.208.57][38617] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -2325,127 +2302,127 @@
                    RISK: Unsafe Protocol
               new: [...400] [ip4][..udp] [......10.0.2.15][28681] -> [..129.45.47.167][.6346] 
          detected: [...400] [ip4][..udp] [......10.0.2.15][28681] -> [..129.45.47.167][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...401] [ip4][..udp] [......10.0.2.15][28681] -> [.173.178.192.76][.6346] 
          detected: [...401] [ip4][..udp] [......10.0.2.15][28681] -> [.173.178.192.76][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...402] [ip4][..udp] [......10.0.2.15][28681] -> [...78.219.202.2][.6346] 
          detected: [...402] [ip4][..udp] [......10.0.2.15][28681] -> [...78.219.202.2][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...403] [ip4][..udp] [......10.0.2.15][28681] -> [197.244.171.132][.6346] 
          detected: [...403] [ip4][..udp] [......10.0.2.15][28681] -> [197.244.171.132][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...404] [ip4][..udp] [......10.0.2.15][28681] -> [.86.234.216.251][17845] 
          detected: [...404] [ip4][..udp] [......10.0.2.15][28681] -> [.86.234.216.251][17845] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...405] [ip4][..udp] [......10.0.2.15][28681] -> [.176.155.31.118][.6346] 
          detected: [...405] [ip4][..udp] [......10.0.2.15][28681] -> [.176.155.31.118][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...406] [ip4][..udp] [......10.0.2.15][28681] -> [....109.27.3.68][57380] 
          detected: [...406] [ip4][..udp] [......10.0.2.15][28681] -> [....109.27.3.68][57380] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...407] [ip4][..udp] [......10.0.2.15][28681] -> [195.181.151.217][.6346] 
          detected: [...407] [ip4][..udp] [......10.0.2.15][28681] -> [195.181.151.217][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...408] [ip4][..udp] [......10.0.2.15][28681] -> [...90.103.2.245][.6346] 
          detected: [...408] [ip4][..udp] [......10.0.2.15][28681] -> [...90.103.2.245][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...409] [ip4][..udp] [......10.0.2.15][28681] -> [...86.194.53.68][33770] 
          detected: [...409] [ip4][..udp] [......10.0.2.15][28681] -> [...86.194.53.68][33770] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...410] [ip4][..udp] [......10.0.2.15][28681] -> [..93.28.130.131][.6346] 
          detected: [...410] [ip4][..udp] [......10.0.2.15][28681] -> [..93.28.130.131][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...411] [ip4][..udp] [......10.0.2.15][28681] -> [...89.143.28.64][.6346] 
          detected: [...411] [ip4][..udp] [......10.0.2.15][28681] -> [...89.143.28.64][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...412] [ip4][..udp] [......10.0.2.15][28681] -> [...58.177.52.73][.6346] 
          detected: [...412] [ip4][..udp] [......10.0.2.15][28681] -> [...58.177.52.73][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...413] [ip4][..udp] [......10.0.2.15][28681] -> [...87.65.188.29][24676] 
          detected: [...413] [ip4][..udp] [......10.0.2.15][28681] -> [...87.65.188.29][24676] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...414] [ip4][..udp] [......10.0.2.15][28681] -> [175.181.156.244][.8255] 
          detected: [...414] [ip4][..udp] [......10.0.2.15][28681] -> [175.181.156.244][.8255] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...415] [ip4][..udp] [......10.0.2.15][28681] -> [..90.247.160.96][17817] 
          detected: [...415] [ip4][..udp] [......10.0.2.15][28681] -> [..90.247.160.96][17817] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...416] [ip4][..udp] [......10.0.2.15][28681] -> [..92.139.61.103][24096] 
          detected: [...416] [ip4][..udp] [......10.0.2.15][28681] -> [..92.139.61.103][24096] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...417] [ip4][..udp] [......10.0.2.15][28681] -> [.94.187.236.179][.6346] 
          detected: [...417] [ip4][..udp] [......10.0.2.15][28681] -> [.94.187.236.179][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...418] [ip4][..udp] [......10.0.2.15][28681] -> [.75.129.149.103][.6346] 
          detected: [...418] [ip4][..udp] [......10.0.2.15][28681] -> [.75.129.149.103][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...419] [ip4][..udp] [......10.0.2.15][28681] -> [...78.193.236.8][46557] 
          detected: [...419] [ip4][..udp] [......10.0.2.15][28681] -> [...78.193.236.8][46557] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...420] [ip4][..udp] [......10.0.2.15][28681] -> [..86.227.127.34][.6346] 
          detected: [...420] [ip4][..udp] [......10.0.2.15][28681] -> [..86.227.127.34][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...421] [ip4][..udp] [......10.0.2.15][28681] -> [..175.182.39.11][12977] 
          detected: [...421] [ip4][..udp] [......10.0.2.15][28681] -> [..175.182.39.11][12977] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...422] [ip4][..udp] [......10.0.2.15][28681] -> [..88.123.35.219][42211] 
          detected: [...422] [ip4][..udp] [......10.0.2.15][28681] -> [..88.123.35.219][42211] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...423] [ip4][..udp] [......10.0.2.15][28681] -> [..119.247.6.226][.9713] 
          detected: [...423] [ip4][..udp] [......10.0.2.15][28681] -> [..119.247.6.226][.9713] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...424] [ip4][..udp] [......10.0.2.15][28681] -> [..93.15.216.216][.6346] 
          detected: [...424] [ip4][..udp] [......10.0.2.15][28681] -> [..93.15.216.216][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...425] [ip4][..udp] [......10.0.2.15][28681] -> [..145.82.53.165][.6346] 
          detected: [...425] [ip4][..udp] [......10.0.2.15][28681] -> [..145.82.53.165][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...426] [ip4][..udp] [......10.0.2.15][28681] -> [..219.71.44.121][14398] 
          detected: [...426] [ip4][..udp] [......10.0.2.15][28681] -> [..219.71.44.121][14398] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...427] [ip4][..udp] [......10.0.2.15][28681] -> [...81.249.13.30][15138] 
          detected: [...427] [ip4][..udp] [......10.0.2.15][28681] -> [...81.249.13.30][15138] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...428] [ip4][..udp] [......10.0.2.15][28681] -> [....86.162.97.8][.6346] 
          detected: [...428] [ip4][..udp] [......10.0.2.15][28681] -> [....86.162.97.8][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...429] [ip4][..udp] [......10.0.2.15][28681] -> [165.169.215.213][23576] 
          detected: [...429] [ip4][..udp] [......10.0.2.15][28681] -> [165.169.215.213][23576] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...430] [ip4][..udp] [......10.0.2.15][28681] -> [....90.8.95.165][40763] 
          detected: [...430] [ip4][..udp] [......10.0.2.15][28681] -> [....90.8.95.165][40763] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...431] [ip4][..udp] [......10.0.2.15][28681] -> [..88.124.71.246][49035] 
          detected: [...431] [ip4][..udp] [......10.0.2.15][28681] -> [..88.124.71.246][49035] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...432] [ip4][..udp] [......10.0.2.15][28681] -> [...104.6.118.53][.6346] 
          detected: [...432] [ip4][..udp] [......10.0.2.15][28681] -> [...104.6.118.53][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...433] [ip4][..udp] [......10.0.2.15][28681] -> [.99.255.145.191][47264] 
          detected: [...433] [ip4][..udp] [......10.0.2.15][28681] -> [.99.255.145.191][47264] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...434] [ip4][..udp] [......10.0.2.15][28681] -> [.114.24.182.130][22232] 
          detected: [...434] [ip4][..udp] [......10.0.2.15][28681] -> [.114.24.182.130][22232] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...435] [ip4][..udp] [......10.0.2.15][28681] -> [.109.24.146.101][.6346] 
          detected: [...435] [ip4][..udp] [......10.0.2.15][28681] -> [.109.24.146.101][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...436] [ip4][..udp] [......10.0.2.15][28681] -> [.219.68.179.137][.6406] 
          detected: [...436] [ip4][..udp] [......10.0.2.15][28681] -> [.219.68.179.137][.6406] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...437] [ip4][..udp] [......10.0.2.15][28681] -> [....31.38.163.2][.6346] 
          detected: [...437] [ip4][..udp] [......10.0.2.15][28681] -> [....31.38.163.2][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...438] [ip4][..udp] [......10.0.2.15][28681] -> [..71.86.190.163][14142] 
          detected: [...438] [ip4][..udp] [......10.0.2.15][28681] -> [..71.86.190.163][14142] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...439] [ip4][..udp] [......10.0.2.15][28681] -> [..176.135.15.86][.6346] 
          detected: [...439] [ip4][..udp] [......10.0.2.15][28681] -> [..176.135.15.86][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...440] [ip4][..udp] [......10.0.2.15][28681] -> [203.165.170.112][37087] 
          detected: [...440] [ip4][..udp] [......10.0.2.15][28681] -> [203.165.170.112][37087] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...441] [ip4][..udp] [......10.0.2.15][28681] -> [.36.237.199.108][56040] 
               new: [...442] [ip4][..udp] [......10.0.2.15][28681] -> [..89.204.130.55][29545] 
               new: [...443] [ip4][..udp] [......10.0.2.15][28681] -> [..183.179.14.31][54754] 
@@ -2472,16 +2449,16 @@
               new: [...464] [ip4][..udp] [......10.0.2.15][28681] -> [...101.128.66.8][34512] 
               new: [...465] [ip4][..udp] [......10.0.2.15][28681] -> [.....2.28.39.18][15672] 
          detected: [...465] [ip4][..udp] [......10.0.2.15][28681] -> [.....2.28.39.18][15672] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...466] [ip4][..udp] [......10.0.2.15][28681] -> [...70.119.248.5][49929] 
          detected: [...466] [ip4][..udp] [......10.0.2.15][28681] -> [...70.119.248.5][49929] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...467] [ip4][..udp] [......10.0.2.15][28681] -> [...61.64.177.53][23458] 
          detected: [...467] [ip4][..udp] [......10.0.2.15][28681] -> [...61.64.177.53][23458] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...468] [ip4][..udp] [......10.0.2.15][28681] -> [..94.214.12.247][44001] 
          detected: [...468] [ip4][..udp] [......10.0.2.15][28681] -> [..94.214.12.247][44001] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...469] [ip4][..udp] [......10.0.2.15][28681] -> [..87.123.54.234][47184] 
               new: [...470] [ip4][..udp] [......10.0.2.15][28681] -> [.185.187.74.173][46790] 
               new: [...471] [ip4][..udp] [......10.0.2.15][28681] -> [...80.7.252.192][43457] 
@@ -2496,20 +2473,20 @@
               new: [...480] [ip4][..udp] [......10.0.2.15][28681] -> [..112.119.74.26][65498] 
               new: [...481] [ip4][..udp] [......10.0.2.15][28681] -> [..82.120.219.74][.6346] 
          detected: [...481] [ip4][..udp] [......10.0.2.15][28681] -> [..82.120.219.74][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...482] [ip4][..udp] [......10.0.2.15][28681] -> [..86.193.23.172][42227] 
          detected: [...482] [ip4][..udp] [......10.0.2.15][28681] -> [..86.193.23.172][42227] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...483] [ip4][..udp] [.......10.0.2.2][.1026] -> [......10.0.2.15][28681] 
               new: [...484] [ip4][..udp] [......10.0.2.15][28681] -> [...107.4.56.177][10000] 
          detected: [...484] [ip4][..udp] [......10.0.2.15][28681] -> [...107.4.56.177][10000] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...485] [ip4][..udp] [......10.0.2.15][28681] -> [...154.3.42.209][.6346] 
          detected: [...485] [ip4][..udp] [......10.0.2.15][28681] -> [...154.3.42.209][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...486] [ip4][..udp] [......10.0.2.15][28681] -> [...88.68.45.203][.6346] 
          detected: [...486] [ip4][..udp] [......10.0.2.15][28681] -> [...88.68.45.203][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
              idle: [....54] [ip4][..udp] [......10.0.2.15][57623] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable]
              idle: [....96] [ip4][..udp] [......10.0.2.15][28681] -> [.88.160.214.137][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
@@ -2553,22 +2530,22 @@
                    RISK: Unsafe Protocol
               new: [...487] [ip4][..udp] [......10.0.2.15][28681] -> [..24.78.134.188][49046] 
          detected: [...487] [ip4][..udp] [......10.0.2.15][28681] -> [..24.78.134.188][49046] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...488] [ip4][..udp] [......10.0.2.15][28681] -> [.183.179.90.112][.9852] 
          detected: [...488] [ip4][..udp] [......10.0.2.15][28681] -> [.183.179.90.112][.9852] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...489] [ip4][..udp] [......10.0.2.15][28681] -> [...108.44.45.25][.6346] 
          detected: [...489] [ip4][..udp] [......10.0.2.15][28681] -> [...108.44.45.25][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...490] [ip4][..udp] [......10.0.2.15][28681] -> [...90.3.215.132][20356] 
          detected: [...490] [ip4][..udp] [......10.0.2.15][28681] -> [...90.3.215.132][20356] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...491] [ip4][..udp] [......10.0.2.15][28681] -> [..36.233.42.210][.5512] 
          detected: [...491] [ip4][..udp] [......10.0.2.15][28681] -> [..36.233.42.210][.5512] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...492] [ip4][..udp] [......10.0.2.15][28681] -> [...172.94.41.71][.6346] 
          detected: [...492] [ip4][..udp] [......10.0.2.15][28681] -> [...172.94.41.71][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
              idle: [...170] [ip4][..udp] [......10.0.2.15][28681] -> [....67.193.8.52][38584] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [...196] [ip4][..udp] [......10.0.2.15][28681] -> [..88.127.72.106][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -2776,82 +2753,82 @@
          detected: [...493] [ip4][..udp] [......10.0.2.15][57552] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
               new: [...494] [ip4][..udp] [......10.0.2.15][28681] -> [...86.210.81.59][.6346] 
          detected: [...494] [ip4][..udp] [......10.0.2.15][28681] -> [...86.210.81.59][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...495] [ip4][..udp] [......10.0.2.15][28681] -> [...81.247.89.20][.6346] 
          detected: [...495] [ip4][..udp] [......10.0.2.15][28681] -> [...81.247.89.20][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...496] [ip4][..udp] [......10.0.2.15][28681] -> [.218.173.230.98][19004] 
          detected: [...496] [ip4][..udp] [......10.0.2.15][28681] -> [.218.173.230.98][19004] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...497] [ip4][..udp] [......10.0.2.15][28681] -> [..84.100.76.123][39628] 
          detected: [...497] [ip4][..udp] [......10.0.2.15][28681] -> [..84.100.76.123][39628] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...498] [ip4][..udp] [......10.0.2.15][28681] -> [...8.44.149.207][30551] 
          detected: [...498] [ip4][..udp] [......10.0.2.15][28681] -> [...8.44.149.207][30551] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...499] [ip4][..udp] [......10.0.2.15][28681] -> [....1.161.80.82][.8656] 
          detected: [...499] [ip4][..udp] [......10.0.2.15][28681] -> [....1.161.80.82][.8656] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...500] [ip4][..udp] [......10.0.2.15][28681] -> [.220.143.34.225][20071] 
          detected: [...500] [ip4][..udp] [......10.0.2.15][28681] -> [.220.143.34.225][20071] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...501] [ip4][..udp] [......10.0.2.15][28681] -> [.88.160.214.137][.6346] 
          detected: [...501] [ip4][..udp] [......10.0.2.15][28681] -> [.88.160.214.137][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...502] [ip4][..udp] [......10.0.2.15][28681] -> [..47.156.58.211][.6346] 
          detected: [...502] [ip4][..udp] [......10.0.2.15][28681] -> [..47.156.58.211][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...503] [ip4][..udp] [......10.0.2.15][28681] -> [..74.210.244.72][.6346] 
          detected: [...503] [ip4][..udp] [......10.0.2.15][28681] -> [..74.210.244.72][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...504] [ip4][..udp] [......10.0.2.15][28681] -> [..85.203.45.107][.6346] 
          detected: [...504] [ip4][..udp] [......10.0.2.15][28681] -> [..85.203.45.107][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...505] [ip4][..udp] [......10.0.2.15][28681] -> [.....42.2.62.28][.6387] 
          detected: [...505] [ip4][..udp] [......10.0.2.15][28681] -> [.....42.2.62.28][.6387] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...506] [ip4][..udp] [......10.0.2.15][28681] -> [..136.32.84.139][.6346] 
          detected: [...506] [ip4][..udp] [......10.0.2.15][28681] -> [..136.32.84.139][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...507] [ip4][..udp] [......10.0.2.15][28681] -> [...50.4.204.220][.6346] 
          detected: [...507] [ip4][..udp] [......10.0.2.15][28681] -> [...50.4.204.220][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...508] [ip4][..udp] [......10.0.2.15][28681] -> [...92.144.99.73][10745] 
          detected: [...508] [ip4][..udp] [......10.0.2.15][28681] -> [...92.144.99.73][10745] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...509] [ip4][..udp] [......10.0.2.15][28681] -> [.92.142.109.190][41370] 
          detected: [...509] [ip4][..udp] [......10.0.2.15][28681] -> [.92.142.109.190][41370] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...510] [ip4][..udp] [......10.0.2.15][28681] -> [...79.94.85.113][.6346] 
          detected: [...510] [ip4][..udp] [......10.0.2.15][28681] -> [...79.94.85.113][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...511] [ip4][..udp] [......10.0.2.15][28681] -> [...68.47.223.27][.6346] 
          detected: [...511] [ip4][..udp] [......10.0.2.15][28681] -> [...68.47.223.27][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...512] [ip4][..udp] [......10.0.2.15][28681] -> [..209.204.207.5][49256] 
          detected: [...512] [ip4][..udp] [......10.0.2.15][28681] -> [..209.204.207.5][49256] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...513] [ip4][..udp] [......10.0.2.15][28681] -> [..78.196.216.12][58910] 
          detected: [...513] [ip4][..udp] [......10.0.2.15][28681] -> [..78.196.216.12][58910] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...514] [ip4][..udp] [......10.0.2.15][28681] -> [..83.114.40.175][23552] 
          detected: [...514] [ip4][..udp] [......10.0.2.15][28681] -> [..83.114.40.175][23552] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...515] [ip4][..udp] [......10.0.2.15][28681] -> [220.137.106.173][11625] 
          detected: [...515] [ip4][..udp] [......10.0.2.15][28681] -> [220.137.106.173][11625] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...516] [ip4][..udp] [......10.0.2.15][28681] -> [.119.246.147.72][.4572] 
          detected: [...516] [ip4][..udp] [......10.0.2.15][28681] -> [.119.246.147.72][.4572] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...517] [ip4][..udp] [......10.0.2.15][28681] -> [..36.239.162.27][.7986] 
          detected: [...517] [ip4][..udp] [......10.0.2.15][28681] -> [..36.239.162.27][.7986] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...518] [ip4][..udp] [......10.0.2.15][28681] -> [..202.151.63.59][.7624] 
          detected: [...518] [ip4][..udp] [......10.0.2.15][28681] -> [..202.151.63.59][.7624] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...519] [ip4][..udp] [......10.0.2.15][28681] -> [...219.70.48.23][.8070] 
          detected: [...519] [ip4][..udp] [......10.0.2.15][28681] -> [...219.70.48.23][.8070] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...520] [ip4][..udp] [......10.0.2.15][28681] -> [182.155.128.228][.3339] 
               new: [...521] [ip4][..udp] [......10.0.2.15][28681] -> [.113.255.250.32][23458] 
               new: [...522] [ip4][..udp] [......10.0.2.15][28681] -> [119.247.152.218][51153] 
@@ -3079,7 +3056,6 @@
               new: [...744] [ip4][..udp] [......10.0.2.15][28681] -> [..164.132.10.25][48250] 
               new: [...745] [ip4][.icmp] [..164.132.10.25] -> [......10.0.2.15] 
          detected: [...745] [ip4][.icmp] [..164.132.10.25] -> [......10.0.2.15] [ICMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [...320] [ip4][..udp] [......10.0.2.15][28681] -> [185.236.200.137][48142] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [...325] [ip4][..udp] [......10.0.2.15][28681] -> [..83.160.143.48][37036] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -3469,22 +3445,22 @@
                    RISK: Unsafe Protocol
               new: [...748] [ip4][..udp] [......10.0.2.15][28681] -> [.....92.8.59.80][35192] 
          detected: [...748] [ip4][..udp] [......10.0.2.15][28681] -> [.....92.8.59.80][35192] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...749] [ip4][..udp] [......10.0.2.15][28681] -> [...78.159.27.22][17563] 
          detected: [...749] [ip4][..udp] [......10.0.2.15][28681] -> [...78.159.27.22][17563] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...750] [ip4][..udp] [......10.0.2.15][28681] -> [....67.193.8.52][38584] 
          detected: [...750] [ip4][..udp] [......10.0.2.15][28681] -> [....67.193.8.52][38584] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...751] [ip4][..udp] [......10.0.2.15][28681] -> [142.115.218.152][.5900] 
          detected: [...751] [ip4][..udp] [......10.0.2.15][28681] -> [142.115.218.152][.5900] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...752] [ip4][..udp] [......10.0.2.15][28681] -> [...78.231.73.14][.6346] 
          detected: [...752] [ip4][..udp] [......10.0.2.15][28681] -> [...78.231.73.14][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...753] [ip4][..udp] [......10.0.2.15][28681] -> [..165.84.140.96][14400] 
          detected: [...753] [ip4][..udp] [......10.0.2.15][28681] -> [..165.84.140.96][14400] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
              idle: [...329] [ip4][..udp] [......10.0.2.15][28681] -> [..92.117.249.98][.6815] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [...328] [ip4][..udp] [......10.0.2.15][28681] -> [.203.220.105.27][19260] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -4231,7 +4207,7 @@
                    RISK: Unsafe Protocol
               new: [...755] [ip4][..udp] [......10.0.2.15][28681] -> [..83.134.107.32][38836] 
          detected: [...755] [ip4][..udp] [......10.0.2.15][28681] -> [..83.134.107.32][38836] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
      not-detected: [...242] [ip4][..udp] [......10.0.2.15][28681] -> [..75.133.101.93][52367] [Unknown][Unknown][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...242] [ip4][..udp] [......10.0.2.15][28681] -> [..75.133.101.93][52367] 
@@ -4882,12 +4858,12 @@
                    RISK: Unsafe Protocol
               new: [...757] [ip4][..udp] [......10.0.2.15][28681] -> [.104.156.226.72][53258] 
          detected: [...757] [ip4][..udp] [......10.0.2.15][28681] -> [.104.156.226.72][53258] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...758] [ip4][..udp] [......10.0.2.15][50213] -> [239.255.255.250][.1900] 
          detected: [...758] [ip4][..udp] [......10.0.2.15][50213] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
               new: [...759] [ip4][..udp] [......10.0.2.15][28681] -> [104.238.172.250][23548] 
          detected: [...759] [ip4][..udp] [......10.0.2.15][28681] -> [104.238.172.250][23548] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
      not-detected: [...369] [ip4][..udp] [......10.0.2.15][28681] -> [.89.187.171.240][.6346] [Unknown][Unknown][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...369] [ip4][..udp] [......10.0.2.15][28681] -> [.89.187.171.240][.6346] 
@@ -5013,10 +4989,10 @@
                    RISK: Unsafe Protocol
               new: [...761] [ip4][..udp] [......10.0.2.15][28681] -> [..195.132.75.56][56009] 
          detected: [...761] [ip4][..udp] [......10.0.2.15][28681] -> [..195.132.75.56][56009] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...762] [ip4][..udp] [......10.0.2.15][28681] -> [...86.75.43.182][43502] 
          detected: [...762] [ip4][..udp] [......10.0.2.15][28681] -> [...86.75.43.182][43502] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
              idle: [...433] [ip4][..udp] [......10.0.2.15][28681] -> [.99.255.145.191][47264] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [...404] [ip4][..udp] [......10.0.2.15][28681] -> [.86.234.216.251][17845] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -5472,10 +5448,10 @@
            update: [...693] [ip4][..udp] [......10.0.2.15][28681] -> [.98.215.130.156][12405] 
               new: [...763] [ip4][..udp] [......10.0.2.15][28681] -> [.85.170.209.214][46210] 
          detected: [...763] [ip4][..udp] [......10.0.2.15][28681] -> [.85.170.209.214][46210] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...764] [ip4][..udp] [......10.0.2.15][28681] -> [.208.92.106.151][32476] 
          detected: [...764] [ip4][..udp] [......10.0.2.15][28681] -> [.208.92.106.151][32476] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
              idle: [...306] [ip4][..udp] [......10.0.2.15][28681] -> [..41.249.63.200][22582] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [...421] [ip4][..udp] [......10.0.2.15][28681] -> [..175.182.39.11][12977] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -6563,7 +6539,6 @@
               new: [...782] [ip4][..udp] [......10.0.2.15][28681] -> [.65.182.231.232][.7890] 
               new: [...783] [ip4][.icmp] [.65.182.231.232] -> [......10.0.2.15] 
          detected: [...783] [ip4][.icmp] [.65.182.231.232] -> [......10.0.2.15] [ICMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...784] [ip4][..udp] [......10.0.2.15][28681] -> [..23.19.141.110][.6346] 
              idle: [....88] [ip4][..udp] [......10.0.2.15][28681] -> [.....81.50.24.2][17874] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
@@ -6586,31 +6561,31 @@
                    RISK: Unsafe Protocol
               new: [...785] [ip4][..udp] [......10.0.2.15][28681] -> [.176.134.139.39][.6346] 
          detected: [...785] [ip4][..udp] [......10.0.2.15][28681] -> [.176.134.139.39][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...786] [ip4][..udp] [......10.0.2.15][28681] -> [....114.38.9.82][24223] 
          detected: [...786] [ip4][..udp] [......10.0.2.15][28681] -> [....114.38.9.82][24223] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...787] [ip4][..udp] [......10.0.2.15][28681] -> [220.133.122.217][23458] 
          detected: [...787] [ip4][..udp] [......10.0.2.15][28681] -> [220.133.122.217][23458] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...788] [ip4][..udp] [......10.0.2.15][28681] -> [.220.134.167.82][.5820] 
          detected: [...788] [ip4][..udp] [......10.0.2.15][28681] -> [.220.134.167.82][.5820] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...789] [ip4][..udp] [......10.0.2.15][28681] -> [..42.98.115.128][23458] 
          detected: [...789] [ip4][..udp] [......10.0.2.15][28681] -> [..42.98.115.128][23458] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...790] [ip4][..udp] [......10.0.2.15][28681] -> [.218.164.39.233][20855] 
          detected: [...790] [ip4][..udp] [......10.0.2.15][28681] -> [.218.164.39.233][20855] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...791] [ip4][..udp] [......10.0.2.15][28681] -> [...219.85.11.85][10722] 
          detected: [...791] [ip4][..udp] [......10.0.2.15][28681] -> [...219.85.11.85][10722] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...792] [ip4][..udp] [......10.0.2.15][28681] -> [.36.239.213.146][21750] 
          detected: [...792] [ip4][..udp] [......10.0.2.15][28681] -> [.36.239.213.146][21750] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...793] [ip4][..udp] [......10.0.2.15][28681] -> [123.205.126.102][.5193] 
          detected: [...793] [ip4][..udp] [......10.0.2.15][28681] -> [123.205.126.102][.5193] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
      not-detected: [...544] [ip4][..udp] [......10.0.2.15][28681] -> [..111.184.29.35][30582] [Unknown][Unknown][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...544] [ip4][..udp] [......10.0.2.15][28681] -> [..111.184.29.35][30582] 
@@ -6893,13 +6868,12 @@
                    RISK: Unsafe Protocol
               new: [...795] [ip4][..udp] [......10.0.2.15][28681] -> [..213.120.26.86][29946] 
          detected: [...795] [ip4][..udp] [......10.0.2.15][28681] -> [..213.120.26.86][29946] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...796] [ip4][..udp] [......10.0.2.15][28681] -> [..41.249.63.200][22582] 
          detected: [...796] [ip4][..udp] [......10.0.2.15][28681] -> [..41.249.63.200][22582] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [...797] [ip4][.icmp] [...154.3.42.209] -> [......10.0.2.15] 
          detected: [...797] [ip4][.icmp] [...154.3.42.209] -> [......10.0.2.15] [ICMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [...195] [ip4][..udp] [......10.0.2.15][28681] -> [.177.231.151.16][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [...191] [ip4][..udp] [......10.0.2.15][28681] -> [.190.153.143.54][65535] [Gnutella][Unknown][Download][Potentially Dangerous]

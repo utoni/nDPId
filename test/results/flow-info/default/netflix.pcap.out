@@ -4,13 +4,11 @@
               new: [.....1] [ip4][..tcp] [....192.168.1.7][52929] -> [.....52.24.87.6][..443] [MIDSTREAM] 
               new: [.....2] [ip4][..udp] [....192.168.1.7][51543] -> [....192.168.1.1][...53] 
          detected: [.....2] [ip4][..udp] [....192.168.1.7][51543] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ios.nccp.netflix.com]
-                   RISK: Unidirectional Traffic
  detection-update: [.....2] [ip4][..udp] [....192.168.1.7][51543] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ios.nccp.netflix.com]
                    RISK: Unidirectional Traffic
  detection-update: [.....2] [ip4][..udp] [....192.168.1.7][51543] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ios.nccp.netflix.com]
               new: [.....3] [ip4][..udp] [....192.168.1.7][52116] -> [....192.168.1.1][...53] 
          detected: [.....3] [ip4][..udp] [....192.168.1.7][52116] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ichnaea.us-west-2.prodaa.netflix.com]
-                   RISK: Unidirectional Traffic
  detection-update: [.....3] [ip4][..udp] [....192.168.1.7][52116] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ichnaea.us-west-2.prodaa.netflix.com]
               new: [.....4] [ip4][..tcp] [....192.168.1.7][53105] -> [..54.69.204.241][..443] 
               new: [.....5] [ip4][..tcp] [....192.168.1.7][53114] -> [...54.191.17.51][..443] 
@@ -60,7 +58,6 @@
          detected: [....12] [ip4][....2] [....192.168.1.7] -> [239.255.255.250] [IGMP][Unknown][Network][Acceptable]
               new: [....13] [ip4][..udp] [....192.168.1.7][51949] -> [....192.168.1.1][...53] 
          detected: [....13] [ip4][..udp] [....192.168.1.7][51949] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][api-global.latency.prodaa.netflix.com]
-                   RISK: Unidirectional Traffic
  detection-update: [....13] [ip4][..udp] [....192.168.1.7][51949] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][api-global.latency.prodaa.netflix.com]
               new: [....14] [ip4][..tcp] [....192.168.1.7][53132] -> [...52.89.39.139][..443] 
               new: [....15] [ip4][..tcp] [....192.168.1.7][53133] -> [...52.89.39.139][..443] 
@@ -95,7 +92,6 @@
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [....17] [ip4][..udp] [....192.168.1.7][57719] -> [....192.168.1.1][...53] 
          detected: [....17] [ip4][..udp] [....192.168.1.7][57719] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][sha2.san.akam.nflximg.net]
-                   RISK: Unidirectional Traffic
  detection-update: [....17] [ip4][..udp] [....192.168.1.7][57719] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][sha2.san.akam.nflximg.net]
               new: [....18] [ip4][..tcp] [....192.168.1.7][53141] -> [..104.86.97.179][..443] 
          detected: [....18] [ip4][..tcp] [....192.168.1.7][53141] -> [..104.86.97.179][..443] [TLS.NetFlix][Unknown][Video][Fun][art-s.nflximg.net]
@@ -115,7 +111,6 @@
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [....19] [ip4][..udp] [....192.168.1.7][59180] -> [....192.168.1.1][...53] 
          detected: [....19] [ip4][..udp] [....192.168.1.7][59180] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][artwork.akam.nflximg.net]
-                   RISK: Unidirectional Traffic
  detection-update: [....19] [ip4][..udp] [....192.168.1.7][59180] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][artwork.akam.nflximg.net]
               new: [....20] [ip4][..tcp] [....192.168.1.7][53148] -> [..184.25.204.25][...80] 
               new: [....21] [ip4][..tcp] [....192.168.1.7][53149] -> [..184.25.204.25][...80] 
@@ -125,7 +120,6 @@
          detected: [....22] [ip4][..tcp] [....192.168.1.7][53150] -> [..184.25.204.25][...80] [HTTP.NetFlix][Unknown][Video][Fun][art-2.nflximg.net]
               new: [....23] [ip4][..udp] [....192.168.1.7][58102] -> [....192.168.1.1][...53] 
          detected: [....23] [ip4][..udp] [....192.168.1.7][58102] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][appboot.netflix.com]
-                   RISK: Unidirectional Traffic
  detection-update: [....23] [ip4][..udp] [....192.168.1.7][58102] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][appboot.netflix.com]
               new: [....24] [ip4][..tcp] [....192.168.1.7][53151] -> [.54.201.191.132][...80] 
          detected: [....24] [ip4][..tcp] [....192.168.1.7][53151] -> [.54.201.191.132][...80] [HTTP.NetFlix][AmazonAWS][Video][Fun][appboot.netflix.com]
@@ -143,10 +137,8 @@
          detected: [....25] [ip4][..tcp] [....192.168.1.7][53152] -> [...52.89.39.139][...80] [HTTP.NetFlix][AmazonAWS][Video][Fun][api-global.netflix.com]
               new: [....26] [ip4][..udp] [....192.168.1.7][51728] -> [....192.168.1.1][...53] 
          detected: [....26] [ip4][..udp] [....192.168.1.7][51728] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][a803.dscg.akamai.net]
-                   RISK: Unidirectional Traffic
               new: [....27] [ip4][..udp] [....192.168.1.7][52347] -> [....192.168.1.1][...53] 
          detected: [....27] [ip4][..udp] [....192.168.1.7][52347] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ios.nccp.netflix.com]
-                   RISK: Unidirectional Traffic
           analyse: [....20] [ip4][..tcp] [....192.168.1.7][53148] -> [..184.25.204.25][...80] [HTTP.NetFlix][Unknown][Video][Fun]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.001|    6.031|    0.428|    1.232|    1516791.529|   2.300]
@@ -393,7 +385,6 @@
               new: [....47] [ip4][..tcp] [....192.168.1.7][53202] -> [...54.191.17.51][..443] 
               new: [....48] [ip4][..udp] [....192.168.1.7][60962] -> [....192.168.1.1][...53] 
          detected: [....48] [ip4][..udp] [....192.168.1.7][60962] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ichnaea.geo.netflix.com]
-                   RISK: Unidirectional Traffic
  detection-update: [....44] [ip4][..tcp] [....192.168.1.7][53183] -> [...23.246.3.140][...80] [HTTP][NetFlix][Download][Acceptable][23.246.3.140]
                    RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
  detection-update: [....48] [ip4][..udp] [....192.168.1.7][60962] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ichnaea.geo.netflix.com]
@@ -478,7 +469,6 @@
            update: [....27] [ip4][..udp] [....192.168.1.7][52347] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun]
               new: [....52] [ip4][..udp] [....192.168.1.7][51622] -> [....192.168.1.1][...53] 
          detected: [....52] [ip4][..udp] [....192.168.1.7][51622] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ios.nccp.netflix.com]
-                   RISK: Unidirectional Traffic
  detection-update: [....52] [ip4][..udp] [....192.168.1.7][51622] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ios.nccp.netflix.com]
                    RISK: Unidirectional Traffic
  detection-update: [....52] [ip4][..udp] [....192.168.1.7][51622] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ios.nccp.netflix.com]
@@ -491,7 +481,6 @@
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [....54] [ip4][..udp] [....192.168.1.7][52095] -> [....192.168.1.1][...53] 
          detected: [....54] [ip4][..udp] [....192.168.1.7][52095] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][api-global.latency.prodaa.netflix.com]
-                   RISK: Unidirectional Traffic
  detection-update: [....54] [ip4][..udp] [....192.168.1.7][52095] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][api-global.latency.prodaa.netflix.com]
               new: [....55] [ip4][..tcp] [....192.168.1.7][53239] -> [.....52.41.30.5][..443] 
               new: [....56] [ip4][..tcp] [....192.168.1.7][53248] -> [...52.32.22.214][..443] 
@@ -526,7 +515,6 @@
                    [ENTROPIES...: 4.5,5.3,5.1,6.0,5.2,6.5,5.1,5.2,6.0,7.9,7.6,5.1,5.2,7.9,7.0,7.8,5.1,7.6,5.1,7.8,5.2,7.5,5.1,7.8,5.2,7.9,5.1,7.7,5.1,7.8,5.1,7.7]
               new: [....59] [ip4][..udp] [....192.168.1.7][57093] -> [....192.168.1.1][...53] 
          detected: [....59] [ip4][..udp] [....192.168.1.7][57093] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][a1907.dscg.akamai.net]
-                   RISK: Unidirectional Traffic
  detection-update: [....59] [ip4][..udp] [....192.168.1.7][57093] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][a1907.dscg.akamai.net]
               new: [....60] [ip4][..tcp] [....192.168.1.7][53251] -> [..184.25.204.10][...80] 
               new: [....61] [ip4][..tcp] [....192.168.1.7][53252] -> [..184.25.204.10][...80] 

@@ -3,11 +3,9 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [......127.0.0.1][44205] -> [......127.0.1.1][.5672] [MIDSTREAM] 
          detected: [.....1] [ip4][..tcp] [......127.0.0.1][44205] -> [......127.0.1.1][.5672] [AMQP][Unknown][RPC][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [.....2] [ip4][..tcp] [......127.0.1.1][.5672] -> [......127.0.0.1][44204] [MIDSTREAM] 
               new: [.....3] [ip4][..tcp] [......127.0.0.1][44206] -> [......127.0.1.1][.5672] [MIDSTREAM] 
          detected: [.....3] [ip4][..tcp] [......127.0.0.1][44206] -> [......127.0.1.1][.5672] [AMQP][Unknown][RPC][Acceptable]
-                   RISK: Unidirectional Traffic
          detected: [.....2] [ip4][..tcp] [......127.0.1.1][.5672] -> [......127.0.0.1][44204] [AMQP][Unknown][RPC][Acceptable]
           analyse: [.....1] [ip4][..tcp] [......127.0.0.1][44205] -> [......127.0.1.1][.5672] [AMQP][Unknown][RPC][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy

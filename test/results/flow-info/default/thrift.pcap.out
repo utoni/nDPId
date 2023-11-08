@@ -17,7 +17,6 @@
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....2] [ip4][..udp] [......127.0.0.1][49164] -> [......127.0.0.1][.6831] 
          detected: [.....2] [ip4][..udp] [......127.0.0.1][49164] -> [......127.0.0.1][.6831] [Thrift][Unknown][RPC][Acceptable]
-                   RISK: Unidirectional Traffic
               end: [.....1] [ip4][..tcp] [.169.254.59.247][53387] -> [...169.254.46.4][11010] [Thrift][Unknown][RPC][Acceptable]
              idle: [.....2] [ip4][..udp] [......127.0.0.1][49164] -> [......127.0.0.1][.6831] [Thrift][Unknown][RPC][Acceptable]
      DAEMON-EVENT: shutdown

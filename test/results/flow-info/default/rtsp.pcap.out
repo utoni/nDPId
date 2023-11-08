@@ -3,7 +3,7 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [......10.1.1.10][52470] -> [.......10.2.2.2][.8554] [MIDSTREAM] 
          detected: [.....1] [ip4][..tcp] [......10.1.1.10][52470] -> [.......10.2.2.2][.8554] [RTSP][Unknown][Media][Fun]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
               new: [.....2] [ip4][..tcp] [......10.1.1.10][52472] -> [.......10.2.2.2][.8554] 
          detected: [.....2] [ip4][..tcp] [......10.1.1.10][52472] -> [.......10.2.2.2][.8554] [RTSP][Unknown][Media][Fun]
                    RISK: Known Proto on Non Std Port

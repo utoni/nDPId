@@ -11,13 +11,10 @@
            update: [.....2] [ip4][..udp] [...192.168.12.1][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable]
               new: [.....3] [ip4][..udp] [.192.168.12.156][39065] -> [.206.247.87.213][.3478] 
          detected: [.....3] [ip4][..udp] [.192.168.12.156][39065] -> [.206.247.87.213][.3478] [STUN.Zoom][Zoom][Video][Acceptable][]
-                   RISK: Unidirectional Traffic
               new: [.....4] [ip4][..udp] [.192.168.12.156][38453] -> [.206.247.87.213][.3478] 
          detected: [.....4] [ip4][..udp] [.192.168.12.156][38453] -> [.206.247.87.213][.3478] [STUN.Zoom][Zoom][Video][Acceptable][]
-                   RISK: Unidirectional Traffic
               new: [.....5] [ip4][.icmp] [.206.247.87.213] -> [.192.168.12.156] 
          detected: [.....5] [ip4][.icmp] [.206.247.87.213] -> [.192.168.12.156] [ICMP][Zoom][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....1] [ip4][..udp] [...192.168.12.1][17500] -> [.192.168.12.255][17500] [Dropbox][Unknown][Cloud][Acceptable]
               new: [.....6] [ip4][..udp] [.192.168.12.156][38453] -> [..192.168.1.226][41036] 
            update: [.....5] [ip4][.icmp] [.206.247.87.213] -> [.192.168.12.156] [ICMP][Zoom][Network][Acceptable]
@@ -62,13 +59,10 @@
              idle: [.....3] [ip4][..udp] [.192.168.12.156][39065] -> [.206.247.87.213][.3478] [STUN.Zoom][Zoom][Video][Acceptable]
               new: [.....8] [ip4][..udp] [.192.168.12.156][49579] -> [.206.247.10.253][.3478] 
          detected: [.....8] [ip4][..udp] [.192.168.12.156][49579] -> [.206.247.10.253][.3478] [STUN.Zoom][Zoom][Video][Acceptable][]
-                   RISK: Unidirectional Traffic
               new: [.....9] [ip4][..udp] [.192.168.12.156][42208] -> [.206.247.10.253][.3478] 
          detected: [.....9] [ip4][..udp] [.192.168.12.156][42208] -> [.206.247.10.253][.3478] [STUN.Zoom][Zoom][Video][Acceptable][]
-                   RISK: Unidirectional Traffic
               new: [....10] [ip4][.icmp] [.206.247.10.253] -> [.192.168.12.156] 
          detected: [....10] [ip4][.icmp] [.206.247.10.253] -> [.192.168.12.156] [ICMP][Zoom][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....11] [ip4][..udp] [...192.168.12.1][.5353] -> [....224.0.0.251][.5353] 
          detected: [....11] [ip4][..udp] [...192.168.12.1][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable][_ipps._tcp.local]
            update: [.....1] [ip4][..udp] [...192.168.12.1][17500] -> [.192.168.12.255][17500] [Dropbox][Unknown][Cloud][Acceptable]

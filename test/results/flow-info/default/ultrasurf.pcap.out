@@ -3,7 +3,6 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [....65.49.68.25][50053] -> [....10.132.0.23][37898] [MIDSTREAM] 
          detected: [.....1] [ip4][..tcp] [....65.49.68.25][50053] -> [....10.132.0.23][37898] [UltraSurf][Unknown][VPN][Acceptable]
-                   RISK: Unidirectional Traffic
           analyse: [.....1] [ip4][..tcp] [....65.49.68.25][50053] -> [....10.132.0.23][37898] [UltraSurf][Unknown][VPN][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.150|    0.021|    0.036|       1271.455|   3.600]

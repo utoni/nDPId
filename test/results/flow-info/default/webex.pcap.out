@@ -136,7 +136,6 @@
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
               new: [....24] [ip4][..udp] [.......10.8.0.1][64538] -> [....172.16.1.75][.5060] 
          detected: [....24] [ip4][..udp] [.......10.8.0.1][64538] -> [....172.16.1.75][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
  detection-update: [....16] [ip4][..tcp] [.......10.8.0.1][47116] -> [.114.29.202.139][..443] [TLS.Webex][Webex][VoIP][Acceptable][]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
  detection-update: [....20] [ip4][..tcp] [.......10.8.0.1][47841] -> [..114.29.200.11][..443] [TLS.Webex][Webex][VoIP][Acceptable][]
@@ -153,7 +152,6 @@
               new: [....32] [ip4][..tcp] [.......10.8.0.1][51135] -> [.62.109.224.120][..443] 
               new: [....33] [ip4][..tcp] [..10.133.206.47][33459] -> [...80.74.110.68][..443] [MIDSTREAM] 
          detected: [....33] [ip4][..tcp] [..10.133.206.47][33459] -> [...80.74.110.68][..443] [TLS][Unknown][Web][Safe]
-                   RISK: Unidirectional Traffic
               new: [....34] [ip4][..tcp] [.......10.8.0.1][33511] -> [...80.74.110.68][..443] 
               new: [....35] [ip4][..tcp] [.......10.8.0.1][33512] -> [...80.74.110.68][..443] 
          detected: [....26] [ip4][..tcp] [.......10.8.0.1][47135] -> [.114.29.202.139][..443] [TLS][Webex][Web][Safe][]

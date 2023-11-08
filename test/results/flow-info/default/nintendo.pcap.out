@@ -3,20 +3,14 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [.192.168.12.114][52119] -> [....91.8.243.35][49432] 
          detected: [.....1] [ip4][..udp] [.192.168.12.114][52119] -> [....91.8.243.35][49432] [Nintendo][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
               new: [.....2] [ip4][..udp] [.192.168.12.114][52119] -> [...134.3.248.25][56955] 
          detected: [.....2] [ip4][..udp] [.192.168.12.114][52119] -> [...134.3.248.25][56955] [Nintendo][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
               new: [.....3] [ip4][..udp] [.192.168.12.114][52119] -> [..109.21.255.11][50251] 
          detected: [.....3] [ip4][..udp] [.192.168.12.114][52119] -> [..109.21.255.11][50251] [Nintendo][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
               new: [.....4] [ip4][..tcp] [..54.187.10.185][..443] -> [.192.168.12.114][48328] [MIDSTREAM] 
          detected: [.....4] [ip4][..tcp] [..54.187.10.185][..443] -> [.192.168.12.114][48328] [TLS][AmazonAWS][Web][Safe]
-                   RISK: Unidirectional Traffic
- detection-update: [.....4] [ip4][..tcp] [..54.187.10.185][..443] -> [.192.168.12.114][48328] [TLS][AmazonAWS][Web][Safe]
               new: [.....5] [ip4][..udp] [.192.168.12.114][52119] -> [...35.158.74.61][33335] 
          detected: [.....5] [ip4][..udp] [.192.168.12.114][52119] -> [...35.158.74.61][33335] [Nintendo][AmazonAWS][Game][Fun]
-                   RISK: Unidirectional Traffic
           analyse: [.....1] [ip4][..udp] [.192.168.12.114][52119] -> [....91.8.243.35][49432] [Nintendo][Unknown][Game][Fun]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    1.730|    0.194|    0.332|     110172.324|   3.600]
@@ -30,7 +24,6 @@
               new: [.....6] [ip4][..udp] [.192.168.12.114][52119] -> [..52.10.205.177][34343] 
               new: [.....7] [ip4][..udp] [.192.168.12.114][18874] -> [...192.168.12.1][...53] 
          detected: [.....7] [ip4][..udp] [.192.168.12.114][18874] -> [...192.168.12.1][...53] [DNS.Nintendo][Unknown][Network][Fun][e0d67c509fb203858ebcb2fe3f88c2aa.baas.nintendo.com]
-                   RISK: Unidirectional Traffic
  detection-update: [.....7] [ip4][..udp] [.192.168.12.114][18874] -> [...192.168.12.1][...53] [DNS.Nintendo][Unknown][Network][Fun][e0d67c509fb203858ebcb2fe3f88c2aa.baas.nintendo.com]
               new: [.....8] [ip4][..tcp] [.192.168.12.114][41517] -> [..54.192.27.217][..443] 
          detected: [.....8] [ip4][..tcp] [.192.168.12.114][41517] -> [..54.192.27.217][..443] [TLS.Nintendo][AmazonAWS][Game][Fun][e0d67c509fb203858ebcb2fe3f88c2aa.baas.nintendo.com]
@@ -45,14 +38,12 @@
               new: [....12] [ip4][..udp] [.192.168.12.114][55915] -> [...35.158.74.61][33335] 
               new: [....13] [ip4][..udp] [.192.168.12.114][10184] -> [...192.168.12.1][...53] 
          detected: [....13] [ip4][..udp] [.192.168.12.114][10184] -> [...192.168.12.1][...53] [DNS.Nintendo][Unknown][Network][Fun][g2df33d01-lp1.p.srv.nintendo.net]
-                   RISK: Unidirectional Traffic
  detection-update: [....13] [ip4][..udp] [.192.168.12.114][10184] -> [...192.168.12.1][...53] [DNS.Nintendo][Unknown][Network][Fun][g2df33d01-lp1.p.srv.nintendo.net]
  detection-update: [....13] [ip4][..udp] [.192.168.12.114][10184] -> [...192.168.12.1][...53] [DNS.Nintendo][Unknown][Network][Fun][g2df33d01-lp1.p.srv.nintendo.net]
  detection-update: [....13] [ip4][..udp] [.192.168.12.114][10184] -> [...192.168.12.1][...53] [DNS.Nintendo][Unknown][Network][Fun][g2df33d01-lp1.p.srv.nintendo.net]
               new: [....14] [ip4][..udp] [.192.168.12.114][55915] -> [..52.10.205.177][34343] 
               new: [....15] [ip4][..udp] [.192.168.12.114][51035] -> [...192.168.12.1][...53] 
          detected: [....15] [ip4][..udp] [.192.168.12.114][51035] -> [...192.168.12.1][...53] [DNS.Nintendo][Unknown][Network][Fun][e0d67c509fb203858ebcb2fe3f88c2aa.baas.nintendo.com]
-                   RISK: Unidirectional Traffic
  detection-update: [....15] [ip4][..udp] [.192.168.12.114][51035] -> [...192.168.12.1][...53] [DNS.Nintendo][Unknown][Network][Fun][e0d67c509fb203858ebcb2fe3f88c2aa.baas.nintendo.com]
               new: [....16] [ip4][..tcp] [.192.168.12.114][31329] -> [....54.192.27.8][..443] 
          detected: [....16] [ip4][..tcp] [.192.168.12.114][31329] -> [....54.192.27.8][..443] [TLS.Nintendo][AmazonAWS][Game][Fun][e0d67c509fb203858ebcb2fe3f88c2aa.baas.nintendo.com]
@@ -73,19 +64,14 @@
                    [ENTROPIES...: 6.5,5.8,5.0,6.0,5.0,6.0,6.0,5.0,5.7,6.6,6.6,5.0,5.1,5.7,5.0,7.5,5.1,6.1,7.4,6.5,5.0,5.8,5.1,7.3,5.1,6.2,6.0,5.1,5.8,5.1,6.7,5.7]
               new: [....17] [ip4][..udp] [.192.168.12.114][55915] -> [.185.118.169.65][27520] 
          detected: [....17] [ip4][..udp] [.192.168.12.114][55915] -> [.185.118.169.65][27520] [Nintendo][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
               new: [....18] [ip4][.icmp] [..151.6.184.100] -> [.192.168.12.114] 
          detected: [....18] [ip4][.icmp] [..151.6.184.100] -> [.192.168.12.114] [ICMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....19] [ip4][..udp] [.192.168.12.114][55915] -> [.93.237.131.235][56066] 
          detected: [....19] [ip4][..udp] [.192.168.12.114][55915] -> [.93.237.131.235][56066] [Nintendo][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
               new: [....20] [ip4][..udp] [.192.168.12.114][55915] -> [..81.61.158.138][51769] 
          detected: [....20] [ip4][..udp] [.192.168.12.114][55915] -> [..81.61.158.138][51769] [Nintendo][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
               new: [....21] [ip4][.icmp] [...151.6.184.98] -> [.192.168.12.114] 
          detected: [....21] [ip4][.icmp] [...151.6.184.98] -> [.192.168.12.114] [ICMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
           analyse: [....17] [ip4][..udp] [.192.168.12.114][55915] -> [.185.118.169.65][27520] [Nintendo][Unknown][Game][Fun]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.754|    0.078|    0.153|      23284.658|   3.200]

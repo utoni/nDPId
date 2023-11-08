@@ -3,7 +3,6 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [...82.110.36.84][.4569] -> [..192.168.2.120][.4566] 
          detected: [.....1] [ip4][..udp] [...82.110.36.84][.4569] -> [..192.168.2.120][.4566] [IAX][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
           analyse: [.....1] [ip4][..udp] [...82.110.36.84][.4569] -> [..192.168.2.120][.4566] [IAX][Unknown][VoIP][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.001|    0.051|    0.019|    0.011|        120.322|   4.700]

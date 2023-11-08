@@ -3,7 +3,6 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [....47.241.7.88][.5222] -> [..10.52.151.160][39180] [MIDSTREAM] 
          detected: [.....1] [ip4][..tcp] [....47.241.7.88][.5222] -> [..10.52.151.160][39180] [Xiaomi][Alibaba][Web][Acceptable][]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 1 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....2] [ip4][..tcp] [.115.164.74.232][.5222] -> [192.168.244.219][45904] 

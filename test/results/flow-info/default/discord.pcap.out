@@ -8,22 +8,16 @@
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 2|updates: 0]
               new: [.....2] [ip4][..udp] [..192.168.2.100][56271] -> [..66.22.244.154][50004] 
          detected: [.....2] [ip4][..udp] [..192.168.2.100][56271] -> [..66.22.244.154][50004] [Discord][Discord][Collaborative][Fun]
-                   RISK: Unidirectional Traffic
               new: [.....3] [ip4][..udp] [..192.168.2.100][56271] -> [..66.22.244.139][50004] 
          detected: [.....3] [ip4][..udp] [..192.168.2.100][56271] -> [..66.22.244.139][50004] [Discord][Discord][Collaborative][Fun]
-                   RISK: Unidirectional Traffic
               new: [.....4] [ip4][..udp] [..192.168.2.100][56271] -> [..66.22.237.138][50004] 
          detected: [.....4] [ip4][..udp] [..192.168.2.100][56271] -> [..66.22.237.138][50004] [Discord][Discord][Collaborative][Fun]
-                   RISK: Unidirectional Traffic
               new: [.....5] [ip4][..udp] [..192.168.2.100][56271] -> [....66.22.241.7][50004] 
          detected: [.....5] [ip4][..udp] [..192.168.2.100][56271] -> [....66.22.241.7][50004] [Discord][Discord][Collaborative][Fun]
-                   RISK: Unidirectional Traffic
               new: [.....6] [ip4][..udp] [..192.168.2.100][56271] -> [....66.22.241.5][50004] 
          detected: [.....6] [ip4][..udp] [..192.168.2.100][56271] -> [....66.22.241.5][50004] [Discord][Discord][Collaborative][Fun]
-                   RISK: Unidirectional Traffic
               new: [.....7] [ip4][..udp] [..192.168.2.100][56271] -> [...66.22.237.11][50004] 
          detected: [.....7] [ip4][..udp] [..192.168.2.100][56271] -> [...66.22.237.11][50004] [Discord][Discord][Collaborative][Fun]
-                   RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..tcp] [......10.0.2.15][42834] -> [162.159.128.233][..443] [TLS.Discord][Cloudflare][Collaborative][Fun]
                    RISK: TLS Cert Expired
      DAEMON-EVENT: [Processed: 19 pkts][ZLib][compressions: 0|diff: 0 / 0]

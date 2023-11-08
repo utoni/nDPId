@@ -72,7 +72,6 @@
      DAEMON-EVENT: [Flows][active: 1 / 8|skipped: 0|!detected: 0|guessed: 0|detection-updates: 10|updates: 0]
               new: [.....9] [ip4][..udp] [..192.168.1.123][59102] -> [..216.58.209.46][..443] 
          detected: [.....9] [ip4][..udp] [..192.168.1.123][59102] -> [..216.58.209.46][..443] [QUIC.GoogleClassroom][Google][Collaborative][Safe][classroom.google.com]
-                   RISK: Unidirectional Traffic
               end: [.....8] [ip4][..tcp] [.192.168.12.169][39248] -> [...23.12.104.83][..443] [TLS.AccuWeather][Unknown][Web][Fun]
      DAEMON-EVENT: [Processed: 315 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 9|skipped: 0|!detected: 0|guessed: 0|detection-updates: 10|updates: 0]
@@ -216,13 +215,11 @@
  detection-update: [....43] [ip4][..tcp] [..192.168.1.128][45014] -> [129.226.107.210][..443] [TLS.IFLIX][Tencent][Video][Fun][www.iflix.com]
               new: [....44] [ip4][..udp] [..192.168.1.128][38642] -> [.216.58.212.142][..443] 
          detected: [....44] [ip4][..udp] [..192.168.1.128][38642] -> [.216.58.212.142][..443] [QUIC.Google][Google][Web][Acceptable][hangouts.google.com]
-                   RISK: Unidirectional Traffic
               new: [....45] [ip4][..tcp] [..192.168.1.128][50608] -> [142.250.185.206][..443] 
          detected: [....45] [ip4][..tcp] [..192.168.1.128][50608] -> [142.250.185.206][..443] [TLS][Google][Web][Safe][googleplus.com]
  detection-update: [....45] [ip4][..tcp] [..192.168.1.128][50608] -> [142.250.185.206][..443] [TLS][Google][Web][Safe][googleplus.com]
               new: [....46] [ip4][..udp] [..192.168.1.128][36832] -> [142.250.181.238][..443] 
          detected: [....46] [ip4][..udp] [..192.168.1.128][36832] -> [142.250.181.238][..443] [QUIC.GooglePlus][Google][SocialNetwork][Fun][plus.google.com]
-                   RISK: Unidirectional Traffic
            update: [....44] [ip4][..udp] [..192.168.1.128][38642] -> [.216.58.212.142][..443] [QUIC.Google][Google][Web][Acceptable]
      DAEMON-EVENT: [Processed: 512 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 10 / 46|skipped: 0|!detected: 0|guessed: 4|detection-updates: 48|updates: 1]

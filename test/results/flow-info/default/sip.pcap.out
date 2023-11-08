@@ -3,14 +3,12 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] 
          detected: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
            update: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
            update: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
            update: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
               new: [.....2] [ip4][..udp] [....192.168.1.2][.5060] -> [..200.68.120.81][.5060] 
          detected: [.....2] [ip4][..udp] [....192.168.1.2][.5060] -> [..200.68.120.81][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
            update: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
            update: [.....2] [ip4][..udp] [....192.168.1.2][.5060] -> [..200.68.120.81][.5060] [SIP][Unknown][VoIP][Acceptable]
@@ -47,7 +45,6 @@
          detected: [.....3] [ip4][..udp] [....192.168.1.2][30000] -> [..212.242.33.36][40392] [RTP][Unknown][Media][Acceptable]
               new: [.....4] [ip4][..udp] [....192.168.1.2][30001] -> [..212.242.33.36][40393] 
          detected: [.....4] [ip4][..udp] [....192.168.1.2][30001] -> [..212.242.33.36][40393] [RTCP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
            update: [.....3] [ip4][..udp] [....192.168.1.2][30000] -> [..212.242.33.36][40392] [RTP][Unknown][Media][Acceptable]
            update: [.....4] [ip4][..udp] [....192.168.1.2][30001] -> [..212.242.33.36][40393] [RTCP][Unknown][VoIP][Acceptable]

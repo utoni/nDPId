@@ -4242,6 +4242,18 @@ static void ndpi_process_packet(uint8_t * const args,
     {
         flow_to_process->info.detection_completed = 1;
         workflow->total_detected_flows++;
+        /*
+         * The following needs to be done, because a successful classification may happen after the first packet.
+         * If there is no further extra dissection possible for this protocol, we may be saving an invalid risk.
+         */
+        if (flow_to_process->flow_extended.packets_processed[FD_SRC2DST] +
+                flow_to_process->flow_extended.packets_processed[FD_DST2SRC] ==
+            1)
+        {
+            ndpi_unset_risk(workflow->ndpi_struct,
+                            &flow_to_process->info.detection_data->flow,
+                            NDPI_UNIDIRECTIONAL_TRAFFIC);
+        }
         jsonize_flow_detection_event(reader_thread, flow_to_process, FLOW_EVENT_DETECTED);
         flow_to_process->info.detection_data->last_ndpi_flow_struct_hash =
             calculate_ndpi_flow_struct_hash(&flow_to_process->info.detection_data->flow);
@@ -4262,24 +4274,6 @@ static void ndpi_process_packet(uint8_t * const args,
         (ndpi_is_protocol_detected(workflow->ndpi_struct, flow_to_process->flow_extended.detected_l7_protocol) != 0 &&
          ndpi_extra_dissection_possible(workflow->ndpi_struct, &flow_to_process->info.detection_data->flow) == 0))
     {
-        /*
-         * The following needs to be done, because a successful classification may happen after the first packet.
-         * If there is no further extra dissection possible for this protocol, we may be saving an invalid risk.
-         */
-        if (ndpi_isset_risk(workflow->ndpi_struct,
-                            &flow_to_process->info.detection_data->flow,
-                            NDPI_UNIDIRECTIONAL_TRAFFIC) != 0 &&
-            ((flow_to_process->flow_extended.packets_processed[FD_SRC2DST] > 0 &&
-              flow_to_process->flow_extended.packets_processed[FD_DST2SRC] > 0) ||
-             (flow_to_process->flow_extended.packets_processed[FD_SRC2DST] +
-                  flow_to_process->flow_extended.packets_processed[FD_DST2SRC] ==
-              1)))
-        {
-            ndpi_unset_risk(workflow->ndpi_struct,
-                            &flow_to_process->info.detection_data->flow,
-                            NDPI_UNIDIRECTIONAL_TRAFFIC);
-        }
-
         struct ndpi_proto detected_l7_protocol = flow_to_process->flow_extended.detected_l7_protocol;
         if (ndpi_is_protocol_detected(workflow->ndpi_struct, detected_l7_protocol) == 0)
         {

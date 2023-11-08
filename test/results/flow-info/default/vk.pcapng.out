@@ -3,12 +3,15 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [..192.168.1.249][33904] -> [.87.240.129.131][..443] [MIDSTREAM] 
          detected: [.....1] [ip4][..tcp] [..192.168.1.249][33904] -> [.87.240.129.131][..443] [TLS][VK][Web][Safe]
-                   RISK: Unidirectional Traffic
               new: [.....2] [ip4][..tcp] [..192.168.1.249][40344] -> [.87.240.129.140][..443] [MIDSTREAM] 
          detected: [.....2] [ip4][..tcp] [..192.168.1.249][40344] -> [.87.240.129.140][..443] [TLS][VK][Web][Safe]
+ detection-update: [.....2] [ip4][..tcp] [..192.168.1.249][40344] -> [.87.240.129.140][..443] [TLS][VK][Web][Safe]
+                   RISK: Unidirectional Traffic
+ detection-update: [.....1] [ip4][..tcp] [..192.168.1.249][33904] -> [.87.240.129.131][..443] [TLS][VK][Web][Safe]
                    RISK: Unidirectional Traffic
               new: [.....3] [ip4][..tcp] [..192.168.1.249][60436] -> [..87.240.132.78][..443] [MIDSTREAM] 
          detected: [.....3] [ip4][..tcp] [..192.168.1.249][60436] -> [..87.240.132.78][..443] [TLS][VK][Web][Safe]
+ detection-update: [.....3] [ip4][..tcp] [..192.168.1.249][60436] -> [..87.240.132.78][..443] [TLS][VK][Web][Safe]
                    RISK: Unidirectional Traffic
           analyse: [.....3] [ip4][..tcp] [..192.168.1.249][60436] -> [..87.240.132.78][..443] [TLS][VK][Web][Safe]
                                         min|      max|      avg|   stddev|       variance| entropy
@@ -30,6 +33,7 @@
                    RISK: Unidirectional Traffic
               new: [.....6] [ip4][..tcp] [..192.168.1.249][56504] -> [.87.240.129.135][..443] [MIDSTREAM] 
          detected: [.....6] [ip4][..tcp] [..192.168.1.249][56504] -> [.87.240.129.135][..443] [TLS][VK][Web][Safe]
+ detection-update: [.....6] [ip4][..tcp] [..192.168.1.249][56504] -> [.87.240.129.135][..443] [TLS][VK][Web][Safe]
                    RISK: Unidirectional Traffic
           analyse: [.....2] [ip4][..tcp] [..192.168.1.249][40344] -> [.87.240.129.140][..443] [TLS][VK][Web][Safe]
                                         min|      max|      avg|   stddev|       variance| entropy
@@ -51,9 +55,11 @@
                    RISK: Unidirectional Traffic
               new: [.....9] [ip4][..tcp] [..192.168.1.249][43938] -> [.87.240.129.135][..443] [MIDSTREAM] 
          detected: [.....9] [ip4][..tcp] [..192.168.1.249][43938] -> [.87.240.129.135][..443] [TLS][VK][Web][Safe]
+ detection-update: [.....9] [ip4][..tcp] [..192.168.1.249][43938] -> [.87.240.129.135][..443] [TLS][VK][Web][Safe]
                    RISK: Unidirectional Traffic
               new: [....10] [ip4][..tcp] [..192.168.1.249][43644] -> [..87.240.132.67][..443] [MIDSTREAM] 
          detected: [....10] [ip4][..tcp] [..192.168.1.249][43644] -> [..87.240.132.67][..443] [TLS][VK][Web][Safe]
+ detection-update: [....10] [ip4][..tcp] [..192.168.1.249][43644] -> [..87.240.132.67][..443] [TLS][VK][Web][Safe]
                    RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..tcp] [..192.168.1.249][40344] -> [.87.240.129.140][..443] [TLS][VK][Web][Safe]
                    RISK: Unidirectional Traffic

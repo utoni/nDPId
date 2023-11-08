@@ -3,22 +3,18 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [..192.168.2.100][60476] -> [..213.163.87.47][50004] 
          detected: [.....1] [ip4][..udp] [..192.168.2.100][60476] -> [..213.163.87.47][50004] [i3D][Discord][Game][Fun]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 15 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....2] [ip4][..udp] [..192.168.2.100][55205] -> [..213.163.87.47][50004] 
          detected: [.....2] [ip4][..udp] [..192.168.2.100][55205] -> [..213.163.87.47][50004] [i3D][Discord][Game][Fun]
-                   RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..udp] [..192.168.2.100][60476] -> [..213.163.87.47][50004] [i3D][Discord][Game][Fun]
      DAEMON-EVENT: [Processed: 30 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....3] [ip4][..udp] [..192.168.2.100][62620] -> [..213.163.87.47][50004] 
          detected: [.....3] [ip4][..udp] [..192.168.2.100][62620] -> [..213.163.87.47][50004] [i3D][Discord][Game][Fun]
-                   RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..udp] [..192.168.2.100][55205] -> [..213.163.87.47][50004] [i3D][Discord][Game][Fun]
               new: [.....4] [ip4][..udp] [..192.168.2.100][62461] -> [..213.163.87.47][50004] 
          detected: [.....4] [ip4][..udp] [..192.168.2.100][62461] -> [..213.163.87.47][50004] [i3D][Discord][Game][Fun]
-                   RISK: Unidirectional Traffic
              idle: [.....4] [ip4][..udp] [..192.168.2.100][62461] -> [..213.163.87.47][50004] [i3D][Discord][Game][Fun]
              idle: [.....3] [ip4][..udp] [..192.168.2.100][62620] -> [..213.163.87.47][50004] [i3D][Discord][Game][Fun]
      DAEMON-EVENT: shutdown

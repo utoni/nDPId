@@ -3,7 +3,7 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [......127.0.0.1][35980] -> [......127.0.0.1][...53] 
          detected: [.....1] [ip4][..udp] [......127.0.0.1][35980] -> [......127.0.0.1][...53] [DNS][Unknown][Network][Acceptable][www.allyourba???arebelongto.cn]
-                   RISK: Non-Printable/Invalid Chars Detected, Unidirectional Traffic
+                   RISK: Non-Printable/Invalid Chars Detected
  detection-update: [.....1] [ip4][..udp] [......127.0.0.1][35980] -> [......127.0.0.1][...53] [DNS][Unknown][Network][Acceptable][www.allyourbasesare???ongto.cn]
                    RISK: Non-Printable/Invalid Chars Detected
              idle: [.....1] [ip4][..udp] [......127.0.0.1][35980] -> [......127.0.0.1][...53] [DNS][Unknown][Network][Acceptable]

@@ -5,7 +5,6 @@
          detected: [.....1] [ip4][..tcp] [..192.168.1.103][.1714] -> [..192.168.1.146][.8080] [HTTP_Connect][Unknown][Web][Acceptable][apache.org]
               new: [.....2] [ip4][..udp] [..192.168.1.146][47767] -> [....192.168.1.2][...53] 
          detected: [.....2] [ip4][..udp] [..192.168.1.146][47767] -> [....192.168.1.2][...53] [DNS][Unknown][Network][Acceptable][apache.org]
-                   RISK: Unidirectional Traffic
  detection-update: [.....2] [ip4][..udp] [..192.168.1.146][47767] -> [....192.168.1.2][...53] [DNS][Unknown][Network][Acceptable][apache.org]
               new: [.....3] [ip4][..tcp] [..192.168.1.146][35968] -> [..151.101.2.132][..443] 
          detected: [.....3] [ip4][..tcp] [..192.168.1.146][35968] -> [..151.101.2.132][..443] [TLS][Unknown][Web][Safe][apache.org]

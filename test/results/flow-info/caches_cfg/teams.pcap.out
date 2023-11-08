@@ -12,7 +12,6 @@
       ERROR-EVENT: Unknown packet type [6/16]
               new: [.....3] [ip4][..udp] [....192.168.1.6][60813] -> [....192.168.1.1][...53] 
          detected: [.....3] [ip4][..udp] [....192.168.1.6][60813] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][skypedataprdcolneu04.cloudapp.net]
-                   RISK: Unidirectional Traffic
  detection-update: [.....3] [ip4][..udp] [....192.168.1.6][60813] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][skypedataprdcolneu04.cloudapp.net]
               new: [.....4] [ip4][..tcp] [....192.168.1.6][60532] -> [...52.114.77.33][..443] 
               new: [.....5] [ip4][..tcp] [....192.168.1.6][60533] -> [.52.113.194.132][..443] 
@@ -75,7 +74,6 @@
       ERROR-EVENT: Unknown packet type [10/16]
               new: [....10] [ip4][..udp] [....192.168.1.6][64046] -> [....192.168.1.1][...53] 
          detected: [....10] [ip4][..udp] [....192.168.1.6][64046] -> [....192.168.1.1][...53] [DNS.ntop][Unknown][Network][Safe][b._dns-sd._udp.ntop.org]
-                   RISK: Unidirectional Traffic
               new: [....11] [ip4][..udp] [....192.168.1.6][17500] -> [255.255.255.255][17500] 
          detected: [....11] [ip4][..udp] [....192.168.1.6][17500] -> [255.255.255.255][17500] [Dropbox][Unknown][Cloud][Acceptable]
               new: [....12] [ip4][..udp] [....192.168.1.6][17500] -> [..192.168.1.255][17500] 
@@ -83,26 +81,23 @@
       ERROR-EVENT: Unknown packet type [11/16]
       ERROR-EVENT: Unknown packet type [12/16]
  detection-update: [....10] [ip4][..udp] [....192.168.1.6][64046] -> [....192.168.1.1][...53] [DNS.ntop][Unknown][Network][Safe][b._dns-sd._udp.ntop.org]
+                   RISK: Unidirectional Traffic
+ detection-update: [....10] [ip4][..udp] [....192.168.1.6][64046] -> [....192.168.1.1][...53] [DNS.ntop][Unknown][Network][Safe][b._dns-sd._udp.ntop.org]
                    RISK: Error Code
               new: [....13] [ip4][..udp] [........0.0.0.0][...68] -> [255.255.255.255][...67] 
          detected: [....13] [ip4][..udp] [........0.0.0.0][...68] -> [255.255.255.255][...67] [DHCP][Unknown][Network][Acceptable][]
               new: [....14] [ip4][..tcp] [..93.62.150.157][..443] -> [....192.168.1.6][60512] [MIDSTREAM] 
          detected: [....14] [ip4][..tcp] [..93.62.150.157][..443] -> [....192.168.1.6][60512] [TLS][Unknown][Web][Safe]
-                   RISK: Unidirectional Traffic
- detection-update: [....14] [ip4][..tcp] [..93.62.150.157][..443] -> [....192.168.1.6][60512] [TLS][Unknown][Web][Safe]
       ERROR-EVENT: Unknown packet type [13/16]
               new: [....15] [ip4][..udp] [....192.168.1.6][56634] -> [....192.168.1.1][...53] 
          detected: [....15] [ip4][..udp] [....192.168.1.6][56634] -> [....192.168.1.1][...53] [DNS.Apple][Unknown][Network][Safe][captive.apple.com.edgekey.net]
-                   RISK: Unidirectional Traffic
  detection-update: [....15] [ip4][..udp] [....192.168.1.6][56634] -> [....192.168.1.1][...53] [DNS.Apple][Unknown][Network][Safe][captive.apple.com.edgekey.net]
       ERROR-EVENT: Unknown packet type [14/16]
       ERROR-EVENT: Unknown packet type [15/16]
               new: [....16] [ip4][..udp] [....192.168.1.6][51033] -> [....192.168.1.1][...53] 
          detected: [....16] [ip4][..udp] [....192.168.1.6][51033] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][eu-api.asm.skype.com]
-                   RISK: Unidirectional Traffic
               new: [....17] [ip4][..udp] [....192.168.1.6][63106] -> [....192.168.1.1][...53] 
          detected: [....17] [ip4][..udp] [....192.168.1.6][63106] -> [....192.168.1.1][...53] [DNS.Teams][Unknown][Network][Safe][eu-prod.asyncgw.teams.microsoft.com]
-                   RISK: Unidirectional Traffic
  detection-update: [....17] [ip4][..udp] [....192.168.1.6][63106] -> [....192.168.1.1][...53] [DNS.Teams][Unknown][Network][Safe][eu-prod.asyncgw.teams.microsoft.com]
               new: [....18] [ip4][..tcp] [....192.168.1.6][60538] -> [...52.114.75.70][..443] 
  detection-update: [....16] [ip4][..udp] [....192.168.1.6][51033] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][eu-api.asm.skype.com]
@@ -117,7 +112,6 @@
          detected: [....21] [ip4][..tcp] [....192.168.1.6][60541] -> [...52.114.75.69][..443] [TLS.Skype_Teams][Azure][VoIP][Acceptable][eu-api.asm.skype.com]
               new: [....22] [ip4][..udp] [....192.168.1.6][49514] -> [....192.168.1.1][...53] 
          detected: [....22] [ip4][..udp] [....192.168.1.6][49514] -> [....192.168.1.1][...53] [DNS.Teams][Unknown][Network][Safe][config.teams.microsoft.com]
-                   RISK: Unidirectional Traffic
  detection-update: [....20] [ip4][..tcp] [....192.168.1.6][60540] -> [...52.114.75.70][..443] [TLS.Teams][Azure][Collaborative][Safe][eu-prod.asyncgw.teams.microsoft.com]
  detection-update: [....21] [ip4][..tcp] [....192.168.1.6][60541] -> [...52.114.75.69][..443] [TLS.Skype_Teams][Azure][VoIP][Acceptable][eu-api.asm.skype.com]
  detection-update: [....22] [ip4][..udp] [....192.168.1.6][49514] -> [....192.168.1.1][...53] [DNS.Teams][Unknown][Network][Safe][config.teams.microsoft.com]
@@ -126,7 +120,6 @@
  detection-update: [....23] [ip4][..tcp] [....192.168.1.6][60542] -> [.52.113.194.132][..443] [TLS.Teams][Skype_Teams][Collaborative][Safe][config.teams.microsoft.com]
               new: [....24] [ip4][..udp] [....192.168.1.6][65387] -> [....192.168.1.1][...53] 
          detected: [....24] [ip4][..udp] [....192.168.1.6][65387] -> [....192.168.1.1][...53] [DNS.Microsoft][Unknown][Network][Safe][northeuropecns.trafficmanager.net]
-                   RISK: Unidirectional Traffic
               new: [....25] [ip4][..tcp] [....192.168.1.6][60543] -> [...52.114.77.33][..443] 
  detection-update: [....24] [ip4][..udp] [....192.168.1.6][65387] -> [....192.168.1.1][...53] [DNS.Microsoft][Unknown][Network][Safe][northeuropecns.trafficmanager.net]
               new: [....26] [ip4][..tcp] [....192.168.1.6][60544] -> [...52.114.76.48][..443] 
@@ -139,13 +132,10 @@
       ERROR-EVENT: Unknown packet type [16/16]
               new: [....27] [ip4][..udp] [....192.168.1.6][57530] -> [....192.168.1.1][...53] 
          detected: [....27] [ip4][..udp] [....192.168.1.6][57530] -> [....192.168.1.1][...53] [DNS.Microsoft][Unknown][Network][Safe][presence.services.sfb.trafficmanager.net]
-                   RISK: Unidirectional Traffic
  detection-update: [....27] [ip4][..udp] [....192.168.1.6][57530] -> [....192.168.1.1][...53] [DNS.Microsoft][Unknown][Network][Safe][presence.services.sfb.trafficmanager.net]
               new: [....28] [ip4][..tcp] [....192.168.1.6][60545] -> [...52.114.77.58][..443] 
               new: [....29] [ip4][..tcp] [.162.125.19.131][..443] -> [....192.168.1.6][60344] [MIDSTREAM] 
          detected: [....29] [ip4][..tcp] [.162.125.19.131][..443] -> [....192.168.1.6][60344] [TLS][Dropbox][Web][Safe]
-                   RISK: Unidirectional Traffic
- detection-update: [....29] [ip4][..tcp] [.162.125.19.131][..443] -> [....192.168.1.6][60344] [TLS][Dropbox][Web][Safe]
          detected: [....28] [ip4][..tcp] [....192.168.1.6][60545] -> [...52.114.77.58][..443] [TLS.Teams][Azure][Collaborative][Safe][presence.teams.microsoft.com]
  detection-update: [....28] [ip4][..tcp] [....192.168.1.6][60545] -> [...52.114.77.58][..443] [TLS.Teams][Azure][Collaborative][Safe][presence.teams.microsoft.com]
           analyse: [....25] [ip4][..tcp] [....192.168.1.6][60543] -> [...52.114.77.33][..443] [TLS.Microsoft][Azure][Cloud][Safe]
@@ -177,7 +167,6 @@
                    [ENTROPIES...: 4.4,5.0,4.6,5.4,7.1,7.4,4.7,4.7,4.5,7.6,7.6,4.7,7.5,4.7,6.6,6.1,7.6,5.4,4.6,6.0,4.5,5.2,5.4,4.7,7.5,4.7,4.5,7.9,6.6,6.7,4.5,5.4]
               new: [....31] [ip4][..udp] [....192.168.1.6][57504] -> [....192.168.1.1][...53] 
          detected: [....31] [ip4][..udp] [....192.168.1.6][57504] -> [....192.168.1.1][...53] [DNS.Teams][Unknown][Network][Safe][chatsvcagg.svcs.teams.office.com]
-                   RISK: Unidirectional Traffic
  detection-update: [....31] [ip4][..udp] [....192.168.1.6][57504] -> [....192.168.1.1][...53] [DNS.Teams][Unknown][Network][Safe][chatsvcagg.svcs.teams.office.com]
               new: [....32] [ip4][..tcp] [....192.168.1.6][60547] -> [...52.114.88.59][..443] 
          detected: [....32] [ip4][..tcp] [....192.168.1.6][60547] -> [...52.114.88.59][..443] [TLS.Teams][Azure][Collaborative][Safe][chatsvcagg.teams.microsoft.com]
@@ -198,7 +187,6 @@
                    [ENTROPIES...: 4.3,5.1,4.7,5.5,7.4,7.3,4.8,4.8,7.5,4.7,7.6,7.4,4.8,6.3,6.2,7.5,5.6,4.9,6.0,4.9,5.4,5.5,4.8,7.4,4.9,5.1,7.8,7.0,5.0,6.8,4.7,7.8]
               new: [....34] [ip4][..udp] [....192.168.1.6][59403] -> [....192.168.1.1][...53] 
          detected: [....34] [ip4][..udp] [....192.168.1.6][59403] -> [....192.168.1.1][...53] [DNS.Microsoft365][Unknown][Network][Acceptable][substrate.office.com]
-                   RISK: Unidirectional Traffic
  detection-update: [....34] [ip4][..udp] [....192.168.1.6][59403] -> [....192.168.1.1][...53] [DNS.Microsoft365][Unknown][Network][Acceptable][substrate.office.com]
               new: [....35] [ip4][..tcp] [....192.168.1.6][60549] -> [...13.107.18.11][..443] 
          detected: [....35] [ip4][..tcp] [....192.168.1.6][60549] -> [...13.107.18.11][..443] [TLS.Microsoft365][Outlook][Collaborative][Acceptable][substrate.office.com]
@@ -227,16 +215,12 @@
  detection-update: [....35] [ip4][..tcp] [....192.168.1.6][60549] -> [...13.107.18.11][..443] [TLS.Microsoft365][Outlook][Collaborative][Acceptable][substrate.office.com]
               new: [....36] [ip4][..udp] [....192.168.1.6][61245] -> [....192.168.1.1][...53] 
          detected: [....36] [ip4][..udp] [....192.168.1.6][61245] -> [....192.168.1.1][...53] [DNS.Teams][Unknown][Network][Safe][euaz.tr.teams.microsoft.com]
-                   RISK: Unidirectional Traffic
               new: [....37] [ip4][..udp] [....192.168.1.6][53678] -> [....192.168.1.1][...53] 
          detected: [....37] [ip4][..udp] [....192.168.1.6][53678] -> [....192.168.1.1][...53] [DNS.Teams][Unknown][Network][Safe][trouter2-asse-a.trouter.teams.microsoft.com]
-                   RISK: Unidirectional Traffic
               new: [....38] [ip4][..udp] [....192.168.1.6][65230] -> [....192.168.1.1][...53] 
          detected: [....38] [ip4][..udp] [....192.168.1.6][65230] -> [....192.168.1.1][...53] [DNS.Teams][Unknown][Network][Safe][trouter2-asse-a.trouter.teams.microsoft.com]
-                   RISK: Unidirectional Traffic
               new: [....39] [ip4][..udp] [....192.168.1.6][50653] -> [....192.168.1.1][...53] 
          detected: [....39] [ip4][..udp] [....192.168.1.6][50653] -> [....192.168.1.1][...53] [DNS.Teams][Unknown][Network][Safe][api.flightproxy.teams.microsoft.com]
-                   RISK: Unidirectional Traffic
  detection-update: [....37] [ip4][..udp] [....192.168.1.6][53678] -> [....192.168.1.1][...53] [DNS.Teams][Unknown][Network][Safe][trouter2-asse-a.trouter.teams.microsoft.com]
  detection-update: [....38] [ip4][..udp] [....192.168.1.6][65230] -> [....192.168.1.1][...53] [DNS.Teams][Unknown][Network][Safe][trouter2-asse-a.trouter.teams.microsoft.com]
               new: [....40] [ip4][..tcp] [....192.168.1.6][60551] -> [...52.114.15.45][..443] 
@@ -245,13 +229,11 @@
                    RISK: Minor Issues
               new: [....41] [ip4][..udp] [....192.168.1.6][58457] -> [....192.168.1.1][...53] 
          detected: [....41] [ip4][..udp] [....192.168.1.6][58457] -> [....192.168.1.1][...53] [DNS.Microsoft365][Unknown][Network][Acceptable][outlook.office.com]
-                   RISK: Unidirectional Traffic
  detection-update: [....41] [ip4][..udp] [....192.168.1.6][58457] -> [....192.168.1.1][...53] [DNS.Microsoft365][Unknown][Network][Acceptable][outlook.office.com]
               new: [....42] [ip4][..tcp] [....192.168.1.6][60552] -> [...52.114.77.33][..443] 
               new: [....43] [ip4][..tcp] [....192.168.1.6][60554] -> [.52.113.194.132][..443] 
               new: [....44] [ip4][..udp] [....192.168.1.6][51309] -> [....192.168.1.1][...53] 
          detected: [....44] [ip4][..udp] [....192.168.1.6][51309] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][skypedataprdcolneu04.cloudapp.net]
-                   RISK: Unidirectional Traffic
               new: [....45] [ip4][..tcp] [....192.168.1.6][60555] -> [...52.114.77.33][..443] 
               new: [....46] [ip4][..tcp] [....192.168.1.6][60556] -> [.....40.126.9.7][..443] 
          detected: [....43] [ip4][..tcp] [....192.168.1.6][60554] -> [.52.113.194.132][..443] [TLS.Teams][Skype_Teams][Collaborative][Safe][config.teams.microsoft.com]
@@ -315,7 +297,6 @@
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [....52] [ip4][..udp] [....192.168.1.6][54069] -> [....192.168.1.1][...53] 
          detected: [....52] [ip4][..udp] [....192.168.1.6][54069] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][api.microsoftstream.com]
-                   RISK: Unidirectional Traffic
  detection-update: [....52] [ip4][..udp] [....192.168.1.6][54069] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][api.microsoftstream.com]
               new: [....53] [ip4][..tcp] [....192.168.1.6][60562] -> [.104.40.187.151][..443] 
          detected: [....53] [ip4][..tcp] [....192.168.1.6][60562] -> [.104.40.187.151][..443] [TLS.Skype_Teams][Azure][VoIP][Acceptable][api.microsoftstream.com]
@@ -333,7 +314,6 @@
                    [ENTROPIES...: 4.4,5.2,4.9,5.6,7.4,7.5,4.9,7.4,4.9,4.8,7.6,7.1,5.0,5.9,6.3,7.4,5.6,6.1,4.9,4.9,5.4,5.6,4.9,7.5,5.0,7.9,6.1,5.1,5.7,5.0,7.5,4.9]
               new: [....54] [ip4][..udp] [....192.168.1.6][62735] -> [....192.168.1.1][...53] 
          detected: [....54] [ip4][..udp] [....192.168.1.6][62735] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][euno-1.api.microsoftstream.com]
-                   RISK: Unidirectional Traffic
  detection-update: [....54] [ip4][..udp] [....192.168.1.6][62735] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][euno-1.api.microsoftstream.com]
               new: [....55] [ip4][..tcp] [....192.168.1.6][60563] -> [.52.169.186.119][..443] 
           analyse: [....51] [ip4][..tcp] [....192.168.1.6][60561] -> [...52.114.77.33][..443] [TLS.Microsoft][Azure][Cloud][Safe]
@@ -351,14 +331,12 @@
          detected: [....55] [ip4][..tcp] [....192.168.1.6][60563] -> [.52.169.186.119][..443] [TLS.Skype_Teams][Azure][VoIP][Acceptable][euno-1.api.microsoftstream.com]
               new: [....56] [ip4][..udp] [....192.168.1.6][63930] -> [....192.168.1.1][...53] 
          detected: [....56] [ip4][..udp] [....192.168.1.6][63930] -> [....192.168.1.1][...53] [DNS.Microsoft][Unknown][Network][Safe][dc.applicationinsights.microsoft.com]
-                   RISK: Unidirectional Traffic
  detection-update: [....56] [ip4][..udp] [....192.168.1.6][63930] -> [....192.168.1.1][...53] [DNS.Microsoft][Unknown][Network][Safe][dc.applicationinsights.microsoft.com]
               new: [....57] [ip4][..tcp] [....192.168.1.6][60564] -> [...40.79.138.41][..443] 
          detected: [....57] [ip4][..tcp] [....192.168.1.6][60564] -> [...40.79.138.41][..443] [TLS.Skype_Teams][Azure][VoIP][Acceptable][gate.hockeyapp.net]
  detection-update: [....57] [ip4][..tcp] [....192.168.1.6][60564] -> [...40.79.138.41][..443] [TLS.Skype_Teams][Azure][VoIP][Acceptable][gate.hockeyapp.net]
               new: [....58] [ip4][..udp] [....192.168.1.6][62863] -> [....192.168.1.1][...53] 
          detected: [....58] [ip4][..udp] [....192.168.1.6][62863] -> [....192.168.1.1][...53] [DNS.Teams][Unknown][Network][Safe][emea.ng.msg.teams-msgapi.trafficmanager.net]
-                   RISK: Unidirectional Traffic
  detection-update: [....58] [ip4][..udp] [....192.168.1.6][62863] -> [....192.168.1.1][...53] [DNS.Teams][Unknown][Network][Safe][emea.ng.msg.teams-msgapi.trafficmanager.net]
               new: [....59] [ip4][..tcp] [....192.168.1.6][60565] -> [...52.114.108.8][..443] 
          detected: [....59] [ip4][..tcp] [....192.168.1.6][60565] -> [...52.114.108.8][..443] [TLS.Teams][Azure][Collaborative][Safe][emea.ng.msg.teams.microsoft.com]
@@ -392,34 +370,27 @@
               new: [....62] [ip4][..udp] [....192.168.1.6][51681] -> [..52.114.77.136][.3478] 
               new: [....63] [ip4][..udp] [....192.168.1.6][50016] -> [.52.114.250.123][.3478] 
          detected: [....63] [ip4][..udp] [....192.168.1.6][50016] -> [.52.114.250.123][.3478] [STUN.Skype_TeamsCall][Azure][VoIP][Acceptable][]
-                   RISK: Unidirectional Traffic
               new: [....64] [ip4][..tcp] [....192.168.1.6][50018] -> [.52.114.250.123][..443] 
               new: [....65] [ip4][..udp] [....192.168.1.6][55765] -> [....192.168.1.1][...53] 
          detected: [....65] [ip4][..udp] [....192.168.1.6][55765] -> [....192.168.1.1][...53] [DNS.Azure][Unknown][Network][Acceptable][b-tr-teams-euno-05.northeurope.cloudapp.azure.com]
-                   RISK: Unidirectional Traffic
  detection-update: [....65] [ip4][..udp] [....192.168.1.6][55765] -> [....192.168.1.1][...53] [DNS.Azure][Unknown][Network][Acceptable][b-tr-teams-euno-05.northeurope.cloudapp.azure.com]
          detected: [....64] [ip4][..tcp] [....192.168.1.6][50018] -> [.52.114.250.123][..443] [TLS.Teams][Azure][Collaborative][Safe][euaz.tr.teams.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [....66] [ip4][..udp] [....192.168.1.6][50036] -> [.52.114.250.123][.3478] 
          detected: [....66] [ip4][..udp] [....192.168.1.6][50036] -> [.52.114.250.123][.3478] [STUN.Skype_TeamsCall][Azure][VoIP][Acceptable][]
-                   RISK: Unidirectional Traffic
               new: [....67] [ip4][..tcp] [....192.168.1.6][50021] -> [.52.114.250.123][..443] 
               new: [....68] [ip4][..udp] [....192.168.1.6][50016] -> [.52.114.250.141][.3478] 
          detected: [....68] [ip4][..udp] [....192.168.1.6][50016] -> [.52.114.250.141][.3478] [STUN.Skype_TeamsCall][Azure][VoIP][Acceptable][]
-                   RISK: Unidirectional Traffic
  detection-update: [....64] [ip4][..tcp] [....192.168.1.6][50018] -> [.52.114.250.123][..443] [TLS.Teams][Azure][Collaborative][Safe][euaz.tr.teams.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [....69] [ip4][..udp] [....192.168.1.6][50017] -> [.52.114.250.141][.3478] 
          detected: [....69] [ip4][..udp] [....192.168.1.6][50017] -> [.52.114.250.141][.3478] [STUN.Skype_TeamsCall][Azure][VoIP][Acceptable][]
-                   RISK: Unidirectional Traffic
          detected: [....67] [ip4][..tcp] [....192.168.1.6][50021] -> [.52.114.250.123][..443] [TLS.Teams][Azure][Collaborative][Safe][euaz.tr.teams.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [....70] [ip4][..udp] [....192.168.1.6][50036] -> [.52.114.250.137][.3478] 
          detected: [....70] [ip4][..udp] [....192.168.1.6][50036] -> [.52.114.250.137][.3478] [STUN.Skype_TeamsCall][Azure][VoIP][Acceptable][]
-                   RISK: Unidirectional Traffic
               new: [....71] [ip4][..udp] [....192.168.1.6][50037] -> [.52.114.250.137][.3478] 
          detected: [....71] [ip4][..udp] [....192.168.1.6][50037] -> [.52.114.250.137][.3478] [STUN.Skype_TeamsCall][Azure][VoIP][Acceptable][]
-                   RISK: Unidirectional Traffic
  detection-update: [....67] [ip4][..tcp] [....192.168.1.6][50021] -> [.52.114.250.123][..443] [TLS.Teams][Azure][Collaborative][Safe][euaz.tr.teams.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [....72] [ip4][..tcp] [....192.168.1.6][50014] -> [.52.114.250.152][..443] 
@@ -435,7 +406,6 @@
               new: [....74] [ip4][..tcp] [....192.168.1.6][60567] -> [..52.114.77.136][..443] 
               new: [....75] [ip4][..udp] [....192.168.1.6][60837] -> [....192.168.1.1][...53] 
          detected: [....75] [ip4][..udp] [....192.168.1.6][60837] -> [....192.168.1.1][...53] [DNS.Teams][Unknown][Network][Safe][c-flightproxy-euno-01-teams.cloudapp.net]
-                   RISK: Unidirectional Traffic
  detection-update: [....75] [ip4][..udp] [....192.168.1.6][60837] -> [....192.168.1.1][...53] [DNS.Teams][Unknown][Network][Safe][c-flightproxy-euno-01-teams.cloudapp.net]
          detected: [....74] [ip4][..tcp] [....192.168.1.6][60567] -> [..52.114.77.136][..443] [TLS.Teams][Azure][Collaborative][Safe][api.flightproxy.teams.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
@@ -443,22 +413,22 @@
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [....76] [ip4][..udp] [....192.168.1.6][50016] -> [....192.168.0.4][50005] 
          detected: [....76] [ip4][..udp] [....192.168.1.6][50016] -> [....192.168.0.4][50005] [STUN.Skype_TeamsCall][Unknown][VoIP][Acceptable][]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
               new: [....77] [ip4][..udp] [....192.168.1.6][50036] -> [....192.168.0.4][50020] 
          detected: [....77] [ip4][..udp] [....192.168.1.6][50036] -> [....192.168.0.4][50020] [STUN.Skype_TeamsCall][Unknown][VoIP][Acceptable][]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
               new: [....78] [ip4][..udp] [..93.71.110.205][16332] -> [....192.168.1.6][50016] 
          detected: [....78] [ip4][..udp] [..93.71.110.205][16332] -> [....192.168.1.6][50016] [STUN.Skype_TeamsCall][Unknown][VoIP][Acceptable][]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
               new: [....79] [ip4][..udp] [..93.71.110.205][16333] -> [....192.168.1.6][50036] 
          detected: [....79] [ip4][..udp] [..93.71.110.205][16333] -> [....192.168.1.6][50036] [STUN.Skype_TeamsCall][Unknown][VoIP][Acceptable][]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
               new: [....80] [ip4][..udp] [..52.114.252.21][.3480] -> [....192.168.1.6][50036] 
          detected: [....80] [ip4][..udp] [..52.114.252.21][.3480] -> [....192.168.1.6][50036] [STUN.Skype_TeamsCall][Azure][VoIP][Acceptable][]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
               new: [....81] [ip4][..udp] [...52.114.252.8][.3479] -> [....192.168.1.6][50016] 
          detected: [....81] [ip4][..udp] [...52.114.252.8][.3479] -> [....192.168.1.6][50016] [STUN.Skype_TeamsCall][Azure][VoIP][Acceptable][]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
           analyse: [....64] [ip4][..tcp] [....192.168.1.6][50018] -> [.52.114.250.123][..443] [TLS.Teams][Azure][Collaborative][Safe]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    1.567|    0.072|    0.275|      75449.426|   1.900]
@@ -474,7 +444,6 @@
  detection-update: [....82] [ip4][..tcp] [....192.168.1.6][60568] -> [...40.79.138.41][..443] [TLS.Skype_Teams][Azure][VoIP][Acceptable][gate.hockeyapp.net]
               new: [....83] [ip4][.icmp] [..93.71.110.205] -> [....192.168.1.6] 
          detected: [....83] [ip4][.icmp] [..93.71.110.205] -> [....192.168.1.6] [ICMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
           analyse: [....78] [ip4][..udp] [..93.71.110.205][16332] -> [....192.168.1.6][50016] [STUN.Skype_TeamsCall][Unknown][VoIP][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    1.168|    0.160|    0.366|     133702.353|   2.700]

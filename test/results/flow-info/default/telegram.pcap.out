@@ -15,10 +15,8 @@
          detected: [.....6] [ip6][..udp] [................fe80::4ba:91a:7817:e318][.5353] -> [...............................ff02::fb][.5353] [MDNS][Unknown][Network][Acceptable][_dacp._tcp.local]
               new: [.....7] [ip4][..udp] [...192.168.1.77][.5353] -> [...192.168.1.75][.5353] 
          detected: [.....7] [ip4][..udp] [...192.168.1.77][.5353] -> [...192.168.1.75][.5353] [MDNS][Unknown][Network][Acceptable][_companion-link._tcp.local]
-                   RISK: Unidirectional Traffic
               new: [.....8] [ip4][..udp] [...192.168.1.77][61631] -> [....192.168.1.1][...53] 
          detected: [.....8] [ip4][..udp] [...192.168.1.77][61631] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][e7047.e12.akamaiedge.net]
-                   RISK: Unidirectional Traffic
  detection-update: [.....8] [ip4][..udp] [...192.168.1.77][61631] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][e7047.e12.akamaiedge.net]
               new: [.....9] [ip4][..udp] [...192.168.1.77][17500] -> [255.255.255.255][17500] 
          detected: [.....9] [ip4][..udp] [...192.168.1.77][17500] -> [255.255.255.255][17500] [Dropbox][Unknown][Cloud][Acceptable]
@@ -29,7 +27,6 @@
          detected: [....11] [ip6][..udp] [..............fe80::18a0:a412:8935:c01b][.5353] -> [...............................ff02::fb][.5353] [MDNS][Unknown][Network][Acceptable][_homekit._tcp.local]
               new: [....12] [ip4][..udp] [...192.168.1.77][.5353] -> [...192.168.1.53][.5353] 
          detected: [....12] [ip4][..udp] [...192.168.1.77][.5353] -> [...192.168.1.53][.5353] [MDNS][Unknown][Network][Acceptable][_companion-link._tcp.local]
-                   RISK: Unidirectional Traffic
           analyse: [.....5] [ip4][..udp] [...192.168.1.75][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    1.089|    0.260|    0.238|      56779.682|   4.400]
@@ -54,7 +51,6 @@
  detection-update: [....11] [ip6][..udp] [..............fe80::18a0:a412:8935:c01b][.5353] -> [...............................ff02::fb][.5353] [MDNS][Unknown][Network][Acceptable][_sleep-proxy._udp.local]
               new: [....13] [ip4][..udp] [...192.168.1.77][52118] -> [....192.168.1.1][...53] 
          detected: [....13] [ip4][..udp] [...192.168.1.77][52118] -> [....192.168.1.1][...53] [DNS.Microsoft][Unknown][Network][Safe][in.appcenter.ms]
-                   RISK: Unidirectional Traffic
  detection-update: [....13] [ip4][..udp] [...192.168.1.77][52118] -> [....192.168.1.1][...53] [DNS.Microsoft][Unknown][Network][Safe][in.appcenter.ms]
               new: [....14] [ip4][..udp] [...192.168.1.53][57621] -> [..192.168.1.255][57621] 
          detected: [....14] [ip4][..udp] [...192.168.1.53][57621] -> [..192.168.1.255][57621] [Spotify][Unknown][Music][Fun]
@@ -62,7 +58,6 @@
          detected: [....15] [ip4][..udp] [...192.168.1.75][57916] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
               new: [....16] [ip4][..udp] [...192.168.1.77][61120] -> [....192.168.1.1][...53] 
          detected: [....16] [ip4][..udp] [...192.168.1.77][61120] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][e4518.dscx.akamaiedge.net]
-                   RISK: Unidirectional Traffic
  detection-update: [....16] [ip4][..udp] [...192.168.1.77][61120] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][e4518.dscx.akamaiedge.net]
               new: [....17] [ip4][..udp] [...192.168.1.52][.5353] -> [....224.0.0.251][.5353] 
          detected: [....17] [ip4][..udp] [...192.168.1.52][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable][_raop._tcp.local]
@@ -70,26 +65,20 @@
          detected: [....18] [ip6][..udp] [...............fe80::4dc:edec:5b0c:a661][.5353] -> [...............................ff02::fb][.5353] [MDNS][Unknown][Network][Acceptable][_raop._tcp.local]
               new: [....19] [ip4][..udp] [...192.168.1.77][23174] -> [.....91.108.8.7][..521] 
          detected: [....19] [ip4][..udp] [...192.168.1.77][23174] -> [.....91.108.8.7][..521] [Telegram][Telegram][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....20] [ip4][..udp] [...192.168.1.77][23174] -> [....91.108.12.5][..523] 
          detected: [....20] [ip4][..udp] [...192.168.1.77][23174] -> [....91.108.12.5][..523] [Telegram][Telegram][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....21] [ip4][..udp] [...192.168.1.77][23174] -> [....91.108.16.1][..527] 
          detected: [....21] [ip4][..udp] [...192.168.1.77][23174] -> [....91.108.16.1][..527] [Telegram][Telegram][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....22] [ip4][..udp] [...192.168.1.77][23174] -> [....91.108.12.1][..536] 
          detected: [....22] [ip4][..udp] [...192.168.1.77][23174] -> [....91.108.12.1][..536] [Telegram][Telegram][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....23] [ip4][..udp] [...192.168.1.77][23174] -> [.....91.108.8.8][..538] 
          detected: [....23] [ip4][..udp] [...192.168.1.77][23174] -> [.....91.108.8.8][..538] [Telegram][Telegram][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....24] [ip4][..udp] [...192.168.1.77][23174] -> [....91.108.16.4][..538] 
          detected: [....24] [ip4][..udp] [...192.168.1.77][23174] -> [....91.108.16.4][..538] [Telegram][Telegram][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....25] [ip4][..udp] [...192.168.1.77][23174] -> [...192.168.1.52][31480] 
               new: [....26] [ip4][..udp] [...192.168.1.77][23174] -> [..87.11.205.195][60723] 
          detected: [....26] [ip4][..udp] [...192.168.1.77][23174] -> [..87.11.205.195][60723] [OpenVPN][Unknown][VPN][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
           analyse: [....19] [ip4][..udp] [...192.168.1.77][23174] -> [.....91.108.8.7][..521] [Telegram][Telegram][Chat][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.001|    0.501|    0.118|    0.112|      12556.351|   4.400]
@@ -102,7 +91,6 @@
                    [ENTROPIES...: 4.9,5.1,6.5,4.9,5.1,6.6,6.5,4.6,6.6,5.1,4.9,5.1,7.1,6.4,7.0,6.5,7.0,7.0,6.5,6.4,7.0,7.1,7.0,4.9,5.1,6.9,6.8,6.9,7.0,7.0,6.4,7.0]
               new: [....27] [ip4][..udp] [...192.168.1.77][47127] -> [....192.168.1.1][...53] 
          detected: [....27] [ip4][..udp] [...192.168.1.77][47127] -> [....192.168.1.1][...53] [DNS.GoogleServices][Unknown][Network][Acceptable][www.googletagservices.com]
-                   RISK: Unidirectional Traffic
  detection-update: [....27] [ip4][..udp] [...192.168.1.77][47127] -> [....192.168.1.1][...53] [DNS.GoogleServices][Unknown][Network][Acceptable][www.googletagservices.com]
                    RISK: Minor Issues
           analyse: [....25] [ip4][..udp] [...192.168.1.77][23174] -> [...192.168.1.52][31480] 
@@ -124,42 +112,33 @@
          detected: [....30] [ip4][..udp] [...192.168.1.77][..137] -> [..192.168.1.255][..137] [NetBIOS][Unknown][System][Acceptable][workgroup]
               new: [....31] [ip4][..udp] [...192.168.1.77][49764] -> [....192.168.1.1][...53] 
          detected: [....31] [ip4][..udp] [...192.168.1.77][49764] -> [....192.168.1.1][...53] [DNS.ntop][Unknown][Network][Safe][dati.ntop.org]
-                   RISK: Unidirectional Traffic
  detection-update: [....31] [ip4][..udp] [...192.168.1.77][49764] -> [....192.168.1.1][...53] [DNS.ntop][Unknown][Network][Safe][dati.ntop.org]
               new: [....32] [ip4][..udp] [...192.168.1.77][.5812] -> [....192.168.1.1][...53] 
          detected: [....32] [ip4][..udp] [...192.168.1.77][.5812] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][pixel.wp.com]
-                   RISK: Unidirectional Traffic
  detection-update: [....32] [ip4][..udp] [...192.168.1.77][.5812] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][pixel.wp.com]
                    RISK: Minor Issues
               new: [....33] [ip4][..udp] [...192.168.1.77][54595] -> [....192.168.1.1][...53] 
          detected: [....33] [ip4][..udp] [...192.168.1.77][54595] -> [....192.168.1.1][...53] [DNS.ntop][Unknown][Network][Safe][b._dns-sd._udp.ntop.org]
-                   RISK: Unidirectional Traffic
  detection-update: [.....3] [ip4][..udp] [...192.168.1.53][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable][_googlecast._tcp.local]
               new: [....34] [ip4][..udp] [...192.168.1.77][61974] -> [..216.58.205.68][..443] 
          detected: [....34] [ip4][..udp] [...192.168.1.77][61974] -> [..216.58.205.68][..443] [QUIC.Google][Google][Web][Acceptable][www.google.com]
-                   RISK: Unidirectional Traffic
               new: [....35] [ip4][..udp] [...192.168.1.77][50822] -> [..216.58.205.68][..443] 
          detected: [....35] [ip4][..udp] [...192.168.1.77][50822] -> [..216.58.205.68][..443] [QUIC.Google][Google][Web][Acceptable][www.google.com]
-                   RISK: Unidirectional Traffic
               new: [....36] [ip4][..udp] [...192.168.1.77][57621] -> [..192.168.1.255][57621] 
          detected: [....36] [ip4][..udp] [...192.168.1.77][57621] -> [..192.168.1.255][57621] [Spotify][Unknown][Music][Fun]
               new: [....37] [ip4][..udp] [...192.168.1.77][28150] -> [.....91.108.8.8][..529] 
          detected: [....37] [ip4][..udp] [...192.168.1.77][28150] -> [.....91.108.8.8][..529] [Telegram][Telegram][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....38] [ip4][..udp] [...192.168.1.77][28150] -> [....91.108.16.1][..529] 
          detected: [....38] [ip4][..udp] [...192.168.1.77][28150] -> [....91.108.16.1][..529] [Telegram][Telegram][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....39] [ip4][..udp] [...192.168.1.77][28150] -> [....91.108.12.3][..530] 
          detected: [....39] [ip4][..udp] [...192.168.1.77][28150] -> [....91.108.12.3][..530] [Telegram][Telegram][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....40] [ip4][..udp] [...192.168.1.77][28150] -> [.....91.108.8.1][..533] 
          detected: [....40] [ip4][..udp] [...192.168.1.77][28150] -> [.....91.108.8.1][..533] [Telegram][Telegram][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....41] [ip4][..udp] [...192.168.1.77][28150] -> [....91.108.12.5][..537] 
          detected: [....41] [ip4][..udp] [...192.168.1.77][28150] -> [....91.108.12.5][..537] [Telegram][Telegram][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....42] [ip4][..udp] [...192.168.1.77][28150] -> [....91.108.16.3][..537] 
          detected: [....42] [ip4][..udp] [...192.168.1.77][28150] -> [....91.108.16.3][..537] [Telegram][Telegram][Chat][Acceptable]
+ detection-update: [....33] [ip4][..udp] [...192.168.1.77][54595] -> [....192.168.1.1][...53] [DNS.ntop][Unknown][Network][Safe][b._dns-sd._udp.ntop.org]
                    RISK: Unidirectional Traffic
  detection-update: [....33] [ip4][..udp] [...192.168.1.77][54595] -> [....192.168.1.1][...53] [DNS.ntop][Unknown][Network][Safe][b._dns-sd._udp.ntop.org]
                    RISK: Error Code
@@ -202,10 +181,8 @@
          detected: [....46] [ip4][..udp] [...192.168.1.53][56384] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
               new: [....47] [ip4][..udp] [...192.168.1.77][58615] -> [....192.168.1.1][...53] 
          detected: [....47] [ip4][..udp] [...192.168.1.77][58615] -> [....192.168.1.1][...53] [DNS.Dropbox][Unknown][Network][Acceptable][telemetry.dropbox.com]
-                   RISK: Unidirectional Traffic
               new: [....48] [ip4][..udp] [...192.168.1.77][49533] -> [....192.168.1.1][...53] 
          detected: [....48] [ip4][..udp] [...192.168.1.77][49533] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][e4518.dscx.akamaiedge.net]
-                   RISK: Unidirectional Traffic
  detection-update: [....48] [ip4][..udp] [...192.168.1.77][49533] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][e4518.dscx.akamaiedge.net]
  detection-update: [....47] [ip4][..udp] [...192.168.1.77][58615] -> [....192.168.1.1][...53] [DNS.Dropbox][Unknown][Network][Acceptable][telemetry.dropbox.com]
              idle: [....32] [ip4][..udp] [...192.168.1.77][.5812] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]

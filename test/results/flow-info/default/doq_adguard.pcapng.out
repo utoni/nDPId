@@ -3,7 +3,6 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [.192.168.12.169][41070] -> [...94.140.14.14][..784] 
          detected: [.....1] [ip4][..udp] [.192.168.12.169][41070] -> [...94.140.14.14][..784] [QUIC.DoH_DoT][Unknown][Network][Acceptable][dns.adguard.com]
-                   RISK: Unidirectional Traffic
           analyse: [.....1] [ip4][..udp] [.192.168.12.169][41070] -> [...94.140.14.14][..784] [QUIC.DoH_DoT][Unknown][Network][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    1.885|    0.161|    0.453|     205274.628|   2.400]

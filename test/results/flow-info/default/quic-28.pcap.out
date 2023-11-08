@@ -3,7 +3,6 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [.......10.9.0.2][60106] -> [..104.26.11.240][..443] 
          detected: [.....1] [ip4][..udp] [.......10.9.0.2][60106] -> [..104.26.11.240][..443] [QUIC][Cloudflare][Web][Acceptable][www.wireshark.org]
-                   RISK: Unidirectional Traffic
           analyse: [.....1] [ip4][..udp] [.......10.9.0.2][60106] -> [..104.26.11.240][..443] [QUIC][Cloudflare][Web][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.021|    0.006|    0.007|         51.479|   3.900]

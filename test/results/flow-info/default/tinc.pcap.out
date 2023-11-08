@@ -9,10 +9,10 @@
                    RISK: Known Proto on Non Std Port
               new: [.....3] [ip4][..udp] [.131.114.168.27][55655] -> [.185.83.218.112][55655] 
          detected: [.....3] [ip4][..udp] [.131.114.168.27][55655] -> [.185.83.218.112][55655] [TINC][Unknown][VPN][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
               new: [.....4] [ip4][..udp] [.185.83.218.112][55656] -> [.131.114.168.27][55656] 
          detected: [.....4] [ip4][..udp] [.185.83.218.112][55656] -> [.131.114.168.27][55656] [TINC][Unknown][VPN][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
           analyse: [.....3] [ip4][..udp] [.131.114.168.27][55655] -> [.185.83.218.112][55655] [TINC][Unknown][VPN][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    1.070|    0.172|    0.377|     142420.984|   2.500]

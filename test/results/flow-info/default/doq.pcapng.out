@@ -3,10 +3,9 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip6][..udp] [....................................::1][47826] -> [....................................::1][..784] 
          detected: [.....1] [ip6][..udp] [....................................::1][47826] -> [....................................::1][..784] [QUIC.DoH_DoT][Unknown][Network][Acceptable][]
-                   RISK: Missing SNI TLS Extn, Unidirectional Traffic
+                   RISK: Missing SNI TLS Extn
               new: [.....2] [ip6][icmp6] [....................................::1] -> [....................................::1] 
          detected: [.....2] [ip6][icmp6] [....................................::1] -> [....................................::1] [ICMPV6][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....2] [ip6][icmp6] [....................................::1] -> [....................................::1] [ICMPV6][Unknown][Network][Acceptable]
              idle: [.....1] [ip6][..udp] [....................................::1][47826] -> [....................................::1][..784] [QUIC.DoH_DoT][Unknown][Network][Acceptable]
                    RISK: Missing SNI TLS Extn

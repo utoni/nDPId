@@ -11,25 +11,20 @@
          detected: [.....3] [ip4][..udp] [........0.0.0.0][...68] -> [255.255.255.255][...67] [DHCP][Unknown][Network][Acceptable][android-1c1335ec95a27318]
               new: [.....4] [ip4][..udp] [....172.16.42.1][...67] -> [..172.16.42.216][...68] 
          detected: [.....4] [ip4][..udp] [....172.16.42.1][...67] -> [..172.16.42.216][...68] [DHCP][Unknown][Network][Acceptable][]
-                   RISK: Unidirectional Traffic
               new: [.....5] [ip6][icmp6] [..............fe80::7af8:82ff:fed3:fbc2] -> [................................ff02::2] 
          detected: [.....5] [ip6][icmp6] [..............fe80::7af8:82ff:fed3:fbc2] -> [................................ff02::2] [ICMPV6][Unknown][Network][Acceptable]
               new: [.....6] [ip4][..udp] [..172.16.42.216][.3440] -> [....172.16.42.1][...53] 
          detected: [.....6] [ip4][..udp] [..172.16.42.216][.3440] -> [....172.16.42.1][...53] [DNS.Google][Unknown][Network][Acceptable][connectivitycheck.android.com]
-                   RISK: Unidirectional Traffic
  detection-update: [.....6] [ip4][..udp] [..172.16.42.216][.3440] -> [....172.16.42.1][...53] [DNS.Google][Unknown][Network][Acceptable][connectivitycheck.android.com]
               new: [.....7] [ip4][..udp] [..172.16.42.216][55619] -> [....172.16.42.1][...53] 
          detected: [.....7] [ip4][..udp] [..172.16.42.216][55619] -> [....172.16.42.1][...53] [DNS.Google][Unknown][Network][Acceptable][connectivitycheck.android.com]
-                   RISK: Unidirectional Traffic
  detection-update: [.....7] [ip4][..udp] [..172.16.42.216][55619] -> [....172.16.42.1][...53] [DNS.Google][Unknown][Network][Acceptable][connectivitycheck.android.com]
               new: [.....8] [ip4][..tcp] [..172.16.42.216][60246] -> [..172.217.9.142][...80] 
          detected: [.....8] [ip4][..tcp] [..172.16.42.216][60246] -> [..172.217.9.142][...80] [HTTP.Google][Google][ConnCheck][Acceptable][connectivitycheck.android.com]
               new: [.....9] [ip4][..udp] [..172.16.42.216][53188] -> [....172.16.42.1][...53] 
          detected: [.....9] [ip4][..udp] [..172.16.42.216][53188] -> [....172.16.42.1][...53] [DNS.GoogleServices][Unknown][Network][Acceptable][mtalk.google.com]
-                   RISK: Unidirectional Traffic
               new: [....10] [ip4][..udp] [..172.16.42.216][52603] -> [....172.16.42.1][...53] 
          detected: [....10] [ip4][..udp] [..172.16.42.216][52603] -> [....172.16.42.1][...53] [DNS.Google][Unknown][Network][Acceptable][www.google.com]
-                   RISK: Unidirectional Traffic
  detection-update: [....10] [ip4][..udp] [..172.16.42.216][52603] -> [....172.16.42.1][...53] [DNS.Google][Unknown][Network][Acceptable][www.google.com]
  detection-update: [.....9] [ip4][..udp] [..172.16.42.216][53188] -> [....172.16.42.1][...53] [DNS.GoogleServices][Unknown][Network][Acceptable][mtalk.google.com]
               new: [....11] [ip4][..tcp] [..172.16.42.216][42878] -> [173.194.223.188][.5228] 
@@ -39,16 +34,13 @@
                    RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
               new: [....12] [ip4][..udp] [..172.16.42.216][10462] -> [....172.16.42.1][...53] 
          detected: [....12] [ip4][..udp] [..172.16.42.216][10462] -> [....172.16.42.1][...53] [DNS.Google][Unknown][Network][Acceptable][www.google.com]
-                   RISK: Unidirectional Traffic
  detection-update: [....12] [ip4][..udp] [..172.16.42.216][10462] -> [....172.16.42.1][...53] [DNS.Google][Unknown][Network][Acceptable][www.google.com]
               new: [....13] [ip4][..tcp] [..172.16.42.216][35540] -> [..172.217.9.142][...80] 
          detected: [....13] [ip4][..tcp] [..172.16.42.216][35540] -> [..172.217.9.142][...80] [HTTP.Google][Google][ConnCheck][Acceptable][connectivitycheck.android.com]
               new: [....14] [ip4][.icmp] [....172.16.42.1] -> [..172.16.42.216] 
          detected: [....14] [ip4][.icmp] [....172.16.42.1] -> [..172.16.42.216] [ICMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....15] [ip4][..udp] [..172.16.42.216][48155] -> [....172.16.42.1][...53] 
          detected: [....15] [ip4][..udp] [..172.16.42.216][48155] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][www.amazon.com]
-                   RISK: Unidirectional Traffic
  detection-update: [....15] [ip4][..udp] [..172.16.42.216][48155] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][www.amazon.com]
               new: [....16] [ip4][..tcp] [..172.16.42.216][55242] -> [..52.85.209.197][..443] 
          detected: [....16] [ip4][..tcp] [..172.16.42.216][55242] -> [..52.85.209.197][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][www.amazon.com]
@@ -59,7 +51,6 @@
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [....17] [ip4][..udp] [..172.16.42.216][19967] -> [....172.16.42.1][...53] 
          detected: [....17] [ip4][..udp] [..172.16.42.216][19967] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][mads.amazon-adsystem.com]
-                   RISK: Unidirectional Traffic
  detection-update: [....17] [ip4][..udp] [..172.16.42.216][19967] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][mads.amazon-adsystem.com]
               new: [....18] [ip4][..tcp] [..172.16.42.216][33556] -> [....52.94.232.0][..443] 
          detected: [....18] [ip4][..tcp] [..172.16.42.216][33556] -> [....52.94.232.0][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][mads.amazon-adsystem.com]
@@ -70,7 +61,6 @@
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [....19] [ip4][..udp] [..172.16.42.216][.7358] -> [....172.16.42.1][...53] 
          detected: [....19] [ip4][..udp] [..172.16.42.216][.7358] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][firs-ta-g7g.amazon.com]
-                   RISK: Unidirectional Traffic
  detection-update: [....19] [ip4][..udp] [..172.16.42.216][.7358] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][firs-ta-g7g.amazon.com]
               new: [....20] [ip4][..tcp] [..172.16.42.216][53682] -> [..54.239.22.185][..443] 
          detected: [....20] [ip4][..tcp] [..172.16.42.216][53682] -> [..54.239.22.185][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][firs-ta-g7g.amazon.com]
@@ -81,7 +71,6 @@
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [....21] [ip4][..udp] [..172.16.42.216][41030] -> [....172.16.42.1][...53] 
          detected: [....21] [ip4][..udp] [..172.16.42.216][41030] -> [....172.16.42.1][...53] [DNS.AmazonAlexa][Unknown][Network][Acceptable][alexa.amazon.com]
-                   RISK: Unidirectional Traffic
  detection-update: [....21] [ip4][..udp] [..172.16.42.216][41030] -> [....172.16.42.1][...53] [DNS.AmazonAlexa][Unknown][Network][Acceptable][alexa.amazon.com]
               new: [....22] [ip4][..tcp] [..172.16.42.216][49572] -> [..52.94.232.134][...80] 
          detected: [....22] [ip4][..tcp] [..172.16.42.216][49572] -> [..52.94.232.134][...80] [HTTP.AmazonAlexa][AmazonAWS][VirtAssistant][Acceptable][alexa.amazon.com]
@@ -89,7 +78,6 @@
          detected: [....23] [ip6][icmp6] [..............fe80::7af8:82ff:fed3:fbc2] -> [...............................ff02::16] [ICMPV6][Unknown][Network][Acceptable]
               new: [....24] [ip4][..udp] [..172.16.42.216][23559] -> [....172.16.42.1][...53] 
          detected: [....24] [ip4][..udp] [..172.16.42.216][23559] -> [....172.16.42.1][...53] [DNS.AmazonAWS][Unknown][Network][Acceptable][cognito-identity.us-east-1.amazonaws.com]
-                   RISK: Unidirectional Traffic
  detection-update: [....24] [ip4][..udp] [..172.16.42.216][23559] -> [....172.16.42.1][...53] [DNS.AmazonAWS][Unknown][Network][Acceptable][cognito-identity.us-east-1.amazonaws.com]
               new: [....25] [ip4][..tcp] [..172.16.42.216][38363] -> [..34.199.52.240][..443] 
          detected: [....25] [ip4][..tcp] [..172.16.42.216][38363] -> [..34.199.52.240][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable][cognito-identity.us-east-1.amazonaws.com]
@@ -100,7 +88,6 @@
  detection-update: [....26] [ip4][..tcp] [..172.16.42.216][38364] -> [..34.199.52.240][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable][cognito-identity.us-east-1.amazonaws.com]
               new: [....27] [ip4][..udp] [..172.16.42.216][54886] -> [....172.16.42.1][...53] 
          detected: [....27] [ip4][..udp] [..172.16.42.216][54886] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][pitangui.amazon.com]
-                   RISK: Unidirectional Traffic
  detection-update: [....27] [ip4][..udp] [..172.16.42.216][54886] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][pitangui.amazon.com]
               new: [....28] [ip4][..tcp] [..172.16.42.216][45661] -> [..52.94.232.134][..443] 
          detected: [....28] [ip4][..tcp] [..172.16.42.216][45661] -> [..52.94.232.134][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][pitangui.amazon.com]
@@ -119,10 +106,8 @@
               new: [....33] [ip4][..tcp] [..172.16.42.216][40202] -> [.10.201.126.241][.8080] 
               new: [....34] [ip4][..udp] [..172.16.42.216][21391] -> [....172.16.42.1][...53] 
          detected: [....34] [ip4][..udp] [..172.16.42.216][21391] -> [....172.16.42.1][...53] [DNS.AmazonAWS][Unknown][Network][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
-                   RISK: Unidirectional Traffic
               new: [....35] [ip4][..udp] [..172.16.42.216][52077] -> [....172.16.42.1][...53] 
          detected: [....35] [ip4][..udp] [..172.16.42.216][52077] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][www.amazon.com]
-                   RISK: Unidirectional Traffic
  detection-update: [....34] [ip4][..udp] [..172.16.42.216][21391] -> [....172.16.42.1][...53] [DNS.AmazonAWS][Unknown][Network][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
               new: [....36] [ip4][..tcp] [..172.16.42.216][34019] -> [..54.239.24.186][..443] 
  detection-update: [....35] [ip4][..udp] [..172.16.42.216][52077] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][www.amazon.com]
@@ -151,7 +136,6 @@
  detection-update: [....36] [ip4][..tcp] [..172.16.42.216][34019] -> [..54.239.24.186][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
               new: [....40] [ip4][..udp] [..172.16.42.216][43350] -> [....172.16.42.1][...53] 
          detected: [....40] [ip4][..udp] [..172.16.42.216][43350] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][fls-na.amazon.com]
-                   RISK: Unidirectional Traffic
       ERROR-EVENT: Unknown packet type [1/16]
           analyse: [....28] [ip4][..tcp] [..172.16.42.216][45661] -> [..52.94.232.134][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
@@ -265,7 +249,6 @@
               new: [....61] [ip4][..tcp] [..172.16.42.216][42148] -> [..72.21.206.135][..443] 
               new: [....62] [ip4][..udp] [..172.16.42.216][44475] -> [....172.16.42.1][...53] 
          detected: [....62] [ip4][..udp] [..172.16.42.216][44475] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][www.amazon.com]
-                   RISK: Unidirectional Traffic
          detected: [....61] [ip4][..tcp] [..172.16.42.216][42148] -> [..72.21.206.135][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][fls-na.amazon.com]
  detection-update: [....62] [ip4][..udp] [..172.16.42.216][44475] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][www.amazon.com]
               new: [....63] [ip4][..tcp] [..172.16.42.216][54434] -> [..52.85.209.216][..443] 
@@ -274,7 +257,6 @@
  detection-update: [....63] [ip4][..tcp] [..172.16.42.216][54434] -> [..52.85.209.216][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][www.amazon.com]
               new: [....64] [ip4][..udp] [..172.16.42.216][60804] -> [....172.16.42.1][...53] 
          detected: [....64] [ip4][..udp] [..172.16.42.216][60804] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][api.amazon.com]
-                   RISK: Unidirectional Traffic
  detection-update: [....64] [ip4][..udp] [..172.16.42.216][60804] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][api.amazon.com]
               new: [....65] [ip4][..tcp] [..172.16.42.216][41691] -> [..54.239.29.146][..443] 
          detected: [....65] [ip4][..tcp] [..172.16.42.216][41691] -> [..54.239.29.146][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][api.amazon.com]
@@ -310,7 +292,6 @@
               new: [....68] [ip4][..tcp] [..172.16.42.216][45694] -> [..52.94.232.134][..443] 
               new: [....69] [ip4][..udp] [..172.16.42.216][25081] -> [....172.16.42.1][...53] 
          detected: [....69] [ip4][..udp] [..172.16.42.216][25081] -> [....172.16.42.1][...53] [DNS.AmazonAlexa][Unknown][Network][Acceptable][alexa.amazon.com]
-                   RISK: Unidirectional Traffic
          detected: [....66] [ip4][..tcp] [..172.16.42.216][49606] -> [..52.94.232.134][...80] [HTTP.AmazonAlexa][AmazonAWS][VirtAssistant][Acceptable][alexa.amazon.com]
               new: [....70] [ip4][..tcp] [..172.16.42.216][45695] -> [..52.94.232.134][..443] 
          detected: [....68] [ip4][..tcp] [..172.16.42.216][45694] -> [..52.94.232.134][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][pitangui.amazon.com]
@@ -424,7 +405,6 @@
          detected: [....94] [ip4][..tcp] [..172.16.42.216][34069] -> [..54.239.24.186][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
               new: [....95] [ip4][..udp] [..172.16.42.216][35726] -> [....172.16.42.1][...53] 
          detected: [....95] [ip4][..udp] [..172.16.42.216][35726] -> [....172.16.42.1][...53] [DNS.AmazonAWS][Unknown][Network][Acceptable][s3-external-2.amazonaws.com]
-                   RISK: Unidirectional Traffic
  detection-update: [....94] [ip4][..tcp] [..172.16.42.216][34069] -> [..54.239.24.186][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
  detection-update: [....95] [ip4][..udp] [..172.16.42.216][35726] -> [....172.16.42.1][...53] [DNS.AmazonAWS][Unknown][Network][Acceptable][s3-external-2.amazonaws.com]
               new: [....96] [ip4][..tcp] [..172.16.42.216][41820] -> [...54.231.72.88][..443] 
@@ -454,7 +434,6 @@
                    [ENTROPIES...: 4.7,4.6,5.1,4.8,5.9,5.1,4.9,6.0,6.1,4.8,4.9,5.8,7.9,7.2,4.7,4.6,4.6,7.6,7.9,7.0,4.7,7.7,7.9,7.1,4.6,7.6,4.9,7.9,6.9,4.5,7.9,4.5]
               new: [....98] [ip4][..udp] [..172.16.42.216][41639] -> [....172.16.42.1][...53] 
          detected: [....98] [ip4][..udp] [..172.16.42.216][41639] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][dp-gw-na-js.amazon.com]
-                   RISK: Unidirectional Traffic
  detection-update: [....98] [ip4][..udp] [..172.16.42.216][41639] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][dp-gw-na-js.amazon.com]
               new: [....99] [ip4][..tcp] [..172.16.42.216][44001] -> [..176.32.101.52][..443] 
          detected: [....99] [ip4][..tcp] [..172.16.42.216][44001] -> [..176.32.101.52][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][dp-gw-na-js.amazon.com]
@@ -483,7 +462,6 @@
            update: [....23] [ip6][icmp6] [..............fe80::7af8:82ff:fed3:fbc2] -> [...............................ff02::16] [ICMPV6][Unknown][Network][Acceptable]
               new: [...103] [ip4][..udp] [..172.16.42.216][14476] -> [....172.16.42.1][...53] 
          detected: [...103] [ip4][..udp] [..172.16.42.216][14476] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][skills-store.amazon.com]
-                   RISK: Unidirectional Traffic
  detection-update: [...103] [ip4][..udp] [..172.16.42.216][14476] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][skills-store.amazon.com]
               new: [...104] [ip4][..tcp] [..172.16.42.216][40853] -> [..54.239.29.253][..443] 
               new: [...105] [ip4][..tcp] [..172.16.42.216][40854] -> [..54.239.29.253][..443] 
@@ -542,7 +520,6 @@
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [...108] [ip4][..udp] [..172.16.42.216][20922] -> [....172.16.42.1][...53] 
          detected: [...108] [ip4][..udp] [..172.16.42.216][20922] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][pitangui.amazon.com]
-                   RISK: Unidirectional Traffic
  detection-update: [...108] [ip4][..udp] [..172.16.42.216][20922] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][pitangui.amazon.com]
               new: [...109] [ip4][..tcp] [..172.16.42.216][45728] -> [..52.94.232.134][..443] 
               new: [...110] [ip4][..tcp] [..172.16.42.216][45729] -> [..52.94.232.134][..443] 
@@ -566,7 +543,6 @@
                    RISK: Weak TLS Cipher
               new: [...114] [ip4][..udp] [..172.16.42.216][28614] -> [....172.16.42.1][...53] 
          detected: [...114] [ip4][..udp] [..172.16.42.216][28614] -> [....172.16.42.1][...53] [DNS.AmazonAWS][Unknown][Network][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
-                   RISK: Unidirectional Traffic
  detection-update: [...114] [ip4][..udp] [..172.16.42.216][28614] -> [....172.16.42.1][...53] [DNS.AmazonAWS][Unknown][Network][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
               new: [...115] [ip4][..tcp] [..172.16.42.216][37551] -> [..54.239.24.180][..443] 
               new: [...116] [ip4][..tcp] [..172.16.42.216][37552] -> [..54.239.24.180][..443] 
@@ -588,7 +564,6 @@
                    RISK: Weak TLS Cipher
               new: [...118] [ip4][..udp] [..172.16.42.216][.4920] -> [....172.16.42.1][...53] 
          detected: [...118] [ip4][..udp] [..172.16.42.216][.4920] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][ecx.images-amazon.com]
-                   RISK: Unidirectional Traffic
  detection-update: [...118] [ip4][..udp] [..172.16.42.216][.4920] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][ecx.images-amazon.com]
               new: [...119] [ip4][..tcp] [..172.16.42.216][51985] -> [....52.84.63.56][...80] 
               new: [...120] [ip4][..tcp] [..172.16.42.216][51986] -> [....52.84.63.56][...80] 
@@ -709,7 +684,6 @@
            update: [...108] [ip4][..udp] [..172.16.42.216][20922] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable]
               new: [...135] [ip4][..udp] [..172.16.42.216][64073] -> [....172.16.42.1][...53] 
          detected: [...135] [ip4][..udp] [..172.16.42.216][64073] -> [....172.16.42.1][...53] [DNS.AmazonAlexa][Unknown][Network][Acceptable][alexa.amazon.com]
-                   RISK: Unidirectional Traffic
  detection-update: [...135] [ip4][..udp] [..172.16.42.216][64073] -> [....172.16.42.1][...53] [DNS.AmazonAlexa][Unknown][Network][Acceptable][alexa.amazon.com]
               new: [...136] [ip4][..tcp] [..172.16.42.216][39750] -> [..52.94.232.134][..443] 
          detected: [...136] [ip4][..tcp] [..172.16.42.216][39750] -> [..52.94.232.134][..443] [TLS][AmazonAWS][Web][Safe][]
@@ -773,7 +747,6 @@
            update: [....62] [ip4][..udp] [..172.16.42.216][44475] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable]
               new: [...138] [ip4][..udp] [..172.16.42.216][.4312] -> [....172.16.42.1][...53] 
          detected: [...138] [ip4][..udp] [..172.16.42.216][.4312] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][pitangui.amazon.com]
-                   RISK: Unidirectional Traffic
  detection-update: [...138] [ip4][..udp] [..172.16.42.216][.4312] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][pitangui.amazon.com]
               new: [...139] [ip4][..tcp] [..172.16.42.216][50796] -> [..54.239.28.178][..443] 
               new: [...140] [ip4][..tcp] [..172.16.42.216][50797] -> [..54.239.28.178][..443] 
@@ -800,7 +773,6 @@
                    RISK: Weak TLS Cipher
               new: [...144] [ip4][..udp] [..172.16.42.216][.8669] -> [....172.16.42.1][...53] 
          detected: [...144] [ip4][..udp] [..172.16.42.216][.8669] -> [....172.16.42.1][...53] [DNS.AmazonAWS][Unknown][Network][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
-                   RISK: Unidirectional Traffic
  detection-update: [...144] [ip4][..udp] [..172.16.42.216][.8669] -> [....172.16.42.1][...53] [DNS.AmazonAWS][Unknown][Network][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
               new: [...145] [ip4][..tcp] [..172.16.42.216][44912] -> [...54.239.23.94][..443] 
          detected: [...145] [ip4][..tcp] [..172.16.42.216][44912] -> [...54.239.23.94][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
@@ -808,7 +780,6 @@
  detection-update: [...145] [ip4][..tcp] [..172.16.42.216][44912] -> [...54.239.23.94][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
               new: [...146] [ip4][..udp] [..172.16.42.216][59908] -> [....172.16.42.1][...53] 
          detected: [...146] [ip4][..udp] [..172.16.42.216][59908] -> [....172.16.42.1][...53] [DNS.AmazonAlexa][Unknown][Network][Acceptable][alexa.amazon.com]
-                   RISK: Unidirectional Traffic
  detection-update: [...146] [ip4][..udp] [..172.16.42.216][59908] -> [....172.16.42.1][...53] [DNS.AmazonAlexa][Unknown][Network][Acceptable][alexa.amazon.com]
               new: [...147] [ip4][..tcp] [..172.16.42.216][38757] -> [..54.239.28.178][..443] 
           analyse: [...142] [ip4][..tcp] [..172.16.42.216][50799] -> [..54.239.28.178][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
@@ -829,12 +800,10 @@
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
               new: [...148] [ip4][..udp] [..172.16.42.216][14934] -> [....172.16.42.1][...53] 
          detected: [...148] [ip4][..udp] [..172.16.42.216][14934] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][www.amazon.com]
-                   RISK: Unidirectional Traffic
  detection-update: [...148] [ip4][..udp] [..172.16.42.216][14934] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][www.amazon.com]
               new: [...149] [ip4][..tcp] [..172.16.42.216][41828] -> [..52.85.209.143][..443] 
               new: [...150] [ip4][..udp] [..172.16.42.216][40425] -> [....172.16.42.1][...53] 
          detected: [...150] [ip4][..udp] [..172.16.42.216][40425] -> [....172.16.42.1][...53] [DNS.PlayStore][Unknown][Network][Safe][android.clients.google.com]
-                   RISK: Unidirectional Traffic
          detected: [...149] [ip4][..tcp] [..172.16.42.216][41828] -> [..52.85.209.143][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][www.amazon.com]
  detection-update: [...149] [ip4][..tcp] [..172.16.42.216][41828] -> [..52.85.209.143][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][www.amazon.com]
  detection-update: [...149] [ip4][..tcp] [..172.16.42.216][41828] -> [..52.85.209.143][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][www.amazon.com]
@@ -859,7 +828,6 @@
  detection-update: [...149] [ip4][..tcp] [..172.16.42.216][41828] -> [..52.85.209.143][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][www.amazon.com]
               new: [...152] [ip4][..udp] [..172.16.42.216][.4612] -> [....172.16.42.1][...53] 
          detected: [...152] [ip4][..udp] [..172.16.42.216][.4612] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][images-na.ssl-images-amazon.com]
-                   RISK: Unidirectional Traffic
  detection-update: [...152] [ip4][..udp] [..172.16.42.216][.4612] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][images-na.ssl-images-amazon.com]
               new: [...153] [ip4][..tcp] [..172.16.42.216][41912] -> [...52.84.62.115][..443] 
               new: [...154] [ip4][..tcp] [..172.16.42.216][41913] -> [...52.84.62.115][..443] 
@@ -923,7 +891,6 @@
                    [ENTROPIES...: 4.7,5.2,5.1,5.4,5.2,7.0,7.3,7.7,5.0,5.1,5.1,6.6,6.1,7.7,7.7,6.1,5.1,5.2,7.8,7.4,7.1,7.7,7.8,7.5,7.9,6.8,7.6,7.9,7.9,7.9,7.9,7.9]
               new: [...158] [ip4][..udp] [..172.16.42.216][.2707] -> [....172.16.42.1][...53] 
          detected: [...158] [ip4][..udp] [..172.16.42.216][.2707] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][fls-na.amazon.com]
-                   RISK: Unidirectional Traffic
           analyse: [...155] [ip4][..tcp] [..172.16.42.216][41914] -> [...52.84.62.115][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.264|    0.057|    0.086|       7393.244|   3.600]

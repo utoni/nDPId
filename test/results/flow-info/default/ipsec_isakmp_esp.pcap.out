@@ -3,10 +3,8 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.193][.4500] 
          detected: [.....1] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.193][.4500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
               new: [.....2] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.193][..500] 
          detected: [.....2] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.193][..500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
            update: [.....1] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.193][.4500] [IPSec][Unknown][VPN][Safe]
            update: [.....2] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.193][..500] [IPSec][Unknown][VPN][Safe]
      DAEMON-EVENT: [Processed: 23 pkts][ZLib][compressions: 0|diff: 0 / 0]
@@ -31,7 +29,6 @@
            update: [.....1] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.193][.4500] [IPSec][Unknown][VPN][Safe]
               new: [.....3] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.193][..500] 
          detected: [.....3] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.193][..500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
            update: [.....1] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.193][.4500] [IPSec][Unknown][VPN][Safe]
            update: [.....3] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.193][..500] [IPSec][Unknown][VPN][Safe]
      DAEMON-EVENT: [Processed: 84 pkts][ZLib][compressions: 0|diff: 0 / 0]
@@ -40,14 +37,11 @@
            update: [.....3] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.193][..500] [IPSec][Unknown][VPN][Safe]
               new: [.....4] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.195][.4500] 
          detected: [.....4] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.195][.4500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
            update: [.....3] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.193][..500] [IPSec][Unknown][VPN][Safe]
               new: [.....5] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.193][.4500] 
          detected: [.....5] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.193][.4500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
               new: [.....6] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.195][..500] 
          detected: [.....6] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.195][..500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
              idle: [.....3] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.193][..500] [IPSec][Unknown][VPN][Safe]
            update: [.....4] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.195][.4500] [IPSec][Unknown][VPN][Safe]
      DAEMON-EVENT: [Processed: 126 pkts][ZLib][compressions: 0|diff: 0 / 0]
@@ -59,10 +53,8 @@
      DAEMON-EVENT: [Flows][active: 2 / 6|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 14]
               new: [.....7] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.194][..500] 
          detected: [.....7] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.194][..500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
               new: [.....8] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.194][.4500] 
          detected: [.....8] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.194][.4500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
              idle: [.....4] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.195][.4500] [IPSec][Unknown][VPN][Safe]
              idle: [.....6] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.195][..500] [IPSec][Unknown][VPN][Safe]
      DAEMON-EVENT: [Processed: 164 pkts][ZLib][compressions: 0|diff: 0 / 0]
@@ -75,18 +67,16 @@
      DAEMON-EVENT: [Flows][active: 2 / 8|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 18]
               new: [.....9] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.225][..500] 
          detected: [.....9] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.225][..500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
               new: [....10] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.225][.4500] 
          detected: [....10] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.225][.4500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Malformed Packet, Unidirectional Traffic
+                   RISK: Malformed Packet
              idle: [.....8] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.194][.4500] [IPSec][Unknown][VPN][Safe]
              idle: [.....7] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.194][..500] [IPSec][Unknown][VPN][Safe]
               new: [....11] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.131][..500] 
          detected: [....11] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.131][..500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Malformed Packet, Unidirectional Traffic
+                   RISK: Malformed Packet
               new: [....12] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.131][.4500] 
          detected: [....12] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.131][.4500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
              idle: [....10] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.225][.4500] [IPSec][Unknown][VPN][Safe]
                    RISK: Malformed Packet
              idle: [.....9] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.225][..500] [IPSec][Unknown][VPN][Safe]
@@ -99,10 +89,8 @@
      DAEMON-EVENT: [Flows][active: 2 / 12|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 20]
               new: [....13] [ip4][..udp] [..192.168.2.100][43811] -> [109.237.187.193][.4500] 
          detected: [....13] [ip4][..udp] [..192.168.2.100][43811] -> [109.237.187.193][.4500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
               new: [....14] [ip4][..udp] [..192.168.2.100][43811] -> [109.237.187.193][..500] 
          detected: [....14] [ip4][..udp] [..192.168.2.100][43811] -> [109.237.187.193][..500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
              idle: [....12] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.131][.4500] [IPSec][Unknown][VPN][Safe]
              idle: [....11] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.131][..500] [IPSec][Unknown][VPN][Safe]
                    RISK: Malformed Packet
@@ -110,36 +98,26 @@
      DAEMON-EVENT: [Flows][active: 2 / 14|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 20]
               new: [....15] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.129][..500] 
          detected: [....15] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.129][..500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
               new: [....16] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.129][.4500] 
          detected: [....16] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.129][.4500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
              idle: [....13] [ip4][..udp] [..192.168.2.100][43811] -> [109.237.187.193][.4500] [IPSec][Unknown][VPN][Safe]
              idle: [....14] [ip4][..udp] [..192.168.2.100][43811] -> [109.237.187.193][..500] [IPSec][Unknown][VPN][Safe]
               new: [....17] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.225][..500] 
          detected: [....17] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.225][..500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
               new: [....18] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.225][.4500] 
          detected: [....18] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.225][.4500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
               new: [....19] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.131][..500] 
          detected: [....19] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.131][..500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
               new: [....20] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.131][.4500] 
          detected: [....20] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.131][.4500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
               new: [....21] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.193][..500] 
          detected: [....21] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.193][..500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
               new: [....22] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.193][.4500] 
          detected: [....22] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.193][.4500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
               new: [....23] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.227][..500] 
          detected: [....23] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.227][..500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
               new: [....24] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.227][.4500] 
          detected: [....24] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.227][.4500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
           analyse: [....24] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.227][.4500] [IPSec][Unknown][VPN][Safe]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.000|    0.000|    0.000|          0.000|   0.000]
@@ -162,16 +140,12 @@
                    [ENTROPIES...: 4.9,4.6,5.0,6.6,5.0,4.6,5.0,6.6,4.9,4.6,5.0,6.4,4.9,4.6,5.0,6.6,4.9,4.6,5.0,6.5,4.9,4.6,5.0,6.6,4.9,4.7,5.0,6.6,4.9,4.6,5.0,6.5]
               new: [....25] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.226][..500] 
          detected: [....25] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.226][..500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
               new: [....26] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.226][.4500] 
          detected: [....26] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.226][.4500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
               new: [....27] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.130][..500] 
          detected: [....27] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.130][..500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
               new: [....28] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.130][.4500] 
          detected: [....28] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.130][.4500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
           analyse: [....28] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.130][.4500] [IPSec][Unknown][VPN][Safe]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.000|    0.000|    0.000|          0.000|   0.000]
@@ -184,28 +158,20 @@
                    [ENTROPIES...: 7.7,6.8,6.3,5.8,6.0,7.4,7.9,7.8,6.6,6.6,7.8,6.6,7.8,7.9,7.9,7.8,6.8,6.3,5.9,6.1,7.4,7.9,7.8,6.6,6.7,7.8,6.7,7.9,7.8,7.8,7.7,6.9]
               new: [....29] [ip4][..udp] [..192.168.2.100][42593] -> [109.237.187.193][.4500] 
          detected: [....29] [ip4][..udp] [..192.168.2.100][42593] -> [109.237.187.193][.4500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
               new: [....30] [ip4][..udp] [..192.168.2.100][42593] -> [109.237.187.193][..500] 
          detected: [....30] [ip4][..udp] [..192.168.2.100][42593] -> [109.237.187.193][..500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
               new: [....31] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.194][..500] 
          detected: [....31] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.194][..500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
               new: [....32] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.194][.4500] 
          detected: [....32] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.194][.4500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
               new: [....33] [ip4][..udp] [..192.168.2.100][41618] -> [109.237.187.194][.4500] 
          detected: [....33] [ip4][..udp] [..192.168.2.100][41618] -> [109.237.187.194][.4500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
               new: [....34] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.195][.4500] 
          detected: [....34] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.195][.4500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
               new: [....35] [ip4][..udp] [..192.168.2.100][41618] -> [109.237.187.194][..500] 
          detected: [....35] [ip4][..udp] [..192.168.2.100][41618] -> [109.237.187.194][..500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
               new: [....36] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.195][..500] 
          detected: [....36] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.195][..500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Unidirectional Traffic
           analyse: [....34] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.195][.4500] [IPSec][Unknown][VPN][Safe]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.000|    0.000|    0.000|          0.000|   0.000]

@@ -3,6 +3,5 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [........1.1.1.1][48502] -> [........2.2.2.2][..443] [MIDSTREAM] 
          detected: [.....1] [ip4][..tcp] [........1.1.1.1][48502] -> [........2.2.2.2][..443] [HAProxy][Unknown][Web][Safe]
-                   RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..tcp] [........1.1.1.1][48502] -> [........2.2.2.2][..443] [HAProxy][Unknown][Web][Safe]
      DAEMON-EVENT: shutdown

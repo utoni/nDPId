@@ -3,10 +3,8 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [..192.168.1.142][55317] -> [188.165.213.169][.8333] [MIDSTREAM] 
          detected: [.....1] [ip4][..tcp] [..192.168.1.142][55317] -> [188.165.213.169][.8333] [BITCOIN][Unknown][Crypto_Currency][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [.....2] [ip4][..tcp] [..192.168.1.142][55328] -> [..69.118.54.122][.8333] [MIDSTREAM] 
          detected: [.....2] [ip4][..tcp] [..192.168.1.142][55328] -> [..69.118.54.122][.8333] [BITCOIN][Unknown][Crypto_Currency][Acceptable]
-                   RISK: Unidirectional Traffic
           analyse: [.....2] [ip4][..tcp] [..192.168.1.142][55328] -> [..69.118.54.122][.8333] [BITCOIN][Unknown][Crypto_Currency][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|  141.657|    9.231|   28.185|  794377756.606|   1.900]
@@ -19,7 +17,6 @@
                    [ENTROPIES...: 4.3,4.4,4.9,5.2,4.7,5.6,4.9,7.4,7.5,7.5,7.5,7.4,3.6,3.4,3.5,3.5,3.5,3.4,3.5,3.5,3.5,3.5,3.5,3.5,3.5,3.5,3.5,3.5,3.5,3.5,3.5,3.5]
               new: [.....3] [ip4][..tcp] [..192.168.1.142][55348] -> [..74.89.181.229][.8333] [MIDSTREAM] 
          detected: [.....3] [ip4][..tcp] [..192.168.1.142][55348] -> [..74.89.181.229][.8333] [BITCOIN][Unknown][Crypto_Currency][Acceptable]
-                   RISK: Unidirectional Traffic
           analyse: [.....3] [ip4][..tcp] [..192.168.1.142][55348] -> [..74.89.181.229][.8333] [BITCOIN][Unknown][Crypto_Currency][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|  100.111|    6.495|   19.445|  378100231.700|   2.000]
@@ -32,7 +29,6 @@
                    [ENTROPIES...: 4.5,4.5,5.1,5.3,4.9,4.9,5.1,4.8,3.6,3.5,3.6,3.5,3.5,3.5,3.5,3.5,3.5,3.5,3.5,3.5,3.5,3.5,3.5,3.5,3.5,3.5,3.5,3.5,3.5,3.5,3.5,3.5]
               new: [.....4] [ip4][..tcp] [..192.168.1.142][55383] -> [....66.68.83.22][.8333] [MIDSTREAM] 
          detected: [.....4] [ip4][..tcp] [..192.168.1.142][55383] -> [....66.68.83.22][.8333] [BITCOIN][Unknown][Crypto_Currency][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 214 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 4 / 4|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
           analyse: [.....4] [ip4][..tcp] [..192.168.1.142][55383] -> [....66.68.83.22][.8333] [BITCOIN][Unknown][Crypto_Currency][Acceptable]
@@ -47,7 +43,6 @@
                    [ENTROPIES...: 4.3,4.5,5.2,5.6,5.6,5.4,5.2,5.5,5.0,6.6,6.6,6.6,6.6,6.7,6.7,6.2,3.5,3.4,3.5,3.5,3.5,3.5,3.5,3.5,3.4,3.4,3.5,3.5,3.5,3.5,3.5,3.5]
               new: [.....5] [ip4][..tcp] [..192.168.1.142][55400] -> [.195.218.16.178][.8333] [MIDSTREAM] 
          detected: [.....5] [ip4][..tcp] [..192.168.1.142][55400] -> [.195.218.16.178][.8333] [BITCOIN][Unknown][Crypto_Currency][Acceptable]
-                   RISK: Unidirectional Traffic
           analyse: [.....5] [ip4][..tcp] [..192.168.1.142][55400] -> [.195.218.16.178][.8333] [BITCOIN][Unknown][Crypto_Currency][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|   41.186|    2.780|    7.976|   63609669.419|   2.200]
@@ -62,7 +57,6 @@
      DAEMON-EVENT: [Flows][active: 5 / 5|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....6] [ip4][..tcp] [..192.168.1.142][55487] -> [.184.58.165.119][.8333] [MIDSTREAM] 
          detected: [.....6] [ip4][..tcp] [..192.168.1.142][55487] -> [.184.58.165.119][.8333] [BITCOIN][Unknown][Crypto_Currency][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 621 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 6 / 6|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
              idle: [.....3] [ip4][..tcp] [..192.168.1.142][55348] -> [..74.89.181.229][.8333] [BITCOIN][Unknown][Crypto_Currency][Acceptable]

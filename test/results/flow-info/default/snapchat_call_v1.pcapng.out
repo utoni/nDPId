@@ -3,8 +3,6 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [.192.168.12.169][47520] -> [.34.246.231.140][..443] 
          detected: [.....1] [ip4][..udp] [.192.168.12.169][47520] -> [.34.246.231.140][..443] [QUIC.Snapchat][AmazonAWS][SocialNetwork][Fun][str1-euwest1-34-246-231-140.addlive.io]
-                   RISK: Unidirectional Traffic
- detection-update: [.....1] [ip4][..udp] [.192.168.12.169][47520] -> [.34.246.231.140][..443] [QUIC.Snapchat][AmazonAWS][SocialNetwork][Fun][str1-euwest1-34-246-231-140.addlive.io]
  detection-update: [.....1] [ip4][..udp] [.192.168.12.169][47520] -> [.34.246.231.140][..443] [QUIC.SnapchatCall][AmazonAWS][VoIP][Acceptable][str1-euwest1-34-246-231-140.addlive.io]
           analyse: [.....1] [ip4][..udp] [.192.168.12.169][47520] -> [.34.246.231.140][..443] [QUIC.SnapchatCall][AmazonAWS][VoIP][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy

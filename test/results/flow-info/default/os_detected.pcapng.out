@@ -3,7 +3,7 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [..192.168.1.128][39821] -> [........8.8.8.8][..443] 
          detected: [.....1] [ip4][..udp] [..192.168.1.128][39821] -> [........8.8.8.8][..443] [QUIC][Google][Web][Acceptable][]
-                   RISK: Missing SNI TLS Extn, Unidirectional Traffic, ALPN/SNI Mismatch
+                   RISK: Missing SNI TLS Extn, ALPN/SNI Mismatch
              idle: [.....1] [ip4][..udp] [..192.168.1.128][39821] -> [........8.8.8.8][..443] [QUIC][Google][Web][Acceptable]
                    RISK: Missing SNI TLS Extn, ALPN/SNI Mismatch
      DAEMON-EVENT: shutdown

@@ -3,13 +3,10 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [....10.12.64.30][29200] -> [..108.226.25.53][.1812] 
          detected: [.....1] [ip4][..udp] [....10.12.64.30][29200] -> [..108.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [.....2] [ip4][..udp] [..198.226.25.53][.1812] -> [...10.102.64.30][29200] 
          detected: [.....2] [ip4][..udp] [..198.226.25.53][.1812] -> [...10.102.64.30][29200] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [.....3] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.25.53][.1812] 
          detected: [.....3] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
       ERROR-EVENT: Unknown packet type [1/16]
               new: [.....4] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.25.53][.1796] 
              idle: [.....2] [ip4][..udp] [..198.226.25.53][.1812] -> [...10.102.64.30][29200] [Radius][Unknown][Network][Acceptable]
@@ -17,7 +14,6 @@
            update: [.....3] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
               new: [.....5] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.25.53][.1813] 
          detected: [.....5] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.25.53][.1813] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
       ERROR-EVENT: Unknown packet type [1/16]
            update: [.....3] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
            update: [.....4] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.25.53][.1796] 
@@ -31,10 +27,8 @@
               new: [.....7] [ip4][..udp] [198.226.170.170][43690] -> [170.170.170.170][43690] 
               new: [.....8] [ip4][..udp] [.....10.4.64.30][29200] -> [..198.226.25.53][.1812] 
          detected: [.....8] [ip4][..udp] [.....10.4.64.30][29200] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [.....9] [ip4][..udp] [..198.226.25.53][.1812] -> [....10.12.64.30][29270] 
          detected: [.....9] [ip4][..udp] [..198.226.25.53][.1812] -> [....10.12.64.30][29270] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
            update: [.....3] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
            update: [.....5] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.25.53][.1813] [Radius][Unknown][Network][Acceptable]
@@ -64,7 +58,6 @@
               new: [....11] [ip4][..udp] [170.170.170.170][43690] -> [170.170.170.170][43690] 
               new: [....12] [ip4][..udp] [..198.226.25.53][.1813] -> [....10.12.64.30][29264] 
          detected: [....12] [ip4][..udp] [..198.226.25.53][.1813] -> [....10.12.64.30][29264] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
       ERROR-EVENT: Unknown packet type [1/16]
              idle: [.....8] [ip4][..udp] [.....10.4.64.30][29200] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
      not-detected: [....10] [ip4][..udp] [..198.226.25.53][..309] -> [....10.12.64.30][12339] [Unknown][Unknown][Unrated]
@@ -96,13 +89,10 @@
            update: [....11] [ip4][..udp] [170.170.170.170][43690] -> [170.170.170.170][43690] 
               new: [....14] [ip4][..udp] [..198.226.25.53][.1812] -> [....74.12.64.30][29200] 
          detected: [....14] [ip4][..udp] [..198.226.25.53][.1812] -> [....74.12.64.30][29200] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....15] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.77.53][.1812] 
          detected: [....15] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.77.53][.1812] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....16] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.25.62][.1812] 
          detected: [....16] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.25.62][.1812] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
            update: [.....3] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
@@ -121,11 +111,9 @@
               new: [....19] [ip4][..udp] [..198.226.25.53][.1812] -> [...10.12.120.30][29200] 
               new: [....20] [ip4][..udp] [....10.12.64.30][29200] -> [..206.226.25.53][.1812] 
          detected: [....20] [ip4][..udp] [....10.12.64.30][29200] -> [..206.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
       ERROR-EVENT: Unknown packet type [1/16]
               new: [....21] [ip4][..udp] [..198.157.25.53][.1812] -> [....10.12.64.30][29200] 
          detected: [....21] [ip4][..udp] [..198.157.25.53][.1812] -> [....10.12.64.30][29200] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [2/16]
      not-detected: [....13] [ip4][..udp] [..198.162.25.53][.1810] -> [....10.12.64.30][29200] [Unknown][Unknown][Unrated]
                    RISK: Unidirectional Traffic
@@ -141,19 +129,15 @@
            update: [....14] [ip4][..udp] [..198.226.25.53][.1812] -> [....74.12.64.30][29200] [Radius][Unknown][Network][Acceptable]
               new: [....22] [ip4][..udp] [..198.230.25.62][.1812] -> [....10.12.64.30][29200] 
          detected: [....22] [ip4][..udp] [..198.230.25.62][.1812] -> [....10.12.64.30][29200] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....23] [ip4][...85] [..198.226.25.62] -> [....10.12.64.30] 
               new: [....24] [ip4][..udp] [..198.226.82.53][.1812] -> [....10.12.64.30][29200] 
          detected: [....24] [ip4][..udp] [..198.226.82.53][.1812] -> [....10.12.64.30][29200] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
               new: [....25] [ip4][..udp] [..198.226.25.53][.1895] -> [....10.12.64.30][29200] 
               new: [....26] [ip4][..udp] [....10.12.64.30][30224] -> [..198.226.25.53][.1812] 
          detected: [....26] [ip4][..udp] [....10.12.64.30][30224] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....27] [ip4][..udp] [..198.226.25.53][.1812] -> [....10.56.64.30][.9472] 
          detected: [....27] [ip4][..udp] [..198.226.25.53][.1812] -> [....10.56.64.30][.9472] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....15] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.77.53][.1812] [Radius][Unknown][Network][Acceptable]
              idle: [....14] [ip4][..udp] [..198.226.25.53][.1812] -> [....74.12.64.30][29200] [Radius][Unknown][Network][Acceptable]
            update: [....20] [ip4][..udp] [....10.12.64.30][29200] -> [..206.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
@@ -163,7 +147,6 @@
      DAEMON-EVENT: [Flows][active: 13 / 27|skipped: 0|!detected: 6|guessed: 0|detection-updates: 0|updates: 39]
               new: [....28] [ip4][..udp] [..198.226.25.53][.1812] -> [....10.28.64.30][29200] 
          detected: [....28] [ip4][..udp] [..198.226.25.53][.1812] -> [....10.28.64.30][29200] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
       ERROR-EVENT: Unknown packet type [1/16]
       ERROR-EVENT: Unknown packet type [2/16]
       ERROR-EVENT: Unknown packet type [3/16]
@@ -174,7 +157,6 @@
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [4/16]
               new: [....29] [ip4][..udp] [....10.12.64.30][29200] -> [..198.224.25.53][.1812] 
          detected: [....29] [ip4][..udp] [....10.12.64.30][29200] -> [..198.224.25.53][.1812] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....24] [ip4][..udp] [..198.226.82.53][.1812] -> [....10.12.64.30][29200] [Radius][Unknown][Network][Acceptable]
            update: [....20] [ip4][..udp] [....10.12.64.30][29200] -> [..206.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
            update: [....25] [ip4][..udp] [..198.226.25.53][.1895] -> [....10.12.64.30][29200] 
@@ -187,10 +169,8 @@
       ERROR-EVENT: Unknown L3 protocol [2/16]
               new: [....31] [ip4][..udp] [...10.12.64.110][29200] -> [..198.226.25.53][.1812] 
          detected: [....31] [ip4][..udp] [...10.12.64.110][29200] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....32] [ip4][..udp] [...72.226.25.53][.1812] -> [....10.12.64.30][29200] 
          detected: [....32] [ip4][..udp] [...72.226.25.53][.1812] -> [....10.12.64.30][29200] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
           guessed: [....19] [ip4][..udp] [..198.226.25.53][.1812] -> [...10.12.120.30][29200] [Radius][Unknown][Network][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....19] [ip4][..udp] [..198.226.25.53][.1812] -> [...10.12.120.30][29200] 
@@ -228,7 +208,6 @@
            update: [....18] [ip4][..254] [....10.12.64.30] -> [..198.226.25.53] 
               new: [....34] [ip4][..112] [....10.12.64.30] -> [..198.226.25.53] 
          detected: [....34] [ip4][..112] [....10.12.64.30] -> [..198.226.25.53] [VRRP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
       ERROR-EVENT: Unknown packet type [1/16]
              idle: [....31] [ip4][..udp] [...10.12.64.110][29200] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
              idle: [....30] [ip4][..udp] [..198.226.25.53][.1812] -> [.....10.12.37.0][29200] [Radius][Unknown][Network][Acceptable]
@@ -241,26 +220,21 @@
            update: [....18] [ip4][..254] [....10.12.64.30] -> [..198.226.25.53] 
               new: [....35] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.25.62][.1812] 
          detected: [....35] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.25.62][.1812] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....36] [ip4][..udp] [.....37.0.25.62][.1812] -> [....10.12.64.30][29200] 
          detected: [....36] [ip4][..udp] [.....37.0.25.62][.1812] -> [....10.12.64.30][29200] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
               new: [....37] [ip4][..udp] [..198.226.25.62][.1812] -> [.....10.12.37.0][29200] 
          detected: [....37] [ip4][..udp] [..198.226.25.62][.1812] -> [.....10.12.37.0][29200] [Radius][Unknown][Network][Acceptable]
               new: [....38] [ip4][..udp] [..198.226.25.62][.1812] -> [....10.12.64.30][29295] 
          detected: [....38] [ip4][..udp] [..198.226.25.62][.1812] -> [....10.12.64.30][29295] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....39] [ip4][..udp] [....10.12.64.30][29304] -> [..198.226.25.53][.1812] 
          detected: [....39] [ip4][..udp] [....10.12.64.30][29304] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....40] [ip4][..170] [170.170.170.170] -> [170.170.170.170] 
              idle: [....33] [ip4][..udp] [....10.12.64.30][29200] -> [...198.226.37.0][.1812] [Radius][Unknown][Network][Acceptable]
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [2/16]
       ERROR-EVENT: Unknown L3 protocol [1/16]
               new: [....41] [ip4][..udp] [..198.226.25.53][.1812] -> [..10.12.172.158][29200] 
          detected: [....41] [ip4][..udp] [..198.226.25.53][.1812] -> [..10.12.172.158][29200] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....42] [ip4][..udp] [....10.12.64.30][29200] -> [..198.119.25.53][.1812] 
               new: [....43] [ip4][..udp] [..198.226.25.53][.1965] -> [....10.12.64.30][29200] 
       ERROR-EVENT: Unknown packet type [2/16]
@@ -268,7 +242,6 @@
               new: [....44] [ip4][....0] [....10.12.64.30] -> [..198.226.25.53] 
               new: [....45] [ip4][..udp] [..198.234.25.53][.1812] -> [....10.12.64.30][29200] 
          detected: [....45] [ip4][..udp] [..198.234.25.53][.1812] -> [....10.12.64.30][29200] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
      not-detected: [....17] [ip4][...88] [..198.226.25.53] -> [....10.12.64.30] [Unknown][Unknown][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....17] [ip4][...88] [..198.226.25.53] -> [....10.12.64.30] 
@@ -286,14 +259,11 @@
            update: [....36] [ip4][..udp] [.....37.0.25.62][.1812] -> [....10.12.64.30][29200] [Radius][Unknown][Network][Acceptable]
               new: [....46] [ip4][..udp] [....10.76.64.30][29200] -> [..198.226.25.53][.1812] 
          detected: [....46] [ip4][..udp] [....10.76.64.30][29200] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....47] [ip4][..udp] [..198.226.25.53][43690] -> [..10.12.170.170][43690] 
               new: [....48] [ip4][..udp] [..198.226.25.53][.1812] -> [...10.12.112.30][29200] 
          detected: [....48] [ip4][..udp] [..198.226.25.53][.1812] -> [...10.12.112.30][29200] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....49] [ip4][..udp] [.....10.84.37.0][29200] -> [..198.226.25.53][.1812] 
          detected: [....49] [ip4][..udp] [.....10.84.37.0][29200] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
       ERROR-EVENT: Unknown L3 protocol [2/16]
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [3/16]
@@ -301,13 +271,10 @@
       ERROR-EVENT: Unknown L3 protocol [1/16]
               new: [....50] [ip4][..udp] [....10.12.64.37][29200] -> [....0.226.25.53][.1812] 
          detected: [....50] [ip4][..udp] [....10.12.64.37][29200] -> [....0.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....51] [ip4][..udp] [....10.12.64.30][29200] -> [...198.48.25.53][.1812] 
          detected: [....51] [ip4][..udp] [....10.12.64.30][29200] -> [...198.48.25.53][.1812] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....52] [ip4][..udp] [...198.52.25.53][.1812] -> [....10.12.64.30][29200] 
          detected: [....52] [ip4][..udp] [...198.52.25.53][.1812] -> [....10.12.64.30][29200] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....3] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
            update: [....37] [ip4][..udp] [..198.226.25.62][.1812] -> [.....10.12.37.0][29200] [Radius][Unknown][Network][Acceptable]
            update: [....49] [ip4][..udp] [.....10.84.37.0][29200] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
@@ -327,14 +294,12 @@
            update: [....34] [ip4][..112] [....10.12.64.30] -> [..198.226.25.53] [VRRP][Unknown][Network][Acceptable]
               new: [....53] [ip4][..udp] [..198.226.25.53][.1813] -> [....10.12.64.30][29200] 
          detected: [....53] [ip4][..udp] [..198.226.25.53][.1813] -> [....10.12.64.30][29200] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
       ERROR-EVENT: Unknown packet type [1/16]
       ERROR-EVENT: Unknown L3 protocol [2/16]
              idle: [....37] [ip4][..udp] [..198.226.25.62][.1812] -> [.....10.12.37.0][29200] [Radius][Unknown][Network][Acceptable]
              idle: [....36] [ip4][..udp] [.....37.0.25.62][.1812] -> [....10.12.64.30][29200] [Radius][Unknown][Network][Acceptable]
               new: [....54] [ip4][..udp] [..198.226.25.53][.1812] -> [....10.12.64.30][29204] 
          detected: [....54] [ip4][..udp] [..198.226.25.53][.1812] -> [....10.12.64.30][29204] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....41] [ip4][..udp] [..198.226.25.53][.1812] -> [..10.12.172.158][29200] [Radius][Unknown][Network][Acceptable]
              idle: [....35] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.25.62][.1812] [Radius][Unknown][Network][Acceptable]
              idle: [....38] [ip4][..udp] [..198.226.25.62][.1812] -> [....10.12.64.30][29295] [Radius][Unknown][Network][Acceptable]
@@ -370,14 +335,11 @@
            update: [....34] [ip4][..112] [....10.12.64.30] -> [..198.226.25.53] [VRRP][Unknown][Network][Acceptable]
               new: [....55] [ip4][..udp] [..198.226.25.53][.1812] -> [....65.12.64.30][29200] 
          detected: [....55] [ip4][..udp] [..198.226.25.53][.1812] -> [....65.12.64.30][29200] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....56] [ip4][..udp] [....10.12.69.30][29200] -> [..198.226.25.53][.1813] 
          detected: [....56] [ip4][..udp] [....10.12.69.30][29200] -> [..198.226.25.53][.1813] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....50] [ip4][..udp] [....10.12.64.37][29200] -> [....0.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
               new: [....57] [ip4][..udp] [....10.12.82.30][29200] -> [..198.226.25.53][.1812] 
          detected: [....57] [ip4][..udp] [....10.12.82.30][29200] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....58] [ip4][..udp] [..198.226.25.53][.1812] -> [....10.12.64.66][29200] 
              idle: [....56] [ip4][..udp] [....10.12.69.30][29200] -> [..198.226.25.53][.1813] [Radius][Unknown][Network][Acceptable]
              idle: [....53] [ip4][..udp] [..198.226.25.53][.1813] -> [....10.12.64.30][29200] [Radius][Unknown][Network][Acceptable]
@@ -391,23 +353,18 @@
            update: [....44] [ip4][....0] [....10.12.64.30] -> [..198.226.25.53] 
               new: [....59] [ip4][..udp] [....88.12.80.30][29200] -> [..198.226.25.53][.1812] 
          detected: [....59] [ip4][..udp] [....88.12.80.30][29200] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....60] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.25.62][.1812] 
          detected: [....60] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.25.62][.1812] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
               new: [....61] [ip4][..udp] [.....10.6.64.30][29200] -> [..198.226.25.53][.1812] 
          detected: [....61] [ip4][..udp] [.....10.6.64.30][29200] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....62] [ip4][..udp] [..198.226.25.53][.1812] -> [....10.82.64.30][29200] 
          detected: [....62] [ip4][..udp] [..198.226.25.53][.1812] -> [....10.82.64.30][29200] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
       ERROR-EVENT: Unknown packet type [2/16]
       ERROR-EVENT: Unknown packet type [3/16]
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
               new: [....63] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.80.53][.1812] 
          detected: [....63] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.80.53][.1812] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....64] [ip4][..udp] [..198.226.25.53][.3860] -> [....14.12.64.30][29200] 
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [2/16]
            update: [.....3] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
@@ -416,15 +373,12 @@
            update: [....59] [ip4][..udp] [....88.12.80.30][29200] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
               new: [....65] [ip4][..udp] [.....198.7.9.53][.1812] -> [....10.12.64.30][29200] 
          detected: [....65] [ip4][..udp] [.....198.7.9.53][.1812] -> [....10.12.64.30][29200] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....66] [ip4][..udp] [....10.12.64.30][29232] -> [..198.226.25.53][.1812] 
          detected: [....66] [ip4][..udp] [....10.12.64.30][29232] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
       ERROR-EVENT: Unknown packet type [1/16]
       ERROR-EVENT: Unknown L3 protocol [2/16]
               new: [....67] [ip4][..udp] [..198.226.25.53][.1812] -> [....10.81.64.30][29200] 
          detected: [....67] [ip4][..udp] [..198.226.25.53][.1812] -> [....10.81.64.30][29200] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....68] [ip4][..udp] [..198.226.25.53][43028] -> [....10.12.64.30][29200] 
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [3/16]
       ERROR-EVENT: Unknown packet type [4/16]
@@ -436,16 +390,13 @@
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
               new: [....69] [ip4][..udp] [..198.226.25.53][.1812] -> [....10.12.64.73][29200] 
          detected: [....69] [ip4][..udp] [..198.226.25.53][.1812] -> [....10.12.64.73][29200] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [2/16]
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [3/16]
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [4/16]
               new: [....70] [ip4][..udp] [..198.226.25.53][.1812] -> [....10.12.64.30][29208] 
          detected: [....70] [ip4][..udp] [..198.226.25.53][.1812] -> [....10.12.64.30][29208] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....71] [ip4][..udp] [....10.12.64.30][29289] -> [..198.226.25.53][.1812] 
          detected: [....71] [ip4][..udp] [....10.12.64.30][29289] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
       ERROR-EVENT: Unknown packet type [5/16]
            update: [.....3] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
            update: [....57] [ip4][..udp] [....10.12.82.30][29200] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
@@ -455,7 +406,6 @@
            update: [....59] [ip4][..udp] [....88.12.80.30][29200] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
               new: [....72] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.25.21][.1812] 
          detected: [....72] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.25.21][.1812] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
      not-detected: [....44] [ip4][....0] [....10.12.64.30] -> [..198.226.25.53] [Unknown][Unknown][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....44] [ip4][....0] [....10.12.64.30] -> [..198.226.25.53] 
@@ -493,22 +443,18 @@
            update: [....40] [ip4][..170] [170.170.170.170] -> [170.170.170.170] 
               new: [....73] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.25.53][.1812] 
          detected: [....73] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....74] [ip4][..udp] [..198.226.25.53][.1814] -> [....10.12.64.30][29200] 
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
               new: [....75] [ip4][..udp] [....57.12.64.30][29200] -> [..198.226.25.53][28948] 
               new: [....76] [ip4][..udp] [..198.226.25.53][.1812] -> [....10.12.64.30][22544] 
          detected: [....76] [ip4][..udp] [..198.226.25.53][.1812] -> [....10.12.64.30][22544] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [2/16]
      DAEMON-EVENT: [Processed: 285 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 6 / 76|skipped: 0|!detected: 15|guessed: 3|detection-updates: 0|updates: 132]
               new: [....77] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.25.53][.1813] 
          detected: [....77] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.25.53][.1813] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....78] [ip4][..udp] [..198.226.25.53][.1813] -> [....10.12.64.30][21008] 
          detected: [....78] [ip4][..udp] [..198.226.25.53][.1813] -> [....10.12.64.30][21008] [Radius][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
      not-detected: [....40] [ip4][..170] [170.170.170.170] -> [170.170.170.170] [Unknown][Unknown][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....40] [ip4][..170] [170.170.170.170] -> [170.170.170.170] 

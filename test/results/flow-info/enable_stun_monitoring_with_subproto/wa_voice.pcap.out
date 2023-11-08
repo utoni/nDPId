@@ -3,15 +3,12 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [...192.168.2.12][51431] -> [....192.168.2.1][...53] 
          detected: [.....1] [ip4][..udp] [...192.168.2.12][51431] -> [....192.168.2.1][...53] [DNS.Google][Unknown][Network][Acceptable][www.google.com]
-                   RISK: Unidirectional Traffic
  detection-update: [.....1] [ip4][..udp] [...192.168.2.12][51431] -> [....192.168.2.1][...53] [DNS.Google][Unknown][Network][Acceptable][www.google.com]
               new: [.....2] [ip4][..udp] [...192.168.2.12][60765] -> [....192.168.2.1][...53] 
          detected: [.....2] [ip4][..udp] [...192.168.2.12][60765] -> [....192.168.2.1][...53] [DNS.WhatsApp][Unknown][Network][Acceptable][g.whatsapp.net]
-                   RISK: Unidirectional Traffic
  detection-update: [.....2] [ip4][..udp] [...192.168.2.12][60765] -> [....192.168.2.1][...53] [DNS.WhatsApp][Unknown][Network][Acceptable][g.whatsapp.net]
               new: [.....3] [ip4][..tcp] [...192.168.2.12][49354] -> [...17.242.60.84][.5223] [MIDSTREAM] 
          detected: [.....3] [ip4][..tcp] [...192.168.2.12][49354] -> [...17.242.60.84][.5223] [ApplePush][Apple][Cloud][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [.....4] [ip4][..udp] [....192.168.2.1][57621] -> [..192.168.2.255][57621] 
          detected: [.....4] [ip4][..udp] [....192.168.2.1][57621] -> [..192.168.2.255][57621] [Spotify][Unknown][Music][Fun]
               new: [.....5] [ip4][..tcp] [...192.168.2.12][49355] -> [..157.240.20.53][.5222] 
@@ -28,7 +25,6 @@
                    [ENTROPIES...: 4.5,5.1,5.0,7.2,5.1,6.1,6.0,6.5,7.9,5.9,7.9,6.7,7.9,6.7,7.9,5.0,5.0,5.0,5.1,5.1,5.1,5.0,7.8,5.6,5.9,6.2,5.7,6.2,5.0,7.3,5.0,5.0]
               new: [.....6] [ip4][..udp] [...192.168.2.12][55296] -> [....192.168.2.1][...53] 
          detected: [.....6] [ip4][..udp] [...192.168.2.12][55296] -> [....192.168.2.1][...53] [DNS.WhatsAppFiles][Unknown][Network][Acceptable][media-mxp1-1.cdn.whatsapp.net]
-                   RISK: Unidirectional Traffic
  detection-update: [.....6] [ip4][..udp] [...192.168.2.12][55296] -> [....192.168.2.1][...53] [DNS.WhatsAppFiles][Unknown][Network][Acceptable][media-mxp1-1.cdn.whatsapp.net]
               new: [.....7] [ip4][..tcp] [...192.168.2.12][50503] -> [....31.13.86.51][..443] 
          detected: [.....7] [ip4][..tcp] [...192.168.2.12][50503] -> [....31.13.86.51][..443] [TLS.WhatsAppFiles][WhatsApp][Download][Acceptable][media-mxp1-1.cdn.whatsapp.net]
@@ -47,7 +43,6 @@
          detected: [.....8] [ip4][..udp] [....192.168.2.1][17500] -> [..192.168.2.255][17500] [Dropbox][Unknown][Cloud][Acceptable]
               new: [.....9] [ip4][..tcp] [...17.171.47.85][..443] -> [...192.168.2.12][50502] [MIDSTREAM] 
          detected: [.....9] [ip4][..tcp] [...17.171.47.85][..443] -> [...192.168.2.12][50502] [TLS][Apple][Web][Safe]
-                   RISK: Unidirectional Traffic
               new: [....10] [ip4][..udp] [169.254.162.244][50384] -> [239.255.255.250][.1900] 
          detected: [....10] [ip4][..udp] [169.254.162.244][50384] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
               new: [....11] [ip4][..udp] [....192.168.2.1][50384] -> [239.255.255.250][.1900] 
@@ -58,24 +53,18 @@
          detected: [....13] [ip6][..udp] [...............fe80::414:409d:8afd:9f05][.5353] -> [...............................ff02::fb][.5353] [MDNS][Unknown][Network][Acceptable][_raop._tcp.local]
               new: [....14] [ip4][..udp] [...192.168.2.12][56328] -> [....31.13.86.48][.3478] 
          detected: [....14] [ip4][..udp] [...192.168.2.12][56328] -> [....31.13.86.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
-                   RISK: Unidirectional Traffic
               new: [....15] [ip4][..udp] [...192.168.2.12][56328] -> [..185.60.216.51][.3478] 
          detected: [....15] [ip4][..udp] [...192.168.2.12][56328] -> [..185.60.216.51][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
-                   RISK: Unidirectional Traffic
               new: [....16] [ip4][..udp] [...192.168.2.12][56328] -> [.157.240.193.48][.3478] 
          detected: [....16] [ip4][..udp] [...192.168.2.12][56328] -> [.157.240.193.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
-                   RISK: Unidirectional Traffic
               new: [....17] [ip4][..udp] [...192.168.2.12][56328] -> [..179.60.192.48][.3478] 
          detected: [....17] [ip4][..udp] [...192.168.2.12][56328] -> [..179.60.192.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
-                   RISK: Unidirectional Traffic
               new: [....18] [ip4][..udp] [...192.168.2.12][56328] -> [.157.240.196.62][.3478] 
          detected: [....18] [ip4][..udp] [...192.168.2.12][56328] -> [.157.240.196.62][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
-                   RISK: Unidirectional Traffic
               new: [....19] [ip4][..udp] [...192.168.2.12][64716] -> [239.255.255.250][.1900] 
          detected: [....19] [ip4][..udp] [...192.168.2.12][64716] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
               new: [....20] [ip4][..udp] [...192.168.2.12][60549] -> [....192.168.2.1][...53] 
          detected: [....20] [ip4][..udp] [...192.168.2.12][60549] -> [....192.168.2.1][...53] [DNS.WhatsApp][Unknown][Network][Acceptable][pps.whatsapp.net]
-                   RISK: Unidirectional Traffic
  detection-update: [....20] [ip4][..udp] [...192.168.2.12][60549] -> [....192.168.2.1][...53] [DNS.WhatsApp][Unknown][Network][Acceptable][pps.whatsapp.net]
               new: [....21] [ip4][..tcp] [...192.168.2.12][50504] -> [..157.240.20.52][..443] 
          detected: [....21] [ip4][..tcp] [...192.168.2.12][50504] -> [..157.240.20.52][..443] [TLS.WhatsApp][WhatsApp][Chat][Acceptable][pps.whatsapp.net]
@@ -94,7 +83,7 @@
          detected: [....22] [ip4][..udp] [........0.0.0.0][...68] -> [255.255.255.255][...67] [DHCP][Unknown][Network][Acceptable][lucas-imac]
               new: [....23] [ip4][..udp] [...91.252.56.51][32704] -> [...192.168.2.12][56328] 
          detected: [....23] [ip4][..udp] [...91.252.56.51][32704] -> [...192.168.2.12][56328] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable][]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
           analyse: [....14] [ip4][..udp] [...192.168.2.12][56328] -> [....31.13.86.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|   12.196|    1.588|    3.050|    9304956.469|   3.200]
@@ -107,7 +96,7 @@
                    [ENTROPIES...: 6.5,6.5,5.3,5.3,4.6,4.5,6.5,6.5,5.2,5.1,4.6,4.5,4.6,4.5,4.6,4.5,4.6,4.5,5.7,5.2,7.0,7.1,7.1,6.6,7.3,7.0,7.2,4.6,4.5,6.5,6.5,5.2]
               new: [....24] [ip4][..udp] [...192.168.2.12][56328] -> [.....1.60.78.64][64282] 
          detected: [....24] [ip4][..udp] [...192.168.2.12][56328] -> [.....1.60.78.64][64282] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable][]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
           analyse: [....23] [ip4][..udp] [...91.252.56.51][32704] -> [...192.168.2.12][56328] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    1.204|    0.182|    0.229|      52393.320|   4.200]
@@ -131,7 +120,6 @@
          detected: [....27] [ip4][..udp] [...192.168.2.12][57546] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
               new: [....28] [ip4][.icmp] [...192.168.2.12] -> [...91.252.56.51] 
          detected: [....28] [ip4][.icmp] [...192.168.2.12] -> [...91.252.56.51] [ICMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....3] [ip4][..tcp] [...192.168.2.12][49354] -> [...17.242.60.84][.5223] [ApplePush][Apple][Cloud][Acceptable]
      not-detected: [....25] [ip4][..tcp] [...192.168.2.12][49352] -> [169.254.162.244][49159] [Unknown][Unknown][Unrated]
              idle: [....25] [ip4][..tcp] [...192.168.2.12][49352] -> [169.254.162.244][49159] 

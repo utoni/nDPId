@@ -4,6 +4,5 @@
       ERROR-EVENT: Unknown L3 protocol [1/16]
               new: [.....1] [ip4][..tcp] [........2.2.2.2][..179] -> [........5.5.5.5][49433] [MIDSTREAM] 
          detected: [.....1] [ip4][..tcp] [........2.2.2.2][..179] -> [........5.5.5.5][49433] [BGP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..tcp] [........2.2.2.2][..179] -> [........5.5.5.5][49433] [BGP][Unknown][Network][Acceptable]
      DAEMON-EVENT: shutdown

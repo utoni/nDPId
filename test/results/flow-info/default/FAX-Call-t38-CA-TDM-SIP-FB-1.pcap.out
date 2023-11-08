@@ -3,16 +3,12 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [....10.35.40.22][.2944] -> [.....10.23.1.42][.2944] 
          detected: [.....1] [ip4][..udp] [....10.35.40.22][.2944] -> [.....10.23.1.42][.2944] [Megaco][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [.....2] [ip4][..udp] [....10.35.60.72][.5060] -> [...10.35.60.100][.5060] 
          detected: [.....2] [ip4][..udp] [....10.35.60.72][.5060] -> [...10.35.60.100][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [.....3] [ip4][..udp] [....10.35.40.25][.5060] -> [...10.35.40.200][.5060] 
          detected: [.....3] [ip4][..udp] [....10.35.40.25][.5060] -> [...10.35.40.200][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [.....4] [ip4][..udp] [138.132.169.101][.5060] -> [192.168.100.219][.5060] 
          detected: [.....4] [ip4][..udp] [138.132.169.101][.5060] -> [192.168.100.219][.5060] [SIP][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
           analyse: [.....1] [ip4][..udp] [....10.35.40.22][.2944] -> [.....10.23.1.42][.2944] [Megaco][Unknown][VoIP][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    4.370|    1.692|    2.031|    4125948.903|   3.700]

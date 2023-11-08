@@ -3,7 +3,7 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [..192.168.1.117][54854] -> [..172.217.21.72][..443] [MIDSTREAM] 
          detected: [.....1] [ip4][..tcp] [..192.168.1.117][54854] -> [..172.217.21.72][..443] [TLS.GoogleServices][Google][Web][Acceptable][www.googletagmanager.com]
-                   RISK: Obsolete TLS (v1.1 or older), Unidirectional Traffic
+                   RISK: Obsolete TLS (v1.1 or older)
               new: [.....2] [ip4][..udp] [..192.168.1.117][.5353] -> [....224.0.0.251][.5353] 
          detected: [.....2] [ip4][..udp] [..192.168.1.117][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable][_spotify-connect._tcp.local]
               new: [.....3] [ip4][..tcp] [..192.168.1.117][54863] -> [.167.99.215.164][.4434] 
@@ -14,37 +14,33 @@
       ERROR-EVENT: Unknown packet type [1/16]
               new: [.....4] [ip4][..tcp] [..192.168.1.117][54341] -> [.62.149.152.153][..993] [MIDSTREAM] 
          detected: [.....4] [ip4][..tcp] [..192.168.1.117][54341] -> [.62.149.152.153][..993] [IMAPS][Unknown][Email][Safe]
-                   RISK: Unidirectional Traffic
+ detection-update: [.....1] [ip4][..tcp] [..192.168.1.117][54854] -> [..172.217.21.72][..443] [TLS.GoogleServices][Google][Web][Acceptable][www.googletagmanager.com]
+                   RISK: Obsolete TLS (v1.1 or older), Unidirectional Traffic
               new: [.....5] [ip4][..udp] [..192.168.1.117][57025] -> [239.255.255.250][.1900] 
          detected: [.....5] [ip4][..udp] [..192.168.1.117][57025] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
               new: [.....6] [ip4][..udp] [..192.168.1.117][..137] -> [..192.168.1.255][..137] 
          detected: [.....6] [ip4][..udp] [..192.168.1.117][..137] -> [..192.168.1.255][..137] [NetBIOS][Unknown][System][Acceptable][workgroup]
               new: [.....7] [ip4][..udp] [..192.168.1.117][64352] -> [....192.168.1.1][...53] 
          detected: [.....7] [ip4][..udp] [..192.168.1.117][64352] -> [....192.168.1.1][...53] [DNS.Zoom][Unknown][Network][Acceptable][log.zoom.us]
-                   RISK: Unidirectional Traffic
  detection-update: [.....7] [ip4][..udp] [..192.168.1.117][64352] -> [....192.168.1.1][...53] [DNS.Zoom][Unknown][Network][Acceptable][log.zoom.us]
               new: [.....8] [ip4][..tcp] [..192.168.1.117][54864] -> [..52.202.62.238][..443] 
               new: [.....9] [ip4][..udp] [..192.168.1.117][65394] -> [....192.168.1.1][...53] 
          detected: [.....9] [ip4][..udp] [..192.168.1.117][65394] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][local]
-                   RISK: Unidirectional Traffic
  detection-update: [.....9] [ip4][..udp] [..192.168.1.117][65394] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][local]
                    RISK: Error Code
               new: [....10] [ip4][.icmp] [..192.168.1.117] -> [....192.168.1.1] 
          detected: [....10] [ip4][.icmp] [..192.168.1.117] -> [....192.168.1.1] [ICMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....11] [ip4][..tcp] [..192.168.1.117][54798] -> [..13.225.84.182][..443] [MIDSTREAM] 
          detected: [.....8] [ip4][..tcp] [..192.168.1.117][54864] -> [..52.202.62.238][..443] [TLS.Zoom][Zoom][Video][Acceptable][log.zoom.us]
               new: [....12] [ip4][..udp] [..192.168.1.117][23903] -> [..162.255.37.14][.3478] 
          detected: [....12] [ip4][..udp] [..192.168.1.117][23903] -> [..162.255.37.14][.3478] [STUN.Zoom][Zoom][Video][Acceptable][]
-                   RISK: Unidirectional Traffic
  detection-update: [.....8] [ip4][..tcp] [..192.168.1.117][54864] -> [..52.202.62.238][..443] [TLS.Zoom][Zoom][Video][Acceptable][log.zoom.us]
  detection-update: [.....8] [ip4][..tcp] [..192.168.1.117][54864] -> [..52.202.62.238][..443] [TLS.Zoom][Zoom][Video][Acceptable][log.zoom.us]
               new: [....13] [ip4][..udp] [..192.168.1.117][23903] -> [..162.255.38.14][.3478] 
          detected: [....13] [ip4][..udp] [..192.168.1.117][23903] -> [..162.255.38.14][.3478] [STUN.Zoom][Zoom][Video][Acceptable][]
-                   RISK: Unidirectional Traffic
               new: [....14] [ip4][..udp] [..192.168.1.117][23903] -> [..162.255.38.14][.3479] 
          detected: [....14] [ip4][..udp] [..192.168.1.117][23903] -> [..162.255.38.14][.3479] [STUN.Zoom][Zoom][Video][Acceptable][]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
               new: [....15] [ip4][..tcp] [..192.168.1.117][53867] -> [..104.199.65.42][...80] [MIDSTREAM] 
               new: [....16] [ip4][..tcp] [..192.168.1.117][53872] -> [..35.186.224.53][..443] [MIDSTREAM] 
          detected: [....16] [ip4][..tcp] [..192.168.1.117][53872] -> [..35.186.224.53][..443] [TLS][GoogleCloud][Web][Safe]
@@ -52,14 +48,12 @@
  detection-update: [....16] [ip4][..tcp] [..192.168.1.117][53872] -> [..35.186.224.53][..443] [TLS][GoogleCloud][Web][Safe]
               new: [....17] [ip4][.icmp] [..192.168.1.117] -> [..162.255.38.14] 
          detected: [....17] [ip4][.icmp] [..192.168.1.117] -> [..162.255.38.14] [ICMP][Zoom][Network][Acceptable]
-                   RISK: Unidirectional Traffic
       ERROR-EVENT: Unknown packet type [2/16]
               new: [....18] [ip4][..udp] [....192.168.0.1][...68] -> [255.255.255.255][...67] 
          detected: [....18] [ip4][..udp] [....192.168.0.1][...68] -> [255.255.255.255][...67] [DHCP][Unknown][Network][Acceptable][tl-sg116e]
               new: [....19] [ip4][..tcp] [..192.168.1.117][54865] -> [..52.202.62.196][..443] 
               new: [....20] [ip4][..udp] [..192.168.1.117][62988] -> [....192.168.1.1][...53] 
          detected: [....20] [ip4][..udp] [..192.168.1.117][62988] -> [....192.168.1.1][...53] [DNS.Zoom][Unknown][Network][Acceptable][www3.zoom.us]
-                   RISK: Unidirectional Traffic
  detection-update: [....20] [ip4][..udp] [..192.168.1.117][62988] -> [....192.168.1.1][...53] [DNS.Zoom][Unknown][Network][Acceptable][www3.zoom.us]
               new: [....21] [ip4][..tcp] [..192.168.1.117][54866] -> [..52.202.62.236][..443] 
          detected: [....19] [ip4][..tcp] [..192.168.1.117][54865] -> [..52.202.62.196][..443] [TLS][Zoom][Web][Safe][zoom.us]
@@ -83,10 +77,8 @@
          detected: [....22] [ip4][..udp] [..192.168.1.117][57621] -> [..192.168.1.255][57621] [Spotify][Unknown][Music][Fun]
               new: [....23] [ip4][..udp] [..192.168.1.117][62563] -> [....192.168.1.1][...53] 
          detected: [....23] [ip4][..udp] [..192.168.1.117][62563] -> [....192.168.1.1][...53] [DNS.Zoom][Unknown][Network][Acceptable][zoomfr85zc.zoom.us]
-                   RISK: Unidirectional Traffic
               new: [....24] [ip4][..udp] [..192.168.1.117][58063] -> [....192.168.1.1][...53] 
          detected: [....24] [ip4][..udp] [..192.168.1.117][58063] -> [....192.168.1.1][...53] [DNS.Zoom][Unknown][Network][Acceptable][zoomfr84zc.zoom.us]
-                   RISK: Unidirectional Traffic
               new: [....25] [ip4][..tcp] [..192.168.1.117][54867] -> [.213.19.144.105][..443] 
               new: [....26] [ip4][..tcp] [..192.168.1.117][54868] -> [.213.19.144.104][..443] 
  detection-update: [....23] [ip4][..udp] [..192.168.1.117][62563] -> [....192.168.1.1][...53] [DNS.Zoom][Unknown][Network][Acceptable][zoomfr85zc.zoom.us]
@@ -119,7 +111,6 @@
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [....29] [ip4][..udp] [..192.168.1.117][51185] -> [....192.168.1.1][...53] 
          detected: [....29] [ip4][..udp] [..192.168.1.117][51185] -> [....192.168.1.1][...53] [DNS.Zoom][Unknown][Network][Acceptable][zoomfrn99mmr.zoom.us]
-                   RISK: Unidirectional Traffic
  detection-update: [....29] [ip4][..udp] [..192.168.1.117][51185] -> [....192.168.1.1][...53] [DNS.Zoom][Unknown][Network][Acceptable][zoomfrn99mmr.zoom.us]
               new: [....30] [ip4][..tcp] [..192.168.1.117][54871] -> [..109.94.160.99][..443] 
          detected: [....30] [ip4][..tcp] [..192.168.1.117][54871] -> [..109.94.160.99][..443] [TLS.Zoom][Unknown][Video][Acceptable][zoomfrn99mmr.zoom.us]
@@ -128,6 +119,8 @@
                    RISK: TLS (probably) Not Carrying HTTPS
  detection-update: [....30] [ip4][..tcp] [..192.168.1.117][54871] -> [..109.94.160.99][..443] [TLS.Zoom][Unknown][Video][Acceptable][zoomfrn99mmr.zoom.us]
                    RISK: TLS (probably) Not Carrying HTTPS
+ detection-update: [.....4] [ip4][..tcp] [..192.168.1.117][54341] -> [.62.149.152.153][..993] [IMAPS][Unknown][Email][Safe]
+                   RISK: Unidirectional Traffic
           analyse: [....30] [ip4][..tcp] [..192.168.1.117][54871] -> [..109.94.160.99][..443] [TLS.Zoom][Unknown][Video][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.156|    0.028|    0.040|       1628.090|   3.800]
@@ -140,11 +133,9 @@
                    [ENTROPIES...: 4.4,5.3,5.0,4.3,5.2,7.1,7.3,7.3,5.0,5.1,7.6,5.6,5.1,6.6,7.1,5.1,6.9,6.3,5.1,7.9,7.6,5.1,5.9,5.1,7.9,5.1,7.9,6.6,5.1,5.8,6.9,7.0]
               new: [....31] [ip4][..udp] [..192.168.1.117][58327] -> [..109.94.160.99][.8801] 
          detected: [....31] [ip4][..udp] [..192.168.1.117][58327] -> [..109.94.160.99][.8801] [Zoom][Unknown][Video][Acceptable]
-                   RISK: Unidirectional Traffic
       ERROR-EVENT: Unknown packet type [3/16]
               new: [....32] [ip4][..udp] [..192.168.1.117][60620] -> [..109.94.160.99][.8801] 
          detected: [....32] [ip4][..udp] [..192.168.1.117][60620] -> [..109.94.160.99][.8801] [Zoom][Unknown][Video][Acceptable]
-                   RISK: Unidirectional Traffic
           analyse: [....31] [ip4][..udp] [..192.168.1.117][58327] -> [..109.94.160.99][.8801] [Zoom][Unknown][Video][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.036|    0.010|    0.009|         72.691|   4.500]
@@ -157,7 +148,6 @@
                    [ENTROPIES...: 5.9,4.8,4.4,4.6,5.1,4.8,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5]
               new: [....33] [ip4][..udp] [..192.168.1.117][61731] -> [..109.94.160.99][.8801] 
          detected: [....33] [ip4][..udp] [..192.168.1.117][61731] -> [..109.94.160.99][.8801] [Zoom][Unknown][Video][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....17] [ip4][.icmp] [..192.168.1.117] -> [..162.255.38.14] [ICMP][Zoom][Network][Acceptable]
              idle: [.....9] [ip4][..udp] [..192.168.1.117][65394] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
                    RISK: Error Code

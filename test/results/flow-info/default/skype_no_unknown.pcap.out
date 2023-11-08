@@ -5,61 +5,65 @@
          detected: [.....1] [ip4][....2] [..192.168.1.219] -> [.....224.0.0.22] [IGMP][Unknown][Network][Acceptable]
               new: [.....2] [ip4][..udp] [...192.168.1.34][55028] -> [....192.168.1.1][...53] 
          detected: [.....2] [ip4][..udp] [...192.168.1.34][55028] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][a.config.skype.com]
-                   RISK: Unidirectional Traffic
               new: [.....3] [ip4][..udp] [...192.168.1.34][64971] -> [....192.168.1.1][...53] 
          detected: [.....3] [ip4][..udp] [...192.168.1.34][64971] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][a.config.skype.com]
-                   RISK: Unidirectional Traffic
               new: [.....4] [ip4][..udp] [...192.168.1.34][60688] -> [....192.168.1.1][...53] 
          detected: [.....4] [ip4][..udp] [...192.168.1.34][60688] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][conn.skype.akadns.net]
-                   RISK: Unidirectional Traffic
               new: [.....5] [ip4][..udp] [...192.168.1.34][58631] -> [....192.168.1.1][...53] 
          detected: [.....5] [ip4][..udp] [...192.168.1.34][58631] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][conn.skype.akadns.net]
-                   RISK: Unidirectional Traffic
               new: [.....6] [ip4][..udp] [...192.168.1.34][64240] -> [....192.168.1.1][...53] 
          detected: [.....6] [ip4][..udp] [...192.168.1.34][64240] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][api.skype.com]
-                   RISK: Unidirectional Traffic
               new: [.....7] [ip4][..udp] [...192.168.1.34][49864] -> [....192.168.1.1][...53] 
          detected: [.....7] [ip4][..udp] [...192.168.1.34][49864] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][api.skype.com]
-                   RISK: Unidirectional Traffic
               new: [.....8] [ip4][..udp] [...192.168.1.34][61016] -> [....192.168.1.1][...53] 
          detected: [.....8] [ip4][..udp] [...192.168.1.34][61016] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][apps.skypeassets.com]
-                   RISK: Unidirectional Traffic
               new: [.....9] [ip4][..udp] [...192.168.1.34][57694] -> [....192.168.1.1][...53] 
          detected: [.....9] [ip4][..udp] [...192.168.1.34][57694] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][db3msgr5011709.gateway.messenger.live.com]
-                   RISK: Unidirectional Traffic
  detection-update: [.....9] [ip4][..udp] [...192.168.1.34][57694] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][db3msgr5011709.gateway.messenger.live.com]
               new: [....10] [ip4][..tcp] [...192.168.1.34][51229] -> [...157.56.52.28][40009] 
               new: [....11] [ip4][..udp] [...192.168.1.34][62875] -> [....192.168.1.1][...53] 
          detected: [....11] [ip4][..udp] [...192.168.1.34][62875] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][dsn13.d.skype.net]
-                   RISK: Unidirectional Traffic
               new: [....12] [ip4][..udp] [...192.168.1.34][59113] -> [....192.168.1.1][...53] 
          detected: [....12] [ip4][..udp] [...192.168.1.34][59113] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][dsn13.d.skype.net]
-                   RISK: Unidirectional Traffic
               new: [....13] [ip4][..tcp] [...192.168.1.34][51230] -> [.157.56.126.211][..443] 
               new: [....14] [ip4][..udp] [...192.168.1.34][57592] -> [....192.168.1.1][...53] 
          detected: [....14] [ip4][..udp] [...192.168.1.34][57592] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][335.0.7.7.3.rst11.r.skype.net]
-                   RISK: Unidirectional Traffic
               new: [....15] [ip4][..udp] [...192.168.1.34][53372] -> [....192.168.1.1][...53] 
          detected: [....15] [ip4][..udp] [...192.168.1.34][53372] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][335.0.7.7.3.rst11.r.skype.net]
-                   RISK: Unidirectional Traffic
          detected: [....13] [ip4][..tcp] [...192.168.1.34][51230] -> [.157.56.126.211][..443] [TLS][Unknown][Web][Safe][]
                    RISK: Obsolete TLS (v1.1 or older)
  detection-update: [....13] [ip4][..tcp] [...192.168.1.34][51230] -> [.157.56.126.211][..443] [TLS.Skype_Teams][Unknown][VoIP][Acceptable][]
                    RISK: Obsolete TLS (v1.1 or older)
               new: [....16] [ip4][..udp] [...192.168.1.34][63514] -> [....192.168.1.1][...53] 
          detected: [....16] [ip4][..udp] [...192.168.1.34][63514] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][ui.skype.com]
+ detection-update: [.....2] [ip4][..udp] [...192.168.1.34][55028] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][a.config.skype.com]
+                   RISK: Unidirectional Traffic
+ detection-update: [.....3] [ip4][..udp] [...192.168.1.34][64971] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][a.config.skype.com]
                    RISK: Unidirectional Traffic
               new: [....17] [ip4][..udp] [...192.168.1.34][63661] -> [....192.168.1.1][...53] 
          detected: [....17] [ip4][..udp] [...192.168.1.34][63661] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][e4593.g.akamaiedge.net]
-                   RISK: Unidirectional Traffic
  detection-update: [....17] [ip4][..udp] [...192.168.1.34][63661] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][e4593.g.akamaiedge.net]
               new: [....18] [ip4][..tcp] [...192.168.1.34][51231] -> [..23.206.33.166][..443] 
+ detection-update: [.....5] [ip4][..udp] [...192.168.1.34][58631] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][conn.skype.akadns.net]
+                   RISK: Unidirectional Traffic
+ detection-update: [.....4] [ip4][..udp] [...192.168.1.34][60688] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][conn.skype.akadns.net]
+                   RISK: Unidirectional Traffic
          detected: [....18] [ip4][..tcp] [...192.168.1.34][51231] -> [..23.206.33.166][..443] [TLS.Skype_Teams][Unknown][VoIP][Acceptable][apps.skype.com]
                    RISK: TLS (probably) Not Carrying HTTPS
+ detection-update: [.....6] [ip4][..udp] [...192.168.1.34][64240] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][api.skype.com]
+                   RISK: Unidirectional Traffic
+ detection-update: [.....7] [ip4][..udp] [...192.168.1.34][49864] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][api.skype.com]
+                   RISK: Unidirectional Traffic
+ detection-update: [....11] [ip4][..udp] [...192.168.1.34][62875] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][dsn13.d.skype.net]
+                   RISK: Unidirectional Traffic
+ detection-update: [....12] [ip4][..udp] [...192.168.1.34][59113] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][dsn13.d.skype.net]
+                   RISK: Unidirectional Traffic
+ detection-update: [....14] [ip4][..udp] [...192.168.1.34][57592] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][335.0.7.7.3.rst11.r.skype.net]
+                   RISK: Unidirectional Traffic
+ detection-update: [....15] [ip4][..udp] [...192.168.1.34][53372] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][335.0.7.7.3.rst11.r.skype.net]
+                   RISK: Unidirectional Traffic
               new: [....19] [ip4][..tcp] [.17.143.160.149][.5223] -> [...192.168.1.34][50407] [MIDSTREAM] 
          detected: [....19] [ip4][..tcp] [.17.143.160.149][.5223] -> [...192.168.1.34][50407] [TLS][Apple][Web][Safe]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
- detection-update: [....19] [ip4][..tcp] [.17.143.160.149][.5223] -> [...192.168.1.34][50407] [TLS][Apple][Web][Safe]
                    RISK: Known Proto on Non Std Port
           analyse: [....13] [ip4][..tcp] [...192.168.1.34][51230] -> [.157.56.126.211][..443] [TLS.Skype_Teams][Unknown][VoIP][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
@@ -73,15 +77,20 @@
                    [ENTROPIES...: 4.6,5.2,5.2,5.7,7.0,5.6,5.1,7.5,7.7,5.1,6.7,5.2,6.0,6.1,5.1,7.3,7.0,5.1,7.7,7.0,5.1,7.2,7.7,5.2,7.2,5.2,7.7,6.6,7.9,5.2,7.9,5.3]
               new: [....20] [ip4][..udp] [...192.168.1.34][50055] -> [....192.168.1.1][...53] 
          detected: [....20] [ip4][..udp] [...192.168.1.34][50055] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][pipe.prd.skypedata.akadns.net]
-                   RISK: Unidirectional Traffic
               new: [....21] [ip4][..udp] [...192.168.1.34][51753] -> [....192.168.1.1][...53] 
          detected: [....21] [ip4][..udp] [...192.168.1.34][51753] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][pipe.prd.skypedata.akadns.net]
-                   RISK: Unidirectional Traffic
               new: [....22] [ip4][..tcp] [...192.168.1.34][51232] -> [...157.56.52.28][..443] 
+ detection-update: [....16] [ip4][..udp] [...192.168.1.34][63514] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][ui.skype.com]
+                   RISK: Unidirectional Traffic
               new: [....23] [ip4][..tcp] [...192.168.1.34][51227] -> [..17.172.100.36][..443] [MIDSTREAM] 
          detected: [....23] [ip4][..tcp] [...192.168.1.34][51227] -> [..17.172.100.36][..443] [TLS][Apple][Web][Safe]
+ detection-update: [....23] [ip4][..tcp] [...192.168.1.34][51227] -> [..17.172.100.36][..443] [TLS][Apple][Web][Safe]
                    RISK: Unidirectional Traffic
  detection-update: [....23] [ip4][..tcp] [...192.168.1.34][51227] -> [..17.172.100.36][..443] [TLS][Apple][Web][Safe]
+ detection-update: [....21] [ip4][..udp] [...192.168.1.34][51753] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][pipe.prd.skypedata.akadns.net]
+                   RISK: Unidirectional Traffic
+ detection-update: [....20] [ip4][..udp] [...192.168.1.34][50055] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][pipe.prd.skypedata.akadns.net]
+                   RISK: Unidirectional Traffic
           analyse: [....23] [ip4][..tcp] [...192.168.1.34][51227] -> [..17.172.100.36][..443] [TLS][Apple][Web][Safe]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    1.077|    0.148|    0.323|     104108.532|   2.700]
@@ -96,13 +105,12 @@
          detected: [....24] [ip4][..udp] [...192.168.1.34][..137] -> [..192.168.1.255][..137] [NetBIOS][Unknown][System][Acceptable][__msbrowse__]
               new: [....25] [ip4][..udp] [....192.168.1.1][..137] -> [...192.168.1.34][..137] 
          detected: [....25] [ip4][..udp] [....192.168.1.1][..137] -> [...192.168.1.34][..137] [NetBIOS][Unknown][System][Acceptable][__msbrowse__]
-                   RISK: Unidirectional Traffic
               new: [....26] [ip4][..udp] [...192.168.1.34][..138] -> [..192.168.1.255][..138] 
          detected: [....26] [ip4][..udp] [...192.168.1.34][..138] -> [..192.168.1.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][lucasmacbookpro]
                    RISK: Unsafe Protocol
               new: [....27] [ip4][..udp] [....192.168.1.1][..138] -> [...192.168.1.34][..138] 
          detected: [....27] [ip4][..udp] [....192.168.1.1][..138] -> [...192.168.1.34][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][alicegate]
-                   RISK: Unsafe Protocol, Unidirectional Traffic
+                   RISK: Unsafe Protocol
               new: [....28] [ip4][..udp] [...192.168.1.92][..137] -> [..192.168.1.255][..137] 
          detected: [....28] [ip4][..udp] [...192.168.1.92][..137] -> [..192.168.1.255][..137] [NetBIOS][Unknown][System][Acceptable][workgroup]
               new: [....29] [ip4][..udp] [...192.168.1.92][..138] -> [..192.168.1.255][..138] 
@@ -117,69 +125,48 @@
  detection-update: [....31] [ip6][..udp] [...............fe80::c62c:3ff:fe06:49fe][.5353] -> [...............................ff02::fb][.5353] [MDNS][Unknown][Network][Acceptable][lucas-imac.local]
               new: [....33] [ip4][..udp] [...192.168.1.34][13021] -> [..157.55.56.170][40015] 
          detected: [....33] [ip4][..udp] [...192.168.1.34][13021] -> [..157.55.56.170][40015] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....34] [ip4][..udp] [...192.168.1.34][13021] -> [..111.221.74.15][40026] 
          detected: [....34] [ip4][..udp] [...192.168.1.34][13021] -> [..111.221.74.15][40026] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....35] [ip4][..udp] [...192.168.1.34][13021] -> [...65.55.223.33][40002] 
          detected: [....35] [ip4][..udp] [...192.168.1.34][13021] -> [...65.55.223.33][40002] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....36] [ip4][..udp] [...192.168.1.34][13021] -> [....64.4.23.145][40027] 
          detected: [....36] [ip4][..udp] [...192.168.1.34][13021] -> [....64.4.23.145][40027] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....37] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.165][40028] 
          detected: [....37] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.165][40028] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....38] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.27][40025] 
          detected: [....38] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.27][40025] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....39] [ip4][..udp] [...192.168.1.34][13021] -> [..111.221.74.34][40027] 
          detected: [....39] [ip4][..udp] [...192.168.1.34][13021] -> [..111.221.74.34][40027] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....40] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.235.168][40024] 
          detected: [....40] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.235.168][40024] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....41] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.235.143][40030] 
          detected: [....41] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.235.143][40030] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....42] [ip4][..udp] [...192.168.1.34][13021] -> [.111.221.77.143][40022] 
          detected: [....42] [ip4][..udp] [...192.168.1.34][13021] -> [.111.221.77.143][40022] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....43] [ip4][..udp] [...192.168.1.34][13021] -> [..111.221.74.44][40019] 
          detected: [....43] [ip4][..udp] [...192.168.1.34][13021] -> [..111.221.74.44][40019] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....44] [ip4][..udp] [...192.168.1.34][13021] -> [213.199.179.173][40013] 
          detected: [....44] [ip4][..udp] [...192.168.1.34][13021] -> [213.199.179.173][40013] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....45] [ip4][..udp] [...192.168.1.34][13021] -> [..157.55.56.167][40024] 
          detected: [....45] [ip4][..udp] [...192.168.1.34][13021] -> [..157.55.56.167][40024] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....46] [ip4][..udp] [...192.168.1.34][13021] -> [....64.4.23.165][40004] 
          detected: [....46] [ip4][..udp] [...192.168.1.34][13021] -> [....64.4.23.165][40004] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....47] [ip4][..udp] [...192.168.1.34][13021] -> [...65.55.223.17][40025] 
          detected: [....47] [ip4][..udp] [...192.168.1.34][13021] -> [...65.55.223.17][40025] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....48] [ip4][..udp] [...192.168.1.34][13021] -> [...65.55.223.18][33033] 
          detected: [....48] [ip4][..udp] [...192.168.1.34][13021] -> [...65.55.223.18][33033] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....49] [ip4][..udp] [..192.168.0.254][.1025] -> [239.255.255.250][.1900] 
          detected: [....49] [ip4][..udp] [..192.168.0.254][.1025] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
               new: [....50] [ip4][..udp] [...192.168.1.34][13021] -> [...65.55.223.32][40022] 
          detected: [....50] [ip4][..udp] [...192.168.1.34][13021] -> [...65.55.223.32][40022] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....51] [ip4][..udp] [...192.168.1.34][13021] -> [..111.221.74.33][40011] 
          detected: [....51] [ip4][..udp] [...192.168.1.34][13021] -> [..111.221.74.33][40011] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....52] [ip4][..udp] [...192.168.1.34][13021] -> [..157.55.56.145][40008] 
          detected: [....52] [ip4][..udp] [...192.168.1.34][13021] -> [..157.55.56.145][40008] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....53] [ip4][..udp] [...192.168.1.34][13021] -> [...65.55.223.13][40009] 
          detected: [....53] [ip4][..udp] [...192.168.1.34][13021] -> [...65.55.223.13][40009] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....54] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.19][40020] 
          detected: [....54] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.19][40020] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....55] [ip4][..udp] [...192.168.1.34][17500] -> [255.255.255.255][17500] 
          detected: [....55] [ip4][..udp] [...192.168.1.34][17500] -> [255.255.255.255][17500] [Dropbox][Unknown][Cloud][Acceptable]
               new: [....56] [ip4][..udp] [...192.168.1.34][17500] -> [..192.168.1.255][17500] 
@@ -193,233 +180,161 @@
               new: [....61] [ip4][..tcp] [...192.168.1.34][51236] -> [..111.221.74.45][40008] 
               new: [....62] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.171][40012] 
          detected: [....62] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.171][40012] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....63] [ip4][..udp] [...192.168.1.34][13021] -> [...65.55.223.65][33033] 
          detected: [....63] [ip4][..udp] [...192.168.1.34][13021] -> [...65.55.223.65][33033] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....64] [ip4][..udp] [...192.168.1.34][13021] -> [213.199.179.140][40003] 
          detected: [....64] [ip4][..udp] [...192.168.1.34][13021] -> [213.199.179.140][40003] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....65] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.39][40031] 
          detected: [....65] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.39][40031] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....66] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.25][40010] 
          detected: [....66] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.25][40010] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....67] [ip4][..tcp] [...192.168.1.34][51237] -> [.157.55.130.176][40022] 
               new: [....68] [ip4][..udp] [...192.168.1.34][13021] -> [...65.55.223.28][40014] 
          detected: [....68] [ip4][..udp] [...192.168.1.34][13021] -> [...65.55.223.28][40014] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....69] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.154][40013] 
          detected: [....69] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.154][40013] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....70] [ip4][..udp] [...192.168.1.34][13021] -> [...65.55.223.44][40020] 
          detected: [....70] [ip4][..udp] [...192.168.1.34][13021] -> [...65.55.223.44][40020] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....71] [ip4][..udp] [...192.168.1.34][13021] -> [....64.4.23.173][40017] 
          detected: [....71] [ip4][..udp] [...192.168.1.34][13021] -> [....64.4.23.173][40017] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....72] [ip4][..udp] [...192.168.1.34][13021] -> [213.199.179.154][40017] 
          detected: [....72] [ip4][..udp] [...192.168.1.34][13021] -> [213.199.179.154][40017] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....73] [ip4][..tcp] [...192.168.1.34][51238] -> [.157.55.235.147][..443] 
               new: [....74] [ip4][..tcp] [...192.168.1.34][51239] -> [...65.55.223.45][..443] 
               new: [....75] [ip4][..tcp] [...192.168.1.34][51240] -> [..111.221.74.45][..443] 
               new: [....76] [ip4][..udp] [...192.168.1.34][13021] -> [213.199.179.146][33033] 
          detected: [....76] [ip4][..udp] [...192.168.1.34][13021] -> [213.199.179.146][33033] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....77] [ip4][..udp] [...192.168.1.34][13021] -> [213.199.179.160][40030] 
          detected: [....77] [ip4][..udp] [...192.168.1.34][13021] -> [213.199.179.160][40030] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....78] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.12][40031] 
          detected: [....78] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.12][40031] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....79] [ip4][..udp] [...192.168.1.34][13021] -> [....64.4.23.143][40018] 
          detected: [....79] [ip4][..udp] [...192.168.1.34][13021] -> [....64.4.23.143][40018] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....80] [ip4][..udp] [...192.168.1.34][13021] -> [213.199.179.174][40025] 
          detected: [....80] [ip4][..udp] [...192.168.1.34][13021] -> [213.199.179.174][40025] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....81] [ip4][..tcp] [...192.168.1.34][51241] -> [.157.55.130.176][..443] 
               new: [....82] [ip4][..udp] [...192.168.1.34][13021] -> [..111.221.74.13][40009] 
          detected: [....82] [ip4][..udp] [...192.168.1.34][13021] -> [..111.221.74.13][40009] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....83] [ip4][..udp] [...192.168.1.34][13021] -> [..111.221.74.46][40027] 
          detected: [....83] [ip4][..udp] [...192.168.1.34][13021] -> [..111.221.74.46][40027] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....84] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.235.174][40019] 
          detected: [....84] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.235.174][40019] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....85] [ip4][..udp] [...192.168.1.34][13021] -> [...65.55.223.22][40009] 
          detected: [....85] [ip4][..udp] [...192.168.1.34][13021] -> [...65.55.223.22][40009] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....86] [ip4][..udp] [...192.168.1.34][13021] -> [.111.221.77.145][40024] 
          detected: [....86] [ip4][..udp] [...192.168.1.34][13021] -> [.111.221.77.145][40024] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....87] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.150][40007] 
          detected: [....87] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.150][40007] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....88] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.15][40027] 
          detected: [....88] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.15][40027] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....89] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.235.162][40033] 
          detected: [....89] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.235.162][40033] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....90] [ip4][..udp] [...192.168.1.34][13021] -> [.111.221.77.159][40031] 
          detected: [....90] [ip4][..udp] [...192.168.1.34][13021] -> [.111.221.77.159][40031] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....91] [ip4][..udp] [...192.168.1.34][13021] -> [....64.4.23.148][40029] 
          detected: [....91] [ip4][..udp] [...192.168.1.34][13021] -> [....64.4.23.148][40029] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....92] [ip4][..udp] [...192.168.1.34][13021] -> [....64.4.23.142][40023] 
          detected: [....92] [ip4][..udp] [...192.168.1.34][13021] -> [....64.4.23.142][40023] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....93] [ip4][..udp] [...192.168.1.34][13021] -> [....64.4.23.146][33033] 
          detected: [....93] [ip4][..udp] [...192.168.1.34][13021] -> [....64.4.23.146][33033] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....94] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.149][40011] 
          detected: [....94] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.149][40011] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....95] [ip4][..udp] [...192.168.1.34][13021] -> [.111.221.77.151][40029] 
          detected: [....95] [ip4][..udp] [...192.168.1.34][13021] -> [.111.221.77.151][40029] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....96] [ip4][..udp] [...192.168.1.34][13021] -> [213.199.179.165][40004] 
          detected: [....96] [ip4][..udp] [...192.168.1.34][13021] -> [213.199.179.165][40004] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....97] [ip4][..tcp] [...192.168.1.34][51246] -> [...157.56.52.44][40020] 
               new: [....98] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.156][40019] 
          detected: [....98] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.156][40019] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....99] [ip4][..udp] [...192.168.1.34][13021] -> [...65.55.223.27][40029] 
          detected: [....99] [ip4][..udp] [...192.168.1.34][13021] -> [...65.55.223.27][40029] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...100] [ip4][..udp] [...192.168.1.34][13021] -> [..157.55.56.142][40013] 
          detected: [...100] [ip4][..udp] [...192.168.1.34][13021] -> [..157.55.56.142][40013] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...101] [ip4][..udp] [...192.168.1.34][13021] -> [....64.4.23.154][40032] 
          detected: [...101] [ip4][..udp] [...192.168.1.34][13021] -> [....64.4.23.154][40032] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...102] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.33][40002] 
          detected: [...102] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.33][40002] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...103] [ip4][..udp] [...192.168.1.34][13021] -> [..111.221.74.42][40006] 
          detected: [...103] [ip4][..udp] [...192.168.1.34][13021] -> [..111.221.74.42][40006] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...104] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.235.172][40020] 
          detected: [...104] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.235.172][40020] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...105] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.235.167][40029] 
          detected: [...105] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.235.167][40029] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...106] [ip4][..udp] [...192.168.1.34][13021] -> [..157.55.56.140][40003] 
          detected: [...106] [ip4][..udp] [...192.168.1.34][13021] -> [..157.55.56.140][40003] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...107] [ip4][..udp] [...192.168.1.34][13021] -> [213.199.179.156][40031] 
          detected: [...107] [ip4][..udp] [...192.168.1.34][13021] -> [213.199.179.156][40031] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...108] [ip4][..tcp] [...192.168.1.34][51247] -> [...157.56.52.44][..443] 
               new: [...109] [ip4][..tcp] [...192.168.1.34][51248] -> [.111.221.77.175][40030] 
               new: [...110] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.13][40021] 
          detected: [...110] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.13][40021] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...111] [ip4][..udp] [...192.168.1.34][13021] -> [..111.221.74.27][40027] 
          detected: [...111] [ip4][..udp] [...192.168.1.34][13021] -> [..111.221.74.27][40027] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...112] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.235.146][33033] 
          detected: [...112] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.235.146][33033] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...113] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.160][40008] 
          detected: [...113] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.160][40008] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...114] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.42][40005] 
          detected: [...114] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.42][40005] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...115] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.16][40032] 
          detected: [...115] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.16][40032] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...116] [ip4][..udp] [...192.168.1.34][13021] -> [213.199.179.143][40018] 
          detected: [...116] [ip4][..udp] [...192.168.1.34][13021] -> [213.199.179.143][40018] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...117] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.235.176][40031] 
          detected: [...117] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.235.176][40031] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...118] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.24][40032] 
          detected: [...118] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.24][40032] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...119] [ip4][..udp] [...192.168.1.34][13021] -> [..111.221.74.20][40033] 
          detected: [...119] [ip4][..udp] [...192.168.1.34][13021] -> [..111.221.74.20][40033] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...120] [ip4][..tcp] [...192.168.1.34][51250] -> [.111.221.77.175][..443] 
               new: [...121] [ip4][..tcp] [...192.168.1.34][51251] -> [....64.4.23.166][40029] 
               new: [...122] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.144][40016] 
          detected: [...122] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.144][40016] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...123] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.20][40033] 
          detected: [...123] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.20][40033] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...124] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.235.144][40032] 
          detected: [...124] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.235.144][40032] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...125] [ip4][..udp] [...192.168.1.34][13021] -> [.111.221.77.165][40004] 
          detected: [...125] [ip4][..udp] [...192.168.1.34][13021] -> [.111.221.77.165][40004] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...126] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.146][40033] 
          detected: [...126] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.146][40033] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...127] [ip4][..tcp] [108.160.163.108][..443] -> [...192.168.1.34][51222] [MIDSTREAM] 
          detected: [...127] [ip4][..tcp] [108.160.163.108][..443] -> [...192.168.1.34][51222] [TLS][Dropbox][Web][Safe]
-                   RISK: Unidirectional Traffic
- detection-update: [...127] [ip4][..tcp] [108.160.163.108][..443] -> [...192.168.1.34][51222] [TLS][Dropbox][Web][Safe]
               new: [...128] [ip4][..udp] [...192.168.1.34][13021] -> [..111.221.74.24][40032] 
          detected: [...128] [ip4][..udp] [...192.168.1.34][13021] -> [..111.221.74.24][40032] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...129] [ip4][..udp] [...192.168.1.34][13021] -> [.111.221.77.160][40016] 
          detected: [...129] [ip4][..udp] [...192.168.1.34][13021] -> [.111.221.77.160][40016] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...130] [ip4][..tcp] [...192.168.1.34][51253] -> [....64.4.23.166][..443] 
               new: [...131] [ip4][..udp] [...192.168.1.34][13021] -> [..111.221.74.28][40026] 
          detected: [...131] [ip4][..udp] [...192.168.1.34][13021] -> [..111.221.74.28][40026] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...132] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.146][33033] 
          detected: [...132] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.146][33033] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...133] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.152][40022] 
          detected: [...133] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.152][40022] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...134] [ip4][..udp] [...192.168.1.34][13021] -> [213.199.179.172][40011] 
          detected: [...134] [ip4][..udp] [...192.168.1.34][13021] -> [213.199.179.172][40011] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...135] [ip4][..udp] [...192.168.1.34][13021] -> [....64.4.23.151][40029] 
          detected: [...135] [ip4][..udp] [...192.168.1.34][13021] -> [....64.4.23.151][40029] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...136] [ip4][..udp] [...192.168.1.34][13021] -> [....64.4.23.176][40001] 
          detected: [...136] [ip4][..udp] [...192.168.1.34][13021] -> [....64.4.23.176][40001] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...137] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.148][40019] 
          detected: [...137] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.148][40019] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...138] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.235.155][40027] 
          detected: [...138] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.235.155][40027] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...139] [ip4][....2] [..192.168.0.254] -> [......224.0.0.1] 
          detected: [...139] [ip4][....2] [..192.168.0.254] -> [......224.0.0.1] [IGMP][Unknown][Network][Acceptable]
               new: [...140] [ip4][....2] [..192.168.1.229] -> [....224.0.0.251] 
          detected: [...140] [ip4][....2] [..192.168.1.229] -> [....224.0.0.251] [IGMP][Unknown][Network][Acceptable]
               new: [...141] [ip4][..udp] [...192.168.1.34][13021] -> [.111.221.77.154][40017] 
          detected: [...141] [ip4][..udp] [...192.168.1.34][13021] -> [.111.221.77.154][40017] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...142] [ip4][..udp] [...192.168.1.34][13021] -> [....64.4.23.149][40030] 
          detected: [...142] [ip4][..udp] [...192.168.1.34][13021] -> [....64.4.23.149][40030] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...143] [ip4][..udp] [...192.168.1.34][13021] -> [.111.221.77.171][40030] 
          detected: [...143] [ip4][..udp] [...192.168.1.34][13021] -> [.111.221.77.171][40030] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...144] [ip4][..udp] [...192.168.1.34][13021] -> [..157.55.56.161][40031] 
          detected: [...144] [ip4][..udp] [...192.168.1.34][13021] -> [..157.55.56.161][40031] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...145] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.235.148][40033] 
          detected: [...145] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.235.148][40033] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
       ERROR-EVENT: Unknown packet type [1/16]
               new: [...146] [ip4][..tcp] [...192.168.1.34][51255] -> [.157.55.130.142][40005] 
               new: [...147] [ip4][..tcp] [...192.168.1.34][51256] -> [.111.221.77.142][40013] 
@@ -427,156 +342,121 @@
               new: [...149] [ip4][..tcp] [...192.168.1.34][51258] -> [213.199.179.176][40021] 
               new: [...150] [ip4][..udp] [...192.168.1.34][13021] -> [.111.221.77.149][40016] 
          detected: [...150] [ip4][..udp] [...192.168.1.34][13021] -> [.111.221.77.149][40016] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...151] [ip4][..udp] [...192.168.1.34][13021] -> [..111.221.74.19][40001] 
          detected: [...151] [ip4][..udp] [...192.168.1.34][13021] -> [..111.221.74.19][40001] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...152] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.140][40011] 
          detected: [...152] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.140][40011] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...153] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.167][40031] 
          detected: [...153] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.167][40031] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...154] [ip4][..udp] [...192.168.1.34][13021] -> [.111.221.77.146][33033] 
          detected: [...154] [ip4][..udp] [...192.168.1.34][13021] -> [.111.221.77.146][33033] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...155] [ip4][..udp] [...192.168.1.34][63342] -> [....192.168.1.1][...53] 
          detected: [...155] [ip4][..udp] [...192.168.1.34][63342] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][b.config.skype.com]
-                   RISK: Unidirectional Traffic
               new: [...156] [ip4][..udp] [...192.168.1.34][64258] -> [....192.168.1.1][...53] 
          detected: [...156] [ip4][..udp] [...192.168.1.34][64258] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][b.config.skype.com]
-                   RISK: Unidirectional Traffic
               new: [...157] [ip4][..tcp] [...192.168.1.34][51259] -> [.111.221.77.142][..443] 
               new: [...158] [ip4][..tcp] [...192.168.1.34][51260] -> [.157.55.130.142][..443] 
               new: [...159] [ip4][..tcp] [...192.168.1.34][51261] -> [.157.55.235.170][..443] 
               new: [...160] [ip4][..tcp] [...192.168.1.34][51262] -> [213.199.179.176][..443] 
               new: [...161] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.235.166][40015] 
          detected: [...161] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.235.166][40015] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...162] [ip4][..udp] [...192.168.1.34][13021] -> [213.199.179.145][40024] 
          detected: [...162] [ip4][..udp] [...192.168.1.34][13021] -> [213.199.179.145][40024] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...163] [ip4][..udp] [...192.168.1.34][13021] -> [...65.55.223.42][40024] 
          detected: [...163] [ip4][..udp] [...192.168.1.34][13021] -> [...65.55.223.42][40024] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
+ detection-update: [...155] [ip4][..udp] [...192.168.1.34][63342] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][b.config.skype.com]
+                   RISK: Unidirectional Traffic
+ detection-update: [...156] [ip4][..udp] [...192.168.1.34][64258] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][b.config.skype.com]
                    RISK: Unidirectional Traffic
               new: [...164] [ip4][..udp] [...192.168.1.34][13021] -> [213.199.179.146][40030] 
          detected: [...164] [ip4][..udp] [...192.168.1.34][13021] -> [213.199.179.146][40030] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...165] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.38][40015] 
          detected: [...165] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.38][40015] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...166] [ip4][..udp] [...192.168.1.34][61095] -> [....192.168.1.1][...53] 
          detected: [...166] [ip4][..udp] [...192.168.1.34][61095] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][pipe.prd.skypedata.akadns.net]
-                   RISK: Unidirectional Traffic
               new: [...167] [ip4][..udp] [...192.168.1.34][55866] -> [....192.168.1.1][...53] 
          detected: [...167] [ip4][..udp] [...192.168.1.34][55866] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][pipe.prd.skypedata.akadns.net]
-                   RISK: Unidirectional Traffic
               new: [...168] [ip4][..udp] [...192.168.1.34][13021] -> [..111.221.74.38][40015] 
          detected: [...168] [ip4][..udp] [...192.168.1.34][13021] -> [..111.221.74.38][40015] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...169] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.40][40017] 
          detected: [...169] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.40][40017] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
+ detection-update: [...167] [ip4][..udp] [...192.168.1.34][55866] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][pipe.prd.skypedata.akadns.net]
+                   RISK: Unidirectional Traffic
+ detection-update: [...166] [ip4][..udp] [...192.168.1.34][61095] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][pipe.prd.skypedata.akadns.net]
                    RISK: Unidirectional Traffic
               new: [...170] [ip4][..tcp] [...192.168.1.34][51267] -> [..111.221.74.18][40025] 
               new: [...171] [ip4][..udp] [...192.168.1.34][13021] -> [....64.4.23.171][40031] 
          detected: [...171] [ip4][..udp] [...192.168.1.34][13021] -> [....64.4.23.171][40031] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...172] [ip4][..udp] [...192.168.1.34][13021] -> [..111.221.74.43][40001] 
          detected: [...172] [ip4][..udp] [...192.168.1.34][13021] -> [..111.221.74.43][40001] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...173] [ip4][..udp] [...192.168.1.34][13021] -> [...65.55.223.20][40023] 
          detected: [...173] [ip4][..udp] [...192.168.1.34][13021] -> [...65.55.223.20][40023] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...174] [ip4][....2] [..192.168.1.219] -> [...233.89.188.1] 
          detected: [...174] [ip4][....2] [..192.168.1.219] -> [...233.89.188.1] [IGMP][Unknown][Network][Acceptable]
               new: [...175] [ip4][..udp] [...192.168.1.34][13021] -> [....64.4.23.140][40003] 
          detected: [...175] [ip4][..udp] [...192.168.1.34][13021] -> [....64.4.23.140][40003] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...176] [ip4][..udp] [...192.168.1.34][13021] -> [....64.4.23.158][40021] 
          detected: [...176] [ip4][..udp] [...192.168.1.34][13021] -> [....64.4.23.158][40021] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...177] [ip4][..tcp] [...192.168.1.34][51268] -> [..111.221.74.18][..443] 
               new: [...178] [ip4][..tcp] [...192.168.1.34][51269] -> [213.199.179.175][40029] 
               new: [...179] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.235.171][40006] 
          detected: [...179] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.235.171][40006] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...180] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.173][40003] 
          detected: [...180] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.173][40003] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...181] [ip4][..udp] [...192.168.1.34][13021] -> [..157.55.56.143][40018] 
          detected: [...181] [ip4][..udp] [...192.168.1.34][13021] -> [..157.55.56.143][40018] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...182] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.18][33033] 
          detected: [...182] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.18][33033] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...183] [ip4][..udp] [...192.168.1.34][13021] -> [...65.55.223.43][40006] 
          detected: [...183] [ip4][..udp] [...192.168.1.34][13021] -> [...65.55.223.43][40006] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...184] [ip4][..udp] [...192.168.1.34][13021] -> [..157.55.56.150][40014] 
          detected: [...184] [ip4][..udp] [...192.168.1.34][13021] -> [..157.55.56.150][40014] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...185] [ip4][..tcp] [...192.168.1.34][51271] -> [213.199.179.175][..443] 
               new: [...186] [ip4][..tcp] [...192.168.1.34][51272] -> [.157.55.235.152][40029] 
               new: [...187] [ip4][..udp] [...192.168.1.34][13021] -> [..157.55.56.147][40014] 
          detected: [...187] [ip4][..udp] [...192.168.1.34][13021] -> [..157.55.56.147][40014] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...188] [ip4][..udp] [...192.168.1.34][13021] -> [...65.55.223.18][40025] 
          detected: [...188] [ip4][..udp] [...192.168.1.34][13021] -> [...65.55.223.18][40025] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...189] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.235.160][40022] 
          detected: [...189] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.235.160][40022] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...190] [ip4][..udp] [...192.168.1.34][13021] -> [..157.55.56.146][40030] 
          detected: [...190] [ip4][..udp] [...192.168.1.34][13021] -> [..157.55.56.146][40030] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...191] [ip4][..tcp] [...192.168.1.34][51274] -> [.157.55.235.152][..443] 
               new: [...192] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.170][40018] 
          detected: [...192] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.170][40018] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...193] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.159][40016] 
          detected: [...193] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.159][40016] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...194] [ip4][..udp] [...192.168.1.34][13021] -> [.111.221.77.170][40021] 
          detected: [...194] [ip4][..udp] [...192.168.1.34][13021] -> [.111.221.77.170][40021] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...195] [ip4][..udp] [...192.168.1.34][13021] -> [...65.55.223.24][40029] 
          detected: [...195] [ip4][..udp] [...192.168.1.34][13021] -> [...65.55.223.24][40029] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...196] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.235.158][40027] 
          detected: [...196] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.235.158][40027] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...197] [ip4][..udp] [...192.168.1.34][13021] -> [...65.55.223.16][40032] 
          detected: [...197] [ip4][..udp] [...192.168.1.34][13021] -> [...65.55.223.16][40032] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...198] [ip4][..udp] [...192.168.1.34][60413] -> [....192.168.1.1][...53] 
          detected: [...198] [ip4][..udp] [...192.168.1.34][60413] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][335.0.7.7.3.rst0.r.skype.net]
-                   RISK: Unidirectional Traffic
               new: [...199] [ip4][..udp] [...192.168.1.34][64364] -> [....192.168.1.1][...53] 
          detected: [...199] [ip4][..udp] [...192.168.1.34][64364] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][335.0.7.7.3.rst0.r.skype.net]
-                   RISK: Unidirectional Traffic
               new: [...200] [ip4][..udp] [...192.168.1.34][13021] -> [213.199.179.149][40030] 
          detected: [...200] [ip4][..udp] [...192.168.1.34][13021] -> [213.199.179.149][40030] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...201] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.29][40010] 
          detected: [...201] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.29][40010] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
+ detection-update: [...198] [ip4][..udp] [...192.168.1.34][60413] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][335.0.7.7.3.rst0.r.skype.net]
+                   RISK: Unidirectional Traffic
+ detection-update: [...199] [ip4][..udp] [...192.168.1.34][64364] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][335.0.7.7.3.rst0.r.skype.net]
                    RISK: Unidirectional Traffic
               new: [...202] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.43][40006] 
          detected: [...202] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.43][40006] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...203] [ip4][..udp] [...192.168.1.34][13021] -> [..111.221.74.18][33033] 
          detected: [...203] [ip4][..udp] [...192.168.1.34][13021] -> [..111.221.74.18][33033] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...204] [ip4][..udp] [...192.168.1.34][13021] -> [...65.55.223.15][40030] 
          detected: [...204] [ip4][..udp] [...192.168.1.34][13021] -> [...65.55.223.15][40030] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...205] [ip4][..udp] [...192.168.1.34][13021] -> [213.199.179.144][40009] 
          detected: [...205] [ip4][..udp] [...192.168.1.34][13021] -> [213.199.179.144][40009] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...206] [ip4][..udp] [...192.168.1.34][13021] -> [..111.221.74.40][40025] 
          detected: [...206] [ip4][..udp] [...192.168.1.34][13021] -> [..111.221.74.40][40025] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....8] [ip4][..udp] [...192.168.1.34][61016] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....12] [ip4][..udp] [...192.168.1.34][59113] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable]
                    RISK: Unidirectional Traffic
            update: [.....2] [ip4][..udp] [...192.168.1.34][55028] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable]
@@ -611,43 +491,35 @@
               new: [...210] [ip4][..tcp] [...192.168.1.34][51279] -> [..111.221.74.48][40008] 
               new: [...211] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.175][40006] 
          detected: [...211] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.175][40006] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...212] [ip4][..udp] [...192.168.1.34][13021] -> [.111.221.77.173][40012] 
          detected: [...212] [ip4][..udp] [...192.168.1.34][13021] -> [.111.221.77.173][40012] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...213] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.235.175][40023] 
          detected: [...213] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.235.175][40023] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...214] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.17][40013] 
          detected: [...214] [ip4][..udp] [...192.168.1.34][13021] -> [...157.56.52.17][40013] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...215] [ip4][..udp] [...192.168.1.34][13021] -> [....64.4.23.170][40011] 
          detected: [...215] [ip4][..udp] [...192.168.1.34][13021] -> [....64.4.23.170][40011] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...216] [ip4][..tcp] [...192.168.1.34][51280] -> [.157.55.235.146][..443] 
               new: [...217] [ip4][..tcp] [...192.168.1.34][51281] -> [.157.55.235.156][..443] 
               new: [...218] [ip4][..tcp] [...192.168.1.34][51282] -> [....64.4.23.159][..443] 
               new: [...219] [ip4][..tcp] [...192.168.1.34][51283] -> [..111.221.74.48][..443] 
               new: [...220] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.157][40013] 
          detected: [...220] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.130.157][40013] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...221] [ip4][..udp] [...192.168.1.34][13021] -> [....64.4.23.155][40004] 
          detected: [...221] [ip4][..udp] [...192.168.1.34][13021] -> [....64.4.23.155][40004] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...222] [ip4][..udp] [...192.168.1.34][13021] -> [213.199.179.141][40015] 
          detected: [...222] [ip4][..udp] [...192.168.1.34][13021] -> [213.199.179.141][40015] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...223] [ip4][..udp] [...192.168.1.34][59237] -> [239.255.255.250][.1900] 
          detected: [...223] [ip4][..udp] [...192.168.1.34][59237] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
               new: [...224] [ip4][..udp] [...192.168.1.34][58061] -> [239.255.255.250][.1900] 
          detected: [...224] [ip4][..udp] [...192.168.1.34][58061] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
               new: [...225] [ip4][..udp] [...192.168.1.34][59052] -> [....192.168.1.1][.5351] 
          detected: [...225] [ip4][..udp] [...192.168.1.34][59052] -> [....192.168.1.1][.5351] [NAT-PMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...226] [ip4][.icmp] [....192.168.1.1] -> [...192.168.1.34] 
          detected: [...226] [ip4][.icmp] [....192.168.1.1] -> [...192.168.1.34] [ICMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...227] [ip4][..tcp] [...192.168.1.34][51284] -> [.91.190.218.125][12350] 
+ detection-update: [...225] [ip4][..udp] [...192.168.1.34][59052] -> [....192.168.1.1][.5351] [NAT-PMP][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
               new: [...228] [ip4][..tcp] [...192.168.1.34][51285] -> [.91.190.218.125][12350] 
           analyse: [...210] [ip4][..tcp] [...192.168.1.34][51279] -> [..111.221.74.48][40008] 
                                         min|      max|      avg|   stddev|       variance| entropy
@@ -662,32 +534,25 @@
               new: [...229] [ip4][..tcp] [...192.168.1.34][51286] -> [.91.190.218.125][..443] 
               new: [...230] [ip4][..udp] [...192.168.1.34][13021] -> [.174.49.171.224][32011] 
          detected: [...230] [ip4][..udp] [...192.168.1.34][13021] -> [.174.49.171.224][32011] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...231] [ip4][..udp] [...192.168.1.34][13021] -> [...83.31.12.173][23939] 
          detected: [...231] [ip4][..udp] [...192.168.1.34][13021] -> [...83.31.12.173][23939] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...232] [ip4][..udp] [...192.168.1.34][13021] -> [.189.138.161.88][19521] 
          detected: [...232] [ip4][..udp] [...192.168.1.34][13021] -> [.189.138.161.88][19521] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...233] [ip4][..udp] [...192.168.1.34][13021] -> [189.188.134.174][22436] 
          detected: [...233] [ip4][..udp] [...192.168.1.34][13021] -> [189.188.134.174][22436] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...234] [ip4][..tcp] [...192.168.1.34][51288] -> [...76.167.161.6][20274] 
               new: [...235] [ip4][..tcp] [...192.168.1.34][51289] -> [...71.238.7.203][18767] 
               new: [...236] [ip4][..tcp] [...192.168.1.34][51290] -> [..5.248.186.221][31010] 
               new: [...237] [ip4][..udp] [...192.168.1.34][13021] -> [..111.221.74.14][..443] 
          detected: [...237] [ip4][..udp] [...192.168.1.34][13021] -> [..111.221.74.14][..443] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...238] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.235.141][..443] 
          detected: [...238] [ip4][..udp] [...192.168.1.34][13021] -> [.157.55.235.141][..443] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [...239] [ip4][..tcp] [...192.168.1.34][51291] -> [...81.83.77.141][17639] 
               new: [...240] [ip4][..tcp] [...192.168.1.34][51292] -> [...71.238.7.203][18767] 
               new: [...241] [ip4][..tcp] [...192.168.1.34][51293] -> [..5.248.186.221][31010] 
               new: [...242] [ip4][..tcp] [...192.168.1.34][51294] -> [...81.83.77.141][17639] 
               new: [...243] [ip4][..udp] [...192.168.1.34][59788] -> [....192.168.1.1][...53] 
          detected: [...243] [ip4][..udp] [...192.168.1.34][59788] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][e4593.g.akamaiedge.net]
-                   RISK: Unidirectional Traffic
  detection-update: [...243] [ip4][..udp] [...192.168.1.34][59788] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][e4593.g.akamaiedge.net]
               new: [...244] [ip4][..tcp] [...192.168.1.34][51295] -> [..23.206.33.166][..443] 
          detected: [...244] [ip4][..tcp] [...192.168.1.34][51295] -> [..23.206.33.166][..443] [TLS.Skype_Teams][Unknown][VoIP][Acceptable][apps.skype.com]
@@ -811,7 +676,6 @@
               new: [...265] [ip4][..tcp] [...192.168.1.34][51318] -> [...212.161.8.36][13392] 
               new: [...266] [ip4][..udp] [...192.168.1.34][13021] -> [..133.236.67.25][49195] 
          detected: [...266] [ip4][..udp] [...192.168.1.34][13021] -> [..133.236.67.25][49195] [Skype_Teams.Skype_TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
           analyse: [....49] [ip4][..udp] [..192.168.0.254][.1025] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|   19.857|    1.935|    5.865|   34398418.239|   1.700]
@@ -827,7 +691,6 @@
           guessed: [....75] [ip4][..tcp] [...192.168.1.34][51240] -> [..111.221.74.45][..443] [TLS][Unknown][Web][Safe]
               end: [....75] [ip4][..tcp] [...192.168.1.34][51240] -> [..111.221.74.45][..443] 
              idle: [.....8] [ip4][..udp] [...192.168.1.34][61016] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
           guessed: [...120] [ip4][..tcp] [...192.168.1.34][51250] -> [.111.221.77.175][..443] [TLS][Unknown][Web][Safe]
               end: [...120] [ip4][..tcp] [...192.168.1.34][51250] -> [.111.221.77.175][..443] 
           guessed: [...157] [ip4][..tcp] [...192.168.1.34][51259] -> [.111.221.77.142][..443] [TLS][Unknown][Web][Safe]

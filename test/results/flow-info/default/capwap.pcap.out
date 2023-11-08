@@ -3,7 +3,6 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12379] 
          detected: [.....1] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12379] [CAPWAP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [.....2] [ip4][..udp] [..192.168.10.10][49259] -> [255.255.255.255][...53] 
          detected: [.....2] [ip4][..udp] [..192.168.10.10][49259] -> [255.255.255.255][...53] [DNS][Unknown][Network][Acceptable][cisco-capwap-controller]
       ERROR-EVENT: Unknown packet type [1/16]
@@ -16,7 +15,6 @@
          detected: [.....3] [ip4][..udp] [..192.168.10.10][12380] -> [255.255.255.255][.5246] [CAPWAP][Unknown][Network][Acceptable]
               new: [.....4] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12380] 
          detected: [.....4] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12380] [CAPWAP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....1] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12379] [CAPWAP][Unknown][Network][Acceptable]
           analyse: [.....4] [ip4][..udp] [...192.168.10.9][.5246] -> [..192.168.10.10][12380] [CAPWAP][Unknown][Network][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
@@ -30,7 +28,6 @@
                    [ENTROPIES...: 3.9,3.9,4.8,4.6,5.4,6.6,6.9,6.4,6.9,6.8,6.4,7.1,7.1,5.5,7.9,7.9,7.9,7.9,7.8,7.8,7.5,6.3,5.8,6.0,6.3,6.0,5.8,7.8,6.3,5.8,6.1,7.7]
               new: [.....5] [ip4][..udp] [..192.168.10.10][12380] -> [...192.168.10.9][.5247] 
          detected: [.....5] [ip4][..udp] [..192.168.10.10][12380] -> [...192.168.10.9][.5247] [CAPWAP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [.....2] [ip4][..udp] [..192.168.10.10][49259] -> [255.255.255.255][...53] [DNS][Unknown][Network][Acceptable]
       ERROR-EVENT: Unknown packet type [1/16]
           analyse: [.....5] [ip4][..udp] [..192.168.10.10][12380] -> [...192.168.10.9][.5247] [CAPWAP][Unknown][Network][Acceptable]

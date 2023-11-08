@@ -3,7 +3,6 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [..172.31.78.129][.9039] -> [..172.29.43.201][..514] [MIDSTREAM] 
          detected: [.....1] [ip4][..tcp] [..172.31.78.129][.9039] -> [..172.29.43.201][..514] [Syslog][Unknown][System][Acceptable]
-                   RISK: Unidirectional Traffic
       ERROR-EVENT: Captured packet size is smaller than expected packet size [1/16]
       ERROR-EVENT: Captured packet size is smaller than expected packet size [2/16]
              idle: [.....1] [ip4][..tcp] [..172.31.78.129][.9039] -> [..172.29.43.201][..514] [Syslog][Unknown][System][Acceptable]

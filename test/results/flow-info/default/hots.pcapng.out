@@ -3,7 +3,6 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [...192.168.0.73][54598] -> [...24.105.56.13][.3724] 
          detected: [.....1] [ip4][..udp] [...192.168.0.73][54598] -> [...24.105.56.13][.3724] [Heroes_of_the_Storm][Starcraft][Game][Fun]
-                   RISK: Unidirectional Traffic
           analyse: [.....1] [ip4][..udp] [...192.168.0.73][54598] -> [...24.105.56.13][.3724] [Heroes_of_the_Storm][Starcraft][Game][Fun]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.004|   91.418|    2.995|   16.144|  260622725.939|   0.200]
@@ -19,13 +18,11 @@
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 1]
               new: [.....2] [ip4][..udp] [..24.105.57.183][.1119] -> [...192.168.0.73][50609] 
          detected: [.....2] [ip4][..udp] [..24.105.57.183][.1119] -> [...192.168.0.73][50609] [Heroes_of_the_Storm][Starcraft][Game][Fun]
-                   RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..udp] [...192.168.0.73][54598] -> [...24.105.56.13][.3724] [Heroes_of_the_Storm][Starcraft][Game][Fun]
      DAEMON-EVENT: [Processed: 60 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 1]
               new: [.....3] [ip4][..udp] [...24.105.57.16][.3724] -> [...192.168.0.73][50609] 
          detected: [.....3] [ip4][..udp] [...24.105.57.16][.3724] -> [...192.168.0.73][50609] [Heroes_of_the_Storm][Starcraft][Game][Fun]
-                   RISK: Unidirectional Traffic
           analyse: [.....3] [ip4][..udp] [...24.105.57.16][.3724] -> [...192.168.0.73][50609] [Heroes_of_the_Storm][Starcraft][Game][Fun]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.001|    0.063|    0.033|    0.019|        353.907|   4.700]

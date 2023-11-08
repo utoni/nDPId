@@ -3,11 +3,8 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [..192.30.252.91][..443] -> [..192.168.1.100][.3213] [MIDSTREAM] 
          detected: [.....1] [ip4][..tcp] [..192.30.252.91][..443] -> [..192.168.1.100][.3213] [TLS][Github][Web][Safe]
-                   RISK: Unidirectional Traffic
- detection-update: [.....1] [ip4][..tcp] [..192.30.252.91][..443] -> [..192.168.1.100][.3213] [TLS][Github][Web][Safe]
               new: [.....2] [ip4][..udp] [..192.168.1.100][58818] -> [..192.168.1.254][...53] 
          detected: [.....2] [ip4][..udp] [..192.168.1.100][58818] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][91.252.30.192.in-addr.arpa]
-                   RISK: Unidirectional Traffic
  detection-update: [.....2] [ip4][..udp] [..192.168.1.100][58818] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][100.1.168.192.in-addr.arpa]
                    RISK: Unidirectional Traffic
  detection-update: [.....2] [ip4][..udp] [..192.168.1.100][58818] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][100.1.168.192.in-addr.arpa]
@@ -15,7 +12,6 @@
               new: [.....3] [ip4][..tcp] [..80.239.186.26][..443] -> [..192.168.1.100][.3476] [MIDSTREAM] 
               new: [.....4] [ip4][..udp] [..192.168.1.100][58831] -> [..192.168.1.254][...53] 
          detected: [.....4] [ip4][..udp] [..192.168.1.100][58831] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][254.1.168.192.in-addr.arpa]
-                   RISK: Unidirectional Traffic
  detection-update: [.....4] [ip4][..udp] [..192.168.1.100][58831] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][26.186.239.80.in-addr.arpa]
                    RISK: Unidirectional Traffic
  detection-update: [.....4] [ip4][..udp] [..192.168.1.100][58831] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][254.1.168.192.in-addr.arpa]
@@ -26,12 +22,10 @@
               new: [.....6] [ip4][..udp] [..173.194.40.22][..443] -> [..192.168.1.100][53568] 
               new: [.....7] [ip4][..udp] [..192.168.1.100][58844] -> [..192.168.1.254][...53] 
          detected: [.....7] [ip4][..udp] [..192.168.1.100][58844] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][40.186.239.80.in-addr.arpa]
-                   RISK: Unidirectional Traffic
  detection-update: [.....7] [ip4][..udp] [..192.168.1.100][58844] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][40.186.239.80.in-addr.arpa]
               new: [.....8] [ip4][..tcp] [..192.168.1.100][.3052] -> [.216.58.212.110][..443] [MIDSTREAM] 
               new: [.....9] [ip4][..udp] [..192.168.1.100][58851] -> [..192.168.1.254][...53] 
          detected: [.....9] [ip4][..udp] [..192.168.1.100][58851] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][22.40.194.173.in-addr.arpa]
-                   RISK: Unidirectional Traffic
  detection-update: [.....9] [ip4][..udp] [..192.168.1.100][58851] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][110.212.58.216.in-addr.arpa]
                    RISK: Unidirectional Traffic
  detection-update: [.....9] [ip4][..udp] [..192.168.1.100][58851] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][110.212.58.216.in-addr.arpa]
@@ -44,6 +38,8 @@
          detected: [....13] [ip4][..tcp] [..192.168.1.100][.3506] -> [173.194.113.224][...80] [HTTP.Google][Google][Advertisement][Acceptable][www.google-analytics.com]
               new: [....14] [ip4][..udp] [..192.168.1.100][60026] -> [..192.168.1.254][...53] 
          detected: [....14] [ip4][..udp] [..192.168.1.100][60026] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][llnw.blizzard.com]
+                   RISK: Susp DGA Domain name
+ detection-update: [....14] [ip4][..udp] [..192.168.1.100][60026] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][llnw.blizzard.com]
                    RISK: Susp DGA Domain name, Unidirectional Traffic
  detection-update: [....14] [ip4][..udp] [..192.168.1.100][60026] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][llnw.blizzard.com]
                    RISK: Susp DGA Domain name, Risky Domain Name
@@ -89,6 +85,7 @@
          detected: [....27] [ip4][....2] [..192.168.1.107] -> [.....224.0.0.22] [IGMP][Unknown][Network][Acceptable]
               new: [....28] [ip4][..udp] [..192.168.1.100][53145] -> [..192.168.1.254][...53] 
          detected: [....28] [ip4][..udp] [..192.168.1.100][53145] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][nydus.battle.net]
+ detection-update: [....28] [ip4][..udp] [..192.168.1.100][53145] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][nydus.battle.net]
                    RISK: Unidirectional Traffic
  detection-update: [....28] [ip4][..udp] [..192.168.1.100][53145] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][nydus.battle.net]
               new: [....29] [ip4][..tcp] [..192.168.1.100][.3515] -> [..80.239.186.26][...80] 
@@ -129,6 +126,7 @@
          detected: [....43] [ip4][..tcp] [..192.168.1.100][.3526] -> [..80.239.186.40][...80] [HTTP][Unknown][Web][Acceptable][eu.battle.net]
               new: [....44] [ip4][..udp] [..192.168.1.100][55468] -> [..192.168.1.254][...53] 
          detected: [....44] [ip4][..udp] [..192.168.1.100][55468] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][bnetcmsus-a.akamaihd.net]
+ detection-update: [....44] [ip4][..udp] [..192.168.1.100][55468] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][bnetcmsus-a.akamaihd.net]
                    RISK: Unidirectional Traffic
  detection-update: [....44] [ip4][..udp] [..192.168.1.100][55468] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][bnetcmsus-a.akamaihd.net]
               new: [....45] [ip4][..tcp] [..192.168.1.100][.3527] -> [...2.228.46.112][...80] 

@@ -3,7 +3,6 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [.......10.0.0.1][53187] -> [.......10.0.0.2][.9987] 
          detected: [.....1] [ip4][..udp] [.......10.0.0.1][53187] -> [.......10.0.0.2][.9987] [TeamSpeak][Unknown][VoIP][Fun]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 13 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....2] [ip4][..udp] [...193.31.25.70][.2011] -> [...51.68.181.92][.2010] 

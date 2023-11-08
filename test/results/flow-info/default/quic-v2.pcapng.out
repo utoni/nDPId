@@ -3,7 +3,7 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip6][..udp] [....................................::1][42086] -> [....................................::1][.4443] 
          detected: [.....1] [ip6][..udp] [....................................::1][42086] -> [....................................::1][.4443] [QUIC][Unknown][Web][Acceptable][test]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
              idle: [.....1] [ip6][..udp] [....................................::1][42086] -> [....................................::1][.4443] [QUIC][Unknown][Web][Acceptable]
                    RISK: Known Proto on Non Std Port
      DAEMON-EVENT: shutdown

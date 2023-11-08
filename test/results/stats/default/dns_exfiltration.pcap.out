@@ -1,5 +1,5 @@
 PUTVAL "localhost/exec-nDPIsrvd/gauge-json_lines" interval=60 N:14
-PUTVAL "localhost/exec-nDPIsrvd/gauge-json_bytes" interval=60 N:14386
+PUTVAL "localhost/exec-nDPIsrvd/gauge-json_bytes" interval=60 N:14276
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_new_count" interval=60 N:1
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_end_count" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_idle_count" interval=60 N:1
@@ -132,7 +132,7 @@ PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_risk_42_count" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_risk_43_count" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_risk_44_count" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_risk_45_count" interval=60 N:0
-PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_risk_46_count" interval=60 N:1
+PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_risk_46_count" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_risk_47_count" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_risk_48_count" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_risk_49_count" interval=60 N:0

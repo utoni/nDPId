@@ -3,7 +3,6 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [..192.168.1.109][57833] -> [.216.58.212.101][..443] 
          detected: [.....1] [ip4][..udp] [..192.168.1.109][57833] -> [.216.58.212.101][..443] [QUIC.GMail][Google][Email][Acceptable][mail.google.com]
-                   RISK: Unidirectional Traffic
           analyse: [.....1] [ip4][..udp] [..192.168.1.109][57833] -> [.216.58.212.101][..443] [QUIC.GMail][Google][Email][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    3.198|    0.584|    0.964|     929164.558|   3.400]
@@ -18,36 +17,29 @@
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....2] [ip4][..udp] [.......10.0.0.4][40134] -> [.......10.0.0.3][.6121] 
          detected: [.....2] [ip4][..udp] [.......10.0.0.4][40134] -> [.......10.0.0.3][.6121] [QUIC][Unknown][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, Missing SNI TLS Extn, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port, Missing SNI TLS Extn
              idle: [.....1] [ip4][..udp] [..192.168.1.109][57833] -> [.216.58.212.101][..443] [QUIC.GMail][Google][Email][Acceptable]
      DAEMON-EVENT: [Processed: 419 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....3] [ip4][..udp] [..192.168.1.105][45669] -> [...172.217.16.4][..443] 
          detected: [.....3] [ip4][..udp] [..192.168.1.105][45669] -> [...172.217.16.4][..443] [QUIC.Google][Google][Web][Acceptable][www.google.com]
-                   RISK: Unidirectional Traffic
               new: [.....4] [ip4][..udp] [..192.168.1.105][40461] -> [...172.217.16.3][..443] 
               new: [.....5] [ip4][..udp] [..192.168.1.105][34438] -> [.216.58.210.238][..443] 
          detected: [.....5] [ip4][..udp] [..192.168.1.105][34438] -> [.216.58.210.238][..443] [QUIC.YouTube][Google][Media][Fun][www.youtube.com]
-                   RISK: Unidirectional Traffic
               new: [.....6] [ip4][..udp] [..192.168.1.105][48445] -> [.216.58.214.110][..443] 
          detected: [.....6] [ip4][..udp] [..192.168.1.105][48445] -> [.216.58.214.110][..443] [QUIC.YouTube][Google][Media][Fun][i.ytimg.com]
-                   RISK: Unidirectional Traffic
               new: [.....7] [ip4][..udp] [..192.168.1.105][40030] -> [.216.58.201.227][..443] 
          detected: [.....7] [ip4][..udp] [..192.168.1.105][40030] -> [.216.58.201.227][..443] [QUIC.Google][Google][Web][Acceptable][fonts.gstatic.com]
-                   RISK: Unidirectional Traffic
               new: [.....8] [ip4][..udp] [..192.168.1.105][55934] -> [.216.58.201.238][..443] 
          detected: [.....8] [ip4][..udp] [..192.168.1.105][55934] -> [.216.58.201.238][..443] [QUIC.YouTube][Google][Media][Fun][s.ytimg.com]
-                   RISK: Unidirectional Traffic
               new: [.....9] [ip4][..udp] [..192.168.1.105][53817] -> [.216.58.210.225][..443] 
          detected: [.....9] [ip4][..udp] [..192.168.1.105][53817] -> [.216.58.210.225][..443] [QUIC.YouTube][Google][Media][Fun][yt3.ggpht.com]
-                   RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..udp] [.......10.0.0.4][40134] -> [.......10.0.0.3][.6121] [QUIC][Unknown][Web][Acceptable]
                    RISK: Known Proto on Non Std Port, Missing SNI TLS Extn
      DAEMON-EVENT: [Processed: 449 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 7 / 9|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [....10] [ip4][..udp] [..192.168.1.109][35236] -> [.216.58.210.206][..443] 
          detected: [....10] [ip4][..udp] [..192.168.1.109][35236] -> [.216.58.210.206][..443] [QUIC.YouTube][Google][Media][Fun][www.youtube.com]
-                   RISK: Unidirectional Traffic
           analyse: [....10] [ip4][..udp] [..192.168.1.109][35236] -> [.216.58.210.206][..443] [QUIC.YouTube][Google][Media][Fun]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.829|    0.062|    0.199|      39440.069|   2.000]

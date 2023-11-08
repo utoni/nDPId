@@ -12,7 +12,7 @@
               new: [.....5] [ip4][..tcp] [....172.20.3.13][53132] -> [.....172.20.3.5][...80] 
               new: [.....6] [ip4][..tcp] [.....172.20.3.1][...80] -> [....172.20.3.13][53132] [MIDSTREAM] 
          detected: [.....6] [ip4][..tcp] [.....172.20.3.1][...80] -> [....172.20.3.13][53132] [HTTP][Unknown][Web][Acceptable][]
-                   RISK: HTTP Susp User-Agent, Unidirectional Traffic
+                   RISK: HTTP Susp User-Agent
               new: [.....7] [ip4][..tcp] [.....172.20.3.5][...80] -> [....172.57.3.13][53132] [MIDSTREAM] 
               new: [.....8] [ip4][..tcp] [......172.6.3.5][...80] -> [....172.20.3.13][53132] [MIDSTREAM] 
               new: [.....9] [ip4][..tcp] [.....172.20.3.5][.2602] -> [....172.21.3.13][...80] 
@@ -20,8 +20,6 @@
               new: [....10] [ip4][..170] [170.170.170.170] -> [170.170.170.170] 
               new: [....11] [ip4][..tcp] [.....172.20.3.5][.2602] -> [....172.20.3.13][...80] [MIDSTREAM] 
          detected: [....11] [ip4][..tcp] [.....172.20.3.5][.2602] -> [....172.20.3.13][...80] [HTTP][Unknown][Web][Acceptable][172.20.3.13]
-                   RISK: HTTP Susp User-Agent, HTTP/TLS/QUIC Numeric Hostname/SNI, Unidirectional Traffic
- detection-update: [....11] [ip4][..tcp] [.....172.20.3.5][.2602] -> [....172.20.3.13][...80] [HTTP][Unknown][Web][Acceptable][172.20.3.13]
                    RISK: HTTP Susp User-Agent, HTTP/TLS/QUIC Numeric Hostname/SNI
               new: [....12] [ip4][..tcp] [....172.20.3.88][...80] -> [....172.20.3.82][.2601] [MIDSTREAM] 
               new: [....13] [ip4][..tcp] [.....172.20.3.5][.2603] -> [....172.20.3.13][...80] 
@@ -41,7 +39,7 @@
               new: [....22] [ip4][..tcp] [....172.20.3.13][...80] -> [....172.20.76.5][65069] [MIDSTREAM] 
               new: [....23] [ip4][..tcp] [....172.20.3.13][...80] -> [......44.20.3.5][.2605] [MIDSTREAM] 
          detected: [....23] [ip4][..tcp] [....172.20.3.13][...80] -> [......44.20.3.5][.2605] [HTTP][Unknown][Web][Acceptable][]
-                   RISK: HTTP Susp User-Agent, Unidirectional Traffic
+                   RISK: HTTP Susp User-Agent
       ERROR-EVENT: Unknown L3 protocol [2/16]
               new: [....24] [ip4][..tcp] [170.170.170.170][43690] -> [170.170.170.170][43690] 
               new: [....25] [ip4][..tcp] [....172.20.3.13][...80] -> [.....172.20.3.5][.2639] [MIDSTREAM] 
@@ -52,14 +50,14 @@
       ERROR-EVENT: Unknown L3 protocol [1/16]
               new: [....28] [ip4][..tcp] [....172.20.3.13][...80] -> [....172.20.72.5][.2606] [MIDSTREAM] 
          detected: [....28] [ip4][..tcp] [....172.20.3.13][...80] -> [....172.20.72.5][.2606] [HTTP][Unknown][Web][Acceptable][]
-                   RISK: HTTP Susp User-Agent, Unidirectional Traffic
+                   RISK: HTTP Susp User-Agent
               new: [....29] [ip4][..tcp] [.....172.20.3.5][.2607] -> [....172.20.3.13][...80] 
               new: [....30] [ip4][..tcp] [.....172.20.3.5][.9587] -> [....172.20.3.13][...80] [MIDSTREAM] 
          detected: [....30] [ip4][..tcp] [.....172.20.3.5][.9587] -> [....172.20.3.13][...80] [HTTP][Unknown][Web][Acceptable][]
-                   RISK: HTTP Susp User-Agent, Unidirectional Traffic
+                   RISK: HTTP Susp User-Agent
               new: [....31] [ip4][..tcp] [....172.20.2.13][...80] -> [.....172.20.3.5][.2607] [MIDSTREAM] 
          detected: [....31] [ip4][..tcp] [....172.20.2.13][...80] -> [.....172.20.3.5][.2607] [HTTP][Unknown][Web][Acceptable][]
-                   RISK: HTTP Susp User-Agent, Unidirectional Traffic
+                   RISK: HTTP Susp User-Agent
               new: [....32] [ip4][..tcp] [....172.20.3.13][53193] -> [.....172.20.3.5][...80] 
               new: [....33] [ip4][..tcp] [.....172.20.3.5][...80] -> [...172.20.35.13][53136] 
               new: [....34] [ip4][..tcp] [....172.20.3.13][53136] -> [.....172.20.3.5][...80] [MIDSTREAM] 
@@ -75,7 +73,7 @@
               new: [....38] [ip4][..tcp] [....172.20.3.13][...80] -> [...172.20.148.5][.2608] [MIDSTREAM] 
               new: [....39] [ip4][..115] [....172.20.3.13] -> [.....172.20.3.5] 
              idle: [.....6] [ip4][..tcp] [.....172.20.3.1][...80] -> [....172.20.3.13][53132] [HTTP][Unknown][Web][Acceptable]
-                   RISK: HTTP Susp User-Agent, Unidirectional Traffic
+                   RISK: HTTP Susp User-Agent
           guessed: [.....5] [ip4][..tcp] [....172.20.3.13][53132] -> [.....172.20.3.5][...80] [HTTP][Unknown][Web][Acceptable][]
               end: [.....5] [ip4][..tcp] [....172.20.3.13][53132] -> [.....172.20.3.5][...80] 
           guessed: [....36] [ip4][..tcp] [...172.20.67.13][53136] -> [.....172.20.3.5][...80] [HTTP][Unknown][Web][Acceptable][]
@@ -106,7 +104,7 @@
                    RISK: Unidirectional Traffic
              idle: [....35] [ip4][..tcp] [....172.20.3.13][53136] -> [.....172.70.3.5][...80] 
              idle: [....23] [ip4][..tcp] [....172.20.3.13][...80] -> [......44.20.3.5][.2605] [HTTP][Unknown][Web][Acceptable]
-                   RISK: HTTP Susp User-Agent, Unidirectional Traffic
+                   RISK: HTTP Susp User-Agent
           guessed: [....21] [ip4][..tcp] [......51.20.3.5][.2605] -> [....172.20.3.13][...80] [HTTP][AmazonAWS][Web][Acceptable][]
                    RISK: Unidirectional Traffic
              idle: [....21] [ip4][..tcp] [......51.20.3.5][.2605] -> [....172.20.3.13][...80] 
@@ -140,11 +138,11 @@
               end: [....20] [ip4][..tcp] [.....172.20.3.5][.2605] -> [....172.20.3.13][...80] [HTTP][Unknown][Web][Acceptable]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [....28] [ip4][..tcp] [....172.20.3.13][...80] -> [....172.20.72.5][.2606] [HTTP][Unknown][Web][Acceptable]
-                   RISK: HTTP Susp User-Agent, Unidirectional Traffic
+                   RISK: HTTP Susp User-Agent
               end: [....27] [ip4][..tcp] [.....172.20.3.5][.2606] -> [....172.20.3.13][...80] [HTTP][Unknown][Web][Acceptable]
                    RISK: HTTP Susp User-Agent, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [....31] [ip4][..tcp] [....172.20.2.13][...80] -> [.....172.20.3.5][.2607] [HTTP][Unknown][Web][Acceptable]
-                   RISK: HTTP Susp User-Agent, Unidirectional Traffic
+                   RISK: HTTP Susp User-Agent
           guessed: [....29] [ip4][..tcp] [.....172.20.3.5][.2607] -> [....172.20.3.13][...80] [HTTP][Unknown][Web][Acceptable][]
              idle: [....29] [ip4][..tcp] [.....172.20.3.5][.2607] -> [....172.20.3.13][...80] 
           guessed: [....38] [ip4][..tcp] [....172.20.3.13][...80] -> [...172.20.148.5][.2608] [HTTP][Unknown][Web][Acceptable][]
@@ -167,7 +165,7 @@
                    RISK: Unidirectional Traffic
              idle: [.....7] [ip4][..tcp] [.....172.20.3.5][...80] -> [....172.57.3.13][53132] 
              idle: [....30] [ip4][..tcp] [.....172.20.3.5][.9587] -> [....172.20.3.13][...80] [HTTP][Unknown][Web][Acceptable]
-                   RISK: HTTP Susp User-Agent, Unidirectional Traffic
+                   RISK: HTTP Susp User-Agent
           guessed: [....22] [ip4][..tcp] [....172.20.3.13][...80] -> [....172.20.76.5][65069] [HTTP][Unknown][Web][Acceptable][]
                    RISK: Unidirectional Traffic
              idle: [....22] [ip4][..tcp] [....172.20.3.13][...80] -> [....172.20.76.5][65069] 

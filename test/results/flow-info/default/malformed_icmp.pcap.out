@@ -3,7 +3,7 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][.icmp] [218.152.179.213] -> [.218.152.179.54] 
          detected: [.....1] [ip4][.icmp] [218.152.179.213] -> [.218.152.179.54] [ICMP][Unknown][Network][Acceptable]
-                   RISK: Malformed Packet, Unidirectional Traffic
+                   RISK: Malformed Packet
              idle: [.....1] [ip4][.icmp] [218.152.179.213] -> [.218.152.179.54] [ICMP][Unknown][Network][Acceptable]
                    RISK: Malformed Packet
      DAEMON-EVENT: shutdown

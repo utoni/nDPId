@@ -46,7 +46,6 @@
                    [ENTROPIES...: 5.8,5.9,4.8,4.3,5.5,5.5,4.8,4.4,5.6,5.5,5.6,4.4,4.5,3.6,3.9,5.5,3.6,3.9,4.5,3.7,4.5,4.5,3.9,3.7,4.0,3.7,4.5,3.9,3.7,3.9,3.9,3.7]
               new: [.....5] [ip4][.icmp] [..192.168.1.178] -> [.144.195.73.154] 
          detected: [.....5] [ip4][.icmp] [..192.168.1.178] -> [.144.195.73.154] [ICMP][Zoom][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....4] [ip4][..udp] [..192.168.1.178][57953] -> [.144.195.73.154][.8801] [SRTP.Zoom][Zoom][Video][Acceptable]
              idle: [.....1] [ip4][..tcp] [..192.168.1.178][50076] -> [.144.195.73.154][..443] [TLS.Zoom][Zoom][Video][Acceptable]
                    RISK: TLS (probably) Not Carrying HTTPS

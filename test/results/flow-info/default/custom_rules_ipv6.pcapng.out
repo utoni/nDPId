@@ -6,10 +6,8 @@
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....2] [ip6][..udp] [247f:855b:5e16:3caf:3f2c:4134:9592:661b][..100] -> [.21bc:b273:7f68:88d7:77a8:585:3990:927b][.1991] 
          detected: [.....2] [ip6][..udp] [247f:855b:5e16:3caf:3f2c:4134:9592:661b][..100] -> [.21bc:b273:7f68:88d7:77a8:585:3990:927b][.1991] [DTLS][Unknown][Web][Safe]
-                   RISK: Unidirectional Traffic
               new: [.....3] [ip6][..udp] [247f:855b:5e16:3caf:3f2c:4134:9592:661b][36098] -> [.21bc:b273:7f68:88d7:77a8:585:3990:927b][50621] 
          detected: [.....3] [ip6][..udp] [247f:855b:5e16:3caf:3f2c:4134:9592:661b][36098] -> [.21bc:b273:7f68:88d7:77a8:585:3990:927b][50621] [DTLS][Unknown][Web][Safe]
-                   RISK: Unidirectional Traffic
      not-detected: [.....1] [ip6][..udp] [.........3ffe:507::1:200:86ff:fe05:80da][21554] -> [......................3ffe:501:4819::42][.5333] [Unknown][Unknown][Unrated]
              idle: [.....1] [ip6][..udp] [.........3ffe:507::1:200:86ff:fe05:80da][21554] -> [......................3ffe:501:4819::42][.5333] 
      DAEMON-EVENT: [Processed: 4 pkts][ZLib][compressions: 0|diff: 0 / 0]

@@ -3,7 +3,7 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] 
          detected: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Unknown][Network][Acceptable]
-                   RISK: Malformed Packet, Unidirectional Traffic
+                   RISK: Malformed Packet
           analyse: [.....1] [ip4][.icmp] [192.168.154.131] -> [192.168.154.132] [ICMP][Unknown][Network][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.999|   13.999|    1.420|    2.297|    5274800.751|   4.200]

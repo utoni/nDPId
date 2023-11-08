@@ -3,43 +3,32 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [.10.111.111.111][.1111] -> [.......10.0.0.1][.1433] [MIDSTREAM] 
          detected: [.....1] [ip4][..tcp] [.10.111.111.111][.1111] -> [.......10.0.0.1][.1433] [MsSQL-TDS][Unknown][Database][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 4 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....2] [ip4][..tcp] [.10.111.111.111][.2222] -> [.......10.0.0.1][.1433] [MIDSTREAM] 
          detected: [.....2] [ip4][..tcp] [.10.111.111.111][.2222] -> [.......10.0.0.1][.1433] [MsSQL-TDS][Unknown][Database][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [.....3] [ip4][..tcp] [.10.111.111.111][.3333] -> [.......10.0.0.1][.1433] [MIDSTREAM] 
          detected: [.....3] [ip4][..tcp] [.10.111.111.111][.3333] -> [.......10.0.0.1][.1433] [MsSQL-TDS][Unknown][Database][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [.....4] [ip4][..tcp] [.10.111.111.111][.4444] -> [.......10.0.0.1][.1433] [MIDSTREAM] 
          detected: [.....4] [ip4][..tcp] [.10.111.111.111][.4444] -> [.......10.0.0.1][.1433] [MsSQL-TDS][Unknown][Database][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [.....5] [ip4][..tcp] [.10.111.111.111][.5555] -> [.......10.0.0.1][.1433] [MIDSTREAM] 
          detected: [.....5] [ip4][..tcp] [.10.111.111.111][.5555] -> [.......10.0.0.1][.1433] [MsSQL-TDS][Unknown][Database][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..tcp] [.10.111.111.111][.1111] -> [.......10.0.0.1][.1433] [MsSQL-TDS][Unknown][Database][Acceptable]
               new: [.....6] [ip4][..tcp] [.10.111.111.111][.6666] -> [.......10.0.0.1][.1433] [MIDSTREAM] 
               new: [.....7] [ip4][..tcp] [.10.111.111.111][.7777] -> [.......10.0.0.1][.1433] [MIDSTREAM] 
          detected: [.....7] [ip4][..tcp] [.10.111.111.111][.7777] -> [.......10.0.0.1][.1433] [MsSQL-TDS][Unknown][Database][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [.....8] [ip4][..tcp] [.10.111.111.111][.8888] -> [.......10.0.0.1][.1433] [MIDSTREAM] 
          detected: [.....8] [ip4][..tcp] [.10.111.111.111][.8888] -> [.......10.0.0.1][.1433] [MsSQL-TDS][Unknown][Database][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 34 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 7 / 8|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....9] [ip4][..tcp] [.10.111.111.111][.9999] -> [.......10.0.0.1][.1433] [MIDSTREAM] 
          detected: [.....9] [ip4][..tcp] [.10.111.111.111][.9999] -> [.......10.0.0.1][.1433] [MsSQL-TDS][Unknown][Database][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....10] [ip4][..tcp] [.10.111.111.111][11111] -> [.......10.0.0.1][.1433] [MIDSTREAM] 
          detected: [....10] [ip4][..tcp] [.10.111.111.111][11111] -> [.......10.0.0.1][.1433] [MsSQL-TDS][Unknown][Database][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....11] [ip4][..tcp] [.10.111.111.111][22222] -> [.......10.0.0.1][.1433] [MIDSTREAM] 
          detected: [....11] [ip4][..tcp] [.10.111.111.111][22222] -> [.......10.0.0.1][.1433] [MsSQL-TDS][Unknown][Database][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....12] [ip4][..tcp] [.10.111.111.111][33333] -> [.......10.0.0.1][.1433] [MIDSTREAM] 
          detected: [....12] [ip4][..tcp] [.10.111.111.111][33333] -> [.......10.0.0.1][.1433] [MsSQL-TDS][Unknown][Database][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....10] [ip4][..tcp] [.10.111.111.111][11111] -> [.......10.0.0.1][.1433] [MsSQL-TDS][Unknown][Database][Acceptable]
              idle: [.....3] [ip4][..tcp] [.10.111.111.111][.3333] -> [.......10.0.0.1][.1433] [MsSQL-TDS][Unknown][Database][Acceptable]
              idle: [.....5] [ip4][..tcp] [.10.111.111.111][.5555] -> [.......10.0.0.1][.1433] [MsSQL-TDS][Unknown][Database][Acceptable]

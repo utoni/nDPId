@@ -4,6 +4,7 @@
               new: [.....1] [ip4][..tcp] [..52.41.135.135][..443] -> [..192.168.26.22][51817] [MIDSTREAM] 
               new: [.....2] [ip4][..tcp] [..35.234.85.218][..443] -> [..192.168.26.22][51949] [MIDSTREAM] 
          detected: [.....2] [ip4][..tcp] [..35.234.85.218][..443] -> [..192.168.26.22][51949] [TLS][GoogleCloud][Web][Safe][]
+ detection-update: [.....2] [ip4][..tcp] [..35.234.85.218][..443] -> [..192.168.26.22][51949] [TLS][GoogleCloud][Web][Safe][]
                    RISK: Unidirectional Traffic
  detection-update: [.....2] [ip4][..tcp] [..35.234.85.218][..443] -> [..192.168.26.22][51949] [TLS.RiotGames][GoogleCloud][Game][Fun][]
                    RISK: Unidirectional Traffic

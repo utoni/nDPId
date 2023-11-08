@@ -3,22 +3,16 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [.....8.17.22.31][.4000] -> [...192.168.0.20][43594] [MIDSTREAM] 
          detected: [.....1] [ip4][..tcp] [.....8.17.22.31][.4000] -> [...192.168.0.20][43594] [FIX][Unknown][RPC][Safe]
-                   RISK: Unidirectional Traffic
               new: [.....2] [ip4][..tcp] [.....8.17.22.31][.4000] -> [...192.168.0.20][47968] [MIDSTREAM] 
          detected: [.....2] [ip4][..tcp] [.....8.17.22.31][.4000] -> [...192.168.0.20][47968] [FIX][Unknown][RPC][Safe]
-                   RISK: Unidirectional Traffic
               new: [.....3] [ip4][..tcp] [..208.245.107.3][.4000] -> [...192.168.0.20][45578] [MIDSTREAM] 
          detected: [.....3] [ip4][..tcp] [..208.245.107.3][.4000] -> [...192.168.0.20][45578] [FIX][Unknown][RPC][Safe]
-                   RISK: Unidirectional Traffic
               new: [.....4] [ip4][..tcp] [.....8.17.22.31][.4000] -> [...192.168.0.20][47952] [MIDSTREAM] 
          detected: [.....4] [ip4][..tcp] [.....8.17.22.31][.4000] -> [...192.168.0.20][47952] [FIX][Unknown][RPC][Safe]
-                   RISK: Unidirectional Traffic
               new: [.....5] [ip4][..tcp] [..208.245.107.3][.4000] -> [...192.168.0.20][45584] [MIDSTREAM] 
          detected: [.....5] [ip4][..tcp] [..208.245.107.3][.4000] -> [...192.168.0.20][45584] [FIX][Unknown][RPC][Safe]
-                   RISK: Unidirectional Traffic
               new: [.....6] [ip4][..tcp] [.....8.17.22.31][.4000] -> [...192.168.0.20][47962] [MIDSTREAM] 
          detected: [.....6] [ip4][..tcp] [.....8.17.22.31][.4000] -> [...192.168.0.20][47962] [FIX][Unknown][RPC][Safe]
-                   RISK: Unidirectional Traffic
           analyse: [.....3] [ip4][..tcp] [..208.245.107.3][.4000] -> [...192.168.0.20][45578] [FIX][Unknown][RPC][Safe]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.315|    0.065|    0.068|       4636.039|   4.400]
@@ -31,10 +25,8 @@
                    [ENTROPIES...: 5.2,4.4,6.4,5.1,4.8,4.5,5.2,4.4,5.0,4.5,5.2,4.4,5.1,4.5,5.1,4.5,5.1,4.4,5.1,4.3,5.1,4.5,5.0,4.4,5.1,4.4,5.2,4.5,4.9,4.5,5.1,4.4]
               new: [.....7] [ip4][..tcp] [..208.245.107.3][.4000] -> [...192.168.0.20][38652] [MIDSTREAM] 
          detected: [.....7] [ip4][..tcp] [..208.245.107.3][.4000] -> [...192.168.0.20][38652] [FIX][Unknown][RPC][Safe]
-                   RISK: Unidirectional Traffic
               new: [.....8] [ip4][..tcp] [.....8.17.22.31][.4000] -> [...192.168.0.20][40918] [MIDSTREAM] 
          detected: [.....8] [ip4][..tcp] [.....8.17.22.31][.4000] -> [...192.168.0.20][40918] [FIX][Unknown][RPC][Safe]
-                   RISK: Unidirectional Traffic
           analyse: [.....2] [ip4][..tcp] [.....8.17.22.31][.4000] -> [...192.168.0.20][47968] [FIX][Unknown][RPC][Safe]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.300|    0.091|    0.084|       7079.807|   4.200]
@@ -47,7 +39,6 @@
                    [ENTROPIES...: 5.4,5.2,5.4,5.4,5.1,5.2,5.4,5.4,5.1,5.2,5.3,5.1,5.6,5.2,5.5,5.2,5.4,5.2,5.1,5.1,6.5,5.1,5.5,5.2,5.5,5.2,5.2,5.2,5.2,5.2,5.4,5.1]
               new: [.....9] [ip4][..tcp] [..208.245.107.3][.4000] -> [...192.168.0.20][38646] [MIDSTREAM] 
          detected: [.....9] [ip4][..tcp] [..208.245.107.3][.4000] -> [...192.168.0.20][38646] [FIX][Unknown][RPC][Safe]
-                   RISK: Unidirectional Traffic
           analyse: [.....1] [ip4][..tcp] [.....8.17.22.31][.4000] -> [...192.168.0.20][43594] [FIX][Unknown][RPC][Safe]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.291|    0.178|    0.113|      12753.578|   4.500]
@@ -60,13 +51,10 @@
                    [ENTROPIES...: 5.5,5.2,5.3,5.1,5.4,5.4,5.2,5.1,6.4,5.1,5.4,5.2,5.5,5.2,5.6,5.2,5.4,5.2,5.5,5.2,5.4,5.2,5.6,5.6,5.2,5.2,5.5,5.2,5.4,5.2,5.5,5.2]
               new: [....10] [ip4][..tcp] [..208.245.107.3][.4000] -> [...192.168.0.20][39094] [MIDSTREAM] 
          detected: [....10] [ip4][..tcp] [..208.245.107.3][.4000] -> [...192.168.0.20][39094] [FIX][Unknown][RPC][Safe]
-                   RISK: Unidirectional Traffic
               new: [....11] [ip4][..tcp] [..217.192.86.32][.4000] -> [...192.168.0.20][53330] [MIDSTREAM] 
          detected: [....11] [ip4][..tcp] [..217.192.86.32][.4000] -> [...192.168.0.20][53330] [FIX][Unknown][RPC][Safe]
-                   RISK: Unidirectional Traffic
               new: [....12] [ip4][..tcp] [.....8.17.22.31][.4000] -> [...192.168.0.20][40928] [MIDSTREAM] 
          detected: [....12] [ip4][..tcp] [.....8.17.22.31][.4000] -> [...192.168.0.20][40928] [FIX][Unknown][RPC][Safe]
-                   RISK: Unidirectional Traffic
           analyse: [.....5] [ip4][..tcp] [..208.245.107.3][.4000] -> [...192.168.0.20][45584] [FIX][Unknown][RPC][Safe]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    5.507|    0.699|    1.281|    1640706.605|   3.700]

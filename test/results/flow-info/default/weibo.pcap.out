@@ -7,7 +7,6 @@
               new: [.....4] [ip4][..udp] [..192.168.1.105][53656] -> [.216.58.210.227][..443] 
               new: [.....5] [ip4][..udp] [..192.168.1.105][54988] -> [....192.168.1.1][...53] 
          detected: [.....5] [ip4][..udp] [..192.168.1.105][54988] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][weibo.com]
-                   RISK: Unidirectional Traffic
  detection-update: [.....5] [ip4][..udp] [..192.168.1.105][54988] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][weibo.com]
               new: [.....6] [ip4][..tcp] [..192.168.1.105][59119] -> [.114.134.80.162][...80] 
               new: [.....7] [ip4][..tcp] [..192.168.1.105][59120] -> [.114.134.80.162][...80] 
@@ -16,7 +15,6 @@
          detected: [.....6] [ip4][..tcp] [..192.168.1.105][59119] -> [.114.134.80.162][...80] [HTTP][Unknown][Web][Acceptable][weibo.com]
               new: [....10] [ip4][..udp] [..192.168.1.105][.7148] -> [....192.168.1.1][...53] 
          detected: [....10] [ip4][..udp] [..192.168.1.105][.7148] -> [....192.168.1.1][...53] [DNS.SinaWeibo][Unknown][Network][Fun][www.weibo.com]
-                   RISK: Unidirectional Traffic
  detection-update: [....10] [ip4][..udp] [..192.168.1.105][.7148] -> [....192.168.1.1][...53] [DNS.SinaWeibo][Unknown][Network][Fun][www.weibo.com]
               new: [....11] [ip4][..tcp] [..192.168.1.105][51698] -> [.93.188.134.137][...80] 
          detected: [....11] [ip4][..tcp] [..192.168.1.105][51698] -> [.93.188.134.137][...80] [HTTP.SinaWeibo][Unknown][SocialNetwork][Fun][www.weibo.com]
@@ -35,7 +33,6 @@
                    [ENTROPIES...: 4.7,5.2,5.0,5.9,5.1,5.1,5.1,7.9,5.1,7.9,5.1,5.1,5.1,7.8,5.1,5.2,5.1,7.9,5.1,7.2,5.1,5.1,5.2,7.8,5.1,5.8,5.1,5.2,5.0,7.9,4.9,7.9]
               new: [....15] [ip4][..udp] [..192.168.1.105][53543] -> [....192.168.1.1][...53] 
          detected: [....15] [ip4][..udp] [..192.168.1.105][53543] -> [....192.168.1.1][...53] [DNS.Sina][Unknown][Network][Fun][img.t.sinajs.cn]
-                   RISK: Unidirectional Traffic
  detection-update: [....15] [ip4][..udp] [..192.168.1.105][53543] -> [....192.168.1.1][...53] [DNS.Sina][Unknown][Network][Fun][img.t.sinajs.cn]
                    RISK: Minor Issues
               new: [....16] [ip4][..tcp] [..192.168.1.105][35803] -> [.93.188.134.246][...80] 
@@ -46,7 +43,6 @@
          detected: [....18] [ip4][..tcp] [..192.168.1.105][35805] -> [.93.188.134.246][...80] [HTTP.Sina][Unknown][SocialNetwork][Fun][img.t.sinajs.cn]
               new: [....19] [ip4][..udp] [..192.168.1.105][41352] -> [....192.168.1.1][...53] 
          detected: [....19] [ip4][..udp] [..192.168.1.105][41352] -> [....192.168.1.1][...53] [DNS.Sina][Unknown][Network][Fun][js.t.sinajs.cn]
-                   RISK: Unidirectional Traffic
           analyse: [....17] [ip4][..tcp] [..192.168.1.105][35804] -> [.93.188.134.246][...80] [HTTP.Sina][Unknown][SocialNetwork][Fun]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    0.314|    0.038|    0.072|       5116.345|   3.500]
@@ -69,19 +65,15 @@
                    [ENTROPIES...: 4.6,5.1,4.9,5.9,5.0,5.7,4.8,7.8,4.9,8.0,4.9,7.9,4.8,8.0,4.9,7.9,4.9,5.7,5.0,5.7,5.0,7.9,4.9,7.9,4.9,7.9,5.0,7.9,5.0,7.9,5.0,7.8]
               new: [....20] [ip4][..udp] [..192.168.1.105][18035] -> [....192.168.1.1][...53] 
          detected: [....20] [ip4][..udp] [..192.168.1.105][18035] -> [....192.168.1.1][...53] [DNS.Sina][Unknown][Network][Fun][u1.img.mobile.sina.cn]
-                   RISK: Unidirectional Traffic
               new: [....21] [ip4][..udp] [..192.168.1.105][50640] -> [....192.168.1.1][...53] 
          detected: [....21] [ip4][..udp] [..192.168.1.105][50640] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][acjstb.aliyun.com]
-                   RISK: Susp DGA Domain name, Unidirectional Traffic
+                   RISK: Susp DGA Domain name
               new: [....22] [ip4][..udp] [..192.168.1.105][51440] -> [....192.168.1.1][...53] 
          detected: [....22] [ip4][..udp] [..192.168.1.105][51440] -> [....192.168.1.1][...53] [DNS.Alibaba][Unknown][Network][Acceptable][g.alicdn.com]
-                   RISK: Unidirectional Traffic
               new: [....23] [ip4][..udp] [..192.168.1.105][53466] -> [....192.168.1.1][...53] 
          detected: [....23] [ip4][..udp] [..192.168.1.105][53466] -> [....192.168.1.1][...53] [DNS.Alibaba][Unknown][Network][Acceptable][log.mmstat.com]
-                   RISK: Unidirectional Traffic
               new: [....24] [ip4][..udp] [..192.168.1.105][33822] -> [....192.168.1.1][...53] 
          detected: [....24] [ip4][..udp] [..192.168.1.105][33822] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][login.taobao.com]
-                   RISK: Unidirectional Traffic
               new: [....25] [ip4][..tcp] [..192.168.1.105][35806] -> [.93.188.134.246][...80] 
               new: [....26] [ip4][..tcp] [..192.168.1.105][35807] -> [.93.188.134.246][...80] 
               new: [....27] [ip4][..tcp] [..192.168.1.105][35808] -> [.93.188.134.246][...80] 
@@ -92,17 +84,14 @@
  detection-update: [....20] [ip4][..udp] [..192.168.1.105][18035] -> [....192.168.1.1][...53] [DNS.Sina][Unknown][Network][Fun][u1.img.mobile.sina.cn]
               new: [....29] [ip4][..udp] [..192.168.1.105][11798] -> [....192.168.1.1][...53] 
          detected: [....29] [ip4][..udp] [..192.168.1.105][11798] -> [....192.168.1.1][...53] [DNS.SinaWeibo][Unknown][Network][Fun][account.weibo.com]
-                   RISK: Unidirectional Traffic
               new: [....30] [ip4][..tcp] [..192.168.1.105][42275] -> [...222.73.28.96][...80] 
  detection-update: [....19] [ip4][..udp] [..192.168.1.105][41352] -> [....192.168.1.1][...53] [DNS.Sina][Unknown][Network][Fun][js.t.sinajs.cn]
               new: [....31] [ip4][..udp] [..192.168.1.105][16804] -> [....192.168.1.1][...53] 
          detected: [....31] [ip4][..udp] [..192.168.1.105][16804] -> [....192.168.1.1][...53] [DNS.SinaWeibo][Unknown][Network][Fun][c.weibo.cn]
-                   RISK: Unidirectional Traffic
               new: [....32] [ip4][..tcp] [..192.168.1.105][35811] -> [.93.188.134.246][...80] 
  detection-update: [....22] [ip4][..udp] [..192.168.1.105][51440] -> [....192.168.1.1][...53] [DNS.Alibaba][Unknown][Network][Acceptable][g.alicdn.com]
               new: [....33] [ip4][..udp] [..192.168.1.105][50533] -> [....192.168.1.1][...53] 
          detected: [....33] [ip4][..udp] [..192.168.1.105][50533] -> [....192.168.1.1][...53] [DNS.SinaWeibo][Unknown][Network][Fun][data.weibo.com]
-                   RISK: Unidirectional Traffic
               new: [....34] [ip4][..tcp] [..192.168.1.105][50827] -> [...47.89.65.229][..443] 
  detection-update: [....23] [ip4][..udp] [..192.168.1.105][53466] -> [....192.168.1.1][...53] [DNS.Alibaba][Unknown][Network][Acceptable][log.mmstat.com]
               new: [....35] [ip4][..tcp] [..192.168.1.105][48352] -> [..140.205.174.1][..443] 
@@ -198,7 +187,6 @@
                    RISK: Minor Issues
              idle: [....19] [ip4][..udp] [..192.168.1.105][41352] -> [....192.168.1.1][...53] [DNS.Sina][Unknown][Network][Fun]
              idle: [....31] [ip4][..udp] [..192.168.1.105][16804] -> [....192.168.1.1][...53] [DNS.SinaWeibo][Unknown][Network][Fun]
-                   RISK: Unidirectional Traffic
           guessed: [....14] [ip4][..tcp] [..192.168.1.105][34699] -> [..216.58.212.65][..443] [TLS][Google][Web][Safe]
              idle: [....14] [ip4][..tcp] [..192.168.1.105][34699] -> [..216.58.212.65][..443] 
           guessed: [....35] [ip4][..tcp] [..192.168.1.105][48352] -> [..140.205.174.1][..443] [TLS][Alibaba][Web][Safe]
@@ -224,10 +212,8 @@
           guessed: [.....4] [ip4][..udp] [..192.168.1.105][53656] -> [.216.58.210.227][..443] [QUIC][Google][Web][Acceptable]
              idle: [.....4] [ip4][..udp] [..192.168.1.105][53656] -> [.216.58.210.227][..443] 
              idle: [....33] [ip4][..udp] [..192.168.1.105][50533] -> [....192.168.1.1][...53] [DNS.SinaWeibo][Unknown][Network][Fun]
-                   RISK: Unidirectional Traffic
              idle: [....11] [ip4][..tcp] [..192.168.1.105][51698] -> [.93.188.134.137][...80] [HTTP.SinaWeibo][Unknown][SocialNetwork][Fun]
              idle: [....21] [ip4][..udp] [..192.168.1.105][50640] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
                    RISK: Susp DGA Domain name, Risky Domain Name
              idle: [....29] [ip4][..udp] [..192.168.1.105][11798] -> [....192.168.1.1][...53] [DNS.SinaWeibo][Unknown][Network][Fun]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

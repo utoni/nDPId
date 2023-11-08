@@ -3,67 +3,66 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [....192.168.1.3][52888] -> [..82.58.216.115][38305] [MIDSTREAM] 
          detected: [.....1] [ip4][..tcp] [....192.168.1.3][52888] -> [..82.58.216.115][38305] [BitTorrent][Unknown][Download][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
               new: [.....2] [ip4][..tcp] [....192.168.1.3][52887] -> [....82.57.97.83][53137] [MIDSTREAM] 
          detected: [.....2] [ip4][..tcp] [....192.168.1.3][52887] -> [....82.57.97.83][53137] [BitTorrent][Unknown][Download][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
               new: [.....3] [ip4][..tcp] [....192.168.1.3][52895] -> [.83.216.184.241][51413] [MIDSTREAM] 
          detected: [.....3] [ip4][..tcp] [....192.168.1.3][52895] -> [.83.216.184.241][51413] [BitTorrent][Unknown][Download][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [.....4] [ip4][..tcp] [....192.168.1.3][52896] -> [....79.53.228.2][14627] [MIDSTREAM] 
          detected: [.....4] [ip4][..tcp] [....192.168.1.3][52896] -> [....79.53.228.2][14627] [BitTorrent][Unknown][Download][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
               new: [.....5] [ip4][..tcp] [....192.168.1.3][52894] -> [..120.62.33.241][39332] [MIDSTREAM] 
          detected: [.....5] [ip4][..tcp] [....192.168.1.3][52894] -> [..120.62.33.241][39332] [BitTorrent][Unknown][Download][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
               new: [.....6] [ip4][..tcp] [....192.168.1.3][52897] -> [...151.26.95.30][22673] [MIDSTREAM] 
          detected: [.....6] [ip4][..tcp] [....192.168.1.3][52897] -> [...151.26.95.30][22673] [BitTorrent][Unknown][Download][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
               new: [.....7] [ip4][..tcp] [....192.168.1.3][52893] -> [...79.55.129.22][12097] [MIDSTREAM] 
          detected: [.....7] [ip4][..tcp] [....192.168.1.3][52893] -> [...79.55.129.22][12097] [BitTorrent][Unknown][Download][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
               new: [.....8] [ip4][..tcp] [....192.168.1.3][52903] -> [..198.100.146.9][60163] [MIDSTREAM] 
          detected: [.....8] [ip4][..tcp] [....192.168.1.3][52903] -> [..198.100.146.9][60163] [BitTorrent][Unknown][Download][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
               new: [.....9] [ip4][..tcp] [....192.168.1.3][52902] -> [.190.103.195.56][46633] [MIDSTREAM] 
          detected: [.....9] [ip4][..tcp] [....192.168.1.3][52902] -> [.190.103.195.56][46633] [BitTorrent][Unknown][Download][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
               new: [....10] [ip4][..tcp] [....192.168.1.3][52907] -> [..82.58.216.115][38305] [MIDSTREAM] 
          detected: [....10] [ip4][..tcp] [....192.168.1.3][52907] -> [..82.58.216.115][38305] [BitTorrent][Unknown][Download][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
               new: [....11] [ip4][..tcp] [....192.168.1.3][52906] -> [....82.57.97.83][53137] [MIDSTREAM] 
          detected: [....11] [ip4][..tcp] [....192.168.1.3][52906] -> [....82.57.97.83][53137] [BitTorrent][Unknown][Download][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
               new: [....12] [ip4][..tcp] [....192.168.1.3][52911] -> [...151.26.95.30][22673] [MIDSTREAM] 
          detected: [....12] [ip4][..tcp] [....192.168.1.3][52911] -> [...151.26.95.30][22673] [BitTorrent][Unknown][Download][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
               new: [....13] [ip4][..tcp] [....192.168.1.3][52912] -> [.151.72.255.163][59928] [MIDSTREAM] 
          detected: [....13] [ip4][..tcp] [....192.168.1.3][52912] -> [.151.72.255.163][59928] [BitTorrent][Unknown][Download][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
               new: [....14] [ip4][..tcp] [....192.168.1.3][52909] -> [....79.53.228.2][14627] [MIDSTREAM] 
          detected: [....14] [ip4][..tcp] [....192.168.1.3][52909] -> [....79.53.228.2][14627] [BitTorrent][Unknown][Download][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
               new: [....15] [ip4][..tcp] [....192.168.1.3][52910] -> [..120.62.33.241][39332] [MIDSTREAM] 
          detected: [....15] [ip4][..tcp] [....192.168.1.3][52910] -> [..120.62.33.241][39332] [BitTorrent][Unknown][Download][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
               new: [....16] [ip4][..tcp] [....192.168.1.3][52908] -> [...79.55.129.22][12097] [MIDSTREAM] 
          detected: [....16] [ip4][..tcp] [....192.168.1.3][52908] -> [...79.55.129.22][12097] [BitTorrent][Unknown][Download][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
               new: [....17] [ip4][..tcp] [....192.168.1.3][52915] -> [..198.100.146.9][60163] [MIDSTREAM] 
          detected: [....17] [ip4][..tcp] [....192.168.1.3][52915] -> [..198.100.146.9][60163] [BitTorrent][Unknown][Download][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
               new: [....18] [ip4][..tcp] [....192.168.1.3][52914] -> [.190.103.195.56][46633] [MIDSTREAM] 
          detected: [....18] [ip4][..tcp] [....192.168.1.3][52914] -> [.190.103.195.56][46633] [BitTorrent][Unknown][Download][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
               new: [....19] [ip4][..tcp] [....192.168.1.3][52917] -> [..151.15.48.189][47001] [MIDSTREAM] 
          detected: [....19] [ip4][..tcp] [....192.168.1.3][52917] -> [..151.15.48.189][47001] [BitTorrent][Unknown][Download][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
               new: [....20] [ip4][..tcp] [....192.168.1.3][52921] -> [..95.234.159.16][41205] [MIDSTREAM] 
          detected: [....20] [ip4][..tcp] [....192.168.1.3][52921] -> [..95.234.159.16][41205] [BitTorrent][Unknown][Download][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
               new: [....21] [ip4][..tcp] [....192.168.1.3][52922] -> [..95.237.193.34][11321] [MIDSTREAM] 
          detected: [....21] [ip4][..tcp] [....192.168.1.3][52922] -> [..95.237.193.34][11321] [BitTorrent][Unknown][Download][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
           analyse: [....17] [ip4][..tcp] [....192.168.1.3][52915] -> [..198.100.146.9][60163] [BitTorrent][Unknown][Download][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.012|    0.920|    0.247|    0.229|      52345.696|   4.400]
@@ -76,13 +75,12 @@
                    [ENTROPIES...: 6.0,6.1,4.9,5.5,4.8,3.9,5.4,4.3,7.8,4.5,7.7,4.6,7.6,4.7,4.6,7.4,4.6,2.9,7.6,4.9,7.7,7.7,7.8,7.8,3.1,7.7,7.8,7.8,7.8,3.1,7.8,7.9]
               new: [....22] [ip4][..tcp] [....192.168.1.3][52927] -> [.83.216.184.241][51413] [MIDSTREAM] 
          detected: [....22] [ip4][..tcp] [....192.168.1.3][52927] -> [.83.216.184.241][51413] [BitTorrent][Unknown][Download][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [....23] [ip4][..tcp] [....192.168.1.3][52926] -> [..93.65.249.100][31336] [MIDSTREAM] 
          detected: [....23] [ip4][..tcp] [....192.168.1.3][52926] -> [..93.65.249.100][31336] [BitTorrent][Unknown][Download][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
               new: [....24] [ip4][..tcp] [....192.168.1.3][52925] -> [..93.65.227.100][19116] [MIDSTREAM] 
          detected: [....24] [ip4][..tcp] [....192.168.1.3][52925] -> [..93.65.227.100][19116] [BitTorrent][Unknown][Download][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
               end: [.....2] [ip4][..tcp] [....192.168.1.3][52887] -> [....82.57.97.83][53137] [BitTorrent][Unknown][Download][Acceptable]
                    RISK: Known Proto on Non Std Port
               end: [....11] [ip4][..tcp] [....192.168.1.3][52906] -> [....82.57.97.83][53137] [BitTorrent][Unknown][Download][Acceptable]

@@ -3,10 +3,8 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [.192.168.195.58][49399] -> [.192.168.193.12][.2000] [MIDSTREAM] 
          detected: [.....1] [ip4][..tcp] [.192.168.195.58][49399] -> [.192.168.193.12][.2000] [CiscoSkinny][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
               new: [.....2] [ip4][..tcp] [.192.168.193.12][.2000] -> [.192.168.195.50][51532] [MIDSTREAM] 
          detected: [.....2] [ip4][..tcp] [.192.168.193.12][.2000] -> [.192.168.195.50][51532] [CiscoSkinny][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
           analyse: [.....1] [ip4][..tcp] [.192.168.195.58][49399] -> [.192.168.193.12][.2000] [CiscoSkinny][Unknown][VoIP][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    3.610|    0.245|    0.877|     769437.794|   1.500]
@@ -79,7 +77,6 @@
                    [ENTROPIES...: 4.9,5.0,5.1,5.2,5.8,5.2,4.8,5.0,5.2,4.8,4.8,4.9,4.7,4.5,4.6,4.6,4.5,4.5,4.3,4.4,4.6,4.4,4.4,4.5,4.8,4.7,4.7,3.9,4.3,5.2,5.6,5.5]
               new: [.....8] [ip4][..tcp] [.192.168.195.58][50917] -> [.....10.16.2.25][.2000] [MIDSTREAM] 
          detected: [.....8] [ip4][..tcp] [.192.168.195.58][50917] -> [.....10.16.2.25][.2000] [CiscoSkinny][Unknown][VoIP][Acceptable]
-                   RISK: Unidirectional Traffic
           analyse: [.....2] [ip4][..tcp] [.192.168.193.12][.2000] -> [.192.168.195.50][51532] [CiscoSkinny][Unknown][VoIP][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    7.046|    0.705|    1.877|    3523893.789|   2.200]
@@ -92,7 +89,6 @@
                    [ENTROPIES...: 4.2,4.7,4.6,4.6,4.3,4.5,4.2,4.5,4.6,4.1,4.5,4.3,4.4,3.3,4.4,2.7,2.6,4.4,2.7,4.4,3.8,4.8,4.5,4.0,3.9,4.6,4.0,4.6,4.5,4.6,4.4,4.6]
               new: [.....9] [ip4][.icmp] [.192.168.195.50] -> [.192.168.195.58] 
          detected: [.....9] [ip4][.icmp] [.192.168.195.50] -> [.192.168.195.58] [ICMP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....9] [ip4][.icmp] [.192.168.195.50] -> [.192.168.195.58] [ICMP][Unknown][Network][Acceptable]
              idle: [.....1] [ip4][..tcp] [.192.168.195.58][49399] -> [.192.168.193.12][.2000] [CiscoSkinny][Unknown][VoIP][Acceptable]
              idle: [.....2] [ip4][..tcp] [.192.168.193.12][.2000] -> [.192.168.195.50][51532] [CiscoSkinny][Unknown][VoIP][Acceptable]
