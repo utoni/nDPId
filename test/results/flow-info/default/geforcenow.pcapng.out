@@ -1,7 +1,7 @@
      DAEMON-EVENT: init
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1] [ip4][..tcp] [..192.168.1.245][57490] -> [..80.84.167.206][49100] 
+              new: [.....1] [ip4][..tcp] [..192.168.1.245][57490] -> [..80.84.167.206][49100]
          detected: [.....1] [ip4][..tcp] [..192.168.1.245][57490] -> [..80.84.167.206][49100] [TLS.GeForceNow][Nvidia][Game][Fun][80-84-167-206.cloudmatchbeta.nvidiagrid.net]
                    RISK: Known Proto on Non Std Port
  detection-update: [.....1] [ip4][..tcp] [..192.168.1.245][57490] -> [..80.84.167.206][49100] [TLS.GeForceNow][Nvidia][Game][Fun][80-84-167-206.cloudmatchbeta.nvidiagrid.net]
@@ -20,7 +20,7 @@
                    [ENTROPIES...: 4.8,5.3,5.2,4.8,7.3,5.2,7.6,5.2,6.1,7.2,7.7,7.3,7.0,5.2,6.9,5.8,5.7,7.9,7.9,7.9,7.9,5.2,7.9,7.9,5.2,7.9,5.2,7.9,5.3,7.9,5.2,7.9]
  detection-update: [.....1] [ip4][..tcp] [..192.168.1.245][57490] -> [..80.84.167.206][49100] [TLS.GeForceNow][Nvidia][Game][Fun][80-84-167-206.cloudmatchbeta.nvidiagrid.net]
                    RISK: Known Proto on Non Std Port
-              new: [.....2] [ip4][..udp] [..192.168.1.245][52441] -> [..80.84.167.206][18452] 
+              new: [.....2] [ip4][..udp] [..192.168.1.245][52441] -> [..80.84.167.206][18452]
          detected: [.....2] [ip4][..udp] [..192.168.1.245][52441] -> [..80.84.167.206][18452] [STUN][Nvidia][Network][Acceptable][]
                    RISK: Known Proto on Non Std Port
  detection-update: [.....2] [ip4][..udp] [..192.168.1.245][52441] -> [..80.84.167.206][18452] [STUN][Nvidia][Network][Acceptable][]

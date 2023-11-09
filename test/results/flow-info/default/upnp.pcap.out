@@ -1,9 +1,9 @@
      DAEMON-EVENT: init
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1] [ip6][..udp] [..............fe80::3441:3d24:6d30:a807][58932] -> [................................ff02::c][.3702] 
+              new: [.....1] [ip6][..udp] [..............fe80::3441:3d24:6d30:a807][58932] -> [................................ff02::c][.3702]
          detected: [.....1] [ip6][..udp] [..............fe80::3441:3d24:6d30:a807][58932] -> [................................ff02::c][.3702] [WSD][Unknown][Network][Acceptable]
-              new: [.....2] [ip4][..udp] [..192.168.61.66][58931] -> [239.255.255.250][.3702] 
+              new: [.....2] [ip4][..udp] [..192.168.61.66][58931] -> [239.255.255.250][.3702]
          detected: [.....2] [ip4][..udp] [..192.168.61.66][58931] -> [239.255.255.250][.3702] [WSD][Unknown][Network][Acceptable]
              idle: [.....1] [ip6][..udp] [..............fe80::3441:3d24:6d30:a807][58932] -> [................................ff02::c][.3702] [WSD][Unknown][Network][Acceptable]
              idle: [.....2] [ip4][..udp] [..192.168.61.66][58931] -> [239.255.255.250][.3702] [WSD][Unknown][Network][Acceptable]

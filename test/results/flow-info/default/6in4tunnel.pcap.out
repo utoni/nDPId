@@ -1,8 +1,8 @@
      DAEMON-EVENT: init
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1] [ip4][...41] [....174.3.73.24] -> [.184.105.255.26] 
-          analyse: [.....1] [ip4][...41] [....174.3.73.24] -> [.184.105.255.26] 
+              new: [.....1] [ip4][...41] [....174.3.73.24] -> [.184.105.255.26]
+          analyse: [.....1] [ip4][...41] [....174.3.73.24] -> [.184.105.255.26]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|    1.005|    0.495|    0.455|     206990.442|   4.200]
                    [PKTLEN......:    92.000| 1897.000|  236.400|  383.000|     146712.700|   4.100]

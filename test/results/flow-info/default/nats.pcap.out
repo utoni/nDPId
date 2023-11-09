@@ -1,9 +1,9 @@
      DAEMON-EVENT: init
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1] [ip4][..tcp] [......127.0.0.1][54820] -> [......127.0.0.1][.4222] 
+              new: [.....1] [ip4][..tcp] [......127.0.0.1][54820] -> [......127.0.0.1][.4222]
          detected: [.....1] [ip4][..tcp] [......127.0.0.1][54820] -> [......127.0.0.1][.4222] [Nats][Unknown][RPC][Acceptable]
-              new: [.....2] [ip4][..tcp] [......127.0.0.1][54821] -> [......127.0.0.1][.4222] 
+              new: [.....2] [ip4][..tcp] [......127.0.0.1][54821] -> [......127.0.0.1][.4222]
          detected: [.....2] [ip4][..tcp] [......127.0.0.1][54821] -> [......127.0.0.1][.4222] [Nats][Unknown][RPC][Acceptable]
               end: [.....1] [ip4][..tcp] [......127.0.0.1][54820] -> [......127.0.0.1][.4222] [Nats][Unknown][RPC][Acceptable]
              idle: [.....2] [ip4][..tcp] [......127.0.0.1][54821] -> [......127.0.0.1][.4222] [Nats][Unknown][RPC][Acceptable]

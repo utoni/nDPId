@@ -1,7 +1,7 @@
      DAEMON-EVENT: init
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1] [ip4][..tcp] [.169.254.59.247][53387] -> [...169.254.46.4][11010] 
+              new: [.....1] [ip4][..tcp] [.169.254.59.247][53387] -> [...169.254.46.4][11010]
          detected: [.....1] [ip4][..tcp] [.169.254.59.247][53387] -> [...169.254.46.4][11010] [Thrift][Unknown][RPC][Acceptable]
           analyse: [.....1] [ip4][..tcp] [.169.254.59.247][53387] -> [...169.254.46.4][11010] [Thrift][Unknown][RPC][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy
@@ -15,7 +15,7 @@
                    [ENTROPIES...: 4.4,4.9,4.6,4.6,4.6,5.1,4.6,4.5,4.8,5.0,4.5,4.9,4.0,4.5,5.1,4.8,4.6,4.8,4.6,4.8,5.0,6.1,6.1,4.6,6.1,6.1,4.6,6.1,6.1,4.6,6.1,6.1]
      DAEMON-EVENT: [Processed: 170 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....2] [ip4][..udp] [......127.0.0.1][49164] -> [......127.0.0.1][.6831] 
+              new: [.....2] [ip4][..udp] [......127.0.0.1][49164] -> [......127.0.0.1][.6831]
          detected: [.....2] [ip4][..udp] [......127.0.0.1][49164] -> [......127.0.0.1][.6831] [Thrift][Unknown][RPC][Acceptable]
               end: [.....1] [ip4][..tcp] [.169.254.59.247][53387] -> [...169.254.46.4][11010] [Thrift][Unknown][RPC][Acceptable]
              idle: [.....2] [ip4][..udp] [......127.0.0.1][49164] -> [......127.0.0.1][.6831] [Thrift][Unknown][RPC][Acceptable]

@@ -1,7 +1,7 @@
      DAEMON-EVENT: init
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1] [ip4][..tcp] [..57.91.202.194][50541] -> [..132.49.141.56][...80] 
+              new: [.....1] [ip4][..tcp] [..57.91.202.194][50541] -> [..132.49.141.56][...80]
          detected: [.....1] [ip4][..tcp] [..57.91.202.194][50541] -> [..132.49.141.56][...80] [TLS][Unknown][Web][Safe][]
                    RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
  detection-update: [.....1] [ip4][..tcp] [..57.91.202.194][50541] -> [..132.49.141.56][...80] [TLS][Unknown][Web][Safe][]

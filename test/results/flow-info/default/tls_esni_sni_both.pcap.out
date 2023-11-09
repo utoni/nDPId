@@ -1,12 +1,12 @@
      DAEMON-EVENT: init
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1] [ip4][..tcp] [...192.168.1.21][55500] -> [..104.17.175.85][..443] 
+              new: [.....1] [ip4][..tcp] [...192.168.1.21][55500] -> [..104.17.175.85][..443]
          detected: [.....1] [ip4][..tcp] [...192.168.1.21][55500] -> [..104.17.175.85][..443] [TLS][Cloudflare][Web][Safe][these-are-not-the-droids-youre-looking-for.com]
                    RISK: TLS (probably) Not Carrying HTTPS, TLS Susp ESNI Usage
  detection-update: [.....1] [ip4][..tcp] [...192.168.1.21][55500] -> [..104.17.175.85][..443] [TLS][Cloudflare][Web][Safe][these-are-not-the-droids-youre-looking-for.com]
                    RISK: TLS (probably) Not Carrying HTTPS, TLS Susp ESNI Usage
-              new: [.....2] [ip4][..tcp] [...192.168.1.21][55514] -> [..104.17.175.85][..443] 
+              new: [.....2] [ip4][..tcp] [...192.168.1.21][55514] -> [..104.17.175.85][..443]
          detected: [.....2] [ip4][..tcp] [...192.168.1.21][55514] -> [..104.17.175.85][..443] [TLS][Cloudflare][Web][Safe][you-think-thats-normal-tls-traffic-youre-seeing.com]
                    RISK: TLS (probably) Not Carrying HTTPS, TLS Susp ESNI Usage
  detection-update: [.....2] [ip4][..tcp] [...192.168.1.21][55514] -> [..104.17.175.85][..443] [TLS][Cloudflare][Web][Safe][you-think-thats-normal-tls-traffic-youre-seeing.com]

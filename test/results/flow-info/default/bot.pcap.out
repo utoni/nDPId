@@ -1,7 +1,7 @@
      DAEMON-EVENT: init
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1] [ip4][..tcp] [...40.77.167.36][64768] -> [...89.31.72.220][...80] 
+              new: [.....1] [ip4][..tcp] [...40.77.167.36][64768] -> [...89.31.72.220][...80]
          detected: [.....1] [ip4][..tcp] [...40.77.167.36][64768] -> [...89.31.72.220][...80] [HTTP][Azure][Web][Acceptable][atlanteditorino.it]
                    RISK: Crawler/Bot
           analyse: [.....1] [ip4][..tcp] [...40.77.167.36][64768] -> [...89.31.72.220][...80] [HTTP][Azure][Web][Acceptable]

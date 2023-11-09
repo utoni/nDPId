@@ -2524,9 +2524,9 @@ static void jsonize_data_analysis(struct nDPId_reader_thread * const reader_thre
         ndpi_serialize_start_of_block(&workflow->ndpi_serializer, "data_analysis");
         ndpi_serialize_start_of_block(&workflow->ndpi_serializer, "iat");
 
-        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "min", ndpi_data_min(&analysis->iat));
+        ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "min", ndpi_data_min(&analysis->iat));
         ndpi_serialize_string_float(&workflow->ndpi_serializer, "avg", ndpi_data_average(&analysis->iat), "%.1f");
-        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "max", ndpi_data_max(&analysis->iat));
+        ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "max", ndpi_data_max(&analysis->iat));
         ndpi_serialize_string_float(&workflow->ndpi_serializer, "stddev", ndpi_data_stddev(&analysis->iat), "%.1f");
         ndpi_serialize_string_float(&workflow->ndpi_serializer, "var", ndpi_data_variance(&analysis->iat), "%.1f");
         ndpi_serialize_string_float(&workflow->ndpi_serializer, "ent", ndpi_data_entropy(&analysis->iat), "%.1f");
@@ -2540,9 +2540,9 @@ static void jsonize_data_analysis(struct nDPId_reader_thread * const reader_thre
         ndpi_serialize_end_of_block(&workflow->ndpi_serializer);
 
         ndpi_serialize_start_of_block(&workflow->ndpi_serializer, "pktlen");
-        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "min", ndpi_data_min(&analysis->pktlen));
+        ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "min", ndpi_data_min(&analysis->pktlen));
         ndpi_serialize_string_float(&workflow->ndpi_serializer, "avg", ndpi_data_average(&analysis->pktlen), "%.1f");
-        ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "max", ndpi_data_max(&analysis->pktlen));
+        ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "max", ndpi_data_max(&analysis->pktlen));
         ndpi_serialize_string_float(&workflow->ndpi_serializer, "stddev", ndpi_data_stddev(&analysis->pktlen), "%.1f");
         ndpi_serialize_string_float(&workflow->ndpi_serializer, "var", ndpi_data_variance(&analysis->pktlen), "%.1f");
         ndpi_serialize_string_float(&workflow->ndpi_serializer, "ent", ndpi_data_entropy(&analysis->pktlen), "%.1f");

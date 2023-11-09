@@ -1,14 +1,14 @@
      DAEMON-EVENT: init
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1] [ip4][..tcp] [.142.250.27.188][.5228] -> [...10.140.72.24][12654] 
+              new: [.....1] [ip4][..tcp] [.142.250.27.188][.5228] -> [...10.140.72.24][12654]
          detected: [.....1] [ip4][..tcp] [.142.250.27.188][.5228] -> [...10.140.72.24][12654] [TLS][Google][Web][Safe][]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
  detection-update: [.....1] [ip4][..tcp] [.142.250.27.188][.5228] -> [...10.140.72.24][12654] [TLS.Google][Google][Web][Acceptable][]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
      DAEMON-EVENT: [Processed: 6 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 1|updates: 0]
-              new: [.....2] [ip4][..tcp] [..192.168.1.128][48260] -> [195.181.174.176][..443] 
+              new: [.....2] [ip4][..tcp] [..192.168.1.128][48260] -> [195.181.174.176][..443]
          detected: [.....2] [ip4][..tcp] [..192.168.1.128][48260] -> [195.181.174.176][..443] [TLS.AnyDesk][Unknown][RemoteAccess][Acceptable][]
                    RISK: Missing SNI TLS Extn, Desktop/File Sharing, Uncommon TLS ALPN, Unidirectional Traffic
              idle: [.....1] [ip4][..tcp] [.142.250.27.188][.5228] -> [...10.140.72.24][12654] [TLS.Google][Google][Web][Acceptable]

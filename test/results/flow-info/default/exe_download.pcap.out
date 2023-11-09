@@ -1,7 +1,7 @@
      DAEMON-EVENT: init
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1] [ip4][..tcp] [....10.9.25.101][49165] -> [..144.91.69.195][...80] 
+              new: [.....1] [ip4][..tcp] [....10.9.25.101][49165] -> [..144.91.69.195][...80]
          detected: [.....1] [ip4][..tcp] [....10.9.25.101][49165] -> [..144.91.69.195][...80] [HTTP][Unknown][Web][Acceptable][144.91.69.195]
                    RISK: HTTP Susp User-Agent, HTTP/TLS/QUIC Numeric Hostname/SNI
  detection-update: [.....1] [ip4][..tcp] [....10.9.25.101][49165] -> [..144.91.69.195][...80] [HTTP][Unknown][Download][Acceptable][144.91.69.195]

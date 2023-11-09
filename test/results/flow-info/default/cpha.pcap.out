@@ -1,7 +1,7 @@
      DAEMON-EVENT: init
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1] [ip4][..udp] [........0.0.0.0][.8116] -> [.....172.21.3.0][.8116] 
+              new: [.....1] [ip4][..udp] [........0.0.0.0][.8116] -> [.....172.21.3.0][.8116]
          detected: [.....1] [ip4][..udp] [........0.0.0.0][.8116] -> [.....172.21.3.0][.8116] [CPHA][Unknown][Network][Fun]
              idle: [.....1] [ip4][..udp] [........0.0.0.0][.8116] -> [.....172.21.3.0][.8116] [CPHA][Unknown][Network][Fun]
      DAEMON-EVENT: shutdown

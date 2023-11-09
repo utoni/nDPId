@@ -1,16 +1,16 @@
      DAEMON-EVENT: init
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1] [ip4][..tcp] [.......10.0.0.1][.1637] -> [.......10.0.0.2][21477] 
+              new: [.....1] [ip4][..tcp] [.......10.0.0.1][.1637] -> [.......10.0.0.2][21477]
          detected: [.....1] [ip4][..tcp] [.......10.0.0.1][.1637] -> [.......10.0.0.2][21477] [SOCKS][Unknown][Web][Acceptable]
                    RISK: Known Proto on Non Std Port
      DAEMON-EVENT: [Processed: 14 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....2] [ip4][..tcp] [.10.180.156.185][53533] -> [.10.180.156.249][.1080] 
+              new: [.....2] [ip4][..tcp] [.10.180.156.185][53533] -> [.10.180.156.249][.1080]
          detected: [.....2] [ip4][..tcp] [.10.180.156.185][53533] -> [.10.180.156.249][.1080] [SOCKS][Unknown][Web][Acceptable]
-              new: [.....3] [ip4][..tcp] [.10.180.156.185][53534] -> [.10.180.156.249][.1080] 
+              new: [.....3] [ip4][..tcp] [.10.180.156.185][53534] -> [.10.180.156.249][.1080]
          detected: [.....3] [ip4][..tcp] [.10.180.156.185][53534] -> [.10.180.156.249][.1080] [SOCKS][Unknown][Web][Acceptable]
-              new: [.....4] [ip4][..tcp] [.10.180.156.185][53535] -> [.10.180.156.249][.1080] 
+              new: [.....4] [ip4][..tcp] [.10.180.156.185][53535] -> [.10.180.156.249][.1080]
          detected: [.....4] [ip4][..tcp] [.10.180.156.185][53535] -> [.10.180.156.249][.1080] [SOCKS][Unknown][Web][Acceptable]
               end: [.....1] [ip4][..tcp] [.......10.0.0.1][.1637] -> [.......10.0.0.2][21477] [SOCKS][Unknown][Web][Acceptable]
                    RISK: Known Proto on Non Std Port

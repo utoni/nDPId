@@ -1,7 +1,7 @@
      DAEMON-EVENT: init
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1] [ip4][..tcp] [..95.237.48.208][59791] -> [..192.168.2.110][.6900] 
+              new: [.....1] [ip4][..tcp] [..95.237.48.208][59791] -> [..192.168.2.110][.6900]
          detected: [.....1] [ip4][..tcp] [..95.237.48.208][59791] -> [..192.168.2.110][.6900] [VNC][Unknown][RemoteAccess][Acceptable]
                    RISK: Known Proto on Non Std Port, Desktop/File Sharing
           analyse: [.....1] [ip4][..tcp] [..95.237.48.208][59791] -> [..192.168.2.110][.6900] [VNC][Unknown][RemoteAccess][Acceptable]
@@ -14,7 +14,7 @@
                    [IATS(ms)....: 0.5,38.8,49.9,50.3,38.8,37.1,157.8,7.0,164.5,0.7,37.5,0.2,0.0,36.4,0.0,37.3,1.2,0.0,0.2,0.7,0.0,0.7,0.5,199.0,310.3,0.0,0.1,545.3,0.7,22.3,59.5]
                    [PKTLENS.....: 52,52,46,52,52,48,46,40,59,46,69,74,74,62,46,75,40,74,72,40,68,72,40,63,40,70,68,72,46,46,67,40]
                    [ENTROPIES...: 4.6,4.9,4.6,5.0,5.1,5.0,4.8,4.7,5.3,4.6,5.6,5.6,5.9,5.4,4.6,5.8,4.7,5.8,5.7,4.7,5.7,5.7,4.6,5.6,4.7,5.6,5.6,5.5,4.5,4.5,5.6,4.7]
-              new: [.....2] [ip4][..tcp] [..95.237.48.208][51559] -> [..192.168.2.110][.6900] 
+              new: [.....2] [ip4][..tcp] [..95.237.48.208][51559] -> [..192.168.2.110][.6900]
          detected: [.....2] [ip4][..tcp] [..95.237.48.208][51559] -> [..192.168.2.110][.6900] [VNC][Unknown][RemoteAccess][Acceptable]
                    RISK: Known Proto on Non Std Port, Desktop/File Sharing
           analyse: [.....2] [ip4][..tcp] [..95.237.48.208][51559] -> [..192.168.2.110][.6900] [VNC][Unknown][RemoteAccess][Acceptable]

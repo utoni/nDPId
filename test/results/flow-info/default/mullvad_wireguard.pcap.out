@@ -1,7 +1,7 @@
      DAEMON-EVENT: init
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1] [ip4][..udp] [.192.168.122.11][22595] -> [..198.54.131.98][.5060] 
+              new: [.....1] [ip4][..udp] [.192.168.122.11][22595] -> [..198.54.131.98][.5060]
          detected: [.....1] [ip4][..udp] [.192.168.122.11][22595] -> [..198.54.131.98][.5060] [WireGuard][Mullvad][VPN][Acceptable]
                    RISK: Known Proto on Non Std Port
              idle: [.....1] [ip4][..udp] [.192.168.122.11][22595] -> [..198.54.131.98][.5060] [WireGuard][Mullvad][VPN][Acceptable]

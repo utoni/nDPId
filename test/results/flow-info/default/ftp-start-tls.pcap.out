@@ -1,7 +1,7 @@
      DAEMON-EVENT: init
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1] [ip4][..tcp] [...10.238.26.36][62092] -> [...10.220.50.76][...21] 
+              new: [.....1] [ip4][..tcp] [...10.238.26.36][62092] -> [...10.220.50.76][...21]
          detected: [.....1] [ip4][..tcp] [...10.238.26.36][62092] -> [...10.220.50.76][...21] [FTPS][Unknown][Download][Unsafe]
                    RISK: Unsafe Protocol
  detection-update: [.....1] [ip4][..tcp] [...10.238.26.36][62092] -> [...10.220.50.76][...21] [FTPS][Unknown][Download][Unsafe]

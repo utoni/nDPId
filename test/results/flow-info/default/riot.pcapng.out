@@ -1,8 +1,8 @@
      DAEMON-EVENT: init
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1] [ip4][..tcp] [..52.41.135.135][..443] -> [..192.168.26.22][51817] [MIDSTREAM] 
-              new: [.....2] [ip4][..tcp] [..35.234.85.218][..443] -> [..192.168.26.22][51949] [MIDSTREAM] 
+              new: [.....1] [ip4][..tcp] [..52.41.135.135][..443] -> [..192.168.26.22][51817] [MIDSTREAM]
+              new: [.....2] [ip4][..tcp] [..35.234.85.218][..443] -> [..192.168.26.22][51949] [MIDSTREAM]
          detected: [.....2] [ip4][..tcp] [..35.234.85.218][..443] -> [..192.168.26.22][51949] [TLS][GoogleCloud][Web][Safe][]
  detection-update: [.....2] [ip4][..tcp] [..35.234.85.218][..443] -> [..192.168.26.22][51949] [TLS][GoogleCloud][Web][Safe][]
                    RISK: Unidirectional Traffic
@@ -10,7 +10,7 @@
                    RISK: Unidirectional Traffic
           guessed: [.....1] [ip4][..tcp] [..52.41.135.135][..443] -> [..192.168.26.22][51817] [TLS][AmazonAWS][Web][Safe]
                    RISK: Unidirectional Traffic
-             idle: [.....1] [ip4][..tcp] [..52.41.135.135][..443] -> [..192.168.26.22][51817] 
+             idle: [.....1] [ip4][..tcp] [..52.41.135.135][..443] -> [..192.168.26.22][51817]
              idle: [.....2] [ip4][..tcp] [..35.234.85.218][..443] -> [..192.168.26.22][51949] [TLS.RiotGames][GoogleCloud][Game][Fun]
                    RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

@@ -1,7 +1,7 @@
      DAEMON-EVENT: init
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1] [ip4][..tcp] [254.125.135.128][21359] -> [..66.152.103.45][...80] 
+              new: [.....1] [ip4][..tcp] [254.125.135.128][21359] -> [..66.152.103.45][...80]
          detected: [.....1] [ip4][..tcp] [254.125.135.128][21359] -> [..66.152.103.45][...80] [HTTP][Unknown][Web][Acceptable][]
  detection-update: [.....1] [ip4][..tcp] [254.125.135.128][21359] -> [..66.152.103.45][...80] [HTTP][Unknown][Web][Acceptable][va.origin.startappservice.com]
           analyse: [.....1] [ip4][..tcp] [254.125.135.128][21359] -> [..66.152.103.45][...80] [HTTP][Unknown][Web][Acceptable]

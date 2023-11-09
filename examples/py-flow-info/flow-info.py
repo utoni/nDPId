@@ -340,6 +340,8 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
     next_lines = []
 
     if 'ndpi' in json_dict:
+        ndpi_proto_categ_breed += ' '
+
         if 'proto' in json_dict['ndpi']:
             if args.ignore_protocol is not None:
                 for proto in args.ignore_protocol:
@@ -458,11 +460,11 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
         if json_dict['flow_event_name'] == 'new':
             line_suffix = ''
             if json_dict['midstream'] != 0:
-                line_suffix += '[{}] '.format(TermColor.WARNING + TermColor.BLINK + 'MIDSTREAM' + TermColor.END)
+                line_suffix += ' [{}]'.format(TermColor.WARNING + TermColor.BLINK + 'MIDSTREAM' + TermColor.END)
             if args.ipwhois is True:
                 src_whois = whois(json_dict['src_ip'].lower())
                 dst_whois = whois(json_dict['dst_ip'].lower())
-                line_suffix += '['
+                line_suffix += ' ['
                 if src_whois is not None:
                     line_suffix += '{}'.format(src_whois)
                 if dst_whois is not None:
@@ -505,7 +507,7 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
                        '[' + Stats.prettifyBytes(json_dict['flow_dst_packets_processed'], False) + ']'
 
     if json_dict['l3_proto'] == 'ip4':
-        print('{}{}{}{}{}: [{:.>6}] [{}][{:.>5}] [{:.>15}]{} -> [{:.>15}]{} {}{}' \
+        print('{}{}{}{}{}: [{:.>6}] [{}][{:.>5}] [{:.>15}]{} -> [{:.>15}]{}{}{}' \
               ''.format(timestamp, first_seen, last_seen, instance_and_source, flow_event_name, 
               json_dict['flow_id'], json_dict['l3_proto'], json_dict['l4_proto'],
               json_dict['src_ip'].lower(),
@@ -514,7 +516,7 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
               '[{:.>5}]'.format(json_dict['dst_port']) if 'dst_port' in json_dict else '',
               ndpi_proto_categ_breed, line_suffix))
     elif json_dict['l3_proto'] == 'ip6':
-        print('{}{}{}{}{}: [{:.>6}] [{}][{:.>5}] [{:.>39}]{} -> [{:.>39}]{} {}{}' \
+        print('{}{}{}{}{}: [{:.>6}] [{}][{:.>5}] [{:.>39}]{} -> [{:.>39}]{}{}{}' \
                 ''.format(timestamp, first_seen, last_seen, instance_and_source, flow_event_name,
               json_dict['flow_id'], json_dict['l3_proto'], json_dict['l4_proto'],
               json_dict['src_ip'].lower(),

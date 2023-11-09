@@ -1,5 +1,5 @@
      DAEMON-EVENT: init
-              new: [.....1] [ip4][..tcp] [......10.0.2.15][49815] -> [..151.99.72.125][...80] 
+              new: [.....1] [ip4][..tcp] [......10.0.2.15][49815] -> [..151.99.72.125][...80]
          detected: [.....1] [ip4][..tcp] [......10.0.2.15][49815] -> [..151.99.72.125][...80] [HTTP.WindowsUpdate][Unknown][SoftwareUpdate][Safe][151.99.72.125]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
  detection-update: [.....1] [ip4][..tcp] [......10.0.2.15][49815] -> [..151.99.72.125][...80] [HTTP.WindowsUpdate][Unknown][Download][Safe][151.99.72.125]

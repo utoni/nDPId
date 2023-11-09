@@ -1,8 +1,8 @@
      DAEMON-EVENT: init
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1] [ip4][..tcp] [192.168.145.147][51218] -> [...10.209.8.148][21999] [MIDSTREAM] 
-          analyse: [.....1] [ip4][..tcp] [192.168.145.147][51218] -> [...10.209.8.148][21999] 
+              new: [.....1] [ip4][..tcp] [192.168.145.147][51218] -> [...10.209.8.148][21999] [MIDSTREAM]
+          analyse: [.....1] [ip4][..tcp] [192.168.145.147][51218] -> [...10.209.8.148][21999]
                                         min|      max|      avg|   stddev|       variance| entropy
                    [IAT.........:     0.000|   30.166|    9.710|   14.065|  197823744.180|   3.300]
                    [PKTLEN......:    52.000|  777.000|  155.000|  234.800|      55144.500|   4.000]
@@ -17,5 +17,5 @@
      DAEMON-EVENT: [Processed: 169 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
      not-detected: [.....1] [ip4][..tcp] [192.168.145.147][51218] -> [...10.209.8.148][21999] [Unknown][Unknown][Unrated]
-              end: [.....1] [ip4][..tcp] [192.168.145.147][51218] -> [...10.209.8.148][21999] 
+              end: [.....1] [ip4][..tcp] [192.168.145.147][51218] -> [...10.209.8.148][21999]
      DAEMON-EVENT: shutdown

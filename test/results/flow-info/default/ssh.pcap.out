@@ -1,7 +1,7 @@
      DAEMON-EVENT: init
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1] [ip4][..tcp] [...172.16.238.1][58395] -> [.172.16.238.168][...22] 
+              new: [.....1] [ip4][..tcp] [...172.16.238.1][58395] -> [.172.16.238.168][...22]
          detected: [.....1] [ip4][..tcp] [...172.16.238.1][58395] -> [.172.16.238.168][...22] [SSH][Unknown][RemoteAccess][Acceptable]
                    RISK: SSH Obsolete Cli Vers/Cipher
  detection-update: [.....1] [ip4][..tcp] [...172.16.238.1][58395] -> [.172.16.238.168][...22] [SSH][Unknown][RemoteAccess][Acceptable]

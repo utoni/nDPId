@@ -1,12 +1,12 @@
      DAEMON-EVENT: init
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1] [ip4][..tcp] [..192.168.2.100][58921] -> [.193.174.240.93][..210] 
+              new: [.....1] [ip4][..tcp] [..192.168.2.100][58921] -> [.193.174.240.93][..210]
      DAEMON-EVENT: [Processed: 15 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....2] [ip4][..tcp] [...192.168.0.20][46524] -> [.129.187.139.43][.9991] 
+              new: [.....2] [ip4][..tcp] [...192.168.0.20][46524] -> [.129.187.139.43][.9991]
           guessed: [.....1] [ip4][..tcp] [..192.168.2.100][58921] -> [.193.174.240.93][..210] [Z3950][Unknown][Network][Acceptable]
-              end: [.....1] [ip4][..tcp] [..192.168.2.100][58921] -> [.193.174.240.93][..210] 
+              end: [.....1] [ip4][..tcp] [..192.168.2.100][58921] -> [.193.174.240.93][..210]
          detected: [.....2] [ip4][..tcp] [...192.168.0.20][46524] -> [.129.187.139.43][.9991] [Z3950][Unknown][Network][Acceptable]
                    RISK: Known Proto on Non Std Port
               end: [.....2] [ip4][..tcp] [...192.168.0.20][46524] -> [.129.187.139.43][.9991] [Z3950][Unknown][Network][Acceptable]

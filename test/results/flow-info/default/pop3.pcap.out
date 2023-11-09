@@ -1,26 +1,26 @@
      DAEMON-EVENT: init
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1] [ip4][..tcp] [143.225.229.181][35287] -> [....74.208.5.28][..110] 
+              new: [.....1] [ip4][..tcp] [143.225.229.181][35287] -> [....74.208.5.28][..110]
          detected: [.....1] [ip4][..tcp] [143.225.229.181][35287] -> [....74.208.5.28][..110] [POP3][Unknown][Email][Unsafe]
                    RISK: Unsafe Protocol, Clear-Text Credentials
      DAEMON-EVENT: [Processed: 31 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....2] [ip4][..tcp] [....192.168.0.4][26272] -> [.212.227.15.166][..110] 
+              new: [.....2] [ip4][..tcp] [....192.168.0.4][26272] -> [.212.227.15.166][..110]
          detected: [.....2] [ip4][..tcp] [....192.168.0.4][26272] -> [.212.227.15.166][..110] [POP3][Unknown][Email][Unsafe]
                    RISK: Unsafe Protocol
               end: [.....1] [ip4][..tcp] [143.225.229.181][35287] -> [....74.208.5.28][..110] [POP3][Unknown][Email][Unsafe]
                    RISK: Unsafe Protocol, Clear-Text Credentials
-              new: [.....3] [ip4][..tcp] [....192.168.0.4][26284] -> [.212.227.15.166][..110] 
+              new: [.....3] [ip4][..tcp] [....192.168.0.4][26284] -> [.212.227.15.166][..110]
          detected: [.....3] [ip4][..tcp] [....192.168.0.4][26284] -> [.212.227.15.166][..110] [POP3][Unknown][Email][Unsafe]
                    RISK: Unsafe Protocol
-              new: [.....4] [ip4][..tcp] [....192.168.0.4][26304] -> [.212.227.15.166][..110] 
+              new: [.....4] [ip4][..tcp] [....192.168.0.4][26304] -> [.212.227.15.166][..110]
          detected: [.....4] [ip4][..tcp] [....192.168.0.4][26304] -> [.212.227.15.166][..110] [POP3][Unknown][Email][Unsafe]
                    RISK: Unsafe Protocol
-              new: [.....5] [ip4][..tcp] [....192.168.0.4][26308] -> [.212.227.15.166][..110] 
+              new: [.....5] [ip4][..tcp] [....192.168.0.4][26308] -> [.212.227.15.166][..110]
          detected: [.....5] [ip4][..tcp] [....192.168.0.4][26308] -> [.212.227.15.166][..110] [POP3][Unknown][Email][Unsafe]
                    RISK: Unsafe Protocol
-              new: [.....6] [ip4][..tcp] [....192.168.0.4][26383] -> [.212.227.15.166][..110] 
+              new: [.....6] [ip4][..tcp] [....192.168.0.4][26383] -> [.212.227.15.166][..110]
          detected: [.....6] [ip4][..tcp] [....192.168.0.4][26383] -> [.212.227.15.166][..110] [POP3][Unknown][Email][Unsafe]
                    RISK: Unsafe Protocol
           analyse: [.....6] [ip4][..tcp] [....192.168.0.4][26383] -> [.212.227.15.166][..110] [POP3][Unknown][Email][Unsafe]

@@ -1,7 +1,7 @@
      DAEMON-EVENT: init
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1] [ip4][..tcp] [192.168.110.131][.2074] -> [192.168.110.138][..502] [MIDSTREAM] 
+              new: [.....1] [ip4][..tcp] [192.168.110.131][.2074] -> [192.168.110.138][..502] [MIDSTREAM]
          detected: [.....1] [ip4][..tcp] [192.168.110.131][.2074] -> [192.168.110.138][..502] [Modbus][Unknown][IoT-Scada][Acceptable]
           analyse: [.....1] [ip4][..tcp] [192.168.110.131][.2074] -> [192.168.110.138][..502] [Modbus][Unknown][IoT-Scada][Acceptable]
                                         min|      max|      avg|   stddev|       variance| entropy

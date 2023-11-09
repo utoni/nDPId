@@ -1,9 +1,9 @@
      DAEMON-EVENT: init
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1] [ip4][..tcp] [........8.8.8.8][..853] -> [..192.168.1.159][55856] [MIDSTREAM] 
-              new: [.....2] [ip4][..tcp] [..192.168.1.159][48044] -> [........8.8.4.4][..853] 
-              new: [.....3] [ip4][..tcp] [..192.168.1.159][56024] -> [........8.8.8.8][..853] 
+              new: [.....1] [ip4][..tcp] [........8.8.8.8][..853] -> [..192.168.1.159][55856] [MIDSTREAM]
+              new: [.....2] [ip4][..tcp] [..192.168.1.159][48044] -> [........8.8.4.4][..853]
+              new: [.....3] [ip4][..tcp] [..192.168.1.159][56024] -> [........8.8.8.8][..853]
          detected: [.....2] [ip4][..tcp] [..192.168.1.159][48044] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable][dns.google]
                    RISK: TLS (probably) Not Carrying HTTPS
          detected: [.....3] [ip4][..tcp] [..192.168.1.159][56024] -> [........8.8.8.8][..853] [TLS.DoH_DoT][Google][Network][Acceptable][dns.google]
@@ -16,7 +16,7 @@
                    RISK: TLS (probably) Not Carrying HTTPS
  detection-update: [.....3] [ip4][..tcp] [..192.168.1.159][56024] -> [........8.8.8.8][..853] [TLS.DoH_DoT][Google][Network][Acceptable][dns.google]
                    RISK: TLS (probably) Not Carrying HTTPS
-              new: [.....4] [ip4][..tcp] [..192.168.1.159][48048] -> [........8.8.4.4][..853] 
+              new: [.....4] [ip4][..tcp] [..192.168.1.159][48048] -> [........8.8.4.4][..853]
          detected: [.....4] [ip4][..tcp] [..192.168.1.159][48048] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable][dns.google]
                    RISK: TLS (probably) Not Carrying HTTPS
  detection-update: [.....4] [ip4][..tcp] [..192.168.1.159][48048] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable][dns.google]
@@ -33,11 +33,11 @@
                    [IATS(ms)....: 12.8,14.6,0.3,14.8,16.2,1.1,0.1,31.1,1.0,0.5,12.5,28.6,36.9,41.2,19.2,12.5,6.2,5.0,24.3,307.1,326.2,13.8,74.3,386.7,447.4,5.0,23.8,155.7,173.7,5.0,23.2]
                    [PKTLENS.....: 60,60,52,206,52,1470,1470,291,52,52,52,145,344,211,52,211,551,52,551,52,211,52,551,52,211,52,551,52,211,52,551,52]
                    [ENTROPIES...: 4.3,5.0,5.0,5.4,5.0,7.1,7.5,7.1,5.1,5.0,5.1,6.1,7.1,6.7,5.0,6.8,7.6,4.9,7.6,5.1,6.8,5.1,7.5,5.1,6.8,5.0,7.6,5.1,6.8,5.0,7.6,5.1]
-              new: [.....5] [ip4][.icmp] [..192.168.1.159] -> [........8.8.8.8] 
+              new: [.....5] [ip4][.icmp] [..192.168.1.159] -> [........8.8.8.8]
          detected: [.....5] [ip4][.icmp] [..192.168.1.159] -> [........8.8.8.8] [ICMP][Google][Network][Acceptable]
-              new: [.....6] [ip4][..tcp] [........8.8.4.4][..853] -> [..192.168.1.159][47968] [MIDSTREAM] 
+              new: [.....6] [ip4][..tcp] [........8.8.4.4][..853] -> [..192.168.1.159][47968] [MIDSTREAM]
            update: [.....5] [ip4][.icmp] [..192.168.1.159] -> [........8.8.8.8] [ICMP][Google][Network][Acceptable]
-              new: [.....7] [ip4][..tcp] [..192.168.1.159][48098] -> [........8.8.4.4][..853] 
+              new: [.....7] [ip4][..tcp] [..192.168.1.159][48098] -> [........8.8.4.4][..853]
          detected: [.....7] [ip4][..tcp] [..192.168.1.159][48098] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable][dns.google]
                    RISK: TLS (probably) Not Carrying HTTPS
  detection-update: [.....7] [ip4][..tcp] [..192.168.1.159][48098] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable][dns.google]
@@ -55,16 +55,16 @@
            update: [.....5] [ip4][.icmp] [..192.168.1.159] -> [........8.8.8.8] [ICMP][Google][Network][Acceptable]
              idle: [.....5] [ip4][.icmp] [..192.168.1.159] -> [........8.8.8.8] [ICMP][Google][Network][Acceptable]
           guessed: [.....1] [ip4][..tcp] [........8.8.8.8][..853] -> [..192.168.1.159][55856] [DoH_DoT][Google][Network][Acceptable]
-              end: [.....1] [ip4][..tcp] [........8.8.8.8][..853] -> [..192.168.1.159][55856] 
+              end: [.....1] [ip4][..tcp] [........8.8.8.8][..853] -> [..192.168.1.159][55856]
               end: [.....3] [ip4][..tcp] [..192.168.1.159][56024] -> [........8.8.8.8][..853] [TLS.DoH_DoT][Google][Network][Acceptable]
                    RISK: TLS (probably) Not Carrying HTTPS
               end: [.....2] [ip4][..tcp] [..192.168.1.159][48044] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable]
                    RISK: TLS (probably) Not Carrying HTTPS
           guessed: [.....6] [ip4][..tcp] [........8.8.4.4][..853] -> [..192.168.1.159][47968] [DoH_DoT][Google][Network][Acceptable]
-              end: [.....6] [ip4][..tcp] [........8.8.4.4][..853] -> [..192.168.1.159][47968] 
+              end: [.....6] [ip4][..tcp] [........8.8.4.4][..853] -> [..192.168.1.159][47968]
               end: [.....4] [ip4][..tcp] [..192.168.1.159][48048] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable]
                    RISK: TLS (probably) Not Carrying HTTPS
-              new: [.....8] [ip4][..tcp] [..192.168.1.159][48210] -> [........8.8.4.4][..853] 
+              new: [.....8] [ip4][..tcp] [..192.168.1.159][48210] -> [........8.8.4.4][..853]
          detected: [.....8] [ip4][..tcp] [..192.168.1.159][48210] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable][dns.google]
                    RISK: TLS (probably) Not Carrying HTTPS
  detection-update: [.....8] [ip4][..tcp] [..192.168.1.159][48210] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable][dns.google]

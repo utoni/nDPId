@@ -1,7 +1,7 @@
      DAEMON-EVENT: init
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1] [ip4][..udp] [.192.168.220.56][56373] -> [192.168.203.167][...53] 
+              new: [.....1] [ip4][..udp] [.192.168.220.56][56373] -> [192.168.203.167][...53]
          detected: [.....1] [ip4][..udp] [.192.168.220.56][56373] -> [192.168.203.167][...53] [DNS][Unknown][Network][Acceptable][e1aa8f8fdb1bbe8d5e04952141f7d4f82c7e3b06dcc8b87fad7a.19e4d098dc8c618f8d81cfeb02]
                    RISK: Susp DGA Domain name
  detection-update: [.....1] [ip4][..udp] [.192.168.220.56][56373] -> [192.168.203.167][...53] [DNS][Unknown][Network][Acceptable][e1aa8f8fdb1bbe8d5e04952141f7d4f82c7e3b06dcc8b87fad7a.19e4d098dc8c618f8d81cfeb02]

@@ -1,7 +1,7 @@
      DAEMON-EVENT: init
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1] [ip4][..tcp] [...192.168.0.77][47991] -> [...5.153.231.21][.9418] 
+              new: [.....1] [ip4][..tcp] [...192.168.0.77][47991] -> [...5.153.231.21][.9418]
          detected: [.....1] [ip4][..tcp] [...192.168.0.77][47991] -> [...5.153.231.21][.9418] [Git][Unknown][Collaborative][Safe]
           analyse: [.....1] [ip4][..tcp] [...192.168.0.77][47991] -> [...5.153.231.21][.9418] [Git][Unknown][Collaborative][Safe]
                                         min|      max|      avg|   stddev|       variance| entropy

@@ -1,7 +1,7 @@
      DAEMON-EVENT: init
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1] [ip4][..udp] [...2.36.234.133][47301] -> [..209.206.59.34][.7351] 
+              new: [.....1] [ip4][..udp] [...2.36.234.133][47301] -> [..209.206.59.34][.7351]
          detected: [.....1] [ip4][..udp] [...2.36.234.133][47301] -> [..209.206.59.34][.7351] [MerakiCloud][Unknown][Network][Acceptable]
            update: [.....1] [ip4][..udp] [...2.36.234.133][47301] -> [..209.206.59.34][.7351] [MerakiCloud][Unknown][Network][Acceptable]
            update: [.....1] [ip4][..udp] [...2.36.234.133][47301] -> [..209.206.59.34][.7351] [MerakiCloud][Unknown][Network][Acceptable]
