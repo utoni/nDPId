@@ -257,6 +257,12 @@ def onFlowCleanup(instance, current_flow, global_user_data):
 
     return True
 
+def limitFloatValue(value, fmt, limit):
+    if float(value) < float(limit) and float(value) > 0.0:
+        return '<' + str(fmt).format(limit)
+    else:
+        return ' ' + str(fmt).format(value)
+
 def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
     stats = global_user_data
     stats.update(json_dict, current_flow)
@@ -417,24 +423,31 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
         flow_event_name += '{}{:>16}{}'.format(TermColor.WARNING,
                                                json_dict['flow_event_name'], TermColor.END)
         if args.print_analyse_results is True:
-            next_lines =  ['               {:>9}|{:>9}|{:>9}|{:>9}|{:>15}|{:>8}'.format(
+            next_lines =  ['               {:>10}|{:>10}|{:>10}|{:>10}|{:>17}|{:>9}'.format(
                            'min', 'max', 'avg', 'stddev', 'variance', 'entropy')]
-            next_lines += ['[IAT.........: {:>9.3f}|{:>9.3f}|{:>9.3f}|{:>9.3f}|{:>15.3f}|{:>8.3f}]'.format(
-                               nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['min']),
-                               nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['max']),
-                               nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['avg']),
-                               nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['stddev']),
-                               nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['var']),
-                               json_dict['data_analysis']['iat']['ent']
+            next_lines += ['[IAT.........: {}|{}|{}|{}|{}|{}]'.format(
+                               limitFloatValue(nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['min']),
+                                               '{:>9.3f}', 0.001),
+                               limitFloatValue(nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['max']),
+                                               '{:>9.3f}', 0.001),
+                               limitFloatValue(nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['avg']),
+                                               '{:>9.3f}', 0.001),
+                               limitFloatValue(nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['stddev']),
+                                               '{:>9.3f}', 0.001),
+                               limitFloatValue(nDPIsrvd.toSeconds(json_dict['data_analysis']['iat']['var']),
+                                               '{:>16.3f}', 0.001),
+                               limitFloatValue(json_dict['data_analysis']['iat']['ent'],
+                                               '{:>8.3f}', 0.001)
                           )]
             next_lines += ['']
-            next_lines[-1] += '[PKTLEN......: {:>9.3f}|{:>9.3f}|{:>9.3f}|{:>9.3f}|{:>15.3f}|{:>8.3f}]'.format(
-                                  json_dict['data_analysis']['pktlen']['min'],
-                                  json_dict['data_analysis']['pktlen']['max'],
-                                  json_dict['data_analysis']['pktlen']['avg'],
-                                  json_dict['data_analysis']['pktlen']['stddev'],
-                                  json_dict['data_analysis']['pktlen']['var'],
-                                  json_dict['data_analysis']['pktlen']['ent']
+            next_lines[-1] += '[PKTLEN......: {}|{}|{}|{}|{}|{}]'.format(
+                                  limitFloatValue(json_dict['data_analysis']['pktlen']['min'], '{:>9.3f}', 0.001),
+                                  limitFloatValue(json_dict['data_analysis']['pktlen']['max'], '{:>9.3f}', 0.001),
+                                  limitFloatValue(json_dict['data_analysis']['pktlen']['avg'], '{:>9.3f}', 0.001),
+                                  limitFloatValue(json_dict['data_analysis']['pktlen']['stddev'],
+                                                  '{:>9.3f}', 0.001),
+                                  limitFloatValue(json_dict['data_analysis']['pktlen']['var'], '{:>16.3f}', 0.001),
+                                  limitFloatValue(json_dict['data_analysis']['pktlen']['ent'], '{:>8.3f}', 0.001)
                               )
             next_lines += ['']
             next_lines[-1] += '[BINS(c->s)..: {}]'.format(','.join([str(n) for n in json_dict['data_analysis']['bins']['c_to_s']]))
