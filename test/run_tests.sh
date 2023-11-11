@@ -12,6 +12,7 @@ JSON_VALIDATOR="$(realpath "${3:-"${MYDIR}/../examples/py-schema-validation/py-s
 SEMN_VALIDATOR="$(realpath "${4:-"${MYDIR}/../examples/py-semantic-validation/py-semantic-validation.py"}")"
 FLOW_INFO="$(realpath "${5:-"${MYDIR}/../examples/py-flow-info/flow-info.py"}")"
 NDPISRVD_ANALYSED="$(realpath "${6:-"$(dirname ${nDPId_test_EXEC})/nDPIsrvd-analysed"}")"
+NDPISRVD_CAPTURED="$(realpath "${6:-"$(dirname ${nDPId_test_EXEC})/nDPIsrvd-captured"}")"
 NDPISRVD_COLLECTD="$(realpath "${6:-"$(dirname ${nDPId_test_EXEC})/nDPIsrvd-collectd"}")"
 IS_GIT=$(test -d "${MYDIR}/../.git" -o -f "${MYDIR}/../.git" && printf '1' || printf '0')
 
@@ -26,6 +27,7 @@ usage: ${0} [path-to-nDPI-source-root] \\
     path-to-nDPId-SEMANTIC-validator default to ${SEMN_VALIDATOR}
     path-to-nDPId-flow-info defaults to         ${FLOW_INFO}
     path-to-nDPIsrvd-analysed defaults to       ${NDPISRVD_ANALYSED}
+    path-to-nDPIsrvd-captured defaults to       ${NDPISRVD_CAPTURED}
     path-to-nDPIsrvd-collectd defaults to       ${NDPISRVD_COLLECTD}
 EOF
 return 0
@@ -339,6 +341,71 @@ if [ -x "${NDPISRVD_ANALYSED}" ]; then
     done
 else
     printf '%s\n' "Not found or not executable: ${NDPISRVD_ANALYSED}"
+fi
+
+cat <<EOF
+
+------------------------
+-- Flow Captured DIFF --
+------------------------
+
+EOF
+
+mkdir -p "${MYDIR}/results/flow-captured"
+if [ -x "${NDPISRVD_CAPTURED}" ]; then
+    cd "${MYDIR}"
+    for out_file in results/*/*.out; do
+        if [ ! -r "${out_file}" ]; then
+            printf '%s: %s\n' "${0}" "${out_file} does not exist!"
+            TESTS_FAILED=$((TESTS_FAILED + 1))
+            continue
+        fi
+        out_name="$(basename ${out_file})"
+        pcap_cfg="$(basename $(dirname ${out_file%.out}))"
+        stdout_file="/tmp/nDPId-test-stdout/${pcap_cfg}_${out_name}.flow-captured.csv.new"
+        stderr_file="/tmp/nDPId-test-stderr/${out_name}"
+        result_file="${MYDIR}/results/flow-captured/${pcap_cfg}/${out_name}"
+        mkdir -p "$(dirname ${result_file})"
+        printf "%-${LINE_SPACES}s\t" "${out_name}"
+        cat "${out_file}" | grep -vE '^~~.*$' | ${NETCAT_EXEC} &
+        nc_pid=$!
+        while ! ss -x -t -n -l | grep -q "${NETCAT_SOCK}"; do sleep 0.1; printf '%s\n' "Waiting until socket ${NETCAT_SOCK} is available.." >>"${stderr_file}"; done
+        ${NDPISRVD_CAPTURED} -s "${NETCAT_SOCK}" -c -l -G -U -R0 -M -E 2>>"${stderr_file}" 1>"${stdout_file}"
+        kill -SIGTERM ${nc_pid} 2>/dev/null
+        wait ${nc_pid} 2>/dev/null
+        while ss -x -t -n -l | grep -q "${NETCAT_SOCK}"; do sleep 0.1; printf '%s\n' "Waiting until socket ${NETCAT_SOCK} is not available anymore.." >>"${stderr_file}"; done
+        if [ ! -r "${result_file}" ]; then
+            printf '%s\n' '[NEW]'
+            test ${IS_GIT} -eq 1 && \
+                mv "${stdout_file}" "${result_file}"
+            TESTS_FAILED=$((TESTS_FAILED + 1))
+        elif diff -u0 "${result_file}" "${stdout_file}" >/dev/null; then
+            printf '%s\n' '[OK]'
+            rm -f "${stdout_file}"
+        else
+            printf '%s\n' '[DIFF]'
+            diff -u0 "${result_file}" "${stdout_file}"
+            test ${IS_GIT} -eq 1 && \
+                mv "${stdout_file}" "${result_file}"
+            TESTS_FAILED=$((TESTS_FAILED + 1))
+        fi
+    done
+
+    for out_file in ${MYDIR}/results/flow-captured/*/*.out; do
+        if [ ! -r "${out_file}" ]; then
+            printf '%s: %s\n' "${0}" "${out_file} does not exist!"
+            TESTS_FAILED=$((TESTS_FAILED + 1))
+            continue
+        fi
+        result_file="$(basename ${out_file})"
+        pcap_cfg="$(basename $(dirname ${out_file%.out}))"
+        if [ ! -r "${MYDIR}/results/${pcap_cfg}/${result_file}" ]; then
+            printf "%-${LINE_SPACES}s\t%s\n" "${result_file}" "[MISSING]"
+            TESTS_FAILED=$((TESTS_FAILED + 1))
+        fi
+    done
+else
+    printf '%s\n' "Not found or not executable: ${NDPISRVD_CAPTURED}"
 fi
 
 cat <<EOF

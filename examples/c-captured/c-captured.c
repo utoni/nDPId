@@ -11,7 +11,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <syslog.h>
 #include <sys/socket.h>
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -141,7 +140,7 @@ static int pcap_open_or_append(int packet_datalink,
 
     if (*pd == NULL)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "pcap error %s", pcap_geterr(*p));
+        logger(1, "pcap error %s", pcap_geterr(*p));
         pcap_close(*p);
         return 1;
     }
@@ -175,13 +174,13 @@ static void decode_base64(pcap_dumper_t * const pd,
     }
     else
     {
-        syslog(LOG_DAEMON | LOG_ERR, "%s", "BUG: Can not decode base64 packet.");
+        logger(1, "%s", "BUG: Can not decode base64 packet.");
         return;
     }
 
     if (nDPIsrvd_base64decode(base64_packet, base64_packet_size, pkt_buf, &pkt_buf_len) != 0 || pkt_buf_len == 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "packet base64 decode failed (%zu bytes): %s", base64_packet_size, base64_packet);
+        logger(1, "packet base64 decode failed (%zu bytes): %s", base64_packet_size, base64_packet);
     }
     else
     {
@@ -485,7 +484,7 @@ static int packet_write_pcap_file(struct global_user_data const * const global_u
 
     if (utarray_len(pd_array) == 0)
     {
-        syslog(LOG_DAEMON, "Can not dump packets to pcap; packet array empty");
+        logger(0, "Can not dump packets to pcap; packet array empty");
         return 1;
     }
 
@@ -501,7 +500,7 @@ static int packet_write_pcap_file(struct global_user_data const * const global_u
         char filename[PATH_MAX];
         if (packet_generate_pcap_filename(filename, sizeof(filename), packet_datalink) == NULL)
         {
-            syslog(LOG_DAEMON | LOG_ERR, "%s", "Internal error. Could not generate PCAP filename, exit ..");
+            logger(1, "%s", "Internal error. Could not generate PCAP filename, exit ..");
             return 1;
         }
 
@@ -509,7 +508,7 @@ static int packet_write_pcap_file(struct global_user_data const * const global_u
         pcap_dumper_t * pd = NULL;
         if (pcap_open_or_append(packet_datalink, filename, &p, &pd) != 0)
         {
-            syslog(LOG_DAEMON | LOG_ERR, "Can not dump packets to pcap; file open/append failed");
+            logger(1, "Can not dump packets to pcap; file open/append failed");
             return 1;
         }
 
@@ -564,13 +563,13 @@ static int flow_write_pcap_file(struct flow_user_data const * const flow_user, c
 
     if (utarray_len(pd_array) == 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "Can not dump flow packets to pcap; flow packet array empty");
+        logger(1, "Can not dump flow packets to pcap; flow packet array empty");
         return 0;
     }
 
     if (pcap_open_or_append(packet_datalink, filename, &p, &pd) != 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "Can not dump flow packets to pcap; file open/append failed");
+        logger(1, "Can not dump flow packets to pcap; file open/append failed");
         return 0;
     }
 
@@ -619,26 +618,26 @@ static enum nDPIsrvd_conversion_return perror_ull(enum nDPIsrvd_conversion_retur
             break;
 
         case CONVERISON_KEY_NOT_FOUND:
-            syslog(LOG_DAEMON | LOG_ERR, "%s: Key not found.", prefix);
+            logger(1, "%s: Key not found.", prefix);
             break;
         case CONVERSION_NOT_A_NUMBER:
-            syslog(LOG_DAEMON | LOG_ERR, "%s: Not a valid number.", prefix);
+            logger(1, "%s: Not a valid number.", prefix);
             break;
         case CONVERSION_RANGE_EXCEEDED:
-            syslog(LOG_DAEMON | LOG_ERR, "%s: Number too large.", prefix);
+            logger(1, "%s: Number too large.", prefix);
             break;
 
         default:
-            syslog(LOG_DAEMON | LOG_ERR, "Internal error, invalid conversion return value.");
+            logger(1, "Internal error, invalid conversion return value.");
             break;
     }
 
     return retval;
 }
 
-static void syslog_event(struct nDPIsrvd_socket * const sock,
-                         struct nDPIsrvd_flow * const flow,
-                         char const * const event_name)
+static void log_event(struct nDPIsrvd_socket * const sock,
+                      struct nDPIsrvd_flow * const flow,
+                      char const * const event_name)
 {
     struct nDPIsrvd_json_token const * const src_ip = TOKEN_GET_SZ(sock, "src_ip");
     struct nDPIsrvd_json_token const * const dst_ip = TOKEN_GET_SZ(sock, "dst_ip");
@@ -653,7 +652,7 @@ static void syslog_event(struct nDPIsrvd_socket * const sock,
 
     if (src_ip == NULL || dst_ip == NULL)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "Flow %llu: Missing essential source/destination IP address.", flow->id_as_ull);
+        logger(1, "Flow %llu: Missing essential source/destination IP address.", flow->id_as_ull);
     }
     else
     {
@@ -677,18 +676,35 @@ static void syslog_event(struct nDPIsrvd_socket * const sock,
         }
     }
 
-    syslog(LOG_DAEMON | LOG_ERR,
-           "Flow %llu %s: %.*s %.*s%s -> %.*s%s",
-           flow->id_as_ull,
-           event_name,
-           (l4_proto_str != NULL ? (int)l4_proto_len : na_len),
-           (l4_proto_str != NULL ? l4_proto_str : na),
-           (src_ip_str != NULL ? (int)src_ip_len : na_len),
-           (src_ip_str != NULL ? src_ip_str : na),
-           src_port_str,
-           (dst_ip_str != NULL ? (int)dst_ip_len : na_len),
-           (dst_ip_str != NULL ? dst_ip_str : na),
-           dst_port_str);
+    if (is_console_logger_enabled() != 0)
+    {
+        printf("Flow %llu %s: %.*s %.*s%s -> %.*s%s\n",
+               flow->id_as_ull,
+               event_name,
+               (l4_proto_str != NULL ? (int)l4_proto_len : na_len),
+               (l4_proto_str != NULL ? l4_proto_str : na),
+               (src_ip_str != NULL ? (int)src_ip_len : na_len),
+               (src_ip_str != NULL ? src_ip_str : na),
+               src_port_str,
+               (dst_ip_str != NULL ? (int)dst_ip_len : na_len),
+               (dst_ip_str != NULL ? dst_ip_str : na),
+               dst_port_str);
+    }
+    else
+    {
+        logger(0,
+               "Flow %llu %s: %.*s %.*s%s -> %.*s%s",
+               flow->id_as_ull,
+               event_name,
+               (l4_proto_str != NULL ? (int)l4_proto_len : na_len),
+               (l4_proto_str != NULL ? l4_proto_str : na),
+               (src_ip_str != NULL ? (int)src_ip_len : na_len),
+               (src_ip_str != NULL ? src_ip_str : na),
+               src_port_str,
+               (dst_ip_str != NULL ? (int)dst_ip_len : na_len),
+               (dst_ip_str != NULL ? dst_ip_str : na),
+               dst_port_str);
+    }
 }
 
 static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_socket * const sock,
@@ -708,17 +724,17 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
 
         if (utarray_packets_init(global_user) == 0)
         {
-            syslog(LOG_DAEMON | LOG_ERR, "Memory allocation for packet data failed.");
+            logger(1, "Memory allocation for packet data failed.");
             return CALLBACK_ERROR;
         }
 
         if (TOKEN_GET_SZ(sock, "error_event_name") != NULL)
         {
-            syslog(LOG_DAEMON | LOG_ERR, "Received an error event for packet id %llu.", packet_id);
+            logger(1, "Received an error event for packet id %llu.", packet_id);
 
             if (TOKEN_GET_SZ(sock, "error_event_id") == NULL)
             {
-                syslog(LOG_DAEMON | LOG_ERR, "Missing error event id.");
+                logger(1, "Missing error event id.");
                 return CALLBACK_ERROR;
             }
 
@@ -727,28 +743,26 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
             struct packet_data pd = {.error_event_id = error_event_id, .packet_id = packet_id};
             if (utarray_packets_add(global_user, &pd) == 0)
             {
-                syslog(LOG_DAEMON | LOG_ERR, "Could not add packet to array with id %llu.", packet_id);
+                logger(1, "Could not add packet to array with id %llu.", packet_id);
                 return CALLBACK_ERROR;
             }
         }
         else if (TOKEN_VALUE_EQUALS_SZ(sock, TOKEN_GET_SZ(sock, "packet_event_name"), "packet") != 0)
         {
-            syslog(LOG_DAEMON | LOG_ERR, "Received an packet event for packet id %llu.", packet_id);
+            logger(1, "Received an packet event for packet id %llu.", packet_id);
 
             if (capture_mode != 0)
             {
                 struct packet_data * const pd = utarray_packets_get(global_user, packet_id);
                 if (pd == NULL)
                 {
-                    syslog(LOG_DAEMON | LOG_ERR,
-                           "Received an packet event w/o a previous error event for packet id %llu.",
-                           packet_id);
+                    logger(1, "Received an packet event w/o a previous error event for packet id %llu.", packet_id);
                     return CALLBACK_OK;
                 }
 
                 if (pd->packet_id != packet_id)
                 {
-                    syslog(LOG_DAEMON | LOG_ERR,
+                    logger(1,
                            "Received a packet event with a different packet id then the one seen in the error event: "
                            "%llu != %llu.",
                            packet_id,
@@ -759,8 +773,8 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
                 struct nDPIsrvd_json_token const * const pkt = TOKEN_GET_SZ(sock, "pkt");
                 if (pkt == NULL)
                 {
-                    syslog(LOG_DAEMON | LOG_ERR, "%s", "No packet data available.");
-                    syslog(LOG_DAEMON | LOG_ERR,
+                    logger(1, "%s", "No packet data available.");
+                    logger(1,
                            "JSON String: '%.*s'",
                            nDPIsrvd_json_buffer_length(sock),
                            nDPIsrvd_json_buffer_string(sock));
@@ -785,7 +799,7 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
 
                 if (packet_write_pcap_file(global_user) != 0)
                 {
-                    syslog(LOG_DAEMON | LOG_ERR, "%s", "Could not dump non-flow packet data");
+                    logger(1, "%s", "Could not dump non-flow packet data");
                     return CALLBACK_OK;
                 }
             }
@@ -813,17 +827,14 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
         struct nDPIsrvd_json_token const * const pkt = TOKEN_GET_SZ(sock, "pkt");
         if (pkt == NULL)
         {
-            syslog(LOG_DAEMON | LOG_ERR, "%s", "No packet data available.");
-            syslog(LOG_DAEMON | LOG_ERR,
-                   "JSON String: '%.*s'",
-                   nDPIsrvd_json_buffer_length(sock),
-                   nDPIsrvd_json_buffer_string(sock));
+            logger(1, "%s", "No packet data available.");
+            logger(1, "JSON String: '%.*s'", nDPIsrvd_json_buffer_length(sock), nDPIsrvd_json_buffer_string(sock));
             return CALLBACK_OK;
         }
 
         if (utarray_flow_packets_init(flow_user) == 0)
         {
-            syslog(LOG_DAEMON | LOG_ERR, "%s", "Memory allocation for captured packets failed.");
+            logger(1, "%s", "Memory allocation for captured packets failed.");
             return CALLBACK_ERROR;
         }
 
@@ -840,7 +851,7 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
                                       .base64_packet_const = nDPIsrvd_get_token_value(sock, pkt)};
         if (utarray_flow_packets_add(flow_user, &pd) == 0)
         {
-            syslog(LOG_DAEMON | LOG_ERR, "%s", "Memory allocation to add a captured packet failed.");
+            logger(1, "%s", "Memory allocation to add a captured packet failed.");
             return CALLBACK_ERROR;
         }
     }
@@ -930,21 +941,20 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
             if (logging_mode != 0)
             {
                 if (flow_user->guessed != 0)
-                    syslog_event(sock, flow, "guessed");
+                    log_event(sock, flow, "guessed");
                 if (flow_user->detected == 0)
-                    syslog_event(sock, flow, "not-detected");
+                    log_event(sock, flow, "not-detected");
                 if (flow_user->risky != 0)
-                    syslog_event(sock, flow, "risky");
+                    log_event(sock, flow, "risky");
                 if (flow_user->midstream != 0)
-                    syslog_event(sock, flow, "midstream");
+                    log_event(sock, flow, "midstream");
             }
 
-            if (flow_user->packets == NULL || flow_user->flow_max_packets == 0 ||
-                utarray_len(flow_user->packets) == 0)
+            if (flow_user->packets == NULL || flow_user->flow_max_packets == 0 || utarray_len(flow_user->packets) == 0)
             {
                 if (logging_mode != 0)
                 {
-                    syslog(LOG_DAEMON | LOG_ERR, "Flow %llu: No packets captured.", flow->id_as_ull);
+                    logger(0, "Flow %llu: No packets captured.", flow->id_as_ull);
                 }
             }
             else if (capture_mode != 0)
@@ -955,7 +965,7 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
                     char pcap_filename[PATH_MAX];
                     if (flow_generate_pcap_filename(flow_user, pcap_filename, sizeof(pcap_filename)) == NULL)
                     {
-                        syslog(LOG_DAEMON | LOG_ERR, "%s", "Internal error. Could not generate PCAP filename, exit ..");
+                        logger(1, "%s", "Internal error. Could not generate PCAP filename, exit ..");
                         return CALLBACK_ERROR;
                     }
 #ifdef VERBOSE
@@ -963,7 +973,7 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
 #endif
                     if (flow_write_pcap_file(flow_user, pcap_filename) != 0)
                     {
-                        syslog(LOG_DAEMON | LOG_ERR, "Could not dump packet data to pcap file %s", pcap_filename);
+                        logger(1, "Could not dump packet data to pcap file %s", pcap_filename);
                         return CALLBACK_OK;
                     }
                 }
@@ -1012,7 +1022,7 @@ static void nDPIsrvd_write_flow_info_cb(struct nDPIsrvd_socket const * sock,
             flow_user->flow_tot_l4_payload_len,
             flow_user->packets != NULL ? utarray_len(flow_user->packets) : 0);
 
-    syslog(LOG_DAEMON,
+    logger(0,
            "[Flow %4llu][ptr: "
 #ifdef __LP64__
            "0x%016llx"
@@ -1071,8 +1081,9 @@ static void print_usage(char const * const arg0)
 {
     static char const usage[] =
         "Usage: %s "
-        "[-d] [-p pidfile] [-s host] [-r rotate-every-n-seconds]\n"
+        "[-c] [-d] [-p pidfile] [-s host] [-r rotate-every-n-seconds]\n"
         "\t  \t[-u user] [-g group] [-D dir] [-G] [-U] [-R risk] [-M]\n\n"
+        "\t-c\tLog all messages to stdout/stderr instead of syslog.\n"
         "\t-d\tForking into background after initialization.\n"
         "\t-p\tWrite the daemon PID to the given file path.\n"
         "\t-s\tDestination where nDPIsrvd is listening on.\n"
@@ -1112,10 +1123,13 @@ static int parse_options(int argc, char ** argv)
 {
     int opt;
 
-    while ((opt = getopt(argc, argv, "hdp:s:r:u:g:lLD:GUR:ME")) != -1)
+    while ((opt = getopt(argc, argv, "hcdp:s:r:u:g:lLD:GUR:ME")) != -1)
     {
         switch (opt)
         {
+            case 'c':
+                enable_console_logger();
+                break;
             case 'd':
                 daemonize_enable();
                 break;
@@ -1272,21 +1286,21 @@ static int mainloop(void)
         }
         if (read_ret == READ_TIMEOUT)
         {
-            syslog(LOG_DAEMON,
+            logger(0,
                    "No data received during the last %llu second(s).\n",
                    (long long unsigned int)sock->read_timeout.tv_sec);
             continue;
         }
         if (read_ret != READ_OK)
         {
-            syslog(LOG_DAEMON | LOG_ERR, "Could not read from socket: %s", nDPIsrvd_enum_to_string(read_ret));
+            logger(1, "Could not read from socket: %s", nDPIsrvd_enum_to_string(read_ret));
             break;
         }
 
         enum nDPIsrvd_parse_return parse_ret = nDPIsrvd_parse_all(sock);
         if (parse_ret != PARSE_NEED_MORE_DATA)
         {
-            syslog(LOG_DAEMON | LOG_ERR, "Could not parse json string: %s", nDPIsrvd_enum_to_string(parse_ret));
+            logger(1, "Could not parse json string: %s", nDPIsrvd_enum_to_string(parse_ret));
             break;
         }
     }
@@ -1321,8 +1335,8 @@ int main(int argc, char ** argv)
         return 1;
     }
 
-    printf("Recv buffer size: %u\n", NETWORK_BUFFER_MAX_SIZE);
-    printf("Connecting to `%s'..\n", serv_optarg);
+    logger(0, "Recv buffer size: %u\n", NETWORK_BUFFER_MAX_SIZE);
+    logger(0, "Connecting to `%s'..\n", serv_optarg);
 
     if (nDPIsrvd_connect(sock) != CONNECT_OK)
     {
@@ -1340,18 +1354,17 @@ int main(int argc, char ** argv)
     {
         return 1;
     }
-    openlog("nDPIsrvd-captured", LOG_CONS, LOG_DAEMON);
 
     errno = 0;
     if (user != NULL && change_user_group(user, group, pidfile, datadir /* :D */, NULL) != 0)
     {
         if (errno != 0)
         {
-            syslog(LOG_DAEMON | LOG_ERR, "Change user/group failed: %s", strerror(errno));
+            logger(1, "Change user/group failed: %s", strerror(errno));
         }
         else
         {
-            syslog(LOG_DAEMON | LOG_ERR, "Change user/group failed.");
+            logger(1, "Change user/group failed.");
         }
         return 1;
     }
@@ -1370,7 +1383,7 @@ int main(int argc, char ** argv)
     utarray_packets_free((struct global_user_data *)sock->global_user_data);
     nDPIsrvd_socket_free(&sock);
     daemonize_shutdown(pidfile);
-    closelog();
+    shutdown_logging();
 
     return retval;
 }
