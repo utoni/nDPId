@@ -90,8 +90,7 @@ int main(void)
                 break;
             }
 
-            if (buf[json_bytes - 2] != '}' ||
-                buf[json_bytes - 1] != '\n')
+            if (buf[json_bytes - 2] != '}' || buf[json_bytes - 1] != '\n')
             {
                 fprintf(stderr, "BUG: Invalid JSON string: \"%.*s\"\n", (int)json_bytes, buf);
                 exit(1);
@@ -129,8 +128,6 @@ int main(void)
 
             memmove(buf, buf + json_bytes, buf_used - json_bytes);
             buf_used -= json_bytes;
-            json_bytes = 0;
-            json_start = 0;
         }
     }
 

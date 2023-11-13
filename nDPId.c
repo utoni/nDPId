@@ -361,7 +361,7 @@ enum error_event
     IP4_PACKET_TOO_SHORT,
     IP4_SIZE_SMALLER_THAN_HEADER,
     IP4_L4_PAYLOAD_DETECTION_FAILED,
-    IP6_PACKET_TOO_SHORT,
+    IP6_PACKET_TOO_SHORT, // 10
     IP6_SIZE_SMALLER_THAN_HEADER,
     IP6_L4_PAYLOAD_DETECTION_FAILED,
     TCP_PACKET_TOO_SHORT,
@@ -370,7 +370,7 @@ enum error_event
     MAX_FLOW_TO_TRACK,
     FLOW_MEMORY_ALLOCATION_FAILED,
 
-    ERROR_EVENT_COUNT
+    ERROR_EVENT_COUNT // 17
 };
 
 enum daemon_event
@@ -1511,7 +1511,10 @@ static void free_workflow(struct nDPId_workflow ** const workflow)
     }
     for (size_t i = 0; i < w->max_active_flows; i++)
     {
-        ndpi_tdestroy(w->ndpi_flows_active[i], ndpi_flow_info_free);
+        if (w->ndpi_flows_active != NULL)
+        {
+            ndpi_tdestroy(w->ndpi_flows_active[i], ndpi_flow_info_free);
+        }
     }
     ndpi_free(w->ndpi_flows_active);
     ndpi_free(w->ndpi_flows_idle);
@@ -4826,7 +4829,8 @@ static int stop_reader_threads(void)
             reader_threads[i].workflow->total_flow_updates);
     }
     /* total packets captured: same value for all threads as packet2thread distribution happens later */
-    printf("Total packets captured.......: %llu\n", reader_threads[0].workflow->packets_captured);
+    printf("Total packets captured.......: %llu\n",
+           (reader_threads[0].workflow != NULL ? reader_threads[0].workflow->packets_captured : 0));
     printf("Total packets processed......: %llu\n", total_packets_processed);
     printf("Total layer4 payload size....: %llu\n", total_l4_payload_len);
     printf("Total flows ignopred.........: %llu\n", total_flows_skipped);

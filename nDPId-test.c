@@ -479,7 +479,7 @@ static enum nDPIsrvd_callback_return update_flow_packets_processed(struct nDPIsr
         return CALLBACK_ERROR;
     }
 
-    if (sock->flow_user_data_size > 0)
+    if (flow_stats != NULL && sock->flow_user_data_size > 0)
     {
         flow_stats->total_packets_processed = 0;
     }
@@ -513,7 +513,7 @@ static enum nDPIsrvd_callback_return update_flow_l4_payload_len(struct nDPIsrvd_
     struct nDPIsrvd_json_token const * const flow_total_l4_payload_len[FD_COUNT] = {
         TOKEN_GET_SZ(sock, "flow_src_tot_l4_payload_len"), TOKEN_GET_SZ(sock, "flow_dst_tot_l4_payload_len")};
 
-    if (sock->flow_user_data_size > 0)
+    if (flow_stats != NULL && sock->flow_user_data_size > 0)
     {
         flow_stats->flow_total_l4_data_len = 0;
     }
@@ -586,7 +586,7 @@ static enum nDPIsrvd_callback_return distributor_json_callback(struct nDPIsrvd_s
             {
                 instance_stats->daemon_event_count++;
             }
-            if (sock->thread_user_data_size > 0)
+            if (thread_stats != NULL && sock->thread_user_data_size > 0)
             {
                 thread_stats->daemon_event_count++;
             }
@@ -687,7 +687,7 @@ static enum nDPIsrvd_callback_return distributor_json_callback(struct nDPIsrvd_s
             {
                 global_stats->cur_active_flows++;
                 global_stats->flow_new_count++;
-                if (sock->thread_user_data_size > 0)
+                if (thread_stats != NULL && sock->thread_user_data_size > 0)
                 {
                     thread_stats->flow_new_count++;
                 }
@@ -707,7 +707,7 @@ static enum nDPIsrvd_callback_return distributor_json_callback(struct nDPIsrvd_s
                 global_stats->cur_active_flows--;
                 global_stats->cur_idle_flows++;
                 global_stats->flow_end_count++;
-                if (sock->thread_user_data_size > 0)
+                if (thread_stats != NULL && sock->thread_user_data_size > 0)
                 {
                     thread_stats->flow_end_count++;
                 }
@@ -723,7 +723,7 @@ static enum nDPIsrvd_callback_return distributor_json_callback(struct nDPIsrvd_s
                 global_stats->cur_active_flows--;
                 global_stats->cur_idle_flows++;
                 global_stats->flow_idle_count++;
-                if (sock->thread_user_data_size > 0)
+                if (thread_stats != NULL && sock->thread_user_data_size > 0)
                 {
                     thread_stats->flow_idle_count++;
                 }

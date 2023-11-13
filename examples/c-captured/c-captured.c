@@ -952,7 +952,7 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
 
             if (flow_user->packets == NULL || flow_user->flow_max_packets == 0 || utarray_len(flow_user->packets) == 0)
             {
-                if (logging_mode != 0)
+                if (capture_mode != 0)
                 {
                     logger(0, "Flow %llu: No packets captured.", flow->id_as_ull);
                 }
@@ -1335,8 +1335,8 @@ int main(int argc, char ** argv)
         return 1;
     }
 
-    logger(0, "Recv buffer size: %u\n", NETWORK_BUFFER_MAX_SIZE);
-    logger(0, "Connecting to `%s'..\n", serv_optarg);
+    logger(0, "Recv buffer size: %u", NETWORK_BUFFER_MAX_SIZE);
+    logger(0, "Connecting to `%s'..", serv_optarg);
 
     if (nDPIsrvd_connect(sock) != CONNECT_OK)
     {

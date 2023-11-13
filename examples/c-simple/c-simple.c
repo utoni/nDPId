@@ -58,7 +58,7 @@ static void nDPIsrvd_write_flow_info_cb(struct nDPIsrvd_socket const * sock,
 #endif
             flow->last_seen,
             flow->idle_time,
-            (flow->last_seen + flow->idle_time >= thread_data->most_recent_flow_time
+            (thread_data != NULL && flow->last_seen + flow->idle_time >= thread_data->most_recent_flow_time
                  ? flow->last_seen + flow->idle_time - thread_data->most_recent_flow_time
                  : 0));
 }
