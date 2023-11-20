@@ -54,8 +54,8 @@
 #define DLT_DSA_TAG_EDSA 285
 #endif
 
-#if ((NDPI_MAJOR == 4 && NDPI_MINOR < 7) || NDPI_MAJOR < 4) && NDPI_API_VERSION < 7001
-#error "nDPI > 4.6.0 or API version >= 7001 required"
+#if ((NDPI_MAJOR == 4 && NDPI_MINOR < 8) || NDPI_MAJOR < 4) && NDPI_API_VERSION < 9000
+#error "nDPI >= 4.8.0 or API version >= 9000 required"
 #endif
 
 #if nDPId_MAX_READER_THREADS <= 0
@@ -611,6 +611,7 @@ static int set_collector_nonblock(struct nDPId_reader_thread * const reader_thre
     while ((current_flags = fcntl(reader_thread->collector_sockfd, F_SETFL, current_flags | O_NONBLOCK)) == -1 &&
            errno == EINTR)
     {
+        // Retry if interrupted by a signal.
     }
     if (current_flags == -1)
     {

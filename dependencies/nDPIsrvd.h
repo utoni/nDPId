@@ -726,6 +726,11 @@ static inline int nDPIsrvd_setup_address(struct nDPIsrvd_address * const address
 
 static inline enum nDPIsrvd_connect_return nDPIsrvd_connect(struct nDPIsrvd_socket * const sock)
 {
+    if (sock == NULL)
+    {
+        return CONNECT_ERROR_SOCKET;
+    }
+
     sock->fd = socket(sock->address.raw.sa_family, SOCK_STREAM, 0);
 
     if (sock->fd < 0)

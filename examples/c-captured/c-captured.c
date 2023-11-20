@@ -74,7 +74,7 @@ struct flow_user_data
     UT_array * packets; // flow_packet_data
 };
 
-static struct nDPIsrvd_socket * sock = NULL;
+static struct nDPIsrvd_socket * ndpisrvd_socket = NULL;
 static int main_thread_shutdown = 0;
 
 static char * pidfile = NULL;
@@ -635,7 +635,7 @@ static enum nDPIsrvd_conversion_return perror_ull(enum nDPIsrvd_conversion_retur
     return retval;
 }
 
-static void log_event(struct nDPIsrvd_socket * const sock,
+static void log_event(struct nDPIsrvd_socket const * const sock,
                       struct nDPIsrvd_flow * const flow,
                       char const * const event_name)
 {
@@ -1050,7 +1050,7 @@ static void sighandler(int signum)
 {
     if (signum == SIGUSR1)
     {
-        nDPIsrvd_flow_info(sock, nDPIsrvd_write_flow_info_cb, NULL);
+        nDPIsrvd_flow_info(ndpisrvd_socket, nDPIsrvd_write_flow_info_cb, NULL);
     }
     else if (main_thread_shutdown == 0)
     {
@@ -1220,7 +1220,7 @@ static int parse_options(int argc, char ** argv)
         serv_optarg = strdup(DISTRIBUTOR_UNIX_SOCKET);
     }
 
-    if (nDPIsrvd_setup_address(&sock->address, serv_optarg) != 0)
+    if (nDPIsrvd_setup_address(&ndpisrvd_socket->address, serv_optarg) != 0)
     {
         fprintf(stderr, "%s: Could not parse address `%s'\n", argv[0], serv_optarg);
         return 1;
@@ -1279,7 +1279,7 @@ static int mainloop(void)
 
     while (main_thread_shutdown == 0)
     {
-        read_ret = nDPIsrvd_read(sock);
+        read_ret = nDPIsrvd_read(ndpisrvd_socket);
         if (errno == EINTR)
         {
             continue;
@@ -1288,7 +1288,7 @@ static int mainloop(void)
         {
             logger(0,
                    "No data received during the last %llu second(s).\n",
-                   (long long unsigned int)sock->read_timeout.tv_sec);
+                   (long long unsigned int)ndpisrvd_socket->read_timeout.tv_sec);
             continue;
         }
         if (read_ret != READ_OK)
@@ -1297,7 +1297,7 @@ static int mainloop(void)
             break;
         }
 
-        enum nDPIsrvd_parse_return parse_ret = nDPIsrvd_parse_all(sock);
+        enum nDPIsrvd_parse_return parse_ret = nDPIsrvd_parse_all(ndpisrvd_socket);
         if (parse_ret != PARSE_NEED_MORE_DATA)
         {
             logger(1, "Could not parse json string: %s", nDPIsrvd_enum_to_string(parse_ret));
@@ -1317,14 +1317,14 @@ int main(int argc, char ** argv)
 {
     init_logging("nDPIsrvd-captured");
 
-    sock = nDPIsrvd_socket_init(sizeof(struct global_user_data),
+    ndpisrvd_socket = nDPIsrvd_socket_init(sizeof(struct global_user_data),
                                 0,
                                 0,
                                 sizeof(struct flow_user_data),
                                 captured_json_callback,
                                 NULL,
                                 captured_flow_cleanup_callback);
-    if (sock == NULL)
+    if (ndpisrvd_socket == NULL)
     {
         fprintf(stderr, "%s: nDPIsrvd socket memory allocation failed!\n", argv[0]);
         return 1;
@@ -1338,10 +1338,10 @@ int main(int argc, char ** argv)
     logger(0, "Recv buffer size: %u", NETWORK_BUFFER_MAX_SIZE);
     logger(0, "Connecting to `%s'..", serv_optarg);
 
-    if (nDPIsrvd_connect(sock) != CONNECT_OK)
+    if (nDPIsrvd_connect(ndpisrvd_socket) != CONNECT_OK)
     {
         fprintf(stderr, "%s: nDPIsrvd socket connect to %s failed!\n", argv[0], serv_optarg);
-        nDPIsrvd_socket_free(&sock);
+        nDPIsrvd_socket_free(&ndpisrvd_socket);
         return 1;
     }
 
@@ -1373,15 +1373,15 @@ int main(int argc, char ** argv)
         chmod(datadir, S_IRWXU);
     }
 
-    if (nDPIsrvd_set_read_timeout(sock, 180, 0) != 0)
+    if (nDPIsrvd_set_read_timeout(ndpisrvd_socket, 180, 0) != 0)
     {
         return 1;
     }
 
     int retval = mainloop();
 
-    utarray_packets_free((struct global_user_data *)sock->global_user_data);
-    nDPIsrvd_socket_free(&sock);
+    utarray_packets_free((struct global_user_data *)ndpisrvd_socket->global_user_data);
+    nDPIsrvd_socket_free(&ndpisrvd_socket);
     daemonize_shutdown(pidfile);
     shutdown_logging();
 
