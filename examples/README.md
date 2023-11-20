@@ -13,10 +13,12 @@ Used also by `tests/run_tests.sh` if available.
 
 A capture daemon suitable for low-resource devices.
 It saves flows that were guessed/undetected/risky/midstream to a PCAP file for manual analysis.
+Used also by `tests/run_tests.sh` if available.
 
 ## c-collectd
 
 A collecd-exec compatible middleware that gathers statistic values from nDPId.
+Used also by `tests/run_tests.sh` if available.
 
 ## c-notifyd
 

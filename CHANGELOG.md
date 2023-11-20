@@ -1,5 +1,24 @@
 # CHANGELOG
 
+#### nDPId 1.6 (Nov 2023)
+
+ - Added Event I/O abstraction layer (supporting only poll/epoll by now)
+ - Support for OSX and *BSD systems
+ - Added proper DLT_RAW dissection for IPv4 and IPv6
+ - Improved TCP timeout handling if FIN/RST seen which caused Midstream TCP flows when there shouldn't be any
+ - Fixed a crash if `nDPId -o value=''` was used
+ - Added OpenWrt packaging
+ - Added new flow event "analyse" used to give some statistical information about active flows
+ - Added new analyse event daemon which generates CSV files from such events
+ - Fixed a crash in nDPIsrvd if a collector closes a connection
+ - Support `nDPId` to send it's data to a UDP endpoint instead of a nDPIsrvd collector
+ - Added events and flow states documentation
+ - Added basic systemd support
+ - Fixed a bug in base64 encoding which could lead to invalid base64 strings
+ - Added some machine learning examples
+ - Fixed various smaller bugs
+ - Fixed nDPIsrvd bug which causes invalid JSON strings sent to Distributors
+
 #### nDPId 1.5 (Apr 2022)
 
  - Improved nDPId cross compilation

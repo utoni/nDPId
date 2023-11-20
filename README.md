@@ -12,6 +12,7 @@
 # References
 
 [ntop Webinar 2022](https://www.ntop.org/webinar/ntop-webinar-on-dec-14th-community-meeting-and-future-plans/)
+[ntopconf 2023](https://www.ntop.org/ntopconf2023/)
 
 # Disclaimer
 
@@ -304,6 +305,8 @@ Format: `subopt` (unit, comment): description
  * `max-packets-per-flow-to-send` (N, safe): max. `packet-flow` events that will be generated for the first N packets of each flow
  * `max-packets-per-flow-to-process` (N, caution advised): max. packets that will be processed by `libnDPI`
  * `max-packets-per-flow-to-analyze` (N, safe): max. packets to analyze before sending an `analyse` event, requires `-A`
+ * `error-event-threshold-n` (N, safe): max. error events to sent until threshold time passed by
+ * `error-event-threshold-time` (N, safe): time after which the error event thresold will be reset
 
 # test
 
