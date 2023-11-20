@@ -325,7 +325,10 @@ else()
     set(DEFAULT_NDPI_INCLUDE ${NDPI_INCLUDE_DIRS})
 endif()
 
-pkg_check_modules(PCAP REQUIRED libpcap>=1.9.0) # no *.pc file before 1.9.0
+pkg_check_modules(PCAP libpcap>=1.9.0) # no *.pc file before 1.9.0
+if(NOT pkgcfg_lib_PCAP_pcap)
+    pkg_check_modules(PCAP libpcap>=1.8.1) # seems like some distributions provide their own *.pc file for 1.8.1 (e.g. Ubuntu-18.04)
+endif()
 if(NOT pkgcfg_lib_PCAP_pcap)
     find_package(PCAP "1.9.0" REQUIRED)
 endif()
