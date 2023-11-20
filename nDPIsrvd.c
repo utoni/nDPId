@@ -1062,7 +1062,7 @@ static int new_connection(struct nio * const io, int eventfd)
                     pwsiz = BUFSIZ;
                 }
                 char buf[pwsiz];
-                if (getpwuid_r(ucred.uid, &pwnam, &buf[0], pwsiz, &pwres) != 0)
+                if (getpwuid_r(ucred.uid, &pwnam, &buf[0], pwsiz, &pwres) != 0 || pwres == NULL)
                 {
                     logger(1, "Could not get passwd entry for user id %u", ucred.uid);
                     return 1;

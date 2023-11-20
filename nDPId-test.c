@@ -119,7 +119,7 @@ struct distributor_global_user_data
     {
         int do_hash_checks;
     } options;
-};
+} __attribute__((__packed__));
 
 struct distributor_flow_user_data
 {

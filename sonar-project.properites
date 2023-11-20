@@ -6,3 +6,4 @@ sonar.projectVersion=1.5
 
 sonar.sourceEncoding=UTF-8
 sonar.sources=*.c,*.h,dependencies/nDPIsrvd.h,dependencies/nDPIsrvd.py,examples/c-*/**,examples/cxx-*/**,examples/py-*/**
+sonar.exclusions = dependencies/jsmn/** dependencies/uthash/** examples/js-rt-analyzer-frontend/** examples/js-rt-analyzer/** examples/c-collectd/www/** examples/py-flow-dashboard/assets/**
