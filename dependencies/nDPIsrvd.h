@@ -702,7 +702,7 @@ static inline int nDPIsrvd_setup_address(struct nDPIsrvd_address * const address
             }
             if (destination[0] == '[')
             {
-                if (last_colon > destination && *(last_colon - 1) != ']')
+                if (last_colon - destination > 1 && *(last_colon - 1) != ']')
                 {
                     return 1;
                 }
