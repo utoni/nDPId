@@ -28,6 +28,9 @@ set(CPACK_STRIP_FILES ON)
 set(CPACK_PACKAGE_VERSION_MAJOR 1)
 set(CPACK_PACKAGE_VERSION_MINOR 5)
 set(CPACK_PACKAGE_VERSION_PATCH 0)
+# Note: CPACK_PACKAGING_INSTALL_PREFIX and CMAKE_INSTALL_PREFIX are *not* the same.
+# It is used only to ease environment file loading via systemd.
+set(CPACK_PACKAGING_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
 include(CPack)
 include(CheckFunctionExists)
@@ -403,8 +406,12 @@ if(BUILD_EXAMPLES)
 endif()
 
 if(ENABLE_SYSTEMD)
-    install(FILES packages/systemd/ndpisrvd.service DESTINATION lib/systemd/system)
-    install(FILES packages/systemd/ndpid@.service DESTINATION lib/systemd/system)
+    configure_file(packages/systemd/ndpisrvd.service.in ndpisrvd.service @ONLY)
+    configure_file(packages/systemd/ndpid@.service.in ndpid@.service @ONLY)
+
+    install(FILES packages/systemd/default.cfg DESTINATION etc/default RENAME ndpid)
+    install(FILES "${CMAKE_BINARY_DIR}/ndpisrvd.service" DESTINATION lib/systemd/system)
+    install(FILES "${CMAKE_BINARY_DIR}/ndpid@.service" DESTINATION lib/systemd/system)
 endif()
 
 install(FILES config.h

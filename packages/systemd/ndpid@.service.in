@@ -1,0 +1,14 @@
+[Unit]
+Description=nDPId Service on interface %i
+After=ndpisrvd.service
+Requires=ndpisrvd.service
+
+[Service]
+Type=simple
+ExecStart=@CMAKE_INSTALL_PREFIX@/sbin/nDPId $NDPID_ARGS -i %i -c ${COLLECTOR_PATH}
+Restart=on-failure
+Environment=COLLECTOR_PATH=/var/run/ndpisrvd-collector NDPID_ARGS="-A -z"
+EnvironmentFile=@CMAKE_INSTALL_PREFIX@/etc/default/ndpid
+
+[Install]
+WantedBy=multi-user.target

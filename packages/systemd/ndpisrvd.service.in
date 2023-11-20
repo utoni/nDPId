@@ -4,9 +4,11 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/nDPIsrvd -c /var/run/ndpisrvd-collector
+ExecStart=@CMAKE_INSTALL_PREFIX@/bin/nDPIsrvd -c ${COLLECTOR_PATH}
 ExecStopPost=/bin/rm -f /var/run/ndpisrvd-collector
 Restart=on-failure
+Environment=COLLECTOR_PATH=/var/run/ndpisrvd-collector
+EnvironmentFile=@CMAKE_INSTALL_PREFIX@/etc/default/ndpid
 
 [Install]
 WantedBy=multi-user.target
