@@ -295,6 +295,7 @@ class nDPIsrvdException(Exception):
     INVALID_LINE_RECEIVED    = 4
     CALLBACK_RETURNED_FALSE  = 5
     SOCKET_TIMEOUT           = 6
+    JSON_DECODE_ERROR        = 7
 
     def __init__(self, etype):
         self.etype = etype
@@ -340,6 +341,14 @@ class SocketTimeout(nDPIsrvdException):
         super().__init__(nDPIsrvdException.SOCKET_TIMEOUT)
     def __str__(self):
         return 'Socket timeout.'
+
+class JsonDecodeError(nDPIsrvdException):
+    def __init__(self, json_exception, failed_line):
+        super().__init__(nDPIsrvdException.JSON_DECODE_ERROR)
+        self.json_exception = json_exception
+        self.failed_line = failed_line
+    def __str__(self):
+        return '{}: {}'.format(self.json_exception, self.failed_line)
 
 class JsonFilter():
     def __init__(self, filter_string):
@@ -456,7 +465,7 @@ class nDPIsrvdSocket:
                 json_dict = dict()
                 self.failed_lines += [received_line]
                 self.lines = self.lines[1:]
-                raise(e)
+                raise JsonDecodeError(e, received_line)
 
             instance = self.flow_mgr.getInstance(json_dict)
             if instance is None:

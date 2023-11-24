@@ -498,6 +498,11 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
         if args.print_hostname is True:
             line_suffix += '[{}]'.format(json_dict['ndpi']['hostname'])
 
+    if args.skip_empty is True:
+        if json_dict['flow_src_tot_l4_payload_len'] == 0 or json_dict['flow_dst_tot_l4_payload_len'] == 0:
+            stats.printStatus()
+            return True
+
     if args.print_bytes is True:
         src_color = ''
         dst_color = ''
@@ -566,6 +571,8 @@ if __name__ == '__main__':
                            help='Print received/transmitted source/dest bytes for every flow.')
     argparser.add_argument('--print-packets', action='store_true', default=False,
                            help='Print received/transmitted source/dest packets for every flow.')
+    argparser.add_argument('--skip-empty', action='store_true', default=False,
+                           help='Do not print flows that did not carry any layer7 payload.')
     argparser.add_argument('--guessed',    action='store_true', default=False, help='Print only guessed flow events.')
     argparser.add_argument('--not-detected', action='store_true', default=False, help='Print only undetected flow events.')
     argparser.add_argument('--detected',   action='store_true', default=False, help='Print only detected flow events.')
