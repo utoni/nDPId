@@ -89,6 +89,8 @@
         name.var = value;                                                                                              \
         pthread_mutex_init(&name.var_mutex, NULL);                                                                     \
     } while (0)
+
+WARN_UNUSED
 static inline uint64_t mt_pt_get_and_add(volatile uint64_t * value, uint64_t add, pthread_mutex_t * mutex)
 {
     uint64_t result;
@@ -98,7 +100,10 @@ static inline uint64_t mt_pt_get_and_add(volatile uint64_t * value, uint64_t add
     pthread_mutex_unlock(mutex);
     return result;
 }
+
 #define MT_GET_AND_ADD(name, value) mt_pt_get_and_add(&name.var, value, &name.var_mutex)
+
+WARN_UNUSED
 static inline uint64_t mt_pt_get_and_sub(volatile uint64_t * value, uint64_t sub, pthread_mutex_t * mutex)
 {
     uint64_t result;
@@ -591,7 +596,7 @@ static char * const subopt_token[] = {[MAX_FLOWS_PER_THREAD] = "max-flows-per-th
                                       NULL};
 
 static void sighandler(int signum);
-static int processing_threads_error_or_eof(void);
+static WARN_UNUSED int processing_threads_error_or_eof(void);
 static void free_workflow(struct nDPId_workflow ** const workflow);
 static void serialize_and_send(struct nDPId_reader_thread * const reader_thread);
 static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
@@ -4622,7 +4627,7 @@ static void * processing_thread(void * const ndpi_thread_arg)
     return NULL;
 }
 
-static int processing_threads_error_or_eof(void)
+static WARN_UNUSED int processing_threads_error_or_eof(void)
 {
     for (unsigned long long int i = 0; i < nDPId_options.reader_thread_count; ++i)
     {

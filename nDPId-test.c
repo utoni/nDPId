@@ -1557,7 +1557,11 @@ static int nio_selftest()
 
     char const wbuf[] = "AAAA";
     size_t const wlen = strnlen(wbuf, sizeof(wbuf));
-    write(pipefds[1], wbuf, wlen);
+    if (write(pipefds[1], wbuf, wlen) < 0)
+    {
+        logger(1, "Write '%s' (%zu bytes) to pipe failed with: %s", wbuf, wlen, strerror(errno));
+        goto error;
+    }
 
     if (nio_run(&io, 1000) != NIO_SUCCESS)
     {
