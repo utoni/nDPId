@@ -16,26 +16,26 @@
 
 # Disclaimer
 
-Please respect&protect the privacy of others.
+Please respect & protect the privacy of others.
 
 The purpose of this software is not to spy on others, but to detect network anomalies and malicious traffic.
 
 # Abstract
 
 nDPId is a set of daemons and tools to capture, process and classify network traffic.
-It's minimal dependencies (besides a half-way modern c library and POSIX threads) are libnDPI (>=4.8.0 or current github dev branch) and libpcap.
+Its minimal dependencies (besides a half-way modern C library and POSIX threads) are libnDPI (>=4.8.0 or current github dev branch) and libpcap.
 
 The daemon `nDPId` is capable of multithreading for packet processing, but w/o mutexes for performance reasons.
-Instead synchronization is achieved by a packet distribution mechanism.
-To balance all workload to all threads (more or less) equally a unique identifier represented as hash value is calculated using a 3-tuple consisting of IPv4/IPv6 src/dst address, IP header value of the layer4 protocol and (for TCP/UDP) src/dst port. Other protocols e.g. ICMP/ICMPv6 are lacking relevance for DPI, thus nDPId does not distinguish between different ICMP/ICMPv6 flows coming from the same host. Saves memory and performance, but might change in the future.
+Instead, synchronization is achieved by a packet distribution mechanism.
+To balance the workload to all threads (more or less) equally, a unique identifier represented as hash value is calculated using a 3-tuple consisting of: IPv4/IPv6 src/dst address; IP header value of the layer4 protocol; and (for TCP/UDP) src/dst port. Other protocols e.g. ICMP/ICMPv6 lack relevance for DPI, thus nDPId does not distinguish between different ICMP/ICMPv6 flows coming from the same host. This saves memory and performance, but might change in the future.
 
-`nDPId` uses libnDPI's JSON serialization interface to generate a JSON strings for each event it receive from the library and which it then sends out to a UNIX-socket (default: /tmp/ndpid-collector.sock ). From such a socket, `nDPIsrvd` (or other custom applications) can retrieve incoming JSON-messages and further proceed working/distributing messages to higher-level applications.
+`nDPId` uses libnDPI's JSON serialization interface to generate a JSON strings for each event it receives from the library and which it then sends out to a UNIX-socket (default: `/tmp/ndpid-collector.sock` ). From such a socket, `nDPIsrvd` (or other custom applications) can retrieve incoming JSON-messages and further proceed working/distributing messages to higher-level applications.
 
-Unfortunately `nDPIsrvd` does currently not support any encryption/authentication for TCP connections (TODO!).
+Unfortunately, `nDPIsrvd` does not yet support any encryption/authentication for TCP connections (TODO!).
 
 # Architecture
 
-This project uses some kind of microservice architecture.
+This project uses a kind of microservice architecture.
 
 ```text
                 connect to UNIX socket [1]        connect to UNIX/TCP socket [2]                
@@ -71,7 +71,7 @@ where:
 
 JSON messages streamed by both `nDPId` and `nDPIsrvd` are presented with:
 
-* a 5-digit-number describing (as decimal number) of the **entire** JSON string including the newline `\n` at the end;
+* a 5-digit-number describing (as decimal number) the **entire** JSON string including the newline `\n` at the end;
 * the JSON messages
 
 ```text
@@ -88,12 +88,12 @@ as with the following example:
 
 The full stream of `nDPId` generated JSON-events can be retrieved directly from `nDPId`, without relying on `nDPIsrvd`, by providing a properly managed UNIX-socket.
 
-Technical details about JSON-messages format can be obtained from related `.schema` file included in the `schema` directory
+Technical details about the JSON-message format can be obtained from the related `.schema` file included in the `schema` directory
 
 
 # Events
 
-`nDPId` generates JSON strings whereas each string is assigned to a certain event.
+`nDPId` generates JSON strings whereby each string is assigned to a certain event.
 Those events specify the contents (key-value-pairs) of the JSON string.
 They are divided into four categories, each with a number of subevents.
 
@@ -132,10 +132,10 @@ Detailed JSON-schema is available [here](schema/daemon_event_schema.json)
 
 
 ## Packet Events
-There are 2 events containing base64 encoded packet payload either belonging to a flow or not:
+There are 2 events containing base64 encoded packet payloads either belonging to a flow or not:
 
 1. packet: does not belong to any flow
-2. packet-flow: does belong to a flow e.g. TCP/UDP or ICMP
+2. packet-flow: belongs to a flow e.g. TCP/UDP or ICMP
 
 Detailed JSON-schema is available [here](schema/packet_event_schema.json)
 
@@ -143,11 +143,11 @@ Detailed JSON-schema is available [here](schema/packet_event_schema.json)
 There are 9 distinct events related to a flow:
 
 1. new: a new TCP/UDP/ICMP flow seen which will be tracked
-2. end: a TCP connections terminates
+2. end: a TCP connection terminates
 3. idle: a flow timed out, because there was no packet on the wire for a certain amount of time
 4. update: inform nDPIsrvd or other apps about a long-lasting flow, whose detection was finished a long time ago but is still active
 5. analyse: provide some information about extracted features of a flow (Experimental; disabled per default, enable with `-A`)
-6. guessed: `libnDPI` was not able to reliable detect a layer7 protocol and falls back to IP/Port based detection
+6. guessed: `libnDPI` was not able to reliably detect a layer7 protocol and falls back to IP/Port based detection
 7. detected: `libnDPI` sucessfully detected a layer7 protocol
 8. detection-update: `libnDPI` dissected more layer7 protocol data (after detection already done)
 9. not-detected: neither detected nor guessed
@@ -158,8 +158,8 @@ Detailed JSON-schema is available [here](schema/flow_event_schema.json). Also, a
 
 A flow can have three different states while it is been tracked by `nDPId`.
 
-1. skipped: the flow will be tracked, but no detection will happen to safe memory, see command line argument `-I` and `-E`
-2. finished: detection finished and the memory used for the detection is free'd
+1. skipped: the flow will be tracked, but no detection will happen to safe memory. See command line argument `-I` and `-E`
+2. finished: detection finished and the memory used for the detection is freed
 3. info: detection is in progress and all flow memory required for `libnDPI` is allocated (this state consumes most memory)
 
 # Build (CMake)
@@ -181,7 +181,7 @@ see below for a full/test live-session
 
 ![](examples/ndpid_install_and_run.gif)
 
-Based on your building environment and/or desiderata, you could need:
+Based on your build environment and/or desiderata, you could need:
 
 ```shell
 mkdir build
@@ -197,8 +197,8 @@ cd build
 cmake .. -DSTATIC_LIBNDPI_INSTALLDIR=[path/to/your/libnDPI/installdir]
 ```
 
-If you're using the latter one, make sure that you've configured libnDPI with `./configure --prefix=[path/to/your/libnDPI/installdir]`
-and do not forget to set the all necessary CMake variables to link against shared libraries used by your nDPI build.
+If you use the latter, make sure that you've configured libnDPI with `./configure --prefix=[path/to/your/libnDPI/installdir]`
+and remember to set the all-necessary CMake variables to link against shared libraries used by your nDPI build.
 
 e.g.:
 
@@ -216,19 +216,21 @@ cd build
 cmake .. -DBUILD_NDPI=ON
 ```
 
-The CMake cache variable `-DBUILD_NDPI=ON` builds a version of `libnDPI` residing as git submodule in this repository.
+The CMake cache variable `-DBUILD_NDPI=ON` builds a version of `libnDPI` residing as a git submodule in this repository.
 
 # run
 
-As mentioned above, in order to run `nDPId` a UNIX-socket need to be provided in order to stream our related JSON-data.
+As mentioned above, in order to run `nDPId`, a UNIX-socket needs to be provided in order to stream our related JSON-data.
 
 Such a UNIX-socket can be provided by both the included `nDPIsrvd` daemon, or, if you simply need a quick check, with the [ncat](https://nmap.org/book/ncat-man.html) utility, with a simple `ncat -U /tmp/listen.sock -l -k`. Remember that OpenBSD `netcat` is not able to handle multiple connections reliably.
 
-Once the socket is ready, you can run `nDPId` capturing and analyzing your own traffic, with something similar to:
+Once the socket is ready, you can run `nDPId` capturing and analyzing your own traffic, with something similar to: `sudo nDPId -c /tmp/listen.sock`
+If you're using OpenBSD `netcat`, you need to run: `sudo nDPId -c /tmp/listen.sock -o max-reader-threads=1`
+Make sure that the UNIX socket is accessible by the user (see -u) to whom nDPId changes to, default: nobody.
 
-Of course, both `ncat` and `nDPId` need to point to the same UNIX-socket (`nDPId` provides the `-c` option, exactly for this. As a default, `nDPId` refer to `/tmp/ndpid-collector.sock`, and the same default-path is also used by `nDPIsrvd` as for the incoming socket).
+Of course, both `ncat` and `nDPId` need to point to the same UNIX-socket (`nDPId` provides the `-c` option, exactly for this. By default, `nDPId` refers to `/tmp/ndpid-collector.sock`, and the same default-path is also used by `nDPIsrvd` for the incoming socket).
 
-You also need to provide `nDPId` some real-traffic. You can capture your own traffic, with something similar to:
+Give `nDPId` some real-traffic. You can capture your own traffic, with something similar to:
 
 ```shell
 socat -u UNIX-Listen:/tmp/listen.sock,fork - # does the same as `ncat`
@@ -256,7 +258,7 @@ Daemons:
 make -C [path-to-a-build-dir] daemon
 ```
 
-Or you can proceed with a manual approach with:
+Or a manual approach with:
 
 ```shell
 ./nDPIsrvd -d
@@ -291,22 +293,22 @@ Suboptions for `-o`:
 Format: `subopt` (unit, comment): description
 
  * `max-flows-per-thread` (N, caution advised): affects max. memory usage
- * `max-idle-flows-per-thread` (N, safe): max. allowed idle flows which memory get's free'd after `flow-scan-interval`
+ * `max-idle-flows-per-thread` (N, safe): max. allowed idle flows whose memory gets freed after `flow-scan-interval`
  * `max-reader-threads` (N, safe): amount of packet processing threads, every thread can have a max. of `max-flows-per-thread` flows
- * `daemon-status-interval` (ms, safe): specifies how often daemon event `status` will be generated
- * `compression-scan-interval` (ms, untested): specifies how often `nDPId` should scan for inactive flows ready for compression
- * `compression-flow-inactivity` (ms, untested): the earliest period of time that must elapse before `nDPId` may consider compressing a flow that did neither send nor receive any data
- * `flow-scan-interval` (ms, safe): min. amount of time after which `nDPId` will scan for idle or long-lasting flows
- * `generic-max-idle-time` (ms, untested): time after which a non TCP/UDP/ICMP flow will time out
- * `icmp-max-idle-time` (ms, untested): time after which an ICMP flow will time out
- * `udp-max-idle-time` (ms, caution advised): time after which an UDP flow will time out
- * `tcp-max-idle-time` (ms, caution advised): time after which a TCP flow will time out
- * `tcp-max-post-end-flow-time` (ms, caution advised): a TCP flow that received a FIN or RST will wait that amount of time before flow tracking will be stopped and the flow memory free'd
- * `max-packets-per-flow-to-send` (N, safe): max. `packet-flow` events that will be generated for the first N packets of each flow
- * `max-packets-per-flow-to-process` (N, caution advised): max. packets that will be processed by `libnDPI`
+ * `daemon-status-interval` (ms, safe): specifies how often daemon event `status` is generated
+ * `compression-scan-interval` (ms, untested): specifies how often `nDPId` scans for inactive flows ready for compression
+ * `compression-flow-inactivity` (ms, untested): the shortest period of time elapsed before `nDPId` considers compressing a flow that neither sent nor received any data
+ * `flow-scan-interval` (ms, safe): min. amount of time after which `nDPId` scans for idle or long-lasting flows
+ * `generic-max-idle-time` (ms, untested): time after which a non TCP/UDP/ICMP flow times out
+ * `icmp-max-idle-time` (ms, untested): time after which an ICMP flow times out
+ * `udp-max-idle-time` (ms, caution advised): time after which an UDP flow times out
+ * `tcp-max-idle-time` (ms, caution advised): time after which a TCP flow times out
+ * `tcp-max-post-end-flow-time` (ms, caution advised): a TCP flow that received a FIN or RST waits this amount of time before flow tracking stops and the flow memory is freed
+ * `max-packets-per-flow-to-send` (N, safe): max. `packet-flow` events generated for the first N packets of each flow
+ * `max-packets-per-flow-to-process` (N, caution advised): max. amount of packets processed by `libnDPI`
  * `max-packets-per-flow-to-analyze` (N, safe): max. packets to analyze before sending an `analyse` event, requires `-A`
- * `error-event-threshold-n` (N, safe): max. error events to sent until threshold time passed by
- * `error-event-threshold-time` (N, safe): time after which the error event thresold will be reset
+ * `error-event-threshold-n` (N, safe): max. error events to send until threshold time has passed
+ * `error-event-threshold-time` (N, safe): time after which the error event threshold resets
 
 # test
 
@@ -329,7 +331,7 @@ e.g.:
 
 Remember that all test results are tied to a specific libnDPI commit hash
 as part of the `git submodule`. Using `test/run_tests.sh` for other commit hashes
-will most likely result in PCAP diff's.
+will most likely result in PCAP diffs.
 
 Why not use `examples/py-flow-dashboard/flow-dash.py` to visualize nDPId's output.
 
