@@ -297,7 +297,7 @@ Format: `subopt` (unit, comment): description
  * `max-reader-threads` (N, safe): amount of packet processing threads, every thread can have a max. of `max-flows-per-thread` flows
  * `daemon-status-interval` (ms, safe): specifies how often daemon event `status` is generated
  * `compression-scan-interval` (ms, untested): specifies how often `nDPId` scans for inactive flows ready for compression
- * `compression-flow-inactivity` (ms, untested): the shorotest period of time elapsed before `nDPId` considers compressing a flow that neither sent nor received any data
+ * `compression-flow-inactivity` (ms, untested): the shortest period of time elapsed before `nDPId` considers compressing a flow that neither sent nor received any data
  * `flow-scan-interval` (ms, safe): min. amount of time after which `nDPId` scans for idle or long-lasting flows
  * `generic-max-idle-time` (ms, untested): time after which a non TCP/UDP/ICMP flow times out
  * `icmp-max-idle-time` (ms, untested): time after which an ICMP flow times out
