@@ -224,9 +224,9 @@ As mentioned above, in order to run `nDPId`, a UNIX-socket needs to be provided 
 
 Such a UNIX-socket can be provided by both the included `nDPIsrvd` daemon, or, if you simply need a quick check, with the [ncat](https://nmap.org/book/ncat-man.html) utility, with a simple `ncat -U /tmp/listen.sock -l -k`. Remember that OpenBSD `netcat` is not able to handle multiple connections reliably.
 
-Once the socket is ready, you can run `nDPId` capturing and analyzing your own traffic, with something similar to:
-
-???
+Once the socket is ready, you can run `nDPId` capturing and analyzing your own traffic, with something similar to: `sudo nDPId -c /tmp/listen.sock`
+If you're using OpenBSD `netcat`, you need to run: `sudo nDPId -c /tmp/listen.sock -o max-reader-threads=1`
+Make sure that the UNIX socket is accessible by the user (see -u) to whom nDPId changes to, default: nobody.
 
 Of course, both `ncat` and `nDPId` need to point to the same UNIX-socket (`nDPId` provides the `-c` option, exactly for this. By default, `nDPId` refers to `/tmp/ndpid-collector.sock`, and the same default-path is also used by `nDPIsrvd` for the incoming socket).
 
