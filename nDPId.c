@@ -90,7 +90,6 @@
         pthread_mutex_init(&name.var_mutex, NULL);                                                                     \
     } while (0)
 
-WARN_UNUSED
 static inline uint64_t mt_pt_get_and_add(volatile uint64_t * value, uint64_t add, pthread_mutex_t * mutex)
 {
     uint64_t result;
@@ -103,7 +102,6 @@ static inline uint64_t mt_pt_get_and_add(volatile uint64_t * value, uint64_t add
 
 #define MT_GET_AND_ADD(name, value) mt_pt_get_and_add(&name.var, value, &name.var_mutex)
 
-WARN_UNUSED
 static inline uint64_t mt_pt_get_and_sub(volatile uint64_t * value, uint64_t sub, pthread_mutex_t * mutex)
 {
     uint64_t result;
@@ -693,7 +691,10 @@ static int zlib_deflate(const void * const src, int srcLen, void * dst, int dstL
     int err = -1;
     int ret = -1;
 
-    err = deflateInit(&strm, Z_BEST_COMPRESSION);
+    err = deflateInit2(&strm, Z_BEST_COMPRESSION, Z_BINARY, 15, 9, Z_HUFFMAN_ONLY);
+    if (err != Z_OK) {
+        err = deflateInit(&strm, Z_BEST_COMPRESSION);
+    }
     if (err == Z_OK)
     {
         err = deflate(&strm, Z_FINISH);
