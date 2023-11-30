@@ -166,7 +166,7 @@ static struct json_stat_map const breeds_map[] = {{"Safe", &collectd_statistics.
                                                   {"Unsafe", &collectd_statistics.flow_breed_unsafe_count},
                                                   {"Potentially Dangerous",
                                                    &collectd_statistics.flow_breed_potentially_dangerous_count},
-                                                  {"Tracker/Ads", &collectd_statistics.flow_breed_tracker_ads_count},
+                                                  {"Tracker\\/Ads", &collectd_statistics.flow_breed_tracker_ads_count},
                                                   {"Dangerous", &collectd_statistics.flow_breed_dangerous_count},
                                                   {"Unrated", &collectd_statistics.flow_breed_unrated_count},
                                                   {NULL, &collectd_statistics.flow_breed_unknown_count}};
