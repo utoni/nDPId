@@ -207,9 +207,9 @@ struct nDPIsrvd_buffer
 struct nDPIsrvd_json_buffer
 {
     struct nDPIsrvd_buffer buf;
-    char * json_string;
-    size_t json_string_start;
-    nDPIsrvd_ull json_string_length;
+    char * json_message;
+    size_t json_message_start;
+    nDPIsrvd_ull json_message_length;
 };
 
 struct nDPIsrvd_jsmn
@@ -402,9 +402,9 @@ static inline void nDPIsrvd_buffer_free(struct nDPIsrvd_buffer * const buffer)
 
 static inline void nDPIsrvd_json_buffer_reset(struct nDPIsrvd_json_buffer * const json_buffer)
 {
-    json_buffer->json_string_start = 0ul;
-    json_buffer->json_string_length = 0ull;
-    json_buffer->json_string = NULL;
+    json_buffer->json_message_start = 0ul;
+    json_buffer->json_message_length = 0ull;
+    json_buffer->json_message = NULL;
 }
 
 static inline int nDPIsrvd_json_buffer_init(struct nDPIsrvd_json_buffer * const json_buffer, size_t json_buffer_size)
@@ -814,11 +814,11 @@ static inline nDPIsrvd_hashkey nDPIsrvd_build_key(char const * str, int len)
 static inline void nDPIsrvd_drain_buffer(struct nDPIsrvd_json_buffer * const json_buffer)
 {
     memmove(json_buffer->buf.ptr.raw,
-            json_buffer->buf.ptr.raw + json_buffer->json_string_length,
-            json_buffer->buf.used - json_buffer->json_string_length);
-    json_buffer->buf.used -= json_buffer->json_string_length;
-    json_buffer->json_string_length = 0;
-    json_buffer->json_string_start = 0;
+            json_buffer->buf.ptr.raw + json_buffer->json_message_length,
+            json_buffer->buf.used - json_buffer->json_message_length);
+    json_buffer->buf.used -= json_buffer->json_message_length;
+    json_buffer->json_message_length = 0;
+    json_buffer->json_message_start = 0;
 }
 
 static inline nDPIsrvd_hashkey nDPIsrvd_vbuild_jsmn_key(char const * const json_key, va_list ap)
@@ -883,7 +883,7 @@ static inline char const * nDPIsrvd_get_jsmn_token_value(struct nDPIsrvd_socket 
         *value_length = jt->end - jt->start;
     }
 
-    return sock->buffer.json_string + jt->start;
+    return sock->buffer.json_message + jt->start;
 }
 
 static inline char const * nDPIsrvd_jsmn_token_to_string(struct nDPIsrvd_socket const * const sock,
@@ -905,7 +905,7 @@ static inline char const * nDPIsrvd_jsmn_token_to_string(struct nDPIsrvd_socket 
         *string_length = jt->end - jt->start;
     }
 
-    return sock->buffer.json_string + jt->start;
+    return sock->buffer.json_message + jt->start;
 }
 
 static inline int nDPIsrvd_get_token_size(struct nDPIsrvd_socket const * const sock,
@@ -931,7 +931,7 @@ static inline char const * nDPIsrvd_get_token_value(struct nDPIsrvd_socket const
         return NULL;
     }
 
-    return sock->buffer.json_string + t->start;
+    return sock->buffer.json_message + t->start;
 }
 
 static inline struct nDPIsrvd_json_token const * nDPIsrvd_get_next_token(struct nDPIsrvd_socket const * const sock,
@@ -1123,7 +1123,7 @@ static inline int nDPIsrvd_walk_tokens(
     int i, j;
     jsmntok_t const * key;
     jsmntok_t const * const t = &sock->jsmn.tokens[b];
-    char const * const js = sock->buffer.json_string;
+    char const * const js = sock->buffer.json_message;
 
     if (depth >= 16)
     {
@@ -1444,36 +1444,36 @@ static inline enum nDPIsrvd_parse_return nDPIsrvd_parse_line(struct nDPIsrvd_jso
     }
 
     errno = 0;
-    json_buffer->json_string_length = strtoull((const char *)json_buffer->buf.ptr.text, &json_buffer->json_string, 10);
-    json_buffer->json_string_length += json_buffer->json_string - json_buffer->buf.ptr.text;
-    json_buffer->json_string_start = json_buffer->json_string - json_buffer->buf.ptr.text;
+    json_buffer->json_message_length = strtoull((const char *)json_buffer->buf.ptr.text, &json_buffer->json_message, 10);
+    json_buffer->json_message_length += json_buffer->json_message - json_buffer->buf.ptr.text;
+    json_buffer->json_message_start = json_buffer->json_message - json_buffer->buf.ptr.text;
 
     if (errno == ERANGE)
     {
         return PARSE_SIZE_EXCEEDS_CONVERSION_LIMIT;
     }
-    if (json_buffer->json_string == json_buffer->buf.ptr.text)
+    if (json_buffer->json_message == json_buffer->buf.ptr.text)
     {
         return PARSE_SIZE_MISSING;
     }
-    if (json_buffer->json_string_length > json_buffer->buf.max)
+    if (json_buffer->json_message_length > json_buffer->buf.max)
     {
         return PARSE_STRING_TOO_BIG;
     }
-    if (json_buffer->json_string_length > json_buffer->buf.used)
+    if (json_buffer->json_message_length > json_buffer->buf.used)
     {
         return PARSE_NEED_MORE_DATA;
     }
-    if (json_buffer->buf.ptr.text[json_buffer->json_string_length - 2] != '}' ||
-        json_buffer->buf.ptr.text[json_buffer->json_string_length - 1] != '\n')
+    if (json_buffer->buf.ptr.text[json_buffer->json_message_length - 2] != '}' ||
+        json_buffer->buf.ptr.text[json_buffer->json_message_length - 1] != '\n')
     {
         return PARSE_INVALID_CLOSING_CHAR;
     }
 
     jsmn_init(&jsmn->parser);
     jsmn->tokens_found = jsmn_parse(&jsmn->parser,
-                                    json_buffer->buf.ptr.text + json_buffer->json_string_start,
-                                    json_buffer->json_string_length - json_buffer->json_string_start,
+                                    json_buffer->buf.ptr.text + json_buffer->json_message_start,
+                                    json_buffer->json_message_length - json_buffer->json_message_start,
                                     jsmn->tokens,
                                     nDPIsrvd_MAX_JSON_TOKENS);
     if (jsmn->tokens_found < 0 || jsmn->tokens[0].type != JSMN_OBJECT)
@@ -1685,7 +1685,7 @@ static inline int nDPIsrvd_json_buffer_length(struct nDPIsrvd_socket const * con
         return 0;
     }
 
-    return (int)sock->buffer.json_string_length - NETWORK_BUFFER_LENGTH_DIGITS;
+    return (int)sock->buffer.json_message_length - NETWORK_BUFFER_LENGTH_DIGITS;
 }
 
 static inline char const * nDPIsrvd_json_buffer_string(struct nDPIsrvd_socket const * const sock)
@@ -1695,7 +1695,7 @@ static inline char const * nDPIsrvd_json_buffer_string(struct nDPIsrvd_socket co
         return NULL;
     }
 
-    return sock->buffer.json_string;
+    return sock->buffer.json_message;
 }
 
 #endif

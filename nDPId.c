@@ -2281,37 +2281,37 @@ static int connect_to_collector(struct nDPId_reader_thread * const reader_thread
 }
 
 static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
-                              char const * const json_str,
-                              size_t json_str_len)
+                              char const * const json_msg,
+                              size_t json_msg_len)
 {
     struct nDPId_workflow * const workflow = reader_thread->workflow;
     int saved_errno;
     int s_ret;
-    char newline_json_str[NETWORK_BUFFER_MAX_SIZE];
+    char newline_json_msg[NETWORK_BUFFER_MAX_SIZE];
 
-    s_ret = snprintf(newline_json_str,
-                     sizeof(newline_json_str),
+    s_ret = snprintf(newline_json_msg,
+                     sizeof(newline_json_msg),
                      "%0" NETWORK_BUFFER_LENGTH_DIGITS_STR "zu%.*s\n",
-                     json_str_len + 1,
-                     (int)json_str_len,
-                     json_str);
+                     json_msg_len + 1,
+                     (int)json_msg_len,
+                     json_msg);
 
-    if (s_ret < 0 || s_ret >= (int)sizeof(newline_json_str))
+    if (s_ret < 0 || s_ret >= (int)sizeof(newline_json_msg))
     {
         logger(1,
                "[%8llu, %zu] JSON buffer prepare failed: snprintf returned %d, buffer size %zu",
                workflow->packets_captured,
                reader_thread->array_index,
                s_ret,
-               sizeof(newline_json_str));
-        if (s_ret >= (int)sizeof(newline_json_str))
+               sizeof(newline_json_msg));
+        if (s_ret >= (int)sizeof(newline_json_msg))
         {
             logger(1,
-                   "[%8llu, %zu] JSON string: %.*s...",
+                   "[%8llu, %zu] JSON message: %.*s...",
                    workflow->packets_captured,
                    reader_thread->array_index,
                    ndpi_min(512, NETWORK_BUFFER_MAX_SIZE),
-                   newline_json_str);
+                   newline_json_msg);
         }
         return;
     }
@@ -2352,7 +2352,7 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
     errno = 0;
     ssize_t written;
     if (reader_thread->collector_sock_last_errno == 0 &&
-        (written = write(reader_thread->collector_sockfd, newline_json_str, s_ret)) != s_ret)
+        (written = write(reader_thread->collector_sockfd, newline_json_msg, s_ret)) != s_ret)
     {
         saved_errno = errno;
         if (saved_errno == EPIPE || written == 0)
@@ -2379,7 +2379,7 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
         {
             size_t pos = (written < 0 ? 0 : written);
             set_collector_block(reader_thread);
-            while ((size_t)(written = write(reader_thread->collector_sockfd, newline_json_str + pos, s_ret - pos)) !=
+            while ((size_t)(written = write(reader_thread->collector_sockfd, newline_json_msg + pos, s_ret - pos)) !=
                    s_ret - pos)
             {
                 saved_errno = errno;
@@ -2415,22 +2415,22 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
 
 static void serialize_and_send(struct nDPId_reader_thread * const reader_thread)
 {
-    char * json_str;
-    uint32_t json_str_len;
+    char * json_msg;
+    uint32_t json_msg_len;
 
-    json_str = ndpi_serializer_get_buffer(&reader_thread->workflow->ndpi_serializer, &json_str_len);
-    if (json_str == NULL || json_str_len == 0)
+    json_msg = ndpi_serializer_get_buffer(&reader_thread->workflow->ndpi_serializer, &json_msg_len);
+    if (json_msg == NULL || json_msg_len == 0)
     {
         logger(1,
                "[%8llu, %zu] jsonize failed, buffer length: %u",
                reader_thread->workflow->packets_captured,
                reader_thread->array_index,
-               json_str_len);
+               json_msg_len);
     }
     else
     {
         reader_thread->workflow->total_events_serialized++;
-        send_to_collector(reader_thread, json_str, json_str_len);
+        send_to_collector(reader_thread, json_msg, json_msg_len);
     }
     ndpi_reset_serializer(&reader_thread->workflow->ndpi_serializer);
 }

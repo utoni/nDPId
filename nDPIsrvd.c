@@ -229,7 +229,7 @@ static UT_array * get_additional_write_buffers(struct remote_desc * const remote
 
 static int add_to_additional_write_buffers(struct remote_desc * const remote,
                                            uint8_t * const buf,
-                                           nDPIsrvd_ull json_string_length)
+                                           nDPIsrvd_ull json_message_length)
 {
     struct nDPIsrvd_write_buffer buf_src = {};
     UT_array * const additional_write_buffers = get_additional_write_buffers(remote);
@@ -264,7 +264,7 @@ static int add_to_additional_write_buffers(struct remote_desc * const remote,
     }
 
     buf_src.buf.ptr.raw = buf;
-    buf_src.buf.used = buf_src.buf.max = json_string_length;
+    buf_src.buf.used = buf_src.buf.max = json_message_length;
     utarray_push_back(additional_write_buffers, &buf_src);
 
     return 0;
@@ -1142,7 +1142,7 @@ static int new_connection(struct nio * const io, int eventfd)
 static int handle_collector_protocol(struct nio * const io, struct remote_desc * const current)
 {
     struct nDPIsrvd_json_buffer * const json_read_buffer = get_read_buffer(current);
-    char * json_str_start = NULL;
+    char * json_msg_start = NULL;
 
     if (json_read_buffer == NULL)
     {
@@ -1160,28 +1160,28 @@ static int handle_collector_protocol(struct nio * const io, struct remote_desc *
     }
 
     errno = 0;
-    current->event_collector_un.json_bytes = strtoull(json_read_buffer->buf.ptr.text, &json_str_start, 10);
-    current->event_collector_un.json_bytes += json_str_start - json_read_buffer->buf.ptr.text;
+    current->event_collector_un.json_bytes = strtoull(json_read_buffer->buf.ptr.text, &json_msg_start, 10);
+    current->event_collector_un.json_bytes += json_msg_start - json_read_buffer->buf.ptr.text;
 
     if (errno == ERANGE)
     {
-        logger_nDPIsrvd(current, "BUG: Collector connection", "JSON string length exceeds numceric limits");
+        logger_nDPIsrvd(current, "BUG: Collector connection", "JSON message length exceeds numceric limits");
         disconnect_client(io, current);
         return 1;
     }
 
-    if (json_str_start == json_read_buffer->buf.ptr.text)
+    if (json_msg_start == json_read_buffer->buf.ptr.text)
     {
         logger_nDPIsrvd(current,
                         "BUG: Collector connection",
-                        "missing JSON string length in protocol preamble: \"%.*s\"",
+                        "missing JSON message length in protocol preamble: \"%.*s\"",
                         NETWORK_BUFFER_LENGTH_DIGITS,
                         json_read_buffer->buf.ptr.text);
         disconnect_client(io, current);
         return 1;
     }
 
-    if (json_str_start - json_read_buffer->buf.ptr.text != NETWORK_BUFFER_LENGTH_DIGITS)
+    if (json_msg_start - json_read_buffer->buf.ptr.text != NETWORK_BUFFER_LENGTH_DIGITS)
     {
         logger_nDPIsrvd(current,
                         "BUG: Collector connection",
@@ -1189,14 +1189,14 @@ static int handle_collector_protocol(struct nio * const io, struct remote_desc *
                         "%ld "
                         "bytes",
                         NETWORK_BUFFER_LENGTH_DIGITS,
-                        (long int)(json_str_start - json_read_buffer->buf.ptr.text));
+                        (long int)(json_msg_start - json_read_buffer->buf.ptr.text));
     }
 
     if (current->event_collector_un.json_bytes > json_read_buffer->buf.max)
     {
         logger_nDPIsrvd(current,
                         "BUG: Collector connection",
-                        "JSON string too big: %llu > %zu",
+                        "JSON message too big: %llu > %zu",
                         current->event_collector_un.json_bytes,
                         json_read_buffer->buf.max);
         disconnect_client(io, current);
@@ -1213,7 +1213,7 @@ static int handle_collector_protocol(struct nio * const io, struct remote_desc *
     {
         logger_nDPIsrvd(current,
                         "BUG: Collector connection",
-                        "invalid JSON string: %.*s...",
+                        "invalid JSON message: %.*s...",
                         (int)current->event_collector_un.json_bytes > 512 ? 512
                                                                           : (int)current->event_collector_un.json_bytes,
                         json_read_buffer->buf.ptr.text);
@@ -1244,7 +1244,7 @@ static int handle_incoming_data(struct nio * const io, struct remote_desc * cons
         return 1;
     }
 
-    /* read JSON strings (or parts) from the UNIX socket (collecting) */
+    /* read JSON messages (or parts) from the UNIX socket (collecting) */
     if (json_read_buffer->buf.used == json_read_buffer->buf.max)
     {
         logger_nDPIsrvd(current,

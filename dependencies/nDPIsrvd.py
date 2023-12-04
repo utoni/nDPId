@@ -531,7 +531,8 @@ def defaultArgumentParser(desc='nDPIsrvd Python Interface', enable_json_filter=F
     parser.add_argument('--unix', type=str, help='nDPIsrvd unix socket path')
     if enable_json_filter is True:
         parser.add_argument('--filter', type=str, action='append',
-                            help='Set a filter string which if evaluates to True will invoke the JSON callback.')
+                            help='Set a filter string which if evaluates to True will invoke the JSON callback.\n'
+                                 'Example: json_dict[\'flow_event_name\'] == \'detected\' will only process \'detected\' events.')
     return parser
 
 def toSeconds(usec):

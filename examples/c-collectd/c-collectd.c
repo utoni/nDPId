@@ -625,7 +625,7 @@ static enum nDPIsrvd_callback_return collectd_json_callback(struct nDPIsrvd_sock
     struct flow_user_data * flow_user_data = NULL;
 
     collectd_statistics.json_lines++;
-    collectd_statistics.json_bytes += sock->buffer.json_string_length + NETWORK_BUFFER_LENGTH_DIGITS;
+    collectd_statistics.json_bytes += sock->buffer.json_message_length + NETWORK_BUFFER_LENGTH_DIGITS;
 
     struct nDPIsrvd_json_token const * const packet_event_name = TOKEN_GET_SZ(sock, "packet_event_name");
     if (packet_event_name != NULL)

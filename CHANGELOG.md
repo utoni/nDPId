@@ -17,7 +17,7 @@
  - Fixed a bug in base64 encoding which could lead to invalid base64 strings
  - Added some machine learning examples
  - Fixed various smaller bugs
- - Fixed nDPIsrvd bug which causes invalid JSON strings sent to Distributors
+ - Fixed nDPIsrvd bug which causes invalid JSON messages sent to Distributors
 
 #### nDPId 1.5 (Apr 2022)
 

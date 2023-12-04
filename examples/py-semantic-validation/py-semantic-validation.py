@@ -193,7 +193,7 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
         if (flow_last_seen is not None and 'flow_idle_time' not in json_dict) or \
            (flow_last_seen is None and 'flow_idle_time' in json_dict):
             raise SemanticValidationException(current_flow,
-                                              'Got a JSON string with only 2 of 3 keys, ' \
+                                              'Got a JSON message with only 2 of 3 keys, ' \
                                               'required for timeout handling: flow_idle_time')
 
         if 'thread_ts_usec' in json_dict:
@@ -213,7 +213,7 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
     try:
         if current_flow.flow_ended == True:
             raise SemanticValidationException(current_flow,
-                                              'Received JSON string for a flow that already ended/idled.')
+                                              'Received JSON message for a flow that already ended/idled.')
     except AttributeError:
         pass
 

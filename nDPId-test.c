@@ -102,9 +102,9 @@ struct distributor_global_user_data
 
     unsigned long long int shutdown_events;
 
-    unsigned long long int json_string_len_min;
-    unsigned long long int json_string_len_max;
-    double json_string_len_avg;
+    unsigned long long int json_message_len_min;
+    unsigned long long int json_message_len_max;
+    double json_message_len_avg;
 
     unsigned long long int cur_active_flows;
     unsigned long long int cur_idle_flows;
@@ -551,7 +551,7 @@ static enum nDPIsrvd_callback_return distributor_json_callback(struct nDPIsrvd_s
     struct distributor_flow_user_data * flow_stats = NULL;
 
 #if 0
-    printf("Distributor: %.*s\n", (int)sock->buffer.json_string_length, sock->buffer.json_string);
+    printf("Distributor: %.*s\n", (int)sock->buffer.json_message_length, sock->buffer.json_message);
 #endif
 
     if (thread_data != NULL)
@@ -563,16 +563,16 @@ static enum nDPIsrvd_callback_return distributor_json_callback(struct nDPIsrvd_s
         flow_stats = (struct distributor_flow_user_data *)flow->flow_user_data;
     }
 
-    if (sock->buffer.json_string_length < global_stats->json_string_len_min)
+    if (sock->buffer.json_message_length < global_stats->json_message_len_min)
     {
-        global_stats->json_string_len_min = sock->buffer.json_string_length;
+        global_stats->json_message_len_min = sock->buffer.json_message_length;
     }
-    if (sock->buffer.json_string_length > global_stats->json_string_len_max)
+    if (sock->buffer.json_message_length > global_stats->json_message_len_max)
     {
-        global_stats->json_string_len_max = sock->buffer.json_string_length;
+        global_stats->json_message_len_max = sock->buffer.json_message_length;
     }
-    global_stats->json_string_len_avg = (global_stats->json_string_len_avg +
-                                         (global_stats->json_string_len_max + global_stats->json_string_len_min) / 2) /
+    global_stats->json_message_len_avg = (global_stats->json_message_len_avg +
+                                         (global_stats->json_message_len_max + global_stats->json_message_len_min) / 2) /
                                         2;
 
     global_stats->total_events_deserialized++;
@@ -910,7 +910,7 @@ static enum nDPIsrvd_callback_return distributor_json_printer(struct nDPIsrvd_so
     }
 
     printf("%0" NETWORK_BUFFER_LENGTH_DIGITS_STR "llu%.*s",
-           sock->buffer.json_string_length - NETWORK_BUFFER_LENGTH_DIGITS,
+           sock->buffer.json_message_length - NETWORK_BUFFER_LENGTH_DIGITS,
            nDPIsrvd_json_buffer_length(sock),
            nDPIsrvd_json_buffer_string(sock));
     return CALLBACK_OK;
@@ -1008,10 +1008,10 @@ static void * distributor_client_mainloop_thread(void * const arg)
     }
 
     sock_stats = (struct distributor_global_user_data *)mock_sock->global_user_data;
-    sock_stats->json_string_len_min = (unsigned long long int)-1;
+    sock_stats->json_message_len_min = (unsigned long long int)-1;
     sock_stats->options.do_hash_checks = 1;
     buff_stats = (struct distributor_global_user_data *)mock_buff->global_user_data;
-    buff_stats->json_string_len_min = (unsigned long long int)-1;
+    buff_stats->json_message_len_min = (unsigned long long int)-1;
     buff_stats->options.do_hash_checks = 0;
     mock_null_shutdown_events = (int *)mock_null->global_user_data;
     *mock_null_shutdown_events = 0;
@@ -1065,12 +1065,12 @@ static void * distributor_client_mainloop_thread(void * const arg)
                 {
                     logger(1, "JSON parsing failed: %s", nDPIsrvd_enum_to_string(parse_ret));
                     logger(1,
-                           "Problematic JSON string (mock sock, start: %zu, length: %llu, buffer usage: %zu): %.*s",
-                           mock_sock->buffer.json_string_start,
-                           mock_sock->buffer.json_string_length,
+                           "Problematic JSON message (mock sock, start: %zu, length: %llu, buffer usage: %zu): %.*s",
+                           mock_sock->buffer.json_message_start,
+                           mock_sock->buffer.json_message_length,
                            mock_sock->buffer.buf.used,
-                           (int)mock_sock->buffer.json_string_length,
-                           mock_sock->buffer.json_string);
+                           (int)mock_sock->buffer.json_message_length,
+                           mock_sock->buffer.json_message);
                     THREAD_ERROR_GOTO(trv);
                 }
 
@@ -1100,12 +1100,12 @@ static void * distributor_client_mainloop_thread(void * const arg)
                 {
                     logger(1, "JSON parsing failed: %s", nDPIsrvd_enum_to_string(parse_ret));
                     logger(1,
-                           "Problematic JSON string (buff sock, start: %zu, length: %llu, buffer usage: %zu): %.*s",
-                           mock_buff->buffer.json_string_start,
-                           mock_buff->buffer.json_string_length,
+                           "Problematic JSON message (buff sock, start: %zu, length: %llu, buffer usage: %zu): %.*s",
+                           mock_buff->buffer.json_message_start,
+                           mock_buff->buffer.json_message_length,
                            mock_buff->buffer.buf.used,
-                           (int)mock_buff->buffer.json_string_length,
-                           mock_buff->buffer.json_string);
+                           (int)mock_buff->buffer.json_message_length,
+                           mock_buff->buffer.json_message);
                     THREAD_ERROR_GOTO(trv);
                 }
 
@@ -1135,12 +1135,12 @@ static void * distributor_client_mainloop_thread(void * const arg)
                 {
                     logger(1, "JSON parsing failed: %s", nDPIsrvd_enum_to_string(parse_ret));
                     logger(1,
-                           "Problematic JSON string (buff sock, start: %zu, length: %llu, buffer usage: %zu): %.*s",
-                           mock_null->buffer.json_string_start,
-                           mock_null->buffer.json_string_length,
+                           "Problematic JSON message (buff sock, start: %zu, length: %llu, buffer usage: %zu): %.*s",
+                           mock_null->buffer.json_message_start,
+                           mock_null->buffer.json_message_length,
                            mock_null->buffer.buf.used,
-                           (int)mock_null->buffer.json_string_length,
-                           mock_null->buffer.json_string);
+                           (int)mock_null->buffer.json_message_length,
+                           mock_null->buffer.json_message);
                     THREAD_ERROR_GOTO(trv);
                 }
             }
@@ -1855,9 +1855,9 @@ int main(int argc, char ** argv)
             "~~ json string min len.......: %llu chars\n"
             "~~ json string max len.......: %llu chars\n"
             "~~ json string avg len.......: %llu chars\n",
-            distributor_return.stats.json_string_len_min,
-            distributor_return.stats.json_string_len_max,
-            (unsigned long long int)distributor_return.stats.json_string_len_avg);
+            distributor_return.stats.json_message_len_min,
+            distributor_return.stats.json_message_len_max,
+            (unsigned long long int)distributor_return.stats.json_message_len_avg);
     }
 
     if (MT_GET_AND_ADD(ndpi_memory_alloc_bytes, 0) != MT_GET_AND_ADD(ndpi_memory_free_bytes, 0) ||

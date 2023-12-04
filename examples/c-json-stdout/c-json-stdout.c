@@ -65,24 +65,24 @@ int main(void)
                 exit(1);
             }
 
-            char * json_str_start = NULL;
-            json_bytes = strtoull((char *)buf, &json_str_start, 10);
-            json_bytes += (uint8_t *)json_str_start - buf;
-            json_start = (uint8_t *)json_str_start - buf;
+            char * json_msg_start = NULL;
+            json_bytes = strtoull((char *)buf, &json_msg_start, 10);
+            json_bytes += (uint8_t *)json_msg_start - buf;
+            json_start = (uint8_t *)json_msg_start - buf;
 
             if (errno == ERANGE)
             {
                 fprintf(stderr, "BUG: Size of JSON exceeds limit\n");
                 exit(1);
             }
-            if ((uint8_t *)json_str_start == buf)
+            if ((uint8_t *)json_msg_start == buf)
             {
-                fprintf(stderr, "BUG: Missing size before JSON string: \"%.*s\"\n", NETWORK_BUFFER_LENGTH_DIGITS, buf);
+                fprintf(stderr, "BUG: Missing size before JSON message: \"%.*s\"\n", NETWORK_BUFFER_LENGTH_DIGITS, buf);
                 exit(1);
             }
             if (json_bytes > sizeof(buf))
             {
-                fprintf(stderr, "BUG: JSON string too big: %llu > %zu\n", json_bytes, sizeof(buf));
+                fprintf(stderr, "BUG: JSON message too big: %llu > %zu\n", json_bytes, sizeof(buf));
                 exit(1);
             }
             if (json_bytes > buf_used)
@@ -92,7 +92,7 @@ int main(void)
 
             if (buf[json_bytes - 2] != '}' || buf[json_bytes - 1] != '\n')
             {
-                fprintf(stderr, "BUG: Invalid JSON string: \"%.*s\"\n", (int)json_bytes, buf);
+                fprintf(stderr, "BUG: Invalid JSON message: \"%.*s\"\n", (int)json_bytes, buf);
                 exit(1);
             }
 
@@ -106,7 +106,7 @@ int main(void)
             if (r < 1 || tokens[0].type != JSMN_OBJECT)
             {
                 fprintf(stderr, "JSON parsing failed with return value %d at position %u\n", r, parser.pos);
-                fprintf(stderr, "JSON string: '%.*s'\n", (int)(json_bytes - json_start), (char *)(buf + json_start));
+                fprintf(stderr, "JSON message: '%.*s'\n", (int)(json_bytes - json_start), (char *)(buf + json_start));
                 exit(1);
             }
 

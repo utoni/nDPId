@@ -29,7 +29,7 @@ The daemon `nDPId` is capable of multithreading for packet processing, but w/o m
 Instead, synchronization is achieved by a packet distribution mechanism.
 To balance the workload to all threads (more or less) equally, a unique identifier represented as hash value is calculated using a 3-tuple consisting of: IPv4/IPv6 src/dst address; IP header value of the layer4 protocol; and (for TCP/UDP) src/dst port. Other protocols e.g. ICMP/ICMPv6 lack relevance for DPI, thus nDPId does not distinguish between different ICMP/ICMPv6 flows coming from the same host. This saves memory and performance, but might change in the future.
 
-`nDPId` uses libnDPI's JSON serialization interface to generate a JSON strings for each event it receives from the library and which it then sends out to a UNIX-socket (default: `/tmp/ndpid-collector.sock` ). From such a socket, `nDPIsrvd` (or other custom applications) can retrieve incoming JSON-messages and further proceed working/distributing messages to higher-level applications.
+`nDPId` uses libnDPI's JSON serialization interface to generate a JSON messages for each event it receives from the library and which it then sends out to a UNIX-socket (default: `/tmp/ndpid-collector.sock` ). From such a socket, `nDPIsrvd` (or other custom applications) can retrieve incoming JSON-messages and further proceed working/distributing messages to higher-level applications.
 
 Unfortunately, `nDPIsrvd` does not yet support any encryption/authentication for TCP connections (TODO!).
 
@@ -71,11 +71,11 @@ where:
 
 JSON messages streamed by both `nDPId` and `nDPIsrvd` are presented with:
 
-* a 5-digit-number describing (as decimal number) the **entire** JSON string including the newline `\n` at the end;
+* a 5-digit-number describing (as decimal number) the **entire** JSON message including the newline `\n` at the end;
 * the JSON messages
 
 ```text
-[5-digit-number][JSON string]
+[5-digit-number][JSON message]
 ```
 
 as with the following example:
@@ -93,8 +93,8 @@ Technical details about the JSON-message format can be obtained from the related
 
 # Events
 
-`nDPId` generates JSON strings whereby each string is assigned to a certain event.
-Those events specify the contents (key-value-pairs) of the JSON string.
+`nDPId` generates JSON messages whereby each string is assigned to a certain event.
+Those events specify the contents (key-value-pairs) of the JSON message.
 They are divided into four categories, each with a number of subevents.
 
 ## Error Events
