@@ -775,7 +775,7 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
                 {
                     logger(1, "%s", "No packet data available.");
                     logger(1,
-                           "JSON String: '%.*s'",
+                           "JSON message: '%.*s'",
                            nDPIsrvd_json_buffer_length(sock),
                            nDPIsrvd_json_buffer_string(sock));
                     return CALLBACK_OK;
@@ -828,7 +828,7 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
         if (pkt == NULL)
         {
             logger(1, "%s", "No packet data available.");
-            logger(1, "JSON String: '%.*s'", nDPIsrvd_json_buffer_length(sock), nDPIsrvd_json_buffer_string(sock));
+            logger(1, "JSON message: '%.*s'", nDPIsrvd_json_buffer_length(sock), nDPIsrvd_json_buffer_string(sock));
             return CALLBACK_OK;
         }
 
@@ -1300,7 +1300,7 @@ static int mainloop(void)
         enum nDPIsrvd_parse_return parse_ret = nDPIsrvd_parse_all(ndpisrvd_socket);
         if (parse_ret != PARSE_NEED_MORE_DATA)
         {
-            logger(1, "Could not parse json string: %s", nDPIsrvd_enum_to_string(parse_ret));
+            logger(1, "Could not parse json message: %s", nDPIsrvd_enum_to_string(parse_ret));
             break;
         }
     }

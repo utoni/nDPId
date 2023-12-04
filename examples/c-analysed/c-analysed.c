@@ -556,7 +556,7 @@ static int mainloop(void)
         enum nDPIsrvd_parse_return parse_ret = nDPIsrvd_parse_all(sock);
         if (parse_ret != PARSE_NEED_MORE_DATA)
         {
-            printf("Could not parse json string: %s\n", nDPIsrvd_enum_to_string(parse_ret));
+            printf("Could not parse json message: %s\n", nDPIsrvd_enum_to_string(parse_ret));
             break;
         }
     }

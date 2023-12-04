@@ -3111,7 +3111,7 @@ static uint32_t calculate_ndpi_flow_struct_hash(struct ndpi_flow_struct const * 
 {
     /*
      * This is a kludge, but necessary for now as I do not want to spam nDPIsrvd and clients
-     * with the same detection json string over and over again.
+     * with the same detection JSON message over and over again.
      * So we are building a hash over the more "stable" parts of the ndpi flow struct.
      * Stable in terms of they should only change if the detection changes for whatever reason.
      * At the time of writing, nDPI has no API function to check if the detection changed

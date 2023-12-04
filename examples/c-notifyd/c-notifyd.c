@@ -620,7 +620,7 @@ int main(int argc, char ** argv)
             if (parse_ret != PARSE_NEED_MORE_DATA)
             {
                 syslog(LOG_DAEMON | LOG_ERR,
-                       "Could not parse json string %s: %.*s\n",
+                       "Could not parse JSON message %s: %.*s\n",
                        nDPIsrvd_enum_to_string(parse_ret),
                        nDPIsrvd_json_buffer_length(sock),
                        nDPIsrvd_json_buffer_string(sock));

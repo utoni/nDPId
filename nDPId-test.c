@@ -1852,9 +1852,9 @@ int main(int argc, char ** argv)
             total_free_count);
 
         printf(
-            "~~ json string min len.......: %llu chars\n"
-            "~~ json string max len.......: %llu chars\n"
-            "~~ json string avg len.......: %llu chars\n",
+            "~~ json message min len.......: %llu chars\n"
+            "~~ json message max len.......: %llu chars\n"
+            "~~ json message avg len.......: %llu chars\n",
             distributor_return.stats.json_message_len_min,
             distributor_return.stats.json_message_len_max,
             (unsigned long long int)distributor_return.stats.json_message_len_avg);
