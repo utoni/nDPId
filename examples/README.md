@@ -20,6 +20,11 @@ Used also by `tests/run_tests.sh` if available.
 A collecd-exec compatible middleware that gathers statistic values from nDPId.
 Used also by `tests/run_tests.sh` if available.
 
+## c-influxd
+
+An InfluxDB push daemon. It aggregates various statistics gathered from nDPId.
+The results are sent to a specified InfluxDB endpoint.
+
 ## c-notifyd
 
 A notification daemon that sends information about suspicious flow events to DBUS.

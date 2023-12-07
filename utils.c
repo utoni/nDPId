@@ -208,7 +208,7 @@ int daemonize_shutdown(char const * const pidfile)
 {
     if (daemonize != 0)
     {
-        if (unlink(pidfile) != 0 && errno != ENOENT)
+        if (pidfile != NULL && unlink(pidfile) != 0 && errno != ENOENT)
         {
             logger(1, "Could not unlink pidfile %s: %s", pidfile, strerror(errno));
             return 1;
