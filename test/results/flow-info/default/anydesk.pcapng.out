@@ -21,10 +21,8 @@
                    [IATS(ms)....: 164.8,164.9,0.6,1.1,165.0,165.4,0.5,0.5,0.3,0.3,1.8,2.0,164.9,165.2,0.2,0.2,0.2,0.3,218.6,218.7,0.6,0.9,1215.5,1216.3,0.0,0.1,0.9,0.0,0.0,1602.9,0.1]
                    [PKTLENS.....: 60,46,40,303,46,1340,40,1340,40,46,40,1134,46,91,40,80,40,186,46,186,40,111,46,119,1500,1500,1242,46,46,46,1500,1180]
                    [ENTROPIES...: 4.8,4.9,4.8,5.4,4.4,7.5,4.8,7.8,4.8,4.6,4.7,7.6,4.4,5.8,4.8,5.8,4.8,6.7,4.4,6.8,4.8,6.3,4.4,6.4,7.9,7.9,7.8,4.4,4.4,4.4,7.9,7.8]
- detection-update: [.....2] [ip4][..tcp] [192.168.149.129][43535] -> [..51.83.238.219][...80] [TLS.AnyDesk][AnyDesk][RemoteAccess][Acceptable][]
-                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Desktop/File Sharing
      DAEMON-EVENT: [Processed: 61 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 2 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 3|updates: 0]
+     DAEMON-EVENT: [Flows][active: 2 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 2|updates: 0]
               new: [.....3] [ip4][..udp] [..192.168.1.187][59511] -> [....192.168.1.1][...53]
          detected: [.....3] [ip4][..udp] [..192.168.1.187][59511] -> [....192.168.1.1][...53] [DNS.AnyDesk][Unknown][Network][Acceptable][relay-3185a847.net.anydesk.com]
  detection-update: [.....3] [ip4][..udp] [..192.168.1.187][59511] -> [....192.168.1.1][...53] [DNS.AnyDesk][Unknown][Network][Acceptable][relay-3185a847.net.anydesk.com]
@@ -56,7 +54,7 @@
                    [PKTLENS.....: 52,52,40,285,46,46,1500,183,40,1326,46,954,80,40,87,46,75,74,46,74,40,3966,46,46,46,79,46,141,40,99,46,116]
                    [ENTROPIES...: 4.5,4.7,4.7,5.4,4.2,4.3,7.7,6.2,4.7,7.7,4.3,7.8,5.6,4.6,5.7,4.2,5.5,5.6,4.3,5.6,4.7,8.0,4.2,4.3,4.2,5.7,4.3,6.5,4.6,6.0,4.3,6.2]
      DAEMON-EVENT: [Processed: 120 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 4 / 6|skipped: 0|!detected: 0|guessed: 0|detection-updates: 7|updates: 0]
+     DAEMON-EVENT: [Flows][active: 4 / 6|skipped: 0|!detected: 0|guessed: 0|detection-updates: 6|updates: 0]
               new: [.....7] [ip4][..tcp] [..192.168.1.128][48260] -> [195.181.174.176][..443]
          detected: [.....7] [ip4][..tcp] [..192.168.1.128][48260] -> [195.181.174.176][..443] [TLS.AnyDesk][Unknown][RemoteAccess][Acceptable][]
                    RISK: Missing SNI TLS Extn, Desktop/File Sharing, Uncommon TLS ALPN

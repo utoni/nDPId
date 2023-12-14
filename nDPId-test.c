@@ -571,9 +571,10 @@ static enum nDPIsrvd_callback_return distributor_json_callback(struct nDPIsrvd_s
     {
         global_stats->json_message_len_max = sock->buffer.json_message_length;
     }
-    global_stats->json_message_len_avg = (global_stats->json_message_len_avg +
-                                         (global_stats->json_message_len_max + global_stats->json_message_len_min) / 2) /
-                                        2;
+    global_stats->json_message_len_avg =
+        (global_stats->json_message_len_avg +
+         (global_stats->json_message_len_max + global_stats->json_message_len_min) / 2) /
+        2;
 
     global_stats->total_events_deserialized++;
 
@@ -2035,9 +2036,9 @@ int main(int argc, char ** argv)
         return 1;
     }
 
-    if (nDPId_return.total_active_flows > distributor_return.stats.flow_detected_count +
-                                              distributor_return.stats.flow_guessed_count +
-                                              distributor_return.stats.flow_not_detected_count)
+    if (nDPId_return.total_active_flows != distributor_return.stats.flow_detected_count +
+                                               distributor_return.stats.flow_guessed_count +
+                                               distributor_return.stats.flow_not_detected_count)
     {
         logger(1,
                "%s: Amount of total active flows not equal to the amount of received 'detected', 'guessed and "

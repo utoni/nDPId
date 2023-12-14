@@ -692,7 +692,8 @@ static int zlib_deflate(const void * const src, int srcLen, void * dst, int dstL
     int ret = -1;
 
     err = deflateInit2(&strm, Z_BEST_COMPRESSION, Z_BINARY, 15, 9, Z_HUFFMAN_ONLY);
-    if (err != Z_OK) {
+    if (err != Z_OK)
+    {
         err = deflateInit(&strm, Z_BEST_COMPRESSION);
     }
     if (err == Z_OK)
@@ -1090,6 +1091,9 @@ static int get_ip_netmask_from_pcap_dev(char const * const pcap_dev)
 
     if (getifaddrs(&ifaddrs) != 0 || ifaddrs == NULL)
     {
+        int saved_errno = errno;
+        logger_early(1, "Interface retrieval failed with: %s", strerror(saved_errno));
+        errno = saved_errno;
         return 1;
     }
 
@@ -1113,6 +1117,11 @@ static int get_ip_netmask_from_pcap_dev(char const * const pcap_dev)
                 case AF_INET6:
                     if (ip6_interface_avail == 0 && get_ip6_address_and_netmask(ifa->ifa_name, ifnamelen) != 0)
                     {
+                        int saved_errno = errno;
+                        logger_early(1,
+                                     "IPv6 address/netmask retrieval from proc filesystem failed with: %s",
+                                     strerror(saved_errno));
+                        errno = saved_errno;
                         retval = 1;
                     }
                     ip6_interface_avail = 1;
@@ -1123,7 +1132,7 @@ static int get_ip_netmask_from_pcap_dev(char const * const pcap_dev)
         }
     }
 
-    if (found_dev != 0 &&
+    if (retval == 0 && found_dev != 0 &&
         (nDPId_options.process_internal_initial_direction != 0 ||
          nDPId_options.process_external_initial_direction != 0) &&
         ip4_interface_avail == 0 && ip6_interface_avail == 0)
@@ -1379,6 +1388,9 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     ndpi_finalize_initialization(workflow->ndpi_struct);
 
     ndpi_set_detection_preferences(workflow->ndpi_struct, ndpi_pref_enable_tls_block_dissection, 1);
+    ndpi_set_detection_preferences(workflow->ndpi_struct,
+                                   ndpi_pref_max_packets_to_process,
+                                   nDPId_options.max_packets_per_flow_to_process);
 
     if (ndpi_init_serializer_ll(&workflow->ndpi_serializer, ndpi_serialization_format_json, NETWORK_BUFFER_MAX_SIZE) !=
         0)
@@ -4212,33 +4224,6 @@ static void ndpi_process_packet(uint8_t * const args,
         return;
     }
 
-    if (flow_to_process->info.detection_data->flow.num_processed_pkts ==
-        nDPId_options.max_packets_per_flow_to_process - 1)
-    {
-        if (flow_to_process->info.detection_completed != 0)
-        {
-            reader_thread->workflow->total_flow_detection_updates++;
-            jsonize_flow_detection_event(reader_thread, flow_to_process, FLOW_EVENT_DETECTION_UPDATE);
-        }
-        else
-        {
-            /* last chance to guess something, better then nothing */
-            uint8_t protocol_was_guessed = 0;
-            flow_to_process->info.detection_data->guessed_l7_protocol = ndpi_detection_giveup(
-                workflow->ndpi_struct, &flow_to_process->info.detection_data->flow, 1, &protocol_was_guessed);
-            if (protocol_was_guessed != 0)
-            {
-                workflow->total_guessed_flows++;
-                jsonize_flow_detection_event(reader_thread, flow_to_process, FLOW_EVENT_GUESSED);
-            }
-            else
-            {
-                reader_thread->workflow->total_not_detected_flows++;
-                jsonize_flow_detection_event(reader_thread, flow_to_process, FLOW_EVENT_NOT_DETECTED);
-            }
-        }
-    }
-
     flow_to_process->flow_extended.detected_l7_protocol =
         ndpi_detection_process_packet(workflow->ndpi_struct,
                                       &flow_to_process->info.detection_data->flow,
@@ -4276,6 +4261,26 @@ static void ndpi_process_packet(uint8_t * const args,
             workflow->total_flow_detection_updates++;
             jsonize_flow_detection_event(reader_thread, flow_to_process, FLOW_EVENT_DETECTION_UPDATE);
             flow_to_process->info.detection_data->last_ndpi_flow_struct_hash = hash;
+        }
+    }
+
+    if (flow_to_process->info.detection_data->flow.num_processed_pkts ==
+            nDPId_options.max_packets_per_flow_to_process &&
+        flow_to_process->info.detection_completed == 0)
+    {
+        /* last chance to guess something, better then nothing */
+        uint8_t protocol_was_guessed = 0;
+        flow_to_process->info.detection_data->guessed_l7_protocol = ndpi_detection_giveup(
+            workflow->ndpi_struct, &flow_to_process->info.detection_data->flow, 1, &protocol_was_guessed);
+        if (protocol_was_guessed != 0)
+        {
+            workflow->total_guessed_flows++;
+            jsonize_flow_detection_event(reader_thread, flow_to_process, FLOW_EVENT_GUESSED);
+        }
+        else
+        {
+            reader_thread->workflow->total_not_detected_flows++;
+            jsonize_flow_detection_event(reader_thread, flow_to_process, FLOW_EVENT_NOT_DETECTED);
         }
     }
 
