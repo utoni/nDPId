@@ -205,132 +205,152 @@ static struct
 
         nDPIsrvd_ull flow_risk_count[NDPI_MAX_RISK - 1];
         nDPIsrvd_ull flow_risk_unknown_count;
-    } gauges;
+    } gauges[2]; /* values after InfluxDB push: gauges[0] -= gauges[1], gauges[1] is zero'd afterwards */
 } influxd_statistics = {.rw_lock = PTHREAD_MUTEX_INITIALIZER};
 
 struct global_map
 {
     char const * const json_key;
-    uint64_t * const global_stat;
+    struct
+    {
+        uint64_t * const global_stat_inc;
+        uint64_t * const global_stat_dec;
+    };
 };
 
-static struct global_map const flow_event_map[] = {{"new", &influxd_statistics.counters.flow_new_count},
-                                                   {"end", &influxd_statistics.counters.flow_end_count},
-                                                   {"idle", &influxd_statistics.counters.flow_idle_count},
-                                                   {"update", &influxd_statistics.counters.flow_update_count},
-                                                   {"analyse", &influxd_statistics.counters.flow_analyse_count},
-                                                   {"guessed", &influxd_statistics.counters.flow_guessed_count},
-                                                   {"detected", &influxd_statistics.counters.flow_detected_count},
+#define INFLUXD_STATS_COUNTER_PTR(member)                                                                              \
+    {                                                                                                                  \
+        .global_stat_inc = &(influxd_statistics.counters.member), NULL                                                 \
+    }
+#define INFLUXD_STATS_GAUGE_PTR(member)                                                                                \
+    {                                                                                                                  \
+        .global_stat_inc = &(influxd_statistics.gauges[0].member),                                                     \
+        .global_stat_dec = &(influxd_statistics.gauges[1].member)                                                      \
+    }
+#define INFLUXD_STATS_COUNTER_INC(member) (influxd_statistics.counters.member++)
+#define INFLUXD_STATS_GAUGE_RES(member) (influxd_statistics.gauges[0].member--)
+#define INFLUXD_STATS_GAUGE_INC(member) (influxd_statistics.gauges[0].member++)
+#define INFLUXD_STATS_GAUGE_DEC(member) (influxd_statistics.gauges[1].member++)
+#define INFLUXD_STATS_GAUGE_SUB(member) (influxd_statistics.gauges[0].member -= influxd_statistics.gauges[1].member)
+#define INFLUXD_STATS_MAP_NOTNULL(map, index) (map[index - 1].global_stat_dec != NULL)
+#define INFLUXD_STATS_MAP_DEC(map, index) ((*map[index - 1].global_stat_dec)++)
+
+static struct global_map const flow_event_map[] = {{"new", INFLUXD_STATS_COUNTER_PTR(flow_new_count)},
+                                                   {"end", INFLUXD_STATS_COUNTER_PTR(flow_end_count)},
+                                                   {"idle", INFLUXD_STATS_COUNTER_PTR(flow_idle_count)},
+                                                   {"update", INFLUXD_STATS_COUNTER_PTR(flow_update_count)},
+                                                   {"analyse", INFLUXD_STATS_COUNTER_PTR(flow_analyse_count)},
+                                                   {"guessed", INFLUXD_STATS_COUNTER_PTR(flow_guessed_count)},
+                                                   {"detected", INFLUXD_STATS_COUNTER_PTR(flow_detected_count)},
                                                    {"detection-update",
-                                                    &influxd_statistics.counters.flow_detection_update_count},
+                                                    INFLUXD_STATS_COUNTER_PTR(flow_detection_update_count)},
                                                    {"not-detected",
-                                                    &influxd_statistics.counters.flow_not_detected_count}};
+                                                    INFLUXD_STATS_COUNTER_PTR(flow_not_detected_count)}};
 
-static struct global_map const packet_event_map[] = {{"packet", &influxd_statistics.counters.packet_count},
-                                                     {"packet-flow", &influxd_statistics.counters.packet_flow_count}};
+static struct global_map const packet_event_map[] = {{"packet", INFLUXD_STATS_COUNTER_PTR(packet_count)},
+                                                     {"packet-flow", INFLUXD_STATS_COUNTER_PTR(packet_flow_count)}};
 
-static struct global_map const daemon_event_map[] = {{"init", &influxd_statistics.counters.init_count},
-                                                     {"reconnect", &influxd_statistics.counters.reconnect_count},
-                                                     {"shutdown", &influxd_statistics.counters.shutdown_count},
-                                                     {"status", &influxd_statistics.counters.status_count}};
+static struct global_map const daemon_event_map[] = {{"init", INFLUXD_STATS_COUNTER_PTR(init_count)},
+                                                     {"reconnect", INFLUXD_STATS_COUNTER_PTR(reconnect_count)},
+                                                     {"shutdown", INFLUXD_STATS_COUNTER_PTR(shutdown_count)},
+                                                     {"status", INFLUXD_STATS_COUNTER_PTR(status_count)}};
 
 static struct global_map const error_event_map[] = {
-    {"Unknown datalink layer packet", &influxd_statistics.counters.error_unknown_datalink},
-    {"Unknown L3 protocol", &influxd_statistics.counters.error_unknown_l3_protocol},
-    {"Unsupported datalink layer", &influxd_statistics.counters.error_unsupported_datalink},
-    {"Packet too short", &influxd_statistics.counters.error_packet_too_short},
-    {"Unknown packet type", &influxd_statistics.counters.error_packet_type_unknown},
-    {"Packet header invalid", &influxd_statistics.counters.error_packet_header_invalid},
-    {"IP4 packet too short", &influxd_statistics.counters.error_ip4_packet_too_short},
-    {"Packet smaller than IP4 header", &influxd_statistics.counters.error_ip4_size_smaller_than_header},
-    {"nDPI IPv4\\/L4 payload detection failed", &influxd_statistics.counters.error_ip4_l4_payload_detection},
-    {"IP6 packet too short", &influxd_statistics.counters.error_ip6_packet_too_short},
-    {"Packet smaller than IP6 header", &influxd_statistics.counters.error_ip6_size_smaller_than_header},
-    {"nDPI IPv6\\/L4 payload detection failed", &influxd_statistics.counters.error_ip6_l4_payload_detection},
-    {"TCP packet smaller than expected", &influxd_statistics.counters.error_tcp_packet_too_short},
-    {"UDP packet smaller than expected", &influxd_statistics.counters.error_udp_packet_too_short},
+    {"Unknown datalink layer packet", INFLUXD_STATS_COUNTER_PTR(error_unknown_datalink)},
+    {"Unknown L3 protocol", INFLUXD_STATS_COUNTER_PTR(error_unknown_l3_protocol)},
+    {"Unsupported datalink layer", INFLUXD_STATS_COUNTER_PTR(error_unsupported_datalink)},
+    {"Packet too short", INFLUXD_STATS_COUNTER_PTR(error_packet_too_short)},
+    {"Unknown packet type", INFLUXD_STATS_COUNTER_PTR(error_packet_type_unknown)},
+    {"Packet header invalid", INFLUXD_STATS_COUNTER_PTR(error_packet_header_invalid)},
+    {"IP4 packet too short", INFLUXD_STATS_COUNTER_PTR(error_ip4_packet_too_short)},
+    {"Packet smaller than IP4 header", INFLUXD_STATS_COUNTER_PTR(error_ip4_size_smaller_than_header)},
+    {"nDPI IPv4\\/L4 payload detection failed", INFLUXD_STATS_COUNTER_PTR(error_ip4_l4_payload_detection)},
+    {"IP6 packet too short", INFLUXD_STATS_COUNTER_PTR(error_ip6_packet_too_short)},
+    {"Packet smaller than IP6 header", INFLUXD_STATS_COUNTER_PTR(error_ip6_size_smaller_than_header)},
+    {"nDPI IPv6\\/L4 payload detection failed", INFLUXD_STATS_COUNTER_PTR(error_ip6_l4_payload_detection)},
+    {"TCP packet smaller than expected", INFLUXD_STATS_COUNTER_PTR(error_tcp_packet_too_short)},
+    {"UDP packet smaller than expected", INFLUXD_STATS_COUNTER_PTR(error_udp_packet_too_short)},
     {"Captured packet size is smaller than expected packet size",
-     &influxd_statistics.counters.error_capture_size_smaller_than_packet},
-    {"Max flows to track reached", &influxd_statistics.counters.error_max_flows_to_track},
-    {"Flow memory allocation failed", &influxd_statistics.counters.error_flow_memory_alloc}};
+     INFLUXD_STATS_COUNTER_PTR(error_capture_size_smaller_than_packet)},
+    {"Max flows to track reached", INFLUXD_STATS_COUNTER_PTR(error_max_flows_to_track)},
+    {"Flow memory allocation failed", INFLUXD_STATS_COUNTER_PTR(error_flow_memory_alloc)}};
 
-static struct global_map const breeds_map[] = {{"Safe", &influxd_statistics.gauges.flow_breed_safe_count},
-                                               {"Acceptable", &influxd_statistics.gauges.flow_breed_acceptable_count},
-                                               {"Fun", &influxd_statistics.gauges.flow_breed_fun_count},
-                                               {"Unsafe", &influxd_statistics.gauges.flow_breed_unsafe_count},
+static struct global_map const breeds_map[] = {{"Safe", INFLUXD_STATS_GAUGE_PTR(flow_breed_safe_count)},
+                                               {"Acceptable", INFLUXD_STATS_GAUGE_PTR(flow_breed_acceptable_count)},
+                                               {"Fun", INFLUXD_STATS_GAUGE_PTR(flow_breed_fun_count)},
+                                               {"Unsafe", INFLUXD_STATS_GAUGE_PTR(flow_breed_unsafe_count)},
                                                {"Potentially Dangerous",
-                                                &influxd_statistics.gauges.flow_breed_potentially_dangerous_count},
-                                               {"Tracker\\/Ads",
-                                                &influxd_statistics.gauges.flow_breed_tracker_ads_count},
-                                               {"Dangerous", &influxd_statistics.gauges.flow_breed_dangerous_count},
-                                               {"Unrated", &influxd_statistics.gauges.flow_breed_unrated_count},
-                                               {NULL, &influxd_statistics.gauges.flow_breed_unknown_count}};
+                                                INFLUXD_STATS_GAUGE_PTR(flow_breed_potentially_dangerous_count)},
+                                               {"Tracker\\/Ads", INFLUXD_STATS_GAUGE_PTR(flow_breed_tracker_ads_count)},
+                                               {"Dangerous", INFLUXD_STATS_GAUGE_PTR(flow_breed_dangerous_count)},
+                                               {"Unrated", INFLUXD_STATS_GAUGE_PTR(flow_breed_unrated_count)},
+                                               {NULL, INFLUXD_STATS_GAUGE_PTR(flow_breed_unknown_count)}};
 
 static struct global_map const categories_map[] = {
-    {"Unspecified", &influxd_statistics.gauges.flow_category_unspecified_count},
-    {"Media", &influxd_statistics.gauges.flow_category_media_count},
-    {"VPN", &influxd_statistics.gauges.flow_category_vpn_count},
-    {"Email", &influxd_statistics.gauges.flow_category_email_count},
-    {"DataTransfer", &influxd_statistics.gauges.flow_category_data_transfer_count},
-    {"Web", &influxd_statistics.gauges.flow_category_web_count},
-    {"SocialNetwork", &influxd_statistics.gauges.flow_category_social_network_count},
-    {"Download", &influxd_statistics.gauges.flow_category_download_count},
-    {"Game", &influxd_statistics.gauges.flow_category_game_count},
-    {"Chat", &influxd_statistics.gauges.flow_category_chat_count},
-    {"VoIP", &influxd_statistics.gauges.flow_category_voip_count},
-    {"Database", &influxd_statistics.gauges.flow_category_database_count},
-    {"RemoteAccess", &influxd_statistics.gauges.flow_category_remote_access_count},
-    {"Cloud", &influxd_statistics.gauges.flow_category_cloud_count},
-    {"Network", &influxd_statistics.gauges.flow_category_network_count},
-    {"Collaborative", &influxd_statistics.gauges.flow_category_collaborative_count},
-    {"RPC", &influxd_statistics.gauges.flow_category_rpc_count},
-    {"Streaming", &influxd_statistics.gauges.flow_category_streaming_count},
-    {"System", &influxd_statistics.gauges.flow_category_system_count},
-    {"SoftwareUpdate", &influxd_statistics.gauges.flow_category_software_update_count},
-    {"Music", &influxd_statistics.gauges.flow_category_music_count},
-    {"Video", &influxd_statistics.gauges.flow_category_video_count},
-    {"Shopping", &influxd_statistics.gauges.flow_category_shopping_count},
-    {"Productivity", &influxd_statistics.gauges.flow_category_productivity_count},
-    {"FileSharing", &influxd_statistics.gauges.flow_category_file_sharing_count},
-    {"ConnCheck", &influxd_statistics.gauges.flow_category_conn_check_count},
-    {"IoT-Scada", &influxd_statistics.gauges.flow_category_iot_scada_count},
-    {"VirtAssistant", &influxd_statistics.gauges.flow_category_virt_assistant_count},
-    {"Cybersecurity", &influxd_statistics.gauges.flow_category_cybersecurity_count},
-    {"AdultContent", &influxd_statistics.gauges.flow_category_adult_content_count},
-    {"Mining", &influxd_statistics.gauges.flow_category_mining_count},
-    {"Malware", &influxd_statistics.gauges.flow_category_malware_count},
-    {"Advertisement", &influxd_statistics.gauges.flow_category_advertisment_count},
-    {"Banned_Site", &influxd_statistics.gauges.flow_category_banned_site_count},
-    {"Site_Unavailable", &influxd_statistics.gauges.flow_category_site_unavail_count},
-    {"Allowed_Site", &influxd_statistics.gauges.flow_category_allowed_site_count},
-    {"Antimalware", &influxd_statistics.gauges.flow_category_antimalware_count},
-    {"Crypto_Currency", &influxd_statistics.gauges.flow_category_crypto_currency_count},
-    {"Gambling", &influxd_statistics.gauges.flow_category_gambling_count},
-    {NULL, &influxd_statistics.gauges.flow_category_unknown_count}};
+    {"Unspecified", INFLUXD_STATS_GAUGE_PTR(flow_category_unspecified_count)},
+    {"Media", INFLUXD_STATS_GAUGE_PTR(flow_category_media_count)},
+    {"VPN", INFLUXD_STATS_GAUGE_PTR(flow_category_vpn_count)},
+    {"Email", INFLUXD_STATS_GAUGE_PTR(flow_category_email_count)},
+    {"DataTransfer", INFLUXD_STATS_GAUGE_PTR(flow_category_data_transfer_count)},
+    {"Web", INFLUXD_STATS_GAUGE_PTR(flow_category_web_count)},
+    {"SocialNetwork", INFLUXD_STATS_GAUGE_PTR(flow_category_social_network_count)},
+    {"Download", INFLUXD_STATS_GAUGE_PTR(flow_category_download_count)},
+    {"Game", INFLUXD_STATS_GAUGE_PTR(flow_category_game_count)},
+    {"Chat", INFLUXD_STATS_GAUGE_PTR(flow_category_chat_count)},
+    {"VoIP", INFLUXD_STATS_GAUGE_PTR(flow_category_voip_count)},
+    {"Database", INFLUXD_STATS_GAUGE_PTR(flow_category_database_count)},
+    {"RemoteAccess", INFLUXD_STATS_GAUGE_PTR(flow_category_remote_access_count)},
+    {"Cloud", INFLUXD_STATS_GAUGE_PTR(flow_category_cloud_count)},
+    {"Network", INFLUXD_STATS_GAUGE_PTR(flow_category_network_count)},
+    {"Collaborative", INFLUXD_STATS_GAUGE_PTR(flow_category_collaborative_count)},
+    {"RPC", INFLUXD_STATS_GAUGE_PTR(flow_category_rpc_count)},
+    {"Streaming", INFLUXD_STATS_GAUGE_PTR(flow_category_streaming_count)},
+    {"System", INFLUXD_STATS_GAUGE_PTR(flow_category_system_count)},
+    {"SoftwareUpdate", INFLUXD_STATS_GAUGE_PTR(flow_category_software_update_count)},
+    {"Music", INFLUXD_STATS_GAUGE_PTR(flow_category_music_count)},
+    {"Video", INFLUXD_STATS_GAUGE_PTR(flow_category_video_count)},
+    {"Shopping", INFLUXD_STATS_GAUGE_PTR(flow_category_shopping_count)},
+    {"Productivity", INFLUXD_STATS_GAUGE_PTR(flow_category_productivity_count)},
+    {"FileSharing", INFLUXD_STATS_GAUGE_PTR(flow_category_file_sharing_count)},
+    {"ConnCheck", INFLUXD_STATS_GAUGE_PTR(flow_category_conn_check_count)},
+    {"IoT-Scada", INFLUXD_STATS_GAUGE_PTR(flow_category_iot_scada_count)},
+    {"VirtAssistant", INFLUXD_STATS_GAUGE_PTR(flow_category_virt_assistant_count)},
+    {"Cybersecurity", INFLUXD_STATS_GAUGE_PTR(flow_category_cybersecurity_count)},
+    {"AdultContent", INFLUXD_STATS_GAUGE_PTR(flow_category_adult_content_count)},
+    {"Mining", INFLUXD_STATS_GAUGE_PTR(flow_category_mining_count)},
+    {"Malware", INFLUXD_STATS_GAUGE_PTR(flow_category_malware_count)},
+    {"Advertisement", INFLUXD_STATS_GAUGE_PTR(flow_category_advertisment_count)},
+    {"Banned_Site", INFLUXD_STATS_GAUGE_PTR(flow_category_banned_site_count)},
+    {"Site_Unavailable", INFLUXD_STATS_GAUGE_PTR(flow_category_site_unavail_count)},
+    {"Allowed_Site", INFLUXD_STATS_GAUGE_PTR(flow_category_allowed_site_count)},
+    {"Antimalware", INFLUXD_STATS_GAUGE_PTR(flow_category_antimalware_count)},
+    {"Crypto_Currency", INFLUXD_STATS_GAUGE_PTR(flow_category_crypto_currency_count)},
+    {"Gambling", INFLUXD_STATS_GAUGE_PTR(flow_category_gambling_count)},
+    {NULL, INFLUXD_STATS_GAUGE_PTR(flow_category_unknown_count)}};
 
 static struct global_map const confidence_map[] = {
-    {"Match by port", &influxd_statistics.gauges.flow_confidence_by_port},
-    {"DPI (partial)", &influxd_statistics.gauges.flow_confidence_dpi_partial},
-    {"DPI (partial cache)", &influxd_statistics.gauges.flow_confidence_dpi_partial_cache},
-    {"DPI (cache)", &influxd_statistics.gauges.flow_confidence_dpi_cache},
-    {"DPI", &influxd_statistics.gauges.flow_confidence_dpi},
-    {"nBPF", &influxd_statistics.gauges.flow_confidence_nbpf},
-    {"Match by IP", &influxd_statistics.gauges.flow_confidence_by_ip},
-    {"DPI (aggressive)", &influxd_statistics.gauges.flow_confidence_dpi_aggressive},
-    {NULL, &influxd_statistics.gauges.flow_confidence_unknown}};
+    {"Match by port", INFLUXD_STATS_GAUGE_PTR(flow_confidence_by_port)},
+    {"DPI (partial)", INFLUXD_STATS_GAUGE_PTR(flow_confidence_dpi_partial)},
+    {"DPI (partial cache)", INFLUXD_STATS_GAUGE_PTR(flow_confidence_dpi_partial_cache)},
+    {"DPI (cache)", INFLUXD_STATS_GAUGE_PTR(flow_confidence_dpi_cache)},
+    {"DPI", INFLUXD_STATS_GAUGE_PTR(flow_confidence_dpi)},
+    {"nBPF", INFLUXD_STATS_GAUGE_PTR(flow_confidence_nbpf)},
+    {"Match by IP", INFLUXD_STATS_GAUGE_PTR(flow_confidence_by_ip)},
+    {"DPI (aggressive)", INFLUXD_STATS_GAUGE_PTR(flow_confidence_dpi_aggressive)},
+    {NULL, INFLUXD_STATS_GAUGE_PTR(flow_confidence_unknown)}};
 
-static struct global_map const severity_map[] = {{"Low", &influxd_statistics.gauges.flow_severity_low},
-                                                 {"Medium", &influxd_statistics.gauges.flow_severity_medium},
-                                                 {"High", &influxd_statistics.gauges.flow_severity_high},
-                                                 {"Severe", &influxd_statistics.gauges.flow_severity_severe},
-                                                 {"Critical", &influxd_statistics.gauges.flow_severity_critical},
-                                                 {"Emergency", &influxd_statistics.gauges.flow_severity_emergency},
-                                                 {NULL, &influxd_statistics.gauges.flow_severity_unknown}};
+static struct global_map const severity_map[] = {{"Low", INFLUXD_STATS_GAUGE_PTR(flow_severity_low)},
+                                                 {"Medium", INFLUXD_STATS_GAUGE_PTR(flow_severity_medium)},
+                                                 {"High", INFLUXD_STATS_GAUGE_PTR(flow_severity_high)},
+                                                 {"Severe", INFLUXD_STATS_GAUGE_PTR(flow_severity_severe)},
+                                                 {"Critical", INFLUXD_STATS_GAUGE_PTR(flow_severity_critical)},
+                                                 {"Emergency", INFLUXD_STATS_GAUGE_PTR(flow_severity_emergency)},
+                                                 {NULL, INFLUXD_STATS_GAUGE_PTR(flow_severity_unknown)}};
 
 #define INFLUXDB_FORMAT() "%s=%llu,"
 #define INFLUXDB_FORMAT_END() "%s=%llu\n"
 #define INFLUXDB_VALUE_COUNTER(value) #value, (unsigned long long int)influxd_statistics.counters.value
-#define INFLUXDB_VALUE_GAUGE(value) #value, (unsigned long long int)influxd_statistics.gauges.value
+#define INFLUXDB_VALUE_GAUGE(value) #value, (unsigned long long int)influxd_statistics.gauges[0].value
 #define CHECK_SNPRINTF_RET(bytes)                                                                                      \
     do                                                                                                                 \
     {                                                                                                                  \
@@ -550,13 +570,107 @@ static int serialize_influx_line(char * buf, size_t siz)
                          siz,
                          "flow_risk_%zu_count=%llu,",
                          i + 1,
-                         (unsigned long long int)influxd_statistics.gauges.flow_risk_count[i]);
+                         (unsigned long long int)influxd_statistics.gauges[0].flow_risk_count[i]);
         CHECK_SNPRINTF_RET(bytes);
     }
     buf[-1] = '\n';
 
 failure:
     memset(&influxd_statistics.counters, 0, sizeof(influxd_statistics.counters));
+
+    INFLUXD_STATS_GAUGE_SUB(flow_state_info);
+    INFLUXD_STATS_GAUGE_SUB(flow_state_finished);
+
+    INFLUXD_STATS_GAUGE_SUB(flow_breed_safe_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_breed_acceptable_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_breed_fun_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_breed_unsafe_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_breed_potentially_dangerous_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_breed_tracker_ads_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_breed_dangerous_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_breed_unrated_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_breed_unknown_count);
+
+    INFLUXD_STATS_GAUGE_SUB(flow_category_unspecified_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_media_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_vpn_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_email_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_data_transfer_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_web_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_social_network_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_download_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_game_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_chat_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_voip_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_database_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_remote_access_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_cloud_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_network_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_collaborative_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_rpc_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_streaming_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_system_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_software_update_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_music_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_video_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_shopping_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_productivity_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_file_sharing_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_conn_check_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_iot_scada_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_virt_assistant_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_cybersecurity_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_adult_content_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_mining_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_malware_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_advertisment_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_banned_site_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_site_unavail_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_allowed_site_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_antimalware_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_crypto_currency_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_gambling_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_category_unknown_count);
+
+    INFLUXD_STATS_GAUGE_SUB(flow_confidence_by_port);
+    INFLUXD_STATS_GAUGE_SUB(flow_confidence_dpi_partial);
+    INFLUXD_STATS_GAUGE_SUB(flow_confidence_dpi_partial_cache);
+    INFLUXD_STATS_GAUGE_SUB(flow_confidence_dpi_cache);
+    INFLUXD_STATS_GAUGE_SUB(flow_confidence_dpi);
+    INFLUXD_STATS_GAUGE_SUB(flow_confidence_nbpf);
+    INFLUXD_STATS_GAUGE_SUB(flow_confidence_by_ip);
+    INFLUXD_STATS_GAUGE_SUB(flow_confidence_dpi_aggressive);
+    INFLUXD_STATS_GAUGE_SUB(flow_confidence_unknown);
+
+    INFLUXD_STATS_GAUGE_SUB(flow_severity_low);
+    INFLUXD_STATS_GAUGE_SUB(flow_severity_medium);
+    INFLUXD_STATS_GAUGE_SUB(flow_severity_high);
+    INFLUXD_STATS_GAUGE_SUB(flow_severity_severe);
+    INFLUXD_STATS_GAUGE_SUB(flow_severity_critical);
+    INFLUXD_STATS_GAUGE_SUB(flow_severity_emergency);
+    INFLUXD_STATS_GAUGE_SUB(flow_severity_unknown);
+
+    INFLUXD_STATS_GAUGE_SUB(flow_l3_ip4_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_l3_ip6_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_l3_other_count);
+
+    INFLUXD_STATS_GAUGE_SUB(flow_l4_tcp_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_l4_udp_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_l4_icmp_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_l4_other_count);
+
+    INFLUXD_STATS_GAUGE_SUB(flow_active_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_detected_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_guessed_count);
+    INFLUXD_STATS_GAUGE_SUB(flow_not_detected_count);
+
+    for (size_t i = 0; i < NDPI_MAX_RISK - 1; ++i)
+    {
+        INFLUXD_STATS_GAUGE_SUB(flow_risk_count[i]);
+    }
+    INFLUXD_STATS_GAUGE_SUB(flow_risk_unknown_count);
+
+    memset(&influxd_statistics.gauges[1], 0, sizeof(influxd_statistics.gauges[1]));
     pthread_mutex_unlock(&influxd_statistics.rw_lock);
 
     return 0;
@@ -680,14 +794,14 @@ static int influxd_map_to_stat(char const * const token_str,
         size_t key_length = strlen(map[i].json_key);
         if (key_length == token_length && strncmp(map[i].json_key, token_str, token_length) == 0)
         {
-            (*map[i].global_stat)++;
+            (*map[i].global_stat_inc)++;
             return 0;
         }
     }
 
-    if (null_i < map_length && map[null_i].global_stat != NULL)
+    if (null_i < map_length && map[null_i].global_stat_inc != NULL)
     {
-        (*map[null_i].global_stat)++;
+        (*map[null_i].global_stat_inc)++;
         return 0;
     }
 
@@ -715,92 +829,92 @@ static void influxd_unmap_flow_from_stat(struct flow_user_data * const flow_user
 {
     if (flow_user_data->is_ip4 != 0)
     {
-        influxd_statistics.gauges.flow_l3_ip4_count--;
+        INFLUXD_STATS_GAUGE_DEC(flow_l3_ip4_count);
     }
 
     if (flow_user_data->is_ip6 != 0)
     {
-        influxd_statistics.gauges.flow_l3_ip6_count--;
+        INFLUXD_STATS_GAUGE_DEC(flow_l3_ip6_count);
     }
 
     if (flow_user_data->is_other_l3 != 0)
     {
-        influxd_statistics.gauges.flow_l3_other_count--;
+        INFLUXD_STATS_GAUGE_DEC(flow_l3_other_count);
     }
 
     if (flow_user_data->is_tcp != 0)
     {
-        influxd_statistics.gauges.flow_l4_tcp_count--;
+        INFLUXD_STATS_GAUGE_DEC(flow_l4_tcp_count);
     }
 
     if (flow_user_data->is_udp != 0)
     {
-        influxd_statistics.gauges.flow_l4_udp_count--;
+        INFLUXD_STATS_GAUGE_DEC(flow_l4_udp_count);
     }
 
     if (flow_user_data->is_icmp != 0)
     {
-        influxd_statistics.gauges.flow_l4_icmp_count--;
+        INFLUXD_STATS_GAUGE_DEC(flow_l4_icmp_count);
     }
 
     if (flow_user_data->is_other_l4 != 0)
     {
-        influxd_statistics.gauges.flow_l4_other_count--;
+        INFLUXD_STATS_GAUGE_DEC(flow_l4_other_count);
     }
 
     if (flow_user_data->new_seen != 0)
     {
-        influxd_statistics.gauges.flow_active_count--;
+        INFLUXD_STATS_GAUGE_DEC(flow_active_count);
     }
 
     if (flow_user_data->is_detected != 0)
     {
-        influxd_statistics.gauges.flow_detected_count--;
+        INFLUXD_STATS_GAUGE_DEC(flow_detected_count);
     }
 
     if (flow_user_data->is_guessed != 0)
     {
-        influxd_statistics.gauges.flow_guessed_count--;
+        INFLUXD_STATS_GAUGE_DEC(flow_guessed_count);
     }
 
     if (flow_user_data->is_not_detected != 0)
     {
-        influxd_statistics.gauges.flow_not_detected_count--;
+        INFLUXD_STATS_GAUGE_DEC(flow_not_detected_count);
     }
 
     if (flow_user_data->is_info != 0)
     {
-        influxd_statistics.gauges.flow_state_info--;
+        INFLUXD_STATS_GAUGE_DEC(flow_state_info);
     }
 
     if (flow_user_data->is_finished != 0)
     {
-        influxd_statistics.gauges.flow_state_finished--;
+        INFLUXD_STATS_GAUGE_DEC(flow_state_finished);
     }
 
     if (flow_user_data->breed > 0 && flow_user_data->breed_ndpid_invalid == 0 &&
-        breeds_map[flow_user_data->breed - 1].global_stat != NULL)
+        INFLUXD_STATS_MAP_NOTNULL(breeds_map, flow_user_data->breed) != 0)
     {
-        (*breeds_map[flow_user_data->breed - 1].global_stat)--;
+        INFLUXD_STATS_MAP_DEC(breeds_map, flow_user_data->breed);
     }
 
     if (flow_user_data->category > 0 && flow_user_data->category_ndpid_invalid == 0 &&
-        categories_map[flow_user_data->category - 1].global_stat != NULL)
+        INFLUXD_STATS_MAP_NOTNULL(categories_map, flow_user_data->category) != 0)
     {
-        (*categories_map[flow_user_data->category - 1].global_stat)--;
+        INFLUXD_STATS_MAP_DEC(categories_map, flow_user_data->category);
     }
 
     if (flow_user_data->confidence > 0 && flow_user_data->confidence_ndpid_invalid == 0 &&
-        confidence_map[flow_user_data->confidence - 1].global_stat != NULL)
+        INFLUXD_STATS_MAP_NOTNULL(confidence_map, flow_user_data->confidence) != 0)
     {
-        (*confidence_map[flow_user_data->confidence - 1].global_stat)--;
+        INFLUXD_STATS_MAP_DEC(confidence_map, flow_user_data->confidence);
     }
 
     for (uint8_t i = 0; i < MAX_SEVERITIES_PER_FLOW; ++i)
     {
         if (flow_user_data->severities[i] > 0)
         {
-            (*severity_map[flow_user_data->severities[i] - 1].global_stat)--;
+            INFLUXD_STATS_MAP_DEC(severity_map, flow_user_data->severities[i]);
         }
     }
 
@@ -808,13 +922,13 @@ static void influxd_unmap_flow_from_stat(struct flow_user_data * const flow_user
     {
         if (flow_user_data->risks[i] > 0)
         {
-            influxd_statistics.gauges.flow_risk_count[flow_user_data->risks[i]]--;
+            INFLUXD_STATS_GAUGE_DEC(flow_risk_count[flow_user_data->risks[i]]);
         }
     }
 
     if (flow_user_data->risk_ndpid_invalid != 0)
     {
-        influxd_statistics.gauges.flow_risk_unknown_count--;
+        INFLUXD_STATS_GAUGE_DEC(flow_risk_unknown_count);
     }
 }
 
@@ -892,45 +1006,45 @@ static void process_flow_stats(struct nDPIsrvd_socket * const sock, struct nDPIs
     if (TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "new") != 0)
     {
         flow_user_data->new_seen = 1;
-        influxd_statistics.gauges.flow_active_count++;
+        INFLUXD_STATS_GAUGE_INC(flow_active_count);
 
         struct nDPIsrvd_json_token const * const l3_proto = TOKEN_GET_SZ(sock, "l3_proto");
         if (TOKEN_VALUE_EQUALS_SZ(sock, l3_proto, "ip4") != 0)
         {
             flow_user_data->is_ip4 = 1;
-            influxd_statistics.gauges.flow_l3_ip4_count++;
+            INFLUXD_STATS_GAUGE_INC(flow_l3_ip4_count);
         }
         else if (TOKEN_VALUE_EQUALS_SZ(sock, l3_proto, "ip6") != 0)
         {
             flow_user_data->is_ip6 = 1;
-            influxd_statistics.gauges.flow_l3_ip6_count++;
+            INFLUXD_STATS_GAUGE_INC(flow_l3_ip6_count);
         }
         else if (l3_proto != NULL)
         {
             flow_user_data->is_other_l3 = 1;
-            influxd_statistics.gauges.flow_l3_other_count++;
+            INFLUXD_STATS_GAUGE_INC(flow_l3_other_count);
         }
 
         struct nDPIsrvd_json_token const * const l4_proto = TOKEN_GET_SZ(sock, "l4_proto");
         if (TOKEN_VALUE_EQUALS_SZ(sock, l4_proto, "tcp") != 0)
         {
             flow_user_data->is_tcp = 1;
-            influxd_statistics.gauges.flow_l4_tcp_count++;
+            INFLUXD_STATS_GAUGE_INC(flow_l4_tcp_count);
         }
         else if (TOKEN_VALUE_EQUALS_SZ(sock, l4_proto, "udp") != 0)
         {
             flow_user_data->is_udp = 1;
-            influxd_statistics.gauges.flow_l4_udp_count++;
+            INFLUXD_STATS_GAUGE_INC(flow_l4_udp_count);
         }
         else if (TOKEN_VALUE_EQUALS_SZ(sock, l4_proto, "icmp") != 0)
         {
             flow_user_data->is_icmp = 1;
-            influxd_statistics.gauges.flow_l4_icmp_count++;
+            INFLUXD_STATS_GAUGE_INC(flow_l4_icmp_count);
         }
         else if (l4_proto != NULL)
         {
             flow_user_data->is_other_l4 = 1;
-            influxd_statistics.gauges.flow_l4_other_count++;
+            INFLUXD_STATS_GAUGE_INC(flow_l4_other_count);
         }
     }
     else if (flow_user_data->new_seen == 0)
@@ -941,12 +1055,12 @@ static void process_flow_stats(struct nDPIsrvd_socket * const sock, struct nDPIs
     if (TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "not-detected") != 0)
     {
         flow_user_data->is_not_detected = 1;
-        influxd_statistics.gauges.flow_not_detected_count++;
+        INFLUXD_STATS_GAUGE_INC(flow_not_detected_count);
     }
     else if (TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "guessed") != 0)
     {
         flow_user_data->is_guessed = 1;
-        influxd_statistics.gauges.flow_guessed_count++;
+        INFLUXD_STATS_GAUGE_INC(flow_guessed_count);
     }
     else if (TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "detected") != 0 ||
              TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "detection-update") != 0)
@@ -958,14 +1072,14 @@ static void process_flow_stats(struct nDPIsrvd_socket * const sock, struct nDPIs
         if (flow_user_data->is_detected == 0)
         {
             flow_user_data->is_detected = 1;
-            influxd_statistics.gauges.flow_detected_count++;
+            INFLUXD_STATS_GAUGE_INC(flow_detected_count);
         }
 
         if (flow_risk != NULL)
         {
             if (flow_user_data->risks[0] == 0)
             {
-                influxd_statistics.counters.flow_risky_count++;
+                INFLUXD_STATS_COUNTER_INC(flow_risky_count);
             }
 
             while ((current = nDPIsrvd_get_next_token(sock, flow_risk, &next_child_index)) != NULL)
@@ -1042,7 +1156,7 @@ static void process_flow_stats(struct nDPIsrvd_socket * const sock, struct nDPIs
                                     break;
                                 }
 
-                                influxd_statistics.gauges.flow_risk_count[numeric_risk_value]++;
+                                INFLUXD_STATS_GAUGE_INC(flow_risk_count[numeric_risk_value]);
                                 flow_user_data->risks[i] = numeric_risk_value;
                                 break;
                             }
@@ -1050,7 +1164,7 @@ static void process_flow_stats(struct nDPIsrvd_socket * const sock, struct nDPIs
                         else if (flow_user_data->risk_ndpid_invalid == 0)
                         {
                             flow_user_data->risk_ndpid_invalid = 1;
-                            influxd_statistics.gauges.flow_risk_unknown_count++;
+                            INFLUXD_STATS_GAUGE_INC(flow_risk_unknown_count);
                         }
                     }
                     else
@@ -1148,7 +1262,7 @@ static void process_flow_stats(struct nDPIsrvd_socket * const sock, struct nDPIs
         if (flow_user_data->is_info == 0)
         {
             flow_user_data->is_info = 1;
-            influxd_statistics.gauges.flow_state_info++;
+            INFLUXD_STATS_GAUGE_INC(flow_state_info);
         }
     }
     else if (TOKEN_VALUE_EQUALS_SZ(sock, flow_state, "finished") != 0)
@@ -1158,10 +1272,10 @@ static void process_flow_stats(struct nDPIsrvd_socket * const sock, struct nDPIs
             if (flow_user_data->is_info != 0)
             {
                 flow_user_data->is_info = 0;
-                influxd_statistics.gauges.flow_state_info--;
+                INFLUXD_STATS_GAUGE_RES(flow_state_info);
             }
             flow_user_data->is_finished = 1;
-            influxd_statistics.gauges.flow_state_finished++;
+            INFLUXD_STATS_GAUGE_INC(flow_state_finished);
         }
     }
 
@@ -1201,7 +1315,7 @@ static enum nDPIsrvd_callback_return influxd_json_callback(struct nDPIsrvd_socke
 
     pthread_mutex_lock(&influxd_statistics.rw_lock);
 
-    influxd_statistics.counters.json_lines++;
+    INFLUXD_STATS_COUNTER_INC(json_lines);
     influxd_statistics.counters.json_bytes += sock->buffer.json_message_length + NETWORK_BUFFER_LENGTH_DIGITS;
 
     process_flow_stats(sock, flow);

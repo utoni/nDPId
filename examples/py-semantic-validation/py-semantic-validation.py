@@ -257,8 +257,20 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
             pass
 
         try:
+            if current_flow.flow_finished == True and \
+               json_dict['flow_event_name'] == 'detection-update':
+                raise SemanticValidationException(current_flow,
+                                                  'Flow state already finished, but another detection-update received.')
+        except AttributeError:
+            pass
+
+        try:
             if json_dict['flow_state'] == 'finished':
                 current_flow.flow_finished = True
+            elif json_dict['flow_state'] == 'info' and \
+                 current_flow.flow_finished is True:
+                raise SemanticValidationException(current_flow,
+                                                  'Flow state already finished, but switched back to info state.')
 
             if current_flow.flow_finished == True and \
                json_dict['flow_event_name'] != 'analyse' and \
