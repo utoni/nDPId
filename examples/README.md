@@ -25,6 +25,8 @@ Used also by `tests/run_tests.sh` if available.
 An InfluxDB push daemon. It aggregates various statistics gathered from nDPId.
 The results are sent to a specified InfluxDB endpoint.
 
+![](ndpid_grafana_example.png)
+
 ## c-notifyd
 
 A notification daemon that sends information about suspicious flow events to DBUS.
