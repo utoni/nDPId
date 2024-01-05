@@ -360,7 +360,7 @@ target_link_libraries(nDPId-test "${STATIC_LIBNDPI_LIB}" "${pkgcfg_lib_PCAP_pcap
                                  "-pthread")
 
 if(BUILD_EXAMPLES)
-    add_executable(nDPIsrvd-collectd examples/c-collectd/c-collectd.c)
+    add_executable(nDPIsrvd-collectd examples/c-collectd/c-collectd.c utils.c)
     if(BUILD_NDPI)
         add_dependencies(nDPIsrvd-collectd libnDPI)
     endif()

@@ -3,7 +3,7 @@
 RRDDIR="${1}"
 OUTDIR="${2}"
 RRDARGS="--width=800 --height=400"
-REQUIRED_RRDCNT=106
+REQUIRED_RRDCNT=130
 
 if [ -z "${RRDDIR}" ]; then
 	printf '%s: Missing RRD directory which contains nDPIsrvd/Collectd files.\n' "${0}"
@@ -62,9 +62,9 @@ rrdtool_graph() {
 }
 
 rrdtool_graph Flows Amount "${OUTDIR}/flows" \
-	DEF:flows_new=${RRDDIR}/gauge-flow_new_count.rrd:value:AVERAGE \
-        DEF:flows_end=${RRDDIR}/gauge-flow_end_count.rrd:value:AVERAGE \
-        DEF:flows_idle=${RRDDIR}/gauge-flow_idle_count.rrd:value:AVERAGE \
+	DEF:flows_new=${RRDDIR}/counter-flow_new_count.rrd:value:AVERAGE \
+        DEF:flows_end=${RRDDIR}/counter-flow_end_count.rrd:value:AVERAGE \
+        DEF:flows_idle=${RRDDIR}/counter-flow_idle_count.rrd:value:AVERAGE \
 	$(rrdtool_graph_colorize_missing_data flows_new) \
 	AREA:flows_new#54EC48::STACK \
 	AREA:flows_end#ECD748::STACK \
@@ -79,8 +79,8 @@ rrdtool_graph Detections Amount "${OUTDIR}/detections" \
 	DEF:flows_detected=${RRDDIR}/gauge-flow_detected_count.rrd:value:AVERAGE \
 	DEF:flows_guessed=${RRDDIR}/gauge-flow_guessed_count.rrd:value:AVERAGE \
 	DEF:flows_not_detected=${RRDDIR}/gauge-flow_not_detected_count.rrd:value:AVERAGE \
-	DEF:flows_detection_update=${RRDDIR}/gauge-flow_detection_update_count.rrd:value:AVERAGE \
-	DEF:flows_risky=${RRDDIR}/gauge-flow_risky_count.rrd:value:AVERAGE \
+	DEF:flows_detection_update=${RRDDIR}/counter-flow_detection_update_count.rrd:value:AVERAGE \
+	DEF:flows_risky=${RRDDIR}/counter-flow_risky_count.rrd:value:AVERAGE \
 	$(rrdtool_graph_colorize_missing_data flows_detected) \
 	AREA:flows_detected#00bfff::STACK \
 	AREA:flows_detection_update#a1b8c4::STACK \
@@ -98,8 +98,8 @@ rrdtool_graph Detections Amount "${OUTDIR}/detections" \
 	LINE2:flows_risky#b32d00:"Risky..........." \
 	$(rrdtool_graph_print_cur_min_max_avg flows_risky)
 rrdtool_graph "Traffic (IN/OUT)" Bytes "${OUTDIR}/traffic" \
-	DEF:total_src_bytes=${RRDDIR}/gauge-flow_src_total_bytes.rrd:value:AVERAGE \
-	DEF:total_dst_bytes=${RRDDIR}/gauge-flow_dst_total_bytes.rrd:value:AVERAGE \
+	DEF:total_src_bytes=${RRDDIR}/counter-flow_src_total_bytes.rrd:value:AVERAGE \
+	DEF:total_dst_bytes=${RRDDIR}/counter-flow_dst_total_bytes.rrd:value:AVERAGE \
 	$(rrdtool_graph_colorize_missing_data total_src_bytes) \
 	AREA:total_src_bytes#00cc99:"Total-Bytes-Source2Dest":STACK \
 	$(rrdtool_graph_print_cur_min_max_avg total_src_bytes) \
@@ -137,7 +137,45 @@ rrdtool_graph Layer4-Flows Amount "${OUTDIR}/layer4" \
 	$(rrdtool_graph_print_cur_min_max_avg layer4_icmp) \
 	LINE2:layer4_other#83588d:"Other" \
 	$(rrdtool_graph_print_cur_min_max_avg layer4_other)
-rrdtool_graph Flow-Breeds Amount "${OUTDIR}/breed" \
+rrdtool_graph Confidence Amount "${OUTDIR}/confidence" \
+	DEF:conf_ip=${RRDDIR}/gauge-flow_confidence_by_ip.rrd:value:AVERAGE \
+	DEF:conf_port=${RRDDIR}/gauge-flow_confidence_by_port.rrd:value:AVERAGE \
+	DEF:conf_aggr=${RRDDIR}/gauge-flow_confidence_dpi_aggressive.rrd:value:AVERAGE \
+	DEF:conf_cache=${RRDDIR}/gauge-flow_confidence_dpi_cache.rrd:value:AVERAGE \
+	DEF:conf_pcache=${RRDDIR}/gauge-flow_confidence_dpi_partial_cache.rrd:value:AVERAGE \
+	DEF:conf_part=${RRDDIR}/gauge-flow_confidence_dpi_partial.rrd:value:AVERAGE \
+	DEF:conf_dpi=${RRDDIR}/gauge-flow_confidence_dpi.rrd:value:AVERAGE \
+	DEF:conf_nbpf=${RRDDIR}/gauge-flow_confidence_nbpf.rrd:value:AVERAGE \
+	DEF:conf_ukn=${RRDDIR}/gauge-flow_confidence_unknown.rrd:value:AVERAGE \
+	$(rrdtool_graph_colorize_missing_data conf_ip) \
+	AREA:conf_ip#4dff4d::STACK \
+	AREA:conf_port#c2ff33::STACK \
+	AREA:conf_aggr#ffe433::STACK \
+	AREA:conf_cache#ffb133::STACK \
+	AREA:conf_pcache#ff5f33::STACK \
+	AREA:conf_part#e74b5b::STACK \
+	AREA:conf_dpi#a5aca0::STACK \
+	AREA:conf_nbpf#d7c1cc::STACK \
+	AREA:conf_ukn#ddccbb::STACK \
+	LINE2:conf_ip#00e600:"By-IP................" \
+	$(rrdtool_graph_print_cur_min_max_avg conf_ip) \
+	LINE2:conf_port#8fce00:"By-Port.............." \
+	$(rrdtool_graph_print_cur_min_max_avg conf_port) \
+	LINE2:conf_aggr#e6c700:"DPI-Aggressive......." \
+	$(rrdtool_graph_print_cur_min_max_avg conf_aggr) \
+	LINE2:conf_cache#e68e00:"DPI-Cache............" \
+	$(rrdtool_graph_print_cur_min_max_avg conf_cache) \
+	LINE2:conf_pcache#e63200:"DPI-Partial-Cache...." \
+	$(rrdtool_graph_print_cur_min_max_avg conf_pcache) \
+	LINE2:conf_part#c61b2b:"DPI-Partial.........." \
+	$(rrdtool_graph_print_cur_min_max_avg conf_part) \
+	LINE2:conf_dpi#7e8877:"DPI.................." \
+	$(rrdtool_graph_print_cur_min_max_avg conf_dpi) \
+	LINE2:conf_nbpf#ae849a:"nBPF................." \
+	$(rrdtool_graph_print_cur_min_max_avg conf_nbpf) \
+	LINE2:conf_ukn#aa9988:"Unknown.............." \
+	$(rrdtool_graph_print_cur_min_max_avg conf_ukn)
+rrdtool_graph Breeds Amount "${OUTDIR}/breed" \
 	DEF:breed_safe=${RRDDIR}/gauge-flow_breed_safe_count.rrd:value:AVERAGE \
 	DEF:breed_acceptable=${RRDDIR}/gauge-flow_breed_acceptable_count.rrd:value:AVERAGE \
 	DEF:breed_fun=${RRDDIR}/gauge-flow_breed_fun_count.rrd:value:AVERAGE \
@@ -171,17 +209,22 @@ rrdtool_graph Flow-Breeds Amount "${OUTDIR}/breed" \
 	$(rrdtool_graph_print_cur_min_max_avg breed_unrated) \
 	LINE2:breed_unknown#ae849a:"Unknown.............." \
 	$(rrdtool_graph_print_cur_min_max_avg breed_unknown)
-rrdtool_graph Flow-Categories 'Amount(SUM)' "${OUTDIR}/categories" \
+rrdtool_graph Categories 'Amount(SUM)' "${OUTDIR}/categories" \
+	DEF:cat_adlt=${RRDDIR}/gauge-flow_category_adult_content_count.rrd:value:AVERAGE \
 	DEF:cat_ads=${RRDDIR}/gauge-flow_category_advertisment_count.rrd:value:AVERAGE \
 	DEF:cat_chat=${RRDDIR}/gauge-flow_category_chat_count.rrd:value:AVERAGE \
 	DEF:cat_cloud=${RRDDIR}/gauge-flow_category_cloud_count.rrd:value:AVERAGE \
 	DEF:cat_collab=${RRDDIR}/gauge-flow_category_collaborative_count.rrd:value:AVERAGE \
+	DEF:cat_conn=${RRDDIR}/gauge-flow_category_conn_check_count.rrd:value:AVERAGE \
+	DEF:cat_cybr=${RRDDIR}/gauge-flow_category_cybersecurity_count.rrd:value:AVERAGE \
 	DEF:cat_xfer=${RRDDIR}/gauge-flow_category_data_transfer_count.rrd:value:AVERAGE \
 	DEF:cat_db=${RRDDIR}/gauge-flow_category_database_count.rrd:value:AVERAGE \
 	DEF:cat_dl=${RRDDIR}/gauge-flow_category_download_count.rrd:value:AVERAGE \
 	DEF:cat_mail=${RRDDIR}/gauge-flow_category_email_count.rrd:value:AVERAGE \
 	DEF:cat_fs=${RRDDIR}/gauge-flow_category_file_sharing_count.rrd:value:AVERAGE \
 	DEF:cat_game=${RRDDIR}/gauge-flow_category_game_count.rrd:value:AVERAGE \
+	DEF:cat_gamb=${RRDDIR}/gauge-flow_category_gambling_count.rrd:value:AVERAGE \
+	DEF:cat_iot=${RRDDIR}/gauge-flow_category_iot_scada_count.rrd:value:AVERAGE \
 	DEF:cat_mal=${RRDDIR}/gauge-flow_category_malware_count.rrd:value:AVERAGE \
 	DEF:cat_med=${RRDDIR}/gauge-flow_category_media_count.rrd:value:AVERAGE \
 	DEF:cat_min=${RRDDIR}/gauge-flow_category_mining_count.rrd:value:AVERAGE \
@@ -196,17 +239,21 @@ rrdtool_graph Flow-Categories 'Amount(SUM)' "${OUTDIR}/categories" \
 	DEF:cat_str=${RRDDIR}/gauge-flow_category_streaming_count.rrd:value:AVERAGE \
 	DEF:cat_sys=${RRDDIR}/gauge-flow_category_system_count.rrd:value:AVERAGE \
 	DEF:cat_ukn=${RRDDIR}/gauge-flow_category_unknown_count.rrd:value:AVERAGE \
+	DEF:cat_uns=${RRDDIR}/gauge-flow_category_unspecified_count.rrd:value:AVERAGE \
 	DEF:cat_vid=${RRDDIR}/gauge-flow_category_video_count.rrd:value:AVERAGE \
+	DEF:cat_vrt=${RRDDIR}/gauge-flow_category_virt_assistant_count.rrd:value:AVERAGE \
 	DEF:cat_voip=${RRDDIR}/gauge-flow_category_voip_count.rrd:value:AVERAGE \
 	DEF:cat_vpn=${RRDDIR}/gauge-flow_category_vpn_count.rrd:value:AVERAGE \
 	DEF:cat_web=${RRDDIR}/gauge-flow_category_web_count.rrd:value:AVERAGE \
-	DEF:cat_banned=${RRDDIR}/gauge-flow_category_web_count.rrd:value:AVERAGE \
-	DEF:cat_unavail=${RRDDIR}/gauge-flow_category_web_count.rrd:value:AVERAGE \
-	DEF:cat_allowed=${RRDDIR}/gauge-flow_category_web_count.rrd:value:AVERAGE \
-	DEF:cat_antimal=${RRDDIR}/gauge-flow_category_web_count.rrd:value:AVERAGE \
-	DEF:cat_crypto=${RRDDIR}/gauge-flow_category_web_count.rrd:value:AVERAGE \
-	$(rrdtool_graph_colorize_missing_data cat_ads) \
-	AREA:cat_ads#f1c232:"Advertisment..........." \
+	DEF:cat_banned=${RRDDIR}/gauge-flow_category_banned_site_count.rrd:value:AVERAGE \
+	DEF:cat_unavail=${RRDDIR}/gauge-flow_category_site_unavail_count.rrd:value:AVERAGE \
+	DEF:cat_allowed=${RRDDIR}/gauge-flow_category_allowed_site_count.rrd:value:AVERAGE \
+	DEF:cat_antimal=${RRDDIR}/gauge-flow_category_antimalware_count.rrd:value:AVERAGE \
+	DEF:cat_crypto=${RRDDIR}/gauge-flow_category_crypto_currency_count.rrd:value:AVERAGE \
+	$(rrdtool_graph_colorize_missing_data cat_adlt) \
+	AREA:cat_adlt#f0c032:"Adult.................." \
+	$(rrdtool_graph_print_cur_min_max_avg cat_adlt) \
+	STACK:cat_ads#f1c232:"Advertisment..........." \
 	$(rrdtool_graph_print_cur_min_max_avg cat_ads) \
 	STACK:cat_chat#6fa8dc:"Chat..................." \
 	$(rrdtool_graph_print_cur_min_max_avg cat_chat) \
@@ -214,6 +261,10 @@ rrdtool_graph Flow-Categories 'Amount(SUM)' "${OUTDIR}/categories" \
 	$(rrdtool_graph_print_cur_min_max_avg cat_cloud) \
 	STACK:cat_collab#3212aa:"Collaborative.........." \
 	$(rrdtool_graph_print_cur_min_max_avg cat_collab) \
+	STACK:cat_conn#22aa11:"Connection-Check......." \
+	$(rrdtool_graph_print_cur_min_max_avg cat_conn) \
+	STACK:cat_cybr#00ff00:"Cybersecurity.........." \
+	$(rrdtool_graph_print_cur_min_max_avg cat_cybr) \
 	STACK:cat_xfer#16537e:"Data-Transfer.........." \
 	$(rrdtool_graph_print_cur_min_max_avg cat_xfer) \
 	STACK:cat_db#cc0000:"Database..............." \
@@ -226,6 +277,10 @@ rrdtool_graph Flow-Categories 'Amount(SUM)' "${OUTDIR}/categories" \
 	$(rrdtool_graph_print_cur_min_max_avg cat_fs) \
 	STACK:cat_game#00ff26:"Game..................." \
 	$(rrdtool_graph_print_cur_min_max_avg cat_game) \
+	STACK:cat_gamb#aa0026:"Gambling..............." \
+	$(rrdtool_graph_print_cur_min_max_avg cat_gamb) \
+	STACK:cat_iot#227867:"IoT-Scada.............." \
+	$(rrdtool_graph_print_cur_min_max_avg cat_iot) \
 	STACK:cat_mal#f44336:"Malware................" \
 	$(rrdtool_graph_print_cur_min_max_avg cat_mal) \
 	STACK:cat_med#ff8300:"Media.................." \
@@ -254,53 +309,56 @@ rrdtool_graph Flow-Categories 'Amount(SUM)' "${OUTDIR}/categories" \
 	$(rrdtool_graph_print_cur_min_max_avg cat_sys) \
 	STACK:cat_ukn#999999:"Unknown................" \
 	$(rrdtool_graph_print_cur_min_max_avg cat_ukn) \
+	STACK:cat_uns#999999:"Unspecified............" \
+	$(rrdtool_graph_print_cur_min_max_avg cat_uns) \
 	STACK:cat_vid#518820:"Video.................." \
 	$(rrdtool_graph_print_cur_min_max_avg cat_vid) \
+	STACK:cat_vrt#216820:"Virtual-Assistant......" \
+	$(rrdtool_graph_print_cur_min_max_avg cat_vrt) \
 	STACK:cat_voip#ffc700:"Voice-Over-IP.........." \
 	$(rrdtool_graph_print_cur_min_max_avg cat_voip) \
 	STACK:cat_vpn#378035:"Virtual-Private-Network" \
 	$(rrdtool_graph_print_cur_min_max_avg cat_vpn) \
 	STACK:cat_web#00fffb:"Web...................." \
 	$(rrdtool_graph_print_cur_min_max_avg cat_web) \
-	STACK:cat_banned#ff1010:"Banned Sites..........." \
+	STACK:cat_banned#ff1010:"Banned-Sites..........." \
 	$(rrdtool_graph_print_cur_min_max_avg cat_banned) \
-	STACK:cat_unavail#ff1010:"Sites Unavailable......" \
+	STACK:cat_unavail#ff1010:"Sites-Unavailable......" \
 	$(rrdtool_graph_print_cur_min_max_avg cat_unavail) \
-	STACK:cat_allowed#ff1010:"Allowed Sites.........." \
+	STACK:cat_allowed#ff1010:"Allowed-Sites.........." \
 	$(rrdtool_graph_print_cur_min_max_avg cat_allowed) \
 	STACK:cat_antimal#ff1010:"Antimalware............" \
 	$(rrdtool_graph_print_cur_min_max_avg cat_antimal) \
-	STACK:cat_crypto#afaf00:"Crypto Currency........" \
+	STACK:cat_crypto#afaf00:"Crypto-Currency........" \
 	$(rrdtool_graph_print_cur_min_max_avg cat_crypto)
 rrdtool_graph JSON 'Lines' "${OUTDIR}/json_lines" \
-	DEF:json_lines=${RRDDIR}/gauge-json_lines.rrd:value:AVERAGE \
+	DEF:json_lines=${RRDDIR}/counter-json_lines.rrd:value:AVERAGE \
 	$(rrdtool_graph_colorize_missing_data json_lines) \
 	AREA:json_lines#4dff4d::STACK \
 	LINE2:json_lines#00e600:"JSON-lines" \
 	$(rrdtool_graph_print_cur_min_max_avg json_lines)
 rrdtool_graph JSON 'Bytes' "${OUTDIR}/json_bytes" \
-	DEF:json_bytes=${RRDDIR}/gauge-json_bytes.rrd:value:AVERAGE \
+	DEF:json_bytes=${RRDDIR}/counter-json_bytes.rrd:value:AVERAGE \
 	$(rrdtool_graph_colorize_missing_data json_bytes) \
 	AREA:json_bytes#4dff4d::STACK \
 	LINE2:json_bytes#00e600:"JSON-bytes" \
 	$(rrdtool_graph_print_cur_min_max_avg json_bytes)
-rrdtool_graph Events 'Amouunt' "${OUTDIR}/events" \
-	DEF:init=${RRDDIR}/gauge-init_count.rrd:value:AVERAGE \
-	DEF:reconnect=${RRDDIR}/gauge-reconnect_count.rrd:value:AVERAGE \
-	DEF:shutdown=${RRDDIR}/gauge-shutdown_count.rrd:value:AVERAGE \
-	DEF:status=${RRDDIR}/gauge-status_count.rrd:value:AVERAGE \
-	DEF:packet=${RRDDIR}/gauge-packet_count.rrd:value:AVERAGE \
-	DEF:packet_flow=${RRDDIR}/gauge-packet_flow_count.rrd:value:AVERAGE \
-	DEF:new=${RRDDIR}/gauge-flow_new_count.rrd:value:AVERAGE \
-	DEF:end=${RRDDIR}/gauge-flow_end_count.rrd:value:AVERAGE \
-	DEF:idle=${RRDDIR}/gauge-flow_idle_count.rrd:value:AVERAGE \
-	DEF:update=${RRDDIR}/gauge-flow_update_count.rrd:value:AVERAGE \
-	DEF:detection_update=${RRDDIR}/gauge-flow_detection_update_count.rrd:value:AVERAGE \
-	DEF:guessed=${RRDDIR}/gauge-flow_guessed_count.rrd:value:AVERAGE \
-	DEF:detected=${RRDDIR}/gauge-flow_detected_count.rrd:value:AVERAGE \
-	DEF:not_detected=${RRDDIR}/gauge-flow_not_detected_count.rrd:value:AVERAGE \
-	DEF:analyse=${RRDDIR}/gauge-flow_analyse_count.rrd:value:AVERAGE \
-	DEF:error=${RRDDIR}/gauge-error_count_sum.rrd:value:AVERAGE \
+rrdtool_graph Events 'Amount' "${OUTDIR}/events" \
+	DEF:init=${RRDDIR}/counter-init_count.rrd:value:AVERAGE \
+	DEF:reconnect=${RRDDIR}/counter-reconnect_count.rrd:value:AVERAGE \
+	DEF:shutdown=${RRDDIR}/counter-shutdown_count.rrd:value:AVERAGE \
+	DEF:status=${RRDDIR}/counter-status_count.rrd:value:AVERAGE \
+	DEF:packet=${RRDDIR}/counter-packet_count.rrd:value:AVERAGE \
+	DEF:packet_flow=${RRDDIR}/counter-packet_flow_count.rrd:value:AVERAGE \
+	DEF:new=${RRDDIR}/counter-flow_new_count.rrd:value:AVERAGE \
+	DEF:ewd=${RRDDIR}/counter-flow_end_count.rrd:value:AVERAGE \
+	DEF:idle=${RRDDIR}/counter-flow_idle_count.rrd:value:AVERAGE \
+	DEF:update=${RRDDIR}/counter-flow_update_count.rrd:value:AVERAGE \
+	DEF:detection_update=${RRDDIR}/counter-flow_detection_update_count.rrd:value:AVERAGE \
+	DEF:guessed=${RRDDIR}/counter-flow_guessed_count.rrd:value:AVERAGE \
+	DEF:detected=${RRDDIR}/counter-flow_detected_count.rrd:value:AVERAGE \
+	DEF:not_detected=${RRDDIR}/counter-flow_not_detected_count.rrd:value:AVERAGE \
+	DEF:analyse=${RRDDIR}/counter-flow_analyse_count.rrd:value:AVERAGE \
 	$(rrdtool_graph_colorize_missing_data init) \
 	AREA:init#f1c232:"Init..................." \
 	$(rrdtool_graph_print_cur_min_max_avg init) \
@@ -316,8 +374,8 @@ rrdtool_graph Events 'Amouunt' "${OUTDIR}/events" \
 	$(rrdtool_graph_print_cur_min_max_avg packet_flow) \
 	STACK:new#c76700:"New...................." \
 	$(rrdtool_graph_print_cur_min_max_avg new) \
-	STACK:end#c78500:"End...................." \
-	$(rrdtool_graph_print_cur_min_max_avg end) \
+	STACK:ewd#c78500:"End...................." \
+	$(rrdtool_graph_print_cur_min_max_avg ewd) \
 	STACK:idle#c7a900:"Idle..................." \
 	$(rrdtool_graph_print_cur_min_max_avg idle) \
 	STACK:update#c7c400:"Updates................" \
@@ -331,28 +389,25 @@ rrdtool_graph Events 'Amouunt' "${OUTDIR}/events" \
 	STACK:not_detected#00bdc7:"Not-Detected..........." \
 	$(rrdtool_graph_print_cur_min_max_avg not_detected) \
 	STACK:analyse#1400c7:"Analyse................" \
-	$(rrdtool_graph_print_cur_min_max_avg analyse) \
-	STACK:error#c70000:"Error.................." \
-	$(rrdtool_graph_print_cur_min_max_avg error)
-rrdtool_graph Error-Events 'Amouunt' "${OUTDIR}/error_events" \
-	DEF:error_0=${RRDDIR}/gauge-error_0_count.rrd:value:AVERAGE \
-	DEF:error_1=${RRDDIR}/gauge-error_1_count.rrd:value:AVERAGE \
-	DEF:error_2=${RRDDIR}/gauge-error_2_count.rrd:value:AVERAGE \
-	DEF:error_3=${RRDDIR}/gauge-error_3_count.rrd:value:AVERAGE \
-	DEF:error_4=${RRDDIR}/gauge-error_4_count.rrd:value:AVERAGE \
-	DEF:error_5=${RRDDIR}/gauge-error_5_count.rrd:value:AVERAGE \
-	DEF:error_6=${RRDDIR}/gauge-error_6_count.rrd:value:AVERAGE \
-	DEF:error_7=${RRDDIR}/gauge-error_7_count.rrd:value:AVERAGE \
-	DEF:error_8=${RRDDIR}/gauge-error_8_count.rrd:value:AVERAGE \
-	DEF:error_9=${RRDDIR}/gauge-error_9_count.rrd:value:AVERAGE \
-	DEF:error_10=${RRDDIR}/gauge-error_10_count.rrd:value:AVERAGE \
-	DEF:error_11=${RRDDIR}/gauge-error_11_count.rrd:value:AVERAGE \
-	DEF:error_12=${RRDDIR}/gauge-error_12_count.rrd:value:AVERAGE \
-	DEF:error_13=${RRDDIR}/gauge-error_13_count.rrd:value:AVERAGE \
-	DEF:error_14=${RRDDIR}/gauge-error_14_count.rrd:value:AVERAGE \
-	DEF:error_15=${RRDDIR}/gauge-error_15_count.rrd:value:AVERAGE \
-	DEF:error_16=${RRDDIR}/gauge-error_16_count.rrd:value:AVERAGE \
-	DEF:error_unknown=${RRDDIR}/gauge-error_unknown_count.rrd:value:AVERAGE \
+	$(rrdtool_graph_print_cur_min_max_avg analyse)
+rrdtool_graph Error-Events 'Amount' "${OUTDIR}/error_events" \
+	DEF:error_0=${RRDDIR}/counter-error_unknown_datalink.rrd:value:AVERAGE \
+	DEF:error_1=${RRDDIR}/counter-error_unknown_l3_protocol.rrd:value:AVERAGE \
+	DEF:error_2=${RRDDIR}/counter-error_unsupported_datalink.rrd:value:AVERAGE \
+	DEF:error_3=${RRDDIR}/counter-error_packet_too_short.rrd:value:AVERAGE \
+	DEF:error_4=${RRDDIR}/counter-error_packet_type_unknown.rrd:value:AVERAGE \
+	DEF:error_5=${RRDDIR}/counter-error_packet_header_invalid.rrd:value:AVERAGE \
+	DEF:error_6=${RRDDIR}/counter-error_ip4_packet_too_short.rrd:value:AVERAGE \
+	DEF:error_7=${RRDDIR}/counter-error_ip4_size_smaller_than_header.rrd:value:AVERAGE \
+	DEF:error_8=${RRDDIR}/counter-error_ip4_l4_payload_detection.rrd:value:AVERAGE \
+	DEF:error_9=${RRDDIR}/counter-error_ip6_packet_too_short.rrd:value:AVERAGE \
+	DEF:error_10=${RRDDIR}/counter-error_ip6_size_smaller_than_header.rrd:value:AVERAGE \
+	DEF:error_11=${RRDDIR}/counter-error_ip6_l4_payload_detection.rrd:value:AVERAGE \
+	DEF:error_12=${RRDDIR}/counter-error_tcp_packet_too_short.rrd:value:AVERAGE \
+	DEF:error_13=${RRDDIR}/counter-error_udp_packet_too_short.rrd:value:AVERAGE \
+	DEF:error_14=${RRDDIR}/counter-error_capture_size_smaller_than_packet.rrd:value:AVERAGE \
+	DEF:error_15=${RRDDIR}/counter-error_max_flows_to_track.rrd:value:AVERAGE \
+	DEF:error_16=${RRDDIR}/counter-error_flow_memory_alloc.rrd:value:AVERAGE \
 	$(rrdtool_graph_colorize_missing_data error_0) \
 	AREA:error_0#ff6a00:"Unknown-datalink-layer-packet............................" \
 	$(rrdtool_graph_print_cur_min_max_avg error_0) \
@@ -387,10 +442,38 @@ rrdtool_graph Error-Events 'Amouunt' "${OUTDIR}/error_events" \
 	STACK:error_15#4095bf:"Max-flows-to-track-reached..............................." \
 	$(rrdtool_graph_print_cur_min_max_avg error_15) \
 	STACK:error_16#0040ff:"Flow-memory-allocation-failed............................" \
-	$(rrdtool_graph_print_cur_min_max_avg error_16) \
-	STACK:error_unknown#4060bf:"Unknown-error............................................" \
-	$(rrdtool_graph_print_cur_min_max_avg error_unknown)
-rrdtool_graph Risky-Events 'Amouunt' "${OUTDIR}/risky_events" \
+	$(rrdtool_graph_print_cur_min_max_avg error_16)
+rrdtool_graph Risk-Severites Amount "${OUTDIR}/severities" \
+	DEF:sever_crit=${RRDDIR}/gauge-flow_severity_critical.rrd:value:AVERAGE \
+	DEF:sever_emer=${RRDDIR}/gauge-flow_severity_emergency.rrd:value:AVERAGE \
+	DEF:sever_high=${RRDDIR}/gauge-flow_severity_high.rrd:value:AVERAGE \
+	DEF:sever_low=${RRDDIR}/gauge-flow_severity_low.rrd:value:AVERAGE \
+	DEF:sever_med=${RRDDIR}/gauge-flow_severity_medium.rrd:value:AVERAGE \
+	DEF:sever_sev=${RRDDIR}/gauge-flow_severity_severe.rrd:value:AVERAGE \
+	DEF:sever_ukn=${RRDDIR}/gauge-flow_severity_unknown.rrd:value:AVERAGE \
+	$(rrdtool_graph_colorize_missing_data sever_crit) \
+	AREA:sever_crit#e68e00::STACK \
+	AREA:sever_emer#e63200::STACK \
+	AREA:sever_high#e6c700::STACK \
+	AREA:sever_low#00e600::STACK \
+	AREA:sever_med#8fce00::STACK \
+	AREA:sever_sev#c61b2b::STACK \
+	AREA:sever_ukn#7e8877::STACK \
+	LINE2:sever_crit#e68e00:"Critical............." \
+	$(rrdtool_graph_print_cur_min_max_avg sever_crit) \
+	LINE2:sever_emer#e63200:"Emergency............" \
+	$(rrdtool_graph_print_cur_min_max_avg sever_emer) \
+	LINE2:sever_high#e6c700:"High................." \
+	$(rrdtool_graph_print_cur_min_max_avg sever_high) \
+	LINE2:sever_low#00e600:"Low.................." \
+	$(rrdtool_graph_print_cur_min_max_avg sever_low) \
+	LINE2:sever_med#8fce00:"Medium..............." \
+	$(rrdtool_graph_print_cur_min_max_avg sever_med) \
+	LINE2:sever_sev#c61b2b:"Severe..............." \
+	$(rrdtool_graph_print_cur_min_max_avg sever_sev) \
+	LINE2:sever_ukn#7e8877:"Unknown.............." \
+	$(rrdtool_graph_print_cur_min_max_avg sever_ukn)
+rrdtool_graph Risks 'Amount' "${OUTDIR}/risky_events" \
 	DEF:risk_1=${RRDDIR}/gauge-flow_risk_1_count.rrd:value:AVERAGE \
 	DEF:risk_2=${RRDDIR}/gauge-flow_risk_2_count.rrd:value:AVERAGE \
 	DEF:risk_3=${RRDDIR}/gauge-flow_risk_3_count.rrd:value:AVERAGE \
@@ -440,6 +523,10 @@ rrdtool_graph Risky-Events 'Amouunt' "${OUTDIR}/risky_events" \
 	DEF:risk_47=${RRDDIR}/gauge-flow_risk_47_count.rrd:value:AVERAGE \
 	DEF:risk_48=${RRDDIR}/gauge-flow_risk_48_count.rrd:value:AVERAGE \
 	DEF:risk_49=${RRDDIR}/gauge-flow_risk_49_count.rrd:value:AVERAGE \
+	DEF:risk_50=${RRDDIR}/gauge-flow_risk_50_count.rrd:value:AVERAGE \
+	DEF:risk_51=${RRDDIR}/gauge-flow_risk_51_count.rrd:value:AVERAGE \
+	DEF:risk_52=${RRDDIR}/gauge-flow_risk_52_count.rrd:value:AVERAGE \
+	DEF:risk_53=${RRDDIR}/gauge-flow_risk_53_count.rrd:value:AVERAGE \
 	DEF:risk_unknown=${RRDDIR}/gauge-flow_risk_unknown_count.rrd:value:AVERAGE \
 	$(rrdtool_graph_colorize_missing_data risk_1) \
 	AREA:risk_1#ff0000:"XSS-Attack..............................................." \
@@ -540,5 +627,13 @@ rrdtool_graph Risky-Events 'Amouunt' "${OUTDIR}/risky_events" \
 	$(rrdtool_graph_print_cur_min_max_avg risk_48) \
 	STACK:risk_49#dfffdf:"Minor-Issues............................................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_49) \
+	STACK:risk_50#ef20df:"TCP-Connection-Issues...................................." \
+	$(rrdtool_graph_print_cur_min_max_avg risk_50) \
+	STACK:risk_51#ef60df:"Fully-Encrypted.........................................." \
+	$(rrdtool_graph_print_cur_min_max_avg risk_51) \
+	STACK:risk_52#efa0df:"Invalid-ALPN/SNI-combination............................." \
+	$(rrdtool_graph_print_cur_min_max_avg risk_52) \
+	STACK:risk_53#efffdf:"Malware-Host-Contacted..................................." \
+	$(rrdtool_graph_print_cur_min_max_avg risk_53) \
 	STACK:risk_unknown#df2060:"Unknown.................................................." \
 	$(rrdtool_graph_print_cur_min_max_avg risk_unknown)
