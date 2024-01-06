@@ -62,19 +62,11 @@ rrdtool_graph() {
 }
 
 rrdtool_graph Flows Amount "${OUTDIR}/flows" \
-	DEF:flows_new=${RRDDIR}/counter-flow_new_count.rrd:value:AVERAGE \
-        DEF:flows_end=${RRDDIR}/counter-flow_end_count.rrd:value:AVERAGE \
-        DEF:flows_idle=${RRDDIR}/counter-flow_idle_count.rrd:value:AVERAGE \
-	$(rrdtool_graph_colorize_missing_data flows_new) \
-	AREA:flows_new#54EC48::STACK \
-	AREA:flows_end#ECD748::STACK \
-	AREA:flows_idle#EC9D48::STACK \
-        LINE2:flows_new#24BC14:"New." \
-	$(rrdtool_graph_print_cur_min_max_avg flows_new) \
-        LINE2:flows_end#C9B215:"End." \
-	$(rrdtool_graph_print_cur_min_max_avg flows_end) \
-        LINE2:flows_idle#CC7016:"Idle" \
-	$(rrdtool_graph_print_cur_min_max_avg flows_idle)
+	DEF:flows_active=${RRDDIR}/gauge-flow_active_count.rrd:value:AVERAGE \
+	$(rrdtool_graph_colorize_missing_data flows_active) \
+	AREA:flows_active#54EC48::STACK \
+	LINE2:flows_active#24BC14:"Active" \
+	$(rrdtool_graph_print_cur_min_max_avg flows_active)
 rrdtool_graph Detections Amount "${OUTDIR}/detections" \
 	DEF:flows_detected=${RRDDIR}/gauge-flow_detected_count.rrd:value:AVERAGE \
 	DEF:flows_guessed=${RRDDIR}/gauge-flow_guessed_count.rrd:value:AVERAGE \

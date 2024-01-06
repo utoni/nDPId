@@ -438,7 +438,16 @@ if [ -x "${NDPISRVD_COLLECTD}" ]; then
         kill -SIGTERM ${nc_pid} 2>/dev/null
         wait ${nc_pid} 2>/dev/null
         while ss -x -t -n -l | grep -q "${NETCAT_SOCK}"; do sleep 0.1; printf '%s\n' "Waiting until socket ${NETCAT_SOCK} is not available anymore.." >>"${stderr_file}"; done
-        if [ ! -r "${result_file}" ]; then
+
+        unknown_count="$(cat "${stdout_file}" | grep -E 'flow_.*_unknown' | wc -l || printf '%s' '0')"
+        if [ "${unknown_count}" -ne 5 ]; then
+            printf '%s: Unknown count: %s\n' '[INTERNAL]' "${unknown_count}"
+            TESTS_FAILED=$((TESTS_FAILED + 1))
+        elif cat "${stdout_file}" | grep -E 'flow_.*_unknown' | grep -qvE 'N:0'; then
+            printf '%s\n' '[INTERNAL]'
+            cat "${stdout_file}" | grep -E 'flow_.*_unknown' | grep -vE 'N:0' || true
+            TESTS_FAILED=$((TESTS_FAILED + 1))
+        elif [ ! -r "${result_file}" ]; then
             printf '%s\n' '[NEW]'
             test ${IS_GIT} -eq 1 && \
                 mv "${stdout_file}" "${result_file}"

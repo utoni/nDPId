@@ -203,7 +203,7 @@ static struct
         uint64_t flow_guessed_count;
         uint64_t flow_not_detected_count;
 
-        nDPIsrvd_ull flow_risk_count[NDPI_MAX_RISK - 1];
+        nDPIsrvd_ull flow_risk_count[NDPI_MAX_RISK - 1 /* NDPI_NO_RISK */];
         nDPIsrvd_ull flow_risk_unknown_count;
     } gauges[2]; /* values after InfluxDB push: gauges[0] -= gauges[1], gauges[1] is zero'd afterwards */
 } influxd_statistics = {.rw_lock = PTHREAD_MUTEX_INITIALIZER};
@@ -388,7 +388,8 @@ static int serialize_influx_line(char * buf, size_t siz)
                                  INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
                                      INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
                                          INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
-                                             INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT_END(),
+                                             INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
+                                                 INFLUXDB_FORMAT() INFLUXDB_FORMAT_END(),
                      "events",
                      INFLUXDB_VALUE_COUNTER(flow_new_count),
                      INFLUXDB_VALUE_COUNTER(flow_end_count),
@@ -419,7 +420,10 @@ static int serialize_influx_line(char * buf, size_t siz)
                      INFLUXDB_VALUE_COUNTER(error_ip6_size_smaller_than_header),
                      INFLUXDB_VALUE_COUNTER(error_ip6_l4_payload_detection),
                      INFLUXDB_VALUE_COUNTER(error_tcp_packet_too_short),
-                     INFLUXDB_VALUE_COUNTER(error_udp_packet_too_short));
+                     INFLUXDB_VALUE_COUNTER(error_udp_packet_too_short),
+                     INFLUXDB_VALUE_COUNTER(error_capture_size_smaller_than_packet),
+                     INFLUXDB_VALUE_COUNTER(error_max_flows_to_track),
+                     INFLUXDB_VALUE_COUNTER(error_flow_memory_alloc));
     CHECK_SNPRINTF_RET(bytes);
 
     bytes = snprintf(buf,
@@ -564,7 +568,7 @@ static int serialize_influx_line(char * buf, size_t siz)
     bytes = snprintf(buf, siz, "%s " INFLUXDB_FORMAT(), "risks", INFLUXDB_VALUE_GAUGE(flow_risk_unknown_count));
     CHECK_SNPRINTF_RET(bytes);
 
-    for (size_t i = 0; i < NDPI_MAX_RISK - 1; ++i)
+    for (size_t i = 0; i < NDPI_MAX_RISK - 1 /* NDPI_NO_RISK */; ++i)
     {
         bytes = snprintf(buf,
                          siz,
@@ -664,7 +668,7 @@ failure:
     INFLUXD_STATS_GAUGE_SUB(flow_guessed_count);
     INFLUXD_STATS_GAUGE_SUB(flow_not_detected_count);
 
-    for (size_t i = 0; i < NDPI_MAX_RISK - 1; ++i)
+    for (size_t i = 0; i < NDPI_MAX_RISK - 1 /* NDPI_NO_RISK */; ++i)
     {
         INFLUXD_STATS_GAUGE_SUB(flow_risk_count[i]);
     }
@@ -1086,7 +1090,7 @@ static void process_flow_stats(struct nDPIsrvd_socket * const sock, struct nDPIs
             {
                 size_t numeric_risk_len = 0;
                 char const * const numeric_risk_str = TOKEN_GET_KEY(sock, current, &numeric_risk_len);
-                nDPIsrvd_ull numeric_risk_value = (nDPIsrvd_ull)-1;
+                nDPIsrvd_ull numeric_risk_value = 0;
                 char numeric_risk_buf[numeric_risk_len + 1];
 
                 if (numeric_risk_len > 0 && numeric_risk_str != NULL)
@@ -1151,13 +1155,13 @@ static void process_flow_stats(struct nDPIsrvd_socket * const sock, struct nDPIs
                                 {
                                     continue;
                                 }
-                                if (flow_user_data->risks[i] == numeric_risk_value)
+                                if (flow_user_data->risks[i] == numeric_risk_value - 1)
                                 {
                                     break;
                                 }
 
-                                INFLUXD_STATS_GAUGE_INC(flow_risk_count[numeric_risk_value]);
-                                flow_user_data->risks[i] = numeric_risk_value;
+                                INFLUXD_STATS_GAUGE_INC(flow_risk_count[numeric_risk_value - 1]);
+                                flow_user_data->risks[i] = numeric_risk_value - 1;
                                 break;
                             }
                         }
@@ -1545,10 +1549,11 @@ static int parse_options(int argc, char ** argv, struct nDPIsrvd_socket * const 
 
 static void sighandler(int signum)
 {
-    (void)signum;
+    logger(0, "Received SIGNAL %d", signum);
 
     if (main_thread_shutdown == 0)
     {
+        logger(0, "%s", "Shutting down ..");
         main_thread_shutdown = 1;
     }
 }

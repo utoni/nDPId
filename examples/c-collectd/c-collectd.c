@@ -210,7 +210,7 @@ static struct
         uint64_t flow_guessed_count;
         uint64_t flow_not_detected_count;
 
-        nDPIsrvd_ull flow_risk_count[NDPI_MAX_RISK - 1];
+        nDPIsrvd_ull flow_risk_count[NDPI_MAX_RISK - 1 /* NDPI_NO_RISK */];
         nDPIsrvd_ull flow_risk_unknown_count;
     } gauges[2];
 } collectd_statistics = {};
@@ -739,7 +739,7 @@ static void print_collectd_exec_output(void)
            COLLECTD_GAUGE_N(flow_guessed_count),
            COLLECTD_GAUGE_N(flow_not_detected_count));
 
-    for (i = 0; i < NDPI_MAX_RISK - 1; ++i)
+    for (i = 0; i < NDPI_MAX_RISK - 1 /* NDPI_NO_RISK */; ++i)
     {
         char gauge_name[BUFSIZ];
         snprintf(gauge_name, sizeof(gauge_name), "flow_risk_%zu_count", i + 1);
@@ -832,7 +832,7 @@ static void print_collectd_exec_output(void)
     COLLECTD_STATS_GAUGE_SUB(flow_guessed_count);
     COLLECTD_STATS_GAUGE_SUB(flow_not_detected_count);
 
-    for (size_t i = 0; i < NDPI_MAX_RISK - 1; ++i)
+    for (size_t i = 0; i < NDPI_MAX_RISK - 1 /* NDPI_NO_RISK */; ++i)
     {
         COLLECTD_STATS_GAUGE_SUB(flow_risk_count[i]);
     }
@@ -1219,95 +1219,92 @@ static void process_flow_stats(struct nDPIsrvd_socket * const sock, struct nDPIs
             {
                 size_t numeric_risk_len = 0;
                 char const * const numeric_risk_str = TOKEN_GET_KEY(sock, current, &numeric_risk_len);
-                nDPIsrvd_ull numeric_risk_value = (nDPIsrvd_ull)-1;
+                nDPIsrvd_ull numeric_risk_value = 0;
                 char numeric_risk_buf[numeric_risk_len + 1];
 
-                if (numeric_risk_len > 0 && numeric_risk_str != NULL)
+                if (numeric_risk_len == 0 || numeric_risk_str == NULL)
                 {
-                    strncpy(numeric_risk_buf, numeric_risk_str, numeric_risk_len);
-                    numeric_risk_buf[numeric_risk_len] = '\0';
+                    logger(1, "%s", "Missing numeric risk value");
+                    continue;
+                }
 
-                    struct nDPIsrvd_json_token const * const severity =
-                        TOKEN_GET_SZ(sock, "ndpi", "flow_risk", numeric_risk_buf, "severity");
-                    uint8_t severity_index;
+                strncpy(numeric_risk_buf, numeric_risk_str, numeric_risk_len);
+                numeric_risk_buf[numeric_risk_len] = '\0';
 
-                    if (collectd_map_flow_u8(
-                            sock, severity, severity_map, nDPIsrvd_ARRAY_LENGTH(severity_map), &severity_index) != 0)
+                struct nDPIsrvd_json_token const * const severity =
+                    TOKEN_GET_SZ(sock, "ndpi", "flow_risk", numeric_risk_buf, "severity");
+                uint8_t severity_index;
+
+                if (collectd_map_flow_u8(
+                        sock, severity, severity_map, nDPIsrvd_ARRAY_LENGTH(severity_map), &severity_index) != 0)
+                {
+                    severity_index = 0;
+                }
+
+                if (severity_index != 0)
+                {
+                    for (uint8_t i = 0; i < MAX_SEVERITIES_PER_FLOW; ++i)
                     {
-                        severity_index = 0;
-                    }
-
-                    if (severity_index != 0)
-                    {
-                        for (uint8_t i = 0; i < MAX_SEVERITIES_PER_FLOW; ++i)
+                        if (flow_user_data->severities[i] != 0)
                         {
-                            if (flow_user_data->severities[i] != 0)
+                            continue;
+                        }
+                        if (flow_user_data->severities[i] == severity_index)
+                        {
+                            break;
+                        }
+
+                        if (collectd_map_value_to_stat(
+                                sock, severity, severity_map, nDPIsrvd_ARRAY_LENGTH(severity_map)) != 0)
+                        {
+                            severity_index = 0;
+                            break;
+                        }
+                        flow_user_data->severities[i] = severity_index;
+                        break;
+                    }
+                }
+
+                if (severity_index == 0)
+                {
+                    size_t value_len = 0;
+                    char const * const value_str = TOKEN_GET_VALUE(sock, severity, &value_len);
+
+                    if (value_len > 0 && value_str != NULL)
+                    {
+                        logger(1, "Unknown/Invalid JSON value for key 'ndpi','breed': %.*s", (int)value_len, value_str);
+                    }
+                }
+
+                if (str_value_to_ull(numeric_risk_str, &numeric_risk_value) == CONVERSION_OK)
+                {
+                    if (numeric_risk_value < NDPI_MAX_RISK && numeric_risk_value > 0)
+                    {
+                        for (uint8_t i = 0; i < MAX_RISKS_PER_FLOW; ++i)
+                        {
+                            if (flow_user_data->risks[i] != 0)
                             {
                                 continue;
                             }
-                            if (flow_user_data->severities[i] == severity_index)
+                            if (flow_user_data->risks[i] == numeric_risk_value - 1)
                             {
                                 break;
                             }
 
-                            if (collectd_map_value_to_stat(
-                                    sock, severity, severity_map, nDPIsrvd_ARRAY_LENGTH(severity_map)) != 0)
-                            {
-                                severity_index = 0;
-                                break;
-                            }
-                            flow_user_data->severities[i] = severity_index;
+                            COLLECTD_STATS_GAUGE_INC(flow_risk_count[numeric_risk_value - 1]);
+                            flow_user_data->risks[i] = numeric_risk_value - 1;
                             break;
                         }
                     }
-                    if (severity_index == 0)
+                    else if (flow_user_data->risk_ndpid_invalid == 0)
                     {
-                        size_t value_len = 0;
-                        char const * const value_str = TOKEN_GET_VALUE(sock, severity, &value_len);
-
-                        if (value_len > 0 && value_str != NULL)
-                        {
-                            logger(1,
-                                   "Unknown/Invalid JSON value for key 'ndpi','breed': %.*s",
-                                   (int)value_len,
-                                   value_str);
-                        }
-                    }
-
-                    if (str_value_to_ull(numeric_risk_str, &numeric_risk_value) == CONVERSION_OK)
-                    {
-                        if (numeric_risk_value < NDPI_MAX_RISK && numeric_risk_value > 0)
-                        {
-                            for (uint8_t i = 0; i < MAX_RISKS_PER_FLOW; ++i)
-                            {
-                                if (flow_user_data->risks[i] != 0)
-                                {
-                                    continue;
-                                }
-                                if (flow_user_data->risks[i] == numeric_risk_value)
-                                {
-                                    break;
-                                }
-
-                                COLLECTD_STATS_GAUGE_INC(flow_risk_count[numeric_risk_value]);
-                                flow_user_data->risks[i] = numeric_risk_value;
-                                break;
-                            }
-                        }
-                        else if (flow_user_data->risk_ndpid_invalid == 0)
-                        {
-                            flow_user_data->risk_ndpid_invalid = 1;
-                            COLLECTD_STATS_GAUGE_INC(flow_risk_unknown_count);
-                        }
-                    }
-                    else
-                    {
-                        logger(1, "Invalid numeric risk value: %s", numeric_risk_buf);
+                        flow_user_data->risk_ndpid_invalid = 1;
+                        COLLECTD_STATS_GAUGE_INC(flow_risk_unknown_count);
                     }
                 }
                 else
                 {
-                    logger(1, "%s", "Missing numeric risk value");
+                    logger(1, "Invalid numeric risk value: %s", numeric_risk_buf);
                 }
             }
         }
