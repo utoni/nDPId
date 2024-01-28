@@ -63,11 +63,12 @@ struct global_user_data
 
 struct flow_user_data
 {
-    uint8_t detection_finished;
-    uint8_t guessed;
-    uint8_t detected;
-    uint8_t risky;
-    uint8_t midstream;
+    uint8_t new_seen : 1;
+    uint8_t detection_finished : 1;
+    uint8_t guessed : 1;
+    uint8_t detected : 1;
+    uint8_t risky : 1;
+    uint8_t midstream : 1;
     nDPIsrvd_ull flow_datalink;
     nDPIsrvd_ull flow_max_packets;
     nDPIsrvd_ull flow_tot_l4_payload_len;
@@ -523,7 +524,7 @@ static int packet_write_pcap_file(struct global_user_data const * const global_u
             decode_base64(pd, pd_elt_dmp, NULL);
         }
 #ifdef VERBOSE
-        printf("packets dumped to %s\n", pcap_filename);
+        printf("packets dumped to %s\n", filename);
 #endif
         pcap_dump_close(pd);
         pcap_close(p);
@@ -876,6 +877,8 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
 
         if (TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "new") != 0)
         {
+            flow_user->new_seen = 1;
+
             perror_ull(TOKEN_VALUE_TO_ULL(sock, TOKEN_GET_SZ(sock, "flow_datalink"), &flow_user->flow_datalink),
                        "flow_datalink");
             perror_ull(TOKEN_VALUE_TO_ULL(sock, TOKEN_GET_SZ(sock, "flow_max_packets"), &flow_user->flow_max_packets),
@@ -887,14 +890,9 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
 
             return CALLBACK_OK;
         }
-        else if (TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "end") != 0)
+        else if (flow_user->new_seen == 0)
         {
-            struct nDPIsrvd_json_token const * const ndpi_proto = TOKEN_GET_SZ(sock, "ndpi", "proto");
-
-            if (ndpi_proto != NULL)
-            {
-                flow_user->detected = 1;
-            }
+            return CALLBACK_OK;
         }
         else if (TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "guessed") != 0)
         {
@@ -903,19 +901,16 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
         else if (TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "not-detected") != 0)
         {
             flow_user->detected = 0;
+            flow_user->detection_finished = 1;
         }
         else if (TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "detected") != 0 ||
-                 TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "detection-update") != 0 ||
-                 TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "update") != 0)
+                 TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "detection-update"))
         {
             struct nDPIsrvd_json_token const * const flow_risk = TOKEN_GET_SZ(sock, "ndpi", "flow_risk");
             struct nDPIsrvd_json_token const * current = NULL;
             int next_child_index = -1;
 
-            if (TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "update") == 0)
-            {
-                flow_user->detected = 1;
-            }
+            flow_user->detected = 1;
 
             if (flow_risk != NULL)
             {
@@ -926,7 +921,6 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
                     if (str_value_to_ull(TOKEN_GET_KEY(sock, current, NULL), &numeric_risk_value) == CONVERSION_OK &&
                         numeric_risk_value < NDPI_MAX_RISK && has_ndpi_risk(&process_risky, numeric_risk_value) != 0)
                     {
-                        flow_user->detected = 1;
                         flow_user->risky = 1;
                     }
                 }
@@ -938,6 +932,11 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
              (flow_user->detected == 0 && process_undetected != 0) || (flow_user->risky != 0 && process_risky != 0) ||
              (flow_user->midstream != 0 && process_midstream != 0)))
         {
+            if (flow_user->guessed != 0 && flow_user->detected != 0)
+            {
+                log_event(sock, flow, "BUG: guessed and detected at the same time");
+            }
+
             if (logging_mode != 0)
             {
                 if (flow_user->guessed != 0)
@@ -954,7 +953,7 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
             {
                 if (capture_mode != 0)
                 {
-                    logger(0, "Flow %llu: No packets captured.", flow->id_as_ull);
+                    log_event(sock, flow, "No packets captured");
                 }
             }
             else if (capture_mode != 0)
@@ -965,15 +964,16 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
                     char pcap_filename[PATH_MAX];
                     if (flow_generate_pcap_filename(flow_user, pcap_filename, sizeof(pcap_filename)) == NULL)
                     {
-                        logger(1, "%s", "Internal error. Could not generate PCAP filename, exit ..");
+                        log_event(sock, flow, "Internal error. Could not generate PCAP filename, exit ..");
                         return CALLBACK_ERROR;
                     }
 #ifdef VERBOSE
                     printf("Flow %llu saved to %s\n", flow->id_as_ull, pcap_filename);
 #endif
+                    errno = 0;
                     if (flow_write_pcap_file(flow_user, pcap_filename) != 0)
                     {
-                        logger(1, "Could not dump packet data to pcap file %s", pcap_filename);
+                        logger(1, "Could not dump packet data to pcap file %s: %s", pcap_filename, strerror(errno));
                         return CALLBACK_OK;
                     }
                 }
@@ -1318,12 +1318,12 @@ int main(int argc, char ** argv)
     init_logging("nDPIsrvd-captured");
 
     ndpisrvd_socket = nDPIsrvd_socket_init(sizeof(struct global_user_data),
-                                0,
-                                0,
-                                sizeof(struct flow_user_data),
-                                captured_json_callback,
-                                NULL,
-                                captured_flow_cleanup_callback);
+                                           0,
+                                           0,
+                                           sizeof(struct flow_user_data),
+                                           captured_json_callback,
+                                           NULL,
+                                           captured_flow_cleanup_callback);
     if (ndpisrvd_socket == NULL)
     {
         fprintf(stderr, "%s: nDPIsrvd socket memory allocation failed!\n", argv[0]);
