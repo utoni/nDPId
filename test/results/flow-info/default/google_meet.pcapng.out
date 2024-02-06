@@ -1,0 +1,11 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [.192.168.88.231][43268] -> [.173.194.73.101][..443]
+         detected: [.....1] [ip4][..tcp] [.192.168.88.231][43268] -> [.173.194.73.101][..443] [TLS.GoogleMeet][Google][Chat][Acceptable][meet.google.com]
+ detection-update: [.....1] [ip4][..tcp] [.192.168.88.231][43268] -> [.173.194.73.101][..443] [TLS.GoogleMeet][Google][Chat][Acceptable][meet.google.com]
+              new: [.....2] [ip4][..udp] [.192.168.88.231][59369] -> [.173.194.73.101][..443]
+         detected: [.....2] [ip4][..udp] [.192.168.88.231][59369] -> [.173.194.73.101][..443] [QUIC.GoogleMeet][Google][Chat][Acceptable][meet.google.com]
+             idle: [.....2] [ip4][..udp] [.192.168.88.231][59369] -> [.173.194.73.101][..443] [QUIC.GoogleMeet][Google][Chat][Acceptable]
+             idle: [.....1] [ip4][..tcp] [.192.168.88.231][43268] -> [.173.194.73.101][..443] [TLS.GoogleMeet][Google][Chat][Acceptable]
+     DAEMON-EVENT: shutdown

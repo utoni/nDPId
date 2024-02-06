@@ -1,0 +1,13 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip6][..udp] [........................fe80::20:9400:d][..320] -> [...............fe80::2b0:aeff:fe01:f921][..320]
+         detected: [.....1] [ip6][..udp] [........................fe80::20:9400:d][..320] -> [...............fe80::2b0:aeff:fe01:f921][..320] [PTPv2][Unknown][System][Acceptable]
+              new: [.....2] [ip6][..udp] [........................fe80::20:9400:e][..320] -> [...............fe80::2b0:aeff:fe01:f921][..320]
+         detected: [.....2] [ip6][..udp] [........................fe80::20:9400:e][..320] -> [...............fe80::2b0:aeff:fe01:f921][..320] [PTPv2][Unknown][System][Acceptable]
+              new: [.....3] [ip6][..udp] [...............fe80::2b0:aeff:fe01:f921][..319] -> [........................fe80::20:9400:d][..319]
+         detected: [.....3] [ip6][..udp] [...............fe80::2b0:aeff:fe01:f921][..319] -> [........................fe80::20:9400:d][..319] [PTPv2][Unknown][System][Acceptable]
+             idle: [.....3] [ip6][..udp] [...............fe80::2b0:aeff:fe01:f921][..319] -> [........................fe80::20:9400:d][..319] [PTPv2][Unknown][System][Acceptable]
+             idle: [.....2] [ip6][..udp] [........................fe80::20:9400:e][..320] -> [...............fe80::2b0:aeff:fe01:f921][..320] [PTPv2][Unknown][System][Acceptable]
+             idle: [.....1] [ip6][..udp] [........................fe80::20:9400:d][..320] -> [...............fe80::2b0:aeff:fe01:f921][..320] [PTPv2][Unknown][System][Acceptable]
+     DAEMON-EVENT: shutdown

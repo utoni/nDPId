@@ -1,0 +1,9 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [....10.24.8.189][50652] -> [..104.156.149.6][...80]
+         detected: [.....1] [ip4][..tcp] [....10.24.8.189][50652] -> [..104.156.149.6][...80] [HTTP.WebDAV][Unknown][Collaborative][Acceptable][104.156.149.6]
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
+              end: [.....1] [ip4][..tcp] [....10.24.8.189][50652] -> [..104.156.149.6][...80] [HTTP.WebDAV][Unknown][Collaborative][Acceptable]
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
+     DAEMON-EVENT: shutdown

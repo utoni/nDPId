@@ -175,7 +175,7 @@ for out_file in ${MYDIR}/results/*/*.out; do
     pcap_file="$(basename ${out_file%.out})"
     pcap_cfg="$(basename $(dirname ${out_file%.out}))"
     if [ ! -r "cfgs/${pcap_cfg}/pcap/${pcap_file}" ]; then
-        printf "%-${LINE_SPACES}s\t%s\n" "${pcap_file}" "[MISSING]"
+        printf "%-${LINE_SPACES}s\t%s\n" "${pcap_file}" "[MISSING][config: ${pcap_cfg}]"
         TESTS_FAILED=$((TESTS_FAILED + 1))
     fi
 done
@@ -193,7 +193,7 @@ function validate_results()
     printf '%s\n' "-- ${prefix_str}" >>"${stderr_file}"
 
     if [ ! -r "${result_file}" ]; then
-        printf ' %s\n' '[MISSING]'
+        printf ' %s\n' "[MISSING][config: ${pcap_cfg}]"
         return 1
     fi
 
@@ -273,7 +273,7 @@ for out_file in ${MYDIR}/results/flow-info/*/*.out; do
     result_file="$(basename ${out_file})"
     pcap_cfg="$(basename $(dirname ${out_file%.out}))"
     if [ ! -r "${MYDIR}/results/${pcap_cfg}/${result_file}" ]; then
-        printf "%-${LINE_SPACES}s\t%s\n" "${result_file}" "[MISSING]"
+        printf "%-${LINE_SPACES}s\t%s\n" "${result_file}" "[MISSING][config: ${pcap_cfg}]"
         TESTS_FAILED=$((TESTS_FAILED + 1))
     fi
 done
@@ -335,7 +335,7 @@ if [ -x "${NDPISRVD_ANALYSED}" ]; then
         result_file="$(basename ${out_file})"
         pcap_cfg="$(basename $(dirname ${out_file%.out}))"
         if [ ! -r "${MYDIR}/results/${pcap_cfg}/${result_file}" ]; then
-            printf "%-${LINE_SPACES}s\t%s\n" "${result_file}" "[MISSING]"
+            printf "%-${LINE_SPACES}s\t%s\n" "${result_file}" "[MISSING][config: ${pcap_cfg}]"
             TESTS_FAILED=$((TESTS_FAILED + 1))
         fi
     done
@@ -400,7 +400,7 @@ if [ -x "${NDPISRVD_CAPTURED}" ]; then
         result_file="$(basename ${out_file})"
         pcap_cfg="$(basename $(dirname ${out_file%.out}))"
         if [ ! -r "${MYDIR}/results/${pcap_cfg}/${result_file}" ]; then
-            printf "%-${LINE_SPACES}s\t%s\n" "${result_file}" "[MISSING]"
+            printf "%-${LINE_SPACES}s\t%s\n" "${result_file}" "[MISSING][config: ${pcap_cfg}]"
             TESTS_FAILED=$((TESTS_FAILED + 1))
         fi
     done
@@ -473,7 +473,7 @@ if [ -x "${NDPISRVD_COLLECTD}" ]; then
         result_file="$(basename ${out_file})"
         pcap_cfg="$(basename $(dirname ${out_file%.out}))"
         if [ ! -r "${MYDIR}/results/${pcap_cfg}/${result_file}" ]; then
-            printf "%-${LINE_SPACES}s\t%s\n" "${result_file}" "[MISSING]"
+            printf "%-${LINE_SPACES}s\t%s\n" "${result_file}" "[MISSING][config: ${pcap_cfg}]"
             TESTS_FAILED=$((TESTS_FAILED + 1))
         fi
     done
@@ -502,7 +502,7 @@ for out_file in results/*/*.out; do
     pcap_cfg="$(basename $(dirname ${out_file%.out}))"
     result_file="${MYDIR}/results/${pcap_cfg}/${out_name}"
     if [ ! -r "${result_file}" ]; then
-        printf "%-${LINE_SPACES}s\t%s\n" "${out_name}" '[MISSING]'
+        printf "%-${LINE_SPACES}s\t%s\n" "${out_name}" "[MISSING][config: ${pcap_cfg}]"
         TESTS_FAILED=$((TESTS_FAILED + 1))
     else
         validate_results "SCHEMA  " "${pcap_cfg}" "${out_name%.out}" "${out_file}" \

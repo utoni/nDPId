@@ -1,0 +1,18 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..udp] [..192.168.2.100][36225] -> [.64.233.164.158][.2002]
+         detected: [.....1] [ip4][..udp] [..192.168.2.100][36225] -> [.64.233.164.158][.2002] [Roughtime][Google][System][Acceptable]
+              new: [.....2] [ip4][..udp] [..192.168.2.100][39393] -> [...35.192.98.51][.2002]
+         detected: [.....2] [ip4][..udp] [..192.168.2.100][39393] -> [...35.192.98.51][.2002] [Roughtime][GoogleCloud][System][Acceptable]
+     DAEMON-EVENT: [Processed: 2 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 2 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....3] [ip4][..udp] [..162.159.200.1][.2002] -> [..192.168.2.100][49021]
+         detected: [.....3] [ip4][..udp] [..162.159.200.1][.2002] -> [..192.168.2.100][49021] [Roughtime][Cloudflare][System][Acceptable]
+             idle: [.....2] [ip4][..udp] [..192.168.2.100][39393] -> [...35.192.98.51][.2002] [Roughtime][GoogleCloud][System][Acceptable]
+             idle: [.....1] [ip4][..udp] [..192.168.2.100][36225] -> [.64.233.164.158][.2002] [Roughtime][Google][System][Acceptable]
+              new: [.....4] [ip4][..udp] [...35.192.98.51][.2002] -> [..192.168.2.100][57626]
+         detected: [.....4] [ip4][..udp] [...35.192.98.51][.2002] -> [..192.168.2.100][57626] [Roughtime][GoogleCloud][System][Acceptable]
+             idle: [.....4] [ip4][..udp] [...35.192.98.51][.2002] -> [..192.168.2.100][57626] [Roughtime][GoogleCloud][System][Acceptable]
+             idle: [.....3] [ip4][..udp] [..162.159.200.1][.2002] -> [..192.168.2.100][49021] [Roughtime][Cloudflare][System][Acceptable]
+     DAEMON-EVENT: shutdown

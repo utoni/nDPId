@@ -3063,16 +3063,20 @@
              idle: [...305] [ip4][..udp] [......10.0.2.15][28681] -> [..88.168.175.31][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
      not-detected: [....31] [ip4][..tcp] [......10.0.2.15][50193] -> [....89.75.52.19][46010] [Unknown][Unknown][Unrated]
+                   RISK: TCP Connection Issues
               end: [....31] [ip4][..tcp] [......10.0.2.15][50193] -> [....89.75.52.19][46010]
              idle: [...322] [ip4][..udp] [......10.0.2.15][28681] -> [..45.88.117.219][.6909] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
      not-detected: [....28] [ip4][..tcp] [......10.0.2.15][50190] -> [..80.140.63.147][29545] [Unknown][Unknown][Unrated]
+                   RISK: TCP Connection Issues
               end: [....28] [ip4][..tcp] [......10.0.2.15][50190] -> [..80.140.63.147][29545]
              idle: [...314] [ip4][..udp] [......10.0.2.15][28681] -> [..71.237.202.91][16117] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
      not-detected: [....30] [ip4][..tcp] [......10.0.2.15][50192] -> [....45.65.87.24][16201] [Unknown][Unknown][Unrated]
+                   RISK: TCP Connection Issues
               end: [....30] [ip4][..tcp] [......10.0.2.15][50192] -> [....45.65.87.24][16201]
      not-detected: [....29] [ip4][..tcp] [......10.0.2.15][50191] -> [.207.38.163.228][.6778] [Unknown][Unknown][Unrated]
+                   RISK: TCP Connection Issues
               end: [....29] [ip4][..tcp] [......10.0.2.15][50191] -> [.207.38.163.228][.6778]
            update: [...166] [ip4][..udp] [......10.0.2.15][28681] -> [..90.59.253.186][15555] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
@@ -3476,6 +3480,7 @@
              idle: [...357] [ip4][..udp] [......10.0.2.15][28681] -> [...98.35.85.238][32173] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
      not-detected: [....90] [ip4][..tcp] [......10.0.2.15][50245] -> [..73.62.225.181][46843] [Unknown][Unknown][Unrated]
+                   RISK: TCP Connection Issues
               end: [....90] [ip4][..tcp] [......10.0.2.15][50245] -> [..73.62.225.181][46843]
              idle: [...318] [ip4][..udp] [......10.0.2.15][28681] -> [173.183.183.110][59920] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol

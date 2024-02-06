@@ -89,7 +89,7 @@
          detected: [....30] [ip4][..tcp] [.....10.0.0.227][56921] -> [....8.37.96.194][.4287] [TLS][Unknown][Web][Safe][]
                    RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
  detection-update: [....30] [ip4][..tcp] [.....10.0.0.227][56921] -> [....8.37.96.194][.4287] [TLS][Unknown][Web][Safe][]
-                   RISK: Known Proto on Non Std Port, Self-signed Cert, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, TLS Cert About To Expire
+                   RISK: Known Proto on Non Std Port, Self-signed Cert, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
               new: [....31] [ip4][..udp] [.....10.0.0.227][64972] -> [....75.75.75.75][...53]
          detected: [....31] [ip4][..udp] [.....10.0.0.227][64972] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][lb._dns-sd._udp.0.128.28.172.in-addr.arpa]
               new: [....32] [ip4][..udp] [.....10.0.0.227][61613] -> [....75.75.75.75][...53]
@@ -220,9 +220,7 @@
               new: [....68] [ip4][..udp] [.....10.0.0.149][.5353] -> [....224.0.0.251][.5353]
          detected: [....68] [ip4][..udp] [.....10.0.0.149][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable][_googlezone._tcp.local]
  detection-update: [....68] [ip4][..udp] [.....10.0.0.149][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable][79d88e83-725c-b71b-bad0-5862d5b22386._googlezone._tcp.local]
-                   RISK: Susp DNS Traffic
  detection-update: [....68] [ip4][..udp] [.....10.0.0.149][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable][_googlezone._tcp.local]
-                   RISK: Susp DNS Traffic
               new: [....69] [ip4][.icmp] [.......10.0.0.1] -> [......224.0.0.1]
          detected: [....69] [ip4][.icmp] [.......10.0.0.1] -> [......224.0.0.1] [ICMP][Unknown][Network][Acceptable]
              idle: [....57] [ip4][..udp] [.....10.0.0.227][57547] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable]
@@ -256,7 +254,6 @@
                    RISK: Error Code
              idle: [.....5] [ip6][icmp6] [..............fe80::2e7e:81ff:feb0:4aa1] -> [................................ff02::1] [ICMPV6][Unknown][Network][Acceptable]
              idle: [....68] [ip4][..udp] [.....10.0.0.149][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable]
-                   RISK: Susp DNS Traffic
              idle: [....18] [ip4][..udp] [.....10.0.0.213][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable]
              idle: [....35] [ip4][..udp] [.....10.0.0.227][59222] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable]
                    RISK: Error Code
@@ -272,7 +269,7 @@
               end: [....44] [ip4][..tcp] [.....10.0.0.227][56886] -> [..17.57.144.116][.5223] [TLS][Apple][Web][Safe]
                    RISK: Known Proto on Non Std Port
              idle: [....30] [ip4][..tcp] [.....10.0.0.227][56921] -> [....8.37.96.194][.4287] [TLS][Unknown][Web][Safe]
-                   RISK: Known Proto on Non Std Port, Self-signed Cert, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, TLS Cert About To Expire
+                   RISK: Known Proto on Non Std Port, Self-signed Cert, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
              idle: [....23] [ip6][icmp6] [...............fe80::408:3e45:3abc:1552] -> [...............................ff02::16] [ICMPV6][Unknown][Network][Acceptable]
              idle: [....32] [ip4][..udp] [.....10.0.0.227][61613] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable]
                    RISK: Error Code

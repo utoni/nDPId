@@ -54,8 +54,10 @@
 #define DLT_DSA_TAG_EDSA 285
 #endif
 
-#if ((NDPI_MAJOR == 4 && NDPI_MINOR < 8) || NDPI_MAJOR < 4) && NDPI_API_VERSION < 9000
-#error "nDPI >= 4.8.0 or API version >= 9000 required"
+#define NDPI_VERSION_CHECK ((NDPI_MAJOR == 5 && NDPI_MINOR < 0) || NDPI_MAJOR < 5)
+
+#if NDPI_VERSION_CHECK && NDPI_API_VERSION < 10172
+#error "nDPI >= 5.0.0 or API version >= 10172 required"
 #endif
 
 #if nDPId_MAX_READER_THREADS <= 0
@@ -1259,6 +1261,41 @@ static void ndpi_debug_printf(unsigned int proto,
            buf);
 }
 
+static char const * cfg_err2str(ndpi_cfg_error err)
+{
+    switch (err)
+    {
+        case NDPI_CFG_INVALID_CONTEXT:
+            return "Invalid context";
+        case NDPI_CFG_NOT_FOUND:
+            return "Not found";
+        case NDPI_CFG_INVALID_PARAM:
+            return "Invalid parameter";
+        case NDPI_CFG_CONTEXT_ALREADY_INITIALIZED:
+            return "Context already initialized";
+        case NDPI_CFG_CALLBACK_ERROR:
+            return "Callback error";
+        case NDPI_CFG_OK:
+            return "Success";
+    }
+
+    return "Unknown error";
+}
+
+static int cfg_set_u64(struct nDPId_workflow * const workflow, char const * const proto, char const * const param, uint64_t const value)
+{
+    ndpi_cfg_error cfg_err;
+
+    cfg_err = ndpi_set_config_u64(workflow->ndpi_struct, proto, param, value);
+    if (cfg_err != NDPI_CFG_OK)
+    {
+        logger_early(1, "Could not set nDPI configuration (numeric value): %s", cfg_err2str(cfg_err));
+        return 1;
+    }
+
+    return 0;
+}
+
 static struct nDPId_workflow * init_workflow(char const * const file_or_device)
 {
     char pcap_error_buffer[PCAP_ERRBUF_SIZE];
@@ -1328,8 +1365,7 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
         pcap_freecode(&fp);
     }
 
-    ndpi_init_prefs init_prefs = ndpi_no_prefs;
-    workflow->ndpi_struct = ndpi_init_detection_module(init_prefs);
+    workflow->ndpi_struct = ndpi_init_detection_module(NULL);
     if (workflow->ndpi_struct == NULL)
     {
         logger_early(1, "%s", "BUG: Could not init ndpi detection module");
@@ -1339,7 +1375,11 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
 
     ndpi_set_user_data(workflow->ndpi_struct, workflow);
     set_ndpi_debug_function(workflow->ndpi_struct, ndpi_debug_printf);
-    ndpi_set_log_level(workflow->ndpi_struct, NDPI_LOG_DEBUG_EXTRA);
+
+    cfg_set_u64(workflow, NULL, "log.level", 3);
+    cfg_set_u64(workflow, NULL, "packets_limit_per_flow", nDPId_options.max_packets_per_flow_to_process);
+    cfg_set_u64(workflow, "tls", "application_blocks_tracking", 1);
+    cfg_set_u64(workflow, "tls", "certificate_expiration_threshold", 5);
 
     workflow->total_skipped_flows = 0;
     workflow->total_active_flows = 0;
@@ -1386,11 +1426,6 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
         ndpi_load_malicious_sha1_file(workflow->ndpi_struct, get_cmdarg(&nDPId_options.custom_sha1_file));
     }
     ndpi_finalize_initialization(workflow->ndpi_struct);
-
-    ndpi_set_detection_preferences(workflow->ndpi_struct, ndpi_pref_enable_tls_block_dissection, 1);
-    ndpi_set_detection_preferences(workflow->ndpi_struct,
-                                   ndpi_pref_max_packets_to_process,
-                                   nDPId_options.max_packets_per_flow_to_process);
 
     if (ndpi_init_serializer_ll(&workflow->ndpi_serializer, ndpi_serialization_format_json, NETWORK_BUFFER_MAX_SIZE) !=
         0)
@@ -1898,7 +1933,7 @@ static void process_idle_flow(struct nDPId_reader_thread * const reader_thread, 
                                                   flow->info.detection_data->guessed_l7_protocol) == 0)
                     {
                         flow->info.detection_data->guessed_l7_protocol = ndpi_detection_giveup(
-                            workflow->ndpi_struct, &flow->info.detection_data->flow, 1, &protocol_was_guessed);
+                            workflow->ndpi_struct, &flow->info.detection_data->flow, &protocol_was_guessed);
                     }
                     else
                     {
@@ -4271,7 +4306,7 @@ static void ndpi_process_packet(uint8_t * const args,
         /* last chance to guess something, better then nothing */
         uint8_t protocol_was_guessed = 0;
         flow_to_process->info.detection_data->guessed_l7_protocol = ndpi_detection_giveup(
-            workflow->ndpi_struct, &flow_to_process->info.detection_data->flow, 1, &protocol_was_guessed);
+            workflow->ndpi_struct, &flow_to_process->info.detection_data->flow, &protocol_was_guessed);
         if (protocol_was_guessed != 0)
         {
             workflow->total_guessed_flows++;

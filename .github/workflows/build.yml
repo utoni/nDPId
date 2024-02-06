@@ -36,7 +36,7 @@ jobs:
             poll: "-DFORCE_POLL=OFF"
             upload: true
             upload_suffix: ""
-            ndpi_min_version: "4.8"
+            ndpi_min_version: "5.0"
           - compiler: "gcc"
             os: "ubuntu-latest"
             ndpi_build: "-DBUILD_NDPI=ON"
@@ -48,7 +48,7 @@ jobs:
             poll: "-DFORCE_POLL=OFF"
             upload: true
             upload_suffix: "-host-gcrypt"
-            ndpi_min_version: "4.8"
+            ndpi_min_version: "5.0"
           - compiler: "clang"
             os: "ubuntu-latest"
             ndpi_build: "-DBUILD_NDPI=ON"
@@ -60,7 +60,7 @@ jobs:
             poll: "-DFORCE_POLL=OFF"
             upload: true
             upload_suffix: "-no-zlib"
-            ndpi_min_version: "4.8"
+            ndpi_min_version: "5.0"
           - compiler: "gcc"
             os: "ubuntu-latest"
             ndpi_build: "-DBUILD_NDPI=ON"
@@ -71,7 +71,7 @@ jobs:
             coverage: "-DENABLE_COVERAGE=ON"
             poll: "-DFORCE_POLL=ON"
             upload: false
-            ndpi_min_version: "4.8"
+            ndpi_min_version: "5.0"
           - compiler: "clang"
             os: "ubuntu-latest"
             ndpi_build: "-DBUILD_NDPI=ON"
@@ -82,7 +82,7 @@ jobs:
             coverage: "-DENABLE_COVERAGE=OFF"
             poll: "-DFORCE_POLL=OFF"
             upload: false
-            ndpi_min_version: "4.8"
+            ndpi_min_version: "5.0"
           - compiler: "clang-12"
             os: "ubuntu-latest"
             ndpi_build: "-DBUILD_NDPI=ON"
@@ -93,7 +93,7 @@ jobs:
             coverage: "-DENABLE_COVERAGE=OFF"
             poll:
             upload: false
-            ndpi_min_version: "4.8"
+            ndpi_min_version: "5.0"
           - compiler: "gcc-10"
             os: "ubuntu-20.04"
             ndpi_build: "-DBUILD_NDPI=ON"
@@ -104,7 +104,7 @@ jobs:
             coverage: "-DENABLE_COVERAGE=OFF"
             poll: "-DFORCE_POLL=ON"
             upload: false
-            ndpi_min_version: "4.8"
+            ndpi_min_version: "5.0"
           - compiler: "gcc-7"
             os: "ubuntu-20.04"
             ndpi_build: "-DBUILD_NDPI=ON"
@@ -115,7 +115,7 @@ jobs:
             coverage: "-DENABLE_COVERAGE=OFF"
             poll: "-DFORCE_POLL=OFF"
             upload: false
-            ndpi_min_version: "4.8"
+            ndpi_min_version: "5.0"
           - compiler: "cc"
             os: "macOS-latest"
             ndpi_build: "-DBUILD_NDPI=OFF"
@@ -127,7 +127,7 @@ jobs:
             coverage: "-DENABLE_COVERAGE=OFF"
             poll:
             upload: false
-            ndpi_min_version: "4.8"
+            ndpi_min_version: "5.0"
 
     steps:
       - name: Print Matrix

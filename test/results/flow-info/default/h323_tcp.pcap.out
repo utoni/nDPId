@@ -1,0 +1,7 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [......10.1.6.18][.1720] -> [.....10.1.3.143][32803]
+         detected: [.....1] [ip4][..tcp] [......10.1.6.18][.1720] -> [.....10.1.3.143][32803] [H323][Unknown][VoIP][Acceptable]
+             idle: [.....1] [ip4][..tcp] [......10.1.6.18][.1720] -> [.....10.1.3.143][32803] [H323][Unknown][VoIP][Acceptable]
+     DAEMON-EVENT: shutdown

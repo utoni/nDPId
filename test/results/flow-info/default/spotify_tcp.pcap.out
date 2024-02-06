@@ -1,0 +1,5 @@
+     DAEMON-EVENT: init
+              new: [.....1] [ip4][..tcp] [......10.0.2.15][48628] -> [..35.190.243.72][.4070]
+         detected: [.....1] [ip4][..tcp] [......10.0.2.15][48628] -> [..35.190.243.72][.4070] [Spotify][Google][Music][Fun]
+             idle: [.....1] [ip4][..tcp] [......10.0.2.15][48628] -> [..35.190.243.72][.4070] [Spotify][Google][Music][Fun]
+     DAEMON-EVENT: shutdown

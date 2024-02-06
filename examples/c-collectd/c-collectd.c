@@ -186,6 +186,7 @@ static struct
         uint64_t flow_confidence_nbpf;
         uint64_t flow_confidence_by_ip;
         uint64_t flow_confidence_dpi_aggressive;
+        uint64_t flow_confidence_custom_rule;
         uint64_t flow_confidence_unknown;
 
         uint64_t flow_severity_low;
@@ -345,6 +346,7 @@ static struct global_map const confidence_map[] = {
     {"nBPF", COLLECTD_STATS_GAUGE_PTR(flow_confidence_nbpf)},
     {"Match by IP", COLLECTD_STATS_GAUGE_PTR(flow_confidence_by_ip)},
     {"DPI (aggressive)", COLLECTD_STATS_GAUGE_PTR(flow_confidence_dpi_aggressive)},
+    {"Match by custom rule", COLLECTD_STATS_GAUGE_PTR(flow_confidence_custom_rule)},
     {NULL, COLLECTD_STATS_GAUGE_PTR(flow_confidence_unknown)}};
 
 static struct global_map const severity_map[] = {{"Low", COLLECTD_STATS_GAUGE_PTR(flow_severity_low)},
@@ -698,7 +700,7 @@ static void print_collectd_exec_output(void)
 
     printf(COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
                COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
-                   COLLECTD_GAUGE_N_FORMAT(),
+                   COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT(),
 
            COLLECTD_GAUGE_N(flow_confidence_by_port),
            COLLECTD_GAUGE_N(flow_confidence_dpi_partial),
@@ -708,6 +710,7 @@ static void print_collectd_exec_output(void)
            COLLECTD_GAUGE_N(flow_confidence_nbpf),
            COLLECTD_GAUGE_N(flow_confidence_by_ip),
            COLLECTD_GAUGE_N(flow_confidence_dpi_aggressive),
+           COLLECTD_GAUGE_N(flow_confidence_custom_rule),
            COLLECTD_GAUGE_N(flow_confidence_unknown));
 
     printf(COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
@@ -808,6 +811,7 @@ static void print_collectd_exec_output(void)
     COLLECTD_STATS_GAUGE_SUB(flow_confidence_nbpf);
     COLLECTD_STATS_GAUGE_SUB(flow_confidence_by_ip);
     COLLECTD_STATS_GAUGE_SUB(flow_confidence_dpi_aggressive);
+    COLLECTD_STATS_GAUGE_SUB(flow_confidence_custom_rule);
     COLLECTD_STATS_GAUGE_SUB(flow_confidence_unknown);
 
     COLLECTD_STATS_GAUGE_SUB(flow_severity_low);

@@ -7,7 +7,9 @@
  detection-update: [.....1] [ip4][..udp] [.....26.83.9.81][57567] -> [..33.35.223.103][..540] [STUN][Unknown][Network][Acceptable][]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
  detection-update: [.....1] [ip4][..udp] [.....26.83.9.81][57567] -> [..33.35.223.103][..540] [DTLS][Unknown][Safe]
-                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Unidirectional Traffic
-             idle: [.....1] [ip4][..udp] [.....26.83.9.81][57567] -> [..33.35.223.103][..540] [DTLS][Unknown][Safe]
-                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Unidirectional Traffic
+                   RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Unidirectional Traffic
+ detection-update: [.....1] [ip4][..udp] [.....26.83.9.81][57567] -> [..33.35.223.103][..540] [DTLS][Unknown][Network][Safe]
+                   RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Unidirectional Traffic
+             idle: [.....1] [ip4][..udp] [.....26.83.9.81][57567] -> [..33.35.223.103][..540] [DTLS][Unknown][Network][Safe]
+                   RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Unidirectional Traffic
      DAEMON-EVENT: shutdown

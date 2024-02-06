@@ -1,5 +1,5 @@
 PUTVAL "localhost/exec-nDPIsrvd/counter-json_lines" interval=60 N:13
-PUTVAL "localhost/exec-nDPIsrvd/counter-json_bytes" interval=60 N:11714
+PUTVAL "localhost/exec-nDPIsrvd/counter-json_bytes" interval=60 N:11804
 PUTVAL "localhost/exec-nDPIsrvd/counter-flow_new_count" interval=60 N:1
 PUTVAL "localhost/exec-nDPIsrvd/counter-flow_end_count" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/counter-flow_idle_count" interval=60 N:1
@@ -92,6 +92,7 @@ PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_confidence_dpi" interval=60 N:1
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_confidence_nbpf" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_confidence_by_ip" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_confidence_dpi_aggressive" interval=60 N:0
+PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_confidence_custom_rule" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_confidence_unknown" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_severity_low" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_severity_medium" interval=60 N:0

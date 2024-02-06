@@ -1,0 +1,32 @@
+     DAEMON-EVENT: init
+              new: [.....1] [ip4][..tcp] [..192.168.1.192][37790] -> [185.157.229.246][.8080]
+         detected: [.....1] [ip4][..tcp] [..192.168.1.192][37790] -> [185.157.229.246][.8080] [Ookla][Unknown][Network][Safe]
+              new: [.....2] [ip4][..tcp] [..192.168.1.192][51156] -> [..89.96.108.170][.8080]
+     DAEMON-EVENT: [Processed: 20 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 2 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....3] [ip4][..tcp] [....192.168.1.7][51207] -> [..46.44.253.187][...80]
+         detected: [.....3] [ip4][..tcp] [....192.168.1.7][51207] -> [..46.44.253.187][...80] [HTTP.Ookla][Unknown][Network][Safe][massarosa-1.speedtest.welcomeitalia.it]
+ detection-update: [.....3] [ip4][..tcp] [....192.168.1.7][51207] -> [..46.44.253.187][...80] [HTTP.Ookla][Unknown][Network][Safe][massarosa-1.speedtest.welcomeitalia.it]
+                   RISK: HTTP Obsolete Server
+              new: [.....4] [ip4][..tcp] [....192.168.1.7][51215] -> [..46.44.253.187][.8080]
+         detected: [.....4] [ip4][..tcp] [....192.168.1.7][51215] -> [..46.44.253.187][.8080] [Ookla][Unknown][Network][Safe]
+          guessed: [.....2] [ip4][..tcp] [..192.168.1.192][51156] -> [..89.96.108.170][.8080] [Ookla][Unknown][Network][Safe]
+             idle: [.....2] [ip4][..tcp] [..192.168.1.192][51156] -> [..89.96.108.170][.8080]
+             idle: [.....1] [ip4][..tcp] [..192.168.1.192][37790] -> [185.157.229.246][.8080] [Ookla][Unknown][Network][Safe]
+     DAEMON-EVENT: [Processed: 70 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 2 / 4|skipped: 0|!detected: 0|guessed: 1|detection-updates: 1|updates: 0]
+              new: [.....5] [ip4][..tcp] [..192.168.1.128][48854] -> [..104.16.209.12][..443]
+         detected: [.....5] [ip4][..tcp] [..192.168.1.128][48854] -> [..104.16.209.12][..443] [TLS.Ookla][Cloudflare][Network][Safe][www.speedtest.net]
+ detection-update: [.....5] [ip4][..tcp] [..192.168.1.128][48854] -> [..104.16.209.12][..443] [TLS.Ookla][Cloudflare][Network][Safe][www.speedtest.net]
+             idle: [.....4] [ip4][..tcp] [....192.168.1.7][51215] -> [..46.44.253.187][.8080] [Ookla][Unknown][Network][Safe]
+              end: [.....3] [ip4][..tcp] [....192.168.1.7][51207] -> [..46.44.253.187][...80] [HTTP.Ookla][Unknown][Network][Safe]
+                   RISK: HTTP Obsolete Server
+              new: [.....6] [ip4][..tcp] [..192.168.1.128][35830] -> [..89.96.108.170][.8080]
+         detected: [.....6] [ip4][..tcp] [..192.168.1.128][35830] -> [..89.96.108.170][.8080] [TLS][Unknown][Web][Safe][spd-pub-mi-01-01.fastwebnet.it]
+                   RISK: Known Proto on Non Std Port
+ detection-update: [.....6] [ip4][..tcp] [..192.168.1.128][35830] -> [..89.96.108.170][.8080] [TLS][Unknown][Web][Safe][spd-pub-mi-01-01.fastwebnet.it]
+                   RISK: Known Proto on Non Std Port
+ detection-update: [.....6] [ip4][..tcp] [..192.168.1.128][35830] -> [..89.96.108.170][.8080] [TLS.Ookla][Unknown][Web][Safe][spd-pub-mi-01-01.fastwebnet.it]
+             idle: [.....5] [ip4][..tcp] [..192.168.1.128][48854] -> [..104.16.209.12][..443] [TLS.Ookla][Cloudflare][Network][Safe]
+             idle: [.....6] [ip4][..tcp] [..192.168.1.128][35830] -> [..89.96.108.170][.8080] [TLS.Ookla][Unknown][Web][Safe]
+     DAEMON-EVENT: shutdown

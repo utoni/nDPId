@@ -92,6 +92,7 @@ PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_confidence_dpi" interval=60 N:77
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_confidence_nbpf" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_confidence_by_ip" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_confidence_dpi_aggressive" interval=60 N:0
+PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_confidence_custom_rule" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_confidence_unknown" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_severity_low" interval=60 N:30
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_severity_medium" interval=60 N:68

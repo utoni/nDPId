@@ -1,0 +1,17 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+      ERROR-EVENT: Unknown datalink layer packet [1/16]
+      ERROR-EVENT: Unknown datalink layer packet [2/16]
+      ERROR-EVENT: Unknown datalink layer packet [3/16]
+      ERROR-EVENT: Unknown datalink layer packet [4/16]
+      ERROR-EVENT: Unknown datalink layer packet [5/16]
+      ERROR-EVENT: Unknown datalink layer packet [6/16]
+      ERROR-EVENT: Unknown datalink layer packet [7/16]
+      ERROR-EVENT: Unknown datalink layer packet [8/16]
+      ERROR-EVENT: Unknown datalink layer packet [9/16]
+      ERROR-EVENT: Unknown datalink layer packet [10/16]
+      ERROR-EVENT: Unknown datalink layer packet [11/16]
+      ERROR-EVENT: Unknown datalink layer packet [12/16]
+      ERROR-EVENT: Unknown datalink layer packet [13/16]
+     DAEMON-EVENT: shutdown

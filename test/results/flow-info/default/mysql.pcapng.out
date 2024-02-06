@@ -1,0 +1,12 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [.192.168.88.231][36732] -> [.192.168.88.201][.3306]
+         detected: [.....1] [ip4][..tcp] [.192.168.88.231][36732] -> [.192.168.88.201][.3306] [MySQL][Unknown][Database][Acceptable]
+     DAEMON-EVENT: [Processed: 15 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....2] [ip4][..tcp] [.192.168.88.231][36272] -> [.192.168.88.200][.3306]
+         detected: [.....2] [ip4][..tcp] [.192.168.88.231][36272] -> [.192.168.88.200][.3306] [MySQL][Unknown][Database][Acceptable]
+              end: [.....2] [ip4][..tcp] [.192.168.88.231][36272] -> [.192.168.88.200][.3306] [MySQL][Unknown][Database][Acceptable]
+              end: [.....1] [ip4][..tcp] [.192.168.88.231][36732] -> [.192.168.88.201][.3306] [MySQL][Unknown][Database][Acceptable]
+     DAEMON-EVENT: shutdown

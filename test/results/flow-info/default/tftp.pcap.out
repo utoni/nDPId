@@ -38,8 +38,18 @@
               new: [.....7] [ip4][..udp] [...172.28.5.170][62058] -> [....172.28.5.91][44618]
          detected: [.....7] [ip4][..udp] [...172.28.5.170][62058] -> [....172.28.5.91][44618] [TFTP][Unknown][DataTransfer][Acceptable]
                    RISK: Known Proto on Non Std Port
+             idle: [.....5] [ip4][..udp] [....172.28.4.53][54627] -> [...172.16.5.170][...69] [TFTP][Unknown][DataTransfer][Acceptable]
+     DAEMON-EVENT: [Processed: 107 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 2 / 7|skipped: 0|!detected: 0|guessed: 2|detection-updates: 0|updates: 0]
+              new: [.....8] [ip4][..udp] [...192.168.2.45][35840] -> [..192.168.2.200][...69]
+         detected: [.....8] [ip4][..udp] [...192.168.2.45][35840] -> [..192.168.2.200][...69] [TFTP][Unknown][DataTransfer][Acceptable]
+              new: [.....9] [ip4][..udp] [..192.168.2.200][47649] -> [...192.168.2.45][35840]
+         detected: [.....9] [ip4][..udp] [..192.168.2.200][47649] -> [...192.168.2.45][35840] [TFTP][Unknown][DataTransfer][Acceptable]
+                   RISK: Known Proto on Non Std Port
              idle: [.....7] [ip4][..udp] [...172.28.5.170][62058] -> [....172.28.5.91][44618] [TFTP][Unknown][DataTransfer][Acceptable]
                    RISK: Known Proto on Non Std Port
-             idle: [.....5] [ip4][..udp] [....172.28.4.53][54627] -> [...172.16.5.170][...69] [TFTP][Unknown][DataTransfer][Acceptable]
+             idle: [.....8] [ip4][..udp] [...192.168.2.45][35840] -> [..192.168.2.200][...69] [TFTP][Unknown][DataTransfer][Acceptable]
+             idle: [.....9] [ip4][..udp] [..192.168.2.200][47649] -> [...192.168.2.45][35840] [TFTP][Unknown][DataTransfer][Acceptable]
+                   RISK: Known Proto on Non Std Port
              idle: [.....6] [ip4][..udp] [....172.28.5.91][44618] -> [...172.28.5.170][...69] [TFTP][Unknown][DataTransfer][Acceptable]
      DAEMON-EVENT: shutdown

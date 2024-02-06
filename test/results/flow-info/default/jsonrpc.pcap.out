@@ -1,0 +1,13 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [......127.0.0.1][36646] -> [......127.0.0.1][.8080]
+         detected: [.....1] [ip4][..tcp] [......127.0.0.1][36646] -> [......127.0.0.1][.8080] [JSON-RPC][Unknown][RPC][Acceptable]
+              new: [.....2] [ip4][..tcp] [..192.168.8.251][51084] -> [.179.99.210.200][...80]
+         detected: [.....2] [ip4][..tcp] [..192.168.8.251][51084] -> [.179.99.210.200][...80] [HTTP.JSON-RPC][Unknown][RPC][Acceptable][mdotti.dyndns.org]
+ detection-update: [.....2] [ip4][..tcp] [..192.168.8.251][51084] -> [.179.99.210.200][...80] [HTTP.JSON-RPC][Unknown][RPC][Acceptable][mdotti.dyndns.org]
+                   RISK: HTTP Obsolete Server
+             idle: [.....2] [ip4][..tcp] [..192.168.8.251][51084] -> [.179.99.210.200][...80] [HTTP.JSON-RPC][Unknown][RPC][Acceptable]
+                   RISK: HTTP Obsolete Server
+              end: [.....1] [ip4][..tcp] [......127.0.0.1][36646] -> [......127.0.0.1][.8080] [JSON-RPC][Unknown][RPC][Acceptable]
+     DAEMON-EVENT: shutdown

@@ -77,8 +77,6 @@
          detected: [....24] [ip4][..udp] [...192.168.1.77][23174] -> [....91.108.16.4][..538] [Telegram][Telegram][Chat][Acceptable]
               new: [....25] [ip4][..udp] [...192.168.1.77][23174] -> [...192.168.1.52][31480]
               new: [....26] [ip4][..udp] [...192.168.1.77][23174] -> [..87.11.205.195][60723]
-         detected: [....26] [ip4][..udp] [...192.168.1.77][23174] -> [..87.11.205.195][60723] [OpenVPN][Unknown][VPN][Acceptable]
-                   RISK: Known Proto on Non Std Port
           analyse: [....19] [ip4][..udp] [...192.168.1.77][23174] -> [.....91.108.8.7][..521] [Telegram][Telegram][Chat][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.501|     0.118|     0.112|        12556.351|    4.400]
@@ -219,8 +217,9 @@
              idle: [....36] [ip4][..udp] [...192.168.1.77][57621] -> [..192.168.1.255][57621] [Spotify][Unknown][Music][Fun]
              idle: [....14] [ip4][..udp] [...192.168.1.53][57621] -> [..192.168.1.255][57621] [Spotify][Unknown][Music][Fun]
              idle: [....43] [ip4][..udp] [...192.168.1.77][52127] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable]
-             idle: [....26] [ip4][..udp] [...192.168.1.77][23174] -> [..87.11.205.195][60723] [OpenVPN][Unknown][VPN][Acceptable]
-                   RISK: Known Proto on Non Std Port
+     not-detected: [....26] [ip4][..udp] [...192.168.1.77][23174] -> [..87.11.205.195][60723] [Unknown][Unknown][Unrated]
+                   RISK: Unidirectional Traffic
+             idle: [....26] [ip4][..udp] [...192.168.1.77][23174] -> [..87.11.205.195][60723]
              idle: [....35] [ip4][..udp] [...192.168.1.77][50822] -> [..216.58.205.68][..443] [QUIC.Google][Google][Web][Acceptable]
              idle: [....31] [ip4][..udp] [...192.168.1.77][49764] -> [....192.168.1.1][...53] [DNS.ntop][Unknown][Network][Safe]
              idle: [.....2] [ip4][..udp] [...192.168.1.53][54306] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable]
