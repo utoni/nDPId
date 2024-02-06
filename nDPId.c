@@ -54,10 +54,10 @@
 #define DLT_DSA_TAG_EDSA 285
 #endif
 
-#define NDPI_VERSION_CHECK ((NDPI_MAJOR == 5 && NDPI_MINOR < 0) || NDPI_MAJOR < 5)
+#define NDPI_VERSION_CHECK ((NDPI_MAJOR == 4 && NDPI_MINOR < 9) || NDPI_MAJOR < 4)
 
-#if NDPI_VERSION_CHECK && NDPI_API_VERSION < 10172
-#error "nDPI >= 5.0.0 or API version >= 10172 required"
+#if NDPI_VERSION_CHECK
+#error "nDPI >= 4.9.0 required"
 #endif
 
 #if nDPId_MAX_READER_THREADS <= 0
