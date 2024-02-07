@@ -970,93 +970,28 @@ static void get_ip6_from_sockaddr(struct sockaddr_in6 const * const saddr, union
     }
 }
 
-static int get_ip6_address_and_netmask(char const * const ifa_name, size_t ifnamelen)
+static void get_ip6_address_and_netmask(struct ifaddrs const * const ifaddr)
 {
-    FILE * f;
-    char addr6[INET6_ADDRSTRLEN], netmask6[INET6_ADDRSTRLEN], subnet6[INET6_ADDRSTRLEN], devname[21];
-    struct sockaddr_in6 sap;
-    int plen, scope, dad_status, if_idx, retval = 0;
-    char addr6p[8][5];
-
-    f = fopen("/proc/net/if_inet6", "r");
-    if (f == NULL)
+    get_ip6_from_sockaddr((struct sockaddr_in6 *)ifaddr->ifa_netmask, &nDPId_options.pcap_dev_netmask6);
+    get_ip6_from_sockaddr((struct sockaddr_in6 *)ifaddr->ifa_addr, &nDPId_options.pcap_dev_ip6);
+    ip_netmask_to_subnet(&nDPId_options.pcap_dev_ip6,
+                         &nDPId_options.pcap_dev_netmask6,
+                         &nDPId_options.pcap_dev_subnet6,
+                         L3_IP6);
     {
-        return 1;
+        char addr[INET6_ADDRSTRLEN];
+        char netm[INET6_ADDRSTRLEN];
+        char subn[INET6_ADDRSTRLEN];
+        void * saddr = &nDPId_options.pcap_dev_ip6.v6.ip;
+        void * snetm = &nDPId_options.pcap_dev_netmask6.v6.ip;
+        void * ssubn = &nDPId_options.pcap_dev_subnet6.v6.ip;
+        logger(0,
+               "%s IPv6 address netmask subnet: %s %s %s",
+               get_cmdarg(&nDPId_options.pcap_file_or_interface),
+               inet_ntop(AF_INET6, saddr, addr, sizeof(addr)),
+               inet_ntop(AF_INET6, snetm, netm, sizeof(netm)),
+               inet_ntop(AF_INET6, ssubn, subn, sizeof(subn)));
     }
-
-    while (fscanf(f,
-                  "%4s%4s%4s%4s%4s%4s%4s%4s %08x %02x %02x %02x %20s\n",
-                  addr6p[0],
-                  addr6p[1],
-                  addr6p[2],
-                  addr6p[3],
-                  addr6p[4],
-                  addr6p[5],
-                  addr6p[6],
-                  addr6p[7],
-                  &if_idx,
-                  &plen,
-                  &scope,
-                  &dad_status,
-                  devname) != EOF)
-    {
-        if (strncmp(devname, ifa_name, ifnamelen) == 0)
-        {
-            sprintf(addr6,
-                    "%s:%s:%s:%s:%s:%s:%s:%s",
-                    addr6p[0],
-                    addr6p[1],
-                    addr6p[2],
-                    addr6p[3],
-                    addr6p[4],
-                    addr6p[5],
-                    addr6p[6],
-                    addr6p[7]);
-
-            memset(&sap, 0, sizeof(sap));
-            if (inet_pton(AF_INET6, addr6, (struct sockaddr *)&sap.sin6_addr) != 1)
-            {
-                retval = 1;
-                goto error;
-            }
-            inet_ntop(AF_INET6, &sap.sin6_addr, addr6, sizeof(addr6));
-            sap.sin6_family = AF_INET6;
-            get_ip6_from_sockaddr(&sap, &nDPId_options.pcap_dev_ip6);
-
-            memset(&sap, 0, sizeof(sap));
-            memset(&sap.sin6_addr.s6_addr, 0xFF, plen / 8);
-            if (plen < 128 && (plen % 32) != 0)
-            {
-#if defined(__FreeBSD__) || defined(__APPLE__)
-                sap.sin6_addr.__u6_addr.__u6_addr32[plen / 32] = 0xFFFFFFFF << (32 - (plen % 32));
-#else
-                sap.sin6_addr.s6_addr32[plen / 32] = 0xFFFFFFFF << (32 - (plen % 32));
-#endif
-            }
-            inet_ntop(AF_INET6, &sap.sin6_addr, netmask6, sizeof(netmask6));
-            sap.sin6_family = AF_INET6;
-            get_ip6_from_sockaddr(&sap, &nDPId_options.pcap_dev_netmask6);
-
-            ip_netmask_to_subnet(&nDPId_options.pcap_dev_ip6,
-                                 &nDPId_options.pcap_dev_netmask6,
-                                 &nDPId_options.pcap_dev_subnet6,
-                                 L3_IP6);
-            inet_ntop(AF_INET6, &nDPId_options.pcap_dev_subnet6.v6, subnet6, sizeof(subnet6));
-
-            logger(0,
-                   "%s IPv6 address/prefix netmask subnet: %s/%u %s %s",
-                   get_cmdarg(&nDPId_options.pcap_file_or_interface),
-                   addr6,
-                   plen,
-                   netmask6,
-                   subnet6);
-        }
-    }
-
-error:
-    fclose(f);
-
-    return retval;
 }
 
 static void get_ip4_address_and_netmask(struct ifaddrs const * const ifaddr)
@@ -1117,15 +1052,7 @@ static int get_ip_netmask_from_pcap_dev(char const * const pcap_dev)
                     ip4_interface_avail = 1;
                     break;
                 case AF_INET6:
-                    if (ip6_interface_avail == 0 && get_ip6_address_and_netmask(ifa->ifa_name, ifnamelen) != 0)
-                    {
-                        int saved_errno = errno;
-                        logger_early(1,
-                                     "IPv6 address/netmask retrieval from proc filesystem failed with: %s",
-                                     strerror(saved_errno));
-                        errno = saved_errno;
-                        retval = 1;
-                    }
+                    get_ip6_address_and_netmask(ifa);
                     ip6_interface_avail = 1;
                     break;
                 default:
@@ -1282,7 +1209,10 @@ static char const * cfg_err2str(ndpi_cfg_error err)
     return "Unknown error";
 }
 
-static int cfg_set_u64(struct nDPId_workflow * const workflow, char const * const proto, char const * const param, uint64_t const value)
+static int cfg_set_u64(struct nDPId_workflow * const workflow,
+                       char const * const proto,
+                       char const * const param,
+                       uint64_t const value)
 {
     ndpi_cfg_error cfg_err;
 
@@ -1932,8 +1862,10 @@ static void process_idle_flow(struct nDPId_reader_thread * const reader_thread, 
                     if (ndpi_is_protocol_detected(workflow->ndpi_struct,
                                                   flow->info.detection_data->guessed_l7_protocol) == 0)
                     {
-                        flow->info.detection_data->guessed_l7_protocol = ndpi_detection_giveup(
-                            workflow->ndpi_struct, &flow->info.detection_data->flow, &protocol_was_guessed);
+                        flow->info.detection_data->guessed_l7_protocol =
+                            ndpi_detection_giveup(workflow->ndpi_struct,
+                                                  &flow->info.detection_data->flow,
+                                                  &protocol_was_guessed);
                     }
                     else
                     {
@@ -4305,8 +4237,10 @@ static void ndpi_process_packet(uint8_t * const args,
     {
         /* last chance to guess something, better then nothing */
         uint8_t protocol_was_guessed = 0;
-        flow_to_process->info.detection_data->guessed_l7_protocol = ndpi_detection_giveup(
-            workflow->ndpi_struct, &flow_to_process->info.detection_data->flow, &protocol_was_guessed);
+        flow_to_process->info.detection_data->guessed_l7_protocol =
+            ndpi_detection_giveup(workflow->ndpi_struct,
+                                  &flow_to_process->info.detection_data->flow,
+                                  &protocol_was_guessed);
         if (protocol_was_guessed != 0)
         {
             workflow->total_guessed_flows++;

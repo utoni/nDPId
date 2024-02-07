@@ -31,11 +31,7 @@ if [ ! -z "${CC}" ]; then
     HOST_TRIPLET="$(${CC} ${CFLAGS} -dumpmachine)"
 fi
 
-if [ ! -z "${MAKEFLAGS}" ]; then
-    case "$(uname -s)" in
-        Linux*) MAKEFLAGS="-${MAKEFLAGS}" ;;
-    esac
-fi
+MAKEFLAGS="-${MAKEFLAGS}"
 
 cat <<EOF
 ------ environment variables ------
