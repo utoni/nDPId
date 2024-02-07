@@ -21,6 +21,7 @@ static char * pidfile = NULL;
 static char * serv_optarg = NULL;
 static char * user = NULL;
 static char * group = NULL;
+static int test_mode = 0;
 static char * influxdb_interval = NULL;
 static nDPIsrvd_ull influxdb_interval_ull = 0uL;
 static char * influxdb_url = NULL;
@@ -179,6 +180,7 @@ static struct
         uint64_t flow_confidence_nbpf;
         uint64_t flow_confidence_by_ip;
         uint64_t flow_confidence_dpi_aggressive;
+        uint64_t flow_confidence_custom_rule;
         uint64_t flow_confidence_unknown;
 
         uint64_t flow_severity_low;
@@ -337,6 +339,7 @@ static struct global_map const confidence_map[] = {
     {"nBPF", INFLUXD_STATS_GAUGE_PTR(flow_confidence_nbpf)},
     {"Match by IP", INFLUXD_STATS_GAUGE_PTR(flow_confidence_by_ip)},
     {"DPI (aggressive)", INFLUXD_STATS_GAUGE_PTR(flow_confidence_dpi_aggressive)},
+    {"Match by custom rule", INFLUXD_STATS_GAUGE_PTR(flow_confidence_custom_rule)},
     {NULL, INFLUXD_STATS_GAUGE_PTR(flow_confidence_unknown)}};
 
 static struct global_map const severity_map[] = {{"Low", INFLUXD_STATS_GAUGE_PTR(flow_severity_low)},
@@ -509,7 +512,7 @@ static int serialize_influx_line(char * buf, size_t siz)
     bytes = snprintf(buf,
                      siz,
                      "%s " INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
-                         INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT_END(),
+                         INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT_END(),
                      "confidence",
                      INFLUXDB_VALUE_GAUGE(flow_confidence_by_port),
                      INFLUXDB_VALUE_GAUGE(flow_confidence_dpi_partial),
@@ -519,6 +522,7 @@ static int serialize_influx_line(char * buf, size_t siz)
                      INFLUXDB_VALUE_GAUGE(flow_confidence_nbpf),
                      INFLUXDB_VALUE_GAUGE(flow_confidence_by_ip),
                      INFLUXDB_VALUE_GAUGE(flow_confidence_dpi_aggressive),
+                     INFLUXDB_VALUE_GAUGE(flow_confidence_custom_rule),
                      INFLUXDB_VALUE_GAUGE(flow_confidence_unknown));
     CHECK_SNPRINTF_RET(bytes);
 
@@ -644,6 +648,7 @@ failure:
     INFLUXD_STATS_GAUGE_SUB(flow_confidence_nbpf);
     INFLUXD_STATS_GAUGE_SUB(flow_confidence_by_ip);
     INFLUXD_STATS_GAUGE_SUB(flow_confidence_dpi_aggressive);
+    INFLUXD_STATS_GAUGE_SUB(flow_confidence_custom_rule);
     INFLUXD_STATS_GAUGE_SUB(flow_confidence_unknown);
 
     INFLUXD_STATS_GAUGE_SUB(flow_severity_low);
@@ -1409,7 +1414,21 @@ static int mainloop(int epollfd, struct nDPIsrvd_socket * const sock)
                     return 1;
                 }
 
-                start_influxdb_thread();
+                if (test_mode == 0)
+                {
+                    start_influxdb_thread();
+                }
+                else
+                {
+                    char stdout_buffer[BUFSIZ];
+
+                    if (serialize_influx_line(stdout_buffer, sizeof(stdout_buffer)) != 0)
+                    {
+                        logger(1, "%s", "Could not serialize influx buffer");
+                        return 1;
+                    }
+                    printf("%s", stdout_buffer);
+                }
             }
             else if (events[i].data.fd == sock->fd)
             {
@@ -1449,12 +1468,13 @@ static int parse_options(int argc, char ** argv, struct nDPIsrvd_socket * const 
         "\t-u\tChange user.\n"
         "\t-g\tChange group.\n"
         "\t-i\tInterval between pushing statistics to an influxdb endpoint.\n"
+        "\t-t\tTest mode: Ignores `-U' / `-T' and prints stats to stdout.\n"
         "\t-U\tInfluxDB URL.\n"
         "\t  \tExample: http://127.0.0.1:8086/write?db=ndpi-daemon\n"
         "\t-T\tInfluxDB access token.\n"
         "\t  \tNot recommended, use environment variable INFLUXDB_AUTH_TOKEN instead.\n";
 
-    while ((opt = getopt(argc, argv, "hcdp:s:u:g:i:U:T:")) != -1)
+    while ((opt = getopt(argc, argv, "hcdp:s:u:g:i:tU:T:")) != -1)
     {
         switch (opt)
         {
@@ -1484,6 +1504,9 @@ static int parse_options(int argc, char ** argv, struct nDPIsrvd_socket * const 
                 free(influxdb_interval);
                 influxdb_interval = strdup(optarg);
                 break;
+            case 't':
+                test_mode = 1;
+                break;
             case 'U':
                 free(influxdb_url);
                 influxdb_url = strdup(optarg);
@@ -1496,6 +1519,15 @@ static int parse_options(int argc, char ** argv, struct nDPIsrvd_socket * const 
                 fprintf(stderr, usage, argv[0]);
                 return 1;
         }
+    }
+
+    if (test_mode != 0)
+    {
+        logger_early(1, "%s", "Test mode enabled: ignoring `-U' / `-T' command line parameters");
+        free(influxdb_url);
+        free(influxdb_token);
+        influxdb_url = NULL;
+        influxdb_token = NULL;
     }
 
     if (serv_optarg == NULL)
@@ -1514,20 +1546,23 @@ static int parse_options(int argc, char ** argv, struct nDPIsrvd_socket * const 
         return 1;
     }
 
-    if (influxdb_url == NULL)
+    if (test_mode == 0)
     {
-        logger_early(1, "%s", "Missing InfluxDB URL.");
-        return 1;
-    }
+        if (influxdb_url == NULL)
+        {
+            logger_early(1, "%s", "Missing InfluxDB URL.");
+            return 1;
+        }
 
-    if (influxdb_token == NULL && getenv("INFLUXDB_AUTH_TOKEN") != NULL)
-    {
-        influxdb_token = strdup(getenv("INFLUXDB_AUTH_TOKEN"));
-    }
-    if (influxdb_token == NULL)
-    {
-        logger_early(1, "%s", "Missing InfluxDB authentication token.");
-        return 1;
+        if (influxdb_token == NULL && getenv("INFLUXDB_AUTH_TOKEN") != NULL)
+        {
+            influxdb_token = strdup(getenv("INFLUXDB_AUTH_TOKEN"));
+        }
+        if (influxdb_token == NULL)
+        {
+            logger_early(1, "%s", "Missing InfluxDB authentication token.");
+            return 1;
+        }
     }
 
     if (nDPIsrvd_setup_address(&sock->address, serv_optarg) != 0)
@@ -1656,13 +1691,30 @@ int main(int argc, char ** argv)
         }
     }
 
-    curl_global_init(CURL_GLOBAL_ALL);
+    if (test_mode == 0)
+    {
+        curl_global_init(CURL_GLOBAL_ALL);
+    }
 
     logger_early(0, "%s", "Initialization succeeded.");
     retval = mainloop(epollfd, sock);
     logger_early(0, "%s", "Bye.");
 
-    curl_global_cleanup();
+    if (test_mode == 0)
+    {
+        curl_global_cleanup();
+    }
+    else
+    {
+        char stdout_buffer[BUFSIZ];
+
+        if (serialize_influx_line(stdout_buffer, sizeof(stdout_buffer)) != 0)
+        {
+            logger(1, "%s", "Could not serialize influx buffer");
+            return 1;
+        }
+        printf("%s", stdout_buffer);
+    }
 failure:
     nDPIsrvd_socket_free(&sock);
     close(influxd_timerfd);

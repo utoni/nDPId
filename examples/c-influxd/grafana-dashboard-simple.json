@@ -89,7 +89,7 @@
       }
     ]
   },
-  "editable": true,
+  "editable": false,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
@@ -97,7 +97,7 @@
   "liveNow": false,
   "panels": [
     {
-      "collapsed": true,
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -105,1683 +105,1681 @@
         "y": 0
       },
       "id": 22,
-      "panels": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_INFLUXDB}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "percentage",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "#EAB839",
-                    "value": 25
-                  },
-                  {
-                    "color": "red",
-                    "value": 50
-                  }
-                ]
-              }
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "error_ip4_l4_payload_detection"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "IPv4 L4 Failed"
-                  },
-                  {
-                    "id": "thresholds",
-                    "value": {
-                      "mode": "absolute",
-                      "steps": [
-                        {
-                          "color": "green",
-                          "value": null
-                        },
-                        {
-                          "color": "yellow",
-                          "value": 1
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "error_ip4_packet_too_short"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "IPv4 Packet Size"
-                  },
-                  {
-                    "id": "thresholds",
-                    "value": {
-                      "mode": "absolute",
-                      "steps": [
-                        {
-                          "color": "green",
-                          "value": null
-                        },
-                        {
-                          "color": "yellow",
-                          "value": 1
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "error_ip4_size_smaller_than_header"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "IPv4 Header Size"
-                  },
-                  {
-                    "id": "thresholds",
-                    "value": {
-                      "mode": "absolute",
-                      "steps": [
-                        {
-                          "color": "green",
-                          "value": null
-                        },
-                        {
-                          "color": "yellow",
-                          "value": 1
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "error_ip6_l4_payload_detection"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "IPv6 L4 Failed"
-                  },
-                  {
-                    "id": "thresholds",
-                    "value": {
-                      "mode": "absolute",
-                      "steps": [
-                        {
-                          "color": "green",
-                          "value": null
-                        },
-                        {
-                          "color": "yellow",
-                          "value": 1
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "error_ip6_packet_too_short"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "IPv6 Packet Size"
-                  },
-                  {
-                    "id": "thresholds",
-                    "value": {
-                      "mode": "absolute",
-                      "steps": [
-                        {
-                          "color": "green",
-                          "value": null
-                        },
-                        {
-                          "color": "yellow",
-                          "value": 1
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "error_ip6_size_smaller_than_header"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "IPv6 Header Size"
-                  },
-                  {
-                    "id": "thresholds",
-                    "value": {
-                      "mode": "absolute",
-                      "steps": [
-                        {
-                          "color": "green",
-                          "value": null
-                        },
-                        {
-                          "color": "yellow",
-                          "value": 1
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "error_packet_header_invalid"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Packet Header Invalid"
-                  },
-                  {
-                    "id": "thresholds",
-                    "value": {
-                      "mode": "absolute",
-                      "steps": [
-                        {
-                          "color": "green",
-                          "value": null
-                        },
-                        {
-                          "color": "yellow",
-                          "value": 1
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "error_packet_too_short"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Packet Size"
-                  },
-                  {
-                    "id": "thresholds",
-                    "value": {
-                      "mode": "absolute",
-                      "steps": [
-                        {
-                          "color": "green",
-                          "value": null
-                        },
-                        {
-                          "color": "yellow",
-                          "value": 1
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "error_packet_type_unknown"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Packet Type Unknown"
-                  },
-                  {
-                    "id": "thresholds",
-                    "value": {
-                      "mode": "absolute",
-                      "steps": [
-                        {
-                          "color": "green",
-                          "value": null
-                        },
-                        {
-                          "color": "yellow",
-                          "value": 1
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "error_tcp_packet_too_short"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "TCP Packet Size"
-                  },
-                  {
-                    "id": "thresholds",
-                    "value": {
-                      "mode": "absolute",
-                      "steps": [
-                        {
-                          "color": "green",
-                          "value": null
-                        },
-                        {
-                          "color": "yellow",
-                          "value": 1
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "error_udp_packet_too_short"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "UDP Packet Size"
-                  },
-                  {
-                    "id": "thresholds",
-                    "value": {
-                      "mode": "absolute",
-                      "steps": [
-                        {
-                          "color": "green",
-                          "value": null
-                        },
-                        {
-                          "color": "yellow",
-                          "value": 1
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "error_unknown_datalink"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Unknown Datalink"
-                  },
-                  {
-                    "id": "thresholds",
-                    "value": {
-                      "mode": "absolute",
-                      "steps": [
-                        {
-                          "color": "green",
-                          "value": null
-                        },
-                        {
-                          "color": "yellow",
-                          "value": 1
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "error_unknown_l3_protocol"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Unknown L3 Protocol"
-                  },
-                  {
-                    "id": "thresholds",
-                    "value": {
-                      "mode": "absolute",
-                      "steps": [
-                        {
-                          "color": "green",
-                          "value": null
-                        },
-                        {
-                          "color": "yellow",
-                          "value": 1
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "error_unsupported_datalink"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Unsupported Datalink"
-                  },
-                  {
-                    "id": "thresholds",
-                    "value": {
-                      "mode": "absolute",
-                      "steps": [
-                        {
-                          "color": "green",
-                          "value": null
-                        },
-                        {
-                          "color": "yellow",
-                          "value": 1
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "flow_analyse_count"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Analyse"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "flow_detected_count"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Detections"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "flow_detection_update_count"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Detection Updates"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "flow_end_count"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "End"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "flow_guessed_count"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Guessed"
-                  },
-                  {
-                    "id": "thresholds",
-                    "value": {
-                      "mode": "percentage",
-                      "steps": [
-                        {
-                          "color": "green",
-                          "value": null
-                        },
-                        {
-                          "color": "yellow",
-                          "value": 5
-                        },
-                        {
-                          "color": "red",
-                          "value": 10
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "id": "color"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "flow_idle_count"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Idle"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "flow_new_count"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "New"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "flow_not_detected_count"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Not Detected"
-                  },
-                  {
-                    "id": "thresholds",
-                    "value": {
-                      "mode": "absolute",
-                      "steps": [
-                        {
-                          "color": "green",
-                          "value": null
-                        },
-                        {
-                          "color": "red",
-                          "value": 1
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "flow_risky_count"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Risky"
-                  },
-                  {
-                    "id": "thresholds",
-                    "value": {
-                      "mode": "absolute",
-                      "steps": [
-                        {
-                          "color": "green",
-                          "value": null
-                        },
-                        {
-                          "color": "yellow",
-                          "value": 1
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "flow_update_count"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Updates"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "init_count"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Init"
-                  },
-                  {
-                    "id": "thresholds",
-                    "value": {
-                      "mode": "absolute",
-                      "steps": [
-                        {
-                          "color": "green",
-                          "value": null
-                        },
-                        {
-                          "color": "yellow",
-                          "value": 1
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "packet_count"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Packet"
-                  },
-                  {
-                    "id": "thresholds",
-                    "value": {
-                      "mode": "percentage",
-                      "steps": [
-                        {
-                          "color": "green",
-                          "value": null
-                        },
-                        {
-                          "color": "yellow",
-                          "value": 25
-                        },
-                        {
-                          "color": "red",
-                          "value": 50
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "id": "color",
-                    "value": {
-                      "mode": "thresholds"
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "packet_flow_count"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Packet Flow"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "reconnect_count"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Reconnect"
-                  },
-                  {
-                    "id": "thresholds",
-                    "value": {
-                      "mode": "absolute",
-                      "steps": [
-                        {
-                          "color": "green",
-                          "value": null
-                        },
-                        {
-                          "color": "yellow",
-                          "value": 1
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "shutdown_count"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Shutdown"
-                  },
-                  {
-                    "id": "thresholds",
-                    "value": {
-                      "mode": "absolute",
-                      "steps": [
-                        {
-                          "color": "green",
-                          "value": null
-                        },
-                        {
-                          "color": "red",
-                          "value": 1
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "status_count"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Status"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "error_capture_size_smaller_than_packet"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Capture Size < Packet Size"
-                  },
-                  {
-                    "id": "thresholds",
-                    "value": {
-                      "mode": "absolute",
-                      "steps": [
-                        {
-                          "color": "green",
-                          "value": null
-                        },
-                        {
-                          "color": "red",
-                          "value": 1
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "error_flow_memory_alloc"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Memory Allocation Failed"
-                  },
-                  {
-                    "id": "thresholds",
-                    "value": {
-                      "mode": "absolute",
-                      "steps": [
-                        {
-                          "color": "green",
-                          "value": null
-                        },
-                        {
-                          "color": "red",
-                          "value": 1
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "error_max_flows_to_track"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Max Flows"
-                  },
-                  {
-                    "id": "thresholds",
-                    "value": {
-                      "mode": "absolute",
-                      "steps": [
-                        {
-                          "color": "green",
-                          "value": null
-                        },
-                        {
-                          "color": "red",
-                          "value": 1
-                        }
-                      ]
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 9,
-            "w": 15,
-            "x": 0,
-            "y": 1
-          },
-          "id": 20,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "10.2.0",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${DS_INFLUXDB}"
-              },
-              "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"events\"\n  )",
-              "refId": "A"
-            }
-          ],
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_INFLUXDB}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic-by-name"
-              },
-              "custom": {
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                }
-              },
-              "mappings": []
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 9,
-            "w": 3,
-            "x": 15,
-            "y": 1
-          },
-          "id": 19,
-          "options": {
-            "legend": {
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": false
-            },
-            "pieType": "pie",
-            "reduceOptions": {
-              "calcs": [
-                "sum"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${DS_INFLUXDB}"
-              },
-              "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"events\"\n  )",
-              "refId": "A"
-            }
-          ],
-          "type": "piechart"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_INFLUXDB}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic-by-name"
-              },
-              "custom": {
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                }
-              },
-              "mappings": []
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 9,
-            "w": 3,
-            "x": 18,
-            "y": 1
-          },
-          "id": 28,
-          "options": {
-            "legend": {
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": false
-            },
-            "pieType": "pie",
-            "reduceOptions": {
-              "calcs": [
-                "sum"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${DS_INFLUXDB}"
-              },
-              "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"events\" and\n    r._field != \"packet_flow_count\"\n  )",
-              "refId": "A"
-            }
-          ],
-          "type": "piechart"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_INFLUXDB}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 3,
-            "w": 3,
-            "x": 21,
-            "y": 1
-          },
-          "id": 27,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "10.2.0",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${DS_INFLUXDB}"
-              },
-              "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"events\" and\n    (r._field == \"packet_count\" or\n     r._field == \"packet_flow_count\")\n  )",
-              "refId": "A"
-            }
-          ],
-          "title": "Packet",
-          "transformations": [
-            {
-              "id": "calculateField",
-              "options": {
-                "mode": "reduceRow",
-                "reduce": {
-                  "reducer": "sum"
-                },
-                "replaceFields": true
-              }
-            }
-          ],
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_INFLUXDB}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 3,
-            "w": 3,
-            "x": 21,
-            "y": 4
-          },
-          "id": 26,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "10.2.0",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${DS_INFLUXDB}"
-              },
-              "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"events\" and\n    (r._field == \"flow_detected_count\" or\n     r._field == \"flow_detection_update_count\" or\n     r._field == \"flow_guessed_count\")\n  )",
-              "refId": "A"
-            }
-          ],
-          "title": "Detection",
-          "transformations": [
-            {
-              "id": "calculateField",
-              "options": {
-                "mode": "reduceRow",
-                "reduce": {
-                  "reducer": "sum"
-                },
-                "replaceFields": true
-              }
-            }
-          ],
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_INFLUXDB}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 3,
-            "w": 3,
-            "x": 21,
-            "y": 7
-          },
-          "id": 21,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "10.2.0",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${DS_INFLUXDB}"
-              },
-              "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"events\"\n  )",
-              "refId": "A"
-            }
-          ],
-          "transformations": [
-            {
-              "id": "calculateField",
-              "options": {
-                "mode": "reduceRow",
-                "reduce": {
-                  "reducer": "sum"
-                },
-                "replaceFields": true
-              }
-            }
-          ],
-          "type": "stat"
-        }
-      ],
+      "panels": [],
       "title": "Events",
       "type": "row"
     },
     {
-      "collapsed": true,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 25
+              },
+              {
+                "color": "red",
+                "value": 50
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "error_ip4_l4_payload_detection"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "IPv4 L4 Failed"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "error_ip4_packet_too_short"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "IPv4 Packet Size"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "error_ip4_size_smaller_than_header"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "IPv4 Header Size"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "error_ip6_l4_payload_detection"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "IPv6 L4 Failed"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "error_ip6_packet_too_short"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "IPv6 Packet Size"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "error_ip6_size_smaller_than_header"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "IPv6 Header Size"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "error_packet_header_invalid"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Packet Header Invalid"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "error_packet_too_short"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Packet Size"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "error_packet_type_unknown"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Packet Type Unknown"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "error_tcp_packet_too_short"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "TCP Packet Size"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "error_udp_packet_too_short"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "UDP Packet Size"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "error_unknown_datalink"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Unknown Datalink"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "error_unknown_l3_protocol"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Unknown L3 Protocol"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "error_unsupported_datalink"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Unsupported Datalink"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "flow_analyse_count"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Analyse"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "flow_detected_count"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Detections"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "flow_detection_update_count"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Detection Updates"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "flow_end_count"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "End"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "flow_guessed_count"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Guessed"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "percentage",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 5
+                    },
+                    {
+                      "color": "red",
+                      "value": 10
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "color"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "flow_idle_count"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Idle"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "flow_new_count"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "New"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "flow_not_detected_count"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Not Detected"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "flow_risky_count"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Risky"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "flow_update_count"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Updates"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "init_count"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Init"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "packet_count"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Packet"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "percentage",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 25
+                    },
+                    {
+                      "color": "red",
+                      "value": 50
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "thresholds"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "packet_flow_count"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Packet Flow"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "reconnect_count"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Reconnect"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "shutdown_count"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Shutdown"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "status_count"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Status"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "error_capture_size_smaller_than_packet"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Capture Size < Packet Size"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "error_flow_memory_alloc"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Memory Allocation Failed"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "error_max_flows_to_track"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Max Flows"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 15,
+        "x": 0,
+        "y": 1
+      },
+      "id": 20,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.2.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"events\"\n  )",
+          "refId": "A"
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic-by-name"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 3,
+        "x": 15,
+        "y": 1
+      },
+      "id": 19,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"events\"\n  )",
+          "refId": "A"
+        }
+      ],
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic-by-name"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 3,
+        "x": 18,
+        "y": 1
+      },
+      "id": 28,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"events\" and\n    r._field != \"packet_flow_count\"\n  )",
+          "refId": "A"
+        }
+      ],
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 21,
+        "y": 1
+      },
+      "id": 27,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.2.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"events\" and\n    (r._field == \"packet_count\" or\n     r._field == \"packet_flow_count\")\n  )",
+          "refId": "A"
+        }
+      ],
+      "title": "Packet",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "mode": "reduceRow",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": true
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 21,
+        "y": 4
+      },
+      "id": 26,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.2.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"events\" and\n    (r._field == \"flow_detected_count\" or\n     r._field == \"flow_detection_update_count\" or\n     r._field == \"flow_guessed_count\")\n  )",
+          "refId": "A"
+        }
+      ],
+      "title": "Detection",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "mode": "reduceRow",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": true
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 21,
+        "y": 7
+      },
+      "id": 21,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.2.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"events\"\n  )",
+          "refId": "A"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "mode": "reduceRow",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": true
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 1
+        "y": 10
       },
       "id": 5,
-      "panels": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_INFLUXDB}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "auto",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              },
-              "unit": "binBps"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "flow_dst_total_bytes"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Total Bytes Received"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "flow_src_total_bytes"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Total Bytes Transmitted"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "json_bytes"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Total JSON Bytes"
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 15,
-            "x": 0,
-            "y": 2
-          },
-          "id": 1,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${DS_INFLUXDB}"
-              },
-              "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"general\" and\n    (r._field == \"flow_src_total_bytes\" or\n     r._field == \"flow_dst_total_bytes\" or\n     r._field == \"json_bytes\")\n  )",
-              "refId": "A"
-            }
-          ],
-          "title": "Data Processed",
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_INFLUXDB}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                }
-              },
-              "mappings": [],
-              "unit": "bytes"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "flow_dst_total_bytes"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Total Bytes Received"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "flow_src_total_bytes"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Total Bytes Transmitted"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "json_bytes"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Total JSON Bytes"
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 3,
-            "x": 15,
-            "y": 2
-          },
-          "id": 3,
-          "options": {
-            "legend": {
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": false
-            },
-            "pieType": "pie",
-            "reduceOptions": {
-              "calcs": [
-                "sum"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${DS_INFLUXDB}"
-              },
-              "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"general\" and\n    (r._field == \"flow_src_total_bytes\" or\n     r._field == \"flow_dst_total_bytes\" or\n     r._field == \"json_bytes\")\n  )",
-              "refId": "A"
-            }
-          ],
-          "type": "piechart"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_INFLUXDB}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              },
-              "unit": "binBps"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 3,
-            "x": 18,
-            "y": 2
-          },
-          "id": 24,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "10.2.0",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${DS_INFLUXDB}"
-              },
-              "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"general\" and\n    r._field == \"flow_src_total_bytes\"\n  )",
-              "refId": "A"
-            }
-          ],
-          "title": "Bytes Transmitted",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_INFLUXDB}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 3,
-            "x": 21,
-            "y": 2
-          },
-          "id": 7,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "10.2.0",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${DS_INFLUXDB}"
-              },
-              "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"general\" and\n    r._field == \"json_lines\"\n  )",
-              "refId": "A"
-            }
-          ],
-          "title": "JSON Lines",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_INFLUXDB}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              },
-              "unit": "binBps"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 3,
-            "x": 18,
-            "y": 6
-          },
-          "id": 25,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "10.2.0",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${DS_INFLUXDB}"
-              },
-              "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"general\" and\n    r._field == \"flow_dst_total_bytes\"\n  )",
-              "refId": "A"
-            }
-          ],
-          "title": "Bytes Received",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_INFLUXDB}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              },
-              "unit": "binBps"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 3,
-            "x": 21,
-            "y": 6
-          },
-          "id": 23,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "10.2.0",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${DS_INFLUXDB}"
-              },
-              "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"general\" and\n    (r._field == \"flow_src_total_bytes\" or\n     r._field == \"flow_dst_total_bytes\")\n  )",
-              "refId": "A"
-            }
-          ],
-          "title": "Total Bytes",
-          "transformations": [
-            {
-              "id": "calculateField",
-              "options": {
-                "mode": "reduceRow",
-                "reduce": {
-                  "reducer": "sum"
-                },
-                "replaceFields": true
-              }
-            }
-          ],
-          "type": "stat"
-        }
-      ],
+      "panels": [],
       "title": "General",
       "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "binBps"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "flow_dst_total_bytes"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Total Bytes Received"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "flow_src_total_bytes"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Total Bytes Transmitted"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "json_bytes"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Total JSON Bytes"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 15,
+        "x": 0,
+        "y": 11
+      },
+      "id": 1,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"general\" and\n    (r._field == \"flow_src_total_bytes\" or\n     r._field == \"flow_dst_total_bytes\" or\n     r._field == \"json_bytes\")\n  )",
+          "refId": "A"
+        }
+      ],
+      "title": "Data Processed",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unit": "bytes"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "flow_dst_total_bytes"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Total Bytes Received"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "flow_src_total_bytes"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Total Bytes Transmitted"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "json_bytes"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Total JSON Bytes"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 3,
+        "x": 15,
+        "y": 11
+      },
+      "id": 3,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"general\" and\n    (r._field == \"flow_src_total_bytes\" or\n     r._field == \"flow_dst_total_bytes\" or\n     r._field == \"json_bytes\")\n  )",
+          "refId": "A"
+        }
+      ],
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "binBps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 18,
+        "y": 11
+      },
+      "id": 24,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.2.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"general\" and\n    r._field == \"flow_src_total_bytes\"\n  )",
+          "refId": "A"
+        }
+      ],
+      "title": "Bytes Transmitted",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 21,
+        "y": 11
+      },
+      "id": 7,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.2.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"general\" and\n    r._field == \"json_lines\"\n  )",
+          "refId": "A"
+        }
+      ],
+      "title": "JSON Lines",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "binBps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 18,
+        "y": 15
+      },
+      "id": 25,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.2.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"general\" and\n    r._field == \"flow_dst_total_bytes\"\n  )",
+          "refId": "A"
+        }
+      ],
+      "title": "Bytes Received",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "binBps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 21,
+        "y": 15
+      },
+      "id": 23,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.2.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"general\" and\n    (r._field == \"flow_src_total_bytes\" or\n     r._field == \"flow_dst_total_bytes\")\n  )",
+          "refId": "A"
+        }
+      ],
+      "title": "Total Bytes",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "mode": "reduceRow",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": true
+          }
+        }
+      ],
+      "type": "stat"
     },
     {
       "collapsed": true,
@@ -1789,7 +1787,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 2
+        "y": 19
       },
       "id": 6,
       "panels": [
@@ -3051,6 +3049,25 @@
                     }
                   }
                 ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_confidence_custom_rule"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Custom Rule"
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "blue",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
               }
             ]
           },
@@ -3066,7 +3083,7 @@
             "minVizHeight": 10,
             "minVizWidth": 0,
             "namePlacement": "auto",
-            "orientation": "auto",
+            "orientation": "horizontal",
             "reduceOptions": {
               "calcs": [
                 "lastNotNull"
@@ -3329,7 +3346,7 @@
             "minVizHeight": 10,
             "minVizWidth": 0,
             "namePlacement": "auto",
-            "orientation": "auto",
+            "orientation": "horizontal",
             "reduceOptions": {
               "calcs": [
                 "lastNotNull"
@@ -3359,1469 +3376,1470 @@
       "type": "row"
     },
     {
-      "collapsed": false,
+      "collapsed": true,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 3
+        "y": 20
       },
       "id": 32,
-      "panels": [],
-      "title": "Risks",
-      "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_INFLUXDB}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "yellow",
-                "value": 1
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_1_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "XSS Attack"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_2_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "SQL Injection"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_3_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "RCE Injection"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_4_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Binary App Transfer"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_5_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Known Proto on Non Std Port"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_6_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Self signed Cert"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_7_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Obsolete TLS v1.1 or older"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_8_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Weak TLS Cipher"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_9_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "TLS Cert Expired"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_10_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "TLS Cert Mismatch"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_11_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "HTTP Suspicious User Agent"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_12_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "HTTP Numeric IP Address"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_13_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "HTTP Suspicious URL"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_14_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "HTTP Suspicious Header"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_15_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "TLS probably Not Carrying HTTPS"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_16_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Suspicious DGA Domain name"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_17_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Malformed Packet"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_18_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "SSH Obsolete Client Version/Cipher"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_19_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "SSH Obsolete Server Version/Cipher"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_20_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "SMB Insecure Version"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_21_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "TLS Suspicious ESNI Usage"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_22_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Unsafe Protocol"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_23_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Suspicious DNS Traffic"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_24_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Missing SNI TLS Extension"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_25_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "HTTP Suspicious Content"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_26_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Risky ASN"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_27_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Risky Domain Name"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_28_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Malicious JA3 Fingerprint"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_29_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Malicious SSL Cert/SHA1 Fingerprint"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_30_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Desktop/File-Sharing"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_31_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Uncommon TLS ALPN"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_32_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "TLS Cert Validity Too Long"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_33_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "TLS Suspicious Extension"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_34_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "TLS Fatal Alert"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_35_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Suspicious Entropy"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_36_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Clear Text Credentials"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_37_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Large DNS Packet"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_38_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Fragmented DNS Message"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_39_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Text With Non Printable Chars"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_40_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Possible Exploit"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_41_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "TLS Cert About To Expire"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_42_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "IDN Domain Name"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_43_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Error Code"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_44_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Crawler/Bot"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_45_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Anonymous Subscriber"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_46_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Unidirectional Traffic"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_47_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "HTTP Obsolete Server"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_48_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Periodic Flow"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_49_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Minor Issues"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_50_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "TCP Connection Issues"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_51_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Fully Encrypted"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_52_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Invalid ALPN/SNI combination"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_53_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Malware Host Contacted"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_unknown_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Unknown Risk"
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 24,
-        "w": 24,
-        "x": 0,
-        "y": 4
-      },
-      "id": 12,
-      "options": {
-        "minVizHeight": 75,
-        "minVizWidth": 75,
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": false
-      },
-      "pluginVersion": "10.2.0",
-      "targets": [
+      "panels": [
         {
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_INFLUXDB}"
           },
-          "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"risks\"\n  )",
-          "refId": "A"
-        }
-      ],
-      "title": "Risk",
-      "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_INFLUXDB}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "yellow",
+                    "value": 1
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_1_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "XSS Attack"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_2_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "SQL Injection"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_3_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "RCE Injection"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_4_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Binary App Transfer"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_5_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Known Proto on Non Std Port"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_6_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Self signed Cert"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_7_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Obsolete TLS v1.1 or older"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_8_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Weak TLS Cipher"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_9_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "TLS Cert Expired"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_10_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "TLS Cert Mismatch"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_11_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "HTTP Suspicious User Agent"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_12_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "HTTP Numeric IP Address"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_13_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "HTTP Suspicious URL"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_14_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "HTTP Suspicious Header"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_15_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "TLS probably Not Carrying HTTPS"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_16_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Suspicious DGA Domain name"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_17_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Malformed Packet"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_18_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "SSH Obsolete Client Version/Cipher"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_19_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "SSH Obsolete Server Version/Cipher"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_20_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "SMB Insecure Version"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_21_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "TLS Suspicious ESNI Usage"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_22_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Unsafe Protocol"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_23_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Suspicious DNS Traffic"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_24_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Missing SNI TLS Extension"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_25_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "HTTP Suspicious Content"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_26_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Risky ASN"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_27_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Risky Domain Name"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_28_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Malicious JA3 Fingerprint"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_29_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Malicious SSL Cert/SHA1 Fingerprint"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_30_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Desktop/File-Sharing"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_31_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Uncommon TLS ALPN"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_32_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "TLS Cert Validity Too Long"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_33_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "TLS Suspicious Extension"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_34_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "TLS Fatal Alert"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_35_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Suspicious Entropy"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_36_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Clear Text Credentials"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_37_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Large DNS Packet"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_38_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Fragmented DNS Message"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_39_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Text With Non Printable Chars"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_40_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Possible Exploit"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_41_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "TLS Cert About To Expire"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_42_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "IDN Domain Name"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_43_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Error Code"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_44_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Crawler/Bot"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_45_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Anonymous Subscriber"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_46_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Unidirectional Traffic"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_47_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "HTTP Obsolete Server"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_48_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Periodic Flow"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_49_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Minor Issues"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_50_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "TCP Connection Issues"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_51_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Fully Encrypted"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_52_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Invalid ALPN/SNI combination"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_53_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Malware Host Contacted"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_unknown_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Unknown Risk"
+                  }
+                ]
+              }
+            ]
           },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
+          "gridPos": {
+            "h": 24,
+            "w": 24,
+            "x": 0,
+            "y": 4
+          },
+          "id": 12,
+          "options": {
+            "minVizHeight": 75,
+            "minVizWidth": 75,
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
             },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
+            "showThresholdLabels": false,
+            "showThresholdMarkers": false
+          },
+          "pluginVersion": "10.2.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "${DS_INFLUXDB}"
+              },
+              "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"risks\"\n  )",
+              "refId": "A"
+            }
+          ],
+          "title": "Risk",
+          "type": "gauge"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "yellow",
+                    "value": 1
+                  }
+                ]
+              }
             },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_1_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "XSS Attack"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_2_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "SQL Injection"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_3_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "RCE Injection"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_4_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Binary App Transfer"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_5_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Known Proto on Non Std Port"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_6_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Self signed Cert"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_7_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Obsolete TLS v1.1 or older"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_8_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Weak TLS Cipher"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_9_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "TLS Cert Expired"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_10_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "TLS Cert Mismatch"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_11_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "HTTP Suspicious User Agent"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_12_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "HTTP Numeric IP Address"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_13_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "HTTP Suspicious URL"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_14_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "HTTP Suspicious Header"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_15_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "TLS probably Not Carrying HTTPS"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_16_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Suspicious DGA Domain name"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_17_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Malformed Packet"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_18_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "SSH Obsolete Client Version/Cipher"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_19_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "SSH Obsolete Server Version/Cipher"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_20_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "SMB Insecure Version"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_21_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "TLS Suspicious ESNI Usage"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_22_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Unsafe Protocol"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_23_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Suspicious DNS Traffic"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_24_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Missing SNI TLS Extension"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_25_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "HTTP Suspicious Content"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_26_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Risky ASN"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_27_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Risky Domain Name"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_28_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Malicious JA3 Fingerprint"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_29_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Malicious SSL Cert/SHA1 Fingerprint"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_30_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Desktop/File-Sharing"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_31_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Uncommon TLS ALPN"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_32_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "TLS Cert Validity Too Long"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_33_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "TLS Suspicious Extension"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_34_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "TLS Fatal Alert"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_35_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Suspicious Entropy"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_36_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Clear Text Credentials"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_37_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Large DNS Packet"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_38_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Fragmented DNS Message"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_39_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Text With Non Printable Chars"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_40_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Possible Exploit"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_41_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "TLS Cert About To Expire"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_42_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "IDN Domain Name"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_43_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Error Code"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_44_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Crawler/Bot"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_45_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Anonymous Subscriber"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_46_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Unidirectional Traffic"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_47_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "HTTP Obsolete Server"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_48_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Periodic Flow"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_49_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Minor Issues"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_50_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "TCP Connection Issues"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_51_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Fully Encrypted"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_52_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Invalid ALPN/SNI combination"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_53_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Malware Host Contacted"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "flow_risk_unknown_count"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Unknown Risk"
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 24,
+            "x": 0,
+            "y": 28
+          },
+          "id": 34,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": false
             },
-            "thresholdsStyle": {
-              "mode": "off"
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
             }
           },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
+          "pluginVersion": "10.2.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "${DS_INFLUXDB}"
               },
-              {
-                "color": "yellow",
-                "value": 1
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_1_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "XSS Attack"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_2_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "SQL Injection"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_3_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "RCE Injection"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_4_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Binary App Transfer"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_5_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Known Proto on Non Std Port"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_6_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Self signed Cert"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_7_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Obsolete TLS v1.1 or older"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_8_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Weak TLS Cipher"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_9_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "TLS Cert Expired"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_10_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "TLS Cert Mismatch"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_11_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "HTTP Suspicious User Agent"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_12_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "HTTP Numeric IP Address"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_13_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "HTTP Suspicious URL"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_14_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "HTTP Suspicious Header"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_15_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "TLS probably Not Carrying HTTPS"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_16_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Suspicious DGA Domain name"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_17_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Malformed Packet"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_18_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "SSH Obsolete Client Version/Cipher"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_19_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "SSH Obsolete Server Version/Cipher"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_20_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "SMB Insecure Version"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_21_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "TLS Suspicious ESNI Usage"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_22_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Unsafe Protocol"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_23_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Suspicious DNS Traffic"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_24_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Missing SNI TLS Extension"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_25_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "HTTP Suspicious Content"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_26_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Risky ASN"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_27_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Risky Domain Name"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_28_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Malicious JA3 Fingerprint"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_29_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Malicious SSL Cert/SHA1 Fingerprint"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_30_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Desktop/File-Sharing"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_31_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Uncommon TLS ALPN"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_32_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "TLS Cert Validity Too Long"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_33_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "TLS Suspicious Extension"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_34_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "TLS Fatal Alert"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_35_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Suspicious Entropy"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_36_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Clear Text Credentials"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_37_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Large DNS Packet"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_38_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Fragmented DNS Message"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_39_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Text With Non Printable Chars"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_40_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Possible Exploit"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_41_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "TLS Cert About To Expire"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_42_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "IDN Domain Name"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_43_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Error Code"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_44_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Crawler/Bot"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_45_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Anonymous Subscriber"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_46_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Unidirectional Traffic"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_47_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "HTTP Obsolete Server"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_48_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Periodic Flow"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_49_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Minor Issues"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_50_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "TCP Connection Issues"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_51_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Fully Encrypted"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_52_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Invalid ALPN/SNI combination"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_53_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Malware Host Contacted"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_risk_unknown_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Unknown Risk"
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 24,
-        "x": 0,
-        "y": 28
-      },
-      "id": 34,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "10.2.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_INFLUXDB}"
-          },
-          "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"risks\"\n  )",
-          "refId": "A"
+              "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"risks\"\n  )",
+              "refId": "A"
+            }
+          ],
+          "title": "Risk",
+          "type": "timeseries"
         }
       ],
-      "title": "Risk",
-      "type": "timeseries"
+      "title": "Risks",
+      "type": "row"
     },
     {
       "collapsed": true,
@@ -4829,7 +4847,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 38
+        "y": 21
       },
       "id": 29,
       "panels": [
@@ -4958,7 +4976,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 29
+            "y": 5
           },
           "id": 30,
           "options": {
@@ -5138,7 +5156,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 29
+            "y": 5
           },
           "id": 31,
           "options": {
@@ -5860,7 +5878,7 @@
             "h": 24,
             "w": 24,
             "x": 0,
-            "y": 37
+            "y": 13
           },
           "id": 33,
           "options": {
@@ -5897,278 +5915,277 @@
       "type": "row"
     },
     {
-      "collapsed": true,
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 39
+        "y": 22
       },
       "id": 15,
-      "panels": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_INFLUXDB}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "auto",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "percentage",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              }
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "flow_l3_ip4_count"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "IPv4"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "flow_l3_ip6_count"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "IPv6"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "flow_l3_other_count"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Other"
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 0,
-            "y": 5
-          },
-          "id": 16,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${DS_INFLUXDB}"
-              },
-              "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"layer3\"\n  )",
-              "refId": "A"
-            }
-          ],
-          "title": "Layer3",
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_INFLUXDB}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "auto",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "percentage",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              }
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "flow_l4_icmp_count"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "ICMP"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "flow_l4_other_count"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Other"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "flow_l4_tcp_count"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "TCP"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "flow_l4_udp_count"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "UDP"
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 12,
-            "y": 5
-          },
-          "id": 17,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${DS_INFLUXDB}"
-              },
-              "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"layer4\"\n  )",
-              "refId": "A"
-            }
-          ],
-          "title": "Layer4",
-          "type": "timeseries"
-        }
-      ],
+      "panels": [],
       "title": "Layer3 / Layer4",
       "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "flow_l3_ip4_count"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "IPv4"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "flow_l3_ip6_count"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "IPv6"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "flow_l3_other_count"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Other"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 23
+      },
+      "id": 16,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"layer3\"\n  )",
+          "refId": "A"
+        }
+      ],
+      "title": "Layer3",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "flow_l4_icmp_count"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "ICMP"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "flow_l4_other_count"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Other"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "flow_l4_tcp_count"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "TCP"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "flow_l4_udp_count"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "UDP"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 23
+      },
+      "id": 17,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"layer4\"\n  )",
+          "refId": "A"
+        }
+      ],
+      "title": "Layer4",
+      "type": "timeseries"
     }
   ],
   "refresh": "10s",
@@ -6198,13 +6215,13 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "nDPId",
   "uid": "e57b37c0-d0ba-4f50-9b2d-f83e71ae8c27",
-  "version": 85,
+  "version": 88,
   "weekStart": ""
 }

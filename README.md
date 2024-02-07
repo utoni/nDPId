@@ -312,7 +312,7 @@ Format: `subopt` (unit, comment): description
 
 # test
 
-The recommended way to run integration / diff tests:
+The recommended way to run regression / diff tests:
 
 ```shell
 mkdir build
