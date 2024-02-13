@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     container: 'centos:8'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: false
           fetch-depth: 1
@@ -45,12 +45,12 @@ jobs:
         run: |
           cd ./build && cpack -G RPM && cd ..
       - name: Upload RPM
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: nDPId-centos-packages
           path: build/*.rpm
       - name: Upload on Failure
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: autoconf-config-log

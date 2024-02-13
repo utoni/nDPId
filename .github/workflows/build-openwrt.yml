@@ -26,9 +26,6 @@ jobs:
           - arch: mips_24kc
             target: ath79-generic
 
-          - arch: mipsel_24kc
-            target: mt7621
-
           - arch: powerpc_464fp
             target: apm821xx-nand
 
@@ -45,7 +42,7 @@ jobs:
             target: x86-64
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: false
           fetch-depth: 1
@@ -60,7 +57,7 @@ jobs:
           V: s
 
       - name: Store packages
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: nDPId-${{ matrix.arch}}-${{ matrix.target }}
           path: bin/packages/${{ matrix.arch }}/ndpid_openwrt_packages_ci/*.ipk

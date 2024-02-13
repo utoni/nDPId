@@ -148,7 +148,7 @@ jobs:
           echo '|---------------------------------------'
           echo '| UPLOAD...: ${{ matrix.upload }}'
           echo '----------------------------------------'
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: false
           fetch-depth: 1
@@ -225,7 +225,7 @@ jobs:
           cd ./build && cpack -G DEB && sudo dpkg -i nDPId-*.deb && cd ..
       - name: Upload DEB
         if: startsWith(matrix.os, 'macOS') == false && matrix.upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: nDPId-debian-packages_${{ matrix.compiler }}${{ matrix.upload_suffix }}
           path: build/*.deb
