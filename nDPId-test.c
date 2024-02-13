@@ -3,9 +3,9 @@
 #include <stdarg.h>
 #include <unistd.h>
 
-static void nDPIsrvd_memprof_log(char const * const format, ...);
-static void nDPIsrvd_memprof_log_alloc(size_t alloc_size);
-static void nDPIsrvd_memprof_log_free(size_t free_size);
+extern void nDPIsrvd_memprof_log(char const * const format, ...);
+extern void nDPIsrvd_memprof_log_alloc(size_t alloc_size);
+extern void nDPIsrvd_memprof_log_free(size_t free_size);
 
 //#define VERBOSE_MEMORY_PROFILING 1
 #define NO_MAIN 1
@@ -176,7 +176,7 @@ static unsigned long long int nDPIsrvd_free_bytes = 0;
         goto error;                                                                                                    \
     } while (0)
 
-static void nDPIsrvd_memprof_log(char const * const format, ...)
+void nDPIsrvd_memprof_log(char const * const format, ...)
 {
 #ifdef VERBOSE_MEMORY_PROFILING
     int logbuf_used, logbuf_used_tmp;

@@ -55,7 +55,7 @@ jobs:
             --define sonar.cfamily.build-wrapper-output="${{ env.BUILD_WRAPPER_OUT_DIR }}" \
             --define sonar.organization=lnslbrty \
             --define sonar.projectKey=lnslbrty_nDPId \
-            --define sonar.exclusions=dependencies/uthash/tests/** \
+            --define sonar.exclusions=dependencies/uthash/src/** \
             --define sonar.verbose=true \
             --define sonar.python.version=3.8 \
             --define sonar.cfamily.gcov.reportsPath=coverage.xml

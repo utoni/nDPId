@@ -277,7 +277,7 @@ static inline int nDPIsrvd_base64decode(char const * in, size_t inLen, unsigned 
 
     while (in < end)
     {
-        unsigned char c = d[*(unsigned char *)in++];
+        unsigned char c = d[*(unsigned char const *)in++];
 
         switch (c)
         {
@@ -402,8 +402,8 @@ static inline void nDPIsrvd_buffer_free(struct nDPIsrvd_buffer * const buffer)
 
 static inline void nDPIsrvd_json_buffer_reset(struct nDPIsrvd_json_buffer * const json_buffer)
 {
-    json_buffer->json_message_start = 0ul;
-    json_buffer->json_message_length = 0ull;
+    json_buffer->json_message_start = 0UL;
+    json_buffer->json_message_length = 0ULL;
     json_buffer->json_message = NULL;
 }
 
@@ -497,7 +497,7 @@ static inline int nDPIsrvd_set_read_timeout(struct nDPIsrvd_socket * const sock,
     return 0;
 }
 
-static inline int nDPIsrvd_set_nonblock(struct nDPIsrvd_socket * const sock)
+static inline int nDPIsrvd_set_nonblock(struct nDPIsrvd_socket const * const sock)
 {
     int flags;
 
