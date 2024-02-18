@@ -946,6 +946,8 @@ static ssize_t influxd_map_index(char const * const json_key,
                                  struct global_map const * const map,
                                  size_t map_length)
 {
+    ssize_t unknown_key = -1;
+
     if (json_key == NULL || key_length == 0)
     {
         return -1;
@@ -955,6 +957,7 @@ static ssize_t influxd_map_index(char const * const json_key,
     {
         if (map[i].json_key == NULL)
         {
+            unknown_key = i;
             continue;
         }
 
@@ -964,7 +967,7 @@ static ssize_t influxd_map_index(char const * const json_key,
         }
     }
 
-    return -1;
+    return unknown_key;
 }
 
 static int influxd_map_flow_u8(struct nDPIsrvd_socket * const sock,
