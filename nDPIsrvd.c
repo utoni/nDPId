@@ -1699,9 +1699,11 @@ int main(int argc, char ** argv)
     }
 
     signal(SIGPIPE, SIG_IGN);
+#if !defined(__FreeBSD__) && !defined(__APPLE__)
     signal(SIGINT, SIG_IGN);
     signal(SIGTERM, SIG_IGN);
     signal(SIGQUIT, SIG_IGN);
+#endif
 
     if (setup_event_queue(&io) != 0)
     {

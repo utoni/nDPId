@@ -1,6 +1,9 @@
 name: Build
 
 on:
+  schedule:
+    # At the end of every day
+    - cron: '0 0 * * *'
   push:
     branches:
       - main
@@ -155,7 +158,7 @@ jobs:
       - name: Install MacOS Prerequisites
         if: startsWith(matrix.os, 'macOS')
         run: |
-          brew install coreutils flock automake make unzip
+          brew install coreutils flock automake make unzip cmake pkg-config git wget
           wget 'https://www.tcpdump.org/release/libpcap-1.10.4.tar.gz'
           tar -xzvf libpcap-1.10.4.tar.gz
           cd libpcap-1.10.4
@@ -193,10 +196,16 @@ jobs:
       - name: Build nDPId
         run: |
           cmake --build build --verbose
-      - name: Build single nDPId executable (invoke CC directly)
-        if: (endsWith(matrix.compiler, 'gcc') || endsWith(matrix.compiler, 'clang')) && startsWith(matrix.coverage, '-DENABLE_COVERAGE=OFF') && startsWith(matrix.sanitizer, '-DENABLE_SANITIZER=ON') && startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=OFF') && startsWith(matrix.ndpid_zlib, '-DENABLE_ZLIB=ON')
+      - name: Build single nDPId/nDPIsrvd executables (invoke CC directly - dynamic nDPI lib)
+        if: startsWith(matrix.ndpi_build, '-DBUILD_NDPI=OFF') && startsWith(matrix.coverage, '-DENABLE_COVERAGE=OFF') && startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=OFF')
         run: |
-          cc -Wall -Wextra -std=gnu99 -fsanitize=address -fsanitize=undefined -fno-sanitize=alignment -fsanitize=enum -fsanitize=leak nDPId.c nio.c utils.c -I./build/libnDPI/include/ndpi -I. -I./dependencies -I./dependencies/jsmn -I./dependencies/uthash/include -o /tmp/a.out -lpcap ./build/libnDPI/lib/libndpi.a -pthread -lm -lz
+          pkg-config --cflags --libs libndpi
+          cc -Wall -Wextra -std=gnu99 ${{ matrix.poll }} nDPId.c nio.c utils.c $(pkg-config --cflags libndpi) -I. -I./dependencies -I./dependencies/jsmn -I./dependencies/uthash/include -o /tmp/a.out -lpcap $(pkg-config --libs libndpi) -pthread -lm
+          cc -Wall -Wextra -std=gnu99 ${{ matrix.poll }} nDPIsrvd.c nio.c utils.c -I. -I./dependencies -I./dependencies/jsmn -I./dependencies/uthash/include -o /tmp/a.out
+      - name: Build single nDPId/nDPIsrvd executables (invoke CC directly - static nDPI lib)
+        if: endsWith(matrix.compiler, 'gcc-7') == false && startsWith(matrix.ndpi_build, '-DBUILD_NDPI=ON') && startsWith(matrix.coverage, '-DENABLE_COVERAGE=OFF') && startsWith(matrix.sanitizer, '-DENABLE_SANITIZER=ON') && startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=OFF') && startsWith(matrix.ndpid_zlib, '-DENABLE_ZLIB=ON')
+        run: |
+          cc -Wall -Wextra -std=gnu99 ${{ matrix.poll }} -fsanitize=address -fsanitize=undefined -fno-sanitize=alignment -fsanitize=enum -fsanitize=leak nDPId.c nio.c utils.c -I./build/libnDPI/include/ndpi -I. -I./dependencies -I./dependencies/jsmn -I./dependencies/uthash/include -o /tmp/a.out -lpcap ./build/libnDPI/lib/libndpi.a -pthread -lm -lz
       - name: Test EXEC
         run: |
           ./build/nDPId-test
@@ -207,7 +216,7 @@ jobs:
         run: |
           ./test/run_tests.sh ./libnDPI ./build/nDPId-test
       - name: Daemon
-        if: endsWith(matrix.compiler, 'gcc') || endsWith(matrix.compiler, 'clang')
+        if: endsWith(matrix.compiler, 'cc') || endsWith(matrix.compiler, 'clang')
         run: |
           make -C ./build daemon VERBOSE=1
           make -C ./build daemon VERBOSE=1
