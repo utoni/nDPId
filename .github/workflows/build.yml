@@ -169,7 +169,7 @@ jobs:
           cd nDPI-dev
           ./autogen.sh --prefix=/usr/local --with-only-libndpi && make install
       - name: Fix kernel mmap rnd bits on Ubuntu
-        if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.arch, 'x86_64')
+        if: startsWith(matrix.os, 'ubuntu')
         run: |
           # Workaround for compatinility between latest kernel and sanitizer
           # See https://github.com/actions/runner-images/issues/9491
