@@ -256,22 +256,32 @@ jobs:
           sudo systemctl show ndpisrvd.service ndpid@lo.service -p SubState,ActiveState || true
           journalctl --no-tail --no-pager -u ndpisrvd.service -u ndpid@lo.service
       - name: Build against libnDPI-${{ matrix.ndpi_min_version }}
-        if: matrix.upload == false && startsWith(matrix.os, 'ubuntu')
+        if: startsWith(matrix.os, 'ubuntu')
         run: |
           mkdir build-local-ndpi && cd build-local-ndpi
           WGET_RET=0
           wget 'https://github.com/ntop/nDPI/archive/refs/tags/${{ matrix.ndpi_min_version }}.tar.gz' || { WGET_RET=$?; true; }
           echo "wget returned: ${WGET_RET}"
-          test $WGET_RET -ne 8 || echo "::warning file=nDPId.c::New libnDPI release required to build against release tarball."
-          test $WGET_RET -ne 0 || { tar -xzvf ${{ matrix.ndpi_min_version }}.tar.gz && \
-                cd nDPI-${{ matrix.ndpi_min_version }} && \
-                ./autogen.sh --prefix=/usr --with-only-libndpi CC="${{ matrix.compiler }}" CXX=false \
+          test $WGET_RET -ne 8 && { \
+                tar -xzvf ${{ matrix.ndpi_min_version }}.tar.gz; }
+          test $WGET_RET -ne 8 || { \
+                echo "::warning file=nDPId.c::New libnDPI release required to build against release tarball, falling back to dev branch."; \
+                wget 'http://github.com/ntop/nDPI/archive/refs/heads/dev.tar.gz'; \
+                WGET_RET=$?; \
+                tar -xzvf dev.tar.gz; \
+                mv -v 'nDPI-dev' 'nDPI-${{ matrix.ndpi_min_version }}'; }
+          test $WGET_RET -ne 0 || { cd nDPI-${{ matrix.ndpi_min_version }}; \
+                NDPI_CONFIGURE_ARGS=''; \
+                test 'x${{ matrix.ndpid_gcrypt }}' != 'x-DNDPI_WITH_GCRYPT=ON' || NDPI_CONFIGURE_ARGS="$NDPI_CONFIGURE_ARGS --with-local-libgcrypt"; \
+                test 'x${{ matrix.sanitizer }}' != 'x-DENABLE_SANITIZER=ON' || NDPI_CONFIGURE_ARGS="$NDPI_CONFIGURE_ARGS --with-sanitizer"; \
+                echo "Configure arguments: '$NDPI_CONFIGURE_ARGS'"
+                ./autogen.sh --prefix=/usr --with-only-libndpi $NDPI_CONFIGURE_ARGS CC="${{ matrix.compiler }}" CXX=false \
                     CFLAGS="$CMAKE_C_FLAGS" && make && sudo make install; cd ..; }
           test $WGET_RET -ne 0 || { echo "::info file=CMakeLists.txt::Running CMake.."; \
                 cmake -S .. -DCMAKE_C_COMPILER="$CMAKE_C_COMPILER" -DCMAKE_C_FLAGS="$CMAKE_C_FLAGS" \
                     -DCMAKE_C_EXE_LINKER_FLAGS="$CMAKE_C_EXE_LINKER_FLAGS" \
-                    -DBUILD_NDPI=OFF -DENABLE_SANITIZER=OFF \
+                    -DBUILD_NDPI=OFF \
                     ${{ matrix.poll }} ${{ matrix.coverage }} \
-                    ${{ matrix.ndpid_examples }}; }
+                    ${{ matrix.sanitizer }} ${{ matrix.ndpid_examples }}; }
           test $WGET_RET -ne 0 || { echo "::info file=CMakeLists.txt:Running Make.."; cmake --build . --verbose; }
           test $WGET_RET -eq 0 -o $WGET_RET -eq 8
