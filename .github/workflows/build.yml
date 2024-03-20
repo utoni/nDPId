@@ -34,6 +34,7 @@ jobs:
             ndpid_examples: "-DBUILD_EXAMPLES=ON"
             ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
             ndpid_zlib: "-DENABLE_ZLIB=ON"
+            ndpid_extras: ""
             sanitizer: "-DENABLE_SANITIZER=OFF -DENABLE_SANITIZER_THREAD=OFF"
             coverage: "-DENABLE_COVERAGE=OFF"
             poll: "-DFORCE_POLL=OFF"
@@ -46,6 +47,7 @@ jobs:
             ndpid_examples: "-DBUILD_EXAMPLES=ON"
             ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=ON"
             ndpid_zlib: "-DENABLE_ZLIB=ON"
+            ndpid_extras: "-DNDPI_WITH_MAXMINDDB=ON -DNDPI_WITH_PCRE=ON"
             sanitizer: "-DENABLE_SANITIZER=OFF -DENABLE_SANITIZER_THREAD=OFF"
             coverage: "-DENABLE_COVERAGE=OFF"
             poll: "-DFORCE_POLL=OFF"
@@ -58,6 +60,7 @@ jobs:
             ndpid_examples: "-DBUILD_EXAMPLES=ON"
             ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
             ndpid_zlib: "-DENABLE_ZLIB=OFF"
+            ndpid_extras: ""
             sanitizer: "-DENABLE_SANITIZER=OFF -DENABLE_SANITIZER_THREAD=OFF"
             coverage: "-DENABLE_COVERAGE=OFF"
             poll: "-DFORCE_POLL=OFF"
@@ -70,6 +73,7 @@ jobs:
             ndpid_examples: "-DBUILD_EXAMPLES=ON"
             ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
             ndpid_zlib: "-DENABLE_ZLIB=ON"
+            ndpid_extras: ""
             sanitizer: "-DENABLE_SANITIZER=ON"
             coverage: "-DENABLE_COVERAGE=ON"
             poll: "-DFORCE_POLL=ON"
@@ -81,6 +85,7 @@ jobs:
             ndpid_examples: "-DBUILD_EXAMPLES=ON"
             ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
             ndpid_zlib: "-DENABLE_ZLIB=ON"
+            ndpid_extras: ""
             sanitizer: "-DENABLE_SANITIZER=ON" 
             coverage: "-DENABLE_COVERAGE=OFF"
             poll: "-DFORCE_POLL=OFF"
@@ -92,6 +97,7 @@ jobs:
             ndpid_examples: "-DBUILD_EXAMPLES=ON"
             ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
             ndpid_zlib: "-DENABLE_ZLIB=ON"
+            ndpid_extras: ""
             sanitizer: "-DENABLE_SANITIZER_THREAD=ON"
             coverage: "-DENABLE_COVERAGE=OFF"
             poll:
@@ -103,6 +109,7 @@ jobs:
             ndpid_examples: "-DBUILD_EXAMPLES=ON"
             ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
             ndpid_zlib: "-DENABLE_ZLIB=OFF"
+            ndpid_extras: ""
             sanitizer: "-DENABLE_SANITIZER=ON"
             coverage: "-DENABLE_COVERAGE=OFF"
             poll: "-DFORCE_POLL=ON"
@@ -114,6 +121,7 @@ jobs:
             ndpid_examples: "-DBUILD_EXAMPLES=ON"
             ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
             ndpid_zlib: "-DENABLE_ZLIB=ON"
+            ndpid_extras: ""
             sanitizer: "-DENABLE_SANITIZER=ON"
             coverage: "-DENABLE_COVERAGE=OFF"
             poll: "-DFORCE_POLL=OFF"
@@ -125,6 +133,7 @@ jobs:
             ndpid_examples: "-DBUILD_EXAMPLES=OFF"
             ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
             ndpid_zlib: "-DENABLE_ZLIB=ON"
+            ndpid_extras: ""
             examples: "-DBUILD_EXAMPLES=OFF"
             sanitizer: "-DENABLE_SANITIZER=OFF"
             coverage: "-DENABLE_COVERAGE=OFF"
@@ -144,6 +153,7 @@ jobs:
           echo '| nDPI min.: ${{ matrix.ndpi_min_version }}'
           echo '| GCRYPT...: ${{ matrix.ndpid_gcrypt }}'
           echo '| ZLIB.....: ${{ matrix.ndpid_zlib }}'
+          echo '| Extras...: ${{ matrix.ndpid_extras }}'
           echo '| ForcePoll: ${{ matrix.poll }}'
           echo '|---------------------------------------'
           echo '| SANITIZER: ${{ matrix.sanitizer }}'
@@ -184,10 +194,14 @@ jobs:
         if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=ON')
         run: |
           sudo apt-get install libgcrypt20-dev
-      - name: Install Ubuntu Prerequisities (zlib)
+      - name: Install Ubuntu Prerequisites (zlib)
         if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.ndpid_zlib, '-DENABLE_ZLIB=ON')
         run: |
           sudo apt-get install zlib1g-dev
+      - name: Install Ubuntu Prerequisites (libmaxminddb, libpcre2)
+        if: startsWith(matrix.ndpid_extras, '-D')
+        run: |
+          sudo apt-get install libmaxminddb-dev libpcre2-dev
       - name: Checking Network Buffer Size
         run: |
           C_VAL=$(cat config.h | sed -n 's/^#define\s\+NETWORK_BUFFER_MAX_SIZE\s\+\([0-9]\+\).*$/\1/gp')
@@ -198,7 +212,7 @@ jobs:
           cmake -S . -B build -DCMAKE_C_COMPILER="$CMAKE_C_COMPILER" -DCMAKE_C_FLAGS="$CMAKE_C_FLAGS" -DCMAKE_MODULE_LINKER_FLAGS="$CMAKE_MODULE_LINKER_FLAGS" -DCMAKE_C_EXE_LINKER_FLAGS="$CMAKE_C_EXE_LINKER_FLAGS" \
             -DENABLE_CURL=ON -DENABLE_SYSTEMD=ON \
             ${{ matrix.poll }} ${{ matrix.coverage }} ${{ matrix.sanitizer }} ${{ matrix.ndpi_build }} \
-            ${{ matrix.ndpid_examples }} ${{ matrix.ndpid_zlib }} ${{ matrix.ndpid_gcrypt }}
+            ${{ matrix.ndpid_examples }} ${{ matrix.ndpid_zlib }} ${{ matrix.ndpid_gcrypt }} ${{ matrix.ndpid_extras }}
       - name: Build nDPId
         run: |
           cmake --build build --verbose
