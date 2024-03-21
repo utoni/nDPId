@@ -350,6 +350,29 @@ static struct global_map const severity_map[] = {{"Low", INFLUXD_STATS_GAUGE_PTR
                                                  {"Emergency", INFLUXD_STATS_GAUGE_PTR(flow_severity_emergency)},
                                                  {NULL, INFLUXD_STATS_GAUGE_PTR(flow_severity_unknown)}};
 
+#ifdef ENABLE_MEMORY_PROFILING
+void nDPIsrvd_memprof_log_alloc(size_t alloc_size)
+{
+    (void)alloc_size;
+}
+
+void nDPIsrvd_memprof_log_free(size_t free_size)
+{
+    (void)free_size;
+}
+
+void nDPIsrvd_memprof_log(char const * const format, ...)
+{
+    va_list ap;
+
+    va_start(ap, format);
+    fprintf(stderr, "%s", "nDPIsrvd MemoryProfiler: ");
+    vfprintf(stderr, format, ap);
+    fprintf(stderr, "%s\n", "");
+    va_end(ap);
+}
+#endif
+
 #define INFLUXDB_FORMAT() "%s=%llu,"
 #define INFLUXDB_FORMAT_END() "%s=%llu\n"
 #define INFLUXDB_VALUE_COUNTER(value) #value, (unsigned long long int)influxd_statistics.counters.value

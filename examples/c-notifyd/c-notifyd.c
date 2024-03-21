@@ -75,6 +75,29 @@ static int main_thread_shutdown = 0;
 static char * pidfile = NULL;
 static char * serv_optarg = NULL;
 
+#ifdef ENABLE_MEMORY_PROFILING
+void nDPIsrvd_memprof_log_alloc(size_t alloc_size)
+{
+    (void)alloc_size;
+}
+
+void nDPIsrvd_memprof_log_free(size_t free_size)
+{
+    (void)free_size;
+}
+
+void nDPIsrvd_memprof_log(char const * const format, ...)
+{
+    va_list ap;
+
+    va_start(ap, format);
+    fprintf(stderr, "%s", "nDPIsrvd MemoryProfiler: ");
+    vfprintf(stderr, format, ap);
+    fprintf(stderr, "%s\n", "");
+    va_end(ap);
+}
+#endif
+
 static void send_to_dbus(char const * const icon,
                          char const * const urgency,
                          enum dbus_level level,

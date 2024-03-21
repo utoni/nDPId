@@ -47,7 +47,7 @@ jobs:
             ndpid_examples: "-DBUILD_EXAMPLES=ON"
             ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=ON"
             ndpid_zlib: "-DENABLE_ZLIB=ON"
-            ndpid_extras: "-DNDPI_WITH_MAXMINDDB=ON -DNDPI_WITH_PCRE=ON"
+            ndpid_extras: "-DNDPI_WITH_MAXMINDDB=ON -DNDPI_WITH_PCRE=ON -DENABLE_MEMORY_PROFILING=ON"
             sanitizer: "-DENABLE_SANITIZER=OFF -DENABLE_SANITIZER_THREAD=OFF"
             coverage: "-DENABLE_COVERAGE=OFF"
             poll: "-DFORCE_POLL=OFF"
@@ -188,7 +188,7 @@ jobs:
         if: startsWith(matrix.os, 'ubuntu')
         run: |
           sudo apt-get update
-          sudo apt-get install autoconf automake cmake libtool pkg-config gettext libjson-c-dev flex bison libpcap-dev zlib1g-dev libcurl4-openssl-dev
+          sudo apt-get install autoconf automake cmake libtool pkg-config gettext libjson-c-dev flex bison libpcap-dev zlib1g-dev libcurl4-openssl-dev libdbus-1-dev
           sudo apt-get install ${{ matrix.compiler }} lcov iproute2
       - name: Install Ubuntu Prerequisites (libgcrypt)
         if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=ON')
@@ -210,7 +210,7 @@ jobs:
       - name: Configure nDPId
         run: |
           cmake -S . -B build -DCMAKE_C_COMPILER="$CMAKE_C_COMPILER" -DCMAKE_C_FLAGS="$CMAKE_C_FLAGS" -DCMAKE_MODULE_LINKER_FLAGS="$CMAKE_MODULE_LINKER_FLAGS" -DCMAKE_C_EXE_LINKER_FLAGS="$CMAKE_C_EXE_LINKER_FLAGS" \
-            -DENABLE_CURL=ON -DENABLE_SYSTEMD=ON \
+            -DENABLE_DBUS=ON -DENABLE_CURL=ON -DENABLE_SYSTEMD=ON \
             ${{ matrix.poll }} ${{ matrix.coverage }} ${{ matrix.sanitizer }} ${{ matrix.ndpi_build }} \
             ${{ matrix.ndpid_examples }} ${{ matrix.ndpid_zlib }} ${{ matrix.ndpid_gcrypt }} ${{ matrix.ndpid_extras }}
       - name: Build nDPId
@@ -291,11 +291,21 @@ jobs:
                 echo "Configure arguments: '$NDPI_CONFIGURE_ARGS'"
                 ./autogen.sh --prefix=/usr --with-only-libndpi $NDPI_CONFIGURE_ARGS CC="${{ matrix.compiler }}" CXX=false \
                     CFLAGS="$CMAKE_C_FLAGS" && make && sudo make install; cd ..; }
-          test $WGET_RET -ne 0 || { echo "::info file=CMakeLists.txt::Running CMake.."; \
+          test $WGET_RET -ne 0 || { echo "Running CMake.."; \
                 cmake -S .. -DCMAKE_C_COMPILER="$CMAKE_C_COMPILER" -DCMAKE_C_FLAGS="$CMAKE_C_FLAGS" \
                     -DCMAKE_C_EXE_LINKER_FLAGS="$CMAKE_C_EXE_LINKER_FLAGS" \
-                    -DBUILD_NDPI=OFF \
+                    -DBUILD_NDPI=OFF -DBUILD_EXAMPLES=ON \
+                    -DENABLE_DBUS=ON -DENABLE_CURL=ON -DENABLE_SYSTEMD=ON \
                     ${{ matrix.poll }} ${{ matrix.coverage }} \
                     ${{ matrix.sanitizer }} ${{ matrix.ndpid_examples }}; }
-          test $WGET_RET -ne 0 || { echo "::info file=CMakeLists.txt:Running Make.."; cmake --build . --verbose; }
+          test $WGET_RET -ne 0 || { echo "Running Make.."; cmake --build . --verbose; }
+          test $WGET_RET -ne 0 || { echo "Running CMake.."; \
+                cmake -S .. -DCMAKE_C_COMPILER="$CMAKE_C_COMPILER" -DCMAKE_C_FLAGS="$CMAKE_C_FLAGS" \
+                    -DCMAKE_C_EXE_LINKER_FLAGS="$CMAKE_C_EXE_LINKER_FLAGS" \
+                    -DBUILD_NDPI=OFF -DBUILD_EXAMPLES=ON \
+                    -DENABLE_DBUS=ON -DENABLE_CURL=ON -DENABLE_SYSTEMD=ON \
+                    -DNDPI_NO_PKGCONFIG=ON -DSTATIC_LIBNDPI_INSTALLDIR=/usr \
+                    ${{ matrix.poll }} ${{ matrix.coverage }} ${{ matrix.ndpid_gcrypt }} \
+                    ${{ matrix.sanitizer }} ${{ matrix.ndpid_examples }}; }
+          test $WGET_RET -ne 0 || { echo "Running Make.."; cmake --build . --verbose; }
           test $WGET_RET -eq 0 -o $WGET_RET -eq 8
