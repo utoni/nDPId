@@ -16,6 +16,8 @@
 #define NETWORK_BUFFER_LENGTH_DIGITS 5u
 #define NETWORK_BUFFER_LENGTH_DIGITS_STR "5"
 
+#define PFRING_BUFFER_SIZE 65535
+
 #define TIME_S_TO_US(s) (s * 1000llu * 1000llu)
 
 /* nDPId default config options */

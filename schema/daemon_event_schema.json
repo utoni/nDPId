@@ -21,7 +21,7 @@
         "properties": { "daemon_event_name": { "enum": [ "status", "shutdown" ] } }
     },
     "then": {
-        "required": [ "packets-captured", "packets-processed", "total-skipped-flows", "total-l4-payload-len", "total-not-detected-flows", "total-guessed-flows", "total-detected-flows", "total-detection-updates", "total-updates", "current-active-flows", "total-active-flows", "total-idle-flows", "total-compressions", "total-compression-diff", "current-compression-diff", "global-alloc-bytes", "global-alloc-count", "global-free-bytes", "global-free-count", "total-events-serialized" ]
+        "required": [ "packets-captured", "packets-processed", "pfring_active", "pfring_recv", "pfring_drop", "pfring_shunt", "total-skipped-flows", "total-l4-payload-len", "total-not-detected-flows", "total-guessed-flows", "total-detected-flows", "total-detection-updates", "total-updates", "current-active-flows", "total-active-flows", "total-idle-flows", "total-compressions", "total-compression-diff", "current-compression-diff", "global-alloc-bytes", "global-alloc-count", "global-free-bytes", "global-free-count", "total-events-serialized" ]
     },
     "properties": {
         "alias": {
@@ -100,6 +100,21 @@
             "minimum": 0
         },
         "packets-processed": {
+            "type": "number",
+            "minimum": 0
+        },
+        "pfring_active": {
+            "type": "boolean"
+        },
+        "pfring_recv": {
+            "type": "number",
+            "minimum": 0
+        },
+        "pfring_drop": {
+            "type": "number",
+            "minimum": 0
+        },
+        "pfring_shunt": {
             "type": "number",
             "minimum": 0
         },

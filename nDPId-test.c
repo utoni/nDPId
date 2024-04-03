@@ -1313,7 +1313,7 @@ static void * nDPId_mainloop_thread(void * const arg)
     {
         goto error;
     }
-    run_pcap_loop(&reader_threads[0]);
+    run_capture_loop(&reader_threads[0]);
     process_remaining_flows();
     for (size_t i = 0; i < nDPId_options.reader_thread_count; ++i)
     {

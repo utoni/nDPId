@@ -206,17 +206,18 @@ function validate_results()
     ${validator_exec} 2>>"${stderr_file}"
     if [ $? -eq 0 ]; then
         printf ' %s\n' '[OK]'
+        rc=0
     else
         printf ' %s\n' '[FAIL]'
         printf '%s\n' '----------------------------------------'
         printf '%s\n' "-- STDERR of ${pcap_file}: ${stderr_file}"
         cat "${stderr_file}"
-        return 1
+        rc=1
     fi
     kill -SIGTERM ${nc_pid} 2>/dev/null
     wait ${nc_pid} 2>/dev/null
 
-    return 0
+    return ${rc}
 }
 
 cat <<EOF
