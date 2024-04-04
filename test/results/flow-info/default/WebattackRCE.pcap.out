@@ -15,7 +15,7 @@
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
               new: [.....5] [ip4][..tcp] [......127.0.0.1][49552] -> [......127.0.0.1][.8080] [MIDSTREAM]
          detected: [.....5] [ip4][..tcp] [......127.0.0.1][49552] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable][127.0.0.1]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Possible Exploit
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Possible Exploit Attempt
               new: [.....6] [ip4][..tcp] [......127.0.0.1][49554] -> [......127.0.0.1][.8080] [MIDSTREAM]
          detected: [.....6] [ip4][..tcp] [......127.0.0.1][49554] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable][127.0.0.1]
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
@@ -1500,7 +1500,7 @@
                    RISK: Known Proto on Non Std Port, HTTP Susp User-Agent, HTTP/TLS/QUIC Numeric Hostname/SNI
               new: [...500] [ip4][..tcp] [......127.0.0.1][50562] -> [......127.0.0.1][.8080] [MIDSTREAM]
          detected: [...500] [ip4][..tcp] [......127.0.0.1][50562] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable][127.0.0.1]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Possible Exploit
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Possible Exploit Attempt
               new: [...501] [ip4][..tcp] [......127.0.0.1][50564] -> [......127.0.0.1][.8080] [MIDSTREAM]
          detected: [...501] [ip4][..tcp] [......127.0.0.1][50564] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable][127.0.0.1]
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
@@ -2507,7 +2507,7 @@
              idle: [.....4] [ip4][..tcp] [......127.0.0.1][49550] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [.....5] [ip4][..tcp] [......127.0.0.1][49552] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Possible Exploit
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Possible Exploit Attempt
              idle: [.....6] [ip4][..tcp] [......127.0.0.1][49554] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [.....7] [ip4][..tcp] [......127.0.0.1][49556] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
@@ -3497,7 +3497,7 @@
              idle: [...499] [ip4][..tcp] [......127.0.0.1][50560] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
                    RISK: Known Proto on Non Std Port, HTTP Susp User-Agent, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [...500] [ip4][..tcp] [......127.0.0.1][50562] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp URL, Possible Exploit
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp URL, Possible Exploit Attempt
              idle: [...501] [ip4][..tcp] [......127.0.0.1][50564] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [...502] [ip4][..tcp] [......127.0.0.1][50566] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]

@@ -1,0 +1,12 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..udp] [.192.168.88.231][36929] -> [.185.253.20.249][20021]
+         detected: [.....1] [ip4][..udp] [.192.168.88.231][36929] -> [.185.253.20.249][20021] [GaijinEntertainment][Unknown][Game][Fun]
+                   RISK: Known Proto on Non Std Port
+              new: [.....2] [ip4][..udp] [.192.168.88.231][37333] -> [.95.211.246.178][20011]
+         detected: [.....2] [ip4][..udp] [.192.168.88.231][37333] -> [.95.211.246.178][20011] [GaijinEntertainment][Unknown][Game][Fun]
+             idle: [.....2] [ip4][..udp] [.192.168.88.231][37333] -> [.95.211.246.178][20011] [GaijinEntertainment][Unknown][Game][Fun]
+             idle: [.....1] [ip4][..udp] [.192.168.88.231][36929] -> [.185.253.20.249][20021] [GaijinEntertainment][Unknown][Game][Fun]
+                   RISK: Known Proto on Non Std Port
+     DAEMON-EVENT: shutdown

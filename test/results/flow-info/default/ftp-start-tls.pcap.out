@@ -8,9 +8,9 @@
                    RISK: TLS (probably) Not Carrying HTTPS, Unsafe Protocol, Missing SNI TLS Extn
  detection-update: [.....1] [ip4][..tcp] [...10.238.26.36][62092] -> [...10.220.50.76][...21] [FTPS][Unknown][Download][Unsafe]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Unsafe Protocol, Missing SNI TLS Extn
- detection-update: [.....1] [ip4][..tcp] [...10.238.26.36][62092] -> [...10.220.50.76][...21] [FTPS][Unknown][Download][Unsafe]
+ detection-update: [.....1] [ip4][..tcp] [...10.238.26.36][62092] -> [...10.220.50.76][...21] [FTPS.Huawei][Unknown][Web][Acceptable]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Unsafe Protocol, Missing SNI TLS Extn
-          analyse: [.....1] [ip4][..tcp] [...10.238.26.36][62092] -> [...10.220.50.76][...21] [FTPS][Unknown][Download][Unsafe]
+          analyse: [.....1] [ip4][..tcp] [...10.238.26.36][62092] -> [...10.220.50.76][...21] [FTPS.Huawei][Unknown][Web][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.040|     0.005|     0.010|           91.331|    3.200]
                    [PKTLEN......:     46.000|   552.000|   160.900|   164.200|        26956.400|    4.400]
@@ -20,6 +20,6 @@
                    [IATS(ms)....: 0.4,0.1,1.3,15.0,0.1,17.8,3.9,0.1,0.8,0.0,4.3,3.3,0.1,1.0,0.0,0.0,0.0,0.1,0.0,2.6,8.5,40.4,0.1,34.7,4.5,0.7,2.2,1.8,0.3,2.7,2.2]
                    [PKTLENS.....: 46,46,46,46,113,113,50,46,46,71,71,190,46,46,552,552,255,552,552,255,46,370,91,91,77,122,122,77,122,122,85,130]
                    [ENTROPIES...: 4.2,4.8,4.8,4.4,5.4,5.4,5.0,4.3,4.3,5.3,5.3,5.2,4.4,4.4,6.8,7.2,7.0,6.8,7.2,7.0,4.5,7.2,5.9,5.9,5.7,6.2,6.2,5.8,6.3,6.3,6.0,6.3]
-             idle: [.....1] [ip4][..tcp] [...10.238.26.36][62092] -> [...10.220.50.76][...21] [FTPS][Unknown][Download][Unsafe]
+             idle: [.....1] [ip4][..tcp] [...10.238.26.36][62092] -> [...10.220.50.76][...21] [FTPS.Huawei][Unknown][Web][Acceptable]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Unsafe Protocol, Missing SNI TLS Extn
      DAEMON-EVENT: shutdown

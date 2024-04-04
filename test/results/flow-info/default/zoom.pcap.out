@@ -56,9 +56,9 @@
          detected: [....20] [ip4][..udp] [..192.168.1.117][62988] -> [....192.168.1.1][...53] [DNS.Zoom][Unknown][Network][Acceptable][www3.zoom.us]
  detection-update: [....20] [ip4][..udp] [..192.168.1.117][62988] -> [....192.168.1.1][...53] [DNS.Zoom][Unknown][Network][Acceptable][www3.zoom.us]
               new: [....21] [ip4][..tcp] [..192.168.1.117][54866] -> [..52.202.62.236][..443]
-         detected: [....19] [ip4][..tcp] [..192.168.1.117][54865] -> [..52.202.62.196][..443] [TLS][Zoom][Web][Safe][zoom.us]
+         detected: [....19] [ip4][..tcp] [..192.168.1.117][54865] -> [..52.202.62.196][..443] [TLS.Zoom][Zoom][Video][Acceptable][zoom.us]
          detected: [....21] [ip4][..tcp] [..192.168.1.117][54866] -> [..52.202.62.236][..443] [TLS.Zoom][Zoom][Video][Acceptable][www3.zoom.us]
- detection-update: [....19] [ip4][..tcp] [..192.168.1.117][54865] -> [..52.202.62.196][..443] [TLS][Zoom][Web][Safe][zoom.us]
+ detection-update: [....19] [ip4][..tcp] [..192.168.1.117][54865] -> [..52.202.62.196][..443] [TLS.Zoom][Zoom][Video][Acceptable][zoom.us]
  detection-update: [....19] [ip4][..tcp] [..192.168.1.117][54865] -> [..52.202.62.196][..443] [TLS.Zoom][Zoom][Video][Acceptable][zoom.us]
  detection-update: [....21] [ip4][..tcp] [..192.168.1.117][54866] -> [..52.202.62.236][..443] [TLS.Zoom][Zoom][Video][Acceptable][www3.zoom.us]
  detection-update: [....21] [ip4][..tcp] [..192.168.1.117][54866] -> [..52.202.62.236][..443] [TLS.Zoom][Zoom][Video][Acceptable][www3.zoom.us]
@@ -135,7 +135,7 @@
       ERROR-EVENT: Unknown packet type [3/16]
               new: [....32] [ip4][..udp] [..192.168.1.117][60620] -> [..109.94.160.99][.8801]
          detected: [....32] [ip4][..udp] [..192.168.1.117][60620] -> [..109.94.160.99][.8801] [Zoom][Unknown][Video][Acceptable]
-          analyse: [....31] [ip4][..udp] [..192.168.1.117][58327] -> [..109.94.160.99][.8801] [Zoom][Unknown][Video][Acceptable]
+          analyse: [....31] [ip4][..udp] [..192.168.1.117][58327] -> [..109.94.160.99][.8801] [SRTP.Zoom][Unknown][Video][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.036|     0.010|     0.009|           72.691|    4.500]
                    [PKTLEN......:     41.000|  1057.000|   872.800|   383.700|       147246.200|    4.800]
@@ -193,7 +193,7 @@
              idle: [.....1] [ip4][..tcp] [..192.168.1.117][54854] -> [..172.217.21.72][..443] [TLS.GoogleServices][Google][Web][Acceptable]
                    RISK: Obsolete TLS (v1.1 or older), Unidirectional Traffic
              idle: [.....6] [ip4][..udp] [..192.168.1.117][..137] -> [..192.168.1.255][..137] [NetBIOS][Unknown][System][Acceptable]
-             idle: [....33] [ip4][..udp] [..192.168.1.117][61731] -> [..109.94.160.99][.8801] [Zoom][Unknown][Video][Acceptable]
+             idle: [....33] [ip4][..udp] [..192.168.1.117][61731] -> [..109.94.160.99][.8801] [SRTP.Zoom][Unknown][Video][Acceptable]
           guessed: [....15] [ip4][..tcp] [..192.168.1.117][53867] -> [..104.199.65.42][...80] [HTTP][Google][Web][Acceptable][]
              idle: [....15] [ip4][..tcp] [..192.168.1.117][53867] -> [..104.199.65.42][...80]
              idle: [.....8] [ip4][..tcp] [..192.168.1.117][54864] -> [..52.202.62.238][..443] [TLS.Zoom][Zoom][Video][Acceptable]
@@ -213,7 +213,7 @@
               end: [....26] [ip4][..tcp] [..192.168.1.117][54868] -> [.213.19.144.104][..443] [TLS.Zoom][Zoom][Video][Acceptable]
                    RISK: TLS (probably) Not Carrying HTTPS
              idle: [.....7] [ip4][..udp] [..192.168.1.117][64352] -> [....192.168.1.1][...53] [DNS.Zoom][Unknown][Network][Acceptable]
-             idle: [....31] [ip4][..udp] [..192.168.1.117][58327] -> [..109.94.160.99][.8801] [Zoom][Unknown][Video][Acceptable]
+             idle: [....31] [ip4][..udp] [..192.168.1.117][58327] -> [..109.94.160.99][.8801] [SRTP.Zoom][Unknown][Video][Acceptable]
               end: [....27] [ip4][..tcp] [..192.168.1.117][54869] -> [.213.244.140.85][..443] [TLS.Zoom][Zoom][Video][Acceptable]
                    RISK: TLS (probably) Not Carrying HTTPS
               end: [....28] [ip4][..tcp] [..192.168.1.117][54870] -> [.213.244.140.84][..443] [TLS.Zoom][Zoom][Video][Acceptable]
@@ -221,7 +221,7 @@
              idle: [....23] [ip4][..udp] [..192.168.1.117][62563] -> [....192.168.1.1][...53] [DNS.Zoom][Unknown][Network][Acceptable]
              idle: [.....4] [ip4][..tcp] [..192.168.1.117][54341] -> [.62.149.152.153][..993] [IMAPS][Unknown][Email][Safe]
                    RISK: Unidirectional Traffic
-             idle: [....32] [ip4][..udp] [..192.168.1.117][60620] -> [..109.94.160.99][.8801] [Zoom][Unknown][Video][Acceptable]
+             idle: [....32] [ip4][..udp] [..192.168.1.117][60620] -> [..109.94.160.99][.8801] [SRTP.Zoom][Unknown][Video][Acceptable]
              idle: [.....5] [ip4][..udp] [..192.168.1.117][57025] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable]
              idle: [....16] [ip4][..tcp] [..192.168.1.117][53872] -> [..35.186.224.53][..443] [TLS][GoogleCloud][Web][Safe]
              idle: [....30] [ip4][..tcp] [..192.168.1.117][54871] -> [..109.94.160.99][..443] [TLS.Zoom][Unknown][Video][Acceptable]

@@ -174,9 +174,9 @@
                    RISK: Known Proto on Non Std Port
  detection-update: [....48] [ip4][..udp] [.....10.0.0.227][64193] -> [....75.75.75.75][...53] [DNS.ApplePush][Unknown][Network][Acceptable][24-courier.push.apple.com]
               new: [....50] [ip4][..udp] [.....10.0.0.227][49781] -> [....75.75.75.75][...53]
-         detected: [....50] [ip4][..udp] [.....10.0.0.227][49781] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][apple.com]
+         detected: [....50] [ip4][..udp] [.....10.0.0.227][49781] -> [....75.75.75.75][...53] [DNS.Apple][Unknown][Network][Safe][apple.com]
               new: [....51] [ip4][..tcp] [.....10.0.0.227][56871] -> [...8.37.103.196][..443] [MIDSTREAM]
- detection-update: [....50] [ip4][..udp] [.....10.0.0.227][49781] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][apple.com]
+ detection-update: [....50] [ip4][..udp] [.....10.0.0.227][49781] -> [....75.75.75.75][...53] [DNS.Apple][Unknown][Network][Safe][apple.com]
  detection-update: [....49] [ip4][..udp] [.....10.0.0.227][51990] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][mail.viasat.com]
               new: [....52] [ip4][..udp] [.....10.0.0.227][58074] -> [....75.75.75.75][...53]
          detected: [....52] [ip4][..udp] [.....10.0.0.227][58074] -> [....75.75.75.75][...53] [DNS.Outlook][Unknown][Network][Acceptable][www.outlook.com]
@@ -299,7 +299,7 @@
              idle: [....62] [ip4][..tcp] [.....10.0.0.227][56954] -> [.....10.0.0.149][.8008] [HTTP][Unknown][Web][Acceptable]
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [....19] [ip6][..udp] [...............fe80::408:3e45:3abc:1552][.5353] -> [...............................ff02::fb][.5353] [MDNS][Unknown][Network][Acceptable]
-             idle: [....50] [ip4][..udp] [.....10.0.0.227][49781] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable]
+             idle: [....50] [ip4][..udp] [.....10.0.0.227][49781] -> [....75.75.75.75][...53] [DNS.Apple][Unknown][Network][Safe]
               end: [....63] [ip4][..tcp] [.....10.0.0.227][56955] -> [.....10.0.0.151][.8060] [HTTP][Unknown][Web][Acceptable]
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
      not-detected: [....60] [ip4][..udp] [.....10.0.0.227][52595] -> [.......10.0.0.1][..192] [Unknown][Unknown][Unrated]

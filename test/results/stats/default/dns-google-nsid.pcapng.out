@@ -1,5 +1,5 @@
 PUTVAL "localhost/exec-nDPIsrvd/counter-json_lines" interval=60 N:46
-PUTVAL "localhost/exec-nDPIsrvd/counter-json_bytes" interval=60 N:40050
+PUTVAL "localhost/exec-nDPIsrvd/counter-json_bytes" interval=60 N:40054
 PUTVAL "localhost/exec-nDPIsrvd/counter-flow_new_count" interval=60 N:7
 PUTVAL "localhost/exec-nDPIsrvd/counter-flow_end_count" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/counter-flow_idle_count" interval=60 N:7
@@ -166,3 +166,4 @@ PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_risk_50_count" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_risk_51_count" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_risk_52_count" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_risk_53_count" interval=60 N:0
+PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_risk_54_count" interval=60 N:0

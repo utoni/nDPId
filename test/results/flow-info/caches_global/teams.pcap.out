@@ -503,7 +503,7 @@
                    RISK: TLS (probably) Not Carrying HTTPS
              idle: [.....1] [ip4][..udp] [....192.168.0.1][...68] -> [255.255.255.255][...67] [DHCP][Unknown][Network][Acceptable]
              idle: [....11] [ip4][..udp] [....192.168.1.6][17500] -> [255.255.255.255][17500] [Dropbox][Unknown][Cloud][Acceptable]
-          guessed: [.....2] [ip4][..tcp] [....192.168.1.6][58533] -> [.149.154.167.91][..443] [TLS][Telegram][Web][Safe]
+          guessed: [.....2] [ip4][..tcp] [....192.168.1.6][58533] -> [.149.154.167.91][..443] [Telegram][Telegram][Chat][Acceptable]
                    RISK: Unidirectional Traffic
               end: [.....2] [ip4][..tcp] [....192.168.1.6][58533] -> [.149.154.167.91][..443]
              idle: [....34] [ip4][..udp] [....192.168.1.6][59403] -> [....192.168.1.1][...53] [DNS.Microsoft365][Unknown][Network][Acceptable]

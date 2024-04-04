@@ -10,7 +10,7 @@
  detection-update: [.....2] [ip4][..udp] [.192.168.12.169][43016] -> [.74.125.247.128][.3478] [STUN][Google][Network][Acceptable][]
                    RISK: Unidirectional Traffic
  detection-update: [.....2] [ip4][..udp] [.192.168.12.169][43016] -> [.74.125.247.128][.3478] [STUN][Google][Network][Acceptable][]
- detection-update: [.....2] [ip4][..udp] [.192.168.12.169][43016] -> [.74.125.247.128][.3478] [STUN.GoogleMeet][Google][VoIP][Acceptable][turn.l.google.com]
+ detection-update: [.....2] [ip4][..udp] [.192.168.12.169][43016] -> [.74.125.247.128][.3478] [STUN.GoogleCall][Google][VoIP][Acceptable][turn.l.google.com]
               new: [.....3] [ip4][.icmp] [.192.168.12.169] -> [.74.125.247.128]
          detected: [.....3] [ip4][.icmp] [.192.168.12.169] -> [.74.125.247.128] [ICMP][Google][Network][Acceptable]
               end: [.....1] [ip4][..tcp] [...10.77.110.51][41588] -> [..10.206.50.239][42000] [STUN.Skype_TeamsCall][Unknown][VoIP][Acceptable]
@@ -18,7 +18,7 @@
      DAEMON-EVENT: [Flows][active: 2 / 3|skipped: 0|!detected: 0|guessed: 0|detection-updates: 3|updates: 0]
               new: [.....4] [ip6][..udp] [3516:bf0b:fc53:75e7:70af:f67f:8e49:f603][56880] -> [....2a38:e156:8167:a333:face:b00c::24d9][.3478]
          detected: [.....4] [ip6][..udp] [3516:bf0b:fc53:75e7:70af:f67f:8e49:f603][56880] -> [....2a38:e156:8167:a333:face:b00c::24d9][.3478] [STUN][Unknown][Network][Acceptable][]
-             idle: [.....2] [ip4][..udp] [.192.168.12.169][43016] -> [.74.125.247.128][.3478] [STUN.GoogleMeet][Google][VoIP][Acceptable]
+             idle: [.....2] [ip4][..udp] [.192.168.12.169][43016] -> [.74.125.247.128][.3478] [STUN.GoogleCall][Google][VoIP][Acceptable]
              idle: [.....3] [ip4][.icmp] [.192.168.12.169] -> [.74.125.247.128] [ICMP][Google][Network][Acceptable]
            update: [.....4] [ip6][..udp] [3516:bf0b:fc53:75e7:70af:f67f:8e49:f603][56880] -> [....2a38:e156:8167:a333:face:b00c::24d9][.3478] [STUN][Unknown][Network][Acceptable]
            update: [.....4] [ip6][..udp] [3516:bf0b:fc53:75e7:70af:f67f:8e49:f603][56880] -> [....2a38:e156:8167:a333:face:b00c::24d9][.3478] [STUN][Unknown][Network][Acceptable]
@@ -61,8 +61,8 @@
      DAEMON-EVENT: [Processed: 161 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 6|skipped: 0|!detected: 0|guessed: 0|detection-updates: 5|updates: 3]
               new: [.....7] [ip4][..udp] [.192.168.12.169][49153] -> [..142.250.82.99][.3478]
-         detected: [.....7] [ip4][..udp] [.192.168.12.169][49153] -> [..142.250.82.99][.3478] [STUN.GoogleMeet][Google][VoIP][Acceptable][]
-          analyse: [.....7] [ip4][..udp] [.192.168.12.169][49153] -> [..142.250.82.99][.3478] [STUN.GoogleMeet][Google][VoIP][Acceptable]
+         detected: [.....7] [ip4][..udp] [.192.168.12.169][49153] -> [..142.250.82.99][.3478] [STUN.GoogleCall][Google][VoIP][Acceptable][]
+          analyse: [.....7] [ip4][..udp] [.192.168.12.169][49153] -> [..142.250.82.99][.3478] [STUN.GoogleCall][Google][VoIP][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.836|     0.131|     0.227|        51553.292|    3.400]
                    [PKTLEN......:     62.000|  1226.000|   179.200|   221.300|        48965.100|    4.400]
@@ -81,9 +81,15 @@
  detection-update: [.....8] [ip4][..udp] [.192.168.43.169][48854] -> [.134.224.90.111][.8801] [STUN][Zoom][Network][Acceptable][]
                    RISK: Unidirectional Traffic
  detection-update: [.....8] [ip4][..udp] [.192.168.43.169][48854] -> [.134.224.90.111][.8801] [STUN][Zoom][Network][Acceptable][]
- detection-update: [.....8] [ip4][..udp] [.192.168.43.169][48854] -> [.134.224.90.111][.8801] [DTLS][Zoom][Safe]
-                   RISK: Missing SNI TLS Extn
-             idle: [.....7] [ip4][..udp] [.192.168.12.169][49153] -> [..142.250.82.99][.3478] [STUN.GoogleMeet][Google][VoIP][Acceptable]
-             idle: [.....8] [ip4][..udp] [.192.168.43.169][48854] -> [.134.224.90.111][.8801] [DTLS][Zoom][Safe]
-                   RISK: Missing SNI TLS Extn
+ detection-update: [.....8] [ip4][..udp] [.192.168.43.169][48854] -> [.134.224.90.111][.8801] [DTLS][Zoom][Network][Safe]
+             idle: [.....7] [ip4][..udp] [.192.168.12.169][49153] -> [..142.250.82.99][.3478] [STUN.GoogleCall][Google][VoIP][Acceptable]
+     DAEMON-EVENT: [Processed: 198 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 1 / 8|skipped: 0|!detected: 0|guessed: 0|detection-updates: 8|updates: 3]
+              new: [.....9] [ip6][..udp] [..............2600:1900:4160:5999::19::][.3478] -> [..2001:b07:a3d:c112:48a1:1094:1227:281e][48094]
+         detected: [.....9] [ip6][..udp] [..............2600:1900:4160:5999::19::][.3478] -> [..2001:b07:a3d:c112:48a1:1094:1227:281e][48094] [STUN][GoogleCloud][Network][Acceptable][]
+ detection-update: [.....9] [ip6][..udp] [..............2600:1900:4160:5999::19::][.3478] -> [..2001:b07:a3d:c112:48a1:1094:1227:281e][48094] [STUN][GoogleCloud][Network][Acceptable][]
+                   RISK: Unidirectional Traffic
+             idle: [.....8] [ip4][..udp] [.192.168.43.169][48854] -> [.134.224.90.111][.8801] [DTLS][Zoom][Network][Safe]
+             idle: [.....9] [ip6][..udp] [..............2600:1900:4160:5999::19::][.3478] -> [..2001:b07:a3d:c112:48a1:1094:1227:281e][48094] [STUN][GoogleCloud][Network][Acceptable]
+                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

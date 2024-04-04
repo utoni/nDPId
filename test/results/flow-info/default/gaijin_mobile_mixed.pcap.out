@@ -1,0 +1,20 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [...10.215.173.1][47666] -> [..54.75.230.133][..443]
+         detected: [.....1] [ip4][..tcp] [...10.215.173.1][47666] -> [..54.75.230.133][..443] [TLS.GaijinEntertainment][AmazonAWS][Game][Fun][yupmaster.gaijinent.com]
+ detection-update: [.....1] [ip4][..tcp] [...10.215.173.1][47666] -> [..54.75.230.133][..443] [TLS.GaijinEntertainment][AmazonAWS][Game][Fun][yupmaster.gaijinent.com]
+     DAEMON-EVENT: [Processed: 7 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 1|updates: 0]
+              new: [.....2] [ip4][..tcp] [...10.215.173.1][39314] -> [...81.171.31.37][..443]
+         detected: [.....2] [ip4][..tcp] [...10.215.173.1][39314] -> [...81.171.31.37][..443] [TLS.GaijinEntertainment][Unknown][Game][Fun][ta-receiver-balancer-xom.crossout.net]
+                   RISK: TLS (probably) Not Carrying HTTPS
+ detection-update: [.....2] [ip4][..tcp] [...10.215.173.1][39314] -> [...81.171.31.37][..443] [TLS.GaijinEntertainment][Unknown][Game][Fun][ta-receiver-balancer-xom.crossout.net]
+                   RISK: TLS (probably) Not Carrying HTTPS
+              new: [.....3] [ip4][..udp] [...10.215.173.1][42424] -> [.95.211.246.178][20011]
+         detected: [.....3] [ip4][..udp] [...10.215.173.1][42424] -> [.95.211.246.178][20011] [GaijinEntertainment][Unknown][Game][Fun]
+             idle: [.....2] [ip4][..tcp] [...10.215.173.1][39314] -> [...81.171.31.37][..443] [TLS.GaijinEntertainment][Unknown][Game][Fun]
+                   RISK: TLS (probably) Not Carrying HTTPS
+             idle: [.....1] [ip4][..tcp] [...10.215.173.1][47666] -> [..54.75.230.133][..443] [TLS.GaijinEntertainment][AmazonAWS][Game][Fun]
+             idle: [.....3] [ip4][..udp] [...10.215.173.1][42424] -> [.95.211.246.178][20011] [GaijinEntertainment][Unknown][Game][Fun]
+     DAEMON-EVENT: shutdown

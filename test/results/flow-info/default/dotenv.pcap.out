@@ -1,0 +1,11 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [..192.168.2.198][51327] -> [....89.31.76.10][...80]
+         detected: [.....1] [ip4][..tcp] [..192.168.2.198][51327] -> [....89.31.76.10][...80] [HTTP][Unknown][Web][Acceptable][sevenpitaly.com]
+                   RISK: Possible Exploit Attempt
+ detection-update: [.....1] [ip4][..tcp] [..192.168.2.198][51327] -> [....89.31.76.10][...80] [HTTP][Unknown][Download][Acceptable][sevenpitaly.com]
+                   RISK: Possible Exploit Attempt, Error Code, Binary Data Transfer Attemot
+              end: [.....1] [ip4][..tcp] [..192.168.2.198][51327] -> [....89.31.76.10][...80] [HTTP][Unknown][Download][Acceptable]
+                   RISK: Possible Exploit Attempt, Error Code, Binary Data Transfer Attemot
+     DAEMON-EVENT: shutdown

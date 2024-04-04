@@ -6,8 +6,6 @@
                    RISK: Known Proto on Non Std Port
  detection-update: [.....1] [ip4][..udp] [..33.35.223.103][..540] -> [.....26.83.9.81][57567] [STUN][Unknown][Network][Acceptable][]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
- detection-update: [.....1] [ip4][..udp] [..33.35.223.103][..540] -> [.....26.83.9.81][57567] [DTLS][Unknown][Safe]
-                   RISK: Self-signed Cert, Unidirectional Traffic
  detection-update: [.....1] [ip4][..udp] [..33.35.223.103][..540] -> [.....26.83.9.81][57567] [DTLS][Unknown][Network][Safe]
                    RISK: Self-signed Cert, Unidirectional Traffic
              idle: [.....1] [ip4][..udp] [..33.35.223.103][..540] -> [.....26.83.9.81][57567] [DTLS][Unknown][Network][Safe]

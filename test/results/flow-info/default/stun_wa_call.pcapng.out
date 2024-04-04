@@ -3,14 +3,29 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [.192.168.12.156][46652] -> [..93.57.123.227][.3478]
          detected: [.....1] [ip4][..udp] [.192.168.12.156][46652] -> [..93.57.123.227][.3478] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable][]
+ detection-update: [.....1] [ip4][..udp] [.192.168.12.156][46652] -> [..93.57.123.227][.3478] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable][]
+                   RISK: Unidirectional Traffic
               new: [.....2] [ip4][..udp] [.192.168.12.156][46652] -> [.157.240.203.62][.3478]
          detected: [.....2] [ip4][..udp] [.192.168.12.156][46652] -> [.157.240.203.62][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
+ detection-update: [.....2] [ip4][..udp] [.192.168.12.156][46652] -> [.157.240.203.62][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
+                   RISK: Unidirectional Traffic
               new: [.....3] [ip4][..udp] [.192.168.12.156][46652] -> [.157.240.231.62][.3478]
          detected: [.....3] [ip4][..udp] [.192.168.12.156][46652] -> [.157.240.231.62][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
+ detection-update: [.....3] [ip4][..udp] [.192.168.12.156][46652] -> [.157.240.231.62][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
+                   RISK: Unidirectional Traffic
               new: [.....4] [ip4][..udp] [.192.168.12.156][46652] -> [..157.240.21.51][.3478]
          detected: [.....4] [ip4][..udp] [.192.168.12.156][46652] -> [..157.240.21.51][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
+ detection-update: [.....4] [ip4][..udp] [.192.168.12.156][46652] -> [..157.240.21.51][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
+                   RISK: Unidirectional Traffic
               new: [.....5] [ip4][..udp] [.192.168.12.156][46652] -> [.157.240.195.48][.3478]
          detected: [.....5] [ip4][..udp] [.192.168.12.156][46652] -> [.157.240.195.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
+ detection-update: [.....5] [ip4][..udp] [.192.168.12.156][46652] -> [.157.240.195.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
+                   RISK: Unidirectional Traffic
+ detection-update: [.....1] [ip4][..udp] [.192.168.12.156][46652] -> [..93.57.123.227][.3478] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable][]
+ detection-update: [.....2] [ip4][..udp] [.192.168.12.156][46652] -> [.157.240.203.62][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
+ detection-update: [.....3] [ip4][..udp] [.192.168.12.156][46652] -> [.157.240.231.62][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
+ detection-update: [.....4] [ip4][..udp] [.192.168.12.156][46652] -> [..157.240.21.51][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
+ detection-update: [.....5] [ip4][..udp] [.192.168.12.156][46652] -> [.157.240.195.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
           analyse: [.....1] [ip4][..udp] [.192.168.12.156][46652] -> [..93.57.123.227][.3478] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     2.505|     0.249|     0.601|       361608.839|    2.900]
@@ -23,14 +38,29 @@
                    [ENTROPIES...: 7.0,7.0,5.8,5.8,5.8,7.0,7.0,7.0,7.0,5.7,5.8,5.7,5.7,5.7,5.2,5.2,5.8,7.0,7.0,5.7,5.8,5.8,4.9,6.0,6.1,5.0,5.5,5.7,6.6,5.5,6.9,7.2]
               new: [.....6] [ip4][..udp] [.192.168.12.156][49526] -> [.157.240.203.62][.3478]
          detected: [.....6] [ip4][..udp] [.192.168.12.156][49526] -> [.157.240.203.62][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
+ detection-update: [.....6] [ip4][..udp] [.192.168.12.156][49526] -> [.157.240.203.62][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
+                   RISK: Unidirectional Traffic
               new: [.....7] [ip4][..udp] [.192.168.12.156][49526] -> [.157.240.231.62][.3478]
          detected: [.....7] [ip4][..udp] [.192.168.12.156][49526] -> [.157.240.231.62][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
+ detection-update: [.....7] [ip4][..udp] [.192.168.12.156][49526] -> [.157.240.231.62][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
+                   RISK: Unidirectional Traffic
               new: [.....8] [ip4][..udp] [.192.168.12.156][49526] -> [.157.240.196.62][.3478]
          detected: [.....8] [ip4][..udp] [.192.168.12.156][49526] -> [.157.240.196.62][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
+ detection-update: [.....8] [ip4][..udp] [.192.168.12.156][49526] -> [.157.240.196.62][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
+                   RISK: Unidirectional Traffic
               new: [.....9] [ip4][..udp] [.192.168.12.156][49526] -> [..179.60.192.48][.3478]
          detected: [.....9] [ip4][..udp] [.192.168.12.156][49526] -> [..179.60.192.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
+ detection-update: [.....9] [ip4][..udp] [.192.168.12.156][49526] -> [..179.60.192.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
+                   RISK: Unidirectional Traffic
               new: [....10] [ip4][..udp] [.192.168.12.156][49526] -> [..185.60.216.51][.3478]
          detected: [....10] [ip4][..udp] [.192.168.12.156][49526] -> [..185.60.216.51][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
+ detection-update: [....10] [ip4][..udp] [.192.168.12.156][49526] -> [..185.60.216.51][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
+                   RISK: Unidirectional Traffic
+ detection-update: [.....6] [ip4][..udp] [.192.168.12.156][49526] -> [.157.240.203.62][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
+ detection-update: [.....7] [ip4][..udp] [.192.168.12.156][49526] -> [.157.240.231.62][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
+ detection-update: [....10] [ip4][..udp] [.192.168.12.156][49526] -> [..185.60.216.51][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
+ detection-update: [.....9] [ip4][..udp] [.192.168.12.156][49526] -> [..179.60.192.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
+ detection-update: [.....8] [ip4][..udp] [.192.168.12.156][49526] -> [.157.240.196.62][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
           analyse: [.....6] [ip4][..udp] [.192.168.12.156][49526] -> [.157.240.203.62][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.025|     0.011|     0.005|           24.788|    4.800]
