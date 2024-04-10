@@ -201,6 +201,7 @@
              idle: [....10] [ip4][..udp] [..192.168.1.105][.7148] -> [....192.168.1.1][...53] [DNS.SinaWeibo][Unknown][Network][Fun]
              idle: [....24] [ip4][..udp] [..192.168.1.105][33822] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
           guessed: [.....1] [ip4][..udp] [..216.58.210.14][..443] -> [..192.168.1.105][49361] [QUIC][Google][Web][Acceptable]
+                   RISK: Susp Entropy
              idle: [.....1] [ip4][..udp] [..216.58.210.14][..443] -> [..192.168.1.105][49361]
               end: [.....6] [ip4][..tcp] [..192.168.1.105][59119] -> [.114.134.80.162][...80] [HTTP.SinaWeibo][Unknown][SocialNetwork][Fun]
           guessed: [.....7] [ip4][..tcp] [..192.168.1.105][59120] -> [.114.134.80.162][...80] [HTTP][Unknown][Web][Acceptable][]
@@ -210,6 +211,7 @@
           guessed: [.....9] [ip4][..tcp] [..192.168.1.105][35154] -> [.216.58.210.206][..443] [TLS][Google][Web][Safe]
              idle: [.....9] [ip4][..tcp] [..192.168.1.105][35154] -> [.216.58.210.206][..443]
           guessed: [.....4] [ip4][..udp] [..192.168.1.105][53656] -> [.216.58.210.227][..443] [QUIC][Google][Web][Acceptable]
+                   RISK: Susp Entropy
              idle: [.....4] [ip4][..udp] [..192.168.1.105][53656] -> [.216.58.210.227][..443]
              idle: [....33] [ip4][..udp] [..192.168.1.105][50533] -> [....192.168.1.1][...53] [DNS.SinaWeibo][Unknown][Network][Fun]
              idle: [....11] [ip4][..tcp] [..192.168.1.105][51698] -> [.93.188.134.137][...80] [HTTP.SinaWeibo][Unknown][SocialNetwork][Fun]

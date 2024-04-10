@@ -19,8 +19,10 @@
               new: [.....6] [ip4][..udp] [......127.0.0.1][54138] -> [......127.0.0.1][25826]
          detected: [.....6] [ip4][..udp] [......127.0.0.1][54138] -> [......127.0.0.1][25826] [collectd][Unknown][System][Acceptable][devlap.fritz.box]
           guessed: [.....4] [ip4][..udp] [.192.168.178.35][39576] -> [..239.192.74.66][25826] [collectd][Unknown][System][Acceptable][]
+                   RISK: Susp Entropy
              idle: [.....4] [ip4][..udp] [.192.168.178.35][39576] -> [..239.192.74.66][25826]
           guessed: [.....5] [ip4][..udp] [.192.168.178.35][39577] -> [..239.192.74.66][25826] [collectd][Unknown][System][Acceptable][]
+                   RISK: Susp Entropy
              idle: [.....5] [ip4][..udp] [.192.168.178.35][39577] -> [..239.192.74.66][25826]
               new: [.....7] [ip4][..udp] [......127.0.0.1][35988] -> [......127.0.0.1][25826]
          detected: [.....7] [ip4][..udp] [......127.0.0.1][35988] -> [......127.0.0.1][25826] [collectd][Unknown][System][Acceptable][devlap.fritz.box]

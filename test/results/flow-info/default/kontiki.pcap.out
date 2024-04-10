@@ -36,6 +36,7 @@
      not-detected: [.....1] [ip4][..udp] [....10.25.32.59][19948] -> [255.255.255.255][19948] [Unknown][Unknown][Unrated]
              idle: [.....1] [ip4][..udp] [....10.25.32.59][19948] -> [255.255.255.255][19948]
      not-detected: [.....2] [ip4][..udp] [....10.25.32.59][19948] -> [..64.200.148.82][.1948] [Unknown][Unknown][Unrated]
+                   RISK: Susp Entropy
              idle: [.....2] [ip4][..udp] [....10.25.32.59][19948] -> [..64.200.148.82][.1948]
              idle: [.....5] [ip4][..udp] [....10.25.32.59][19948] -> [..64.200.148.88][...80] [Kontiki][Unknown][Media][Potentially Dangerous]
                    RISK: Unsafe Protocol

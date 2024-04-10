@@ -869,9 +869,9 @@
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol
               new: [...335] [ip4][..udp] [......10.0.2.15][28681] -> [.14.200.255.229][37058]
  detection-update: [...333] [ip4][..tcp] [......10.0.2.15][50327] -> [.69.118.162.229][46906] [HTTP.Gnutella][Unknown][Media][Potentially Dangerous][69.118.162.229]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol, Binary file/data transfer (attempt)
  detection-update: [...334] [ip4][..tcp] [......10.0.2.15][50328] -> [..189.147.72.83][26108] [HTTP.Gnutella][Unknown][Media][Potentially Dangerous][189.147.72.83]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol, Binary file/data transfer (attempt)
               new: [...336] [ip4][..udp] [......10.0.2.15][28681] -> [...80.7.252.192][.6888]
          detected: [...336] [ip4][..udp] [......10.0.2.15][28681] -> [...80.7.252.192][.6888] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
@@ -7108,7 +7108,7 @@
              idle: [...123] [ip4][..tcp] [......10.0.2.15][50254] -> [..24.78.134.188][49046]
              idle: [...799] [ip6][..udp] [..............fe80::c50d:519f:96a4:e108][63958] -> [................................ff02::c][.3702] [WSD][Unknown][Network][Acceptable]
              idle: [...333] [ip4][..tcp] [......10.0.2.15][50327] -> [.69.118.162.229][46906] [HTTP.Gnutella][Unknown][Media][Potentially Dangerous]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol, Binary file/data transfer (attempt)
      not-detected: [....64] [ip4][..tcp] [......10.0.2.15][50223] -> [118.167.248.220][63108] [Unknown][Unknown][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....64] [ip4][..tcp] [......10.0.2.15][50223] -> [118.167.248.220][63108]
@@ -7347,7 +7347,7 @@
               end: [...239] [ip4][..tcp] [......10.0.2.15][50285] -> [..75.133.101.93][52367] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [...334] [ip4][..tcp] [......10.0.2.15][50328] -> [..189.147.72.83][26108] [HTTP.Gnutella][Unknown][Media][Potentially Dangerous]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol, Binary file/data transfer (attempt)
              idle: [...175] [ip4][..udp] [......10.0.2.15][28681] -> [...115.69.62.99][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [...756] [ip4][..udp] [......10.0.2.15][28681] -> [..41.100.68.255][12838] [Gnutella][Unknown][Download][Potentially Dangerous]

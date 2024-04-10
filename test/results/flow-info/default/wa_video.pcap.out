@@ -59,6 +59,12 @@
               new: [....11] [ip4][..udp] [...192.168.2.12][53688] -> [...91.252.56.51][32641]
          detected: [....11] [ip4][..udp] [...192.168.2.12][53688] -> [...91.252.56.51][32641] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port
+ detection-update: [....10] [ip4][..udp] [...192.168.2.12][53688] -> [.....1.60.78.64][59491] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable][]
+                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+ detection-update: [....11] [ip4][..udp] [...192.168.2.12][53688] -> [...91.252.56.51][32641] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable][]
+                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+ detection-update: [....11] [ip4][..udp] [...192.168.2.12][53688] -> [...91.252.56.51][32641] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable][]
+                   RISK: Known Proto on Non Std Port
           analyse: [....11] [ip4][..udp] [...192.168.2.12][53688] -> [...91.252.56.51][32641] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     1.979|     0.150|     0.383|       146861.081|    2.700]
@@ -89,7 +95,8 @@
              idle: [....11] [ip4][..udp] [...192.168.2.12][53688] -> [...91.252.56.51][32641] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
                    RISK: Known Proto on Non Std Port
           guessed: [.....2] [ip4][..tcp] [...192.168.2.12][49355] -> [..157.240.20.53][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
+                   RISK: Susp Entropy
              idle: [.....2] [ip4][..tcp] [...192.168.2.12][49355] -> [..157.240.20.53][.5222]
              idle: [....10] [ip4][..udp] [...192.168.2.12][53688] -> [.....1.60.78.64][59491] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
-                   RISK: Known Proto on Non Std Port
+                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
      DAEMON-EVENT: shutdown

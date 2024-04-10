@@ -427,7 +427,7 @@
               new: [...134] [ip4][..tcp] [..192.168.2.126][41134] -> [.129.226.107.77][...80] [MIDSTREAM]
          detected: [...134] [ip4][..tcp] [..192.168.2.126][41134] -> [.129.226.107.77][...80] [HTTP.QQ][Tencent][Chat][Fun][cgi.connect.qq.com]
  detection-update: [...133] [ip4][..tcp] [..192.168.2.126][47230] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Download][Fun][kankan.1kxun.mobi]
-                   RISK: Binary App Transfer
+                   RISK: Binary file/data transfer (attempt)
               new: [...135] [ip4][..tcp] [..192.168.2.126][47246] -> [..161.117.13.29][...80] [MIDSTREAM]
          detected: [...135] [ip4][..tcp] [..192.168.2.126][47246] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Streaming][Fun][kankan.1kxun.com]
               new: [...136] [ip4][..tcp] [..192.168.2.126][47262] -> [..161.117.13.29][...80] [MIDSTREAM]
@@ -571,6 +571,7 @@
              idle: [....19] [ip6][..udp] [..............fe80::e98f:bae2:19f7:6b0f][58779] -> [..............................ff02::1:3][.5355] [LLMNR][Unknown][Network][Acceptable]
                    RISK: Non-Printable/Invalid Chars Detected
           guessed: [...101] [ip4][..tcp] [.119.235.235.84][..443] -> [...192.168.5.16][53406] [TLS][Line][Web][Safe]
+                   RISK: Susp Entropy
              idle: [...101] [ip4][..tcp] [.119.235.235.84][..443] -> [...192.168.5.16][53406]
               end: [....46] [ip4][..tcp] [..192.168.115.8][49612] -> [.183.131.48.145][...80] [HTTP][Unknown][Web][Acceptable]
                    RISK: HTTP Susp User-Agent, HTTP/TLS/QUIC Numeric Hostname/SNI
@@ -863,7 +864,7 @@
              idle: [...142] [ip4][..tcp] [..192.168.2.126][46170] -> [.172.105.121.82][...80] [HTTP.1kxun][Unknown][Streaming][Fun]
              idle: [...141] [ip4][..tcp] [..192.168.2.126][46184] -> [.172.105.121.82][...80] [HTTP.1kxun][Unknown][Streaming][Fun]
              idle: [...133] [ip4][..tcp] [..192.168.2.126][47230] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Download][Fun]
-                   RISK: Binary App Transfer
+                   RISK: Binary file/data transfer (attempt)
              idle: [...188] [ip4][..tcp] [..192.168.2.126][37100] -> [..52.29.177.177][...80] [HTTP][AmazonAWS][Web][Acceptable]
              idle: [...143] [ip4][..tcp] [..192.168.2.126][46200] -> [.172.105.121.82][...80] [HTTP.1kxun][Unknown][Streaming][Fun]
              idle: [...135] [ip4][..tcp] [..192.168.2.126][47246] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Streaming][Fun]

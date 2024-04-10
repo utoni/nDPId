@@ -122,5 +122,6 @@
              idle: [....12] [ip4][..udp] [...10.24.82.188][11320] -> [....1.201.1.174][23044] [RTP][Unknown][Media][Acceptable]
              idle: [....10] [ip4][..udp] [...10.24.82.188][11321] -> [....1.201.1.174][23045] [KakaoTalk_Voice][Unknown][VoIP][Acceptable]
           guessed: [.....7] [ip4][..tcp] [..139.150.0.125][..443] -> [...10.24.82.188][46947] [TLS][Unknown][Web][Safe]
+                   RISK: Susp Entropy
              idle: [.....7] [ip4][..tcp] [..139.150.0.125][..443] -> [...10.24.82.188][46947]
      DAEMON-EVENT: shutdown

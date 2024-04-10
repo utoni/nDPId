@@ -47,7 +47,7 @@
          detected: [....15] [ip4][..tcp] [..192.168.1.100][.3508] -> [.87.248.221.254][...80] [HTTP][Unknown][Web][Acceptable][llnw.blizzard.com]
                    RISK: Susp DGA Domain name
  detection-update: [....15] [ip4][..tcp] [..192.168.1.100][.3508] -> [.87.248.221.254][...80] [HTTP][Unknown][Download][Acceptable][llnw.blizzard.com]
-                   RISK: Binary App Transfer, Susp DGA Domain name
+                   RISK: Susp DGA Domain name, Binary file/data transfer (attempt)
           analyse: [....15] [ip4][..tcp] [..192.168.1.100][.3508] -> [.87.248.221.254][...80] [HTTP][Unknown][Download][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.072|     0.012|     0.024|          562.008|    2.800]
@@ -212,7 +212,7 @@
               end: [....25] [ip4][..tcp] [..192.168.1.100][.3486] -> [.199.38.164.156][..443]
              idle: [....12] [ip4][..udp] [..192.168.1.254][38605] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable]
               end: [....15] [ip4][..tcp] [..192.168.1.100][.3508] -> [.87.248.221.254][...80] [HTTP][Unknown][Download][Acceptable]
-                   RISK: Binary App Transfer, Susp DGA Domain name
+                   RISK: Susp DGA Domain name, Binary file/data transfer (attempt)
           guessed: [.....3] [ip4][..tcp] [..80.239.186.26][..443] -> [..192.168.1.100][.3476] [TLS][Unknown][Web][Safe]
                    RISK: Unidirectional Traffic, TCP Connection Issues
               end: [.....3] [ip4][..tcp] [..80.239.186.26][..443] -> [..192.168.1.100][.3476]

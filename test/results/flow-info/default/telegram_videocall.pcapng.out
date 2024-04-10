@@ -91,24 +91,24 @@
  detection-update: [....23] [ip4][..udp] [.192.168.12.169][37444] -> [....91.108.17.2][.1400] [STUN.TelegramVoip][Telegram][VoIP][Acceptable][telegram.org]
                    RISK: Known Proto on Non Std Port
               new: [....24] [ip4][..udp] [.192.168.12.169][42405] -> [..10.46.103.200][42554]
-         detected: [....24] [ip4][..udp] [.192.168.12.169][42405] -> [..10.46.103.200][42554] [STUN][Unknown][Network][Acceptable][]
+         detected: [....24] [ip4][..udp] [.192.168.12.169][42405] -> [..10.46.103.200][42554] [STUN.TelegramVoip][Unknown][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port
               new: [....25] [ip4][..udp] [.192.168.12.169][40906] -> [..10.46.103.200][42554]
-         detected: [....25] [ip4][..udp] [.192.168.12.169][40906] -> [..10.46.103.200][42554] [STUN][Unknown][Network][Acceptable][]
+         detected: [....25] [ip4][..udp] [.192.168.12.169][40906] -> [..10.46.103.200][42554] [STUN.TelegramVoip][Unknown][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port
               new: [....26] [ip4][..udp] [.192.168.12.169][42405] -> [...93.36.13.115][35393]
-         detected: [....26] [ip4][..udp] [.192.168.12.169][42405] -> [...93.36.13.115][35393] [STUN][Unknown][Network][Acceptable][]
+         detected: [....26] [ip4][..udp] [.192.168.12.169][42405] -> [...93.36.13.115][35393] [STUN.TelegramVoip][Unknown][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port
               new: [....27] [ip4][..udp] [.192.168.12.169][40906] -> [...93.36.13.115][35393]
-         detected: [....27] [ip4][..udp] [.192.168.12.169][40906] -> [...93.36.13.115][35393] [STUN][Unknown][Network][Acceptable][]
+         detected: [....27] [ip4][..udp] [.192.168.12.169][40906] -> [...93.36.13.115][35393] [STUN.TelegramVoip][Unknown][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port
- detection-update: [....24] [ip4][..udp] [.192.168.12.169][42405] -> [..10.46.103.200][42554] [STUN][Unknown][Network][Acceptable][]
+ detection-update: [....24] [ip4][..udp] [.192.168.12.169][42405] -> [..10.46.103.200][42554] [STUN.TelegramVoip][Unknown][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
- detection-update: [....25] [ip4][..udp] [.192.168.12.169][40906] -> [..10.46.103.200][42554] [STUN][Unknown][Network][Acceptable][]
+ detection-update: [....25] [ip4][..udp] [.192.168.12.169][40906] -> [..10.46.103.200][42554] [STUN.TelegramVoip][Unknown][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
               new: [....28] [ip6][icmp6] [...............fe80::abe:acff:fe0b:176e] -> [................................ff02::2]
          detected: [....28] [ip6][icmp6] [...............fe80::abe:acff:fe0b:176e] -> [................................ff02::2] [ICMPV6][Unknown][Network][Acceptable]
-          analyse: [....26] [ip4][..udp] [.192.168.12.169][42405] -> [...93.36.13.115][35393] [STUN][Unknown][Network][Acceptable]
+          analyse: [....26] [ip4][..udp] [.192.168.12.169][42405] -> [...93.36.13.115][35393] [STUN.TelegramVoip][Unknown][VoIP][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.475|     0.052|     0.095|         9109.989|    3.600]
                    [PKTLEN......:     49.000|   265.000|   106.200|    48.900|         2396.000|    4.900]
@@ -167,7 +167,7 @@
                    RISK: Known Proto on Non Std Port
              idle: [....12] [ip4][..udp] [.192.168.12.169][40906] -> [....91.108.9.35][.1400] [STUN.TelegramVoip][Telegram][VoIP][Acceptable]
                    RISK: Known Proto on Non Std Port
-             idle: [....24] [ip4][..udp] [.192.168.12.169][42405] -> [..10.46.103.200][42554] [STUN][Unknown][Network][Acceptable]
+             idle: [....24] [ip4][..udp] [.192.168.12.169][42405] -> [..10.46.103.200][42554] [STUN.TelegramVoip][Unknown][VoIP][Acceptable]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
              idle: [....11] [ip4][..udp] [...192.168.12.1][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable]
              idle: [.....1] [ip6][icmp6] [..............fe80::98df:58ff:fefa:ebdc] -> [................................ff02::2] [ICMPV6][Unknown][Network][Acceptable]
@@ -179,11 +179,11 @@
              idle: [.....9] [ip4][..tcp] [.192.168.12.169][40834] -> [149.154.167.222][..443] [Telegram][Telegram][Chat][Acceptable]
              idle: [....19] [ip4][..udp] [.192.168.12.169][49667] -> [...91.108.13.23][.1400] [STUN.TelegramVoip][Telegram][VoIP][Acceptable]
                    RISK: Known Proto on Non Std Port
-             idle: [....25] [ip4][..udp] [.192.168.12.169][40906] -> [..10.46.103.200][42554] [STUN][Unknown][Network][Acceptable]
+             idle: [....25] [ip4][..udp] [.192.168.12.169][40906] -> [..10.46.103.200][42554] [STUN.TelegramVoip][Unknown][VoIP][Acceptable]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
              idle: [....23] [ip4][..udp] [.192.168.12.169][37444] -> [....91.108.17.2][.1400] [STUN.TelegramVoip][Telegram][VoIP][Acceptable]
                    RISK: Known Proto on Non Std Port
-             idle: [....26] [ip4][..udp] [.192.168.12.169][42405] -> [...93.36.13.115][35393] [STUN][Unknown][Network][Acceptable]
+             idle: [....26] [ip4][..udp] [.192.168.12.169][42405] -> [...93.36.13.115][35393] [STUN.TelegramVoip][Unknown][VoIP][Acceptable]
                    RISK: Known Proto on Non Std Port
              idle: [....20] [ip4][..udp] [.192.168.12.169][49780] -> [....91.108.17.2][.1400] [STUN.TelegramVoip][Telegram][VoIP][Acceptable]
                    RISK: Known Proto on Non Std Port
@@ -197,7 +197,7 @@
              idle: [....30] [ip4][..tcp] [.192.168.12.169][40710] -> [....52.58.18.25][.5222]
              idle: [....21] [ip4][..udp] [.192.168.12.169][37849] -> [....91.108.9.35][.1400] [STUN.TelegramVoip][Telegram][VoIP][Acceptable]
                    RISK: Known Proto on Non Std Port
-             idle: [....27] [ip4][..udp] [.192.168.12.169][40906] -> [...93.36.13.115][35393] [STUN][Unknown][Network][Acceptable]
+             idle: [....27] [ip4][..udp] [.192.168.12.169][40906] -> [...93.36.13.115][35393] [STUN.TelegramVoip][Unknown][VoIP][Acceptable]
                    RISK: Known Proto on Non Std Port
              idle: [....17] [ip4][..udp] [.192.168.12.169][42197] -> [....91.108.17.2][.1400] [STUN.TelegramVoip][Telegram][VoIP][Acceptable]
                    RISK: Known Proto on Non Std Port

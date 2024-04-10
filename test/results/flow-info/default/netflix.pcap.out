@@ -162,7 +162,7 @@
          detected: [....30] [ip4][..tcp] [....192.168.1.7][53163] -> [..23.246.11.145][...80] [HTTP][NetFlix][Web][Acceptable][23.246.11.145]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
  detection-update: [....30] [ip4][..tcp] [....192.168.1.7][53163] -> [..23.246.11.145][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.145]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
           analyse: [....30] [ip4][..tcp] [....192.168.1.7][53163] -> [..23.246.11.145][...80] [HTTP][NetFlix][Download][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........:      0.004|     0.651|     0.082|     0.154|        23582.077|    3.600]
@@ -177,12 +177,12 @@
          detected: [....31] [ip4][..tcp] [....192.168.1.7][53164] -> [..23.246.10.139][...80] [HTTP][NetFlix][Web][Acceptable][23.246.10.139]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
  detection-update: [....31] [ip4][..tcp] [....192.168.1.7][53164] -> [..23.246.10.139][...80] [HTTP][NetFlix][Download][Acceptable][23.246.10.139]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
               new: [....32] [ip4][..tcp] [....192.168.1.7][53171] -> [...23.246.3.140][...80]
          detected: [....32] [ip4][..tcp] [....192.168.1.7][53171] -> [...23.246.3.140][...80] [HTTP][NetFlix][Web][Acceptable][23.246.3.140]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
  detection-update: [....32] [ip4][..tcp] [....192.168.1.7][53171] -> [...23.246.3.140][...80] [HTTP][NetFlix][Download][Acceptable][23.246.3.140]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
           analyse: [....32] [ip4][..tcp] [....192.168.1.7][53171] -> [...23.246.3.140][...80] [HTTP][NetFlix][Download][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........:      0.002|     0.044|     0.018|     0.010|          100.655|    4.700]
@@ -213,7 +213,7 @@
          detected: [....36] [ip4][..tcp] [....192.168.1.7][53175] -> [..23.246.11.141][...80] [HTTP][NetFlix][Web][Acceptable][23.246.11.141]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
  detection-update: [....33] [ip4][..tcp] [....192.168.1.7][53172] -> [..23.246.11.133][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.133]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
          detected: [....40] [ip4][..tcp] [....192.168.1.7][53179] -> [..23.246.11.141][...80] [HTTP][NetFlix][Web][Acceptable][23.246.11.141]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
          detected: [....39] [ip4][..tcp] [....192.168.1.7][53178] -> [..23.246.11.141][...80] [HTTP][NetFlix][Web][Acceptable][23.246.11.141]
@@ -223,31 +223,31 @@
          detected: [....38] [ip4][..tcp] [....192.168.1.7][53177] -> [..23.246.11.141][...80] [HTTP][NetFlix][Web][Acceptable][23.246.11.141]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
  detection-update: [....35] [ip4][..tcp] [....192.168.1.7][53174] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.141]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
  detection-update: [....34] [ip4][..tcp] [....192.168.1.7][53173] -> [..23.246.11.133][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.133]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
          detected: [....41] [ip4][..tcp] [....192.168.1.7][53180] -> [..23.246.11.141][...80] [HTTP][NetFlix][Web][Acceptable][23.246.11.141]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
  detection-update: [....36] [ip4][..tcp] [....192.168.1.7][53175] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.141]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
          detected: [....42] [ip4][..tcp] [....192.168.1.7][53181] -> [..23.246.11.141][...80] [HTTP][NetFlix][Web][Acceptable][23.246.11.141]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
          detected: [....43] [ip4][..tcp] [....192.168.1.7][53182] -> [..23.246.11.141][...80] [HTTP][NetFlix][Web][Acceptable][23.246.11.141]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
  detection-update: [....40] [ip4][..tcp] [....192.168.1.7][53179] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.141]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
  detection-update: [....37] [ip4][..tcp] [....192.168.1.7][53176] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.141]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
  detection-update: [....39] [ip4][..tcp] [....192.168.1.7][53178] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.141]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
  detection-update: [....38] [ip4][..tcp] [....192.168.1.7][53177] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.141]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
  detection-update: [....41] [ip4][..tcp] [....192.168.1.7][53180] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.141]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
  detection-update: [....42] [ip4][..tcp] [....192.168.1.7][53181] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.141]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
  detection-update: [....43] [ip4][..tcp] [....192.168.1.7][53182] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.141]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
           analyse: [....41] [ip4][..tcp] [....192.168.1.7][53180] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     2.098|     0.201|     0.403|       162731.114|    3.600]
@@ -375,13 +375,13 @@
          detected: [....44] [ip4][..tcp] [....192.168.1.7][53183] -> [...23.246.3.140][...80] [HTTP][NetFlix][Web][Acceptable][23.246.3.140]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
  detection-update: [....45] [ip4][..tcp] [....192.168.1.7][53184] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.141]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
               new: [....46] [ip4][..tcp] [....192.168.1.7][53193] -> [...54.191.17.51][..443]
               new: [....47] [ip4][..tcp] [....192.168.1.7][53202] -> [...54.191.17.51][..443]
               new: [....48] [ip4][..udp] [....192.168.1.7][60962] -> [....192.168.1.1][...53]
          detected: [....48] [ip4][..udp] [....192.168.1.7][60962] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ichnaea.geo.netflix.com]
  detection-update: [....44] [ip4][..tcp] [....192.168.1.7][53183] -> [...23.246.3.140][...80] [HTTP][NetFlix][Download][Acceptable][23.246.3.140]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
  detection-update: [....48] [ip4][..udp] [....192.168.1.7][60962] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ichnaea.geo.netflix.com]
               new: [....49] [ip4][..tcp] [....192.168.1.7][53203] -> [...52.37.36.252][..443]
           analyse: [....11] [ip4][..tcp] [....192.168.1.7][53119] -> [..54.69.204.241][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
@@ -443,7 +443,7 @@
          detected: [....50] [ip4][..tcp] [....192.168.1.7][53210] -> [..23.246.11.133][...80] [HTTP][NetFlix][Web][Acceptable][23.246.11.133]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
  detection-update: [....50] [ip4][..tcp] [....192.168.1.7][53210] -> [..23.246.11.133][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.133]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
            update: [....10] [ip4][..udp] [....192.168.1.7][53776] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable]
            update: [.....2] [ip4][..udp] [....192.168.1.7][51543] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun]
            update: [....17] [ip4][..udp] [....192.168.1.7][57719] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun]
@@ -453,7 +453,7 @@
          detected: [....51] [ip4][..tcp] [....192.168.1.7][53217] -> [..23.246.11.141][...80] [HTTP][NetFlix][Web][Acceptable][23.246.11.141]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
  detection-update: [....51] [ip4][..tcp] [....192.168.1.7][53217] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.141]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
            update: [....19] [ip4][..udp] [....192.168.1.7][59180] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun]
            update: [....26] [ip4][..udp] [....192.168.1.7][51728] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
            update: [....23] [ip4][..udp] [....192.168.1.7][58102] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun]
@@ -595,41 +595,41 @@
              idle: [.....3] [ip4][..udp] [....192.168.1.7][52116] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun]
              idle: [....27] [ip4][..udp] [....192.168.1.7][52347] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun]
               end: [....30] [ip4][..tcp] [....192.168.1.7][53163] -> [..23.246.11.145][...80] [HTTP][NetFlix][Download][Acceptable]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
              idle: [....31] [ip4][..tcp] [....192.168.1.7][53164] -> [..23.246.10.139][...80] [HTTP][NetFlix][Download][Acceptable]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
               end: [....32] [ip4][..tcp] [....192.168.1.7][53171] -> [...23.246.3.140][...80] [HTTP][NetFlix][Download][Acceptable]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
               end: [....33] [ip4][..tcp] [....192.168.1.7][53172] -> [..23.246.11.133][...80] [HTTP][NetFlix][Download][Acceptable]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
               end: [....34] [ip4][..tcp] [....192.168.1.7][53173] -> [..23.246.11.133][...80] [HTTP][NetFlix][Download][Acceptable]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
               end: [....35] [ip4][..tcp] [....192.168.1.7][53174] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
               end: [....36] [ip4][..tcp] [....192.168.1.7][53175] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
               end: [....37] [ip4][..tcp] [....192.168.1.7][53176] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
               end: [....38] [ip4][..tcp] [....192.168.1.7][53177] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
               end: [....39] [ip4][..tcp] [....192.168.1.7][53178] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
               end: [....40] [ip4][..tcp] [....192.168.1.7][53179] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
               end: [....41] [ip4][..tcp] [....192.168.1.7][53180] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
               end: [....42] [ip4][..tcp] [....192.168.1.7][53181] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
               end: [....43] [ip4][..tcp] [....192.168.1.7][53182] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
              idle: [....44] [ip4][..tcp] [....192.168.1.7][53183] -> [...23.246.3.140][...80] [HTTP][NetFlix][Download][Acceptable]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
              idle: [....45] [ip4][..tcp] [....192.168.1.7][53184] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
              idle: [....50] [ip4][..tcp] [....192.168.1.7][53210] -> [..23.246.11.133][...80] [HTTP][NetFlix][Download][Acceptable]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
              idle: [....51] [ip4][..tcp] [....192.168.1.7][53217] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable]
-                   RISK: Binary App Transfer, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary file/data transfer (attempt)
               end: [.....4] [ip4][..tcp] [....192.168.1.7][53105] -> [..54.69.204.241][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
               end: [.....9] [ip4][..tcp] [....192.168.1.7][53118] -> [..54.69.204.241][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
               end: [....11] [ip4][..tcp] [....192.168.1.7][53119] -> [..54.69.204.241][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]

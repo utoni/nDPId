@@ -16,7 +16,6 @@
                    [ENTROPIES...: 4.2,5.3,4.9,5.6,4.9,5.4,5.2,5.7,4.9,5.2,5.1,5.7,4.9,5.0,5.0,5.6,4.8,5.0,5.5,5.3,4.9,4.9,5.2,5.7,4.9,5.0,4.9,5.6,5.6,4.9,5.1,5.7]
               new: [.....2] [ip4][..tcp] [..192.168.1.212][50695] -> [...90.130.70.73][25685]
          detected: [.....2] [ip4][..tcp] [..192.168.1.212][50695] -> [...90.130.70.73][25685] [FTP_DATA][Unknown][Download][Acceptable]
-                   RISK: Known Proto on Non Std Port
               new: [.....3] [ip4][..tcp] [..192.168.1.212][50696] -> [...90.130.70.73][24523]
           analyse: [.....3] [ip4][..tcp] [..192.168.1.212][50696] -> [...90.130.70.73][24523]
                                          min|       max|       avg|    stddev|         variance|  entropy
@@ -33,5 +32,4 @@
               end: [.....1] [ip4][..tcp] [..192.168.1.212][50694] -> [...90.130.70.73][...21] [FTP_CONTROL][Unknown][Download][Unsafe]
                    RISK: Unsafe Protocol, Clear-Text Credentials
               end: [.....2] [ip4][..tcp] [..192.168.1.212][50695] -> [...90.130.70.73][25685] [FTP_DATA][Unknown][Download][Acceptable]
-                   RISK: Known Proto on Non Std Port
      DAEMON-EVENT: shutdown

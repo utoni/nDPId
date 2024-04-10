@@ -123,7 +123,7 @@
              idle: [....19] [ip4][..udp] [.192.168.12.114][55915] -> [.93.237.131.235][56066] [Nintendo][Unknown][Game][Fun]
              idle: [.....5] [ip4][..udp] [.192.168.12.114][52119] -> [...35.158.74.61][33335] [Nintendo][AmazonAWS][Game][Fun]
           guessed: [.....6] [ip4][..udp] [.192.168.12.114][52119] -> [..52.10.205.177][34343] [AmazonAWS][AmazonAWS][Cloud][Acceptable]
-                   RISK: Unidirectional Traffic
+                   RISK: Susp Entropy, Unidirectional Traffic
              idle: [.....6] [ip4][..udp] [.192.168.12.114][52119] -> [..52.10.205.177][34343]
               end: [.....8] [ip4][..tcp] [.192.168.12.114][41517] -> [..54.192.27.217][..443] [TLS.Nintendo][AmazonAWS][Game][Fun]
                    RISK: TLS (probably) Not Carrying HTTPS

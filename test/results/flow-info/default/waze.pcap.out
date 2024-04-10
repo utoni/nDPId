@@ -28,7 +28,7 @@
  detection-update: [.....6] [ip4][..tcp] [.......10.8.0.1][36102] -> [..46.51.173.182][..443] [TLS.Waze][AmazonAWS][Web][Acceptable][]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
  detection-update: [.....3] [ip4][..tcp] [.......10.8.0.1][54915] -> [..65.39.128.135][...80] [HTTP][Unknown][Download][Acceptable][xtra1.gpsonextra.net]
-                   RISK: Binary App Transfer
+                   RISK: Binary file/data transfer (attempt)
               new: [.....9] [ip4][..tcp] [.......10.8.0.1][45538] -> [.54.230.227.172][...80]
               new: [....10] [ip4][..tcp] [.......10.8.0.1][45540] -> [.54.230.227.172][...80]
          detected: [.....9] [ip4][..tcp] [.......10.8.0.1][45538] -> [.54.230.227.172][...80] [HTTP.Waze][AmazonAWS][Web][Acceptable][cres.waze.com]
@@ -211,7 +211,7 @@
           guessed: [....28] [ip4][..tcp] [.......10.8.0.1][60574] -> [...200.160.4.49][...80] [HTTP][Unknown][Web][Acceptable][]
               end: [....28] [ip4][..tcp] [.......10.8.0.1][60574] -> [...200.160.4.49][...80]
               end: [.....3] [ip4][..tcp] [.......10.8.0.1][54915] -> [..65.39.128.135][...80] [HTTP][Unknown][Download][Acceptable]
-                   RISK: Binary App Transfer
+                   RISK: Binary file/data transfer (attempt)
           guessed: [....23] [ip4][..tcp] [...10.16.37.157][46473] -> [...200.160.4.49][...80] [HTTP][Unknown][Web][Acceptable][]
               end: [....23] [ip4][..tcp] [...10.16.37.157][46473] -> [...200.160.4.49][...80]
           guessed: [....30] [ip4][..tcp] [.......10.8.0.1][60479] -> [...200.160.4.49][..443] [TLS][Unknown][Web][Safe]

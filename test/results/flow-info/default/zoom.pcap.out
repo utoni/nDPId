@@ -195,6 +195,7 @@
              idle: [.....6] [ip4][..udp] [..192.168.1.117][..137] -> [..192.168.1.255][..137] [NetBIOS][Unknown][System][Acceptable]
              idle: [....33] [ip4][..udp] [..192.168.1.117][61731] -> [..109.94.160.99][.8801] [SRTP.Zoom][Unknown][Video][Acceptable]
           guessed: [....15] [ip4][..tcp] [..192.168.1.117][53867] -> [..104.199.65.42][...80] [HTTP][Google][Web][Acceptable][]
+                   RISK: Susp Entropy
              idle: [....15] [ip4][..tcp] [..192.168.1.117][53867] -> [..104.199.65.42][...80]
              idle: [.....8] [ip4][..tcp] [..192.168.1.117][54864] -> [..52.202.62.238][..443] [TLS.Zoom][Zoom][Video][Acceptable]
              idle: [....19] [ip4][..tcp] [..192.168.1.117][54865] -> [..52.202.62.196][..443] [TLS.Zoom][Zoom][Video][Acceptable]
