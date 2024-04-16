@@ -380,10 +380,6 @@ if(BUILD_EXAMPLES)
                                             "${pkgcfg_lib_PCRE_pcre2-8}" "${pkgcfg_lib_MAXMINDDB_maxminddb}"
                                             "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}")
 
-    add_executable(nDPIsrvd-json-dump examples/c-json-stdout/c-json-stdout.c)
-    target_compile_definitions(nDPIsrvd-json-dump PRIVATE ${NDPID_DEFS})
-    target_include_directories(nDPIsrvd-json-dump PRIVATE ${NDPID_DEPS_INC})
-
     add_executable(nDPIsrvd-analysed examples/c-analysed/c-analysed.c utils.c)
     target_compile_definitions(nDPIsrvd-analysed PRIVATE ${NDPID_DEFS})
     target_include_directories(nDPIsrvd-analysed PRIVATE ${NDPID_DEPS_INC})
@@ -393,7 +389,7 @@ if(BUILD_EXAMPLES)
     target_include_directories(nDPIsrvd-simple PRIVATE ${NDPID_DEPS_INC})
 
     if(ENABLE_COVERAGE)
-        add_dependencies(coverage nDPIsrvd-analysed nDPIsrvd-collectd nDPIsrvd-captured nDPIsrvd-json-dump nDPIsrvd-simple)
+        add_dependencies(coverage nDPIsrvd-analysed nDPIsrvd-collectd nDPIsrvd-captured nDPIsrvd-simple)
     endif()
 
     if(ENABLE_DBUS)
@@ -420,7 +416,7 @@ if(BUILD_EXAMPLES)
         install(TARGETS nDPIsrvd-influxd DESTINATION bin)
     endif()
 
-    install(TARGETS nDPIsrvd-analysed nDPIsrvd-collectd nDPIsrvd-captured nDPIsrvd-json-dump nDPIsrvd-simple DESTINATION bin)
+    install(TARGETS nDPIsrvd-analysed nDPIsrvd-collectd nDPIsrvd-captured nDPIsrvd-simple DESTINATION bin)
     install(FILES examples/c-collectd/plugin_nDPIsrvd.conf examples/c-collectd/rrdgraph.sh DESTINATION share/nDPId/nDPIsrvd-collectd)
     install(DIRECTORY examples/c-collectd/www DESTINATION share/nDPId/nDPIsrvd-collectd)
 endif()

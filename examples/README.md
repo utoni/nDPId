@@ -31,10 +31,6 @@ The results are sent to a specified InfluxDB endpoint.
 
 A notification daemon that sends information about suspicious flow events to DBUS.
 
-## c-json-stdout
-
-Tiny nDPId json dumper. Does not provide any useful funcationality besides dumping parsed JSON objects.
-
 ## c-simple
 
 Integration example that verifies flow timeouts on SIGUSR1.
