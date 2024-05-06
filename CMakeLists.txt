@@ -31,6 +31,7 @@ set(CPACK_PACKAGE_VERSION_PATCH 0)
 # Note: CPACK_PACKAGING_INSTALL_PREFIX and CMAKE_INSTALL_PREFIX are *not* the same.
 # It is used only to ease environment file loading via systemd.
 set(CPACK_PACKAGING_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
+set(CMAKE_MACOSX_RPATH 1)
 
 include(CPack)
 include(CheckFunctionExists)
