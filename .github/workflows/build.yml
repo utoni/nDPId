@@ -128,7 +128,7 @@ jobs:
             upload: false
             ndpi_min_version: "5.0"
           - compiler: "cc"
-            os: "macOS-latest"
+            os: "macOS-13"
             ndpi_build: "-DBUILD_NDPI=OFF"
             ndpid_examples: "-DBUILD_EXAMPLES=OFF"
             ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
