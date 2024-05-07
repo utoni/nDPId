@@ -237,7 +237,7 @@ jobs:
         run: |
           ./test/run_tests.sh ./libnDPI ./build/nDPId-test
       - name: Daemon
-        if: endsWith(matrix.compiler, 'cc') || endsWith(matrix.compiler, 'clang')
+        if: startsWith(matrix.compiler, 'gcc') || endsWith(matrix.compiler, 'clang')
         run: |
           make -C ./build daemon VERBOSE=1
           make -C ./build daemon VERBOSE=1
