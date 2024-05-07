@@ -81,9 +81,9 @@ JSON messages streamed by both `nDPId` and `nDPIsrvd` are presented with:
 as with the following example:
 
 ```text
-01223{"flow_event_id":7,"flow_event_name":"detection-update","thread_id":12,"packet_id":307,"source":"wlan0",[...]}
-00458{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":11,"packet_id":324,"source":"wlan0",[...]]}
-00572{"flow_event_id":1,"flow_event_name":"new","thread_id":11,"packet_id":324,"source":"wlan0",[...]}
+01223{"flow_event_id":7,"flow_event_name":"detection-update","thread_id":12,"packet_id":307,"source":"wlan0", ...snip...}
+00458{"packet_event_id":2,"packet_event_name":"packet-flow","thread_id":11,"packet_id":324,"source":"wlan0", ...snip...}
+00572{"flow_event_id":1,"flow_event_name":"new","thread_id":11,"packet_id":324,"source":"wlan0", ...snip...}
 ```
 
 The full stream of `nDPId` generated JSON-events can be retrieved directly from `nDPId`, without relying on `nDPIsrvd`, by providing a properly managed UNIX-socket.
@@ -158,7 +158,8 @@ Detailed JSON-schema is available [here](schema/flow_event_schema.json). Also, a
 
 A flow can have three different states while it is been tracked by `nDPId`.
 
-1. skipped: the flow will be tracked, but no detection will happen to safe memory. See command line argument `-I` and `-E`
+1. skipped: the flow will be tracked, but no detection will happen to reduce memory usage.
+   See command line argument `-I` and `-E`
 2. finished: detection finished and the memory used for the detection is freed
 3. info: detection is in progress and all flow memory required for `libnDPI` is allocated (this state consumes most memory)
 
@@ -276,11 +277,6 @@ And why not a flow-info example?
 ./examples/py-flow-info/flow-info.py
 ```
 
-or
-```shell
-./nDPIsrvd-json-dump
-```
-
 or anything below `./examples`.
 
 # nDPId tuning
@@ -297,7 +293,7 @@ Format: `subopt` (unit, comment): description
  * `max-reader-threads` (N, safe): amount of packet processing threads, every thread can have a max. of `max-flows-per-thread` flows
  * `daemon-status-interval` (ms, safe): specifies how often daemon event `status` is generated
  * `compression-scan-interval` (ms, untested): specifies how often `nDPId` scans for inactive flows ready for compression
- * `compression-flow-inactivity` (ms, untested): the shortest period of time elapsed before `nDPId` considers compressing a flow that neither sent nor received any data
+ * `compression-flow-inactivity` (ms, untested): the shortest period of time elapsed before `nDPId` considers compressing a flow (e.g. nDPI flow struct) that neither sent nor received any data
  * `flow-scan-interval` (ms, safe): min. amount of time after which `nDPId` scans for idle or long-lasting flows
  * `generic-max-idle-time` (ms, untested): time after which a non TCP/UDP/ICMP flow times out
  * `icmp-max-idle-time` (ms, untested): time after which an ICMP flow times out
@@ -327,13 +323,11 @@ Alternatively you can run some integration tests manually:
 
 e.g.:
 
-`./test/run_tests.sh [${HOME}/git/nDPI] [${HOME}/git/nDPId/build/nDPId-test]`
+`./test/run_tests.sh "${HOME}/git/nDPI "${HOME}/git/nDPId/build/nDPId-test"`
 
 Remember that all test results are tied to a specific libnDPI commit hash
 as part of the `git submodule`. Using `test/run_tests.sh` for other commit hashes
 will most likely result in PCAP diffs.
-
-Why not use `examples/py-flow-dashboard/flow-dash.py` to visualize nDPId's output.
 
 # Contributors
 

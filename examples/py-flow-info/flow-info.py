@@ -408,7 +408,10 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
             else:
                 color = ''
 
-            next_lines[0] = '{}{}{}: {}'.format(color, 'RISK', TermColor.END, next_lines[0][:-2])
+            if severity >= args.min_risk_severity:
+                next_lines[0] = '{}{}{}: {}'.format(color, 'RISK', TermColor.END, next_lines[0][:-2])
+            else:
+                del next_lines[0]
 
     line_suffix = ''
     flow_event_name = ''
@@ -594,6 +597,7 @@ if __name__ == '__main__':
     argparser.add_argument('--ignore-category', action='append', help='Ignore printing lines with a certain category.')
     argparser.add_argument('--ignore-breed', action='append', help='Ignore printing lines with a certain breed.')
     argparser.add_argument('--ignore-hostname', action='append', help='Ignore printing lines with a certain hostname.')
+    argparser.add_argument('--min-risk-severity', action='store', type=int, default=0, help='Print only risks with a risk severity greater or equal to the given argument')
     args = argparser.parse_args()
 
     if args.no_color is True:
