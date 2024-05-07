@@ -24,6 +24,7 @@ jobs:
       CMAKE_C_FLAGS: -Werror ${{ matrix.cflags }}
       CMAKE_C_EXE_LINKER_FLAGS: ${{ matrix.ldflags }}
       CMAKE_MODULE_LINKER_FLAGS: ${{ matrix.ldflags }}
+      DYLD_LIBRARY_PATH: /usr/local/lib
     strategy:
       fail-fast: true
       matrix:
