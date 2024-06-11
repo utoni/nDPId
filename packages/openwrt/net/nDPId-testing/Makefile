@@ -51,6 +51,14 @@ config NDPID_TESTING_LIBNDPI_COMMIT_HASH
      Set the desired libnDPI git commit hash you want to link nDPId against.
      Leave empty to use the dev branch.
      Disabled by default.
+
+config NDPI_TESTING_INFLUXDB
+   bool "nDPIsrvd-influxdb"
+   depends on PACKAGE_nDPId-testing && PACKAGE_libcurl
+   default n
+   help
+     An InfluxDB push daemon. It aggregates various statistics gathered from nDPId.
+     The results are sent to a specified InfluxDB endpoint.
 endef
 
 CMAKE_OPTIONS += -DBUILD_EXAMPLES=ON
@@ -64,6 +72,10 @@ CMAKE_OPTIONS += -DSTATIC_LIBNDPI_INSTALLDIR="$(PKG_BUILD_DIR)/libnDPI/install"
 
 TARGET_CFLAGS += -DLIBNDPI_STATIC=1
 TARGET_CFLAGS += -Werror
+
+ifneq ($(CONFIG_NDPI_TESTING_INFLUXDB),)
+CMAKE_OPTIONS += -DENABLE_CURL=ON
+endif
 
 ifneq ($(CONFIG_LIBNDPI_GCRYPT),)
 CMAKE_OPTIONS += -DNDPI_WIDTH_GCRYPT=ON
@@ -105,6 +117,8 @@ endef
 endif
 
 define Build/Prepare
+	@rm -f '$(DL_DIR)/$(PKG_SOURCE)'
+	@rm -rf '$(PKG_BUILD_DIR)/*'
 	@echo 'tar: $(DL_DIR)/$(PKG_SOURCE)'
 	@echo 'pwd: $(shell pwd)'
 	@echo 'PKG_DIRECTORY=$(PKG_DIRECTORY)'

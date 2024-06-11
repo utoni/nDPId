@@ -1,5 +1,6 @@
 #include <curl/curl.h>
 #include <pthread.h>
+#include <signal.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/epoll.h>
@@ -737,7 +738,7 @@ static int init_influx_ctx(struct influx_ctx * const ctx, char const * const url
     if (curl_easy_setopt(ctx->curl, CURLOPT_URL, url) != CURLE_OK ||
         curl_easy_setopt(ctx->curl, CURLOPT_USERAGENT, "nDPIsrvd-influxd") != CURLE_OK ||
         curl_easy_setopt(ctx->curl, CURLOPT_HTTPHEADER, ctx->http_header) != CURLE_OK ||
-        curl_easy_setopt(ctx->curl, CURLOPT_TIMEOUT, influxdb_interval_ull) != CURLE_OK)
+        curl_easy_setopt(ctx->curl, CURLOPT_TIMEOUT, (long)influxdb_interval_ull) != CURLE_OK)
     {
         return -1;
     }
@@ -774,7 +775,7 @@ static void post_influx_ctx(struct influx_ctx * const ctx)
 
 static void * send_to_influxdb(void * thread_data)
 {
-    struct influx_ctx influx_ctx;
+    struct influx_ctx influx_ctx = {};
 
     (void)thread_data;
     init_influx_ctx(&influx_ctx, influxdb_url, influxdb_token);
