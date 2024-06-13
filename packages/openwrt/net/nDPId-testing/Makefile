@@ -18,6 +18,7 @@ PKG_LICENSE_FILES:=COPYING
 
 CMAKE_INSTALL:=1
 
+include $(INCLUDE_DIR)/kernel.mk
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
 
@@ -25,7 +26,7 @@ define Package/nDPId-testing
  TITLE:=nDPId is a tiny nDPI based daemons / toolkit (nDPId source repository)
  SECTION:=net
  CATEGORY:=Network
- DEPENDS:=@!SMALL_FLASH @!LOW_MEMORY_FOOTPRINT +libpcap +zlib +LIBNDPI_GCRYPT:libgcrypt
+ DEPENDS:=@!SMALL_FLASH @!LOW_MEMORY_FOOTPRINT +libpcap +zlib +LIBNDPI_GCRYPT:libgcrypt +NDPID_TESTING_INFLUXDB:libcurl +NDPID_TESTING_PFRING:libpfring
  URL:=http://github.com/lnslbrty/nDPId
 endef
 
@@ -52,13 +53,21 @@ config NDPID_TESTING_LIBNDPI_COMMIT_HASH
      Leave empty to use the dev branch.
      Disabled by default.
 
-config NDPI_TESTING_INFLUXDB
+config NDPID_TESTING_INFLUXDB
    bool "nDPIsrvd-influxdb"
    depends on PACKAGE_nDPId-testing && PACKAGE_libcurl
    default n
    help
      An InfluxDB push daemon. It aggregates various statistics gathered from nDPId.
      The results are sent to a specified InfluxDB endpoint.
+
+config NDPID_TESTING_PFRING
+   bool "PF_RING support"
+   select PACKAGE_libpfring
+   select PACKAGE_kmod-pf-ring
+   default n
+   help
+     bla
 endef
 
 CMAKE_OPTIONS += -DBUILD_EXAMPLES=ON
@@ -73,7 +82,14 @@ CMAKE_OPTIONS += -DSTATIC_LIBNDPI_INSTALLDIR="$(PKG_BUILD_DIR)/libnDPI/install"
 TARGET_CFLAGS += -DLIBNDPI_STATIC=1
 TARGET_CFLAGS += -Werror
 
-ifneq ($(CONFIG_NDPI_TESTING_INFLUXDB),)
+ifneq ($(CONFIG_NDPID_TESTING_PFRING),)
+CMAKE_OPTIONS += -DENABLE_PFRING=ON \
+	-DPFRING_KERNEL_INC="$(KERNEL_BUILD_DIR)/PF_RING-8.4.0/kernel" \
+	-DPFRING_INSTALLDIR="$(STAGING_DIR)/usr" \
+	-DPFRING_LINK_STATIC=OFF
+endif
+
+ifneq ($(CONFIG_NDPID_TESTING_INFLUXDB),)
 CMAKE_OPTIONS += -DENABLE_CURL=ON
 endif
 
