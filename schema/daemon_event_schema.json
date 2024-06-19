@@ -21,7 +21,7 @@
         "properties": { "daemon_event_name": { "enum": [ "status", "shutdown" ] } }
     },
     "then": {
-        "required": [ "packets-captured", "packets-processed", "total-skipped-flows", "total-l4-payload-len", "total-not-detected-flows", "total-guessed-flows", "total-detected-flows", "total-detection-updates", "total-updates", "current-active-flows", "total-active-flows", "total-idle-flows", "total-compressions", "total-compression-diff", "current-compression-diff", "total-events-serialized" ]
+        "required": [ "packets-captured", "packets-processed", "total-skipped-flows", "total-l4-payload-len", "total-not-detected-flows", "total-guessed-flows", "total-detected-flows", "total-detection-updates", "total-updates", "current-active-flows", "total-active-flows", "total-idle-flows", "total-compressions", "total-compression-diff", "current-compression-diff", "global-alloc-bytes", "global-alloc-count", "global-free-bytes", "global-free-count", "total-events-serialized" ]
     },
     "properties": {
         "alias": {
@@ -152,6 +152,22 @@
             "minimum": 0
         },
         "current-compression-diff": {
+            "type": "number",
+            "minimum": 0
+        },
+        "global-alloc-bytes": {
+            "type": "number",
+            "minimum": 0
+        },
+        "global-alloc-count": {
+            "type": "number",
+            "minimum": 0
+        },
+        "global-free-bytes": {
+            "type": "number",
+            "minimum": 0
+        },
+        "global-free-count": {
             "type": "number",
             "minimum": 0
         },

@@ -221,12 +221,24 @@ jobs:
         if: startsWith(matrix.ndpi_build, '-DBUILD_NDPI=OFF') && startsWith(matrix.coverage, '-DENABLE_COVERAGE=OFF') && startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=OFF')
         run: |
           pkg-config --cflags --libs libndpi
-          cc -Wall -Wextra -std=gnu99 ${{ matrix.poll }} nDPId.c nio.c utils.c $(pkg-config --cflags libndpi) -I. -I./dependencies -I./dependencies/jsmn -I./dependencies/uthash/include -o /tmp/a.out -lpcap $(pkg-config --libs libndpi) -pthread -lm
-          cc -Wall -Wextra -std=gnu99 ${{ matrix.poll }} nDPIsrvd.c nio.c utils.c -I. -I./dependencies -I./dependencies/jsmn -I./dependencies/uthash/include -o /tmp/a.out
+          cc -Wall -Wextra -std=gnu99 \
+            ${{ matrix.poll }} -DENABLE_MEMORY_STATUS=1 -DENABLE_MEMORY_PROFILING=1 \
+            nDPId.c nio.c utils.c \
+            $(pkg-config --cflags libndpi) -I. -I./dependencies -I./dependencies/jsmn -I./dependencies/uthash/include \
+            -o /tmp/a.out -lpcap $(pkg-config --libs libndpi) -pthread -lm
+          cc -Wall -Wextra -std=gnu99 \
+            ${{ matrix.poll }} -DENABLE_MEMORY_PROFILING=1 \
+            nDPIsrvd.c nio.c utils.c \
+            -I. -I./dependencies -I./dependencies/jsmn -I./dependencies/uthash/include \
+            -o /tmp/a.out
       - name: Build single nDPId/nDPIsrvd executables (invoke CC directly - static nDPI lib)
         if: endsWith(matrix.compiler, 'gcc-7') == false && startsWith(matrix.ndpi_build, '-DBUILD_NDPI=ON') && startsWith(matrix.coverage, '-DENABLE_COVERAGE=OFF') && startsWith(matrix.sanitizer, '-DENABLE_SANITIZER=ON') && startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=OFF') && startsWith(matrix.ndpid_zlib, '-DENABLE_ZLIB=ON')
         run: |
-          cc -Wall -Wextra -std=gnu99 ${{ matrix.poll }} -fsanitize=address -fsanitize=undefined -fno-sanitize=alignment -fsanitize=enum -fsanitize=leak nDPId.c nio.c utils.c -I./build/libnDPI/include/ndpi -I. -I./dependencies -I./dependencies/jsmn -I./dependencies/uthash/include -o /tmp/a.out -lpcap ./build/libnDPI/lib/libndpi.a -pthread -lm -lz
+          cc -Wall -Wextra -std=gnu99 ${{ matrix.poll }} \
+            -fsanitize=address -fsanitize=undefined -fno-sanitize=alignment -fsanitize=enum -fsanitize=leak \
+            nDPId.c nio.c utils.c \
+            -I./build/libnDPI/include/ndpi -I. -I./dependencies -I./dependencies/jsmn -I./dependencies/uthash/include \
+            -o /tmp/a.out -lpcap ./build/libnDPI/lib/libndpi.a -pthread -lm -lz
       - name: Test EXEC
         run: |
           ./build/nDPId-test
