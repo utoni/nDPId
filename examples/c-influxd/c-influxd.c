@@ -5,7 +5,6 @@
 #include <string.h>
 #include <sys/epoll.h>
 #include <sys/timerfd.h>
-#include <syslog.h>
 
 #include <ndpi_typedefs.h>
 
@@ -1622,7 +1621,6 @@ static void sighandler(int signum)
 
 int main(int argc, char ** argv)
 {
-    enum nDPIsrvd_connect_return connect_ret;
     int retval = 1, epollfd = -1;
 
     init_logging("nDPIsrvd-influxd");
@@ -1651,8 +1649,7 @@ int main(int argc, char ** argv)
                      strerror(errno));
     }
 
-    connect_ret = nDPIsrvd_connect(sock);
-    if (connect_ret != CONNECT_OK)
+    if (nDPIsrvd_connect(sock) != CONNECT_OK)
     {
         logger_early(1, "nDPIsrvd socket connect to %s failed!", serv_optarg);
         goto failure;

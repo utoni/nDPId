@@ -213,7 +213,7 @@ static struct
 
         nDPIsrvd_ull flow_risk_count[NDPI_MAX_RISK - 1 /* NDPI_NO_RISK */];
         nDPIsrvd_ull flow_risk_unknown_count;
-    } gauges[2];
+    } gauges[2]; /* values after InfluxDB push: gauges[0] -= gauges[1], gauges[1] is zero'd afterwards */
 } collectd_statistics = {};
 
 struct global_map
@@ -421,7 +421,7 @@ static int parse_options(int argc, char ** argv, struct nDPIsrvd_socket * const 
 
     static char const usage[] =
         "Usage: %s "
-        "[-l] [-s host] [-c hostname] [-n collectd-instance-name] [-i interval] [-q]\n\n"
+        "[-l] [-s host] [-c hostname] [-n collectd-instance-name] [-i interval]\n\n"
         "\t-l\tLog to console instead of syslog.\n"
         "\t-s\tDestination where nDPIsrvd is listening on.\n"
         "\t-c\tCollectd hostname.\n"
@@ -430,7 +430,7 @@ static int parse_options(int argc, char ** argv, struct nDPIsrvd_socket * const 
         "\t  \tDefaults to: " DEFAULT_COLLECTD_EXEC_INST
         "\n"
         "\t-i\tInterval between print statistics to stdout.\n"
-        "\t  \tThis value defaults to the environment variable COLLECTD_INTERVAL.\n";
+        "\t  \tThis value defaults to the environment variable COLLECTD_INTERVAL.\n\n";
 
     while ((opt = getopt(argc, argv, "hls:c:n:i:")) != -1)
     {
