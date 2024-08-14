@@ -655,6 +655,11 @@ static inline void nDPIsrvd_socket_free(struct nDPIsrvd_socket ** const sock)
 
 static inline int nDPIsrvd_setup_address(struct nDPIsrvd_address * const address, char const * const destination)
 {
+    if (address == NULL || destination == NULL)
+    {
+        return 1;
+    }
+
     size_t len = strlen(destination);
     char const * first_colon = strchr(destination, ':');
     char const * last_colon = strrchr(destination, ':');
