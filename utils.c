@@ -1,5 +1,3 @@
-#include "utils.h"
-
 #include <errno.h>
 #include <fcntl.h>
 #include <grp.h>
@@ -14,6 +12,8 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+
+#include "utils.h"
 
 typedef char pid_str[16];
 
