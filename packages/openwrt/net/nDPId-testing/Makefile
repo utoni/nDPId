@@ -83,6 +83,7 @@ TARGET_CFLAGS += -DLIBNDPI_STATIC=1
 TARGET_CFLAGS += -Werror
 
 ifneq ($(CONFIG_NDPID_TESTING_PFRING),)
+# FIXME: PFRING kernel include directory is hardcoded (not installed to linux header directory).
 CMAKE_OPTIONS += -DENABLE_PFRING=ON \
 	-DPFRING_KERNEL_INC="$(KERNEL_BUILD_DIR)/PF_RING-8.4.0/kernel" \
 	-DPFRING_INSTALLDIR="$(STAGING_DIR)/usr" \
