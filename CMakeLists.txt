@@ -391,7 +391,8 @@ if(BUILD_EXAMPLES)
 
     add_executable(nDPIsrvd-analysed examples/c-analysed/c-analysed.c utils.c)
     target_compile_definitions(nDPIsrvd-analysed PRIVATE ${NDPID_DEFS})
-    target_include_directories(nDPIsrvd-analysed PRIVATE "${STATIC_LIBNDPI_INC}" "${NDPID_DEPS_INC}")
+    target_include_directories(nDPIsrvd-analysed PRIVATE
+                               "${STATIC_LIBNDPI_INC}" "${DEFAULT_NDPI_INCLUDE}" "${CMAKE_SOURCE_DIR}" ${NDPID_DEPS_INC})
 
     add_executable(nDPIsrvd-simple examples/c-simple/c-simple.c)
     target_compile_definitions(nDPIsrvd-simple PRIVATE ${NDPID_DEFS})
