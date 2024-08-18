@@ -195,11 +195,12 @@ or to build with a staticially linked libnDPI:
 ```shell
 mkdir build
 cd build
-cmake .. -DSTATIC_LIBNDPI_INSTALLDIR=[path/to/your/libnDPI/installdir]
+cmake .. -DSTATIC_LIBNDPI_INSTALLDIR=[path/to/your/libnDPI/installdir] -DNDPI_NO_PKGCONFIG=ON
 ```
 
 If you use the latter, make sure that you've configured libnDPI with `./configure --prefix=[path/to/your/libnDPI/installdir]`
 and remember to set the all-necessary CMake variables to link against shared libraries used by your nDPI build.
+You'll also need to use `-DNDPI_NO_PKGCONFIG=ON` if `STATIC_LIBNDPI_INSTALLDIR` does not contain a pkg-config file.
 
 e.g.:
 
