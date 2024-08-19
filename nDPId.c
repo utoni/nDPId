@@ -32,6 +32,9 @@
 #include "config.h"
 #include "nDPIsrvd.h"
 #include "nio.h"
+#ifdef ENABLE_PFRING
+#include "npfring.h"
+#endif
 #include "utils.h"
 
 #ifndef UNIX_PATH_MAX
@@ -264,6 +267,9 @@ struct nDPId_flow
 
 struct nDPId_workflow
 {
+#ifdef ENABLE_PFRING
+    struct npfring npf;
+#endif
     pcap_t * pcap_handle;
 
     MT_VALUE(error_or_eof, uint8_t);
@@ -482,6 +488,9 @@ static struct
     uint8_t enable_data_analysis;
 #ifdef ENABLE_EPOLL
     uint8_t use_poll;
+#endif
+#ifdef ENABLE_PFRING
+    uint8_t use_pfring;
 #endif
     /* subopts */
     unsigned long long int max_flows_per_thread;
@@ -1252,54 +1261,94 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
 
     MT_INIT2(workflow->error_or_eof, 0);
 
-    errno = 0;
-    if (access(file_or_device, R_OK) != 0 && errno == ENOENT)
+#ifdef ENABLE_PFRING
+    if (nDPId_options.use_pfring != 0)
     {
-        workflow->pcap_handle = pcap_open_live(file_or_device, 65535, 1, 250, pcap_error_buffer);
+        errno = 0;
+
+        if (npfring_init(file_or_device, PFRING_BUFFER_SIZE, &workflow->npf) != 0)
+        {
+            logger_early(1, "PF_RING open device %s failed: %s", file_or_device, strerror(errno));
+            free_workflow(&workflow);
+            return NULL;
+        }
+
+        if (is_cmdarg_set(&nDPId_options.bpf_str) != 0)
+        {
+            if (npfring_set_bpf(&workflow->npf, get_cmdarg(&nDPId_options.bpf_str)) != 0)
+            {
+                logger_early(1, "%s", "PF_RING set bpf filter failed");
+                free_workflow(&workflow);
+                return NULL;
+            }
+        }
     }
     else
+#endif
     {
-        workflow->pcap_handle =
-            pcap_open_offline_with_tstamp_precision(file_or_device, PCAP_TSTAMP_PRECISION_MICRO, pcap_error_buffer);
-        workflow->is_pcap_file = 1;
-    }
+        errno = 0;
 
-    if (workflow->pcap_handle == NULL)
-    {
-        logger_early(1,
-                     (workflow->is_pcap_file == 0 ? "pcap_open_live: %.*s"
-                                                  : "pcap_open_offline_with_tstamp_precision: %.*s"),
-                     (int)PCAP_ERRBUF_SIZE,
-                     pcap_error_buffer);
-        free_workflow(&workflow);
-        return NULL;
-    }
-
-    if (workflow->is_pcap_file == 0 && pcap_setnonblock(workflow->pcap_handle, 1, pcap_error_buffer) == PCAP_ERROR)
-    {
-        logger_early(1, "pcap_setnonblock: %.*s", (int)PCAP_ERRBUF_SIZE, pcap_error_buffer);
-        free_workflow(&workflow);
-        return NULL;
-    }
-
-    if (is_cmdarg_set(&nDPId_options.bpf_str) != 0)
-    {
-        struct bpf_program fp;
-        if (pcap_compile(workflow->pcap_handle, &fp, get_cmdarg(&nDPId_options.bpf_str), 1, PCAP_NETMASK_UNKNOWN) != 0)
+        if (access(file_or_device, R_OK) != 0 && errno == ENOENT)
         {
-            logger_early(1, "pcap_compile: %s", pcap_geterr(workflow->pcap_handle));
+            workflow->pcap_handle = pcap_open_live(file_or_device, 65535, 1, 250, pcap_error_buffer);
+        }
+        else
+        {
+            workflow->pcap_handle =
+                pcap_open_offline_with_tstamp_precision(file_or_device, PCAP_TSTAMP_PRECISION_MICRO, pcap_error_buffer);
+            workflow->is_pcap_file = 1;
+        }
+
+        if (workflow->pcap_handle == NULL)
+        {
+            logger_early(1,
+                         (workflow->is_pcap_file == 0 ? "pcap_open_live: %.*s"
+                                                      : "pcap_open_offline_with_tstamp_precision: %.*s"),
+                         (int)PCAP_ERRBUF_SIZE,
+                         pcap_error_buffer);
             free_workflow(&workflow);
             return NULL;
         }
-        if (pcap_setfilter(workflow->pcap_handle, &fp) != 0)
+
+        if (workflow->is_pcap_file == 0 && pcap_setnonblock(workflow->pcap_handle, 1, pcap_error_buffer) == PCAP_ERROR)
         {
-            logger_early(1, "pcap_setfilter: %s", pcap_geterr(workflow->pcap_handle));
+            logger_early(1, "pcap_setnonblock: %.*s", (int)PCAP_ERRBUF_SIZE, pcap_error_buffer);
             free_workflow(&workflow);
+            return NULL;
+        }
+
+        if (is_cmdarg_set(&nDPId_options.bpf_str) != 0)
+        {
+            struct bpf_program fp;
+            if (pcap_compile(workflow->pcap_handle, &fp, get_cmdarg(&nDPId_options.bpf_str), 1, PCAP_NETMASK_UNKNOWN) !=
+                0)
+            {
+                logger_early(1, "pcap_compile: %s", pcap_geterr(workflow->pcap_handle));
+                free_workflow(&workflow);
+                return NULL;
+            }
+            if (pcap_setfilter(workflow->pcap_handle, &fp) != 0)
+            {
+                logger_early(1, "pcap_setfilter: %s", pcap_geterr(workflow->pcap_handle));
+                free_workflow(&workflow);
+                pcap_freecode(&fp);
+                return NULL;
+            }
             pcap_freecode(&fp);
+        }
+    }
+
+#ifdef ENABLE_PFRING
+    if (nDPId_options.use_pfring != 0)
+    {
+        if (npfring_enable(&workflow->npf) != 0)
+        {
+            logger_early(1, "%s", "Could not enable PF_RING");
+            free_workflow(&workflow);
             return NULL;
         }
-        pcap_freecode(&fp);
     }
+#endif
 
     workflow->ndpi_struct = ndpi_init_detection_module(NULL);
     if (workflow->ndpi_struct == NULL)
@@ -1488,6 +1537,13 @@ static void free_workflow(struct nDPId_workflow ** const workflow)
     {
         return;
     }
+
+#ifdef ENABLE_PFRING
+    if (nDPId_options.use_pfring != 0)
+    {
+        npfring_close(&w->npf);
+    }
+#endif
 
     if (w->pcap_handle != NULL)
     {
@@ -2125,6 +2181,33 @@ static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enu
         case DAEMON_EVENT_SHUTDOWN:
             ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "packets-captured", workflow->packets_captured);
             ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "packets-processed", workflow->packets_processed);
+#ifdef ENABLE_PFRING
+            {
+                int rc;
+                struct npfring_stats stats = {};
+
+                if (nDPId_options.use_pfring != 0) {
+                    if ((rc = npfring_stats(&workflow->npf, &stats)) != 0)
+                    {
+                        logger(1, "[%8llu] PF_RING stats returned: %d", reader_thread->workflow->packets_processed, rc);
+                    }
+                    ndpi_serialize_string_boolean(&workflow->ndpi_serializer, "pfring_active", 0);
+                    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "pfring_recv", 0);
+                    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "pfring_drop", 0);
+                    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "pfring_shunt", 0);
+                } else {
+                    ndpi_serialize_string_boolean(&workflow->ndpi_serializer, "pfring_active", nDPId_options.use_pfring);
+                    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "pfring_recv", stats.recv);
+                    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "pfring_drop", stats.drop);
+                    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "pfring_shunt", stats.shunt);
+                }
+            }
+#else
+            ndpi_serialize_string_boolean(&workflow->ndpi_serializer, "pfring_active", 0);
+            ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "pfring_recv", 0);
+            ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "pfring_drop", 0);
+            ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "pfring_shunt", 0);
+#endif
             ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
                                          "total-skipped-flows",
                                          workflow->total_skipped_flows);
@@ -2669,9 +2752,20 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
                                      get_l4_protocol_idle_time_external(flow_ext->flow_basic.l4_protocol));
     }
 
-    ndpi_serialize_string_int32(&workflow->ndpi_serializer,
-                                "pkt_datalink",
-                                pcap_datalink(reader_thread->workflow->pcap_handle));
+#ifdef ENABLE_PFRING
+    if (nDPId_options.use_pfring != 0)
+    {
+        ndpi_serialize_string_int32(&workflow->ndpi_serializer,
+                                    "pkt_datalink",
+                                    npfring_datalink(&reader_thread->workflow->npf));
+    }
+    else
+#endif
+    {
+        ndpi_serialize_string_int32(&workflow->ndpi_serializer,
+                                    "pkt_datalink",
+                                    pcap_datalink(reader_thread->workflow->pcap_handle));
+    }
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_caplen", header->caplen);
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_type", pkt_type);
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_l3_offset", pkt_l3_offset);
@@ -2736,9 +2830,20 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
         case FLOW_EVENT_IDLE:
         case FLOW_EVENT_UPDATE:
         case FLOW_EVENT_ANALYSE:
-            ndpi_serialize_string_int32(&workflow->ndpi_serializer,
-                                        "flow_datalink",
-                                        pcap_datalink(reader_thread->workflow->pcap_handle));
+#ifdef ENABLE_PFRING
+            if (nDPId_options.use_pfring != 0)
+            {
+                ndpi_serialize_string_int32(&workflow->ndpi_serializer,
+                                            "flow_datalink",
+                                            npfring_datalink(&reader_thread->workflow->npf));
+            }
+            else
+#endif
+            {
+                ndpi_serialize_string_int32(&workflow->ndpi_serializer,
+                                            "flow_datalink",
+                                            pcap_datalink(reader_thread->workflow->pcap_handle));
+            }
             ndpi_serialize_string_uint32(&workflow->ndpi_serializer,
                                          "flow_max_packets",
                                          nDPId_options.max_packets_per_flow_to_send);
@@ -3164,8 +3269,19 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
                                   uint16_t * layer3_type)
 {
     const uint16_t eth_offset = 0;
-    const int datalink_type = pcap_datalink(reader_thread->workflow->pcap_handle);
+    int datalink_type;
     const struct ndpi_ethhdr * ethernet;
+
+#ifdef ENABLE_PFRING
+    if (nDPId_options.use_pfring != 0)
+    {
+        datalink_type = npfring_datalink(&reader_thread->workflow->npf);
+    }
+    else
+#endif
+    {
+        datalink_type = pcap_datalink(reader_thread->workflow->pcap_handle);
+    }
 
     switch (datalink_type)
     {
@@ -4402,168 +4518,208 @@ static void log_all_flows(struct nDPId_reader_thread const * const reader_thread
 }
 #endif
 
-static void run_pcap_loop(struct nDPId_reader_thread * const reader_thread)
+static void run_capture_loop(struct nDPId_reader_thread * const reader_thread)
 {
-    if (reader_thread->workflow != NULL && reader_thread->workflow->pcap_handle != NULL)
+    if (reader_thread->workflow == NULL || (reader_thread->workflow->pcap_handle == NULL
+#ifdef ENABLE_PFRING
+                                            && reader_thread->workflow->npf.pfring_desc == NULL
+#endif
+                                            ))
     {
-        if (reader_thread->workflow->is_pcap_file != 0)
+        return;
+    }
+
+    if (reader_thread->workflow->is_pcap_file != 0)
+    {
+        switch (pcap_loop(reader_thread->workflow->pcap_handle, -1, &ndpi_process_packet, (uint8_t *)reader_thread))
         {
-            switch (pcap_loop(reader_thread->workflow->pcap_handle, -1, &ndpi_process_packet, (uint8_t *)reader_thread))
-            {
-                case PCAP_ERROR:
-                    logger(1, "Error while reading pcap file: '%s'", pcap_geterr(reader_thread->workflow->pcap_handle));
-                    MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
-                    return;
-                case PCAP_ERROR_BREAK:
-                    MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
-                    return;
-                default:
-                    return;
-            }
+            case PCAP_ERROR:
+                logger(1, "Error while reading pcap file: '%s'", pcap_geterr(reader_thread->workflow->pcap_handle));
+                MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
+                return;
+            case PCAP_ERROR_BREAK:
+                MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
+                return;
+            default:
+                return;
+        }
+    }
+    else
+    {
+#if !defined(__FreeBSD__) && !defined(__APPLE__)
+        sigset_t thread_signal_set, old_signal_set;
+        sigfillset(&thread_signal_set);
+        if (pthread_sigmask(SIG_BLOCK, &thread_signal_set, &old_signal_set) != 0)
+        {
+            logger(1, "pthread_sigmask: %s", strerror(errno));
+            MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
+            return;
+        }
+
+        sigaddset(&thread_signal_set, SIGINT);
+        sigaddset(&thread_signal_set, SIGTERM);
+        sigaddset(&thread_signal_set, SIGUSR1);
+        int signal_fd = signalfd(-1, &thread_signal_set, SFD_NONBLOCK);
+        if (signal_fd < 0 || set_fd_cloexec(signal_fd) < 0)
+        {
+            logger(1, "signalfd: %s", strerror(errno));
+            MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
+            return;
+        }
+#endif
+
+        int capture_fd = -1;
+#ifdef ENABLE_PFRING
+        if (nDPId_options.use_pfring != 0)
+        {
+            capture_fd = npfring_get_selectable_fd(&reader_thread->workflow->npf);
         }
         else
+#endif
         {
-#if !defined(__FreeBSD__) && !defined(__APPLE__)
-            sigset_t thread_signal_set, old_signal_set;
-            sigfillset(&thread_signal_set);
-            if (pthread_sigmask(SIG_BLOCK, &thread_signal_set, &old_signal_set) != 0)
-            {
-                logger(1, "pthread_sigmask: %s", strerror(errno));
-                MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
-                return;
-            }
-
-            sigaddset(&thread_signal_set, SIGINT);
-            sigaddset(&thread_signal_set, SIGTERM);
-            sigaddset(&thread_signal_set, SIGUSR1);
-            int signal_fd = signalfd(-1, &thread_signal_set, SFD_NONBLOCK);
-            if (signal_fd < 0 || set_fd_cloexec(signal_fd) < 0)
-            {
-                logger(1, "signalfd: %s", strerror(errno));
-                MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
-                return;
-            }
+            capture_fd = pcap_get_selectable_fd(reader_thread->workflow->pcap_handle);
+        }
+        if (capture_fd < 0)
+        {
+            logger(1,
+                   "Got an invalid %s fd",
+                   (
+#ifdef ENABLE_PFRING
+                       nDPId_options.use_pfring != 0 ? "PF_RING" :
 #endif
+                                                     "PCAP"));
+            MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
+            return;
+        }
 
-            int pcap_fd = pcap_get_selectable_fd(reader_thread->workflow->pcap_handle);
-            if (pcap_fd < 0)
-            {
-                logger(1, "%s", "Got an invalid PCAP fd");
-                MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
-                return;
-            }
-
-            struct nio io;
-            nio_init(&io);
+        struct nio io;
+        nio_init(&io);
 #ifdef ENABLE_EPOLL
-            if ((nDPId_options.use_poll == 0 && nio_use_epoll(&io, 32) != NIO_SUCCESS) ||
-                (nDPId_options.use_poll != 0 && nio_use_poll(&io, nDPIsrvd_MAX_REMOTE_DESCRIPTORS) != NIO_SUCCESS))
+        if ((nDPId_options.use_poll == 0 && nio_use_epoll(&io, 32) != NIO_SUCCESS) ||
+            (nDPId_options.use_poll != 0 && nio_use_poll(&io, nDPIsrvd_MAX_REMOTE_DESCRIPTORS) != NIO_SUCCESS))
 #else
-            if (nio_use_poll(&io, nDPIsrvd_MAX_REMOTE_DESCRIPTORS) != NIO_SUCCESS)
+        if (nio_use_poll(&io, nDPIsrvd_MAX_REMOTE_DESCRIPTORS) != NIO_SUCCESS)
 #endif
-            {
-                logger(1, "%s", "Event I/O poll/epoll setup failed");
-                MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
-                nio_free(&io);
-                return;
-            }
+        {
+            logger(1, "%s", "Event I/O poll/epoll setup failed");
+            MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
+            nio_free(&io);
+            return;
+        }
 
-            errno = 0;
-            if (nio_add_fd(&io, pcap_fd, NIO_EVENT_INPUT, NULL) != NIO_SUCCESS)
-            {
-                logger(1,
-                       "Could not add pcap fd to event queue: %s",
-                       (errno != 0 ? strerror(errno) : "Internal Error"));
-                MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
-                nio_free(&io);
-                return;
-            }
+        errno = 0;
+        if (nio_add_fd(&io, capture_fd, NIO_EVENT_INPUT, NULL) != NIO_SUCCESS)
+        {
+            logger(1, "Could not add pcap fd to event queue: %s", (errno != 0 ? strerror(errno) : "Internal Error"));
+            MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
+            nio_free(&io);
+            return;
+        }
 #if !defined(__FreeBSD__) && !defined(__APPLE__)
-            errno = 0;
-            if (nio_add_fd(&io, signal_fd, NIO_EVENT_INPUT, NULL) != NIO_SUCCESS)
-            {
-                logger(1,
-                       "Could not add signal fd to event queue: %s",
-                       (errno != 0 ? strerror(errno) : "Internal Error"));
-                MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
-                nio_free(&io);
-                return;
-            }
+        errno = 0;
+        if (nio_add_fd(&io, signal_fd, NIO_EVENT_INPUT, NULL) != NIO_SUCCESS)
+        {
+            logger(1, "Could not add signal fd to event queue: %s", (errno != 0 ? strerror(errno) : "Internal Error"));
+            MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
+            nio_free(&io);
+            return;
+        }
 #endif
 
-            int const timeout_ms = 1000; /* TODO: Configurable? */
-            struct timeval tval_before_epoll, tval_after_epoll;
-            while (MT_GET_AND_ADD(nDPId_main_thread_shutdown, 0) == 0 && processing_threads_error_or_eof() == 0)
+        int const timeout_ms = 1000; /* TODO: Configurable? */
+        struct timeval tval_before_epoll, tval_after_epoll;
+        while (MT_GET_AND_ADD(nDPId_main_thread_shutdown, 0) == 0 && processing_threads_error_or_eof() == 0)
+        {
+            get_current_time(&tval_before_epoll);
+            errno = 0;
+            if (nio_run(&io, timeout_ms) != NIO_SUCCESS)
             {
-                get_current_time(&tval_before_epoll);
-                errno = 0;
-                if (nio_run(&io, timeout_ms) != NIO_SUCCESS)
+                logger(1, "Event I/O returned error: %s", strerror(errno));
+                MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
+                break;
+            }
+
+            int nready = nio_get_nready(&io);
+
+            if (nready == 0)
+            {
+                struct timeval tval_diff;
+                get_current_time(&tval_after_epoll);
+                ndpi_timer_sub(&tval_after_epoll, &tval_before_epoll, &tval_diff);
+                uint64_t tdiff_us = tval_diff.tv_sec * 1000 * 1000 + tval_diff.tv_usec;
+
+                reader_thread->workflow->last_global_time += tdiff_us;
+                reader_thread->workflow->last_thread_time += tdiff_us;
+
+                do_periodically_work(reader_thread);
+            }
+
+            for (int i = 0; i < nready; ++i)
+            {
+                if (nio_has_error(&io, i) == NIO_SUCCESS)
                 {
-                    logger(1, "Event I/O returned error: %s", strerror(errno));
+                    logger(1, "%s", "Event I/O error");
                     MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
-                    break;
                 }
 
-                int nready = nio_get_nready(&io);
-
-                if (nready == 0)
-                {
-                    struct timeval tval_diff;
-                    get_current_time(&tval_after_epoll);
-                    ndpi_timer_sub(&tval_after_epoll, &tval_before_epoll, &tval_diff);
-                    uint64_t tdiff_us = tval_diff.tv_sec * 1000 * 1000 + tval_diff.tv_usec;
-
-                    reader_thread->workflow->last_global_time += tdiff_us;
-                    reader_thread->workflow->last_thread_time += tdiff_us;
-
-                    do_periodically_work(reader_thread);
-                }
-
-                for (int i = 0; i < nready; ++i)
-                {
-                    if (nio_has_error(&io, i) == NIO_SUCCESS)
-                    {
-                        logger(1, "%s", "Event I/O error");
-                        MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
-                    }
-
-                    int fd = nio_get_fd(&io, i);
+                int fd = nio_get_fd(&io, i);
 
 #if !defined(__FreeBSD__) && !defined(__APPLE__)
-                    if (fd == signal_fd)
+                if (fd == signal_fd)
+                {
+                    struct signalfd_siginfo fdsi;
+                    if (read(signal_fd, &fdsi, sizeof(fdsi)) != sizeof(fdsi))
                     {
-                        struct signalfd_siginfo fdsi;
-                        if (read(signal_fd, &fdsi, sizeof(fdsi)) != sizeof(fdsi))
+                        if (errno != EAGAIN)
                         {
-                            if (errno != EAGAIN)
-                            {
-                                logger(1, "Could not read signal data from fd %d: %s", signal_fd, strerror(errno));
-                            }
-                        }
-                        else
-                        {
-                            char const * signame = "unknown";
-                            switch (fdsi.ssi_signo)
-                            {
-                                case SIGINT:
-                                    signame = "SIGINT";
-                                    sighandler(SIGINT);
-                                    break;
-                                case SIGTERM:
-                                    signame = "SIGTERM";
-                                    sighandler(SIGTERM);
-                                    break;
-                                case SIGUSR1:
-                                    signame = "SIGUSR1";
-                                    log_all_flows(reader_thread);
-                                    break;
-                            }
-                            logger(1, "Received signal %d (%s)", fdsi.ssi_signo, signame);
+                            logger(1, "Could not read signal data from fd %d: %s", signal_fd, strerror(errno));
                         }
                     }
                     else
+                    {
+                        char const * signame = "unknown";
+                        switch (fdsi.ssi_signo)
+                        {
+                            case SIGINT:
+                                signame = "SIGINT";
+                                sighandler(SIGINT);
+                                break;
+                            case SIGTERM:
+                                signame = "SIGTERM";
+                                sighandler(SIGTERM);
+                                break;
+                            case SIGUSR1:
+                                signame = "SIGUSR1";
+                                log_all_flows(reader_thread);
+                                break;
+                        }
+                        logger(1, "Received signal %d (%s)", fdsi.ssi_signo, signame);
+                    }
+                }
+                else
 #endif
-                        if (fd == pcap_fd)
+                    if (fd == capture_fd)
+                {
+#ifdef ENABLE_PFRING
+                    if (nDPId_options.use_pfring != 0)
+                    {
+                        struct pcap_pkthdr hdr;
+
+                        int rc = npfring_recv(&reader_thread->workflow->npf, &hdr);
+                        if (rc == 0)
+                        {
+                            logger(1, "Error while reading packets from PF_RING: %d", rc);
+                            MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
+                            nio_free(&io);
+                            return;
+                        }
+
+                        ndpi_process_packet((uint8_t *)reader_thread,
+                                            &hdr,
+                                            &reader_thread->workflow->npf.pfring_buffer[0]);
+                    }
+                    else
+#endif
                     {
                         switch (pcap_dispatch(
                             reader_thread->workflow->pcap_handle, -1, ndpi_process_packet, (uint8_t *)reader_thread))
@@ -4582,15 +4738,15 @@ static void run_pcap_loop(struct nDPId_reader_thread * const reader_thread)
                                 break;
                         }
                     }
-                    else
-                    {
-                        logger(1, "Unknown event descriptor or data returned: %p", nio_get_ptr(&io, i));
-                    }
+                }
+                else
+                {
+                    logger(1, "Unknown event descriptor or data returned: %p", nio_get_ptr(&io, i));
                 }
             }
-
-            nio_free(&io);
         }
+
+        nio_free(&io);
     }
 }
 
@@ -4622,7 +4778,7 @@ static void * processing_thread(void * const ndpi_thread_arg)
         jsonize_daemon(reader_thread, DAEMON_EVENT_INIT);
     }
 
-    run_pcap_loop(reader_thread);
+    run_capture_loop(reader_thread);
     set_collector_block(reader_thread);
     MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
     return NULL;
@@ -4975,6 +5131,9 @@ static void print_usage(char const * const arg0)
         "\t  \t"
         "[-v] [-h]\n\n"
         "\t-i\tInterface or file from where to read packets from.\n"
+#ifdef ENABLE_PFRING
+        "\t-r\tUse PFRING to capture packets instead of libpcap.\n"
+#endif
         "\t-I\tProcess only packets where the source address of the first packet\n"
         "\t  \tis part of the interface subnet. (Internal mode)\n"
         "\t-E\tProcess only packets where the source address of the first packet\n"
@@ -5022,38 +5181,46 @@ static void print_usage(char const * const arg0)
 static void nDPId_print_deps_version(FILE * const out)
 {
     fprintf(out,
-            "------------------------------------------------------\n"
+            "-------------------------------------------------------\n"
 #ifdef LIBNDPI_STATIC
-            "nDPI version: %s (statically linked)\n"
+            "nDPI version...: %s (statically linked)\n"
 #else
-            "nDPI version: %s\n"
+            "nDPI version...: %s\n"
 #endif
-            " API version: %u\n"
-            "pcap version: %s\n"
-            "------------------------------------------------------\n",
+            " API version...: %u\n"
+            "pcap version...: %s\n",
             ndpi_revision(),
             ndpi_get_api_version(),
             pcap_lib_version() + strlen("libpcap version "));
     if (ndpi_get_gcrypt_version() != NULL)
     {
-        fprintf(out,
-                "gcrypt version: %s\n"
-                "----------------------------------\n",
-                ndpi_get_gcrypt_version());
+        fprintf(out, "gcrypt version.: %s\n", ndpi_get_gcrypt_version());
     }
+#ifdef ENABLE_PFRING
+    npfring_print_version(out);
+#endif
+    fprintf(out, "%s", "-------------------------------------------------------\n");
 }
 
 static int nDPId_parse_options(int argc, char ** argv)
 {
     int opt;
 
-    while ((opt = getopt(argc, argv, "i:IEB:lL:c:edp:u:g:P:C:J:S:a:Azo:vh")) != -1)
+    while ((opt = getopt(argc, argv, "i:rIEB:lL:c:edp:u:g:P:C:J:S:a:Azo:vh")) != -1)
     {
         switch (opt)
         {
             case 'i':
                 set_cmdarg(&nDPId_options.pcap_file_or_interface, optarg);
                 break;
+            case 'r':
+#ifdef ENABLE_PFRING
+                nDPId_options.use_pfring = 1;
+                break;
+#else
+                logger_early(1, "%s", "nDPId was built w/o PFRING support");
+                return 1;
+#endif
             case 'I':
                 nDPId_options.process_internal_initial_direction = 1;
                 break;

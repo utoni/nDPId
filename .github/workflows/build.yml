@@ -225,20 +225,22 @@ jobs:
             ${{ matrix.poll }} -DENABLE_MEMORY_STATUS=1 -DENABLE_MEMORY_PROFILING=1 \
             nDPId.c nio.c utils.c \
             $(pkg-config --cflags libndpi) -I. -I./dependencies -I./dependencies/jsmn -I./dependencies/uthash/include \
-            -o /tmp/a.out -lpcap $(pkg-config --libs libndpi) -pthread -lm
+            -o /tmp/a.out \
+            -lpcap $(pkg-config --libs libndpi) -pthread -lm
           cc -Wall -Wextra -std=gnu99 \
-            ${{ matrix.poll }} -DENABLE_MEMORY_PROFILING=1 \
+            ${{ matrix.poll }} -DENABLE_MEMORY_STATUS=1 -DENABLE_MEMORY_PROFILING=1 \
             nDPIsrvd.c nio.c utils.c \
             -I. -I./dependencies -I./dependencies/jsmn -I./dependencies/uthash/include \
             -o /tmp/a.out
       - name: Build single nDPId/nDPIsrvd executables (invoke CC directly - static nDPI lib)
         if: endsWith(matrix.compiler, 'gcc-7') == false && startsWith(matrix.ndpi_build, '-DBUILD_NDPI=ON') && startsWith(matrix.coverage, '-DENABLE_COVERAGE=OFF') && startsWith(matrix.sanitizer, '-DENABLE_SANITIZER=ON') && startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=OFF') && startsWith(matrix.ndpid_zlib, '-DENABLE_ZLIB=ON')
         run: |
-          cc -Wall -Wextra -std=gnu99 ${{ matrix.poll }} \
+          cc -Wall -Wextra -std=gnu99 ${{ matrix.poll }} -DENABLE_ZLIB=1 -DENABLE_MEMORY_STATUS=1 -DENABLE_MEMORY_PROFILING=1 \
             -fsanitize=address -fsanitize=undefined -fno-sanitize=alignment -fsanitize=enum -fsanitize=leak \
             nDPId.c nio.c utils.c \
             -I./build/libnDPI/include/ndpi -I. -I./dependencies -I./dependencies/jsmn -I./dependencies/uthash/include \
-            -o /tmp/a.out -lpcap ./build/libnDPI/lib/libndpi.a -pthread -lm -lz
+            -o /tmp/a.out \
+            -lpcap ./build/libnDPI/lib/libndpi.a -pthread -lm -lz
       - name: Test EXEC
         run: |
           ./build/nDPId-test
@@ -282,6 +284,20 @@ jobs:
           sudo systemctl status ndpisrvd.service ndpid@lo.service || true
           sudo systemctl show ndpisrvd.service ndpid@lo.service -p SubState,ActiveState || true
           journalctl --no-tail --no-pager -u ndpisrvd.service -u ndpid@lo.service
+      - name: Build PF_RING and nDPId (invoke CC directly - dynamic nDPI lib)
+        if: endsWith(matrix.compiler, 'gcc-7') == false && startsWith(matrix.ndpi_build, '-DBUILD_NDPI=ON') && startsWith(matrix.coverage, '-DENABLE_COVERAGE=OFF') && startsWith(matrix.sanitizer, '-DENABLE_SANITIZER=ON') && startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=OFF') && startsWith(matrix.ndpid_zlib, '-DENABLE_ZLIB=ON')
+        run: |
+          git clone --depth=1 https://github.com/ntop/PF_RING.git
+          cd PF_RING && make all && sudo make install prefix=/usr
+          cd ..
+          cc -Wall -Wextra -std=gnu99 ${{ matrix.poll }} -DENABLE_PFRING=1 -DENABLE_ZLIB=1 -DENABLE_MEMORY_STATUS=1 -DENABLE_MEMORY_PROFILING=1 \
+            -fsanitize=address -fsanitize=undefined -fno-sanitize=alignment -fsanitize=enum -fsanitize=leak \
+            nDPId.c npfring.c nio.c utils.c \
+            -I. -I./dependencies -I./dependencies/jsmn -I./dependencies/uthash/include \
+            -I./build/libnDPI/include/ndpi \
+            -I./PF_RING/userland/lib -I./PF_RING/kernel \
+            -o /tmp/a.out \
+            -ldl ./PF_RING/userland/lib/libpfring.a -lpcap ./build/libnDPI/lib/libndpi.a -pthread -lm -lz
       - name: Build against libnDPI-${{ matrix.ndpi_min_version }}
         if: startsWith(matrix.os, 'ubuntu')
         run: |
@@ -304,21 +320,51 @@ jobs:
                 echo "Configure arguments: '$NDPI_CONFIGURE_ARGS'"
                 ./autogen.sh --prefix=/usr --with-only-libndpi $NDPI_CONFIGURE_ARGS CC="${{ matrix.compiler }}" CXX=false \
                     CFLAGS="$CMAKE_C_FLAGS" && make && sudo make install; cd ..; }
-          test $WGET_RET -ne 0 || { echo "Running CMake.."; \
-                cmake -S .. -DCMAKE_C_COMPILER="$CMAKE_C_COMPILER" -DCMAKE_C_FLAGS="$CMAKE_C_FLAGS" \
+          cd ..
+          test $WGET_RET -ne 0 || { echo "Running CMake.. (pkgconfig)"; \
+                cmake -S . -B ./build-local-pkgconfig \
+                    -DCMAKE_C_COMPILER="$CMAKE_C_COMPILER" -DCMAKE_C_FLAGS="$CMAKE_C_FLAGS" \
                     -DCMAKE_C_EXE_LINKER_FLAGS="$CMAKE_C_EXE_LINKER_FLAGS" \
                     -DBUILD_NDPI=OFF -DBUILD_EXAMPLES=ON \
                     -DENABLE_DBUS=ON -DENABLE_CURL=ON -DENABLE_SYSTEMD=ON \
                     ${{ matrix.poll }} ${{ matrix.coverage }} \
                     ${{ matrix.sanitizer }} ${{ matrix.ndpid_examples }}; }
-          test $WGET_RET -ne 0 || { echo "Running Make.."; cmake --build . --verbose; }
-          test $WGET_RET -ne 0 || { echo "Running CMake.."; \
-                cmake -S .. -DCMAKE_C_COMPILER="$CMAKE_C_COMPILER" -DCMAKE_C_FLAGS="$CMAKE_C_FLAGS" \
+          test $WGET_RET -ne 0 || { echo "Running Make.. (pkgconfig)"; \
+                cmake --build ./build-local-pkgconfig --verbose; }
+          test $WGET_RET -ne 0 || { echo "Testing Executable.. (pkgconfig)"; \
+                ./build-local-pkgconfig/nDPId-test; \
+                ./build-local-pkgconfig/nDPId -h || test $? -eq 1; \
+                ./build-local-pkgconfig/nDPIsrvd -h || test $? -eq 1; }
+          test $WGET_RET -ne 0 || { echo "Running CMake.. (static)"; \
+                cmake -S . -B ./build-local-static \
+                    -DCMAKE_C_COMPILER="$CMAKE_C_COMPILER" -DCMAKE_C_FLAGS="$CMAKE_C_FLAGS" \
                     -DCMAKE_C_EXE_LINKER_FLAGS="$CMAKE_C_EXE_LINKER_FLAGS" \
                     -DBUILD_NDPI=OFF -DBUILD_EXAMPLES=ON \
                     -DENABLE_DBUS=ON -DENABLE_CURL=ON -DENABLE_SYSTEMD=ON \
                     -DNDPI_NO_PKGCONFIG=ON -DSTATIC_LIBNDPI_INSTALLDIR=/usr \
                     ${{ matrix.poll }} ${{ matrix.coverage }} ${{ matrix.ndpid_gcrypt }} \
                     ${{ matrix.sanitizer }} ${{ matrix.ndpid_examples }}; }
-          test $WGET_RET -ne 0 || { echo "Running Make.."; cmake --build . --verbose; }
+          test $WGET_RET -ne 0 || { echo "Running Make.. (static)"; \
+                cmake --build ./build-local-static --verbose; }
+          test $WGET_RET -ne 0 || { echo "Testing Executable.. (static)"; \
+                ./build-local-static/nDPId-test; \
+                ./build-local-static/nDPId -h || test $? -eq 1; \
+                ./build-local-static/nDPIsrvd -h || test $? -eq 1; }
+          test $WGET_RET -ne 0 || test ! -d ./PF_RING || { echo "Running CMake.. (PF_RING)"; \
+                cmake -S . -B ./build-local-pfring \
+                    -DCMAKE_C_COMPILER="$CMAKE_C_COMPILER" -DCMAKE_C_FLAGS="$CMAKE_C_FLAGS" \
+                    -DCMAKE_C_EXE_LINKER_FLAGS="$CMAKE_C_EXE_LINKER_FLAGS" \
+                    -DBUILD_NDPI=OFF -DBUILD_EXAMPLES=ON -DENABLE_PFRING=ON \
+                    -DENABLE_DBUS=ON -DENABLE_CURL=ON -DENABLE_SYSTEMD=ON \
+                    -DNDPI_NO_PKGCONFIG=ON -DSTATIC_LIBNDPI_INSTALLDIR=/usr \
+                    -DPFRING_LINK_STATIC=OFF \
+                    -DPFRING_INSTALLDIR=/usr -DPFRING_KERNEL_INC="$(realpath ./PF_RING/kernel)" \
+                    ${{ matrix.poll }} ${{ matrix.coverage }} ${{ matrix.ndpid_gcrypt }} \
+                    ${{ matrix.sanitizer }} ${{ matrix.ndpid_examples }}; }
+          test $WGET_RET -ne 0 || test ! -d ./PF_RING || { echo "Running Make.. (PF_RING)"; \
+                cmake --build ./build-local-pfring --verbose; }
+          test $WGET_RET -ne 0 || test ! -d ./PF_RING || { echo "Testing Executable.. (PF_RING)"; \
+                ./build-local-pfring/nDPId-test; \
+                ./build-local-pfring/nDPId -h || test $? -eq 1; \
+                ./build-local-pfring/nDPIsrvd -h || test $? -eq 1; }
           test $WGET_RET -eq 0 -o $WGET_RET -eq 8

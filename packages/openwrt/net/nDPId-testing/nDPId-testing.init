@@ -64,9 +64,11 @@ start_ndpid_instance() {
 	fi
 
 	args="$(print_arg_str "$cfg" 'interface' '-i')"
+	args="$args$(print_arg_bool "$cfg" 'use_pfring' '-r')"
 	args="$args$(print_arg_bool "$cfg" 'internal_only' '-I')"
 	args="$args$(print_arg_bool "$cfg" 'external_only' '-E')"
 	args="$args$(print_arg_str "$cfg" 'bpf_filter' '-B')"
+	args="$args$(print_arg_bool "$cfg" 'use_poll' '-e')"
 	args="$args$(print_arg_str "$cfg" 'proto_file' '-P')"
 	args="$args$(print_arg_str "$cfg" 'cat_file' '-C')"
 	args="$args$(print_arg_str "$cfg" 'ja3_file' '-J')"
