@@ -1266,7 +1266,7 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     {
         errno = 0;
 
-        if (npfring_init(file_or_device, 65535, &workflow->npf) != 0)
+        if (npfring_init(file_or_device, PFRING_BUFFER_SIZE, &workflow->npf) != 0)
         {
             logger_early(1, "PF_RING open device %s failed: %s", file_or_device, strerror(errno));
             free_workflow(&workflow);
@@ -2186,14 +2186,21 @@ static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enu
                 int rc;
                 struct npfring_stats stats = {};
 
-                if ((rc = npfring_stats(&workflow->npf, &stats)) != 0)
-                {
-                    logger(1, "[%8llu] PF_RING stats returned: %d", reader_thread->workflow->packets_processed, rc);
+                if (nDPId_options.use_pfring != 0) {
+                    if ((rc = npfring_stats(&workflow->npf, &stats)) != 0)
+                    {
+                        logger(1, "[%8llu] PF_RING stats returned: %d", reader_thread->workflow->packets_processed, rc);
+                    }
+                    ndpi_serialize_string_boolean(&workflow->ndpi_serializer, "pfring_active", 0);
+                    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "pfring_recv", 0);
+                    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "pfring_drop", 0);
+                    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "pfring_shunt", 0);
+                } else {
+                    ndpi_serialize_string_boolean(&workflow->ndpi_serializer, "pfring_active", nDPId_options.use_pfring);
+                    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "pfring_recv", stats.recv);
+                    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "pfring_drop", stats.drop);
+                    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "pfring_shunt", stats.shunt);
                 }
-                ndpi_serialize_string_boolean(&workflow->ndpi_serializer, "pfring_active", nDPId_options.use_pfring);
-                ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "pfring_recv", stats.recv);
-                ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "pfring_drop", stats.drop);
-                ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "pfring_shunt", stats.shunt);
             }
 #else
             ndpi_serialize_string_boolean(&workflow->ndpi_serializer, "pfring_active", 0);
@@ -2827,7 +2834,7 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
             if (nDPId_options.use_pfring != 0)
             {
                 ndpi_serialize_string_int32(&workflow->ndpi_serializer,
-                                            "pkt_datalink",
+                                            "flow_datalink",
                                             npfring_datalink(&reader_thread->workflow->npf));
             }
             else
