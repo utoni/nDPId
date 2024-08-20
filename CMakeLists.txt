@@ -239,6 +239,11 @@ if(ENABLE_COVERAGE)
         COMMAND genhtml -o "${CMAKE_BINARY_DIR}/coverage_report" "${CMAKE_BINARY_DIR}/lcov.info"
         DEPENDS nDPId nDPId-test nDPIsrvd
     )
+    add_custom_target(coverage-clean)
+    add_custom_command(
+        TARGET coverage-clean
+        COMMAND find "${CMAKE_BINARY_DIR}" "${CMAKE_SOURCE_DIR}/libnDPI" -name "*.gcda" -delete
+    )
     add_custom_target(coverage-view)
     add_custom_command(
         TARGET  coverage-view
@@ -460,6 +465,9 @@ if(BUILD_EXAMPLES)
                                             "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}")
 
     add_executable(nDPIsrvd-analysed examples/c-analysed/c-analysed.c utils.c)
+    if(BUILD_NDPI)
+        add_dependencies(nDPIsrvd-analysed libnDPI)
+    endif()
     target_compile_definitions(nDPIsrvd-analysed PRIVATE ${NDPID_DEFS})
     target_include_directories(nDPIsrvd-analysed PRIVATE
                                "${STATIC_LIBNDPI_INC}" "${DEFAULT_NDPI_INCLUDE}" "${CMAKE_SOURCE_DIR}" ${NDPID_DEPS_INC})
@@ -469,7 +477,7 @@ if(BUILD_EXAMPLES)
     target_include_directories(nDPIsrvd-simple PRIVATE ${NDPID_DEPS_INC})
 
     if(ENABLE_COVERAGE)
-        add_dependencies(coverage nDPIsrvd-analysed nDPIsrvd-collectd nDPIsrvd-captured nDPIsrvd-simple)
+        add_dependencies(coverage libnDPI nDPIsrvd-analysed nDPIsrvd-collectd nDPIsrvd-captured nDPIsrvd-simple)
     endif()
 
     if(ENABLE_DBUS)

@@ -193,9 +193,10 @@ ccmake ..
 or to build with a staticially linked libnDPI:
 
 ```shell
-mkdir build
-cd build
-cmake .. -DSTATIC_LIBNDPI_INSTALLDIR=[path/to/your/libnDPI/installdir] -DNDPI_NO_PKGCONFIG=ON
+cmake -S . -B ./build \
+    -DSTATIC_LIBNDPI_INSTALLDIR=[path/to/your/libnDPI/installdir] \
+    -DNDPI_NO_PKGCONFIG=ON
+cmake --build ./build
 ```
 
 If you use the latter, make sure that you've configured libnDPI with `./configure --prefix=[path/to/your/libnDPI/installdir]`
@@ -205,17 +206,19 @@ You'll also need to use `-DNDPI_NO_PKGCONFIG=ON` if `STATIC_LIBNDPI_INSTALLDIR` 
 e.g.:
 
 ```shell
-mkdir build
-cd build
-cmake .. -DSTATIC_LIBNDPI_INSTALLDIR=[path/to/your/libnDPI/installdir] -DNDPI_WITH_GCRYPT=ON -DNDPI_WITH_PCRE=OFF -DNDPI_WITH_MAXMINDDB=OFF
+cmake -S . -B ./build \
+    -DSTATIC_LIBNDPI_INSTALLDIR=[path/to/your/libnDPI/installdir] \
+    -DNDPI_NO_PKGCONFIG=ON \
+    -DNDPI_WITH_GCRYPT=ON -DNDPI_WITH_PCRE=OFF -DNDPI_WITH_MAXMINDDB=OFF
+cmake --build ./build
 ```
 
 Or let a shell script do the work for you:
 
 ```shell
-mkdir build
-cd build
-cmake .. -DBUILD_NDPI=ON
+cmake -S . -B ./build \
+    -DBUILD_NDPI=ON
+cmake --build ./build
 ```
 
 The CMake cache variable `-DBUILD_NDPI=ON` builds a version of `libnDPI` residing as a git submodule in this repository.
@@ -312,23 +315,34 @@ Format: `subopt` (unit, comment): description
 The recommended way to run regression / diff tests:
 
 ```shell
-mkdir build
-cd build
-cmake .. -DBUILD_NDPI=ON
-make nDPId-test test
+cmake -S . -B ./build-like-ci \
+    -DBUILD_NDPI=ON -DENABLE_ZLIB=ON -DBUILD_EXAMPLES=ON
+# optional: -DENABLE_CURL=ON -DENABLE_SANITIZER=ON
+./test/run_tests.sh ./libnDPI ./build-like-ci/nDPId-test
+# or: make -C ./build-like-ci test
 ```
 
-Alternatively you can run some integration tests manually:
-
-`./test/run_tests.sh [/path/to/libnDPI/root/directory] [/path/to/nDPId-test]`
-
-e.g.:
-
-`./test/run_tests.sh "${HOME}/git/nDPI "${HOME}/git/nDPId/build/nDPId-test"`
+Run `./test/run_tests.sh` to see some usage information.
 
 Remember that all test results are tied to a specific libnDPI commit hash
 as part of the `git submodule`. Using `test/run_tests.sh` for other commit hashes
 will most likely result in PCAP diffs.
+
+# Code Coverage
+
+You may generate code coverage by using:
+
+```shell
+cmake -S . -B ./build-coverage \
+    -DENABLE_COVERAGE=ON -DENABLE_ZLIB=ON
+# optional: -DBUILD_NDPI=ON
+make -C ./build-coverage coverage-clean
+make -C ./build-coverage clean
+make -C ./build-coverage all
+./test/run_tests.sh ./libnDPI ./build-coverage/nDPId-test
+make -C ./build-coverage coverage
+make -C ./build-coverage coverage-view
+```
 
 # Contributors
 
