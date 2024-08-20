@@ -477,7 +477,10 @@ if(BUILD_EXAMPLES)
     target_include_directories(nDPIsrvd-simple PRIVATE ${NDPID_DEPS_INC})
 
     if(ENABLE_COVERAGE)
-        add_dependencies(coverage libnDPI nDPIsrvd-analysed nDPIsrvd-collectd nDPIsrvd-captured nDPIsrvd-simple)
+        add_dependencies(coverage nDPIsrvd-analysed nDPIsrvd-collectd nDPIsrvd-captured nDPIsrvd-simple)
+        if(BUILD_NDPI)
+            add_dependencies(coverage libnDPI)
+        endif()
     endif()
 
     if(ENABLE_DBUS)
