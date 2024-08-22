@@ -237,7 +237,17 @@
                     "type": "number"
                 },
                 "category": {
-                    "type": "string"
+                    "type": "string",
+                    "enum": [
+                        "Unspecified", "Media", "VPN", "Email", "DataTransfer",
+                        "Web", "SocialNetwork", "Download", "Game", "Chat", "VoIP",
+                        "Database", "RemoteAccess", "Cloud", "Network", "Collaborative",
+                        "RPC", "Streaming", "System", "SoftwareUpdate", "Music", "Video",
+                        "Shopping", "Productivity", "FileSharing", "ConnCheck", "IoT-Scada",
+                        "VirtAssistant", "Cybersecurity", "AdultContent", "Mining", "Malware",
+                        "Advertisement", "Banned_Site", "Site_Unavailable", "Allowed_Site",
+                        "Antimalware", "Crypto_Currency", "Gambling"
+                    ]
                 },
                 "category_id": {
                     "type": "number"
@@ -250,40 +260,1083 @@
                     ]
                 },
                 "breed": {
-                    "type": "string"
+                    "type": "string",
+                    "enum": [
+                        "Safe", "Acceptable", "Fun", "Unsafe",
+                        "Potentially Dangerous", "Tracker/Ads",
+                        "Dangerous", "Unrated"
+                    ]
                 },
                 "flow_risk": {
-                    "type": "object"
+                    "type": "object",
+                    "properties": {
+                        "1": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "2": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "3": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "4": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "5": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "6": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "7": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "8": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "9": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "10": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "11": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "12": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "13": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "14": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "15": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "16": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "17": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "18": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "19": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "20": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "21": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "22": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "23": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "24": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "25": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "26": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "27": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "28": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "29": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "30": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "31": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "32": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "33": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "34": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "35": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "36": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "37": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "38": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "39": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "40": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "41": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "42": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "43": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "44": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "45": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "46": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "47": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "48": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "49": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "50": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "51": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "52": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "53": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "54": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string" },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        }
+                    },
+                    "additionalProperties": false
                 },
                 "confidence": {
                     "type": "object",
                     "properties": {
                         "0": {
-                            "type": "string"
+                            "type": "string",
+                            "enum": [ "Unknown" ]
                         },
                         "1": {
-                            "type": "string"
+                            "type": "string",
+                            "enum": [ "Match by port" ]
                         },
                         "2": {
-                            "type": "string"
+                            "type": "string",
+                            "enum": [ "nBPF" ]
                         },
                         "3": {
-                            "type": "string"
+                            "type": "string",
+                            "enum": [ "DPI (partial)" ]
                         },
                         "4": {
-                            "type": "string"
+                            "type": "string",
+                            "enum": [ "DPI (partial cache)" ]
                         },
                         "5": {
-                            "type": "string"
+                            "type": "string",
+                            "enum": [ "DPI (cache)" ]
                         },
                         "6": {
-                            "type": "string"
+                            "type": "string",
+                            "enum": [ "DPI" ]
                         },
                         "7": {
-                            "type": "string"
+                            "type": "string",
+                            "enum": [ "Match by IP" ]
                         },
                         "8": {
-                            "type": "string"
+                            "type": "string",
+                            "enum": [ "DPI (aggressive)" ]
                         }
                     },
                     "additionalProperties": false
@@ -375,11 +1428,9 @@
         "data_analysis": {
             "type": "object",
             "required": [ "iat", "pktlen", "bins", "directions" ],
-
             "properties": {
                 "iat": {
                     "type": "object",
-
                     "properties": {
                         "min": {
                             "type": "number"
