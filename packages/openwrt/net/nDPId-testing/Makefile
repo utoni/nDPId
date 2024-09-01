@@ -55,7 +55,7 @@ config NDPID_TESTING_LIBNDPI_COMMIT_HASH
 
 config NDPID_TESTING_INFLUXDB
    bool "nDPIsrvd-influxdb"
-   depends on PACKAGE_nDPId-testing && PACKAGE_libcurl
+   depends on PACKAGE_nDPId-testing
    default n
    help
      An InfluxDB push daemon. It aggregates various statistics gathered from nDPId.
@@ -63,11 +63,10 @@ config NDPID_TESTING_INFLUXDB
 
 config NDPID_TESTING_PFRING
    bool "PF_RING support"
-   select PACKAGE_libpfring
-   select PACKAGE_kmod-pf-ring
+   depends on PACKAGE_nDPId-testing
    default n
    help
-     bla
+     Enable PF_RING support for faster packet capture.
 endef
 
 CMAKE_OPTIONS += -DBUILD_EXAMPLES=ON
