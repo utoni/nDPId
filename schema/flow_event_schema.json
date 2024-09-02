@@ -274,8 +274,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "XSS Attack" ] },
+                                "severity": { "type": "string", "enum": [ "Severe" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -293,8 +293,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "SQL Injection" ] },
+                                "severity": { "type": "string", "enum": [ "Severe" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -312,8 +312,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "RCE Injection" ] },
+                                "severity": { "type": "string", "enum": [ "Severe" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -331,8 +331,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "Binary App Transfer" ] },
+                                "severity": { "type": "string", "enum": [ "Severe" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -350,8 +350,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "Known Proto on Non Std Port" ] },
+                                "severity": { "type": "string", "enum": [ "Medium" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -369,8 +369,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "Self-signed Cert" ] },
+                                "severity": { "type": "string", "enum": [ "High" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -388,8 +388,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "Obsolete TLS (v1.1 or older)" ] },
+                                "severity": { "type": "string", "enum": [ "High" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -407,8 +407,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "Weak TLS Cipher" ] },
+                                "severity": { "type": "string", "enum": [ "High" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -426,8 +426,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "TLS Cert Expired" ] },
+                                "severity": { "type": "string", "enum": [ "High" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -445,8 +445,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "TLS Cert Mismatch" ] },
+                                "severity": { "type": "string", "enum": [ "High" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -464,8 +464,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "HTTP Susp User-Agent" ] },
+                                "severity": { "type": "string", "enum": [ "High" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -483,8 +483,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "HTTP/TLS/QUIC Numeric Hostname/SNI" ] },
+                                "severity": { "type": "string", "enum": [ "Low" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -502,8 +502,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "HTTP Susp URL" ] },
+                                "severity": { "type": "string", "enum": [ "High" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -521,8 +521,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "HTTP Susp Header" ] },
+                                "severity": { "type": "string", "enum": [ "High" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -540,8 +540,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "TLS (probably) Not Carrying HTTPS" ] },
+                                "severity": { "type": "string", "enum": [ "Low" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -559,8 +559,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "Susp DGA Domain name" ] },
+                                "severity": { "type": "string", "enum": [ "High" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -578,8 +578,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "Malformed Packet" ] },
+                                "severity": { "type": "string", "enum": [ "Low" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -597,8 +597,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "SSH Obsolete Cli Vers/Cipher" ] },
+                                "severity": { "type": "string", "enum": [ "High" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -616,8 +616,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "SSH Obsolete Ser Vers/Cipher" ] },
+                                "severity": { "type": "string", "enum": [ "Medium" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -635,8 +635,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "SMB Insecure Vers" ] },
+                                "severity": { "type": "string", "enum": [ "High" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -654,8 +654,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "TLS Susp ESNI Usage" ] },
+                                "severity": { "type": "string", "enum": [ "Medium" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -673,8 +673,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "Unsafe Protocol" ] },
+                                "severity": { "type": "string", "enum": [ "Low" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -692,8 +692,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "Susp DNS Traffic" ] },
+                                "severity": { "type": "string", "enum": [ "Medium" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -711,8 +711,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "Missing SNI TLS Extn" ] },
+                                "severity": { "type": "string", "enum": [ "Medium" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -730,8 +730,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "HTTP Susp Content" ] },
+                                "severity": { "type": "string", "enum": [ "High" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -749,8 +749,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "Risky ASN" ] },
+                                "severity": { "type": "string", "enum": [ "Medium" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -768,8 +768,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "Risky Domain Name" ] },
+                                "severity": { "type": "string", "enum": [ "Medium" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -787,8 +787,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "Malicious JA3 Fingerp." ] },
+                                "severity": { "type": "string", "enum": [ "Medium" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -806,8 +806,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "Malicious SSL Cert/SHA1 Fingerp." ] },
+                                "severity": { "type": "string", "enum": [ "Medium" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -825,8 +825,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "Desktop/File Sharing" ] },
+                                "severity": { "type": "string", "enum": [ "Low" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -844,8 +844,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "Uncommon TLS ALPN" ] },
+                                "severity": { "type": "string", "enum": [ "Medium" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -863,8 +863,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "TLS Cert Validity Too Long" ] },
+                                "severity": { "type": "string", "enum": [ "Medium" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -882,8 +882,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "TLS Susp Extn" ] },
+                                "severity": { "type": "string", "enum": [ "High" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -901,8 +901,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "TLS Fatal Alert" ] },
+                                "severity": { "type": "string", "enum": [ "Low" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -920,8 +920,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "Susp Entropy" ] },
+                                "severity": { "type": "string", "enum": [ "Medium" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -939,8 +939,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "Clear-Text Credentials" ] },
+                                "severity": { "type": "string", "enum": [ "High" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -958,8 +958,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "Large DNS Packet (512+ bytes)" ] },
+                                "severity": { "type": "string", "enum": [ "Medium" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -977,8 +977,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "Fragmented DNS Message" ] },
+                                "severity": { "type": "string", "enum": [ "Medium" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -996,8 +996,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "Non-Printable/Invalid Chars Detected" ] },
+                                "severity": { "type": "string", "enum": [ "High" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -1015,8 +1015,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "Possible Exploit Attempt" ] },
+                                "severity": { "type": "string", "enum": [ "Severe" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -1034,8 +1034,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "TLS Cert About To Expire" ] },
+                                "severity": { "type": "string", "enum": [ "Medium" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -1053,8 +1053,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "IDN Domain Name" ] },
+                                "severity": { "type": "string", "enum": [ "Low" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -1072,8 +1072,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "Error Code" ] },
+                                "severity": { "type": "string", "enum": [ "Low" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -1091,8 +1091,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "Crawler/Bot" ] },
+                                "severity": { "type": "string", "enum": [ "Low" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -1110,8 +1110,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "Anonymous Subscriber" ] },
+                                "severity": { "type": "string", "enum": [ "Medium" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -1129,8 +1129,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "Unidirectional Traffic" ] },
+                                "severity": { "type": "string", "enum": [ "Low" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -1148,8 +1148,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "HTTP Obsolete Server" ] },
+                                "severity": { "type": "string", "enum": [ "Medium" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -1167,8 +1167,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "Periodic Flow" ] },
+                                "severity": { "type": "string", "enum": [ "Low" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -1186,8 +1186,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "Minor Issues" ] },
+                                "severity": { "type": "string", "enum": [ "Low" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -1205,8 +1205,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "TCP Connection Issues" ] },
+                                "severity": { "type": "string", "enum": [ "Medium" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -1224,8 +1224,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "Fully encrypted flow" ] },
+                                "severity": { "type": "string", "enum": [ "Medium" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -1243,17 +1243,17 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "ALPN/SNI Mismatch" ] },
+                                "severity": { "type": "string", "enum": [ "Medium" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
                                     "properties": {
                                         "total": { "type": "number", "minimum": 10, "maximum": 610 },
                                         "client": { "type": "number", "minimum": 5, "maximum": 485 },
-                                        "server": { "type": "number", "minimum": 5, "maximum": 130 }
-                                    },
-                                    "additionalProperties": false
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "additionalProperties": false
+                                    }
                                 }
                             },
                             "additionalProperties": false
@@ -1262,8 +1262,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
-                                "severity": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "Client contacted a malware host" ] },
+                                "severity": { "type": "string", "enum": [ "Severe" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -1281,7 +1281,26 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string" },
+                                "risk": { "type": "string", "enum": [ "Binary file/data transfer (attempt)" ] },
+                                "severity": { "type": "string", "enum": [ "Medium" ] },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 10, "maximum": 610 },
+                                        "client": { "type": "number", "minimum": 5, "maximum": 485 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 130 }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "55": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string", "enum": [ "Probing attempt" ] },
                                 "severity": { "type": "string" },
                                 "risk_score": {
                                     "type": "object",
