@@ -17,6 +17,9 @@
 #include <pthread.h>
 #include <signal.h>
 #include <stdarg.h>
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
+#include <stddef.h>
+#endif
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/ioctl.h>
@@ -221,6 +224,10 @@ struct nDPId_flow_extended
     unsigned long long int total_l4_payload_len[FD_COUNT];
     struct ndpi_proto detected_l7_protocol;
 };
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
+_Static_assert(offsetof(struct nDPId_flow_extended, flow_basic) == 0,
+               "Offset of flow_basic is not zero any more. nDPId won't work anymore w/o changing it's core!");
+#endif
 
 /*
  * Skipped flows need at least some information.
@@ -229,6 +236,10 @@ struct nDPId_flow_skipped
 {
     struct nDPId_flow_basic flow_basic; // Do not move this element!
 };
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
+_Static_assert(offsetof(struct nDPId_flow_skipped, flow_basic) == 0,
+               "Offset of flow_basic is not zero any more. nDPId won't work anymore w/o changing it's core!");
+#endif
 
 /*
  * Structure which is important for the detection process.
@@ -265,6 +276,10 @@ struct nDPId_flow
         } finished;
     };
 };
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
+_Static_assert(offsetof(struct nDPId_flow, flow_extended) == 0,
+               "Offset of flow_extended is not zero any more. nDPId won't work anymore w/o changing it's core!");
+#endif
 
 struct nDPId_workflow
 {
