@@ -69,6 +69,8 @@
                    [IATS(ms)....: 54.2,95.9,0.3,44.0,41.8,57.0,16.1,92.1,91.6,10563.9,10701.7,4192.1,4152.7,4422.1,4422.1,309.5,309.6,21.6,197.0,0.1,215.0,3974.5,3934.9,3635.3,52.6,3635.3,52.6,12.7,140.8,167.5,4361.2]
                    [PKTLENS.....: 153,108,52,128,52,494,116,52,120,52,149,52,146,52,146,52,391,52,150,52,136,52,146,52,146,410,52,52,150,136,52,582]
                    [ENTROPIES...: 6.4,6.0,4.8,6.2,5.0,7.6,6.1,5.0,6.1,4.9,6.3,4.9,6.4,5.0,6.5,4.9,7.4,5.0,6.5,5.0,6.3,5.0,6.5,5.0,6.4,7.4,5.0,5.0,6.5,6.4,5.0,7.6]
+          guessed: [.....1] [ip4][..tcp] [...192.168.0.17][33208] -> [...52.0.253.101][.4244] [Viber][Viber][VoIP][Fun]
+                   RISK: Susp Entropy
               new: [....18] [ip4][..tcp] [...192.168.0.17][45424] -> [....18.201.4.32][..443]
               new: [....19] [ip4][..udp] [...192.168.0.17][47171] -> [....18.201.4.32][.7985]
          detected: [....19] [ip4][..udp] [...192.168.0.17][47171] -> [....18.201.4.32][.7985] [Viber][AmazonAWS][VoIP][Fun]
@@ -109,11 +111,12 @@
  detection-update: [....25] [ip4][..udp] [...192.168.0.17][50097] -> [...192.168.0.15][...53] [DNS.Google][Unknown][Network][Acceptable][www.google.com]
               new: [....26] [ip4][.icmp] [...192.168.0.17] -> [...192.168.0.15]
          detected: [....26] [ip4][.icmp] [...192.168.0.17] -> [...192.168.0.15] [ICMP][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
            update: [.....3] [ip4][..udp] [...192.168.0.17][35283] -> [...192.168.0.15][...53] [DNS.ADS_Analytic_Track][Unknown][Network][Tracker/Ads]
            update: [.....2] [ip4][..udp] [...192.168.0.17][45743] -> [...192.168.0.15][...53] [DNS.Facebook][Unknown][Network][Fun]
            update: [.....4] [ip4][..udp] [...192.168.0.17][62872] -> [...192.168.0.15][...53] [DNS][Unknown][Network][Acceptable]
      DAEMON-EVENT: [Processed: 420 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 26 / 26|skipped: 0|!detected: 0|guessed: 0|detection-updates: 19|updates: 4]
+     DAEMON-EVENT: [Flows][active: 26 / 26|skipped: 0|!detected: 0|guessed: 1|detection-updates: 19|updates: 4]
               new: [....27] [ip4][..tcp] [..192.168.2.100][48690] -> [...52.0.252.145][.4244]
          detected: [....27] [ip4][..tcp] [..192.168.2.100][48690] -> [...52.0.252.145][.4244] [Viber][Viber][VoIP][Fun]
               end: [.....5] [ip4][..tcp] [...192.168.0.17][36986] -> [..54.69.166.226][..443] [TLS][AmazonAWS][Web][Safe]
@@ -124,9 +127,10 @@
              idle: [....20] [ip4][..udp] [...192.168.0.17][47171] -> [....18.201.4.32][.7987] [Viber][AmazonAWS][VoIP][Fun]
              idle: [.....8] [ip4][..tcp] [...192.168.0.17][57520] -> [...54.230.93.96][..443] [TLS.Viber][AmazonAWS][Chat][Fun]
              idle: [....26] [ip4][.icmp] [...192.168.0.17] -> [...192.168.0.15] [ICMP][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
              idle: [....17] [ip4][..tcp] [...192.168.0.17][55746] -> [..151.101.1.130][..443] [TLS][Unknown][Web][Safe]
-          guessed: [.....1] [ip4][..tcp] [...192.168.0.17][33208] -> [...52.0.253.101][.4244] [Viber][Viber][VoIP][Fun]
-             idle: [.....1] [ip4][..tcp] [...192.168.0.17][33208] -> [...52.0.253.101][.4244]
+             idle: [.....1] [ip4][..tcp] [...192.168.0.17][33208] -> [...52.0.253.101][.4244] [Viber][Viber][VoIP][Fun]
+                   RISK: Susp Entropy
              idle: [....10] [ip4][..tcp] [...192.168.0.17][53934] -> [...54.230.93.53][..443] [TLS.Viber][AmazonAWS][Chat][Fun]
              idle: [....15] [ip6][icmp6] [..............fe80::3207:4dff:fea3:5fa7] -> [................................ff02::2] [ICMPV6][Unknown][Network][Acceptable]
              idle: [....14] [ip4][..udp] [...192.168.0.17][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable]
@@ -154,7 +158,16 @@
      DAEMON-EVENT: [Flows][active: 2 / 28|skipped: 0|!detected: 0|guessed: 4|detection-updates: 19|updates: 4]
               new: [....29] [ip4][..tcp] [..192.168.2.100][42900] -> [..44.192.202.74][.4244] [MIDSTREAM]
          detected: [....29] [ip4][..tcp] [..192.168.2.100][42900] -> [..44.192.202.74][.4244] [Viber][AmazonAWS][VoIP][Fun]
-             idle: [....29] [ip4][..tcp] [..192.168.2.100][42900] -> [..44.192.202.74][.4244] [Viber][AmazonAWS][VoIP][Fun]
               end: [....28] [ip4][..tcp] [..192.168.2.100][41184] -> [.....52.0.252.2][.5242] [Viber][Viber][VoIP][Fun]
              idle: [....27] [ip4][..tcp] [..192.168.2.100][48690] -> [...52.0.252.145][.4244] [Viber][Viber][VoIP][Fun]
+     DAEMON-EVENT: [Processed: 447 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 1 / 29|skipped: 0|!detected: 0|guessed: 4|detection-updates: 19|updates: 4]
+              new: [....30] [ip4][..udp] [.192.168.12.156][40482] -> [...18.195.4.121][..443]
+         detected: [....30] [ip4][..udp] [.192.168.12.156][40482] -> [...18.195.4.121][..443] [STUN][Viber][Network][Acceptable][]
+                   RISK: Known Proto on Non Std Port
+ detection-update: [....30] [ip4][..udp] [.192.168.12.156][40482] -> [...18.195.4.121][..443] [STUN.ViberVoip][Viber][VoIP][Acceptable][viber.com]
+                   RISK: Known Proto on Non Std Port
+             idle: [....29] [ip4][..tcp] [..192.168.2.100][42900] -> [..44.192.202.74][.4244] [Viber][AmazonAWS][VoIP][Fun]
+             idle: [....30] [ip4][..udp] [.192.168.12.156][40482] -> [...18.195.4.121][..443] [STUN.ViberVoip][Viber][VoIP][Acceptable]
+                   RISK: Known Proto on Non Std Port
      DAEMON-EVENT: shutdown

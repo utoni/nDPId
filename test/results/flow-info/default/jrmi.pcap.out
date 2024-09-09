@@ -1,0 +1,7 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [......127.0.0.1][34450] -> [......127.0.1.1][.1099]
+         detected: [.....1] [ip4][..tcp] [......127.0.0.1][34450] -> [......127.0.1.1][.1099] [JRMI][Unknown][RPC][Acceptable]
+              end: [.....1] [ip4][..tcp] [......127.0.0.1][34450] -> [......127.0.1.1][.1099] [JRMI][Unknown][RPC][Acceptable]
+     DAEMON-EVENT: shutdown

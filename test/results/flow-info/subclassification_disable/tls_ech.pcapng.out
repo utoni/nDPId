@@ -1,0 +1,8 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip6][..tcp] [..2001:b07:a3d:c112:ce16:b409:3d0a:9177][47460] -> [...................2606:4700::6812:1e4e][..443]
+         detected: [.....1] [ip6][..tcp] [..2001:b07:a3d:c112:ce16:b409:3d0a:9177][47460] -> [...................2606:4700::6812:1e4e][..443] [TLS.Cloudflare][Cloudflare][Web][Acceptable][performance.radar.cloudflare.com]
+ detection-update: [.....1] [ip6][..tcp] [..2001:b07:a3d:c112:ce16:b409:3d0a:9177][47460] -> [...................2606:4700::6812:1e4e][..443] [TLS.Cloudflare][Cloudflare][Web][Acceptable][performance.radar.cloudflare.com]
+             idle: [.....1] [ip6][..tcp] [..2001:b07:a3d:c112:ce16:b409:3d0a:9177][47460] -> [...................2606:4700::6812:1e4e][..443] [TLS.Cloudflare][Cloudflare][Web][Acceptable]
+     DAEMON-EVENT: shutdown

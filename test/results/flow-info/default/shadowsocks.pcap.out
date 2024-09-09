@@ -6,6 +6,6 @@
               new: [.....2] [ip4][..tcp] [......127.0.0.1][44276] -> [......127.0.0.1][.8388]
               end: [.....1] [ip4][..tcp] [......127.0.0.1][37904] -> [......127.0.0.1][.1080] [SOCKS][Unknown][Web][Acceptable]
      not-detected: [.....2] [ip4][..tcp] [......127.0.0.1][44276] -> [......127.0.0.1][.8388] [Unknown][Unknown][Unrated]
-                   RISK: Fully encrypted flow
+                   RISK: Fully Encrypted Flow
               end: [.....2] [ip4][..tcp] [......127.0.0.1][44276] -> [......127.0.0.1][.8388]
      DAEMON-EVENT: shutdown

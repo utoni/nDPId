@@ -16,6 +16,6 @@
                    RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..udp] [...50.7.111.134][17000] -> [103.225.103.159][.2123]
           guessed: [.....3] [ip4][..udp] [119.185.190.173][.2123] -> [...66.86.98.114][50140] [GTP][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
+                   RISK: Susp Entropy, Unidirectional Traffic
              idle: [.....3] [ip4][..udp] [119.185.190.173][.2123] -> [...66.86.98.114][50140]
      DAEMON-EVENT: shutdown

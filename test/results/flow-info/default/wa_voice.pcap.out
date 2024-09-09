@@ -116,9 +116,11 @@
                    RISK: Known Proto on Non Std Port
  detection-update: [....23] [ip4][..udp] [...91.252.56.51][32704] -> [...192.168.2.12][56328] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port
+ detection-update: [....23] [ip4][..udp] [...91.252.56.51][32704] -> [...192.168.2.12][56328] [SRTP.WhatsAppCall][Unknown][VoIP][Acceptable]
+                   RISK: Known Proto on Non Std Port
  detection-update: [....24] [ip4][..udp] [...192.168.2.12][56328] -> [.....1.60.78.64][64282] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
-          analyse: [....23] [ip4][..udp] [...91.252.56.51][32704] -> [...192.168.2.12][56328] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
+          analyse: [....23] [ip4][..udp] [...91.252.56.51][32704] -> [...192.168.2.12][56328] [SRTP.WhatsAppCall][Unknown][VoIP][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     1.204|     0.182|     0.229|        52393.320|    4.200]
                    [PKTLEN......:     54.000|   301.000|   144.900|    51.700|         2672.500|    4.900]
@@ -146,7 +148,7 @@
              idle: [....25] [ip4][..tcp] [...192.168.2.12][49352] -> [169.254.162.244][49159]
               end: [....21] [ip4][..tcp] [...192.168.2.12][50504] -> [..157.240.20.52][..443] [TLS.WhatsApp][WhatsApp][Chat][Acceptable]
              idle: [....22] [ip4][..udp] [........0.0.0.0][...68] -> [255.255.255.255][...67] [DHCP][Unknown][Network][Acceptable]
-             idle: [....23] [ip4][..udp] [...91.252.56.51][32704] -> [...192.168.2.12][56328] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
+             idle: [....23] [ip4][..udp] [...91.252.56.51][32704] -> [...192.168.2.12][56328] [SRTP.WhatsAppCall][Unknown][VoIP][Acceptable]
                    RISK: Known Proto on Non Std Port
              idle: [....27] [ip4][..udp] [...192.168.2.12][57546] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable]
              idle: [.....6] [ip4][..udp] [...192.168.2.12][55296] -> [....192.168.2.1][...53] [DNS.WhatsAppFiles][Unknown][Network][Acceptable]

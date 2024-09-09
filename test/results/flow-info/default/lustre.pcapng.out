@@ -1,0 +1,8 @@
+     DAEMON-EVENT: init
+              new: [.....1] [ip4][..tcp] [.192.168.88.132][.1022] -> [.192.168.88.131][..988]
+         detected: [.....1] [ip4][..tcp] [.192.168.88.132][.1022] -> [.192.168.88.131][..988] [Lustre][Unknown][DataTransfer][Acceptable]
+              new: [.....2] [ip4][..tcp] [.192.168.88.118][.1023] -> [.192.168.88.119][..988] [MIDSTREAM]
+         detected: [.....2] [ip4][..tcp] [.192.168.88.118][.1023] -> [.192.168.88.119][..988] [Lustre][Unknown][DataTransfer][Acceptable]
+             idle: [.....1] [ip4][..tcp] [.192.168.88.132][.1022] -> [.192.168.88.131][..988] [Lustre][Unknown][DataTransfer][Acceptable]
+             idle: [.....2] [ip4][..tcp] [.192.168.88.118][.1023] -> [.192.168.88.119][..988] [Lustre][Unknown][DataTransfer][Acceptable]
+     DAEMON-EVENT: shutdown

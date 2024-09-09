@@ -921,7 +921,7 @@
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
                                 "risk": { "type": "string", "enum": [ "Susp Entropy" ] },
-                                "severity": { "type": "string", "enum": [ "Medium" ] },
+                                "severity": { "type": "string", "enum": [ "Low" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],
@@ -1224,7 +1224,7 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string", "enum": [ "Fully encrypted flow" ] },
+                                "risk": { "type": "string", "enum": [ "Fully Encrypted Flow" ] },
                                 "severity": { "type": "string", "enum": [ "Medium" ] },
                                 "risk_score": {
                                     "type": "object",
@@ -1262,7 +1262,7 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string", "enum": [ "Client contacted a malware host" ] },
+                                "risk": { "type": "string", "enum": [ "Client Contacted A Malware Host" ] },
                                 "severity": { "type": "string", "enum": [ "Severe" ] },
                                 "risk_score": {
                                     "type": "object",
@@ -1281,7 +1281,7 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string", "enum": [ "Binary file/data transfer (attempt)" ] },
+                                "risk": { "type": "string", "enum": [ "Binary File/Data Transfer (Attempt)" ] },
                                 "severity": { "type": "string", "enum": [ "Medium" ] },
                                 "risk_score": {
                                     "type": "object",
@@ -1300,7 +1300,7 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string", "enum": [ "Probing attempt" ] },
+                                "risk": { "type": "string", "enum": [ "Probing Attempt" ] },
                                 "severity": { "type": "string" },
                                 "risk_score": {
                                     "type": "object",

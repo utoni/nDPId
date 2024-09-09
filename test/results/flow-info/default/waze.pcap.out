@@ -10,6 +10,7 @@
               new: [.....5] [ip4][..tcp] [.......10.8.0.1][36100] -> [..46.51.173.182][..443]
               new: [.....6] [ip4][..tcp] [.......10.8.0.1][36102] -> [..46.51.173.182][..443]
          detected: [.....4] [ip4][..tcp] [.......10.8.0.1][45529] -> [.54.230.227.172][...80] [HTTP.Waze][AmazonAWS][Web][Acceptable][roadshields.waze.com]
+                   RISK: Susp Entropy
               new: [.....7] [ip4][..tcp] [.......10.8.0.1][36585] -> [.173.194.118.48][..443]
          detected: [.....5] [ip4][..tcp] [.......10.8.0.1][36100] -> [..46.51.173.182][..443] [TLS][AmazonAWS][Web][Safe][]
                    RISK: Obsolete TLS (v1.1 or older)
@@ -21,6 +22,7 @@
                    RISK: Obsolete TLS (v1.1 or older)
               new: [.....8] [ip4][..tcp] [.......10.8.0.1][45536] -> [.54.230.227.172][...80]
          detected: [.....8] [ip4][..tcp] [.......10.8.0.1][45536] -> [.54.230.227.172][...80] [HTTP.Waze][AmazonAWS][Web][Acceptable][cres.waze.com]
+                   RISK: Susp Entropy
  detection-update: [.....6] [ip4][..tcp] [.......10.8.0.1][36102] -> [..46.51.173.182][..443] [TLS][AmazonAWS][Web][Safe][]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
  detection-update: [.....5] [ip4][..tcp] [.......10.8.0.1][36100] -> [..46.51.173.182][..443] [TLS.Waze][AmazonAWS][Web][Acceptable][]
@@ -28,11 +30,13 @@
  detection-update: [.....6] [ip4][..tcp] [.......10.8.0.1][36102] -> [..46.51.173.182][..443] [TLS.Waze][AmazonAWS][Web][Acceptable][]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
  detection-update: [.....3] [ip4][..tcp] [.......10.8.0.1][54915] -> [..65.39.128.135][...80] [HTTP][Unknown][Download][Acceptable][xtra1.gpsonextra.net]
-                   RISK: Binary file/data transfer (attempt)
+                   RISK: Binary File/Data Transfer (Attempt)
               new: [.....9] [ip4][..tcp] [.......10.8.0.1][45538] -> [.54.230.227.172][...80]
               new: [....10] [ip4][..tcp] [.......10.8.0.1][45540] -> [.54.230.227.172][...80]
          detected: [.....9] [ip4][..tcp] [.......10.8.0.1][45538] -> [.54.230.227.172][...80] [HTTP.Waze][AmazonAWS][Web][Acceptable][cres.waze.com]
+                   RISK: Susp Entropy
          detected: [....10] [ip4][..tcp] [.......10.8.0.1][45540] -> [.54.230.227.172][...80] [HTTP.Waze][AmazonAWS][Web][Acceptable][roadshields.waze.com]
+                   RISK: Susp Entropy
               new: [....11] [ip4][..tcp] [.......10.8.0.1][51049] -> [.176.34.103.105][..443]
               new: [....12] [ip4][..tcp] [.......10.8.0.1][51050] -> [.176.34.103.105][..443]
               new: [....13] [ip4][..tcp] [.......10.8.0.1][51051] -> [.176.34.103.105][..443]
@@ -47,8 +51,10 @@
          detected: [....14] [ip4][..tcp] [.......10.8.0.1][39010] -> [..52.17.114.219][..443] [TLS][AmazonAWS][Web][Safe][]
                    RISK: Obsolete TLS (v1.1 or older)
          detected: [....15] [ip4][..tcp] [.......10.8.0.1][45546] -> [.54.230.227.172][...80] [HTTP.Waze][AmazonAWS][Web][Acceptable][cres.waze.com]
+                   RISK: Susp Entropy
               new: [....16] [ip4][..tcp] [.......10.8.0.1][45552] -> [.54.230.227.172][...80]
          detected: [....16] [ip4][..tcp] [.......10.8.0.1][45552] -> [.54.230.227.172][...80] [HTTP.Waze][AmazonAWS][Web][Acceptable][cres.waze.com]
+                   RISK: Susp Entropy
  detection-update: [....13] [ip4][..tcp] [.......10.8.0.1][51051] -> [.176.34.103.105][..443] [TLS][AmazonAWS][Web][Safe][]
                    RISK: Obsolete TLS (v1.1 or older)
  detection-update: [....11] [ip4][..tcp] [.......10.8.0.1][51049] -> [.176.34.103.105][..443] [TLS][AmazonAWS][Web][Safe][]
@@ -57,6 +63,7 @@
                    RISK: Obsolete TLS (v1.1 or older)
               new: [....17] [ip4][..tcp] [.......10.8.0.1][45554] -> [.54.230.227.172][...80]
          detected: [....17] [ip4][..tcp] [.......10.8.0.1][45554] -> [.54.230.227.172][...80] [HTTP.Waze][AmazonAWS][Web][Acceptable][cres.waze.com]
+                   RISK: Susp Entropy
           analyse: [.....3] [ip4][..tcp] [.......10.8.0.1][54915] -> [..65.39.128.135][...80] [HTTP][Unknown][Download][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........:      0.002|     3.681|     0.340|     0.885|       782653.260|    2.800]
@@ -167,12 +174,19 @@
           guessed: [....26] [ip4][..tcp] [...10.16.37.157][52953] -> [...200.160.4.49][...80] [HTTP][Unknown][Web][Acceptable][]
               end: [....26] [ip4][..tcp] [...10.16.37.157][52953] -> [...200.160.4.49][...80]
               end: [.....4] [ip4][..tcp] [.......10.8.0.1][45529] -> [.54.230.227.172][...80] [HTTP.Waze][AmazonAWS][Web][Acceptable]
+                   RISK: Susp Entropy
               end: [.....8] [ip4][..tcp] [.......10.8.0.1][45536] -> [.54.230.227.172][...80] [HTTP.Waze][AmazonAWS][Web][Acceptable]
+                   RISK: Susp Entropy
               end: [.....9] [ip4][..tcp] [.......10.8.0.1][45538] -> [.54.230.227.172][...80] [HTTP.Waze][AmazonAWS][Web][Acceptable]
+                   RISK: Susp Entropy
               end: [....10] [ip4][..tcp] [.......10.8.0.1][45540] -> [.54.230.227.172][...80] [HTTP.Waze][AmazonAWS][Web][Acceptable]
+                   RISK: Susp Entropy
               end: [....15] [ip4][..tcp] [.......10.8.0.1][45546] -> [.54.230.227.172][...80] [HTTP.Waze][AmazonAWS][Web][Acceptable]
+                   RISK: Susp Entropy
               end: [....16] [ip4][..tcp] [.......10.8.0.1][45552] -> [.54.230.227.172][...80] [HTTP.Waze][AmazonAWS][Web][Acceptable]
+                   RISK: Susp Entropy
               end: [....17] [ip4][..tcp] [.......10.8.0.1][45554] -> [.54.230.227.172][...80] [HTTP.Waze][AmazonAWS][Web][Acceptable]
+                   RISK: Susp Entropy
              idle: [....32] [ip4][..tcp] [.......10.8.0.1][50828] -> [108.168.176.228][..443] [WhatsApp][Unknown][Chat][Acceptable]
           guessed: [....25] [ip4][..tcp] [.......10.8.0.1][45169] -> [..200.160.4.198][...80] [HTTP][Unknown][Web][Acceptable][]
               end: [....25] [ip4][..tcp] [.......10.8.0.1][45169] -> [..200.160.4.198][...80]
@@ -211,7 +225,7 @@
           guessed: [....28] [ip4][..tcp] [.......10.8.0.1][60574] -> [...200.160.4.49][...80] [HTTP][Unknown][Web][Acceptable][]
               end: [....28] [ip4][..tcp] [.......10.8.0.1][60574] -> [...200.160.4.49][...80]
               end: [.....3] [ip4][..tcp] [.......10.8.0.1][54915] -> [..65.39.128.135][...80] [HTTP][Unknown][Download][Acceptable]
-                   RISK: Binary file/data transfer (attempt)
+                   RISK: Binary File/Data Transfer (Attempt)
           guessed: [....23] [ip4][..tcp] [...10.16.37.157][46473] -> [...200.160.4.49][...80] [HTTP][Unknown][Web][Acceptable][]
               end: [....23] [ip4][..tcp] [...10.16.37.157][46473] -> [...200.160.4.49][...80]
           guessed: [....30] [ip4][..tcp] [.......10.8.0.1][60479] -> [...200.160.4.49][..443] [TLS][Unknown][Web][Safe]

@@ -101,12 +101,12 @@
                    RISK: Unidirectional Traffic
              idle: [.....8] [ip4][..tcp] [......172.6.3.5][...80] -> [....172.20.3.13][53132]
           guessed: [....35] [ip4][..tcp] [....172.20.3.13][53136] -> [.....172.70.3.5][...80] [HTTP][Cloudflare][Web][Acceptable][]
-                   RISK: Unidirectional Traffic
+                   RISK: Susp Entropy, Unidirectional Traffic
              idle: [....35] [ip4][..tcp] [....172.20.3.13][53136] -> [.....172.70.3.5][...80]
              idle: [....23] [ip4][..tcp] [....172.20.3.13][...80] -> [......44.20.3.5][.2605] [HTTP][Unknown][Web][Acceptable]
                    RISK: HTTP Susp User-Agent
           guessed: [....21] [ip4][..tcp] [......51.20.3.5][.2605] -> [....172.20.3.13][...80] [HTTP][AmazonAWS][Web][Acceptable][]
-                   RISK: Unidirectional Traffic
+                   RISK: Susp Entropy, Unidirectional Traffic
              idle: [....21] [ip4][..tcp] [......51.20.3.5][.2605] -> [....172.20.3.13][...80]
           guessed: [....15] [ip4][..tcp] [.....172.20.3.5][.2603] -> [.....72.20.3.13][...80] [HTTP][Unknown][Web][Acceptable][]
                    RISK: Unidirectional Traffic
@@ -162,7 +162,7 @@
                    RISK: Unidirectional Traffic
              idle: [....10] [ip4][..170] [170.170.170.170] -> [170.170.170.170]
           guessed: [.....7] [ip4][..tcp] [.....172.20.3.5][...80] -> [....172.57.3.13][53132] [HTTP][Unknown][Web][Acceptable][]
-                   RISK: Unidirectional Traffic
+                   RISK: Susp Entropy, Unidirectional Traffic
              idle: [.....7] [ip4][..tcp] [.....172.20.3.5][...80] -> [....172.57.3.13][53132]
              idle: [....30] [ip4][..tcp] [.....172.20.3.5][.9587] -> [....172.20.3.13][...80] [HTTP][Unknown][Web][Acceptable]
                    RISK: HTTP Susp User-Agent

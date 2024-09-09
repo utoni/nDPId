@@ -1,0 +1,12 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [......127.0.0.1][44450] -> [......127.0.0.1][.5070]
+         detected: [.....1] [ip4][..tcp] [......127.0.0.1][44450] -> [......127.0.0.1][.5070] [BFCP][Unknown][Video][Acceptable]
+     DAEMON-EVENT: [Processed: 11 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....2] [ip4][..udp] [......127.0.0.1][47706] -> [......127.0.0.1][.5070]
+         detected: [.....2] [ip4][..udp] [......127.0.0.1][47706] -> [......127.0.0.1][.5070] [BFCP][Unknown][Video][Acceptable]
+              end: [.....1] [ip4][..tcp] [......127.0.0.1][44450] -> [......127.0.0.1][.5070] [BFCP][Unknown][Video][Acceptable]
+             idle: [.....2] [ip4][..udp] [......127.0.0.1][47706] -> [......127.0.0.1][.5070] [BFCP][Unknown][Video][Acceptable]
+     DAEMON-EVENT: shutdown

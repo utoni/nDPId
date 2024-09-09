@@ -60,40 +60,52 @@
              idle: [.....1] [ip4][..tcp] [...172.16.8.201][49157] -> [.....172.16.8.8][...88] [Kerberos][Unknown][Network][Acceptable]
              idle: [.....2] [ip4][..tcp] [...172.16.8.201][49158] -> [.....172.16.8.8][...88] [Kerberos][Unknown][Network][Acceptable]
           guessed: [.....3] [ip4][..tcp] [...172.16.8.201][49159] -> [.....172.16.8.8][...88] [Kerberos][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
              idle: [.....3] [ip4][..tcp] [...172.16.8.201][49159] -> [.....172.16.8.8][...88]
              idle: [.....4] [ip4][..tcp] [...172.16.8.201][49160] -> [.....172.16.8.8][...88] [Kerberos][Unknown][Network][Acceptable]
           guessed: [.....6] [ip4][..tcp] [...172.16.8.201][49162] -> [.....172.16.8.8][...88] [Kerberos][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
              idle: [.....6] [ip4][..tcp] [...172.16.8.201][49162] -> [.....172.16.8.8][...88]
              idle: [.....8] [ip4][..tcp] [...172.16.8.201][49166] -> [.....172.16.8.8][...88] [Kerberos][Unknown][Network][Acceptable]
              idle: [.....9] [ip4][..tcp] [...172.16.8.201][49167] -> [.....172.16.8.8][...88] [Kerberos][Unknown][Network][Acceptable]
           guessed: [....10] [ip4][..tcp] [...172.16.8.201][49168] -> [.....172.16.8.8][...88] [Kerberos][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
              idle: [....10] [ip4][..tcp] [...172.16.8.201][49168] -> [.....172.16.8.8][...88]
           guessed: [....13] [ip4][..tcp] [...172.16.8.201][49170] -> [.....172.16.8.8][...88] [Kerberos][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
              idle: [....13] [ip4][..tcp] [...172.16.8.201][49170] -> [.....172.16.8.8][...88]
              idle: [....14] [ip4][..tcp] [...172.16.8.201][49171] -> [.....172.16.8.8][...88] [Kerberos][Unknown][Network][Acceptable]
           guessed: [....15] [ip4][..tcp] [...172.16.8.201][49173] -> [.....172.16.8.8][...88] [Kerberos][Unknown][Network][Acceptable]
                    RISK: Susp Entropy
              idle: [....15] [ip4][..tcp] [...172.16.8.201][49173] -> [.....172.16.8.8][...88]
           guessed: [....17] [ip4][..tcp] [...172.16.8.201][49175] -> [.....172.16.8.8][...88] [Kerberos][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
              idle: [....17] [ip4][..tcp] [...172.16.8.201][49175] -> [.....172.16.8.8][...88]
              idle: [....18] [ip4][..tcp] [...172.16.8.201][49176] -> [.....172.16.8.8][...88] [Kerberos][Unknown][Network][Acceptable]
              idle: [....22] [ip4][..tcp] [...172.16.8.201][49181] -> [.....172.16.8.8][...88] [Kerberos][Unknown][Network][Acceptable]
              idle: [....23] [ip4][..tcp] [...172.16.8.201][49182] -> [.....172.16.8.8][...88] [Kerberos][Unknown][Network][Acceptable]
           guessed: [....24] [ip4][..tcp] [...172.16.8.201][49183] -> [.....172.16.8.8][...88] [Kerberos][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
              idle: [....24] [ip4][..tcp] [...172.16.8.201][49183] -> [.....172.16.8.8][...88]
           guessed: [....25] [ip4][..tcp] [...172.16.8.201][49186] -> [.....172.16.8.8][...88] [Kerberos][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
              idle: [....25] [ip4][..tcp] [...172.16.8.201][49186] -> [.....172.16.8.8][...88]
              idle: [....27] [ip4][..tcp] [...172.16.8.201][49187] -> [.....172.16.8.8][...88] [Kerberos][Unknown][Network][Acceptable]
              idle: [....28] [ip4][..tcp] [...172.16.8.201][49188] -> [.....172.16.8.8][...88] [Kerberos][Unknown][Network][Acceptable]
           guessed: [....29] [ip4][..tcp] [...172.16.8.201][49189] -> [.....172.16.8.8][...88] [Kerberos][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
              idle: [....29] [ip4][..tcp] [...172.16.8.201][49189] -> [.....172.16.8.8][...88]
           guessed: [....30] [ip4][..tcp] [...172.16.8.201][49190] -> [.....172.16.8.8][...88] [Kerberos][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
              idle: [....30] [ip4][..tcp] [...172.16.8.201][49190] -> [.....172.16.8.8][...88]
           guessed: [....31] [ip4][..tcp] [...172.16.8.201][49192] -> [.....172.16.8.8][...88] [Kerberos][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
              idle: [....31] [ip4][..tcp] [...172.16.8.201][49192] -> [.....172.16.8.8][...88]
           guessed: [....34] [ip4][..tcp] [...172.16.8.201][49195] -> [.....172.16.8.8][...88] [Kerberos][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
              idle: [....34] [ip4][..tcp] [...172.16.8.201][49195] -> [.....172.16.8.8][...88]
           guessed: [....35] [ip4][..tcp] [...172.16.8.201][49196] -> [.....172.16.8.8][...88] [Kerberos][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
              idle: [....35] [ip4][..tcp] [...172.16.8.201][49196] -> [.....172.16.8.8][...88]
           guessed: [.....7] [ip4][..tcp] [...172.16.8.201][49161] -> [.....172.16.8.8][..389] [LDAP][Unknown][System][Acceptable]
                    RISK: Susp Entropy

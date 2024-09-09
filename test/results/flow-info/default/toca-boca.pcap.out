@@ -68,7 +68,7 @@
               new: [....17] [ip4][..udp] [..91.199.81.122][.5055] -> [..192.168.2.100][34503]
          detected: [....17] [ip4][..udp] [..91.199.81.122][.5055] -> [..192.168.2.100][34503] [TocaBoca][Unknown][Game][Fun]
           guessed: [....16] [ip4][..udp] [..91.199.81.123][.5055] -> [..192.168.2.100][37167] [TocaBoca][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
+                   RISK: Susp Entropy, Unidirectional Traffic
              idle: [....16] [ip4][..udp] [..91.199.81.123][.5055] -> [..192.168.2.100][37167]
              idle: [....15] [ip4][..udp] [..192.168.2.100][35671] -> [..91.199.81.123][.5055] [TocaBoca][Unknown][Game][Fun]
      DAEMON-EVENT: [Processed: 73 pkts][ZLib][compressions: 0|diff: 0 / 0]
@@ -81,7 +81,7 @@
               new: [....20] [ip4][..udp] [..192.168.2.100][45096] -> [..91.199.81.208][.5055]
          detected: [....20] [ip4][..udp] [..192.168.2.100][45096] -> [..91.199.81.208][.5055] [TocaBoca][Unknown][Game][Fun]
           guessed: [....18] [ip4][..udp] [..91.199.81.225][.5055] -> [..192.168.2.100][50337] [TocaBoca][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
+                   RISK: Susp Entropy, Unidirectional Traffic
              idle: [....18] [ip4][..udp] [..91.199.81.225][.5055] -> [..192.168.2.100][50337]
      DAEMON-EVENT: [Processed: 76 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 2 / 20|skipped: 0|!detected: 0|guessed: 2|detection-updates: 0|updates: 5]
@@ -91,6 +91,6 @@
              idle: [....19] [ip4][..udp] [..91.199.81.122][.5055] -> [..192.168.2.100][56920]
              idle: [....20] [ip4][..udp] [..192.168.2.100][45096] -> [..91.199.81.208][.5055] [TocaBoca][Unknown][Game][Fun]
           guessed: [....21] [ip4][..udp] [..91.199.81.225][.5055] -> [..192.168.2.100][43151] [TocaBoca][Unknown][Game][Fun]
-                   RISK: Unidirectional Traffic
+                   RISK: Susp Entropy, Unidirectional Traffic
              idle: [....21] [ip4][..udp] [..91.199.81.225][.5055] -> [..192.168.2.100][43151]
      DAEMON-EVENT: shutdown

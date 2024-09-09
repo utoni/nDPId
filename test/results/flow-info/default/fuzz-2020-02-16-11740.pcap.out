@@ -61,7 +61,7 @@
       ERROR-EVENT: Unknown packet type [1/16]
              idle: [.....8] [ip4][..udp] [.....10.4.64.30][29200] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
      not-detected: [....10] [ip4][..udp] [..198.226.25.53][..309] -> [....10.12.64.30][12339] [Unknown][Unknown][Unrated]
-                   RISK: Unidirectional Traffic
+                   RISK: Susp Entropy, Unidirectional Traffic
              idle: [....10] [ip4][..udp] [..198.226.25.53][..309] -> [....10.12.64.30][12339]
              idle: [.....9] [ip4][..udp] [..198.226.25.53][.1812] -> [....10.12.64.30][29270] [Radius][Unknown][Network][Acceptable]
      not-detected: [.....7] [ip4][..udp] [198.226.170.170][43690] -> [170.170.170.170][43690] [Unknown][Unknown][Unrated]
@@ -116,7 +116,7 @@
          detected: [....21] [ip4][..udp] [..198.157.25.53][.1812] -> [....10.12.64.30][29200] [Radius][Unknown][Network][Acceptable]
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [2/16]
      not-detected: [....13] [ip4][..udp] [..198.162.25.53][.1810] -> [....10.12.64.30][29200] [Unknown][Unknown][Unrated]
-                   RISK: Unidirectional Traffic
+                   RISK: Susp Entropy, Unidirectional Traffic
              idle: [....13] [ip4][..udp] [..198.162.25.53][.1810] -> [....10.12.64.30][29200]
              idle: [....12] [ip4][..udp] [..198.226.25.53][.1813] -> [....10.12.64.30][29264] [Radius][Unknown][Network][Acceptable]
      not-detected: [....11] [ip4][..udp] [170.170.170.170][43690] -> [170.170.170.170][43690] [Unknown][Unknown][Unrated]
@@ -193,7 +193,7 @@
              idle: [....24] [ip4][..udp] [..198.226.82.53][.1812] -> [....10.12.64.30][29200] [Radius][Unknown][Network][Acceptable]
              idle: [....16] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.25.62][.1812] [Radius][Unknown][Network][Acceptable]
      not-detected: [....25] [ip4][..udp] [..198.226.25.53][.1895] -> [....10.12.64.30][29200] [Unknown][Unknown][Unrated]
-                   RISK: Unidirectional Traffic
+                   RISK: Susp Entropy, Unidirectional Traffic
              idle: [....25] [ip4][..udp] [..198.226.25.53][.1895] -> [....10.12.64.30][29200]
              idle: [....26] [ip4][..udp] [....10.12.64.30][30224] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
              idle: [....22] [ip4][..udp] [..198.230.25.62][.1812] -> [....10.12.64.30][29200] [Radius][Unknown][Network][Acceptable]
@@ -319,7 +319,7 @@
              idle: [....45] [ip4][..udp] [..198.234.25.53][.1812] -> [....10.12.64.30][29200] [Radius][Unknown][Network][Acceptable]
              idle: [....49] [ip4][..udp] [.....10.84.37.0][29200] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
      not-detected: [....43] [ip4][..udp] [..198.226.25.53][.1965] -> [....10.12.64.30][29200] [Unknown][Unknown][Unrated]
-                   RISK: Unidirectional Traffic
+                   RISK: Susp Entropy, Unidirectional Traffic
              idle: [....43] [ip4][..udp] [..198.226.25.53][.1965] -> [....10.12.64.30][29200]
      not-detected: [....47] [ip4][..udp] [..198.226.25.53][43690] -> [..10.12.170.170][43690] [Unknown][Unknown][Unrated]
                    RISK: Unidirectional Traffic
@@ -426,14 +426,14 @@
              idle: [....72] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.25.21][.1812] [Radius][Unknown][Network][Acceptable]
              idle: [.....3] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
      not-detected: [....64] [ip4][..udp] [..198.226.25.53][.3860] -> [....14.12.64.30][29200] [Unknown][Unknown][Unrated]
-                   RISK: Unidirectional Traffic
+                   RISK: Susp Entropy, Unidirectional Traffic
              idle: [....64] [ip4][..udp] [..198.226.25.53][.3860] -> [....14.12.64.30][29200]
              idle: [....70] [ip4][..udp] [..198.226.25.53][.1812] -> [....10.12.64.30][29208] [Radius][Unknown][Network][Acceptable]
              idle: [....66] [ip4][..udp] [....10.12.64.30][29232] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
              idle: [....59] [ip4][..udp] [....88.12.80.30][29200] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
              idle: [....71] [ip4][..udp] [....10.12.64.30][29289] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
      not-detected: [....68] [ip4][..udp] [..198.226.25.53][43028] -> [....10.12.64.30][29200] [Unknown][Unknown][Unrated]
-                   RISK: Unidirectional Traffic
+                   RISK: Susp Entropy, Unidirectional Traffic
              idle: [....68] [ip4][..udp] [..198.226.25.53][43028] -> [....10.12.64.30][29200]
              idle: [....61] [ip4][..udp] [.....10.6.64.30][29200] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
              idle: [....67] [ip4][..udp] [..198.226.25.53][.1812] -> [....10.81.64.30][29200] [Radius][Unknown][Network][Acceptable]
@@ -467,7 +467,7 @@
              idle: [....78] [ip4][..udp] [..198.226.25.53][.1813] -> [....10.12.64.30][21008] [Radius][Unknown][Network][Acceptable]
              idle: [....77] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.25.53][.1813] [Radius][Unknown][Network][Acceptable]
      not-detected: [....74] [ip4][..udp] [..198.226.25.53][.1814] -> [....10.12.64.30][29200] [Unknown][Unknown][Unrated]
-                   RISK: Unidirectional Traffic
+                   RISK: Susp Entropy, Unidirectional Traffic
              idle: [....74] [ip4][..udp] [..198.226.25.53][.1814] -> [....10.12.64.30][29200]
      not-detected: [....75] [ip4][..udp] [....57.12.64.30][29200] -> [..198.226.25.53][28948] [Unknown][Unknown][Unrated]
                    RISK: Unidirectional Traffic

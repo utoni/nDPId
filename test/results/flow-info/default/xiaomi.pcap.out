@@ -7,29 +7,39 @@
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....2] [ip4][..tcp] [.115.164.74.232][.5222] -> [192.168.244.219][45904]
          detected: [.....2] [ip4][..tcp] [.115.164.74.232][.5222] -> [192.168.244.219][45904] [Xiaomi][Unknown][Web][Acceptable][47.241.35.73]
+                   RISK: Susp Entropy
               new: [.....3] [ip4][..tcp] [.115.164.74.232][.5222] -> [.192.168.247.13][38018]
          detected: [.....3] [ip4][..tcp] [.115.164.74.232][.5222] -> [.192.168.247.13][38018] [Xiaomi][Unknown][Web][Acceptable][47.241.35.73]
+                   RISK: Susp Entropy
              idle: [.....1] [ip4][..tcp] [....47.241.7.88][.5222] -> [..10.52.151.160][39180] [Xiaomi][Alibaba][Web][Acceptable]
               new: [.....4] [ip4][..tcp] [..97.39.119.172][.5222] -> [..192.168.93.59][51488]
          detected: [.....4] [ip4][..tcp] [..97.39.119.172][.5222] -> [..192.168.93.59][51488] [Xiaomi][Unknown][Web][Acceptable][47.241.59.87]
+                   RISK: Susp Entropy
      DAEMON-EVENT: [Processed: 18 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 3 / 4|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....5] [ip4][..tcp] [..192.168.2.100][37708] -> [...3.127.176.74][.5222]
          detected: [.....5] [ip4][..tcp] [..192.168.2.100][37708] -> [...3.127.176.74][.5222] [Xiaomi][AmazonAWS][Web][Acceptable][fr-app-chat-global-xiaomi-net1-1667981913.eu-central-1.elb.amazonaws.com]
+                   RISK: Susp Entropy
              idle: [.....2] [ip4][..tcp] [.115.164.74.232][.5222] -> [192.168.244.219][45904] [Xiaomi][Unknown][Web][Acceptable]
+                   RISK: Susp Entropy
              idle: [.....4] [ip4][..tcp] [..97.39.119.172][.5222] -> [..192.168.93.59][51488] [Xiaomi][Unknown][Web][Acceptable]
+                   RISK: Susp Entropy
              idle: [.....3] [ip4][..tcp] [.115.164.74.232][.5222] -> [.192.168.247.13][38018] [Xiaomi][Unknown][Web][Acceptable]
+                   RISK: Susp Entropy
      DAEMON-EVENT: [Processed: 33 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 5|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....6] [ip4][..tcp] [..192.168.2.100][45106] -> [.18.193.233.122][.5222]
          detected: [.....6] [ip4][..tcp] [..192.168.2.100][45106] -> [.18.193.233.122][.5222] [Xiaomi][AmazonAWS][Web][Acceptable][fr-app-chat-global-xiaomi-net2-2117517874.eu-central-1.elb.amazonaws.com]
+                   RISK: Susp Entropy
              idle: [.....5] [ip4][..tcp] [..192.168.2.100][37708] -> [...3.127.176.74][.5222] [Xiaomi][AmazonAWS][Web][Acceptable]
+                   RISK: Susp Entropy
      DAEMON-EVENT: [Processed: 48 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 6|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....7] [ip4][..tcp] [..192.168.2.100][48698] -> [...203.107.1.65][...80]
          detected: [.....7] [ip4][..tcp] [..192.168.2.100][48698] -> [...203.107.1.65][...80] [HTTP.Xiaomi][Alibaba][Web][Acceptable][203.107.1.65]
-                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Susp Entropy
              idle: [.....7] [ip4][..tcp] [..192.168.2.100][48698] -> [...203.107.1.65][...80] [HTTP.Xiaomi][Alibaba][Web][Acceptable]
-                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Susp Entropy
              idle: [.....6] [ip4][..tcp] [..192.168.2.100][45106] -> [.18.193.233.122][.5222] [Xiaomi][AmazonAWS][Web][Acceptable]
+                   RISK: Susp Entropy
      DAEMON-EVENT: shutdown

@@ -44,12 +44,13 @@
               new: [.....3] [ip4][..udp] [....192.168.1.2][30000] -> [..212.242.33.36][40392]
          detected: [.....3] [ip4][..udp] [....192.168.1.2][30000] -> [..212.242.33.36][40392] [RTP][Unknown][Media][Acceptable]
               new: [.....4] [ip4][..udp] [....192.168.1.2][30001] -> [..212.242.33.36][40393]
-         detected: [.....4] [ip4][..udp] [....192.168.1.2][30001] -> [..212.242.33.36][40393] [RTCP][Unknown][VoIP][Acceptable]
            update: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
            update: [.....3] [ip4][..udp] [....192.168.1.2][30000] -> [..212.242.33.36][40392] [RTP][Unknown][Media][Acceptable]
-           update: [.....4] [ip4][..udp] [....192.168.1.2][30001] -> [..212.242.33.36][40393] [RTCP][Unknown][VoIP][Acceptable]
+           update: [.....4] [ip4][..udp] [....192.168.1.2][30001] -> [..212.242.33.36][40393]
            update: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
              idle: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
              idle: [.....3] [ip4][..udp] [....192.168.1.2][30000] -> [..212.242.33.36][40392] [RTP][Unknown][Media][Acceptable]
-             idle: [.....4] [ip4][..udp] [....192.168.1.2][30001] -> [..212.242.33.36][40393] [RTCP][Unknown][VoIP][Acceptable]
+     not-detected: [.....4] [ip4][..udp] [....192.168.1.2][30001] -> [..212.242.33.36][40393] [Unknown][Unknown][Unrated]
+                   RISK: Susp Entropy, Unidirectional Traffic
+             idle: [.....4] [ip4][..udp] [....192.168.1.2][30001] -> [..212.242.33.36][40393]
      DAEMON-EVENT: shutdown

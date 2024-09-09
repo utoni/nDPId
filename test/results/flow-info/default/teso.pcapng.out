@@ -1,0 +1,12 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [.192.168.88.231][56158] -> [159.100.232.124][24120]
+         detected: [.....1] [ip4][..tcp] [.192.168.88.231][56158] -> [159.100.232.124][24120] [TES_Online][Unknown][Game][Fun]
+     DAEMON-EVENT: [Processed: 4 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....2] [ip4][..tcp] [.192.168.88.231][47860] -> [159.100.232.114][24504]
+         detected: [.....2] [ip4][..tcp] [.192.168.88.231][47860] -> [159.100.232.114][24504] [TES_Online][Unknown][Game][Fun]
+             idle: [.....2] [ip4][..tcp] [.192.168.88.231][47860] -> [159.100.232.114][24504] [TES_Online][Unknown][Game][Fun]
+             idle: [.....1] [ip4][..tcp] [.192.168.88.231][56158] -> [159.100.232.124][24120] [TES_Online][Unknown][Game][Fun]
+     DAEMON-EVENT: shutdown

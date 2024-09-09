@@ -69,7 +69,7 @@
          detected: [.....9] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.225][..500] [IPSec][Unknown][VPN][Safe]
               new: [....10] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.225][.4500]
          detected: [....10] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.225][.4500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Malformed Packet
+                   RISK: Malformed Packet, Susp Entropy
              idle: [.....8] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.194][.4500] [IPSec][Unknown][VPN][Safe]
              idle: [.....7] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.194][..500] [IPSec][Unknown][VPN][Safe]
               new: [....11] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.131][..500]
@@ -78,7 +78,7 @@
               new: [....12] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.131][.4500]
          detected: [....12] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.131][.4500] [IPSec][Unknown][VPN][Safe]
              idle: [....10] [ip4][..udp] [..192.168.2.100][14500] -> [109.237.187.225][.4500] [IPSec][Unknown][VPN][Safe]
-                   RISK: Malformed Packet
+                   RISK: Malformed Packet, Susp Entropy
              idle: [.....9] [ip4][..udp] [..192.168.2.100][10500] -> [109.237.187.225][..500] [IPSec][Unknown][VPN][Safe]
      DAEMON-EVENT: [Processed: 225 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 2 / 12|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 18]

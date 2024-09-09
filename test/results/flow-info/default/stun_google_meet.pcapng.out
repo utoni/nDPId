@@ -13,7 +13,9 @@
               new: [.....4] [ip4][..udp] [.192.168.12.156][45400] -> [..142.250.82.76][19305]
          detected: [.....4] [ip4][..udp] [.192.168.12.156][45400] -> [..142.250.82.76][19305] [STUN.GoogleCall][Google][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port
-          analyse: [.....3] [ip4][..udp] [.192.168.12.156][38152] -> [..142.250.82.76][19305] [STUN.GoogleCall][Google][VoIP][Acceptable]
+ detection-update: [.....3] [ip4][..udp] [.192.168.12.156][38152] -> [..142.250.82.76][19305] [DTLS.GoogleCall][Google][VoIP][Acceptable]
+ detection-update: [.....3] [ip4][..udp] [.192.168.12.156][38152] -> [..142.250.82.76][19305] [DTLS.GoogleCall][Google][VoIP][Acceptable]
+          analyse: [.....3] [ip4][..udp] [.192.168.12.156][38152] -> [..142.250.82.76][19305] [DTLS.GoogleCall][Google][VoIP][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.164|     0.015|     0.039|         1549.851|    2.400]
                    [PKTLEN......:     65.000|  1231.000|   290.000|   203.200|        41279.000|    4.700]
@@ -25,9 +27,10 @@
                    [ENTROPIES...: 5.9,5.7,5.9,5.0,5.7,7.3,6.8,7.4,4.6,7.1,7.1,7.2,7.1,7.0,7.0,7.1,7.1,7.0,7.1,7.1,7.1,7.1,5.7,5.7,7.0,7.1,7.0,6.4,7.2,7.1,7.1,7.1]
               new: [.....5] [ip4][..udp] [.192.168.12.156][38152] -> [..142.250.82.76][.3478]
          detected: [.....5] [ip4][..udp] [.192.168.12.156][38152] -> [..142.250.82.76][.3478] [STUN.GoogleCall][Google][VoIP][Acceptable][]
+ detection-update: [.....5] [ip4][..udp] [.192.168.12.156][38152] -> [..142.250.82.76][.3478] [DTLS.GoogleCall][Google][VoIP][Acceptable]
               new: [.....6] [ip4][..udp] [.192.168.12.156][45400] -> [..142.250.82.76][.3478]
          detected: [.....6] [ip4][..udp] [.192.168.12.156][45400] -> [..142.250.82.76][.3478] [STUN.GoogleCall][Google][VoIP][Acceptable][]
-          analyse: [.....5] [ip4][..udp] [.192.168.12.156][38152] -> [..142.250.82.76][.3478] [STUN.GoogleCall][Google][VoIP][Acceptable]
+          analyse: [.....5] [ip4][..udp] [.192.168.12.156][38152] -> [..142.250.82.76][.3478] [DTLS.GoogleCall][Google][VoIP][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     1.000|     0.179|     0.232|        53990.769|    4.000]
                    [PKTLEN......:     68.000|   565.000|   110.700|    85.700|         7337.900|    4.800]
@@ -56,17 +59,18 @@
            update: [.....6] [ip4][..udp] [.192.168.12.156][45400] -> [..142.250.82.76][.3478] [STUN.GoogleCall][Google][VoIP][Acceptable]
            update: [.....2] [ip4][..udp] [.192.168.12.156][45400] -> [.74.125.128.127][19302] [STUN.GoogleCall][Google][VoIP][Acceptable]
                    RISK: Known Proto on Non Std Port
-           update: [.....3] [ip4][..udp] [.192.168.12.156][38152] -> [..142.250.82.76][19305] [STUN.GoogleCall][Google][VoIP][Acceptable]
-                   RISK: Known Proto on Non Std Port
-           update: [.....5] [ip4][..udp] [.192.168.12.156][38152] -> [..142.250.82.76][.3478] [STUN.GoogleCall][Google][VoIP][Acceptable]
+           update: [.....3] [ip4][..udp] [.192.168.12.156][38152] -> [..142.250.82.76][19305] [DTLS.GoogleCall][Google][VoIP][Acceptable]
+           update: [.....5] [ip4][..udp] [.192.168.12.156][38152] -> [..142.250.82.76][.3478] [DTLS.GoogleCall][Google][VoIP][Acceptable]
            update: [.....1] [ip4][..udp] [.192.168.12.156][38152] -> [.74.125.128.127][19302] [STUN.GoogleCall][Google][VoIP][Acceptable]
                    RISK: Known Proto on Non Std Port
      DAEMON-EVENT: [Processed: 214 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 6 / 6|skipped: 0|!detected: 0|guessed: 0|detection-updates: 2|updates: 6]
+     DAEMON-EVENT: [Flows][active: 6 / 6|skipped: 0|!detected: 0|guessed: 0|detection-updates: 5|updates: 6]
               new: [.....7] [ip6][..udp] [..2001:b07:a3d:c112:48a1:1094:1227:281e][45572] -> [...................2001:4860:4864:6::81][19305]
          detected: [.....7] [ip6][..udp] [..2001:b07:a3d:c112:48a1:1094:1227:281e][45572] -> [...................2001:4860:4864:6::81][19305] [STUN.GoogleCall][Google][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port
-          analyse: [.....7] [ip6][..udp] [..2001:b07:a3d:c112:48a1:1094:1227:281e][45572] -> [...................2001:4860:4864:6::81][19305] [STUN.GoogleCall][Google][VoIP][Acceptable]
+ detection-update: [.....7] [ip6][..udp] [..2001:b07:a3d:c112:48a1:1094:1227:281e][45572] -> [...................2001:4860:4864:6::81][19305] [DTLS.GoogleCall][Google][VoIP][Acceptable]
+ detection-update: [.....7] [ip6][..udp] [..2001:b07:a3d:c112:48a1:1094:1227:281e][45572] -> [...................2001:4860:4864:6::81][19305] [DTLS.GoogleCall][Google][VoIP][Acceptable]
+          analyse: [.....7] [ip6][..udp] [..2001:b07:a3d:c112:48a1:1094:1227:281e][45572] -> [...................2001:4860:4864:6::81][19305] [DTLS.GoogleCall][Google][VoIP][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........:      0.000|     0.082|     0.009|     0.020|          398.613|    2.800]
                    [PKTLEN......:     85.000|  1251.000|   300.000|   206.900|        42788.400|    4.700]
@@ -78,14 +82,12 @@
                    [ENTROPIES...: 6.0,5.7,5.8,5.0,5.9,7.3,6.7,5.9,7.4,4.7,7.0,7.1,7.1,7.1,7.0,7.0,7.1,7.1,7.0,7.1,7.0,7.1,5.7,5.7,5.7,7.1,7.1,7.0,7.0,6.1,7.0,7.0]
              idle: [.....4] [ip4][..udp] [.192.168.12.156][45400] -> [..142.250.82.76][19305] [STUN.GoogleCall][Google][VoIP][Acceptable]
                    RISK: Known Proto on Non Std Port
-             idle: [.....7] [ip6][..udp] [..2001:b07:a3d:c112:48a1:1094:1227:281e][45572] -> [...................2001:4860:4864:6::81][19305] [STUN.GoogleCall][Google][VoIP][Acceptable]
-                   RISK: Known Proto on Non Std Port
+             idle: [.....7] [ip6][..udp] [..2001:b07:a3d:c112:48a1:1094:1227:281e][45572] -> [...................2001:4860:4864:6::81][19305] [DTLS.GoogleCall][Google][VoIP][Acceptable]
              idle: [.....6] [ip4][..udp] [.192.168.12.156][45400] -> [..142.250.82.76][.3478] [STUN.GoogleCall][Google][VoIP][Acceptable]
              idle: [.....2] [ip4][..udp] [.192.168.12.156][45400] -> [.74.125.128.127][19302] [STUN.GoogleCall][Google][VoIP][Acceptable]
                    RISK: Known Proto on Non Std Port
-             idle: [.....3] [ip4][..udp] [.192.168.12.156][38152] -> [..142.250.82.76][19305] [STUN.GoogleCall][Google][VoIP][Acceptable]
-                   RISK: Known Proto on Non Std Port
-             idle: [.....5] [ip4][..udp] [.192.168.12.156][38152] -> [..142.250.82.76][.3478] [STUN.GoogleCall][Google][VoIP][Acceptable]
+             idle: [.....3] [ip4][..udp] [.192.168.12.156][38152] -> [..142.250.82.76][19305] [DTLS.GoogleCall][Google][VoIP][Acceptable]
+             idle: [.....5] [ip4][..udp] [.192.168.12.156][38152] -> [..142.250.82.76][.3478] [DTLS.GoogleCall][Google][VoIP][Acceptable]
              idle: [.....1] [ip4][..udp] [.192.168.12.156][38152] -> [.74.125.128.127][19302] [STUN.GoogleCall][Google][VoIP][Acceptable]
                    RISK: Known Proto on Non Std Port
      DAEMON-EVENT: shutdown

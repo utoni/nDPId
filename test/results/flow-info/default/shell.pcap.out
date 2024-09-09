@@ -12,9 +12,9 @@
                    RISK: Possible Exploit Attempt
               end: [.....1] [ip4][..tcp] [......127.0.0.1][47638] -> [......127.0.0.1][33333]
      not-detected: [.....2] [ip4][..udp] [......127.0.0.1][54112] -> [......127.0.0.1][33333] [Unknown][Unknown][Unrated]
-                   RISK: Possible Exploit Attempt, Unidirectional Traffic
+                   RISK: Susp Entropy, Possible Exploit Attempt, Unidirectional Traffic
              idle: [.....2] [ip4][..udp] [......127.0.0.1][54112] -> [......127.0.0.1][33333]
      not-detected: [.....3] [ip4][..udp] [......127.0.0.1][58538] -> [......127.0.0.1][33333] [Unknown][Unknown][Unrated]
-                   RISK: Possible Exploit Attempt, Unidirectional Traffic
+                   RISK: Susp Entropy, Possible Exploit Attempt, Unidirectional Traffic
              idle: [.....3] [ip4][..udp] [......127.0.0.1][58538] -> [......127.0.0.1][33333]
      DAEMON-EVENT: shutdown

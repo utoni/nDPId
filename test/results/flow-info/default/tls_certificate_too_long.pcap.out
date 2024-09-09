@@ -55,11 +55,11 @@
          detected: [....18] [ip4][..tcp] [..192.168.1.121][53912] -> [....2.22.33.235][...80] [HTTP.Microsoft][Unknown][Cloud][Safe][www.microsoft.com]
  detection-update: [....17] [ip4][..udp] [..192.168.1.121][54561] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][e13678.dscb.akamaiedge.net]
  detection-update: [....18] [ip4][..tcp] [..192.168.1.121][53912] -> [....2.22.33.235][...80] [HTTP.Microsoft][Unknown][Download][Safe][www.microsoft.com]
-                   RISK: HTTP Susp Header, Binary file/data transfer (attempt)
+                   RISK: HTTP Susp Header, Binary File/Data Transfer (Attempt)
               new: [....19] [ip4][..tcp] [..192.168.1.121][53913] -> [....2.22.33.235][...80]
          detected: [....19] [ip4][..tcp] [..192.168.1.121][53913] -> [....2.22.33.235][...80] [HTTP.Microsoft][Unknown][Cloud][Safe][www.microsoft.com]
  detection-update: [....19] [ip4][..tcp] [..192.168.1.121][53913] -> [....2.22.33.235][...80] [HTTP.Microsoft][Unknown][Download][Safe][www.microsoft.com]
-                   RISK: HTTP Susp Header, Binary file/data transfer (attempt)
+                   RISK: HTTP Susp Header, Binary File/Data Transfer (Attempt)
               new: [....20] [ip4][..tcp] [..192.168.1.121][53905] -> [..140.82.113.26][..443] [MIDSTREAM]
               new: [....21] [ip4][..udp] [..192.168.1.121][65213] -> [........8.8.8.8][...53]
          detected: [....21] [ip4][..udp] [..192.168.1.121][65213] -> [........8.8.8.8][...53] [DNS.Apple][Google][Network][Safe][time-macos.apple.com]
@@ -136,9 +136,9 @@
              idle: [.....8] [ip4][....2] [..192.168.1.139] -> [....224.0.0.251] [IGMP][Unknown][Network][Acceptable]
              idle: [.....7] [ip4][....2] [..192.168.1.139] -> [......224.0.0.2] [IGMP][Unknown][Network][Acceptable]
               end: [....18] [ip4][..tcp] [..192.168.1.121][53912] -> [....2.22.33.235][...80] [HTTP.Microsoft][Unknown][Download][Safe]
-                   RISK: HTTP Susp Header, Binary file/data transfer (attempt)
+                   RISK: HTTP Susp Header, Binary File/Data Transfer (Attempt)
               end: [....19] [ip4][..tcp] [..192.168.1.121][53913] -> [....2.22.33.235][...80] [HTTP.Microsoft][Unknown][Download][Safe]
-                   RISK: HTTP Susp Header, Binary file/data transfer (attempt)
+                   RISK: HTTP Susp Header, Binary File/Data Transfer (Attempt)
              idle: [....14] [ip4][..udp] [..192.168.1.121][51364] -> [........8.8.8.8][...53] [DNS.Microsoft][Google][Network][Safe]
              idle: [.....9] [ip4][..udp] [..192.168.1.121][55567] -> [........8.8.8.8][...53] [DNS.Microsoft][Google][Network][Safe]
              idle: [....16] [ip4][..udp] [..192.168.1.121][55578] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable]

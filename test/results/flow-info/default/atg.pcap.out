@@ -1,0 +1,10 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [..192.168.0.105][.3134] -> [..20.108.25.119][10001] [MIDSTREAM]
+         detected: [.....1] [ip4][..tcp] [..192.168.0.105][.3134] -> [..20.108.25.119][10001] [ATG][Azure][IoT-Scada][Acceptable]
+              new: [.....2] [ip4][..tcp] [..192.168.0.105][.3148] -> [..20.108.25.119][10001]
+         detected: [.....2] [ip4][..tcp] [..192.168.0.105][.3148] -> [..20.108.25.119][10001] [ATG][Azure][IoT-Scada][Acceptable]
+              end: [.....1] [ip4][..tcp] [..192.168.0.105][.3134] -> [..20.108.25.119][10001] [ATG][Azure][IoT-Scada][Acceptable]
+             idle: [.....2] [ip4][..tcp] [..192.168.0.105][.3148] -> [..20.108.25.119][10001] [ATG][Azure][IoT-Scada][Acceptable]
+     DAEMON-EVENT: shutdown

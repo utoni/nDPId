@@ -6,7 +6,7 @@
                    RISK: HTTP Susp User-Agent
               new: [.....2] [ip4][..tcp] [.......10.8.0.1][40467] -> [.173.194.119.24][...80]
          detected: [.....2] [ip4][..tcp] [.......10.8.0.1][40467] -> [.173.194.119.24][...80] [HTTP.Google][Google][Web][Acceptable][www.google.com.br]
-                   RISK: HTTP Susp User-Agent
+                   RISK: HTTP Susp User-Agent, Susp Entropy
               new: [.....3] [ip4][..udp] [.......10.8.0.1][52257] -> [200.185.138.146][.6000]
               new: [.....4] [ip4][..udp] [.......10.8.0.1][48890] -> [200.185.125.226][.6000]
               new: [.....5] [ip4][..udp] [.......10.8.0.1][51569] -> [.200.194.148.67][.6000]
@@ -127,7 +127,7 @@
              idle: [....23] [ip4][..udp] [.......10.8.0.1][36552] -> [.200.194.136.66][.6000] [EAQ][Unknown][Network][Acceptable]
                    RISK: Unidirectional Traffic
               end: [.....2] [ip4][..tcp] [.......10.8.0.1][40467] -> [.173.194.119.24][...80] [HTTP.Google][Google][Web][Acceptable]
-                   RISK: HTTP Susp User-Agent
+                   RISK: HTTP Susp User-Agent, Susp Entropy
              idle: [....26] [ip4][..udp] [.......10.8.0.1][59098] -> [.200.194.134.68][.6000] [EAQ][Unknown][Network][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....28] [ip4][..udp] [.......10.8.0.1][36577] -> [.200.194.149.68][.6000] [EAQ][Unknown][Network][Acceptable]

@@ -3,6 +3,6 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [..188.75.184.20][49542] -> [.251.182.120.32][..443]
           guessed: [.....1] [ip4][..tcp] [..188.75.184.20][49542] -> [.251.182.120.32][..443] [TLS][Unknown][Web][Safe]
-                   RISK: Fully encrypted flow
+                   RISK: Fully Encrypted Flow
               end: [.....1] [ip4][..tcp] [..188.75.184.20][49542] -> [.251.182.120.32][..443]
      DAEMON-EVENT: shutdown

@@ -41,6 +41,8 @@
                    [IATS(ms)....: 51.7,176.8,0.0,0.0,439.6,1227.8,0.8,306.1,108.9,2404.5,0.2,0.0,0.3,0.0,0.0,0.3,133.1,0.6,40.7,0.3,7.7,7.9,1.7,1.6,528.8,1.1,0.7,0.7,0.7,2.7,2.6]
                    [PKTLENS.....: 600,52,1440,155,508,508,332,189,225,1440,52,52,64,52,52,52,64,228,228,52,52,228,52,404,52,214,212,206,206,206,206,206]
                    [ENTROPIES...: 7.6,5.1,7.9,6.7,7.6,7.6,7.3,6.7,7.0,7.9,5.0,5.1,5.1,5.1,5.1,5.1,5.2,7.0,7.0,5.1,5.1,7.0,5.1,7.5,5.1,6.9,6.9,6.9,6.9,6.9,6.8,7.0]
+          guessed: [.....2] [ip4][..tcp] [...192.168.2.12][49355] -> [..157.240.20.53][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
+                   RISK: Susp Entropy
           analyse: [.....3] [ip4][..udp] [...192.168.2.12][53688] -> [....31.13.86.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.550|     0.064|     0.136|        18373.693|    3.100]
@@ -94,9 +96,8 @@
              idle: [....13] [ip4][..udp] [...192.168.2.12][65025] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable]
              idle: [....11] [ip4][..udp] [...192.168.2.12][53688] -> [...91.252.56.51][32641] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
                    RISK: Known Proto on Non Std Port
-          guessed: [.....2] [ip4][..tcp] [...192.168.2.12][49355] -> [..157.240.20.53][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
+             idle: [.....2] [ip4][..tcp] [...192.168.2.12][49355] -> [..157.240.20.53][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
                    RISK: Susp Entropy
-             idle: [.....2] [ip4][..tcp] [...192.168.2.12][49355] -> [..157.240.20.53][.5222]
              idle: [....10] [ip4][..udp] [...192.168.2.12][53688] -> [.....1.60.78.64][59491] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
      DAEMON-EVENT: shutdown

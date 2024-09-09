@@ -864,14 +864,14 @@
               new: [...333] [ip4][..tcp] [......10.0.2.15][50327] -> [.69.118.162.229][46906]
               new: [...334] [ip4][..tcp] [......10.0.2.15][50328] -> [..189.147.72.83][26108]
          detected: [...333] [ip4][..tcp] [......10.0.2.15][50327] -> [.69.118.162.229][46906] [HTTP.Gnutella][Unknown][Download][Potentially Dangerous][69.118.162.229]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol, Susp Entropy
          detected: [...334] [ip4][..tcp] [......10.0.2.15][50328] -> [..189.147.72.83][26108] [HTTP.Gnutella][Unknown][Download][Potentially Dangerous][189.147.72.83]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol, Susp Entropy
               new: [...335] [ip4][..udp] [......10.0.2.15][28681] -> [.14.200.255.229][37058]
  detection-update: [...333] [ip4][..tcp] [......10.0.2.15][50327] -> [.69.118.162.229][46906] [HTTP.Gnutella][Unknown][Media][Potentially Dangerous][69.118.162.229]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol, Binary file/data transfer (attempt)
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol, Susp Entropy, Binary File/Data Transfer (Attempt)
  detection-update: [...334] [ip4][..tcp] [......10.0.2.15][50328] -> [..189.147.72.83][26108] [HTTP.Gnutella][Unknown][Media][Potentially Dangerous][189.147.72.83]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol, Binary file/data transfer (attempt)
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol, Susp Entropy, Binary File/Data Transfer (Attempt)
               new: [...336] [ip4][..udp] [......10.0.2.15][28681] -> [...80.7.252.192][.6888]
          detected: [...336] [ip4][..udp] [......10.0.2.15][28681] -> [...80.7.252.192][.6888] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
@@ -1017,7 +1017,7 @@
                    RISK: Unsafe Protocol
               new: [...345] [ip4][..tcp] [......10.0.2.15][50330] -> [.69.118.162.229][46906]
          detected: [...345] [ip4][..tcp] [......10.0.2.15][50330] -> [.69.118.162.229][46906] [HTTP.Gnutella][Unknown][Download][Potentially Dangerous][69.118.162.229]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol, Susp Entropy
               new: [...346] [ip4][..udp] [......10.0.2.15][28681] -> [..76.226.85.105][.6346]
          detected: [...346] [ip4][..udp] [......10.0.2.15][28681] -> [..76.226.85.105][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
@@ -1029,6 +1029,7 @@
                    RISK: Unsafe Protocol
               new: [...349] [ip4][.icmp] [...84.197.97.94] -> [......10.0.2.15]
          detected: [...349] [ip4][.icmp] [...84.197.97.94] -> [......10.0.2.15] [ICMP][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
               new: [...350] [ip4][..udp] [......10.0.2.15][28681] -> [..99.250.253.99][11819]
          detected: [...350] [ip4][..udp] [......10.0.2.15][28681] -> [..99.250.253.99][11819] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
@@ -1321,6 +1322,7 @@
            update: [...336] [ip4][..udp] [......10.0.2.15][28681] -> [...80.7.252.192][.6888] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
            update: [...349] [ip4][.icmp] [...84.197.97.94] -> [......10.0.2.15] [ICMP][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
            update: [....26] [ip4][..udp] [......10.0.2.15][57619] -> [.......10.0.2.2][.5351] [NAT-PMP][Unknown][Network][Acceptable]
            update: [....27] [ip4][..udp] [......10.0.2.15][57620] -> [.......10.0.2.2][.5351] [NAT-PMP][Unknown][Network][Acceptable]
            update: [....34] [ip4][..udp] [......10.0.2.15][57621] -> [.......10.0.2.2][.5351] [NAT-PMP][Unknown][Network][Acceptable]
@@ -1750,6 +1752,7 @@
            update: [...248] [ip4][..udp] [......10.0.2.15][28681] -> [..66.30.221.181][12012] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
            update: [...349] [ip4][.icmp] [...84.197.97.94] -> [......10.0.2.15] [ICMP][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
            update: [...263] [ip4][..udp] [......10.0.2.15][28681] -> [..82.217.176.52][.7446] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
            update: [...253] [ip4][..udp] [......10.0.2.15][28681] -> [.193.37.255.130][61616] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -2146,6 +2149,7 @@
            update: [...185] [ip4][..udp] [......10.0.2.15][28681] -> [.109.132.196.58][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
            update: [...349] [ip4][.icmp] [...84.197.97.94] -> [......10.0.2.15] [ICMP][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
            update: [...165] [ip4][..udp] [......10.0.2.15][28681] -> [...86.75.43.182][43502] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
            update: [...161] [ip4][..udp] [......10.0.2.15][28681] -> [..213.120.26.86][29946] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -2497,7 +2501,7 @@
              idle: [...101] [ip4][..udp] [......10.0.2.15][28681] -> [123.205.126.102][.5193] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
               end: [...345] [ip4][..tcp] [......10.0.2.15][50330] -> [.69.118.162.229][46906] [HTTP.Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol, Susp Entropy
              idle: [...131] [ip4][..udp] [......10.0.2.15][28681] -> [.86.225.140.186][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [...106] [ip4][..udp] [......10.0.2.15][28681] -> [..114.39.154.69][.4832] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -2511,6 +2515,7 @@
              idle: [....99] [ip4][..udp] [......10.0.2.15][28681] -> [....114.38.9.82][24223] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [...349] [ip4][.icmp] [...84.197.97.94] -> [......10.0.2.15] [ICMP][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
              idle: [...107] [ip4][..udp] [......10.0.2.15][28681] -> [..202.151.63.59][.7624] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [...103] [ip4][..udp] [......10.0.2.15][28681] -> [.220.134.167.82][.5820] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -2551,6 +2556,7 @@
              idle: [...196] [ip4][..udp] [......10.0.2.15][28681] -> [..88.127.72.106][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
      not-detected: [...220] [ip4][..udp] [......10.0.2.15][28681] -> [.113.252.86.162][.9239] [Unknown][Unknown][Unrated]
+                   RISK: Susp Entropy
              idle: [...220] [ip4][..udp] [......10.0.2.15][28681] -> [.113.252.86.162][.9239]
              idle: [...217] [ip4][..udp] [......10.0.2.15][28681] -> [.126.117.45.151][19323] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
@@ -3056,6 +3062,7 @@
               new: [...744] [ip4][..udp] [......10.0.2.15][28681] -> [..164.132.10.25][48250]
               new: [...745] [ip4][.icmp] [..164.132.10.25] -> [......10.0.2.15]
          detected: [...745] [ip4][.icmp] [..164.132.10.25] -> [......10.0.2.15] [ICMP][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
              idle: [...320] [ip4][..udp] [......10.0.2.15][28681] -> [185.236.200.137][48142] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [...325] [ip4][..udp] [......10.0.2.15][28681] -> [..83.160.143.48][37036] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -3487,6 +3494,7 @@
              idle: [...311] [ip4][..udp] [......10.0.2.15][28681] -> [.109.132.188.98][62851] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
      not-detected: [...300] [ip4][..udp] [......10.0.2.15][28681] -> [104.238.172.250][23548] [Unknown][Unknown][Unrated]
+                   RISK: Susp Entropy
              idle: [...300] [ip4][..udp] [......10.0.2.15][28681] -> [104.238.172.250][23548]
              idle: [...324] [ip4][..udp] [......10.0.2.15][28681] -> [.73.250.179.237][20848] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
@@ -3557,6 +3565,7 @@
            update: [...116] [ip4][..udp] [......10.0.2.15][28681] -> [.124.44.190.145][10170] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
            update: [...745] [ip4][.icmp] [..164.132.10.25] -> [......10.0.2.15] [ICMP][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
            update: [...319] [ip4][..udp] [......10.0.2.15][28681] -> [..164.132.10.25][55302] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
            update: [...133] [ip4][..udp] [......10.0.2.15][28681] -> [.91.175.220.161][15721] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -4188,6 +4197,7 @@
      not-detected: [...301] [ip4][..udp] [......10.0.2.15][28681] -> [..188.61.52.183][11852] [Unknown][Unknown][Unrated]
              idle: [...301] [ip4][..udp] [......10.0.2.15][28681] -> [..188.61.52.183][11852]
      not-detected: [...243] [ip4][..udp] [......10.0.2.15][28681] -> [.104.156.226.72][53258] [Unknown][Unknown][Unrated]
+                   RISK: Susp Entropy
              idle: [...243] [ip4][..udp] [......10.0.2.15][28681] -> [.104.156.226.72][53258]
              idle: [...330] [ip4][..udp] [......10.0.2.15][28681] -> [....82.64.44.11][.1352] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
@@ -4202,6 +4212,7 @@
            update: [...490] [ip4][..udp] [......10.0.2.15][28681] -> [...90.3.215.132][20356] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
            update: [...745] [ip4][.icmp] [..164.132.10.25] -> [......10.0.2.15] [ICMP][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
            update: [...489] [ip4][..udp] [......10.0.2.15][28681] -> [...108.44.45.25][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
            update: [...487] [ip4][..udp] [......10.0.2.15][28681] -> [..24.78.134.188][49046] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -4214,7 +4225,7 @@
          detected: [...755] [ip4][..udp] [......10.0.2.15][28681] -> [..83.134.107.32][38836] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
      not-detected: [...242] [ip4][..udp] [......10.0.2.15][28681] -> [..75.133.101.93][52367] [Unknown][Unknown][Unrated]
-                   RISK: Unidirectional Traffic
+                   RISK: Susp Entropy, Unidirectional Traffic
              idle: [...242] [ip4][..udp] [......10.0.2.15][28681] -> [..75.133.101.93][52367]
              idle: [...308] [ip4][..udp] [......10.0.2.15][28681] -> [...81.205.91.45][40137] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
@@ -4787,6 +4798,7 @@
            update: [...405] [ip4][..udp] [......10.0.2.15][28681] -> [.176.155.31.118][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
            update: [...745] [ip4][.icmp] [..164.132.10.25] -> [......10.0.2.15] [ICMP][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
            update: [...387] [ip4][..udp] [......10.0.2.15][28681] -> [....220.135.8.7][.1219]
            update: [...302] [ip4][..udp] [......10.0.2.15][28681] -> [.185.187.74.173][53489]
            update: [...255] [ip4][..udp] [......10.0.2.15][28681] -> [..80.61.221.246][30577] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -4894,6 +4906,7 @@
              idle: [...372] [ip4][..udp] [......10.0.2.15][28681] -> [.91.179.185.126][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [...745] [ip4][.icmp] [..164.132.10.25] -> [......10.0.2.15] [ICMP][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
              idle: [...373] [ip4][..udp] [......10.0.2.15][28681] -> [..88.122.233.15][11488] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
            update: [...750] [ip4][..udp] [......10.0.2.15][28681] -> [....67.193.8.52][38584] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -5029,6 +5042,7 @@
              idle: [...416] [ip4][..udp] [......10.0.2.15][28681] -> [..92.139.61.103][24096] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
      not-detected: [...304] [ip4][..udp] [......10.0.2.15][28681] -> [.193.32.126.214][59596] [Unknown][Unknown][Unrated]
+                   RISK: Susp Entropy
              idle: [...304] [ip4][..udp] [......10.0.2.15][28681] -> [.193.32.126.214][59596]
      not-detected: [...389] [ip4][..udp] [......10.0.2.15][28681] -> [..94.215.183.71][31310] [Unknown][Unknown][Unrated]
                    RISK: Unidirectional Traffic
@@ -5060,6 +5074,7 @@
              idle: [...431] [ip4][..udp] [......10.0.2.15][28681] -> [..88.124.71.246][49035] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
      not-detected: [...303] [ip4][..udp] [......10.0.2.15][28681] -> [.142.132.165.13][30566] [Unknown][Unknown][Unrated]
+                   RISK: Susp Entropy
              idle: [...303] [ip4][..udp] [......10.0.2.15][28681] -> [.142.132.165.13][30566]
      not-detected: [...395] [ip4][..udp] [......10.0.2.15][28681] -> [..191.114.88.39][18751] [Unknown][Unknown][Unrated]
                    RISK: Unidirectional Traffic
@@ -6051,6 +6066,7 @@
                    RISK: Unidirectional Traffic
              idle: [...723] [ip4][..udp] [......10.0.2.15][28681] -> [.175.39.219.223][13482]
      not-detected: [...376] [ip4][..udp] [......10.0.2.15][28681] -> [....156.57.42.2][33476] [Unknown][Unknown][Unrated]
+                   RISK: Susp Entropy
              idle: [...376] [ip4][..udp] [......10.0.2.15][28681] -> [....156.57.42.2][33476]
      not-detected: [...673] [ip4][..udp] [......10.0.2.15][28681] -> [.125.59.215.249][14571] [Unknown][Unknown][Unrated]
                    RISK: Unidirectional Traffic
@@ -6090,6 +6106,7 @@
              idle: [...319] [ip4][..udp] [......10.0.2.15][28681] -> [..164.132.10.25][55302] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
      not-detected: [...302] [ip4][..udp] [......10.0.2.15][28681] -> [.185.187.74.173][53489] [Unknown][Unknown][Unrated]
+                   RISK: Susp Entropy
              idle: [...302] [ip4][..udp] [......10.0.2.15][28681] -> [.185.187.74.173][53489]
      not-detected: [...668] [ip4][..udp] [......10.0.2.15][28681] -> [..218.103.139.2][64731] [Unknown][Unknown][Unrated]
                    RISK: Unidirectional Traffic
@@ -6544,6 +6561,7 @@
               new: [...782] [ip4][..udp] [......10.0.2.15][28681] -> [.65.182.231.232][.7890]
               new: [...783] [ip4][.icmp] [.65.182.231.232] -> [......10.0.2.15]
          detected: [...783] [ip4][.icmp] [.65.182.231.232] -> [......10.0.2.15] [ICMP][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
               new: [...784] [ip4][..udp] [......10.0.2.15][28681] -> [..23.19.141.110][.6346]
              idle: [....88] [ip4][..udp] [......10.0.2.15][28681] -> [.....81.50.24.2][17874] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
@@ -6801,6 +6819,7 @@
            update: [...140] [ip4][..udp] [......10.0.2.15][28681] -> [.77.197.111.186][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
            update: [...783] [ip4][.icmp] [.65.182.231.232] -> [......10.0.2.15] [ICMP][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
            update: [...175] [ip4][..udp] [......10.0.2.15][28681] -> [...115.69.62.99][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
            update: [...756] [ip4][..udp] [......10.0.2.15][28681] -> [..41.100.68.255][12838] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -6879,6 +6898,7 @@
                    RISK: Unsafe Protocol
               new: [...797] [ip4][.icmp] [...154.3.42.209] -> [......10.0.2.15]
          detected: [...797] [ip4][.icmp] [...154.3.42.209] -> [......10.0.2.15] [ICMP][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
              idle: [...195] [ip4][..udp] [......10.0.2.15][28681] -> [.177.231.151.16][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [...191] [ip4][..udp] [......10.0.2.15][28681] -> [.190.153.143.54][65535] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -6894,6 +6914,7 @@
                    RISK: Unsafe Protocol
            update: [...794] [ip4][..udp] [......10.0.2.15][50214] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable]
            update: [...783] [ip4][.icmp] [.65.182.231.232] -> [......10.0.2.15] [ICMP][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
              idle: [...759] [ip4][..udp] [......10.0.2.15][28681] -> [104.238.172.250][23548] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [...757] [ip4][..udp] [......10.0.2.15][28681] -> [.104.156.226.72][53258] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -7002,6 +7023,7 @@
                    RISK: Unsafe Protocol
              idle: [...758] [ip4][..udp] [......10.0.2.15][50213] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable]
            update: [...797] [ip4][.icmp] [...154.3.42.209] -> [......10.0.2.15] [ICMP][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
               new: [...798] [ip4][..udp] [......10.0.2.15][63962] -> [239.255.255.250][.1900]
          detected: [...798] [ip4][..udp] [......10.0.2.15][63962] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
               new: [...799] [ip6][..udp] [..............fe80::c50d:519f:96a4:e108][63958] -> [................................ff02::c][.3702]
@@ -7069,6 +7091,7 @@
      not-detected: [...768] [ip4][..udp] [......10.0.2.15][28681] -> [.14.200.255.229][37058] [Unknown][Unknown][Unrated]
              idle: [...768] [ip4][..udp] [......10.0.2.15][28681] -> [.14.200.255.229][37058]
      not-detected: [...765] [ip4][..udp] [......10.0.2.15][28681] -> [213.229.111.224][.4876] [Unknown][Unknown][Unrated]
+                   RISK: Susp Entropy
              idle: [...765] [ip4][..udp] [......10.0.2.15][28681] -> [213.229.111.224][.4876]
      not-detected: [....75] [ip4][..tcp] [......10.0.2.15][50234] -> [...66.189.28.17][16269] [Unknown][Unknown][Unrated]
                    RISK: Unidirectional Traffic
@@ -7108,7 +7131,7 @@
              idle: [...123] [ip4][..tcp] [......10.0.2.15][50254] -> [..24.78.134.188][49046]
              idle: [...799] [ip6][..udp] [..............fe80::c50d:519f:96a4:e108][63958] -> [................................ff02::c][.3702] [WSD][Unknown][Network][Acceptable]
              idle: [...333] [ip4][..tcp] [......10.0.2.15][50327] -> [.69.118.162.229][46906] [HTTP.Gnutella][Unknown][Media][Potentially Dangerous]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol, Binary file/data transfer (attempt)
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol, Susp Entropy, Binary File/Data Transfer (Attempt)
      not-detected: [....64] [ip4][..tcp] [......10.0.2.15][50223] -> [118.167.248.220][63108] [Unknown][Unknown][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....64] [ip4][..tcp] [......10.0.2.15][50223] -> [118.167.248.220][63108]
@@ -7169,6 +7192,7 @@
                    RISK: Unidirectional Traffic
              idle: [...266] [ip4][..tcp] [......10.0.2.15][50290] -> [....73.89.249.8][50649]
              idle: [...797] [ip4][.icmp] [...154.3.42.209] -> [......10.0.2.15] [ICMP][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
              idle: [...135] [ip4][..udp] [......10.0.2.15][28681] -> [.193.250.99.158][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
      not-detected: [....78] [ip4][..tcp] [......10.0.2.15][50237] -> [.88.123.202.175][37910] [Unknown][Unknown][Unrated]
@@ -7341,13 +7365,14 @@
                    RISK: Unidirectional Traffic
              idle: [...235] [ip4][..tcp] [......10.0.2.15][50281] -> [.94.134.154.158][54130]
              idle: [...783] [ip4][.icmp] [.65.182.231.232] -> [......10.0.2.15] [ICMP][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
      not-detected: [....60] [ip4][..tcp] [......10.0.2.15][50219] -> [.193.121.165.12][55376] [Unknown][Unknown][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....60] [ip4][..tcp] [......10.0.2.15][50219] -> [.193.121.165.12][55376]
               end: [...239] [ip4][..tcp] [......10.0.2.15][50285] -> [..75.133.101.93][52367] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [...334] [ip4][..tcp] [......10.0.2.15][50328] -> [..189.147.72.83][26108] [HTTP.Gnutella][Unknown][Media][Potentially Dangerous]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol, Binary file/data transfer (attempt)
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol, Susp Entropy, Binary File/Data Transfer (Attempt)
              idle: [...175] [ip4][..udp] [......10.0.2.15][28681] -> [...115.69.62.99][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [...756] [ip4][..udp] [......10.0.2.15][28681] -> [..41.100.68.255][12838] [Gnutella][Unknown][Download][Potentially Dangerous]

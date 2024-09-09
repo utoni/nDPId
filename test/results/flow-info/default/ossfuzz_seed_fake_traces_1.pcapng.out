@@ -35,7 +35,6 @@
      DAEMON-EVENT: [Processed: 16 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 5 / 7|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 3]
               new: [.....8] [ip4][..udp] [......127.0.0.1][17788] -> [......127.0.0.1][17788]
-         detected: [.....8] [ip4][..udp] [......127.0.0.1][17788] -> [......127.0.0.1][17788] [PPStream][Unknown][Streaming][Fun]
      not-detected: [.....7] [ip4][..udp] [......127.0.0.1][..100] -> [......127.0.0.1][..200] [Unknown][Unknown][Unrated]
              idle: [.....7] [ip4][..udp] [......127.0.0.1][..100] -> [......127.0.0.1][..200]
              idle: [.....4] [ip4][..tcp] [..192.168.1.128][....1] -> [121.254.200.130][.1119] [Starcraft][Unknown][Game][Fun]
@@ -51,7 +50,9 @@
               new: [.....9] [ip4][..tcp] [..192.168.1.128][....1] -> [........1.2.3.4][...10] [MIDSTREAM]
          detected: [.....9] [ip4][..tcp] [..192.168.1.128][....1] -> [........1.2.3.4][...10] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol, Unidirectional Traffic, TCP Connection Issues
-             idle: [.....8] [ip4][..udp] [......127.0.0.1][17788] -> [......127.0.0.1][17788] [PPStream][Unknown][Streaming][Fun]
+     not-detected: [.....8] [ip4][..udp] [......127.0.0.1][17788] -> [......127.0.0.1][17788] [Unknown][Unknown][Unrated]
+                   RISK: Unidirectional Traffic
+             idle: [.....8] [ip4][..udp] [......127.0.0.1][17788] -> [......127.0.0.1][17788]
               new: [....10] [ip4][..tcp] [..192.168.1.128][....1] -> [........1.2.3.4][...11] [MIDSTREAM]
          detected: [....10] [ip4][..tcp] [..192.168.1.128][....1] -> [........1.2.3.4][...11] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol, Unidirectional Traffic, TCP Connection Issues

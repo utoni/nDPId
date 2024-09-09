@@ -19,12 +19,14 @@
                    RISK: Known Proto on Non Std Port
               new: [.....7] [ip4][.icmp] [.35.158.183.167] -> [.192.168.12.169]
          detected: [.....7] [ip4][.icmp] [.35.158.183.167] -> [.192.168.12.169] [ICMP][AmazonAWS][Network][Acceptable]
+                   RISK: Susp Entropy
  detection-update: [.....3] [ip4][..udp] [.192.168.12.169][47204] -> [.35.158.183.167][..443] [STUN][AmazonAWS][Network][Acceptable][]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
  detection-update: [.....6] [ip4][..udp] [.192.168.12.169][39518] -> [.35.158.183.167][..443] [STUN][AmazonAWS][Network][Acceptable][]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
  detection-update: [.....5] [ip4][..udp] [.192.168.12.169][39518] -> [.35.158.183.167][.3478] [STUN.SignalVoip][AmazonAWS][VoIP][Acceptable][signal.org]
  detection-update: [.....4] [ip4][..udp] [.192.168.12.169][47204] -> [.35.158.183.167][.3478] [STUN.SignalVoip][AmazonAWS][VoIP][Acceptable][]
+ detection-update: [.....4] [ip4][..udp] [.192.168.12.169][47204] -> [.35.158.183.167][.3478] [STUN.SignalVoip][AmazonAWS][VoIP][Acceptable][signal.org]
  detection-update: [.....1] [ip4][..udp] [.192.168.12.169][39518] -> [172.253.121.127][19302] [STUN.SignalVoip][Google][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
  detection-update: [.....2] [ip4][..udp] [.192.168.12.169][47204] -> [172.253.121.127][19302] [STUN.SignalVoip][Google][VoIP][Acceptable][]
@@ -57,6 +59,8 @@
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
  detection-update: [....12] [ip4][..udp] [.192.168.12.169][39950] -> [.35.158.183.167][..443] [STUN.SignalVoip][AmazonAWS][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
+ detection-update: [....13] [ip4][..udp] [.192.168.12.169][39950] -> [.35.158.183.167][.3478] [STUN.SignalVoip][AmazonAWS][VoIP][Acceptable][signal.org]
+ detection-update: [.....8] [ip4][..udp] [.192.168.12.169][43068] -> [.35.158.183.167][.3478] [STUN.SignalVoip][AmazonAWS][VoIP][Acceptable][signal.org]
  detection-update: [....10] [ip4][..udp] [.192.168.12.169][43068] -> [172.253.121.127][19302] [STUN.SignalVoip][Google][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
  detection-update: [....11] [ip4][..udp] [.192.168.12.169][39950] -> [172.253.121.127][19302] [STUN.SignalVoip][Google][VoIP][Acceptable][]
@@ -79,6 +83,7 @@
                    [PKTLENS.....: 124,92,124,92,132,132,92,124,92,92,124,92,84,56,84,56,124,92,84,84,124,92,56,84,56,56,56,124,92,84,56,84]
                    [ENTROPIES...: 5.8,5.8,5.9,5.8,5.7,5.6,5.9,5.9,5.8,5.8,5.9,5.8,5.7,5.1,5.8,5.3,5.9,5.8,5.8,5.7,5.9,5.8,5.1,5.8,5.2,5.2,5.1,5.8,5.8,5.6,5.1,5.8]
            update: [.....7] [ip4][.icmp] [.35.158.183.167] -> [.192.168.12.169] [ICMP][AmazonAWS][Network][Acceptable]
+                   RISK: Susp Entropy
           analyse: [.....7] [ip4][.icmp] [.35.158.183.167] -> [.192.168.12.169] [ICMP][AmazonAWS][Network][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|    17.079|     1.597|     3.547|     12584568.750|    2.800]
@@ -123,10 +128,12 @@
                    RISK: Unidirectional Traffic
               new: [....21] [ip4][.icmp] [.35.158.122.211] -> [.192.168.12.169]
          detected: [....21] [ip4][.icmp] [.35.158.122.211] -> [.192.168.12.169] [ICMP][AmazonAWS][Network][Acceptable]
+                   RISK: Susp Entropy
  detection-update: [....19] [ip4][..udp] [.192.168.12.169][47767] -> [.35.158.122.211][.3478] [STUN.SignalVoip][AmazonAWS][VoIP][Acceptable][signal.org]
  detection-update: [....20] [ip4][..udp] [.192.168.12.169][37970] -> [.35.158.122.211][.3478] [STUN.SignalVoip][AmazonAWS][VoIP][Acceptable][]
  detection-update: [....18] [ip4][..udp] [.192.168.12.169][37970] -> [.35.158.122.211][..443] [STUN.SignalVoip][AmazonAWS][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
+ detection-update: [....20] [ip4][..udp] [.192.168.12.169][37970] -> [.35.158.122.211][.3478] [STUN.SignalVoip][AmazonAWS][VoIP][Acceptable][signal.org]
  detection-update: [....15] [ip4][..udp] [.192.168.12.169][47767] -> [172.253.121.127][19302] [STUN.SignalVoip][Google][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
  detection-update: [....16] [ip4][..udp] [.192.168.12.169][37970] -> [172.253.121.127][19302] [STUN.SignalVoip][Google][VoIP][Acceptable][]
@@ -164,6 +171,7 @@
            update: [....11] [ip4][..udp] [.192.168.12.169][39950] -> [172.253.121.127][19302] [STUN.SignalVoip][Google][VoIP][Acceptable]
                    RISK: Known Proto on Non Std Port
            update: [.....7] [ip4][.icmp] [.35.158.183.167] -> [.192.168.12.169] [ICMP][AmazonAWS][Network][Acceptable]
+                   RISK: Susp Entropy
              idle: [....13] [ip4][..udp] [.192.168.12.169][39950] -> [.35.158.183.167][.3478] [STUN.SignalVoip][AmazonAWS][VoIP][Acceptable]
              idle: [....20] [ip4][..udp] [.192.168.12.169][37970] -> [.35.158.122.211][.3478] [STUN.SignalVoip][AmazonAWS][VoIP][Acceptable]
              idle: [.....9] [ip4][..udp] [.192.168.12.169][43068] -> [.35.158.183.167][..443] [STUN.SignalVoip][AmazonAWS][VoIP][Acceptable]
@@ -199,7 +207,9 @@
              idle: [....23] [ip4][..udp] [.192.168.12.169][47767] -> [.18.195.131.143][61498] [STUN.SignalVoip][AmazonAWS][VoIP][Acceptable]
                    RISK: Known Proto on Non Std Port
              idle: [....21] [ip4][.icmp] [.35.158.122.211] -> [.192.168.12.169] [ICMP][AmazonAWS][Network][Acceptable]
+                   RISK: Susp Entropy
              idle: [.....7] [ip4][.icmp] [.35.158.183.167] -> [.192.168.12.169] [ICMP][AmazonAWS][Network][Acceptable]
+                   RISK: Susp Entropy
              idle: [.....5] [ip4][..udp] [.192.168.12.169][39518] -> [.35.158.183.167][.3478] [STUN.SignalVoip][AmazonAWS][VoIP][Acceptable]
              idle: [....19] [ip4][..udp] [.192.168.12.169][47767] -> [.35.158.122.211][.3478] [STUN.SignalVoip][AmazonAWS][VoIP][Acceptable]
      DAEMON-EVENT: shutdown

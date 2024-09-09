@@ -39,6 +39,7 @@
          detected: [....13] [ip4][..tcp] [..172.16.42.216][35540] -> [..172.217.9.142][...80] [HTTP.Google][Google][ConnCheck][Acceptable][connectivitycheck.android.com]
               new: [....14] [ip4][.icmp] [....172.16.42.1] -> [..172.16.42.216]
          detected: [....14] [ip4][.icmp] [....172.16.42.1] -> [..172.16.42.216] [ICMP][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
               new: [....15] [ip4][..udp] [..172.16.42.216][48155] -> [....172.16.42.1][...53]
          detected: [....15] [ip4][..udp] [..172.16.42.216][48155] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][www.amazon.com]
  detection-update: [....15] [ip4][..udp] [..172.16.42.216][48155] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][www.amazon.com]
@@ -241,6 +242,7 @@
          detected: [....60] [ip4][..tcp] [..172.16.42.216][34041] -> [..54.239.24.186][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
  detection-update: [....60] [ip4][..tcp] [..172.16.42.216][34041] -> [..54.239.24.186][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
            update: [....14] [ip4][.icmp] [....172.16.42.1] -> [..172.16.42.216] [ICMP][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
            update: [.....1] [ip6][icmp6] [.....................................::] -> [......................ff02::1:ffd3:fbc2] [ICMPV6][Unknown][Network][Acceptable]
            update: [.....2] [ip6][icmp6] [.....................................::] -> [...............................ff02::16] [ICMPV6][Unknown][Network][Acceptable]
            update: [.....5] [ip6][icmp6] [..............fe80::7af8:82ff:fed3:fbc2] -> [................................ff02::2] [ICMPV6][Unknown][Network][Acceptable]
@@ -439,6 +441,7 @@
       ERROR-EVENT: Unknown packet type [1/16]
            update: [....27] [ip4][..udp] [..172.16.42.216][54886] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable]
            update: [....14] [ip4][.icmp] [....172.16.42.1] -> [..172.16.42.216] [ICMP][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
            update: [....40] [ip4][..udp] [..172.16.42.216][43350] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable]
            update: [.....1] [ip6][icmp6] [.....................................::] -> [......................ff02::1:ffd3:fbc2] [ICMPV6][Unknown][Network][Acceptable]
            update: [.....2] [ip6][icmp6] [.....................................::] -> [...............................ff02::16] [ICMPV6][Unknown][Network][Acceptable]
@@ -566,11 +569,17 @@
               new: [...123] [ip4][..tcp] [..172.16.42.216][51989] -> [....52.84.63.56][...80]
               new: [...124] [ip4][..tcp] [..172.16.42.216][51990] -> [....52.84.63.56][...80]
          detected: [...123] [ip4][..tcp] [..172.16.42.216][51989] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
+                   RISK: Susp Entropy
          detected: [...122] [ip4][..tcp] [..172.16.42.216][51988] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
+                   RISK: Susp Entropy
          detected: [...119] [ip4][..tcp] [..172.16.42.216][51985] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
+                   RISK: Susp Entropy
          detected: [...120] [ip4][..tcp] [..172.16.42.216][51986] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
+                   RISK: Susp Entropy
          detected: [...121] [ip4][..tcp] [..172.16.42.216][51987] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
+                   RISK: Susp Entropy
          detected: [...124] [ip4][..tcp] [..172.16.42.216][51990] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
+                   RISK: Susp Entropy
           analyse: [...120] [ip4][..tcp] [..172.16.42.216][51986] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.295|     0.052|     0.098|         9533.209|    3.000]
@@ -602,11 +611,17 @@
               new: [...130] [ip4][..tcp] [..172.16.42.216][51996] -> [....52.84.63.56][...80]
               new: [...131] [ip4][..tcp] [..172.16.42.216][51997] -> [....52.84.63.56][...80]
          detected: [...126] [ip4][..tcp] [..172.16.42.216][51992] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
+                   RISK: Susp Entropy
          detected: [...128] [ip4][..tcp] [..172.16.42.216][51994] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
+                   RISK: Susp Entropy
          detected: [...129] [ip4][..tcp] [..172.16.42.216][51995] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
+                   RISK: Susp Entropy
          detected: [...127] [ip4][..tcp] [..172.16.42.216][51993] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
+                   RISK: Susp Entropy
          detected: [...130] [ip4][..tcp] [..172.16.42.216][51996] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
+                   RISK: Susp Entropy
          detected: [...131] [ip4][..tcp] [..172.16.42.216][51997] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
+                   RISK: Susp Entropy
           analyse: [...129] [ip4][..tcp] [..172.16.42.216][51995] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.179|     0.023|     0.044|         1924.322|    3.100]
@@ -619,6 +634,7 @@
                    [ENTROPIES...: 4.7,5.3,4.8,6.0,5.0,7.1,7.7,7.6,7.6,7.7,7.7,7.7,7.5,7.5,5.1,5.0,5.1,5.1,5.1,5.1,5.1,5.1,5.2,6.0,7.1,7.8,5.1,7.8,7.8,7.8,7.8,5.0]
            update: [....27] [ip4][..udp] [..172.16.42.216][54886] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable]
            update: [....14] [ip4][.icmp] [....172.16.42.1] -> [..172.16.42.216] [ICMP][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
            update: [....21] [ip4][..udp] [..172.16.42.216][41030] -> [....172.16.42.1][...53] [DNS.AmazonAlexa][Unknown][Network][Acceptable]
            update: [....40] [ip4][..udp] [..172.16.42.216][43350] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable]
            update: [.....1] [ip6][icmp6] [.....................................::] -> [......................ff02::1:ffd3:fbc2] [ICMPV6][Unknown][Network][Acceptable]
@@ -669,6 +685,7 @@
                    RISK: Weak TLS Cipher
               end: [....22] [ip4][..tcp] [..172.16.42.216][49572] -> [..52.94.232.134][...80] [HTTP.AmazonAlexa][AmazonAWS][VirtAssistant][Acceptable]
              idle: [....14] [ip4][.icmp] [....172.16.42.1] -> [..172.16.42.216] [ICMP][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
              idle: [....23] [ip6][icmp6] [..............fe80::7af8:82ff:fed3:fbc2] -> [...............................ff02::16] [ICMPV6][Unknown][Network][Acceptable]
              idle: [.....5] [ip6][icmp6] [..............fe80::7af8:82ff:fed3:fbc2] -> [................................ff02::2] [ICMPV6][Unknown][Network][Acceptable]
               end: [....25] [ip4][..tcp] [..172.16.42.216][38363] -> [..34.199.52.240][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable]
@@ -921,17 +938,29 @@
              idle: [...143] [ip4][..tcp] [..172.16.42.216][50800] -> [..54.239.28.178][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
                    RISK: Weak TLS Cipher
               end: [...119] [ip4][..tcp] [..172.16.42.216][51985] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable]
+                   RISK: Susp Entropy
               end: [...120] [ip4][..tcp] [..172.16.42.216][51986] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable]
+                   RISK: Susp Entropy
               end: [...121] [ip4][..tcp] [..172.16.42.216][51987] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable]
+                   RISK: Susp Entropy
               end: [...122] [ip4][..tcp] [..172.16.42.216][51988] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable]
+                   RISK: Susp Entropy
               end: [...123] [ip4][..tcp] [..172.16.42.216][51989] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable]
+                   RISK: Susp Entropy
               end: [...124] [ip4][..tcp] [..172.16.42.216][51990] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable]
+                   RISK: Susp Entropy
               end: [...126] [ip4][..tcp] [..172.16.42.216][51992] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable]
+                   RISK: Susp Entropy
               end: [...127] [ip4][..tcp] [..172.16.42.216][51993] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable]
+                   RISK: Susp Entropy
               end: [...128] [ip4][..tcp] [..172.16.42.216][51994] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable]
+                   RISK: Susp Entropy
               end: [...129] [ip4][..tcp] [..172.16.42.216][51995] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable]
+                   RISK: Susp Entropy
               end: [...130] [ip4][..tcp] [..172.16.42.216][51996] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable]
+                   RISK: Susp Entropy
               end: [...131] [ip4][..tcp] [..172.16.42.216][51997] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable]
+                   RISK: Susp Entropy
              idle: [.....3] [ip4][..udp] [........0.0.0.0][...68] -> [255.255.255.255][...67] [DHCP][Unknown][Network][Acceptable]
              idle: [....58] [ip4][....2] [........0.0.0.0] -> [......224.0.0.1] [IGMP][Unknown][Network][Acceptable]
               end: [....76] [ip4][..tcp] [..172.16.42.216][49613] -> [..52.94.232.134][...80] [HTTP.AmazonAlexa][AmazonAWS][VirtAssistant][Acceptable]

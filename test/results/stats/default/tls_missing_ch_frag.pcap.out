@@ -167,3 +167,4 @@ PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_risk_51_count" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_risk_52_count" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_risk_53_count" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_risk_54_count" interval=60 N:0
+PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_risk_55_count" interval=60 N:0

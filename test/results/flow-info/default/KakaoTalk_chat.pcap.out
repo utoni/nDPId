@@ -190,7 +190,7 @@
              idle: [....12] [ip4][..udp] [...10.24.82.188][43077] -> [.....10.188.1.1][...53] [DNS.KakaoTalk][Unknown][Network][Acceptable]
              idle: [....37] [ip4][..tcp] [...10.24.82.188][49217] -> [.216.58.220.174][..443] [TLS][Google][Web][Safe]
           guessed: [....13] [ip4][..tcp] [...10.24.82.188][51021] -> [.103.246.57.251][.8080] [HTTP_Proxy][Unknown][Web][Acceptable][]
-                   RISK: Fully encrypted flow
+                   RISK: Fully Encrypted Flow
              idle: [....13] [ip4][..tcp] [...10.24.82.188][51021] -> [.103.246.57.251][.8080]
               end: [....20] [ip4][..tcp] [...10.24.82.188][37821] -> [.210.103.240.15][..443] [TLS.KakaoTalk][Unknown][Chat][Acceptable]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
@@ -214,7 +214,6 @@
           guessed: [....14] [ip4][..tcp] [..216.58.221.10][...80] -> [...10.24.82.188][35922] [HTTP][Google][Web][Acceptable][]
               end: [....14] [ip4][..tcp] [..216.58.221.10][...80] -> [...10.24.82.188][35922]
           guessed: [....35] [ip4][..tcp] [..139.150.0.125][..443] -> [...10.24.82.188][46947] [TLS][Unknown][Web][Safe]
-                   RISK: Susp Entropy
              idle: [....35] [ip4][..tcp] [..139.150.0.125][..443] -> [...10.24.82.188][46947]
              idle: [.....8] [ip4][..udp] [...10.24.82.188][.9094] -> [.....10.188.1.1][...53] [DNS.KakaoTalk][Unknown][Network][Acceptable]
      DAEMON-EVENT: shutdown

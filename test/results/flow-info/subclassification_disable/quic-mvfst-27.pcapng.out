@@ -1,0 +1,5 @@
+     DAEMON-EVENT: init
+              new: [.....1] [ip4][..udp] [......10.0.2.15][35957] -> [..69.171.250.15][..443]
+         detected: [.....1] [ip4][..udp] [......10.0.2.15][35957] -> [..69.171.250.15][..443] [QUIC.Facebook][Facebook][SocialNetwork][Fun][graph.facebook.com]
+             idle: [.....1] [ip4][..udp] [......10.0.2.15][35957] -> [..69.171.250.15][..443] [QUIC.Facebook][Facebook][SocialNetwork][Fun]
+     DAEMON-EVENT: shutdown

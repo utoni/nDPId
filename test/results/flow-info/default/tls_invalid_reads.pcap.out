@@ -18,7 +18,7 @@
       ERROR-EVENT: Unknown packet type [1/16]
       ERROR-EVENT: Unknown packet type [2/16]
       ERROR-EVENT: Unknown packet type [3/16]
-          guessed: [.....2] [ip4][..tcp] [...74.80.160.99][.3258] -> [...67.217.77.28][..443] [TLS][GoTo][Web][Safe]
+          guessed: [.....2] [ip4][..tcp] [...74.80.160.99][.3258] -> [...67.217.77.28][..443] [TLS][Unknown][Web][Safe]
                    RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..tcp] [...74.80.160.99][.3258] -> [...67.217.77.28][..443]
      DAEMON-EVENT: shutdown
