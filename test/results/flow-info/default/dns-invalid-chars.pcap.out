@@ -6,6 +6,6 @@
                    RISK: Non-Printable/Invalid Chars Detected
  detection-update: [.....1] [ip4][..udp] [......127.0.0.1][35980] -> [......127.0.0.1][...53] [DNS][Unknown][Network][Acceptable][www.allyourbasesare???ongto.cn]
                    RISK: Non-Printable/Invalid Chars Detected
-             idle: [.....1] [ip4][..udp] [......127.0.0.1][35980] -> [......127.0.0.1][...53] [DNS][Unknown][Network][Acceptable]
+             idle: [.....1] [ip4][..udp] [......127.0.0.1][35980] -> [......127.0.0.1][...53] [DNS][Unknown][Network][Acceptable][www.allyourbasesare???ongto.cn]
                    RISK: Non-Printable/Invalid Chars Detected
      DAEMON-EVENT: shutdown

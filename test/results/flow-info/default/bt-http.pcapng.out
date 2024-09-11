@@ -4,6 +4,6 @@
               new: [.....1] [ip4][..tcp] [..192.168.1.128][46882] -> [.176.31.225.118][...80]
          detected: [.....1] [ip4][..tcp] [..192.168.1.128][46882] -> [.176.31.225.118][...80] [HTTP.BitTorrent][Unknown][Download][Acceptable][tracker.trackerfix.com]
                    RISK: Susp Entropy
-              end: [.....1] [ip4][..tcp] [..192.168.1.128][46882] -> [.176.31.225.118][...80] [HTTP.BitTorrent][Unknown][Download][Acceptable]
+              end: [.....1] [ip4][..tcp] [..192.168.1.128][46882] -> [.176.31.225.118][...80] [HTTP.BitTorrent][Unknown][Download][Acceptable][tracker.trackerfix.com]
                    RISK: Susp Entropy
      DAEMON-EVENT: shutdown

@@ -6,6 +6,6 @@
                    RISK: Known Proto on Non Std Port
  detection-update: [.....1] [ip4][..udp] [..192.168.1.199][42759] -> [...31.220.27.69][...80] [STUN.AdultContent][Unknown][AdultContent][Acceptable][b-eu14.stripcdn.com]
                    RISK: Known Proto on Non Std Port
-             idle: [.....1] [ip4][..udp] [..192.168.1.199][42759] -> [...31.220.27.69][...80] [STUN.AdultContent][Unknown][AdultContent][Acceptable]
+             idle: [.....1] [ip4][..udp] [..192.168.1.199][42759] -> [...31.220.27.69][...80] [STUN.AdultContent][Unknown][AdultContent][Acceptable][b-eu14.stripcdn.com]
                    RISK: Known Proto on Non Std Port
      DAEMON-EVENT: shutdown

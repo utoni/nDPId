@@ -10,7 +10,7 @@
                    RISK: Known Proto on Non Std Port, Missing SNI TLS Extn, ALPN/SNI Mismatch
  detection-update: [.....2] [ip4][..tcp] [...10.17.34.139][64016] -> [.....10.17.51.8][.4343] [TLS][Unknown][Web][Safe][]
                    RISK: Known Proto on Non Std Port, Missing SNI TLS Extn, ALPN/SNI Mismatch
-              end: [.....1] [ip4][..tcp] [......10.0.2.15][44188] -> [....192.0.47.59][...43] [Whois-DAS][Unknown][Network][Acceptable]
+              end: [.....1] [ip4][..tcp] [......10.0.2.15][44188] -> [....192.0.47.59][...43] [Whois-DAS][Unknown][Network][Acceptable][example.com]
      DAEMON-EVENT: [Processed: 18 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 1|updates: 0]
               new: [.....3] [ip4][..tcp] [...192.30.45.30][...43] -> [..10.160.63.128][53217]

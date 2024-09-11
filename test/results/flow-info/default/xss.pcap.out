@@ -5,7 +5,7 @@
               new: [.....2] [ip4][..tcp] [..192.168.3.109][53516] -> [..192.168.3.107][...80]
          detected: [.....1] [ip4][..tcp] [..192.168.3.109][53514] -> [..192.168.3.107][...80] [HTTP][Unknown][Web][Acceptable][192.168.3.107]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
-             idle: [.....1] [ip4][..tcp] [..192.168.3.109][53514] -> [..192.168.3.107][...80] [HTTP][Unknown][Web][Acceptable]
+             idle: [.....1] [ip4][..tcp] [..192.168.3.109][53514] -> [..192.168.3.107][...80] [HTTP][Unknown][Web][Acceptable][192.168.3.107]
                    RISK: XSS Attack, HTTP/TLS/QUIC Numeric Hostname/SNI
           guessed: [.....2] [ip4][..tcp] [..192.168.3.109][53516] -> [..192.168.3.107][...80] [HTTP][Unknown][Web][Acceptable][]
              idle: [.....2] [ip4][..tcp] [..192.168.3.109][53516] -> [..192.168.3.107][...80]

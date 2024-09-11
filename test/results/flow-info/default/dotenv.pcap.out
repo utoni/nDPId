@@ -6,6 +6,6 @@
                    RISK: Possible Exploit Attempt
  detection-update: [.....1] [ip4][..tcp] [..192.168.2.198][51327] -> [....89.31.76.10][...80] [HTTP][Unknown][Download][Acceptable][sevenpitaly.com]
                    RISK: Possible Exploit Attempt, Error Code, Binary File/Data Transfer (Attempt)
-              end: [.....1] [ip4][..tcp] [..192.168.2.198][51327] -> [....89.31.76.10][...80] [HTTP][Unknown][Download][Acceptable]
+              end: [.....1] [ip4][..tcp] [..192.168.2.198][51327] -> [....89.31.76.10][...80] [HTTP][Unknown][Download][Acceptable][sevenpitaly.com]
                    RISK: Possible Exploit Attempt, Error Code, Binary File/Data Transfer (Attempt)
      DAEMON-EVENT: shutdown

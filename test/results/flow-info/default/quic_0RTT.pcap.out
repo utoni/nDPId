@@ -9,8 +9,8 @@
               new: [.....2] [ip4][..udp] [..192.168.2.100][51972] -> [142.250.181.227][..443]
          detected: [.....2] [ip4][..udp] [..192.168.2.100][51972] -> [142.250.181.227][..443] [QUIC.Google][Google][Web][Acceptable][ssl.gstatic.com]
                    RISK: Unidirectional Traffic
-             idle: [.....2] [ip4][..udp] [..192.168.2.100][51972] -> [142.250.181.227][..443] [QUIC.Google][Google][Web][Acceptable]
+             idle: [.....2] [ip4][..udp] [..192.168.2.100][51972] -> [142.250.181.227][..443] [QUIC.Google][Google][Web][Acceptable][ssl.gstatic.com]
                    RISK: Unidirectional Traffic
-             idle: [.....1] [ip6][..udp] [....................................::1][60459] -> [....................................::1][.4443] [QUIC][Unknown][Web][Acceptable]
+             idle: [.....1] [ip6][..udp] [....................................::1][60459] -> [....................................::1][.4443] [QUIC][Unknown][Web][Acceptable][abcd]
                    RISK: Known Proto on Non Std Port
      DAEMON-EVENT: shutdown

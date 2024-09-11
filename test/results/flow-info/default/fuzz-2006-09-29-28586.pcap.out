@@ -79,7 +79,7 @@
           guessed: [....36] [ip4][..tcp] [...172.20.67.13][53136] -> [.....172.20.3.5][...80] [HTTP][Unknown][Web][Acceptable][]
                    RISK: Unidirectional Traffic
              idle: [....36] [ip4][..tcp] [...172.20.67.13][53136] -> [.....172.20.3.5][...80]
-              end: [....34] [ip4][..tcp] [....172.20.3.13][53136] -> [.....172.20.3.5][...80] [HTTP][Unknown][Web][Acceptable]
+              end: [....34] [ip4][..tcp] [....172.20.3.13][53136] -> [.....172.20.3.5][...80] [HTTP][Unknown][Web][Acceptable][172.20.3.5]
           guessed: [....33] [ip4][..tcp] [.....172.20.3.5][...80] -> [...172.20.35.13][53136] [HTTP][Unknown][Web][Acceptable][]
                    RISK: Unidirectional Traffic
              idle: [....33] [ip4][..tcp] [.....172.20.3.5][...80] -> [...172.20.35.13][53136]
@@ -117,7 +117,7 @@
                    RISK: Unidirectional Traffic
              idle: [....12] [ip4][..tcp] [....172.20.3.88][...80] -> [....172.20.3.82][.2601]
               end: [.....2] [ip4][..tcp] [....172.20.3.13][...80] -> [.....172.20.3.5][.2601] [HTTP][Unknown][Web][Acceptable]
-              end: [....11] [ip4][..tcp] [.....172.20.3.5][.2602] -> [....172.20.3.13][...80] [HTTP][Unknown][Web][Acceptable]
+              end: [....11] [ip4][..tcp] [.....172.20.3.5][.2602] -> [....172.20.3.13][...80] [HTTP][Unknown][Web][Acceptable][172.20.3.13]
                    RISK: HTTP Susp User-Agent, HTTP/TLS/QUIC Numeric Hostname/SNI
      not-detected: [.....3] [ip4][..tcp] [....172.20.3.13][...81] -> [.....172.20.3.5][.2601] [Unknown][Unknown][Unrated]
                    RISK: Unidirectional Traffic
@@ -133,13 +133,13 @@
           guessed: [....19] [ip4][..tcp] [....172.20.3.13][...80] -> [....172.20.68.5][.2604] [HTTP][Unknown][Web][Acceptable][]
                    RISK: Unidirectional Traffic, TCP Connection Issues
               end: [....19] [ip4][..tcp] [....172.20.3.13][...80] -> [....172.20.68.5][.2604]
-              end: [....18] [ip4][..tcp] [.....172.20.3.5][.2604] -> [....172.20.3.13][...80] [HTTP][Unknown][Web][Acceptable]
+              end: [....18] [ip4][..tcp] [.....172.20.3.5][.2604] -> [....172.20.3.13][...80] [HTTP][Unknown][Web][Acceptable][172.20.3.13]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
               end: [....20] [ip4][..tcp] [.....172.20.3.5][.2605] -> [....172.20.3.13][...80] [HTTP][Unknown][Web][Acceptable]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [....28] [ip4][..tcp] [....172.20.3.13][...80] -> [....172.20.72.5][.2606] [HTTP][Unknown][Web][Acceptable]
                    RISK: HTTP Susp User-Agent
-              end: [....27] [ip4][..tcp] [.....172.20.3.5][.2606] -> [....172.20.3.13][...80] [HTTP][Unknown][Web][Acceptable]
+              end: [....27] [ip4][..tcp] [.....172.20.3.5][.2606] -> [....172.20.3.13][...80] [HTTP][Unknown][Web][Acceptable][172.20.3.13]
                    RISK: HTTP Susp User-Agent, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [....31] [ip4][..tcp] [....172.20.2.13][...80] -> [.....172.20.3.5][.2607] [HTTP][Unknown][Web][Acceptable]
                    RISK: HTTP Susp User-Agent

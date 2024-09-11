@@ -9,7 +9,7 @@
  detection-update: [.....2] [ip4][..tcp] [...192.168.2.27][57452] -> [.172.217.23.111][..443] [TLS.YouTubeUpload][Google][Media][Fun][upload.youtube.com]
               new: [.....3] [ip4][..udp] [...192.168.2.27][62232] -> [.172.217.23.111][..443]
          detected: [.....3] [ip4][..udp] [...192.168.2.27][62232] -> [.172.217.23.111][..443] [QUIC.YouTubeUpload][Google][Media][Fun][upload.youtube.com]
-          analyse: [.....1] [ip4][..udp] [...192.168.2.27][51925] -> [.172.217.23.111][..443] [QUIC.YouTubeUpload][Google][Media][Fun]
+          analyse: [.....1] [ip4][..udp] [...192.168.2.27][51925] -> [.172.217.23.111][..443] [QUIC.YouTubeUpload][Google][Media][Fun][upload.youtube.com]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     1.883|     0.207|     0.510|       259988.193|    2.400]
                    [PKTLEN......:     44.000|  1378.000|   767.800|   621.300|       386013.800|    4.400]
@@ -20,6 +20,6 @@
                    [PKTLENS.....: 1378,1378,1378,66,1378,410,1378,59,69,66,58,44,597,69,63,330,64,140,44,69,373,1378,1378,1378,1378,1378,1378,1378,1378,1378,1378,1378]
                    [ENTROPIES...: 2.6,7.5,7.4,5.3,4.6,7.4,7.9,5.4,5.7,5.8,5.5,5.0,7.7,5.6,5.7,7.3,5.5,6.6,5.0,5.7,7.5,7.9,7.9,7.9,7.9,7.9,7.9,7.9,7.9,7.9,7.8,7.9]
              idle: [.....2] [ip4][..tcp] [...192.168.2.27][57452] -> [.172.217.23.111][..443] [TLS.YouTubeUpload][Google][Media][Fun]
-             idle: [.....1] [ip4][..udp] [...192.168.2.27][51925] -> [.172.217.23.111][..443] [QUIC.YouTubeUpload][Google][Media][Fun]
-             idle: [.....3] [ip4][..udp] [...192.168.2.27][62232] -> [.172.217.23.111][..443] [QUIC.YouTubeUpload][Google][Media][Fun]
+             idle: [.....1] [ip4][..udp] [...192.168.2.27][51925] -> [.172.217.23.111][..443] [QUIC.YouTubeUpload][Google][Media][Fun][upload.youtube.com]
+             idle: [.....3] [ip4][..udp] [...192.168.2.27][62232] -> [.172.217.23.111][..443] [QUIC.YouTubeUpload][Google][Media][Fun][upload.youtube.com]
      DAEMON-EVENT: shutdown

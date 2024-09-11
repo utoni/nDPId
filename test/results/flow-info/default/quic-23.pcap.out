@@ -3,5 +3,5 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip6][..udp] [2e4a:774d:26fd:7f9b:785b:2d1b:4f8a:63c7][50339] -> [3bcc:9991:faba:bae1:cd2a:e2fd:b3be:c5ab][..443]
          detected: [.....1] [ip6][..udp] [2e4a:774d:26fd:7f9b:785b:2d1b:4f8a:63c7][50339] -> [3bcc:9991:faba:bae1:cd2a:e2fd:b3be:c5ab][..443] [QUIC][Unknown][Web][Acceptable][quic.aiortc.org]
-             idle: [.....1] [ip6][..udp] [2e4a:774d:26fd:7f9b:785b:2d1b:4f8a:63c7][50339] -> [3bcc:9991:faba:bae1:cd2a:e2fd:b3be:c5ab][..443] [QUIC][Unknown][Web][Acceptable]
+             idle: [.....1] [ip6][..udp] [2e4a:774d:26fd:7f9b:785b:2d1b:4f8a:63c7][50339] -> [3bcc:9991:faba:bae1:cd2a:e2fd:b3be:c5ab][..443] [QUIC][Unknown][Web][Acceptable][quic.aiortc.org]
      DAEMON-EVENT: shutdown

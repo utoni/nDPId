@@ -6,6 +6,6 @@
                    RISK: Susp DNS Traffic, Susp Entropy, Non-Printable/Invalid Chars Detected
  detection-update: [.....1] [ip4][..udp] [..192.168.2.225][45290] -> [..192.168.2.134][...53] [DNS][Unknown][Network][Acceptable][4sicn03_2qaa3rlc3qudhh0aavjycxwakjehelu5klueow0zjxulgage-.4s2fgaaaa__-.test.txt]
                    RISK: Susp DNS Traffic, Susp Entropy, Non-Printable/Invalid Chars Detected, Minor Issues
-             idle: [.....1] [ip4][..udp] [..192.168.2.225][45290] -> [..192.168.2.134][...53] [DNS][Unknown][Network][Acceptable]
+             idle: [.....1] [ip4][..udp] [..192.168.2.225][45290] -> [..192.168.2.134][...53] [DNS][Unknown][Network][Acceptable][4sicn03_2qaa3rlc3qudhh0aavjycxwakjehelu5klueow0zjxulgage-.4s2fgaaaa__-.test.txt]
                    RISK: Susp DNS Traffic, Susp Entropy, Non-Printable/Invalid Chars Detected, Minor Issues
      DAEMON-EVENT: shutdown

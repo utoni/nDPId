@@ -3,7 +3,7 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [....10.2.25.102][57309] -> [..193.252.22.84][..587]
          detected: [.....1] [ip4][..tcp] [....10.2.25.102][57309] -> [..193.252.22.84][..587] [SMTP][Unknown][Email][Acceptable][opmta1mto02nd1]
-          analyse: [.....1] [ip4][..tcp] [....10.2.25.102][57309] -> [..193.252.22.84][..587] [SMTP][Unknown][Email][Acceptable]
+          analyse: [.....1] [ip4][..tcp] [....10.2.25.102][57309] -> [..193.252.22.84][..587] [SMTP][Unknown][Email][Acceptable][opmta1mto02nd1]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     3.056|     0.539|     0.774|       599161.176|    3.700]
                    [PKTLEN......:     40.000|   738.000|    80.800|   121.900|        14849.500|    4.300]
@@ -17,7 +17,7 @@
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....2] [ip4][..tcp] [....10.3.29.101][56309] -> [.104.161.127.22][...80]
          detected: [.....2] [ip4][..tcp] [....10.3.29.101][56309] -> [.104.161.127.22][...80] [HTTP][Unknown][Web][Acceptable][fkl.co.ke]
-          analyse: [.....2] [ip4][..tcp] [....10.3.29.101][56309] -> [.104.161.127.22][...80] [HTTP][Unknown][Web][Acceptable]
+          analyse: [.....2] [ip4][..tcp] [....10.3.29.101][56309] -> [.104.161.127.22][...80] [HTTP][Unknown][Web][Acceptable][fkl.co.ke]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.204|     0.029|     0.060|         3581.477|    2.700]
                    [PKTLEN......:     40.000|  1401.000|   820.000|   663.100|       439751.800|    4.400]
@@ -27,14 +27,14 @@
                    [IATS(ms)....: 115.8,115.9,0.3,0.5,204.2,0.1,204.4,0.4,0.2,0.6,0.2,0.2,0.4,0.2,0.5,0.7,0.2,0.2,0.5,115.0,0.2,115.3,0.3,0.3,0.6,9.2,0.2,9.5,0.5,0.2,0.7]
                    [PKTLENS.....: 52,44,40,486,40,1401,1401,40,1401,1401,40,1401,1401,40,1401,1401,40,1401,1401,40,1401,1401,40,1401,1401,40,1401,1401,40,1401,1401,40]
                    [ENTROPIES...: 4.7,4.9,4.7,5.8,4.6,7.4,7.7,4.7,7.8,7.8,4.7,7.8,7.9,4.7,7.8,7.9,4.8,7.8,7.9,4.7,7.9,7.8,4.8,7.9,7.9,4.8,7.9,7.8,4.7,7.8,7.8,4.8]
-             idle: [.....1] [ip4][..tcp] [....10.2.25.102][57309] -> [..193.252.22.84][..587] [SMTP][Unknown][Email][Acceptable]
+             idle: [.....1] [ip4][..tcp] [....10.2.25.102][57309] -> [..193.252.22.84][..587] [SMTP][Unknown][Email][Acceptable][opmta1mto02nd1]
      DAEMON-EVENT: [Processed: 108 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....3] [ip4][..tcp] [....10.4.20.102][54319] -> [107.161.178.210][...80]
          detected: [.....3] [ip4][..tcp] [....10.4.20.102][54319] -> [107.161.178.210][...80] [HTTP][Unknown][Web][Acceptable][gandhitoday.org]
  detection-update: [.....3] [ip4][..tcp] [....10.4.20.102][54319] -> [107.161.178.210][...80] [HTTP][Unknown][Download][Acceptable][gandhitoday.org]
                    RISK: Binary App Transfer, Binary File/Data Transfer (Attempt)
-             idle: [.....2] [ip4][..tcp] [....10.3.29.101][56309] -> [.104.161.127.22][...80] [HTTP][Unknown][Web][Acceptable]
+             idle: [.....2] [ip4][..tcp] [....10.3.29.101][56309] -> [.104.161.127.22][...80] [HTTP][Unknown][Web][Acceptable][fkl.co.ke]
      DAEMON-EVENT: [Processed: 122 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 3|skipped: 0|!detected: 0|guessed: 0|detection-updates: 1|updates: 0]
               new: [.....4] [ip4][..tcp] [....10.4.25.101][49797] -> [..77.105.36.156][...80]
@@ -42,7 +42,7 @@
                    RISK: HTTP Susp User-Agent
  detection-update: [.....4] [ip4][..tcp] [....10.4.25.101][49797] -> [..77.105.36.156][...80] [HTTP][Unknown][Download][Acceptable][filmmogzivota.rs]
                    RISK: Binary App Transfer, HTTP Susp User-Agent, Binary File/Data Transfer (Attempt)
-             idle: [.....3] [ip4][..tcp] [....10.4.20.102][54319] -> [107.161.178.210][...80] [HTTP][Unknown][Download][Acceptable]
+             idle: [.....3] [ip4][..tcp] [....10.4.20.102][54319] -> [107.161.178.210][...80] [HTTP][Unknown][Download][Acceptable][gandhitoday.org]
                    RISK: Binary App Transfer, Binary File/Data Transfer (Attempt)
               new: [.....5] [ip4][..tcp] [....10.4.25.101][49803] -> [138.197.147.101][..443]
          detected: [.....5] [ip4][..tcp] [....10.4.25.101][49803] -> [138.197.147.101][..443] [TLS][Unknown][Web][Safe][]
@@ -54,7 +54,7 @@
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
  detection-update: [.....6] [ip4][..tcp] [....10.4.25.101][49804] -> [138.197.147.101][..443] [TLS][Unknown][Web][Safe][]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
-             idle: [.....4] [ip4][..tcp] [....10.4.25.101][49797] -> [..77.105.36.156][...80] [HTTP][Unknown][Download][Acceptable]
+             idle: [.....4] [ip4][..tcp] [....10.4.25.101][49797] -> [..77.105.36.156][...80] [HTTP][Unknown][Download][Acceptable][filmmogzivota.rs]
                    RISK: Binary App Transfer, HTTP Susp User-Agent, Binary File/Data Transfer (Attempt)
              idle: [.....5] [ip4][..tcp] [....10.4.25.101][49803] -> [138.197.147.101][..443] [TLS][Unknown][Web][Safe]
                    RISK: Self-signed Cert, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn

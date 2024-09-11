@@ -7,7 +7,7 @@
          detected: [.....2] [ip4][..tcp] [..192.168.8.251][51084] -> [.179.99.210.200][...80] [HTTP.JSON-RPC][Unknown][RPC][Acceptable][mdotti.dyndns.org]
  detection-update: [.....2] [ip4][..tcp] [..192.168.8.251][51084] -> [.179.99.210.200][...80] [HTTP.JSON-RPC][Unknown][RPC][Acceptable][mdotti.dyndns.org]
                    RISK: HTTP Obsolete Server
-             idle: [.....2] [ip4][..tcp] [..192.168.8.251][51084] -> [.179.99.210.200][...80] [HTTP.JSON-RPC][Unknown][RPC][Acceptable]
+             idle: [.....2] [ip4][..tcp] [..192.168.8.251][51084] -> [.179.99.210.200][...80] [HTTP.JSON-RPC][Unknown][RPC][Acceptable][mdotti.dyndns.org]
                    RISK: HTTP Obsolete Server
               end: [.....1] [ip4][..tcp] [......127.0.0.1][36646] -> [......127.0.0.1][.8080] [JSON-RPC][Unknown][RPC][Acceptable]
      DAEMON-EVENT: shutdown

@@ -8,6 +8,6 @@
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
      DAEMON-EVENT: [Processed: 7 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 1|updates: 0]
-              end: [.....1] [ip4][..tcp] [......10.3.9.19][40632] -> [..10.68.137.118][.8091] [HTTP.SOAP][Unknown][RPC][Acceptable]
+              end: [.....1] [ip4][..tcp] [......10.3.9.19][40632] -> [..10.68.137.118][.8091] [HTTP.SOAP][Unknown][RPC][Acceptable][10.68.137.118]
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
      DAEMON-EVENT: shutdown

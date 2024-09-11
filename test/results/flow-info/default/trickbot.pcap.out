@@ -6,7 +6,7 @@
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
  detection-update: [.....1] [ip4][..tcp] [...10.12.29.101][61318] -> [.82.118.225.196][.7080] [HTTP][Unknown][Web][Acceptable][82.118.225.196]
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp Content
-          analyse: [.....1] [ip4][..tcp] [...10.12.29.101][61318] -> [.82.118.225.196][.7080] [HTTP][Unknown][Web][Acceptable]
+          analyse: [.....1] [ip4][..tcp] [...10.12.29.101][61318] -> [.82.118.225.196][.7080] [HTTP][Unknown][Web][Acceptable][82.118.225.196]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.931|     0.157|     0.258|        66793.452|    3.300]
                    [PKTLEN......:     40.000|  1500.000|   930.000|   662.500|       438885.500|    4.500]
@@ -16,6 +16,6 @@
                    [IATS(ms)....: 245.7,245.9,0.2,0.1,0.5,0.0,931.1,931.3,2.3,2.3,480.2,0.0,480.3,297.6,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,297.7,227.9,227.9,482.9,0.0,0.0]
                    [PKTLENS.....: 52,44,40,389,968,40,40,1398,40,1398,40,1500,1323,40,1500,1500,1500,1500,1500,1500,1500,1500,1500,1500,1500,276,40,1398,40,1500,1500,1194]
                    [ENTROPIES...: 4.8,4.9,4.8,5.8,6.0,4.8,4.8,7.8,4.9,7.8,4.9,7.9,7.9,4.9,7.9,7.9,7.9,7.9,7.9,7.9,7.9,7.9,7.9,7.9,7.9,7.3,4.9,7.9,4.9,7.9,7.9,7.9]
-              end: [.....1] [ip4][..tcp] [...10.12.29.101][61318] -> [.82.118.225.196][.7080] [HTTP][Unknown][Web][Acceptable]
+              end: [.....1] [ip4][..tcp] [...10.12.29.101][61318] -> [.82.118.225.196][.7080] [HTTP][Unknown][Web][Acceptable][82.118.225.196]
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp Content
      DAEMON-EVENT: shutdown

@@ -5,7 +5,7 @@
          detected: [.....1] [ip4][..udp] [....192.168.1.7][54997] -> [..216.58.205.66][..443] [QUIC.Google][Google][Advertisement][Acceptable][pagead2.googlesyndication.com]
               new: [.....2] [ip4][..udp] [....192.168.1.7][56074] -> [..216.58.198.33][..443]
          detected: [.....2] [ip4][..udp] [....192.168.1.7][56074] -> [..216.58.198.33][..443] [QUIC.YouTube][Google][Media][Fun][yt3.ggpht.com]
-          analyse: [.....2] [ip4][..udp] [....192.168.1.7][56074] -> [..216.58.198.33][..443] [QUIC.YouTube][Google][Media][Fun]
+          analyse: [.....2] [ip4][..udp] [....192.168.1.7][56074] -> [..216.58.198.33][..443] [QUIC.YouTube][Google][Media][Fun][yt3.ggpht.com]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.047|     0.007|     0.013|          177.503|    3.300]
                    [PKTLEN......:     59.000|  1378.000|   851.500|   620.100|       384534.200|    4.500]
@@ -17,7 +17,7 @@
                    [ENTROPIES...: 2.5,7.5,2.6,5.5,7.5,6.7,6.7,5.2,7.9,5.3,5.5,5.6,7.8,7.8,5.6,7.9,7.9,5.6,7.9,7.9,5.5,7.9,7.9,5.6,7.9,7.9,5.6,7.9,7.9,5.5,7.8,7.9]
               new: [.....3] [ip4][..udp] [....192.168.1.7][53859] -> [..216.58.205.66][..443]
          detected: [.....3] [ip4][..udp] [....192.168.1.7][53859] -> [..216.58.205.66][..443] [QUIC.Google][Google][Advertisement][Acceptable][googleads.g.doubleclick.net]
-             idle: [.....2] [ip4][..udp] [....192.168.1.7][56074] -> [..216.58.198.33][..443] [QUIC.YouTube][Google][Media][Fun]
-             idle: [.....1] [ip4][..udp] [....192.168.1.7][54997] -> [..216.58.205.66][..443] [QUIC.Google][Google][Advertisement][Acceptable]
-             idle: [.....3] [ip4][..udp] [....192.168.1.7][53859] -> [..216.58.205.66][..443] [QUIC.Google][Google][Advertisement][Acceptable]
+             idle: [.....2] [ip4][..udp] [....192.168.1.7][56074] -> [..216.58.198.33][..443] [QUIC.YouTube][Google][Media][Fun][yt3.ggpht.com]
+             idle: [.....1] [ip4][..udp] [....192.168.1.7][54997] -> [..216.58.205.66][..443] [QUIC.Google][Google][Advertisement][Acceptable][pagead2.googlesyndication.com]
+             idle: [.....3] [ip4][..udp] [....192.168.1.7][53859] -> [..216.58.205.66][..443] [QUIC.Google][Google][Advertisement][Acceptable][googleads.g.doubleclick.net]
      DAEMON-EVENT: shutdown

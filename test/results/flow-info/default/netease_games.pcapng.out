@@ -15,7 +15,7 @@
      DAEMON-EVENT: [Flows][active: 2 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 3|updates: 0]
               new: [.....3] [ip4][..udp] [.192.168.88.231][56588] -> [..35.246.207.19][.4513]
          detected: [.....3] [ip4][..udp] [.192.168.88.231][56588] -> [..35.246.207.19][.4513] [NetEaseGames][GoogleCloud][Game][Fun]
-             idle: [.....1] [ip4][..udp] [.192.168.88.231][49377] -> [....172.17.8.75][...53] [DNS.NetEaseGames][Unknown][Network][Fun]
+             idle: [.....1] [ip4][..udp] [.192.168.88.231][49377] -> [....172.17.8.75][...53] [DNS.NetEaseGames][Unknown][Network][Fun][data-detect.nie.easebar.com]
      DAEMON-EVENT: [Processed: 13 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 2 / 3|skipped: 0|!detected: 0|guessed: 0|detection-updates: 3|updates: 0]
               new: [.....4] [ip4][..udp] [.192.168.88.231][41040] -> [..35.228.32.209][.4170]

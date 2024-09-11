@@ -23,7 +23,7 @@
                    RISK: TLS (probably) Not Carrying HTTPS
  detection-update: [.....4] [ip4][..tcp] [..192.168.1.159][48048] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable][dns.google]
                    RISK: TLS (probably) Not Carrying HTTPS
-          analyse: [.....4] [ip4][..tcp] [..192.168.1.159][48048] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable]
+          analyse: [.....4] [ip4][..tcp] [..192.168.1.159][48048] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable][dns.google]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.447|     0.072|     0.122|        14825.912|    3.500]
                    [PKTLEN......:     52.000|  1470.000|   268.200|   356.700|       127227.700|    4.100]
@@ -44,7 +44,7 @@
                    RISK: TLS (probably) Not Carrying HTTPS
  detection-update: [.....7] [ip4][..tcp] [..192.168.1.159][48098] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable][dns.google]
                    RISK: TLS (probably) Not Carrying HTTPS
-          analyse: [.....7] [ip4][..tcp] [..192.168.1.159][48098] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable]
+          analyse: [.....7] [ip4][..tcp] [..192.168.1.159][48098] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable][dns.google]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     1.254|     0.185|     0.342|       116761.002|    3.200]
                    [PKTLEN......:     52.000|   569.000|   198.200|   197.900|        39161.300|    4.400]
@@ -66,7 +66,7 @@
                    RISK: TLS (probably) Not Carrying HTTPS
           guessed: [.....6] [ip4][..tcp] [........8.8.4.4][..853] -> [..192.168.1.159][47968] [DoH_DoT][Google][Network][Acceptable]
               end: [.....6] [ip4][..tcp] [........8.8.4.4][..853] -> [..192.168.1.159][47968]
-              end: [.....4] [ip4][..tcp] [..192.168.1.159][48048] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable]
+              end: [.....4] [ip4][..tcp] [..192.168.1.159][48048] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable][dns.google]
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [.....8] [ip4][..tcp] [..192.168.1.159][48210] -> [........8.8.4.4][..853]
          detected: [.....8] [ip4][..tcp] [..192.168.1.159][48210] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable][dns.google]
@@ -75,7 +75,7 @@
                    RISK: TLS (probably) Not Carrying HTTPS
  detection-update: [.....8] [ip4][..tcp] [..192.168.1.159][48210] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable][dns.google]
                    RISK: TLS (probably) Not Carrying HTTPS
-          analyse: [.....8] [ip4][..tcp] [..192.168.1.159][48210] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable]
+          analyse: [.....8] [ip4][..tcp] [..192.168.1.159][48210] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable][dns.google]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     5.704|     0.390|     1.388|      1925240.193|    1.500]
                    [PKTLEN......:     52.000|  1470.000|   268.200|   356.700|       127227.700|    4.100]
@@ -85,8 +85,8 @@
                    [IATS(ms)....: 14.4,41.9,9.2,49.9,17.6,0.1,0.1,32.5,0.5,0.1,15.4,30.8,15.7,19.9,22.6,85.5,5640.7,5703.8,20.5,7.6,6.2,13.7,17.6,31.1,85.4,103.7,33.2,18.8,6.3,16.2,17.6]
                    [PKTLENS.....: 60,60,52,206,52,1470,1470,291,52,52,52,145,344,211,52,551,52,211,52,211,551,52,52,551,52,211,52,211,551,52,52,551]
                    [ENTROPIES...: 4.3,5.0,4.9,5.4,4.8,7.0,7.5,7.1,4.9,5.0,4.9,5.9,7.0,6.8,4.9,7.5,5.0,6.8,4.9,6.7,7.6,5.0,4.8,7.6,4.8,6.8,4.6,6.8,7.5,5.0,4.9,7.5]
-              end: [.....7] [ip4][..tcp] [..192.168.1.159][48098] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable]
+              end: [.....7] [ip4][..tcp] [..192.168.1.159][48098] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable][dns.google]
                    RISK: TLS (probably) Not Carrying HTTPS
-             idle: [.....8] [ip4][..tcp] [..192.168.1.159][48210] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable]
+             idle: [.....8] [ip4][..tcp] [..192.168.1.159][48210] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable][dns.google]
                    RISK: TLS (probably) Not Carrying HTTPS
      DAEMON-EVENT: shutdown

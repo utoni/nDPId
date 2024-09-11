@@ -76,8 +76,8 @@
                    RISK: Known Proto on Non Std Port, Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Desktop/File Sharing
              idle: [.....5] [ip4][..tcp] [..192.168.1.187][54164] -> [..192.168.1.178][.7070] [TLS.AnyDesk][Unknown][RemoteAccess][Acceptable]
                    RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Desktop/File Sharing
-             idle: [.....4] [ip4][..udp] [..192.168.1.187][55376] -> [....192.168.1.1][...53] [DNS.AnyDesk][Unknown][Network][Acceptable]
-             idle: [.....3] [ip4][..udp] [..192.168.1.187][59511] -> [....192.168.1.1][...53] [DNS.AnyDesk][Unknown][Network][Acceptable]
+             idle: [.....4] [ip4][..udp] [..192.168.1.187][55376] -> [....192.168.1.1][...53] [DNS.AnyDesk][Unknown][Network][Acceptable][relay-9b6827f2.net.anydesk.com]
+             idle: [.....3] [ip4][..udp] [..192.168.1.187][59511] -> [....192.168.1.1][...53] [DNS.AnyDesk][Unknown][Network][Acceptable][relay-3185a847.net.anydesk.com]
              idle: [.....7] [ip4][..tcp] [..192.168.1.128][48260] -> [195.181.174.176][..443] [TLS.AnyDesk][Unknown][RemoteAccess][Acceptable]
                    RISK: Missing SNI TLS Extn, Desktop/File Sharing, Uncommon TLS ALPN
      DAEMON-EVENT: shutdown

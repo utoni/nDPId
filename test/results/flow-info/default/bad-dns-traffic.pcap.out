@@ -21,7 +21,7 @@
                    RISK: Susp DGA Domain name, Susp DNS Traffic, Unidirectional Traffic
  detection-update: [.....2] [ip4][..udp] [..192.168.43.91][56354] -> [........4.2.2.4][...53] [DNS][Unknown][Network][Acceptable][c75900fdf525320021636f6d6d616e64202873697276696d65732900.skullseclabs.org]
                    RISK: Susp DGA Domain name, Susp DNS Traffic, Risky Domain Name
-          analyse: [.....2] [ip4][..udp] [..192.168.43.91][56354] -> [........4.2.2.4][...53] [DNS][Unknown][Network][Acceptable]
+          analyse: [.....2] [ip4][..udp] [..192.168.43.91][56354] -> [........4.2.2.4][...53] [DNS][Unknown][Network][Acceptable][c75900fdf525320021636f6d6d616e64202873697276696d65732900.skullseclabs.org]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........:      0.063|     4.102|     1.074|     0.689|       474850.951|    4.700]
                    [PKTLEN......:     81.000|   309.000|   115.200|    50.600|         2560.600|    4.900]
@@ -31,21 +31,21 @@
                    [IATS(ms)....: 1006.5,1005.8,1008.1,1008.5,4101.9,73.2,63.1,1023.9,1006.7,2080.9,1018.8,962.5,1014.1,1012.6,1013.6,1040.3,1038.2,1060.2,1011.7,991.1,1041.5,1066.6,1017.8,982.3,1029.5,1026.2,1027.8,1007.4,2080.4,166.4,305.9]
                    [PKTLENS.....: 119,119,119,119,119,150,81,116,81,81,112,81,114,81,116,81,114,81,114,81,112,81,114,81,116,81,114,81,81,160,276,309]
                    [ENTROPIES...: 4.9,5.0,5.0,5.0,5.0,4.9,5.0,5.0,5.0,5.1,5.0,5.0,5.0,5.0,5.0,5.0,5.0,5.0,5.0,5.0,5.0,4.9,5.0,4.9,5.0,5.0,5.0,5.0,5.0,4.9,4.2,4.3]
-           update: [.....1] [ip4][..udp] [..192.168.43.91][35966] -> [........4.2.2.4][...53] [DNS][Unknown][Network][Acceptable]
+           update: [.....1] [ip4][..udp] [..192.168.43.91][35966] -> [........4.2.2.4][...53] [DNS][Unknown][Network][Acceptable][958700a621c3620001636f6e736f6c65202873697276696d65732900.skullseclabs.org]
                    RISK: Susp DGA Domain name, Susp DNS Traffic, Risky Domain Name
-           update: [.....2] [ip4][..udp] [..192.168.43.91][56354] -> [........4.2.2.4][...53] [DNS][Unknown][Network][Acceptable]
+           update: [.....2] [ip4][..udp] [..192.168.43.91][56354] -> [........4.2.2.4][...53] [DNS][Unknown][Network][Acceptable][c75900fdf525320021636f6d6d616e64202873697276696d65732900.skullseclabs.org]
                    RISK: Susp DGA Domain name, Susp DNS Traffic, Risky Domain Name
-           update: [.....1] [ip4][..udp] [..192.168.43.91][35966] -> [........4.2.2.4][...53] [DNS][Unknown][Network][Acceptable]
+           update: [.....1] [ip4][..udp] [..192.168.43.91][35966] -> [........4.2.2.4][...53] [DNS][Unknown][Network][Acceptable][958700a621c3620001636f6e736f6c65202873697276696d65732900.skullseclabs.org]
                    RISK: Susp DGA Domain name, Susp DNS Traffic, Risky Domain Name
               new: [.....3] [ip4][..udp] [..192.168.43.91][46961] -> [........4.2.2.4][...53]
          detected: [.....3] [ip4][..udp] [..192.168.43.91][46961] -> [........4.2.2.4][...53] [DNS][Unknown][Network][Acceptable][a05700e6da83510001636f6e736f6c65202873697276696d65732900.skullseclabs.org]
                    RISK: Susp DGA Domain name, Susp DNS Traffic
  detection-update: [.....3] [ip4][..udp] [..192.168.43.91][46961] -> [........4.2.2.4][...53] [DNS][Unknown][Network][Acceptable][a05700e6da83510001636f6e736f6c65202873697276696d65732900.skullseclabs.org]
                    RISK: Susp DGA Domain name, Susp DNS Traffic, Risky Domain Name
-             idle: [.....3] [ip4][..udp] [..192.168.43.91][46961] -> [........4.2.2.4][...53] [DNS][Unknown][Network][Acceptable]
+             idle: [.....3] [ip4][..udp] [..192.168.43.91][46961] -> [........4.2.2.4][...53] [DNS][Unknown][Network][Acceptable][a05700e6da83510001636f6e736f6c65202873697276696d65732900.skullseclabs.org]
                    RISK: Susp DGA Domain name, Susp DNS Traffic, Risky Domain Name
-             idle: [.....2] [ip4][..udp] [..192.168.43.91][56354] -> [........4.2.2.4][...53] [DNS][Unknown][Network][Acceptable]
+             idle: [.....2] [ip4][..udp] [..192.168.43.91][56354] -> [........4.2.2.4][...53] [DNS][Unknown][Network][Acceptable][c75900fdf525320021636f6d6d616e64202873697276696d65732900.skullseclabs.org]
                    RISK: Susp DGA Domain name, Susp DNS Traffic, Risky Domain Name
-             idle: [.....1] [ip4][..udp] [..192.168.43.91][35966] -> [........4.2.2.4][...53] [DNS][Unknown][Network][Acceptable]
+             idle: [.....1] [ip4][..udp] [..192.168.43.91][35966] -> [........4.2.2.4][...53] [DNS][Unknown][Network][Acceptable][958700a621c3620001636f6e736f6c65202873697276696d65732900.skullseclabs.org]
                    RISK: Susp DGA Domain name, Susp DNS Traffic, Risky Domain Name
      DAEMON-EVENT: shutdown

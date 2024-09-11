@@ -5,5 +5,5 @@
          detected: [.....1] [ip4][..udp] [...129.21.84.33][37229] -> [..73.185.34.172][..443] [QUIC][Unknown][Web][Acceptable]
  detection-update: [.....1] [ip4][..udp] [...129.21.84.33][37229] -> [..73.185.34.172][..443] [QUIC][Unknown][Web][Acceptable]
  detection-update: [.....1] [ip4][..udp] [...129.21.84.33][37229] -> [..73.185.34.172][..443] [QUIC.Cloudflare][Unknown][Media][Acceptable][cdnjs.cloudflare.com]
-             idle: [.....1] [ip4][..udp] [...129.21.84.33][37229] -> [..73.185.34.172][..443] [QUIC.Cloudflare][Unknown][Media][Acceptable]
+             idle: [.....1] [ip4][..udp] [...129.21.84.33][37229] -> [..73.185.34.172][..443] [QUIC.Cloudflare][Unknown][Media][Acceptable][cdnjs.cloudflare.com]
      DAEMON-EVENT: shutdown

@@ -9,8 +9,8 @@
               new: [.....2] [ip4][..tcp] [...192.168.0.20][33684] -> [....192.168.0.7][.8080]
          detected: [.....2] [ip4][..tcp] [...192.168.0.20][33684] -> [....192.168.0.7][.8080] [HTTP][Unknown][Web][Acceptable][www.lan]
                    RISK: Known Proto on Non Std Port
-              end: [.....1] [ip4][..tcp] [...192.168.0.20][33632] -> [....192.168.0.7][.8080] [HTTP][Unknown][Web][Acceptable]
+              end: [.....1] [ip4][..tcp] [...192.168.0.20][33632] -> [....192.168.0.7][.8080] [HTTP][Unknown][Web][Acceptable][wwww.lan]
                    RISK: Known Proto on Non Std Port
-             idle: [.....2] [ip4][..tcp] [...192.168.0.20][33684] -> [....192.168.0.7][.8080] [HTTP][Unknown][Web][Acceptable]
+             idle: [.....2] [ip4][..tcp] [...192.168.0.20][33684] -> [....192.168.0.7][.8080] [HTTP][Unknown][Web][Acceptable][www.lan]
                    RISK: Known Proto on Non Std Port
      DAEMON-EVENT: shutdown

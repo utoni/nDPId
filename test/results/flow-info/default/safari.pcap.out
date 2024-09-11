@@ -30,7 +30,7 @@
                    RISK: TLS (probably) Not Carrying HTTPS
  detection-update: [.....6] [ip4][..tcp] [..192.168.1.178][55269] -> [...146.48.58.18][..443] [TLS][Unknown][Web][Safe][www.iit.cnr.it]
                    RISK: TLS (probably) Not Carrying HTTPS
-          analyse: [.....4] [ip4][..tcp] [..192.168.1.178][55267] -> [...146.48.58.18][..443] [TLS][Unknown][Web][Safe]
+          analyse: [.....4] [ip4][..tcp] [..192.168.1.178][55267] -> [...146.48.58.18][..443] [TLS][Unknown][Web][Safe][www.iit.cnr.it]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.119|     0.018|     0.029|          823.374|    3.500]
                    [PKTLEN......:     52.000|  1492.000|   618.000|   660.500|       436248.100|    4.100]
@@ -45,15 +45,15 @@
  detection-update: [.....7] [ip4][..tcp] [..192.168.1.178][55285] -> [...146.48.58.18][..443] [TLS][Unknown][Web][Safe][www.iit.cnr.it]
  detection-update: [.....7] [ip4][..tcp] [..192.168.1.178][55285] -> [...146.48.58.18][..443] [TLS][Unknown][Web][Safe][www.iit.cnr.it]
              idle: [.....1] [ip4][..tcp] [..192.168.1.178][55262] -> [...146.48.58.18][..443] [TLS][Unknown][Web][Safe]
-             idle: [.....2] [ip4][..tcp] [..192.168.1.178][55265] -> [...146.48.58.18][..443] [TLS][Unknown][Web][Safe]
+             idle: [.....2] [ip4][..tcp] [..192.168.1.178][55265] -> [...146.48.58.18][..443] [TLS][Unknown][Web][Safe][www.iit.cnr.it]
                    RISK: TLS (probably) Not Carrying HTTPS
-             idle: [.....3] [ip4][..tcp] [..192.168.1.178][55266] -> [...146.48.58.18][..443] [TLS][Unknown][Web][Safe]
+             idle: [.....3] [ip4][..tcp] [..192.168.1.178][55266] -> [...146.48.58.18][..443] [TLS][Unknown][Web][Safe][www.iit.cnr.it]
                    RISK: TLS (probably) Not Carrying HTTPS
-             idle: [.....4] [ip4][..tcp] [..192.168.1.178][55267] -> [...146.48.58.18][..443] [TLS][Unknown][Web][Safe]
+             idle: [.....4] [ip4][..tcp] [..192.168.1.178][55267] -> [...146.48.58.18][..443] [TLS][Unknown][Web][Safe][www.iit.cnr.it]
                    RISK: TLS (probably) Not Carrying HTTPS
-             idle: [.....5] [ip4][..tcp] [..192.168.1.178][55268] -> [...146.48.58.18][..443] [TLS][Unknown][Web][Safe]
+             idle: [.....5] [ip4][..tcp] [..192.168.1.178][55268] -> [...146.48.58.18][..443] [TLS][Unknown][Web][Safe][www.iit.cnr.it]
                    RISK: TLS (probably) Not Carrying HTTPS
-             idle: [.....6] [ip4][..tcp] [..192.168.1.178][55269] -> [...146.48.58.18][..443] [TLS][Unknown][Web][Safe]
+             idle: [.....6] [ip4][..tcp] [..192.168.1.178][55269] -> [...146.48.58.18][..443] [TLS][Unknown][Web][Safe][www.iit.cnr.it]
                    RISK: TLS (probably) Not Carrying HTTPS
              idle: [.....7] [ip4][..tcp] [..192.168.1.178][55285] -> [...146.48.58.18][..443] [TLS][Unknown][Web][Safe]
      DAEMON-EVENT: shutdown

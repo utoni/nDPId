@@ -28,5 +28,5 @@
              idle: [.....7] [ip4][..tcp] [.192.168.88.231][42070] -> [..95.100.141.15][..443] [TLS.Steam][Unknown][Game][Fun]
              idle: [.....1] [ip4][..udp] [.192.168.88.231][27036] -> [.192.168.88.255][27036] [Steam][Unknown][Game][Fun]
              idle: [.....4] [ip4][..udp] [.192.168.88.231][46604] -> [.155.133.252.86][27045] [SteamDatagramRelay][Steam][Game][Fun]
-              end: [.....2] [ip4][..tcp] [.192.168.88.231][59739] -> [....2.20.254.25][...80] [HTTP.Steam][Unknown][Game][Fun]
+              end: [.....2] [ip4][..tcp] [.192.168.88.231][59739] -> [....2.20.254.25][...80] [HTTP.Steam][Unknown][Game][Fun][test.steampowered.com]
      DAEMON-EVENT: shutdown

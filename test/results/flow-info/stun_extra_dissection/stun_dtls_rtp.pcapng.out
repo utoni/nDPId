@@ -21,7 +21,7 @@
               new: [.....2] [ip4][..tcp] [.192.168.12.182][50221] -> [.142.250.82.249][.3478]
          detected: [.....2] [ip4][..tcp] [.192.168.12.182][50221] -> [.142.250.82.249][.3478] [STUN.GoogleCall][Google][VoIP][Acceptable][]
  detection-update: [.....2] [ip4][..tcp] [.192.168.12.182][50221] -> [.142.250.82.249][.3478] [STUN.GoogleCall][Google][VoIP][Acceptable][turn.l.google.com]
-          analyse: [.....2] [ip4][..tcp] [.192.168.12.182][50221] -> [.142.250.82.249][.3478] [STUN.GoogleCall][Google][VoIP][Acceptable]
+          analyse: [.....2] [ip4][..tcp] [.192.168.12.182][50221] -> [.142.250.82.249][.3478] [STUN.GoogleCall][Google][VoIP][Acceptable][turn.l.google.com]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........:      0.000|     0.509|     0.047|     0.118|        13863.927|    2.800]
                    [PKTLEN......:     40.000|   696.000|   142.100|   150.700|        22704.000|    4.400]
@@ -32,5 +32,5 @@
                    [PKTLENS.....: 52,52,40,40,68,40,120,192,116,40,180,196,148,172,84,40,40,140,204,236,40,172,40,696,40,172,140,648,40,160,40,160]
                    [ENTROPIES...: 4.8,5.0,4.8,4.8,5.3,4.8,5.8,6.2,5.8,4.8,6.0,6.2,6.0,6.1,5.9,5.0,4.9,6.1,6.2,5.4,5.0,6.1,5.0,6.6,4.9,6.1,6.0,7.4,4.8,6.0,5.0,5.9]
              idle: [.....1] [ip4][..udp] [.192.168.12.156][37967] -> [..142.250.82.76][19305] [DTLS.GoogleCall][Google][VoIP][Acceptable]
-             idle: [.....2] [ip4][..tcp] [.192.168.12.182][50221] -> [.142.250.82.249][.3478] [STUN.GoogleCall][Google][VoIP][Acceptable]
+             idle: [.....2] [ip4][..tcp] [.192.168.12.182][50221] -> [.142.250.82.249][.3478] [STUN.GoogleCall][Google][VoIP][Acceptable][turn.l.google.com]
      DAEMON-EVENT: shutdown

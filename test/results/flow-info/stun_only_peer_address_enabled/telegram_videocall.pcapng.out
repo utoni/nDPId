@@ -169,7 +169,7 @@
                    RISK: Susp Entropy
              idle: [....10] [ip4][..tcp] [.192.168.12.169][37966] -> [.149.154.167.91][..443] [Telegram][Telegram][Chat][Acceptable]
                    RISK: Susp Entropy
-             idle: [....18] [ip4][..udp] [.192.168.12.169][40643] -> [....91.108.9.35][.1400] [STUN.TelegramVoip][Telegram][VoIP][Acceptable]
+             idle: [....18] [ip4][..udp] [.192.168.12.169][40643] -> [....91.108.9.35][.1400] [STUN.TelegramVoip][Telegram][VoIP][Acceptable][telegram.org]
                    RISK: Known Proto on Non Std Port
              idle: [....28] [ip6][icmp6] [...............fe80::abe:acff:fe0b:176e] -> [................................ff02::2] [ICMPV6][Unknown][Network][Acceptable]
              idle: [.....2] [ip4][..udp] [...192.168.12.1][17500] -> [.192.168.12.255][17500] [Dropbox][Unknown][Cloud][Acceptable]
@@ -194,7 +194,7 @@
                    RISK: Susp Entropy
              idle: [.....9] [ip4][..tcp] [.192.168.12.169][40834] -> [149.154.167.222][..443] [Telegram][Telegram][Chat][Acceptable]
                    RISK: Susp Entropy
-             idle: [....19] [ip4][..udp] [.192.168.12.169][49667] -> [...91.108.13.23][.1400] [STUN.TelegramVoip][Telegram][VoIP][Acceptable]
+             idle: [....19] [ip4][..udp] [.192.168.12.169][49667] -> [...91.108.13.23][.1400] [STUN.TelegramVoip][Telegram][VoIP][Acceptable][telegram.org]
                    RISK: Known Proto on Non Std Port
              idle: [....25] [ip4][..udp] [.192.168.12.169][40906] -> [..10.46.103.200][42554] [STUN.TelegramVoip][Unknown][VoIP][Acceptable]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
@@ -202,7 +202,7 @@
                    RISK: Known Proto on Non Std Port
              idle: [....26] [ip4][..udp] [.192.168.12.169][42405] -> [...93.36.13.115][35393] [STUN.TelegramVoip][Unknown][VoIP][Acceptable]
                    RISK: Known Proto on Non Std Port
-             idle: [....20] [ip4][..udp] [.192.168.12.169][49780] -> [....91.108.17.2][.1400] [STUN.TelegramVoip][Telegram][VoIP][Acceptable]
+             idle: [....20] [ip4][..udp] [.192.168.12.169][49780] -> [....91.108.17.2][.1400] [STUN.TelegramVoip][Telegram][VoIP][Acceptable][telegram.org]
                    RISK: Known Proto on Non Std Port
              idle: [....33] [ip4][.icmp] [.192.168.12.169] -> [....91.108.17.2] [ICMP][Telegram][Network][Acceptable]
                    RISK: Susp Entropy

@@ -19,7 +19,7 @@
      DAEMON-EVENT: [Flows][active: 2 / 3|skipped: 0|!detected: 0|guessed: 0|detection-updates: 3|updates: 0]
               new: [.....4] [ip6][..udp] [3516:bf0b:fc53:75e7:70af:f67f:8e49:f603][56880] -> [....2a38:e156:8167:a333:face:b00c::24d9][.3478]
          detected: [.....4] [ip6][..udp] [3516:bf0b:fc53:75e7:70af:f67f:8e49:f603][56880] -> [....2a38:e156:8167:a333:face:b00c::24d9][.3478] [STUN][Unknown][Network][Acceptable][]
-             idle: [.....2] [ip4][..udp] [.192.168.12.169][43016] -> [.74.125.247.128][.3478] [STUN.GoogleCall][Google][VoIP][Acceptable]
+             idle: [.....2] [ip4][..udp] [.192.168.12.169][43016] -> [.74.125.247.128][.3478] [STUN.GoogleCall][Google][VoIP][Acceptable][turn.l.google.com]
              idle: [.....3] [ip4][.icmp] [.192.168.12.169] -> [.74.125.247.128] [ICMP][Google][Network][Acceptable]
                    RISK: Susp Entropy
            update: [.....4] [ip6][..udp] [3516:bf0b:fc53:75e7:70af:f67f:8e49:f603][56880] -> [....2a38:e156:8167:a333:face:b00c::24d9][.3478] [STUN][Unknown][Network][Acceptable]
@@ -42,7 +42,7 @@
                    RISK: Known Proto on Non Std Port
  detection-update: [.....5] [ip4][..udp] [.192.168.12.169][38123] -> [....31.13.86.54][40003] [STUN.FacebookVoip][Facebook][VoIP][Acceptable][turner.facebook]
                    RISK: Known Proto on Non Std Port
-          analyse: [.....5] [ip4][..udp] [.192.168.12.169][38123] -> [....31.13.86.54][40003] [STUN.FacebookVoip][Facebook][VoIP][Acceptable]
+          analyse: [.....5] [ip4][..udp] [.192.168.12.169][38123] -> [....31.13.86.54][40003] [STUN.FacebookVoip][Facebook][VoIP][Acceptable][turner.facebook]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     6.004|     0.447|     1.463|      2139022.033|    1.900]
                    [PKTLEN......:     56.000|   168.000|   139.600|    32.100|         1033.400|    5.000]
@@ -58,7 +58,7 @@
               new: [.....6] [ip4][..tcp] [...87.47.100.17][.3478] -> [....54.1.57.155][37257]
          detected: [.....6] [ip4][..tcp] [...87.47.100.17][.3478] -> [....54.1.57.155][37257] [STUN][Unknown][Network][Acceptable][]
  detection-update: [.....6] [ip4][..tcp] [...87.47.100.17][.3478] -> [....54.1.57.155][37257] [STUN][Unknown][Network][Acceptable][apps-host.com]
-             idle: [.....5] [ip4][..udp] [.192.168.12.169][38123] -> [....31.13.86.54][40003] [STUN.FacebookVoip][Facebook][VoIP][Acceptable]
+             idle: [.....5] [ip4][..udp] [.192.168.12.169][38123] -> [....31.13.86.54][40003] [STUN.FacebookVoip][Facebook][VoIP][Acceptable][turner.facebook]
                    RISK: Known Proto on Non Std Port
      DAEMON-EVENT: [Processed: 161 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 6|skipped: 0|!detected: 0|guessed: 0|detection-updates: 5|updates: 3]
@@ -76,7 +76,7 @@
                    [IATS(ms)....: 22.9,25.6,18.8,27.0,9.0,16.5,8.2,0.0,96.0,9.4,96.1,13.9,9.7,14.0,0.0,0.0,28.4,12.0,233.2,17.4,835.9,625.3,352.7,699.8,203.7,550.7,72.1,9.0,20.6,28.1,14.7]
                    [PKTLENS.....: 136,120,181,140,1226,574,120,109,598,109,140,145,161,120,141,93,97,93,113,62,93,140,120,62,110,140,120,94,94,95,95,95]
                    [ENTROPIES...: 5.9,5.9,5.0,5.9,7.3,6.7,5.8,5.7,7.4,5.7,6.0,6.2,6.4,5.9,6.1,5.4,5.4,5.6,5.9,5.3,5.2,5.9,5.8,5.2,6.1,5.9,6.0,6.1,6.0,5.9,6.1,5.9]
-             idle: [.....6] [ip4][..tcp] [...87.47.100.17][.3478] -> [....54.1.57.155][37257] [STUN][Unknown][Network][Acceptable]
+             idle: [.....6] [ip4][..tcp] [...87.47.100.17][.3478] -> [....54.1.57.155][37257] [STUN][Unknown][Network][Acceptable][apps-host.com]
      DAEMON-EVENT: [Processed: 194 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 7|skipped: 0|!detected: 0|guessed: 0|detection-updates: 7|updates: 3]
               new: [.....8] [ip4][..udp] [.192.168.43.169][48854] -> [.134.224.90.111][.8801]

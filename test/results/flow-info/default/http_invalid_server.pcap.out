@@ -6,6 +6,6 @@
                    RISK: HTTP Susp User-Agent
  detection-update: [.....1] [ip4][..tcp] [...192.168.1.29][51536] -> [.143.204.14.183][...80] [HTTP.OCSP][AmazonAWS][Web][Safe][ocsp.rootg2.amazontrust.com]
                    RISK: HTTP Susp User-Agent, HTTP Susp Header
-              end: [.....1] [ip4][..tcp] [...192.168.1.29][51536] -> [.143.204.14.183][...80] [HTTP.OCSP][AmazonAWS][Web][Safe]
+              end: [.....1] [ip4][..tcp] [...192.168.1.29][51536] -> [.143.204.14.183][...80] [HTTP.OCSP][AmazonAWS][Web][Safe][ocsp.rootg2.amazontrust.com]
                    RISK: HTTP Susp User-Agent, HTTP Susp Header
      DAEMON-EVENT: shutdown

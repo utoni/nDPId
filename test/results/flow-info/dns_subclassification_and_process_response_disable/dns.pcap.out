@@ -7,5 +7,5 @@
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
       ERROR-EVENT: Unknown packet type [1/16]
       ERROR-EVENT: Unknown packet type [2/16]
-             idle: [.....1] [ip4][..udp] [.192.168.170.20][...53] -> [..192.168.170.8][32795] [DNS.Google][Unknown][Network][Acceptable]
+             idle: [.....1] [ip4][..udp] [.192.168.170.20][...53] -> [..192.168.170.8][32795] [DNS.Google][Unknown][Network][Acceptable][www.l.google.com]
      DAEMON-EVENT: shutdown

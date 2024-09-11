@@ -5,6 +5,6 @@
          detected: [.....1] [ip4][..udp] [......127.0.0.1][50435] -> [......127.0.0.1][...53] [DNS][Unknown][Network][Acceptable][www.xt.com]
  detection-update: [.....1] [ip4][..udp] [......127.0.0.1][50435] -> [......127.0.0.1][...53] [DNS][Unknown][Network][Acceptable][www.xt.com]
                    RISK: Malformed Packet, Large DNS Packet (512+ bytes), Minor Issues
-             idle: [.....1] [ip4][..udp] [......127.0.0.1][50435] -> [......127.0.0.1][...53] [DNS][Unknown][Network][Acceptable]
+             idle: [.....1] [ip4][..udp] [......127.0.0.1][50435] -> [......127.0.0.1][...53] [DNS][Unknown][Network][Acceptable][www.xt.com]
                    RISK: Malformed Packet, Large DNS Packet (512+ bytes), Minor Issues
      DAEMON-EVENT: shutdown

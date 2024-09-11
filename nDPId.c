@@ -205,7 +205,7 @@ struct nDPId_flow_basic
  */
 struct nDPId_flow_extended
 {
-    struct nDPId_flow_basic flow_basic;
+    struct nDPId_flow_basic flow_basic; // Do not move this element!
 
     unsigned long long int flow_id;
 
@@ -227,7 +227,7 @@ struct nDPId_flow_extended
  */
 struct nDPId_flow_skipped
 {
-    struct nDPId_flow_basic flow_basic;
+    struct nDPId_flow_basic flow_basic; // Do not move this element!
 };
 
 /*
@@ -243,7 +243,7 @@ struct nDPId_detection_data
 
 struct nDPId_flow
 {
-    struct nDPId_flow_extended flow_extended;
+    struct nDPId_flow_extended flow_extended; // Do not move this element!
 
     union
     {
@@ -261,6 +261,7 @@ struct nDPId_flow
         {
             ndpi_risk risk;
             ndpi_confidence_t confidence;
+            char * hostname;
         } finished;
     };
 };
@@ -1513,8 +1514,9 @@ static void ndpi_flow_info_free(void * const node)
 
         case FS_FINISHED:
         {
-            struct nDPId_flow_extended * const flow_ext = (struct nDPId_flow_extended *)flow_basic;
-            free_analysis_data(flow_ext);
+            struct nDPId_flow * const flow = (struct nDPId_flow *)flow_basic;
+            free(flow->finished.hostname);
+            free_analysis_data(&flow->flow_extended);
             break;
         }
 
@@ -2186,7 +2188,8 @@ static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enu
                 int rc;
                 struct npfring_stats stats = {};
 
-                if (nDPId_options.use_pfring != 0) {
+                if (nDPId_options.use_pfring != 0)
+                {
                     if ((rc = npfring_stats(&workflow->npf, &stats)) != 0)
                     {
                         logger(1, "[%8llu] PF_RING stats returned: %d", reader_thread->workflow->packets_processed, rc);
@@ -2195,8 +2198,12 @@ static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enu
                     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "pfring_recv", 0);
                     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "pfring_drop", 0);
                     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "pfring_shunt", 0);
-                } else {
-                    ndpi_serialize_string_boolean(&workflow->ndpi_serializer, "pfring_active", nDPId_options.use_pfring);
+                }
+                else
+                {
+                    ndpi_serialize_string_boolean(&workflow->ndpi_serializer,
+                                                  "pfring_active",
+                                                  nDPId_options.use_pfring);
                     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "pfring_recv", stats.recv);
                     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "pfring_drop", stats.drop);
                     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "pfring_shunt", stats.shunt);
@@ -2862,6 +2869,10 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
                                      flow->finished.risk,
                                      flow->finished.confidence,
                                      flow->flow_extended.detected_l7_protocol);
+                if (flow->finished.hostname != NULL)
+                {
+                    ndpi_serialize_string_string(&workflow->ndpi_serializer, "hostname", flow->finished.hostname);
+                }
                 ndpi_serialize_end_of_block(&workflow->ndpi_serializer);
             }
             else if (flow_ext->flow_basic.state == FS_INFO)
@@ -4408,6 +4419,16 @@ static void ndpi_process_packet(uint8_t * const args,
 
         ndpi_risk risk = flow_to_process->info.detection_data->flow.risk;
         ndpi_confidence_t confidence = flow_to_process->info.detection_data->flow.confidence;
+        char * hostname = NULL;
+        if (flow_to_process->info.detection_data->flow.host_server_name[0] != '\0')
+        {
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
+            _Static_assert(sizeof(flow_to_process->info.detection_data->flow.host_server_name) == 80,
+                           "Size of nDPI flow host server name changed. Please review manually.");
+#endif
+            hostname = strndup(&flow_to_process->info.detection_data->flow.host_server_name[0],
+                               sizeof(flow_to_process->info.detection_data->flow.host_server_name));
+        }
 
         free_detection_data(flow_to_process);
 
@@ -4416,6 +4437,7 @@ static void ndpi_process_packet(uint8_t * const args,
         flow->flow_extended.detected_l7_protocol = detected_l7_protocol;
         flow->finished.risk = risk;
         flow->finished.confidence = confidence;
+        flow->finished.hostname = hostname;
     }
 
 #ifdef ENABLE_ZLIB

@@ -6,6 +6,6 @@
                    RISK: HTTP Susp User-Agent, HTTP/TLS/QUIC Numeric Hostname/SNI
  detection-update: [.....1] [ip4][..tcp] [....10.9.25.101][49165] -> [..144.91.69.195][...80] [HTTP][Unknown][Download][Acceptable][144.91.69.195]
                    RISK: Binary App Transfer, HTTP Susp User-Agent, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Obsolete Server, Binary File/Data Transfer (Attempt)
-             idle: [.....1] [ip4][..tcp] [....10.9.25.101][49165] -> [..144.91.69.195][...80] [HTTP][Unknown][Download][Acceptable]
+             idle: [.....1] [ip4][..tcp] [....10.9.25.101][49165] -> [..144.91.69.195][...80] [HTTP][Unknown][Download][Acceptable][144.91.69.195]
                    RISK: Binary App Transfer, HTTP Susp User-Agent, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Obsolete Server, Binary File/Data Transfer (Attempt)
      DAEMON-EVENT: shutdown

@@ -5,5 +5,5 @@
          detected: [.....1] [ip4][..tcp] [.192.168.12.156][38291] -> [..93.184.220.29][...80] [HTTP][Edgecast][Web][Acceptable][]
                    RISK: HTTP Susp User-Agent
  detection-update: [.....1] [ip4][..tcp] [.192.168.12.156][38291] -> [..93.184.220.29][...80] [HTTP.OCSP][Edgecast][Web][Safe][ocsp.digicert.com]
-              end: [.....1] [ip4][..tcp] [.192.168.12.156][38291] -> [..93.184.220.29][...80] [HTTP.OCSP][Edgecast][Web][Safe]
+              end: [.....1] [ip4][..tcp] [.192.168.12.156][38291] -> [..93.184.220.29][...80] [HTTP.OCSP][Edgecast][Web][Safe][ocsp.digicert.com]
      DAEMON-EVENT: shutdown

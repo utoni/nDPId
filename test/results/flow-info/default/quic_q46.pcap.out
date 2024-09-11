@@ -3,5 +3,5 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [..172.29.42.236][38292] -> [.153.20.183.203][..443]
          detected: [.....1] [ip4][..udp] [..172.29.42.236][38292] -> [.153.20.183.203][..443] [QUIC.Google][Unknown][Web][Acceptable][play.google.com]
-             idle: [.....1] [ip4][..udp] [..172.29.42.236][38292] -> [.153.20.183.203][..443] [QUIC.Google][Unknown][Web][Acceptable]
+             idle: [.....1] [ip4][..udp] [..172.29.42.236][38292] -> [.153.20.183.203][..443] [QUIC.Google][Unknown][Web][Acceptable][play.google.com]
      DAEMON-EVENT: shutdown

@@ -34,7 +34,7 @@
                    RISK: TLS (probably) Not Carrying HTTPS
  detection-update: [.....8] [ip4][..tcp] [....192.168.1.7][53117] -> [...52.32.196.36][..443] [TLS.NetFlix][AmazonAWS][Video][Fun][api-global.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-          analyse: [.....4] [ip4][..tcp] [....192.168.1.7][53105] -> [..54.69.204.241][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
+          analyse: [.....4] [ip4][..tcp] [....192.168.1.7][53105] -> [..54.69.204.241][..443] [TLS.NetFlix][AmazonAWS][Video][Fun][ichnaea.netflix.com]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.364|     0.040|     0.082|         6699.630|    3.200]
                    [PKTLEN......:     52.000|  1500.000|   265.200|   396.800|       157454.800|    3.900]
@@ -119,7 +119,7 @@
  detection-update: [....23] [ip4][..udp] [....192.168.1.7][58102] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][appboot.netflix.com]
               new: [....24] [ip4][..tcp] [....192.168.1.7][53151] -> [.54.201.191.132][...80]
          detected: [....24] [ip4][..tcp] [....192.168.1.7][53151] -> [.54.201.191.132][...80] [HTTP.NetFlix][AmazonAWS][Video][Fun][appboot.netflix.com]
-          analyse: [....24] [ip4][..tcp] [....192.168.1.7][53151] -> [.54.201.191.132][...80] [HTTP.NetFlix][AmazonAWS][Video][Fun]
+          analyse: [....24] [ip4][..tcp] [....192.168.1.7][53151] -> [.54.201.191.132][...80] [HTTP.NetFlix][AmazonAWS][Video][Fun][appboot.netflix.com]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.187|     0.029|     0.042|         1791.215|    4.000]
                    [PKTLEN......:     52.000|  1500.000|   812.300|   674.900|       455511.900|    4.400]
@@ -135,7 +135,7 @@
          detected: [....26] [ip4][..udp] [....192.168.1.7][51728] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][a803.dscg.akamai.net]
               new: [....27] [ip4][..udp] [....192.168.1.7][52347] -> [....192.168.1.1][...53]
          detected: [....27] [ip4][..udp] [....192.168.1.7][52347] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ios.nccp.netflix.com]
-          analyse: [....20] [ip4][..tcp] [....192.168.1.7][53148] -> [..184.25.204.25][...80] [HTTP.NetFlix][Unknown][Video][Fun]
+          analyse: [....20] [ip4][..tcp] [....192.168.1.7][53148] -> [..184.25.204.25][...80] [HTTP.NetFlix][Unknown][Video][Fun][art-2.nflximg.net]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     6.031|     0.428|     1.232|      1516791.529|    2.300]
                    [PKTLEN......:     52.000|  1500.000|   795.600|   706.600|       499284.200|    4.300]
@@ -163,7 +163,7 @@
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
  detection-update: [....30] [ip4][..tcp] [....192.168.1.7][53163] -> [..23.246.11.145][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.145]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary File/Data Transfer (Attempt)
-          analyse: [....30] [ip4][..tcp] [....192.168.1.7][53163] -> [..23.246.11.145][...80] [HTTP][NetFlix][Download][Acceptable]
+          analyse: [....30] [ip4][..tcp] [....192.168.1.7][53163] -> [..23.246.11.145][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.145]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........:      0.004|     0.651|     0.082|     0.154|        23582.077|    3.600]
                    [PKTLEN......:     52.000|  1500.000|   940.800|   683.500|       467159.100|    4.500]
@@ -183,7 +183,7 @@
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
  detection-update: [....32] [ip4][..tcp] [....192.168.1.7][53171] -> [...23.246.3.140][...80] [HTTP][NetFlix][Download][Acceptable][23.246.3.140]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary File/Data Transfer (Attempt)
-          analyse: [....32] [ip4][..tcp] [....192.168.1.7][53171] -> [...23.246.3.140][...80] [HTTP][NetFlix][Download][Acceptable]
+          analyse: [....32] [ip4][..tcp] [....192.168.1.7][53171] -> [...23.246.3.140][...80] [HTTP][NetFlix][Download][Acceptable][23.246.3.140]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........:      0.002|     0.044|     0.018|     0.010|          100.655|    4.700]
                    [PKTLEN......:     52.000|  1500.000|   984.900|   672.700|       452466.100|    4.500]
@@ -248,7 +248,7 @@
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary File/Data Transfer (Attempt)
  detection-update: [....43] [ip4][..tcp] [....192.168.1.7][53182] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.141]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary File/Data Transfer (Attempt)
-          analyse: [....41] [ip4][..tcp] [....192.168.1.7][53180] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable]
+          analyse: [....41] [ip4][..tcp] [....192.168.1.7][53180] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.141]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     2.098|     0.201|     0.403|       162731.114|    3.600]
                    [PKTLEN......:     52.000|  1500.000|   493.700|   638.100|       407212.300|    3.900]
@@ -258,7 +258,7 @@
                    [IATS(ms)....: 61.8,72.3,0.5,134.9,0.4,125.9,1162.3,73.6,0.9,212.9,11.5,409.2,101.1,1.9,70.9,2097.5,79.5,52.1,129.8,120.6,42.9,59.9,67.1,69.4,174.4,284.0,29.4,65.0,252.7,150.5,125.9]
                    [PKTLENS.....: 64,60,52,412,570,1500,52,80,80,80,80,80,80,64,64,52,1500,52,1500,52,1500,1500,52,1500,52,1500,64,52,52,1500,52,1500]
                    [ENTROPIES...: 4.6,5.3,5.0,6.3,5.8,4.4,5.1,5.2,5.2,5.3,5.3,5.4,5.3,5.2,5.2,5.2,4.8,5.2,4.8,5.1,4.8,4.8,5.2,4.8,5.0,4.8,5.2,5.2,5.2,4.6,5.0,4.6]
-          analyse: [....38] [ip4][..tcp] [....192.168.1.7][53177] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable]
+          analyse: [....38] [ip4][..tcp] [....192.168.1.7][53177] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.141]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     1.047|     0.281|     0.301|        90549.584|    4.200]
                    [PKTLEN......:     52.000|  1500.000|   490.100|   638.900|       408170.900|    3.900]
@@ -268,7 +268,7 @@
                    [IATS(ms)....: 43.7,45.8,23.6,124.8,4.9,111.6,635.9,176.1,0.2,0.1,41.6,37.4,940.2,0.9,45.4,434.5,483.8,1047.0,74.7,202.4,418.9,472.2,955.3,169.9,525.3,694.3,167.2,252.3,98.0,326.3,148.9]
                    [PKTLENS.....: 64,60,52,412,571,1500,52,72,72,64,64,64,52,88,1476,52,52,52,1500,1500,52,52,52,1500,52,52,1500,52,1500,1500,52,1500]
                    [ENTROPIES...: 4.5,5.3,5.0,6.4,5.8,4.4,5.1,5.3,5.2,5.1,5.2,5.1,5.1,4.9,4.3,5.2,5.2,5.1,4.9,4.9,5.0,5.1,5.1,4.9,5.0,5.0,4.8,5.0,4.6,4.7,5.1,4.8]
-          analyse: [....36] [ip4][..tcp] [....192.168.1.7][53175] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable]
+          analyse: [....36] [ip4][..tcp] [....192.168.1.7][53175] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.141]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     1.636|     0.284|     0.363|       131453.321|    4.000]
                    [PKTLEN......:     52.000|  1500.000|   536.600|   657.900|       432827.800|    3.900]
@@ -278,7 +278,7 @@
                    [IATS(ms)....: 16.1,19.4,23.6,88.6,4.0,82.2,1105.3,26.9,21.8,19.6,0.6,13.1,381.6,1636.2,66.4,119.0,421.4,408.1,882.7,90.2,143.4,490.4,519.4,92.3,121.0,487.1,597.7,217.6,227.5,270.0,221.9]
                    [PKTLENS.....: 64,60,52,409,570,1500,52,72,72,72,64,64,64,64,1500,1500,52,64,52,1500,1500,52,52,1500,1500,52,52,1500,52,1500,64,1500]
                    [ENTROPIES...: 4.5,5.3,5.1,6.4,5.8,4.5,5.1,5.3,5.4,5.4,5.2,5.2,5.2,5.2,3.8,4.4,5.2,5.1,5.2,4.4,4.4,5.2,5.2,4.4,4.4,5.2,5.2,4.3,5.0,4.4,5.2,4.6]
-          analyse: [....34] [ip4][..tcp] [....192.168.1.7][53173] -> [..23.246.11.133][...80] [HTTP][NetFlix][Download][Acceptable]
+          analyse: [....34] [ip4][..tcp] [....192.168.1.7][53173] -> [..23.246.11.133][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.133]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........:      0.005|     1.397|     0.291|     0.314|        98805.531|    4.200]
                    [PKTLEN......:     52.000|  1500.000|   716.200|   699.000|       488561.800|    4.200]
@@ -288,7 +288,7 @@
                    [IATS(ms)....: 23.9,25.1,18.2,72.5,4.9,71.3,152.2,249.5,985.6,26.7,1397.2,519.1,299.5,499.9,482.3,40.5,55.6,206.8,137.1,537.5,535.2,174.3,571.8,776.0,198.8,230.5,89.9,284.0,128.1,116.3,110.5]
                    [PKTLENS.....: 64,60,52,409,570,1500,52,1500,52,80,80,1500,72,1500,64,1500,1500,1500,52,1500,52,1500,52,52,1500,52,1500,1500,52,1500,52,1500]
                    [ENTROPIES...: 4.6,5.3,5.0,6.4,5.8,4.5,5.0,4.2,5.0,5.3,5.3,4.4,5.3,4.4,5.2,4.3,4.5,4.3,5.1,4.3,5.1,4.3,5.1,5.2,4.5,5.0,4.7,4.7,5.1,4.7,5.2,4.7]
-          analyse: [....43] [ip4][..tcp] [....192.168.1.7][53182] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable]
+          analyse: [....43] [ip4][..tcp] [....192.168.1.7][53182] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.141]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     2.716|     0.300|     0.539|       290723.889|    3.600]
                    [PKTLEN......:     52.000|  1500.000|   492.600|   638.800|       408052.900|    3.900]
@@ -298,7 +298,7 @@
                    [IATS(ms)....: 61.7,63.1,19.4,172.7,0.3,153.9,1162.5,94.2,1.4,12.3,104.3,65.9,674.7,41.5,40.0,488.9,2716.4,44.9,75.7,28.7,32.8,29.5,133.6,256.1,743.0,71.3,1131.5,569.7,135.4,73.6,104.1]
                    [PKTLENS.....: 64,60,52,410,570,1500,52,80,72,72,72,72,72,72,64,52,52,1500,1500,52,1500,52,1500,52,1500,64,52,1500,52,1500,1500,52]
                    [ENTROPIES...: 4.6,5.4,5.1,6.4,5.8,4.4,5.2,5.3,5.4,5.3,5.4,5.3,5.3,5.3,5.3,5.2,5.0,4.6,4.5,5.1,4.6,5.0,4.5,5.0,4.6,5.2,5.1,4.3,5.0,4.4,4.5,5.1]
-          analyse: [....35] [ip4][..tcp] [....192.168.1.7][53174] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable]
+          analyse: [....35] [ip4][..tcp] [....192.168.1.7][53174] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.141]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     3.094|     0.303|     0.556|       309287.715|    3.700]
                    [PKTLEN......:     52.000|  1500.000|   447.800|   616.500|       380048.700|    3.800]
@@ -308,7 +308,7 @@
                    [IATS(ms)....: 20.0,22.2,5.3,69.1,0.1,72.2,626.0,607.0,26.6,520.3,51.5,55.5,593.2,41.7,80.3,418.0,3094.3,65.6,425.7,470.0,40.8,85.0,52.1,54.3,117.7,383.1,387.3,709.4,53.7,73.8,158.6]
                    [PKTLENS.....: 64,60,52,410,570,1500,52,72,72,72,72,64,64,72,64,52,52,1500,64,64,1500,1500,52,1500,52,1500,52,64,1500,64,1500,52]
                    [ENTROPIES...: 4.5,5.3,5.1,6.4,5.8,4.4,5.1,5.3,5.4,5.4,5.2,5.3,5.2,5.3,5.3,5.3,5.1,4.7,5.2,5.2,4.7,4.7,5.1,4.7,5.1,4.6,5.2,5.3,4.4,5.3,4.5,5.2]
-          analyse: [....42] [ip4][..tcp] [....192.168.1.7][53181] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable]
+          analyse: [....42] [ip4][..tcp] [....192.168.1.7][53181] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.141]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     2.609|     0.294|     0.529|       280024.056|    3.500]
                    [PKTLEN......:     52.000|  1500.000|   449.200|   615.600|       378913.200|    3.800]
@@ -318,7 +318,7 @@
                    [IATS(ms)....: 61.9,63.0,9.0,155.1,0.3,150.1,1152.4,92.1,0.5,591.4,113.7,141.7,52.3,0.5,39.9,381.1,2608.5,28.2,68.2,27.2,29.6,26.6,56.5,81.7,44.8,43.7,497.4,496.6,1208.9,807.4,91.6]
                    [PKTLENS.....: 64,60,52,411,569,1500,52,80,80,80,80,72,64,64,64,52,64,1500,1500,52,1500,52,1500,1500,52,1500,52,64,52,1500,72,72]
                    [ENTROPIES...: 4.6,5.3,5.1,6.4,5.8,4.4,5.1,5.4,5.3,5.3,5.3,5.3,5.2,5.2,5.2,5.2,5.2,5.0,5.0,5.2,5.0,5.0,5.0,5.0,5.2,5.0,5.0,5.1,5.0,4.7,5.2,5.3]
-          analyse: [....33] [ip4][..tcp] [....192.168.1.7][53172] -> [..23.246.11.133][...80] [HTTP][NetFlix][Download][Acceptable]
+          analyse: [....33] [ip4][..tcp] [....192.168.1.7][53172] -> [..23.246.11.133][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.133]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     3.064|     0.322|     0.577|       332375.130|    3.600]
                    [PKTLEN......:     52.000|  1500.000|   495.000|   637.200|       406023.800|    3.900]
@@ -328,7 +328,7 @@
                    [IATS(ms)....: 11.7,15.7,2.4,60.2,1.2,0.1,57.1,107.8,316.9,313.9,536.7,811.2,71.2,122.5,693.7,84.7,585.6,3064.5,52.8,57.9,98.4,231.5,526.2,115.1,0.7,585.7,117.7,1178.9,25.8,79.1,64.3]
                    [PKTLENS.....: 64,60,52,410,570,1500,1500,52,52,1500,52,80,80,80,80,72,64,72,1500,72,1500,64,1500,80,64,52,64,52,1500,52,1500,1500]
                    [ENTROPIES...: 4.5,5.2,5.0,6.3,5.8,4.5,4.2,5.1,5.0,3.8,5.0,5.1,5.1,5.2,5.2,5.2,5.1,5.2,4.3,5.2,4.2,5.0,4.3,5.1,5.1,5.1,5.1,5.1,4.5,5.1,4.5,4.5]
-          analyse: [....39] [ip4][..tcp] [....192.168.1.7][53178] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable]
+          analyse: [....39] [ip4][..tcp] [....192.168.1.7][53178] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.141]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     3.546|     0.356|     0.683|       466078.499|    3.500]
                    [PKTLEN......:     52.000|  1500.000|   493.200|   638.400|       407523.400|    3.900]
@@ -338,7 +338,7 @@
                    [IATS(ms)....: 43.2,45.3,13.2,106.7,4.9,97.9,1317.7,102.1,98.2,0.2,515.8,59.8,1148.4,57.2,54.9,165.2,3546.3,68.4,92.3,156.0,131.0,70.0,95.9,104.0,104.5,205.1,729.4,92.0,551.2,1189.4,68.2]
                    [PKTLENS.....: 64,60,52,409,570,1500,52,80,80,72,72,72,72,72,64,64,52,1500,52,1500,52,1500,1500,52,1500,52,1500,64,52,52,1500,1500]
                    [ENTROPIES...: 4.5,5.3,5.0,6.4,5.8,4.5,5.1,5.4,5.4,5.4,5.3,5.4,5.4,5.3,5.3,5.3,5.3,4.4,5.2,4.5,5.0,4.5,4.5,5.2,4.5,5.1,4.5,5.3,5.2,5.0,4.4,4.4]
-          analyse: [....40] [ip4][..tcp] [....192.168.1.7][53179] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable]
+          analyse: [....40] [ip4][..tcp] [....192.168.1.7][53179] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.141]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     4.457|     0.415|     0.811|       658300.731|    3.600]
                    [PKTLEN......:     52.000|  1500.000|   538.100|   656.800|       431419.800|    3.900]
@@ -348,7 +348,7 @@
                    [IATS(ms)....: 41.4,43.5,2.9,82.1,0.1,78.7,1252.1,77.7,132.2,0.8,525.3,100.7,510.0,513.0,40.3,4457.1,87.0,1393.0,522.4,574.9,39.6,91.2,57.6,58.1,139.0,449.1,380.1,69.9,139.5,473.4,516.8]
                    [PKTLENS.....: 64,60,52,410,570,1500,52,80,80,72,72,72,72,72,64,64,1500,1500,52,52,1500,1500,52,1500,52,1500,52,1500,1500,52,52,1500]
                    [ENTROPIES...: 4.5,5.3,5.0,6.4,5.8,4.4,5.1,5.3,5.4,5.4,5.4,5.4,5.3,5.3,5.2,5.2,4.4,4.5,5.1,5.2,4.4,4.5,5.2,4.4,5.1,4.5,5.2,4.3,4.3,5.2,5.2,4.4]
-          analyse: [....37] [ip4][..tcp] [....192.168.1.7][53176] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable]
+          analyse: [....37] [ip4][..tcp] [....192.168.1.7][53176] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.141]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     4.432|     0.435|     0.814|       663375.512|    3.600]
                    [PKTLEN......:     52.000|  1500.000|   404.200|   589.200|       347103.400|    3.700]
@@ -429,7 +429,7 @@
                    [IATS(ms)....: 69.5,71.0,2.6,55.6,49.1,64.4,167.9,331.9,332.6,26.5,0.7,0.7,87.7,0.5,60.7,8.8,7.1,0.4,81.1,62.8,0.8,0.2,0.1,68.1,67.1,0.8,0.2,0.1,111.2,109.6,2.5]
                    [PKTLENS.....: 64,60,52,281,52,1500,1500,52,215,52,127,58,97,52,103,52,1403,1500,1500,52,1500,1500,1500,1500,52,1500,1500,1500,1500,52,1500,1500]
                    [ENTROPIES...: 4.6,5.3,5.2,5.8,5.1,7.2,7.3,5.2,6.9,5.2,6.2,5.1,6.1,5.2,6.0,5.2,7.9,7.9,7.9,5.2,7.9,7.8,7.9,7.9,5.2,7.9,7.9,7.9,7.9,5.2,7.9,7.9]
-          analyse: [....44] [ip4][..tcp] [....192.168.1.7][53183] -> [...23.246.3.140][...80] [HTTP][NetFlix][Download][Acceptable]
+          analyse: [....44] [ip4][..tcp] [....192.168.1.7][53183] -> [...23.246.3.140][...80] [HTTP][NetFlix][Download][Acceptable][23.246.3.140]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........:      0.005|     0.731|     0.102|     0.156|        24231.225|    4.000]
                    [PKTLEN......:     52.000|  1500.000|   648.300|   653.400|       426995.300|    4.200]
@@ -444,20 +444,20 @@
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
  detection-update: [....50] [ip4][..tcp] [....192.168.1.7][53210] -> [..23.246.11.133][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.133]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary File/Data Transfer (Attempt)
-           update: [....10] [ip4][..udp] [....192.168.1.7][53776] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable]
-           update: [.....2] [ip4][..udp] [....192.168.1.7][51543] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun]
-           update: [....17] [ip4][..udp] [....192.168.1.7][57719] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun]
-           update: [....13] [ip4][..udp] [....192.168.1.7][51949] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun]
-           update: [.....3] [ip4][..udp] [....192.168.1.7][52116] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun]
+           update: [....10] [ip4][..udp] [....192.168.1.7][53776] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
+           update: [.....2] [ip4][..udp] [....192.168.1.7][51543] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ios.nccp.netflix.com]
+           update: [....17] [ip4][..udp] [....192.168.1.7][57719] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][sha2.san.akam.nflximg.net]
+           update: [....13] [ip4][..udp] [....192.168.1.7][51949] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][api-global.latency.prodaa.netflix.com]
+           update: [.....3] [ip4][..udp] [....192.168.1.7][52116] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ichnaea.us-west-2.prodaa.netflix.com]
               new: [....51] [ip4][..tcp] [....192.168.1.7][53217] -> [..23.246.11.141][...80]
          detected: [....51] [ip4][..tcp] [....192.168.1.7][53217] -> [..23.246.11.141][...80] [HTTP][NetFlix][Web][Acceptable][23.246.11.141]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
  detection-update: [....51] [ip4][..tcp] [....192.168.1.7][53217] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.141]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary File/Data Transfer (Attempt)
-           update: [....19] [ip4][..udp] [....192.168.1.7][59180] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun]
-           update: [....26] [ip4][..udp] [....192.168.1.7][51728] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
-           update: [....23] [ip4][..udp] [....192.168.1.7][58102] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun]
-           update: [....27] [ip4][..udp] [....192.168.1.7][52347] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun]
+           update: [....19] [ip4][..udp] [....192.168.1.7][59180] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][artwork.akam.nflximg.net]
+           update: [....26] [ip4][..udp] [....192.168.1.7][51728] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][a803.dscg.akamai.net]
+           update: [....23] [ip4][..udp] [....192.168.1.7][58102] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][appboot.netflix.com]
+           update: [....27] [ip4][..udp] [....192.168.1.7][52347] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ios.nccp.netflix.com]
               new: [....52] [ip4][..udp] [....192.168.1.7][51622] -> [....192.168.1.1][...53]
          detected: [....52] [ip4][..udp] [....192.168.1.7][51622] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ios.nccp.netflix.com]
  detection-update: [....52] [ip4][..udp] [....192.168.1.7][51622] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ios.nccp.netflix.com]
@@ -494,7 +494,7 @@
                    RISK: TLS (probably) Not Carrying HTTPS
  detection-update: [....58] [ip4][..tcp] [....192.168.1.7][53250] -> [.....52.41.30.5][..443] [TLS.NetFlix][AmazonAWS][Video][Fun][api-global.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-          analyse: [....57] [ip4][..tcp] [....192.168.1.7][53249] -> [.....52.41.30.5][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
+          analyse: [....57] [ip4][..tcp] [....192.168.1.7][53249] -> [.....52.41.30.5][..443] [TLS.NetFlix][AmazonAWS][Video][Fun][api-global.netflix.com]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.141|     0.020|     0.029|          838.464|    3.900]
                    [PKTLEN......:     52.000|  1500.000|   420.800|   506.400|       256458.000|    4.100]
@@ -521,7 +521,7 @@
                    [IATS(ms)....: 58.3,61.2,1.8,70.6,2.9,1.0,71.3,11.6,12.3,13.1,0.1,0.1,65.7,0.8,52.3,3.6,0.2,91.6,51.8,0.3,140.2,3.7,3.4,3.9,5.5,6.4,5.0,437.2,0.9,500.9,291.9]
                    [PKTLENS.....: 64,60,52,569,52,1500,1500,52,245,52,127,58,97,52,103,52,1500,789,52,1500,476,52,448,52,751,52,86,52,1500,672,52,1500]
                    [ENTROPIES...: 4.6,5.3,5.2,4.1,5.0,7.3,7.3,5.2,7.0,5.2,6.3,5.1,6.0,5.1,6.0,5.2,7.9,7.8,5.2,7.9,7.5,5.2,7.6,5.1,7.7,5.2,6.0,5.2,7.9,7.7,5.0,7.9]
-          analyse: [....61] [ip4][..tcp] [....192.168.1.7][53252] -> [..184.25.204.10][...80] [HTTP.NetFlix][Unknown][Video][Fun]
+          analyse: [....61] [ip4][..tcp] [....192.168.1.7][53252] -> [..184.25.204.10][...80] [HTTP.NetFlix][Unknown][Video][Fun][art-1.nflximg.net]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.100|     0.036|     0.022|          464.586|    4.700]
                    [PKTLEN......:     52.000|  1500.000|  1146.700|   613.300|       376142.500|    4.700]
@@ -531,7 +531,7 @@
                    [IATS(ms)....: 16.7,17.7,12.0,38.5,0.5,12.7,40.1,27.1,27.1,58.5,99.8,81.1,33.9,23.7,53.8,53.8,65.1,48.0,65.4,13.9,30.9,13.3,28.7,40.4,54.5,28.8,29.4,29.4,27.5,25.5,25.5]
                    [PKTLENS.....: 64,60,52,297,52,1500,1500,52,1500,52,1500,64,1500,1500,1500,1500,1500,1500,1500,1500,1500,1500,1500,1500,1500,1500,1500,1500,1500,1500,1500,1500]
                    [ENTROPIES...: 4.5,5.2,5.2,5.9,5.3,7.0,7.5,5.1,7.7,5.1,7.7,5.2,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.9,7.8,7.9,7.8,7.9,7.8,7.9,7.9,7.8,7.8]
-          analyse: [....60] [ip4][..tcp] [....192.168.1.7][53251] -> [..184.25.204.10][...80] [HTTP.NetFlix][Unknown][Video][Fun]
+          analyse: [....60] [ip4][..tcp] [....192.168.1.7][53251] -> [..184.25.204.10][...80] [HTTP.NetFlix][Unknown][Video][Fun][art-1.nflximg.net]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     1.416|     0.126|     0.341|       116136.157|    2.600]
                    [PKTLEN......:     52.000|  1500.000|   767.500|   698.900|       488505.900|    4.300]
@@ -541,10 +541,10 @@
                    [IATS(ms)....: 15.4,16.8,2.1,27.2,1.0,1.1,27.3,38.1,39.4,39.9,44.7,83.4,40.7,236.7,277.7,1389.8,1416.3,0.3,12.8,48.7,0.2,12.8,12.8,15.9,13.8,16.3,12.8,12.7,23.2,13.3,13.2]
                    [PKTLENS.....: 64,60,52,297,52,1500,1500,52,1500,52,1500,1500,52,1500,719,52,297,1500,1500,1500,52,52,1500,1500,52,1500,52,1500,1500,52,1500,52]
                    [ENTROPIES...: 4.5,5.2,5.1,5.9,5.3,7.3,7.8,5.2,7.8,5.0,7.8,7.8,5.1,7.8,7.7,5.2,5.8,6.9,7.5,7.8,5.1,5.0,7.8,7.8,5.0,7.9,4.9,7.8,7.8,5.1,7.8,5.1]
-             idle: [....18] [ip4][..tcp] [....192.168.1.7][53141] -> [..104.86.97.179][..443] [TLS.NetFlix][Unknown][Video][Fun]
+             idle: [....18] [ip4][..tcp] [....192.168.1.7][53141] -> [..104.86.97.179][..443] [TLS.NetFlix][Unknown][Video][Fun][art-s.nflximg.net]
              idle: [....12] [ip4][....2] [....192.168.1.7] -> [239.255.255.250] [IGMP][Unknown][Network][Acceptable]
-             idle: [....59] [ip4][..udp] [....192.168.1.7][57093] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
-             idle: [....19] [ip4][..udp] [....192.168.1.7][59180] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun]
+             idle: [....59] [ip4][..udp] [....192.168.1.7][57093] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][a1907.dscg.akamai.net]
+             idle: [....19] [ip4][..udp] [....192.168.1.7][59180] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][artwork.akam.nflximg.net]
               end: [.....5] [ip4][..tcp] [....192.168.1.7][53114] -> [...54.191.17.51][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
                    RISK: TLS (probably) Not Carrying HTTPS
               end: [....29] [ip4][..tcp] [....192.168.1.7][53162] -> [...54.191.17.51][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
@@ -554,85 +554,85 @@
               end: [.....1] [ip4][..tcp] [....192.168.1.7][52929] -> [.....52.24.87.6][..443]
              idle: [....46] [ip4][..tcp] [....192.168.1.7][53193] -> [...54.191.17.51][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
                    RISK: TLS (probably) Not Carrying HTTPS
-              end: [....47] [ip4][..tcp] [....192.168.1.7][53202] -> [...54.191.17.51][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
+              end: [....47] [ip4][..tcp] [....192.168.1.7][53202] -> [...54.191.17.51][..443] [TLS.NetFlix][AmazonAWS][Video][Fun][ios.nccp.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-              end: [....25] [ip4][..tcp] [....192.168.1.7][53152] -> [...52.89.39.139][...80] [HTTP.NetFlix][AmazonAWS][Video][Fun]
-              end: [....24] [ip4][..tcp] [....192.168.1.7][53151] -> [.54.201.191.132][...80] [HTTP.NetFlix][AmazonAWS][Video][Fun]
+              end: [....25] [ip4][..tcp] [....192.168.1.7][53152] -> [...52.89.39.139][...80] [HTTP.NetFlix][AmazonAWS][Video][Fun][api-global.netflix.com]
+              end: [....24] [ip4][..tcp] [....192.168.1.7][53151] -> [.54.201.191.132][...80] [HTTP.NetFlix][AmazonAWS][Video][Fun][appboot.netflix.com]
               end: [.....6] [ip4][..tcp] [....192.168.1.7][53115] -> [...52.32.196.36][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
              idle: [.....7] [ip4][..tcp] [....192.168.1.7][53116] -> [...52.32.196.36][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
-              end: [.....8] [ip4][..tcp] [....192.168.1.7][53117] -> [...52.32.196.36][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
+              end: [.....8] [ip4][..tcp] [....192.168.1.7][53117] -> [...52.32.196.36][..443] [TLS.NetFlix][AmazonAWS][Video][Fun][api-global.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-             idle: [....10] [ip4][..udp] [....192.168.1.7][53776] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable]
-              end: [....20] [ip4][..tcp] [....192.168.1.7][53148] -> [..184.25.204.25][...80] [HTTP.NetFlix][Unknown][Video][Fun]
-             idle: [....21] [ip4][..tcp] [....192.168.1.7][53149] -> [..184.25.204.25][...80] [HTTP.NetFlix][Unknown][Video][Fun]
-              end: [....22] [ip4][..tcp] [....192.168.1.7][53150] -> [..184.25.204.25][...80] [HTTP.NetFlix][Unknown][Video][Fun]
-             idle: [....28] [ip4][..tcp] [....192.168.1.7][53153] -> [..184.25.204.24][...80] [HTTP.NetFlix][Unknown][Video][Fun]
+             idle: [....10] [ip4][..udp] [....192.168.1.7][53776] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
+              end: [....20] [ip4][..tcp] [....192.168.1.7][53148] -> [..184.25.204.25][...80] [HTTP.NetFlix][Unknown][Video][Fun][art-2.nflximg.net]
+             idle: [....21] [ip4][..tcp] [....192.168.1.7][53149] -> [..184.25.204.25][...80] [HTTP.NetFlix][Unknown][Video][Fun][art-2.nflximg.net]
+              end: [....22] [ip4][..tcp] [....192.168.1.7][53150] -> [..184.25.204.25][...80] [HTTP.NetFlix][Unknown][Video][Fun][art-2.nflximg.net]
+             idle: [....28] [ip4][..tcp] [....192.168.1.7][53153] -> [..184.25.204.24][...80] [HTTP.NetFlix][Unknown][Video][Fun][tp.akam.nflximg.com]
                    RISK: HTTP Susp Content
               end: [....53] [ip4][..tcp] [....192.168.1.7][53238] -> [...52.32.22.214][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
                    RISK: TLS (probably) Not Carrying HTTPS
              idle: [....56] [ip4][..tcp] [....192.168.1.7][53248] -> [...52.32.22.214][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
                    RISK: TLS (probably) Not Carrying HTTPS
-             idle: [....60] [ip4][..tcp] [....192.168.1.7][53251] -> [..184.25.204.10][...80] [HTTP.NetFlix][Unknown][Video][Fun]
-             idle: [....61] [ip4][..tcp] [....192.168.1.7][53252] -> [..184.25.204.10][...80] [HTTP.NetFlix][Unknown][Video][Fun]
-             idle: [.....2] [ip4][..udp] [....192.168.1.7][51543] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun]
-             idle: [....17] [ip4][..udp] [....192.168.1.7][57719] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun]
-              end: [....14] [ip4][..tcp] [....192.168.1.7][53132] -> [...52.89.39.139][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
+             idle: [....60] [ip4][..tcp] [....192.168.1.7][53251] -> [..184.25.204.10][...80] [HTTP.NetFlix][Unknown][Video][Fun][art-1.nflximg.net]
+             idle: [....61] [ip4][..tcp] [....192.168.1.7][53252] -> [..184.25.204.10][...80] [HTTP.NetFlix][Unknown][Video][Fun][art-1.nflximg.net]
+             idle: [.....2] [ip4][..udp] [....192.168.1.7][51543] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ios.nccp.netflix.com]
+             idle: [....17] [ip4][..udp] [....192.168.1.7][57719] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][sha2.san.akam.nflximg.net]
+              end: [....14] [ip4][..tcp] [....192.168.1.7][53132] -> [...52.89.39.139][..443] [TLS.NetFlix][AmazonAWS][Video][Fun][api-global.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-              end: [....15] [ip4][..tcp] [....192.168.1.7][53133] -> [...52.89.39.139][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
+              end: [....15] [ip4][..tcp] [....192.168.1.7][53133] -> [...52.89.39.139][..443] [TLS.NetFlix][AmazonAWS][Video][Fun][api-global.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-              end: [....16] [ip4][..tcp] [....192.168.1.7][53134] -> [...52.89.39.139][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
+              end: [....16] [ip4][..tcp] [....192.168.1.7][53134] -> [...52.89.39.139][..443] [TLS.NetFlix][AmazonAWS][Video][Fun][api-global.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-             idle: [....52] [ip4][..udp] [....192.168.1.7][51622] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun]
-             idle: [....55] [ip4][..tcp] [....192.168.1.7][53239] -> [.....52.41.30.5][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
-             idle: [....57] [ip4][..tcp] [....192.168.1.7][53249] -> [.....52.41.30.5][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
+             idle: [....52] [ip4][..udp] [....192.168.1.7][51622] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ios.nccp.netflix.com]
+             idle: [....55] [ip4][..tcp] [....192.168.1.7][53239] -> [.....52.41.30.5][..443] [TLS.NetFlix][AmazonAWS][Video][Fun][api-global.netflix.com]
+             idle: [....57] [ip4][..tcp] [....192.168.1.7][53249] -> [.....52.41.30.5][..443] [TLS.NetFlix][AmazonAWS][Video][Fun][api-global.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-             idle: [....58] [ip4][..tcp] [....192.168.1.7][53250] -> [.....52.41.30.5][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
+             idle: [....58] [ip4][..tcp] [....192.168.1.7][53250] -> [.....52.41.30.5][..443] [TLS.NetFlix][AmazonAWS][Video][Fun][api-global.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-             idle: [....26] [ip4][..udp] [....192.168.1.7][51728] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
-             idle: [....13] [ip4][..udp] [....192.168.1.7][51949] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun]
-             idle: [....23] [ip4][..udp] [....192.168.1.7][58102] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun]
-             idle: [....54] [ip4][..udp] [....192.168.1.7][52095] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun]
-             idle: [.....3] [ip4][..udp] [....192.168.1.7][52116] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun]
-             idle: [....27] [ip4][..udp] [....192.168.1.7][52347] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun]
-              end: [....30] [ip4][..tcp] [....192.168.1.7][53163] -> [..23.246.11.145][...80] [HTTP][NetFlix][Download][Acceptable]
+             idle: [....26] [ip4][..udp] [....192.168.1.7][51728] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][a803.dscg.akamai.net]
+             idle: [....13] [ip4][..udp] [....192.168.1.7][51949] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][api-global.latency.prodaa.netflix.com]
+             idle: [....23] [ip4][..udp] [....192.168.1.7][58102] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][appboot.netflix.com]
+             idle: [....54] [ip4][..udp] [....192.168.1.7][52095] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][api-global.latency.prodaa.netflix.com]
+             idle: [.....3] [ip4][..udp] [....192.168.1.7][52116] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ichnaea.us-west-2.prodaa.netflix.com]
+             idle: [....27] [ip4][..udp] [....192.168.1.7][52347] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ios.nccp.netflix.com]
+              end: [....30] [ip4][..tcp] [....192.168.1.7][53163] -> [..23.246.11.145][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.145]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary File/Data Transfer (Attempt)
-             idle: [....31] [ip4][..tcp] [....192.168.1.7][53164] -> [..23.246.10.139][...80] [HTTP][NetFlix][Download][Acceptable]
+             idle: [....31] [ip4][..tcp] [....192.168.1.7][53164] -> [..23.246.10.139][...80] [HTTP][NetFlix][Download][Acceptable][23.246.10.139]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary File/Data Transfer (Attempt)
-              end: [....32] [ip4][..tcp] [....192.168.1.7][53171] -> [...23.246.3.140][...80] [HTTP][NetFlix][Download][Acceptable]
+              end: [....32] [ip4][..tcp] [....192.168.1.7][53171] -> [...23.246.3.140][...80] [HTTP][NetFlix][Download][Acceptable][23.246.3.140]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary File/Data Transfer (Attempt)
-              end: [....33] [ip4][..tcp] [....192.168.1.7][53172] -> [..23.246.11.133][...80] [HTTP][NetFlix][Download][Acceptable]
+              end: [....33] [ip4][..tcp] [....192.168.1.7][53172] -> [..23.246.11.133][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.133]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary File/Data Transfer (Attempt)
-              end: [....34] [ip4][..tcp] [....192.168.1.7][53173] -> [..23.246.11.133][...80] [HTTP][NetFlix][Download][Acceptable]
+              end: [....34] [ip4][..tcp] [....192.168.1.7][53173] -> [..23.246.11.133][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.133]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary File/Data Transfer (Attempt)
-              end: [....35] [ip4][..tcp] [....192.168.1.7][53174] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable]
+              end: [....35] [ip4][..tcp] [....192.168.1.7][53174] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.141]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary File/Data Transfer (Attempt)
-              end: [....36] [ip4][..tcp] [....192.168.1.7][53175] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable]
+              end: [....36] [ip4][..tcp] [....192.168.1.7][53175] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.141]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary File/Data Transfer (Attempt)
-              end: [....37] [ip4][..tcp] [....192.168.1.7][53176] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable]
+              end: [....37] [ip4][..tcp] [....192.168.1.7][53176] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.141]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary File/Data Transfer (Attempt)
-              end: [....38] [ip4][..tcp] [....192.168.1.7][53177] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable]
+              end: [....38] [ip4][..tcp] [....192.168.1.7][53177] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.141]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary File/Data Transfer (Attempt)
-              end: [....39] [ip4][..tcp] [....192.168.1.7][53178] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable]
+              end: [....39] [ip4][..tcp] [....192.168.1.7][53178] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.141]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary File/Data Transfer (Attempt)
-              end: [....40] [ip4][..tcp] [....192.168.1.7][53179] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable]
+              end: [....40] [ip4][..tcp] [....192.168.1.7][53179] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.141]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary File/Data Transfer (Attempt)
-              end: [....41] [ip4][..tcp] [....192.168.1.7][53180] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable]
+              end: [....41] [ip4][..tcp] [....192.168.1.7][53180] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.141]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary File/Data Transfer (Attempt)
-              end: [....42] [ip4][..tcp] [....192.168.1.7][53181] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable]
+              end: [....42] [ip4][..tcp] [....192.168.1.7][53181] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.141]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary File/Data Transfer (Attempt)
-              end: [....43] [ip4][..tcp] [....192.168.1.7][53182] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable]
+              end: [....43] [ip4][..tcp] [....192.168.1.7][53182] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.141]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary File/Data Transfer (Attempt)
-             idle: [....44] [ip4][..tcp] [....192.168.1.7][53183] -> [...23.246.3.140][...80] [HTTP][NetFlix][Download][Acceptable]
+             idle: [....44] [ip4][..tcp] [....192.168.1.7][53183] -> [...23.246.3.140][...80] [HTTP][NetFlix][Download][Acceptable][23.246.3.140]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary File/Data Transfer (Attempt)
-             idle: [....45] [ip4][..tcp] [....192.168.1.7][53184] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable]
+             idle: [....45] [ip4][..tcp] [....192.168.1.7][53184] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.141]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary File/Data Transfer (Attempt)
-             idle: [....50] [ip4][..tcp] [....192.168.1.7][53210] -> [..23.246.11.133][...80] [HTTP][NetFlix][Download][Acceptable]
+             idle: [....50] [ip4][..tcp] [....192.168.1.7][53210] -> [..23.246.11.133][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.133]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary File/Data Transfer (Attempt)
-             idle: [....51] [ip4][..tcp] [....192.168.1.7][53217] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable]
+             idle: [....51] [ip4][..tcp] [....192.168.1.7][53217] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.141]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary File/Data Transfer (Attempt)
-              end: [.....4] [ip4][..tcp] [....192.168.1.7][53105] -> [..54.69.204.241][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
-              end: [.....9] [ip4][..tcp] [....192.168.1.7][53118] -> [..54.69.204.241][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
-              end: [....11] [ip4][..tcp] [....192.168.1.7][53119] -> [..54.69.204.241][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
-              end: [....49] [ip4][..tcp] [....192.168.1.7][53203] -> [...52.37.36.252][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
-             idle: [....48] [ip4][..udp] [....192.168.1.7][60962] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun]
+              end: [.....4] [ip4][..tcp] [....192.168.1.7][53105] -> [..54.69.204.241][..443] [TLS.NetFlix][AmazonAWS][Video][Fun][ichnaea.netflix.com]
+              end: [.....9] [ip4][..tcp] [....192.168.1.7][53118] -> [..54.69.204.241][..443] [TLS.NetFlix][AmazonAWS][Video][Fun][ichnaea.netflix.com]
+              end: [....11] [ip4][..tcp] [....192.168.1.7][53119] -> [..54.69.204.241][..443] [TLS.NetFlix][AmazonAWS][Video][Fun][ichnaea.netflix.com]
+              end: [....49] [ip4][..tcp] [....192.168.1.7][53203] -> [...52.37.36.252][..443] [TLS.NetFlix][AmazonAWS][Video][Fun][ichnaea.netflix.com]
+             idle: [....48] [ip4][..udp] [....192.168.1.7][60962] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ichnaea.geo.netflix.com]
      DAEMON-EVENT: shutdown
