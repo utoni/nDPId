@@ -102,12 +102,12 @@ static struct
 #ifdef ENABLE_EPOLL
     uint8_t use_poll;
 #endif
-} nDPIsrvd_options = {.pidfile = CMDARG(nDPIsrvd_PIDFILE),
-                      .collector_un_sockpath = CMDARG(COLLECTOR_UNIX_SOCKET),
-                      .distributor_un_sockpath = CMDARG(DISTRIBUTOR_UNIX_SOCKET),
-                      .distributor_in_address = CMDARG(NULL),
-                      .user = CMDARG(DEFAULT_CHUSER),
-                      .group = CMDARG(NULL),
+} nDPIsrvd_options = {.pidfile = CMDARG_STR(nDPIsrvd_PIDFILE),
+                      .collector_un_sockpath = CMDARG_STR(COLLECTOR_UNIX_SOCKET),
+                      .distributor_un_sockpath = CMDARG_STR(DISTRIBUTOR_UNIX_SOCKET),
+                      .distributor_in_address = CMDARG_STR(NULL),
+                      .user = CMDARG_STR(DEFAULT_CHUSER),
+                      .group = CMDARG_STR(NULL),
                       .max_remote_descriptors = nDPIsrvd_MAX_REMOTE_DESCRIPTORS,
                       .max_write_buffers = nDPIsrvd_MAX_WRITE_BUFFERS,
                       .bufferbloat_fallback_to_blocking = 1};
@@ -498,7 +498,7 @@ static int create_listen_sockets(void)
         return 1;
     }
 
-    if (is_cmdarg_set(&nDPIsrvd_options.distributor_in_address) != 0)
+    if (IS_CMDARG_SET(nDPIsrvd_options.distributor_in_address) != 0)
     {
         distributor_in_sockfd = socket(distributor_in_address.raw.sa_family, SOCK_STREAM, 0);
         if (distributor_in_sockfd < 0 || set_fd_cloexec(distributor_in_sockfd) < 0)
@@ -528,7 +528,7 @@ static int create_listen_sockets(void)
         int written = snprintf(collector_addr.sun_path,
                                sizeof(collector_addr.sun_path),
                                "%s",
-                               get_cmdarg(&nDPIsrvd_options.collector_un_sockpath));
+                               GET_CMDARG_STR(nDPIsrvd_options.collector_un_sockpath));
         if (written < 0)
         {
             logger(1, "snprintf failed: %s", strerror(errno));
@@ -538,7 +538,7 @@ static int create_listen_sockets(void)
         {
             logger(1,
                    "Collector UNIX socket path too long, current/max: %zu/%zu",
-                   strlen(get_cmdarg(&nDPIsrvd_options.collector_un_sockpath)),
+                   strlen(GET_CMDARG_STR(nDPIsrvd_options.collector_un_sockpath)),
                    sizeof(collector_addr.sun_path) - 1);
             return 1;
         }
@@ -547,7 +547,7 @@ static int create_listen_sockets(void)
         {
             logger(1,
                    "Error binding Collector UNIX socket to `%s': %s",
-                   get_cmdarg(&nDPIsrvd_options.collector_un_sockpath),
+                   GET_CMDARG_STR(nDPIsrvd_options.collector_un_sockpath),
                    strerror(errno));
             return 1;
         }
@@ -559,7 +559,7 @@ static int create_listen_sockets(void)
         int written = snprintf(distributor_addr.sun_path,
                                sizeof(distributor_addr.sun_path),
                                "%s",
-                               get_cmdarg(&nDPIsrvd_options.distributor_un_sockpath));
+                               GET_CMDARG_STR(nDPIsrvd_options.distributor_un_sockpath));
         if (written < 0)
         {
             logger(1, "snprintf failed: %s", strerror(errno));
@@ -569,7 +569,7 @@ static int create_listen_sockets(void)
         {
             logger(1,
                    "Distributor UNIX socket path too long, current/max: %zu/%zu",
-                   strlen(get_cmdarg(&nDPIsrvd_options.distributor_un_sockpath)),
+                   strlen(GET_CMDARG_STR(nDPIsrvd_options.distributor_un_sockpath)),
                    sizeof(distributor_addr.sun_path) - 1);
             return 2;
         }
@@ -578,19 +578,19 @@ static int create_listen_sockets(void)
         {
             logger(1,
                    "Error binding Distributor socket to `%s': %s",
-                   get_cmdarg(&nDPIsrvd_options.distributor_un_sockpath),
+                   GET_CMDARG_STR(nDPIsrvd_options.distributor_un_sockpath),
                    strerror(errno));
             return 2;
         }
     }
 
-    if (is_cmdarg_set(&nDPIsrvd_options.distributor_in_address) != 0)
+    if (IS_CMDARG_SET(nDPIsrvd_options.distributor_in_address) != 0)
     {
         if (bind(distributor_in_sockfd, &distributor_in_address.raw, distributor_in_address.size) < 0)
         {
             logger(1,
                    "Error binding Distributor TCP/IP socket to %s: %s",
-                   get_cmdarg(&nDPIsrvd_options.distributor_in_address),
+                   GET_CMDARG_STR(nDPIsrvd_options.distributor_in_address),
                    strerror(errno));
             return 3;
         }
@@ -598,7 +598,7 @@ static int create_listen_sockets(void)
         {
             logger(1,
                    "Error listening Distributor TCP/IP socket to %s: %s",
-                   get_cmdarg(&nDPIsrvd_options.distributor_in_address),
+                   GET_CMDARG_STR(nDPIsrvd_options.distributor_in_address),
                    strerror(errno));
             return 3;
         }
@@ -606,7 +606,7 @@ static int create_listen_sockets(void)
         {
             logger(1,
                    "Error setting Distributor TCP/IP socket %s to non-blocking mode: %s",
-                   get_cmdarg(&nDPIsrvd_options.distributor_in_address),
+                   GET_CMDARG_STR(nDPIsrvd_options.distributor_in_address),
                    strerror(errno));
             return 3;
         }
@@ -622,7 +622,7 @@ static int create_listen_sockets(void)
     {
         logger(1,
                "Error setting Collector UNIX socket `%s' to non-blocking mode: %s",
-               get_cmdarg(&nDPIsrvd_options.collector_un_sockpath),
+               GET_CMDARG_STR(nDPIsrvd_options.collector_un_sockpath),
                strerror(errno));
         return 3;
     }
@@ -631,7 +631,7 @@ static int create_listen_sockets(void)
     {
         logger(1,
                "Error setting Distributor UNIX socket `%s' to non-blocking mode: %s",
-               get_cmdarg(&nDPIsrvd_options.distributor_un_sockpath),
+               GET_CMDARG_STR(nDPIsrvd_options.distributor_un_sockpath),
                strerror(errno));
         return 3;
     }
@@ -818,7 +818,7 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
                 }
                 break;
             case 'c':
-                set_cmdarg(&nDPIsrvd_options.collector_un_sockpath, optarg);
+                set_cmdarg_string(&nDPIsrvd_options.collector_un_sockpath, optarg);
                 break;
             case 'e':
 #ifdef ENABLE_EPOLL
@@ -831,13 +831,13 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
                 daemonize_enable();
                 break;
             case 'p':
-                set_cmdarg(&nDPIsrvd_options.pidfile, optarg);
+                set_cmdarg_string(&nDPIsrvd_options.pidfile, optarg);
                 break;
             case 's':
-                set_cmdarg(&nDPIsrvd_options.distributor_un_sockpath, optarg);
+                set_cmdarg_string(&nDPIsrvd_options.distributor_un_sockpath, optarg);
                 break;
             case 'S':
-                set_cmdarg(&nDPIsrvd_options.distributor_in_address, optarg);
+                set_cmdarg_string(&nDPIsrvd_options.distributor_in_address, optarg);
                 break;
             case 'm':
                 if (str_value_to_ull(optarg, &nDPIsrvd_options.max_remote_descriptors) != CONVERSION_OK)
@@ -847,10 +847,10 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
                 }
                 break;
             case 'u':
-                set_cmdarg(&nDPIsrvd_options.user, optarg);
+                set_cmdarg_string(&nDPIsrvd_options.user, optarg);
                 break;
             case 'g':
-                set_cmdarg(&nDPIsrvd_options.group, optarg);
+                set_cmdarg_string(&nDPIsrvd_options.group, optarg);
                 break;
             case 'C':
                 if (str_value_to_ull(optarg, &nDPIsrvd_options.max_write_buffers) != CONVERSION_OK)
@@ -895,37 +895,38 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
                         "\t-v\tversion\n"
                         "\t-h\tthis\n\n",
                         argv[0],
-                        get_cmdarg(&nDPIsrvd_options.collector_un_sockpath),
-                        get_cmdarg(&nDPIsrvd_options.pidfile),
-                        get_cmdarg(&nDPIsrvd_options.user),
-                        get_cmdarg(&nDPIsrvd_options.distributor_un_sockpath));
+                        GET_CMDARG_STR(nDPIsrvd_options.collector_un_sockpath),
+                        GET_CMDARG_STR(nDPIsrvd_options.pidfile),
+                        GET_CMDARG_STR(nDPIsrvd_options.user),
+                        GET_CMDARG_STR(nDPIsrvd_options.distributor_un_sockpath));
                 return 1;
         }
     }
 
-    if (is_path_absolute("Pidfile", get_cmdarg(&nDPIsrvd_options.pidfile)) != 0)
+    if (is_path_absolute("Pidfile", GET_CMDARG_STR(nDPIsrvd_options.pidfile)) != 0)
     {
         return 1;
     }
 
-    if (is_path_absolute("Collector UNIX socket", get_cmdarg(&nDPIsrvd_options.collector_un_sockpath)) != 0)
+    if (is_path_absolute("Collector UNIX socket", GET_CMDARG_STR(nDPIsrvd_options.collector_un_sockpath)) != 0)
     {
         return 1;
     }
 
-    if (is_path_absolute("Distributor UNIX socket", get_cmdarg(&nDPIsrvd_options.distributor_un_sockpath)) != 0)
+    if (is_path_absolute("Distributor UNIX socket", GET_CMDARG_STR(nDPIsrvd_options.distributor_un_sockpath)) != 0)
     {
         return 1;
     }
 
-    if (is_cmdarg_set(&nDPIsrvd_options.distributor_in_address) != 0)
+    if (IS_CMDARG_SET(nDPIsrvd_options.distributor_in_address) != 0)
     {
-        if (nDPIsrvd_setup_address(&distributor_in_address, get_cmdarg(&nDPIsrvd_options.distributor_in_address)) != 0)
+        if (nDPIsrvd_setup_address(&distributor_in_address, GET_CMDARG_STR(nDPIsrvd_options.distributor_in_address)) !=
+            0)
         {
             logger_early(1,
                          "%s: Could not parse address %s",
                          argv[0],
-                         get_cmdarg(&nDPIsrvd_options.distributor_in_address));
+                         GET_CMDARG_STR(nDPIsrvd_options.distributor_in_address));
             return 1;
         }
         if (distributor_in_address.raw.sa_family == AF_UNIX)
@@ -933,8 +934,8 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
             logger_early(1,
                          "%s: You've requested to setup another UNIX socket `%s', but there is already one at `%s'",
                          argv[0],
-                         get_cmdarg(&nDPIsrvd_options.distributor_in_address),
-                         get_cmdarg(&nDPIsrvd_options.distributor_un_sockpath));
+                         GET_CMDARG_STR(nDPIsrvd_options.distributor_in_address),
+                         GET_CMDARG_STR(nDPIsrvd_options.distributor_un_sockpath));
             return 1;
         }
     }
@@ -1604,27 +1605,27 @@ int main(int argc, char ** argv)
         return 1;
     }
 
-    if (access(get_cmdarg(&nDPIsrvd_options.collector_un_sockpath), F_OK) == 0)
+    if (access(GET_CMDARG_STR(nDPIsrvd_options.collector_un_sockpath), F_OK) == 0)
     {
         logger_early(1,
                      "UNIX socket `%s' exists; nDPIsrvd already running? "
                      "Please remove the socket manually or change socket path.",
-                     get_cmdarg(&nDPIsrvd_options.collector_un_sockpath));
+                     GET_CMDARG_STR(nDPIsrvd_options.collector_un_sockpath));
         return 1;
     }
 
-    if (access(get_cmdarg(&nDPIsrvd_options.distributor_un_sockpath), F_OK) == 0)
+    if (access(GET_CMDARG_STR(nDPIsrvd_options.distributor_un_sockpath), F_OK) == 0)
     {
         logger_early(1,
                      "UNIX socket `%s' exists; nDPIsrvd already running? "
                      "Please remove the socket manually or change socket path.",
-                     get_cmdarg(&nDPIsrvd_options.distributor_un_sockpath));
+                     GET_CMDARG_STR(nDPIsrvd_options.distributor_un_sockpath));
         return 1;
     }
 
     log_app_info();
 
-    if (daemonize_with_pidfile(get_cmdarg(&nDPIsrvd_options.pidfile)) != 0)
+    if (daemonize_with_pidfile(GET_CMDARG_STR(nDPIsrvd_options.pidfile)) != 0)
     {
         goto error;
     }
@@ -1641,11 +1642,11 @@ int main(int argc, char ** argv)
         case 1:
             goto error;
         case 2:
-            if (unlink(get_cmdarg(&nDPIsrvd_options.collector_un_sockpath)) != 0)
+            if (unlink(GET_CMDARG_STR(nDPIsrvd_options.collector_un_sockpath)) != 0)
             {
                 logger(1,
                        "Could not unlink `%s': %s",
-                       get_cmdarg(&nDPIsrvd_options.collector_un_sockpath),
+                       GET_CMDARG_STR(nDPIsrvd_options.collector_un_sockpath),
                        strerror(errno));
             }
             goto error;
@@ -1655,8 +1656,8 @@ int main(int argc, char ** argv)
             goto error;
     }
 
-    logger(0, "collector UNIX socket listen on `%s'", get_cmdarg(&nDPIsrvd_options.collector_un_sockpath));
-    logger(0, "distributor UNIX listen on `%s'", get_cmdarg(&nDPIsrvd_options.distributor_un_sockpath));
+    logger(0, "collector UNIX socket listen on `%s'", GET_CMDARG_STR(nDPIsrvd_options.collector_un_sockpath));
+    logger(0, "distributor UNIX listen on `%s'", GET_CMDARG_STR(nDPIsrvd_options.distributor_un_sockpath));
     switch (distributor_in_address.raw.sa_family)
     {
         default:
@@ -1673,27 +1674,27 @@ int main(int argc, char ** argv)
     }
 
     errno = 0;
-    if (change_user_group(get_cmdarg(&nDPIsrvd_options.user),
-                          get_cmdarg(&nDPIsrvd_options.group),
-                          get_cmdarg(&nDPIsrvd_options.pidfile),
-                          get_cmdarg(&nDPIsrvd_options.collector_un_sockpath),
-                          get_cmdarg(&nDPIsrvd_options.distributor_un_sockpath)) != 0 &&
+    if (change_user_group(GET_CMDARG_STR(nDPIsrvd_options.user),
+                          GET_CMDARG_STR(nDPIsrvd_options.group),
+                          GET_CMDARG_STR(nDPIsrvd_options.pidfile),
+                          GET_CMDARG_STR(nDPIsrvd_options.collector_un_sockpath),
+                          GET_CMDARG_STR(nDPIsrvd_options.distributor_un_sockpath)) != 0 &&
         errno != EPERM)
     {
         if (errno != 0)
         {
             logger(1,
                    "Change user/group to %s/%s failed: %s",
-                   get_cmdarg(&nDPIsrvd_options.user),
-                   (is_cmdarg_set(&nDPIsrvd_options.group) != 0 ? get_cmdarg(&nDPIsrvd_options.group) : "-"),
+                   GET_CMDARG_STR(nDPIsrvd_options.user),
+                   (IS_CMDARG_SET(nDPIsrvd_options.group) != 0 ? GET_CMDARG_STR(nDPIsrvd_options.group) : "-"),
                    strerror(errno));
         }
         else
         {
             logger(1,
                    "Change user/group to %s/%s failed.",
-                   get_cmdarg(&nDPIsrvd_options.user),
-                   (is_cmdarg_set(&nDPIsrvd_options.group) != 0 ? get_cmdarg(&nDPIsrvd_options.group) : "-"));
+                   GET_CMDARG_STR(nDPIsrvd_options.user),
+                   (IS_CMDARG_SET(nDPIsrvd_options.group) != 0 ? GET_CMDARG_STR(nDPIsrvd_options.group) : "-"));
         }
         goto error_unlink_sockets;
     }
@@ -1713,20 +1714,23 @@ int main(int argc, char ** argv)
     retval = mainloop(&io);
 
 error_unlink_sockets:
-    if (unlink(get_cmdarg(&nDPIsrvd_options.collector_un_sockpath)) != 0)
+    if (unlink(GET_CMDARG_STR(nDPIsrvd_options.collector_un_sockpath)) != 0)
     {
-        logger(1, "Could not unlink `%s': %s", get_cmdarg(&nDPIsrvd_options.collector_un_sockpath), strerror(errno));
+        logger(1, "Could not unlink `%s': %s", GET_CMDARG_STR(nDPIsrvd_options.collector_un_sockpath), strerror(errno));
     }
-    if (unlink(get_cmdarg(&nDPIsrvd_options.distributor_un_sockpath)) != 0)
+    if (unlink(GET_CMDARG_STR(nDPIsrvd_options.distributor_un_sockpath)) != 0)
     {
-        logger(1, "Could not unlink `%s': %s", get_cmdarg(&nDPIsrvd_options.distributor_un_sockpath), strerror(errno));
+        logger(1,
+               "Could not unlink `%s': %s",
+               GET_CMDARG_STR(nDPIsrvd_options.distributor_un_sockpath),
+               strerror(errno));
     }
 error:
     close(collector_un_sockfd);
     close(distributor_un_sockfd);
     close(distributor_in_sockfd);
 
-    daemonize_shutdown(get_cmdarg(&nDPIsrvd_options.pidfile));
+    daemonize_shutdown(GET_CMDARG_STR(nDPIsrvd_options.pidfile));
     logger(0, "Bye.");
     shutdown_logging();
 

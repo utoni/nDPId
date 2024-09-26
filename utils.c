@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <grp.h>
@@ -15,6 +16,13 @@
 
 #include "utils.h"
 
+#ifndef INI_MAX_LINE
+#define INI_MAX_LINE BUFSIZ
+#endif
+
+#define INI_INLINE_COMMENT_PREFIXES ";"
+#define INI_START_COMMENT_PREFIXES ";#"
+
 typedef char pid_str[16];
 
 static char const * app_name = NULL;
@@ -22,40 +30,87 @@ static int daemonize = 0;
 static int log_to_console = 0;
 static int log_to_file_fd = -1;
 
-void set_cmdarg(struct cmdarg * const ca, char const * const val)
+void set_config_defaults(struct confopt * const co_array, size_t array_length)
+{
+    for (size_t i = 0; i < array_length; ++i)
+    {
+        if (co_array[i].opt == NULL)
+        {
+            logger_early(1, "%s", "BUG: Config option is NULL");
+            continue;
+        }
+        if (co_array[i].opt->is_set == 0)
+        {
+            switch (co_array[i].opt->type)
+            {
+                case CMDTYPE_INVALID:
+                    break;
+                case CMDTYPE_STRING:
+                    if (co_array[i].opt->string.default_value == NULL)
+                    {
+                        break;
+                    }
+                    co_array[i].opt->string.value = strdup(co_array[i].opt->string.default_value);
+                    break;
+                case CMDTYPE_BOOLEAN:
+                    break;
+                case CMDTYPE_ULL:
+                    break;
+            }
+        }
+    }
+}
+
+void set_cmdarg_string(struct cmdarg * const ca, char const * const val)
 {
     if (ca == NULL || val == NULL)
     {
         return;
     }
 
-    free(ca->value);
-    ca->value = strdup(val);
+    if (ca->type != CMDTYPE_STRING)
+    {
+        logger_early(1, "%s", "BUG: Type is not CMDTYPE_STRING!");
+        return;
+    }
+
+    ca->is_set = 1;
+    free(ca->string.value);
+    ca->string.value = strdup(val);
 }
 
-char const * get_cmdarg(struct cmdarg const * const ca)
+void set_cmdarg_boolean(struct cmdarg * const ca, uint8_t val)
 {
     if (ca == NULL)
     {
-        return NULL;
+        return;
     }
 
-    if (ca->value != NULL)
+    if (ca->type != CMDTYPE_BOOLEAN)
     {
-        return ca->value;
+        logger_early(1, "%s", "BUG: Type is not CMDTYPE_BOOLEAN!");
+        return;
     }
 
-    return ca->default_value;
+    ca->is_set = 1;
+    ca->boolean.value = (val != 0);
 }
 
-int is_cmdarg_set(struct cmdarg const * const ca)
+void set_cmdarg_ull(struct cmdarg * const ca, unsigned long long int val)
 {
     if (ca == NULL)
     {
-        return 0;
+        return;
     }
 
-    return ca->value != NULL;
+    if (ca->type != CMDTYPE_ULL)
+    {
+        logger_early(1, "%s", "BUG: Type is not CMDTYPE_ULL!");
+        return;
+    }
+
+    ca->is_set = 1;
+    ca->ull.value = val;
 }
 
 void daemonize_enable(void)
@@ -454,6 +509,144 @@ char const * get_nDPId_version(void)
            "unknown"
 #endif
            "\n"
-           "(C) 2020-2023 Toni Uhlig\n"
+           "(C) 2020-2024 Toni Uhlig\n"
            "Please report any BUG to toni@impl.cc\n";
+}
+
+/* Strip whitespace chars off end of given string, in place. Return s. */
+static char * ini_rstrip(char * s)
+{
+    char * p = s + strlen(s);
+    while (p > s && isspace((unsigned char)(*--p)))
+        *p = '\0';
+    return s;
+}
+
+/* Return pointer to first non-whitespace char in given string. */
+static char * ini_lskip(const char * s)
+{
+    while (*s && isspace((unsigned char)(*s)))
+        s++;
+    return (char *)s;
+}
+
+/* Return pointer to first char (of chars) or inline comment in given string,
+   or pointer to NUL at end of string if neither found. Inline comment must
+   be prefixed by a whitespace character to register as a comment. */
+static char * ini_find_chars_or_comment(const char * s, const char * chars)
+{
+    int was_space = 0;
+    while (*s && (!chars || !strchr(chars, *s)) && !(was_space && strchr(INI_INLINE_COMMENT_PREFIXES, *s)))
+    {
+        was_space = isspace((unsigned char)(*s));
+        s++;
+    }
+    return (char *)s;
+}
+
+/* See: https://github.com/benhoyt/inih/blob/master/ini.c#L97C67-L97C74 */
+static int parse_config_lines(FILE * const file, config_line_callback cb)
+{
+    char line[INI_MAX_LINE];
+    int max_line = INI_MAX_LINE;
+    char section[INI_MAX_SECTION] = "";
+    char prev_name[INI_MAX_NAME] = "";
+    char * start;
+    char * end;
+    char * name;
+    char * value;
+    int lineno = 0;
+    int error = 0;
+
+    while (fgets(line, max_line, file) != NULL)
+    {
+        lineno++;
+        start = line;
+        start = ini_lskip(ini_rstrip(start));
+
+        if (strchr(INI_START_COMMENT_PREFIXES, *start))
+        {
+            /* Start-of-line comment */
+        }
+        else if (*prev_name && *start && start > line)
+        {
+            end = ini_find_chars_or_comment(start, NULL);
+            if (*end)
+            {
+                *end = '\0';
+            }
+            ini_rstrip(start);
+
+            /* Non-blank line with leading whitespace, treat as continuation
+               of previous name's value (as per Python configparser). */
+            if (!cb(lineno, section, prev_name, start) && !error)
+            {
+                error = lineno;
+            }
+        }
+        else if (*start == '[')
+        {
+            /* A "[section]" line */
+            end = ini_find_chars_or_comment(start + 1, "]");
+            if (*end == ']')
+            {
+                *end = '\0';
+                snprintf(section, sizeof(section), "%s", start + 1);
+                *prev_name = '\0';
+            }
+            else if (!error)
+            {
+                /* No ']' found on section line */
+                error = lineno;
+            }
+        }
+        else if (*start)
+        {
+            /* Not a comment, must be a name[=:]value pair */
+            end = ini_find_chars_or_comment(start, "=:");
+            if (*end == '=' || *end == ':')
+            {
+                *end = '\0';
+                name = ini_rstrip(start);
+                value = end + 1;
+                end = ini_find_chars_or_comment(value, NULL);
+                if (*end)
+                {
+                    *end = '\0';
+                }
+                value = ini_lskip(value);
+                ini_rstrip(value);
+
+                /* Valid name[=:]value pair found, call handler */
+                snprintf(prev_name, sizeof(prev_name), "%s", name);
+                if (!cb(lineno, section, prev_name, value) && !error)
+                {
+                    error = lineno;
+                }
+            }
+            else if (!error)
+            {
+                /* No '=' or ':' found on name[=:]value line */
+                error = lineno;
+            }
+        }
+    }
+
+    return error;
+}
+
+int parse_config_file(char const * const config_file, config_line_callback cb)
+{
+    FILE * file;
+    int error;
+
+    file = fopen(config_file, "r");
+    if (file == NULL)
+    {
+        return -1;
+    }
+
+    error = parse_config_lines(file, cb);
+    fclose(file);
+    return error;
 }

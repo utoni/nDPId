@@ -7,7 +7,7 @@ extern void nDPIsrvd_memprof_log(char const * const format, ...);
 extern void nDPIsrvd_memprof_log_alloc(size_t alloc_size);
 extern void nDPIsrvd_memprof_log_free(size_t free_size);
 
-//#define VERBOSE_MEMORY_PROFILING 1
+// #define VERBOSE_MEMORY_PROFILING 1
 #define NO_MAIN 1
 #include "utils.c"
 #include "nio.c"
@@ -1668,7 +1668,7 @@ int main(int argc, char ** argv)
     }
 
     nDPIsrvd_options.max_write_buffers = 32;
-    nDPId_options.enable_data_analysis = 1;
+    set_cmdarg_boolean(&nDPId_options.enable_data_analysis, 1);
     nDPId_options.max_packets_per_flow_to_send = 5;
 #ifdef ENABLE_ZLIB
     /*
@@ -1676,18 +1676,19 @@ int main(int argc, char ** argv)
      * Remember to compile nDPId with zlib enabled.
      * There will be diff's while running `test/run_tests.sh' otherwise.
      */
-    nDPId_options.enable_zlib_compression = 1;
+    set_cmdarg_boolean(&nDPId_options.enable_zlib_compression, 1);
 #endif
     nDPId_options.memory_profiling_log_interval = (unsigned long long int)-1;
     nDPId_options.reader_thread_count = 1; /* Please do not change this! Generating meaningful pcap diff's relies on a
                                               single reader thread! */
-    set_cmdarg(&nDPId_options.instance_alias, "nDPId-test");
+    set_cmdarg_string(&nDPId_options.instance_alias, "nDPId-test");
     if (access(argv[1], R_OK) != 0)
     {
         logger(1, "%s: pcap file `%s' does not exist or is not readable", argv[0], argv[1]);
         return 1;
     }
-    set_cmdarg(&nDPId_options.pcap_file_or_interface, argv[1]);
+    set_cmdarg_string(&nDPId_options.pcap_file_or_interface, argv[1]);
+    set_config_defaults(&general_config_map[0], nDPIsrvd_ARRAY_LENGTH(general_config_map));
     if (validate_options() != 0)
     {
         return 1;

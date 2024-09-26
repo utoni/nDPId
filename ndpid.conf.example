@@ -1,0 +1,9 @@
+[general]
+netif = eth0
+bpf = udp or tcp
+
+[tuning]
+max-flows-per-thread = 1024
+
+[ndpi]
+key = value
