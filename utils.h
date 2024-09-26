@@ -2,27 +2,80 @@
 #define UTILS_H 1
 
 #include <stdarg.h>
+#include <stdint.h>
 
 #define WARN_UNUSED __attribute__((__warn_unused_result__))
 
-#define CMDARG(_default_value)                                                                                         \
+#define INI_MAX_SECTION 50
+#define INI_MAX_NAME 50
+
+#define CMDARG_STR(_default_value)                                                                                     \
     {                                                                                                                  \
-        .value = NULL, .default_value = (_default_value)                                                               \
+        .is_set = 0, .type = CMDTYPE_STRING, .string.value = NULL, .string.default_value = (_default_value)            \
     }
+#define CMDARG_BOOL(_default_value)                                                                                    \
+    {                                                                                                                  \
+        .is_set = 0, .type = CMDTYPE_BOOLEAN, .boolean.value = 0, .boolean.default_value = (_default_value)            \
+    }
+#define CONFOPT(_key, _opt)                                                                                            \
+    {                                                                                                                  \
+        .key = _key, .opt = _opt                                                                                       \
+    }
+#define GET_CMDARG_STR(cmdarg) ((cmdarg).string.value)
+#define GET_CMDARG_BOOLEAN(cmdarg) ((cmdarg).boolean.value)
+#define GET_CMDARG_ULL(cmdarg) ((cmdarg).ull.value)
+#define IS_CMDARG_SET(cmdarg) ((cmdarg).is_set)
+
+enum cmdtype
+{
+    CMDTYPE_INVALID = 0,
+    CMDTYPE_STRING,
+    CMDTYPE_BOOLEAN,
+    CMDTYPE_ULL
+};
 
 struct cmdarg
 {
-    char * value;
-    char const * const default_value;
+    enum cmdtype type;
+    int is_set;
+    union
+    {
+        struct
+        {
+            char * value;
+            char const * const default_value;
+        } string;
+        struct
+        {
+            uint8_t value;
+            uint8_t const default_value;
+        } boolean;
+        struct
+        {
+            unsigned long long int value;
+            unsigned long long int const default_value;
+        } ull;
+    };
 };
 
-void set_cmdarg(struct cmdarg * const ca, char const * const val);
+struct confopt
+{
+    char const * const key;
+    struct cmdarg * const opt;
+};
 
-WARN_UNUSED
-char const * get_cmdarg(struct cmdarg const * const ca);
+typedef int (*config_line_callback)(int lineno,
+                                    char const * const section,
+                                    char const * const key,
+                                    char const * const value);
 
-WARN_UNUSED
-int is_cmdarg_set(struct cmdarg const * const ca);
+void set_config_defaults(struct confopt * const co_array, size_t array_length);
+
+void set_cmdarg_string(struct cmdarg * const ca, char const * const val);
+
+void set_cmdarg_boolean(struct cmdarg * const ca, uint8_t val);
+
+void set_cmdarg_ull(struct cmdarg * const ca, unsigned long long int val);
 
 WARN_UNUSED
 int is_path_absolute(char const * const prefix, char const * const path);
@@ -72,5 +125,8 @@ int set_fd_cloexec(int fd);
 
 WARN_UNUSED
 char const * get_nDPId_version(void);
+
+WARN_UNUSED
+int parse_config_file(char const * const config_file, config_line_callback cb);
 
 #endif
