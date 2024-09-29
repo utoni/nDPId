@@ -17,6 +17,10 @@
     {                                                                                                                  \
         .is_set = 0, .type = CMDTYPE_BOOLEAN, .boolean.value = 0, .boolean.default_value = (_default_value)            \
     }
+#define CMDARG_ULL(_default_value)                                                                                     \
+    {                                                                                                                  \
+        .is_set = 0, .type = CMDTYPE_ULL, .ull.value = 0ull, .ull.default_value = (_default_value)                     \
+    }
 #define CONFOPT(_key, _opt)                                                                                            \
     {                                                                                                                  \
         .key = _key, .opt = _opt                                                                                       \
