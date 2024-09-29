@@ -53,8 +53,10 @@ void set_config_defaults(struct confopt * const co_array, size_t array_length)
                     co_array[i].opt->string.value = strdup(co_array[i].opt->string.default_value);
                     break;
                 case CMDTYPE_BOOLEAN:
+                    co_array[i].opt->boolean.value = co_array[i].opt->boolean.default_value;
                     break;
                 case CMDTYPE_ULL:
+                    co_array[i].opt->ull.value = co_array[i].opt->ull.default_value;
                     break;
             }
         }

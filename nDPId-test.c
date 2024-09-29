@@ -1315,7 +1315,7 @@ static void * nDPId_mainloop_thread(void * const arg)
     }
     run_capture_loop(&reader_threads[0]);
     process_remaining_flows();
-    for (size_t i = 0; i < nDPId_options.reader_thread_count; ++i)
+    for (size_t i = 0; i < GET_CMDARG_ULL(nDPId_options.reader_thread_count); ++i)
     {
         nrv->packets_captured += reader_threads[i].workflow->packets_captured;
         nrv->packets_processed += reader_threads[i].workflow->packets_processed;
@@ -1669,7 +1669,7 @@ int main(int argc, char ** argv)
 
     nDPIsrvd_options.max_write_buffers = 32;
     set_cmdarg_boolean(&nDPId_options.enable_data_analysis, 1);
-    nDPId_options.max_packets_per_flow_to_send = 5;
+    set_cmdarg_ull(&nDPId_options.max_packets_per_flow_to_send, 5);
 #ifdef ENABLE_ZLIB
     /*
      * zLib compression is forced enabled for testing.
@@ -1678,9 +1678,9 @@ int main(int argc, char ** argv)
      */
     set_cmdarg_boolean(&nDPId_options.enable_zlib_compression, 1);
 #endif
-    nDPId_options.memory_profiling_log_interval = (unsigned long long int)-1;
-    nDPId_options.reader_thread_count = 1; /* Please do not change this! Generating meaningful pcap diff's relies on a
-                                              single reader thread! */
+    set_cmdarg_ull(&nDPId_options.memory_profiling_log_interval, (unsigned long long int)-1);
+    set_cmdarg_ull(&nDPId_options.reader_thread_count, 1); /* Please do not change this! Generating meaningful pcap
+                                              diff's relies on a single reader thread! */
     set_cmdarg_string(&nDPId_options.instance_alias, "nDPId-test");
     if (access(argv[1], R_OK) != 0)
     {
@@ -1689,6 +1689,7 @@ int main(int argc, char ** argv)
     }
     set_cmdarg_string(&nDPId_options.pcap_file_or_interface, argv[1]);
     set_config_defaults(&general_config_map[0], nDPIsrvd_ARRAY_LENGTH(general_config_map));
+    set_config_defaults(&tuning_config_map[0], nDPIsrvd_ARRAY_LENGTH(tuning_config_map));
     if (validate_options() != 0)
     {
         return 1;
@@ -1846,10 +1847,12 @@ int main(int argc, char ** argv)
             "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n",
             total_alloc_bytes -
                 sizeof(struct nDPId_workflow) *
-                    nDPId_options.reader_thread_count /* We do not want to take the workflow into account. */,
+                    GET_CMDARG_ULL(
+                        nDPId_options.reader_thread_count) /* We do not want to take the workflow into account. */,
             total_free_bytes -
                 sizeof(struct nDPId_workflow) *
-                    nDPId_options.reader_thread_count /* We do not want to take the workflow into account. */,
+                    GET_CMDARG_ULL(
+                        nDPId_options.reader_thread_count) /* We do not want to take the workflow into account. */,
             total_alloc_count,
             total_free_count);
 
