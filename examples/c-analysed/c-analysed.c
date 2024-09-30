@@ -1786,9 +1786,19 @@ static int write_global_flow_stats(void)
     }
     buf[-1] = '\n';
 
-    time_t timestamp = time(NULL);
-    fprintf(stats_csv_fp, "%lld,%s", (long long int)timestamp, output_buffer);
-    rc = 0;
+    struct timeval tval;
+    if (gettimeofday(&tval, NULL) == 0)
+    {
+        unsigned long long int sec = tval.tv_sec;
+        unsigned long long int usec = tval.tv_usec;
+        unsigned long long int timestamp = usec + sec * 1000 * 1000;
+        fprintf(stats_csv_fp, "%llu,%s", timestamp, output_buffer);
+        rc = 0;
+    }
+    else
+    {
+        fprintf(stats_csv_fp, "0,%s", output_buffer);
+    }
 failure:
     // reset all counters until the analysed timer is ready again
     memset(&analysed_statistics.counters, 0, sizeof(analysed_statistics.counters));
