@@ -1,9 +1,41 @@
 [general]
-netif = eth0
-bpf = udp or tcp
+#netif      = eth0
+#bpf        = udp or tcp
+pidfile     = /tmp/ndpid.pid
+user        = nobody
+#group      = nogroup
+#protocols  = /path/to/libnDPI/example/protos.txt
+#categories = /path/to/libnDPI/example/categories.txt
+#ja3        = /path/to/libnDPI/example/ja3_fingerprints.csv
+#sha1       = /path/to/libnDPI/example/sha1_fingerprints.csv
+collector   = /tmp/ndpid-collector.sock
+#alias      = myhostname
 
 [tuning]
-max-flows-per-thread = 1024
+max-flows-per-thread            = 2048
+max-idle-flows-per-thread       = 64
+max-reader-threads              = 10
+daemon-status-interval          = 600000000
+#memory-profiling-log-interval   = 5
+compression-scan-interval       = 20000000
+compression-flow-inactivity     = 30000000
+flow-scan-interval              = 10000000
+generic-max-idle-time           = 600000000
+icmp-max-idle-time              = 120000000
+tcp-max-idle-time               = 180000000
+udp-max-idle-time               = 7440000000
+tcp-max-post-end-flow-time      = 120000000
+max-packets-per-flow-to-send    = 15
+max-packets-per-flow-to-process = 32
+max-packets-per-flow-to-analyse = 32
+error-event-threshold-n         = 16
+error-event-threshold-time      = 10000000
+
+# Please note that the following options are libnDPI related and can only be set via config file,
+# not as commnand line parameter.
 
 [ndpi]
+key = value
+
+[protos]
 key = value

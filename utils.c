@@ -16,6 +16,8 @@
 
 #include "utils.h"
 
+#define UTILS_STRLEN_SZ(s) ((size_t)((sizeof(s) / sizeof(s[0])) - sizeof(s[0])))
+
 #ifndef INI_MAX_LINE
 #define INI_MAX_LINE BUFSIZ
 #endif
@@ -39,11 +41,12 @@ void set_config_defaults(struct confopt * const co_array, size_t array_length)
             logger_early(1, "%s", "BUG: Config option is NULL");
             continue;
         }
-        if (co_array[i].opt->is_set == 0)
+        if (IS_CMDARG_SET(*co_array[i].opt) == 0)
         {
             switch (co_array[i].opt->type)
             {
                 case CMDTYPE_INVALID:
+                    logger_early(1, "BUG: Config option `%s' has CMDTYPE_INVALID!", co_array[i].key);
                     break;
                 case CMDTYPE_STRING:
                     if (co_array[i].opt->string.default_value == NULL)
@@ -61,6 +64,67 @@ void set_config_defaults(struct confopt * const co_array, size_t array_length)
             }
         }
     }
+}
+
+int set_config_from(struct confopt * const co, char const * const from)
+{
+    if (co == NULL || co->opt == NULL || from == NULL)
+    {
+        return -1;
+    }
+
+    switch (co->opt->type)
+    {
+        case CMDTYPE_INVALID:
+            break;
+        case CMDTYPE_STRING:
+            set_cmdarg_string(co->opt, from);
+            break;
+        case CMDTYPE_BOOLEAN:
+        {
+            uint8_t enabled;
+
+            if ((strnlen(from, INI_MAX_LINE) == UTILS_STRLEN_SZ("true") &&
+                 strncasecmp(from, "true", INI_MAX_LINE) == 0) ||
+                (strnlen(from, INI_MAX_LINE) == UTILS_STRLEN_SZ("1") && strncasecmp(from, "1", INI_MAX_LINE) == 0))
+            {
+                enabled = 1;
+            }
+            else if ((strnlen(from, INI_MAX_LINE) == UTILS_STRLEN_SZ("false") &&
+                      strncasecmp(from, "false", INI_MAX_LINE) == 0) ||
+                     (strnlen(from, INI_MAX_LINE) == UTILS_STRLEN_SZ("0") && strncasecmp(from, "0", INI_MAX_LINE) == 0))
+            {
+                enabled = 0;
+            }
+            else
+            {
+                logger_early(1, "Config key `%s' has a value not of type bool: `%s'", co->key, from);
+                return 1;
+            }
+            set_cmdarg_boolean(co->opt, enabled);
+        }
+        break;
+        case CMDTYPE_ULL:
+        {
+            char * endptr;
+            long int value_llu = strtoull(from, &endptr, 10);
+
+            if (from == endptr)
+            {
+                logger_early(1, "Subopt `%s': Value `%s' is not a valid number.", co->key, from);
+                return 1;
+            }
+            if (errno == ERANGE)
+            {
+                logger_early(1, "Subopt `%s': Number too large.", co->key);
+                return 1;
+            }
+            set_cmdarg_ull(co->opt, value_llu);
+        }
+        break;
+    }
+
+    return 0;
 }
 
 void set_cmdarg_string(struct cmdarg * const ca, char const * const val)
@@ -294,7 +358,7 @@ int change_user_group(char const * const user,
     pwd = getpwnam(user);
     if (pwd == NULL)
     {
-        return -errno;
+        return (errno != 0 ? -errno : -ENOENT);
     }
 
     if (group != NULL)
@@ -303,7 +367,7 @@ int change_user_group(char const * const user,
         grp = getgrnam(group);
         if (grp == NULL)
         {
-            return -errno;
+            return (errno != 0 ? -errno : -ENOENT);
         }
         gid = grp->gr_gid;
     }

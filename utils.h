@@ -75,6 +75,8 @@ typedef int (*config_line_callback)(int lineno,
 
 void set_config_defaults(struct confopt * const co_array, size_t array_length);
 
+int set_config_from(struct confopt * const co, char const * const from);
+
 void set_cmdarg_string(struct cmdarg * const ca, char const * const val);
 
 void set_cmdarg_boolean(struct cmdarg * const ca, uint8_t val);

@@ -3288,8 +3288,8 @@ static uint32_t calculate_ndpi_flow_struct_hash(struct ndpi_flow_struct const * 
 /* mask for FCF */
 #define WIFI_DATA 0x2
 #define FCF_TYPE(fc) (((fc) >> 2) & 0x3) /* 0000 0011 = 0x3 */
-#define FCF_TO_DS(fc) ((fc) & 0x0100)
-#define FCF_FROM_DS(fc) ((fc) & 0x0200)
+#define FCF_TO_DS(fc) ((fc)&0x0100)
+#define FCF_FROM_DS(fc) ((fc)&0x0200)
 /* mask for Bad FCF presence */
 #define BAD_FCS 0x50 /* 0101 0000 */
 static int process_datalink_layer(struct nDPId_reader_thread * const reader_thread,
@@ -4862,28 +4862,24 @@ static int start_reader_threads(void)
         return 1;
     }
 
-    errno = 0;
-    if (change_user_group(GET_CMDARG_STR(nDPId_options.user),
-                          GET_CMDARG_STR(nDPId_options.group),
-                          GET_CMDARG_STR(nDPId_options.pidfile),
-                          NULL,
-                          NULL) != 0 &&
-        errno != EPERM)
+    int ret = change_user_group(GET_CMDARG_STR(nDPId_options.user),
+                                GET_CMDARG_STR(nDPId_options.group),
+                                GET_CMDARG_STR(nDPId_options.pidfile),
+                                NULL,
+                                NULL);
+    if (ret != 0 && ret != -EPERM)
     {
-        if (errno != 0)
+        if (GET_CMDARG_STR(nDPId_options.group) != NULL)
         {
             logger(1,
                    "Change user/group to %s/%s failed: %s",
                    GET_CMDARG_STR(nDPId_options.user),
                    GET_CMDARG_STR(nDPId_options.group),
-                   strerror(errno));
+                   strerror(-ret));
         }
         else
         {
-            logger(1,
-                   "Change user/group to %s/%s failed.",
-                   GET_CMDARG_STR(nDPId_options.user),
-                   GET_CMDARG_STR(nDPId_options.group));
+            logger(1, "Change user to %s failed: %s", GET_CMDARG_STR(nDPId_options.user), strerror(-ret));
         }
         return 1;
     }
@@ -5150,9 +5146,9 @@ static void print_usage(char const * const arg0)
     fprintf(stderr,
             usage,
             arg0,
-            GET_CMDARG_STR(nDPId_options.collector_address),
-            GET_CMDARG_STR(nDPId_options.pidfile),
-            GET_CMDARG_STR(nDPId_options.user));
+            nDPId_options.collector_address.string.default_value,
+            nDPId_options.pidfile.string.default_value,
+            nDPId_options.user.string.default_value);
 }
 
 static void nDPId_print_deps_version(FILE * const out)
@@ -5177,30 +5173,6 @@ static void nDPId_print_deps_version(FILE * const out)
     npfring_print_version(out);
 #endif
     fprintf(out, "%s", "-------------------------------------------------------\n");
-}
-
-static int nDPId_set_subopt(int conf_index, char const * const value)
-{
-    char * endptr;
-    long int value_llu = strtoull(value, &endptr, 10);
-
-    if (conf_index < 0 || conf_index >= (int)nDPIsrvd_ARRAY_LENGTH(tuning_config_map))
-    {
-        return 1;
-    }
-    if (value == endptr)
-    {
-        logger_early(1, "Subopt `%s': Value `%s' is not a valid number.", tuning_config_map[conf_index].key, value);
-        return 1;
-    }
-    if (errno == ERANGE)
-    {
-        logger_early(1, "Subopt `%s': Number too large.", tuning_config_map[conf_index].key);
-        return 1;
-    }
-    set_cmdarg_ull(tuning_config_map[conf_index].opt, value_llu);
-
-    return 0;
 }
 
 static int nDPId_parse_options(int argc, char ** argv)
@@ -5324,8 +5296,9 @@ static int nDPId_parse_options(int argc, char ** argv)
                         break;
                     }
 
-                    if (nDPId_set_subopt(subopt, value) != 0)
+                    if (set_config_from(&tuning_config_map[subopt], value) != 0)
                     {
+                        logger_early(1, "Could not set subopt: %s", tuning_config_map[subopt].key);
                         errfnd = 1;
                         break;
                     }
@@ -5519,7 +5492,7 @@ static int validate_options(void)
 
 static int parsed_config_line(int lineno, char const * const section, char const * const name, char const * const value)
 {
-    if (strnlen(section, INI_MAX_SECTION) == nDPIsrvd_ARRAY_LENGTH("general") - 1 &&
+    if (strnlen(section, INI_MAX_SECTION) == nDPIsrvd_STRLEN_SZ("general") &&
         strncmp(section, "general", INI_MAX_SECTION) == 0)
     {
         size_t i;
@@ -5545,7 +5518,7 @@ static int parsed_config_line(int lineno, char const * const section, char const
             logger_early(1, "Invalid general config key `%s' at line %d", name, lineno);
         }
     }
-    else if (strnlen(section, INI_MAX_SECTION) == nDPIsrvd_ARRAY_LENGTH("tuning") - 1 &&
+    else if (strnlen(section, INI_MAX_SECTION) == nDPIsrvd_STRLEN_SZ("tuning") &&
              strncmp(section, "tuning", INI_MAX_SECTION) == 0)
     {
         size_t i;
@@ -5555,7 +5528,7 @@ static int parsed_config_line(int lineno, char const * const section, char const
             if (strnlen(name, INI_MAX_NAME) == strnlen(tuning_config_map[i].key, INI_MAX_NAME) &&
                 strncmp(name, tuning_config_map[i].key, INI_MAX_NAME) == 0)
             {
-                if (nDPId_set_subopt(i, value) != 0)
+                if (set_config_from(&tuning_config_map[i], value) != 0)
                 {
                     logger_early(
                         1, "Non numeric tuning config value `%s' for key `%s' at line %d", value, name, lineno);
@@ -5569,8 +5542,10 @@ static int parsed_config_line(int lineno, char const * const section, char const
             logger_early(1, "Invalid tuning config key `%s' at line %d", name, lineno);
         }
     }
-    else if (strnlen(section, INI_MAX_SECTION) == nDPIsrvd_ARRAY_LENGTH("ndpi") - 1 &&
-             strncmp(section, "ndpi", INI_MAX_SECTION) == 0)
+    else if ((strnlen(section, INI_MAX_SECTION) == nDPIsrvd_STRLEN_SZ("ndpi") &&
+              strncmp(section, "ndpi", INI_MAX_SECTION) == 0) ||
+             (strnlen(section, INI_MAX_SECTION) == nDPIsrvd_STRLEN_SZ("protos") &&
+              strncmp(section, "protos", INI_MAX_SECTION) == 0))
     {
         // Nothing to do here right now (workflow not initialized yet)
         return 1;
