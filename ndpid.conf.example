@@ -33,9 +33,21 @@ error-event-threshold-time      = 10000000
 
 # Please note that the following options are libnDPI related and can only be set via config file,
 # not as commnand line parameter.
+# See libnDPI/doc/configuration_parameters.md for detailed information.
 
 [ndpi]
-key = value
+packets_limit_per_flow      = 32
+flow.direction_detection    = enable
+flow.track_payload          = disable
+tcp_ack_payload_heuristic   = disable
+fully_encrypted_heuristic   = enable
+libgcrypt.init              = 1
+dpi.compute_entropy         = 1
+fpc                         = disable
+dpi.guess_on_giveup         = 0x03
+flow_risk_lists.load        = 1
+flow_risk.crawler_bot.list.load = 1
+log.level                   = 0
 
 [protos]
 key = value

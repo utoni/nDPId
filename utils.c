@@ -611,7 +611,7 @@ static char * ini_find_chars_or_comment(const char * s, const char * chars)
 }
 
 /* See: https://github.com/benhoyt/inih/blob/master/ini.c#L97C67-L97C74 */
-static int parse_config_lines(FILE * const file, config_line_callback cb)
+static int parse_config_lines(FILE * const file, config_line_callback cb, void * const user_data)
 {
     char line[INI_MAX_LINE];
     int max_line = INI_MAX_LINE;
@@ -645,7 +645,7 @@ static int parse_config_lines(FILE * const file, config_line_callback cb)
 
             /* Non-blank line with leading whitespace, treat as continuation
                of previous name's value (as per Python configparser). */
-            if (!cb(lineno, section, prev_name, start) && !error)
+            if (!cb(lineno, section, prev_name, start, user_data) && !error)
             {
                 error = lineno;
             }
@@ -685,7 +685,7 @@ static int parse_config_lines(FILE * const file, config_line_callback cb)
 
                 /* Valid name[=:]value pair found, call handler */
                 snprintf(prev_name, sizeof(prev_name), "%s", name);
-                if (!cb(lineno, section, prev_name, value) && !error)
+                if (!cb(lineno, section, prev_name, value, user_data) && !error)
                 {
                     error = lineno;
                 }
@@ -701,7 +701,7 @@ static int parse_config_lines(FILE * const file, config_line_callback cb)
     return error;
 }
 
-int parse_config_file(char const * const config_file, config_line_callback cb)
+int parse_config_file(char const * const config_file, config_line_callback cb, void * const user_data)
 {
     FILE * file;
     int error;
@@ -712,7 +712,7 @@ int parse_config_file(char const * const config_file, config_line_callback cb)
         return -1;
     }
 
-    error = parse_config_lines(file, cb);
+    error = parse_config_lines(file, cb, user_data);
     fclose(file);
     return error;
 }

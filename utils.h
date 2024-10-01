@@ -68,10 +68,8 @@ struct confopt
     struct cmdarg * const opt;
 };
 
-typedef int (*config_line_callback)(int lineno,
-                                    char const * const section,
-                                    char const * const key,
-                                    char const * const value);
+typedef int (*config_line_callback)(
+    int lineno, char const * const section, char const * const key, char const * const value, void * const user_data);
 
 void set_config_defaults(struct confopt * const co_array, size_t array_length);
 
@@ -133,6 +131,6 @@ WARN_UNUSED
 char const * get_nDPId_version(void);
 
 WARN_UNUSED
-int parse_config_file(char const * const config_file, config_line_callback cb);
+int parse_config_file(char const * const config_file, config_line_callback cb, void * const user_data);
 
 #endif

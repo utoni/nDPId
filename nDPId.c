@@ -1259,6 +1259,67 @@ static int cfg_set_u64(struct nDPId_workflow * const workflow,
     return 0;
 }
 
+static int cfg_set(struct nDPId_workflow * const workflow, const char * proto, const char * param, const char * value)
+{
+    ndpi_cfg_error cfg_err;
+
+    cfg_err = ndpi_set_config(workflow->ndpi_struct, proto, param, value);
+    if (cfg_err != NDPI_CFG_OK)
+    {
+        if (proto != NULL)
+        {
+            logger_early(1,
+                         "Could not set nDPI configuration for protocol `%s' with key `%s' and value `%s': %s",
+                         proto,
+                         param,
+                         value,
+                         cfg_err2str(cfg_err));
+        }
+        else
+        {
+            logger_early(1,
+                         "Could not set nDPI configuration for key `%s' with value `%s': %s",
+                         param,
+                         value,
+                         cfg_err2str(cfg_err));
+        }
+        return 1;
+    }
+
+    return 0;
+}
+
+static int libnDPI_parsed_config_line(
+    int lineno, char const * const section, char const * const name, char const * const value, void * const user_data)
+{
+    struct nDPId_workflow * const workflow = (struct nDPId_workflow *)user_data;
+
+    if ((strnlen(section, INI_MAX_SECTION) == nDPIsrvd_STRLEN_SZ("general") &&
+         strncmp(section, "general", INI_MAX_SECTION) == 0) ||
+        (strnlen(section, INI_MAX_SECTION) == nDPIsrvd_STRLEN_SZ("tuning") &&
+         strncmp(section, "tuning", INI_MAX_SECTION) == 0))
+    {
+        // Nothing to do here right now (already initialized)
+        return 1;
+    }
+    else if (strnlen(section, INI_MAX_SECTION) == nDPIsrvd_STRLEN_SZ("ndpi") &&
+             strncmp(section, "ndpi", INI_MAX_SECTION) == 0)
+    {
+        return (cfg_set(workflow, NULL, name, value) == 0);
+    }
+    else if (strnlen(section, INI_MAX_SECTION) == nDPIsrvd_STRLEN_SZ("protos") &&
+             strncmp(section, "protos", INI_MAX_SECTION) == 0)
+    {
+    }
+    else
+    {
+        logger_early(
+            1, "Invalid config section `%s' at line %d with key `%s' and value `%s'", section, lineno, name, value);
+    }
+
+    return 1;
+}
+
 static struct nDPId_workflow * init_workflow(char const * const file_or_device)
 {
     char pcap_error_buffer[PCAP_ERRBUF_SIZE];
@@ -1378,6 +1439,14 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
 
     ndpi_set_user_data(workflow->ndpi_struct, workflow);
     set_ndpi_debug_function(workflow->ndpi_struct, ndpi_debug_printf);
+
+    if (IS_CMDARG_SET(nDPId_options.config_file) != 0 &&
+        parse_config_file(GET_CMDARG_STR(nDPId_options.config_file), libnDPI_parsed_config_line, workflow) != 0)
+    {
+        logger_early(1, "Config file `%s' is malformed", GET_CMDARG_STR(nDPId_options.config_file));
+        free_workflow(&workflow);
+        return NULL;
+    }
 
     cfg_set_u64(workflow, NULL, "log.level", 3);
     cfg_set_u64(workflow,
@@ -5490,8 +5559,11 @@ static int validate_options(void)
     return retval;
 }
 
-static int parsed_config_line(int lineno, char const * const section, char const * const name, char const * const value)
+static int nDPId_parsed_config_line(
+    int lineno, char const * const section, char const * const name, char const * const value, void * const user_data)
 {
+    (void)user_data;
+
     if (strnlen(section, INI_MAX_SECTION) == nDPIsrvd_STRLEN_SZ("general") &&
         strncmp(section, "general", INI_MAX_SECTION) == 0)
     {
@@ -5576,7 +5648,7 @@ int main(int argc, char ** argv)
     set_config_defaults(&general_config_map[0], nDPIsrvd_ARRAY_LENGTH(general_config_map));
     set_config_defaults(&tuning_config_map[0], nDPIsrvd_ARRAY_LENGTH(tuning_config_map));
     if (IS_CMDARG_SET(nDPId_options.config_file) != 0 &&
-        parse_config_file(GET_CMDARG_STR(nDPId_options.config_file), parsed_config_line) != 0)
+        parse_config_file(GET_CMDARG_STR(nDPId_options.config_file), nDPId_parsed_config_line, NULL) != 0)
     {
         logger_early(1, "Config file `%s' is malformed", GET_CMDARG_STR(nDPId_options.config_file));
         return 1;
