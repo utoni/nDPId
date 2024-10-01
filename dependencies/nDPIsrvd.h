@@ -33,8 +33,8 @@
 #define nDPIsrvd_JSON_KEY_STRLEN (32)
 #define nDPIsrvd_HASHKEY_SEED (0x995fd871u)
 
-#define nDPIsrvd_ARRAY_LENGTH(s) (sizeof(s) / sizeof(s[0]))
-#define nDPIsrvd_STRLEN_SZ(s) (sizeof(s) / sizeof(s[0]) - sizeof(s[0]))
+#define nDPIsrvd_ARRAY_LENGTH(s) ((size_t)(sizeof(s) / sizeof(s[0])))
+#define nDPIsrvd_STRLEN_SZ(s) ((size_t)((sizeof(s) / sizeof(s[0])) - sizeof(s[0])))
 #define TOKEN_GET_SZ(sock, ...) nDPIsrvd_get_token(sock, __VA_ARGS__, NULL)
 #define TOKEN_VALUE_EQUALS(sock, token, string_to_check, string_to_check_length)                                       \
     nDPIsrvd_token_value_equals(sock, token, string_to_check, string_to_check_length)

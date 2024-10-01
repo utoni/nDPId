@@ -895,10 +895,10 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
                         "\t-v\tversion\n"
                         "\t-h\tthis\n\n",
                         argv[0],
-                        GET_CMDARG_STR(nDPIsrvd_options.collector_un_sockpath),
-                        GET_CMDARG_STR(nDPIsrvd_options.pidfile),
-                        GET_CMDARG_STR(nDPIsrvd_options.user),
-                        GET_CMDARG_STR(nDPIsrvd_options.distributor_un_sockpath));
+                        nDPIsrvd_options.collector_un_sockpath.string.default_value,
+                        nDPIsrvd_options.pidfile.string.default_value,
+                        nDPIsrvd_options.user.string.default_value,
+                        nDPIsrvd_options.distributor_un_sockpath.string.default_value);
                 return 1;
         }
     }
@@ -1673,28 +1673,24 @@ int main(int argc, char ** argv)
             break;
     }
 
-    errno = 0;
-    if (change_user_group(GET_CMDARG_STR(nDPIsrvd_options.user),
-                          GET_CMDARG_STR(nDPIsrvd_options.group),
-                          GET_CMDARG_STR(nDPIsrvd_options.pidfile),
-                          GET_CMDARG_STR(nDPIsrvd_options.collector_un_sockpath),
-                          GET_CMDARG_STR(nDPIsrvd_options.distributor_un_sockpath)) != 0 &&
-        errno != EPERM)
+    int ret = change_user_group(GET_CMDARG_STR(nDPIsrvd_options.user),
+                                GET_CMDARG_STR(nDPIsrvd_options.group),
+                                GET_CMDARG_STR(nDPIsrvd_options.pidfile),
+                                GET_CMDARG_STR(nDPIsrvd_options.collector_un_sockpath),
+                                GET_CMDARG_STR(nDPIsrvd_options.distributor_un_sockpath));
+    if (ret != 0 && ret != -EPERM)
     {
-        if (errno != 0)
+        if (GET_CMDARG_STR(nDPIsrvd_options.group) != NULL)
         {
             logger(1,
                    "Change user/group to %s/%s failed: %s",
                    GET_CMDARG_STR(nDPIsrvd_options.user),
-                   (IS_CMDARG_SET(nDPIsrvd_options.group) != 0 ? GET_CMDARG_STR(nDPIsrvd_options.group) : "-"),
-                   strerror(errno));
+                   GET_CMDARG_STR(nDPIsrvd_options.group),
+                   strerror(-ret));
         }
         else
         {
-            logger(1,
-                   "Change user/group to %s/%s failed.",
-                   GET_CMDARG_STR(nDPIsrvd_options.user),
-                   (IS_CMDARG_SET(nDPIsrvd_options.group) != 0 ? GET_CMDARG_STR(nDPIsrvd_options.group) : "-"));
+            logger(1, "Change user to %s failed: %s", GET_CMDARG_STR(nDPIsrvd_options.user), strerror(-ret));
         }
         goto error_unlink_sockets;
     }
