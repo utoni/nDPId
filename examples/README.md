@@ -92,3 +92,8 @@ Required by `tests/run_tests.sh`
 
 Validate nDPId JSON messages against internal event semantics.
 Required by `tests/run_tests.sh`
+
+## yaml-filebeat
+An example filebeat configuration to parse and send nDPId JSON 
+messages to Elasticsearch. Allowing long term storage and data visualization with kibana
+and various other tools that interact with Elasticsearch (No logstash required).
