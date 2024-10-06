@@ -4,7 +4,7 @@ filebeat.inputs:
   max_message_size: 100MiB
   index: "index-name" # Replace this with your desired index name in Elasticsearch
   enabled: true
-  path: "/var/run/nDPId.sock" # point nDPId to this Unix Socket
+  path: "/var/run/nDPId.sock" # point nDPId to this Unix Socket (Collector)
   processors:
     - script: # execute javascript to remove the first 5-digit-number and also the Newline at the end
         lang: javascript
