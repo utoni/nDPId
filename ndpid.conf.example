@@ -50,4 +50,6 @@ flow_risk.crawler_bot.list.load = 1
 log.level                   = 0
 
 [protos]
-key = value
+tls.certificate_expiration_threshold = 7
+tls.application_blocks_tracking      = enable
+stun.max_packets_extra_dissection    = 8

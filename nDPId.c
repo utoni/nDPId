@@ -1310,6 +1310,33 @@ static int libnDPI_parsed_config_line(
     else if (strnlen(section, INI_MAX_SECTION) == nDPIsrvd_STRLEN_SZ("protos") &&
              strncmp(section, "protos", INI_MAX_SECTION) == 0)
     {
+        char const * const first_sep = strchr(name, '.');
+        char proto[INI_MAX_NAME];
+
+        if (first_sep == NULL)
+        {
+            logger_early(1,
+                         "Missing first `.' for section `protos' at line %d with key `%s' and value `%s'",
+                         lineno,
+                         name,
+                         value);
+            return 0;
+        }
+        int s_ret = snprintf(proto, sizeof(proto), "%.*s", (int)(first_sep - name), name);
+        if (s_ret < 0)
+        {
+            logger_early(1,
+                         "Could not format protocol at line %d with key `%s' and value `%s': snprintf returnded %d, "
+                         "buffer size %zu",
+                         lineno,
+                         name,
+                         value,
+                         s_ret,
+                         sizeof(proto));
+            return 0;
+        }
+
+        return (cfg_set(workflow, proto, first_sep + 1, value) == 0);
     }
     else
     {
@@ -3105,7 +3132,16 @@ static void vjsonize_error_eventf(struct nDPId_reader_thread * const reader_thre
                 char * value = va_arg(ap, char *);
                 if (got_jsonkey == 0)
                 {
-                    snprintf(json_key, sizeof(json_key), "%s", value);
+                    int s_ret = snprintf(json_key, sizeof(json_key), "%s", value);
+                    if (s_ret < 0)
+                    {
+                        logger(1,
+                               "[%8llu, %zu] Error event format failed: snprintf returned %d, buffer size %zu",
+                               reader_thread->workflow->packets_captured,
+                               reader_thread->array_index,
+                               s_ret,
+                               sizeof(json_key));
+                    }
                     got_jsonkey = 1;
                 }
                 else
