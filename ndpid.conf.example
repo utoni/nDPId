@@ -1,6 +1,12 @@
 [general]
+# Set the network interface from which packets are captured and processed.
+# Leave it empty to let nDPId choose the default network interface.
 #netif       = eth0
+
+# Set a Berkeley Packet Filter.
+# This will work for libpcap as well as with PF_RING.
 #bpf         = udp or tcp
+
 pidfile     = /tmp/ndpid.pid
 user        = nobody
 #group       = nogroup
@@ -8,11 +14,32 @@ user        = nobody
 #categories  = /path/to/libnDPI/example/categories.txt
 #ja3         = /path/to/libnDPI/example/ja3_fingerprints.csv
 #sha1        = /path/to/libnDPI/example/sha1_fingerprints.csv
-# Collector endpoint as UNIX socket
-#collector   = /tmp/ndpid-collector.sock
-# Collector endpoint as UDP socket
-collector   = 127.0.0.1:7777
+
+# Collector endpoint as UNIX socket (usually nDPIsrvd)
+collector   = /var/run/ndpisrvd-collector
+# Collector endpoint as UDP socket (usually a custom application)
+#collector   = 127.0.0.1:7777
+
+# Set a name for this nDPId instance
 #alias       = myhostname
+
+# Process only internal initial connections
+#internal    = true
+
+# Process only external initial connections
+#external    = true
+
+# Enable zLib compression of flow memory for long lasting flows
+compression = true
+
+# Enable "analyse" events, which can be used for machine learning
+analysis    = true
+
+# Force poll() on systems that support epoll() as well
+#poll        = false
+
+# Enable PF_RING packet capture instead of libpcap
+#pfring      = false
 
 [tuning]
 max-flows-per-thread            = 2048
