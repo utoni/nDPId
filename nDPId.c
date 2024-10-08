@@ -4830,23 +4830,34 @@ static void run_capture_loop(struct nDPId_reader_thread * const reader_thread)
                     }
                     else
                     {
+                        int is_valid_signal = 0;
                         char const * signame = "unknown";
                         switch (fdsi.ssi_signo)
                         {
                             case SIGINT:
+                                is_valid_signal = 1;
                                 signame = "SIGINT";
                                 sighandler(SIGINT);
                                 break;
                             case SIGTERM:
+                                is_valid_signal = 1;
                                 signame = "SIGTERM";
                                 sighandler(SIGTERM);
                                 break;
                             case SIGUSR1:
+                                is_valid_signal = 1;
                                 signame = "SIGUSR1";
                                 log_all_flows(reader_thread);
                                 break;
                         }
-                        logger(1, "Received signal %d (%s)", fdsi.ssi_signo, signame);
+                        if (is_valid_signal != 0)
+                        {
+                            logger(1, "Received signal %d (%s)", fdsi.ssi_signo, signame);
+                        }
+                        else
+                        {
+                            logger(1, "Received signal %d (%s), ignored", fdsi.ssi_signo, signame);
+                        }
                     }
                 }
                 else

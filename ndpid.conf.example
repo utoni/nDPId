@@ -1,15 +1,18 @@
 [general]
-#netif      = eth0
-#bpf        = udp or tcp
+#netif       = eth0
+#bpf         = udp or tcp
 pidfile     = /tmp/ndpid.pid
 user        = nobody
-#group      = nogroup
-#protocols  = /path/to/libnDPI/example/protos.txt
-#categories = /path/to/libnDPI/example/categories.txt
-#ja3        = /path/to/libnDPI/example/ja3_fingerprints.csv
-#sha1       = /path/to/libnDPI/example/sha1_fingerprints.csv
-collector   = /tmp/ndpid-collector.sock
-#alias      = myhostname
+#group       = nogroup
+#protocols   = /path/to/libnDPI/example/protos.txt
+#categories  = /path/to/libnDPI/example/categories.txt
+#ja3         = /path/to/libnDPI/example/ja3_fingerprints.csv
+#sha1        = /path/to/libnDPI/example/sha1_fingerprints.csv
+# Collector endpoint as UNIX socket
+#collector   = /tmp/ndpid-collector.sock
+# Collector endpoint as UDP socket
+collector   = 127.0.0.1:7777
+#alias       = myhostname
 
 [tuning]
 max-flows-per-thread            = 2048
