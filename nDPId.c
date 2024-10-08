@@ -599,7 +599,20 @@ struct confopt general_config_map[] = {CONFOPT("netif", &nDPId_options.pcap_file
                                        CONFOPT("ja3", &nDPId_options.custom_ja3_file),
                                        CONFOPT("sha1", &nDPId_options.custom_sha1_file),
                                        CONFOPT("collector", &nDPId_options.collector_address),
-                                       CONFOPT("alias", &nDPId_options.instance_alias)};
+                                       CONFOPT("alias", &nDPId_options.instance_alias),
+                                       CONFOPT("internal", &nDPId_options.process_internal_initial_direction),
+                                       CONFOPT("external", &nDPId_options.process_external_initial_direction),
+#ifdef ENABLE_ZLIB
+                                       CONFOPT("compression", &nDPId_options.enable_zlib_compression),
+#endif
+                                       CONFOPT("analysis", &nDPId_options.enable_data_analysis),
+#ifdef ENABLE_EPOLL
+                                       CONFOPT("poll", &nDPId_options.use_poll),
+#endif
+#ifdef ENABLE_PFRING
+                                       CONFOPT("pfring", &nDPId_options_use_pfring)
+#endif
+};
 struct confopt tuning_config_map[] = {
     CONFOPT("max-flows-per-thread", &nDPId_options.max_flows_per_thread),
     CONFOPT("max-idle-flows-per-thread", &nDPId_options.max_idle_flows_per_thread),
@@ -5627,7 +5640,10 @@ static int nDPId_parsed_config_line(
                 }
                 else
                 {
-                    set_cmdarg_string(general_config_map[i].opt, value);
+                    if (set_config_from(&general_config_map[i], value) != 0)
+                    {
+                        return 0;
+                    }
                 }
                 break;
             }
