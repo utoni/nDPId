@@ -1480,12 +1480,32 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     ndpi_set_user_data(workflow->ndpi_struct, workflow);
     set_ndpi_debug_function(workflow->ndpi_struct, ndpi_debug_printf);
 
-    if (IS_CMDARG_SET(nDPId_options.config_file) != 0 &&
-        parse_config_file(GET_CMDARG_STR(nDPId_options.config_file), libnDPI_parsed_config_line, workflow) != 0)
     {
-        logger_early(1, "Config file `%s' is malformed", GET_CMDARG_STR(nDPId_options.config_file));
-        free_workflow(&workflow);
-        return NULL;
+        int ret;
+
+        if (IS_CMDARG_SET(nDPId_options.config_file) != 0 &&
+            (ret =
+                 parse_config_file(GET_CMDARG_STR(nDPId_options.config_file), libnDPI_parsed_config_line, workflow)) !=
+                0)
+        {
+            if (ret > 0)
+            {
+                logger_early(1, "Config file `%s' is malformed", GET_CMDARG_STR(nDPId_options.config_file));
+            }
+            else if (ret == -ENOENT)
+            {
+                logger_early(1, "Path `%s' is not a regular file", GET_CMDARG_STR(nDPId_options.config_file));
+            }
+            else
+            {
+                logger_early(1,
+                             "Could not open file `%s' for reading: %s",
+                             GET_CMDARG_STR(nDPId_options.config_file),
+                             strerror(errno));
+            }
+            free_workflow(&workflow);
+            return NULL;
+        }
     }
 
     cfg_set_u64(workflow, NULL, "log.level", 3);
@@ -5710,11 +5730,29 @@ int main(int argc, char ** argv)
     }
     set_config_defaults(&general_config_map[0], nDPIsrvd_ARRAY_LENGTH(general_config_map));
     set_config_defaults(&tuning_config_map[0], nDPIsrvd_ARRAY_LENGTH(tuning_config_map));
-    if (IS_CMDARG_SET(nDPId_options.config_file) != 0 &&
-        parse_config_file(GET_CMDARG_STR(nDPId_options.config_file), nDPId_parsed_config_line, NULL) != 0)
     {
-        logger_early(1, "Config file `%s' is malformed", GET_CMDARG_STR(nDPId_options.config_file));
-        return 1;
+        int ret;
+
+        if (IS_CMDARG_SET(nDPId_options.config_file) != 0 &&
+            (ret = parse_config_file(GET_CMDARG_STR(nDPId_options.config_file), nDPId_parsed_config_line, NULL)) != 0)
+        {
+            if (ret > 0)
+            {
+                logger_early(1, "Config file `%s' is malformed", GET_CMDARG_STR(nDPId_options.config_file));
+            }
+            else if (ret == -ENOENT)
+            {
+                logger_early(1, "Path `%s' is not a regular file", GET_CMDARG_STR(nDPId_options.config_file));
+            }
+            else
+            {
+                logger_early(1,
+                             "Could not open file `%s' for reading: %s",
+                             GET_CMDARG_STR(nDPId_options.config_file),
+                             strerror(errno));
+            }
+            return 1;
+        }
     }
     if (validate_options() != 0)
     {
