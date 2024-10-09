@@ -705,6 +705,16 @@ int parse_config_file(char const * const config_file, config_line_callback cb, v
 {
     FILE * file;
     int error;
+    struct stat sbuf;
+
+    if (stat(config_file, &sbuf) != 0)
+    {
+        return -1;
+    }
+    if ((sbuf.st_mode & S_IFMT) != S_IFREG)
+    {
+        return -ENOENT;
+    }
 
     file = fopen(config_file, "r");
     if (file == NULL)
