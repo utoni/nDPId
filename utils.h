@@ -26,7 +26,7 @@
         .key = _key, .opt = _opt                                                                                       \
     }
 #define GET_CMDARG_STR(cmdarg) ((cmdarg).string.value)
-#define GET_CMDARG_BOOLEAN(cmdarg) ((cmdarg).boolean.value)
+#define GET_CMDARG_BOOL(cmdarg) ((cmdarg).boolean.value)
 #define GET_CMDARG_ULL(cmdarg) ((cmdarg).ull.value)
 #define IS_CMDARG_SET(cmdarg) ((cmdarg).is_set)
 
@@ -73,6 +73,7 @@ typedef int (*config_line_callback)(
 
 void set_config_defaults(struct confopt * const co_array, size_t array_length);
 
+WARN_UNUSED
 int set_config_from(struct confopt * const co, char const * const from);
 
 void set_cmdarg_string(struct cmdarg * const ca, char const * const val);
