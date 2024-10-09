@@ -1106,8 +1106,8 @@ static int get_ip_netmask_from_pcap_dev(char const * const pcap_dev)
     }
 
     if (retval == 0 && found_dev != 0 &&
-        (GET_CMDARG_BOOLEAN(nDPId_options.process_internal_initial_direction) != 0 ||
-         GET_CMDARG_BOOLEAN(nDPId_options.process_external_initial_direction) != 0) &&
+        (GET_CMDARG_BOOL(nDPId_options.process_internal_initial_direction) != 0 ||
+         GET_CMDARG_BOOL(nDPId_options.process_external_initial_direction) != 0) &&
         ip4_interface_avail == 0 && ip6_interface_avail == 0)
     {
         logger_early(1, "Interface %s does not have any IPv4 / IPv6 address set, -I / -E won't work.", pcap_dev);
@@ -1381,7 +1381,7 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     MT_INIT2(workflow->error_or_eof, 0);
 
 #ifdef ENABLE_PFRING
-    if (GET_CMDARG_BOOLEAN(nDPId_options.use_pfring) != 0)
+    if (GET_CMDARG_BOOL(nDPId_options.use_pfring) != 0)
     {
         errno = 0;
 
@@ -1458,7 +1458,7 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     }
 
 #ifdef ENABLE_PFRING
-    if (GET_CMDARG_BOOLEAN(nDPId_options.use_pfring) != 0)
+    if (GET_CMDARG_BOOL(nDPId_options.use_pfring) != 0)
     {
         if (npfring_enable(&workflow->npf) != 0)
         {
@@ -1575,7 +1575,7 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
 
 static void free_analysis_data(struct nDPId_flow_extended * const flow_ext)
 {
-    if (GET_CMDARG_BOOLEAN(nDPId_options.enable_data_analysis) != 0 && flow_ext->flow_analysis != NULL)
+    if (GET_CMDARG_BOOL(nDPId_options.enable_data_analysis) != 0 && flow_ext->flow_analysis != NULL)
     {
         ndpi_free_data_analysis(&flow_ext->flow_analysis->iat, 0);
         ndpi_free_data_analysis(&flow_ext->flow_analysis->pktlen, 0);
@@ -1609,7 +1609,7 @@ static int alloc_detection_data(struct nDPId_flow * const flow)
 
     memset(flow->info.detection_data, 0, sizeof(*flow->info.detection_data));
 
-    if (GET_CMDARG_BOOLEAN(nDPId_options.enable_data_analysis) != 0)
+    if (GET_CMDARG_BOOL(nDPId_options.enable_data_analysis) != 0)
     {
         flow->flow_extended.flow_analysis =
             (struct nDPId_flow_analysis *)ndpi_malloc(sizeof(*flow->flow_extended.flow_analysis));
@@ -1693,7 +1693,7 @@ static void free_workflow(struct nDPId_workflow ** const workflow)
     }
 
 #ifdef ENABLE_PFRING
-    if (GET_CMDARG_BOOLEAN(nDPId_options.use_pfring) != 0)
+    if (GET_CMDARG_BOOL(nDPId_options.use_pfring) != 0)
     {
         npfring_close(&w->npf);
     }
@@ -2049,7 +2049,7 @@ static void process_idle_flow(struct nDPId_reader_thread * const reader_thread, 
                 struct nDPId_flow * const flow = (struct nDPId_flow *)flow_basic;
 
 #ifdef ENABLE_ZLIB
-                if (GET_CMDARG_BOOLEAN(nDPId_options.enable_zlib_compression) != 0 &&
+                if (GET_CMDARG_BOOL(nDPId_options.enable_zlib_compression) != 0 &&
                     flow->info.detection_data_compressed_size > 0)
                 {
                     workflow->current_compression_diff -= flow->info.detection_data_compressed_size;
@@ -2333,7 +2333,7 @@ static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enu
                 int rc;
                 struct npfring_stats stats = {};
 
-                if (GET_CMDARG_BOOLEAN(nDPId_options.use_pfring) != 0)
+                if (GET_CMDARG_BOOL(nDPId_options.use_pfring) != 0)
                 {
                     if ((rc = npfring_stats(&workflow->npf, &stats)) != 0)
                     {
@@ -2348,7 +2348,7 @@ static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enu
                 {
                     ndpi_serialize_string_boolean(&workflow->ndpi_serializer,
                                                   "pfring_active",
-                                                  GET_CMDARG_BOOLEAN(nDPId_options.use_pfring));
+                                                  GET_CMDARG_BOOL(nDPId_options.use_pfring));
                     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "pfring_recv", stats.recv);
                     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "pfring_drop", stats.drop);
                     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "pfring_shunt", stats.shunt);
@@ -2773,7 +2773,7 @@ static void jsonize_data_analysis(struct nDPId_reader_thread * const reader_thre
     struct nDPId_workflow * const workflow = reader_thread->workflow;
     struct nDPId_flow_analysis * const analysis = (struct nDPId_flow_analysis *)flow_ext->flow_analysis;
 
-    if (GET_CMDARG_BOOLEAN(nDPId_options.enable_data_analysis) != 0 && flow_ext->flow_analysis != NULL)
+    if (GET_CMDARG_BOOL(nDPId_options.enable_data_analysis) != 0 && flow_ext->flow_analysis != NULL)
     {
         ndpi_serialize_start_of_block(&workflow->ndpi_serializer, "data_analysis");
         ndpi_serialize_start_of_block(&workflow->ndpi_serializer, "iat");
@@ -2907,7 +2907,7 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
     }
 
 #ifdef ENABLE_PFRING
-    if (GET_CMDARG_BOOLEAN(nDPId_options.use_pfring) != 0)
+    if (GET_CMDARG_BOOL(nDPId_options.use_pfring) != 0)
     {
         ndpi_serialize_string_int32(&workflow->ndpi_serializer,
                                     "pkt_datalink",
@@ -2985,7 +2985,7 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
         case FLOW_EVENT_UPDATE:
         case FLOW_EVENT_ANALYSE:
 #ifdef ENABLE_PFRING
-            if (GET_CMDARG_BOOLEAN(nDPId_options.use_pfring) != 0)
+            if (GET_CMDARG_BOOL(nDPId_options.use_pfring) != 0)
             {
                 ndpi_serialize_string_int32(&workflow->ndpi_serializer,
                                             "flow_datalink",
@@ -3027,7 +3027,7 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
                 struct nDPId_flow * const flow = (struct nDPId_flow *)flow_ext;
 
 #ifdef ENABLE_ZLIB
-                if (GET_CMDARG_BOOLEAN(nDPId_options.enable_zlib_compression) != 0 &&
+                if (GET_CMDARG_BOOL(nDPId_options.enable_zlib_compression) != 0 &&
                     flow->info.detection_data_compressed_size > 0)
                 {
                     workflow->current_compression_diff -= flow->info.detection_data_compressed_size;
@@ -3441,7 +3441,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
     const struct ndpi_ethhdr * ethernet;
 
 #ifdef ENABLE_PFRING
-    if (GET_CMDARG_BOOLEAN(nDPId_options.use_pfring) != 0)
+    if (GET_CMDARG_BOOL(nDPId_options.use_pfring) != 0)
     {
         datalink_type = npfring_datalink(&reader_thread->workflow->npf);
     }
@@ -4261,7 +4261,7 @@ static void ndpi_process_packet(uint8_t * const args,
                 subnet = &nDPId_options.pcap_dev_subnet6;
                 break;
         }
-        if (GET_CMDARG_BOOLEAN(nDPId_options.process_internal_initial_direction) != 0 &&
+        if (GET_CMDARG_BOOL(nDPId_options.process_internal_initial_direction) != 0 &&
             flow_basic.tcp_is_midstream_flow == 0)
         {
             if (is_ip_in_subnet(&flow_basic.src, netmask, subnet, flow_basic.l3_type) == 0)
@@ -4287,7 +4287,7 @@ static void ndpi_process_packet(uint8_t * const args,
                 return;
             }
         }
-        else if (GET_CMDARG_BOOLEAN(nDPId_options.process_external_initial_direction) != 0 &&
+        else if (GET_CMDARG_BOOL(nDPId_options.process_external_initial_direction) != 0 &&
                  flow_basic.tcp_is_midstream_flow == 0)
         {
             if (is_ip_in_subnet(&flow_basic.src, netmask, subnet, flow_basic.l3_type) != 0)
@@ -4417,7 +4417,7 @@ static void ndpi_process_packet(uint8_t * const args,
         if (flow_to_process->flow_extended.flow_basic.state == FS_INFO)
         {
 #ifdef ENABLE_ZLIB
-            if (GET_CMDARG_BOOLEAN(nDPId_options.enable_zlib_compression) != 0 &&
+            if (GET_CMDARG_BOOL(nDPId_options.enable_zlib_compression) != 0 &&
                 flow_to_process->info.detection_data_compressed_size > 0)
             {
                 workflow->current_compression_diff -= flow_to_process->info.detection_data_compressed_size;
@@ -4461,7 +4461,7 @@ static void ndpi_process_packet(uint8_t * const args,
         jsonize_flow_event(reader_thread, &flow_to_process->flow_extended, FLOW_EVENT_NEW);
     }
 
-    if (GET_CMDARG_BOOLEAN(nDPId_options.enable_data_analysis) != 0 &&
+    if (GET_CMDARG_BOOL(nDPId_options.enable_data_analysis) != 0 &&
         flow_to_process->flow_extended.flow_analysis != NULL &&
         flow_to_process->flow_extended.packets_processed[FD_SRC2DST] +
                 flow_to_process->flow_extended.packets_processed[FD_DST2SRC] <=
@@ -4604,7 +4604,7 @@ static void ndpi_process_packet(uint8_t * const args,
     }
 
 #ifdef ENABLE_ZLIB
-    if (GET_CMDARG_BOOLEAN(nDPId_options.enable_zlib_compression) != 0)
+    if (GET_CMDARG_BOOL(nDPId_options.enable_zlib_compression) != 0)
     {
         check_for_compressable_flows(reader_thread);
     }
@@ -4755,7 +4755,7 @@ static void run_capture_loop(struct nDPId_reader_thread * const reader_thread)
 
         int capture_fd = -1;
 #ifdef ENABLE_PFRING
-        if (GET_CMDARG_BOOLEAN(nDPId_options.use_pfring) != 0)
+        if (GET_CMDARG_BOOL(nDPId_options.use_pfring) != 0)
         {
             capture_fd = npfring_get_selectable_fd(&reader_thread->workflow->npf);
         }
@@ -4770,9 +4770,9 @@ static void run_capture_loop(struct nDPId_reader_thread * const reader_thread)
                    "Got an invalid %s fd",
                    (
 #ifdef ENABLE_PFRING
-                       GET_CMDARG_BOOLEAN(nDPId_options.use_pfring) != 0 ? "PF_RING" :
+                       GET_CMDARG_BOOL(nDPId_options.use_pfring) != 0 ? "PF_RING" :
 #endif
-                                                                         "PCAP"));
+                                                                      "PCAP"));
             MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
             return;
         }
@@ -4780,8 +4780,8 @@ static void run_capture_loop(struct nDPId_reader_thread * const reader_thread)
         struct nio io;
         nio_init(&io);
 #ifdef ENABLE_EPOLL
-        if ((GET_CMDARG_BOOLEAN(nDPId_options.use_poll) == 0 && nio_use_epoll(&io, 32) != NIO_SUCCESS) ||
-            (GET_CMDARG_BOOLEAN(nDPId_options.use_poll) != 0 &&
+        if ((GET_CMDARG_BOOL(nDPId_options.use_poll) == 0 && nio_use_epoll(&io, 32) != NIO_SUCCESS) ||
+            (GET_CMDARG_BOOL(nDPId_options.use_poll) != 0 &&
              nio_use_poll(&io, nDPIsrvd_MAX_REMOTE_DESCRIPTORS) != NIO_SUCCESS))
 #else
         if (nio_use_poll(&io, nDPIsrvd_MAX_REMOTE_DESCRIPTORS) != NIO_SUCCESS)
@@ -4898,7 +4898,7 @@ static void run_capture_loop(struct nDPId_reader_thread * const reader_thread)
                     if (fd == capture_fd)
                 {
 #ifdef ENABLE_PFRING
-                    if (GET_CMDARG_BOOLEAN(nDPId_options.use_pfring) != 0)
+                    if (GET_CMDARG_BOOL(nDPId_options.use_pfring) != 0)
                     {
                         struct pcap_pkthdr hdr;
 
@@ -5500,7 +5500,7 @@ static int validate_options(void)
         retval = 1;
     }
 #ifdef ENABLE_ZLIB
-    if (GET_CMDARG_BOOLEAN(nDPId_options.enable_zlib_compression) != 0)
+    if (GET_CMDARG_BOOL(nDPId_options.enable_zlib_compression) != 0)
     {
         if (GET_CMDARG_ULL(nDPId_options.compression_flow_inactivity) < TIME_S_TO_US(6u) ||
             GET_CMDARG_ULL(nDPId_options.compression_scan_interval) < TIME_S_TO_US(4u))
@@ -5609,14 +5609,14 @@ static int validate_options(void)
                      GET_CMDARG_ULL(nDPId_options.udp_max_idle_time));
         retval = 1;
     }
-    if (GET_CMDARG_BOOLEAN(nDPId_options.process_internal_initial_direction) != 0 &&
-        GET_CMDARG_BOOLEAN(nDPId_options.process_external_initial_direction) != 0)
+    if (GET_CMDARG_BOOL(nDPId_options.process_internal_initial_direction) != 0 &&
+        GET_CMDARG_BOOL(nDPId_options.process_external_initial_direction) != 0)
     {
         logger_early(1, "%s", "Internal and External packet processing does not make sense as this is the default.");
         retval = 1;
     }
-    if (GET_CMDARG_BOOLEAN(nDPId_options.process_internal_initial_direction) != 0 ||
-        GET_CMDARG_BOOLEAN(nDPId_options.process_external_initial_direction) != 0)
+    if (GET_CMDARG_BOOL(nDPId_options.process_internal_initial_direction) != 0 ||
+        GET_CMDARG_BOOL(nDPId_options.process_external_initial_direction) != 0)
     {
         logger_early(1,
                      "%s",
