@@ -610,7 +610,7 @@ struct confopt general_config_map[] = {CONFOPT("netif", &nDPId_options.pcap_file
                                        CONFOPT("poll", &nDPId_options.use_poll),
 #endif
 #ifdef ENABLE_PFRING
-                                       CONFOPT("pfring", &nDPId_options_use_pfring)
+                                       CONFOPT("pfring", &nDPId_options.use_pfring)
 #endif
 };
 struct confopt tuning_config_map[] = {
