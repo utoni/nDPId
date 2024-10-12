@@ -703,11 +703,17 @@ static int parse_config_lines(FILE * const file, config_line_callback cb, void *
 
 int parse_config_file(char const * const config_file, config_line_callback cb, void * const user_data)
 {
+    int file_fd;
     FILE * file;
     int error;
     struct stat sbuf;
 
-    if (stat(config_file, &sbuf) != 0)
+    file_fd = open(config_file, O_RDONLY);
+    if (file_fd < 0)
+    {
+        return -1;
+    }
+    if (fstat(file_fd, &sbuf) != 0)
     {
         return -1;
     }
@@ -716,7 +722,7 @@ int parse_config_file(char const * const config_file, config_line_callback cb, v
         return -ENOENT;
     }
 
-    file = fopen(config_file, "r");
+    file = fdopen(file_fd, "r");
     if (file == NULL)
     {
         return -1;
