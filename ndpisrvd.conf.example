@@ -1,0 +1,25 @@
+[general]
+#pidfile                = /tmp/ndpisrvd.pid
+#user                   = nobody
+#group                  = nogroup
+
+# Collector listener as UNIX socket
+collector              = /run/nDPIsrvd/collector
+
+# Distributor listener as UNIX socket
+distributor-unix       = /run/nDPIsrvd/distributor
+
+# Distributor listener as IP socket
+#distributor-in         = 127.0.0.1:7000
+
+# Max (distributor) clients allowed to connect to nDPIsrvd
+max-remote-descriptors = 128
+
+# Additional output buffers useful if a distributor sink speed unstable
+max-write-buffers      = 1024
+
+# Fallback to blocking I/O if output buffers full
+blocking-io-fallback   = true
+
+# Force poll() on systems that support epoll() as well
+#poll                   = false

@@ -7,8 +7,8 @@
 # This will work for libpcap as well as with PF_RING.
 #bpf         = udp or tcp
 
-pidfile     = /tmp/ndpid.pid
-user        = nobody
+#pidfile     = /tmp/ndpid.pid
+#user        = nobody
 #group       = nogroup
 #protocols   = /path/to/libnDPI/example/protos.txt
 #categories  = /path/to/libnDPI/example/categories.txt
@@ -16,7 +16,7 @@ user        = nobody
 #sha1        = /path/to/libnDPI/example/sha1_fingerprints.csv
 
 # Collector endpoint as UNIX socket (usually nDPIsrvd)
-collector   = /var/run/ndpisrvd-collector
+collector   = /run/nDPIsrvd/collector
 # Collector endpoint as UDP socket (usually a custom application)
 #collector   = 127.0.0.1:7777
 

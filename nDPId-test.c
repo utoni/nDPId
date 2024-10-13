@@ -1667,7 +1667,7 @@ int main(int argc, char ** argv)
         return retval;
     }
 
-    nDPIsrvd_options.max_write_buffers = 32;
+    set_cmdarg_ull(&nDPIsrvd_options.max_write_buffers, 32);
     set_cmdarg_boolean(&nDPId_options.enable_data_analysis, 1);
     set_cmdarg_ull(&nDPId_options.max_packets_per_flow_to_send, 5);
 #ifdef ENABLE_ZLIB

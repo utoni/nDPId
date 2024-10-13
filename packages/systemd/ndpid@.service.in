@@ -5,10 +5,9 @@ Requires=ndpisrvd.service
 
 [Service]
 Type=simple
-ExecStart=@CMAKE_INSTALL_PREFIX@/sbin/nDPId $NDPID_ARGS -i %i -c ${COLLECTOR_PATH}
+ExecStartPre=/bin/sh -c 'test -r "@CMAKE_INSTALL_PREFIX@/etc/nDPId/%i.conf" || cp -v "@CMAKE_INSTALL_PREFIX@/share/nDPId/ndpid.conf.example" "@CMAKE_INSTALL_PREFIX@/etc/nDPId/%i.conf"'
+ExecStart=@CMAKE_INSTALL_PREFIX@/sbin/nDPId -f @CMAKE_INSTALL_PREFIX@/etc/nDPId/%i.conf -i %i -u nobody
 Restart=on-failure
-Environment=COLLECTOR_PATH=/var/run/ndpisrvd-collector NDPID_ARGS="-A -z"
-EnvironmentFile=@CMAKE_INSTALL_PREFIX@/etc/default/ndpid
 
 [Install]
 WantedBy=multi-user.target

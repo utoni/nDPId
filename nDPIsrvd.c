@@ -90,27 +90,48 @@ static struct nDPIsrvd_address distributor_in_address = {
 
 static struct
 {
+    struct cmdarg config_file;
     struct cmdarg pidfile;
     struct cmdarg collector_un_sockpath;
     struct cmdarg distributor_un_sockpath;
     struct cmdarg distributor_in_address;
     struct cmdarg user;
     struct cmdarg group;
-    nDPIsrvd_ull max_remote_descriptors;
-    nDPIsrvd_ull max_write_buffers;
-    uint8_t bufferbloat_fallback_to_blocking;
+    struct cmdarg max_remote_descriptors;
+    struct cmdarg max_write_buffers;
+    struct cmdarg bufferbloat_fallback_to_blocking;
 #ifdef ENABLE_EPOLL
-    uint8_t use_poll;
+    struct cmdarg use_poll;
 #endif
-} nDPIsrvd_options = {.pidfile = CMDARG_STR(nDPIsrvd_PIDFILE),
+} nDPIsrvd_options = {.config_file = CMDARG_STR(NULL),
+                      .pidfile = CMDARG_STR(nDPIsrvd_PIDFILE),
                       .collector_un_sockpath = CMDARG_STR(COLLECTOR_UNIX_SOCKET),
                       .distributor_un_sockpath = CMDARG_STR(DISTRIBUTOR_UNIX_SOCKET),
                       .distributor_in_address = CMDARG_STR(NULL),
                       .user = CMDARG_STR(DEFAULT_CHUSER),
                       .group = CMDARG_STR(NULL),
-                      .max_remote_descriptors = nDPIsrvd_MAX_REMOTE_DESCRIPTORS,
-                      .max_write_buffers = nDPIsrvd_MAX_WRITE_BUFFERS,
-                      .bufferbloat_fallback_to_blocking = 1};
+                      .max_remote_descriptors = CMDARG_ULL(nDPIsrvd_MAX_REMOTE_DESCRIPTORS),
+                      .max_write_buffers = CMDARG_ULL(nDPIsrvd_MAX_WRITE_BUFFERS),
+                      .bufferbloat_fallback_to_blocking = CMDARG_BOOL(1)
+#ifdef ENABLE_EPOLL
+                          ,
+                      .use_poll = CMDARG_BOOL(0)
+#endif
+};
+struct confopt config_map[] = {CONFOPT("pidfile", &nDPIsrvd_options.pidfile),
+                               CONFOPT("collector", &nDPIsrvd_options.collector_un_sockpath),
+                               CONFOPT("distributor-unix", &nDPIsrvd_options.distributor_un_sockpath),
+                               CONFOPT("distributor-in", &nDPIsrvd_options.distributor_in_address),
+                               CONFOPT("user", &nDPIsrvd_options.user),
+                               CONFOPT("group", &nDPIsrvd_options.group),
+                               CONFOPT("max-remote-descriptors", &nDPIsrvd_options.max_remote_descriptors),
+                               CONFOPT("max-write-buffers", &nDPIsrvd_options.max_write_buffers),
+                               CONFOPT("blocking-io-fallback", &nDPIsrvd_options.bufferbloat_fallback_to_blocking)
+#ifdef ENABLE_EPOLL
+                                   ,
+                               CONFOPT("poll", &nDPIsrvd_options.use_poll)
+#endif
+};
 
 static void logger_nDPIsrvd(struct remote_desc const * const remote,
                             char const * const prefix,
@@ -239,9 +260,9 @@ static int add_to_additional_write_buffers(struct remote_desc * const remote,
         return -1;
     }
 
-    if (utarray_len(additional_write_buffers) >= nDPIsrvd_options.max_write_buffers)
+    if (utarray_len(additional_write_buffers) >= GET_CMDARG_ULL(nDPIsrvd_options.max_write_buffers))
     {
-        if (nDPIsrvd_options.bufferbloat_fallback_to_blocking == 0)
+        if (GET_CMDARG_BOOL(nDPIsrvd_options.bufferbloat_fallback_to_blocking) == 0)
         {
             logger_nDPIsrvd(remote,
                             "Buffer limit for",
@@ -804,10 +825,13 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
 {
     int opt;
 
-    while ((opt = getopt(argc, argv, "lL:c:dp:s:S:m:u:g:C:Dvh")) != -1)
+    while ((opt = getopt(argc, argv, "f:lL:c:dp:s:S:m:u:g:C:Dvh")) != -1)
     {
         switch (opt)
         {
+            case 'f':
+                set_cmdarg_string(&nDPIsrvd_options.config_file, optarg);
+                break;
             case 'l':
                 enable_console_logger();
                 break;
@@ -822,7 +846,7 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
                 break;
             case 'e':
 #ifdef ENABLE_EPOLL
-                nDPIsrvd_options.use_poll = 1;
+                set_cmdarg_boolean(&nDPIsrvd_options.use_poll, 1);
 #else
                 logger_early(1, "%s", "nDPIsrvd was built w/o epoll() support, poll() is already the default");
 #endif
@@ -840,12 +864,17 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
                 set_cmdarg_string(&nDPIsrvd_options.distributor_in_address, optarg);
                 break;
             case 'm':
-                if (str_value_to_ull(optarg, &nDPIsrvd_options.max_remote_descriptors) != CONVERSION_OK)
+            {
+                nDPIsrvd_ull tmp;
+
+                if (str_value_to_ull(optarg, &tmp) != CONVERSION_OK)
                 {
                     fprintf(stderr, "%s: Argument for `-C' is not a number: %s\n", argv[0], optarg);
                     return 1;
                 }
+                set_cmdarg_ull(&nDPIsrvd_options.max_remote_descriptors, tmp);
                 break;
+            }
             case 'u':
                 set_cmdarg_string(&nDPIsrvd_options.user, optarg);
                 break;
@@ -853,14 +882,19 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
                 set_cmdarg_string(&nDPIsrvd_options.group, optarg);
                 break;
             case 'C':
-                if (str_value_to_ull(optarg, &nDPIsrvd_options.max_write_buffers) != CONVERSION_OK)
+            {
+                nDPIsrvd_ull tmp;
+
+                if (str_value_to_ull(optarg, &tmp) != CONVERSION_OK)
                 {
                     fprintf(stderr, "%s: Argument for `-C' is not a number: %s\n", argv[0], optarg);
                     return 1;
                 }
+                set_cmdarg_ull(&nDPIsrvd_options.max_write_buffers, tmp);
                 break;
+            }
             case 'D':
-                nDPIsrvd_options.bufferbloat_fallback_to_blocking = 0;
+                set_cmdarg_boolean(&nDPIsrvd_options.bufferbloat_fallback_to_blocking, 0);
                 break;
             case 'v':
                 fprintf(stderr, "%s", get_nDPId_version());
@@ -869,11 +903,13 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
             default:
                 fprintf(stderr, "%s\n", get_nDPId_version());
                 fprintf(stderr,
-                        "Usage: %s [-l] [-L logfile] [-c path-to-unix-sock] [-e] [-d] [-p pidfile]\n"
+                        "Usage: %s [-f config-file] [-l] [-L logfile]\n"
+                        "\t[-c path-to-unix-sock] [-e] [-d] [-p pidfile]\n"
                         "\t[-s path-to-distributor-unix-socket] [-S distributor-host:port]\n"
                         "\t[-m max-remote-descriptors] [-u user] [-g group]\n"
                         "\t[-C max-buffered-json-lines] [-D]\n"
                         "\t[-v] [-h]\n\n"
+                        "\t-f\tLoad nDPIsrvd options from a configuration file.\n"
                         "\t-l\tLog all messages to stderr.\n"
                         "\t-L\tLog all messages to a log file.\n"
                         "\t-c\tPath to a listening UNIX socket (nDPIsrvd Collector).\n"
@@ -902,6 +938,8 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
                 return 1;
         }
     }
+
+    set_config_defaults(&config_map[0], nDPIsrvd_ARRAY_LENGTH(config_map));
 
     if (is_path_absolute("Pidfile", GET_CMDARG_STR(nDPIsrvd_options.pidfile)) != 0)
     {
@@ -1517,8 +1555,9 @@ static int mainloop(struct nio * const io)
 static int setup_event_queue(struct nio * const io)
 {
 #ifdef ENABLE_EPOLL
-    if ((nDPIsrvd_options.use_poll == 0 && nio_use_epoll(io, 32) != NIO_SUCCESS) ||
-        (nDPIsrvd_options.use_poll != 0 && nio_use_poll(io, nDPIsrvd_MAX_REMOTE_DESCRIPTORS) != NIO_SUCCESS))
+    if ((GET_CMDARG_BOOL(nDPIsrvd_options.use_poll) == 0 && nio_use_epoll(io, 32) != NIO_SUCCESS) ||
+        (GET_CMDARG_BOOL(nDPIsrvd_options.use_poll) != 0 &&
+         nio_use_poll(io, nDPIsrvd_MAX_REMOTE_DESCRIPTORS) != NIO_SUCCESS))
 #else
     if (nio_use_poll(io, nDPIsrvd_MAX_REMOTE_DESCRIPTORS) != NIO_SUCCESS)
 #endif
@@ -1577,6 +1616,49 @@ static int setup_remote_descriptors(nDPIsrvd_ull max_remote_descriptors)
     return 0;
 }
 
+static int nDPIsrvd_parsed_config_line(
+    int lineno, char const * const section, char const * const name, char const * const value, void * const user_data)
+{
+    (void)user_data;
+
+    if (strnlen(section, INI_MAX_SECTION) == nDPIsrvd_STRLEN_SZ("general") &&
+        strncmp(section, "general", INI_MAX_SECTION) == 0)
+    {
+        size_t i;
+
+        for (i = 0; i < nDPIsrvd_ARRAY_LENGTH(config_map); ++i)
+        {
+            if (strnlen(name, INI_MAX_NAME) == strnlen(config_map[i].key, INI_MAX_NAME) &&
+                strncmp(name, config_map[i].key, INI_MAX_NAME) == 0)
+            {
+                if (IS_CMDARG_SET(*config_map[i].opt) != 0)
+                {
+                    logger_early(1, "General config key `%s' already set, ignoring value `%s'", name, value);
+                }
+                else
+                {
+                    if (set_config_from(&config_map[i], value) != 0)
+                    {
+                        return 0;
+                    }
+                }
+                break;
+            }
+        }
+        if (i == nDPIsrvd_ARRAY_LENGTH(config_map))
+        {
+            logger_early(1, "Invalid general config key `%s' at line %d", name, lineno);
+        }
+    }
+    else
+    {
+        logger_early(
+            1, "Invalid config section `%s' at line %d with key `%s' and value `%s'", section, lineno, name, value);
+    }
+
+    return 1;
+}
+
 #ifndef NO_MAIN
 int main(int argc, char ** argv)
 {
@@ -1594,6 +1676,32 @@ int main(int argc, char ** argv)
     if (nDPIsrvd_parse_options(argc, argv) != 0)
     {
         return 1;
+    }
+    {
+        int ret;
+
+        if (IS_CMDARG_SET(nDPIsrvd_options.config_file) != 0 &&
+            (ret =
+                 parse_config_file(GET_CMDARG_STR(nDPIsrvd_options.config_file), nDPIsrvd_parsed_config_line, NULL)) !=
+                0)
+        {
+            if (ret > 0)
+            {
+                logger_early(1, "Config file `%s' is malformed", GET_CMDARG_STR(nDPIsrvd_options.config_file));
+            }
+            else if (ret == -ENOENT)
+            {
+                logger_early(1, "Path `%s' is not a regular file", GET_CMDARG_STR(nDPIsrvd_options.config_file));
+            }
+            else
+            {
+                logger_early(1,
+                             "Could not open file `%s' for reading: %s",
+                             GET_CMDARG_STR(nDPIsrvd_options.config_file),
+                             strerror(errno));
+            }
+            return 1;
+        }
     }
 
     if (is_daemonize_enabled() != 0 && is_console_logger_enabled() != 0)
@@ -1630,7 +1738,7 @@ int main(int argc, char ** argv)
         goto error;
     }
 
-    if (setup_remote_descriptors(nDPIsrvd_options.max_remote_descriptors) != 0)
+    if (setup_remote_descriptors(GET_CMDARG_ULL(nDPIsrvd_options.max_remote_descriptors)) != 0)
     {
         goto error;
     }

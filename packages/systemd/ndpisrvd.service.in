@@ -4,11 +4,10 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=@CMAKE_INSTALL_PREFIX@/bin/nDPIsrvd -c ${COLLECTOR_PATH}
-ExecStopPost=/bin/rm -f /var/run/ndpisrvd-collector
+ExecStartPre=/bin/sh -c 'test -r "@CMAKE_INSTALL_PREFIX@/etc/nDPId/nDPIsrvd.conf" || cp -v "@CMAKE_INSTALL_PREFIX@/share/nDPId/ndpisrvd.conf.example" "@CMAKE_INSTALL_PREFIX@/etc/nDPId/nDPIsrvd.conf"'
+ExecStartPre=/bin/sh -c 'mkdir -p /run/nDPIsrvd && chown nobody /run/nDPIsrvd'
+ExecStart=@CMAKE_INSTALL_PREFIX@/bin/nDPIsrvd -f @CMAKE_INSTALL_PREFIX@/etc/nDPId/nDPIsrvd.conf -u nobody
 Restart=on-failure
-Environment=COLLECTOR_PATH=/var/run/ndpisrvd-collector
-EnvironmentFile=@CMAKE_INSTALL_PREFIX@/etc/default/ndpid
 
 [Install]
 WantedBy=multi-user.target
