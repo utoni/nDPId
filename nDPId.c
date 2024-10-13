@@ -492,6 +492,7 @@ static struct
     struct cmdarg pidfile;
     struct cmdarg user;
     struct cmdarg group;
+    struct cmdarg custom_risk_domain_file;
     struct cmdarg custom_protocols_file;
     struct cmdarg custom_categories_file;
     struct cmdarg custom_ja3_file;
@@ -539,6 +540,7 @@ static struct
                    .pidfile = CMDARG_STR(nDPId_PIDFILE),
                    .user = CMDARG_STR(DEFAULT_CHUSER),
                    .group = CMDARG_STR(NULL),
+                   .custom_risk_domain_file = CMDARG_STR(NULL),
                    .custom_protocols_file = CMDARG_STR(NULL),
                    .custom_categories_file = CMDARG_STR(NULL),
                    .custom_ja3_file = CMDARG_STR(NULL),
@@ -594,6 +596,7 @@ struct confopt general_config_map[] = {CONFOPT("netif", &nDPId_options.pcap_file
                                        CONFOPT("pidfile", &nDPId_options.pidfile),
                                        CONFOPT("user", &nDPId_options.user),
                                        CONFOPT("group", &nDPId_options.group),
+                                       CONFOPT("riskdomains", &nDPId_options.custom_risk_domain_file),
                                        CONFOPT("protocols", &nDPId_options.custom_protocols_file),
                                        CONFOPT("categories", &nDPId_options.custom_categories_file),
                                        CONFOPT("ja3", &nDPId_options.custom_ja3_file),
@@ -1544,6 +1547,10 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     NDPI_PROTOCOL_BITMASK protos;
     NDPI_BITMASK_SET_ALL(protos);
     ndpi_set_protocol_detection_bitmask2(workflow->ndpi_struct, &protos);
+    if (IS_CMDARG_SET(nDPId_options.custom_risk_domain_file) != 0)
+    {
+        ndpi_load_risk_domain_file(workflow->ndpi_struct, GET_CMDARG_STR(nDPId_options.custom_risk_domain_file));
+    }
     if (IS_CMDARG_SET(nDPId_options.custom_protocols_file) != 0)
     {
         ndpi_load_protocols_file(workflow->ndpi_struct, GET_CMDARG_STR(nDPId_options.custom_protocols_file));
@@ -5328,7 +5335,7 @@ static int nDPId_parse_options(int argc, char ** argv)
 {
     int opt;
 
-    while ((opt = getopt(argc, argv, "f:i:rIEB:lL:c:edp:u:g:P:C:J:S:a:Azo:vh")) != -1)
+    while ((opt = getopt(argc, argv, "f:i:rIEB:lL:c:edp:u:g:R:P:C:J:S:a:Azo:vh")) != -1)
     {
         switch (opt)
         {
@@ -5385,6 +5392,9 @@ static int nDPId_parse_options(int argc, char ** argv)
                 break;
             case 'g':
                 set_cmdarg_string(&nDPId_options.group, optarg);
+                break;
+            case 'R':
+                set_cmdarg_string(&nDPId_options.custom_risk_domain_file, optarg);
                 break;
             case 'P':
                 set_cmdarg_string(&nDPId_options.custom_protocols_file, optarg);
