@@ -558,8 +558,7 @@ static int create_listen_sockets(void)
         else if (written == sizeof(collector_addr.sun_path))
         {
             logger(1,
-                   "Collector UNIX socket path too long, current/max: %zu/%zu",
-                   strlen(GET_CMDARG_STR(nDPIsrvd_options.collector_un_sockpath)),
+                   "Collector UNIX socket path too long, max: %zu characters",
                    sizeof(collector_addr.sun_path) - 1);
             return 1;
         }
@@ -589,8 +588,7 @@ static int create_listen_sockets(void)
         else if (written == sizeof(distributor_addr.sun_path))
         {
             logger(1,
-                   "Distributor UNIX socket path too long, current/max: %zu/%zu",
-                   strlen(GET_CMDARG_STR(nDPIsrvd_options.distributor_un_sockpath)),
+                   "Distributor UNIX socket path too long, max: %zu characters",
                    sizeof(distributor_addr.sun_path) - 1);
             return 2;
         }
