@@ -1688,6 +1688,7 @@ int main(int argc, char ** argv)
         return 1;
     }
     set_cmdarg_string(&nDPId_options.pcap_file_or_interface, argv[1]);
+    set_config_defaults(&config_map[0], nDPIsrvd_ARRAY_LENGTH(config_map));
     set_config_defaults(&general_config_map[0], nDPIsrvd_ARRAY_LENGTH(general_config_map));
     set_config_defaults(&tuning_config_map[0], nDPIsrvd_ARRAY_LENGTH(tuning_config_map));
     if (validate_options() != 0)
