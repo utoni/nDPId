@@ -3,5 +3,4 @@
 rm -rf /run/nDPId /run/nDPIsrvd
 deluser ndpid || true
 deluser ndpisrvd || true
-delgroup ndpisrvd-collector || true
 delgroup ndpisrvd-distributor || true

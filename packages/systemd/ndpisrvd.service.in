@@ -5,8 +5,8 @@ After=network.target
 [Service]
 Type=simple
 ExecStartPre=/bin/sh -c 'test -r "@CMAKE_INSTALL_PREFIX@/etc/nDPId/nDPIsrvd.conf" || cp -v "@CMAKE_INSTALL_PREFIX@/share/nDPId/ndpisrvd.conf.example" "@CMAKE_INSTALL_PREFIX@/etc/nDPId/nDPIsrvd.conf"'
-ExecStartPre=/bin/sh -c 'mkdir -p /run/nDPIsrvd && chown nobody /run/nDPIsrvd'
-ExecStart=@CMAKE_INSTALL_PREFIX@/bin/nDPIsrvd -f @CMAKE_INSTALL_PREFIX@/etc/nDPId/nDPIsrvd.conf -u ndpisrvd -G ndpisrvd-collector:ndpisrvd-distributor
+ExecStartPre=/bin/sh -c 'mkdir -p /run/nDPIsrvd && chown root:root /run/nDPIsrvd && chmod 0775 /run/nDPIsrvd'
+ExecStart=@CMAKE_INSTALL_PREFIX@/bin/nDPIsrvd -f @CMAKE_INSTALL_PREFIX@/etc/nDPId/nDPIsrvd.conf -u ndpisrvd -G ndpid:ndpisrvd-distributor
 Restart=on-failure
 
 [Install]

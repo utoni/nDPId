@@ -1841,7 +1841,7 @@ int main(int argc, char ** argv)
     }
 
     ret = chmod_chown(GET_CMDARG_STR(nDPIsrvd_options.distributor_un_sockpath),
-                      S_IRUSR | S_IWUSR | S_IRGRP,
+                      S_IRUSR | S_IWUSR | S_IWGRP,
                       GET_CMDARG_STR(nDPIsrvd_options.user),
                       IS_CMDARG_SET(nDPIsrvd_options.distributor_group) != 0
                           ? GET_CMDARG_STR(nDPIsrvd_options.distributor_group)
