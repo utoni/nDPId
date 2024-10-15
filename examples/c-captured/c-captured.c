@@ -24,7 +24,7 @@
 #include "utarray.h"
 #include "utils.h"
 
-//#define VERBOSE
+// #define VERBOSE
 #define DEFAULT_DATADIR "/tmp/nDPId-captured"
 
 struct packet_data
@@ -1355,8 +1355,14 @@ int main(int argc, char ** argv)
         return 1;
     }
 
+    if (capture_mode != 0 && chmod_chown(datadir, S_IRWXU | S_IRGRP | S_IXGRP, user, group) != 0)
+    {
+        logger(1, "Could not chmod/chown `%s': %s", datadir, strerror(errno));
+        return 1;
+    }
+
     errno = 0;
-    if (user != NULL && change_user_group(user, group, pidfile, datadir /* :D */, NULL) != 0)
+    if (user != NULL && change_user_group(user, group, pidfile) != 0)
     {
         if (errno != 0)
         {
@@ -1367,10 +1373,6 @@ int main(int argc, char ** argv)
             logger(1, "Change user/group failed.");
         }
         return 1;
-    }
-    if (datadir != NULL)
-    {
-        chmod(datadir, S_IRWXU);
     }
 
     if (nDPIsrvd_set_read_timeout(ndpisrvd_socket, 180, 0) != 0)

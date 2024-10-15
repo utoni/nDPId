@@ -1,0 +1,6 @@
+#!/bin/sh
+
+addgroup --system ndpisrvd-collector
+addgroup --system ndpisrvd-distributor
+adduser --system --no-create-home --shell=/bin/false --group ndpisrvd
+adduser --system --no-create-home --shell=/bin/false --group ndpid

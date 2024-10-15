@@ -11,7 +11,6 @@
 #include <syslog.h>
 #endif
 #include <sys/stat.h>
-#include <sys/types.h>
 #include <unistd.h>
 
 #include "utils.h"
@@ -339,11 +338,7 @@ int daemonize_shutdown(char const * const pidfile)
     return 0;
 }
 
-int change_user_group(char const * const user,
-                      char const * const group,
-                      char const * const pidfile,
-                      char const * const uds_collector_path,
-                      char const * const uds_distributor_path)
+int change_user_group(char const * const user, char const * const group, char const * const pidfile)
 {
     struct passwd * pwd;
     struct group * grp;
@@ -376,23 +371,6 @@ int change_user_group(char const * const user,
         gid = pwd->pw_gid;
     }
 
-    if (uds_collector_path != NULL)
-    {
-        errno = 0;
-        if (chmod(uds_collector_path, S_IRUSR | S_IWUSR) != 0 || chown(uds_collector_path, pwd->pw_uid, gid) != 0)
-        {
-            return -errno;
-        }
-    }
-    if (uds_distributor_path != NULL)
-    {
-        errno = 0;
-        if (chmod(uds_distributor_path, S_IRUSR | S_IWUSR | S_IRGRP) != 0 ||
-            chown(uds_distributor_path, pwd->pw_uid, gid) != 0)
-        {
-            return -errno;
-        }
-    }
     if (daemonize != 0 && pidfile != NULL)
     {
         errno = 0;
@@ -402,6 +380,56 @@ int change_user_group(char const * const user,
         }
     }
     return setregid(gid, gid) != 0 || setreuid(pwd->pw_uid, pwd->pw_uid);
+}
+
+WARN_UNUSED
+int chmod_chown(char const * const path, mode_t mode, char const * const user, char const * const group)
+{
+    uid_t path_uid = (uid_t)-1;
+    gid_t path_gid = (gid_t)-1;
+
+    if (mode != 0)
+    {
+        if (chmod(path, mode) != 0)
+        {
+            return -errno;
+        }
+    }
+
+    if (user != NULL)
+    {
+        errno = 0;
+
+        struct passwd * const pwd = getpwnam(user);
+        if (pwd == NULL)
+        {
+            return (errno != 0 ? -errno : -ENOENT);
+        }
+        path_uid = pwd->pw_uid;
+        path_gid = pwd->pw_gid;
+    }
+
+    if (group != NULL)
+    {
+        errno = 0;
+
+        struct group * const grp = getgrnam(group);
+        if (grp == NULL)
+        {
+            return (errno != 0 ? -errno : -ENOENT);
+        }
+        path_gid = grp->gr_gid;
+    }
+
+    if (path_uid != (uid_t)-1 || path_gid != (gid_t)-1)
+    {
+        if (chown(path, path_uid, path_gid) != 0)
+        {
+            return -errno;
+        }
+    }
+
+    return 0;
 }
 
 void init_logging(char const * const name)

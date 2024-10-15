@@ -97,6 +97,8 @@ static struct
     struct cmdarg distributor_in_address;
     struct cmdarg user;
     struct cmdarg group;
+    struct cmdarg collector_group;
+    struct cmdarg distributor_group;
     struct cmdarg max_remote_descriptors;
     struct cmdarg max_write_buffers;
     struct cmdarg bufferbloat_fallback_to_blocking;
@@ -110,6 +112,8 @@ static struct
                       .distributor_in_address = CMDARG_STR(NULL),
                       .user = CMDARG_STR(DEFAULT_CHUSER),
                       .group = CMDARG_STR(NULL),
+                      .collector_group = CMDARG_STR(NULL),
+                      .distributor_group = CMDARG_STR(NULL),
                       .max_remote_descriptors = CMDARG_ULL(nDPIsrvd_MAX_REMOTE_DESCRIPTORS),
                       .max_write_buffers = CMDARG_ULL(nDPIsrvd_MAX_WRITE_BUFFERS),
                       .bufferbloat_fallback_to_blocking = CMDARG_BOOL(1)
@@ -124,6 +128,8 @@ struct confopt config_map[] = {CONFOPT("pidfile", &nDPIsrvd_options.pidfile),
                                CONFOPT("distributor-in", &nDPIsrvd_options.distributor_in_address),
                                CONFOPT("user", &nDPIsrvd_options.user),
                                CONFOPT("group", &nDPIsrvd_options.group),
+                               CONFOPT("collector-group", &nDPIsrvd_options.collector_group),
+                               CONFOPT("distributor-group", &nDPIsrvd_options.distributor_group),
                                CONFOPT("max-remote-descriptors", &nDPIsrvd_options.max_remote_descriptors),
                                CONFOPT("max-write-buffers", &nDPIsrvd_options.max_write_buffers),
                                CONFOPT("blocking-io-fallback", &nDPIsrvd_options.bufferbloat_fallback_to_blocking)
@@ -557,9 +563,7 @@ static int create_listen_sockets(void)
         }
         else if (written == sizeof(collector_addr.sun_path))
         {
-            logger(1,
-                   "Collector UNIX socket path too long, max: %zu characters",
-                   sizeof(collector_addr.sun_path) - 1);
+            logger(1, "Collector UNIX socket path too long, max: %zu characters", sizeof(collector_addr.sun_path) - 1);
             return 1;
         }
 
@@ -823,7 +827,7 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
 {
     int opt;
 
-    while ((opt = getopt(argc, argv, "f:lL:c:dp:s:S:m:u:g:C:Dvh")) != -1)
+    while ((opt = getopt(argc, argv, "f:lL:c:dp:s:S:G:m:u:g:C:Dvh")) != -1)
     {
         switch (opt)
         {
@@ -861,6 +865,27 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
             case 'S':
                 set_cmdarg_string(&nDPIsrvd_options.distributor_in_address, optarg);
                 break;
+            case 'G':
+            {
+                char const * const sep = strchr(optarg, ':');
+                char group[256];
+
+                if (sep == NULL)
+                {
+                    fprintf(stderr, "%s: Argument for `-G' is not in the format group:group\n", argv[0]);
+                    return 1;
+                }
+
+                if (snprintf(group, sizeof(group), "%.*s", (int)(sep - optarg), optarg) > 0)
+                {
+                    set_cmdarg_string(&nDPIsrvd_options.collector_group, group);
+                }
+                if (snprintf(group, sizeof(group), "%s", sep + 1) > 0)
+                {
+                    set_cmdarg_string(&nDPIsrvd_options.distributor_group, group);
+                }
+                break;
+            }
             case 'm':
             {
                 nDPIsrvd_ull tmp;
@@ -904,6 +929,7 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
                         "Usage: %s [-f config-file] [-l] [-L logfile]\n"
                         "\t[-c path-to-unix-sock] [-e] [-d] [-p pidfile]\n"
                         "\t[-s path-to-distributor-unix-socket] [-S distributor-host:port]\n"
+                        "\t[-G collector-unix-socket-group:distributor-unix-socket-group]\n"
                         "\t[-m max-remote-descriptors] [-u user] [-g group]\n"
                         "\t[-C max-buffered-json-lines] [-D]\n"
                         "\t[-v] [-h]\n\n"
@@ -926,6 +952,8 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
                         "\t-s\tPath to a listening UNIX socket (nDPIsrvd Distributor).\n"
                         "\t  \tDefault: %s\n"
                         "\t-S\tAddress:Port of the listening TCP/IP socket (nDPIsrvd Distributor).\n"
+                        "\t-G\tGroup owner of the UNIX collector/distributor socket.\n"
+                        "\t  \tDefault: Either the group set via `-g', otherwise the primary group of `-u'\n"
                         "\t-v\tversion\n"
                         "\t-h\tthis\n\n",
                         argv[0],
@@ -1779,11 +1807,75 @@ int main(int argc, char ** argv)
             break;
     }
 
-    int ret = change_user_group(GET_CMDARG_STR(nDPIsrvd_options.user),
-                                GET_CMDARG_STR(nDPIsrvd_options.group),
-                                GET_CMDARG_STR(nDPIsrvd_options.pidfile),
-                                GET_CMDARG_STR(nDPIsrvd_options.collector_un_sockpath),
-                                GET_CMDARG_STR(nDPIsrvd_options.distributor_un_sockpath));
+    int ret = chmod_chown(GET_CMDARG_STR(nDPIsrvd_options.collector_un_sockpath),
+                          S_IRUSR | S_IWUSR | S_IWGRP,
+                          GET_CMDARG_STR(nDPIsrvd_options.user),
+                          IS_CMDARG_SET(nDPIsrvd_options.collector_group) != 0
+                              ? GET_CMDARG_STR(nDPIsrvd_options.collector_group)
+                              : GET_CMDARG_STR(nDPIsrvd_options.group));
+    if (ret != 0)
+    {
+        if (IS_CMDARG_SET(nDPIsrvd_options.collector_group) != 0 || IS_CMDARG_SET(nDPIsrvd_options.group) != 0)
+        {
+            logger(1,
+                   "Could not chmod/chown `%s' to user `%s' and group `%s': %s",
+                   GET_CMDARG_STR(nDPIsrvd_options.collector_un_sockpath),
+                   GET_CMDARG_STR(nDPIsrvd_options.user),
+                   IS_CMDARG_SET(nDPIsrvd_options.collector_group) != 0
+                       ? GET_CMDARG_STR(nDPIsrvd_options.collector_group)
+                       : GET_CMDARG_STR(nDPIsrvd_options.group),
+                   strerror(errno));
+        }
+        else
+        {
+            logger(1,
+                   "Could not chmod/chown `%s' to user `%s': %s",
+                   GET_CMDARG_STR(nDPIsrvd_options.collector_un_sockpath),
+                   GET_CMDARG_STR(nDPIsrvd_options.user),
+                   strerror(errno));
+        }
+        if (ret != -EPERM)
+        {
+            goto error_unlink_sockets;
+        }
+    }
+
+    ret = chmod_chown(GET_CMDARG_STR(nDPIsrvd_options.distributor_un_sockpath),
+                      S_IRUSR | S_IWUSR | S_IRGRP,
+                      GET_CMDARG_STR(nDPIsrvd_options.user),
+                      IS_CMDARG_SET(nDPIsrvd_options.distributor_group) != 0
+                          ? GET_CMDARG_STR(nDPIsrvd_options.distributor_group)
+                          : GET_CMDARG_STR(nDPIsrvd_options.group));
+    if (ret != 0)
+    {
+        if (IS_CMDARG_SET(nDPIsrvd_options.distributor_group) != 0 || IS_CMDARG_SET(nDPIsrvd_options.group) != 0)
+        {
+            logger(1,
+                   "Could not chmod/chown `%s' to user `%s' and group `%s': %s",
+                   GET_CMDARG_STR(nDPIsrvd_options.distributor_un_sockpath),
+                   GET_CMDARG_STR(nDPIsrvd_options.user),
+                   IS_CMDARG_SET(nDPIsrvd_options.distributor_group) != 0
+                       ? GET_CMDARG_STR(nDPIsrvd_options.distributor_group)
+                       : GET_CMDARG_STR(nDPIsrvd_options.group),
+                   strerror(errno));
+        }
+        else
+        {
+            logger(1,
+                   "Could not chmod/chown `%s' to user `%s': %s",
+                   GET_CMDARG_STR(nDPIsrvd_options.distributor_un_sockpath),
+                   GET_CMDARG_STR(nDPIsrvd_options.user),
+                   strerror(errno));
+        }
+        if (ret != -EPERM)
+        {
+            goto error_unlink_sockets;
+        }
+    }
+
+    ret = change_user_group(GET_CMDARG_STR(nDPIsrvd_options.user),
+                            GET_CMDARG_STR(nDPIsrvd_options.group),
+                            GET_CMDARG_STR(nDPIsrvd_options.pidfile));
     if (ret != 0 && ret != -EPERM)
     {
         if (GET_CMDARG_STR(nDPIsrvd_options.group) != NULL)

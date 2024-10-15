@@ -3,6 +3,7 @@
 
 #include <stdarg.h>
 #include <stdint.h>
+#include <sys/types.h>
 
 #define WARN_UNUSED __attribute__((__warn_unused_result__))
 
@@ -96,11 +97,10 @@ int daemonize_with_pidfile(char const * const pidfile);
 int daemonize_shutdown(char const * const pidfile);
 
 WARN_UNUSED
-int change_user_group(char const * const user,
-                      char const * const group,
-                      char const * const pidfile,
-                      char const * const uds_collector_path,
-                      char const * const uds_distributor_path);
+int change_user_group(char const * const user, char const * const group, char const * const pidfile);
+
+WARN_UNUSED
+int chmod_chown(char const * const path, mode_t mode, char const * const user, char const * const group);
 
 void init_logging(char const * const daemon_name);
 
