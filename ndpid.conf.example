@@ -9,7 +9,7 @@
 
 #pidfile     = /tmp/ndpid.pid
 #user        = nobody
-#group       = nogroup
+#group       = daemon
 #riskdomains = /path/to/libnDPI/example/risky_domains.txt
 #protocols   = /path/to/libnDPI/example/protos.txt
 #categories  = /path/to/libnDPI/example/categories.txt

@@ -12,6 +12,12 @@ distributor-unix       = /run/nDPIsrvd/distributor
 # Distributor listener as IP socket
 #distributor-in         = 127.0.0.1:7000
 
+# Change group of the collector socket
+#collector-group        = daemon
+
+# Change group of the distirbutor socket
+#distirbutor-group      = staff
+
 # Max (distributor) clients allowed to connect to nDPIsrvd
 max-remote-descriptors = 128
 
