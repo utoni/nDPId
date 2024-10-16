@@ -5274,6 +5274,7 @@ static void print_usage(char const * const arg0)
         "\t-u\tChange UID to the numeric value of user.\n"
         "\t  \tDefault: %s\n"
         "\t-g\tChange GID to the numeric value of group.\n"
+        "\t-R\tLoad a nDPI custom risk domain file.\n"
         "\t-P\tLoad a nDPI custom protocols file.\n"
         "\t-C\tLoad a nDPI custom categories file.\n"
         "\t-J\tLoad a nDPI JA3 hash blacklist file.\n"
