@@ -40,10 +40,6 @@
 #endif
 #include "utils.h"
 
-#ifndef UNIX_PATH_MAX
-#define UNIX_PATH_MAX 108
-#endif
-
 #ifndef ETHERTYPE_DCE
 #define ETHERTYPE_DCE 0x8903
 #endif
@@ -462,7 +458,6 @@ static char const * const daemon_event_name_table[DAEMON_EVENT_COUNT] = {
 };
 
 static struct nDPId_reader_thread reader_threads[nDPId_MAX_READER_THREADS] = {};
-static struct nDPIsrvd_address collector_address;
 static MT_VALUE(nDPId_main_thread_shutdown, int) = MT_INIT(0);
 static MT_VALUE(global_flow_id, uint64_t) = MT_INIT(1);
 
@@ -481,69 +476,87 @@ static MT_VALUE(zlib_compression_bytes, uint64_t) = MT_INIT(0);
 
 static struct
 {
+    /* options which are resolved automatically */
+    struct nDPIsrvd_address parsed_collector_address;
+    union nDPId_ip pcap_dev_ip4, pcap_dev_ip6;
+    union nDPId_ip pcap_dev_netmask4, pcap_dev_netmask6;
+    union nDPId_ip pcap_dev_subnet4, pcap_dev_subnet6;
     /* opts */
+    struct cmdarg config_file;
     struct cmdarg pcap_file_or_interface;
     struct cmdarg bpf_str;
     struct cmdarg pidfile;
     struct cmdarg user;
     struct cmdarg group;
+    struct cmdarg custom_risk_domain_file;
     struct cmdarg custom_protocols_file;
     struct cmdarg custom_categories_file;
     struct cmdarg custom_ja3_file;
     struct cmdarg custom_sha1_file;
     struct cmdarg collector_address;
     struct cmdarg instance_alias;
-    union nDPId_ip pcap_dev_ip4, pcap_dev_ip6;
-    union nDPId_ip pcap_dev_netmask4, pcap_dev_netmask6;
-    union nDPId_ip pcap_dev_subnet4, pcap_dev_subnet6;
-    uint8_t process_internal_initial_direction;
-    uint8_t process_external_initial_direction;
+    struct cmdarg process_internal_initial_direction;
+    struct cmdarg process_external_initial_direction;
 #ifdef ENABLE_ZLIB
-    uint8_t enable_zlib_compression;
+    struct cmdarg enable_zlib_compression;
 #endif
-    uint8_t enable_data_analysis;
+    struct cmdarg enable_data_analysis;
 #ifdef ENABLE_EPOLL
-    uint8_t use_poll;
+    struct cmdarg use_poll;
 #endif
 #ifdef ENABLE_PFRING
-    uint8_t use_pfring;
+    struct cmdarg use_pfring;
 #endif
     /* subopts */
-    unsigned long long int max_flows_per_thread;
-    unsigned long long int max_idle_flows_per_thread;
-    unsigned long long int reader_thread_count;
-    unsigned long long int daemon_status_interval;
+    struct cmdarg max_flows_per_thread;
+    struct cmdarg max_idle_flows_per_thread;
+    struct cmdarg reader_thread_count;
+    struct cmdarg daemon_status_interval;
 #ifdef ENABLE_MEMORY_PROFILING
-    unsigned long long int memory_profiling_log_interval;
+    struct cmdarg memory_profiling_log_interval;
 #endif
 #ifdef ENABLE_ZLIB
-    unsigned long long int compression_scan_interval;
-    unsigned long long int compression_flow_inactivity;
+    struct cmdarg compression_scan_interval;
+    struct cmdarg compression_flow_inactivity;
 #endif
-    unsigned long long int flow_scan_interval;
-    unsigned long long int generic_max_idle_time;
-    unsigned long long int icmp_max_idle_time;
-    unsigned long long int udp_max_idle_time;
-    unsigned long long int tcp_max_idle_time;
-    unsigned long long int tcp_max_post_end_flow_time;
-    unsigned long long int max_packets_per_flow_to_send;
-    unsigned long long int max_packets_per_flow_to_process;
-    unsigned long long int max_packets_per_flow_to_analyse;
-    unsigned long long int error_event_threshold_n;
-    unsigned long long int error_event_threshold_time;
-} nDPId_options = {.pcap_file_or_interface = CMDARG(NULL),
-                   .bpf_str = CMDARG(NULL),
-                   .pidfile = CMDARG(nDPId_PIDFILE),
-                   .user = CMDARG(DEFAULT_CHUSER),
-                   .group = CMDARG(NULL),
-                   .custom_protocols_file = CMDARG(NULL),
-                   .custom_categories_file = CMDARG(NULL),
-                   .custom_ja3_file = CMDARG(NULL),
-                   .custom_sha1_file = CMDARG(NULL),
-                   .collector_address = CMDARG(COLLECTOR_UNIX_SOCKET),
-                   .instance_alias = CMDARG(NULL),
-                   .max_flows_per_thread = nDPId_MAX_FLOWS_PER_THREAD / 2,
-                   .max_idle_flows_per_thread = nDPId_MAX_IDLE_FLOWS_PER_THREAD / 2,
+    struct cmdarg flow_scan_interval;
+    struct cmdarg generic_max_idle_time;
+    struct cmdarg icmp_max_idle_time;
+    struct cmdarg udp_max_idle_time;
+    struct cmdarg tcp_max_idle_time;
+    struct cmdarg tcp_max_post_end_flow_time;
+    struct cmdarg max_packets_per_flow_to_send;
+    struct cmdarg max_packets_per_flow_to_process;
+    struct cmdarg max_packets_per_flow_to_analyse;
+    struct cmdarg error_event_threshold_n;
+    struct cmdarg error_event_threshold_time;
+} nDPId_options = {.config_file = CMDARG_STR(NULL),
+                   .pcap_file_or_interface = CMDARG_STR(NULL),
+                   .bpf_str = CMDARG_STR(NULL),
+                   .pidfile = CMDARG_STR(nDPId_PIDFILE),
+                   .user = CMDARG_STR(DEFAULT_CHUSER),
+                   .group = CMDARG_STR(NULL),
+                   .custom_risk_domain_file = CMDARG_STR(NULL),
+                   .custom_protocols_file = CMDARG_STR(NULL),
+                   .custom_categories_file = CMDARG_STR(NULL),
+                   .custom_ja3_file = CMDARG_STR(NULL),
+                   .custom_sha1_file = CMDARG_STR(NULL),
+                   .collector_address = CMDARG_STR(COLLECTOR_UNIX_SOCKET),
+                   .instance_alias = CMDARG_STR(NULL),
+                   .process_internal_initial_direction = CMDARG_BOOL(0),
+                   .process_external_initial_direction = CMDARG_BOOL(0),
+#ifdef ENABLE_ZLIB
+                   .enable_zlib_compression = CMDARG_BOOL(0),
+#endif
+                   .enable_data_analysis = CMDARG_BOOL(0),
+#ifdef ENABLE_EPOLL
+                   .use_poll = CMDARG_BOOL(0),
+#endif
+#ifdef ENABLE_PFRING
+                   .use_pfring = CMDARG_BOOL(0),
+#endif
+                   .max_flows_per_thread = CMDARG_ULL(nDPId_MAX_FLOWS_PER_THREAD / 2),
+                   .max_idle_flows_per_thread = CMDARG_ULL(nDPId_MAX_IDLE_FLOWS_PER_THREAD / 2),
 #ifdef CROSS_COMPILATION
                    /*
                     * We are assuming that in the cross compilation case
@@ -551,78 +564,78 @@ static struct
                     * To further reduce memory consumption caused by allocating nDPId / nDPI workflows per thread,
                     * we set the default reader thread count to two.
                     */
-                   .reader_thread_count = 2,
+                   .reader_thread_count = CMDARG_ULL(2),
 #else
-                   .reader_thread_count = nDPId_MAX_READER_THREADS / 3,
+                   .reader_thread_count = CMDARG_ULL(nDPId_MAX_READER_THREADS / 3),
 #endif
-                   .daemon_status_interval = nDPId_DAEMON_STATUS_INTERVAL,
+                   .daemon_status_interval = CMDARG_ULL(nDPId_DAEMON_STATUS_INTERVAL),
 #ifdef ENABLE_MEMORY_PROFILING
-                   .memory_profiling_log_interval = nDPId_MEMORY_PROFILING_LOG_INTERVAL,
+                   .memory_profiling_log_interval = CMDARG_ULL(nDPId_MEMORY_PROFILING_LOG_INTERVAL),
 #endif
 #ifdef ENABLE_ZLIB
-                   .compression_scan_interval = nDPId_COMPRESSION_SCAN_INTERVAL,
-                   .compression_flow_inactivity = nDPId_COMPRESSION_FLOW_INACTIVITY,
+                   .compression_scan_interval = CMDARG_ULL(nDPId_COMPRESSION_SCAN_INTERVAL),
+                   .compression_flow_inactivity = CMDARG_ULL(nDPId_COMPRESSION_FLOW_INACTIVITY),
 #endif
-                   .flow_scan_interval = nDPId_FLOW_SCAN_INTERVAL,
-                   .generic_max_idle_time = nDPId_GENERIC_IDLE_TIME,
-                   .icmp_max_idle_time = nDPId_ICMP_IDLE_TIME,
-                   .udp_max_idle_time = nDPId_UDP_IDLE_TIME,
-                   .tcp_max_idle_time = nDPId_TCP_IDLE_TIME,
-                   .tcp_max_post_end_flow_time = nDPId_TCP_POST_END_FLOW_TIME,
-                   .max_packets_per_flow_to_send = nDPId_PACKETS_PER_FLOW_TO_SEND,
-                   .max_packets_per_flow_to_process = nDPId_PACKETS_PER_FLOW_TO_PROCESS,
-                   .max_packets_per_flow_to_analyse = nDPId_PACKETS_PER_FLOW_TO_ANALYZE,
-                   .error_event_threshold_n = nDPId_ERROR_EVENT_THRESHOLD_N,
-                   .error_event_threshold_time = nDPId_ERROR_EVENT_THRESHOLD_TIME};
-
-enum nDPId_subopts
-{
-    MAX_FLOWS_PER_THREAD = 0,
-    MAX_IDLE_FLOWS_PER_THREAD,
-    MAX_READER_THREADS,
-    DAEMON_STATUS_INTERVAL,
-#ifdef ENABLE_MEMORY_PROFILING
-    MEMORY_PROFILING_LOG_INTERVAL,
-#endif
+                   .flow_scan_interval = CMDARG_ULL(nDPId_FLOW_SCAN_INTERVAL),
+                   .generic_max_idle_time = CMDARG_ULL(nDPId_GENERIC_IDLE_TIME),
+                   .icmp_max_idle_time = CMDARG_ULL(nDPId_ICMP_IDLE_TIME),
+                   .udp_max_idle_time = CMDARG_ULL(nDPId_UDP_IDLE_TIME),
+                   .tcp_max_idle_time = CMDARG_ULL(nDPId_TCP_IDLE_TIME),
+                   .tcp_max_post_end_flow_time = CMDARG_ULL(nDPId_TCP_POST_END_FLOW_TIME),
+                   .max_packets_per_flow_to_send = CMDARG_ULL(nDPId_PACKETS_PER_FLOW_TO_SEND),
+                   .max_packets_per_flow_to_process = CMDARG_ULL(nDPId_PACKETS_PER_FLOW_TO_PROCESS),
+                   .max_packets_per_flow_to_analyse = CMDARG_ULL(nDPId_PACKETS_PER_FLOW_TO_ANALYZE),
+                   .error_event_threshold_n = CMDARG_ULL(nDPId_ERROR_EVENT_THRESHOLD_N),
+                   .error_event_threshold_time = CMDARG_ULL(nDPId_ERROR_EVENT_THRESHOLD_TIME)};
+struct confopt general_config_map[] = {CONFOPT("netif", &nDPId_options.pcap_file_or_interface),
+                                       CONFOPT("bpf", &nDPId_options.bpf_str),
+                                       CONFOPT("pidfile", &nDPId_options.pidfile),
+                                       CONFOPT("user", &nDPId_options.user),
+                                       CONFOPT("group", &nDPId_options.group),
+                                       CONFOPT("riskdomains", &nDPId_options.custom_risk_domain_file),
+                                       CONFOPT("protocols", &nDPId_options.custom_protocols_file),
+                                       CONFOPT("categories", &nDPId_options.custom_categories_file),
+                                       CONFOPT("ja3", &nDPId_options.custom_ja3_file),
+                                       CONFOPT("sha1", &nDPId_options.custom_sha1_file),
+                                       CONFOPT("collector", &nDPId_options.collector_address),
+                                       CONFOPT("alias", &nDPId_options.instance_alias),
+                                       CONFOPT("internal", &nDPId_options.process_internal_initial_direction),
+                                       CONFOPT("external", &nDPId_options.process_external_initial_direction),
 #ifdef ENABLE_ZLIB
-    COMPRESSION_SCAN_INTERVAL,
-    COMPRESSION_FLOW_INACTIVITY,
+                                       CONFOPT("compression", &nDPId_options.enable_zlib_compression),
 #endif
-    FLOW_SCAN_INTVERAL,
-    GENERIC_MAX_IDLE_TIME,
-    ICMP_MAX_IDLE_TIME,
-    UDP_MAX_IDLE_TIME,
-    TCP_MAX_IDLE_TIME,
-    TCP_MAX_POST_END_FLOW_TIME,
-    MAX_PACKETS_PER_FLOW_TO_SEND,
-    MAX_PACKETS_PER_FLOW_TO_PROCESS,
-    MAX_PACKETS_PER_FLOW_TO_ANALYZE,
-    ERROR_EVENT_THRESHOLD_N,
-    ERROR_EVENT_THRESHOLD_TIME,
+                                       CONFOPT("analysis", &nDPId_options.enable_data_analysis),
+#ifdef ENABLE_EPOLL
+                                       CONFOPT("poll", &nDPId_options.use_poll),
+#endif
+#ifdef ENABLE_PFRING
+                                       CONFOPT("pfring", &nDPId_options.use_pfring)
+#endif
 };
-static char * const subopt_token[] = {[MAX_FLOWS_PER_THREAD] = "max-flows-per-thread",
-                                      [MAX_IDLE_FLOWS_PER_THREAD] = "max-idle-flows-per-thread",
-                                      [MAX_READER_THREADS] = "max-reader-threads",
-                                      [DAEMON_STATUS_INTERVAL] = "daemon-status-interval",
+struct confopt tuning_config_map[] = {
+    CONFOPT("max-flows-per-thread", &nDPId_options.max_flows_per_thread),
+    CONFOPT("max-idle-flows-per-thread", &nDPId_options.max_idle_flows_per_thread),
+    CONFOPT("max-reader-threads", &nDPId_options.reader_thread_count),
+    CONFOPT("daemon-status-interval", &nDPId_options.daemon_status_interval),
 #ifdef ENABLE_MEMORY_PROFILING
-                                      [MEMORY_PROFILING_LOG_INTERVAL] = "memory-profiling-log-interval",
+    CONFOPT("memory-profiling-log-interval", &nDPId_options.memory_profiling_log_interval),
 #endif
 #ifdef ENABLE_ZLIB
-                                      [COMPRESSION_SCAN_INTERVAL] = "compression-scan-interval",
-                                      [COMPRESSION_FLOW_INACTIVITY] = "compression-flow-inactivity",
+    CONFOPT("compression-scan-interval", &nDPId_options.compression_scan_interval),
+    CONFOPT("compression-flow-inactivity", &nDPId_options.compression_flow_inactivity),
 #endif
-                                      [FLOW_SCAN_INTVERAL] = "flow-scan-interval",
-                                      [GENERIC_MAX_IDLE_TIME] = "generic-max-idle-time",
-                                      [ICMP_MAX_IDLE_TIME] = "icmp-max-idle-time",
-                                      [UDP_MAX_IDLE_TIME] = "udp-max-idle-time",
-                                      [TCP_MAX_IDLE_TIME] = "tcp-max-idle-time",
-                                      [TCP_MAX_POST_END_FLOW_TIME] = "tcp-max-post-end-flow-time",
-                                      [MAX_PACKETS_PER_FLOW_TO_SEND] = "max-packets-per-flow-to-send",
-                                      [MAX_PACKETS_PER_FLOW_TO_PROCESS] = "max-packets-per-flow-to-process",
-                                      [MAX_PACKETS_PER_FLOW_TO_ANALYZE] = "max-packets-per-flow-to-analyse",
-                                      [ERROR_EVENT_THRESHOLD_N] = "error-event-threshold-n",
-                                      [ERROR_EVENT_THRESHOLD_TIME] = "error-event-threshold-time",
-                                      NULL};
+    CONFOPT("flow-scan-interval", &nDPId_options.flow_scan_interval),
+    CONFOPT("generic-max-idle-time", &nDPId_options.generic_max_idle_time),
+    CONFOPT("icmp-max-idle-time", &nDPId_options.icmp_max_idle_time),
+    CONFOPT("udp-max-idle-time", &nDPId_options.udp_max_idle_time),
+    CONFOPT("tcp-max-idle-time", &nDPId_options.tcp_max_idle_time),
+    CONFOPT("tcp-max-post-end-flow-time", &nDPId_options.tcp_max_post_end_flow_time),
+    CONFOPT("max-packets-per-flow-to-send", &nDPId_options.max_packets_per_flow_to_send),
+    CONFOPT("max-packets-per-flow-to-process", &nDPId_options.max_packets_per_flow_to_process),
+    CONFOPT("max-packets-per-flow-to-analyse", &nDPId_options.max_packets_per_flow_to_analyse),
+    CONFOPT("error-event-threshold-n", &nDPId_options.error_event_threshold_n),
+    CONFOPT("error-event-threshold-time", &nDPId_options.error_event_threshold_time),
+};
 
 static void sighandler(int signum);
 static WARN_UNUSED int processing_threads_error_or_eof(void);
@@ -883,7 +896,7 @@ static void ndpi_comp_scan_walker(void const * const A, ndpi_VISIT which, int de
 
             case FS_INFO:
             {
-                if (get_last_pkt_time(flow_basic) + nDPId_options.compression_flow_inactivity <
+                if (get_last_pkt_time(flow_basic) + GET_CMDARG_ULL(nDPId_options.compression_flow_inactivity) <
                     workflow->last_thread_time)
                 {
                     struct nDPId_flow * const flow = (struct nDPId_flow *)flow_basic;
@@ -919,7 +932,8 @@ static void check_for_compressable_flows(struct nDPId_reader_thread * const read
 {
     struct nDPId_workflow * const workflow = reader_thread->workflow;
 
-    if (workflow->last_compression_scan_time + nDPId_options.compression_scan_interval < workflow->last_thread_time)
+    if (workflow->last_compression_scan_time + GET_CMDARG_ULL(nDPId_options.compression_scan_interval) <
+        workflow->last_thread_time)
     {
         for (size_t comp_scan_index = 0; comp_scan_index < workflow->max_active_flows; ++comp_scan_index)
         {
@@ -1016,7 +1030,7 @@ static void get_ip6_address_and_netmask(struct ifaddrs const * const ifaddr)
         void * ssubn = &nDPId_options.pcap_dev_subnet6.v6.ip;
         logger(0,
                "%s IPv6 address netmask subnet: %s %s %s",
-               get_cmdarg(&nDPId_options.pcap_file_or_interface),
+               GET_CMDARG_STR(nDPId_options.pcap_file_or_interface),
                inet_ntop(AF_INET6, saddr, addr, sizeof(addr)),
                inet_ntop(AF_INET6, snetm, netm, sizeof(netm)),
                inet_ntop(AF_INET6, ssubn, subn, sizeof(subn)));
@@ -1040,7 +1054,7 @@ static void get_ip4_address_and_netmask(struct ifaddrs const * const ifaddr)
         void * ssubn = &nDPId_options.pcap_dev_subnet4.v4.ip;
         logger(0,
                "%s IPv4 address netmask subnet: %s %s %s",
-               get_cmdarg(&nDPId_options.pcap_file_or_interface),
+               GET_CMDARG_STR(nDPId_options.pcap_file_or_interface),
                inet_ntop(AF_INET, saddr, addr, sizeof(addr)),
                inet_ntop(AF_INET, snetm, netm, sizeof(netm)),
                inet_ntop(AF_INET, ssubn, subn, sizeof(subn)));
@@ -1091,8 +1105,8 @@ static int get_ip_netmask_from_pcap_dev(char const * const pcap_dev)
     }
 
     if (retval == 0 && found_dev != 0 &&
-        (nDPId_options.process_internal_initial_direction != 0 ||
-         nDPId_options.process_external_initial_direction != 0) &&
+        (GET_CMDARG_BOOL(nDPId_options.process_internal_initial_direction) != 0 ||
+         GET_CMDARG_BOOL(nDPId_options.process_external_initial_direction) != 0) &&
         ip4_interface_avail == 0 && ip6_interface_avail == 0)
     {
         logger_early(1, "Interface %s does not have any IPv4 / IPv6 address set, -I / -E won't work.", pcap_dev);
@@ -1257,6 +1271,94 @@ static int cfg_set_u64(struct nDPId_workflow * const workflow,
     return 0;
 }
 
+static int cfg_set(struct nDPId_workflow * const workflow, const char * proto, const char * param, const char * value)
+{
+    ndpi_cfg_error cfg_err;
+
+    cfg_err = ndpi_set_config(workflow->ndpi_struct, proto, param, value);
+    if (cfg_err != NDPI_CFG_OK)
+    {
+        if (proto != NULL)
+        {
+            logger_early(1,
+                         "Could not set nDPI configuration for protocol `%s' with key `%s' and value `%s': %s",
+                         proto,
+                         param,
+                         value,
+                         cfg_err2str(cfg_err));
+        }
+        else
+        {
+            logger_early(1,
+                         "Could not set nDPI configuration for key `%s' with value `%s': %s",
+                         param,
+                         value,
+                         cfg_err2str(cfg_err));
+        }
+        return 1;
+    }
+
+    return 0;
+}
+
+static int libnDPI_parsed_config_line(
+    int lineno, char const * const section, char const * const name, char const * const value, void * const user_data)
+{
+    struct nDPId_workflow * const workflow = (struct nDPId_workflow *)user_data;
+
+    if ((strnlen(section, INI_MAX_SECTION) == nDPIsrvd_STRLEN_SZ("general") &&
+         strncmp(section, "general", INI_MAX_SECTION) == 0) ||
+        (strnlen(section, INI_MAX_SECTION) == nDPIsrvd_STRLEN_SZ("tuning") &&
+         strncmp(section, "tuning", INI_MAX_SECTION) == 0))
+    {
+        // Nothing to do here right now (already initialized)
+        return 1;
+    }
+    else if (strnlen(section, INI_MAX_SECTION) == nDPIsrvd_STRLEN_SZ("ndpi") &&
+             strncmp(section, "ndpi", INI_MAX_SECTION) == 0)
+    {
+        return (cfg_set(workflow, NULL, name, value) == 0);
+    }
+    else if (strnlen(section, INI_MAX_SECTION) == nDPIsrvd_STRLEN_SZ("protos") &&
+             strncmp(section, "protos", INI_MAX_SECTION) == 0)
+    {
+        char const * const first_sep = strchr(name, '.');
+        char proto[INI_MAX_NAME];
+
+        if (first_sep == NULL)
+        {
+            logger_early(1,
+                         "Missing first `.' for section `protos' at line %d with key `%s' and value `%s'",
+                         lineno,
+                         name,
+                         value);
+            return 0;
+        }
+        int s_ret = snprintf(proto, sizeof(proto), "%.*s", (int)(first_sep - name), name);
+        if (s_ret < 0)
+        {
+            logger_early(1,
+                         "Could not format protocol at line %d with key `%s' and value `%s': snprintf returnded %d, "
+                         "buffer size %zu",
+                         lineno,
+                         name,
+                         value,
+                         s_ret,
+                         sizeof(proto));
+            return 0;
+        }
+
+        return (cfg_set(workflow, proto, first_sep + 1, value) == 0);
+    }
+    else
+    {
+        logger_early(
+            1, "Invalid config section `%s' at line %d with key `%s' and value `%s'", section, lineno, name, value);
+    }
+
+    return 1;
+}
+
 static struct nDPId_workflow * init_workflow(char const * const file_or_device)
 {
     char pcap_error_buffer[PCAP_ERRBUF_SIZE];
@@ -1278,7 +1380,7 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     MT_INIT2(workflow->error_or_eof, 0);
 
 #ifdef ENABLE_PFRING
-    if (nDPId_options.use_pfring != 0)
+    if (GET_CMDARG_BOOL(nDPId_options.use_pfring) != 0)
     {
         errno = 0;
 
@@ -1289,9 +1391,9 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
             return NULL;
         }
 
-        if (is_cmdarg_set(&nDPId_options.bpf_str) != 0)
+        if (IS_CMDARG_SET(nDPId_options.bpf_str) != 0)
         {
-            if (npfring_set_bpf(&workflow->npf, get_cmdarg(&nDPId_options.bpf_str)) != 0)
+            if (npfring_set_bpf(&workflow->npf, GET_CMDARG_STR(nDPId_options.bpf_str)) != 0)
             {
                 logger_early(1, "%s", "PF_RING set bpf filter failed");
                 free_workflow(&workflow);
@@ -1333,11 +1435,11 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
             return NULL;
         }
 
-        if (is_cmdarg_set(&nDPId_options.bpf_str) != 0)
+        if (IS_CMDARG_SET(nDPId_options.bpf_str) != 0)
         {
             struct bpf_program fp;
-            if (pcap_compile(workflow->pcap_handle, &fp, get_cmdarg(&nDPId_options.bpf_str), 1, PCAP_NETMASK_UNKNOWN) !=
-                0)
+            if (pcap_compile(
+                    workflow->pcap_handle, &fp, GET_CMDARG_STR(nDPId_options.bpf_str), 1, PCAP_NETMASK_UNKNOWN) != 0)
             {
                 logger_early(1, "pcap_compile: %s", pcap_geterr(workflow->pcap_handle));
                 free_workflow(&workflow);
@@ -1355,7 +1457,7 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     }
 
 #ifdef ENABLE_PFRING
-    if (nDPId_options.use_pfring != 0)
+    if (GET_CMDARG_BOOL(nDPId_options.use_pfring) != 0)
     {
         if (npfring_enable(&workflow->npf) != 0)
         {
@@ -1377,14 +1479,45 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     ndpi_set_user_data(workflow->ndpi_struct, workflow);
     set_ndpi_debug_function(workflow->ndpi_struct, ndpi_debug_printf);
 
+    {
+        int ret;
+
+        if (IS_CMDARG_SET(nDPId_options.config_file) != 0 &&
+            (ret =
+                 parse_config_file(GET_CMDARG_STR(nDPId_options.config_file), libnDPI_parsed_config_line, workflow)) !=
+                0)
+        {
+            if (ret > 0)
+            {
+                logger_early(1, "Config file `%s' is malformed", GET_CMDARG_STR(nDPId_options.config_file));
+            }
+            else if (ret == -ENOENT)
+            {
+                logger_early(1, "Path `%s' is not a regular file", GET_CMDARG_STR(nDPId_options.config_file));
+            }
+            else
+            {
+                logger_early(1,
+                             "Could not open file `%s' for reading: %s",
+                             GET_CMDARG_STR(nDPId_options.config_file),
+                             strerror(errno));
+            }
+            free_workflow(&workflow);
+            return NULL;
+        }
+    }
+
     cfg_set_u64(workflow, NULL, "log.level", 3);
-    cfg_set_u64(workflow, NULL, "packets_limit_per_flow", nDPId_options.max_packets_per_flow_to_process);
+    cfg_set_u64(workflow,
+                NULL,
+                "packets_limit_per_flow",
+                GET_CMDARG_ULL(nDPId_options.max_packets_per_flow_to_process));
     cfg_set_u64(workflow, "tls", "application_blocks_tracking", 1);
     cfg_set_u64(workflow, "tls", "certificate_expiration_threshold", 5);
 
     workflow->total_skipped_flows = 0;
     workflow->total_active_flows = 0;
-    workflow->max_active_flows = nDPId_options.max_flows_per_thread;
+    workflow->max_active_flows = GET_CMDARG_ULL(nDPId_options.max_flows_per_thread);
     workflow->ndpi_flows_active = (void **)ndpi_calloc(workflow->max_active_flows, sizeof(void *));
     if (workflow->ndpi_flows_active == NULL)
     {
@@ -1396,7 +1529,7 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     }
 
     workflow->total_idle_flows = 0;
-    workflow->max_idle_flows = nDPId_options.max_idle_flows_per_thread;
+    workflow->max_idle_flows = GET_CMDARG_ULL(nDPId_options.max_idle_flows_per_thread);
     workflow->ndpi_flows_idle = (void **)ndpi_calloc(workflow->max_idle_flows, sizeof(void *));
     if (workflow->ndpi_flows_idle == NULL)
     {
@@ -1410,21 +1543,25 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     NDPI_PROTOCOL_BITMASK protos;
     NDPI_BITMASK_SET_ALL(protos);
     ndpi_set_protocol_detection_bitmask2(workflow->ndpi_struct, &protos);
-    if (is_cmdarg_set(&nDPId_options.custom_protocols_file) != 0)
+    if (IS_CMDARG_SET(nDPId_options.custom_risk_domain_file) != 0)
     {
-        ndpi_load_protocols_file(workflow->ndpi_struct, get_cmdarg(&nDPId_options.custom_protocols_file));
+        ndpi_load_risk_domain_file(workflow->ndpi_struct, GET_CMDARG_STR(nDPId_options.custom_risk_domain_file));
     }
-    if (is_cmdarg_set(&nDPId_options.custom_categories_file) != 0)
+    if (IS_CMDARG_SET(nDPId_options.custom_protocols_file) != 0)
     {
-        ndpi_load_categories_file(workflow->ndpi_struct, get_cmdarg(&nDPId_options.custom_categories_file), NULL);
+        ndpi_load_protocols_file(workflow->ndpi_struct, GET_CMDARG_STR(nDPId_options.custom_protocols_file));
     }
-    if (is_cmdarg_set(&nDPId_options.custom_ja3_file) != 0)
+    if (IS_CMDARG_SET(nDPId_options.custom_categories_file) != 0)
     {
-        ndpi_load_malicious_ja3_file(workflow->ndpi_struct, get_cmdarg(&nDPId_options.custom_ja3_file));
+        ndpi_load_categories_file(workflow->ndpi_struct, GET_CMDARG_STR(nDPId_options.custom_categories_file), NULL);
     }
-    if (is_cmdarg_set(&nDPId_options.custom_sha1_file) != 0)
+    if (IS_CMDARG_SET(nDPId_options.custom_ja3_file) != 0)
     {
-        ndpi_load_malicious_sha1_file(workflow->ndpi_struct, get_cmdarg(&nDPId_options.custom_sha1_file));
+        ndpi_load_malicious_ja3_file(workflow->ndpi_struct, GET_CMDARG_STR(nDPId_options.custom_ja3_file));
+    }
+    if (IS_CMDARG_SET(nDPId_options.custom_sha1_file) != 0)
+    {
+        ndpi_load_malicious_sha1_file(workflow->ndpi_struct, GET_CMDARG_STR(nDPId_options.custom_sha1_file));
     }
     ndpi_finalize_initialization(workflow->ndpi_struct);
 
@@ -1441,7 +1578,7 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
 
 static void free_analysis_data(struct nDPId_flow_extended * const flow_ext)
 {
-    if (nDPId_options.enable_data_analysis != 0 && flow_ext->flow_analysis != NULL)
+    if (GET_CMDARG_BOOL(nDPId_options.enable_data_analysis) != 0 && flow_ext->flow_analysis != NULL)
     {
         ndpi_free_data_analysis(&flow_ext->flow_analysis->iat, 0);
         ndpi_free_data_analysis(&flow_ext->flow_analysis->pktlen, 0);
@@ -1475,7 +1612,7 @@ static int alloc_detection_data(struct nDPId_flow * const flow)
 
     memset(flow->info.detection_data, 0, sizeof(*flow->info.detection_data));
 
-    if (nDPId_options.enable_data_analysis != 0)
+    if (GET_CMDARG_BOOL(nDPId_options.enable_data_analysis) != 0)
     {
         flow->flow_extended.flow_analysis =
             (struct nDPId_flow_analysis *)ndpi_malloc(sizeof(*flow->flow_extended.flow_analysis));
@@ -1485,13 +1622,16 @@ static int alloc_detection_data(struct nDPId_flow * const flow)
         }
 
         ndpi_init_data_analysis(&flow->flow_extended.flow_analysis->iat,
-                                nDPId_options.max_packets_per_flow_to_analyse - 1 /* first packet IAT is always 0 */);
+                                GET_CMDARG_ULL(nDPId_options.max_packets_per_flow_to_analyse) -
+                                    1 /* first packet IAT is always 0 */);
         ndpi_init_data_analysis(&flow->flow_extended.flow_analysis->pktlen,
-                                nDPId_options.max_packets_per_flow_to_analyse);
-        flow->flow_extended.flow_analysis->directions = (uint8_t *)ndpi_malloc(
-            sizeof(*flow->flow_extended.flow_analysis->directions) * nDPId_options.max_packets_per_flow_to_analyse);
-        flow->flow_extended.flow_analysis->entropies = (float *)ndpi_malloc(
-            sizeof(*flow->flow_extended.flow_analysis->entropies) * nDPId_options.max_packets_per_flow_to_analyse);
+                                GET_CMDARG_ULL(nDPId_options.max_packets_per_flow_to_analyse));
+        flow->flow_extended.flow_analysis->directions =
+            (uint8_t *)ndpi_malloc(sizeof(*flow->flow_extended.flow_analysis->directions) *
+                                   GET_CMDARG_ULL(nDPId_options.max_packets_per_flow_to_analyse));
+        flow->flow_extended.flow_analysis->entropies =
+            (float *)ndpi_malloc(sizeof(*flow->flow_extended.flow_analysis->entropies) *
+                                 GET_CMDARG_ULL(nDPId_options.max_packets_per_flow_to_analyse));
 
         if (ndpi_init_bin(&flow->flow_extended.flow_analysis->payload_len_bin[FD_SRC2DST],
                           ndpi_bin_family8,
@@ -1556,7 +1696,7 @@ static void free_workflow(struct nDPId_workflow ** const workflow)
     }
 
 #ifdef ENABLE_PFRING
-    if (nDPId_options.use_pfring != 0)
+    if (GET_CMDARG_BOOL(nDPId_options.use_pfring) != 0)
     {
         npfring_close(&w->npf);
     }
@@ -1606,63 +1746,52 @@ static int setup_reader_threads(void)
 {
     char pcap_error_buffer[PCAP_ERRBUF_SIZE];
 
-    if (nDPId_options.reader_thread_count > nDPId_MAX_READER_THREADS)
+    if (GET_CMDARG_ULL(nDPId_options.reader_thread_count) > nDPId_MAX_READER_THREADS)
     {
         return 1;
     }
 
-    if (is_cmdarg_set(&nDPId_options.pcap_file_or_interface) == 0)
+    if (IS_CMDARG_SET(nDPId_options.pcap_file_or_interface) == 0)
     {
         char * const pcapdev = get_default_pcapdev(pcap_error_buffer);
-        set_cmdarg(&nDPId_options.pcap_file_or_interface, pcapdev);
+        set_cmdarg_string(&nDPId_options.pcap_file_or_interface, pcapdev);
         free(pcapdev);
-        if (is_cmdarg_set(&nDPId_options.pcap_file_or_interface) == 0)
+        if (IS_CMDARG_SET(nDPId_options.pcap_file_or_interface) == 0)
         {
             logger_early(1, "pcap_lookupdev: %.*s", (int)PCAP_ERRBUF_SIZE, pcap_error_buffer);
             return 1;
         }
-        logger_early(0, "Capturing packets from default device: %s", get_cmdarg(&nDPId_options.pcap_file_or_interface));
+        logger_early(0,
+                     "Capturing packets from default device: %s",
+                     GET_CMDARG_STR(nDPId_options.pcap_file_or_interface));
     }
 
     errno = 0;
-    if (access(get_cmdarg(&nDPId_options.pcap_file_or_interface), R_OK) != 0 && errno == ENOENT)
+    if (access(GET_CMDARG_STR(nDPId_options.pcap_file_or_interface), R_OK) != 0 && errno == ENOENT)
     {
         errno = 0;
-        if (get_ip_netmask_from_pcap_dev(get_cmdarg(&nDPId_options.pcap_file_or_interface)) != 0)
+        if (get_ip_netmask_from_pcap_dev(GET_CMDARG_STR(nDPId_options.pcap_file_or_interface)) != 0)
         {
             if (errno != 0)
             {
                 logger_early(1,
                              "Could not get netmask for pcap device %s: %s",
-                             get_cmdarg(&nDPId_options.pcap_file_or_interface),
+                             GET_CMDARG_STR(nDPId_options.pcap_file_or_interface),
                              strerror(errno));
             }
             else
             {
                 logger_early(1,
                              "Unexpected error while retrieving netmask for pcap device %s",
-                             get_cmdarg(&nDPId_options.pcap_file_or_interface));
+                             GET_CMDARG_STR(nDPId_options.pcap_file_or_interface));
             }
             return 1;
         }
     }
-    else
-    {
-        if (nDPId_options.process_internal_initial_direction != 0)
-        {
-            logger_early(1, "%s", "You are processing a PCAP file, `-I' ignored");
-            nDPId_options.process_internal_initial_direction = 0;
-        }
-        if (nDPId_options.process_external_initial_direction != 0)
-        {
-            logger_early(1, "%s", "You are processing a PCAP file, `-E' ignored");
-            nDPId_options.process_external_initial_direction = 0;
-        }
-    }
 
-    for (unsigned long long int i = 0; i < nDPId_options.reader_thread_count; ++i)
+    for (unsigned long long int i = 0; i < GET_CMDARG_ULL(nDPId_options.reader_thread_count); ++i)
     {
-        reader_threads[i].workflow = init_workflow(get_cmdarg(&nDPId_options.pcap_file_or_interface));
+        reader_threads[i].workflow = init_workflow(GET_CMDARG_STR(nDPId_options.pcap_file_or_interface));
         if (reader_threads[i].workflow == NULL)
         {
             return 1;
@@ -1747,13 +1876,13 @@ static uint64_t get_l4_protocol_idle_time(uint8_t l4_protocol)
     {
         case IPPROTO_ICMP:
         case IPPROTO_ICMPV6:
-            return nDPId_options.icmp_max_idle_time;
+            return GET_CMDARG_ULL(nDPId_options.icmp_max_idle_time);
         case IPPROTO_TCP:
-            return nDPId_options.tcp_max_idle_time;
+            return GET_CMDARG_ULL(nDPId_options.tcp_max_idle_time);
         case IPPROTO_UDP:
-            return nDPId_options.udp_max_idle_time;
+            return GET_CMDARG_ULL(nDPId_options.udp_max_idle_time);
         default:
-            return nDPId_options.generic_max_idle_time;
+            return GET_CMDARG_ULL(nDPId_options.generic_max_idle_time);
     }
 }
 
@@ -1761,10 +1890,10 @@ static uint64_t get_l4_protocol_idle_time_external(uint8_t l4_protocol)
 {
     uint64_t idle_time = get_l4_protocol_idle_time(l4_protocol);
 
-    idle_time += nDPId_options.flow_scan_interval * 2;
+    idle_time += GET_CMDARG_ULL(nDPId_options.flow_scan_interval) * 2;
     if (l4_protocol == IPPROTO_TCP)
     {
-        idle_time += nDPId_options.tcp_max_post_end_flow_time;
+        idle_time += GET_CMDARG_ULL(nDPId_options.tcp_max_post_end_flow_time);
     }
 
     return idle_time;
@@ -1783,7 +1912,8 @@ static int is_tcp_post_end(struct nDPId_workflow const * const workflow,
 {
     return flow_basic->l4_protocol != IPPROTO_TCP || flow_basic->tcp_fin_rst_seen == 0 ||
            (flow_basic->tcp_fin_rst_seen == 1 &&
-            get_last_pkt_time(flow_basic) + nDPId_options.tcp_max_post_end_flow_time <= workflow->last_thread_time);
+            get_last_pkt_time(flow_basic) + GET_CMDARG_ULL(nDPId_options.tcp_max_post_end_flow_time) <=
+                workflow->last_thread_time);
 }
 
 static int is_flow_update_required(struct nDPId_workflow const * const workflow,
@@ -1800,13 +1930,14 @@ static int is_flow_update_required(struct nDPId_workflow const * const workflow,
 
 static int is_error_event_threshold(struct nDPId_workflow * const workflow)
 {
-    if (workflow->last_global_time - workflow->last_error_time > nDPId_options.error_event_threshold_time)
+    if (workflow->last_global_time - workflow->last_error_time >
+        GET_CMDARG_ULL(nDPId_options.error_event_threshold_time))
     {
         workflow->error_count = 0;
     }
 
     workflow->last_error_time = workflow->last_global_time;
-    if (workflow->error_count >= nDPId_options.error_event_threshold_n)
+    if (workflow->error_count >= GET_CMDARG_ULL(nDPId_options.error_event_threshold_n))
     {
         return 1;
     }
@@ -1827,7 +1958,7 @@ static void ndpi_idle_scan_walker(void const * const A, ndpi_VISIT which, int de
         return;
     }
 
-    if (workflow->cur_idle_flows == nDPId_options.max_idle_flows_per_thread)
+    if (workflow->cur_idle_flows == GET_CMDARG_ULL(nDPId_options.max_idle_flows_per_thread))
     {
         return;
     }
@@ -1921,7 +2052,8 @@ static void process_idle_flow(struct nDPId_reader_thread * const reader_thread, 
                 struct nDPId_flow * const flow = (struct nDPId_flow *)flow_basic;
 
 #ifdef ENABLE_ZLIB
-                if (nDPId_options.enable_zlib_compression != 0 && flow->info.detection_data_compressed_size > 0)
+                if (GET_CMDARG_BOOL(nDPId_options.enable_zlib_compression) != 0 &&
+                    flow->info.detection_data_compressed_size > 0)
                 {
                     workflow->current_compression_diff -= flow->info.detection_data_compressed_size;
                     int ret = detection_data_inflate(flow);
@@ -2119,8 +2251,8 @@ static void jsonize_basic(struct nDPId_reader_thread * const reader_thread, int 
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "packet_id", workflow->packets_captured);
     ndpi_serialize_string_string(&workflow->ndpi_serializer,
                                  "source",
-                                 get_cmdarg(&nDPId_options.pcap_file_or_interface));
-    ndpi_serialize_string_string(&workflow->ndpi_serializer, "alias", get_cmdarg(&nDPId_options.instance_alias));
+                                 GET_CMDARG_STR(nDPId_options.pcap_file_or_interface));
+    ndpi_serialize_string_string(&workflow->ndpi_serializer, "alias", GET_CMDARG_STR(nDPId_options.instance_alias));
 }
 
 static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enum daemon_event event)
@@ -2161,37 +2293,38 @@ static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enu
         case DAEMON_EVENT_RECONNECT:
             ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
                                          "max-flows-per-thread",
-                                         nDPId_options.max_flows_per_thread);
+                                         GET_CMDARG_ULL(nDPId_options.max_flows_per_thread));
             ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
                                          "max-idle-flows-per-thread",
-                                         nDPId_options.max_idle_flows_per_thread);
+                                         GET_CMDARG_ULL(nDPId_options.max_idle_flows_per_thread));
             ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
                                          "reader-thread-count",
-                                         nDPId_options.reader_thread_count);
+                                         GET_CMDARG_ULL(nDPId_options.reader_thread_count));
             ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
                                          "flow-scan-interval",
-                                         nDPId_options.flow_scan_interval);
+                                         GET_CMDARG_ULL(nDPId_options.flow_scan_interval));
             ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
                                          "generic-max-idle-time",
-                                         nDPId_options.generic_max_idle_time);
+                                         GET_CMDARG_ULL(nDPId_options.generic_max_idle_time));
             ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
                                          "icmp-max-idle-time",
-                                         nDPId_options.icmp_max_idle_time);
+                                         GET_CMDARG_ULL(nDPId_options.icmp_max_idle_time));
             ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
                                          "udp-max-idle-time",
-                                         nDPId_options.udp_max_idle_time);
+                                         GET_CMDARG_ULL(nDPId_options.udp_max_idle_time));
             ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
                                          "tcp-max-idle-time",
-                                         nDPId_options.tcp_max_idle_time + nDPId_options.tcp_max_post_end_flow_time);
+                                         GET_CMDARG_ULL(nDPId_options.tcp_max_idle_time) +
+                                             GET_CMDARG_ULL(nDPId_options.tcp_max_post_end_flow_time));
             ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
                                          "max-packets-per-flow-to-send",
-                                         nDPId_options.max_packets_per_flow_to_send);
+                                         GET_CMDARG_ULL(nDPId_options.max_packets_per_flow_to_send));
             ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
                                          "max-packets-per-flow-to-process",
-                                         nDPId_options.max_packets_per_flow_to_process);
+                                         GET_CMDARG_ULL(nDPId_options.max_packets_per_flow_to_process));
             ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
                                          "max-packets-per-flow-to-analyse",
-                                         nDPId_options.max_packets_per_flow_to_analyse);
+                                         GET_CMDARG_ULL(nDPId_options.max_packets_per_flow_to_analyse));
             break;
 
         case DAEMON_EVENT_STATUS:
@@ -2203,7 +2336,7 @@ static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enu
                 int rc;
                 struct npfring_stats stats = {};
 
-                if (nDPId_options.use_pfring != 0)
+                if (GET_CMDARG_BOOL(nDPId_options.use_pfring) != 0)
                 {
                     if ((rc = npfring_stats(&workflow->npf, &stats)) != 0)
                     {
@@ -2218,7 +2351,7 @@ static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enu
                 {
                     ndpi_serialize_string_boolean(&workflow->ndpi_serializer,
                                                   "pfring_active",
-                                                  nDPId_options.use_pfring);
+                                                  GET_CMDARG_BOOL(nDPId_options.use_pfring));
                     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "pfring_recv", stats.recv);
                     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "pfring_drop", stats.drop);
                     ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "pfring_shunt", stats.shunt);
@@ -2356,8 +2489,8 @@ static int connect_to_collector(struct nDPId_reader_thread * const reader_thread
         close(reader_thread->collector_sockfd);
     }
 
-    int sock_type = (collector_address.raw.sa_family == AF_UNIX ? SOCK_STREAM : SOCK_DGRAM);
-    reader_thread->collector_sockfd = socket(collector_address.raw.sa_family, sock_type, 0);
+    int sock_type = (nDPId_options.parsed_collector_address.raw.sa_family == AF_UNIX ? SOCK_STREAM : SOCK_DGRAM);
+    reader_thread->collector_sockfd = socket(nDPId_options.parsed_collector_address.raw.sa_family, sock_type, 0);
     if (reader_thread->collector_sockfd < 0 || set_fd_cloexec(reader_thread->collector_sockfd) < 0)
     {
         reader_thread->collector_sock_last_errno = errno;
@@ -2375,7 +2508,9 @@ static int connect_to_collector(struct nDPId_reader_thread * const reader_thread
         return 1;
     }
 
-    if (connect(reader_thread->collector_sockfd, &collector_address.raw, collector_address.size) < 0)
+    if (connect(reader_thread->collector_sockfd,
+                &nDPId_options.parsed_collector_address.raw,
+                nDPId_options.parsed_collector_address.size) < 0)
     {
         reader_thread->collector_sock_last_errno = errno;
         return 1;
@@ -2434,13 +2569,13 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
 
         if (connect_to_collector(reader_thread) == 0)
         {
-            if (collector_address.raw.sa_family == AF_UNIX)
+            if (nDPId_options.parsed_collector_address.raw.sa_family == AF_UNIX)
             {
                 logger(1,
                        "[%8llu, %zu] Reconnected to nDPIsrvd Collector at %s",
                        workflow->packets_captured,
                        reader_thread->array_index,
-                       get_cmdarg(&nDPId_options.collector_address));
+                       GET_CMDARG_STR(nDPId_options.collector_address));
                 jsonize_daemon(reader_thread, DAEMON_EVENT_RECONNECT);
             }
         }
@@ -2452,7 +2587,7 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
                        "[%8llu, %zu] Could not connect to nDPIsrvd Collector at %s, will try again later. Error: %s",
                        workflow->packets_captured,
                        reader_thread->array_index,
-                       get_cmdarg(&nDPId_options.collector_address),
+                       GET_CMDARG_STR(nDPId_options.collector_address),
                        (reader_thread->collector_sock_last_errno != 0
                             ? strerror(reader_thread->collector_sock_last_errno)
                             : "Internal Error."));
@@ -2482,12 +2617,12 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
                        "[%8llu, %zu] %s to %s refused by endpoint",
                        workflow->packets_captured,
                        reader_thread->array_index,
-                       (collector_address.raw.sa_family == AF_UNIX ? "Connection" : "Datagram"),
-                       get_cmdarg(&nDPId_options.collector_address));
+                       (nDPId_options.parsed_collector_address.raw.sa_family == AF_UNIX ? "Connection" : "Datagram"),
+                       GET_CMDARG_STR(nDPId_options.collector_address));
             }
             reader_thread->collector_sock_last_errno = saved_errno;
         }
-        else if (collector_address.raw.sa_family == AF_UNIX)
+        else if (nDPId_options.parsed_collector_address.raw.sa_family == AF_UNIX)
         {
             size_t pos = (written < 0 ? 0 : written);
             set_collector_block(reader_thread);
@@ -2510,7 +2645,7 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
                            "[%8llu, %zu] Send data (blocking I/O) to nDPIsrvd Collector at %s failed: %s",
                            workflow->packets_captured,
                            reader_thread->array_index,
-                           get_cmdarg(&nDPId_options.collector_address),
+                           GET_CMDARG_STR(nDPId_options.collector_address),
                            strerror(saved_errno));
                     reader_thread->collector_sock_last_errno = saved_errno;
                     break;
@@ -2641,7 +2776,7 @@ static void jsonize_data_analysis(struct nDPId_reader_thread * const reader_thre
     struct nDPId_workflow * const workflow = reader_thread->workflow;
     struct nDPId_flow_analysis * const analysis = (struct nDPId_flow_analysis *)flow_ext->flow_analysis;
 
-    if (nDPId_options.enable_data_analysis != 0 && flow_ext->flow_analysis != NULL)
+    if (GET_CMDARG_BOOL(nDPId_options.enable_data_analysis) != 0 && flow_ext->flow_analysis != NULL)
     {
         ndpi_serialize_start_of_block(&workflow->ndpi_serializer, "data_analysis");
         ndpi_serialize_start_of_block(&workflow->ndpi_serializer, "iat");
@@ -2698,14 +2833,14 @@ static void jsonize_data_analysis(struct nDPId_reader_thread * const reader_thre
         ndpi_serialize_end_of_block(&workflow->ndpi_serializer);
 
         ndpi_serialize_start_of_list(&workflow->ndpi_serializer, "directions");
-        for (unsigned long long int i = 0; i < nDPId_options.max_packets_per_flow_to_analyse; ++i)
+        for (unsigned long long int i = 0; i < GET_CMDARG_ULL(nDPId_options.max_packets_per_flow_to_analyse); ++i)
         {
             ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "", analysis->directions[i]);
         }
         ndpi_serialize_end_of_list(&workflow->ndpi_serializer);
 
         ndpi_serialize_start_of_list(&workflow->ndpi_serializer, "entropies");
-        for (unsigned long long int i = 0; i < nDPId_options.max_packets_per_flow_to_analyse; ++i)
+        for (unsigned long long int i = 0; i < GET_CMDARG_ULL(nDPId_options.max_packets_per_flow_to_analyse); ++i)
         {
             ndpi_serialize_string_float(&workflow->ndpi_serializer, "", analysis->entropies[i], "%.9f");
         }
@@ -2739,7 +2874,7 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
             return;
         }
         if (flow_ext->packets_processed[FD_SRC2DST] + flow_ext->packets_processed[FD_DST2SRC] >
-            nDPId_options.max_packets_per_flow_to_send)
+            GET_CMDARG_ULL(nDPId_options.max_packets_per_flow_to_send))
         {
             return;
         }
@@ -2775,7 +2910,7 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
     }
 
 #ifdef ENABLE_PFRING
-    if (nDPId_options.use_pfring != 0)
+    if (GET_CMDARG_BOOL(nDPId_options.use_pfring) != 0)
     {
         ndpi_serialize_string_int32(&workflow->ndpi_serializer,
                                     "pkt_datalink",
@@ -2853,7 +2988,7 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
         case FLOW_EVENT_UPDATE:
         case FLOW_EVENT_ANALYSE:
 #ifdef ENABLE_PFRING
-            if (nDPId_options.use_pfring != 0)
+            if (GET_CMDARG_BOOL(nDPId_options.use_pfring) != 0)
             {
                 ndpi_serialize_string_int32(&workflow->ndpi_serializer,
                                             "flow_datalink",
@@ -2868,7 +3003,7 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
             }
             ndpi_serialize_string_uint32(&workflow->ndpi_serializer,
                                          "flow_max_packets",
-                                         nDPId_options.max_packets_per_flow_to_send);
+                                         GET_CMDARG_ULL(nDPId_options.max_packets_per_flow_to_send));
 
             if (event == FLOW_EVENT_ANALYSE)
             {
@@ -2895,7 +3030,8 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
                 struct nDPId_flow * const flow = (struct nDPId_flow *)flow_ext;
 
 #ifdef ENABLE_ZLIB
-                if (nDPId_options.enable_zlib_compression != 0 && flow->info.detection_data_compressed_size > 0)
+                if (GET_CMDARG_BOOL(nDPId_options.enable_zlib_compression) != 0 &&
+                    flow->info.detection_data_compressed_size > 0)
                 {
                     workflow->current_compression_diff -= flow->info.detection_data_compressed_size;
                     int ret = detection_data_inflate(flow);
@@ -3032,7 +3168,16 @@ static void vjsonize_error_eventf(struct nDPId_reader_thread * const reader_thre
                 char * value = va_arg(ap, char *);
                 if (got_jsonkey == 0)
                 {
-                    snprintf(json_key, sizeof(json_key), "%s", value);
+                    int s_ret = snprintf(json_key, sizeof(json_key), "%s", value);
+                    if (s_ret < 0)
+                    {
+                        logger(1,
+                               "[%8llu, %zu] Error event format failed: snprintf returned %d, buffer size %zu",
+                               reader_thread->workflow->packets_captured,
+                               reader_thread->array_index,
+                               s_ret,
+                               sizeof(json_key));
+                    }
                     got_jsonkey = 1;
                 }
                 else
@@ -3171,10 +3316,10 @@ __attribute__((format(printf, 3, 4))) static void jsonize_error_eventf(struct nD
     ndpi_serialize_string_uint32(&reader_thread->workflow->ndpi_serializer, "threshold_n", workflow->error_count);
     ndpi_serialize_string_uint32(&reader_thread->workflow->ndpi_serializer,
                                  "threshold_n_max",
-                                 nDPId_options.error_event_threshold_n);
+                                 GET_CMDARG_ULL(nDPId_options.error_event_threshold_n));
     ndpi_serialize_string_uint64(&reader_thread->workflow->ndpi_serializer,
                                  "threshold_time",
-                                 nDPId_options.error_event_threshold_time);
+                                 GET_CMDARG_ULL(nDPId_options.error_event_threshold_time));
     ndpi_serialize_string_uint64(&reader_thread->workflow->ndpi_serializer,
                                  "threshold_ts_usec",
                                  workflow->last_error_time);
@@ -3284,8 +3429,8 @@ static uint32_t calculate_ndpi_flow_struct_hash(struct ndpi_flow_struct const * 
 /* mask for FCF */
 #define WIFI_DATA 0x2
 #define FCF_TYPE(fc) (((fc) >> 2) & 0x3) /* 0000 0011 = 0x3 */
-#define FCF_TO_DS(fc) ((fc)&0x0100)
-#define FCF_FROM_DS(fc) ((fc)&0x0200)
+#define FCF_TO_DS(fc) ((fc) & 0x0100)
+#define FCF_FROM_DS(fc) ((fc) & 0x0200)
 /* mask for Bad FCF presence */
 #define BAD_FCS 0x50 /* 0101 0000 */
 static int process_datalink_layer(struct nDPId_reader_thread * const reader_thread,
@@ -3299,7 +3444,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
     const struct ndpi_ethhdr * ethernet;
 
 #ifdef ENABLE_PFRING
-    if (nDPId_options.use_pfring != 0)
+    if (GET_CMDARG_BOOL(nDPId_options.use_pfring) != 0)
     {
         datalink_type = npfring_datalink(&reader_thread->workflow->npf);
     }
@@ -3722,14 +3867,14 @@ static struct nDPId_flow_basic * add_new_flow(struct nDPId_workflow * const work
 
 static void do_periodically_work(struct nDPId_reader_thread * const reader_thread)
 {
-    if (reader_thread->workflow->last_scan_time + nDPId_options.flow_scan_interval <=
+    if (reader_thread->workflow->last_scan_time + GET_CMDARG_ULL(nDPId_options.flow_scan_interval) <=
         reader_thread->workflow->last_global_time)
     {
         check_for_idle_flows(reader_thread);
         check_for_flow_updates(reader_thread);
         reader_thread->workflow->last_scan_time = reader_thread->workflow->last_global_time;
     }
-    if (reader_thread->workflow->last_status_time + nDPId_options.daemon_status_interval +
+    if (reader_thread->workflow->last_status_time + GET_CMDARG_ULL(nDPId_options.daemon_status_interval) +
             reader_thread->array_index * 1000 <=
         reader_thread->workflow->last_global_time)
     {
@@ -3738,7 +3883,8 @@ static void do_periodically_work(struct nDPId_reader_thread * const reader_threa
             reader_thread->workflow->last_global_time + reader_thread->array_index * 1000;
     }
 #ifdef ENABLE_MEMORY_PROFILING
-    if (reader_thread->workflow->last_memory_usage_log_time + nDPId_options.memory_profiling_log_interval <=
+    if (reader_thread->workflow->last_memory_usage_log_time +
+            GET_CMDARG_ULL(nDPId_options.memory_profiling_log_interval) <=
         reader_thread->workflow->last_global_time)
     {
         log_memory_usage(reader_thread);
@@ -3749,7 +3895,7 @@ static void do_periodically_work(struct nDPId_reader_thread * const reader_threa
 
 static int distribute_single_packet(struct nDPId_reader_thread * const reader_thread)
 {
-    return (reader_thread->workflow->packets_captured % nDPId_options.reader_thread_count ==
+    return (reader_thread->workflow->packets_captured % GET_CMDARG_ULL(nDPId_options.reader_thread_count) ==
             reader_thread->array_index);
 }
 
@@ -4024,7 +4170,7 @@ static void ndpi_process_packet(uint8_t * const args,
 
     /* distribute flows to threads while keeping stability (same flow goes always to same thread) */
     thread_index += (flow_basic.src_port < flow_basic.dst_port ? flow_basic.dst_port : flow_basic.src_port);
-    thread_index %= nDPId_options.reader_thread_count;
+    thread_index %= GET_CMDARG_ULL(nDPId_options.reader_thread_count);
     if (thread_index != reader_thread->array_index)
     {
         return;
@@ -4118,7 +4264,8 @@ static void ndpi_process_packet(uint8_t * const args,
                 subnet = &nDPId_options.pcap_dev_subnet6;
                 break;
         }
-        if (nDPId_options.process_internal_initial_direction != 0 && flow_basic.tcp_is_midstream_flow == 0)
+        if (GET_CMDARG_BOOL(nDPId_options.process_internal_initial_direction) != 0 &&
+            flow_basic.tcp_is_midstream_flow == 0)
         {
             if (is_ip_in_subnet(&flow_basic.src, netmask, subnet, flow_basic.l3_type) == 0)
             {
@@ -4143,7 +4290,8 @@ static void ndpi_process_packet(uint8_t * const args,
                 return;
             }
         }
-        else if (nDPId_options.process_external_initial_direction != 0 && flow_basic.tcp_is_midstream_flow == 0)
+        else if (GET_CMDARG_BOOL(nDPId_options.process_external_initial_direction) != 0 &&
+                 flow_basic.tcp_is_midstream_flow == 0)
         {
             if (is_ip_in_subnet(&flow_basic.src, netmask, subnet, flow_basic.l3_type) != 0)
             {
@@ -4272,7 +4420,8 @@ static void ndpi_process_packet(uint8_t * const args,
         if (flow_to_process->flow_extended.flow_basic.state == FS_INFO)
         {
 #ifdef ENABLE_ZLIB
-            if (nDPId_options.enable_zlib_compression != 0 && flow_to_process->info.detection_data_compressed_size > 0)
+            if (GET_CMDARG_BOOL(nDPId_options.enable_zlib_compression) != 0 &&
+                flow_to_process->info.detection_data_compressed_size > 0)
             {
                 workflow->current_compression_diff -= flow_to_process->info.detection_data_compressed_size;
                 int ret = detection_data_inflate(flow_to_process);
@@ -4315,10 +4464,11 @@ static void ndpi_process_packet(uint8_t * const args,
         jsonize_flow_event(reader_thread, &flow_to_process->flow_extended, FLOW_EVENT_NEW);
     }
 
-    if (nDPId_options.enable_data_analysis != 0 && flow_to_process->flow_extended.flow_analysis != NULL &&
+    if (GET_CMDARG_BOOL(nDPId_options.enable_data_analysis) != 0 &&
+        flow_to_process->flow_extended.flow_analysis != NULL &&
         flow_to_process->flow_extended.packets_processed[FD_SRC2DST] +
                 flow_to_process->flow_extended.packets_processed[FD_DST2SRC] <=
-            nDPId_options.max_packets_per_flow_to_analyse)
+            GET_CMDARG_ULL(nDPId_options.max_packets_per_flow_to_analyse))
     {
         unsigned long long int total_flow_packets = flow_to_process->flow_extended.packets_processed[FD_SRC2DST] +
                                                     flow_to_process->flow_extended.packets_processed[FD_DST2SRC];
@@ -4330,15 +4480,16 @@ static void ndpi_process_packet(uint8_t * const args,
         }
         ndpi_data_add_value(&flow_to_process->flow_extended.flow_analysis->pktlen, ip_size);
         flow_to_process->flow_extended.flow_analysis
-            ->directions[(total_flow_packets - 1) % nDPId_options.max_packets_per_flow_to_analyse] = direction;
+            ->directions[(total_flow_packets - 1) % GET_CMDARG_ULL(nDPId_options.max_packets_per_flow_to_analyse)] =
+            direction;
         ndpi_inc_bin(&flow_to_process->flow_extended.flow_analysis->payload_len_bin[direction],
                      plen2slot(l4_payload_len),
                      1);
         flow_to_process->flow_extended.flow_analysis
-            ->entropies[(total_flow_packets - 1) % nDPId_options.max_packets_per_flow_to_analyse] =
+            ->entropies[(total_flow_packets - 1) % GET_CMDARG_ULL(nDPId_options.max_packets_per_flow_to_analyse)] =
             ndpi_entropy((ip != NULL ? (uint8_t *)ip : (uint8_t *)ip6), ip_size);
 
-        if (total_flow_packets == nDPId_options.max_packets_per_flow_to_analyse)
+        if (total_flow_packets == GET_CMDARG_ULL(nDPId_options.max_packets_per_flow_to_analyse))
         {
             jsonize_flow_event(reader_thread, &flow_to_process->flow_extended, FLOW_EVENT_ANALYSE);
             free_analysis_data(&flow_to_process->flow_extended);
@@ -4400,7 +4551,7 @@ static void ndpi_process_packet(uint8_t * const args,
     }
 
     if (flow_to_process->info.detection_data->flow.num_processed_pkts ==
-            nDPId_options.max_packets_per_flow_to_process &&
+            GET_CMDARG_ULL(nDPId_options.max_packets_per_flow_to_process) &&
         flow_to_process->info.detection_completed == 0)
     {
         /* last chance to guess something, better then nothing */
@@ -4422,7 +4573,7 @@ static void ndpi_process_packet(uint8_t * const args,
     }
 
     if (flow_to_process->info.detection_data->flow.num_processed_pkts ==
-            nDPId_options.max_packets_per_flow_to_process ||
+            GET_CMDARG_ULL(nDPId_options.max_packets_per_flow_to_process) ||
         (ndpi_is_protocol_detected(flow_to_process->flow_extended.detected_l7_protocol) != 0 &&
          ndpi_extra_dissection_possible(workflow->ndpi_struct, &flow_to_process->info.detection_data->flow) == 0))
     {
@@ -4456,7 +4607,7 @@ static void ndpi_process_packet(uint8_t * const args,
     }
 
 #ifdef ENABLE_ZLIB
-    if (nDPId_options.enable_zlib_compression != 0)
+    if (GET_CMDARG_BOOL(nDPId_options.enable_zlib_compression) != 0)
     {
         check_for_compressable_flows(reader_thread);
     }
@@ -4607,7 +4758,7 @@ static void run_capture_loop(struct nDPId_reader_thread * const reader_thread)
 
         int capture_fd = -1;
 #ifdef ENABLE_PFRING
-        if (nDPId_options.use_pfring != 0)
+        if (GET_CMDARG_BOOL(nDPId_options.use_pfring) != 0)
         {
             capture_fd = npfring_get_selectable_fd(&reader_thread->workflow->npf);
         }
@@ -4622,9 +4773,9 @@ static void run_capture_loop(struct nDPId_reader_thread * const reader_thread)
                    "Got an invalid %s fd",
                    (
 #ifdef ENABLE_PFRING
-                       nDPId_options.use_pfring != 0 ? "PF_RING" :
+                       GET_CMDARG_BOOL(nDPId_options.use_pfring) != 0 ? "PF_RING" :
 #endif
-                                                     "PCAP"));
+                                                                      "PCAP"));
             MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
             return;
         }
@@ -4632,8 +4783,9 @@ static void run_capture_loop(struct nDPId_reader_thread * const reader_thread)
         struct nio io;
         nio_init(&io);
 #ifdef ENABLE_EPOLL
-        if ((nDPId_options.use_poll == 0 && nio_use_epoll(&io, 32) != NIO_SUCCESS) ||
-            (nDPId_options.use_poll != 0 && nio_use_poll(&io, nDPIsrvd_MAX_REMOTE_DESCRIPTORS) != NIO_SUCCESS))
+        if ((GET_CMDARG_BOOL(nDPId_options.use_poll) == 0 && nio_use_epoll(&io, 32) != NIO_SUCCESS) ||
+            (GET_CMDARG_BOOL(nDPId_options.use_poll) != 0 &&
+             nio_use_poll(&io, nDPIsrvd_MAX_REMOTE_DESCRIPTORS) != NIO_SUCCESS))
 #else
         if (nio_use_poll(&io, nDPIsrvd_MAX_REMOTE_DESCRIPTORS) != NIO_SUCCESS)
 #endif
@@ -4714,23 +4866,34 @@ static void run_capture_loop(struct nDPId_reader_thread * const reader_thread)
                     }
                     else
                     {
+                        int is_valid_signal = 0;
                         char const * signame = "unknown";
                         switch (fdsi.ssi_signo)
                         {
                             case SIGINT:
+                                is_valid_signal = 1;
                                 signame = "SIGINT";
                                 sighandler(SIGINT);
                                 break;
                             case SIGTERM:
+                                is_valid_signal = 1;
                                 signame = "SIGTERM";
                                 sighandler(SIGTERM);
                                 break;
                             case SIGUSR1:
+                                is_valid_signal = 1;
                                 signame = "SIGUSR1";
                                 log_all_flows(reader_thread);
                                 break;
                         }
-                        logger(1, "Received signal %d (%s)", fdsi.ssi_signo, signame);
+                        if (is_valid_signal != 0)
+                        {
+                            logger(1, "Received signal %d (%s)", fdsi.ssi_signo, signame);
+                        }
+                        else
+                        {
+                            logger(1, "Received signal %d (%s), ignored", fdsi.ssi_signo, signame);
+                        }
                     }
                 }
                 else
@@ -4738,7 +4901,7 @@ static void run_capture_loop(struct nDPId_reader_thread * const reader_thread)
                     if (fd == capture_fd)
                 {
 #ifdef ENABLE_PFRING
-                    if (nDPId_options.use_pfring != 0)
+                    if (GET_CMDARG_BOOL(nDPId_options.use_pfring) != 0)
                     {
                         struct pcap_pkthdr hdr;
 
@@ -4806,7 +4969,7 @@ static void * processing_thread(void * const ndpi_thread_arg)
         logger(1,
                "Thread %zu: Could not connect to nDPIsrvd Collector at %s, will try again later. Error: %s",
                reader_thread->array_index,
-               get_cmdarg(&nDPId_options.collector_address),
+               GET_CMDARG_STR(nDPId_options.collector_address),
                (reader_thread->collector_sock_last_errno != 0 ? strerror(reader_thread->collector_sock_last_errno)
                                                               : "Internal Error."));
     }
@@ -4823,7 +4986,7 @@ static void * processing_thread(void * const ndpi_thread_arg)
 
 static WARN_UNUSED int processing_threads_error_or_eof(void)
 {
-    for (unsigned long long int i = 0; i < nDPId_options.reader_thread_count; ++i)
+    for (unsigned long long int i = 0; i < GET_CMDARG_ULL(nDPId_options.reader_thread_count); ++i)
     {
         if (MT_GET_AND_ADD(reader_threads[i].workflow->error_or_eof, 0) == 0)
         {
@@ -4846,38 +5009,32 @@ static int start_reader_threads(void)
         return 1;
     }
 
-    if (daemonize_with_pidfile(get_cmdarg(&nDPId_options.pidfile)) != 0)
+    if (daemonize_with_pidfile(GET_CMDARG_STR(nDPId_options.pidfile)) != 0)
     {
         return 1;
     }
 
-    errno = 0;
-    if (change_user_group(get_cmdarg(&nDPId_options.user),
-                          get_cmdarg(&nDPId_options.group),
-                          get_cmdarg(&nDPId_options.pidfile),
-                          NULL,
-                          NULL) != 0 &&
-        errno != EPERM)
+    int ret = change_user_group(GET_CMDARG_STR(nDPId_options.user),
+                                GET_CMDARG_STR(nDPId_options.group),
+                                GET_CMDARG_STR(nDPId_options.pidfile));
+    if (ret != 0 && ret != -EPERM)
     {
-        if (errno != 0)
+        if (GET_CMDARG_STR(nDPId_options.group) != NULL)
         {
             logger(1,
                    "Change user/group to %s/%s failed: %s",
-                   get_cmdarg(&nDPId_options.user),
-                   get_cmdarg(&nDPId_options.group),
-                   strerror(errno));
+                   GET_CMDARG_STR(nDPId_options.user),
+                   GET_CMDARG_STR(nDPId_options.group),
+                   strerror(-ret));
         }
         else
         {
-            logger(1,
-                   "Change user/group to %s/%s failed.",
-                   get_cmdarg(&nDPId_options.user),
-                   get_cmdarg(&nDPId_options.group));
+            logger(1, "Change user to %s failed: %s", GET_CMDARG_STR(nDPId_options.user), strerror(-ret));
         }
         return 1;
     }
 
-    for (unsigned long long int i = 0; i < nDPId_options.reader_thread_count; ++i)
+    for (unsigned long long int i = 0; i < GET_CMDARG_ULL(nDPId_options.reader_thread_count); ++i)
     {
         reader_threads[i].array_index = i;
 
@@ -4915,7 +5072,7 @@ static void ndpi_shutdown_walker(void const * const A, ndpi_VISIT which, int dep
         return;
     }
 
-    if (workflow->cur_idle_flows == nDPId_options.max_idle_flows_per_thread)
+    if (workflow->cur_idle_flows == GET_CMDARG_ULL(nDPId_options.max_idle_flows_per_thread))
     {
         return;
     }
@@ -4940,7 +5097,7 @@ static void ndpi_shutdown_walker(void const * const A, ndpi_VISIT which, int dep
 
 static void process_remaining_flows(void)
 {
-    for (unsigned long long int i = 0; i < nDPId_options.reader_thread_count; ++i)
+    for (unsigned long long int i = 0; i < GET_CMDARG_ULL(nDPId_options.reader_thread_count); ++i)
     {
         set_collector_block(&reader_threads[i]);
 
@@ -4970,13 +5127,13 @@ static int stop_reader_threads(void)
     unsigned long long int total_flow_detection_updates = 0;
     unsigned long long int total_flow_updates = 0;
 
-    for (unsigned long long int i = 0; i < nDPId_options.reader_thread_count; ++i)
+    for (unsigned long long int i = 0; i < GET_CMDARG_ULL(nDPId_options.reader_thread_count); ++i)
     {
         break_pcap_loop(&reader_threads[i]);
     }
 
     printf("------------------------------------ Stopping reader threads\n");
-    for (unsigned long long int i = 0; i < nDPId_options.reader_thread_count; ++i)
+    for (unsigned long long int i = 0; i < GET_CMDARG_ULL(nDPId_options.reader_thread_count); ++i)
     {
         if (reader_threads[i].workflow == NULL)
         {
@@ -4993,7 +5150,7 @@ static int stop_reader_threads(void)
     process_remaining_flows();
 
     printf("------------------------------------ Results\n");
-    for (unsigned long long int i = 0; i < nDPId_options.reader_thread_count; ++i)
+    for (unsigned long long int i = 0; i < GET_CMDARG_ULL(nDPId_options.reader_thread_count); ++i)
     {
         if (reader_threads[i].workflow == NULL)
         {
@@ -5047,7 +5204,7 @@ static int stop_reader_threads(void)
 
 static void free_reader_threads(void)
 {
-    for (unsigned long long int i = 0; i < nDPId_options.reader_thread_count; ++i)
+    for (unsigned long long int i = 0; i < GET_CMDARG_ULL(nDPId_options.reader_thread_count); ++i)
     {
         if (reader_threads[i].workflow == NULL)
         {
@@ -5070,90 +5227,18 @@ static void sighandler(int signum)
 
 static void print_subopt_usage(void)
 {
-    int index = MAX_FLOWS_PER_THREAD;
-    char * const * token = &subopt_token[0];
-
     fprintf(stderr, "\tsubopts:\n");
-    do
+    for (size_t i = 0; i < nDPIsrvd_ARRAY_LENGTH(tuning_config_map); ++i)
     {
-        if (*token != NULL)
-        {
-            fprintf(stderr, "\t\t%s = ", *token);
-            enum nDPId_subopts subopts = index++;
-            switch (subopts)
-            {
-                case MAX_FLOWS_PER_THREAD:
-                    fprintf(stderr, "%llu\n", nDPId_options.max_flows_per_thread);
-                    break;
-                case MAX_IDLE_FLOWS_PER_THREAD:
-                    fprintf(stderr, "%llu\n", nDPId_options.max_idle_flows_per_thread);
-                    break;
-                case MAX_READER_THREADS:
-                    fprintf(stderr, "%llu\n", nDPId_options.reader_thread_count);
-                    break;
-                case DAEMON_STATUS_INTERVAL:
-                    fprintf(stderr, "%llu\n", nDPId_options.daemon_status_interval);
-                    break;
-#ifdef ENABLE_MEMORY_PROFILING
-                case MEMORY_PROFILING_LOG_INTERVAL:
-                    fprintf(stderr, "%llu\n", nDPId_options.memory_profiling_log_interval);
-                    break;
-#endif
-#ifdef ENABLE_ZLIB
-                case COMPRESSION_SCAN_INTERVAL:
-                    fprintf(stderr, "%llu\n", nDPId_options.compression_scan_interval);
-                    break;
-                case COMPRESSION_FLOW_INACTIVITY:
-                    fprintf(stderr, "%llu\n", nDPId_options.compression_flow_inactivity);
-                    break;
-#endif
-                case FLOW_SCAN_INTVERAL:
-                    fprintf(stderr, "%llu\n", nDPId_options.flow_scan_interval);
-                    break;
-                case GENERIC_MAX_IDLE_TIME:
-                    fprintf(stderr, "%llu\n", nDPId_options.generic_max_idle_time);
-                    break;
-                case ICMP_MAX_IDLE_TIME:
-                    fprintf(stderr, "%llu\n", nDPId_options.icmp_max_idle_time);
-                    break;
-                case UDP_MAX_IDLE_TIME:
-                    fprintf(stderr, "%llu\n", nDPId_options.udp_max_idle_time);
-                    break;
-                case TCP_MAX_IDLE_TIME:
-                    fprintf(stderr, "%llu\n", nDPId_options.tcp_max_idle_time);
-                    break;
-                case TCP_MAX_POST_END_FLOW_TIME:
-                    fprintf(stderr, "%llu\n", nDPId_options.tcp_max_post_end_flow_time);
-                    break;
-                case MAX_PACKETS_PER_FLOW_TO_SEND:
-                    fprintf(stderr, "%llu\n", nDPId_options.max_packets_per_flow_to_send);
-                    break;
-                case MAX_PACKETS_PER_FLOW_TO_PROCESS:
-                    fprintf(stderr, "%llu\n", nDPId_options.max_packets_per_flow_to_process);
-                    break;
-                case MAX_PACKETS_PER_FLOW_TO_ANALYZE:
-                    fprintf(stderr, "%llu\n", nDPId_options.max_packets_per_flow_to_analyse);
-                    break;
-                case ERROR_EVENT_THRESHOLD_N:
-                    fprintf(stderr, "%llu\n", nDPId_options.error_event_threshold_n);
-                    break;
-                case ERROR_EVENT_THRESHOLD_TIME:
-                    fprintf(stderr, "%llu\n", nDPId_options.error_event_threshold_time);
-                    break;
-            }
-        }
-        else
-        {
-            break;
-        }
-        token++;
-    } while (1);
+        fprintf(stderr, "\t\t%s = %llu\n", tuning_config_map[i].key, tuning_config_map[i].opt->ull.default_value);
+    }
 }
 
 static void print_usage(char const * const arg0)
 {
     static char const usage[] =
         "Usage: %s "
+        "[-f config-file]\n"
         "[-i pcap-file/interface] [-I] [-E] [-B bpf-filter]\n"
         "\t  \t"
         "[-l] [-L logfile] [-c address] [-e]"
@@ -5167,6 +5252,7 @@ static void print_usage(char const * const arg0)
         "[-o subopt=value]\n"
         "\t  \t"
         "[-v] [-h]\n\n"
+        "\t-f\tLoad nDPId/libnDPI options from a configuration file.\n"
         "\t-i\tInterface or file from where to read packets from.\n"
 #ifdef ENABLE_PFRING
         "\t-r\tUse PFRING to capture packets instead of libpcap.\n"
@@ -5188,6 +5274,7 @@ static void print_usage(char const * const arg0)
         "\t-u\tChange UID to the numeric value of user.\n"
         "\t  \tDefault: %s\n"
         "\t-g\tChange GID to the numeric value of group.\n"
+        "\t-R\tLoad a nDPI custom risk domain file.\n"
         "\t-P\tLoad a nDPI custom protocols file.\n"
         "\t-C\tLoad a nDPI custom categories file.\n"
         "\t-J\tLoad a nDPI JA3 hash blacklist file.\n"
@@ -5210,9 +5297,9 @@ static void print_usage(char const * const arg0)
     fprintf(stderr,
             usage,
             arg0,
-            get_cmdarg(&nDPId_options.collector_address),
-            get_cmdarg(&nDPId_options.pidfile),
-            get_cmdarg(&nDPId_options.user));
+            nDPId_options.collector_address.string.default_value,
+            nDPId_options.pidfile.string.default_value,
+            nDPId_options.user.string.default_value);
 }
 
 static void nDPId_print_deps_version(FILE * const out)
@@ -5243,29 +5330,32 @@ static int nDPId_parse_options(int argc, char ** argv)
 {
     int opt;
 
-    while ((opt = getopt(argc, argv, "i:rIEB:lL:c:edp:u:g:P:C:J:S:a:Azo:vh")) != -1)
+    while ((opt = getopt(argc, argv, "f:i:rIEB:lL:c:edp:u:g:R:P:C:J:S:a:Azo:vh")) != -1)
     {
         switch (opt)
         {
+            case 'f':
+                set_cmdarg_string(&nDPId_options.config_file, optarg);
+                break;
             case 'i':
-                set_cmdarg(&nDPId_options.pcap_file_or_interface, optarg);
+                set_cmdarg_string(&nDPId_options.pcap_file_or_interface, optarg);
                 break;
             case 'r':
 #ifdef ENABLE_PFRING
-                nDPId_options.use_pfring = 1;
+                set_cmdarg_boolean(&nDPId_options.use_pfring, 1);
                 break;
 #else
                 logger_early(1, "%s", "nDPId was built w/o PFRING support");
                 return 1;
 #endif
             case 'I':
-                nDPId_options.process_internal_initial_direction = 1;
+                set_cmdarg_boolean(&nDPId_options.process_internal_initial_direction, 1);
                 break;
             case 'E':
-                nDPId_options.process_external_initial_direction = 1;
+                set_cmdarg_boolean(&nDPId_options.process_external_initial_direction, 1);
                 break;
             case 'B':
-                set_cmdarg(&nDPId_options.bpf_str, optarg);
+                set_cmdarg_string(&nDPId_options.bpf_str, optarg);
                 break;
             case 'l':
                 enable_console_logger();
@@ -5277,11 +5367,11 @@ static int nDPId_parse_options(int argc, char ** argv)
                 }
                 break;
             case 'c':
-                set_cmdarg(&nDPId_options.collector_address, optarg);
+                set_cmdarg_string(&nDPId_options.collector_address, optarg);
                 break;
             case 'e':
 #ifdef ENABLE_EPOLL
-                nDPId_options.use_poll = 1;
+                set_cmdarg_boolean(&nDPId_options.use_poll, 1);
 #else
                 logger_early(1, "%s", "nDPId was built w/o epoll() support, poll() is already the default");
 #endif
@@ -5290,35 +5380,38 @@ static int nDPId_parse_options(int argc, char ** argv)
                 daemonize_enable();
                 break;
             case 'p':
-                set_cmdarg(&nDPId_options.pidfile, optarg);
+                set_cmdarg_string(&nDPId_options.pidfile, optarg);
                 break;
             case 'u':
-                set_cmdarg(&nDPId_options.user, optarg);
+                set_cmdarg_string(&nDPId_options.user, optarg);
                 break;
             case 'g':
-                set_cmdarg(&nDPId_options.group, optarg);
+                set_cmdarg_string(&nDPId_options.group, optarg);
+                break;
+            case 'R':
+                set_cmdarg_string(&nDPId_options.custom_risk_domain_file, optarg);
                 break;
             case 'P':
-                set_cmdarg(&nDPId_options.custom_protocols_file, optarg);
+                set_cmdarg_string(&nDPId_options.custom_protocols_file, optarg);
                 break;
             case 'C':
-                set_cmdarg(&nDPId_options.custom_categories_file, optarg);
+                set_cmdarg_string(&nDPId_options.custom_categories_file, optarg);
                 break;
             case 'J':
-                set_cmdarg(&nDPId_options.custom_ja3_file, optarg);
+                set_cmdarg_string(&nDPId_options.custom_ja3_file, optarg);
                 break;
             case 'S':
-                set_cmdarg(&nDPId_options.custom_sha1_file, optarg);
+                set_cmdarg_string(&nDPId_options.custom_sha1_file, optarg);
                 break;
             case 'a':
-                set_cmdarg(&nDPId_options.instance_alias, optarg);
+                set_cmdarg_string(&nDPId_options.instance_alias, optarg);
                 break;
             case 'A':
-                nDPId_options.enable_data_analysis = 1;
+                set_cmdarg_boolean(&nDPId_options.enable_data_analysis, 1);
                 break;
             case 'z':
 #ifdef ENABLE_ZLIB
-                nDPId_options.enable_zlib_compression = 1;
+                set_cmdarg_boolean(&nDPId_options.enable_zlib_compression, 1);
                 break;
 #else
                 logger_early(1, "%s", "nDPId was built w/o zLib compression");
@@ -5329,18 +5422,23 @@ static int nDPId_parse_options(int argc, char ** argv)
                 int errfnd = 0;
                 char * subopts = optarg;
                 char * value;
+                char * subopt_tokens[nDPIsrvd_ARRAY_LENGTH(tuning_config_map) + 1] = {};
 
-                while (*subopts != '\0' && !errfnd)
+                for (size_t i = 0; i < nDPIsrvd_ARRAY_LENGTH(tuning_config_map); ++i)
                 {
-                    char * endptr;
-                    int subopt = getsubopt(&subopts, subopt_token, &value);
+                    subopt_tokens[i] = strdup(tuning_config_map[i].key);
+                }
+                while (*subopts != '\0' && errfnd == 0)
+                {
+                    int subopt = getsubopt(&subopts, subopt_tokens, &value);
                     if (value == NULL && subopt != -1)
                     {
-                        logger_early(1, "Missing value for `%s'", subopt_token[subopt]);
+                        logger_early(1, "Missing value for `%s'", subopt_tokens[subopt]);
                         fprintf(stderr, "%s", "\n");
                         print_usage(argv[0]);
                         print_subopt_usage();
-                        return 1;
+                        errfnd = 1;
+                        break;
                     }
                     if (subopt == -1)
                     {
@@ -5348,82 +5446,24 @@ static int nDPId_parse_options(int argc, char ** argv)
                         fprintf(stderr, "%s", "\n");
                         print_usage(argv[0]);
                         print_subopt_usage();
-                        return 1;
+                        errfnd = 1;
+                        break;
                     }
 
-                    long int value_llu = strtoull(value, &endptr, 10);
-                    if (value == endptr)
+                    if (set_config_from(&tuning_config_map[subopt], value) != 0)
                     {
-                        logger_early(1, "Subopt `%s': Value `%s' is not a valid number.", subopt_token[subopt], value);
-                        return 1;
+                        logger_early(1, "Could not set subopt: %s", tuning_config_map[subopt].key);
+                        errfnd = 1;
+                        break;
                     }
-                    if (errno == ERANGE)
-                    {
-                        logger_early(1, "Subopt `%s': Number too large.", subopt_token[subopt]);
-                        return 1;
-                    }
-
-                    switch ((enum nDPId_subopts)subopt)
-                    {
-                        case MAX_FLOWS_PER_THREAD:
-                            nDPId_options.max_flows_per_thread = value_llu;
-                            break;
-                        case MAX_IDLE_FLOWS_PER_THREAD:
-                            nDPId_options.max_idle_flows_per_thread = value_llu;
-                            break;
-                        case MAX_READER_THREADS:
-                            nDPId_options.reader_thread_count = value_llu;
-                            break;
-                        case DAEMON_STATUS_INTERVAL:
-                            nDPId_options.daemon_status_interval = value_llu;
-                            break;
-#ifdef ENABLE_MEMORY_PROFILING
-                        case MEMORY_PROFILING_LOG_INTERVAL:
-                            nDPId_options.memory_profiling_log_interval = value_llu;
-                            break;
-#endif
-#ifdef ENABLE_ZLIB
-                        case COMPRESSION_SCAN_INTERVAL:
-                            nDPId_options.compression_scan_interval = value_llu;
-                            break;
-                        case COMPRESSION_FLOW_INACTIVITY:
-                            nDPId_options.compression_flow_inactivity = value_llu;
-                            break;
-#endif
-                        case FLOW_SCAN_INTVERAL:
-                            nDPId_options.flow_scan_interval = value_llu;
-                            break;
-                        case GENERIC_MAX_IDLE_TIME:
-                            nDPId_options.generic_max_idle_time = value_llu;
-                            break;
-                        case ICMP_MAX_IDLE_TIME:
-                            nDPId_options.icmp_max_idle_time = value_llu;
-                            break;
-                        case UDP_MAX_IDLE_TIME:
-                            nDPId_options.udp_max_idle_time = value_llu;
-                            break;
-                        case TCP_MAX_IDLE_TIME:
-                            nDPId_options.tcp_max_idle_time = value_llu;
-                            break;
-                        case TCP_MAX_POST_END_FLOW_TIME:
-                            nDPId_options.tcp_max_post_end_flow_time = value_llu;
-                            break;
-                        case MAX_PACKETS_PER_FLOW_TO_SEND:
-                            nDPId_options.max_packets_per_flow_to_send = value_llu;
-                            break;
-                        case MAX_PACKETS_PER_FLOW_TO_PROCESS:
-                            nDPId_options.max_packets_per_flow_to_process = value_llu;
-                            break;
-                        case MAX_PACKETS_PER_FLOW_TO_ANALYZE:
-                            nDPId_options.max_packets_per_flow_to_analyse = value_llu;
-                            break;
-                        case ERROR_EVENT_THRESHOLD_N:
-                            nDPId_options.error_event_threshold_n = value_llu;
-                            break;
-                        case ERROR_EVENT_THRESHOLD_TIME:
-                            nDPId_options.error_event_threshold_time = value_llu;
-                            break;
-                    }
+                }
+                for (size_t i = 0; i < nDPIsrvd_ARRAY_LENGTH(tuning_config_map); ++i)
+                {
+                    free(subopt_tokens[i]);
+                }
+                if (errfnd != 0)
+                {
+                    return 1;
                 }
                 break;
             }
@@ -5465,10 +5505,10 @@ static int validate_options(void)
         retval = 1;
     }
 #ifdef ENABLE_ZLIB
-    if (nDPId_options.enable_zlib_compression != 0)
+    if (GET_CMDARG_BOOL(nDPId_options.enable_zlib_compression) != 0)
     {
-        if (nDPId_options.compression_flow_inactivity < TIME_S_TO_US(6u) ||
-            nDPId_options.compression_scan_interval < TIME_S_TO_US(4u))
+        if (GET_CMDARG_ULL(nDPId_options.compression_flow_inactivity) < TIME_S_TO_US(6u) ||
+            GET_CMDARG_ULL(nDPId_options.compression_scan_interval) < TIME_S_TO_US(4u))
         {
             logger_early(1,
                          "Setting compression-scan-interval / compression-flow-inactivity "
@@ -5479,12 +5519,13 @@ static int validate_options(void)
         }
     }
 #endif
-    if (nDPIsrvd_setup_address(&collector_address, get_cmdarg(&nDPId_options.collector_address)) != 0)
+    if (nDPIsrvd_setup_address(&nDPId_options.parsed_collector_address,
+                               GET_CMDARG_STR(nDPId_options.collector_address)) != 0)
     {
         retval = 1;
-        logger_early(1, "Collector socket invalid address: %s.", get_cmdarg(&nDPId_options.collector_address));
+        logger_early(1, "Collector socket invalid address: %s.", GET_CMDARG_STR(nDPId_options.collector_address));
     }
-    if (is_cmdarg_set(&nDPId_options.instance_alias) == 0)
+    if (IS_CMDARG_SET(nDPId_options.instance_alias) == 0)
     {
         char hname[256];
 
@@ -5496,106 +5537,186 @@ static int validate_options(void)
         }
         else
         {
-            set_cmdarg(&nDPId_options.instance_alias, hname);
+            set_cmdarg_string(&nDPId_options.instance_alias, hname);
             logger_early(1,
                          "No instance alias given, using your hostname '%s'",
-                         get_cmdarg(&nDPId_options.instance_alias));
-            if (is_cmdarg_set(&nDPId_options.instance_alias) == 0)
+                         GET_CMDARG_STR(nDPId_options.instance_alias));
+            if (IS_CMDARG_SET(nDPId_options.instance_alias) == 0)
             {
                 retval = 1;
             }
         }
     }
-    if (nDPId_options.max_flows_per_thread < 128 || nDPId_options.max_flows_per_thread > nDPId_MAX_FLOWS_PER_THREAD)
+    if (GET_CMDARG_ULL(nDPId_options.max_flows_per_thread) < 128 ||
+        GET_CMDARG_ULL(nDPId_options.max_flows_per_thread) > nDPId_MAX_FLOWS_PER_THREAD)
     {
         logger_early(1,
                      "Value not in range: 128 < max-flows-per-thread[%llu] < %d",
-                     nDPId_options.max_flows_per_thread,
+                     GET_CMDARG_ULL(nDPId_options.max_flows_per_thread),
                      nDPId_MAX_FLOWS_PER_THREAD);
         retval = 1;
     }
-    if (nDPId_options.max_idle_flows_per_thread < 64 ||
-        nDPId_options.max_idle_flows_per_thread > nDPId_MAX_IDLE_FLOWS_PER_THREAD)
+    if (GET_CMDARG_ULL(nDPId_options.max_idle_flows_per_thread) < 64 ||
+        GET_CMDARG_ULL(nDPId_options.max_idle_flows_per_thread) > nDPId_MAX_IDLE_FLOWS_PER_THREAD)
     {
         logger_early(1,
                      "Value not in range: 64 < max-idle-flows-per-thread[%llu] < %d",
-                     nDPId_options.max_idle_flows_per_thread,
+                     GET_CMDARG_ULL(nDPId_options.max_idle_flows_per_thread),
                      nDPId_MAX_IDLE_FLOWS_PER_THREAD);
         retval = 1;
     }
-    if (nDPId_options.reader_thread_count < 1 || nDPId_options.reader_thread_count > nDPId_MAX_READER_THREADS)
+    if (GET_CMDARG_ULL(nDPId_options.reader_thread_count) < 1 ||
+        GET_CMDARG_ULL(nDPId_options.reader_thread_count) > nDPId_MAX_READER_THREADS)
     {
         logger_early(1,
                      "Value not in range: 1 < reader-thread-count[%llu] < %d",
-                     nDPId_options.reader_thread_count,
+                     GET_CMDARG_ULL(nDPId_options.reader_thread_count),
                      nDPId_MAX_READER_THREADS);
         retval = 1;
     }
-    if (nDPId_options.flow_scan_interval < TIME_S_TO_US(5u))
+    if (GET_CMDARG_ULL(nDPId_options.flow_scan_interval) < TIME_S_TO_US(5u))
     {
         logger_early(1,
                      "Value not in range: idle-scan-interval[%llu] > %llu",
-                     nDPId_options.flow_scan_interval,
+                     GET_CMDARG_ULL(nDPId_options.flow_scan_interval),
                      TIME_S_TO_US(5u));
         retval = 1;
     }
-    if (nDPId_options.flow_scan_interval >= nDPId_options.generic_max_idle_time)
+    if (GET_CMDARG_ULL(nDPId_options.flow_scan_interval) >= GET_CMDARG_ULL(nDPId_options.generic_max_idle_time))
     {
         logger_early(1,
                      "Value not in range: flow-scan-interval[%llu] < generic-max-idle-time[%llu]",
-                     nDPId_options.flow_scan_interval,
-                     nDPId_options.generic_max_idle_time);
+                     GET_CMDARG_ULL(nDPId_options.flow_scan_interval),
+                     GET_CMDARG_ULL(nDPId_options.generic_max_idle_time));
         retval = 1;
     }
-    if (nDPId_options.flow_scan_interval >= nDPId_options.icmp_max_idle_time)
+    if (GET_CMDARG_ULL(nDPId_options.flow_scan_interval) >= GET_CMDARG_ULL(nDPId_options.icmp_max_idle_time))
     {
         logger_early(1,
                      "Value not in range: flow-scan-interval[%llu] < icmp-max-idle-time[%llu]",
-                     nDPId_options.flow_scan_interval,
-                     nDPId_options.icmp_max_idle_time);
+                     GET_CMDARG_ULL(nDPId_options.flow_scan_interval),
+                     GET_CMDARG_ULL(nDPId_options.icmp_max_idle_time));
         retval = 1;
     }
-    if (nDPId_options.flow_scan_interval >= nDPId_options.tcp_max_idle_time)
+    if (GET_CMDARG_ULL(nDPId_options.flow_scan_interval) >= GET_CMDARG_ULL(nDPId_options.tcp_max_idle_time))
     {
         logger_early(1,
                      "Value not in range: flow-scan-interval[%llu] < generic-max-idle-time[%llu]",
-                     nDPId_options.flow_scan_interval,
-                     nDPId_options.tcp_max_idle_time);
+                     GET_CMDARG_ULL(nDPId_options.flow_scan_interval),
+                     GET_CMDARG_ULL(nDPId_options.tcp_max_idle_time));
         retval = 1;
     }
-    if (nDPId_options.flow_scan_interval >= nDPId_options.udp_max_idle_time)
+    if (GET_CMDARG_ULL(nDPId_options.flow_scan_interval) >= GET_CMDARG_ULL(nDPId_options.udp_max_idle_time))
     {
         logger_early(1,
                      "Value not in range:flow-scan-interval[%llu] < udp-max-idle-time[%llu]",
-                     nDPId_options.flow_scan_interval,
-                     nDPId_options.udp_max_idle_time);
+                     GET_CMDARG_ULL(nDPId_options.flow_scan_interval),
+                     GET_CMDARG_ULL(nDPId_options.udp_max_idle_time));
         retval = 1;
     }
-    if (nDPId_options.process_internal_initial_direction != 0 && nDPId_options.process_external_initial_direction != 0)
+    if (GET_CMDARG_BOOL(nDPId_options.process_internal_initial_direction) != 0 &&
+        GET_CMDARG_BOOL(nDPId_options.process_external_initial_direction) != 0)
     {
         logger_early(1, "%s", "Internal and External packet processing does not make sense as this is the default.");
         retval = 1;
     }
-    if (nDPId_options.process_internal_initial_direction != 0 || nDPId_options.process_external_initial_direction != 0)
+    if (GET_CMDARG_BOOL(nDPId_options.process_internal_initial_direction) != 0 ||
+        GET_CMDARG_BOOL(nDPId_options.process_external_initial_direction) != 0)
     {
         logger_early(1,
                      "%s",
                      "Internal and External packet processing may lead to incorrect results for flows that were active "
                      "before the daemon started.");
     }
-    if (nDPId_options.max_packets_per_flow_to_process < 1 || nDPId_options.max_packets_per_flow_to_process > 65535)
+    if (GET_CMDARG_ULL(nDPId_options.max_packets_per_flow_to_process) < 1 ||
+        GET_CMDARG_ULL(nDPId_options.max_packets_per_flow_to_process) > 65535)
     {
         logger_early(1,
                      "Value not in range: 1 =< max-packets-per-flow-to-process[%llu] =< 65535",
-                     nDPId_options.max_packets_per_flow_to_process);
+                     GET_CMDARG_ULL(nDPId_options.max_packets_per_flow_to_process));
         retval = 1;
     }
-    if (nDPId_options.max_packets_per_flow_to_send > 30)
+    if (GET_CMDARG_ULL(nDPId_options.max_packets_per_flow_to_send) > 30)
     {
         logger_early(1, "%s", "Higher values of max-packets-per-flow-to-send may cause superfluous network usage.");
     }
 
     return retval;
+}
+
+static int nDPId_parsed_config_line(
+    int lineno, char const * const section, char const * const name, char const * const value, void * const user_data)
+{
+    (void)user_data;
+
+    if (strnlen(section, INI_MAX_SECTION) == nDPIsrvd_STRLEN_SZ("general") &&
+        strncmp(section, "general", INI_MAX_SECTION) == 0)
+    {
+        size_t i;
+
+        for (i = 0; i < nDPIsrvd_ARRAY_LENGTH(general_config_map); ++i)
+        {
+            if (strnlen(name, INI_MAX_NAME) == strnlen(general_config_map[i].key, INI_MAX_NAME) &&
+                strncmp(name, general_config_map[i].key, INI_MAX_NAME) == 0)
+            {
+                if (IS_CMDARG_SET(*general_config_map[i].opt) != 0)
+                {
+                    logger_early(1, "General config key `%s' already set, ignoring value `%s'", name, value);
+                }
+                else
+                {
+                    if (set_config_from(&general_config_map[i], value) != 0)
+                    {
+                        return 0;
+                    }
+                }
+                break;
+            }
+        }
+        if (i == nDPIsrvd_ARRAY_LENGTH(general_config_map))
+        {
+            logger_early(1, "Invalid general config key `%s' at line %d", name, lineno);
+        }
+    }
+    else if (strnlen(section, INI_MAX_SECTION) == nDPIsrvd_STRLEN_SZ("tuning") &&
+             strncmp(section, "tuning", INI_MAX_SECTION) == 0)
+    {
+        size_t i;
+
+        for (i = 0; i < nDPIsrvd_ARRAY_LENGTH(tuning_config_map); ++i)
+        {
+            if (strnlen(name, INI_MAX_NAME) == strnlen(tuning_config_map[i].key, INI_MAX_NAME) &&
+                strncmp(name, tuning_config_map[i].key, INI_MAX_NAME) == 0)
+            {
+                if (set_config_from(&tuning_config_map[i], value) != 0)
+                {
+                    logger_early(
+                        1, "Non numeric tuning config value `%s' for key `%s' at line %d", value, name, lineno);
+                    return 0;
+                }
+                break;
+            }
+        }
+        if (i == nDPIsrvd_ARRAY_LENGTH(tuning_config_map))
+        {
+            logger_early(1, "Invalid tuning config key `%s' at line %d", name, lineno);
+        }
+    }
+    else if ((strnlen(section, INI_MAX_SECTION) == nDPIsrvd_STRLEN_SZ("ndpi") &&
+              strncmp(section, "ndpi", INI_MAX_SECTION) == 0) ||
+             (strnlen(section, INI_MAX_SECTION) == nDPIsrvd_STRLEN_SZ("protos") &&
+              strncmp(section, "protos", INI_MAX_SECTION) == 0))
+    {
+        // Nothing to do here right now (workflow not initialized yet)
+        return 1;
+    }
+    else
+    {
+        logger_early(
+            1, "Invalid config section `%s' at line %d with key `%s' and value `%s'", section, lineno, name, value);
+    }
+
+    return 1;
 }
 
 #ifndef NO_MAIN
@@ -5611,6 +5732,32 @@ int main(int argc, char ** argv)
     if (nDPId_parse_options(argc, argv) != 0)
     {
         return 1;
+    }
+    set_config_defaults(&general_config_map[0], nDPIsrvd_ARRAY_LENGTH(general_config_map));
+    set_config_defaults(&tuning_config_map[0], nDPIsrvd_ARRAY_LENGTH(tuning_config_map));
+    {
+        int ret;
+
+        if (IS_CMDARG_SET(nDPId_options.config_file) != 0 &&
+            (ret = parse_config_file(GET_CMDARG_STR(nDPId_options.config_file), nDPId_parsed_config_line, NULL)) != 0)
+        {
+            if (ret > 0)
+            {
+                logger_early(1, "Config file `%s' is malformed", GET_CMDARG_STR(nDPId_options.config_file));
+            }
+            else if (ret == -ENOENT)
+            {
+                logger_early(1, "Path `%s' is not a regular file", GET_CMDARG_STR(nDPId_options.config_file));
+            }
+            else
+            {
+                logger_early(1,
+                             "Could not open file `%s' for reading: %s",
+                             GET_CMDARG_STR(nDPId_options.config_file),
+                             strerror(errno));
+            }
+            return 1;
+        }
     }
     if (validate_options() != 0)
     {
@@ -5670,7 +5817,7 @@ int main(int argc, char ** argv)
     }
     free_reader_threads();
 
-    daemonize_shutdown(get_cmdarg(&nDPId_options.pidfile));
+    daemonize_shutdown(GET_CMDARG_STR(nDPId_options.pidfile));
     logger(0, "%s", "Bye.");
     shutdown_logging();
 

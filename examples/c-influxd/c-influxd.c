@@ -1671,7 +1671,7 @@ int main(int argc, char ** argv)
     }
 
     errno = 0;
-    if (user != NULL && change_user_group(user, group, pidfile, NULL, NULL) != 0)
+    if (user != NULL && change_user_group(user, group, pidfile) != 0)
     {
         if (errno != 0)
         {

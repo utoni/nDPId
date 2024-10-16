@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <grp.h>
@@ -10,10 +11,18 @@
 #include <syslog.h>
 #endif
 #include <sys/stat.h>
-#include <sys/types.h>
 #include <unistd.h>
 
 #include "utils.h"
+
+#define UTILS_STRLEN_SZ(s) ((size_t)((sizeof(s) / sizeof(s[0])) - sizeof(s[0])))
+
+#ifndef INI_MAX_LINE
+#define INI_MAX_LINE BUFSIZ
+#endif
+
+#define INI_INLINE_COMMENT_PREFIXES ";"
+#define INI_START_COMMENT_PREFIXES ";#"
 
 typedef char pid_str[16];
 
@@ -22,40 +31,151 @@ static int daemonize = 0;
 static int log_to_console = 0;
 static int log_to_file_fd = -1;
 
-void set_cmdarg(struct cmdarg * const ca, char const * const val)
+void set_config_defaults(struct confopt * const co_array, size_t array_length)
+{
+    for (size_t i = 0; i < array_length; ++i)
+    {
+        if (co_array[i].opt == NULL)
+        {
+            logger_early(1, "%s", "BUG: Config option is NULL");
+            continue;
+        }
+        if (IS_CMDARG_SET(*co_array[i].opt) == 0)
+        {
+            switch (co_array[i].opt->type)
+            {
+                case CMDTYPE_INVALID:
+                    logger_early(1, "BUG: Config option `%s' has CMDTYPE_INVALID!", co_array[i].key);
+                    break;
+                case CMDTYPE_STRING:
+                    if (co_array[i].opt->string.default_value == NULL)
+                    {
+                        break;
+                    }
+                    co_array[i].opt->string.value = strdup(co_array[i].opt->string.default_value);
+                    break;
+                case CMDTYPE_BOOLEAN:
+                    co_array[i].opt->boolean.value = co_array[i].opt->boolean.default_value;
+                    break;
+                case CMDTYPE_ULL:
+                    co_array[i].opt->ull.value = co_array[i].opt->ull.default_value;
+                    break;
+            }
+        }
+    }
+}
+
+int set_config_from(struct confopt * const co, char const * const from)
+{
+    if (co == NULL || co->opt == NULL || from == NULL)
+    {
+        return -1;
+    }
+
+    switch (co->opt->type)
+    {
+        case CMDTYPE_INVALID:
+            break;
+        case CMDTYPE_STRING:
+            set_cmdarg_string(co->opt, from);
+            break;
+        case CMDTYPE_BOOLEAN:
+        {
+            uint8_t enabled;
+
+            if ((strnlen(from, INI_MAX_LINE) == UTILS_STRLEN_SZ("true") &&
+                 strncasecmp(from, "true", INI_MAX_LINE) == 0) ||
+                (strnlen(from, INI_MAX_LINE) == UTILS_STRLEN_SZ("1") && strncasecmp(from, "1", INI_MAX_LINE) == 0))
+            {
+                enabled = 1;
+            }
+            else if ((strnlen(from, INI_MAX_LINE) == UTILS_STRLEN_SZ("false") &&
+                      strncasecmp(from, "false", INI_MAX_LINE) == 0) ||
+                     (strnlen(from, INI_MAX_LINE) == UTILS_STRLEN_SZ("0") && strncasecmp(from, "0", INI_MAX_LINE) == 0))
+            {
+                enabled = 0;
+            }
+            else
+            {
+                logger_early(1, "Config key `%s' has a value not of type bool: `%s'", co->key, from);
+                return 1;
+            }
+            set_cmdarg_boolean(co->opt, enabled);
+        }
+        break;
+        case CMDTYPE_ULL:
+        {
+            char * endptr;
+            long int value_llu = strtoull(from, &endptr, 10);
+
+            if (from == endptr)
+            {
+                logger_early(1, "Subopt `%s': Value `%s' is not a valid number.", co->key, from);
+                return 1;
+            }
+            if (errno == ERANGE)
+            {
+                logger_early(1, "Subopt `%s': Number too large.", co->key);
+                return 1;
+            }
+            set_cmdarg_ull(co->opt, value_llu);
+        }
+        break;
+    }
+
+    return 0;
+}
+
+void set_cmdarg_string(struct cmdarg * const ca, char const * const val)
 {
     if (ca == NULL || val == NULL)
     {
         return;
     }
 
-    free(ca->value);
-    ca->value = strdup(val);
+    if (ca->type != CMDTYPE_STRING)
+    {
+        logger_early(1, "%s", "BUG: Type is not CMDTYPE_STRING!");
+        return;
+    }
+
+    ca->is_set = 1;
+    free(ca->string.value);
+    ca->string.value = strdup(val);
 }
 
-char const * get_cmdarg(struct cmdarg const * const ca)
+void set_cmdarg_boolean(struct cmdarg * const ca, uint8_t val)
 {
     if (ca == NULL)
     {
-        return NULL;
+        return;
     }
 
-    if (ca->value != NULL)
+    if (ca->type != CMDTYPE_BOOLEAN)
     {
-        return ca->value;
+        logger_early(1, "%s", "BUG: Type is not CMDTYPE_BOOLEAN!");
+        return;
     }
 
-    return ca->default_value;
+    ca->is_set = 1;
+    ca->boolean.value = (val != 0);
 }
 
-int is_cmdarg_set(struct cmdarg const * const ca)
+void set_cmdarg_ull(struct cmdarg * const ca, unsigned long long int val)
 {
     if (ca == NULL)
     {
-        return 0;
+        return;
     }
 
-    return ca->value != NULL;
+    if (ca->type != CMDTYPE_ULL)
+    {
+        logger_early(1, "%s", "BUG: Type is not CMDTYPE_ULL!");
+        return;
+    }
+
+    ca->is_set = 1;
+    ca->ull.value = val;
 }
 
 void daemonize_enable(void)
@@ -218,11 +338,7 @@ int daemonize_shutdown(char const * const pidfile)
     return 0;
 }
 
-int change_user_group(char const * const user,
-                      char const * const group,
-                      char const * const pidfile,
-                      char const * const uds_collector_path,
-                      char const * const uds_distributor_path)
+int change_user_group(char const * const user, char const * const group, char const * const pidfile)
 {
     struct passwd * pwd;
     struct group * grp;
@@ -237,7 +353,7 @@ int change_user_group(char const * const user,
     pwd = getpwnam(user);
     if (pwd == NULL)
     {
-        return -errno;
+        return (errno != 0 ? -errno : -ENOENT);
     }
 
     if (group != NULL)
@@ -246,7 +362,7 @@ int change_user_group(char const * const user,
         grp = getgrnam(group);
         if (grp == NULL)
         {
-            return -errno;
+            return (errno != 0 ? -errno : -ENOENT);
         }
         gid = grp->gr_gid;
     }
@@ -255,23 +371,6 @@ int change_user_group(char const * const user,
         gid = pwd->pw_gid;
     }
 
-    if (uds_collector_path != NULL)
-    {
-        errno = 0;
-        if (chmod(uds_collector_path, S_IRUSR | S_IWUSR) != 0 || chown(uds_collector_path, pwd->pw_uid, gid) != 0)
-        {
-            return -errno;
-        }
-    }
-    if (uds_distributor_path != NULL)
-    {
-        errno = 0;
-        if (chmod(uds_distributor_path, S_IRUSR | S_IWUSR | S_IRGRP) != 0 ||
-            chown(uds_distributor_path, pwd->pw_uid, gid) != 0)
-        {
-            return -errno;
-        }
-    }
     if (daemonize != 0 && pidfile != NULL)
     {
         errno = 0;
@@ -281,6 +380,56 @@ int change_user_group(char const * const user,
         }
     }
     return setregid(gid, gid) != 0 || setreuid(pwd->pw_uid, pwd->pw_uid);
+}
+
+WARN_UNUSED
+int chmod_chown(char const * const path, mode_t mode, char const * const user, char const * const group)
+{
+    uid_t path_uid = (uid_t)-1;
+    gid_t path_gid = (gid_t)-1;
+
+    if (mode != 0)
+    {
+        if (chmod(path, mode) != 0)
+        {
+            return -errno;
+        }
+    }
+
+    if (user != NULL)
+    {
+        errno = 0;
+
+        struct passwd * const pwd = getpwnam(user);
+        if (pwd == NULL)
+        {
+            return (errno != 0 ? -errno : -ENOENT);
+        }
+        path_uid = pwd->pw_uid;
+        path_gid = pwd->pw_gid;
+    }
+
+    if (group != NULL)
+    {
+        errno = 0;
+
+        struct group * const grp = getgrnam(group);
+        if (grp == NULL)
+        {
+            return (errno != 0 ? -errno : -ENOENT);
+        }
+        path_gid = grp->gr_gid;
+    }
+
+    if (path_uid != (uid_t)-1 || path_gid != (gid_t)-1)
+    {
+        if (chown(path, path_uid, path_gid) != 0)
+        {
+            return -errno;
+        }
+    }
+
+    return 0;
 }
 
 void init_logging(char const * const name)
@@ -454,6 +603,160 @@ char const * get_nDPId_version(void)
            "unknown"
 #endif
            "\n"
-           "(C) 2020-2023 Toni Uhlig\n"
+           "(C) 2020-2024 Toni Uhlig\n"
            "Please report any BUG to toni@impl.cc\n";
+}
+
+/* Strip whitespace chars off end of given string, in place. Return s. */
+static char * ini_rstrip(char * s)
+{
+    char * p = s + strlen(s);
+    while (p > s && isspace((unsigned char)(*--p)))
+        *p = '\0';
+    return s;
+}
+
+/* Return pointer to first non-whitespace char in given string. */
+static char * ini_lskip(const char * s)
+{
+    while (*s && isspace((unsigned char)(*s)))
+        s++;
+    return (char *)s;
+}
+
+/* Return pointer to first char (of chars) or inline comment in given string,
+   or pointer to NUL at end of string if neither found. Inline comment must
+   be prefixed by a whitespace character to register as a comment. */
+static char * ini_find_chars_or_comment(const char * s, const char * chars)
+{
+    int was_space = 0;
+    while (*s && (!chars || !strchr(chars, *s)) && !(was_space && strchr(INI_INLINE_COMMENT_PREFIXES, *s)))
+    {
+        was_space = isspace((unsigned char)(*s));
+        s++;
+    }
+    return (char *)s;
+}
+
+/* See: https://github.com/benhoyt/inih/blob/master/ini.c#L97C67-L97C74 */
+static int parse_config_lines(FILE * const file, config_line_callback cb, void * const user_data)
+{
+    char line[INI_MAX_LINE];
+    int max_line = INI_MAX_LINE;
+    char section[INI_MAX_SECTION] = "";
+    char prev_name[INI_MAX_NAME] = "";
+    char * start;
+    char * end;
+    char * name;
+    char * value;
+    int lineno = 0;
+    int error = 0;
+
+    while (fgets(line, max_line, file) != NULL)
+    {
+        lineno++;
+        start = line;
+        start = ini_lskip(ini_rstrip(start));
+
+        if (strchr(INI_START_COMMENT_PREFIXES, *start))
+        {
+            /* Start-of-line comment */
+        }
+        else if (*prev_name && *start && start > line)
+        {
+            end = ini_find_chars_or_comment(start, NULL);
+            if (*end)
+            {
+                *end = '\0';
+            }
+            ini_rstrip(start);
+
+            /* Non-blank line with leading whitespace, treat as continuation
+               of previous name's value (as per Python configparser). */
+            if (!cb(lineno, section, prev_name, start, user_data) && !error)
+            {
+                error = lineno;
+            }
+        }
+        else if (*start == '[')
+        {
+            /* A "[section]" line */
+            end = ini_find_chars_or_comment(start + 1, "]");
+            if (*end == ']')
+            {
+                *end = '\0';
+                snprintf(section, sizeof(section), "%s", start + 1);
+                *prev_name = '\0';
+            }
+            else if (!error)
+            {
+                /* No ']' found on section line */
+                error = lineno;
+            }
+        }
+        else if (*start)
+        {
+            /* Not a comment, must be a name[=:]value pair */
+            end = ini_find_chars_or_comment(start, "=:");
+            if (*end == '=' || *end == ':')
+            {
+                *end = '\0';
+                name = ini_rstrip(start);
+                value = end + 1;
+                end = ini_find_chars_or_comment(value, NULL);
+                if (*end)
+                {
+                    *end = '\0';
+                }
+                value = ini_lskip(value);
+                ini_rstrip(value);
+
+                /* Valid name[=:]value pair found, call handler */
+                snprintf(prev_name, sizeof(prev_name), "%s", name);
+                if (!cb(lineno, section, prev_name, value, user_data) && !error)
+                {
+                    error = lineno;
+                }
+            }
+            else if (!error)
+            {
+                /* No '=' or ':' found on name[=:]value line */
+                error = lineno;
+            }
+        }
+    }
+
+    return error;
+}
+
+int parse_config_file(char const * const config_file, config_line_callback cb, void * const user_data)
+{
+    int file_fd;
+    FILE * file;
+    int error;
+    struct stat sbuf;
+
+    file_fd = open(config_file, O_RDONLY);
+    if (file_fd < 0)
+    {
+        return -1;
+    }
+    if (fstat(file_fd, &sbuf) != 0)
+    {
+        return -1;
+    }
+    if ((sbuf.st_mode & S_IFMT) != S_IFREG)
+    {
+        return -ENOENT;
+    }
+
+    file = fdopen(file_fd, "r");
+    if (file == NULL)
+    {
+        return -1;
+    }
+
+    error = parse_config_lines(file, cb, user_data);
+    fclose(file);
+    return error;
 }
