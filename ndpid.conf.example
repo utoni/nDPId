@@ -17,7 +17,7 @@
 #sha1        = /path/to/libnDPI/example/sha1_fingerprints.csv
 
 # Collector endpoint as UNIX socket (usually nDPIsrvd)
-collector   = /run/nDPIsrvd/collector
+#collector   = /run/nDPIsrvd/collector
 # Collector endpoint as UDP socket (usually a custom application)
 #collector   = 127.0.0.1:7777
 

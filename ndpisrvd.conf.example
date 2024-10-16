@@ -4,10 +4,10 @@
 #group                  = nogroup
 
 # Collector listener as UNIX socket
-collector              = /run/nDPIsrvd/collector
+#collector              = /run/nDPIsrvd/collector
 
 # Distributor listener as UNIX socket
-distributor-unix       = /run/nDPIsrvd/distributor
+#distributor-unix       = /run/nDPIsrvd/distributor
 
 # Distributor listener as IP socket
 #distributor-in         = 127.0.0.1:7000

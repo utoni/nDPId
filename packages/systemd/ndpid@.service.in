@@ -6,7 +6,7 @@ Requires=ndpisrvd.service
 [Service]
 Type=simple
 ExecStartPre=/bin/sh -c 'test -r "@CMAKE_INSTALL_PREFIX@/etc/nDPId/%i.conf" || cp -v "@CMAKE_INSTALL_PREFIX@/share/nDPId/ndpid.conf.example" "@CMAKE_INSTALL_PREFIX@/etc/nDPId/%i.conf"'
-ExecStart=@CMAKE_INSTALL_PREFIX@/sbin/nDPId -f @CMAKE_INSTALL_PREFIX@/etc/nDPId/%i.conf -i %i -u ndpid -p /run/nDPId-%i.pid
+ExecStart=@CMAKE_INSTALL_PREFIX@/sbin/nDPId -f @CMAKE_INSTALL_PREFIX@/etc/nDPId/%i.conf -i %i -u ndpid -p /run/nDPId-%i.pid -c /run/nDPIsrvd/collector
 Restart=on-failure
 
 [Install]
