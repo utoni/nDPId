@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2008-2021, Troy D. Hanson   http://troydhanson.github.io/uthash/
+Copyright (c) 2008-2022, Troy D. Hanson  https://troydhanson.github.io/uthash/
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -36,11 +36,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define UTARRAY_UNUSED __attribute__((__unused__))
 #else
 #define UTARRAY_UNUSED
-#endif
-
-#ifdef oom
-#error "The name of macro 'oom' has been changed to 'utarray_oom'. Please update your code."
-#define utarray_oom() oom()
 #endif
 
 #ifndef utarray_oom
@@ -234,7 +229,16 @@ typedef struct {
 static void utarray_str_cpy(void *dst, const void *src) {
   char *const *srcc = (char *const *)src;
   char **dstc = (char**)dst;
-  *dstc = (*srcc == NULL) ? NULL : strdup(*srcc);
+  if (*srcc == NULL) {
+    *dstc = NULL;
+  } else {
+    *dstc = (char*)malloc(strlen(*srcc) + 1);
+    if (*dstc == NULL) {
+      utarray_oom();
+    } else {
+      strcpy(*dstc, *srcc);
+    }
+  }
 }
 static void utarray_str_dtor(void *elt) {
   char **eltc = (char**)elt;
