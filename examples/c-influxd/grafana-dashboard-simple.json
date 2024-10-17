@@ -34,7 +34,7 @@
             },
             "mappings": [],
             "thresholds": {
-              "mode": "absolute",
+              "mode": "percentage",
               "steps": [
                 {
                   "color": "green",
@@ -42,7 +42,11 @@
                 },
                 {
                   "color": "yellow",
-                  "value": 1
+                  "value": 0.01
+                },
+                {
+                  "color": "dark-red",
+                  "value": 50
                 }
               ]
             }
@@ -745,9 +749,36 @@
             },
             "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"risks\"\n  )",
             "refId": "A"
+          },
+          {
+            "datasource": {
+              "type": "influxdb",
+              "uid": "dabd3b1d-a74e-4ae6-9dfd-e1344e589ba0"
+            },
+            "hide": false,
+            "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"detection\" and\n    (r._field == \"flow_active_count\")\n  )",
+            "refId": "B"
           }
         ],
         "title": "Risk",
+        "transformations": [
+          {
+            "id": "configFromData",
+            "options": {
+              "configRefId": "B",
+              "mappings": [
+                {
+                  "fieldName": "Time",
+                  "handlerKey": "__ignore"
+                },
+                {
+                  "fieldName": "flow_active_count",
+                  "handlerKey": "max"
+                }
+              ]
+            }
+          }
+        ],
         "type": "gauge"
       }
     }
@@ -2767,9 +2798,36 @@
           },
           "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"breed\"\n  )",
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "hide": false,
+          "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"detection\" and\n    (r._field == \"flow_active_count\")\n  )",
+          "refId": "B"
         }
       ],
       "title": "Breed",
+      "transformations": [
+        {
+          "id": "configFromData",
+          "options": {
+            "configRefId": "B",
+            "mappings": [
+              {
+                "fieldName": "Time",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "flow_active_count",
+                "handlerKey": "max"
+              }
+            ]
+          }
+        }
+      ],
       "type": "gauge"
     },
     {
@@ -2965,9 +3023,36 @@
           },
           "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"detection\" and\n    (r._field == \"flow_detected_count\" or\n     r._field == \"flow_guessed_count\" or\n     r._field == \"flow_not_detected_count\")\n  )",
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "hide": false,
+          "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"detection\" and\n    (r._field == \"flow_active_count\")\n  )",
+          "refId": "B"
         }
       ],
       "title": "Detection",
+      "transformations": [
+        {
+          "id": "configFromData",
+          "options": {
+            "configRefId": "B",
+            "mappings": [
+              {
+                "fieldName": "Time",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "flow_active_count",
+                "handlerKey": "max"
+              }
+            ]
+          }
+        }
+      ],
       "type": "gauge"
     },
     {
@@ -2990,7 +3075,7 @@
               },
               {
                 "color": "#EAB839",
-                "value": 80
+                "value": 50
               }
             ]
           }
@@ -3508,9 +3593,36 @@
           },
           "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"category\"\n  )",
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "hide": false,
+          "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"detection\" and\n    (r._field == \"flow_active_count\")\n  )",
+          "refId": "B"
         }
       ],
       "title": "Category",
+      "transformations": [
+        {
+          "id": "configFromData",
+          "options": {
+            "configRefId": "B",
+            "mappings": [
+              {
+                "fieldName": "Time",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "flow_active_count",
+                "handlerKey": "max"
+              }
+            ]
+          }
+        }
+      ],
       "type": "gauge"
     },
     {
@@ -3591,9 +3703,36 @@
           },
           "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"state\"\n  )",
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "hide": false,
+          "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"detection\" and\n    (r._field == \"flow_active_count\")\n  )",
+          "refId": "B"
         }
       ],
       "title": "State",
+      "transformations": [
+        {
+          "id": "configFromData",
+          "options": {
+            "configRefId": "B",
+            "mappings": [
+              {
+                "fieldName": "Time",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "flow_active_count",
+                "handlerKey": "max"
+              }
+            ]
+          }
+        }
+      ],
       "type": "stat"
     },
     {
@@ -3841,9 +3980,36 @@
           },
           "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"confidence\"\n  )",
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "hide": false,
+          "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"detection\" and\n    (r._field == \"flow_active_count\")\n  )",
+          "refId": "B"
         }
       ],
       "title": "Confidence",
+      "transformations": [
+        {
+          "id": "configFromData",
+          "options": {
+            "configRefId": "B",
+            "mappings": [
+              {
+                "fieldName": "Time",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "flow_active_count",
+                "handlerKey": "max"
+              }
+            ]
+          }
+        }
+      ],
       "type": "bargauge"
     },
     {
@@ -3861,8 +4027,7 @@
             "mode": "percentage",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -3931,8 +4096,7 @@
             "mode": "percentage",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -4104,9 +4268,36 @@
           },
           "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"severity\"\n  )",
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "hide": false,
+          "query": "from(bucket: \"${ndpid_db_name}\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"detection\" and\n    (r._field == \"flow_active_count\")\n  )",
+          "refId": "B"
         }
       ],
       "title": "Risk Severity",
+      "transformations": [
+        {
+          "id": "configFromData",
+          "options": {
+            "configRefId": "B",
+            "mappings": [
+              {
+                "fieldName": "Time",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "flow_active_count",
+                "handlerKey": "max"
+              }
+            ]
+          }
+        }
+      ],
       "type": "bargauge"
     },
     {
@@ -4182,8 +4373,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "yellow",
@@ -4937,8 +5127,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -5113,8 +5302,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -5148,8 +5336,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green",
-                      "value": null
+                      "color": "green"
                     },
                     {
                       "color": "yellow",
@@ -5176,8 +5363,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green",
-                      "value": null
+                      "color": "green"
                     },
                     {
                       "color": "red",
@@ -5251,8 +5437,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "yellow",
@@ -6032,8 +6217,7 @@
             "mode": "percentage",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -6156,8 +6340,7 @@
             "mode": "percentage",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -6280,6 +6463,6 @@
   "timezone": "",
   "title": "nDPId",
   "uid": "e57b37c0-d0ba-4f50-9b2d-f83e71ae8c27",
-  "version": 101,
+  "version": 111,
   "weekStart": ""
 }
