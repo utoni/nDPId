@@ -5,7 +5,7 @@ v2.3.0, February 2021
 
 To download uthash, follow this link back to the
 https://github.com/troydhanson/uthash[GitHub project page].
-Back to my http://troydhanson.github.io/[other projects].
+Back to my https://troydhanson.github.io/[other projects].
 
 A hash in C
 -----------
@@ -805,7 +805,7 @@ Here is a simple example where a structure has a pointer member, called `key`.
 
 .A pointer key
 ----------------------------------------------------------------------
-#include <stdio.h>
+#include <assert.h>
 #include <stdlib.h>
 #include "uthash.h"
 
@@ -816,17 +816,16 @@ typedef struct {
 } el_t;
 
 el_t *hash = NULL;
-char *someaddr = NULL;
+void *someaddr = &hash;
 
 int main() {
   el_t *d;
   el_t *e = (el_t *)malloc(sizeof *e);
-  if (!e) return -1;
-  e->key = (void*)someaddr;
+  e->key = someaddr;
   e->i = 1;
   HASH_ADD_PTR(hash, key, e);
   HASH_FIND_PTR(hash, &someaddr, d);
-  if (d) printf("found\n");
+  assert(d == e);
 
   /* release memory */
   HASH_DEL(hash, e);
@@ -835,9 +834,7 @@ int main() {
 }
 ----------------------------------------------------------------------
 
-This example is included in `tests/test57.c`. Note that the end of the program
-deletes the element out of the hash, (and since no more elements remain in the
-hash), uthash releases its internal memory.
+This example is included in `tests/test57.c`.
 
 Structure keys
 ~~~~~~~~~~~~~~
@@ -893,7 +890,7 @@ int main(int argc, char *argv[]) {
 
 ----------------------------------------------------------------------
 
-This usage is nearly the same as use of a compound key explained below.
+This usage is nearly the same as the usage of a compound key explained below.
 
 Note that the general macros require the name of the `UT_hash_handle` to be
 passed as the first argument (here, this is `hh`). The general macros are
@@ -1153,17 +1150,16 @@ always used with the `users_by_name` hash table).
 
 Sorted insertion of new items
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-If you would like to maintain a sorted hash you have two options. The first
-option is to use the HASH_SRT() macro, which will sort any unordered list in
+To maintain a sorted hash, you have two options. Your first
+option is to use the `HASH_SRT` macro, which will sort any unordered list in
 'O(n log(n))'. This is the best strategy if you're just filling up a hash
-table with items in random order with a single final HASH_SRT() operation
-when all is done. Obviously, this won't do what you want if you need
-the list to be in an ordered state at times between insertion of
-items. You can use HASH_SRT() after every insertion operation, but that will
-yield a computational complexity of 'O(n^2 log n)'.
+table with items in random order with a single final `HASH_SRT` operation
+when all is done. If you need the table to remain sorted as you add and remove
+items, you can use `HASH_SRT` after every insertion operation, but that gives
+a computational complexity of 'O(n^2 log n)' to insert 'n' items.
 
-The second route you can take is via the in-order add and replace macros.
-The `HASH_ADD_INORDER*` macros work just like their `HASH_ADD*` counterparts, but
+Your second option is to use the in-order add and replace macros.
+The `HASH_ADD_*_INORDER` macros work just like their `HASH_ADD_*` counterparts, but
 with an additional comparison-function argument:
 
   int name_sort(struct my_struct *a, struct my_struct *b) {
@@ -1172,11 +1168,11 @@ with an additional comparison-function argument:
 
   HASH_ADD_KEYPTR_INORDER(hh, items, &item->name, strlen(item->name), item, name_sort);
 
-New items are sorted at insertion time in 'O(n)', thus resulting in a
-total computational complexity of 'O(n^2)' for the creation of the hash
-table with all items.
-For in-order add to work, the list must be in an ordered state before
-insertion of the new item.
+These macros assume that the hash is already sorted according to the
+comparison function, and insert the new item in its proper place.
+A single insertion takes 'O(n)', resulting in a total computational
+complexity of 'O(n^2)' to insert all 'n' items: slower than a single
+`HASH_SRT`, but faster than doing a `HASH_SRT` after every insertion.
 
 Several sort orders
 ~~~~~~~~~~~~~~~~~~~

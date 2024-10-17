@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2007-2021, Troy D. Hanson   http://troydhanson.github.io/uthash/
+Copyright (c) 2007-2022, Troy D. Hanson  https://troydhanson.github.io/uthash/
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -70,6 +70,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #else                   /* VS2008 or older (or VS2010 in C mode) */
 #define NO_DECLTYPE
 #endif
+#elif defined(__MCST__)  /* Elbrus C Compiler */
+#define LDECLTYPE(x) __typeof(x)
 #elif defined(__BORLANDC__) || defined(__ICCARM__) || defined(__LCC__) || defined(__WATCOMC__)
 #define NO_DECLTYPE
 #else                   /* GNU, Sun and other compilers */
@@ -709,7 +711,8 @@ do {                                                                            
   assert((del)->prev != NULL);                                                                 \
   if ((del)->prev == (del)) {                                                                  \
       (head)=NULL;                                                                             \
-  } else if ((del)==(head)) {                                                                  \
+  } else if ((del) == (head)) {                                                                \
+      assert((del)->next != NULL);                                                             \
       (del)->next->prev = (del)->prev;                                                         \
       (head) = (del)->next;                                                                    \
   } else {                                                                                     \
