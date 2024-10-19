@@ -250,6 +250,7 @@ jobs:
         if: startsWith(matrix.os, 'macOS') == false && startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=OFF')
         run: |
           ./test/run_tests.sh ./libnDPI ./build/nDPId-test
+          ./test/run_config_tests.sh ./libnDPI ./build/nDPId-test
       - name: Daemon
         if: startsWith(matrix.compiler, 'gcc') || endsWith(matrix.compiler, 'clang')
         run: |
@@ -266,7 +267,10 @@ jobs:
       - name: CPack DEB
         if: startsWith(matrix.os, 'macOS') == false
         run: |
-          cd ./build && cpack -G DEB && sudo dpkg -i nDPId-*.deb && cd ..
+          cd ./build && cpack -G DEB && \
+            sudo dpkg -i nDPId-*.deb && \
+            sudo apt purge ndpid && \
+            sudo dpkg -i nDPId-*.deb && cd ..
       - name: Upload DEB
         if: startsWith(matrix.os, 'macOS') == false && matrix.upload
         uses: actions/upload-artifact@v4

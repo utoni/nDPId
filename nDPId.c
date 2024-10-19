@@ -5609,7 +5609,7 @@ static int validate_options(void)
     if (GET_CMDARG_ULL(nDPId_options.flow_scan_interval) >= GET_CMDARG_ULL(nDPId_options.udp_max_idle_time))
     {
         logger_early(1,
-                     "Value not in range:flow-scan-interval[%llu] < udp-max-idle-time[%llu]",
+                     "Value not in range: flow-scan-interval[%llu] < udp-max-idle-time[%llu]",
                      GET_CMDARG_ULL(nDPId_options.flow_scan_interval),
                      GET_CMDARG_ULL(nDPId_options.udp_max_idle_time));
         retval = 1;
