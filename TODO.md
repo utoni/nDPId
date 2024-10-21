@@ -1,10 +1,10 @@
 # TODOs
 
-1.7:
+1.8:
 
  * let nDPIsrvd (collector) connect to other nDPIsrvd instances (as distributor)
  * nDPIsrvd GnuTLS support for TCP/IP distributor connections
- * PF\_RING integration
+ * provide nDPId-exportd daemon which will only send captured packets to an nDPId instance running on a different machine
 
 2.0.0:
 

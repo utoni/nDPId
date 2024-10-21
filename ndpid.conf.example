@@ -24,17 +24,20 @@
 # Set a name for this nDPId instance
 #alias       = myhostname
 
-# Process only internal initial connections
+# Process only internal initial connections (src->dst)
 #internal    = true
 
-# Process only external initial connections
+# Process only external initial connections (dst->src)
 #external    = true
 
 # Enable zLib compression of flow memory for long lasting flows
 compression = true
 
-# Enable "analyse" events, which can be used for machine learning
-analysis    = true
+# Enable "analyse" events, which can be used for machine learning.
+# The daemon will generate some statistical values for every single flow.
+# An "analyse" event is thrown after "max-packets-per-flow-to-analyse".
+# Please note that the daemon will require a lot more heap memory for every flow.
+#analysis    = true
 
 # Force poll() on systems that support epoll() as well
 #poll        = false

@@ -1,5 +1,24 @@
 # CHANGELOG
 
+#### nDPId 1.7 (Oct 2024)
+
+ - Read and parse configuration files for nDPId (+ libnDPI) and nDPIsrvd
+ - Added loading risk domains from a file (`-R`, thanks to @UnveilTech)
+ - Added Filebeat configuration file
+ - Improved hostname handling; will now always be part of `analyse`/`end`/`idle` events (if dissected)
+ - Improved Documentation (INSTALL / Schema)
+ - Added PF\_RING support
+ - Improved nDPIsrvd-analyse to write global stats to a CSV
+ - Added global (heap) memory stats for daemon status events (if enabled)
+ - Fixed IPv6 address/netmask retrieval on some systems
+ - Improved nDPIsrvd-collect; gauges and counters are now handled the right way
+ - Added nDPId Grafana dashboard
+ - Fixed `detection-update` event bug; was thrown even if nothing changed
+ - Fixed `not-detected` event spam if detection not completed (in some rare cases)
+ - Improved InfluxDB push daemon (severity parsing / gauge handling)
+ - Improved zLib compression
+ - Fixed nDPIsrvd-collectd missing escape character
+
 #### nDPId 1.6 (Nov 2023)
 
  - Added Event I/O abstraction layer (supporting only poll/epoll by now)
