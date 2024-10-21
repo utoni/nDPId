@@ -1649,6 +1649,13 @@ int main(int argc, char ** argv)
         return 1;
     }
 
+#ifdef ENABLE_MEMORY_STATUS
+    set_ndpi_malloc(ndpi_malloc_wrapper);
+    set_ndpi_free(ndpi_free_wrapper);
+    set_ndpi_flow_malloc(NULL);
+    set_ndpi_flow_free(NULL);
+#endif
+
     init_logging("nDPId-test");
     log_app_info();
 
@@ -1743,6 +1750,12 @@ int main(int argc, char ** argv)
     distributor_un_sockfd = -1;
     distributor_in_sockfd = -1;
 
+    global_context = ndpi_global_init();
+    if (global_context == NULL)
+    {
+        logger_early(1, "Could not initialize libnDPI global context.");
+    }
+
     if (setup_remote_descriptors(MAX_REMOTE_DESCRIPTORS) != 0)
     {
         return 1;
@@ -1796,6 +1809,12 @@ int main(int argc, char ** argv)
 
     logger(0, "%s", "All worker threads terminated..");
     free_reader_threads();
+
+    if (global_context != NULL)
+    {
+        ndpi_global_deinit(global_context);
+    }
+    global_context = NULL;
 
     if (THREADS_RETURNED_ERROR() != 0)
     {

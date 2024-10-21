@@ -1,0 +1,3 @@
+[ndpi]
+lru.ookla.size=0
+lru.msteams.ttl=1

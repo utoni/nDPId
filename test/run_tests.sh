@@ -130,21 +130,34 @@ for pcap_file in cfgs/*/pcap/*.pcap cfgs/*/pcap/*.pcapng cfgs/*/pcap/*.cap; do
     stderr_file="/tmp/nDPId-test-stderr/${pcap_name}.out"
     result_file="${MYDIR}/results/${pcap_cfg}/${pcap_name}.out"
     mkdir -p "$(dirname ${result_file})"
-    printf '%s\n' "-- CMD: ${nDPId_test_EXEC} ${pcap_path}" \
+
+    printf "%-${LINE_SPACES}s\t" "${pcap_name}"
+
+    if [ -r "${MYDIR}/configs/${pcap_cfg}.ndpiconf" ]; then
+        nDPId_test_cfg="${MYDIR}/configs/${pcap_cfg}.ndpiconf"
+    else
+        nDPId_test_cfg=""
+    fi
+
+    printf '%s\n' "-- CMD: ${nDPId_test_EXEC} ${pcap_path} ${nDPId_test_cfg}" \
         >${stderr_file}
     printf '%s\n' "-- OUT: ${result_file}" \
         >>${stderr_file}
-
-    printf "%-${LINE_SPACES}s\t" "${pcap_name}"
 
     if [ ! -z "${STRACE_EXEC}" ]; then
         STRACE_CMD="${STRACE_EXEC} -f -e decode-fds=path,socket,dev,pidfd -s 1024 -o /tmp/nDPId-test-stderr/${pcap_name}.strace.out"
     else
         STRACE_CMD=""
     fi
-    timeout --foreground -k 3 -s SIGINT 60 ${STRACE_CMD} ${nDPId_test_EXEC} "${pcap_file}" \
-        >${stdout_file} \
-        2>>${stderr_file}
+    if [ "x${nDPId_test_cfg}" != "x" ]; then
+        timeout --foreground -k 3 -s SIGINT 60 ${STRACE_CMD} ${nDPId_test_EXEC} "${pcap_file}" "${nDPId_test_cfg}" \
+            >${stdout_file} \
+            2>>${stderr_file}
+    else
+        timeout --foreground -k 3 -s SIGINT 60 ${STRACE_CMD} ${nDPId_test_EXEC} "${pcap_file}" \
+            >${stdout_file} \
+            2>>${stderr_file}
+    fi
     nDPId_test_RETVAL=$?
 
     if [ ${nDPId_test_RETVAL} -eq 0 ]; then

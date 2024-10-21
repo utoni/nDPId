@@ -257,6 +257,7 @@ if(ENABLE_COVERAGE)
     )
 endif()
 if(ENABLE_SANITIZER)
+    # TODO: Check for `-fsanitize-memory-track-origins` and add if available?
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address -fsanitize=undefined -fno-sanitize=alignment -fsanitize=enum -fsanitize=leak")
 endif()
 if(ENABLE_SANITIZER_THREAD)

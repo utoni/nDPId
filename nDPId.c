@@ -457,6 +457,7 @@ static char const * const daemon_event_name_table[DAEMON_EVENT_COUNT] = {
     [DAEMON_EVENT_STATUS] = "status",
 };
 
+static struct ndpi_global_context * global_context = NULL;
 static struct nDPId_reader_thread reader_threads[nDPId_MAX_READER_THREADS] = {};
 static MT_VALUE(nDPId_main_thread_shutdown, int) = MT_INIT(0);
 static MT_VALUE(global_flow_id, uint64_t) = MT_INIT(1);
@@ -1364,13 +1365,6 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     char pcap_error_buffer[PCAP_ERRBUF_SIZE];
     struct nDPId_workflow * workflow;
 
-#ifdef ENABLE_MEMORY_STATUS
-    set_ndpi_malloc(ndpi_malloc_wrapper);
-    set_ndpi_free(ndpi_free_wrapper);
-    set_ndpi_flow_malloc(NULL);
-    set_ndpi_flow_free(NULL);
-#endif
-
     workflow = (struct nDPId_workflow *)ndpi_calloc(1, sizeof(*workflow));
     if (workflow == NULL)
     {
@@ -1468,7 +1462,7 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     }
 #endif
 
-    workflow->ndpi_struct = ndpi_init_detection_module(NULL);
+    workflow->ndpi_struct = ndpi_init_detection_module(global_context);
     if (workflow->ndpi_struct == NULL)
     {
         logger_early(1, "%s", "BUG: Could not init ndpi detection module");
@@ -5727,6 +5721,13 @@ int main(int argc, char ** argv)
         return 1;
     }
 
+#ifdef ENABLE_MEMORY_STATUS
+    set_ndpi_malloc(ndpi_malloc_wrapper);
+    set_ndpi_free(ndpi_free_wrapper);
+    set_ndpi_flow_malloc(NULL);
+    set_ndpi_flow_free(NULL);
+#endif
+
     init_logging("nDPId");
 
     if (nDPId_parse_options(argc, argv) != 0)
@@ -5792,6 +5793,12 @@ int main(int argc, char ** argv)
     logger_early(0, "size/flow-analyse: %zu bytes", sizeof(struct nDPId_flow_analysis));
 #endif
 
+    global_context = ndpi_global_init();
+    if (global_context == NULL)
+    {
+        logger_early(1, "Could not initialize libnDPI global context.");
+    }
+
     if (setup_reader_threads() != 0)
     {
         return 1;
@@ -5816,6 +5823,12 @@ int main(int argc, char ** argv)
         return 1;
     }
     free_reader_threads();
+
+    if (global_context != NULL)
+    {
+        ndpi_global_deinit(global_context);
+    }
+    global_context = NULL;
 
     daemonize_shutdown(GET_CMDARG_STR(nDPId_options.pidfile));
     logger(0, "%s", "Bye.");

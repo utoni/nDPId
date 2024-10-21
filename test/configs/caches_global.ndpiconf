@@ -1,0 +1,8 @@
+[ndpi]
+lru.ookla.scope=1
+lru.bittorrent.scope=1
+lru.stun.scope=1
+lru.tls_cert.scope=1
+lru.mining.scope=1
+lru.msteams.scope=1
+lru.fpc_dns.scope=1
