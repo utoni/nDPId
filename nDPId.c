@@ -75,10 +75,6 @@
 #error "Invalid value for nDPId_PACKETS_PLEN_MAX"
 #endif
 
-#if defined(ENABLE_MEMORY_PROFILING) && !defined(ENABLE_MEMORY_STATUS)
-#error "ENABLE_MEMORY_PROFILING requires ENABLE_MEMORY_STATUS to make it work!"
-#endif
-
 /* MIPS* does not support Compare and Swap. Use traditional locking as fallback. */
 #if !defined(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4) || !defined(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_8)
 #define MT_VALUE(name, type)                                                                                           \
@@ -462,7 +458,6 @@ static struct nDPId_reader_thread reader_threads[nDPId_MAX_READER_THREADS] = {};
 static MT_VALUE(nDPId_main_thread_shutdown, int) = MT_INIT(0);
 static MT_VALUE(global_flow_id, uint64_t) = MT_INIT(1);
 
-#ifdef ENABLE_MEMORY_STATUS
 static MT_VALUE(ndpi_memory_alloc_count, uint64_t) = MT_INIT(0);
 static MT_VALUE(ndpi_memory_alloc_bytes, uint64_t) = MT_INIT(0);
 static MT_VALUE(ndpi_memory_free_count, uint64_t) = MT_INIT(0);
@@ -472,7 +467,6 @@ static MT_VALUE(zlib_compressions, uint64_t) = MT_INIT(0);
 static MT_VALUE(zlib_decompressions, uint64_t) = MT_INIT(0);
 static MT_VALUE(zlib_compression_diff, uint64_t) = MT_INIT(0);
 static MT_VALUE(zlib_compression_bytes, uint64_t) = MT_INIT(0);
-#endif
 #endif
 
 static struct
@@ -747,11 +741,9 @@ static int zlib_deflate(const void * const src, int srcLen, void * dst, int dstL
         if (err == Z_STREAM_END)
         {
             ret = strm.total_out;
-#ifdef ENABLE_MEMORY_STATUS
             MT_GET_AND_ADD(zlib_compressions, 1);
             MT_GET_AND_ADD(zlib_compression_diff, srcLen - ret);
             MT_GET_AND_ADD(zlib_compression_bytes, ret);
-#endif
         }
         else
         {
@@ -791,10 +783,8 @@ static int zlib_inflate(const void * src, int srcLen, void * dst, int dstLen)
         if (err == Z_STREAM_END)
         {
             ret = strm.total_out;
-#ifdef ENABLE_MEMORY_STATUS
             MT_GET_AND_ADD(zlib_decompressions, 1);
             MT_GET_AND_SUB(zlib_compression_diff, ret - srcLen);
-#endif
         }
         else
         {
@@ -1118,7 +1108,6 @@ static int get_ip_netmask_from_pcap_dev(char const * const pcap_dev)
     return retval;
 }
 
-#ifdef ENABLE_MEMORY_STATUS
 static void * ndpi_malloc_wrapper(size_t const size)
 {
     void * p = malloc(sizeof(uint64_t) + size);
@@ -1144,7 +1133,6 @@ static void ndpi_free_wrapper(void * const freeable)
 
     free(p);
 }
-#endif
 
 #ifdef ENABLE_MEMORY_PROFILING
 static void log_memory_usage(struct nDPId_reader_thread const * const reader_thread)
@@ -2399,7 +2387,7 @@ static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enu
             ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "total-compression-diff", 0);
             ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "current-compression-diff", 0);
 #endif
-#if defined(ENABLE_MEMORY_STATUS) && !defined(NO_MAIN)
+#ifndef NO_MAIN
             /*
              * Global memory stats may very from run to run.
              * Due to this, `nDPId-test' results would be inconsistent and is disabled if NO_MAIN defined.
@@ -5721,12 +5709,10 @@ int main(int argc, char ** argv)
         return 1;
     }
 
-#ifdef ENABLE_MEMORY_STATUS
     set_ndpi_malloc(ndpi_malloc_wrapper);
     set_ndpi_free(ndpi_free_wrapper);
     set_ndpi_flow_malloc(NULL);
     set_ndpi_flow_free(NULL);
-#endif
 
     init_logging("nDPId");
 

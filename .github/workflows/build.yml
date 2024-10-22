@@ -222,20 +222,20 @@ jobs:
         run: |
           pkg-config --cflags --libs libndpi
           cc -Wall -Wextra -std=gnu99 \
-            ${{ matrix.poll }} -DENABLE_MEMORY_STATUS=1 -DENABLE_MEMORY_PROFILING=1 \
+            ${{ matrix.poll }} -DENABLE_MEMORY_PROFILING=1 \
             nDPId.c nio.c utils.c \
             $(pkg-config --cflags libndpi) -I. -I./dependencies -I./dependencies/jsmn -I./dependencies/uthash/include \
             -o /tmp/a.out \
             -lpcap $(pkg-config --libs libndpi) -pthread -lm
           cc -Wall -Wextra -std=gnu99 \
-            ${{ matrix.poll }} -DENABLE_MEMORY_STATUS=1 -DENABLE_MEMORY_PROFILING=1 \
+            ${{ matrix.poll }} -DENABLE_MEMORY_PROFILING=1 \
             nDPIsrvd.c nio.c utils.c \
             -I. -I./dependencies -I./dependencies/jsmn -I./dependencies/uthash/include \
             -o /tmp/a.out
       - name: Build single nDPId/nDPIsrvd executables (invoke CC directly - static nDPI lib)
         if: endsWith(matrix.compiler, 'gcc-7') == false && startsWith(matrix.ndpi_build, '-DBUILD_NDPI=ON') && startsWith(matrix.coverage, '-DENABLE_COVERAGE=OFF') && startsWith(matrix.sanitizer, '-DENABLE_SANITIZER=ON') && startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=OFF') && startsWith(matrix.ndpid_zlib, '-DENABLE_ZLIB=ON')
         run: |
-          cc -Wall -Wextra -std=gnu99 ${{ matrix.poll }} -DENABLE_ZLIB=1 -DENABLE_MEMORY_STATUS=1 -DENABLE_MEMORY_PROFILING=1 \
+          cc -Wall -Wextra -std=gnu99 ${{ matrix.poll }} -DENABLE_ZLIB=1 -DENABLE_MEMORY_PROFILING=1 \
             -fsanitize=address -fsanitize=undefined -fno-sanitize=alignment -fsanitize=enum -fsanitize=leak \
             nDPId.c nio.c utils.c \
             -I./build/libnDPI/include/ndpi -I. -I./dependencies -I./dependencies/jsmn -I./dependencies/uthash/include \
@@ -294,7 +294,7 @@ jobs:
           git clone --depth=1 https://github.com/ntop/PF_RING.git
           cd PF_RING && make all && sudo make install prefix=/usr
           cd ..
-          cc -Wall -Wextra -std=gnu99 ${{ matrix.poll }} -DENABLE_PFRING=1 -DENABLE_ZLIB=1 -DENABLE_MEMORY_STATUS=1 -DENABLE_MEMORY_PROFILING=1 \
+          cc -Wall -Wextra -std=gnu99 ${{ matrix.poll }} -DENABLE_PFRING=1 -DENABLE_ZLIB=1 -DENABLE_MEMORY_PROFILING=1 \
             -fsanitize=address -fsanitize=undefined -fno-sanitize=alignment -fsanitize=enum -fsanitize=leak \
             nDPId.c npfring.c nio.c utils.c \
             -I. -I./dependencies -I./dependencies/jsmn -I./dependencies/uthash/include \

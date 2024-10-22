@@ -1649,12 +1649,10 @@ int main(int argc, char ** argv)
         return 1;
     }
 
-#ifdef ENABLE_MEMORY_STATUS
     set_ndpi_malloc(ndpi_malloc_wrapper);
     set_ndpi_free(ndpi_free_wrapper);
     set_ndpi_flow_malloc(NULL);
     set_ndpi_flow_free(NULL);
-#endif
 
     init_logging("nDPId-test");
     log_app_info();

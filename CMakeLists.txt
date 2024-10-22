@@ -83,7 +83,6 @@ endif()
 option(ENABLE_COVERAGE "Generate a code coverage report using lcov/genhtml." OFF)
 option(ENABLE_SANITIZER "Enable ASAN/LSAN/UBSAN." OFF)
 option(ENABLE_SANITIZER_THREAD "Enable TSAN (does not work together with ASAN)." OFF)
-option(ENABLE_MEMORY_STATUS "Enable malloc/free wrapper to gather and send heap memory statistics." ON)
 option(ENABLE_MEMORY_PROFILING "Enable dynamic memory tracking." OFF)
 option(ENABLE_ZLIB "Enable zlib support for nDPId (experimental)." OFF)
 option(ENABLE_SYSTEMD "Install systemd components." OFF)
@@ -185,13 +184,6 @@ else()
     unset(NDPI_WITH_GCRYPT CACHE)
     unset(NDPI_WITH_PCRE CACHE)
     unset(NDPI_WITH_MAXMINDDB CACHE)
-endif()
-
-if (ENABLE_MEMORY_STATUS)
-    set(MEMORY_STATUS_DEFS "-DENABLE_MEMORY_STATUS=1")
-endif()
-if (ENABLE_MEMORY_PROFILING AND NOT ENABLE_MEMORY_STATUS)
-    message(FATAL_ERROR "ENABLE_MEMORY_PROFILING requires ENABLE_MEMORY_STATUS to make it work!")
 endif()
 
 if(ENABLE_PFRING)
@@ -430,7 +422,7 @@ if(NOT pkgcfg_lib_PCAP_pcap)
 endif()
 
 target_compile_options(nDPId PRIVATE "-pthread")
-target_compile_definitions(nDPId PRIVATE -D_GNU_SOURCE=1 -DPKG_VERSION=\"${PKG_VERSION}\" -DGIT_VERSION=\"${GIT_VERSION}\" ${NDPID_DEFS} ${EPOLL_DEFS} ${ZLIB_DEFS} ${PFRING_DEFS} ${MEMORY_STATUS_DEFS})
+target_compile_definitions(nDPId PRIVATE -D_GNU_SOURCE=1 -DPKG_VERSION=\"${PKG_VERSION}\" -DGIT_VERSION=\"${GIT_VERSION}\" ${NDPID_DEFS} ${EPOLL_DEFS} ${ZLIB_DEFS} ${PFRING_DEFS})
 target_include_directories(nDPId PRIVATE "${STATIC_LIBNDPI_INC}" "${DEFAULT_NDPI_INCLUDE}" ${NDPID_DEPS_INC} ${PFRING_KERNEL_INC} ${PFRING_INC})
 target_link_libraries(nDPId "${STATIC_LIBNDPI_LIB}" "${STATIC_PFRING_LIB}" "${pkgcfg_lib_PCAP_pcap}" "${pkgcfg_lib_NDPI_ndpi}"
                             "${pkgcfg_lib_PCRE_pcre2-8}" "${pkgcfg_lib_MAXMINDDB_maxminddb}" "${pkgcfg_lib_ZLIB_z}"
@@ -442,7 +434,7 @@ target_include_directories(nDPIsrvd PRIVATE ${NDPID_DEPS_INC})
 
 target_compile_options(nDPId-test PRIVATE "-Wno-unused-function" "-pthread")
 target_compile_definitions(nDPId-test PRIVATE -D_GNU_SOURCE=1 -DNO_MAIN=1 -DPKG_VERSION=\"${PKG_VERSION}\" -DGIT_VERSION=\"${GIT_VERSION}\"
-                                              ${NDPID_DEFS} ${EPOLL_DEFS} ${ZLIB_DEFS} ${PFRING_DEFS} ${MEMORY_STATUS_DEFS} ${NDPID_TEST_MPROF_DEFS})
+                                              ${NDPID_DEFS} ${EPOLL_DEFS} ${ZLIB_DEFS} ${PFRING_DEFS} ${NDPID_TEST_MPROF_DEFS})
 target_include_directories(nDPId-test PRIVATE
                            "${STATIC_LIBNDPI_INC}" "${DEFAULT_NDPI_INCLUDE}" ${NDPID_DEPS_INC} ${PFRING_KERNEL_INC} ${PFRING_INC})
 target_link_libraries(nDPId-test "${STATIC_LIBNDPI_LIB}" "${STATIC_PFRING_LIB}" "${pkgcfg_lib_PCAP_pcap}" "${pkgcfg_lib_NDPI_ndpi}"
@@ -580,7 +572,6 @@ endif()
 message(STATUS "ENABLE_COVERAGE..........: ${ENABLE_COVERAGE}")
 message(STATUS "ENABLE_SANITIZER.........: ${ENABLE_SANITIZER}")
 message(STATUS "ENABLE_SANITIZER_THREAD..: ${ENABLE_SANITIZER_THREAD}")
-message(STATUS "ENABLE_MEMORY_STATUS.....: ${ENABLE_MEMORY_STATUS}")
 message(STATUS "ENABLE_MEMORY_PROFILING..: ${ENABLE_MEMORY_PROFILING}")
 message(STATUS "ENABLE_ZLIB..............: ${ENABLE_ZLIB}")
 message(STATUS "BUILD_NDPI...............: ${BUILD_NDPI}")
