@@ -15,6 +15,6 @@
              idle: [.....1] [ip4][..tcp] [......10.0.2.15][37810] -> [185.159.159.148][..443] [TLS.ProtonVPN][Unknown][VPN][Acceptable]
                    RISK: TLS Cert Expired
           guessed: [.....3] [ip4][..tcp] [....2.58.241.67][37710] -> [........8.8.8.8][..443] [TLS][Google][Web][Safe]
-                   RISK: Anonymous Subscriber, Unidirectional Traffic
+                   RISK: Unidirectional Traffic
              idle: [.....3] [ip4][..tcp] [....2.58.241.67][37710] -> [........8.8.8.8][..443]
      DAEMON-EVENT: shutdown
