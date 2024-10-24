@@ -1727,7 +1727,9 @@ int main(int argc, char ** argv)
      */
     set_cmdarg_boolean(&nDPId_options.enable_zlib_compression, 1);
 #endif
+#ifdef ENABLE_MEMORY_PROFILING
     set_cmdarg_ull(&nDPId_options.memory_profiling_log_interval, (unsigned long long int)-1);
+#endif
     set_cmdarg_ull(&nDPId_options.reader_thread_count, 1); /* Please do not change this! Generating meaningful pcap
                                               diff's relies on a single reader thread! */
     set_cmdarg_string(&nDPId_options.instance_alias, "nDPId-test");

@@ -1196,6 +1196,10 @@ static void ndpi_debug_printf(unsigned int proto,
                written);
     }
     va_end(vl);
+    if (written <= 0)
+    {
+        return;
+    }
 
     switch (log_level)
     {
@@ -1212,8 +1216,13 @@ static void ndpi_debug_printf(unsigned int proto,
             break;
     }
 
+    size_t buf_last = ndpi_min((size_t)written, nDPIsrvd_ARRAY_LENGTH(buf));
+    if (buf[buf_last - 1] == '\n')
+    {
+        buf[buf_last - 1] = '\0';
+    }
     logger(is_log_err,
-           "[libnDPI@%s.%s.%u] protocol %u.%s: %s",
+           "[libnDPI@%s.%s.%u] protocol %u.%s: `%s'",
            file_name,
            func_name,
            line_number,
@@ -1489,7 +1498,6 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
         }
     }
 
-    cfg_set_u64(workflow, NULL, "log.level", 3);
     cfg_set_u64(workflow,
                 NULL,
                 "packets_limit_per_flow",
@@ -2903,7 +2911,9 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
     {
         ndpi_serialize_string_int32(&workflow->ndpi_serializer,
                                     "pkt_datalink",
-                                    pcap_datalink(reader_thread->workflow->pcap_handle));
+                                    reader_thread->workflow->pcap_handle != NULL
+                                        ? pcap_datalink(reader_thread->workflow->pcap_handle)
+                                        : -1);
     }
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_caplen", header->caplen);
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "pkt_type", pkt_type);
@@ -2981,7 +2991,9 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
             {
                 ndpi_serialize_string_int32(&workflow->ndpi_serializer,
                                             "flow_datalink",
-                                            pcap_datalink(reader_thread->workflow->pcap_handle));
+                                            reader_thread->workflow->pcap_handle != NULL
+                                                ? pcap_datalink(reader_thread->workflow->pcap_handle)
+                                                : -1);
             }
             ndpi_serialize_string_uint32(&workflow->ndpi_serializer,
                                          "flow_max_packets",
@@ -3029,11 +3041,14 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
                 if (flow->info.detection_completed != 0)
                 {
                     ndpi_serialize_start_of_block(&workflow->ndpi_serializer, "ndpi");
-                    ndpi_serialize_proto(workflow->ndpi_struct,
-                                         &workflow->ndpi_serializer,
-                                         flow->info.detection_data->flow.risk,
-                                         flow->info.detection_data->flow.confidence,
-                                         flow->flow_extended.detected_l7_protocol);
+                    if (flow->info.detection_data != NULL)
+                    {
+                        ndpi_serialize_proto(workflow->ndpi_struct,
+                                             &workflow->ndpi_serializer,
+                                             flow->info.detection_data->flow.risk,
+                                             flow->info.detection_data->flow.confidence,
+                                             flow->flow_extended.detected_l7_protocol);
+                    }
                     ndpi_serialize_end_of_block(&workflow->ndpi_serializer);
                 }
             }
@@ -3411,8 +3426,8 @@ static uint32_t calculate_ndpi_flow_struct_hash(struct ndpi_flow_struct const * 
 /* mask for FCF */
 #define WIFI_DATA 0x2
 #define FCF_TYPE(fc) (((fc) >> 2) & 0x3) /* 0000 0011 = 0x3 */
-#define FCF_TO_DS(fc) ((fc) & 0x0100)
-#define FCF_FROM_DS(fc) ((fc) & 0x0200)
+#define FCF_TO_DS(fc) ((fc)&0x0100)
+#define FCF_FROM_DS(fc) ((fc)&0x0200)
 /* mask for Bad FCF presence */
 #define BAD_FCS 0x50 /* 0101 0000 */
 static int process_datalink_layer(struct nDPId_reader_thread * const reader_thread,
@@ -3433,7 +3448,14 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
     else
 #endif
     {
-        datalink_type = pcap_datalink(reader_thread->workflow->pcap_handle);
+        if (reader_thread->workflow->pcap_handle != NULL)
+        {
+            datalink_type = pcap_datalink(reader_thread->workflow->pcap_handle);
+        }
+        else
+        {
+            datalink_type = DLT_RAW;
+        }
     }
 
     switch (datalink_type)
