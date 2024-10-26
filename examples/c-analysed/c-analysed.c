@@ -23,7 +23,7 @@ typedef char csv_buf_t[(NETWORK_BUFFER_MAX_SIZE / 3) + 1];
 
 static int main_thread_shutdown = 0;
 static int analysed_timerfd = -1;
-static struct nDPIsrvd_socket * sock = NULL;
+static struct nDPIsrvd_socket * distributor = NULL;
 
 static char * pidfile = NULL;
 static char * serv_optarg = NULL;
@@ -452,9 +452,9 @@ static void sighandler(int signum)
 
     if (signum == SIGUSR1)
     {
-        nDPIsrvd_flow_info(sock, nDPIsrvd_write_flow_info_cb, NULL);
+        nDPIsrvd_flow_info(distributor, nDPIsrvd_write_flow_info_cb, NULL);
 
-        HASH_ITER(hh, sock->instance_table, current_instance, itmp)
+        HASH_ITER(hh, distributor->instance_table, current_instance, itmp)
         {
             if (nDPIsrvd_verify_flows(current_instance, nDPIsrvd_verify_flows_cb, NULL) != 0)
             {
@@ -794,7 +794,7 @@ static int analysed_map_flow_u8(struct nDPIsrvd_socket * const sock,
     }
 
     ssize_t const map_index = analysed_map_index(str, len, map, map_length);
-    if (map_index < 0 || map_index > UCHAR_MAX)
+    if (map_index < 0 || map_index >= UCHAR_MAX)
     {
         return 1;
     }
@@ -971,6 +971,10 @@ static void process_flow_stats(struct nDPIsrvd_socket * const sock, struct nDPIs
                                 if (flow_user_data->risks[i] == numeric_risk_value - 1)
                                 {
                                     break;
+                                }
+                                if (numeric_risk_value > UCHAR_MAX)
+                                {
+                                    logger(1, "BUG: Numeric risk value > 255");
                                 }
 
                                 ANALYSED_STATS_GAUGE_INC(flow_risk_count[numeric_risk_value - 1]);
@@ -1974,15 +1978,15 @@ int main(int argc, char ** argv)
         goto failure;
     }
 
-    sock = nDPIsrvd_socket_init(
+    distributor = nDPIsrvd_socket_init(
         0, 0, 0, (stats_csv_outfile != NULL ? sizeof(struct flow_user_data) : 0), analysed_json_callback, NULL, NULL);
-    if (sock == NULL)
+    if (distributor == NULL)
     {
         logger_early(1, "%s", "nDPIsrvd socket memory allocation failed!");
         goto failure;
     }
 
-    if (nDPIsrvd_setup_address(&sock->address, serv_optarg) != 0)
+    if (nDPIsrvd_setup_address(&distributor->address, serv_optarg) != 0)
     {
         fprintf(stderr, "%s: Could not parse address `%s'\n", argv[0], serv_optarg);
         goto failure;
@@ -1991,13 +1995,13 @@ int main(int argc, char ** argv)
     printf("Recv buffer size: %u\n", NETWORK_BUFFER_MAX_SIZE);
     printf("Connecting to `%s'..\n", serv_optarg);
 
-    if (nDPIsrvd_connect(sock) != CONNECT_OK)
+    if (nDPIsrvd_connect(distributor) != CONNECT_OK)
     {
         logger_early(1, "nDPIsrvd socket connect to %s failed!", serv_optarg);
         goto failure;
     }
 
-    if (nDPIsrvd_set_nonblock(sock) != 0)
+    if (nDPIsrvd_set_nonblock(distributor) != 0)
     {
         logger_early(1, "nDPIsrvd set nonblock failed: %s", strerror(errno));
         goto failure;
@@ -2099,8 +2103,8 @@ int main(int argc, char ** argv)
     }
 
     {
-        struct epoll_event socket_event = {.data.fd = sock->fd, .events = EPOLLIN};
-        if (epoll_ctl(epollfd, EPOLL_CTL_ADD, sock->fd, &socket_event) < 0)
+        struct epoll_event socket_event = {.data.fd = distributor->fd, .events = EPOLLIN};
+        if (epoll_ctl(epollfd, EPOLL_CTL_ADD, distributor->fd, &socket_event) < 0)
         {
             logger_early(1, "Error adding nDPIsrvd socket fd to epoll: %s", strerror(errno));
             goto failure;
@@ -2108,9 +2112,9 @@ int main(int argc, char ** argv)
     }
 
     logger(0, "%s", "Initialization succeeded.");
-    retval = mainloop(epollfd, sock);
+    retval = mainloop(epollfd, distributor);
 failure:
-    nDPIsrvd_socket_free(&sock);
+    nDPIsrvd_socket_free(&distributor);
     daemonize_shutdown(pidfile);
     shutdown_logging();
 

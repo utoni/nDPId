@@ -29,7 +29,7 @@
             logger(is_error, fmt, __VA_ARGS__);                                                                        \
         }                                                                                                              \
     } while (0)
-//#define GENERATE_TIMESTAMP 1
+// #define GENERATE_TIMESTAMP 1
 
 struct flow_user_data
 {
@@ -836,7 +836,7 @@ static void print_collectd_exec_output(void)
     COLLECTD_STATS_GAUGE_SUB(flow_guessed_count);
     COLLECTD_STATS_GAUGE_SUB(flow_not_detected_count);
 
-    for (size_t i = 0; i < NDPI_MAX_RISK - 1 /* NDPI_NO_RISK */; ++i)
+    for (i = 0; i < NDPI_MAX_RISK - 1 /* NDPI_NO_RISK */; ++i)
     {
         COLLECTD_STATS_GAUGE_SUB(flow_risk_count[i]);
     }
@@ -1358,9 +1358,8 @@ static void process_flow_stats(struct nDPIsrvd_socket * const sock, struct nDPIs
         if (flow_user_data->confidence == 0 && flow_user_data->confidence_ndpid_invalid == 0)
         {
             struct nDPIsrvd_json_token const * const token = TOKEN_GET_SZ(sock, "ndpi", "confidence");
-            struct nDPIsrvd_json_token const * current = NULL;
-            int next_child_index = -1;
 
+            next_child_index = -1;
             if ((current = nDPIsrvd_get_next_token(sock, token, &next_child_index)) == NULL)
             {
                 flow_user_data->confidence_ndpid_invalid = 1;

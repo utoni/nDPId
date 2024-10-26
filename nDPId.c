@@ -5551,6 +5551,15 @@ static int validate_options(void)
             }
         }
     }
+    if (GET_CMDARG_ULL(nDPId_options.max_packets_per_flow_to_analyse) < 2 ||
+        GET_CMDARG_ULL(nDPId_options.max_packets_per_flow_to_analyse) > USHRT_MAX)
+    {
+        logger_early(1,
+                     "Value not in range: 2 < max-packets-per-flow-to-analyse[%llu] < %d",
+                     GET_CMDARG_ULL(nDPId_options.max_packets_per_flow_to_analyse),
+                     USHRT_MAX);
+        retval = 1;
+    }
     if (GET_CMDARG_ULL(nDPId_options.max_flows_per_thread) < 128 ||
         GET_CMDARG_ULL(nDPId_options.max_flows_per_thread) > nDPId_MAX_FLOWS_PER_THREAD)
     {

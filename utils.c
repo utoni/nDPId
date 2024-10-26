@@ -340,8 +340,7 @@ int daemonize_shutdown(char const * const pidfile)
 
 int change_user_group(char const * const user, char const * const group, char const * const pidfile)
 {
-    struct passwd * pwd;
-    struct group * grp;
+    struct passwd pwd;
     gid_t gid;
 
     if (user == NULL)
@@ -349,37 +348,46 @@ int change_user_group(char const * const user, char const * const group, char co
         return 1;
     }
 
-    errno = 0;
-    pwd = getpwnam(user);
-    if (pwd == NULL)
     {
-        return (errno != 0 ? -errno : -ENOENT);
+        struct passwd * result;
+        char buf[BUFSIZ];
+        int retval;
+
+        retval = getpwnam_r(user, &pwd, buf, sizeof(buf), &result);
+        if (result == NULL)
+        {
+            return (retval != 0 ? -retval : -ENOENT);
+        }
     }
 
     if (group != NULL)
     {
-        errno = 0;
-        grp = getgrnam(group);
-        if (grp == NULL)
+        struct group grp;
+        struct group * result;
+        char buf[BUFSIZ];
+        int retval;
+
+        retval = getgrnam_r(group, &grp, buf, sizeof(buf), &result);
+        if (result == NULL)
         {
-            return (errno != 0 ? -errno : -ENOENT);
+            return (retval != 0 ? -retval : -ENOENT);
         }
-        gid = grp->gr_gid;
+        gid = grp.gr_gid;
     }
     else
     {
-        gid = pwd->pw_gid;
+        gid = pwd.pw_gid;
     }
 
     if (daemonize != 0 && pidfile != NULL)
     {
         errno = 0;
-        if (chown(pidfile, pwd->pw_uid, gid) != 0)
+        if (chown(pidfile, pwd.pw_uid, gid) != 0)
         {
             return -errno;
         }
     }
-    return setregid(gid, gid) != 0 || setreuid(pwd->pw_uid, pwd->pw_uid);
+    return setregid(gid, gid) != 0 || setreuid(pwd.pw_uid, pwd.pw_uid);
 }
 
 WARN_UNUSED
@@ -398,27 +406,35 @@ int chmod_chown(char const * const path, mode_t mode, char const * const user, c
 
     if (user != NULL)
     {
-        errno = 0;
-
-        struct passwd * const pwd = getpwnam(user);
-        if (pwd == NULL)
         {
-            return (errno != 0 ? -errno : -ENOENT);
+            struct passwd pwd;
+            struct passwd * result;
+            char buf[BUFSIZ];
+            int retval;
+
+            retval = getpwnam_r(user, &pwd, buf, sizeof(buf), &result);
+            if (result == NULL)
+            {
+                return (retval != 0 ? -retval : -ENOENT);
+            }
+            path_uid = pwd.pw_uid;
+            path_gid = pwd.pw_gid;
         }
-        path_uid = pwd->pw_uid;
-        path_gid = pwd->pw_gid;
     }
 
     if (group != NULL)
     {
-        errno = 0;
+        struct group grp;
+        struct group * result;
+        char buf[BUFSIZ];
+        int retval;
 
-        struct group * const grp = getgrnam(group);
-        if (grp == NULL)
+        retval = getgrnam_r(group, &grp, buf, sizeof(buf), &result);
+        if (result == NULL)
         {
-            return (errno != 0 ? -errno : -ENOENT);
+            return (retval != 0 ? -retval : -ENOENT);
         }
-        path_gid = grp->gr_gid;
+        path_gid = grp.gr_gid;
     }
 
     if (path_uid != (uid_t)-1 || path_gid != (gid_t)-1)
@@ -617,17 +633,17 @@ static char * ini_rstrip(char * s)
 }
 
 /* Return pointer to first non-whitespace char in given string. */
-static char * ini_lskip(const char * s)
+static char * ini_lskip(char * s)
 {
     while (*s && isspace((unsigned char)(*s)))
         s++;
-    return (char *)s;
+    return s;
 }
 
 /* Return pointer to first char (of chars) or inline comment in given string,
    or pointer to NUL at end of string if neither found. Inline comment must
    be prefixed by a whitespace character to register as a comment. */
-static char * ini_find_chars_or_comment(const char * s, const char * chars)
+static char * ini_find_chars_or_comment(char * s, const char * chars)
 {
     int was_space = 0;
     while (*s && (!chars || !strchr(chars, *s)) && !(was_space && strchr(INI_INLINE_COMMENT_PREFIXES, *s)))
@@ -635,7 +651,7 @@ static char * ini_find_chars_or_comment(const char * s, const char * chars)
         was_space = isspace((unsigned char)(*s));
         s++;
     }
-    return (char *)s;
+    return s;
 }
 
 /* See: https://github.com/benhoyt/inih/blob/master/ini.c#L97C67-L97C74 */

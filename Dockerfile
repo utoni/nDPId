@@ -1,7 +1,9 @@
 FROM ubuntu:22.04 AS builder
 
 WORKDIR /root
-RUN apt-get -y update && apt-get install -y --no-install-recommends autoconf automake build-essential ca-certificates wget unzip git make cmake pkg-config libpcap-dev autoconf libtool && apt-get clean
+RUN apt-get -y update && apt-get install -y --no-install-recommends \
+    autoconf automake build-essential ca-certificates cmake git \
+    libpcap-dev libtool make pkg-config unzip wget && apt-get clean
 RUN git clone https://github.com/utoni/nDPId.git
 
 WORKDIR /root/nDPId
