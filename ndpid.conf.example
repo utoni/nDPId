@@ -24,6 +24,14 @@
 # Set a name for this nDPId instance
 #alias       = myhostname
 
+# Set an optional UUID for this instance
+# If the value starts with a '/' or '.', it is interpreted as a path
+# from which the uuid is read from.
+#uuid        = 00000000-dead-c0de-0000-123456789abc
+#uuid        = ./path/to/some/file
+#uuid        = /proc/sys/kernel/random/uuid
+#uuid        = /sys/class/dmi/id/product_uuid
+
 # Process only internal initial connections (src->dst)
 #internal    = true
 

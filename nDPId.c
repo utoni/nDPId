@@ -490,6 +490,7 @@ static struct
     struct cmdarg custom_sha1_file;
     struct cmdarg collector_address;
     struct cmdarg instance_alias;
+    struct cmdarg instance_uuid;
     struct cmdarg process_internal_initial_direction;
     struct cmdarg process_external_initial_direction;
 #ifdef ENABLE_ZLIB
@@ -538,6 +539,7 @@ static struct
                    .custom_sha1_file = CMDARG_STR(NULL),
                    .collector_address = CMDARG_STR(COLLECTOR_UNIX_SOCKET),
                    .instance_alias = CMDARG_STR(NULL),
+                   .instance_uuid = CMDARG_STR(NULL),
                    .process_internal_initial_direction = CMDARG_BOOL(0),
                    .process_external_initial_direction = CMDARG_BOOL(0),
 #ifdef ENABLE_ZLIB
@@ -594,6 +596,7 @@ struct confopt general_config_map[] = {CONFOPT("netif", &nDPId_options.pcap_file
                                        CONFOPT("sha1", &nDPId_options.custom_sha1_file),
                                        CONFOPT("collector", &nDPId_options.collector_address),
                                        CONFOPT("alias", &nDPId_options.instance_alias),
+                                       CONFOPT("uuid", &nDPId_options.instance_uuid),
                                        CONFOPT("internal", &nDPId_options.process_internal_initial_direction),
                                        CONFOPT("external", &nDPId_options.process_external_initial_direction),
 #ifdef ENABLE_ZLIB
@@ -2243,6 +2246,10 @@ static void jsonize_basic(struct nDPId_reader_thread * const reader_thread, int 
                                  "source",
                                  GET_CMDARG_STR(nDPId_options.pcap_file_or_interface));
     ndpi_serialize_string_string(&workflow->ndpi_serializer, "alias", GET_CMDARG_STR(nDPId_options.instance_alias));
+    if (IS_CMDARG_SET(nDPId_options.instance_uuid) != 0)
+    {
+        ndpi_serialize_string_string(&workflow->ndpi_serializer, "uuid", GET_CMDARG_STR(nDPId_options.instance_uuid));
+    }
 }
 
 static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enum daemon_event event)
@@ -5251,49 +5258,74 @@ static void print_usage(char const * const arg0)
         "[-u user] [-g group] "
         "[-P path] [-C path] [-J path]\n"
         "\t  \t"
-        "[-a instance-alias] [-A]\n"
+        "[-a instance-alias] [-U instance-uuid] [-A]\n"
         "\t \t"
         "[-o subopt=value]\n"
         "\t  \t"
         "[-v] [-h]\n\n"
         "\t-f\tLoad nDPId/libnDPI options from a configuration file.\n"
+        "\t  \tDefault: disabled\n"
         "\t-i\tInterface or file from where to read packets from.\n"
+        "\t  \tDefault: automatically detected\n"
 #ifdef ENABLE_PFRING
         "\t-r\tUse PFRING to capture packets instead of libpcap.\n"
+        "\t  \tDefault: disabled\n"
 #endif
         "\t-I\tProcess only packets where the source address of the first packet\n"
         "\t  \tis part of the interface subnet. (Internal mode)\n"
+        "\t  \tDefault: disabled\n"
         "\t-E\tProcess only packets where the source address of the first packet\n"
         "\t  \tis *NOT* part of the interface subnet. (External mode)\n"
+        "\t  \tDefault: disabled\n"
         "\t-B\tSet an optional PCAP filter string. (BPF format)\n"
+        "\t  \tDefault: empty\n"
         "\t-l\tLog all messages to stderr.\n"
+        "\t  \tDefault: disabled\n"
         "\t-L\tLog all messages to a log file.\n"
+        "\t  \tDefault: disabled\n"
         "\t-c\tPath to a UNIX socket (nDPIsrvd Collector) or a custom UDP endpoint.\n"
-        "\t  \tDefault: %s\n"
+        "\t  \tDefault: `%s'\n"
+#ifdef ENABLE_EPOLL
         "\t-e\tUse poll() instead of epoll().\n"
         "\t  \tDefault: epoll() on Linux, poll() otherwise\n"
+#endif
         "\t-d\tFork into background after initialization.\n"
+        "\t  \tDefault: disabled\n"
         "\t-p\tWrite the daemon PID to the given file path.\n"
-        "\t  \tDefault: %s\n"
+        "\t  \tDefault: `%s'\n"
         "\t-u\tChange UID to the numeric value of user.\n"
-        "\t  \tDefault: %s\n"
+        "\t  \tDefault: `%s'\n"
         "\t-g\tChange GID to the numeric value of group.\n"
+        "\t  \tDefault: use primary GID from `-u'\n"
         "\t-R\tLoad a nDPI custom risk domain file.\n"
+        "\t  \tDefault: disabled\n"
         "\t-P\tLoad a nDPI custom protocols file.\n"
+        "\t  \tDefault: disabled\n"
         "\t-C\tLoad a nDPI custom categories file.\n"
+        "\t  \tDefault: disabled\n"
         "\t-J\tLoad a nDPI JA3 hash blacklist file.\n"
         "\t  \tSee: https://sslbl.abuse.ch/blacklist/ja3_fingerprints.csv\n"
+        "\t  \tDefault: disabled\n"
         "\t-S\tLoad a nDPI SSL SHA1 hash blacklist file.\n"
         "\t  \tSee: https://sslbl.abuse.ch/blacklist/sslblacklist.csv\n"
+        "\t  \tDefault: disabled\n"
         "\t-a\tSet an alias name of this daemon instance which will\n"
         "\t  \tbe part of every JSON message.\n"
         "\t  \tThis value is required for correct flow handling of\n"
         "\t  \tmultiple instances and should be unique.\n"
-        "\t  \tDefaults to your hostname.\n"
+        "\t  \tDefault: hostname\n"
+        "\t-U\tSet an optional UUID for this daemon instance which will\n"
+        "\t  \tbe part of every JSON message.\n"
+        "\t  \tThis value must use the UUID format.\n"
+        "\t  \tIf the value starts with a `/' or `.', the value is interpreted\n"
+        "\t  \tas a path from where the UUID is read from.\n"
+        "\t  \tDefault: disabled\n"
         "\t-A\tEnable flow analysis aka feature extraction. Requires more memory and cpu usage.\n"
         "\t  \tExperimental, do not rely on those values.\n"
+        "\t  \tDefault: disabled\n"
 #ifdef ENABLE_ZLIB
         "\t-z\tEnable flow memory zLib compression.\n"
+        "\t  \tDefault: disabled\n"
 #endif
         "\t-o\t(Carefully) Tune some daemon options. See subopts below.\n"
         "\t-v\tversion\n"
@@ -5330,11 +5362,43 @@ static void nDPId_print_deps_version(FILE * const out)
     fprintf(out, "%s", "-------------------------------------------------------\n");
 }
 
+static int read_uuid_from_file(char const * const path)
+{
+    FILE * const fp = fopen(path, "r");
+    char uuid[40];
+    size_t uuid_len;
+
+    if (fp == NULL)
+    {
+        logger_early(1, "Could not open UUID file `%s': %s", path, strerror(errno));
+        return 1;
+    }
+    uuid_len = fread(uuid, sizeof(uuid[0]), sizeof(uuid), fp);
+    if (uuid_len == 0)
+    {
+        logger_early(1, "Could not read UUID from file `%s': %s", path, strerror(errno));
+        fclose(fp);
+        return 1;
+    }
+    if (uuid_len > 36)
+    {
+        uuid[36] = '\0';
+    }
+    else
+    {
+        uuid[uuid_len - 1] = '\0';
+    }
+    fclose(fp);
+
+    set_cmdarg_string(&nDPId_options.instance_uuid, uuid);
+    return 0;
+}
+
 static int nDPId_parse_options(int argc, char ** argv)
 {
     int opt;
 
-    while ((opt = getopt(argc, argv, "f:i:rIEB:lL:c:edp:u:g:R:P:C:J:S:a:Azo:vh")) != -1)
+    while ((opt = getopt(argc, argv, "f:i:rIEB:lL:c:edp:u:g:R:P:C:J:S:a:U:Azo:vh")) != -1)
     {
         switch (opt)
         {
@@ -5376,10 +5440,11 @@ static int nDPId_parse_options(int argc, char ** argv)
             case 'e':
 #ifdef ENABLE_EPOLL
                 set_cmdarg_boolean(&nDPId_options.use_poll, 1);
+                break;
 #else
                 logger_early(1, "%s", "nDPId was built w/o epoll() support, poll() is already the default");
+                return 1;
 #endif
-                break;
             case 'd':
                 daemonize_enable();
                 break;
@@ -5409,6 +5474,19 @@ static int nDPId_parse_options(int argc, char ** argv)
                 break;
             case 'a':
                 set_cmdarg_string(&nDPId_options.instance_alias, optarg);
+                break;
+            case 'U':
+                if (strncmp(optarg, "/", 1) == 0 || strncmp(optarg, ".", 1) == 0)
+                {
+                    if (read_uuid_from_file(optarg) != 0)
+                    {
+                        return 1;
+                    }
+                }
+                else
+                {
+                    set_cmdarg_string(&nDPId_options.instance_uuid, optarg);
+                }
                 break;
             case 'A':
                 set_cmdarg_boolean(&nDPId_options.enable_data_analysis, 1);
@@ -5496,6 +5574,58 @@ static int nDPId_parse_options(int argc, char ** argv)
     return 0;
 }
 
+static size_t validate_uuid(void)
+{
+    char const valid_chars[] = "0123456789ABCDEFabcdef";
+    char * const uuid = GET_CMDARG_STR(nDPId_options.instance_uuid);
+    size_t i = 0;
+    int ret = 0;
+
+    while (uuid[i] != '\0')
+    {
+        size_t j;
+
+        if (ndpi_isprint(uuid[i]) == 0)
+        {
+            uuid[i] = '?';
+        }
+
+        // UUID Format: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+        if (i == 8 || i == 13 || i == 18 || i == 23)
+        {
+            if (uuid[i] != '-')
+            {
+                logger_early(1, "Expected character `-', but found `%c' at position %zu", uuid[i], i + 1);
+                ret++;
+            }
+            i++;
+            continue;
+        }
+        for (j = 0; j < nDPIsrvd_ARRAY_LENGTH(valid_chars); ++j)
+        {
+            if (uuid[i] == valid_chars[j])
+            {
+                break;
+            }
+        }
+        if (j == nDPIsrvd_ARRAY_LENGTH(valid_chars))
+        {
+            logger_early(1, "Invalid character `%c' found at position %zu", uuid[i], i + 1);
+            ret++;
+        }
+
+        i++;
+    }
+
+    if (i != 36)
+    {
+        logger_early(1, "UUID length mismatch; expected %d, got %zu", 36, i);
+        ret++;
+    }
+
+    return ret;
+}
+
 static int validate_options(void)
 {
     int retval = 0;
@@ -5543,12 +5673,24 @@ static int validate_options(void)
         {
             set_cmdarg_string(&nDPId_options.instance_alias, hname);
             logger_early(1,
-                         "No instance alias given, using your hostname '%s'",
+                         "No instance alias given, using your hostname `%s'",
                          GET_CMDARG_STR(nDPId_options.instance_alias));
             if (IS_CMDARG_SET(nDPId_options.instance_alias) == 0)
             {
                 retval = 1;
             }
+        }
+    }
+    if (IS_CMDARG_SET(nDPId_options.instance_uuid) != 0)
+    {
+        size_t uuid_errors = validate_uuid();
+        if (uuid_errors != 0)
+        {
+            logger_early(1,
+                         "UUID `%s' contains %zu format error",
+                         GET_CMDARG_STR(nDPId_options.instance_uuid),
+                         uuid_errors);
+            retval = 1;
         }
     }
     if (GET_CMDARG_ULL(nDPId_options.max_packets_per_flow_to_analyse) < 2 ||
@@ -5614,7 +5756,7 @@ static int validate_options(void)
     if (GET_CMDARG_ULL(nDPId_options.flow_scan_interval) >= GET_CMDARG_ULL(nDPId_options.tcp_max_idle_time))
     {
         logger_early(1,
-                     "Value not in range: flow-scan-interval[%llu] < generic-max-idle-time[%llu]",
+                     "Value not in range: flow-scan-interval[%llu] < tcp-max-idle-time[%llu]",
                      GET_CMDARG_ULL(nDPId_options.flow_scan_interval),
                      GET_CMDARG_ULL(nDPId_options.tcp_max_idle_time));
         retval = 1;
