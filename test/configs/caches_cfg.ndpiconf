@@ -1,3 +1,5 @@
+[general]
+uuid=00000000-dead-c0de-0000-123456789abc
 [ndpi]
 lru.ookla.size=0
 lru.msteams.ttl=1

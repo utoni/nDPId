@@ -74,6 +74,9 @@
         "alias": {
             "type": "string"
         },
+        "uuid": {
+            "type": "string"
+        },
         "source": {
             "type": "string"
         },
