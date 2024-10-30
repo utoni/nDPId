@@ -16,46 +16,51 @@ jobs:
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0
-#    - uses: actions/checkout@v4
-#    - name: Set up Python 3.8 for gcovr
-#      uses: actions/setup-python@v4
-#      with:
-#        python-version: 3.8
-#    - name: install gcovr 5.0
-#      run: |
-#        pip install gcovr==5.0 # 5.1 is not supported
+    - name: Set up Python 3.8 for gcovr
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.8
+    - name: install gcovr 5.0
+      run: |
+        pip install gcovr==5.0 # 5.1 is not supported
     - name: Install sonar-scanner and build-wrapper
-      uses: SonarSource/sonarcloud-github-c-cpp@v2
+      uses: SonarSource/sonarcloud-github-c-cpp@v3.1.0
     - name: Install Prerequisites
       run: |
         sudo apt-get update
-        sudo apt-get install autoconf automake cmake libtool pkg-config gettext libjson-c-dev flex bison libpcap-dev zlib1g-dev
+        sudo apt-get install autoconf automake cmake lcov \
+            libtool pkg-config gettext \
+            libjson-c-dev flex bison \
+            libcurl4-openssl-dev libpcap-dev zlib1g-dev
     - name: Run build-wrapper
       run: |
-        mkdir build
-        cmake -S . -B build -DBUILD_NDPI=ON -DDENABLE_ZLIB=ON -DNDPI_WITH_GCRYPT=OFF
-        build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} cmake --build build/ --config Release
-#    - name: Run tests
-#      run: |
-#        for file in $(ls libnDPI/tests/cfgs/*/pcap/*.pcap libnDPI/tests/cfgs/*/pcap/*.pcapng libnDPI/tests/cfgs/*/pcap/*.cap); do \
-#            echo -n "${file} "; \
-#            ./build/nDPId-test "${file}" >/dev/null 2>/dev/null; \
-#            echo "[ok]"; \
-#        done
-#    - name: Collect coverage into one XML report
-#      run: |
-#        gcovr --sonarqube > coverage.xml
+        build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} ./scripts/build-sonarcloud.sh
+    - name: Run tests
+      run: |
+        for file in $(ls libnDPI/tests/cfgs/*/pcap/*.pcap libnDPI/tests/cfgs/*/pcap/*.pcapng libnDPI/tests/cfgs/*/pcap/*.cap); do \
+            echo -n "${file} "; \
+            cd ./build-sonarcloud; \
+            ./nDPId-test "../${file}" >/dev/null 2>/dev/null; \
+            cd ..; \
+            echo "[ok]"; \
+        done
+        mkdir -p gcov_report
+        cd gcov_report
+        gcov ../build-sonarcloud/CMakeFiles/nDPId-test.dir/nDPId-test.c.o
+        cd ..
     - name: Run sonar-scanner
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: |
         sonar-scanner \
+            --define sonar.projectName=nDPId \
+            --define sonar.projectVersion=1.7 \
+            --define sonar.sourceEncoding=UTF-8 \
             --define sonar.branch.name=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}} \
-            --define sonar.cfamily.build-wrapper-output="${{ env.BUILD_WRAPPER_OUT_DIR }}" \
             --define sonar.organization=lnslbrty \
             --define sonar.projectKey=lnslbrty_nDPId \
-            --define sonar.exclusions=dependencies/uthash/src/** \
-            --define sonar.verbose=true \
             --define sonar.python.version=3.8 \
-            --define sonar.cfamily.gcov.reportsPath=coverage.xml
+            --define sonar.cfamily.compile-commands=${{ env.BUILD_WRAPPER_OUT_DIR }}/compile_commands.json \
+            --define sonar.cfamily.gcov.reportsPath=gcov_report \
+            --define sonar.exclusions=build-sonarcloud/**,libnDPI/**,test/results/**,dependencies/jsmn/**,dependencies/uthash/**,examples/js-rt-analyzer-frontend/**,examples/js-rt-analyzer/**,examples/c-collectd/www/**,examples/py-flow-dashboard/assets/**
