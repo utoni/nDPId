@@ -27,7 +27,7 @@
         "required": [ "thread_id", "flow_id", "flow_packet_id", "flow_src_last_pkt_time", "flow_dst_last_pkt_time", "flow_idle_time" ]
     },
     "else": {
-        "not": { "required": [ "thread_id", "flow_id", "flow_packet_id", "flow_src_last_pkt_time", "flow_dst_last_pkt_time", "flow_idle_time" ] }
+        "not": { "required": [ "thread_id", "vlan_id", "flow_id", "flow_packet_id", "flow_src_last_pkt_time", "flow_dst_last_pkt_time", "flow_idle_time" ] }
     },
 
     "properties": {
@@ -59,6 +59,11 @@
                 "packet",
                 "packet-flow"
             ]
+        },
+        "vlan_id": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 4095
         },
         "flow_id": {
             "type": "number",

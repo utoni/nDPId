@@ -189,7 +189,7 @@ struct nDPId_flow_basic
     uint8_t tcp_fin_rst_seen : 1;
     uint8_t tcp_is_midstream_flow : 1;
     uint8_t reserved_00 : 6;
-    uint8_t reserved_01[2];
+    uint16_t vlan_id; // ETHERTYPE_VLAN: 802.1Q VLAN
     uint16_t src_port;
     uint16_t dst_port;
     uint64_t last_pkt_time[FD_COUNT];
@@ -206,7 +206,6 @@ struct nDPId_flow_extended
 
     uint16_t min_l4_payload_len[FD_COUNT];
     uint16_t max_l4_payload_len[FD_COUNT];
-    ;
 
     unsigned long long int packets_processed[FD_COUNT];
     uint64_t first_seen;
@@ -1995,6 +1994,15 @@ static int ndpi_workflow_node_cmp(void const * const A, void const * const B)
         return 1;
     }
 
+    if (flow_basic_a->vlan_id < flow_basic_b->vlan_id)
+    {
+        return -1;
+    }
+    else if (flow_basic_a->vlan_id > flow_basic_b->vlan_id)
+    {
+        return 1;
+    }
+
     /* flows have the same hash */
     if (flow_basic_a->l4_protocol < flow_basic_b->l4_protocol)
     {
@@ -2170,6 +2178,11 @@ static void jsonize_l3_l4(struct nDPId_workflow * const workflow, struct nDPId_f
     ndpi_serializer * const serializer = &workflow->ndpi_serializer;
     char src_name[48] = {};
     char dst_name[48] = {};
+
+    if (flow_basic->vlan_id != USHRT_MAX)
+    {
+        ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "vlan_id", flow_basic->vlan_id);
+    }
 
     switch (flow_basic->l3_type)
     {
@@ -2891,6 +2904,10 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
 
     if (event == PACKET_EVENT_PAYLOAD_FLOW)
     {
+        if (flow_ext->flow_basic.vlan_id != USHRT_MAX)
+        {
+            ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "vlan_id", flow_ext->flow_basic.vlan_id);
+        }
         ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "flow_id", flow_ext->flow_id);
         ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
                                      "flow_packet_id",
@@ -3440,8 +3457,9 @@ static uint32_t calculate_ndpi_flow_struct_hash(struct ndpi_flow_struct const * 
 static int process_datalink_layer(struct nDPId_reader_thread * const reader_thread,
                                   struct pcap_pkthdr const * const header,
                                   uint8_t const * const packet,
-                                  uint16_t * ip_offset,
-                                  uint16_t * layer3_type)
+                                  uint16_t * const ip_offset,
+                                  uint16_t * const layer3_type,
+                                  uint16_t * const vlan_id)
 {
     const uint16_t eth_offset = 0;
     int datalink_type;
@@ -3734,6 +3752,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
                     }
                     return 1;
                 }
+                *vlan_id = ntohs(*(uint16_t *)&packet[*ip_offset]) & 0xFFF;
                 *layer3_type = ntohs(*(uint16_t *)&packet[*ip_offset + 2]);
                 *ip_offset += 4;
             }
@@ -3916,7 +3935,7 @@ static void ndpi_process_packet(uint8_t * const args,
 {
     struct nDPId_reader_thread * const reader_thread = (struct nDPId_reader_thread *)args;
     struct nDPId_workflow * workflow;
-    struct nDPId_flow_basic flow_basic = {};
+    struct nDPId_flow_basic flow_basic = {.vlan_id = USHRT_MAX};
     enum nDPId_flow_direction direction;
 
     size_t hashed_index;
@@ -3966,7 +3985,7 @@ static void ndpi_process_packet(uint8_t * const args,
 
     do_periodically_work(reader_thread);
 
-    if (process_datalink_layer(reader_thread, header, packet, &ip_offset, &type) != 0)
+    if (process_datalink_layer(reader_thread, header, packet, &ip_offset, &type, &flow_basic.vlan_id) != 0)
     {
         return;
     }
@@ -4181,6 +4200,7 @@ static void ndpi_process_packet(uint8_t * const args,
 
     /* distribute flows to threads while keeping stability (same flow goes always to same thread) */
     thread_index += (flow_basic.src_port < flow_basic.dst_port ? flow_basic.dst_port : flow_basic.src_port);
+    thread_index += flow_basic.vlan_id;
     thread_index %= GET_CMDARG_ULL(nDPId_options.reader_thread_count);
     if (thread_index != reader_thread->array_index)
     {

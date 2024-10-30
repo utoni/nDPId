@@ -6,18 +6,18 @@
                    RISK: Desktop/File Sharing
      DAEMON-EVENT: [Processed: 6 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....2] [ip4][..udp] [....10.8.37.100][51652] -> [....10.100.2.87][.3389]
-         detected: [.....2] [ip4][..udp] [....10.8.37.100][51652] -> [....10.100.2.87][.3389] [RDP][Unknown][RemoteAccess][Acceptable]
+              new: [.....2][1308] [ip4][..udp] [....10.8.37.100][51652] -> [....10.100.2.87][.3389]
+         detected: [.....2][1308] [ip4][..udp] [....10.8.37.100][51652] -> [....10.100.2.87][.3389] [RDP][Unknown][RemoteAccess][Acceptable]
                    RISK: Desktop/File Sharing
              idle: [.....1] [ip4][..udp] [192.168.122.181][54759] -> [..192.168.122.2][.3389] [RDP][Unknown][RemoteAccess][Acceptable]
                    RISK: Desktop/File Sharing
      DAEMON-EVENT: [Processed: 32 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....3] [ip4][..udp] [..10.50.181.210][60355] -> [....10.50.73.36][.3389]
-         detected: [.....3] [ip4][..udp] [..10.50.181.210][60355] -> [....10.50.73.36][.3389] [RDP][Unknown][RemoteAccess][Acceptable]
+              new: [.....3][1108] [ip4][..udp] [..10.50.181.210][60355] -> [....10.50.73.36][.3389]
+         detected: [.....3][1108] [ip4][..udp] [..10.50.181.210][60355] -> [....10.50.73.36][.3389] [RDP][Unknown][RemoteAccess][Acceptable]
                    RISK: Desktop/File Sharing
-             idle: [.....2] [ip4][..udp] [....10.8.37.100][51652] -> [....10.100.2.87][.3389] [RDP][Unknown][RemoteAccess][Acceptable]
+             idle: [.....2][1308] [ip4][..udp] [....10.8.37.100][51652] -> [....10.100.2.87][.3389] [RDP][Unknown][RemoteAccess][Acceptable]
                    RISK: Desktop/File Sharing
-             idle: [.....3] [ip4][..udp] [..10.50.181.210][60355] -> [....10.50.73.36][.3389] [RDP][Unknown][RemoteAccess][Acceptable]
+             idle: [.....3][1108] [ip4][..udp] [..10.50.181.210][60355] -> [....10.50.73.36][.3389] [RDP][Unknown][RemoteAccess][Acceptable]
                    RISK: Desktop/File Sharing
      DAEMON-EVENT: shutdown

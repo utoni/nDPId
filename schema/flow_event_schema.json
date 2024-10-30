@@ -77,6 +77,11 @@
             "type": "number",
             "minimum": 0
         },
+        "vlan_id": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 4095
+        },
         "flow_event_id": {
             "type": "number",
             "minimum": 0,

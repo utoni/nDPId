@@ -528,9 +528,11 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
                        '[' + Stats.prettifyBytes(json_dict['flow_dst_packets_processed'], False) + ']'
 
     if json_dict['l3_proto'] == 'ip4':
-        print('{}{}{}{}{}: [{:.>6}] [{}][{:.>5}] [{:.>15}]{} -> [{:.>15}]{}{}{}' \
+        print('{}{}{}{}{}: [{:.>6}]{} [{}][{:.>5}] [{:.>15}]{} -> [{:.>15}]{}{}{}' \
               ''.format(timestamp, first_seen, last_seen, instance_and_source, flow_event_name, 
-              json_dict['flow_id'], json_dict['l3_proto'], json_dict['l4_proto'],
+              json_dict['flow_id'],
+              '[{:.>4}]'.format(json_dict['vlan_id']) if 'vlan_id' in json_dict else '',
+              json_dict['l3_proto'], json_dict['l4_proto'],
               json_dict['src_ip'].lower(),
               '[{:.>5}]'.format(json_dict['src_port']) if 'src_port' in json_dict else '',
               json_dict['dst_ip'].lower(),

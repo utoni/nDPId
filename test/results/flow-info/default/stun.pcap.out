@@ -1,8 +1,8 @@
      DAEMON-EVENT: init
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1] [ip4][..tcp] [...10.77.110.51][41588] -> [..10.206.50.239][42000]
-         detected: [.....1] [ip4][..tcp] [...10.77.110.51][41588] -> [..10.206.50.239][42000] [STUN.Skype_TeamsCall][Unknown][VoIP][Acceptable][]
+              new: [.....1][1611] [ip4][..tcp] [...10.77.110.51][41588] -> [..10.206.50.239][42000]
+         detected: [.....1][1611] [ip4][..tcp] [...10.77.110.51][41588] -> [..10.206.50.239][42000] [STUN.Skype_TeamsCall][Unknown][VoIP][Acceptable][]
      DAEMON-EVENT: [Processed: 15 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....2] [ip4][..udp] [.192.168.12.169][43016] -> [.74.125.247.128][.3478]
@@ -14,7 +14,7 @@
               new: [.....3] [ip4][.icmp] [.192.168.12.169] -> [.74.125.247.128]
          detected: [.....3] [ip4][.icmp] [.192.168.12.169] -> [.74.125.247.128] [ICMP][Google][Network][Acceptable]
                    RISK: Susp Entropy
-              end: [.....1] [ip4][..tcp] [...10.77.110.51][41588] -> [..10.206.50.239][42000] [STUN.Skype_TeamsCall][Unknown][VoIP][Acceptable]
+              end: [.....1][1611] [ip4][..tcp] [...10.77.110.51][41588] -> [..10.206.50.239][42000] [STUN.Skype_TeamsCall][Unknown][VoIP][Acceptable]
      DAEMON-EVENT: [Processed: 24 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 2 / 3|skipped: 0|!detected: 0|guessed: 0|detection-updates: 3|updates: 0]
               new: [.....4] [ip6][..udp] [3516:bf0b:fc53:75e7:70af:f67f:8e49:f603][56880] -> [....2a38:e156:8167:a333:face:b00c::24d9][.3478]

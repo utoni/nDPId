@@ -69,20 +69,20 @@
            update: [....13] [ip4][..udp] [.113.19.156.111][54318] -> [.135.201.124.55][..162] [SNMP][Unknown][Network][Acceptable]
      DAEMON-EVENT: [Processed: 62 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 4 / 15|skipped: 0|!detected: 0|guessed: 0|detection-updates: 6|updates: 10]
-              new: [....16] [ip4][..udp] [...10.231.2.134][..161] -> [....10.72.247.4][61088]
-         detected: [....16] [ip4][..udp] [...10.231.2.134][..161] -> [....10.72.247.4][61088] [SNMP][Unknown][Network][Acceptable]
+              new: [....16][.908] [ip4][..udp] [...10.231.2.134][..161] -> [....10.72.247.4][61088]
+         detected: [....16][.908] [ip4][..udp] [...10.231.2.134][..161] -> [....10.72.247.4][61088] [SNMP][Unknown][Network][Acceptable]
                    RISK: Error Code
              idle: [....12] [ip4][..udp] [.200.76.132.137][54318] -> [189.111.255.214][..162] [SNMP][Unknown][Network][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....13] [ip4][..udp] [.113.19.156.111][54318] -> [.135.201.124.55][..162] [SNMP][Unknown][Network][Acceptable]
              idle: [....15] [ip4][..udp] [.124.53.196.176][54318] -> [..103.248.22.47][..162] [SNMP][Unknown][Network][Acceptable]
              idle: [....14] [ip4][..udp] [..205.83.36.228][54318] -> [.160.174.106.32][..162] [SNMP][Unknown][Network][Acceptable]
-              new: [....17] [ip4][..udp] [.....10.99.8.88][43242] -> [.10.100.253.146][..161]
-         detected: [....17] [ip4][..udp] [.....10.99.8.88][43242] -> [.10.100.253.146][..161] [SNMP][Unknown][Network][Acceptable]
- detection-update: [....17] [ip4][..udp] [.....10.99.8.88][43242] -> [.10.100.253.146][..161] [SNMP][Unknown][Network][Acceptable]
+              new: [....17][1308] [ip4][..udp] [.....10.99.8.88][43242] -> [.10.100.253.146][..161]
+         detected: [....17][1308] [ip4][..udp] [.....10.99.8.88][43242] -> [.10.100.253.146][..161] [SNMP][Unknown][Network][Acceptable]
+ detection-update: [....17][1308] [ip4][..udp] [.....10.99.8.88][43242] -> [.10.100.253.146][..161] [SNMP][Unknown][Network][Acceptable]
                    RISK: Error Code
-             idle: [....17] [ip4][..udp] [.....10.99.8.88][43242] -> [.10.100.253.146][..161] [SNMP][Unknown][Network][Acceptable]
+             idle: [....17][1308] [ip4][..udp] [.....10.99.8.88][43242] -> [.10.100.253.146][..161] [SNMP][Unknown][Network][Acceptable]
                    RISK: Error Code
-             idle: [....16] [ip4][..udp] [...10.231.2.134][..161] -> [....10.72.247.4][61088] [SNMP][Unknown][Network][Acceptable]
+             idle: [....16][.908] [ip4][..udp] [...10.231.2.134][..161] -> [....10.72.247.4][61088] [SNMP][Unknown][Network][Acceptable]
                    RISK: Error Code
      DAEMON-EVENT: shutdown
