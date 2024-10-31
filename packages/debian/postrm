@@ -1,6 +1,11 @@
 #!/bin/sh
 
-rm -rf /run/nDPId /run/nDPIsrvd
-deluser ndpid || true
-deluser ndpisrvd || true
-delgroup ndpisrvd-distributor || true
+if [ "$1" = "remove" -o "$1" = "purge" ]; then
+    rm -rf /run/nDPId /run/nDPIsrvd
+
+    if [ "$1" = "purge" ]; then
+        deluser ndpid || true
+        deluser ndpisrvd || true
+        delgroup ndpisrvd-distributor || true
+    fi
+fi

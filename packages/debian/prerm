@@ -1,3 +1,5 @@
 #!/bin/sh
 
-systemctl stop ndpisrvd.service
+if [ "$1" = "remove" -o "$1" = "purge" ]; then
+    systemctl stop ndpisrvd.service
+fi

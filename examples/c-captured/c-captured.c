@@ -1355,10 +1355,14 @@ int main(int argc, char ** argv)
         return 1;
     }
 
-    if (capture_mode != 0 && chmod_chown(datadir, S_IRWXU | S_IRGRP | S_IXGRP, user, group) != 0)
+    if (capture_mode != 0)
     {
-        logger(1, "Could not chmod/chown `%s': %s", datadir, strerror(errno));
-        return 1;
+        int ret = chmod_chown(datadir, S_IRWXU | S_IRGRP | S_IXGRP, user, group);
+        if (ret != 0)
+        {
+            logger(1, "Could not chmod/chown `%s': %s", datadir, strerror(ret));
+            return 1;
+        }
     }
 
     errno = 0;

@@ -1824,7 +1824,7 @@ int main(int argc, char ** argv)
                    IS_CMDARG_SET(nDPIsrvd_options.collector_group) != 0
                        ? GET_CMDARG_STR(nDPIsrvd_options.collector_group)
                        : GET_CMDARG_STR(nDPIsrvd_options.group),
-                   strerror(errno));
+                   strerror(ret));
         }
         else
         {
@@ -1832,7 +1832,7 @@ int main(int argc, char ** argv)
                    "Could not chmod/chown `%s' to user `%s': %s",
                    GET_CMDARG_STR(nDPIsrvd_options.collector_un_sockpath),
                    GET_CMDARG_STR(nDPIsrvd_options.user),
-                   strerror(errno));
+                   strerror(ret));
         }
         if (ret != -EPERM)
         {
@@ -1857,7 +1857,7 @@ int main(int argc, char ** argv)
                    IS_CMDARG_SET(nDPIsrvd_options.distributor_group) != 0
                        ? GET_CMDARG_STR(nDPIsrvd_options.distributor_group)
                        : GET_CMDARG_STR(nDPIsrvd_options.group),
-                   strerror(errno));
+                   strerror(ret));
         }
         else
         {
@@ -1865,7 +1865,7 @@ int main(int argc, char ** argv)
                    "Could not chmod/chown `%s' to user `%s': %s",
                    GET_CMDARG_STR(nDPIsrvd_options.distributor_un_sockpath),
                    GET_CMDARG_STR(nDPIsrvd_options.user),
-                   strerror(errno));
+                   strerror(ret));
         }
         if (ret != -EPERM)
         {

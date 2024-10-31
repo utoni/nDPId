@@ -400,7 +400,7 @@ int chmod_chown(char const * const path, mode_t mode, char const * const user, c
     {
         if (chmod(path, mode) != 0)
         {
-            return -errno;
+            return errno;
         }
     }
 
@@ -415,7 +415,7 @@ int chmod_chown(char const * const path, mode_t mode, char const * const user, c
             retval = getpwnam_r(user, &pwd, buf, sizeof(buf), &result);
             if (result == NULL)
             {
-                return (retval != 0 ? -retval : -ENOENT);
+                return (retval != 0 ? retval : ENOENT);
             }
             path_uid = pwd.pw_uid;
             path_gid = pwd.pw_gid;
@@ -432,7 +432,7 @@ int chmod_chown(char const * const path, mode_t mode, char const * const user, c
         retval = getgrnam_r(group, &grp, buf, sizeof(buf), &result);
         if (result == NULL)
         {
-            return (retval != 0 ? -retval : -ENOENT);
+            return (retval != 0 ? retval : ENOENT);
         }
         path_gid = grp.gr_gid;
     }
@@ -441,7 +441,7 @@ int chmod_chown(char const * const path, mode_t mode, char const * const user, c
     {
         if (chown(path, path_uid, path_gid) != 0)
         {
-            return -errno;
+            return errno;
         }
     }
 

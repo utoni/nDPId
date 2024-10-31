@@ -42,7 +42,7 @@ jobs:
           fetch-depth: 1
 
       - name: Build
-        uses: openwrt/gh-action-sdk@v7
+        uses: openwrt/gh-action-sdk@main
         env:
           ARCH: ${{ matrix.arch }}-snapshot
           FEED_DIR: ${{ github.workspace }}/packages/openwrt

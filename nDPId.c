@@ -717,7 +717,10 @@ static uint64_t timer_sub(uint64_t a, uint64_t b)
 }
 
 #ifdef ENABLE_ZLIB
-static int zlib_deflate(const void * const src, int srcLen, void * dst, int dstLen)
+#define ZLIB_ERROR_COMPRESSED_SIZE (-7)
+#define ZLIB_ERROR_SIZE (-8)
+#define ZLIB_ERROR_ALLOCATION (-9)
+static uLong zlib_deflate(void * const src, int srcLen, void * const dst, int dstLen)
 {
     z_stream strm = {0};
     strm.total_in = strm.avail_in = srcLen;
@@ -730,7 +733,7 @@ static int zlib_deflate(const void * const src, int srcLen, void * dst, int dstL
     strm.opaque = Z_NULL;
 
     int err = -1;
-    int ret = -1;
+    uLong ret = 0;
 
     err = deflateInit2(&strm, Z_BEST_COMPRESSION, Z_BINARY, 15, 9, Z_HUFFMAN_ONLY);
     if (err != Z_OK)
@@ -763,7 +766,7 @@ static int zlib_deflate(const void * const src, int srcLen, void * dst, int dstL
     return ret;
 }
 
-static int zlib_inflate(const void * src, int srcLen, void * dst, int dstLen)
+static uLong zlib_inflate(void * const src, int srcLen, void * const dst, int dstLen)
 {
     z_stream strm = {0};
     strm.total_in = strm.avail_in = srcLen;
@@ -776,7 +779,7 @@ static int zlib_inflate(const void * src, int srcLen, void * dst, int dstLen)
     strm.opaque = Z_NULL;
 
     int err = -1;
-    int ret = -1;
+    uLong ret = 0;
 
     err = inflateInit2(&strm, (15 + 32)); // 15 window bits, and the +32 tells zlib to to detect if using gzip or zlib
     if (err == Z_OK)
@@ -807,61 +810,61 @@ static int zlib_inflate(const void * src, int srcLen, void * dst, int dstLen)
 static int detection_data_deflate(struct nDPId_flow * const flow)
 {
     uint8_t tmpOut[sizeof(*flow->info.detection_data)];
-    int ret;
+    uLong size;
 
     if (flow->info.detection_data_compressed_size > 0)
     {
-        return -7;
+        return ZLIB_ERROR_COMPRESSED_SIZE;
     }
 
-    ret = zlib_deflate(flow->info.detection_data, sizeof(*flow->info.detection_data), tmpOut, sizeof(tmpOut));
-    if (ret <= 0)
+    size = zlib_deflate(flow->info.detection_data, sizeof(*flow->info.detection_data), tmpOut, sizeof(tmpOut));
+    if (size == 0 || size > sizeof(*flow->info.detection_data))
     {
-        return ret;
+        return ZLIB_ERROR_SIZE;
     }
 
-    struct nDPId_detection_data * const new_det_data = ndpi_malloc(ret);
+    struct nDPId_detection_data * const new_det_data = ndpi_malloc(size);
     if (new_det_data == NULL)
     {
-        return -8;
+        return ZLIB_ERROR_ALLOCATION;
     }
     ndpi_free(flow->info.detection_data);
     flow->info.detection_data = new_det_data;
 
-    memcpy(flow->info.detection_data, tmpOut, ret);
-    flow->info.detection_data_compressed_size = ret;
+    memcpy(flow->info.detection_data, tmpOut, size);
+    flow->info.detection_data_compressed_size = (uint16_t)size;
 
-    return ret;
+    return (int)size;
 }
 
 static int detection_data_inflate(struct nDPId_flow * const flow)
 {
     uint8_t tmpOut[sizeof(*flow->info.detection_data)];
-    int ret;
+    uLong size;
 
     if (flow->info.detection_data_compressed_size == 0)
     {
-        return -7;
+        return ZLIB_ERROR_COMPRESSED_SIZE;
     }
 
-    ret = zlib_inflate(flow->info.detection_data, flow->info.detection_data_compressed_size, tmpOut, sizeof(tmpOut));
-    if (ret <= 0)
+    size = zlib_inflate(flow->info.detection_data, flow->info.detection_data_compressed_size, tmpOut, sizeof(tmpOut));
+    if (size == 0 || size > sizeof(*flow->info.detection_data))
     {
-        return ret;
+        return ZLIB_ERROR_SIZE;
     }
 
-    struct nDPId_detection_data * const new_det_data = ndpi_malloc(ret);
+    struct nDPId_detection_data * const new_det_data = ndpi_malloc(size);
     if (new_det_data == NULL)
     {
-        return -8;
+        return ZLIB_ERROR_ALLOCATION;
     }
     ndpi_free(flow->info.detection_data);
     flow->info.detection_data = new_det_data;
 
-    memcpy(flow->info.detection_data, tmpOut, ret);
+    memcpy(flow->info.detection_data, tmpOut, size);
     flow->info.detection_data_compressed_size = 0;
 
-    return ret;
+    return (int)size;
 }
 
 static void ndpi_comp_scan_walker(void const * const A, ndpi_VISIT which, int depth, void * const user_data)
@@ -900,8 +903,7 @@ static void ndpi_comp_scan_walker(void const * const A, ndpi_VISIT which, int de
                     }
 
                     int ret = detection_data_deflate(flow);
-
-                    if (ret <= 0)
+                    if (ret < 0)
                     {
                         logger(1,
                                "zLib compression failed for flow %llu with error code: %d",
@@ -2058,7 +2060,7 @@ static void process_idle_flow(struct nDPId_reader_thread * const reader_thread, 
                 {
                     workflow->current_compression_diff -= flow->info.detection_data_compressed_size;
                     int ret = detection_data_inflate(flow);
-                    if (ret <= 0)
+                    if (ret < 0)
                     {
                         workflow->current_compression_diff += flow->info.detection_data_compressed_size;
                         logger(1, "zLib decompression failed with error code: %d", ret);
@@ -3053,7 +3055,7 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
                 {
                     workflow->current_compression_diff -= flow->info.detection_data_compressed_size;
                     int ret = detection_data_inflate(flow);
-                    if (ret <= 0)
+                    if (ret < 0)
                     {
                         workflow->current_compression_diff += flow->info.detection_data_compressed_size;
                         logger(1, "zLib decompression failed with error code: %d", ret);
@@ -3489,7 +3491,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
         {
             /* DLT header values can be stored as big or little endian. */
 
-            uint32_t dlt_hdr = *((uint32_t *)&packet[eth_offset]);
+            uint32_t dlt_hdr = *((uint32_t const *)&packet[eth_offset]);
 
             if (dlt_hdr == 0x02000000 || dlt_hdr == 0x02)
             {
@@ -3508,7 +3510,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
                                          UNKNOWN_DATALINK_LAYER,
                                          "%s%u",
                                          "layer_type",
-                                         ntohl(*((uint32_t *)&packet[eth_offset])));
+                                         ntohl(*((uint32_t const *)&packet[eth_offset])));
                     jsonize_packet_event(reader_thread, header, packet, 0, 0, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
                 }
                 return 1;
@@ -3534,7 +3536,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
                 return 1;
             }
 
-            struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const * const)&packet[eth_offset];
+            struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const *)&packet[eth_offset];
             *ip_offset = sizeof(struct ndpi_chdlc);
             *layer3_type = ntohs(chdlc->proto_code);
             break;
@@ -3559,14 +3561,14 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
 
             if (packet[0] == 0x0f || packet[0] == 0x8f)
             {
-                struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const * const)&packet[eth_offset];
+                struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const *)&packet[eth_offset];
                 *ip_offset = sizeof(struct ndpi_chdlc); /* CHDLC_OFF = 4 */
                 *layer3_type = ntohs(chdlc->proto_code);
             }
             else
             {
                 *ip_offset = 2;
-                *layer3_type = ntohs(*((u_int16_t *)&packet[eth_offset]));
+                *layer3_type = ntohs(*(u_int16_t const *)&packet[eth_offset]);
             }
             break;
         case DLT_LINUX_SLL:
@@ -3603,7 +3605,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
             }
 
             struct ndpi_radiotap_header const * const radiotap =
-                (struct ndpi_radiotap_header const * const)&packet[eth_offset];
+                (struct ndpi_radiotap_header const *)&packet[eth_offset];
             uint16_t radio_len = radiotap->len;
 
             /* Check Bad FCS presence */
@@ -3635,7 +3637,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
 
             /* Calculate 802.11 header length (variable) */
             struct ndpi_wifi_header const * const wifi =
-                (struct ndpi_wifi_header const * const)(packet + eth_offset + radio_len);
+                (struct ndpi_wifi_header const *)(packet + eth_offset + radio_len);
             uint16_t fc = wifi->fc;
             int wifi_len = 0;
 
@@ -3660,7 +3662,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
             }
 
             struct ndpi_llc_header_snap const * const llc =
-                (struct ndpi_llc_header_snap const * const)(packet + eth_offset + wifi_len + radio_len);
+                (struct ndpi_llc_header_snap const *)(packet + eth_offset + wifi_len + radio_len);
             if (llc->dsap == SNAP)
             {
                 *layer3_type = ntohs(llc->snap.proto_ID);
@@ -3728,7 +3730,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
                     }
                     return 1;
                 }
-                ethernet = (struct ndpi_ethhdr *)&packet[eth_offset + 20];
+                ethernet = (struct ndpi_ethhdr const *)&packet[eth_offset + 20];
                 *ip_offset = sizeof(struct ndpi_ethhdr) + eth_offset;
                 *layer3_type = ntohs(ethernet->h_proto);
             }
@@ -3752,8 +3754,8 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
                     }
                     return 1;
                 }
-                *vlan_id = ntohs(*(uint16_t *)&packet[*ip_offset]) & 0xFFF;
-                *layer3_type = ntohs(*(uint16_t *)&packet[*ip_offset + 2]);
+                *vlan_id = ntohs(*(uint16_t const *)&packet[*ip_offset]) & 0xFFF;
+                *layer3_type = ntohs(*(uint16_t const *)&packet[*ip_offset + 2]);
                 *ip_offset += 4;
             }
 
@@ -4456,7 +4458,7 @@ static void ndpi_process_packet(uint8_t * const args,
             {
                 workflow->current_compression_diff -= flow_to_process->info.detection_data_compressed_size;
                 int ret = detection_data_inflate(flow_to_process);
-                if (ret <= 0)
+                if (ret < 0)
                 {
                     workflow->current_compression_diff += flow_to_process->info.detection_data_compressed_size;
                     logger(1,

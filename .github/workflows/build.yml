@@ -285,8 +285,12 @@ jobs:
           sudo systemctl enable ndpid@lo
           sudo systemctl start ndpid@lo
           SYSTEMCTL_RET=3; while (( $SYSTEMCTL_RET == 3 )); do systemctl is-active ndpid@lo.service; SYSTEMCTL_RET=$?; sleep 1; done
-          sudo systemctl status ndpisrvd.service ndpid@lo.service || true
-          sudo systemctl show ndpisrvd.service ndpid@lo.service -p SubState,ActiveState || true
+          sudo systemctl status ndpisrvd.service ndpid@lo.service
+          sudo systemctl show ndpisrvd.service ndpid@lo.service -p SubState,ActiveState
+          sudo dpkg -i ./build/nDPId-*.deb
+          sudo systemctl status ndpisrvd.service ndpid@lo.service
+          sudo systemctl show ndpisrvd.service ndpid@lo.service -p SubState,ActiveState
+          sudo systemctl stop ndpisrvd.service
           journalctl --no-tail --no-pager -u ndpisrvd.service -u ndpid@lo.service
       - name: Build PF_RING and nDPId (invoke CC directly - dynamic nDPI lib)
         if: endsWith(matrix.compiler, 'gcc-7') == false && startsWith(matrix.ndpi_build, '-DBUILD_NDPI=ON') && startsWith(matrix.coverage, '-DENABLE_COVERAGE=OFF') && startsWith(matrix.sanitizer, '-DENABLE_SANITIZER=ON') && startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=OFF') && startsWith(matrix.ndpid_zlib, '-DENABLE_ZLIB=ON')

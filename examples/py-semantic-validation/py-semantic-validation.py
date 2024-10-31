@@ -86,8 +86,8 @@ def verifyFlows(nsock, instance):
                 l4_proto = 'n/a'
             invalid_flows_str += '{} proto[{},{}] ts[{} + {} < {}] diff[{}], '.format(flow_id, l4_proto, flow.flow_idle_time,
                                                          flow.flow_last_seen, flow.flow_idle_time,
-                                                         instance.most_recent_flow_time,
-                                                         instance.most_recent_flow_time -
+                                                         instance.getMostRecentFlowTime(flow.thread_id),
+                                                         instance.getMostRecentFlowTime(flow.thread_id) -
                                                          (flow.flow_last_seen + flow.flow_idle_time))
 
         raise SemanticValidationException(None, 'Flow Manager verification failed for: {}'.format(invalid_flows_str[:-2]))

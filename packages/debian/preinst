@@ -5,12 +5,13 @@ adduser --system --no-create-home --shell=/bin/false --group ndpisrvd
 adduser --system --no-create-home --shell=/bin/false --group ndpid
 
 cat <<EOF
-**********************************************************************************
-* The that may want to access DPI data needs access to /run/nDPIsrvd/distributor *
-*                                                                                *
-* To make it accessible to a user, type:                                         *
-* sudo usermod --append --groups ndpisrvd-distributor [USER]                     *
-*                                                                                *
-* Please not that you might need to re-login to make changes take effect.        *
-**********************************************************************************
+****************************************************************************
+* The user whom may want to access DPI data needs access to:               *
+* /run/nDPIsrvd/distributor                                                *
+*                                                                          *
+* To make it accessible to [USER], type:                                   *
+* sudo usermod --append --groups ndpisrvd-distributor [USER]               *
+*                                                                          *
+* Please note that you might need to re-login to make changes take effect. *
+****************************************************************************
 EOF
