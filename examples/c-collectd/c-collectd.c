@@ -1503,8 +1503,8 @@ int main(int argc, char ** argv)
 
     if (getenv("COLLECTD_HOSTNAME") == NULL && getenv("COLLECTD_INTERVAL") == NULL)
     {
-        LOGGER_EARLY(0, "Recv buffer size: %u", NETWORK_BUFFER_MAX_SIZE);
-        LOGGER_EARLY(0, "Connecting to `%s'..", serv_optarg);
+        logger(0, "Recv buffer size: %u", NETWORK_BUFFER_MAX_SIZE);
+        logger(0, "Connecting to `%s'..", serv_optarg);
     }
     else
     {

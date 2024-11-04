@@ -1,7 +1,6 @@
 #include <dbus-1.0/dbus/dbus.h>
 #include <signal.h>
 #include <stdint.h>
-#include <syslog.h>
 
 #include "nDPIsrvd.h"
 #include "utstring.h"
@@ -185,8 +184,7 @@ static void check_value(char const * const possible_values[],
 {
     if (get_value_index(possible_values, possible_values_size, needle, needle_len) == -1)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "BUG: Unknown value: %.*s", (int)needle_len, needle);
-        notifyf(DBUS_CRITICAL, "BUG", 5000, "Unknown value: %.*s", (int)needle_len, needle);
+        notifyf(DBUS_CRITICAL, "nDPIsrvd-notifyd", 5000, "BUG: Unknown value: %.*s", (int)needle_len, needle);
     }
 }
 
@@ -451,7 +449,7 @@ static int parse_options(int argc, char ** argv, struct nDPIsrvd_socket * const 
 {
     int opt, force_defaults = 1;
 
-    while ((opt = getopt(argc, argv, "hdp:s:C:B:S:")) != -1)
+    while ((opt = getopt(argc, argv, "hldp:s:C:B:S:")) != -1)
     {
         switch (opt)
         {
@@ -522,8 +520,7 @@ static int parse_options(int argc, char ** argv, struct nDPIsrvd_socket * const 
 
     if (force_defaults != 0 && set_defaults() != 0)
     {
-        fprintf(stderr, "%s\n", "BUG: Could not set default values.");
-        syslog(LOG_DAEMON | LOG_ERR, "%s\n", "BUG: Could not set default values.");
+        notifyf(DBUS_CRITICAL, "nDPIsrvd-notifyd", 5000, "%s\n", "BUG: Could not set default values.");
         return 1;
     }
 
@@ -534,13 +531,13 @@ static int parse_options(int argc, char ** argv, struct nDPIsrvd_socket * const 
 
     if (nDPIsrvd_setup_address(&sock->address, serv_optarg) != 0)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "Could not parse address `%s'", serv_optarg);
+        notifyf(DBUS_CRITICAL, "nDPIsrvd-notifyd", 3000, "Could not parse address `%s'\n", serv_optarg);
         return 1;
     }
 
     if (optind < argc)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "%s", "Unexpected argument after options");
+        notifyf(DBUS_CRITICAL, "nDPIsrvd-notifyd", 3000, "%s\n", "Unexpected argument after options");
         return 1;
     }
 
@@ -571,13 +568,11 @@ int main(int argc, char ** argv)
     signal(SIGTERM, sighandler);
     signal(SIGPIPE, SIG_IGN);
 
-    openlog("nDPIsrvd-notifyd", LOG_CONS, LOG_DAEMON);
-
     struct nDPIsrvd_socket * sock =
         nDPIsrvd_socket_init(0, 0, 0, sizeof(struct flow_user_data), notifyd_json_callback, NULL, NULL);
     if (sock == NULL)
     {
-        syslog(LOG_DAEMON | LOG_ERR, "%s", "nDPIsrvd socket memory allocation failed!");
+        notifyf(DBUS_CRITICAL, "nDPIsrvd-notifyd", 5000, "%s\n", "BUG: nDPIsrvd socket memory allocation failed!");
         return 1;
     }
 
@@ -602,8 +597,8 @@ int main(int argc, char ** argv)
             }
             if (previous_connect_succeeded != 0)
             {
-                notifyf(DBUS_CRITICAL, "nDPIsrvd-notifyd", 3000, "nDPIsrvd socket connect to %s failed!", serv_optarg);
-                syslog(LOG_DAEMON | LOG_ERR, "nDPIsrvd socket connect to %s failed!", serv_optarg);
+                notifyf(
+                    DBUS_CRITICAL, "nDPIsrvd-notifyd", 3000, "nDPIsrvd socket connect to %s failed!\n", serv_optarg);
                 previous_connect_succeeded = 0;
             }
             nDPIsrvd_socket_close(sock);
@@ -614,12 +609,11 @@ int main(int argc, char ** argv)
 
         if (nDPIsrvd_set_read_timeout(sock, 3, 0) != 0)
         {
-            syslog(LOG_DAEMON | LOG_ERR, "nDPIsrvd set read timeout failed: %s", strerror(errno));
+            notifyf(DBUS_CRITICAL, "nDPIsrvd-notifyd", 3000, "nDPIsrvd set read timeout failed: %s\n", strerror(errno));
             goto failure;
         }
 
-        notifyf(DBUS_NORMAL, "nDPIsrvd-notifyd", 3000, "Connected to '%s'", serv_optarg);
-        syslog(LOG_DAEMON | LOG_NOTICE, "%s", "Initialization succeeded.");
+        notifyf(DBUS_NORMAL, "nDPIsrvd-notifyd", 3000, "Connected to '%s'\n", serv_optarg);
 
         while (main_thread_shutdown == 0)
         {
@@ -634,25 +628,26 @@ int main(int argc, char ** argv)
             }
             if (read_ret != READ_OK)
             {
-                notifyf(DBUS_CRITICAL, "nDPIsrvd-notifyd", 3000, "nDPIsrvd socket read from %s failed!", serv_optarg);
-                syslog(LOG_DAEMON | LOG_ERR, "nDPIsrvd socket read from %s failed!", serv_optarg);
+                notifyf(DBUS_CRITICAL, "nDPIsrvd-notifyd", 3000, "nDPIsrvd socket read from %s failed!\n", serv_optarg);
                 break;
             }
 
             enum nDPIsrvd_parse_return parse_ret = nDPIsrvd_parse_all(sock);
             if (parse_ret != PARSE_NEED_MORE_DATA)
             {
-                syslog(LOG_DAEMON | LOG_ERR,
-                       "Could not parse JSON message %s: %.*s\n",
-                       nDPIsrvd_enum_to_string(parse_ret),
-                       nDPIsrvd_json_buffer_length(sock),
-                       nDPIsrvd_json_buffer_string(sock));
+                notifyf(DBUS_CRITICAL,
+                        "nDPIsrvd-notifyd",
+                        3000,
+                        "Could not parse JSON message %s: %.*s\n",
+                        nDPIsrvd_enum_to_string(parse_ret),
+                        nDPIsrvd_json_buffer_length(sock),
+                        nDPIsrvd_json_buffer_string(sock));
                 break;
             }
         }
 
         nDPIsrvd_socket_close(sock);
-        notifyf(DBUS_NORMAL, "nDPIsrvd-notifyd", 3000, "Disconnected from '%s'.", serv_optarg);
+        notifyf(DBUS_NORMAL, "nDPIsrvd-notifyd", 3000, "Disconnected from '%s'.\n", serv_optarg);
         if (main_thread_shutdown == 0)
         {
             sleep(SLEEP_TIME_IN_S);
@@ -662,7 +657,6 @@ int main(int argc, char ** argv)
 failure:
     nDPIsrvd_socket_free(&sock);
     daemonize_shutdown(pidfile);
-    closelog();
 
     return 0;
 }

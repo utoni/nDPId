@@ -321,7 +321,7 @@ if [ -x "${NDPISRVD_ANALYSED}" ]; then
         cat "${out_file}" | grep -vE '^~~.*$' | ${NETCAT_EXEC} &
         nc_pid=$!
         while ! ss -x -t -n -l | grep -q "${NETCAT_SOCK}"; do sleep 0.1; printf '%s\n' "Waiting until socket ${NETCAT_SOCK} is available.." >>"${stderr_file}"; done
-        ${NDPISRVD_ANALYSED} -s "${NETCAT_SOCK}" -o "${stdout_file}" 2>>"${stderr_file}" 1>&2
+        ${NDPISRVD_ANALYSED} -l -s "${NETCAT_SOCK}" -o "${stdout_file}" 2>>"${stderr_file}" 1>&2
         kill -SIGTERM ${nc_pid} 2>/dev/null
         wait ${nc_pid} 2>/dev/null
         while ss -x -t -n -l | grep -q "${NETCAT_SOCK}"; do sleep 0.1; printf '%s\n' "Waiting until socket ${NETCAT_SOCK} is not available anymore.." >>"${stderr_file}"; done
@@ -450,7 +450,7 @@ if [ -x "${NDPISRVD_COLLECTD}" ]; then
         cat "${out_file}" | grep -vE '^~~.*$' | ${NETCAT_EXEC} &
         nc_pid=$!
         while ! ss -x -t -n -l | grep -q "${NETCAT_SOCK}"; do sleep 0.1; printf '%s\n' "Waiting until socket ${NETCAT_SOCK} is available.." >>"${stderr_file}"; done
-        ${NDPISRVD_COLLECTD} -s "${NETCAT_SOCK}" 2>>"${stderr_file}" 1>"${stdout_file}"
+        ${NDPISRVD_COLLECTD} -l -s "${NETCAT_SOCK}" 2>>"${stderr_file}" 1>"${stdout_file}"
         kill -SIGTERM ${nc_pid} 2>/dev/null
         wait ${nc_pid} 2>/dev/null
         while ss -x -t -n -l | grep -q "${NETCAT_SOCK}"; do sleep 0.1; printf '%s\n' "Waiting until socket ${NETCAT_SOCK} is not available anymore.." >>"${stderr_file}"; done

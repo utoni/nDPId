@@ -366,9 +366,8 @@ void nDPIsrvd_memprof_log(char const * const format, ...)
     va_list ap;
 
     va_start(ap, format);
-    fprintf(stderr, "%s", "nDPIsrvd MemoryProfiler: ");
-    vfprintf(stderr, format, ap);
-    fprintf(stderr, "%s\n", "");
+    logger(0, "%s", "nDPIsrvd MemoryProfiler: ");
+    vlogger(0, format, ap);
     va_end(ap);
 }
 #endif
@@ -1549,7 +1548,7 @@ static int parse_options(int argc, char ** argv, struct nDPIsrvd_socket * const 
 
     if (test_mode != 0)
     {
-        logger_early(1, "%s", "Test mode enabled: ignoring `-U' / `-T' command line parameters");
+        logger(1, "%s", "Test mode enabled: ignoring `-U' / `-T' command line parameters");
         free(influxdb_url);
         free(influxdb_token);
         influxdb_url = NULL;
@@ -1600,8 +1599,7 @@ static int parse_options(int argc, char ** argv, struct nDPIsrvd_socket * const 
     if (optind < argc)
     {
         logger_early(1, "%s", "Unexpected argument after options");
-        logger_early(1, "%s", "");
-        logger_early(1, usage, argv[0]);
+        fprintf(stderr, usage, argv[0]);
         return 1;
     }
 
@@ -1638,26 +1636,29 @@ int main(int argc, char ** argv)
         goto failure;
     }
 
-    logger_early(0, "Recv buffer size: %u", NETWORK_BUFFER_MAX_SIZE);
-    logger_early(0, "Connecting to `%s'..", serv_optarg);
-    logger_early(0, "InfluxDB push URL: %s", influxdb_url);
+    if (test_mode == 0)
+    {
+        logger(0, "Recv buffer size: %u", NETWORK_BUFFER_MAX_SIZE);
+        logger(0, "Connecting to `%s'..", serv_optarg);
+        logger(0, "InfluxDB push URL: %s", influxdb_url);
+    }
 
     if (setvbuf(stdout, NULL, _IONBF, 0) != 0)
     {
-        logger_early(1,
-                     "Could not set stdout unbuffered: %s. Collectd may receive too old PUTVALs and complain.",
-                     strerror(errno));
+        logger(1,
+               "Could not set stdout unbuffered: %s. Collectd may receive too old PUTVALs and complain.",
+               strerror(errno));
     }
 
     if (nDPIsrvd_connect(sock) != CONNECT_OK)
     {
-        logger_early(1, "nDPIsrvd socket connect to %s failed!", serv_optarg);
+        logger(1, "nDPIsrvd socket connect to %s failed!", serv_optarg);
         goto failure;
     }
 
     if (nDPIsrvd_set_nonblock(sock) != 0)
     {
-        logger_early(1, "nDPIsrvd set nonblock failed: %s", strerror(errno));
+        logger(1, "nDPIsrvd set nonblock failed: %s", strerror(errno));
         goto failure;
     }
 
@@ -1675,11 +1676,11 @@ int main(int argc, char ** argv)
     {
         if (errno != 0)
         {
-            logger_early(1, "Change user/group failed: %s", strerror(errno));
+            logger(1, "Change user/group failed: %s", strerror(errno));
         }
         else
         {
-            logger_early(1, "%s", "Change user/group failed.");
+            logger(1, "%s", "Change user/group failed.");
         }
         goto failure;
     }
@@ -1687,13 +1688,13 @@ int main(int argc, char ** argv)
     epollfd = epoll_create1(0);
     if (epollfd < 0)
     {
-        logger_early(1, "Error creating epoll: %s", strerror(errno));
+        logger(1, "Error creating epoll: %s", strerror(errno));
         goto failure;
     }
 
     if (create_influxd_timer() != 0)
     {
-        logger_early(1, "Error creating timer: %s", strerror(errno));
+        logger(1, "Error creating timer: %s", strerror(errno));
         goto failure;
     }
 
@@ -1701,7 +1702,7 @@ int main(int argc, char ** argv)
         struct epoll_event timer_event = {.data.fd = influxd_timerfd, .events = EPOLLIN};
         if (epoll_ctl(epollfd, EPOLL_CTL_ADD, influxd_timerfd, &timer_event) < 0)
         {
-            logger_early(1, "Error adding JSON fd to epoll: %s", strerror(errno));
+            logger(1, "Error adding JSON fd to epoll: %s", strerror(errno));
             goto failure;
         }
     }
@@ -1710,7 +1711,7 @@ int main(int argc, char ** argv)
         struct epoll_event socket_event = {.data.fd = sock->fd, .events = EPOLLIN};
         if (epoll_ctl(epollfd, EPOLL_CTL_ADD, sock->fd, &socket_event) < 0)
         {
-            logger_early(1, "Error adding nDPIsrvd socket fd to epoll: %s", strerror(errno));
+            logger(1, "Error adding nDPIsrvd socket fd to epoll: %s", strerror(errno));
             goto failure;
         }
     }
@@ -1719,10 +1720,9 @@ int main(int argc, char ** argv)
     {
         curl_global_init(CURL_GLOBAL_ALL);
     }
-
-    logger_early(0, "%s", "Initialization succeeded.");
+    logger(0, "%s", "Initialization succeeded.");
     retval = mainloop(epollfd, sock);
-    logger_early(0, "%s", "Bye.");
+    logger(0, "%s", "Bye.");
 
     if (test_mode == 0)
     {

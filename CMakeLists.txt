@@ -512,6 +512,7 @@ if(BUILD_EXAMPLES)
         if(BUILD_NDPI)
             add_dependencies(nDPIsrvd-notifyd libnDPI)
         endif()
+        target_compile_definitions(nDPIsrvd-notifyd PRIVATE ${NDPID_DEFS})
         target_include_directories(nDPIsrvd-notifyd PRIVATE
                                    "${STATIC_LIBNDPI_INC}" "${DEFAULT_NDPI_INCLUDE}" "${CMAKE_SOURCE_DIR}" "${NDPID_DEPS_INC}"
                                    "${DBUS_INCLUDE_DIRS}")
@@ -524,6 +525,7 @@ if(BUILD_EXAMPLES)
         if(BUILD_NDPI)
             add_dependencies(nDPIsrvd-influxd libnDPI)
         endif()
+        target_compile_definitions(nDPIsrvd-influxd PRIVATE ${NDPID_DEFS})
         target_include_directories(nDPIsrvd-influxd PRIVATE
                                    "${STATIC_LIBNDPI_INC}" "${DEFAULT_NDPI_INCLUDE}" "${CMAKE_SOURCE_DIR}" "${NDPID_DEPS_INC}"
                                    "${CURL_INCLUDE_DIRS}")

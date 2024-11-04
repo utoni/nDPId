@@ -367,9 +367,8 @@ void nDPIsrvd_memprof_log(char const * const format, ...)
     va_list ap;
 
     va_start(ap, format);
-    fprintf(stderr, "%s", "nDPIsrvd MemoryProfiler: ");
-    vfprintf(stderr, format, ap);
-    fprintf(stderr, "%s\n", "");
+    logger(0, "%s", "nDPIsrvd MemoryProfiler: ");
+    vlogger(0, format, ap);
     va_end(ap);
 }
 #endif
@@ -386,30 +385,30 @@ static void nDPIsrvd_write_flow_info_cb(struct nDPIsrvd_socket const * sock,
 
     if (flow == NULL || thread_data == NULL)
     {
-        fprintf(stderr, "%s\n", "[WriteFlowInfoCallback] BUG: Internal error.");
+        logger(0, "%s", "[WriteFlowInfoCallback] BUG: Internal error.");
         return;
     }
 
-    fprintf(stderr,
-            "[Thread %2d][Flow %5llu][ptr: "
+    logger(0,
+           "[Thread %2d][Flow %5llu][ptr: "
 #ifdef __LP64__
-            "0x%016llx"
+           "0x%016llx"
 #else
-            "0x%08lx"
+           "0x%08lx"
 #endif
-            "][last-seen: %13llu][idle-time: %7llu][time-until-timeout: %7llu]\n",
-            flow->thread_id,
-            flow->id_as_ull,
+           "][last-seen: %13llu][idle-time: %7llu][time-until-timeout: %7llu]",
+           flow->thread_id,
+           flow->id_as_ull,
 #ifdef __LP64__
-            (unsigned long long int)flow,
+           (unsigned long long int)flow,
 #else
-            (unsigned long int)flow,
+           (unsigned long int)flow,
 #endif
-            flow->last_seen,
-            flow->idle_time,
-            (flow->last_seen + flow->idle_time >= thread_data->most_recent_flow_time
-                 ? flow->last_seen + flow->idle_time - thread_data->most_recent_flow_time
-                 : 0));
+           flow->last_seen,
+           flow->idle_time,
+           (flow->last_seen + flow->idle_time >= thread_data->most_recent_flow_time
+                ? flow->last_seen + flow->idle_time - thread_data->most_recent_flow_time
+                : 0));
 }
 
 static void nDPIsrvd_verify_flows_cb(struct nDPIsrvd_thread_data const * const thread_data,
@@ -422,25 +421,25 @@ static void nDPIsrvd_verify_flows_cb(struct nDPIsrvd_thread_data const * const t
     {
         if (flow->last_seen + flow->idle_time >= thread_data->most_recent_flow_time)
         {
-            fprintf(stderr,
-                    "Thread %d / %d, Flow %llu verification failed\n",
-                    thread_data->thread_key,
-                    flow->thread_id,
-                    flow->id_as_ull);
+            logger(1,
+                   "Thread %d / %d, Flow %llu verification failed",
+                   thread_data->thread_key,
+                   flow->thread_id,
+                   flow->id_as_ull);
         }
         else
         {
-            fprintf(stderr,
-                    "Thread %d / %d, Flow %llu verification failed, diff: %llu\n",
-                    thread_data->thread_key,
-                    flow->thread_id,
-                    flow->id_as_ull,
-                    thread_data->most_recent_flow_time - flow->last_seen + flow->idle_time);
+            logger(1,
+                   "Thread %d / %d, Flow %llu verification failed, diff: %llu",
+                   thread_data->thread_key,
+                   flow->thread_id,
+                   flow->id_as_ull,
+                   thread_data->most_recent_flow_time - flow->last_seen + flow->idle_time);
         }
     }
     else
     {
-        fprintf(stderr, "Thread [UNKNOWN], Flow %llu verification failed\n", flow->id_as_ull);
+        logger(1, "Thread [UNKNOWN], Flow %llu verification failed", flow->id_as_ull);
     }
 }
 
@@ -458,13 +457,13 @@ static void sighandler(int signum)
         {
             if (nDPIsrvd_verify_flows(current_instance, nDPIsrvd_verify_flows_cb, NULL) != 0)
             {
-                fprintf(stderr, "Flow verification failed for instance %d\n", current_instance->alias_source_key);
+                logger(1, "Flow verification failed for instance %d", current_instance->alias_source_key);
                 verification_failed = 1;
             }
         }
         if (verification_failed == 0)
         {
-            fprintf(stderr, "%s\n", "Flow verification succeeded.");
+            logger(1, "%s", "Flow verification succeeded.");
         }
         else
         {
@@ -1351,8 +1350,9 @@ static void print_usage(char const * const arg0)
 {
     static char const usage[] =
         "Usage: %s "
-        "[-d] [-p pidfile] [-s host]\n"
+        "[-l] [-d] [-p pidfile] [-s host]\n"
         "\t  \t[-u user] [-g group] [-o csv-outfile] [-O csv-outfile]\n\n"
+        "\t-l\tLog to console instead of syslog.\n"
         "\t-d\tForking into background after initialization.\n"
         "\t-p\tWrite the daemon PID to the given file path.\n"
         "\t-s\tDestination where nDPIsrvd is listening on.\n"
@@ -1370,10 +1370,13 @@ static int parse_options(int argc, char ** argv)
 {
     int opt;
 
-    while ((opt = getopt(argc, argv, "hdp:s:u:g:o:O:t:")) != -1)
+    while ((opt = getopt(argc, argv, "hldp:s:u:g:o:O:t:")) != -1)
     {
         switch (opt)
         {
+            case 'l':
+                enable_console_logger();
+                break;
             case 'd':
                 daemonize_enable();
                 break;
@@ -1413,9 +1416,9 @@ static int parse_options(int argc, char ** argv)
 
     if (csv_outfile == NULL && stats_csv_outfile == NULL)
     {
-        fprintf(stderr,
-                "%s: Missing either analyse CSV output file (`-o') or global stats CSV output file (`-O')\n",
-                argv[0]);
+        logger_early(1,
+                     "%s: Missing either analyse CSV output file (`-o') or global stats CSV output file (`-O')",
+                     argv[0]);
         return 1;
     }
 
@@ -1430,7 +1433,7 @@ static int parse_options(int argc, char ** argv)
         csv_fp = fopen(csv_outfile, "a+");
         if (csv_fp == NULL)
         {
-            fprintf(stderr, "%s: Could not open file `%s' for appending: %s\n", argv[0], csv_outfile, strerror(errno));
+            logger_early(1, "%s: Could not open file `%s' for appending: %s", argv[0], csv_outfile, strerror(errno));
             return 1;
         }
 
@@ -1468,11 +1471,8 @@ static int parse_options(int argc, char ** argv)
         stats_csv_fp = fopen(stats_csv_outfile, "a+");
         if (stats_csv_fp == NULL)
         {
-            fprintf(stderr,
-                    "%s: Could not open file `%s' for appending: %s\n",
-                    argv[0],
-                    stats_csv_outfile,
-                    strerror(errno));
+            logger_early(
+                1, "%s: Could not open file `%s' for appending: %s", argv[0], stats_csv_outfile, strerror(errno));
             return 1;
         }
 
@@ -1537,7 +1537,7 @@ static int parse_options(int argc, char ** argv)
 
     if (optind < argc)
     {
-        fprintf(stderr, "Unexpected argument after options\n\n");
+        logger_early(1, "%s", "Unexpected argument after options");
         print_usage(argv[0]);
         return 1;
     }
@@ -1988,12 +1988,12 @@ int main(int argc, char ** argv)
 
     if (nDPIsrvd_setup_address(&distributor->address, serv_optarg) != 0)
     {
-        fprintf(stderr, "%s: Could not parse address `%s'\n", argv[0], serv_optarg);
+        logger_early(1, "%s: Could not parse address `%s'\n", argv[0], serv_optarg);
         goto failure;
     }
 
-    printf("Recv buffer size: %u\n", NETWORK_BUFFER_MAX_SIZE);
-    printf("Connecting to `%s'..\n", serv_optarg);
+    logger(0, "Recv buffer size: %u", NETWORK_BUFFER_MAX_SIZE);
+    logger(0, "Connecting to `%s'..", serv_optarg);
 
     if (nDPIsrvd_connect(distributor) != CONNECT_OK)
     {
