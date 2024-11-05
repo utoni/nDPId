@@ -596,11 +596,7 @@ static int serialize_influx_line(char * buf, size_t siz)
 
     for (size_t i = 0; i < NDPI_MAX_RISK - 1 /* NDPI_NO_RISK */; ++i)
     {
-        bytes = snprintf(buf,
-                         siz,
-                         "flow_risk_%zu_count=%llu,",
-                         i + 1,
-                         (unsigned long long int)influxd_statistics.gauges[0].flow_risk_count[i]);
+        bytes = snprintf(buf, siz, "flow_risk_%zu_count=%llu,", i + 1, influxd_statistics.gauges[0].flow_risk_count[i]);
         CHECK_SNPRINTF_RET(bytes);
     }
     buf[-1] = '\n';
@@ -812,7 +808,8 @@ static int influxd_map_to_stat(char const * const token_str,
                                struct global_map const * const map,
                                size_t map_length)
 {
-    size_t i, null_i = map_length;
+    size_t i;
+    size_t null_i = map_length;
 
     for (i = 0; i < map_length; ++i)
     {
@@ -839,7 +836,7 @@ static int influxd_map_to_stat(char const * const token_str,
     return 1;
 }
 
-static int influxd_map_value_to_stat(struct nDPIsrvd_socket * const sock,
+static int influxd_map_value_to_stat(struct nDPIsrvd_socket const * const sock,
                                      struct nDPIsrvd_json_token const * const token,
                                      struct global_map const * const map,
                                      size_t map_length)
@@ -856,7 +853,7 @@ static int influxd_map_value_to_stat(struct nDPIsrvd_socket * const sock,
     return influxd_map_to_stat(value_str, value_length, map, map_length);
 }
 
-static void influxd_unmap_flow_from_stat(struct flow_user_data * const flow_user_data)
+static void influxd_unmap_flow_from_stat(struct flow_user_data const * const flow_user_data)
 {
     if (flow_user_data->is_ip4 != 0)
     {
@@ -992,7 +989,7 @@ static ssize_t influxd_map_index(char const * const json_key,
     return unknown_key;
 }
 
-static int influxd_map_flow_u8(struct nDPIsrvd_socket * const sock,
+static int influxd_map_flow_u8(struct nDPIsrvd_socket const * const sock,
                                struct nDPIsrvd_json_token const * const token,
                                struct global_map const * const map,
                                size_t map_length,
@@ -1255,22 +1252,22 @@ static void process_flow_stats(struct nDPIsrvd_socket * const sock, struct nDPIs
         if (flow_user_data->confidence == 0 && flow_user_data->confidence_ndpid_invalid == 0)
         {
             struct nDPIsrvd_json_token const * const token = TOKEN_GET_SZ(sock, "ndpi", "confidence");
-            struct nDPIsrvd_json_token const * current = NULL;
-            int next_child_index = -1;
+            struct nDPIsrvd_json_token const * confi_current = NULL;
+            int confi_next_child_index = -1;
 
-            if ((current = nDPIsrvd_get_next_token(sock, token, &next_child_index)) == NULL)
+            if ((confi_current = nDPIsrvd_get_next_token(sock, token, &confi_next_child_index)) == NULL)
             {
                 flow_user_data->confidence_ndpid_invalid = 1;
             }
-            else if (nDPIsrvd_get_next_token(sock, token, &next_child_index) == NULL)
+            else if (nDPIsrvd_get_next_token(sock, token, &confi_next_child_index) == NULL)
             {
                 if (influxd_map_flow_u8(sock,
-                                        current,
+                                        confi_current,
                                         confidence_map,
                                         nDPIsrvd_ARRAY_LENGTH(confidence_map),
                                         &flow_user_data->confidence) != 0 ||
-                    influxd_map_value_to_stat(sock, current, confidence_map, nDPIsrvd_ARRAY_LENGTH(confidence_map)) !=
-                        0)
+                    influxd_map_value_to_stat(
+                        sock, confi_current, confidence_map, nDPIsrvd_ARRAY_LENGTH(confidence_map)) != 0)
                 {
                     flow_user_data->confidence = 0;
                     flow_user_data->confidence_ndpid_invalid = 1;
@@ -1284,7 +1281,7 @@ static void process_flow_stats(struct nDPIsrvd_socket * const sock, struct nDPIs
             if (flow_user_data->confidence_ndpid_invalid != 0)
             {
                 size_t value_len = 0;
-                char const * const value_str = TOKEN_GET_VALUE(sock, current, &value_len);
+                char const * const value_str = TOKEN_GET_VALUE(sock, confi_current, &value_len);
 
                 logger(1, "Unknown/Invalid JSON value for key 'ndpi','confidence': %.*s", (int)value_len, value_str);
             }
@@ -1619,7 +1616,8 @@ static void sighandler(int signum)
 
 int main(int argc, char ** argv)
 {
-    int retval = 1, epollfd = -1;
+    int retval = 1;
+    int epollfd = -1;
 
     init_logging("nDPIsrvd-influxd");
 

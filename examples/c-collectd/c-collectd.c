@@ -1358,21 +1358,22 @@ static void process_flow_stats(struct nDPIsrvd_socket * const sock, struct nDPIs
         if (flow_user_data->confidence == 0 && flow_user_data->confidence_ndpid_invalid == 0)
         {
             struct nDPIsrvd_json_token const * const token = TOKEN_GET_SZ(sock, "ndpi", "confidence");
+            struct nDPIsrvd_json_token const * confi_current = NULL;
+            int confi_next_child_index = -1;
 
-            next_child_index = -1;
-            if ((current = nDPIsrvd_get_next_token(sock, token, &next_child_index)) == NULL)
+            if ((confi_current = nDPIsrvd_get_next_token(sock, token, &confi_next_child_index)) == NULL)
             {
                 flow_user_data->confidence_ndpid_invalid = 1;
             }
-            else if (nDPIsrvd_get_next_token(sock, token, &next_child_index) == NULL)
+            else if (nDPIsrvd_get_next_token(sock, token, &confi_next_child_index) == NULL)
             {
                 if (collectd_map_flow_u8(sock,
-                                         current,
+                                         confi_current,
                                          confidence_map,
                                          nDPIsrvd_ARRAY_LENGTH(confidence_map),
                                          &flow_user_data->confidence) != 0 ||
-                    collectd_map_value_to_stat(sock, current, confidence_map, nDPIsrvd_ARRAY_LENGTH(confidence_map)) !=
-                        0)
+                    collectd_map_value_to_stat(
+                        sock, confi_current, confidence_map, nDPIsrvd_ARRAY_LENGTH(confidence_map)) != 0)
                 {
                     flow_user_data->confidence = 0;
                     flow_user_data->confidence_ndpid_invalid = 1;
@@ -1386,7 +1387,7 @@ static void process_flow_stats(struct nDPIsrvd_socket * const sock, struct nDPIs
             if (flow_user_data->confidence_ndpid_invalid != 0)
             {
                 size_t value_len = 0;
-                char const * const value_str = TOKEN_GET_VALUE(sock, current, &value_len);
+                char const * const value_str = TOKEN_GET_VALUE(sock, confi_current, &value_len);
 
                 logger(1, "Unknown/Invalid JSON value for key 'ndpi','confidence': %.*s", (int)value_len, value_str);
             }
