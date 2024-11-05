@@ -34,6 +34,9 @@
 
 #include "config.h"
 #include "nDPIsrvd.h"
+#ifdef ENABLE_CRYPTO
+#include "ncrypt.h"
+#endif
 #include "nio.h"
 #ifdef ENABLE_PFRING
 #include "npfring.h"
@@ -307,6 +310,9 @@ struct nDPId_workflow
     uint64_t total_compression_diff;
     uint64_t current_compression_diff;
 #endif
+#ifdef ENABLE_CRYPTO
+    struct ncrypt crypto;
+#endif
 
     uint64_t last_scan_time;
     uint64_t last_status_time;
@@ -501,6 +507,10 @@ static struct
 #ifdef ENABLE_PFRING
     struct cmdarg use_pfring;
 #endif
+#ifdef ENABLE_CRYPTO
+    struct cmdarg local_private_key_file;
+    struct cmdarg remote_public_key_file;
+#endif
     /* subopts */
     struct cmdarg max_flows_per_thread;
     struct cmdarg max_idle_flows_per_thread;
@@ -550,6 +560,10 @@ static struct
 #endif
 #ifdef ENABLE_PFRING
                    .use_pfring = CMDARG_BOOL(0),
+#endif
+#ifdef ENABLE_CRYPTO
+                   .local_private_key_file = CMDARG_STR(NULL),
+                   .remote_public_key_file = CMDARG_STR(NULL),
 #endif
                    .max_flows_per_thread = CMDARG_ULL(nDPId_MAX_FLOWS_PER_THREAD / 2),
                    .max_idle_flows_per_thread = CMDARG_ULL(nDPId_MAX_IDLE_FLOWS_PER_THREAD / 2),
@@ -1559,6 +1573,61 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
         return NULL;
     }
 
+#ifdef ENABLE_CRYPTO
+    if (IS_CMDARG_SET(nDPId_options.local_private_key_file) != 0 &&
+        IS_CMDARG_SET(nDPId_options.remote_public_key_file) != 0)
+    {
+        unsigned char local_priv_key[NCRYPT_X25519_KEYLEN];
+        unsigned char remote_pub_key[NCRYPT_X25519_KEYLEN];
+        int rv;
+
+        rv = chmod_chown(GET_CMDARG_STR(nDPId_options.local_private_key_file), S_IRUSR | S_IWUSR, "root", "root");
+        if (rv != 0)
+        {
+            logger_early(1,
+                         "Could not chmod/chown private key file `%s' to 0600/root: %s",
+                         GET_CMDARG_STR(nDPId_options.local_private_key_file),
+                         strerror(rv));
+            free_workflow(&workflow);
+            return NULL;
+        }
+        rv = ncrypt_load_privkey(GET_CMDARG_STR(nDPId_options.local_private_key_file), local_priv_key);
+        if (rv != 0)
+        {
+            logger_early(1,
+                         "Could not load (local) private key file `%s': %d",
+                         GET_CMDARG_STR(nDPId_options.local_private_key_file),
+                         rv);
+            free_workflow(&workflow);
+            return NULL;
+        }
+        rv = ncrypt_load_pubkey(GET_CMDARG_STR(nDPId_options.remote_public_key_file), remote_pub_key);
+        if (rv != 0)
+        {
+            logger_early(1,
+                         "Could not load (remote) public key file `%s': %d",
+                         GET_CMDARG_STR(nDPId_options.remote_public_key_file),
+                         rv);
+            free_workflow(&workflow);
+            return NULL;
+        }
+        rv = ncrypt_init(&workflow->crypto, local_priv_key, remote_pub_key);
+        if (rv != 0)
+        {
+            logger_early(1, "Could not init crypto system: %d", rv);
+            free_workflow(&workflow);
+            return NULL;
+        }
+        rv = ncrypt_init_encrypt(&workflow->crypto);
+        if (rv != 0)
+        {
+            logger_early(1, "Could not init encryption mode: %d", rv);
+            free_workflow(&workflow);
+            return NULL;
+        }
+    }
+#endif
+
     return workflow;
 }
 
@@ -1685,6 +1754,13 @@ static void free_workflow(struct nDPId_workflow ** const workflow)
     if (GET_CMDARG_BOOL(nDPId_options.use_pfring) != 0)
     {
         npfring_close(&w->npf);
+    }
+#endif
+#ifdef ENABLE_CRYPTO
+    if (IS_CMDARG_SET(nDPId_options.local_private_key_file) != 0 &&
+        IS_CMDARG_SET(nDPId_options.remote_public_key_file) != 0)
+    {
+        ncrypt_free(&w->crypto);
     }
 #endif
 
@@ -2609,6 +2685,28 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
             return;
         }
     }
+
+#ifdef ENABLE_CRYPTO
+    if (IS_CMDARG_SET(nDPId_options.local_private_key_file) != 0 &&
+        IS_CMDARG_SET(nDPId_options.remote_public_key_file) != 0)
+    {
+        int rv;
+        struct ncrypt_buffer buf = {.data_used = s_ret};
+
+        memcpy(buf.plaintext.data, newline_json_msg, s_ret);
+        rv = ncrypt_encrypt_send(&workflow->crypto, reader_thread->collector_sockfd, &buf);
+        if (rv - (NCRYPT_AES_IVLEN + NCRYPT_TAG_SIZE) != s_ret)
+        {
+            logger(1,
+                   "[%8llu, %zu] Crypto: encrypt and send returned %d, but expected %d",
+                   workflow->packets_captured,
+                   reader_thread->array_index,
+                   rv,
+                   s_ret + (NCRYPT_AES_IVLEN + NCRYPT_TAG_SIZE));
+        }
+        return;
+    }
+#endif
 
     errno = 0;
     ssize_t written;
@@ -5571,7 +5669,7 @@ static int nDPId_parse_options(int argc, char ** argv)
 {
     int opt;
 
-    while ((opt = getopt(argc, argv, "f:i:rIEB:tlL:c:edp:u:g:R:P:C:J:S:a:U:Azo:vh")) != -1)
+    while ((opt = getopt(argc, argv, "f:i:rIEB:tlL:c:k:K:edp:u:g:R:P:C:J:S:a:U:Azo:vh")) != -1)
     {
         switch (opt)
         {
@@ -5613,6 +5711,22 @@ static int nDPId_parse_options(int argc, char ** argv)
             case 'c':
                 set_cmdarg_string(&nDPId_options.collector_address, optarg);
                 break;
+            case 'k':
+#ifdef ENABLE_CRYPTO
+                set_cmdarg_string(&nDPId_options.local_private_key_file, optarg);
+                break;
+#else
+                logger(1, "%s", "nDPId was built w/o OpenSSL/Crypto support");
+                return 1;
+#endif
+            case 'K':
+#ifdef ENABLE_CRYPTO
+                set_cmdarg_string(&nDPId_options.remote_public_key_file, optarg);
+                break;
+#else
+                logger(1, "%s", "nDPId was built w/o OpenSSL/Crypto support");
+                return 1;
+#endif
             case 'e':
 #ifdef ENABLE_EPOLL
                 set_cmdarg_boolean(&nDPId_options.use_poll, 1);
@@ -5971,6 +6085,16 @@ static int validate_options(void)
     {
         logger_early(1, "%s", "Higher values of max-packets-per-flow-to-send may cause superfluous network usage.");
     }
+#ifdef ENABLE_CRYPTO
+    if ((IS_CMDARG_SET(nDPId_options.local_private_key_file) != 0 &&
+         IS_CMDARG_SET(nDPId_options.remote_public_key_file) == 0) ||
+        (IS_CMDARG_SET(nDPId_options.local_private_key_file) == 0 &&
+         IS_CMDARG_SET(nDPId_options.remote_public_key_file) != 0))
+    {
+        logger_early(1, "%s", "Encryption requires a local private key file and a remote public key file to be set.");
+        retval = 1;
+    }
+#endif
 
     return retval;
 }

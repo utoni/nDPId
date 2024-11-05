@@ -93,6 +93,7 @@ option(ENABLE_SANITIZER_THREAD "Enable TSAN (does not work together with ASAN)."
 option(ENABLE_MEMORY_PROFILING "Enable dynamic memory tracking." OFF)
 option(ENABLE_ZLIB "Enable zlib support for nDPId (experimental)." OFF)
 option(ENABLE_SYSTEMD "Install systemd components." OFF)
+option(ENABLE_CRYPTO "Enable OpenSSL cryptographic support in nDPId/nDPIsrvd." OFF)
 option(BUILD_EXAMPLES "Build C examples." ON)
 option(BUILD_RUST_EXAMPLES "Build Rust examples." OFF)
 if(BUILD_EXAMPLES)
@@ -197,7 +198,10 @@ endif()
 if(ENABLE_PFRING)
     set(NDPID_PFRING_SRCS npfring.c)
 endif()
-add_executable(nDPId nDPId.c ${NDPID_PFRING_SRCS} nio.c utils.c)
+if(ENABLE_CRYPTO)
+    set(CRYPTO_SRCS ncrypt.c)
+endif()
+add_executable(nDPId nDPId.c ${NDPID_PFRING_SRCS} ${CRYPTO_SRCS} nio.c utils.c)
 add_executable(nDPIsrvd nDPIsrvd.c nio.c utils.c)
 add_executable(nDPId-test nDPId-test.c ${NDPID_PFRING_SRCS})
 
@@ -385,6 +389,12 @@ if(BUILD_NDPI)
     add_dependencies(nDPId-test libnDPI)
 endif()
 
+if(ENABLE_CRYPTO)
+    find_package(OpenSSL REQUIRED)
+    set(OSSL_DEFS "-DENABLE_CRYPTO=1")
+    set(OSSL_LIBRARY "${OPENSSL_CRYPTO_LIBRARY}")
+endif()
+
 if(STATIC_LIBNDPI_INSTALLDIR OR BUILD_NDPI OR NDPI_NO_PKGCONFIG)
     if(NDPI_WITH_GCRYPT)
         find_package(GCRYPT "1.4.2" REQUIRED)
@@ -448,25 +458,26 @@ if(NOT pkgcfg_lib_PCAP_pcap)
 endif()
 
 target_compile_options(nDPId PRIVATE "-pthread")
-target_compile_definitions(nDPId PRIVATE -D_GNU_SOURCE=1 -DPKG_VERSION=\"${PKG_VERSION}\" -DGIT_VERSION=\"${GIT_VERSION}\" ${NDPID_DEFS} ${EPOLL_DEFS} ${ZLIB_DEFS} ${PFRING_DEFS})
+target_compile_definitions(nDPId PRIVATE -D_GNU_SOURCE=1 -DPKG_VERSION=\"${PKG_VERSION}\" -DGIT_VERSION=\"${GIT_VERSION}\"
+                                         ${NDPID_DEFS} ${EPOLL_DEFS} ${ZLIB_DEFS} ${PFRING_DEFS} ${OSSL_DEFS})
 target_include_directories(nDPId PRIVATE "${STATIC_LIBNDPI_INC}" "${DEFAULT_NDPI_INCLUDE}" ${NDPID_DEPS_INC} ${PFRING_KERNEL_INC} ${PFRING_INC})
 target_link_libraries(nDPId "${STATIC_LIBNDPI_LIB}" "${STATIC_PFRING_LIB}" "${pkgcfg_lib_PCAP_pcap}" "${pkgcfg_lib_NDPI_ndpi}"
                             "${pkgcfg_lib_PCRE_pcre2-8}" "${pkgcfg_lib_MAXMINDDB_maxminddb}" "${pkgcfg_lib_ZLIB_z}"
                             "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}" "${LIBM_LIB}" "${PF_RING_LIB}"
-                            "-pthread")
+                            "${OSSL_LIBRARY}" "-pthread")
 
 target_compile_definitions(nDPIsrvd PRIVATE -D_GNU_SOURCE=1 -DPKG_VERSION=\"${PKG_VERSION}\" -DGIT_VERSION=\"${GIT_VERSION}\" ${NDPID_DEFS} ${EPOLL_DEFS})
 target_include_directories(nDPIsrvd PRIVATE ${NDPID_DEPS_INC})
 
 target_compile_options(nDPId-test PRIVATE "-Wno-unused-function" "-pthread")
 target_compile_definitions(nDPId-test PRIVATE -D_GNU_SOURCE=1 -DNO_MAIN=1 -DPKG_VERSION=\"${PKG_VERSION}\" -DGIT_VERSION=\"${GIT_VERSION}\"
-                                              ${NDPID_DEFS} ${EPOLL_DEFS} ${ZLIB_DEFS} ${PFRING_DEFS} ${NDPID_TEST_MPROF_DEFS})
+                                              ${NDPID_DEFS} ${EPOLL_DEFS} ${ZLIB_DEFS} ${PFRING_DEFS} ${OSSL_DEFS} ${NDPID_TEST_MPROF_DEFS})
 target_include_directories(nDPId-test PRIVATE
                            "${STATIC_LIBNDPI_INC}" "${DEFAULT_NDPI_INCLUDE}" ${NDPID_DEPS_INC} ${PFRING_KERNEL_INC} ${PFRING_INC})
 target_link_libraries(nDPId-test "${STATIC_LIBNDPI_LIB}" "${STATIC_PFRING_LIB}" "${pkgcfg_lib_PCAP_pcap}" "${pkgcfg_lib_NDPI_ndpi}"
                                  "${pkgcfg_lib_PCRE_pcre2-8}" "${pkgcfg_lib_MAXMINDDB_maxminddb}" "${pkgcfg_lib_ZLIB_z}"
                                  "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}" "${LIBM_LIB}" "${PF_RING_LIB}"
-                                 "-pthread")
+                                 "${OSSL_LIBRARY}" "-pthread")
 
 if(CMAKE_C_COMPILER_ID STREQUAL "Clang")
     add_executable(fuzz_ndpi_process_packet test/fuzz_ndpi_process_packet.c)
@@ -624,6 +635,7 @@ message(STATUS "ENABLE_PFRING............: ${ENABLE_PFRING}")
 if(ENABLE_PFRING)
 message(STATUS "PFRING_LINK_STATIC.......: ${PFRING_LINK_STATIC}")
 endif()
+message(STATUS "ENABLE_CRYPTO............: ${ENABLE_CRYPTO}")
 message(STATUS "ENABLE_COVERAGE..........: ${ENABLE_COVERAGE}")
 message(STATUS "ENABLE_SANITIZER.........: ${ENABLE_SANITIZER}")
 message(STATUS "ENABLE_SANITIZER_THREAD..: ${ENABLE_SANITIZER_THREAD}")
