@@ -1303,6 +1303,12 @@ static enum nDPIsrvd_callback_return process_analyse_events(struct nDPIsrvd_sock
         {
             risks[csv_risks_used++] = '"';
         }
+        if (BUFFER_REMAINING(csv_risks_used) > 0)
+        {
+            risks[csv_risks_used] = '\0';
+        } else {
+            risks[csv_risks_used - 1] = '\0';
+        }
         csv_buf_add(buf, &csv_buf_used, risks, csv_risks_used);
     }
 
