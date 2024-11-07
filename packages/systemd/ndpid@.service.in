@@ -8,6 +8,7 @@ Type=simple
 ExecStartPre=/bin/sh -c 'test -r "@CMAKE_INSTALL_PREFIX@/etc/nDPId/%i.conf" || cp -v "@CMAKE_INSTALL_PREFIX@/share/nDPId/ndpid.conf.example" "@CMAKE_INSTALL_PREFIX@/etc/nDPId/%i.conf"'
 ExecStart=@CMAKE_INSTALL_PREFIX@/sbin/nDPId -f @CMAKE_INSTALL_PREFIX@/etc/nDPId/%i.conf -i %i -u ndpid -c /run/nDPIsrvd/collector
 Restart=on-failure
+Environment="NDPID_STARTED_BY_SYSTEMD="
 
 [Install]
 WantedBy=multi-user.target

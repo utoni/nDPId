@@ -3452,8 +3452,8 @@ static uint32_t calculate_ndpi_flow_struct_hash(struct ndpi_flow_struct const * 
 /* mask for FCF */
 #define WIFI_DATA 0x2
 #define FCF_TYPE(fc) (((fc) >> 2) & 0x3) /* 0000 0011 = 0x3 */
-#define FCF_TO_DS(fc) ((fc)&0x0100)
-#define FCF_FROM_DS(fc) ((fc)&0x0200)
+#define FCF_TO_DS(fc) ((fc) & 0x0100)
+#define FCF_FROM_DS(fc) ((fc) & 0x0200)
 /* mask for Bad FCF presence */
 #define BAD_FCS 0x50 /* 0101 0000 */
 static int process_datalink_layer(struct nDPId_reader_thread * const reader_thread,
@@ -4881,7 +4881,6 @@ static void run_capture_loop(struct nDPId_reader_thread * const reader_thread)
                 if (nio_has_error(&io, i) == NIO_SUCCESS)
                 {
                     logger(1, "%s", "Event I/O error");
-                    MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
                 }
 
                 int fd = nio_get_fd(&io, i);

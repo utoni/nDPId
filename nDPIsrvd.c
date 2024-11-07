@@ -1834,7 +1834,7 @@ int main(int argc, char ** argv)
                    GET_CMDARG_STR(nDPIsrvd_options.user),
                    strerror(ret));
         }
-        if (ret != -EPERM)
+        if (ret != EPERM)
         {
             goto error_unlink_sockets;
         }
@@ -1867,7 +1867,7 @@ int main(int argc, char ** argv)
                    GET_CMDARG_STR(nDPIsrvd_options.user),
                    strerror(ret));
         }
-        if (ret != -EPERM)
+        if (ret != EPERM)
         {
             goto error_unlink_sockets;
         }

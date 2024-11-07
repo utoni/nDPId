@@ -586,9 +586,12 @@ __attribute__((format(printf, 2, 3))) void logger_early(int is_error, char const
     int old_log_to_console = log_to_console;
     va_list ap;
 
-    va_start(ap, format);
-    vlogger_to(fileno(stderr), is_error, format, &ap);
-    va_end(ap);
+    if (getenv("NDPID_STARTED_BY_SYSTEMD") == NULL)
+    {
+        va_start(ap, format);
+        vlogger_to(fileno(stderr), is_error, format, &ap);
+        va_end(ap);
+    }
 
     log_to_console = 0;
 
