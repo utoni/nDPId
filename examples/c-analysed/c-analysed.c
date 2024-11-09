@@ -207,7 +207,7 @@ static struct
 
         nDPIsrvd_ull flow_risk_count[NDPI_MAX_RISK - 1 /* NDPI_NO_RISK */];
         nDPIsrvd_ull flow_risk_unknown_count;
-    } gauges[2]; /* values after InfluxDB push: gauges[0] -= gauges[1], gauges[1] is zero'd afterwards */
+    } gauges[2]; /* values after CSV write: gauges[0] -= gauges[1], gauges[1] is zero'd afterwards */
 } analysed_statistics = {};
 
 struct global_map
@@ -1553,8 +1553,12 @@ static int parse_options(int argc, char ** argv)
 
         if (str_value_to_ull(analysed_interval, &analysed_interval_ull) != CONVERSION_OK)
         {
-            logger_early(1, "InfluxDB push interval `%s' is not a valid number", analysed_interval);
+            logger_early(1, "Global Stats CSV write interval `%s' is not a valid number", analysed_interval);
             return 1;
+        }
+        if (analysed_interval_ull == 0)
+        {
+            logger_early(0, "%s", "Global Stats CSV write interval is zero, summarizing stats during termination");
         }
     }
 
@@ -1570,6 +1574,11 @@ static int parse_options(int argc, char ** argv)
 
 static int set_analysed_timer(void)
 {
+    if (analysed_interval_ull == 0)
+    {
+        return 0;
+    }
+
     const time_t interval = analysed_interval_ull * 1000;
     struct itimerspec its;
     its.it_value.tv_sec = interval / 1000;
@@ -1814,7 +1823,7 @@ static int write_global_flow_stats(void)
     buf[-1] = '\n';
 
     struct timeval tval;
-    if (gettimeofday(&tval, NULL) == 0)
+    if (analysed_interval_ull != 0 && gettimeofday(&tval, NULL) == 0)
     {
         unsigned long long int sec = tval.tv_sec;
         unsigned long long int usec = tval.tv_usec;
@@ -2112,6 +2121,13 @@ int main(int argc, char ** argv)
 
     logger(0, "%s", "Initialization succeeded.");
     retval = mainloop(epollfd, distributor);
+    if (analysed_interval_ull == 0)
+    {
+        if (write_global_flow_stats() != 0)
+        {
+            logger(1, "%s", "Could not write global/flow stats on termination.");
+        }
+    }
 failure:
     nDPIsrvd_socket_free(&distributor);
     daemonize_shutdown(pidfile);

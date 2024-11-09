@@ -313,7 +313,8 @@ if [ -x "${NDPISRVD_ANALYSED}" ]; then
         fi
         out_name="$(basename ${out_file})"
         pcap_cfg="$(basename $(dirname ${out_file%.out}))"
-        stdout_file="/tmp/nDPId-test-stdout/${pcap_cfg}_${out_name}.flow-analyse.csv.new"
+        flow_stats_file="/tmp/nDPId-test-stdout/${pcap_cfg}_${out_name}.flow-analyse.csv.new"
+        global_stats_file="/tmp/nDPId-test-stdout/${pcap_cfg}_${out_name}.global-analyse.csv.new"
         stderr_file="/tmp/nDPId-test-stderr/${pcap_cfg}_${out_name}"
         result_file="${MYDIR}/results/flow-analyse/${pcap_cfg}/${out_name}"
         mkdir -p "$(dirname ${result_file})"
@@ -321,23 +322,25 @@ if [ -x "${NDPISRVD_ANALYSED}" ]; then
         cat "${out_file}" | grep -vE '^~~.*$' | ${NETCAT_EXEC} &
         nc_pid=$!
         while ! ss -x -t -n -l | grep -q "${NETCAT_SOCK}"; do sleep 0.1; printf '%s\n' "Waiting until socket ${NETCAT_SOCK} is available.." >>"${stderr_file}"; done
-        ${NDPISRVD_ANALYSED} -l -s "${NETCAT_SOCK}" -o "${stdout_file}" 2>>"${stderr_file}" 1>&2
+        ${NDPISRVD_ANALYSED} -l -s "${NETCAT_SOCK}" -o "${flow_stats_file}" -O "${global_stats_file}" -t 0 2>>"${stderr_file}" 1>&2
+        cat "${global_stats_file}" >>"${flow_stats_file}"
+        rm "${global_stats_file}"
         kill -SIGTERM ${nc_pid} 2>/dev/null
         wait ${nc_pid} 2>/dev/null
         while ss -x -t -n -l | grep -q "${NETCAT_SOCK}"; do sleep 0.1; printf '%s\n' "Waiting until socket ${NETCAT_SOCK} is not available anymore.." >>"${stderr_file}"; done
         if [ ! -r "${result_file}" ]; then
             printf '%s\n' '[NEW]'
             test ${IS_GIT} -eq 1 && \
-                mv "${stdout_file}" "${result_file}"
+                mv "${flow_stats_file}" "${result_file}"
             TESTS_FAILED=$((TESTS_FAILED + 1))
-        elif diff -u0 "${result_file}" "${stdout_file}" >/dev/null; then
+        elif diff -u0 "${result_file}" "${flow_stats_file}" >/dev/null; then
             printf '%s\n' '[OK]'
-            rm -f "${stdout_file}"
+            rm -f "${flow_stats_file}"
         else
             printf '%s\n' '[DIFF]'
-            diff -u0 "${result_file}" "${stdout_file}"
+            diff -u0 "${result_file}" "${flow_stats_file}"
             test ${IS_GIT} -eq 1 && \
-                mv "${stdout_file}" "${result_file}"
+                mv "${flow_stats_file}" "${result_file}"
             TESTS_FAILED=$((TESTS_FAILED + 1))
         fi
     done
