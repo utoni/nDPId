@@ -976,35 +976,27 @@ static int is_ip_in_subnet(union nDPId_ip const * const cmp_ip,
 
 static void get_ip4_from_sockaddr(struct sockaddr_in const * const saddr, union nDPId_ip * dest)
 {
-    switch (saddr->sin_family)
+    if (saddr->sin_family == AF_INET)
     {
-        case AF_INET:
-            dest->v4.ip = saddr->sin_addr.s_addr;
-            break;
-        case AF_INET6:
-            return;
+        dest->v4.ip = saddr->sin_addr.s_addr;
     }
 }
 
 static void get_ip6_from_sockaddr(struct sockaddr_in6 const * const saddr, union nDPId_ip * dest)
 {
-    switch (saddr->sin6_family)
+    if (saddr->sin6_family == AF_INET6)
     {
-        case AF_INET6:
 #if defined(__FreeBSD__) || defined(__APPLE__)
-            dest->v6.ip_u32[0] = saddr->sin6_addr.__u6_addr.__u6_addr32[0];
-            dest->v6.ip_u32[1] = saddr->sin6_addr.__u6_addr.__u6_addr32[1];
-            dest->v6.ip_u32[2] = saddr->sin6_addr.__u6_addr.__u6_addr32[2];
-            dest->v6.ip_u32[3] = saddr->sin6_addr.__u6_addr.__u6_addr32[3];
+        dest->v6.ip_u32[0] = saddr->sin6_addr.__u6_addr.__u6_addr32[0];
+        dest->v6.ip_u32[1] = saddr->sin6_addr.__u6_addr.__u6_addr32[1];
+        dest->v6.ip_u32[2] = saddr->sin6_addr.__u6_addr.__u6_addr32[2];
+        dest->v6.ip_u32[3] = saddr->sin6_addr.__u6_addr.__u6_addr32[3];
 #else
-            dest->v6.ip_u32[0] = saddr->sin6_addr.s6_addr32[0];
-            dest->v6.ip_u32[1] = saddr->sin6_addr.s6_addr32[1];
-            dest->v6.ip_u32[2] = saddr->sin6_addr.s6_addr32[2];
-            dest->v6.ip_u32[3] = saddr->sin6_addr.s6_addr32[3];
+        dest->v6.ip_u32[0] = saddr->sin6_addr.s6_addr32[0];
+        dest->v6.ip_u32[1] = saddr->sin6_addr.s6_addr32[1];
+        dest->v6.ip_u32[2] = saddr->sin6_addr.s6_addr32[2];
+        dest->v6.ip_u32[3] = saddr->sin6_addr.s6_addr32[3];
 #endif
-            break;
-        default:
-            return;
     }
 }
 
@@ -1020,9 +1012,9 @@ static void get_ip6_address_and_netmask(struct ifaddrs const * const ifaddr)
         char addr[INET6_ADDRSTRLEN];
         char netm[INET6_ADDRSTRLEN];
         char subn[INET6_ADDRSTRLEN];
-        void * saddr = &nDPId_options.pcap_dev_ip6.v6.ip;
-        void * snetm = &nDPId_options.pcap_dev_netmask6.v6.ip;
-        void * ssubn = &nDPId_options.pcap_dev_subnet6.v6.ip;
+        void const * saddr = &nDPId_options.pcap_dev_ip6.v6.ip;
+        void const * snetm = &nDPId_options.pcap_dev_netmask6.v6.ip;
+        void const * ssubn = &nDPId_options.pcap_dev_subnet6.v6.ip;
         logger(0,
                "%s IPv6 address netmask subnet: %s %s %s",
                GET_CMDARG_STR(nDPId_options.pcap_file_or_interface),
@@ -1044,9 +1036,9 @@ static void get_ip4_address_and_netmask(struct ifaddrs const * const ifaddr)
         char addr[INET_ADDRSTRLEN];
         char netm[INET_ADDRSTRLEN];
         char subn[INET_ADDRSTRLEN];
-        void * saddr = &nDPId_options.pcap_dev_ip4.v4.ip;
-        void * snetm = &nDPId_options.pcap_dev_netmask4.v4.ip;
-        void * ssubn = &nDPId_options.pcap_dev_subnet4.v4.ip;
+        void const * saddr = &nDPId_options.pcap_dev_ip4.v4.ip;
+        void const * snetm = &nDPId_options.pcap_dev_netmask4.v4.ip;
+        void const * ssubn = &nDPId_options.pcap_dev_subnet4.v4.ip;
         logger(0,
                "%s IPv4 address netmask subnet: %s %s %s",
                GET_CMDARG_STR(nDPId_options.pcap_file_or_interface),
@@ -1058,7 +1050,8 @@ static void get_ip4_address_and_netmask(struct ifaddrs const * const ifaddr)
 
 static int get_ip_netmask_from_pcap_dev(char const * const pcap_dev)
 {
-    int retval = 0, found_dev = 0;
+    int retval = 0;
+    int found_dev = 0;
     int ip4_interface_avail = 0;
     int ip6_interface_avail = 0;
     struct ifaddrs * ifaddrs = NULL;
@@ -1187,7 +1180,8 @@ static void ndpi_debug_printf(unsigned int proto,
                               ...)
 {
     va_list vl;
-    int written, is_log_err = 0;
+    int written;
+    int is_log_err = 0;
     char buf[128];
     struct nDPId_workflow * const workflow = (struct nDPId_workflow *)ndpi_get_user_data(ndpi_struct);
 
@@ -3452,8 +3446,8 @@ static uint32_t calculate_ndpi_flow_struct_hash(struct ndpi_flow_struct const * 
 /* mask for FCF */
 #define WIFI_DATA 0x2
 #define FCF_TYPE(fc) (((fc) >> 2) & 0x3) /* 0000 0011 = 0x3 */
-#define FCF_TO_DS(fc) ((fc) & 0x0100)
-#define FCF_FROM_DS(fc) ((fc) & 0x0200)
+#define FCF_TO_DS(fc) ((fc)&0x0100)
+#define FCF_FROM_DS(fc) ((fc)&0x0200)
 /* mask for Bad FCF presence */
 #define BAD_FCS 0x50 /* 0101 0000 */
 static int process_datalink_layer(struct nDPId_reader_thread * const reader_thread,
