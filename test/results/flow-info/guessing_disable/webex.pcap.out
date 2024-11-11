@@ -31,7 +31,7 @@
                    RISK: TLS (probably) Not Carrying HTTPS
  detection-update: [.....4] [ip4][..tcp] [.......10.8.0.1][41351] -> [..64.68.105.103][..443] [TLS.Webex][Webex][VoIP][Acceptable][radcom.webex.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-          analyse: [.....2] [ip4][..tcp] [.......10.8.0.1][41348] -> [..64.68.105.103][..443] [TLS.Webex][Webex][VoIP][Acceptable][radcom.webex.com]
+          analyse: [.....2] [ip4][..tcp] [.......10.8.0.1][41348] -> [..64.68.105.103][..443] [TLS.Webex][Webex][VoIP][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.455|     0.115|     0.126|        15828.845|    4.100]
                    [PKTLEN......:     40.000| 18006.000|  1574.700|  3700.100|     13691057.000|    2.900]
@@ -399,9 +399,9 @@
                    RISK: TLS (probably) Not Carrying HTTPS
              idle: [.....2] [ip4][..tcp] [.......10.8.0.1][41348] -> [..64.68.105.103][..443] [TLS.Webex][Webex][VoIP][Acceptable][radcom.webex.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-             idle: [.....3] [ip4][..tcp] [.......10.8.0.1][41350] -> [..64.68.105.103][..443] [TLS.Webex][Webex][VoIP][Acceptable][radcom.webex.com]
+             idle: [.....3] [ip4][..tcp] [.......10.8.0.1][41350] -> [..64.68.105.103][..443] [TLS.Webex][Webex][VoIP][Acceptable]
                    RISK: TLS (probably) Not Carrying HTTPS
-             idle: [.....4] [ip4][..tcp] [.......10.8.0.1][41351] -> [..64.68.105.103][..443] [TLS.Webex][Webex][VoIP][Acceptable][radcom.webex.com]
+             idle: [.....4] [ip4][..tcp] [.......10.8.0.1][41351] -> [..64.68.105.103][..443] [TLS.Webex][Webex][VoIP][Acceptable]
                    RISK: TLS (probably) Not Carrying HTTPS
               end: [.....7] [ip4][..tcp] [.......10.8.0.1][41354] -> [..64.68.105.103][..443] [TLS.Webex][Webex][VoIP][Acceptable]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher

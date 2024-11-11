@@ -1,0 +1,13 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1][..77] [ip4][..tcp] [..91.238.181.21][35888] -> [....89.31.79.12][.3389]
+         detected: [.....1][..77] [ip4][..tcp] [..91.238.181.21][35888] -> [....89.31.79.12][.3389] [RDP][Unknown][RemoteAccess][Acceptable]
+                   RISK: Desktop/File Sharing
+ detection-update: [.....1][..77] [ip4][..tcp] [..91.238.181.21][35888] -> [....89.31.79.12][.3389] [TLS.RDP][Unknown][RemoteAccess][Acceptable][]
+                   RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Desktop/File Sharing
+ detection-update: [.....1][..77] [ip4][..tcp] [..91.238.181.21][35888] -> [....89.31.79.12][.3389] [TLS.RDP][Unknown][RemoteAccess][Acceptable][]
+                   RISK: Self-signed Cert, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Desktop/File Sharing
+              end: [.....1][..77] [ip4][..tcp] [..91.238.181.21][35888] -> [....89.31.79.12][.3389] [TLS.RDP][Unknown][RemoteAccess][Acceptable]
+                   RISK: Self-signed Cert, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Desktop/File Sharing
+     DAEMON-EVENT: shutdown

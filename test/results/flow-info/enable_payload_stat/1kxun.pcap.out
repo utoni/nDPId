@@ -529,13 +529,13 @@
              idle: [....25] [ip4][..tcp] [..192.168.115.8][49598] -> [.222.73.254.167][...80] [HTTP.1kxun][Unknown][Streaming][Fun][kankan.1kxun.com]
           guessed: [....17] [ip4][..tcp] [...192.168.5.16][53622] -> [.192.168.115.75][..443] [TLS][Unknown][Web][Safe]
               end: [....17] [ip4][..tcp] [...192.168.5.16][53622] -> [.192.168.115.75][..443]
-              end: [....45] [ip4][..tcp] [...192.168.5.16][53623] -> [.192.168.115.75][..443] [TLS][Unknown][Web][Safe][192.168.115.75]
+              end: [....45] [ip4][..tcp] [...192.168.5.16][53623] -> [.192.168.115.75][..443] [TLS][Unknown][Web][Safe]
                    RISK: Weak TLS Cipher, HTTP/TLS/QUIC Numeric Hostname/SNI, TLS (probably) Not Carrying HTTPS
-              end: [....87] [ip4][..tcp] [...192.168.5.16][53625] -> [.192.168.115.75][..443] [TLS][Unknown][Web][Safe][192.168.115.75]
+              end: [....87] [ip4][..tcp] [...192.168.5.16][53625] -> [.192.168.115.75][..443] [TLS][Unknown][Web][Safe]
                    RISK: Weak TLS Cipher, HTTP/TLS/QUIC Numeric Hostname/SNI, TLS (probably) Not Carrying HTTPS
-              end: [...107] [ip4][..tcp] [...192.168.5.16][53626] -> [.192.168.115.75][..443] [TLS][Unknown][Web][Safe][192.168.115.75]
+              end: [...107] [ip4][..tcp] [...192.168.5.16][53626] -> [.192.168.115.75][..443] [TLS][Unknown][Web][Safe]
                    RISK: Weak TLS Cipher, HTTP/TLS/QUIC Numeric Hostname/SNI, TLS (probably) Not Carrying HTTPS
-              end: [...117] [ip4][..tcp] [...192.168.5.16][53629] -> [.192.168.115.75][..443] [TLS][Unknown][Web][Safe][192.168.115.75]
+              end: [...117] [ip4][..tcp] [...192.168.5.16][53629] -> [.192.168.115.75][..443] [TLS][Unknown][Web][Safe]
                    RISK: Weak TLS Cipher, HTTP/TLS/QUIC Numeric Hostname/SNI, TLS (probably) Not Carrying HTTPS
              idle: [.....6] [ip4][..udp] [...192.168.5.50][64674] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
      not-detected: [....65] [ip4][..udp] [192.168.140.140][62976] -> [255.255.255.255][62976] [Unknown][Unknown][Unrated]

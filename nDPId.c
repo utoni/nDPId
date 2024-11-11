@@ -1170,7 +1170,7 @@ static void log_memory_usage(struct nDPId_reader_thread const * const reader_thr
 }
 #endif
 
-static void ndpi_debug_printf(unsigned int proto,
+static void ndpi_debug_printf(uint16_t proto,
                               struct ndpi_detection_module_struct * ndpi_struct,
                               ndpi_log_level_t log_level,
                               const char * file_name,

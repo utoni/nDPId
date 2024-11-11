@@ -23,7 +23,7 @@
                    RISK: TLS (probably) Not Carrying HTTPS
  detection-update: [.....4] [ip4][..tcp] [..192.168.1.159][48048] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable][dns.google]
                    RISK: TLS (probably) Not Carrying HTTPS
-          analyse: [.....4] [ip4][..tcp] [..192.168.1.159][48048] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable][dns.google]
+          analyse: [.....4] [ip4][..tcp] [..192.168.1.159][48048] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.447|     0.072|     0.122|        14825.912|    3.500]
                    [PKTLEN......:     52.000|  1470.000|   268.200|   356.700|       127227.700|    4.100]
@@ -44,7 +44,7 @@
                    RISK: TLS (probably) Not Carrying HTTPS
  detection-update: [.....7] [ip4][..tcp] [..192.168.1.159][48098] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable][dns.google]
                    RISK: TLS (probably) Not Carrying HTTPS
-          analyse: [.....7] [ip4][..tcp] [..192.168.1.159][48098] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable][dns.google]
+          analyse: [.....7] [ip4][..tcp] [..192.168.1.159][48098] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     1.254|     0.185|     0.342|       116761.002|    3.200]
                    [PKTLEN......:     52.000|   569.000|   198.200|   197.900|        39161.300|    4.400]
@@ -75,7 +75,7 @@
                    RISK: TLS (probably) Not Carrying HTTPS
  detection-update: [.....8] [ip4][..tcp] [..192.168.1.159][48210] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable][dns.google]
                    RISK: TLS (probably) Not Carrying HTTPS
-          analyse: [.....8] [ip4][..tcp] [..192.168.1.159][48210] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable][dns.google]
+          analyse: [.....8] [ip4][..tcp] [..192.168.1.159][48210] -> [........8.8.4.4][..853] [TLS.DoH_DoT][Google][Network][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     5.704|     0.390|     1.388|      1925240.193|    1.500]
                    [PKTLEN......:     52.000|  1470.000|   268.200|   356.700|       127227.700|    4.100]

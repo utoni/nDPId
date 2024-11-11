@@ -4,7 +4,7 @@
               new: [.....1] [ip4][..tcp] [....172.20.10.4][49877] -> [.104.16.248.249][..443]
          detected: [.....1] [ip4][..tcp] [....172.20.10.4][49877] -> [.104.16.248.249][..443] [TLS.DoH_DoT][Cloudflare][Network][Acceptable][mozilla.cloudflare-dns.com]
  detection-update: [.....1] [ip4][..tcp] [....172.20.10.4][49877] -> [.104.16.248.249][..443] [TLS.DoH_DoT][Cloudflare][Network][Acceptable][mozilla.cloudflare-dns.com]
-          analyse: [.....1] [ip4][..tcp] [....172.20.10.4][49877] -> [.104.16.248.249][..443] [TLS.DoH_DoT][Cloudflare][Network][Acceptable][mozilla.cloudflare-dns.com]
+          analyse: [.....1] [ip4][..tcp] [....172.20.10.4][49877] -> [.104.16.248.249][..443] [TLS.DoH_DoT][Cloudflare][Network][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........:      0.000|     0.535|     0.062|     0.130|        16944.855|    3.000]
                    [PKTLEN......:     40.000|  1340.000|   216.900|   327.300|       107137.200|    3.900]

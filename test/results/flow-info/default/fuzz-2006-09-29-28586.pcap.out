@@ -10,6 +10,8 @@
               new: [.....4] [ip4][..tcp] [......0.20.3.13][...80] -> [.....172.20.3.5][.2601] [MIDSTREAM]
       ERROR-EVENT: Unknown packet type [3/16]
               new: [.....5] [ip4][..tcp] [....172.20.3.13][53132] -> [.....172.20.3.5][...80]
+         detected: [.....5] [ip4][..tcp] [....172.20.3.13][53132] -> [.....172.20.3.5][...80] [HTTP][Unknown][Web][Acceptable][%s]
+                   RISK: Clear-Text Credentials, Non-Printable/Invalid Chars Detected, Possible Exploit Attempt
               new: [.....6] [ip4][..tcp] [.....172.20.3.1][...80] -> [....172.20.3.13][53132] [MIDSTREAM]
          detected: [.....6] [ip4][..tcp] [.....172.20.3.1][...80] -> [....172.20.3.13][53132] [HTTP][Unknown][Web][Acceptable][]
                    RISK: HTTP Susp User-Agent
@@ -74,8 +76,8 @@
               new: [....39] [ip4][..115] [....172.20.3.13] -> [.....172.20.3.5]
              idle: [.....6] [ip4][..tcp] [.....172.20.3.1][...80] -> [....172.20.3.13][53132] [HTTP][Unknown][Web][Acceptable]
                    RISK: HTTP Susp User-Agent
-          guessed: [.....5] [ip4][..tcp] [....172.20.3.13][53132] -> [.....172.20.3.5][...80] [HTTP][Unknown][Web][Acceptable][]
-              end: [.....5] [ip4][..tcp] [....172.20.3.13][53132] -> [.....172.20.3.5][...80]
+              end: [.....5] [ip4][..tcp] [....172.20.3.13][53132] -> [.....172.20.3.5][...80] [HTTP][Unknown][Web][Acceptable][%s]
+                   RISK: Clear-Text Credentials, Non-Printable/Invalid Chars Detected, Possible Exploit Attempt
           guessed: [....36] [ip4][..tcp] [...172.20.67.13][53136] -> [.....172.20.3.5][...80] [HTTP][Unknown][Web][Acceptable][]
                    RISK: Unidirectional Traffic
              idle: [....36] [ip4][..tcp] [...172.20.67.13][53136] -> [.....172.20.3.5][...80]

@@ -73,7 +73,7 @@
               new: [....23] [ip4][..udp] [..192.168.1.105][53466] -> [....192.168.1.1][...53]
          detected: [....23] [ip4][..udp] [..192.168.1.105][53466] -> [....192.168.1.1][...53] [DNS.Alibaba][Unknown][Network][Acceptable][log.mmstat.com]
               new: [....24] [ip4][..udp] [..192.168.1.105][33822] -> [....192.168.1.1][...53]
-         detected: [....24] [ip4][..udp] [..192.168.1.105][33822] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][login.taobao.com]
+         detected: [....24] [ip4][..udp] [..192.168.1.105][33822] -> [....192.168.1.1][...53] [DNS.Taobao][Unknown][Network][Acceptable][login.taobao.com]
               new: [....25] [ip4][..tcp] [..192.168.1.105][35806] -> [.93.188.134.246][...80]
               new: [....26] [ip4][..tcp] [..192.168.1.105][35807] -> [.93.188.134.246][...80]
               new: [....27] [ip4][..tcp] [..192.168.1.105][35808] -> [.93.188.134.246][...80]
@@ -105,7 +105,7 @@
                    RISK: Susp DGA Domain name, Risky Domain Name
               new: [....40] [ip4][..tcp] [..192.168.1.105][52271] -> [..42.156.184.19][..443]
               new: [....41] [ip4][..tcp] [..192.168.1.105][52272] -> [..42.156.184.19][..443]
- detection-update: [....24] [ip4][..udp] [..192.168.1.105][33822] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][login.taobao.com]
+ detection-update: [....24] [ip4][..udp] [..192.168.1.105][33822] -> [....192.168.1.1][...53] [DNS.Taobao][Unknown][Network][Acceptable][login.taobao.com]
               new: [....42] [ip4][..tcp] [..192.168.1.105][47721] -> [.140.205.170.63][..443]
          detected: [....30] [ip4][..tcp] [..192.168.1.105][42275] -> [...222.73.28.96][...80] [HTTP.Sina][Unknown][SocialNetwork][Fun][u1.img.mobile.sina.cn]
               new: [....43] [ip4][..tcp] [..192.168.1.105][52274] -> [..42.156.184.19][..443]
@@ -199,7 +199,7 @@
                    RISK: Unidirectional Traffic
              idle: [....39] [ip4][..tcp] [..192.168.1.105][48356] -> [..140.205.174.1][..443]
              idle: [....10] [ip4][..udp] [..192.168.1.105][.7148] -> [....192.168.1.1][...53] [DNS.SinaWeibo][Unknown][Network][Fun][www.weibo.com]
-             idle: [....24] [ip4][..udp] [..192.168.1.105][33822] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][login.taobao.com]
+             idle: [....24] [ip4][..udp] [..192.168.1.105][33822] -> [....192.168.1.1][...53] [DNS.Taobao][Unknown][Network][Acceptable][login.taobao.com]
           guessed: [.....1] [ip4][..udp] [..216.58.210.14][..443] -> [..192.168.1.105][49361] [QUIC][Google][Web][Acceptable]
                    RISK: Susp Entropy
              idle: [.....1] [ip4][..udp] [..216.58.210.14][..443] -> [..192.168.1.105][49361]

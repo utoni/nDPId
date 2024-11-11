@@ -1,0 +1,52 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [......127.0.0.1][40136] -> [......127.0.0.1][.1080]
+         detected: [.....1] [ip4][..tcp] [......127.0.0.1][40136] -> [......127.0.0.1][.1080] [SOCKS][Unknown][Web][Acceptable]
+              new: [.....2] [ip4][..udp] [......127.0.0.1][46548] -> [.....127.0.0.53][...53]
+         detected: [.....2] [ip4][..udp] [......127.0.0.1][46548] -> [.....127.0.0.53][...53] [DNS.YouTube][Unknown][Network][Fun][www.youtube.com]
+ detection-update: [.....2] [ip4][..udp] [......127.0.0.1][46548] -> [.....127.0.0.53][...53] [DNS.YouTube][Unknown][Network][Fun][www.youtube.com]
+                   RISK: Unidirectional Traffic
+              new: [.....3] [ip4][..udp] [..192.168.1.183][49817] -> [..192.168.1.253][...53]
+         detected: [.....3] [ip4][..udp] [..192.168.1.183][49817] -> [..192.168.1.253][...53] [DNS.YouTube][Unknown][Network][Fun][www.youtube.com]
+              new: [.....4] [ip4][..udp] [..192.168.1.183][41933] -> [..192.168.1.253][...53]
+         detected: [.....4] [ip4][..udp] [..192.168.1.183][41933] -> [..192.168.1.253][...53] [DNS.YouTube][Unknown][Network][Fun][www.youtube.com]
+ detection-update: [.....3] [ip4][..udp] [..192.168.1.183][49817] -> [..192.168.1.253][...53] [DNS.YouTube][Unknown][Network][Fun][www.youtube.com]
+ detection-update: [.....4] [ip4][..udp] [..192.168.1.183][41933] -> [..192.168.1.253][...53] [DNS.YouTube][Unknown][Network][Fun][www.youtube.com]
+ detection-update: [.....2] [ip4][..udp] [......127.0.0.1][46548] -> [.....127.0.0.53][...53] [DNS.YouTube][Unknown][Network][Fun][www.youtube.com]
+              new: [.....5] [ip4][..udp] [......127.0.0.1][50125] -> [.....127.0.0.53][...53]
+         detected: [.....5] [ip4][..udp] [......127.0.0.1][50125] -> [.....127.0.0.53][...53] [DNS][Unknown][Network][Acceptable][test.lan]
+              new: [.....6] [ip4][..udp] [......127.0.0.1][45262] -> [.....127.0.0.53][...53]
+         detected: [.....6] [ip4][..udp] [......127.0.0.1][45262] -> [.....127.0.0.53][...53] [DNS][Unknown][Network][Acceptable][test.lan]
+              new: [.....7] [ip4][..udp] [..192.168.1.183][58009] -> [..192.168.1.253][...53]
+         detected: [.....7] [ip4][..udp] [..192.168.1.183][58009] -> [..192.168.1.253][...53] [DNS][Unknown][Network][Acceptable][test.lan]
+              new: [.....8] [ip4][..udp] [..192.168.1.183][42485] -> [..192.168.1.253][...53]
+         detected: [.....8] [ip4][..udp] [..192.168.1.183][42485] -> [..192.168.1.253][...53] [DNS][Unknown][Network][Acceptable][test.lan]
+ detection-update: [.....7] [ip4][..udp] [..192.168.1.183][58009] -> [..192.168.1.253][...53] [DNS][Unknown][Network][Acceptable][test.lan]
+ detection-update: [.....8] [ip4][..udp] [..192.168.1.183][42485] -> [..192.168.1.253][...53] [DNS][Unknown][Network][Acceptable][test.lan]
+                   RISK: Minor Issues
+ detection-update: [.....5] [ip4][..udp] [......127.0.0.1][50125] -> [.....127.0.0.53][...53] [DNS][Unknown][Network][Acceptable][test.lan]
+ detection-update: [.....6] [ip4][..udp] [......127.0.0.1][45262] -> [.....127.0.0.53][...53] [DNS][Unknown][Network][Acceptable][test.lan]
+                   RISK: Minor Issues
+              new: [.....9] [ip4][..tcp] [......127.0.0.1][57874] -> [......127.0.0.1][.1234]
+         detected: [.....9] [ip4][..tcp] [......127.0.0.1][57874] -> [......127.0.0.1][.1234] [TLS][Unknown][Web][Safe][test.lan]
+                   RISK: Known Proto on Non Std Port
+ detection-update: [.....9] [ip4][..tcp] [......127.0.0.1][57874] -> [......127.0.0.1][.1234] [TLS][Unknown][Web][Safe][test.lan]
+                   RISK: Known Proto on Non Std Port
+              new: [....10] [ip4][..tcp] [..192.168.1.183][58612] -> [.216.58.204.142][..443]
+         detected: [....10] [ip4][..tcp] [..192.168.1.183][58612] -> [.216.58.204.142][..443] [TLS.YouTube][Google][Media][Fun][www.youtube.com]
+ detection-update: [....10] [ip4][..tcp] [..192.168.1.183][58612] -> [.216.58.204.142][..443] [TLS.YouTube][Google][Media][Fun][www.youtube.com]
+             idle: [.....1] [ip4][..tcp] [......127.0.0.1][40136] -> [......127.0.0.1][.1080] [SOCKS][Unknown][Web][Acceptable]
+             idle: [.....6] [ip4][..udp] [......127.0.0.1][45262] -> [.....127.0.0.53][...53] [DNS][Unknown][Network][Acceptable][test.lan]
+                   RISK: Minor Issues
+             idle: [....10] [ip4][..tcp] [..192.168.1.183][58612] -> [.216.58.204.142][..443] [TLS.YouTube][Google][Media][Fun]
+             idle: [.....7] [ip4][..udp] [..192.168.1.183][58009] -> [..192.168.1.253][...53] [DNS][Unknown][Network][Acceptable][test.lan]
+             idle: [.....3] [ip4][..udp] [..192.168.1.183][49817] -> [..192.168.1.253][...53] [DNS.YouTube][Unknown][Network][Fun][www.youtube.com]
+             idle: [.....5] [ip4][..udp] [......127.0.0.1][50125] -> [.....127.0.0.53][...53] [DNS][Unknown][Network][Acceptable][test.lan]
+             idle: [.....4] [ip4][..udp] [..192.168.1.183][41933] -> [..192.168.1.253][...53] [DNS.YouTube][Unknown][Network][Fun][www.youtube.com]
+             idle: [.....2] [ip4][..udp] [......127.0.0.1][46548] -> [.....127.0.0.53][...53] [DNS.YouTube][Unknown][Network][Fun][www.youtube.com]
+             idle: [.....8] [ip4][..udp] [..192.168.1.183][42485] -> [..192.168.1.253][...53] [DNS][Unknown][Network][Acceptable][test.lan]
+                   RISK: Minor Issues
+             idle: [.....9] [ip4][..tcp] [......127.0.0.1][57874] -> [......127.0.0.1][.1234] [TLS][Unknown][Web][Safe]
+                   RISK: Known Proto on Non Std Port
+     DAEMON-EVENT: shutdown

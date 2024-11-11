@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=nDPId-testing
 PKG_VERSION:=1.0
-PKG_RELEASE:=$(AUTORELEASE)
+PKG_RELEASE:=1
 
 ifneq ($(wildcard /artifacts),)
 PKG_DIRECTORY:=/artifacts
@@ -32,7 +32,7 @@ endef
 
 define Package/nDPId-testing/description
   nDPId is a set of daemons and tools to capture, process and classify network flows.
-  It's only dependencies (besides a half-way modern c library and POSIX threads) are libnDPI (>= 3.6.0 or current github dev branch) and libpcap.
+  It's only dependencies (besides a half-way modern c library and POSIX threads) are libnDPI and libpcap.
 endef
 
 define Package/nDPId-testing/config

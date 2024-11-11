@@ -7,6 +7,6 @@
                    RISK: Binary App Transfer, Susp Entropy
              idle: [.....1] [ip4][..tcp] [..172.16.99.201][.1732] -> [..64.227.107.71][.4444]
           guessed: [.....2] [ip4][..tcp] [..64.227.107.71][...53] -> [...172.16.99.10][49652] [DNS][Unknown][Network][Acceptable][]
-                   RISK: Binary App Transfer, Malformed Packet, Susp Entropy
+                   RISK: Binary App Transfer, Susp Entropy
              idle: [.....2] [ip4][..tcp] [..64.227.107.71][...53] -> [...172.16.99.10][49652]
      DAEMON-EVENT: shutdown

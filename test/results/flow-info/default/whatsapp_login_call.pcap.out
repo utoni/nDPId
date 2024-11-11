@@ -56,7 +56,7 @@
                    RISK: TLS (probably) Not Carrying HTTPS
  detection-update: [....17] [ip4][..tcp] [....192.168.2.4][49204] -> [..17.173.66.102][..443] [TLS.AppleStore][Apple][SoftwareUpdate][Safe][p53-buy.itunes.apple.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-          analyse: [....17] [ip4][..tcp] [....192.168.2.4][49204] -> [..17.173.66.102][..443] [TLS.AppleStore][Apple][SoftwareUpdate][Safe][p53-buy.itunes.apple.com]
+          analyse: [....17] [ip4][..tcp] [....192.168.2.4][49204] -> [..17.173.66.102][..443] [TLS.AppleStore][Apple][SoftwareUpdate][Safe]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.246|     0.057|     0.089|         7910.915|    3.400]
                    [PKTLEN......:     40.000|  1480.000|   289.300|   408.500|       166890.900|    3.900]
@@ -254,7 +254,7 @@
                    RISK: TLS (probably) Not Carrying HTTPS
  detection-update: [....57] [ip4][..tcp] [....192.168.2.4][49205] -> [..17.173.66.102][..443] [TLS.AppleStore][Apple][SoftwareUpdate][Safe][p53-buy.itunes.apple.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-          analyse: [....57] [ip4][..tcp] [....192.168.2.4][49205] -> [..17.173.66.102][..443] [TLS.AppleStore][Apple][SoftwareUpdate][Safe][p53-buy.itunes.apple.com]
+          analyse: [....57] [ip4][..tcp] [....192.168.2.4][49205] -> [..17.173.66.102][..443] [TLS.AppleStore][Apple][SoftwareUpdate][Safe]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.272|     0.058|     0.092|         8444.798|    3.300]
                    [PKTLEN......:     40.000|  1480.000|   289.300|   408.500|       166876.700|    3.900]

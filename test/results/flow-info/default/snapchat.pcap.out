@@ -14,6 +14,6 @@
  detection-update: [.....3] [ip4][..tcp] [.......10.8.0.1][56193] -> [.74.125.136.141][..443] [TLS.Snapchat][Google][SocialNetwork][Fun][feelinsonice-hrd.appspot.com]
               end: [.....1] [ip4][..tcp] [.......10.8.0.1][33233] -> [.74.125.136.141][..443] [TLS][Google][Web][Safe]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
-             idle: [.....3] [ip4][..tcp] [.......10.8.0.1][56193] -> [.74.125.136.141][..443] [TLS.Snapchat][Google][SocialNetwork][Fun][feelinsonice-hrd.appspot.com]
-             idle: [.....2] [ip4][..tcp] [.......10.8.0.1][44536] -> [.74.125.136.141][..443] [TLS.Snapchat][Google][SocialNetwork][Fun][feelinsonice-hrd.appspot.com]
+             idle: [.....3] [ip4][..tcp] [.......10.8.0.1][56193] -> [.74.125.136.141][..443] [TLS.Snapchat][Google][SocialNetwork][Fun]
+             idle: [.....2] [ip4][..tcp] [.......10.8.0.1][44536] -> [.74.125.136.141][..443] [TLS.Snapchat][Google][SocialNetwork][Fun]
      DAEMON-EVENT: shutdown

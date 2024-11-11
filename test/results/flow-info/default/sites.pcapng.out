@@ -260,7 +260,7 @@
          detected: [....52] [ip6][..tcp] [..2001:b07:a3d:c112:9a00:ba78:86b1:e177][48624] -> [...................2001:67c:4e8:f004::9][..443] [TLS.Telegram][Telegram][Chat][Acceptable][telegram.me]
  detection-update: [....51] [ip6][..tcp] [..2001:b07:a3d:c112:9a00:ba78:86b1:e177][48616] -> [...................2001:67c:4e8:f004::9][..443] [TLS.Telegram][Telegram][Chat][Acceptable][t.me]
  detection-update: [....52] [ip6][..tcp] [..2001:b07:a3d:c112:9a00:ba78:86b1:e177][48624] -> [...................2001:67c:4e8:f004::9][..443] [TLS.Telegram][Telegram][Chat][Acceptable][telegram.me]
-              end: [....48] [ip4][..tcp] [..192.168.1.245][49558] -> [..80.158.42.215][..443] [TLS.HuaweiCloud][Unknown][Cloud][Acceptable][id7.cloud.huawei.com]
+              end: [....48] [ip4][..tcp] [..192.168.1.245][49558] -> [..80.158.42.215][..443] [TLS.HuaweiCloud][Unknown][Cloud][Acceptable]
              idle: [....47] [ip4][..tcp] [..192.168.1.245][54690] -> [.160.44.196.198][..443] [TLS.HuaweiCloud][Unknown][Cloud][Acceptable]
              idle: [....49] [ip6][..tcp] [...2001:b07:a3d:c112:c044:a6d4:80d:5d55][39970] -> [...2600:9000:25ea:1200:1:12d8:5a00:93a1][..443] [TLS.HuaweiCloud][AmazonAWS][Cloud][Acceptable]
      DAEMON-EVENT: [Processed: 584 pkts][ZLib][compressions: 0|diff: 0 / 0]
@@ -325,6 +325,6 @@
               new: [....64] [ip4][..tcp] [..192.168.1.183][44102] -> [..146.70.182.51][..443]
          detected: [....64] [ip4][..tcp] [..192.168.1.183][44102] -> [..146.70.182.51][..443] [TLS.SurfShark][Unknown][VPN][Acceptable][it-mil-v086.prod.surfshark.com]
  detection-update: [....64] [ip4][..tcp] [..192.168.1.183][44102] -> [..146.70.182.51][..443] [TLS.SurfShark][Unknown][VPN][Acceptable][it-mil-v086.prod.surfshark.com]
-             idle: [....64] [ip4][..tcp] [..192.168.1.183][44102] -> [..146.70.182.51][..443] [TLS.SurfShark][Unknown][VPN][Acceptable][it-mil-v086.prod.surfshark.com]
-             idle: [....63] [ip4][..tcp] [..192.168.1.245][58624] -> [.104.16.156.111][..443] [TLS.NordVPN][Cloudflare][VPN][Acceptable][s1.nordcdn.com]
+             idle: [....64] [ip4][..tcp] [..192.168.1.183][44102] -> [..146.70.182.51][..443] [TLS.SurfShark][Unknown][VPN][Acceptable]
+             idle: [....63] [ip4][..tcp] [..192.168.1.245][58624] -> [.104.16.156.111][..443] [TLS.NordVPN][Cloudflare][VPN][Acceptable]
      DAEMON-EVENT: shutdown

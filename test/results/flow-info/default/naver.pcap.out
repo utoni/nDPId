@@ -1,0 +1,16 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [...10.215.173.1][40026] -> [...23.52.84.208][..443]
+         detected: [.....1] [ip4][..tcp] [...10.215.173.1][40026] -> [...23.52.84.208][..443] [TLS.Naver][Unknown][Web][Safe][m.naver.com]
+ detection-update: [.....1] [ip4][..tcp] [...10.215.173.1][40026] -> [...23.52.84.208][..443] [TLS.Naver][Unknown][Web][Safe][m.naver.com]
+              new: [.....2] [ip4][..tcp] [...10.215.173.1][42040] -> [..110.93.157.96][..443]
+         detected: [.....2] [ip4][..tcp] [...10.215.173.1][42040] -> [..110.93.157.96][..443] [TLS.Naver][Unknown][Web][Safe][kr-col-ext.nelo.navercorp.com]
+ detection-update: [.....2] [ip4][..tcp] [...10.215.173.1][42040] -> [..110.93.157.96][..443] [TLS.Naver][Unknown][Web][Safe][kr-col-ext.nelo.navercorp.com]
+              new: [.....3] [ip4][..tcp] [...10.215.173.1][45578] -> [.184.50.200.195][..443]
+         detected: [.....3] [ip4][..tcp] [...10.215.173.1][45578] -> [.184.50.200.195][..443] [TLS.Naver][Unknown][Web][Safe][dthumb-phinf.pstatic.net]
+ detection-update: [.....3] [ip4][..tcp] [...10.215.173.1][45578] -> [.184.50.200.195][..443] [TLS.Naver][Unknown][Web][Safe][dthumb-phinf.pstatic.net]
+             idle: [.....1] [ip4][..tcp] [...10.215.173.1][40026] -> [...23.52.84.208][..443] [TLS.Naver][Unknown][Web][Safe]
+             idle: [.....2] [ip4][..tcp] [...10.215.173.1][42040] -> [..110.93.157.96][..443] [TLS.Naver][Unknown][Web][Safe]
+             idle: [.....3] [ip4][..tcp] [...10.215.173.1][45578] -> [.184.50.200.195][..443] [TLS.Naver][Unknown][Web][Safe]
+     DAEMON-EVENT: shutdown

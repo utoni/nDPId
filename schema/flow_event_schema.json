@@ -1322,6 +1322,25 @@
                                 }
                             },
                             "additionalProperties": false
+                        },
+                        "56": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string", "enum": [ "Obfuscated Traffic" ] },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 350, "maximum": 350 },
+                                        "client": { "type": "number", "minimum": 235, "maximum": 235 },
+                                        "server": { "type": "number", "minimum": 115, "maximum": 115 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
                         }
                     },
                     "additionalProperties": false
@@ -1370,6 +1389,9 @@
                 },
                 "entropy": {
                     "type": "number"
+                },
+                "domainame": {
+                    "type": "string"
                 },
                 "hostname": {
                     "type": "string"

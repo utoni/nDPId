@@ -102,7 +102,7 @@
               new: [....30] [ip4][..tcp] [...10.24.82.188][58927] -> [.54.255.253.199][.5223] [MIDSTREAM]
          detected: [....30] [ip4][..tcp] [...10.24.82.188][58927] -> [.54.255.253.199][.5223] [TLS][AmazonAWS][Web][Safe]
                    RISK: Known Proto on Non Std Port
-          analyse: [....26] [ip4][..tcp] [...10.24.82.188][43581] -> [....31.13.68.70][..443] [TLS.Facebook][Facebook][SocialNetwork][Fun][graph.facebook.com]
+          analyse: [....26] [ip4][..tcp] [...10.24.82.188][43581] -> [....31.13.68.70][..443] [TLS.Facebook][Facebook][SocialNetwork][Fun]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.174|     0.038|     0.043|         1891.518|    4.000]
                    [PKTLEN......:     40.000|  1320.000|   256.100|   386.900|       149674.200|    3.800]

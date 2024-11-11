@@ -307,7 +307,7 @@
              idle: [....60] [ip4][..udp] [.....10.0.0.227][52595] -> [.......10.0.0.1][..192]
              idle: [....48] [ip4][..udp] [.....10.0.0.227][64193] -> [....75.75.75.75][...53] [DNS.ApplePush][Unknown][Network][Acceptable][24-courier.push.apple.com]
              idle: [....52] [ip4][..udp] [.....10.0.0.227][58074] -> [....75.75.75.75][...53] [DNS.Outlook][Unknown][Network][Acceptable][www.outlook.com]
-              end: [....28] [ip4][..tcp] [.....10.0.0.227][56920] -> [...99.86.34.156][..443] [TLS.Slack][AmazonAWS][Collaborative][Acceptable][slack.com]
+              end: [....28] [ip4][..tcp] [.....10.0.0.227][56920] -> [...99.86.34.156][..443] [TLS.Slack][AmazonAWS][Collaborative][Acceptable]
              idle: [....55] [ip4][..udp] [.....10.0.0.149][38616] -> [.....10.0.0.227][61328] [SSDP][Unknown][System][Acceptable]
           guessed: [....37] [ip4][..tcp] [.....10.0.0.227][56881] -> [.162.222.43.153][..443] [TLS][Unknown][Web][Safe]
              idle: [....37] [ip4][..tcp] [.....10.0.0.227][56881] -> [.162.222.43.153][..443]

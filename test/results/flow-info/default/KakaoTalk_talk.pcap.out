@@ -8,6 +8,8 @@
               new: [.....5] [ip4][..tcp] [.216.58.220.161][..443] -> [...10.24.82.188][56697] [MIDSTREAM]
          detected: [.....4] [ip4][..tcp] [...10.24.82.188][48489] -> [203.205.147.215][...80] [HTTP_Proxy.QQ][Tencent][Chat][Fun][hkminorshort.weixin.qq.com]
                    RISK: Known Proto on Non Std Port
+ detection-update: [.....4] [ip4][..tcp] [...10.24.82.188][48489] -> [203.205.147.215][...80] [HTTP_Proxy.QQ][Tencent][Download][Fun][hkminorshort.weixin.qq.com]
+                   RISK: Known Proto on Non Std Port, Binary File/Data Transfer (Attempt)
               new: [.....6] [ip4][..tcp] [...10.24.82.188][32968] -> [..110.76.143.50][.8080]
          detected: [.....6] [ip4][..tcp] [...10.24.82.188][32968] -> [..110.76.143.50][.8080] [TLS][Unknown][Web][Safe][]
                    RISK: Known Proto on Non Std Port, Obsolete TLS (v1.1 or older)
@@ -105,8 +107,8 @@
               end: [....17] [ip4][..tcp] [173.194.117.229][..443] -> [...10.24.82.188][38380]
              idle: [....13] [ip4][..udp] [...10.24.82.188][10268] -> [....1.201.1.174][23046] [RTP][Unknown][Media][Acceptable]
              idle: [....11] [ip4][..udp] [...10.24.82.188][10269] -> [....1.201.1.174][23047] [KakaoTalk_Voice][Unknown][VoIP][Acceptable]
-              end: [.....4] [ip4][..tcp] [...10.24.82.188][48489] -> [203.205.147.215][...80] [HTTP_Proxy.QQ][Tencent][Chat][Fun]
-                   RISK: Known Proto on Non Std Port
+              end: [.....4] [ip4][..tcp] [...10.24.82.188][48489] -> [203.205.147.215][...80] [HTTP_Proxy.QQ][Tencent][Download][Fun][hkminorshort.weixin.qq.com]
+                   RISK: Known Proto on Non Std Port, Binary File/Data Transfer (Attempt)
           guessed: [.....2] [ip4][..tcp] [..120.28.26.242][...80] -> [...10.24.82.188][34533] [HTTP][Unknown][Web][Acceptable][]
               end: [.....2] [ip4][..tcp] [..120.28.26.242][...80] -> [...10.24.82.188][34533]
              idle: [.....6] [ip4][..tcp] [...10.24.82.188][32968] -> [..110.76.143.50][.8080] [TLS.KakaoTalk][Unknown][Chat][Acceptable]

@@ -10,7 +10,7 @@
          detected: [.....2] [ip4][..tcp] [..192.168.1.119][51606] -> [.104.16.249.249][..443] [TLS.DoH_DoT][Cloudflare][Network][Acceptable][mozilla.cloudflare-dns.com]
  detection-update: [.....2] [ip4][..tcp] [..192.168.1.119][51606] -> [.104.16.249.249][..443] [TLS.DoH_DoT][Cloudflare][Network][Acceptable][mozilla.cloudflare-dns.com]
               new: [.....3] [ip4][..tcp] [..192.168.1.119][51612] -> [..104.16.124.96][..443]
-          analyse: [.....2] [ip4][..tcp] [..192.168.1.119][51606] -> [.104.16.249.249][..443] [TLS.DoH_DoT][Cloudflare][Network][Acceptable][mozilla.cloudflare-dns.com]
+          analyse: [.....2] [ip4][..tcp] [..192.168.1.119][51606] -> [.104.16.249.249][..443] [TLS.DoH_DoT][Cloudflare][Network][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.180|     0.028|     0.054|         2913.211|    3.000]
                    [PKTLEN......:     40.000|   722.000|   127.200|   163.800|        26828.900|    4.200]
@@ -63,6 +63,6 @@
               end: [.....1] [ip4][..tcp] [..192.168.1.119][51331] -> [.104.16.249.249][..443] [TLS][Cloudflare][Web][Safe]
              idle: [.....2] [ip4][..tcp] [..192.168.1.119][51606] -> [.104.16.249.249][..443] [TLS.DoH_DoT][Cloudflare][Network][Acceptable][mozilla.cloudflare-dns.com]
              idle: [.....3] [ip4][..tcp] [..192.168.1.119][51612] -> [..104.16.124.96][..443] [TLS][Cloudflare][Web][Safe]
-             idle: [.....4] [ip4][..tcp] [..192.168.1.119][51635] -> [..104.17.198.37][..443] [TLS][Cloudflare][Web][Safe][951c558a-5e07-47ca-a0c0-225da1b33163.is-cf.help.every1dns.net]
-             idle: [.....5] [ip4][..tcp] [..192.168.1.119][51636] -> [..104.17.198.37][..443] [TLS][Cloudflare][Web][Safe][951c558a-5e07-47ca-a0c0-225da1b33163.is-doh.help.every1dns.net]
+             idle: [.....4] [ip4][..tcp] [..192.168.1.119][51635] -> [..104.17.198.37][..443] [TLS][Cloudflare][Web][Safe]
+             idle: [.....5] [ip4][..tcp] [..192.168.1.119][51636] -> [..104.17.198.37][..443] [TLS][Cloudflare][Web][Safe]
      DAEMON-EVENT: shutdown

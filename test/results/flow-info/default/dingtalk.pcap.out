@@ -1,0 +1,11 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [...10.215.173.1][48910] -> [..47.246.133.39][..443]
+         detected: [.....1] [ip4][..tcp] [...10.215.173.1][48910] -> [..47.246.133.39][..443] [DingTalk][Alibaba][Chat][Acceptable]
+              new: [.....2] [ip4][..tcp] [...10.215.173.1][49352] -> [.104.166.182.25][..443]
+         detected: [.....2] [ip4][..tcp] [...10.215.173.1][49352] -> [.104.166.182.25][..443] [TLS.DingTalk][Unknown][Chat][Acceptable][static.dingtalk.com]
+ detection-update: [.....2] [ip4][..tcp] [...10.215.173.1][49352] -> [.104.166.182.25][..443] [TLS.DingTalk][Unknown][Chat][Acceptable][static.dingtalk.com]
+             idle: [.....1] [ip4][..tcp] [...10.215.173.1][48910] -> [..47.246.133.39][..443] [DingTalk][Alibaba][Chat][Acceptable]
+              end: [.....2] [ip4][..tcp] [...10.215.173.1][49352] -> [.104.166.182.25][..443] [TLS.DingTalk][Unknown][Chat][Acceptable]
+     DAEMON-EVENT: shutdown

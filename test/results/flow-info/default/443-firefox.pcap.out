@@ -5,7 +5,7 @@
          detected: [.....1] [ip4][..tcp] [...192.168.1.13][53096] -> [.178.62.197.130][..443] [TLS.ntop][Unknown][Network][Safe][www.ntop.org]
  detection-update: [.....1] [ip4][..tcp] [...192.168.1.13][53096] -> [.178.62.197.130][..443] [TLS.ntop][Unknown][Network][Safe][www.ntop.org]
  detection-update: [.....1] [ip4][..tcp] [...192.168.1.13][53096] -> [.178.62.197.130][..443] [TLS.ntop][Unknown][Network][Safe][www.ntop.org]
-          analyse: [.....1] [ip4][..tcp] [...192.168.1.13][53096] -> [.178.62.197.130][..443] [TLS.ntop][Unknown][Network][Safe][www.ntop.org]
+          analyse: [.....1] [ip4][..tcp] [...192.168.1.13][53096] -> [.178.62.197.130][..443] [TLS.ntop][Unknown][Network][Safe]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     1.656|     0.130|     0.404|       163175.268|    2.000]
                    [PKTLEN......:     52.000|  1492.000|   518.700|   610.400|       372566.000|    4.000]

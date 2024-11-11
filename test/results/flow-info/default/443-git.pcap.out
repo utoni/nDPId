@@ -5,7 +5,7 @@
          detected: [.....1] [ip4][..tcp] [...192.168.1.13][55744] -> [...140.82.114.4][..443] [TLS.Github][Github][Collaborative][Acceptable][github.com]
  detection-update: [.....1] [ip4][..tcp] [...192.168.1.13][55744] -> [...140.82.114.4][..443] [TLS.Github][Github][Collaborative][Acceptable][github.com]
  detection-update: [.....1] [ip4][..tcp] [...192.168.1.13][55744] -> [...140.82.114.4][..443] [TLS.Github][Github][Collaborative][Acceptable][github.com]
-          analyse: [.....1] [ip4][..tcp] [...192.168.1.13][55744] -> [...140.82.114.4][..443] [TLS.Github][Github][Collaborative][Acceptable][github.com]
+          analyse: [.....1] [ip4][..tcp] [...192.168.1.13][55744] -> [...140.82.114.4][..443] [TLS.Github][Github][Collaborative][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.144|     0.033|     0.053|         2832.982|    3.200]
                    [PKTLEN......:     52.000|  1476.000|   337.800|   464.400|       215710.400|    4.000]

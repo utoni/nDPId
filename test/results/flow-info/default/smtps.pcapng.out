@@ -4,8 +4,6 @@
               new: [.....1] [ip4][..tcp] [....62.43.36.99][37682] -> [...21.65.95.132][..465]
          detected: [.....1] [ip4][..tcp] [....62.43.36.99][37682] -> [...21.65.95.132][..465] [SMTPS][Unknown][Email][Safe]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
- detection-update: [.....1] [ip4][..tcp] [....62.43.36.99][37682] -> [...21.65.95.132][..465] [SMTPS][Unknown][Email][Safe]
-                   RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
              idle: [.....1] [ip4][..tcp] [....62.43.36.99][37682] -> [...21.65.95.132][..465] [SMTPS][Unknown][Email][Safe]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
      DAEMON-EVENT: shutdown
