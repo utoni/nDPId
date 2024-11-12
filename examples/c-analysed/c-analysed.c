@@ -1307,7 +1307,9 @@ static enum nDPIsrvd_callback_return process_analyse_events(struct nDPIsrvd_sock
         if (BUFFER_REMAINING(csv_risks_used) > 0)
         {
             risks[csv_risks_used] = '\0';
-        } else {
+        }
+        else
+        {
             risks[csv_risks_used - 1] = '\0';
         }
         csv_buf_add(buf, &csv_buf_used, risks, csv_risks_used);
@@ -1436,6 +1438,13 @@ static int parse_options(int argc, char ** argv)
         {
             opt = 1;
         }
+        else
+        {
+            if (chmod_chown(csv_outfile, S_IRUSR | S_IWUSR, "root", "root") != 0)
+            {
+                // skip "unused result" warning
+            }
+        }
 
         csv_fp = fopen(csv_outfile, "a+");
         if (csv_fp == NULL)
@@ -1473,6 +1482,13 @@ static int parse_options(int argc, char ** argv)
         if (access(stats_csv_outfile, F_OK) != 0 && errno == ENOENT)
         {
             opt = 1;
+        }
+        else
+        {
+            if (chmod_chown(stats_csv_outfile, S_IRUSR | S_IWUSR, "root", "root") != 0)
+            {
+                // skip "unused result" warning
+            }
         }
 
         stats_csv_fp = fopen(stats_csv_outfile, "a+");
@@ -2026,47 +2042,22 @@ int main(int argc, char ** argv)
         goto failure;
     }
 
-    if (user != NULL)
+    if (csv_outfile != NULL)
     {
-        struct passwd * pwd;
-        struct group * grp;
-        gid_t gid;
-
-        errno = 0;
-        pwd = getpwnam(user);
-        if (pwd == NULL)
+        int ret = chmod_chown(csv_outfile, S_IRUSR | S_IWUSR | S_IRGRP, user, group);
+        if (ret != 0)
         {
-            logger_early(1, "Get user failed: %s", strerror(errno));
-            goto failure;
+            logger_early(1, "Could not chmod/chown `%s': %s", csv_outfile, strerror(ret));
+            return 1;
         }
-
-        if (group != NULL)
+    }
+    if (stats_csv_outfile != NULL)
+    {
+        int ret = chmod_chown(stats_csv_outfile, S_IRUSR | S_IWUSR | S_IRGRP, user, group);
+        if (ret != 0)
         {
-            errno = 0;
-            grp = getgrnam(group);
-            if (grp == NULL)
-            {
-                logger_early(1, "Get group failed: %s", strerror(errno));
-                goto failure;
-            }
-            gid = grp->gr_gid;
-        }
-        else
-        {
-            gid = pwd->pw_gid;
-        }
-
-        if (csv_outfile != NULL &&
-            (chmod(csv_outfile, S_IRUSR | S_IWUSR) != 0 || chown(csv_outfile, pwd->pw_uid, gid) != 0))
-        {
-            logger_early(1, "Change user/group of `%s' failed: %s", csv_outfile, strerror(errno));
-            goto failure;
-        }
-        if (stats_csv_outfile != NULL &&
-            (chmod(stats_csv_outfile, S_IRUSR | S_IWUSR) != 0 || chown(stats_csv_outfile, pwd->pw_uid, gid) != 0))
-        {
-            logger_early(1, "Change user/group of `%s' failed: %s", stats_csv_outfile, strerror(errno));
-            goto failure;
+            logger_early(1, "Could not chmod/chown `%s': %s", stats_csv_outfile, strerror(ret));
+            return 1;
         }
     }
 

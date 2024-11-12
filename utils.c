@@ -396,6 +396,11 @@ int chmod_chown(char const * const path, mode_t mode, char const * const user, c
     uid_t path_uid = (uid_t)-1;
     gid_t path_gid = (gid_t)-1;
 
+    if (path == NULL)
+    {
+        return EINVAL;
+    }
+
     if (mode != 0)
     {
         if (chmod(path, mode) != 0)
