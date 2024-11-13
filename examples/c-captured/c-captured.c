@@ -197,7 +197,7 @@ static void decode_base64(pcap_dumper_t * const pd,
 static void packet_data_copy(void * dst, const void * src)
 {
     struct packet_data * const pd_dst = (struct packet_data *)dst;
-    struct packet_data const * const pd_src = (struct packet_data *)src;
+    struct packet_data const * const pd_src = (struct packet_data const *)src;
     *pd_dst = *pd_src;
     if (pd_src->base64_packet != NULL && pd_src->base64_packet_size > 0)
     {
@@ -224,7 +224,7 @@ static void packet_data_dtor(void * elt)
 static void flow_packet_data_copy(void * dst, const void * src)
 {
     struct flow_packet_data * const pd_dst = (struct flow_packet_data *)dst;
-    struct flow_packet_data const * const pd_src = (struct flow_packet_data *)src;
+    struct flow_packet_data const * const pd_src = (struct flow_packet_data const *)src;
     *pd_dst = *pd_src;
     if (pd_src->base64_packet != NULL && pd_src->base64_packet_size > 0)
     {
@@ -1175,7 +1175,7 @@ static int parse_options(int argc, char ** argv)
                 break;
             case 'R':
             {
-                char * value = (optarg[0] == '~' ? optarg + 1 : optarg);
+                char const * const value = (optarg[0] == '~' ? optarg + 1 : optarg);
                 nDPIsrvd_ull risk;
                 if (perror_ull(str_value_to_ull(value, &risk), "process_risky") != CONVERSION_OK)
                 {

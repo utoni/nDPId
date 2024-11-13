@@ -686,7 +686,7 @@ static inline int nDPIsrvd_setup_address(struct nDPIsrvd_address * const address
         {
             address->raw.sa_family = AF_INET;
             address->size = sizeof(address->in);
-            address->in.sin_port = htons(atoi(last_colon + 1));
+            address->in.sin_port = htons((uint16_t)atoi(last_colon + 1));
             sock_addr = &address->in.sin_addr;
 
             if (len < 7)
@@ -698,7 +698,7 @@ static inline int nDPIsrvd_setup_address(struct nDPIsrvd_address * const address
         {
             address->raw.sa_family = AF_INET6;
             address->size = sizeof(address->in6);
-            address->in6.sin6_port = htons(atoi(last_colon + 1));
+            address->in6.sin6_port = htons((uint16_t)atoi(last_colon + 1));
             sock_addr = &address->in6.sin6_addr;
 
             if (len < 2)
@@ -803,7 +803,7 @@ static inline enum nDPIsrvd_conversion_return str_value_to_ull(char const * cons
     return CONVERSION_OK;
 }
 
-static inline nDPIsrvd_hashkey nDPIsrvd_build_key(char const * str, int len)
+static inline nDPIsrvd_hashkey nDPIsrvd_build_key(char const * str, size_t len)
 {
     uint32_t hash = nDPIsrvd_HASHKEY_SEED;
     uint32_t c;
@@ -1099,19 +1099,24 @@ static inline struct nDPIsrvd_json_token * nDPIsrvd_find_token(struct nDPIsrvd_s
 
 static inline struct nDPIsrvd_json_token * nDPIsrvd_add_token(struct nDPIsrvd_socket * const sock,
                                                               nDPIsrvd_hashkey hash_value,
-                                                              int value_token_index)
+                                                              size_t value_token_index)
 {
     struct nDPIsrvd_json_token * token = nDPIsrvd_find_token(sock, hash_value);
 
+    if (value_token_index >= nDPIsrvd_MAX_JSON_TOKENS)
+    {
+        return NULL;
+    }
+
     if (token != NULL)
     {
-        token->token_index = value_token_index;
+        token->token_index = (int)value_token_index;
 
         return token;
     }
     else
     {
-        struct nDPIsrvd_json_token jt = {.token_keys_hash = hash_value, .token_index = value_token_index, .hh = {}};
+        struct nDPIsrvd_json_token jt = {.token_keys_hash = hash_value, .token_index = (int)value_token_index, .hh = {}};
 
         utarray_push_back(sock->json.tokens, &jt);
         HASH_ADD_INT(sock->json.token_table,
@@ -1125,7 +1130,8 @@ static inline struct nDPIsrvd_json_token * nDPIsrvd_add_token(struct nDPIsrvd_so
 static inline int nDPIsrvd_walk_tokens(
     struct nDPIsrvd_socket * const sock, nDPIsrvd_hashkey h, size_t b, int count, uint8_t is_value, uint8_t depth)
 {
-    int i, j;
+    int i;
+    int j;
     jsmntok_t const * key;
     jsmntok_t const * const t = &sock->jsmn.tokens[b];
     char const * const js = sock->buffer.json_message;
@@ -1225,7 +1231,7 @@ static inline struct nDPIsrvd_instance * nDPIsrvd_get_instance(struct nDPIsrvd_s
 }
 
 static inline struct nDPIsrvd_thread_data * nDPIsrvd_get_thread_data(
-    struct nDPIsrvd_socket * const sock,
+    struct nDPIsrvd_socket const * const sock,
     struct nDPIsrvd_instance * const instance,
     struct nDPIsrvd_json_token const * const thread_id_token,
     struct nDPIsrvd_json_token const * const ts_usec_token)
@@ -1241,7 +1247,7 @@ static inline struct nDPIsrvd_thread_data * nDPIsrvd_get_thread_data(
     {
         nDPIsrvd_ull thread_key;
         TOKEN_VALUE_TO_ULL(sock, thread_id_token, &thread_key);
-        thread_id = thread_key;
+        thread_id = (nDPIsrvd_hashkey)thread_key;
     }
 
     HASH_FIND_INT(instance->thread_data_table, &thread_id, thread_data);

@@ -594,7 +594,8 @@ static int analysed_map_to_stat(char const * const token_str,
                                 struct global_map const * const map,
                                 size_t map_length)
 {
-    size_t i, null_i = map_length;
+    size_t i;
+    size_t null_i = map_length;
 
     for (i = 0; i < map_length; ++i)
     {
@@ -621,7 +622,7 @@ static int analysed_map_to_stat(char const * const token_str,
     return 1;
 }
 
-static int analysed_map_value_to_stat(struct nDPIsrvd_socket * const sock,
+static int analysed_map_value_to_stat(struct nDPIsrvd_socket const * const sock,
                                       struct nDPIsrvd_json_token const * const token,
                                       struct global_map const * const map,
                                       size_t map_length)
@@ -638,7 +639,7 @@ static int analysed_map_value_to_stat(struct nDPIsrvd_socket * const sock,
     return analysed_map_to_stat(value_str, value_length, map, map_length);
 }
 
-static void analysed_unmap_flow_from_stat(struct flow_user_data * const flow_user_data)
+static void analysed_unmap_flow_from_stat(struct flow_user_data const * const flow_user_data)
 {
     if (flow_user_data->is_ip4 != 0)
     {
@@ -774,7 +775,7 @@ static ssize_t analysed_map_index(char const * const json_key,
     return unknown_key;
 }
 
-static int analysed_map_flow_u8(struct nDPIsrvd_socket * const sock,
+static int analysed_map_flow_u8(struct nDPIsrvd_socket const * const sock,
                                 struct nDPIsrvd_json_token const * const token,
                                 struct global_map const * const map,
                                 size_t map_length,
@@ -802,7 +803,7 @@ static int analysed_map_flow_u8(struct nDPIsrvd_socket * const sock,
     return 0;
 }
 
-static void process_flow_stats(struct nDPIsrvd_socket * const sock, struct nDPIsrvd_flow * const flow)
+static void process_flow_stats(struct nDPIsrvd_socket const * const sock, struct nDPIsrvd_flow * const flow)
 {
     struct flow_user_data * flow_user_data;
     struct nDPIsrvd_json_token const * const flow_event_name = TOKEN_GET_SZ(sock, "flow_event_name");
@@ -1120,7 +1121,7 @@ static void process_flow_stats(struct nDPIsrvd_socket * const sock, struct nDPIs
     }
 }
 
-static void process_global_stats(struct nDPIsrvd_socket * const sock)
+static void process_global_stats(struct nDPIsrvd_socket const * const sock)
 {
     struct nDPIsrvd_json_token const * const flow_event = TOKEN_GET_SZ(sock, "flow_event_name");
     struct nDPIsrvd_json_token const * const packet_event = TOKEN_GET_SZ(sock, "packet_event_name");
@@ -1975,7 +1976,8 @@ static int mainloop(int epollfd, struct nDPIsrvd_socket * const sock)
 
 int main(int argc, char ** argv)
 {
-    int retval = 1, epollfd = -1;
+    int retval = 1;
+    int epollfd = -1;
 
     init_logging("nDPIsrvd-analysed");
 

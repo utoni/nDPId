@@ -83,7 +83,6 @@ class TermColor:
         global USE_COLORAMA
         if USE_COLORAMA is True:
             fg_color, bg_color = TermColor.getColorsByHash(string)
-            color_hash = TermColor.calcColorHash(string)
             return '{}{}{}{}{}'.format(Style.BRIGHT, fg_color, bg_color, string, Style.RESET_ALL)
         else:
             return '{}{}{}'.format(TermColor.BOLD, string, TermColor.END)

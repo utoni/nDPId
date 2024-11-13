@@ -1359,7 +1359,7 @@ static void usage(char const * const arg0)
     fprintf(stderr, "usage: %s [path-to-pcap-file] [optional-nDPId-config-file]\n", arg0);
 }
 
-static int thread_wait_for_termination(pthread_t thread, time_t wait_time_secs, struct thread_return_value * const trv)
+static int thread_wait_for_termination(pthread_t thread, time_t wait_time_secs, struct thread_return_value * trv)
 {
 #if !defined(__FreeBSD__) && !defined(__APPLE__)
     struct timespec ts;
