@@ -1,0 +1,5 @@
+#!/bin/sh
+
+if [ $1 == 0 ]; then
+    systemctl stop ndpisrvd.service
+fi

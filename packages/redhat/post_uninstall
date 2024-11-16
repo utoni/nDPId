@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ $1 == 0 ]; then
+    rm -rf /run/nDPId /run/nDPIsrvd
+    userdel ndpid || true
+    userdel ndpisrvd || true
+    groupdel ndpisrvd-distributor || true
+fi

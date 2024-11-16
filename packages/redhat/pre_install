@@ -1,0 +1,19 @@
+#!/bin/sh
+
+if [ $1 == 1 ]; then
+    groupadd --system ndpisrvd-distributor
+    adduser --system --no-create-home --shell=/bin/false --user-group ndpisrvd
+    adduser --system --no-create-home --shell=/bin/false --user-group ndpid
+
+    cat <<EOF
+****************************************************************************
+* The user whom may want to access DPI data needs access to:               *
+* /run/nDPIsrvd/distributor                                                *
+*                                                                          *
+* To make it accessible to [USER], type:                                   *
+* sudo usermod --append --groups ndpisrvd-distributor [USER]               *
+*                                                                          *
+* Please note that you might need to re-login to make changes take effect. *
+****************************************************************************
+EOF
+fi

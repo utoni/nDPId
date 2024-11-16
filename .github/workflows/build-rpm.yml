@@ -1,0 +1,45 @@
+name: RPM Build
+on:
+  schedule:
+    # At the end of every day
+    - cron: '0 0 * * *'
+  push:
+    branches:
+      - main
+      - tmp
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened]
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install Ubuntu Prerequisites
+      run: |
+        sudo apt-get update
+        sudo apt-get install fakeroot alien autoconf automake cmake libtool pkg-config gettext libjson-c-dev flex bison libpcap-dev zlib1g-dev libcurl4-openssl-dev libdbus-1-dev
+
+    - name: Build RPM package
+      run: |
+        cmake -S . -B build-rpm -DBUILD_EXAMPLES=ON -DBUILD_NDPI=ON -DCMAKE_BUILD_TYPE=Release
+        cmake --build build-rpm --parallel
+        cd build-rpm
+        cpack -G RPM
+        cd ..
+
+    - name: Convert/Install RPM package
+      run: |
+        fakeroot alien --scripts --to-deb --verbose ./build-rpm/nDPId-*.rpm
+        sudo dpkg -i ./ndpid_*.deb
+
+    - name: Upload RPM
+      uses: actions/upload-artifact@v4
+      with:
+        name: nDPId-rpm-packages
+        path: build-rpm/*.rpm
