@@ -17,3 +17,4 @@ no release plan:
  * improve UDP/TCP timeout handling by reading netfilter conntrack timeouts from /proc (or just read conntrack table entries)
  * detect interface / timeout changes and apply them to nDPId
  * switch to MIT or BSD License
+ * libdaq integration

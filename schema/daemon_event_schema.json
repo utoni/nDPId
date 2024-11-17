@@ -9,7 +9,9 @@
         "daemon_event_name",
         "global_ts_usec",
         "version",
-        "ndpi_version"
+        "ndpi_version",
+        "ndpi_api_version",
+        "size_per_flow"
     ],
     "if": {
         "properties": { "daemon_event_name": { "enum": [ "init", "reconnect" ] } }
@@ -62,6 +64,15 @@
         },
         "ndpi_version": {
             "type": "string"
+        },
+        "ndpi_api_version": {
+            "type": "number",
+            "minimum": 11500
+        },
+        "size_per_flow": {
+            "type": "number",
+            "minimum": 1400,
+            "maximum": 1500
         },
 
         "max-flows-per-thread": {

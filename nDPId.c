@@ -2288,6 +2288,8 @@ static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enu
     ndpi_serialize_string_string(&workflow->ndpi_serializer, "version", PKG_VERSION);
 #endif
     ndpi_serialize_string_string(&workflow->ndpi_serializer, "ndpi_version", ndpi_revision());
+    ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "ndpi_api_version", ndpi_get_api_version());
+    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "size_per_flow", (uint64_t)(sizeof(struct nDPId_flow) + sizeof(struct nDPId_detection_data)));
 
     switch (event)
     {
@@ -5357,6 +5359,7 @@ static void nDPId_print_deps_version(FILE * const out)
 {
     fprintf(out,
             "-------------------------------------------------------\n"
+            "package version: %s\n"
 #ifdef LIBNDPI_STATIC
             "nDPI version...: %s (statically linked)\n"
 #else
@@ -5364,6 +5367,11 @@ static void nDPId_print_deps_version(FILE * const out)
 #endif
             " API version...: %u\n"
             "pcap version...: %s\n",
+#ifndef PKG_VERSION
+            "unknown",
+#else
+            PKG_VERSION,
+#endif
             ndpi_revision(),
             ndpi_get_api_version(),
             pcap_lib_version() + strlen("libpcap version "));
@@ -5962,9 +5970,7 @@ int main(int argc, char ** argv)
     }
 
 #ifdef ENABLE_MEMORY_PROFILING
-    logger_early(0, "size/workflow....: %zu bytes", sizeof(struct nDPId_workflow));
     logger_early(0, "size/flow........: %zu bytes", sizeof(struct nDPId_flow) + sizeof(struct nDPId_detection_data));
-    logger_early(0, "size/flow-analyse: %zu bytes", sizeof(struct nDPId_flow_analysis));
 #endif
 
     global_context = ndpi_global_init();

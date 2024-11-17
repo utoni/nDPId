@@ -1,5 +1,5 @@
 PUTVAL "localhost/exec-nDPIsrvd/counter-json_lines" interval=60 N:668
-PUTVAL "localhost/exec-nDPIsrvd/counter-json_bytes" interval=60 N:641671
+PUTVAL "localhost/exec-nDPIsrvd/counter-json_bytes" interval=60 N:641809
 PUTVAL "localhost/exec-nDPIsrvd/counter-flow_new_count" interval=60 N:83
 PUTVAL "localhost/exec-nDPIsrvd/counter-flow_end_count" interval=60 N:17
 PUTVAL "localhost/exec-nDPIsrvd/counter-flow_idle_count" interval=60 N:66
