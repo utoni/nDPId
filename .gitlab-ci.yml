@@ -4,7 +4,7 @@ stages:
   - build_and_test
 
 variables:
-  GIT_CLONE_PATH: $CI_BUILDS_DIR/$CI_CONCURRENT_ID/$CI_PROJECT_PATH
+  GIT_CLONE_PATH: '$CI_BUILDS_DIR/$CI_JOB_ID/$CI_PROJECT_NAME'
 
 before_script:
   - export DEBIAN_FRONTEND=noninteractive
