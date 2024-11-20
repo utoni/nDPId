@@ -264,6 +264,17 @@ jobs:
         if: startsWith(matrix.os, 'macOS') == false && matrix.upload == false
         run: |
           make -C ./build dist
+          RAND_ID=$(( ( RANDOM ) + 1 ))
+          mkdir "nDPId-dist-${RAND_ID}"
+          cd "nDPId-dist-${RAND_ID}"
+          tar -xjf ../nDPId-*.tar.bz2
+          cd ./nDPId-*
+          cmake -S . -B ./build \
+            -DENABLE_DBUS=ON -DENABLE_CURL=ON -DENABLE_SYSTEMD=ON \
+            ${{ matrix.poll }} ${{ matrix.coverage }} ${{ matrix.sanitizer }} ${{ matrix.ndpi_build }} \
+            ${{ matrix.ndpid_examples }} ${{ matrix.ndpid_zlib }} ${{ matrix.ndpid_gcrypt }} ${{ matrix.ndpid_extras }}
+          cd ../..
+          rm -rf "nDPId-dist-${RAND_ID}"
       - name: CPack DEB
         if: startsWith(matrix.os, 'macOS') == false
         run: |
