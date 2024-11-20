@@ -200,6 +200,14 @@ add_executable(nDPId nDPId.c ${NDPID_PFRING_SRCS} nio.c utils.c)
 add_executable(nDPIsrvd nDPIsrvd.c nio.c utils.c)
 add_executable(nDPId-test nDPId-test.c ${NDPID_PFRING_SRCS})
 
+add_custom_target(umask_check)
+add_custom_command(
+    TARGET umask_check
+    PRE_BUILD
+    COMMAND ${CMAKE_SOURCE_DIR}/scripts/umask-check.sh
+)
+add_dependencies(nDPId umask_check)
+
 add_custom_target(dist)
 add_custom_command(
     TARGET dist
