@@ -211,15 +211,17 @@ add_dependencies(nDPId umask_check)
 add_custom_target(dist)
 add_custom_command(
     TARGET dist
+    PRE_BUILD
     COMMAND "${CMAKE_SOURCE_DIR}/scripts/make-dist.sh"
 )
 
 add_custom_target(daemon)
 add_custom_command(
-    TARGET  daemon
+    TARGET daemon
+    POST_BUILD
     COMMAND env nDPIsrvd_ARGS='-C 1024' "${CMAKE_SOURCE_DIR}/scripts/daemon.sh" "$<TARGET_FILE:nDPId>" "$<TARGET_FILE:nDPIsrvd>"
-    DEPENDS nDPId nDPIsrvd
 )
+add_dependencies(daemon nDPId nDPIsrvd)
 
 if(CMAKE_CROSSCOMPILING)
     set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
