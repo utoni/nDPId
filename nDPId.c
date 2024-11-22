@@ -386,13 +386,14 @@ enum error_event
     IP6_PACKET_TOO_SHORT, // 10
     IP6_SIZE_SMALLER_THAN_HEADER,
     IP6_L4_PAYLOAD_DETECTION_FAILED,
+    TUNNEL_DECODE_FAILED,
     TCP_PACKET_TOO_SHORT,
     UDP_PACKET_TOO_SHORT,
     CAPTURE_SIZE_SMALLER_THAN_PACKET_SIZE,
     MAX_FLOW_TO_TRACK,
-    FLOW_MEMORY_ALLOCATION_FAILED,
+    FLOW_MEMORY_ALLOCATION_FAILED, // 18
 
-    ERROR_EVENT_COUNT // 17
+    ERROR_EVENT_COUNT
 };
 
 enum daemon_event
@@ -437,6 +438,7 @@ static char const * const error_event_name_table[ERROR_EVENT_COUNT] = {
     [IP6_PACKET_TOO_SHORT] = "IP6 packet too short",
     [IP6_SIZE_SMALLER_THAN_HEADER] = "Packet smaller than IP6 header",
     [IP6_L4_PAYLOAD_DETECTION_FAILED] = "nDPI IPv6/L4 payload detection failed",
+    [TUNNEL_DECODE_FAILED] = "Tunnel decoding failed",
     [TCP_PACKET_TOO_SHORT] = "TCP packet smaller than expected",
     [UDP_PACKET_TOO_SHORT] = "UDP packet smaller than expected",
     [CAPTURE_SIZE_SMALLER_THAN_PACKET_SIZE] = "Captured packet size is smaller than expected packet size",
@@ -2289,7 +2291,9 @@ static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enu
 #endif
     ndpi_serialize_string_string(&workflow->ndpi_serializer, "ndpi_version", ndpi_revision());
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "ndpi_api_version", ndpi_get_api_version());
-    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "size_per_flow", (uint64_t)(sizeof(struct nDPId_flow) + sizeof(struct nDPId_detection_data)));
+    ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
+                                 "size_per_flow",
+                                 (uint64_t)(sizeof(struct nDPId_flow) + sizeof(struct nDPId_detection_data)));
 
     switch (event)
     {
@@ -3927,6 +3931,119 @@ static int distribute_single_packet(struct nDPId_reader_thread * const reader_th
             reader_thread->array_index);
 }
 
+/* See libnDPI: `ndpi_is_valid_gre_tunnel()` in example/reader_util.c */
+static uint32_t is_valid_gre_tunnel(struct pcap_pkthdr const * const header,
+                                    uint8_t const * const packet,
+                                    uint8_t const * const l4_ptr)
+{
+
+    if (header->caplen < (l4_ptr - packet) + sizeof(struct ndpi_gre_basehdr))
+    {
+        return 0; /* Too short for GRE header*/
+    }
+    uint32_t offset = (l4_ptr - packet);
+    struct ndpi_gre_basehdr * grehdr = (struct ndpi_gre_basehdr *)&packet[offset];
+    offset += sizeof(struct ndpi_gre_basehdr);
+
+    /*
+     * The GRE flags are encoded in the first two octets.  Bit 0 is the
+     * most significant bit, bit 15 is the least significant bit.  Bits
+     * 13 through 15 are reserved for the Version field.  Bits 9 through
+     * 12 are reserved for future use and MUST be transmitted as zero.
+     */
+    if (NDPI_GRE_IS_FLAGS(grehdr->flags))
+    {
+        return 0;
+    }
+    if (NDPI_GRE_IS_REC(grehdr->flags))
+    {
+        return 0;
+    }
+
+    /* GRE rfc 2890 that update 1701 */
+    if (NDPI_GRE_IS_VERSION_0(grehdr->flags))
+    {
+        if (NDPI_GRE_IS_CSUM(grehdr->flags))
+        {
+            if (header->caplen < offset + 4)
+            {
+                return 0;
+            }
+            /* checksum field and offset field */
+            offset += 4;
+        }
+        if (NDPI_GRE_IS_KEY(grehdr->flags))
+        {
+            if (header->caplen < offset + 4)
+            {
+                return 0;
+            }
+            offset += 4;
+        }
+        if (NDPI_GRE_IS_SEQ(grehdr->flags))
+        {
+            if (header->caplen < offset + 4)
+            {
+                return 0;
+            }
+            offset += 4;
+        }
+    }
+    else if (NDPI_GRE_IS_VERSION_1(grehdr->flags))
+    {
+        /* rfc-2637 section 4.1 enhanced gre */
+        if (NDPI_GRE_IS_CSUM(grehdr->flags))
+        {
+            return 0;
+        }
+        if (NDPI_GRE_IS_ROUTING(grehdr->flags))
+        {
+            return 0;
+        }
+        if (!NDPI_GRE_IS_KEY(grehdr->flags))
+        {
+            return 0;
+        }
+        if (NDPI_GRE_IS_STRICT(grehdr->flags))
+        {
+            return 0;
+        }
+        if (grehdr->protocol != NDPI_GRE_PROTO_PPP)
+        {
+            return 0;
+        }
+        /* key field */
+        if (header->caplen < offset + 4)
+        {
+            return 0;
+        }
+        offset += 4;
+        if (NDPI_GRE_IS_SEQ(grehdr->flags))
+        {
+            if (header->caplen < offset + 4)
+            {
+                return 0;
+            }
+            offset += 4;
+        }
+        if (NDPI_GRE_IS_ACK(grehdr->flags))
+        {
+            if (header->caplen < offset + 4)
+            {
+                return 0;
+            }
+            offset += 4;
+        }
+    }
+    else
+    {
+        /* support only ver 0, 1 */
+        return 0;
+    }
+
+    return offset;
+}
+
 static void ndpi_process_packet(uint8_t * const args,
                                 struct pcap_pkthdr const * const header,
                                 uint8_t const * const packet)
@@ -3988,6 +4105,7 @@ static void ndpi_process_packet(uint8_t * const args,
         return;
     }
 
+process_layer3_again:
     if (type == ETH_P_IP)
     {
         ip = (struct ndpi_iphdr *)&packet[ip_offset];
@@ -4063,7 +4181,7 @@ static void ndpi_process_packet(uint8_t * const args,
         flow_basic.src.v4.ip = ip->saddr;
         flow_basic.dst.v4.ip = ip->daddr;
         uint32_t min_addr = (flow_basic.src.v4.ip > flow_basic.dst.v4.ip ? flow_basic.dst.v4.ip : flow_basic.src.v4.ip);
-        thread_index = min_addr + ip->protocol;
+        thread_index += min_addr + ip->protocol;
     }
     else if (ip6 != NULL)
     {
@@ -4113,7 +4231,7 @@ static void ndpi_process_packet(uint8_t * const args,
             min_addr[0] = flow_basic.src.v6.ip[0];
             min_addr[1] = flow_basic.src.v6.ip[1];
         }
-        thread_index = min_addr[0] + min_addr[1] + ip6->ip6_hdr.ip6_un1_nxt;
+        thread_index += min_addr[0] + min_addr[1] + ip6->ip6_hdr.ip6_un1_nxt;
     }
     else
     {
@@ -4123,6 +4241,61 @@ static void ndpi_process_packet(uint8_t * const args,
             jsonize_packet_event(reader_thread, header, packet, type, ip_offset, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
         }
         return;
+    }
+
+    /* process intermediate protocols i.e. layer4 tunnel protocols */
+    if (flow_basic.l4_protocol == IPPROTO_GRE)
+    {
+        uint32_t offset = is_valid_gre_tunnel(header, packet, l4_ptr);
+
+        if (offset == 0)
+        {
+            if (is_error_event_threshold(reader_thread->workflow) == 0)
+            {
+                jsonize_error_eventf(reader_thread, TUNNEL_DECODE_FAILED, "%s%u", "protocol", flow_basic.l4_protocol);
+                jsonize_packet_event(reader_thread, header, packet, type, ip_offset, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
+            }
+            return;
+        }
+        else
+        {
+            struct ndpi_gre_basehdr const * const grehdr = (struct ndpi_gre_basehdr const *)l4_ptr;
+
+            if (grehdr->protocol == ntohs(ETH_P_IP) || grehdr->protocol == ntohs(ETH_P_IPV6))
+            {
+                ip_offset = offset;
+                goto process_layer3_again;
+            }
+            else if (grehdr->protocol == NDPI_GRE_PROTO_PPP)
+            {
+                /* Point to Point Protocol */
+                if (header->caplen < offset + sizeof(struct ndpi_chdlc))
+                {
+                    if (is_error_event_threshold(reader_thread->workflow) == 0)
+                    {
+                        jsonize_error_eventf(reader_thread,
+                                             TUNNEL_DECODE_FAILED,
+                                             "%s%u %s%u %s%zu",
+                                             "protocol",
+                                             flow_basic.l4_protocol,
+                                             "size",
+                                             header->caplen,
+                                             "expected",
+                                             offset + sizeof(struct ndpi_chdlc));
+                        jsonize_packet_event(reader_thread, header, packet, 0, 0, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
+                    }
+                    return;
+                }
+
+                struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const *)&packet[offset];
+                ip_offset = offset + sizeof(*chdlc);
+                goto process_layer3_again;
+            }
+            else
+            {
+                // TODO: Check Layer1 / Layer2 again?
+            }
+        }
     }
 
     /* process layer4 e.g. TCP / UDP */
