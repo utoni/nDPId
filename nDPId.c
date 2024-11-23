@@ -56,6 +56,9 @@
 #define DLT_DSA_TAG_EDSA 285
 #endif
 
+#define PPP_P_IP 0x0021
+#define PPP_P_IPV6 0x0057
+
 #define NDPI_VERSION_CHECK ((NDPI_MAJOR == 4 && NDPI_MINOR < 9) || NDPI_MAJOR < 4)
 
 #if NDPI_VERSION_CHECK
@@ -4127,22 +4130,17 @@ process_layer3_again:
     }
     ip_size = header->caplen - ip_offset;
 
-    if (type == ETH_P_IP && header->caplen >= ip_offset)
+    if (header->caplen >= ip_offset && header->caplen < header->len && distribute_single_packet(reader_thread) != 0 &&
+        is_error_event_threshold(reader_thread->workflow) == 0)
     {
-        if (header->caplen < header->len)
-        {
-            if (distribute_single_packet(reader_thread) != 0 && is_error_event_threshold(reader_thread->workflow) == 0)
-            {
-                jsonize_error_eventf(reader_thread,
-                                     CAPTURE_SIZE_SMALLER_THAN_PACKET_SIZE,
-                                     "%s%u %s%u",
-                                     "size",
-                                     header->caplen,
-                                     "expected",
-                                     header->len);
-                jsonize_packet_event(reader_thread, header, packet, type, ip_offset, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
-            }
-        }
+        jsonize_error_eventf(reader_thread,
+                             CAPTURE_SIZE_SMALLER_THAN_PACKET_SIZE,
+                             "%s%u %s%u",
+                             "size",
+                             header->caplen,
+                             "expected",
+                             header->len);
+        jsonize_packet_event(reader_thread, header, packet, type, ip_offset, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
     }
 
     /* process layer3 e.g. IPv4 / IPv6 */
@@ -4263,6 +4261,7 @@ process_layer3_again:
 
             if (grehdr->protocol == ntohs(ETH_P_IP) || grehdr->protocol == ntohs(ETH_P_IPV6))
             {
+                type = ntohs(grehdr->protocol);
                 ip_offset = offset;
                 goto process_layer3_again;
             }
@@ -4288,6 +4287,23 @@ process_layer3_again:
                 }
 
                 struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const *)&packet[offset];
+                type = ntohs(chdlc->proto_code);
+                switch (type)
+                {
+                    case PPP_P_IP:
+                        type = ETH_P_IP;
+                        break;
+                    case PPP_P_IPV6:
+                        type = ETH_P_IPV6;
+                        break;
+                    default:
+                        if (is_error_event_threshold(reader_thread->workflow) == 0)
+                        {
+                            jsonize_error_eventf(reader_thread, TUNNEL_DECODE_FAILED, "%s%u", "ppp-protocol", type);
+                            jsonize_packet_event(reader_thread, header, packet, 0, 0, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
+                        }
+                        return;
+                }
                 ip_offset = offset + sizeof(*chdlc);
                 goto process_layer3_again;
             }
