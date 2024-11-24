@@ -3496,7 +3496,21 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
         case DLT_NULL:
         {
             /* DLT header values can be stored as big or little endian. */
-
+            if (header->caplen < sizeof(uint32_t))
+            {
+                if (is_error_event_threshold(reader_thread->workflow) == 0)
+                {
+                    jsonize_error_eventf(reader_thread,
+                                         PACKET_TOO_SHORT,
+                                         "%s%u %s%zu",
+                                         "size",
+                                         header->caplen,
+                                         "expected",
+                                         sizeof(uint32_t));
+                    jsonize_packet_event(reader_thread, header, packet, 0, 0, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
+                }
+                return 1;
+            }
             uint32_t dlt_hdr = *((uint32_t const *)&packet[eth_offset]);
 
             if (dlt_hdr == 0x02000000 || dlt_hdr == 0x02)
@@ -4116,11 +4130,19 @@ process_layer3_again:
     {
         ip = (struct ndpi_iphdr *)&packet[ip_offset];
         ip6 = NULL;
+        if (header->caplen < ip_offset + sizeof(*ip))
+        {
+            return;
+        }
     }
     else if (type == ETH_P_IPV6)
     {
         ip = NULL;
         ip6 = (struct ndpi_ipv6hdr *)&packet[ip_offset];
+        if (header->caplen < ip_offset + sizeof(*ip6))
+        {
+            return;
+        }
     }
     else
     {
@@ -4247,7 +4269,7 @@ process_layer3_again:
     /* process intermediate protocols i.e. layer4 tunnel protocols */
     if (IS_CMDARG_SET(nDPId_options.decode_tunnel) != 0 && flow_basic.l4_protocol == IPPROTO_GRE)
     {
-        uint32_t offset = is_valid_gre_tunnel(header, packet, l4_ptr);
+        uint32_t const offset = is_valid_gre_tunnel(header, packet, l4_ptr);
 
         if (offset == 0)
         {
