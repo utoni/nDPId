@@ -484,6 +484,7 @@ static struct
     struct cmdarg config_file;
     struct cmdarg pcap_file_or_interface;
     struct cmdarg bpf_str;
+    struct cmdarg decode_tunnel;
     struct cmdarg pidfile;
     struct cmdarg user;
     struct cmdarg group;
@@ -533,6 +534,7 @@ static struct
 } nDPId_options = {.config_file = CMDARG_STR(NULL),
                    .pcap_file_or_interface = CMDARG_STR(NULL),
                    .bpf_str = CMDARG_STR(NULL),
+                   .decode_tunnel = CMDARG_BOOL(0),
                    .pidfile = CMDARG_STR(nDPId_PIDFILE),
                    .user = CMDARG_STR(DEFAULT_CHUSER),
                    .group = CMDARG_STR(NULL),
@@ -590,6 +592,7 @@ static struct
                    .error_event_threshold_time = CMDARG_ULL(nDPId_ERROR_EVENT_THRESHOLD_TIME)};
 struct confopt general_config_map[] = {CONFOPT("netif", &nDPId_options.pcap_file_or_interface),
                                        CONFOPT("bpf", &nDPId_options.bpf_str),
+                                       CONFOPT("decode-tunnel", &nDPId_options.decode_tunnel),
                                        CONFOPT("pidfile", &nDPId_options.pidfile),
                                        CONFOPT("user", &nDPId_options.user),
                                        CONFOPT("group", &nDPId_options.group),
@@ -4242,7 +4245,7 @@ process_layer3_again:
     }
 
     /* process intermediate protocols i.e. layer4 tunnel protocols */
-    if (flow_basic.l4_protocol == IPPROTO_GRE)
+    if (IS_CMDARG_SET(nDPId_options.decode_tunnel) != 0 && flow_basic.l4_protocol == IPPROTO_GRE)
     {
         uint32_t offset = is_valid_gre_tunnel(header, packet, l4_ptr);
 
@@ -5456,6 +5459,7 @@ static void print_usage(char const * const arg0)
     static char const usage[] =
         "Usage: %s "
         "[-f config-file]\n"
+        "\t  \t"
         "[-i pcap-file/interface] [-I] [-E] [-B bpf-filter]\n"
         "\t  \t"
         "[-l] [-L logfile] [-c address] [-e]"
@@ -5485,6 +5489,8 @@ static void print_usage(char const * const arg0)
         "\t  \tDefault: disabled\n"
         "\t-B\tSet an optional PCAP filter string. (BPF format)\n"
         "\t  \tDefault: empty\n"
+        "\t-t\tEnable tunnel decapsulation. Supported protocols: GRE\n"
+        "\t  \tDefault: disabled\n"
         "\t-l\tLog all messages to stderr.\n"
         "\t  \tDefault: disabled\n"
         "\t-L\tLog all messages to a log file.\n"
@@ -5609,7 +5615,7 @@ static int nDPId_parse_options(int argc, char ** argv)
 {
     int opt;
 
-    while ((opt = getopt(argc, argv, "f:i:rIEB:lL:c:edp:u:g:R:P:C:J:S:a:U:Azo:vh")) != -1)
+    while ((opt = getopt(argc, argv, "f:i:rIEB:tlL:c:edp:u:g:R:P:C:J:S:a:U:Azo:vh")) != -1)
     {
         switch (opt)
         {
@@ -5635,6 +5641,9 @@ static int nDPId_parse_options(int argc, char ** argv)
                 break;
             case 'B':
                 set_cmdarg_string(&nDPId_options.bpf_str, optarg);
+                break;
+            case 't':
+                set_cmdarg_boolean(&nDPId_options.decode_tunnel, 1);
                 break;
             case 'l':
                 enable_console_logger();
