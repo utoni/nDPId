@@ -384,17 +384,15 @@ enum error_event
     PACKET_TYPE_UNKNOWN,
     PACKET_HEADER_INVALID,
     IP4_PACKET_TOO_SHORT,
-    IP4_SIZE_SMALLER_THAN_HEADER,
     IP4_L4_PAYLOAD_DETECTION_FAILED,
-    IP6_PACKET_TOO_SHORT, // 10
-    IP6_SIZE_SMALLER_THAN_HEADER,
-    IP6_L4_PAYLOAD_DETECTION_FAILED,
+    IP6_PACKET_TOO_SHORT,
+    IP6_L4_PAYLOAD_DETECTION_FAILED, // 10
     TUNNEL_DECODE_FAILED,
     TCP_PACKET_TOO_SHORT,
     UDP_PACKET_TOO_SHORT,
     CAPTURE_SIZE_SMALLER_THAN_PACKET_SIZE,
     MAX_FLOW_TO_TRACK,
-    FLOW_MEMORY_ALLOCATION_FAILED, // 18
+    FLOW_MEMORY_ALLOCATION_FAILED, // 16
 
     ERROR_EVENT_COUNT
 };
@@ -436,10 +434,8 @@ static char const * const error_event_name_table[ERROR_EVENT_COUNT] = {
     [PACKET_TYPE_UNKNOWN] = "Unknown packet type",
     [PACKET_HEADER_INVALID] = "Packet header invalid",
     [IP4_PACKET_TOO_SHORT] = "IP4 packet too short",
-    [IP4_SIZE_SMALLER_THAN_HEADER] = "Packet smaller than IP4 header",
     [IP4_L4_PAYLOAD_DETECTION_FAILED] = "nDPI IPv4/L4 payload detection failed",
     [IP6_PACKET_TOO_SHORT] = "IP6 packet too short",
-    [IP6_SIZE_SMALLER_THAN_HEADER] = "Packet smaller than IP6 header",
     [IP6_L4_PAYLOAD_DETECTION_FAILED] = "nDPI IPv6/L4 payload detection failed",
     [TUNNEL_DECODE_FAILED] = "Tunnel decoding failed",
     [TCP_PACKET_TOO_SHORT] = "TCP packet smaller than expected",
@@ -3782,54 +3778,8 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
             switch (*layer3_type)
             {
                 case ETH_P_IP: /* IPv4 */
-                    if (header->caplen < sizeof(struct ndpi_ethhdr) + sizeof(struct ndpi_iphdr))
-                    {
-                        if (is_error_event_threshold(reader_thread->workflow) == 0)
-                        {
-                            jsonize_error_eventf(reader_thread,
-                                                 IP4_PACKET_TOO_SHORT,
-                                                 "%s%u %s%zu",
-                                                 "size",
-                                                 header->caplen,
-                                                 "expected",
-                                                 sizeof(struct ndpi_ethhdr) + sizeof(struct ndpi_iphdr));
-                            jsonize_packet_event(reader_thread,
-                                                 header,
-                                                 packet,
-                                                 *layer3_type,
-                                                 *ip_offset,
-                                                 0,
-                                                 0,
-                                                 NULL,
-                                                 PACKET_EVENT_PAYLOAD);
-                        }
-                        return 1;
-                    }
                     break;
                 case ETH_P_IPV6: /* IPV6 */
-                    if (header->caplen < sizeof(struct ndpi_ethhdr) + sizeof(struct ndpi_ipv6hdr))
-                    {
-                        if (is_error_event_threshold(reader_thread->workflow) == 0)
-                        {
-                            jsonize_error_eventf(reader_thread,
-                                                 IP6_PACKET_TOO_SHORT,
-                                                 "%s%u %s%zu",
-                                                 "size",
-                                                 header->caplen,
-                                                 "expected",
-                                                 sizeof(struct ndpi_ethhdr) + sizeof(struct ndpi_ipv6hdr));
-                            jsonize_packet_event(reader_thread,
-                                                 header,
-                                                 packet,
-                                                 *layer3_type,
-                                                 *ip_offset,
-                                                 0,
-                                                 0,
-                                                 NULL,
-                                                 PACKET_EVENT_PAYLOAD);
-                        }
-                        return 1;
-                    }
                     break;
                 case ETHERTYPE_PAE: /* 802.1X Authentication */
                     return 1;
@@ -4132,6 +4082,17 @@ process_layer3_again:
         ip6 = NULL;
         if (header->caplen < ip_offset + sizeof(*ip))
         {
+            if (distribute_single_packet(reader_thread) != 0 && is_error_event_threshold(reader_thread->workflow) == 0)
+            {
+                jsonize_error_eventf(reader_thread,
+                                     IP4_PACKET_TOO_SHORT,
+                                     "%s%u %s%zu",
+                                     "size",
+                                     header->caplen,
+                                     "expected",
+                                     sizeof(struct ndpi_ethhdr) + sizeof(struct ndpi_iphdr));
+                jsonize_packet_event(reader_thread, header, packet, type, ip_offset, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
+            }
             return;
         }
     }
@@ -4141,6 +4102,17 @@ process_layer3_again:
         ip6 = (struct ndpi_ipv6hdr *)&packet[ip_offset];
         if (header->caplen < ip_offset + sizeof(*ip6))
         {
+            if (distribute_single_packet(reader_thread) != 0 && is_error_event_threshold(reader_thread->workflow) == 0)
+            {
+                jsonize_error_eventf(reader_thread,
+                                     IP4_PACKET_TOO_SHORT,
+                                     "%s%u %s%zu",
+                                     "size",
+                                     header->caplen,
+                                     "expected",
+                                     sizeof(struct ndpi_ethhdr) + sizeof(struct ndpi_iphdr));
+                jsonize_packet_event(reader_thread, header, packet, type, ip_offset, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
+            }
             return;
         }
     }
@@ -4171,22 +4143,6 @@ process_layer3_again:
     /* process layer3 e.g. IPv4 / IPv6 */
     if (ip != NULL && ip->version == 4)
     {
-        if (ip_size < sizeof(*ip))
-        {
-            if (distribute_single_packet(reader_thread) != 0 && is_error_event_threshold(reader_thread->workflow) == 0)
-            {
-                jsonize_error_eventf(reader_thread,
-                                     IP4_SIZE_SMALLER_THAN_HEADER,
-                                     "%s%u %s%zu",
-                                     "size",
-                                     ip_size,
-                                     "expected",
-                                     sizeof(*ip));
-                jsonize_packet_event(reader_thread, header, packet, type, ip_offset, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
-            }
-            return;
-        }
-
         flow_basic.l3_type = L3_IP;
 
         if (ndpi_detection_get_l4(
@@ -4208,22 +4164,6 @@ process_layer3_again:
     }
     else if (ip6 != NULL)
     {
-        if (ip_size < sizeof(ip6->ip6_hdr))
-        {
-            if (distribute_single_packet(reader_thread) != 0 && is_error_event_threshold(reader_thread->workflow) == 0)
-            {
-                jsonize_error_eventf(reader_thread,
-                                     IP6_SIZE_SMALLER_THAN_HEADER,
-                                     "%s%u %s%zu",
-                                     "size",
-                                     ip_size,
-                                     "expected",
-                                     sizeof(ip6->ip6_hdr));
-                jsonize_packet_event(reader_thread, header, packet, type, ip_offset, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
-            }
-            return;
-        }
-
         flow_basic.l3_type = L3_IP6;
         if (ndpi_detection_get_l4(
                 (uint8_t *)ip6, ip_size, &l4_ptr, &l4_len, &flow_basic.l4_protocol, NDPI_DETECTION_ONLY_IPV6) != 0)
