@@ -1,11 +1,15 @@
 [general]
 # Set the network interface from which packets are captured and processed.
 # Leave it empty to let nDPId choose the default network interface.
-#netif       = eth0
+#netif = eth0
 
 # Set a Berkeley Packet Filter.
 # This will work for libpcap as well as with PF_RING.
-#bpf         = udp or tcp
+#bpf = udp or tcp
+
+# Decapsulate Layer4 tunnel protocols.
+# Supported protocols: GRE
+#decode-tunnel = true
 
 #pidfile     = /tmp/ndpid.pid
 #user        = nobody
