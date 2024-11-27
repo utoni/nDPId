@@ -15,7 +15,8 @@ if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
                         "Please remove ${PROJECT_SOURCE_DIR}/CMakeCache.txt\n"
                         "and\n"
                         "${PROJECT_SOURCE_DIR}/CMakeFiles\n"
-                        "Create a build directory somewhere and run CMake again.")
+                        "Create a build directory somewhere and run CMake again.\n"
+                        "Or run: 'cmake -S ${PROJECT_SOURCE_DIR} -B ./your-custom-build-dir [CMAKE-OPTIONS]'")
 endif()
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 find_package(PkgConfig REQUIRED)
@@ -560,6 +561,14 @@ if(BUILD_EXAMPLES)
                                    "${CURL_INCLUDE_DIRS}")
         target_link_libraries(nDPIsrvd-influxd "${CURL_LIBRARIES}")
         install(TARGETS nDPIsrvd-influxd DESTINATION bin)
+    endif()
+
+    if(ENABLE_CRYPTO)
+        add_executable(nDPId-decrypt examples/c-decrypt/c-decrypt.c utils.c ncrypt.c)
+        target_compile_definitions(nDPId-decrypt PRIVATE ${NDPID_DEFS} ${OSSL_DEFS})
+        target_include_directories(nDPId-decrypt PRIVATE ${NDPID_DEPS_INC})
+        target_link_libraries(nDPId-decrypt ${OSSL_LIBRARY})
+        install(TARGETS nDPId-decrypt DESTINATION bin)
     endif()
 
     install(TARGETS nDPIsrvd-analysed nDPIsrvd-collectd nDPIsrvd-captured nDPIsrvd-simple DESTINATION bin)
