@@ -329,7 +329,7 @@ int nio_check(struct nio * io, int index, int event_flags)
     return NIO_ERROR_INTERNAL;
 }
 
-int nio_is_valid(struct nio const * const io, int index)
+int nio_is_valid(struct nio const * io, int index)
 {
     if (index < 0 || index >= io->nready)
         return NIO_ERROR_INTERNAL;

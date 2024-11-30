@@ -10,6 +10,9 @@ extern void nDPIsrvd_memprof_log_free(size_t free_size);
 // #define VERBOSE_MEMORY_PROFILING 1
 #define NO_MAIN 1
 #include "utils.c"
+#ifdef ENABLE_CRYPTO
+#include "ncrypt.c"
+#endif
 #include "nio.c"
 #include "nDPIsrvd.c"
 #include "nDPId.c"
@@ -1638,6 +1641,210 @@ error:
     return 1;
 }
 
+#ifdef ENABLE_CRYPTO
+static int ncrypt_selftest()
+{
+    int ret = 0;
+    struct ncrypt nc_peer1 = {};
+    struct ncrypt nc_peer2 = {};
+    unsigned char peer1_priv_key[NCRYPT_X25519_KEYLEN];
+    unsigned char peer2_priv_key[NCRYPT_X25519_KEYLEN];
+    unsigned char peer1_pub_key[NCRYPT_X25519_KEYLEN];
+    unsigned char peer2_pub_key[NCRYPT_X25519_KEYLEN];
+    unsigned char iv[NCRYPT_AES_IVLEN];
+
+    if (ncrypt_keygen(peer1_priv_key, peer1_pub_key) != 0)
+    {
+        ret++;
+    }
+    if (ncrypt_keygen(peer2_priv_key, peer2_pub_key) != 0)
+    {
+        ret++;
+    }
+    if (ncrypt_init(&nc_peer1, peer1_priv_key, peer2_pub_key) != 0)
+    {
+        ret++;
+    }
+    if (ncrypt_init(&nc_peer2, peer2_priv_key, peer1_pub_key) != 0)
+    {
+        ret++;
+    }
+    if (ncrypt_init_encrypt(&nc_peer1) != 0)
+    {
+        ret++;
+    }
+    if (ncrypt_init_decrypt(&nc_peer2, nc_peer1.iv) != 0)
+    {
+        ret++;
+    }
+    if (memcmp(nc_peer1.shared_secret, nc_peer2.shared_secret, NCRYPT_X25519_KEYLEN) != 0)
+    {
+        ret++;
+    }
+    if (memcmp(nc_peer1.iv, nc_peer2.iv, NCRYPT_AES_IVLEN) != 0)
+    {
+        ret++;
+    }
+
+    memcpy(iv, nc_peer1.iv, NCRYPT_AES_IVLEN);
+    unsigned char plaintext[] = "Secret Message";
+    unsigned char encrypted1[NCRYPT_BUFFER_SIZE];
+    unsigned char tag1[NCRYPT_TAG_SIZE];
+    unsigned char encrypted2[NCRYPT_BUFFER_SIZE];
+    unsigned char tag2[NCRYPT_TAG_SIZE];
+    unsigned char tmp1[NETWORK_BUFFER_MAX_SIZE];
+    unsigned char tmp2[NETWORK_BUFFER_MAX_SIZE];
+
+    memset(encrypted1, 0xFF, sizeof(encrypted1));
+    memset(encrypted2, 0xFF, sizeof(encrypted2));
+    memset(tag1, 0xFF, sizeof(tag1));
+    memset(tag2, 0xFF, sizeof(tag2));
+
+    int enc_bytes;
+    int dec_bytes;
+
+    enc_bytes = ncrypt_encrypt(&nc_peer1, plaintext, sizeof(plaintext), encrypted1, tag1);
+    dec_bytes = ncrypt_decrypt(&nc_peer2, encrypted1, enc_bytes, tag1, tmp1);
+
+    if (enc_bytes != dec_bytes)
+    {
+        ret++;
+    }
+    if (memcmp(plaintext, tmp1, dec_bytes) != 0)
+    {
+        ret++;
+    }
+    memset(tmp1, 0xFF, sizeof(tmp1));
+
+    enc_bytes = ncrypt_encrypt(&nc_peer1, plaintext, sizeof(plaintext), encrypted2, tag2);
+    dec_bytes = ncrypt_decrypt(&nc_peer2, encrypted2, enc_bytes, tag2, tmp1);
+
+    if (enc_bytes != dec_bytes)
+    {
+        ret++;
+    }
+    if (memcmp(plaintext, tmp1, dec_bytes) != 0)
+    {
+        ret++;
+    }
+
+    if (memcmp(tag1, tag2, NCRYPT_TAG_SIZE) == 0)
+    {
+        ret++;
+    }
+    if (memcmp(encrypted1, encrypted2, enc_bytes) == 0)
+    {
+        ret++;
+    }
+
+    if (memcmp(iv, nc_peer1.iv, NCRYPT_AES_IVLEN) == 0)
+    {
+        ret++;
+    }
+
+    memset(encrypted1, 0xFF, sizeof(encrypted1));
+    memset(tag1, 0xFF, sizeof(tag1));
+    memset(tmp1, 0x41, sizeof(tmp1));
+    enc_bytes = ncrypt_encrypt(&nc_peer1, tmp1, sizeof(tmp1), encrypted1, tag1);
+    dec_bytes = ncrypt_decrypt(&nc_peer2, encrypted1, enc_bytes, tag1, tmp2);
+    if (enc_bytes != sizeof(tmp1) || dec_bytes != sizeof(tmp2))
+    {
+        ret++;
+    }
+    if (memcmp(tmp1, tmp2, sizeof(tmp1)) != 0)
+    {
+        ret++;
+    }
+
+    enc_bytes = ncrypt_encrypt(&nc_peer1, tmp1, sizeof(tmp1), encrypted2, tag2);
+    dec_bytes = ncrypt_decrypt(&nc_peer2, encrypted2, enc_bytes, tag2, tmp2);
+    if (enc_bytes != sizeof(tmp1) || dec_bytes != sizeof(tmp2))
+    {
+        ret++;
+    }
+    if (memcmp(tmp1, tmp2, sizeof(tmp1)) != 0)
+    {
+        ret++;
+    }
+
+    if (enc_bytes != dec_bytes)
+    {
+        ret++;
+    }
+    if (memcmp(tmp2, encrypted1, dec_bytes) == 0)
+    {
+        ret++;
+    }
+    if (memcmp(tag1, tag2, NCRYPT_TAG_SIZE) == 0)
+    {
+        ret++;
+    }
+    if (memcmp(encrypted1, encrypted2, enc_bytes) == 0)
+    {
+        ret++;
+    }
+    if (memcmp(iv, nc_peer1.iv, NCRYPT_AES_IVLEN) == 0)
+    {
+        ret++;
+    }
+    if (memcmp(nc_peer1.iv, nc_peer2.iv, NCRYPT_AES_IVLEN) != 0)
+    {
+        ret++;
+    }
+
+    int pipefds[2] = {-1, -1};
+    if (pipe2(pipefds, O_DIRECT) != 0)
+    {
+        ret++;
+    }
+
+    struct ncrypt_buffer encrypted_buf = {};
+    struct ncrypt_buffer decrypted_buf = {};
+    memcpy(encrypted_buf.plaintext.data, plaintext, sizeof(plaintext));
+    encrypted_buf.data_used = sizeof(plaintext);
+
+    int sent;
+    sent = ncrypt_encrypt_send(&nc_peer1, pipefds[1], &encrypted_buf);
+    if (sent < 0)
+    {
+        ret++;
+    }
+
+    int received = ncrypt_decrypt_recv(&nc_peer2, pipefds[0], &decrypted_buf);
+    if (received < 0)
+    {
+        ret++;
+    }
+
+    if (received != sent)
+    {
+        ret++;
+    }
+
+    sent = ncrypt_encrypt_send(&nc_peer1, pipefds[1], &encrypted_buf);
+    int sent2 = ncrypt_encrypt_send(&nc_peer1, pipefds[1], &encrypted_buf);
+    if (sent < 0 || sent != sent2)
+    {
+        ret++;
+    }
+
+    received = ncrypt_decrypt_recv(&nc_peer2, pipefds[0], &decrypted_buf);
+    int received2 = ncrypt_decrypt_recv(&nc_peer2, pipefds[0], &decrypted_buf);
+    if (received < 0 || received != received2)
+    {
+        ret++;
+    }
+
+    close(pipefds[0]);
+    close(pipefds[1]);
+
+    ncrypt_free(&nc_peer2);
+    ncrypt_free(&nc_peer1);
+
+    return ret;
+}
+#endif
+
 #define THREADS_RETURNED_ERROR()                                                                                       \
     (nDPId_return.thread_return_value.val != 0 || nDPIsrvd_return.val != 0 ||                                          \
      distributor_return.thread_return_value.val != 0)
@@ -1671,8 +1878,11 @@ int main(int argc, char ** argv)
 
         retval += base64_selftest();
         retval += nio_selftest();
+#ifdef ENABLE_CRYPTO
+        retval += ncrypt_selftest();
+#endif
 
-        logger(1, "Selftest returned: %d", retval);
+        logger(1, "Selftest returned: %d%s", retval, (retval == 0 ? " (OK)" : ""));
         return retval;
     }
 
