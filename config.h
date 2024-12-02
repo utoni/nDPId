@@ -22,7 +22,7 @@
 
 /* nDPId default config options */
 #define nDPId_PIDFILE "/tmp/ndpid.pid"
-#define nDPId_MAX_FLOWS_PER_THREAD 4096u
+#define nDPId_MAX_FLOWS_PER_THREAD 65535u
 #define nDPId_MAX_IDLE_FLOWS_PER_THREAD (nDPId_MAX_FLOWS_PER_THREAD / 32u)
 #define nDPId_MAX_READER_THREADS 32u
 #define nDPId_ERROR_EVENT_THRESHOLD_N 16u
