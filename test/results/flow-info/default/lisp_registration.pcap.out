@@ -9,8 +9,8 @@
          detected: [.....3] [ip4][..udp] [.....10.0.123.3][.4342] -> [.....10.0.123.1][.4342] [LISP][Unknown][Cloud][Acceptable]
               new: [.....4] [ip4][..tcp] [.....10.0.123.3][52995] -> [.....10.0.123.1][.4342]
          detected: [.....4] [ip4][..tcp] [.....10.0.123.3][52995] -> [.....10.0.123.1][.4342] [LISP][Unknown][Cloud][Acceptable]
-             idle: [.....4] [ip4][..tcp] [.....10.0.123.3][52995] -> [.....10.0.123.1][.4342] [LISP][Unknown][Cloud][Acceptable]
              idle: [.....3] [ip4][..udp] [.....10.0.123.3][.4342] -> [.....10.0.123.1][.4342] [LISP][Unknown][Cloud][Acceptable]
              idle: [.....1] [ip4][..udp] [.....10.0.123.2][.4342] -> [.....10.0.123.1][.4342] [LISP][Unknown][Cloud][Acceptable]
              idle: [.....2] [ip4][..tcp] [.....10.0.123.2][15373] -> [.....10.0.123.1][.4342] [LISP][Unknown][Cloud][Acceptable]
+             idle: [.....4] [ip4][..tcp] [.....10.0.123.3][52995] -> [.....10.0.123.1][.4342] [LISP][Unknown][Cloud][Acceptable]
      DAEMON-EVENT: shutdown

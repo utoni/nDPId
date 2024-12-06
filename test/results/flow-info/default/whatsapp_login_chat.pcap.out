@@ -36,13 +36,13 @@
  detection-update: [.....9] [ip4][..tcp] [..17.110.229.14][.5223] -> [....192.168.2.4][49193] [TLS][Apple][Web][Safe]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
              idle: [.....6] [ip4][..udp] [........0.0.0.0][...68] -> [255.255.255.255][...67] [DHCP][Unknown][Network][Acceptable][lucas-imac]
-             idle: [.....8] [ip6][..udp] [...............fe80::189c:c31b:1298:224][.5353] -> [...............................ff02::fb][.5353] [MDNS][Unknown][Network][Acceptable]
-             idle: [.....5] [ip4][..udp] [....192.168.2.1][17500] -> [..192.168.2.255][17500] [Dropbox][Unknown][Cloud][Acceptable]
-             idle: [.....2] [ip4][..udp] [....192.168.2.4][61697] -> [....192.168.2.1][...53] [DNS.WhatsApp][Unknown][Network][Acceptable][e12.whatsapp.net]
-              end: [.....3] [ip4][..tcp] [....192.168.2.4][49206] -> [...158.85.58.15][.5222] [WhatsApp][Unknown][Chat][Acceptable]
-              end: [.....9] [ip4][..tcp] [..17.110.229.14][.5223] -> [....192.168.2.4][49193] [TLS][Apple][Web][Safe]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
-             idle: [.....7] [ip4][..udp] [....192.168.2.4][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable]
              idle: [.....1] [ip4][..udp] [....192.168.2.1][57621] -> [..192.168.2.255][57621] [Spotify][Unknown][Music][Fun]
              idle: [.....4] [ip4][..tcp] [....192.168.2.4][49205] -> [..17.173.66.102][..443] [TLS][Apple][Web][Safe]
+             idle: [.....2] [ip4][..udp] [....192.168.2.4][61697] -> [....192.168.2.1][...53] [DNS.WhatsApp][Unknown][Network][Acceptable][e12.whatsapp.net]
+             idle: [.....8] [ip6][..udp] [...............fe80::189c:c31b:1298:224][.5353] -> [...............................ff02::fb][.5353] [MDNS][Unknown][Network][Acceptable]
+              end: [.....3] [ip4][..tcp] [....192.168.2.4][49206] -> [...158.85.58.15][.5222] [WhatsApp][Unknown][Chat][Acceptable]
+             idle: [.....7] [ip4][..udp] [....192.168.2.4][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable]
+             idle: [.....5] [ip4][..udp] [....192.168.2.1][17500] -> [..192.168.2.255][17500] [Dropbox][Unknown][Cloud][Acceptable]
+              end: [.....9] [ip4][..tcp] [..17.110.229.14][.5223] -> [....192.168.2.4][49193] [TLS][Apple][Web][Safe]
+                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
      DAEMON-EVENT: shutdown

@@ -19,9 +19,9 @@
      DAEMON-EVENT: [Flows][active: 2 / 3|skipped: 0|!detected: 0|guessed: 0|detection-updates: 3|updates: 0]
               new: [.....4] [ip6][..udp] [3516:bf0b:fc53:75e7:70af:f67f:8e49:f603][56880] -> [....2a38:e156:8167:a333:face:b00c::24d9][.3478]
          detected: [.....4] [ip6][..udp] [3516:bf0b:fc53:75e7:70af:f67f:8e49:f603][56880] -> [....2a38:e156:8167:a333:face:b00c::24d9][.3478] [STUN][Unknown][Network][Acceptable][]
-             idle: [.....2] [ip4][..udp] [.192.168.12.169][43016] -> [.74.125.247.128][.3478] [STUN.GoogleCall][Google][VoIP][Acceptable][turn.l.google.com]
              idle: [.....3] [ip4][.icmp] [.192.168.12.169] -> [.74.125.247.128] [ICMP][Google][Network][Acceptable]
                    RISK: Susp Entropy
+             idle: [.....2] [ip4][..udp] [.192.168.12.169][43016] -> [.74.125.247.128][.3478] [STUN.GoogleCall][Google][VoIP][Acceptable][turn.l.google.com]
            update: [.....4] [ip6][..udp] [3516:bf0b:fc53:75e7:70af:f67f:8e49:f603][56880] -> [....2a38:e156:8167:a333:face:b00c::24d9][.3478] [STUN][Unknown][Network][Acceptable]
            update: [.....4] [ip6][..udp] [3516:bf0b:fc53:75e7:70af:f67f:8e49:f603][56880] -> [....2a38:e156:8167:a333:face:b00c::24d9][.3478] [STUN][Unknown][Network][Acceptable]
           analyse: [.....4] [ip6][..udp] [3516:bf0b:fc53:75e7:70af:f67f:8e49:f603][56880] -> [....2a38:e156:8167:a333:face:b00c::24d9][.3478] [STUN][Unknown][Network][Acceptable]

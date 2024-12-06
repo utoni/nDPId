@@ -7,7 +7,7 @@
          detected: [.....2] [ip4][..tcp] [.....198.18.0.3][37892] -> [.....198.18.0.2][.9042] [Cassandra][Unknown][Database][Acceptable]
               new: [.....3] [ip4][..tcp] [.....198.18.0.2][37184] -> [.....198.18.0.3][.7000]
          detected: [.....3] [ip4][..tcp] [.....198.18.0.2][37184] -> [.....198.18.0.3][.7000] [Cassandra][Unknown][Database][Acceptable]
-             idle: [.....1] [ip4][..tcp] [......127.0.0.1][46536] -> [......127.0.0.1][.9042] [Cassandra][Unknown][Database][Acceptable]
              idle: [.....3] [ip4][..tcp] [.....198.18.0.2][37184] -> [.....198.18.0.3][.7000] [Cassandra][Unknown][Database][Acceptable]
+             idle: [.....1] [ip4][..tcp] [......127.0.0.1][46536] -> [......127.0.0.1][.9042] [Cassandra][Unknown][Database][Acceptable]
              idle: [.....2] [ip4][..tcp] [.....198.18.0.3][37892] -> [.....198.18.0.2][.9042] [Cassandra][Unknown][Database][Acceptable]
      DAEMON-EVENT: shutdown

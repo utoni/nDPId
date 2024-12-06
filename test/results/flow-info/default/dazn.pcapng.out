@@ -10,7 +10,7 @@
               new: [.....3] [ip4][..tcp] [..192.168.1.128][40882] -> [..13.226.244.30][..443]
          detected: [.....3] [ip4][..tcp] [..192.168.1.128][40882] -> [..13.226.244.30][..443] [TLS.Dazn][AmazonAWS][Streaming][Fun][subscriptions-service.dazn-api.com]
  detection-update: [.....3] [ip4][..tcp] [..192.168.1.128][40882] -> [..13.226.244.30][..443] [TLS.Dazn][AmazonAWS][Streaming][Fun][subscriptions-service.dazn-api.com]
+             idle: [.....3] [ip4][..tcp] [..192.168.1.128][40882] -> [..13.226.244.30][..443] [TLS.Dazn][AmazonAWS][Streaming][Fun]
              idle: [.....2] [ip4][..tcp] [..192.168.1.128][46036] -> [..13.226.244.27][..443] [TLS.Dazn][AmazonAWS][Streaming][Fun]
              idle: [.....1] [ip4][..tcp] [..192.168.1.128][54020] -> [...52.84.223.58][..443] [TLS.Dazn][AmazonAWS][Streaming][Fun]
-             idle: [.....3] [ip4][..tcp] [..192.168.1.128][40882] -> [..13.226.244.30][..443] [TLS.Dazn][AmazonAWS][Streaming][Fun]
      DAEMON-EVENT: shutdown

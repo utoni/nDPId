@@ -30,16 +30,16 @@
               new: [.....7] [ip4][..udp] [....139.25.22.2][..686] -> [..139.25.22.102][.1048]
          detected: [.....7] [ip4][..udp] [....139.25.22.2][..686] -> [..139.25.22.102][.1048] [NFS][Unknown][DataTransfer][Acceptable]
                    RISK: Known Proto on Non Std Port
-             idle: [.....4] [ip4][..udp] [....139.25.22.2][.3292] -> [..139.25.22.102][.2049] [NFS][Unknown][DataTransfer][Acceptable]
+             idle: [.....2] [ip4][..udp] [....139.25.22.2][..671] -> [..139.25.22.102][.1048] [NFS][Unknown][DataTransfer][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [.....7] [ip4][..udp] [....139.25.22.2][..686] -> [..139.25.22.102][.1048] [NFS][Unknown][DataTransfer][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [.....5] [ip4][..udp] [....139.25.22.2][.1023] -> [..139.25.22.102][.2049] [NFS][Unknown][DataTransfer][Acceptable]
              idle: [.....1] [ip4][..udp] [....139.25.22.2][.3289] -> [..139.25.22.102][..111] [NFS][Unknown][DataTransfer][Acceptable]
                    RISK: Known Proto on Non Std Port
              idle: [.....3] [ip4][..udp] [....139.25.22.2][.3291] -> [..139.25.22.102][..111] [NFS][Unknown][DataTransfer][Acceptable]
                    RISK: Known Proto on Non Std Port
              idle: [.....6] [ip4][..udp] [....139.25.22.2][.3293] -> [..139.25.22.102][..111] [NFS][Unknown][DataTransfer][Acceptable]
                    RISK: Known Proto on Non Std Port
-             idle: [.....2] [ip4][..udp] [....139.25.22.2][..671] -> [..139.25.22.102][.1048] [NFS][Unknown][DataTransfer][Acceptable]
-                   RISK: Known Proto on Non Std Port
-             idle: [.....7] [ip4][..udp] [....139.25.22.2][..686] -> [..139.25.22.102][.1048] [NFS][Unknown][DataTransfer][Acceptable]
-                   RISK: Known Proto on Non Std Port
-             idle: [.....5] [ip4][..udp] [....139.25.22.2][.1023] -> [..139.25.22.102][.2049] [NFS][Unknown][DataTransfer][Acceptable]
+             idle: [.....4] [ip4][..udp] [....139.25.22.2][.3292] -> [..139.25.22.102][.2049] [NFS][Unknown][DataTransfer][Acceptable]
      DAEMON-EVENT: shutdown

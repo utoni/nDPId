@@ -5,6 +5,6 @@
          detected: [.....1] [ip4][..udp] [.23.220.116.175][..427] -> [.192.168.199.71][57782] [Service_Location_Protocol][Unknown][RPC][Acceptable]
               new: [.....2] [ip4][..udp] [..250.83.105.78][51708] -> [.172.30.246.115][..427]
          detected: [.....2] [ip4][..udp] [..250.83.105.78][51708] -> [.172.30.246.115][..427] [Service_Location_Protocol][Unknown][RPC][Acceptable]
-             idle: [.....1] [ip4][..udp] [.23.220.116.175][..427] -> [.192.168.199.71][57782] [Service_Location_Protocol][Unknown][RPC][Acceptable]
              idle: [.....2] [ip4][..udp] [..250.83.105.78][51708] -> [.172.30.246.115][..427] [Service_Location_Protocol][Unknown][RPC][Acceptable]
+             idle: [.....1] [ip4][..udp] [.23.220.116.175][..427] -> [.192.168.199.71][57782] [Service_Location_Protocol][Unknown][RPC][Acceptable]
      DAEMON-EVENT: shutdown

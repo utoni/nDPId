@@ -12,8 +12,8 @@
                    RISK: Unidirectional Traffic
              idle: [.....3] [ip4][..udp] [..192.168.1.245][40408] -> [..13.226.175.53][..443] [QUIC][AmazonAWS][Web][Acceptable]
                    RISK: Unidirectional Traffic
-             idle: [.....1] [ip6][..udp] [...2001:b07:a3d:c112:91b7:b97e:6e2:fad8][37542] -> [.................2606:4700:7::a29f:9804][..443] [QUIC][Cloudflare][Web][Acceptable]
-                   RISK: Susp Entropy
              idle: [.....2] [ip6][..udp] [...............2a00:1450:4002:411::200e][..443] -> [...2001:b07:a3d:c112:91b7:b97e:6e2:fad8][33144] [QUIC][Google][Web][Acceptable]
+                   RISK: Susp Entropy
+             idle: [.....1] [ip6][..udp] [...2001:b07:a3d:c112:91b7:b97e:6e2:fad8][37542] -> [.................2606:4700:7::a29f:9804][..443] [QUIC][Cloudflare][Web][Acceptable]
                    RISK: Susp Entropy
      DAEMON-EVENT: shutdown

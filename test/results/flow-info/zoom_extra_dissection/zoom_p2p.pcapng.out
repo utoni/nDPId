@@ -46,9 +46,9 @@
            update: [.....5] [ip4][.icmp] [.206.247.87.213] -> [.192.168.12.156] [ICMP][Zoom][Network][Acceptable]
                    RISK: Susp Entropy
            update: [.....7] [ip4][..udp] [.192.168.12.156][39065] -> [..192.168.1.226][46757] [Zoom][Unknown][Video][Acceptable]
-           update: [.....2] [ip4][..udp] [...192.168.12.1][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable]
            update: [.....4] [ip4][..udp] [.192.168.12.156][38453] -> [.206.247.87.213][.3478] [STUN.Zoom][Zoom][Video][Acceptable]
            update: [.....3] [ip4][..udp] [.192.168.12.156][39065] -> [.206.247.87.213][.3478] [STUN.Zoom][Zoom][Video][Acceptable]
+           update: [.....2] [ip4][..udp] [...192.168.12.1][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable]
            update: [.....5] [ip4][.icmp] [.206.247.87.213] -> [.192.168.12.156] [ICMP][Zoom][Network][Acceptable]
                    RISK: Susp Entropy
            update: [.....1] [ip4][..udp] [...192.168.12.1][17500] -> [.192.168.12.255][17500] [Dropbox][Unknown][Cloud][Acceptable]
@@ -57,9 +57,9 @@
            update: [.....6] [ip4][..udp] [.192.168.12.156][38453] -> [..192.168.1.226][41036] [Zoom][Unknown][Video][Acceptable]
                    RISK: Unidirectional Traffic
            update: [.....7] [ip4][..udp] [.192.168.12.156][39065] -> [..192.168.1.226][46757] [Zoom][Unknown][Video][Acceptable]
-           update: [.....2] [ip4][..udp] [...192.168.12.1][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable]
            update: [.....4] [ip4][..udp] [.192.168.12.156][38453] -> [.206.247.87.213][.3478] [STUN.Zoom][Zoom][Video][Acceptable]
            update: [.....3] [ip4][..udp] [.192.168.12.156][39065] -> [.206.247.87.213][.3478] [STUN.Zoom][Zoom][Video][Acceptable]
+           update: [.....2] [ip4][..udp] [...192.168.12.1][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable]
              idle: [.....2] [ip4][..udp] [...192.168.12.1][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable]
            update: [.....1] [ip4][..udp] [...192.168.12.1][17500] -> [.192.168.12.255][17500] [Dropbox][Unknown][Cloud][Acceptable]
              idle: [.....6] [ip4][..udp] [.192.168.12.156][38453] -> [..192.168.1.226][41036] [Zoom][Unknown][Video][Acceptable]
@@ -119,12 +119,12 @@
                    [ENTROPIES...: 4.9,4.9,4.9,4.9,4.9,4.9,4.9,4.9,4.9,4.9,4.9,4.9,4.9,4.9,4.9,4.9,4.9,4.9,4.9,4.9,4.9,4.9,4.9,4.9,4.9,4.9,4.9,4.9,4.9,4.9,4.9,4.9]
              idle: [....10] [ip4][.icmp] [.206.247.10.253] -> [.192.168.12.156] [ICMP][Zoom][Network][Acceptable]
                    RISK: Susp Entropy
-             idle: [....13] [ip4][..udp] [.192.168.12.156][49579] -> [...10.78.14.178][49586] [Zoom][Unknown][Video][Acceptable]
-                   RISK: Unidirectional Traffic
-             idle: [.....1] [ip4][..udp] [...192.168.12.1][17500] -> [.192.168.12.255][17500] [Dropbox][Unknown][Cloud][Acceptable]
              idle: [.....9] [ip4][..udp] [.192.168.12.156][42208] -> [.206.247.10.253][.3478] [STUN.Zoom][Zoom][Video][Acceptable]
              idle: [....11] [ip4][..udp] [...192.168.12.1][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable]
              idle: [....12] [ip4][..udp] [.192.168.12.156][42208] -> [...10.78.14.178][47312] [Zoom][Unknown][Video][Acceptable]
                    RISK: Unidirectional Traffic
+             idle: [.....1] [ip4][..udp] [...192.168.12.1][17500] -> [.192.168.12.255][17500] [Dropbox][Unknown][Cloud][Acceptable]
              idle: [.....8] [ip4][..udp] [.192.168.12.156][49579] -> [.206.247.10.253][.3478] [STUN.Zoom][Zoom][Video][Acceptable]
+             idle: [....13] [ip4][..udp] [.192.168.12.156][49579] -> [...10.78.14.178][49586] [Zoom][Unknown][Video][Acceptable]
+                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

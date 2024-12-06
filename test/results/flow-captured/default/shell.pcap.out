@@ -1,4 +1,4 @@
-Flow 4 not-detected: tcp 127.0.0.1:54970 -> 127.0.0.1:33333
 Flow 1 not-detected: tcp 127.0.0.1:47638 -> 127.0.0.1:33333
 Flow 2 not-detected: udp 127.0.0.1:54112 -> 127.0.0.1:33333
+Flow 4 not-detected: tcp 127.0.0.1:54970 -> 127.0.0.1:33333
 Flow 3 not-detected: udp 127.0.0.1:58538 -> 127.0.0.1:33333

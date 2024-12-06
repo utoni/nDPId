@@ -103,13 +103,13 @@
       ERROR-EVENT: Unknown packet type [5/16]
               end: [.....1] [ip4][..tcp] [..192.168.1.252][51110] -> [..91.143.93.242][..443] [TLS][Unknown][Web][Safe][www.ct7ctrgb6cr7.com]
                    RISK: Obsolete TLS (v1.1 or older)
-             idle: [.....5] [ip4][..udp] [..192.168.1.252][..138] -> [..192.168.1.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][endian-pc]
-                   RISK: Unsafe Protocol
           guessed: [.....6] [ip4][..tcp] [..192.168.1.252][51104] -> [...157.56.30.46][..443] [TLS][Azure][Web][Safe]
                    RISK: Unidirectional Traffic
               end: [.....6] [ip4][..tcp] [..192.168.1.252][51104] -> [...157.56.30.46][..443]
               end: [.....2] [ip4][..tcp] [..192.168.1.252][51111] -> [....46.59.52.31][..443] [TLS.Tor][Unknown][VPN][Potentially Dangerous][www.e6r5p57kbafwrxj3plz.com]
                    RISK: Obsolete TLS (v1.1 or older), Susp DGA Domain name, Unsafe Protocol
+             idle: [.....5] [ip4][..udp] [..192.168.1.252][..138] -> [..192.168.1.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][endian-pc]
+                   RISK: Unsafe Protocol
            update: [.....4] [ip4][..udp] [....192.168.1.1][17500] -> [..192.168.1.255][17500] [Dropbox][Unknown][Cloud][Acceptable]
       ERROR-EVENT: Unknown packet type [6/16]
       ERROR-EVENT: Unknown packet type [7/16]
@@ -146,7 +146,6 @@
            update: [....11] [ip6][..udp] [..............fe80::c583:1972:5728:7323][..546] -> [..............................ff02::1:2][..547] [DHCPV6][Unknown][Network][Acceptable]
               end: [.....8] [ip4][..tcp] [..192.168.1.252][51175] -> [..91.143.93.242][..443] [TLS.Tor][Unknown][VPN][Potentially Dangerous][www.gfu7hbxpfp.com]
                    RISK: Obsolete TLS (v1.1 or older), Susp DGA Domain name, Unsafe Protocol
-             idle: [.....4] [ip4][..udp] [....192.168.1.1][17500] -> [..192.168.1.255][17500] [Dropbox][Unknown][Cloud][Acceptable]
              idle: [....11] [ip6][..udp] [..............fe80::c583:1972:5728:7323][..546] -> [..............................ff02::1:2][..547] [DHCPV6][Unknown][Network][Acceptable]
               end: [....10] [ip4][..tcp] [..192.168.1.252][51185] -> [.62.210.137.230][..443] [TLS][Unknown][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older)
@@ -156,4 +155,5 @@
                    RISK: Obsolete TLS (v1.1 or older), Susp DGA Domain name, Unsafe Protocol
              idle: [.....9] [ip4][..tcp] [..192.168.1.252][51176] -> [...38.229.70.53][..443] [TLS][Unknown][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older)
+             idle: [.....4] [ip4][..udp] [....192.168.1.1][17500] -> [..192.168.1.255][17500] [Dropbox][Unknown][Cloud][Acceptable]
      DAEMON-EVENT: shutdown

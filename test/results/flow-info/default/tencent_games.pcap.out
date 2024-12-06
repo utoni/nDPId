@@ -14,7 +14,7 @@
      DAEMON-EVENT: [Flows][active: 2 / 3|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....4] [ip4][..tcp] [...10.215.173.1][47046] -> [.129.226.103.74][31003]
          detected: [.....4] [ip4][..tcp] [...10.215.173.1][47046] -> [.129.226.103.74][31003] [TencentGames][Tencent][Game][Fun]
+             idle: [.....3] [ip4][..tcp] [...10.215.173.1][42864] -> [.162.62.116.201][20731] [TencentGames][Tencent][Game][Fun]
               end: [.....4] [ip4][..tcp] [...10.215.173.1][47046] -> [.129.226.103.74][31003] [TencentGames][Tencent][Game][Fun]
              idle: [.....2] [ip4][..tcp] [...10.215.173.1][46658] -> [..162.62.97.166][.8085] [TencentGames][Tencent][Game][Fun]
-             idle: [.....3] [ip4][..tcp] [...10.215.173.1][42864] -> [.162.62.116.201][20731] [TencentGames][Tencent][Game][Fun]
      DAEMON-EVENT: shutdown

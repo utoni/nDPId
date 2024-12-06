@@ -84,25 +84,25 @@
               new: [....13] [ip4][.icmp] [..93.63.100.129] -> [.192.168.12.156]
          detected: [....13] [ip4][.icmp] [..93.63.100.129] -> [.192.168.12.156] [ICMP][Unknown][Network][Acceptable]
                    RISK: Susp Entropy
+           update: [.....1] [ip4][..udp] [.192.168.12.156][46652] -> [..93.57.123.227][.3478] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
            update: [.....2] [ip4][..udp] [.192.168.12.156][46652] -> [.157.240.203.62][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
            update: [.....4] [ip4][..udp] [.192.168.12.156][46652] -> [..157.240.21.51][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
            update: [.....5] [ip4][..udp] [.192.168.12.156][46652] -> [.157.240.195.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
            update: [.....3] [ip4][..udp] [.192.168.12.156][46652] -> [.157.240.231.62][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-           update: [.....1] [ip4][..udp] [.192.168.12.156][46652] -> [..93.57.123.227][.3478] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
+             idle: [.....1] [ip4][..udp] [.192.168.12.156][46652] -> [..93.57.123.227][.3478] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
+             idle: [....12] [ip4][..udp] [.192.168.12.156][49526] -> [...93.33.118.87][41107] [SRTP.WhatsAppCall][Unknown][VoIP][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [.....9] [ip4][..udp] [.192.168.12.156][49526] -> [..179.60.192.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
+             idle: [....10] [ip4][..udp] [.192.168.12.156][49526] -> [..185.60.216.51][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
+             idle: [....11] [ip4][..udp] [.192.168.12.156][49526] -> [...10.82.40.241][40436] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
+                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+             idle: [.....3] [ip4][..udp] [.192.168.12.156][46652] -> [.157.240.231.62][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
+             idle: [.....5] [ip4][..udp] [.192.168.12.156][46652] -> [.157.240.195.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
+             idle: [.....4] [ip4][..udp] [.192.168.12.156][46652] -> [..157.240.21.51][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
+             idle: [.....2] [ip4][..udp] [.192.168.12.156][46652] -> [.157.240.203.62][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
              idle: [....13] [ip4][.icmp] [..93.63.100.129] -> [.192.168.12.156] [ICMP][Unknown][Network][Acceptable]
                    RISK: Susp Entropy
              idle: [.....7] [ip4][..udp] [.192.168.12.156][49526] -> [.157.240.231.62][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
              idle: [.....8] [ip4][..udp] [.192.168.12.156][49526] -> [.157.240.196.62][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
              idle: [.....6] [ip4][..udp] [.192.168.12.156][49526] -> [.157.240.203.62][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-             idle: [....11] [ip4][..udp] [.192.168.12.156][49526] -> [...10.82.40.241][40436] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
-             idle: [....12] [ip4][..udp] [.192.168.12.156][49526] -> [...93.33.118.87][41107] [SRTP.WhatsAppCall][Unknown][VoIP][Acceptable]
-                   RISK: Known Proto on Non Std Port
-             idle: [.....9] [ip4][..udp] [.192.168.12.156][49526] -> [..179.60.192.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-             idle: [....10] [ip4][..udp] [.192.168.12.156][49526] -> [..185.60.216.51][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-             idle: [.....3] [ip4][..udp] [.192.168.12.156][46652] -> [.157.240.231.62][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-             idle: [.....5] [ip4][..udp] [.192.168.12.156][46652] -> [.157.240.195.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-             idle: [.....4] [ip4][..udp] [.192.168.12.156][46652] -> [..157.240.21.51][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-             idle: [.....2] [ip4][..udp] [.192.168.12.156][46652] -> [.157.240.203.62][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-             idle: [.....1] [ip4][..udp] [.192.168.12.156][46652] -> [..93.57.123.227][.3478] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
      DAEMON-EVENT: shutdown

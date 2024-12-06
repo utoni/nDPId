@@ -9,8 +9,8 @@
          detected: [.....3] [ip4][..udp] [.192.168.12.156][39322] -> [..18.157.15.184][.9011] [EpicGames][AmazonAWS][Game][Fun]
               new: [.....4] [ip4][..udp] [.192.168.12.156][37989] -> [..18.157.15.184][15011]
          detected: [.....4] [ip4][..udp] [.192.168.12.156][37989] -> [..18.157.15.184][15011] [EpicGames][AmazonAWS][Game][Fun]
-             idle: [.....2] [ip4][..udp] [.192.168.12.156][47446] -> [..18.157.15.184][15011] [EpicGames][AmazonAWS][Game][Fun]
-             idle: [.....1] [ip4][..udp] [.192.168.12.156][49693] -> [..18.157.15.184][15011] [EpicGames][AmazonAWS][Game][Fun]
              idle: [.....3] [ip4][..udp] [.192.168.12.156][39322] -> [..18.157.15.184][.9011] [EpicGames][AmazonAWS][Game][Fun]
              idle: [.....4] [ip4][..udp] [.192.168.12.156][37989] -> [..18.157.15.184][15011] [EpicGames][AmazonAWS][Game][Fun]
+             idle: [.....2] [ip4][..udp] [.192.168.12.156][47446] -> [..18.157.15.184][15011] [EpicGames][AmazonAWS][Game][Fun]
+             idle: [.....1] [ip4][..udp] [.192.168.12.156][49693] -> [..18.157.15.184][15011] [EpicGames][AmazonAWS][Game][Fun]
      DAEMON-EVENT: shutdown

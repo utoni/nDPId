@@ -1,4 +1,4 @@
-00618{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"cfgs\/default\/pcap\/someip_sd_sample.pcap","alias":"nDPId-test","version":"1.7.0","ndpi_version":"4.11.0-4976-59ee1fe","ndpi_api_version":11619,"size_per_flow":1408,"max-flows-per-thread":2048,"max-idle-flows-per-thread":64,"reader-thread-count":1,"flow-scan-interval":10000000,"generic-max-idle-time":600000000,"icmp-max-idle-time":120000000,"udp-max-idle-time":180000000,"tcp-max-idle-time":7560000000,"max-packets-per-flow-to-send":5,"max-packets-per-flow-to-process":32,"max-packets-per-flow-to-analyse":32,"global_ts_usec":0}
+00621{"daemon_event_id":1,"daemon_event_name":"init","thread_id":0,"packet_id":0,"source":"cfgs\/default\/pcap\/someip_sd_sample.pcap","alias":"nDPId-test","version":"1.7.0","ndpi_version":"4.11.0-4976-59ee1fe","ndpi_api_version":11619,"size_per_flow":1408,"max-flows-per-thread":32768,"max-idle-flows-per-thread":1024,"reader-thread-count":1,"flow-scan-interval":10000000,"generic-max-idle-time":600000000,"icmp-max-idle-time":120000000,"udp-max-idle-time":180000000,"tcp-max-idle-time":7560000000,"max-packets-per-flow-to-send":5,"max-packets-per-flow-to-process":32,"max-packets-per-flow-to-analyse":32,"global_ts_usec":0}
 00842{"daemon_event_id":4,"daemon_event_name":"status","thread_id":0,"packet_id":1,"source":"cfgs\/default\/pcap\/someip_sd_sample.pcap","alias":"nDPId-test","version":"1.7.0","ndpi_version":"4.11.0-4976-59ee1fe","ndpi_api_version":11619,"size_per_flow":1408,"packets-captured":1,"packets-processed":0,"pfring_active":false,"pfring_recv":0,"pfring_drop":0,"pfring_shunt":0,"total-skipped-flows":0,"total-l4-payload-len":0,"total-not-detected-flows":0,"total-guessed-flows":0,"total-detected-flows":0,"total-detection-updates":0,"total-updates":0,"current-active-flows":0,"total-active-flows":0,"total-idle-flows":0,"total-compressions":0,"total-compression-diff":0,"current-compression-diff":0,"global-alloc-count":0,"global-free-count":0,"global-alloc-bytes":0,"global-free-bytes":0,"total-events-serialized":2,"global_ts_usec":1559741544964106}
 00313{"error_event_id":1,"error_event_name":"Unknown datalink layer packet","threshold_n":1,"threshold_n_max":16,"threshold_time":10000000,"threshold_ts_usec":1559741544964106,"packet_id":1,"source":"cfgs\/default\/pcap\/someip_sd_sample.pcap","alias":"nDPId-test","layer_type":4096,"global_ts_usec":1559741544964106}
 00452{"packet_event_id":1,"packet_event_name":"packet","packet_id":1,"source":"cfgs\/default\/pcap\/someip_sd_sample.pcap","alias":"nDPId-test","pkt_datalink":192,"pkt_caplen":114,"pkt_type":0,"pkt_l3_offset":0,"pkt_l4_offset":0,"pkt_len":114,"pkt_l4_len":0,"thread_ts_usec":1559741544964106,"pkt":"AAAQAAEAAAAIAAQAAAAAAAEAXgIDBQBUr+cDQAgARQAAVAAAQAD\/EXSfwKhYSesCAwV3GncaAEDieP\/\/gQAAAAAwAAAAAwEBAgDAAAAAAAAAEAEAABAA6wAAAQAAHgAAAAAAAAAMAAkEAMCoWEkAEcNQ"}
@@ -21,8 +21,8 @@
 ~~ total active/idle flows...: 0/0
 ~~ total timeout flows.......: 0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~ total memory allocated....: 6651793 bytes
-~~ total memory freed........: 6651793 bytes
+~~ total memory allocated....: 6905233 bytes
+~~ total memory freed........: 6905233 bytes
 ~~ total allocations/frees...: 114126/114126
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~ json message min len.......: 318 chars

@@ -241,10 +241,10 @@
               new: [....60] [ip4][..tcp] [..172.16.42.216][34041] -> [..54.239.24.186][..443]
          detected: [....60] [ip4][..tcp] [..172.16.42.216][34041] -> [..54.239.24.186][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
  detection-update: [....60] [ip4][..tcp] [..172.16.42.216][34041] -> [..54.239.24.186][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
-           update: [....14] [ip4][.icmp] [....172.16.42.1] -> [..172.16.42.216] [ICMP][Unknown][Network][Acceptable]
-                   RISK: Susp Entropy
            update: [.....1] [ip6][icmp6] [.....................................::] -> [......................ff02::1:ffd3:fbc2] [ICMPV6][Unknown][Network][Acceptable]
            update: [.....2] [ip6][icmp6] [.....................................::] -> [...............................ff02::16] [ICMPV6][Unknown][Network][Acceptable]
+           update: [....14] [ip4][.icmp] [....172.16.42.1] -> [..172.16.42.216] [ICMP][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
            update: [.....5] [ip6][icmp6] [..............fe80::7af8:82ff:fed3:fbc2] -> [................................ff02::2] [ICMPV6][Unknown][Network][Acceptable]
               new: [....61] [ip4][..tcp] [..172.16.42.216][42148] -> [..72.21.206.135][..443]
               new: [....62] [ip4][..udp] [..172.16.42.216][44475] -> [....172.16.42.1][...53]
@@ -320,13 +320,13 @@
  detection-update: [....72] [ip4][..tcp] [..172.16.42.216][45697] -> [..52.94.232.134][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][pitangui.amazon.com]
                    RISK: Weak TLS Cipher
            update: [.....3] [ip4][..udp] [........0.0.0.0][...68] -> [255.255.255.255][...67] [DHCP][Unknown][Network][Acceptable][android-1c1335ec95a27318]
-           update: [.....9] [ip4][..udp] [..172.16.42.216][53188] -> [....172.16.42.1][...53] [DNS.GoogleServices][Unknown][Network][Acceptable][mtalk.google.com]
            update: [.....4] [ip4][..udp] [....172.16.42.1][...67] -> [..172.16.42.216][...68] [DHCP][Unknown][Network][Acceptable]
+           update: [.....6] [ip4][..udp] [..172.16.42.216][.3440] -> [....172.16.42.1][...53] [DNS.Google][Unknown][Network][Acceptable][connectivitycheck.android.com]
            update: [....12] [ip4][..udp] [..172.16.42.216][10462] -> [....172.16.42.1][...53] [DNS.Google][Unknown][Network][Acceptable][www.google.com]
+           update: [....10] [ip4][..udp] [..172.16.42.216][52603] -> [....172.16.42.1][...53] [DNS.Google][Unknown][Network][Acceptable][www.google.com]
+           update: [.....9] [ip4][..udp] [..172.16.42.216][53188] -> [....172.16.42.1][...53] [DNS.GoogleServices][Unknown][Network][Acceptable][mtalk.google.com]
            update: [.....7] [ip4][..udp] [..172.16.42.216][55619] -> [....172.16.42.1][...53] [DNS.Google][Unknown][Network][Acceptable][connectivitycheck.android.com]
            update: [....23] [ip6][icmp6] [..............fe80::7af8:82ff:fed3:fbc2] -> [...............................ff02::16] [ICMPV6][Unknown][Network][Acceptable]
-           update: [.....6] [ip4][..udp] [..172.16.42.216][.3440] -> [....172.16.42.1][...53] [DNS.Google][Unknown][Network][Acceptable][connectivitycheck.android.com]
-           update: [....10] [ip4][..udp] [..172.16.42.216][52603] -> [....172.16.42.1][...53] [DNS.Google][Unknown][Network][Acceptable][www.google.com]
               new: [....75] [ip4][..tcp] [..172.16.42.216][37113] -> [..52.94.232.134][..443]
          detected: [....75] [ip4][..tcp] [..172.16.42.216][37113] -> [..52.94.232.134][..443] [TLS][AmazonAWS][Web][Safe][]
                    RISK: Obsolete TLS (v1.1 or older)
@@ -342,11 +342,11 @@
               new: [....79] [ip4][..tcp] [..172.16.42.216][34054] -> [..54.239.24.186][..443]
          detected: [....78] [ip4][..tcp] [..172.16.42.216][34053] -> [..54.239.24.186][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
  detection-update: [....78] [ip4][..tcp] [..172.16.42.216][34053] -> [..54.239.24.186][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
-           update: [....21] [ip4][..udp] [..172.16.42.216][41030] -> [....172.16.42.1][...53] [DNS.AmazonAlexa][Unknown][Network][Acceptable][alexa.amazon.com]
-           update: [....24] [ip4][..udp] [..172.16.42.216][23559] -> [....172.16.42.1][...53] [DNS.AmazonAWS][Unknown][Network][Acceptable][cognito-identity.us-east-1.amazonaws.com]
-           update: [....15] [ip4][..udp] [..172.16.42.216][48155] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][www.amazon.com]
            update: [....19] [ip4][..udp] [..172.16.42.216][.7358] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][firs-ta-g7g.amazon.com]
+           update: [....21] [ip4][..udp] [..172.16.42.216][41030] -> [....172.16.42.1][...53] [DNS.AmazonAlexa][Unknown][Network][Acceptable][alexa.amazon.com]
+           update: [....15] [ip4][..udp] [..172.16.42.216][48155] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][www.amazon.com]
            update: [....17] [ip4][..udp] [..172.16.42.216][19967] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][mads.amazon-adsystem.com]
+           update: [....24] [ip4][..udp] [..172.16.42.216][23559] -> [....172.16.42.1][...53] [DNS.AmazonAWS][Unknown][Network][Acceptable][cognito-identity.us-east-1.amazonaws.com]
               new: [....80] [ip4][..tcp] [..172.16.42.216][45703] -> [..52.94.232.134][..443]
               new: [....81] [ip4][..tcp] [..172.16.42.216][45704] -> [..52.94.232.134][..443]
               new: [....82] [ip4][..tcp] [..172.16.42.216][45705] -> [..52.94.232.134][..443]
@@ -439,15 +439,15 @@
  detection-update: [....99] [ip4][..tcp] [..172.16.42.216][44001] -> [..176.32.101.52][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][dp-gw-na-js.amazon.com]
                    RISK: TLS (probably) Not Carrying HTTPS
       ERROR-EVENT: Unknown packet type [1/16]
-           update: [....27] [ip4][..udp] [..172.16.42.216][54886] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][pitangui.amazon.com]
+           update: [.....1] [ip6][icmp6] [.....................................::] -> [......................ff02::1:ffd3:fbc2] [ICMPV6][Unknown][Network][Acceptable]
+           update: [.....2] [ip6][icmp6] [.....................................::] -> [...............................ff02::16] [ICMPV6][Unknown][Network][Acceptable]
            update: [....14] [ip4][.icmp] [....172.16.42.1] -> [..172.16.42.216] [ICMP][Unknown][Network][Acceptable]
                    RISK: Susp Entropy
            update: [....40] [ip4][..udp] [..172.16.42.216][43350] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][fls-na.amazon.com]
-           update: [.....1] [ip6][icmp6] [.....................................::] -> [......................ff02::1:ffd3:fbc2] [ICMPV6][Unknown][Network][Acceptable]
-           update: [.....2] [ip6][icmp6] [.....................................::] -> [...............................ff02::16] [ICMPV6][Unknown][Network][Acceptable]
-           update: [.....5] [ip6][icmp6] [..............fe80::7af8:82ff:fed3:fbc2] -> [................................ff02::2] [ICMPV6][Unknown][Network][Acceptable]
            update: [....35] [ip4][..udp] [..172.16.42.216][52077] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][www.amazon.com]
            update: [....34] [ip4][..udp] [..172.16.42.216][21391] -> [....172.16.42.1][...53] [DNS.AmazonAWS][Unknown][Network][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
+           update: [....27] [ip4][..udp] [..172.16.42.216][54886] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][pitangui.amazon.com]
+           update: [.....5] [ip6][icmp6] [..............fe80::7af8:82ff:fed3:fbc2] -> [................................ff02::2] [ICMPV6][Unknown][Network][Acceptable]
  detection-update: [....88] [ip4][..tcp] [..172.16.42.216][45711] -> [..52.94.232.134][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][pitangui.amazon.com]
                    RISK: Weak TLS Cipher
               new: [...100] [ip4][..tcp] [..172.16.42.216][34073] -> [..54.239.24.186][..443]
@@ -549,12 +549,12 @@
            update: [....62] [ip4][..udp] [..172.16.42.216][44475] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][www.amazon.com]
  detection-update: [...115] [ip4][..tcp] [..172.16.42.216][37551] -> [..54.239.24.180][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
            update: [.....3] [ip4][..udp] [........0.0.0.0][...68] -> [255.255.255.255][...67] [DHCP][Unknown][Network][Acceptable][android-1c1335ec95a27318]
-           update: [.....9] [ip4][..udp] [..172.16.42.216][53188] -> [....172.16.42.1][...53] [DNS.GoogleServices][Unknown][Network][Acceptable][mtalk.google.com]
            update: [.....4] [ip4][..udp] [....172.16.42.1][...67] -> [..172.16.42.216][...68] [DHCP][Unknown][Network][Acceptable]
-           update: [....12] [ip4][..udp] [..172.16.42.216][10462] -> [....172.16.42.1][...53] [DNS.Google][Unknown][Network][Acceptable][www.google.com]
-           update: [.....7] [ip4][..udp] [..172.16.42.216][55619] -> [....172.16.42.1][...53] [DNS.Google][Unknown][Network][Acceptable][connectivitycheck.android.com]
            update: [.....6] [ip4][..udp] [..172.16.42.216][.3440] -> [....172.16.42.1][...53] [DNS.Google][Unknown][Network][Acceptable][connectivitycheck.android.com]
+           update: [....12] [ip4][..udp] [..172.16.42.216][10462] -> [....172.16.42.1][...53] [DNS.Google][Unknown][Network][Acceptable][www.google.com]
            update: [....10] [ip4][..udp] [..172.16.42.216][52603] -> [....172.16.42.1][...53] [DNS.Google][Unknown][Network][Acceptable][www.google.com]
+           update: [.....9] [ip4][..udp] [..172.16.42.216][53188] -> [....172.16.42.1][...53] [DNS.GoogleServices][Unknown][Network][Acceptable][mtalk.google.com]
+           update: [.....7] [ip4][..udp] [..172.16.42.216][55619] -> [....172.16.42.1][...53] [DNS.Google][Unknown][Network][Acceptable][connectivitycheck.android.com]
               new: [...117] [ip4][..tcp] [..172.16.42.216][40864] -> [..54.239.29.253][..443]
          detected: [...117] [ip4][..tcp] [..172.16.42.216][40864] -> [..54.239.29.253][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][skills-store.amazon.com]
  detection-update: [...117] [ip4][..tcp] [..172.16.42.216][40864] -> [..54.239.29.253][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][skills-store.amazon.com]
@@ -632,23 +632,23 @@
                    [IATS(ms)....: 31.3,34.1,0.6,113.4,46.4,0.0,0.0,0.1,0.0,0.0,11.2,1.6,7.2,179.1,0.1,0.1,0.1,0.1,0.1,3.4,0.3,0.4,4.5,99.2,0.3,120.8,46.9,0.2,0.3,0.8,17.5]
                    [PKTLENS.....: 60,60,52,599,52,1500,1500,1500,1500,1500,1500,1500,1223,1223,52,52,52,52,52,52,52,52,64,599,1500,1500,52,1500,1336,1500,1500,52]
                    [ENTROPIES...: 4.7,5.3,4.8,6.0,5.0,7.1,7.7,7.6,7.6,7.7,7.7,7.7,7.5,7.5,5.1,5.0,5.1,5.1,5.1,5.1,5.1,5.1,5.2,6.0,7.1,7.8,5.1,7.8,7.8,7.8,7.8,5.0]
-           update: [....27] [ip4][..udp] [..172.16.42.216][54886] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][pitangui.amazon.com]
-           update: [....14] [ip4][.icmp] [....172.16.42.1] -> [..172.16.42.216] [ICMP][Unknown][Network][Acceptable]
-                   RISK: Susp Entropy
-           update: [....21] [ip4][..udp] [..172.16.42.216][41030] -> [....172.16.42.1][...53] [DNS.AmazonAlexa][Unknown][Network][Acceptable][alexa.amazon.com]
-           update: [....40] [ip4][..udp] [..172.16.42.216][43350] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][fls-na.amazon.com]
            update: [.....1] [ip6][icmp6] [.....................................::] -> [......................ff02::1:ffd3:fbc2] [ICMPV6][Unknown][Network][Acceptable]
            update: [.....2] [ip6][icmp6] [.....................................::] -> [...............................ff02::16] [ICMPV6][Unknown][Network][Acceptable]
+           update: [....14] [ip4][.icmp] [....172.16.42.1] -> [..172.16.42.216] [ICMP][Unknown][Network][Acceptable]
+                   RISK: Susp Entropy
+           update: [....95] [ip4][..udp] [..172.16.42.216][35726] -> [....172.16.42.1][...53] [DNS.AmazonAWS][Unknown][Network][Acceptable][s3-external-2.amazonaws.com]
+           update: [....19] [ip4][..udp] [..172.16.42.216][.7358] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][firs-ta-g7g.amazon.com]
+           update: [....21] [ip4][..udp] [..172.16.42.216][41030] -> [....172.16.42.1][...53] [DNS.AmazonAlexa][Unknown][Network][Acceptable][alexa.amazon.com]
            update: [....98] [ip4][..udp] [..172.16.42.216][41639] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][dp-gw-na-js.amazon.com]
+           update: [....40] [ip4][..udp] [..172.16.42.216][43350] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][fls-na.amazon.com]
+           update: [....15] [ip4][..udp] [..172.16.42.216][48155] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][www.amazon.com]
+           update: [....35] [ip4][..udp] [..172.16.42.216][52077] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][www.amazon.com]
+           update: [....17] [ip4][..udp] [..172.16.42.216][19967] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][mads.amazon-adsystem.com]
+           update: [....34] [ip4][..udp] [..172.16.42.216][21391] -> [....172.16.42.1][...53] [DNS.AmazonAWS][Unknown][Network][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
+           update: [....27] [ip4][..udp] [..172.16.42.216][54886] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][pitangui.amazon.com]
            update: [.....5] [ip6][icmp6] [..............fe80::7af8:82ff:fed3:fbc2] -> [................................ff02::2] [ICMPV6][Unknown][Network][Acceptable]
            update: [....23] [ip6][icmp6] [..............fe80::7af8:82ff:fed3:fbc2] -> [...............................ff02::16] [ICMPV6][Unknown][Network][Acceptable]
-           update: [....35] [ip4][..udp] [..172.16.42.216][52077] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][www.amazon.com]
-           update: [....95] [ip4][..udp] [..172.16.42.216][35726] -> [....172.16.42.1][...53] [DNS.AmazonAWS][Unknown][Network][Acceptable][s3-external-2.amazonaws.com]
-           update: [....34] [ip4][..udp] [..172.16.42.216][21391] -> [....172.16.42.1][...53] [DNS.AmazonAWS][Unknown][Network][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
            update: [....24] [ip4][..udp] [..172.16.42.216][23559] -> [....172.16.42.1][...53] [DNS.AmazonAWS][Unknown][Network][Acceptable][cognito-identity.us-east-1.amazonaws.com]
-           update: [....15] [ip4][..udp] [..172.16.42.216][48155] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][www.amazon.com]
-           update: [....19] [ip4][..udp] [..172.16.42.216][.7358] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][firs-ta-g7g.amazon.com]
-           update: [....17] [ip4][..udp] [..172.16.42.216][19967] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][mads.amazon-adsystem.com]
           analyse: [...126] [ip4][..tcp] [..172.16.42.216][51992] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.511|     0.042|     0.110|        12114.281|    2.500]
@@ -683,12 +683,12 @@
          detected: [...134] [ip4][..tcp] [..172.16.42.216][45751] -> [..52.94.232.134][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][pitangui.amazon.com]
  detection-update: [...134] [ip4][..tcp] [..172.16.42.216][45751] -> [..52.94.232.134][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][pitangui.amazon.com]
                    RISK: Weak TLS Cipher
-              end: [....22] [ip4][..tcp] [..172.16.42.216][49572] -> [..52.94.232.134][...80] [HTTP.AmazonAlexa][AmazonAWS][VirtAssistant][Acceptable][alexa.amazon.com]
              idle: [....14] [ip4][.icmp] [....172.16.42.1] -> [..172.16.42.216] [ICMP][Unknown][Network][Acceptable]
                    RISK: Susp Entropy
+              end: [....22] [ip4][..tcp] [..172.16.42.216][49572] -> [..52.94.232.134][...80] [HTTP.AmazonAlexa][AmazonAWS][VirtAssistant][Acceptable][alexa.amazon.com]
+              end: [....25] [ip4][..tcp] [..172.16.42.216][38363] -> [..34.199.52.240][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable]
              idle: [....23] [ip6][icmp6] [..............fe80::7af8:82ff:fed3:fbc2] -> [...............................ff02::16] [ICMPV6][Unknown][Network][Acceptable]
              idle: [.....5] [ip6][icmp6] [..............fe80::7af8:82ff:fed3:fbc2] -> [................................ff02::2] [ICMPV6][Unknown][Network][Acceptable]
-              end: [....25] [ip4][..tcp] [..172.16.42.216][38363] -> [..34.199.52.240][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable]
            update: [...103] [ip4][..udp] [..172.16.42.216][14476] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][skills-store.amazon.com]
            update: [...108] [ip4][..udp] [..172.16.42.216][20922] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][pitangui.amazon.com]
               new: [...135] [ip4][..udp] [..172.16.42.216][64073] -> [....172.16.42.1][...53]
@@ -703,8 +703,9 @@
          detected: [...137] [ip4][..tcp] [..172.16.42.216][45752] -> [..52.94.232.134][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][pitangui.amazon.com]
  detection-update: [...137] [ip4][..tcp] [..172.16.42.216][45752] -> [..52.94.232.134][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][pitangui.amazon.com]
                    RISK: Weak TLS Cipher
-              end: [....45] [ip4][..tcp] [..172.16.42.216][49589] -> [..52.94.232.134][...80] [HTTP.AmazonAlexa][AmazonAWS][VirtAssistant][Acceptable][alexa.amazon.com]
-                   RISK: Error Code
+              end: [....36] [ip4][..tcp] [..172.16.42.216][34019] -> [..54.239.24.186][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable]
+              end: [....51] [ip4][..tcp] [..172.16.42.216][34033] -> [..54.239.24.186][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable]
+              end: [....52] [ip4][..tcp] [..172.16.42.216][34034] -> [..54.239.24.186][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
               end: [....28] [ip4][..tcp] [..172.16.42.216][45661] -> [..52.94.232.134][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][pitangui.amazon.com]
                    RISK: Weak TLS Cipher
               end: [....29] [ip4][..tcp] [..172.16.42.216][45662] -> [..52.94.232.134][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
@@ -727,6 +728,8 @@
                    RISK: Weak TLS Cipher
               end: [....53] [ip4][..tcp] [..172.16.42.216][45683] -> [..52.94.232.134][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
                    RISK: Weak TLS Cipher
+              end: [....45] [ip4][..tcp] [..172.16.42.216][49589] -> [..52.94.232.134][...80] [HTTP.AmazonAlexa][AmazonAWS][VirtAssistant][Acceptable][alexa.amazon.com]
+                   RISK: Error Code
               end: [....37] [ip4][..tcp] [..172.16.42.216][54411] -> [..52.85.209.216][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][www.amazon.com]
               end: [....38] [ip4][..tcp] [..172.16.42.216][54412] -> [..52.85.209.216][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
           guessed: [....39] [ip4][..tcp] [..172.16.42.216][54413] -> [..52.85.209.216][..443] [TLS][AmazonAWS][Web][Safe]
@@ -736,24 +739,21 @@
               end: [....42] [ip4][..tcp] [..172.16.42.216][42130] -> [..72.21.206.135][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][fls-na.amazon.com]
               end: [....55] [ip4][..tcp] [..172.16.42.216][42143] -> [..72.21.206.135][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
               end: [....56] [ip4][..tcp] [..172.16.42.216][42144] -> [..72.21.206.135][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
-              end: [....36] [ip4][..tcp] [..172.16.42.216][34019] -> [..54.239.24.186][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable]
-              end: [....51] [ip4][..tcp] [..172.16.42.216][34033] -> [..54.239.24.186][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable]
-              end: [....52] [ip4][..tcp] [..172.16.42.216][34034] -> [..54.239.24.186][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
           guessed: [....32] [ip4][..tcp] [..172.16.42.216][38391] -> [...192.168.11.1][.8080] [HTTP_Proxy][Unknown][Web][Acceptable][]
                    RISK: TCP Connection Issues
               end: [....32] [ip4][..tcp] [..172.16.42.216][38391] -> [...192.168.11.1][.8080]
               end: [....26] [ip4][..tcp] [..172.16.42.216][38364] -> [..34.199.52.240][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable]
            update: [.....3] [ip4][..udp] [........0.0.0.0][...68] -> [255.255.255.255][...67] [DHCP][Unknown][Network][Acceptable][android-1c1335ec95a27318]
-           update: [.....9] [ip4][..udp] [..172.16.42.216][53188] -> [....172.16.42.1][...53] [DNS.GoogleServices][Unknown][Network][Acceptable][mtalk.google.com]
+           update: [....69] [ip4][..udp] [..172.16.42.216][25081] -> [....172.16.42.1][...53] [DNS.AmazonAlexa][Unknown][Network][Acceptable][alexa.amazon.com]
+           update: [....64] [ip4][..udp] [..172.16.42.216][60804] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][api.amazon.com]
            update: [...114] [ip4][..udp] [..172.16.42.216][28614] -> [....172.16.42.1][...53] [DNS.AmazonAWS][Unknown][Network][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
            update: [.....4] [ip4][..udp] [....172.16.42.1][...67] -> [..172.16.42.216][...68] [DHCP][Unknown][Network][Acceptable]
-           update: [....12] [ip4][..udp] [..172.16.42.216][10462] -> [....172.16.42.1][...53] [DNS.Google][Unknown][Network][Acceptable][www.google.com]
-           update: [.....7] [ip4][..udp] [..172.16.42.216][55619] -> [....172.16.42.1][...53] [DNS.Google][Unknown][Network][Acceptable][connectivitycheck.android.com]
-           update: [....69] [ip4][..udp] [..172.16.42.216][25081] -> [....172.16.42.1][...53] [DNS.AmazonAlexa][Unknown][Network][Acceptable][alexa.amazon.com]
            update: [.....6] [ip4][..udp] [..172.16.42.216][.3440] -> [....172.16.42.1][...53] [DNS.Google][Unknown][Network][Acceptable][connectivitycheck.android.com]
-           update: [....10] [ip4][..udp] [..172.16.42.216][52603] -> [....172.16.42.1][...53] [DNS.Google][Unknown][Network][Acceptable][www.google.com]
-           update: [....64] [ip4][..udp] [..172.16.42.216][60804] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][api.amazon.com]
+           update: [....12] [ip4][..udp] [..172.16.42.216][10462] -> [....172.16.42.1][...53] [DNS.Google][Unknown][Network][Acceptable][www.google.com]
            update: [....62] [ip4][..udp] [..172.16.42.216][44475] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][www.amazon.com]
+           update: [....10] [ip4][..udp] [..172.16.42.216][52603] -> [....172.16.42.1][...53] [DNS.Google][Unknown][Network][Acceptable][www.google.com]
+           update: [.....9] [ip4][..udp] [..172.16.42.216][53188] -> [....172.16.42.1][...53] [DNS.GoogleServices][Unknown][Network][Acceptable][mtalk.google.com]
+           update: [.....7] [ip4][..udp] [..172.16.42.216][55619] -> [....172.16.42.1][...53] [DNS.Google][Unknown][Network][Acceptable][connectivitycheck.android.com]
               new: [...138] [ip4][..udp] [..172.16.42.216][.4312] -> [....172.16.42.1][...53]
          detected: [...138] [ip4][..udp] [..172.16.42.216][.4312] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][pitangui.amazon.com]
  detection-update: [...138] [ip4][..udp] [..172.16.42.216][.4312] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][pitangui.amazon.com]
@@ -770,11 +770,11 @@
          detected: [...142] [ip4][..tcp] [..172.16.42.216][50799] -> [..54.239.28.178][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][pitangui.amazon.com]
  detection-update: [...142] [ip4][..tcp] [..172.16.42.216][50799] -> [..54.239.28.178][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][pitangui.amazon.com]
                    RISK: Weak TLS Cipher
+              end: [....60] [ip4][..tcp] [..172.16.42.216][34041] -> [..54.239.24.186][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable]
               end: [....57] [ip4][..tcp] [..172.16.42.216][45687] -> [..52.94.232.134][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
                    RISK: Weak TLS Cipher
               end: [....59] [ip4][..tcp] [..172.16.42.216][45688] -> [..52.94.232.134][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
                    RISK: Weak TLS Cipher
-              end: [....60] [ip4][..tcp] [..172.16.42.216][34041] -> [..54.239.24.186][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable]
            update: [...118] [ip4][..udp] [..172.16.42.216][.4920] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][ecx.images-amazon.com]
               new: [...143] [ip4][..tcp] [..172.16.42.216][50800] -> [..54.239.28.178][..443]
          detected: [...143] [ip4][..tcp] [..172.16.42.216][50800] -> [..54.239.28.178][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][pitangui.amazon.com]
@@ -852,7 +852,6 @@
                    RISK: Obsolete TLS (v1.1 or older)
  detection-update: [...156] [ip4][..tcp] [..172.16.42.216][58048] -> [..54.239.28.178][..443] [TLS][AmazonAWS][Web][Safe][]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
-              end: [....66] [ip4][..tcp] [..172.16.42.216][49606] -> [..52.94.232.134][...80] [HTTP.AmazonAlexa][AmazonAWS][VirtAssistant][Acceptable][alexa.amazon.com]
               end: [....67] [ip4][..tcp] [..172.16.42.216][45693] -> [..52.94.232.134][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
                    RISK: Weak TLS Cipher
               end: [....68] [ip4][..tcp] [..172.16.42.216][45694] -> [..52.94.232.134][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
@@ -865,19 +864,20 @@
                    RISK: Weak TLS Cipher
               end: [....74] [ip4][..tcp] [..172.16.42.216][45698] -> [..52.94.232.134][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
                    RISK: Weak TLS Cipher
+              end: [....66] [ip4][..tcp] [..172.16.42.216][49606] -> [..52.94.232.134][...80] [HTTP.AmazonAlexa][AmazonAWS][VirtAssistant][Acceptable][alexa.amazon.com]
               end: [....63] [ip4][..tcp] [..172.16.42.216][54434] -> [..52.85.209.216][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][www.amazon.com]
               end: [....61] [ip4][..tcp] [..172.16.42.216][42148] -> [..72.21.206.135][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
-           update: [....27] [ip4][..udp] [..172.16.42.216][54886] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][pitangui.amazon.com]
-           update: [....21] [ip4][..udp] [..172.16.42.216][41030] -> [....172.16.42.1][...53] [DNS.AmazonAlexa][Unknown][Network][Acceptable][alexa.amazon.com]
-           update: [....40] [ip4][..udp] [..172.16.42.216][43350] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][fls-na.amazon.com]
-           update: [....98] [ip4][..udp] [..172.16.42.216][41639] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][dp-gw-na-js.amazon.com]
-           update: [....35] [ip4][..udp] [..172.16.42.216][52077] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][www.amazon.com]
            update: [....95] [ip4][..udp] [..172.16.42.216][35726] -> [....172.16.42.1][...53] [DNS.AmazonAWS][Unknown][Network][Acceptable][s3-external-2.amazonaws.com]
-           update: [....34] [ip4][..udp] [..172.16.42.216][21391] -> [....172.16.42.1][...53] [DNS.AmazonAWS][Unknown][Network][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
-           update: [....24] [ip4][..udp] [..172.16.42.216][23559] -> [....172.16.42.1][...53] [DNS.AmazonAWS][Unknown][Network][Acceptable][cognito-identity.us-east-1.amazonaws.com]
-           update: [....15] [ip4][..udp] [..172.16.42.216][48155] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][www.amazon.com]
            update: [....19] [ip4][..udp] [..172.16.42.216][.7358] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][firs-ta-g7g.amazon.com]
+           update: [....21] [ip4][..udp] [..172.16.42.216][41030] -> [....172.16.42.1][...53] [DNS.AmazonAlexa][Unknown][Network][Acceptable][alexa.amazon.com]
+           update: [....98] [ip4][..udp] [..172.16.42.216][41639] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][dp-gw-na-js.amazon.com]
+           update: [....40] [ip4][..udp] [..172.16.42.216][43350] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][fls-na.amazon.com]
+           update: [....15] [ip4][..udp] [..172.16.42.216][48155] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][www.amazon.com]
+           update: [....35] [ip4][..udp] [..172.16.42.216][52077] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][www.amazon.com]
            update: [....17] [ip4][..udp] [..172.16.42.216][19967] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][mads.amazon-adsystem.com]
+           update: [....34] [ip4][..udp] [..172.16.42.216][21391] -> [....172.16.42.1][...53] [DNS.AmazonAWS][Unknown][Network][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
+           update: [....27] [ip4][..udp] [..172.16.42.216][54886] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][pitangui.amazon.com]
+           update: [....24] [ip4][..udp] [..172.16.42.216][23559] -> [....172.16.42.1][...53] [DNS.AmazonAWS][Unknown][Network][Acceptable][cognito-identity.us-east-1.amazonaws.com]
               new: [...157] [ip4][..tcp] [..172.16.42.216][38483] -> [..52.85.209.143][..443]
          detected: [...157] [ip4][..tcp] [..172.16.42.216][38483] -> [..52.85.209.143][..443] [TLS][AmazonAWS][Web][Safe][]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
@@ -926,51 +926,50 @@
  detection-update: [...159] [ip4][..tcp] [..172.16.42.216][47605] -> [..72.21.206.121][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][fls-na.amazon.com]
  detection-update: [...160] [ip4][..tcp] [..172.16.42.216][47606] -> [..72.21.206.121][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][fls-na.amazon.com]
  detection-update: [...160] [ip4][..tcp] [..172.16.42.216][47606] -> [..72.21.206.121][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][fls-na.amazon.com]
-             idle: [....27] [ip4][..udp] [..172.16.42.216][54886] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][pitangui.amazon.com]
-             idle: [...139] [ip4][..tcp] [..172.16.42.216][50796] -> [..54.239.28.178][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
-                   RISK: Weak TLS Cipher
-             idle: [...140] [ip4][..tcp] [..172.16.42.216][50797] -> [..54.239.28.178][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
-                   RISK: Weak TLS Cipher
-          guessed: [...141] [ip4][..tcp] [..172.16.42.216][50798] -> [..54.239.28.178][..443] [TLS][AmazonAWS][Web][Safe]
-              end: [...141] [ip4][..tcp] [..172.16.42.216][50798] -> [..54.239.28.178][..443]
-              end: [...142] [ip4][..tcp] [..172.16.42.216][50799] -> [..54.239.28.178][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][pitangui.amazon.com]
-                   RISK: Weak TLS Cipher
-             idle: [...143] [ip4][..tcp] [..172.16.42.216][50800] -> [..54.239.28.178][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
-                   RISK: Weak TLS Cipher
-              end: [...119] [ip4][..tcp] [..172.16.42.216][51985] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
-                   RISK: Susp Entropy
-              end: [...120] [ip4][..tcp] [..172.16.42.216][51986] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
-                   RISK: Susp Entropy
-              end: [...121] [ip4][..tcp] [..172.16.42.216][51987] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
-                   RISK: Susp Entropy
-              end: [...122] [ip4][..tcp] [..172.16.42.216][51988] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
-                   RISK: Susp Entropy
-              end: [...123] [ip4][..tcp] [..172.16.42.216][51989] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
-                   RISK: Susp Entropy
-              end: [...124] [ip4][..tcp] [..172.16.42.216][51990] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
-                   RISK: Susp Entropy
-              end: [...126] [ip4][..tcp] [..172.16.42.216][51992] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
-                   RISK: Susp Entropy
-              end: [...127] [ip4][..tcp] [..172.16.42.216][51993] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
-                   RISK: Susp Entropy
-              end: [...128] [ip4][..tcp] [..172.16.42.216][51994] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
-                   RISK: Susp Entropy
-              end: [...129] [ip4][..tcp] [..172.16.42.216][51995] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
-                   RISK: Susp Entropy
-              end: [...130] [ip4][..tcp] [..172.16.42.216][51996] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
-                   RISK: Susp Entropy
-              end: [...131] [ip4][..tcp] [..172.16.42.216][51997] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
-                   RISK: Susp Entropy
              idle: [.....3] [ip4][..udp] [........0.0.0.0][...68] -> [255.255.255.255][...67] [DHCP][Unknown][Network][Acceptable][android-1c1335ec95a27318]
              idle: [....58] [ip4][....2] [........0.0.0.0] -> [......224.0.0.1] [IGMP][Unknown][Network][Acceptable]
-              end: [....76] [ip4][..tcp] [..172.16.42.216][49613] -> [..52.94.232.134][...80] [HTTP.AmazonAlexa][AmazonAWS][VirtAssistant][Acceptable][alexa.amazon.com]
+              end: [....75] [ip4][..tcp] [..172.16.42.216][37113] -> [..52.94.232.134][..443] [TLS][AmazonAWS][Web][Safe]
+                   RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
+             idle: [....69] [ip4][..udp] [..172.16.42.216][25081] -> [....172.16.42.1][...53] [DNS.AmazonAlexa][Unknown][Network][Acceptable][alexa.amazon.com]
+              end: [....78] [ip4][..tcp] [..172.16.42.216][34053] -> [..54.239.24.186][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable]
+          guessed: [....79] [ip4][..tcp] [..172.16.42.216][34054] -> [..54.239.24.186][..443] [TLS][AmazonAWS][Web][Safe]
+              end: [....79] [ip4][..tcp] [..172.16.42.216][34054] -> [..54.239.24.186][..443]
+              end: [....94] [ip4][..tcp] [..172.16.42.216][34069] -> [..54.239.24.186][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable]
+          guessed: [...100] [ip4][..tcp] [..172.16.42.216][34073] -> [..54.239.24.186][..443] [TLS][AmazonAWS][Web][Safe]
+              end: [...100] [ip4][..tcp] [..172.16.42.216][34073] -> [..54.239.24.186][..443]
+              end: [...101] [ip4][..tcp] [..172.16.42.216][34074] -> [..54.239.24.186][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable]
+             idle: [...153] [ip4][..tcp] [..172.16.42.216][41912] -> [...52.84.62.115][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
+             idle: [...154] [ip4][..tcp] [..172.16.42.216][41913] -> [...52.84.62.115][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
+             idle: [...155] [ip4][..tcp] [..172.16.42.216][41914] -> [...52.84.62.115][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][images-na.ssl-images-amazon.com]
+             idle: [...149] [ip4][..tcp] [..172.16.42.216][41828] -> [..52.85.209.143][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][www.amazon.com]
+             idle: [...146] [ip4][..udp] [..172.16.42.216][59908] -> [....172.16.42.1][...53] [DNS.AmazonAlexa][Unknown][Network][Acceptable][alexa.amazon.com]
+              end: [...136] [ip4][..tcp] [..172.16.42.216][39750] -> [..52.94.232.134][..443] [TLS][AmazonAWS][Web][Safe]
+                   RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
+             idle: [...151] [ip4][..tcp] [..172.16.42.216][49067] -> [..216.58.194.78][..443] [TLS.PlayStore][Google][SoftwareUpdate][Safe]
+                   RISK: TLS (probably) Not Carrying HTTPS
+             idle: [....64] [ip4][..udp] [..172.16.42.216][60804] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][api.amazon.com]
+             idle: [....11] [ip4][..tcp] [..172.16.42.216][42878] -> [173.194.223.188][.5228] [TLS.GoogleServices][Google][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+             idle: [...114] [ip4][..udp] [..172.16.42.216][28614] -> [....172.16.42.1][...53] [DNS.AmazonAWS][Unknown][Network][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
+              end: [...115] [ip4][..tcp] [..172.16.42.216][37551] -> [..54.239.24.180][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable]
+          guessed: [...116] [ip4][..tcp] [..172.16.42.216][37552] -> [..54.239.24.180][..443] [TLS][AmazonAWS][Web][Safe]
+              end: [...116] [ip4][..tcp] [..172.16.42.216][37552] -> [..54.239.24.180][..443]
+          guessed: [....31] [ip4][..tcp] [..172.16.42.216][40200] -> [.10.201.126.241][.8080] [HTTP_Proxy][Unknown][Web][Acceptable][]
+                   RISK: Unidirectional Traffic, TCP Connection Issues
+              end: [....31] [ip4][..tcp] [..172.16.42.216][40200] -> [.10.201.126.241][.8080]
+          guessed: [....33] [ip4][..tcp] [..172.16.42.216][40202] -> [.10.201.126.241][.8080] [HTTP_Proxy][Unknown][Web][Acceptable][]
+                   RISK: Unidirectional Traffic, TCP Connection Issues
+              end: [....33] [ip4][..tcp] [..172.16.42.216][40202] -> [.10.201.126.241][.8080]
+          guessed: [....83] [ip4][..tcp] [..172.16.42.216][40242] -> [.10.201.126.241][.8080] [HTTP_Proxy][Unknown][Web][Acceptable][]
+                   RISK: Unidirectional Traffic
+             idle: [....83] [ip4][..tcp] [..172.16.42.216][40242] -> [.10.201.126.241][.8080]
              idle: [...147] [ip4][..tcp] [..172.16.42.216][38757] -> [..54.239.28.178][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
-          guessed: [....90] [ip4][..tcp] [..172.16.42.216][49627] -> [..52.94.232.134][...80] [HTTP][AmazonAWS][Web][Acceptable][]
-              end: [....90] [ip4][..tcp] [..172.16.42.216][49627] -> [..52.94.232.134][...80]
-              end: [...145] [ip4][..tcp] [..172.16.42.216][44912] -> [...54.239.23.94][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
-              end: [....93] [ip4][..tcp] [..172.16.42.216][49630] -> [..52.94.232.134][...80] [HTTP.AmazonAlexa][AmazonAWS][VirtAssistant][Acceptable][alexa.amazon.com]
-                   RISK: Error Code
+             idle: [...135] [ip4][..udp] [..172.16.42.216][64073] -> [....172.16.42.1][...53] [DNS.AmazonAlexa][Unknown][Network][Acceptable][alexa.amazon.com]
+              end: [....96] [ip4][..tcp] [..172.16.42.216][41820] -> [...54.231.72.88][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable]
+          guessed: [....97] [ip4][..tcp] [..172.16.42.216][41821] -> [...54.231.72.88][..443] [TLS][AmazonAWS][Web][Safe]
+              end: [....97] [ip4][..tcp] [..172.16.42.216][41821] -> [...54.231.72.88][..443]
+              end: [...102] [ip4][..tcp] [..172.16.42.216][41825] -> [...54.231.72.88][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable]
               end: [...104] [ip4][..tcp] [..172.16.42.216][40853] -> [..54.239.29.253][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
                    RISK: Weak TLS Cipher
               end: [...105] [ip4][..tcp] [..172.16.42.216][40854] -> [..54.239.29.253][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][skills-store.amazon.com]
@@ -985,25 +984,7 @@
                    RISK: Weak TLS Cipher
               end: [...132] [ip4][..tcp] [..172.16.42.216][40878] -> [..54.239.29.253][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
                    RISK: Weak TLS Cipher
-             idle: [.....9] [ip4][..udp] [..172.16.42.216][53188] -> [....172.16.42.1][...53] [DNS.GoogleServices][Unknown][Network][Acceptable][mtalk.google.com]
-             idle: [...114] [ip4][..udp] [..172.16.42.216][28614] -> [....172.16.42.1][...53] [DNS.AmazonAWS][Unknown][Network][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
-              end: [....75] [ip4][..tcp] [..172.16.42.216][37113] -> [..52.94.232.134][..443] [TLS][AmazonAWS][Web][Safe]
-                   RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
-             idle: [...159] [ip4][..tcp] [..172.16.42.216][47605] -> [..72.21.206.121][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
-             idle: [...160] [ip4][..tcp] [..172.16.42.216][47606] -> [..72.21.206.121][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
-              end: [....73] [ip4][..tcp] [..172.16.42.216][59698] -> [..52.94.232.134][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
-                   RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
-             idle: [....21] [ip4][..udp] [..172.16.42.216][41030] -> [....172.16.42.1][...53] [DNS.AmazonAlexa][Unknown][Network][Acceptable][alexa.amazon.com]
              idle: [.....4] [ip4][..udp] [....172.16.42.1][...67] -> [..172.16.42.216][...68] [DHCP][Unknown][Network][Acceptable]
-             idle: [...103] [ip4][..udp] [..172.16.42.216][14476] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][skills-store.amazon.com]
-             idle: [...153] [ip4][..tcp] [..172.16.42.216][41912] -> [...52.84.62.115][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
-             idle: [...154] [ip4][..tcp] [..172.16.42.216][41913] -> [...52.84.62.115][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
-             idle: [...155] [ip4][..tcp] [..172.16.42.216][41914] -> [...52.84.62.115][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][images-na.ssl-images-amazon.com]
-             idle: [...138] [ip4][..udp] [..172.16.42.216][.4312] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][pitangui.amazon.com]
-             idle: [....12] [ip4][..udp] [..172.16.42.216][10462] -> [....172.16.42.1][...53] [DNS.Google][Unknown][Network][Acceptable][www.google.com]
-             idle: [.....7] [ip4][..udp] [..172.16.42.216][55619] -> [....172.16.42.1][...53] [DNS.Google][Unknown][Network][Acceptable][connectivitycheck.android.com]
-             idle: [....40] [ip4][..udp] [..172.16.42.216][43350] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][fls-na.amazon.com]
-             idle: [...149] [ip4][..tcp] [..172.16.42.216][41828] -> [..52.85.209.143][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][www.amazon.com]
               end: [....80] [ip4][..tcp] [..172.16.42.216][45703] -> [..52.94.232.134][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][pitangui.amazon.com]
                    RISK: Weak TLS Cipher
               end: [....81] [ip4][..tcp] [..172.16.42.216][45704] -> [..52.94.232.134][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
@@ -1034,81 +1015,100 @@
                    RISK: Weak TLS Cipher
               end: [...113] [ip4][..tcp] [..172.16.42.216][45732] -> [..52.94.232.134][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
                    RISK: Weak TLS Cipher
-             idle: [....20] [ip4][..tcp] [..172.16.42.216][53682] -> [..54.239.22.185][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
-                   RISK: TLS (probably) Not Carrying HTTPS
               end: [...133] [ip4][..tcp] [..172.16.42.216][45750] -> [..52.94.232.134][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
                    RISK: Weak TLS Cipher
               end: [...134] [ip4][..tcp] [..172.16.42.216][45751] -> [..52.94.232.134][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
                    RISK: Weak TLS Cipher
-             idle: [...108] [ip4][..udp] [..172.16.42.216][20922] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][pitangui.amazon.com]
               end: [...137] [ip4][..tcp] [..172.16.42.216][45752] -> [..52.94.232.134][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
                    RISK: Weak TLS Cipher
-             idle: [...144] [ip4][..udp] [..172.16.42.216][.8669] -> [....172.16.42.1][...53] [DNS.AmazonAWS][Unknown][Network][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
-             idle: [....69] [ip4][..udp] [..172.16.42.216][25081] -> [....172.16.42.1][...53] [DNS.AmazonAlexa][Unknown][Network][Acceptable][alexa.amazon.com]
-             idle: [...152] [ip4][..udp] [..172.16.42.216][.4612] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][images-na.ssl-images-amazon.com]
-             idle: [...146] [ip4][..udp] [..172.16.42.216][59908] -> [....172.16.42.1][...53] [DNS.AmazonAlexa][Unknown][Network][Acceptable][alexa.amazon.com]
-              end: [....18] [ip4][..tcp] [..172.16.42.216][33556] -> [....52.94.232.0][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
-                   RISK: TLS (probably) Not Carrying HTTPS
-              end: [...136] [ip4][..tcp] [..172.16.42.216][39750] -> [..52.94.232.134][..443] [TLS][AmazonAWS][Web][Safe]
-                   RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
-             idle: [...135] [ip4][..udp] [..172.16.42.216][64073] -> [....172.16.42.1][...53] [DNS.AmazonAlexa][Unknown][Network][Acceptable][alexa.amazon.com]
-             idle: [...148] [ip4][..udp] [..172.16.42.216][14934] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][www.amazon.com]
-             idle: [...158] [ip4][..udp] [..172.16.42.216][.2707] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][fls-na.amazon.com]
-             idle: [....98] [ip4][..udp] [..172.16.42.216][41639] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][dp-gw-na-js.amazon.com]
-              end: [...115] [ip4][..tcp] [..172.16.42.216][37551] -> [..54.239.24.180][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable]
-          guessed: [...116] [ip4][..tcp] [..172.16.42.216][37552] -> [..54.239.24.180][..443] [TLS][AmazonAWS][Web][Safe]
-              end: [...116] [ip4][..tcp] [..172.16.42.216][37552] -> [..54.239.24.180][..443]
-              end: [...156] [ip4][..tcp] [..172.16.42.216][58048] -> [..54.239.28.178][..443] [TLS][AmazonAWS][Web][Safe]
-                   RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
               end: [....65] [ip4][..tcp] [..172.16.42.216][41691] -> [..54.239.29.146][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][api.amazon.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-             idle: [...118] [ip4][..udp] [..172.16.42.216][.4920] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][ecx.images-amazon.com]
-             idle: [...151] [ip4][..tcp] [..172.16.42.216][49067] -> [..216.58.194.78][..443] [TLS.PlayStore][Google][SoftwareUpdate][Safe]
-                   RISK: TLS (probably) Not Carrying HTTPS
-              end: [....96] [ip4][..tcp] [..172.16.42.216][41820] -> [...54.231.72.88][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable]
-          guessed: [....97] [ip4][..tcp] [..172.16.42.216][41821] -> [...54.231.72.88][..443] [TLS][AmazonAWS][Web][Safe]
-              end: [....97] [ip4][..tcp] [..172.16.42.216][41821] -> [...54.231.72.88][..443]
-              end: [...102] [ip4][..tcp] [..172.16.42.216][41825] -> [...54.231.72.88][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable]
-             idle: [....35] [ip4][..udp] [..172.16.42.216][52077] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][www.amazon.com]
+             idle: [...158] [ip4][..udp] [..172.16.42.216][.2707] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][fls-na.amazon.com]
              idle: [....95] [ip4][..udp] [..172.16.42.216][35726] -> [....172.16.42.1][...53] [DNS.AmazonAWS][Unknown][Network][Acceptable][s3-external-2.amazonaws.com]
-             idle: [....34] [ip4][..udp] [..172.16.42.216][21391] -> [....172.16.42.1][...53] [DNS.AmazonAWS][Unknown][Network][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
-             idle: [....13] [ip4][..tcp] [..172.16.42.216][35540] -> [..172.217.9.142][...80] [HTTP.Google][Google][ConnCheck][Acceptable][connectivitycheck.android.com]
-             idle: [....24] [ip4][..udp] [..172.16.42.216][23559] -> [....172.16.42.1][...53] [DNS.AmazonAWS][Unknown][Network][Acceptable][cognito-identity.us-east-1.amazonaws.com]
-             idle: [....15] [ip4][..udp] [..172.16.42.216][48155] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][www.amazon.com]
-             idle: [...157] [ip4][..tcp] [..172.16.42.216][38483] -> [..52.85.209.143][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
-                   RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
-             idle: [.....8] [ip4][..tcp] [..172.16.42.216][60246] -> [..172.217.9.142][...80] [HTTP.Google][Google][ConnCheck][Acceptable][connectivitycheck.android.com]
-          guessed: [....31] [ip4][..tcp] [..172.16.42.216][40200] -> [.10.201.126.241][.8080] [HTTP_Proxy][Unknown][Web][Acceptable][]
-                   RISK: Unidirectional Traffic, TCP Connection Issues
-              end: [....31] [ip4][..tcp] [..172.16.42.216][40200] -> [.10.201.126.241][.8080]
-          guessed: [....33] [ip4][..tcp] [..172.16.42.216][40202] -> [.10.201.126.241][.8080] [HTTP_Proxy][Unknown][Web][Acceptable][]
-                   RISK: Unidirectional Traffic, TCP Connection Issues
-              end: [....33] [ip4][..tcp] [..172.16.42.216][40202] -> [.10.201.126.241][.8080]
-             idle: [....19] [ip4][..udp] [..172.16.42.216][.7358] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][firs-ta-g7g.amazon.com]
-          guessed: [....83] [ip4][..tcp] [..172.16.42.216][40242] -> [.10.201.126.241][.8080] [HTTP_Proxy][Unknown][Web][Acceptable][]
-                   RISK: Unidirectional Traffic
-             idle: [....83] [ip4][..tcp] [..172.16.42.216][40242] -> [.10.201.126.241][.8080]
-              end: [....78] [ip4][..tcp] [..172.16.42.216][34053] -> [..54.239.24.186][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable]
-          guessed: [....79] [ip4][..tcp] [..172.16.42.216][34054] -> [..54.239.24.186][..443] [TLS][AmazonAWS][Web][Safe]
-              end: [....79] [ip4][..tcp] [..172.16.42.216][34054] -> [..54.239.24.186][..443]
-              end: [....94] [ip4][..tcp] [..172.16.42.216][34069] -> [..54.239.24.186][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable]
-          guessed: [...100] [ip4][..tcp] [..172.16.42.216][34073] -> [..54.239.24.186][..443] [TLS][AmazonAWS][Web][Safe]
-              end: [...100] [ip4][..tcp] [..172.16.42.216][34073] -> [..54.239.24.186][..443]
-              end: [...101] [ip4][..tcp] [..172.16.42.216][34074] -> [..54.239.24.186][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable]
-              end: [....99] [ip4][..tcp] [..172.16.42.216][44001] -> [..176.32.101.52][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][dp-gw-na-js.amazon.com]
-                   RISK: TLS (probably) Not Carrying HTTPS
              idle: [.....6] [ip4][..udp] [..172.16.42.216][.3440] -> [....172.16.42.1][...53] [DNS.Google][Unknown][Network][Acceptable][connectivitycheck.android.com]
-             idle: [....10] [ip4][..udp] [..172.16.42.216][52603] -> [....172.16.42.1][...53] [DNS.Google][Unknown][Network][Acceptable][www.google.com]
-             idle: [....64] [ip4][..udp] [..172.16.42.216][60804] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][api.amazon.com]
-          guessed: [....85] [ip4][..tcp] [..172.16.42.216][38434] -> [...192.168.11.1][.8080] [HTTP_Proxy][Unknown][Web][Acceptable][]
-                   RISK: TCP Connection Issues
-              end: [....85] [ip4][..tcp] [..172.16.42.216][38434] -> [...192.168.11.1][.8080]
-             idle: [....11] [ip4][..tcp] [..172.16.42.216][42878] -> [173.194.223.188][.5228] [TLS.GoogleServices][Google][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
-             idle: [....62] [ip4][..udp] [..172.16.42.216][44475] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][www.amazon.com]
+              end: [...119] [ip4][..tcp] [..172.16.42.216][51985] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
+                   RISK: Susp Entropy
+              end: [...120] [ip4][..tcp] [..172.16.42.216][51986] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
+                   RISK: Susp Entropy
+              end: [...121] [ip4][..tcp] [..172.16.42.216][51987] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
+                   RISK: Susp Entropy
+              end: [...122] [ip4][..tcp] [..172.16.42.216][51988] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
+                   RISK: Susp Entropy
+              end: [...123] [ip4][..tcp] [..172.16.42.216][51989] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
+                   RISK: Susp Entropy
+              end: [...124] [ip4][..tcp] [..172.16.42.216][51990] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
+                   RISK: Susp Entropy
+              end: [...126] [ip4][..tcp] [..172.16.42.216][51992] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
+                   RISK: Susp Entropy
+              end: [...127] [ip4][..tcp] [..172.16.42.216][51993] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
+                   RISK: Susp Entropy
+              end: [...128] [ip4][..tcp] [..172.16.42.216][51994] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
+                   RISK: Susp Entropy
+              end: [...129] [ip4][..tcp] [..172.16.42.216][51995] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
+                   RISK: Susp Entropy
+              end: [...130] [ip4][..tcp] [..172.16.42.216][51996] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
+                   RISK: Susp Entropy
+              end: [...131] [ip4][..tcp] [..172.16.42.216][51997] -> [....52.84.63.56][...80] [HTTP.Amazon][AmazonAWS][Web][Acceptable][ecx.images-amazon.com]
+                   RISK: Susp Entropy
+              end: [....76] [ip4][..tcp] [..172.16.42.216][49613] -> [..52.94.232.134][...80] [HTTP.AmazonAlexa][AmazonAWS][VirtAssistant][Acceptable][alexa.amazon.com]
+          guessed: [....90] [ip4][..tcp] [..172.16.42.216][49627] -> [..52.94.232.134][...80] [HTTP][AmazonAWS][Web][Acceptable][]
+              end: [....90] [ip4][..tcp] [..172.16.42.216][49627] -> [..52.94.232.134][...80]
+              end: [...145] [ip4][..tcp] [..172.16.42.216][44912] -> [...54.239.23.94][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
+              end: [....93] [ip4][..tcp] [..172.16.42.216][49630] -> [..52.94.232.134][...80] [HTTP.AmazonAlexa][AmazonAWS][VirtAssistant][Acceptable][alexa.amazon.com]
+                   RISK: Error Code
+             idle: [...138] [ip4][..udp] [..172.16.42.216][.4312] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][pitangui.amazon.com]
+             idle: [...152] [ip4][..udp] [..172.16.42.216][.4612] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][images-na.ssl-images-amazon.com]
+             idle: [...118] [ip4][..udp] [..172.16.42.216][.4920] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][ecx.images-amazon.com]
+             idle: [....19] [ip4][..udp] [..172.16.42.216][.7358] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][firs-ta-g7g.amazon.com]
               end: [....16] [ip4][..tcp] [..172.16.42.216][55242] -> [..52.85.209.197][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][www.amazon.com]
                    RISK: TLS (probably) Not Carrying HTTPS
              idle: [...150] [ip4][..udp] [..172.16.42.216][40425] -> [....172.16.42.1][...53] [DNS.PlayStore][Unknown][Network][Safe][android.clients.google.com]
+             idle: [....21] [ip4][..udp] [..172.16.42.216][41030] -> [....172.16.42.1][...53] [DNS.AmazonAlexa][Unknown][Network][Acceptable][alexa.amazon.com]
+             idle: [...144] [ip4][..udp] [..172.16.42.216][.8669] -> [....172.16.42.1][...53] [DNS.AmazonAWS][Unknown][Network][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
+             idle: [....98] [ip4][..udp] [..172.16.42.216][41639] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][dp-gw-na-js.amazon.com]
+             idle: [...139] [ip4][..tcp] [..172.16.42.216][50796] -> [..54.239.28.178][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
+                   RISK: Weak TLS Cipher
+             idle: [...140] [ip4][..tcp] [..172.16.42.216][50797] -> [..54.239.28.178][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
+                   RISK: Weak TLS Cipher
+          guessed: [...141] [ip4][..tcp] [..172.16.42.216][50798] -> [..54.239.28.178][..443] [TLS][AmazonAWS][Web][Safe]
+              end: [...141] [ip4][..tcp] [..172.16.42.216][50798] -> [..54.239.28.178][..443]
+              end: [...142] [ip4][..tcp] [..172.16.42.216][50799] -> [..54.239.28.178][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][pitangui.amazon.com]
+                   RISK: Weak TLS Cipher
+             idle: [...143] [ip4][..tcp] [..172.16.42.216][50800] -> [..54.239.28.178][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
+                   RISK: Weak TLS Cipher
+             idle: [....12] [ip4][..udp] [..172.16.42.216][10462] -> [....172.16.42.1][...53] [DNS.Google][Unknown][Network][Acceptable][www.google.com]
+             idle: [....40] [ip4][..udp] [..172.16.42.216][43350] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][fls-na.amazon.com]
+             idle: [....62] [ip4][..udp] [..172.16.42.216][44475] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][www.amazon.com]
+             idle: [....20] [ip4][..tcp] [..172.16.42.216][53682] -> [..54.239.22.185][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
+                   RISK: TLS (probably) Not Carrying HTTPS
+             idle: [.....8] [ip4][..tcp] [..172.16.42.216][60246] -> [..172.217.9.142][...80] [HTTP.Google][Google][ConnCheck][Acceptable][connectivitycheck.android.com]
+              end: [....73] [ip4][..tcp] [..172.16.42.216][59698] -> [..52.94.232.134][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
+                   RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
+             idle: [...103] [ip4][..udp] [..172.16.42.216][14476] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][skills-store.amazon.com]
+             idle: [...148] [ip4][..udp] [..172.16.42.216][14934] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][www.amazon.com]
+             idle: [....15] [ip4][..udp] [..172.16.42.216][48155] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][www.amazon.com]
+              end: [....99] [ip4][..tcp] [..172.16.42.216][44001] -> [..176.32.101.52][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable][dp-gw-na-js.amazon.com]
+                   RISK: TLS (probably) Not Carrying HTTPS
+             idle: [...159] [ip4][..tcp] [..172.16.42.216][47605] -> [..72.21.206.121][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
+             idle: [...160] [ip4][..tcp] [..172.16.42.216][47606] -> [..72.21.206.121][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
+              end: [...156] [ip4][..tcp] [..172.16.42.216][58048] -> [..54.239.28.178][..443] [TLS][AmazonAWS][Web][Safe]
+                   RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
+             idle: [....35] [ip4][..udp] [..172.16.42.216][52077] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][www.amazon.com]
+             idle: [....10] [ip4][..udp] [..172.16.42.216][52603] -> [....172.16.42.1][...53] [DNS.Google][Unknown][Network][Acceptable][www.google.com]
+          guessed: [....85] [ip4][..tcp] [..172.16.42.216][38434] -> [...192.168.11.1][.8080] [HTTP_Proxy][Unknown][Web][Acceptable][]
+                   RISK: TCP Connection Issues
+              end: [....85] [ip4][..tcp] [..172.16.42.216][38434] -> [...192.168.11.1][.8080]
               end: [....77] [ip4][..tcp] [..172.16.42.216][38404] -> [..34.199.52.240][..443] [TLS.AmazonAWS][AmazonAWS][Cloud][Acceptable]
              idle: [....17] [ip4][..udp] [..172.16.42.216][19967] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][mads.amazon-adsystem.com]
+             idle: [.....9] [ip4][..udp] [..172.16.42.216][53188] -> [....172.16.42.1][...53] [DNS.GoogleServices][Unknown][Network][Acceptable][mtalk.google.com]
+             idle: [...108] [ip4][..udp] [..172.16.42.216][20922] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][pitangui.amazon.com]
+              end: [....18] [ip4][..tcp] [..172.16.42.216][33556] -> [....52.94.232.0][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
+                   RISK: TLS (probably) Not Carrying HTTPS
+             idle: [....34] [ip4][..udp] [..172.16.42.216][21391] -> [....172.16.42.1][...53] [DNS.AmazonAWS][Unknown][Network][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
+             idle: [....13] [ip4][..tcp] [..172.16.42.216][35540] -> [..172.217.9.142][...80] [HTTP.Google][Google][ConnCheck][Acceptable][connectivitycheck.android.com]
+             idle: [....27] [ip4][..udp] [..172.16.42.216][54886] -> [....172.16.42.1][...53] [DNS.Amazon][Unknown][Network][Acceptable][pitangui.amazon.com]
+             idle: [.....7] [ip4][..udp] [..172.16.42.216][55619] -> [....172.16.42.1][...53] [DNS.Google][Unknown][Network][Acceptable][connectivitycheck.android.com]
+             idle: [....24] [ip4][..udp] [..172.16.42.216][23559] -> [....172.16.42.1][...53] [DNS.AmazonAWS][Unknown][Network][Acceptable][cognito-identity.us-east-1.amazonaws.com]
+             idle: [...157] [ip4][..tcp] [..172.16.42.216][38483] -> [..52.85.209.143][..443] [TLS.Amazon][AmazonAWS][Web][Acceptable]
+                   RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
      DAEMON-EVENT: shutdown

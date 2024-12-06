@@ -6,6 +6,6 @@
  detection-update: [.....1] [ip4][..tcp] [.192.168.88.231][43268] -> [.173.194.73.101][..443] [TLS.GoogleMeet][Google][Chat][Acceptable][meet.google.com]
               new: [.....2] [ip4][..udp] [.192.168.88.231][59369] -> [.173.194.73.101][..443]
          detected: [.....2] [ip4][..udp] [.192.168.88.231][59369] -> [.173.194.73.101][..443] [QUIC.GoogleMeet][Google][Chat][Acceptable][meet.google.com]
-             idle: [.....2] [ip4][..udp] [.192.168.88.231][59369] -> [.173.194.73.101][..443] [QUIC.GoogleMeet][Google][Chat][Acceptable][meet.google.com]
              idle: [.....1] [ip4][..tcp] [.192.168.88.231][43268] -> [.173.194.73.101][..443] [TLS.GoogleMeet][Google][Chat][Acceptable]
+             idle: [.....2] [ip4][..udp] [.192.168.88.231][59369] -> [.173.194.73.101][..443] [QUIC.GoogleMeet][Google][Chat][Acceptable][meet.google.com]
      DAEMON-EVENT: shutdown

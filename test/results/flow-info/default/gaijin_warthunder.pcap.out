@@ -6,7 +6,7 @@
                    RISK: Known Proto on Non Std Port
               new: [.....2] [ip4][..udp] [.192.168.88.231][37333] -> [.95.211.246.178][20011]
          detected: [.....2] [ip4][..udp] [.192.168.88.231][37333] -> [.95.211.246.178][20011] [GaijinEntertainment][Unknown][Game][Fun]
-             idle: [.....2] [ip4][..udp] [.192.168.88.231][37333] -> [.95.211.246.178][20011] [GaijinEntertainment][Unknown][Game][Fun]
              idle: [.....1] [ip4][..udp] [.192.168.88.231][36929] -> [.185.253.20.249][20021] [GaijinEntertainment][Unknown][Game][Fun]
                    RISK: Known Proto on Non Std Port
+             idle: [.....2] [ip4][..udp] [.192.168.88.231][37333] -> [.95.211.246.178][20011] [GaijinEntertainment][Unknown][Game][Fun]
      DAEMON-EVENT: shutdown

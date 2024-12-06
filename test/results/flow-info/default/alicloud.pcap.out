@@ -47,8 +47,8 @@
      DAEMON-EVENT: [Flows][active: 2 / 10|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [....11] [ip4][..tcp] [..192.168.2.100][44388] -> [..8.209.107.125][.8999]
          detected: [....11] [ip4][..tcp] [..192.168.2.100][44388] -> [..8.209.107.125][.8999] [AliCloud][Alibaba][Cloud][Acceptable]
-             idle: [....10] [ip4][..tcp] [..192.168.2.100][52228] -> [...8.209.73.197][.8999] [AliCloud][Alibaba][Cloud][Acceptable]
              idle: [.....9] [ip4][..tcp] [..192.168.2.100][51682] -> [...8.209.73.197][.8999] [AliCloud][Alibaba][Cloud][Acceptable]
+             idle: [....10] [ip4][..tcp] [..192.168.2.100][52228] -> [...8.209.73.197][.8999] [AliCloud][Alibaba][Cloud][Acceptable]
      DAEMON-EVENT: [Processed: 165 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 11|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [....12] [ip4][..tcp] [..192.168.2.100][37160] -> [..8.209.107.125][.8999]
@@ -68,6 +68,6 @@
      DAEMON-EVENT: [Flows][active: 1 / 14|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [....15] [ip4][..tcp] [..192.168.2.100][51774] -> [....8.209.77.36][.8999]
          detected: [....15] [ip4][..tcp] [..192.168.2.100][51774] -> [....8.209.77.36][.8999] [AliCloud][Alibaba][Cloud][Acceptable]
-             idle: [....14] [ip4][..tcp] [..192.168.2.100][57322] -> [..8.209.107.122][.8999] [AliCloud][Alibaba][Cloud][Acceptable]
              idle: [....15] [ip4][..tcp] [..192.168.2.100][51774] -> [....8.209.77.36][.8999] [AliCloud][Alibaba][Cloud][Acceptable]
+             idle: [....14] [ip4][..tcp] [..192.168.2.100][57322] -> [..8.209.107.122][.8999] [AliCloud][Alibaba][Cloud][Acceptable]
      DAEMON-EVENT: shutdown

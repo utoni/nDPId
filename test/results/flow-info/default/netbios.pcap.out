@@ -76,9 +76,9 @@
                    RISK: Unsafe Protocol
              idle: [.....3] [ip4][..udp] [.......10.0.5.9][..138] -> [.....10.0.5.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][nvr9]
                    RISK: Unsafe Protocol
+          guessed: [.....4] [ip4][..tcp] [......10.0.4.24][..139] -> [.....10.0.4.131][.1398] [NetBIOS][Unknown][System][Acceptable][]
+             idle: [.....4] [ip4][..tcp] [......10.0.4.24][..139] -> [.....10.0.4.131][.1398]
              idle: [.....5] [ip4][..udp] [......10.0.1.87][57836] -> [......10.0.4.24][..137] [NetBIOS][Unknown][System][Acceptable][*]
              idle: [....15] [ip4][..udp] [......10.0.1.87][57921] -> [......10.0.4.24][..137] [NetBIOS][Unknown][System][Acceptable][*]
              idle: [....16][2308] [ip4][..tcp] [...10.19.71.184][55489] -> [..10.17.113.129][..139] [NetBIOS][Unknown][System][Acceptable]
-          guessed: [.....4] [ip4][..tcp] [......10.0.4.24][..139] -> [.....10.0.4.131][.1398] [NetBIOS][Unknown][System][Acceptable][]
-             idle: [.....4] [ip4][..tcp] [......10.0.4.24][..139] -> [.....10.0.4.131][.1398]
      DAEMON-EVENT: shutdown

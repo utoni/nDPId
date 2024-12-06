@@ -1,5 +1,5 @@
 Flow 4 not-detected: tcp 10.0.0.2:16417 -> 10.128.0.2:16419
+Flow 3 not-detected: tcp 10.0.0.2:9253 -> 10.128.0.2:24102
 Flow 1 not-detected: tcp 10.0.0.2:24102 -> 10.128.0.2:10792
 Flow 2 not-detected: tcp 10.0.0.2:18730 -> 10.128.0.2:20304
 Flow 2 midstream: tcp 10.0.0.2:18730 -> 10.128.0.2:20304
-Flow 3 not-detected: tcp 10.0.0.2:9253 -> 10.128.0.2:24102

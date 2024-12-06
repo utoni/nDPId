@@ -83,21 +83,21 @@
          detected: [....13] [ip4][..udp] [...192.168.2.12][65025] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
               new: [....14] [ip4][..udp] [...192.168.2.12][51458] -> [239.255.255.250][.1900]
          detected: [....14] [ip4][..udp] [...192.168.2.12][51458] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
-             idle: [.....8] [ip4][..udp] [...192.168.2.12][51277] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
              idle: [.....9] [ip4][..udp] [........0.0.0.0][...68] -> [255.255.255.255][...67] [DHCP][Unknown][Network][Acceptable][lucas-imac]
+             idle: [.....1] [ip4][..udp] [....192.168.2.1][57621] -> [..192.168.2.255][57621] [Spotify][Unknown][Music][Fun]
+             idle: [.....3] [ip4][..udp] [...192.168.2.12][53688] -> [....31.13.86.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
+             idle: [....10] [ip4][..udp] [...192.168.2.12][53688] -> [.....1.60.78.64][59491] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
+                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+             idle: [....13] [ip4][..udp] [...192.168.2.12][65025] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
+             idle: [.....6] [ip4][..udp] [...192.168.2.12][53688] -> [..179.60.192.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
+             idle: [.....4] [ip4][..udp] [...192.168.2.12][53688] -> [..185.60.216.51][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
+             idle: [....12] [ip4][..udp] [....192.168.2.1][17500] -> [..192.168.2.255][17500] [Dropbox][Unknown][Cloud][Acceptable]
+             idle: [.....2] [ip4][..tcp] [...192.168.2.12][49355] -> [..157.240.20.53][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
+                   RISK: Susp Entropy
+             idle: [....11] [ip4][..udp] [...192.168.2.12][53688] -> [...91.252.56.51][32641] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [.....8] [ip4][..udp] [...192.168.2.12][51277] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
              idle: [.....7] [ip4][..udp] [...192.168.2.12][53688] -> [.157.240.196.62][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
              idle: [.....5] [ip4][..udp] [...192.168.2.12][53688] -> [.157.240.193.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
              idle: [....14] [ip4][..udp] [...192.168.2.12][51458] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
-             idle: [....12] [ip4][..udp] [....192.168.2.1][17500] -> [..192.168.2.255][17500] [Dropbox][Unknown][Cloud][Acceptable]
-             idle: [.....1] [ip4][..udp] [....192.168.2.1][57621] -> [..192.168.2.255][57621] [Spotify][Unknown][Music][Fun]
-             idle: [.....6] [ip4][..udp] [...192.168.2.12][53688] -> [..179.60.192.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-             idle: [.....4] [ip4][..udp] [...192.168.2.12][53688] -> [..185.60.216.51][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-             idle: [.....3] [ip4][..udp] [...192.168.2.12][53688] -> [....31.13.86.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
-             idle: [....13] [ip4][..udp] [...192.168.2.12][65025] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
-             idle: [....11] [ip4][..udp] [...192.168.2.12][53688] -> [...91.252.56.51][32641] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
-                   RISK: Known Proto on Non Std Port
-             idle: [.....2] [ip4][..tcp] [...192.168.2.12][49355] -> [..157.240.20.53][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
-                   RISK: Susp Entropy
-             idle: [....10] [ip4][..udp] [...192.168.2.12][53688] -> [.....1.60.78.64][59491] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
      DAEMON-EVENT: shutdown

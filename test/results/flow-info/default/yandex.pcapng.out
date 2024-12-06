@@ -34,17 +34,17 @@
               new: [.....9] [ip4][..tcp] [..192.168.1.249][51462] -> [..87.250.251.77][..443]
          detected: [.....9] [ip4][..tcp] [..192.168.1.249][51462] -> [..87.250.251.77][..443] [TLS.YandexMetrika][Yandex][Web][Safe][metrika.yandex.kz]
  detection-update: [.....9] [ip4][..tcp] [..192.168.1.249][51462] -> [..87.250.251.77][..443] [TLS.YandexMetrika][Yandex][Web][Safe][metrika.yandex.kz]
-             idle: [.....3] [ip4][..tcp] [..192.168.1.249][42102] -> [178.154.131.216][..443] [TLS.Yandex][Yandex][Web][Safe]
-                   RISK: Unidirectional Traffic
-             idle: [.....7] [ip4][..tcp] [..192.168.1.249][42954] -> [...77.88.21.127][..443] [TLS.YandexDisk][Yandex][Cloud][Safe]
+             idle: [.....5] [ip4][..tcp] [..192.168.1.249][57322] -> [.87.250.250.108][..443] [TLS.YandexCloud][Yandex][Cloud][Safe]
              idle: [.....6] [ip4][..tcp] [..192.168.1.249][58832] -> [.87.250.250.134][..443] [TLS.YandexDirect][Yandex][Advertisement][Tracker/Ads]
-             idle: [.....8] [ip4][..tcp] [..192.168.1.249][45224] -> [....77.88.21.37][..443] [TLS.YandexMail][Yandex][Email][Safe]
-                   RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..tcp] [..192.168.1.249][57126] -> [178.154.131.216][..443] [TLS.Yandex][Yandex][Web][Safe]
                    RISK: Unidirectional Traffic
-             idle: [.....1] [ip4][..tcp] [..192.168.1.249][40218] -> [213.180.204.186][..443] [TLS.YandexMusic][Yandex][Music][Fun]
+             idle: [.....7] [ip4][..tcp] [..192.168.1.249][42954] -> [...77.88.21.127][..443] [TLS.YandexDisk][Yandex][Cloud][Safe]
+             idle: [.....8] [ip4][..tcp] [..192.168.1.249][45224] -> [....77.88.21.37][..443] [TLS.YandexMail][Yandex][Email][Safe]
+                   RISK: Unidirectional Traffic
              idle: [.....4] [ip4][..tcp] [..192.168.1.249][40870] -> [..87.250.251.22][..443] [TLS.YandexMarket][Yandex][Shopping][Safe]
                    RISK: Unidirectional Traffic
-             idle: [.....5] [ip4][..tcp] [..192.168.1.249][57322] -> [.87.250.250.108][..443] [TLS.YandexCloud][Yandex][Cloud][Safe]
+             idle: [.....3] [ip4][..tcp] [..192.168.1.249][42102] -> [178.154.131.216][..443] [TLS.Yandex][Yandex][Web][Safe]
+                   RISK: Unidirectional Traffic
              idle: [.....9] [ip4][..tcp] [..192.168.1.249][51462] -> [..87.250.251.77][..443] [TLS.YandexMetrika][Yandex][Web][Safe]
+             idle: [.....1] [ip4][..tcp] [..192.168.1.249][40218] -> [213.180.204.186][..443] [TLS.YandexMusic][Yandex][Music][Fun]
      DAEMON-EVENT: shutdown

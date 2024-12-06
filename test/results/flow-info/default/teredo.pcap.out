@@ -12,8 +12,8 @@
               new: [.....5] [ip4][..udp] [...10.112.16.67][51812] -> [..194.136.28.76][.3544]
          detected: [.....5] [ip4][..udp] [...10.112.16.67][51812] -> [..194.136.28.76][.3544] [Teredo][Unknown][Network][Acceptable]
              idle: [.....5] [ip4][..udp] [...10.112.16.67][51812] -> [..194.136.28.76][.3544] [Teredo][Unknown][Network][Acceptable]
+             idle: [.....1] [ip4][..udp] [..10.112.16.106][52513] -> [..194.136.28.76][.3544] [Teredo][Unknown][Network][Acceptable]
              idle: [.....4] [ip4][..udp] [...10.112.16.64][56154] -> [..194.136.28.76][.3544] [Teredo][Unknown][Network][Acceptable]
              idle: [.....2] [ip4][..udp] [...10.112.16.89][60381] -> [..194.136.28.76][.3544] [Teredo][Unknown][Network][Acceptable]
-             idle: [.....1] [ip4][..udp] [..10.112.16.106][52513] -> [..194.136.28.76][.3544] [Teredo][Unknown][Network][Acceptable]
              idle: [.....3] [ip4][..udp] [...10.112.16.92][63448] -> [..194.136.28.76][.3544] [Teredo][Unknown][Network][Acceptable]
      DAEMON-EVENT: shutdown

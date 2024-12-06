@@ -9,8 +9,8 @@
          detected: [.....3] [ip4][..tcp] [..192.168.2.100][42810] -> [..62.210.127.86][18080] [Monero][Unknown][Crypto_Currency][Acceptable]
               new: [.....4] [ip4][..tcp] [..192.168.2.100][38004] -> [...100.42.27.58][18085]
          detected: [.....4] [ip4][..tcp] [..192.168.2.100][38004] -> [...100.42.27.58][18085] [Monero][Unknown][Crypto_Currency][Acceptable]
-             idle: [.....3] [ip4][..tcp] [..192.168.2.100][42810] -> [..62.210.127.86][18080] [Monero][Unknown][Crypto_Currency][Acceptable]
-             idle: [.....2] [ip4][..tcp] [..192.168.2.100][39378] -> [....78.56.22.89][18080] [Monero][Unknown][Crypto_Currency][Acceptable]
-             idle: [.....1] [ip4][..tcp] [..192.168.2.100][48882] -> [...159.69.36.66][18080] [Monero][Unknown][Crypto_Currency][Acceptable]
              idle: [.....4] [ip4][..tcp] [..192.168.2.100][38004] -> [...100.42.27.58][18085] [Monero][Unknown][Crypto_Currency][Acceptable]
+             idle: [.....2] [ip4][..tcp] [..192.168.2.100][39378] -> [....78.56.22.89][18080] [Monero][Unknown][Crypto_Currency][Acceptable]
+             idle: [.....3] [ip4][..tcp] [..192.168.2.100][42810] -> [..62.210.127.86][18080] [Monero][Unknown][Crypto_Currency][Acceptable]
+             idle: [.....1] [ip4][..tcp] [..192.168.2.100][48882] -> [...159.69.36.66][18080] [Monero][Unknown][Crypto_Currency][Acceptable]
      DAEMON-EVENT: shutdown

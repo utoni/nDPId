@@ -8,6 +8,6 @@
               new: [.....3] [ip4][..tcp] [.......10.0.0.1][51762] -> [.......10.0.0.2][..854] [MIDSTREAM]
          detected: [.....3] [ip4][..tcp] [.......10.0.0.1][51762] -> [.......10.0.0.2][..854] [DLEP][Unknown][Network][Acceptable]
              idle: [.....2] [ip4][..udp] [.......10.0.0.2][44515] -> [.......10.0.0.1][..854] [DLEP][Unknown][Network][Acceptable]
-             idle: [.....1] [ip4][..udp] [.......10.0.0.1][57060] -> [....224.0.0.117][..854] [DLEP][Unknown][Network][Acceptable]
              idle: [.....3] [ip4][..tcp] [.......10.0.0.1][51762] -> [.......10.0.0.2][..854] [DLEP][Unknown][Network][Acceptable]
+             idle: [.....1] [ip4][..udp] [.......10.0.0.1][57060] -> [....224.0.0.117][..854] [DLEP][Unknown][Network][Acceptable]
      DAEMON-EVENT: shutdown

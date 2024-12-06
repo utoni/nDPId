@@ -5,6 +5,6 @@
          detected: [.....1] [ip4][..udp] [.....10.9.3.124][55092] -> [.....10.208.0.9][.1153] [ANSI_C1222][Unknown][IoT-Scada][Acceptable]
               new: [.....2] [ip4][..tcp] [..192.168.1.101][.1577] -> [192.168.100.124][.1153] [MIDSTREAM]
          detected: [.....2] [ip4][..tcp] [..192.168.1.101][.1577] -> [192.168.100.124][.1153] [ANSI_C1222][Unknown][IoT-Scada][Acceptable]
-             idle: [.....2] [ip4][..tcp] [..192.168.1.101][.1577] -> [192.168.100.124][.1153] [ANSI_C1222][Unknown][IoT-Scada][Acceptable]
              idle: [.....1] [ip4][..udp] [.....10.9.3.124][55092] -> [.....10.208.0.9][.1153] [ANSI_C1222][Unknown][IoT-Scada][Acceptable]
+             idle: [.....2] [ip4][..tcp] [..192.168.1.101][.1577] -> [192.168.100.124][.1153] [ANSI_C1222][Unknown][IoT-Scada][Acceptable]
      DAEMON-EVENT: shutdown

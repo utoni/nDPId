@@ -10,9 +10,9 @@
      DAEMON-EVENT: [Flows][active: 2 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....3] [ip4][..tcp] [..192.168.0.208][56837] -> [....192.168.0.1][.1720]
          detected: [.....3] [ip4][..tcp] [..192.168.0.208][56837] -> [....192.168.0.1][.1720] [H323][Unknown][VoIP][Acceptable]
-             idle: [.....1] [ip4][..tcp] [.....10.1.3.143][32803] -> [......10.1.6.18][.1720] [H323][Unknown][VoIP][Acceptable]
              idle: [.....2] [ip4][..tcp] [.....10.1.3.143][32804] -> [......10.1.6.18][.1232] [H323][Unknown][VoIP][Acceptable]
                    RISK: Known Proto on Non Std Port
+             idle: [.....1] [ip4][..tcp] [.....10.1.3.143][32803] -> [......10.1.6.18][.1720] [H323][Unknown][VoIP][Acceptable]
      DAEMON-EVENT: [Processed: 58 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 3|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....4] [ip4][..udp] [.....17.2.0.124][.2034] -> [.....17.2.0.161][.1719]

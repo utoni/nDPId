@@ -7,8 +7,8 @@
               new: [.....2] [ip4][..udp] [..192.168.0.125][49191] -> [....192.168.0.1][49201]
          detected: [.....2] [ip4][..udp] [..192.168.0.125][49191] -> [....192.168.0.1][49201] [SOMEIP][Unknown][RPC][Acceptable]
                    RISK: Known Proto on Non Std Port
-             idle: [.....2] [ip4][..udp] [..192.168.0.125][49191] -> [....192.168.0.1][49201] [SOMEIP][Unknown][RPC][Acceptable]
-                   RISK: Known Proto on Non Std Port
              idle: [.....1] [ip4][..udp] [....192.168.0.1][49190] -> [......224.0.0.1][49190] [SOMEIP][Unknown][RPC][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [.....2] [ip4][..udp] [..192.168.0.125][49191] -> [....192.168.0.1][49201] [SOMEIP][Unknown][RPC][Acceptable]
                    RISK: Known Proto on Non Std Port
      DAEMON-EVENT: shutdown

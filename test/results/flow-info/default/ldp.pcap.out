@@ -7,7 +7,7 @@
          detected: [.....2] [ip4][..udp] [.......10.0.0.1][..646] -> [......224.0.0.2][..646] [LDP][Unknown][Network][Acceptable]
               new: [.....3] [ip4][..tcp] [.......10.0.1.1][45334] -> [.......10.0.0.6][..646] [MIDSTREAM]
          detected: [.....3] [ip4][..tcp] [.......10.0.1.1][45334] -> [.......10.0.0.6][..646] [LDP][Unknown][Network][Acceptable]
-             idle: [.....3] [ip4][..tcp] [.......10.0.1.1][45334] -> [.......10.0.0.6][..646] [LDP][Unknown][Network][Acceptable]
              idle: [.....2] [ip4][..udp] [.......10.0.0.1][..646] -> [......224.0.0.2][..646] [LDP][Unknown][Network][Acceptable]
              idle: [.....1] [ip4][..udp] [.......10.0.0.2][..646] -> [......224.0.0.2][..646] [LDP][Unknown][Network][Acceptable]
+             idle: [.....3] [ip4][..tcp] [.......10.0.1.1][45334] -> [.......10.0.0.6][..646] [LDP][Unknown][Network][Acceptable]
      DAEMON-EVENT: shutdown

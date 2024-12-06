@@ -173,6 +173,13 @@
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
           guessed: [....26] [ip4][..tcp] [...10.16.37.157][52953] -> [...200.160.4.49][...80] [HTTP][Unknown][Web][Acceptable][]
               end: [....26] [ip4][..tcp] [...10.16.37.157][52953] -> [...200.160.4.49][...80]
+              end: [.....3] [ip4][..tcp] [.......10.8.0.1][54915] -> [..65.39.128.135][...80] [HTTP][Unknown][Download][Acceptable][xtra1.gpsonextra.net]
+                   RISK: Binary File/Data Transfer (Attempt)
+          guessed: [....28] [ip4][..tcp] [.......10.8.0.1][60574] -> [...200.160.4.49][...80] [HTTP][Unknown][Web][Acceptable][]
+              end: [....28] [ip4][..tcp] [.......10.8.0.1][60574] -> [...200.160.4.49][...80]
+          guessed: [....30] [ip4][..tcp] [.......10.8.0.1][60479] -> [...200.160.4.49][..443] [TLS][Unknown][Web][Safe]
+              end: [....30] [ip4][..tcp] [.......10.8.0.1][60479] -> [...200.160.4.49][..443]
+             idle: [.....2] [ip4][..udp] [.......10.8.0.1][46214] -> [..200.89.75.198][..123] [NTP][Unknown][System][Acceptable]
               end: [.....4] [ip4][..tcp] [.......10.8.0.1][45529] -> [.54.230.227.172][...80] [HTTP.Waze][AmazonAWS][Web][Acceptable][roadshields.waze.com]
                    RISK: Susp Entropy
               end: [.....8] [ip4][..tcp] [.......10.8.0.1][45536] -> [.54.230.227.172][...80] [HTTP.Waze][AmazonAWS][Web][Acceptable][cres.waze.com]
@@ -187,9 +194,16 @@
                    RISK: Susp Entropy
               end: [....17] [ip4][..tcp] [.......10.8.0.1][45554] -> [.54.230.227.172][...80] [HTTP.Waze][AmazonAWS][Web][Acceptable][cres.waze.com]
                    RISK: Susp Entropy
-             idle: [....32] [ip4][..tcp] [.......10.8.0.1][50828] -> [108.168.176.228][..443] [WhatsApp][Unknown][Chat][Acceptable]
-          guessed: [....25] [ip4][..tcp] [.......10.8.0.1][45169] -> [..200.160.4.198][...80] [HTTP][Unknown][Web][Acceptable][]
-              end: [....25] [ip4][..tcp] [.......10.8.0.1][45169] -> [..200.160.4.198][...80]
+              end: [....14] [ip4][..tcp] [.......10.8.0.1][39010] -> [..52.17.114.219][..443] [TLS.Waze][AmazonAWS][Web][Acceptable]
+                   RISK: Obsolete TLS (v1.1 or older)
+              end: [....18] [ip4][..tcp] [.......10.8.0.1][39021] -> [..52.17.114.219][..443] [TLS.Waze][AmazonAWS][Web][Acceptable]
+                   RISK: Obsolete TLS (v1.1 or older)
+              end: [....19] [ip4][..tcp] [.......10.8.0.1][36312] -> [.176.34.186.180][..443] [TLS.Waze][AmazonAWS][Web][Acceptable]
+                   RISK: Obsolete TLS (v1.1 or older)
+              end: [....20] [ip4][..tcp] [.......10.8.0.1][36314] -> [.176.34.186.180][..443] [TLS.Waze][AmazonAWS][Web][Acceptable]
+                   RISK: Obsolete TLS (v1.1 or older)
+              end: [....21] [ip4][..tcp] [.......10.8.0.1][36316] -> [.176.34.186.180][..443] [TLS.Waze][AmazonAWS][Web][Acceptable]
+                   RISK: Obsolete TLS (v1.1 or older)
               end: [.....5] [ip4][..tcp] [.......10.8.0.1][36100] -> [..46.51.173.182][..443] [TLS.Waze][AmazonAWS][Web][Acceptable]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
               end: [.....6] [ip4][..tcp] [.......10.8.0.1][36102] -> [..46.51.173.182][..443] [TLS.Waze][AmazonAWS][Web][Acceptable]
@@ -198,41 +212,27 @@
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
               end: [....33] [ip4][..tcp] [.......10.8.0.1][36137] -> [..46.51.173.182][..443] [TLS.Waze][AmazonAWS][Web][Acceptable]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
-              end: [....19] [ip4][..tcp] [.......10.8.0.1][36312] -> [.176.34.186.180][..443] [TLS.Waze][AmazonAWS][Web][Acceptable]
-                   RISK: Obsolete TLS (v1.1 or older)
-              end: [....20] [ip4][..tcp] [.......10.8.0.1][36314] -> [.176.34.186.180][..443] [TLS.Waze][AmazonAWS][Web][Acceptable]
-                   RISK: Obsolete TLS (v1.1 or older)
-              end: [....21] [ip4][..tcp] [.......10.8.0.1][36316] -> [.176.34.186.180][..443] [TLS.Waze][AmazonAWS][Web][Acceptable]
-                   RISK: Obsolete TLS (v1.1 or older)
           guessed: [....29] [ip4][..tcp] [.......10.8.0.1][43089] -> [..200.160.4.198][..443] [TLS][Unknown][Web][Safe]
               end: [....29] [ip4][..tcp] [.......10.8.0.1][43089] -> [..200.160.4.198][..443]
-              end: [....14] [ip4][..tcp] [.......10.8.0.1][39010] -> [..52.17.114.219][..443] [TLS.Waze][AmazonAWS][Web][Acceptable]
-                   RISK: Obsolete TLS (v1.1 or older)
+          guessed: [....24] [ip4][..tcp] [...10.16.37.157][41823] -> [...200.160.4.49][...80] [HTTP][Unknown][Web][Acceptable][]
+              end: [....24] [ip4][..tcp] [...10.16.37.157][41823] -> [...200.160.4.49][...80]
+          guessed: [....25] [ip4][..tcp] [.......10.8.0.1][45169] -> [..200.160.4.198][...80] [HTTP][Unknown][Web][Acceptable][]
+              end: [....25] [ip4][..tcp] [.......10.8.0.1][45169] -> [..200.160.4.198][...80]
              idle: [.....7] [ip4][..tcp] [.......10.8.0.1][36585] -> [.173.194.118.48][..443] [TLS][Google][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older)
-              end: [....18] [ip4][..tcp] [.......10.8.0.1][39021] -> [..52.17.114.219][..443] [TLS.Waze][AmazonAWS][Web][Acceptable]
-                   RISK: Obsolete TLS (v1.1 or older)
+          guessed: [....22] [ip4][..tcp] [...10.16.37.157][43991] -> [...200.160.4.31][...80] [HTTP][Unknown][Web][Acceptable][]
+              end: [....22] [ip4][..tcp] [...10.16.37.157][43991] -> [...200.160.4.31][...80]
+          guessed: [....23] [ip4][..tcp] [...10.16.37.157][46473] -> [...200.160.4.49][...80] [HTTP][Unknown][Web][Acceptable][]
+              end: [....23] [ip4][..tcp] [...10.16.37.157][46473] -> [...200.160.4.49][...80]
+     not-detected: [.....1] [ip4][..tcp] [...10.16.37.157][42256] -> [..174.37.231.81][.5222] [Unknown][Unknown][Unrated]
+              end: [.....1] [ip4][..tcp] [...10.16.37.157][42256] -> [..174.37.231.81][.5222]
               end: [....11] [ip4][..tcp] [.......10.8.0.1][51049] -> [.176.34.103.105][..443] [TLS.Waze][AmazonAWS][Web][Acceptable]
                    RISK: Obsolete TLS (v1.1 or older)
               end: [....12] [ip4][..tcp] [.......10.8.0.1][51050] -> [.176.34.103.105][..443] [TLS.Waze][AmazonAWS][Web][Acceptable]
                    RISK: Obsolete TLS (v1.1 or older)
               end: [....13] [ip4][..tcp] [.......10.8.0.1][51051] -> [.176.34.103.105][..443] [TLS.Waze][AmazonAWS][Web][Acceptable]
                    RISK: Obsolete TLS (v1.1 or older)
-          guessed: [....24] [ip4][..tcp] [...10.16.37.157][41823] -> [...200.160.4.49][...80] [HTTP][Unknown][Web][Acceptable][]
-              end: [....24] [ip4][..tcp] [...10.16.37.157][41823] -> [...200.160.4.49][...80]
-          guessed: [....22] [ip4][..tcp] [...10.16.37.157][43991] -> [...200.160.4.31][...80] [HTTP][Unknown][Web][Acceptable][]
-              end: [....22] [ip4][..tcp] [...10.16.37.157][43991] -> [...200.160.4.31][...80]
-          guessed: [....28] [ip4][..tcp] [.......10.8.0.1][60574] -> [...200.160.4.49][...80] [HTTP][Unknown][Web][Acceptable][]
-              end: [....28] [ip4][..tcp] [.......10.8.0.1][60574] -> [...200.160.4.49][...80]
-              end: [.....3] [ip4][..tcp] [.......10.8.0.1][54915] -> [..65.39.128.135][...80] [HTTP][Unknown][Download][Acceptable][xtra1.gpsonextra.net]
-                   RISK: Binary File/Data Transfer (Attempt)
-          guessed: [....23] [ip4][..tcp] [...10.16.37.157][46473] -> [...200.160.4.49][...80] [HTTP][Unknown][Web][Acceptable][]
-              end: [....23] [ip4][..tcp] [...10.16.37.157][46473] -> [...200.160.4.49][...80]
-          guessed: [....30] [ip4][..tcp] [.......10.8.0.1][60479] -> [...200.160.4.49][..443] [TLS][Unknown][Web][Safe]
-              end: [....30] [ip4][..tcp] [.......10.8.0.1][60479] -> [...200.160.4.49][..443]
-             idle: [.....2] [ip4][..udp] [.......10.8.0.1][46214] -> [..200.89.75.198][..123] [NTP][Unknown][System][Acceptable]
+             idle: [....32] [ip4][..tcp] [.......10.8.0.1][50828] -> [108.168.176.228][..443] [WhatsApp][Unknown][Chat][Acceptable]
           guessed: [....27] [ip4][..tcp] [...10.16.37.157][52746] -> [...200.160.4.49][...80] [HTTP][Unknown][Web][Acceptable][]
               end: [....27] [ip4][..tcp] [...10.16.37.157][52746] -> [...200.160.4.49][...80]
-     not-detected: [.....1] [ip4][..tcp] [...10.16.37.157][42256] -> [..174.37.231.81][.5222] [Unknown][Unknown][Unrated]
-              end: [.....1] [ip4][..tcp] [...10.16.37.157][42256] -> [..174.37.231.81][.5222]
      DAEMON-EVENT: shutdown

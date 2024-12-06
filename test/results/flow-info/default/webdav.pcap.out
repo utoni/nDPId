@@ -36,18 +36,18 @@
          detected: [.....8] [ip4][..tcp] [.192.168.16.173][57432] -> [.198.244.151.63][...80] [HTTP.WebDAV][Unknown][Collaborative][Acceptable][www.dlp-test.com]
  detection-update: [.....8] [ip4][..tcp] [.192.168.16.173][57432] -> [.198.244.151.63][...80] [HTTP.WebDAV][Unknown][Collaborative][Acceptable][www.dlp-test.com]
                    RISK: Error Code
-              end: [.....7] [ip4][..tcp] [.192.168.16.173][47726] -> [.198.244.151.63][...80] [HTTP.WebDAV][Unknown][Collaborative][Acceptable][www.dlp-test.com]
-                   RISK: Error Code
-              end: [.....4] [ip4][..tcp] [.192.168.16.173][55974] -> [.198.244.151.63][...80] [HTTP.WebDAV][Unknown][Collaborative][Acceptable][www.dlp-test.com]
-                   RISK: Error Code
-              end: [.....3] [ip4][..tcp] [.192.168.16.173][41714] -> [.198.244.151.63][...80] [HTTP.WebDAV][Unknown][Collaborative][Acceptable][www.dlp-test.com]
-                   RISK: Error Code
               end: [.....2] [ip4][..tcp] [.192.168.16.173][35612] -> [.198.244.151.63][...80] [HTTP.WebDAV][Unknown][Collaborative][Acceptable][www.dlp-test.com]
                    RISK: Error Code
-              end: [.....8] [ip4][..tcp] [.192.168.16.173][57432] -> [.198.244.151.63][...80] [HTTP.WebDAV][Unknown][Collaborative][Acceptable][www.dlp-test.com]
+              end: [.....3] [ip4][..tcp] [.192.168.16.173][41714] -> [.198.244.151.63][...80] [HTTP.WebDAV][Unknown][Collaborative][Acceptable][www.dlp-test.com]
                    RISK: Error Code
               end: [.....5] [ip4][..tcp] [.192.168.16.173][47432] -> [.198.244.151.63][...80] [HTTP.WebDAV][Unknown][Collaborative][Acceptable][www.dlp-test.com]
                    RISK: Error Code
               end: [.....6] [ip4][..tcp] [.192.168.16.173][47436] -> [.198.244.151.63][...80] [HTTP.WebDAV][Unknown][Collaborative][Acceptable][www.dlp-test.com]
+                   RISK: Error Code
+              end: [.....7] [ip4][..tcp] [.192.168.16.173][47726] -> [.198.244.151.63][...80] [HTTP.WebDAV][Unknown][Collaborative][Acceptable][www.dlp-test.com]
+                   RISK: Error Code
+              end: [.....4] [ip4][..tcp] [.192.168.16.173][55974] -> [.198.244.151.63][...80] [HTTP.WebDAV][Unknown][Collaborative][Acceptable][www.dlp-test.com]
+                   RISK: Error Code
+              end: [.....8] [ip4][..tcp] [.192.168.16.173][57432] -> [.198.244.151.63][...80] [HTTP.WebDAV][Unknown][Collaborative][Acceptable][www.dlp-test.com]
                    RISK: Error Code
      DAEMON-EVENT: shutdown

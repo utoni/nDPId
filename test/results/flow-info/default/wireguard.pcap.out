@@ -8,6 +8,6 @@
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 1]
               new: [.....2] [ip4][..udp] [139.162.192.157][51820] -> [...192.168.0.14][36116]
          detected: [.....2] [ip4][..udp] [139.162.192.157][51820] -> [...192.168.0.14][36116] [WireGuard][Unknown][VPN][Acceptable]
-             idle: [.....2] [ip4][..udp] [139.162.192.157][51820] -> [...192.168.0.14][36116] [WireGuard][Unknown][VPN][Acceptable]
              idle: [.....1] [ip4][..udp] [.......10.9.0.1][43462] -> [.......10.9.0.2][51820] [WireGuard][Unknown][VPN][Acceptable]
+             idle: [.....2] [ip4][..udp] [139.162.192.157][51820] -> [...192.168.0.14][36116] [WireGuard][Unknown][VPN][Acceptable]
      DAEMON-EVENT: shutdown

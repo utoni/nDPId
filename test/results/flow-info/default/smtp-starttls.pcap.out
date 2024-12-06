@@ -38,8 +38,8 @@
                    [IATS(ms)....: 0.7,1.0,19.0,29.5,11.1,0.1,1.2,1.0,1.0,6.1,12.8,0.6,8.6,202.0,202.9,1.0,7.3,6.8,7.3,7.3,1.2,2.1,3.0,0.4,21.0,21.8,1.0,6.8,0.0,6.8,0.7]
                    [PKTLENS.....: 72,72,60,118,110,60,212,70,90,242,1200,186,139,318,227,60,149,103,123,103,95,126,60,1094,60,125,95,104,91,60,91,60]
                    [ENTROPIES...: 4.3,5.0,4.6,5.6,5.4,4.8,5.6,4.9,5.2,5.4,7.6,6.2,5.9,7.2,6.9,4.7,6.1,5.7,5.6,5.7,5.2,6.1,4.8,7.8,4.8,6.1,5.1,5.8,5.0,4.6,5.5,4.4]
-              end: [.....2] [ip6][..tcp] [...2003:de:2016:125:fc36:8317:4e86:cb72][.7562] -> [...............2003:de:2016:120::a08:53][...25] [SMTPS][Unknown][Email][Safe][dovecot.weberlab.de]
-                   RISK: Self-signed Cert, TLS (probably) Not Carrying HTTPS, TLS Susp Extn
               end: [.....1] [ip4][..tcp] [.......10.0.0.1][57406] -> [..173.194.68.26][...25] [SMTPS.Google][Google][Email][Acceptable][mx.google.com]
                    RISK: Obsolete TLS (v1.1 or older)
+              end: [.....2] [ip6][..tcp] [...2003:de:2016:125:fc36:8317:4e86:cb72][.7562] -> [...............2003:de:2016:120::a08:53][...25] [SMTPS][Unknown][Email][Safe][dovecot.weberlab.de]
+                   RISK: Self-signed Cert, TLS (probably) Not Carrying HTTPS, TLS Susp Extn
      DAEMON-EVENT: shutdown

@@ -108,24 +108,24 @@
                    [ENTROPIES...: 4.5,4.5,4.5,6.1,4.6,6.0,4.6,5.4,4.6,5.5,4.6,5.9,4.5,7.6,4.5,7.6,4.6,6.8,4.5,5.9,5.3,4.6,5.3,7.2,4.6,7.6,4.6,6.5,4.6,7.3,4.5,7.9]
               new: [....22] [ip4][..tcp] [.......10.8.0.1][33858] -> [..104.17.114.40][..443]
          detected: [....22] [ip4][..tcp] [.......10.8.0.1][33858] -> [..104.17.114.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable][api.polargrizzly.com]
-             idle: [....14] [ip4][..tcp] [.......10.8.0.1][47046] -> [.74.125.200.188][.5228] [TLS.GoogleServices][Google][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
-             idle: [....16] [ip4][..tcp] [.......10.8.0.1][50904] -> [.104.17.154.236][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable]
-             idle: [.....7] [ip4][..tcp] [.......10.8.0.1][47496] -> [162.247.243.188][..443] [TLS.ADS_Analytic_Track][Unknown][Advertisement][Tracker/Ads]
-             idle: [....12] [ip4][..tcp] [.......10.8.0.1][60224] -> [...157.240.7.32][..443] [TLS.FacebookMessenger][Facebook][Chat][Acceptable]
-                   RISK: TLS (probably) Not Carrying HTTPS
-             idle: [....21] [ip4][..tcp] [.......10.8.0.1][48222] -> [162.247.243.188][..443] [TLS.ADS_Analytic_Track][Unknown][Advertisement][Tracker/Ads]
-          guessed: [....11] [ip4][..tcp] [..10.158.132.91][51120] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][]
-              end: [....11] [ip4][..tcp] [..10.158.132.91][51120] -> [........8.8.8.8][...53]
              idle: [....13] [ip4][..tcp] [.......10.8.0.1][47594] -> [..99.83.135.170][..443] [TLS][AmazonAWS][Web][Safe]
                    RISK: TLS (probably) Not Carrying HTTPS
-              end: [....10] [ip4][..tcp] [..10.158.132.91][38398] -> [..104.17.114.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable]
-                   RISK: Unidirectional Traffic
-             idle: [.....2] [ip4][..tcp] [.......10.8.0.1][50178] -> [.104.17.154.236][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable]
               end: [....15] [ip4][..tcp] [.......10.8.0.1][33830] -> [..104.17.114.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable][api.polargrizzly.com]
               end: [....17] [ip4][..tcp] [.......10.8.0.1][33838] -> [..104.17.114.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable]
               end: [....18] [ip4][..tcp] [.......10.8.0.1][33842] -> [..104.17.114.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable]
               end: [....19] [ip4][..tcp] [.......10.8.0.1][33846] -> [..104.17.114.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable]
               end: [....20] [ip4][..tcp] [.......10.8.0.1][33848] -> [..104.17.114.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable]
              idle: [....22] [ip4][..tcp] [.......10.8.0.1][33858] -> [..104.17.114.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable]
+             idle: [.....7] [ip4][..tcp] [.......10.8.0.1][47496] -> [162.247.243.188][..443] [TLS.ADS_Analytic_Track][Unknown][Advertisement][Tracker/Ads]
+             idle: [....21] [ip4][..tcp] [.......10.8.0.1][48222] -> [162.247.243.188][..443] [TLS.ADS_Analytic_Track][Unknown][Advertisement][Tracker/Ads]
+              end: [....10] [ip4][..tcp] [..10.158.132.91][38398] -> [..104.17.114.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [....14] [ip4][..tcp] [.......10.8.0.1][47046] -> [.74.125.200.188][.5228] [TLS.GoogleServices][Google][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+             idle: [.....2] [ip4][..tcp] [.......10.8.0.1][50178] -> [.104.17.154.236][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable]
+             idle: [....16] [ip4][..tcp] [.......10.8.0.1][50904] -> [.104.17.154.236][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable]
+             idle: [....12] [ip4][..tcp] [.......10.8.0.1][60224] -> [...157.240.7.32][..443] [TLS.FacebookMessenger][Facebook][Chat][Acceptable]
+                   RISK: TLS (probably) Not Carrying HTTPS
+          guessed: [....11] [ip4][..tcp] [..10.158.132.91][51120] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][]
+              end: [....11] [ip4][..tcp] [..10.158.132.91][51120] -> [........8.8.8.8][...53]
      DAEMON-EVENT: shutdown

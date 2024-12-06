@@ -6,12 +6,12 @@
      DAEMON-EVENT: [Processed: 5 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 2 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....3] [ip4][..tcp] [..192.168.1.245][58288] -> [........3.3.3.3][..446]
-     not-detected: [.....3] [ip4][..tcp] [..192.168.1.245][58288] -> [........3.3.3.3][..446] [Unknown][Unknown][Unrated]
-                   RISK: Unidirectional Traffic
-             idle: [.....3] [ip4][..tcp] [..192.168.1.245][58288] -> [........3.3.3.3][..446]
           guessed: [.....1] [ip4][..tcp] [..192.168.1.245][56866] -> [........3.3.3.3][..443] [TLS][Unknown][Web][Safe]
                    RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..tcp] [..192.168.1.245][56866] -> [........3.3.3.3][..443]
+     not-detected: [.....3] [ip4][..tcp] [..192.168.1.245][58288] -> [........3.3.3.3][..446] [Unknown][Unknown][Unrated]
+                   RISK: Unidirectional Traffic
+             idle: [.....3] [ip4][..tcp] [..192.168.1.245][58288] -> [........3.3.3.3][..446]
      not-detected: [.....2] [ip4][..tcp] [..192.168.1.245][59682] -> [........3.3.3.3][..444] [Unknown][Unknown][Unrated]
                    RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..tcp] [..192.168.1.245][59682] -> [........3.3.3.3][..444]

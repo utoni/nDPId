@@ -58,8 +58,6 @@
               new: [....13] [ip4][..tcp] [..192.168.2.100][41610] -> [..179.60.195.49][.5222]
          detected: [....13] [ip4][..tcp] [..192.168.2.100][41610] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
                    RISK: Unidirectional Traffic
-             idle: [.....6] [ip4][..tcp] [..192.168.2.100][42646] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..tcp] [..192.168.2.100][40084] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [.....5] [ip4][..tcp] [..192.168.2.100][40178] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
@@ -69,6 +67,8 @@
              idle: [.....3] [ip4][..tcp] [..192.168.2.100][42272] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [.....4] [ip4][..tcp] [..192.168.2.100][42436] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [.....6] [ip4][..tcp] [..192.168.2.100][42646] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
                    RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 105 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 6 / 13|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
@@ -99,9 +99,9 @@
               new: [....18] [ip4][..tcp] [..192.168.2.100][45824] -> [..179.60.195.49][.5222]
          detected: [....18] [ip4][..tcp] [..192.168.2.100][45824] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
                    RISK: Unidirectional Traffic
-             idle: [....11] [ip4][..tcp] [..192.168.2.100][49026] -> [..179.60.195.33][.5222] [WhatsApp][Facebook][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....10] [ip4][..tcp] [..192.168.2.100][41214] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [....11] [ip4][..tcp] [..192.168.2.100][49026] -> [..179.60.195.33][.5222] [WhatsApp][Facebook][Chat][Acceptable]
                    RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 145 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 7 / 18|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
@@ -285,11 +285,11 @@
                    RISK: Unidirectional Traffic
              idle: [....36] [ip4][..tcp] [..192.168.2.100][45290] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
                    RISK: Unidirectional Traffic
+             idle: [....38] [ip4][..tcp] [..192.168.2.100][47948] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
+                   RISK: Unidirectional Traffic
              idle: [....37] [ip4][..tcp] [..192.168.2.100][51544] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....39] [ip4][..tcp] [..192.168.2.100][51724] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
-             idle: [....38] [ip4][..tcp] [..192.168.2.100][47948] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
                    RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 381 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 9 / 48|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
@@ -338,11 +338,11 @@
               new: [....57] [ip4][..tcp] [..192.168.2.100][46768] -> [..179.60.195.49][.5222]
          detected: [....57] [ip4][..tcp] [..192.168.2.100][46768] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
                    RISK: Unidirectional Traffic
-             idle: [....46] [ip4][..tcp] [..192.168.2.100][55038] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....47] [ip4][..tcp] [..192.168.2.100][55476] -> [....31.13.70.50][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....45] [ip4][..tcp] [..192.168.2.100][48234] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [....46] [ip4][..tcp] [..192.168.2.100][55038] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
                    RISK: Unidirectional Traffic
               new: [....58] [ip4][..tcp] [..192.168.2.100][45130] -> [..179.60.195.33][.5222]
          detected: [....58] [ip4][..tcp] [..192.168.2.100][45130] -> [..179.60.195.33][.5222] [WhatsApp][Facebook][Chat][Acceptable]
@@ -360,24 +360,24 @@
                    RISK: Unidirectional Traffic
              idle: [....49] [ip4][..tcp] [..192.168.2.100][45850] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
                    RISK: Unidirectional Traffic
-             idle: [....51] [ip4][..tcp] [..192.168.2.100][58198] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....48] [ip4][..tcp] [..192.168.2.100][48538] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [....51] [ip4][..tcp] [..192.168.2.100][58198] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
                    RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 465 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 6 / 59|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [....60] [ip4][..tcp] [..192.168.2.100][32798] -> [..179.60.195.49][.5222]
          detected: [....60] [ip4][..tcp] [..192.168.2.100][32798] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
                    RISK: Unidirectional Traffic
+             idle: [....58] [ip4][..tcp] [..192.168.2.100][45130] -> [..179.60.195.33][.5222] [WhatsApp][Facebook][Chat][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [....56] [ip4][..tcp] [..192.168.2.100][46598] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
+                   RISK: Unidirectional Traffic
              idle: [....54] [ip4][..tcp] [..192.168.2.100][46732] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....57] [ip4][..tcp] [..192.168.2.100][46768] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
                    RISK: Unidirectional Traffic
-             idle: [....58] [ip4][..tcp] [..192.168.2.100][45130] -> [..179.60.195.33][.5222] [WhatsApp][Facebook][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....55] [ip4][..tcp] [..192.168.2.100][58882] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
-             idle: [....56] [ip4][..tcp] [..192.168.2.100][46598] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
                    RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 473 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 2 / 60|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
@@ -507,35 +507,27 @@
               new: [....84] [ip4][..tcp] [..192.168.2.100][47284] -> [..179.60.195.33][.5222]
          detected: [....84] [ip4][..tcp] [..192.168.2.100][47284] -> [..179.60.195.33][.5222] [WhatsApp][Facebook][Chat][Acceptable]
                    RISK: Unidirectional Traffic
-             idle: [....70] [ip4][..tcp] [..192.168.2.100][49428] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....71] [ip4][..tcp] [..192.168.2.100][47634] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [....70] [ip4][..tcp] [..192.168.2.100][49428] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
                    RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 663 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 13 / 84|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [....85] [ip4][..tcp] [..192.168.2.100][39334] -> [..179.60.195.49][.5222]
          detected: [....85] [ip4][..tcp] [..192.168.2.100][39334] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
                    RISK: Unidirectional Traffic
-             idle: [....72] [ip4][..tcp] [..192.168.2.100][49610] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....73] [ip4][..tcp] [..192.168.2.100][37378] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....74] [ip4][..tcp] [..192.168.2.100][47738] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [....72] [ip4][..tcp] [..192.168.2.100][49610] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
                    RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 671 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 11 / 85|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [....86] [ip4][..tcp] [..192.168.2.100][40006] -> [..179.60.195.49][.5222]
          detected: [....86] [ip4][..tcp] [..192.168.2.100][40006] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
                    RISK: Unidirectional Traffic
-             idle: [....84] [ip4][..tcp] [..192.168.2.100][47284] -> [..179.60.195.33][.5222] [WhatsApp][Facebook][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
-             idle: [....85] [ip4][..tcp] [..192.168.2.100][39334] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....75] [ip4][..tcp] [..192.168.2.100][37404] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
-             idle: [....76] [ip4][..tcp] [..192.168.2.100][47776] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
-             idle: [....79] [ip4][..tcp] [..192.168.2.100][47810] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....78] [ip4][..tcp] [..192.168.2.100][37674] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
                    RISK: Unidirectional Traffic
@@ -543,12 +535,20 @@
                    RISK: Unidirectional Traffic
              idle: [....81] [ip4][..tcp] [..192.168.2.100][37822] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
                    RISK: Unidirectional Traffic
+             idle: [....83] [ip4][..tcp] [..192.168.2.100][38234] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [....85] [ip4][..tcp] [..192.168.2.100][39334] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
+                   RISK: Unidirectional Traffic
              idle: [....86] [ip4][..tcp] [..192.168.2.100][40006] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....80] [ip4][..tcp] [..192.168.2.100][46394] -> [..179.60.195.33][.5222] [WhatsApp][Facebook][Chat][Acceptable]
                    RISK: Unidirectional Traffic
-             idle: [....83] [ip4][..tcp] [..192.168.2.100][38234] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....82] [ip4][..tcp] [..192.168.2.100][46576] -> [..179.60.195.33][.5222] [WhatsApp][Facebook][Chat][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [....84] [ip4][..tcp] [..192.168.2.100][47284] -> [..179.60.195.33][.5222] [WhatsApp][Facebook][Chat][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [....76] [ip4][..tcp] [..192.168.2.100][47776] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [....79] [ip4][..tcp] [..192.168.2.100][47810] -> [..179.60.195.49][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
                    RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

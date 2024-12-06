@@ -11,7 +11,7 @@
               new: [.....3][.808] [ip4][..tcp] [..185.32.192.30][...80] -> [.85.154.114.113][56028]
          detected: [.....3][.808] [ip4][..tcp] [..185.32.192.30][...80] -> [.85.154.114.113][56028] [SOAP][Unknown][RPC][Acceptable]
              idle: [.....3][.808] [ip4][..tcp] [..185.32.192.30][...80] -> [.85.154.114.113][56028] [SOAP][Unknown][RPC][Acceptable]
+              end: [.....1] [ip4][..tcp] [..192.168.2.100][50100] -> [...23.2.213.165][...80] [SOAP][Unknown][RPC][Acceptable]
              idle: [.....2] [ip4][..tcp] [..192.168.2.100][50100] -> [...23.2.213.165][.4176] [HTTP.SOAP][Unknown][Cloud][Acceptable]
                    RISK: Known Proto on Non Std Port
-              end: [.....1] [ip4][..tcp] [..192.168.2.100][50100] -> [...23.2.213.165][...80] [SOAP][Unknown][RPC][Acceptable]
      DAEMON-EVENT: shutdown

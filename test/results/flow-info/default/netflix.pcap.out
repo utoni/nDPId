@@ -446,9 +446,9 @@
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary File/Data Transfer (Attempt)
            update: [....10] [ip4][..udp] [....192.168.1.7][53776] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
            update: [.....2] [ip4][..udp] [....192.168.1.7][51543] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ios.nccp.netflix.com]
-           update: [....17] [ip4][..udp] [....192.168.1.7][57719] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][sha2.san.akam.nflximg.net]
            update: [....13] [ip4][..udp] [....192.168.1.7][51949] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][api-global.latency.prodaa.netflix.com]
            update: [.....3] [ip4][..udp] [....192.168.1.7][52116] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ichnaea.us-west-2.prodaa.netflix.com]
+           update: [....17] [ip4][..udp] [....192.168.1.7][57719] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][sha2.san.akam.nflximg.net]
               new: [....51] [ip4][..tcp] [....192.168.1.7][53217] -> [..23.246.11.141][...80]
          detected: [....51] [ip4][..tcp] [....192.168.1.7][53217] -> [..23.246.11.141][...80] [HTTP][NetFlix][Web][Acceptable][23.246.11.141]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
@@ -456,8 +456,8 @@
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary File/Data Transfer (Attempt)
            update: [....19] [ip4][..udp] [....192.168.1.7][59180] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][artwork.akam.nflximg.net]
            update: [....26] [ip4][..udp] [....192.168.1.7][51728] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][a803.dscg.akamai.net]
-           update: [....23] [ip4][..udp] [....192.168.1.7][58102] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][appboot.netflix.com]
            update: [....27] [ip4][..udp] [....192.168.1.7][52347] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ios.nccp.netflix.com]
+           update: [....23] [ip4][..udp] [....192.168.1.7][58102] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][appboot.netflix.com]
               new: [....52] [ip4][..udp] [....192.168.1.7][51622] -> [....192.168.1.1][...53]
          detected: [....52] [ip4][..udp] [....192.168.1.7][51622] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ios.nccp.netflix.com]
  detection-update: [....52] [ip4][..udp] [....192.168.1.7][51622] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ios.nccp.netflix.com]
@@ -541,59 +541,64 @@
                    [IATS(ms)....: 15.4,16.8,2.1,27.2,1.0,1.1,27.3,38.1,39.4,39.9,44.7,83.4,40.7,236.7,277.7,1389.8,1416.3,0.3,12.8,48.7,0.2,12.8,12.8,15.9,13.8,16.3,12.8,12.7,23.2,13.3,13.2]
                    [PKTLENS.....: 64,60,52,297,52,1500,1500,52,1500,52,1500,1500,52,1500,719,52,297,1500,1500,1500,52,52,1500,1500,52,1500,52,1500,1500,52,1500,52]
                    [ENTROPIES...: 4.5,5.2,5.1,5.9,5.3,7.3,7.8,5.2,7.8,5.0,7.8,7.8,5.1,7.8,7.7,5.2,5.8,6.9,7.5,7.8,5.1,5.0,7.8,7.8,5.0,7.9,4.9,7.8,7.8,5.1,7.8,5.1]
-             idle: [....18] [ip4][..tcp] [....192.168.1.7][53141] -> [..104.86.97.179][..443] [TLS.NetFlix][Unknown][Video][Fun]
-             idle: [....12] [ip4][....2] [....192.168.1.7] -> [239.255.255.250] [IGMP][Unknown][Network][Acceptable]
-             idle: [....59] [ip4][..udp] [....192.168.1.7][57093] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][a1907.dscg.akamai.net]
-             idle: [....19] [ip4][..udp] [....192.168.1.7][59180] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][artwork.akam.nflximg.net]
-              end: [.....5] [ip4][..tcp] [....192.168.1.7][53114] -> [...54.191.17.51][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
-                   RISK: TLS (probably) Not Carrying HTTPS
-              end: [....29] [ip4][..tcp] [....192.168.1.7][53162] -> [...54.191.17.51][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
-                   RISK: TLS (probably) Not Carrying HTTPS
+             idle: [....10] [ip4][..udp] [....192.168.1.7][53776] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
           guessed: [.....1] [ip4][..tcp] [....192.168.1.7][52929] -> [.....52.24.87.6][..443] [TLS][AmazonAWS][Web][Safe]
                    RISK: Unidirectional Traffic
               end: [.....1] [ip4][..tcp] [....192.168.1.7][52929] -> [.....52.24.87.6][..443]
-             idle: [....46] [ip4][..tcp] [....192.168.1.7][53193] -> [...54.191.17.51][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
-                   RISK: TLS (probably) Not Carrying HTTPS
-              end: [....47] [ip4][..tcp] [....192.168.1.7][53202] -> [...54.191.17.51][..443] [TLS.NetFlix][AmazonAWS][Video][Fun][ios.nccp.netflix.com]
-                   RISK: TLS (probably) Not Carrying HTTPS
-              end: [....25] [ip4][..tcp] [....192.168.1.7][53152] -> [...52.89.39.139][...80] [HTTP.NetFlix][AmazonAWS][Video][Fun][api-global.netflix.com]
-              end: [....24] [ip4][..tcp] [....192.168.1.7][53151] -> [.54.201.191.132][...80] [HTTP.NetFlix][AmazonAWS][Video][Fun][appboot.netflix.com]
-              end: [.....6] [ip4][..tcp] [....192.168.1.7][53115] -> [...52.32.196.36][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
-             idle: [.....7] [ip4][..tcp] [....192.168.1.7][53116] -> [...52.32.196.36][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
-              end: [.....8] [ip4][..tcp] [....192.168.1.7][53117] -> [...52.32.196.36][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
-                   RISK: TLS (probably) Not Carrying HTTPS
-             idle: [....10] [ip4][..udp] [....192.168.1.7][53776] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
               end: [....20] [ip4][..tcp] [....192.168.1.7][53148] -> [..184.25.204.25][...80] [HTTP.NetFlix][Unknown][Video][Fun][art-2.nflximg.net]
              idle: [....21] [ip4][..tcp] [....192.168.1.7][53149] -> [..184.25.204.25][...80] [HTTP.NetFlix][Unknown][Video][Fun][art-2.nflximg.net]
               end: [....22] [ip4][..tcp] [....192.168.1.7][53150] -> [..184.25.204.25][...80] [HTTP.NetFlix][Unknown][Video][Fun][art-2.nflximg.net]
              idle: [....28] [ip4][..tcp] [....192.168.1.7][53153] -> [..184.25.204.24][...80] [HTTP.NetFlix][Unknown][Video][Fun][tp.akam.nflximg.com]
                    RISK: HTTP Susp Content
+             idle: [....60] [ip4][..tcp] [....192.168.1.7][53251] -> [..184.25.204.10][...80] [HTTP.NetFlix][Unknown][Video][Fun][art-1.nflximg.net]
+             idle: [....61] [ip4][..tcp] [....192.168.1.7][53252] -> [..184.25.204.10][...80] [HTTP.NetFlix][Unknown][Video][Fun][art-1.nflximg.net]
+              end: [.....6] [ip4][..tcp] [....192.168.1.7][53115] -> [...52.32.196.36][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
+             idle: [.....7] [ip4][..tcp] [....192.168.1.7][53116] -> [...52.32.196.36][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
+              end: [.....8] [ip4][..tcp] [....192.168.1.7][53117] -> [...52.32.196.36][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
+                   RISK: TLS (probably) Not Carrying HTTPS
               end: [....53] [ip4][..tcp] [....192.168.1.7][53238] -> [...52.32.22.214][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
                    RISK: TLS (probably) Not Carrying HTTPS
              idle: [....56] [ip4][..tcp] [....192.168.1.7][53248] -> [...52.32.22.214][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
                    RISK: TLS (probably) Not Carrying HTTPS
-             idle: [....60] [ip4][..tcp] [....192.168.1.7][53251] -> [..184.25.204.10][...80] [HTTP.NetFlix][Unknown][Video][Fun][art-1.nflximg.net]
-             idle: [....61] [ip4][..tcp] [....192.168.1.7][53252] -> [..184.25.204.10][...80] [HTTP.NetFlix][Unknown][Video][Fun][art-1.nflximg.net]
              idle: [.....2] [ip4][..udp] [....192.168.1.7][51543] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ios.nccp.netflix.com]
+             idle: [....52] [ip4][..udp] [....192.168.1.7][51622] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ios.nccp.netflix.com]
+             idle: [....26] [ip4][..udp] [....192.168.1.7][51728] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][a803.dscg.akamai.net]
+             idle: [....13] [ip4][..udp] [....192.168.1.7][51949] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][api-global.latency.prodaa.netflix.com]
+             idle: [....54] [ip4][..udp] [....192.168.1.7][52095] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][api-global.latency.prodaa.netflix.com]
+             idle: [.....3] [ip4][..udp] [....192.168.1.7][52116] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ichnaea.us-west-2.prodaa.netflix.com]
+             idle: [....27] [ip4][..udp] [....192.168.1.7][52347] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ios.nccp.netflix.com]
+              end: [....49] [ip4][..tcp] [....192.168.1.7][53203] -> [...52.37.36.252][..443] [TLS.NetFlix][AmazonAWS][Video][Fun][ichnaea.netflix.com]
+             idle: [....55] [ip4][..tcp] [....192.168.1.7][53239] -> [.....52.41.30.5][..443] [TLS.NetFlix][AmazonAWS][Video][Fun][api-global.netflix.com]
+             idle: [....57] [ip4][..tcp] [....192.168.1.7][53249] -> [.....52.41.30.5][..443] [TLS.NetFlix][AmazonAWS][Video][Fun][api-global.netflix.com]
+                   RISK: TLS (probably) Not Carrying HTTPS
+             idle: [....58] [ip4][..tcp] [....192.168.1.7][53250] -> [.....52.41.30.5][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
+                   RISK: TLS (probably) Not Carrying HTTPS
+             idle: [....12] [ip4][....2] [....192.168.1.7] -> [239.255.255.250] [IGMP][Unknown][Network][Acceptable]
+             idle: [....59] [ip4][..udp] [....192.168.1.7][57093] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][a1907.dscg.akamai.net]
              idle: [....17] [ip4][..udp] [....192.168.1.7][57719] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][sha2.san.akam.nflximg.net]
+             idle: [....23] [ip4][..udp] [....192.168.1.7][58102] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][appboot.netflix.com]
+             idle: [....19] [ip4][..udp] [....192.168.1.7][59180] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][artwork.akam.nflximg.net]
+              end: [.....5] [ip4][..tcp] [....192.168.1.7][53114] -> [...54.191.17.51][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
+                   RISK: TLS (probably) Not Carrying HTTPS
+              end: [....29] [ip4][..tcp] [....192.168.1.7][53162] -> [...54.191.17.51][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
+                   RISK: TLS (probably) Not Carrying HTTPS
+             idle: [....46] [ip4][..tcp] [....192.168.1.7][53193] -> [...54.191.17.51][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
+                   RISK: TLS (probably) Not Carrying HTTPS
+              end: [....47] [ip4][..tcp] [....192.168.1.7][53202] -> [...54.191.17.51][..443] [TLS.NetFlix][AmazonAWS][Video][Fun][ios.nccp.netflix.com]
+                   RISK: TLS (probably) Not Carrying HTTPS
+              end: [.....4] [ip4][..tcp] [....192.168.1.7][53105] -> [..54.69.204.241][..443] [TLS.NetFlix][AmazonAWS][Video][Fun][ichnaea.netflix.com]
+              end: [.....9] [ip4][..tcp] [....192.168.1.7][53118] -> [..54.69.204.241][..443] [TLS.NetFlix][AmazonAWS][Video][Fun][ichnaea.netflix.com]
+              end: [....11] [ip4][..tcp] [....192.168.1.7][53119] -> [..54.69.204.241][..443] [TLS.NetFlix][AmazonAWS][Video][Fun][ichnaea.netflix.com]
+             idle: [....48] [ip4][..udp] [....192.168.1.7][60962] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ichnaea.geo.netflix.com]
+              end: [....24] [ip4][..tcp] [....192.168.1.7][53151] -> [.54.201.191.132][...80] [HTTP.NetFlix][AmazonAWS][Video][Fun][appboot.netflix.com]
+             idle: [....18] [ip4][..tcp] [....192.168.1.7][53141] -> [..104.86.97.179][..443] [TLS.NetFlix][Unknown][Video][Fun]
+              end: [....25] [ip4][..tcp] [....192.168.1.7][53152] -> [...52.89.39.139][...80] [HTTP.NetFlix][AmazonAWS][Video][Fun][api-global.netflix.com]
               end: [....14] [ip4][..tcp] [....192.168.1.7][53132] -> [...52.89.39.139][..443] [TLS.NetFlix][AmazonAWS][Video][Fun][api-global.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
               end: [....15] [ip4][..tcp] [....192.168.1.7][53133] -> [...52.89.39.139][..443] [TLS.NetFlix][AmazonAWS][Video][Fun][api-global.netflix.com]
                    RISK: TLS (probably) Not Carrying HTTPS
               end: [....16] [ip4][..tcp] [....192.168.1.7][53134] -> [...52.89.39.139][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
                    RISK: TLS (probably) Not Carrying HTTPS
-             idle: [....52] [ip4][..udp] [....192.168.1.7][51622] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ios.nccp.netflix.com]
-             idle: [....55] [ip4][..tcp] [....192.168.1.7][53239] -> [.....52.41.30.5][..443] [TLS.NetFlix][AmazonAWS][Video][Fun][api-global.netflix.com]
-             idle: [....57] [ip4][..tcp] [....192.168.1.7][53249] -> [.....52.41.30.5][..443] [TLS.NetFlix][AmazonAWS][Video][Fun][api-global.netflix.com]
-                   RISK: TLS (probably) Not Carrying HTTPS
-             idle: [....58] [ip4][..tcp] [....192.168.1.7][53250] -> [.....52.41.30.5][..443] [TLS.NetFlix][AmazonAWS][Video][Fun]
-                   RISK: TLS (probably) Not Carrying HTTPS
-             idle: [....26] [ip4][..udp] [....192.168.1.7][51728] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][a803.dscg.akamai.net]
-             idle: [....13] [ip4][..udp] [....192.168.1.7][51949] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][api-global.latency.prodaa.netflix.com]
-             idle: [....23] [ip4][..udp] [....192.168.1.7][58102] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][appboot.netflix.com]
-             idle: [....54] [ip4][..udp] [....192.168.1.7][52095] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][api-global.latency.prodaa.netflix.com]
-             idle: [.....3] [ip4][..udp] [....192.168.1.7][52116] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ichnaea.us-west-2.prodaa.netflix.com]
-             idle: [....27] [ip4][..udp] [....192.168.1.7][52347] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ios.nccp.netflix.com]
               end: [....30] [ip4][..tcp] [....192.168.1.7][53163] -> [..23.246.11.145][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.145]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary File/Data Transfer (Attempt)
              idle: [....31] [ip4][..tcp] [....192.168.1.7][53164] -> [..23.246.10.139][...80] [HTTP][NetFlix][Download][Acceptable][23.246.10.139]
@@ -630,9 +635,4 @@
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary File/Data Transfer (Attempt)
              idle: [....51] [ip4][..tcp] [....192.168.1.7][53217] -> [..23.246.11.141][...80] [HTTP][NetFlix][Download][Acceptable][23.246.11.141]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, Binary File/Data Transfer (Attempt)
-              end: [.....4] [ip4][..tcp] [....192.168.1.7][53105] -> [..54.69.204.241][..443] [TLS.NetFlix][AmazonAWS][Video][Fun][ichnaea.netflix.com]
-              end: [.....9] [ip4][..tcp] [....192.168.1.7][53118] -> [..54.69.204.241][..443] [TLS.NetFlix][AmazonAWS][Video][Fun][ichnaea.netflix.com]
-              end: [....11] [ip4][..tcp] [....192.168.1.7][53119] -> [..54.69.204.241][..443] [TLS.NetFlix][AmazonAWS][Video][Fun][ichnaea.netflix.com]
-              end: [....49] [ip4][..tcp] [....192.168.1.7][53203] -> [...52.37.36.252][..443] [TLS.NetFlix][AmazonAWS][Video][Fun][ichnaea.netflix.com]
-             idle: [....48] [ip4][..udp] [....192.168.1.7][60962] -> [....192.168.1.1][...53] [DNS.NetFlix][Unknown][Network][Fun][ichnaea.geo.netflix.com]
      DAEMON-EVENT: shutdown

@@ -22,6 +22,6 @@
      DAEMON-EVENT: [Flows][active: 1 / 4|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....5] [ip4][..tcp] [......127.0.0.1][59030] -> [......127.0.0.1][12345]
          detected: [.....5] [ip4][..tcp] [......127.0.0.1][59030] -> [......127.0.0.1][12345] [Protobuf][Unknown][Network][Safe]
-              end: [.....4] [ip4][..tcp] [......127.0.0.1][42358] -> [......127.0.0.1][12345] [Protobuf][Unknown][Network][Safe]
               end: [.....5] [ip4][..tcp] [......127.0.0.1][59030] -> [......127.0.0.1][12345] [Protobuf][Unknown][Network][Safe]
+              end: [.....4] [ip4][..tcp] [......127.0.0.1][42358] -> [......127.0.0.1][12345] [Protobuf][Unknown][Network][Safe]
      DAEMON-EVENT: shutdown

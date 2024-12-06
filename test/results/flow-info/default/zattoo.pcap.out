@@ -8,7 +8,7 @@
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, TLS Cert Validity Too Long
               new: [.....2] [ip4][..tcp] [.....10.101.0.2][.2936] -> [.....10.102.0.2][...80]
          detected: [.....2] [ip4][..tcp] [.....10.101.0.2][.2936] -> [.....10.102.0.2][...80] [HTTP.Zattoo][Unknown][Video][Fun][zattosecurehd2-f.akamaihd.net]
+              end: [.....2] [ip4][..tcp] [.....10.101.0.2][.2936] -> [.....10.102.0.2][...80] [HTTP.Zattoo][Unknown][Video][Fun][zattosecurehd2-f.akamaihd.net]
               end: [.....1] [ip4][..tcp] [.....10.101.0.2][.2930] -> [.....10.102.0.2][..443] [TLS.Zattoo][Unknown][Video][Fun]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, TLS Cert Validity Too Long
-              end: [.....2] [ip4][..tcp] [.....10.101.0.2][.2936] -> [.....10.102.0.2][...80] [HTTP.Zattoo][Unknown][Video][Fun][zattosecurehd2-f.akamaihd.net]
      DAEMON-EVENT: shutdown

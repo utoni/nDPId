@@ -215,79 +215,97 @@
               new: [....67] [ip4][..udp] [.....10.0.0.227][..137] -> [.....10.0.0.255][..137]
          detected: [....67] [ip4][..udp] [.....10.0.0.227][..137] -> [.....10.0.0.255][..137] [NetBIOS][Unknown][System][Acceptable][lp-rkerur-osx]
            update: [.....5] [ip6][icmp6] [..............fe80::2e7e:81ff:feb0:4aa1] -> [................................ff02::1] [ICMPV6][Unknown][Network][Acceptable]
-           update: [....17] [ip4][.icmp] [.....10.0.0.227] -> [....75.75.76.76] [ICMP][Unknown][Network][Acceptable]
            update: [....23] [ip6][icmp6] [...............fe80::408:3e45:3abc:1552] -> [...............................ff02::16] [ICMPV6][Unknown][Network][Acceptable]
+           update: [....17] [ip4][.icmp] [.....10.0.0.227] -> [....75.75.76.76] [ICMP][Unknown][Network][Acceptable]
               new: [....68] [ip4][..udp] [.....10.0.0.149][.5353] -> [....224.0.0.251][.5353]
          detected: [....68] [ip4][..udp] [.....10.0.0.149][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable][_googlezone._tcp.local]
  detection-update: [....68] [ip4][..udp] [.....10.0.0.149][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable][79d88e83-725c-b71b-bad0-5862d5b22386._googlezone._tcp.local]
  detection-update: [....68] [ip4][..udp] [.....10.0.0.149][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable][_googlezone._tcp.local]
               new: [....69] [ip4][.icmp] [.......10.0.0.1] -> [......224.0.0.1]
          detected: [....69] [ip4][.icmp] [.......10.0.0.1] -> [......224.0.0.1] [ICMP][Unknown][Network][Acceptable]
-             idle: [....57] [ip4][..udp] [.....10.0.0.227][57547] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
-             idle: [....25] [ip4][..tcp] [.....10.0.0.227][56884] -> [...184.25.56.77][...80] [HTTP][Unknown][ConnCheck][Acceptable][detectportal.firefox.com]
-          guessed: [.....1] [ip4][..tcp] [.....10.0.0.227][56885] -> [...184.25.56.53][...80] [HTTP][Unknown][Web][Acceptable][]
-              end: [.....1] [ip4][..tcp] [.....10.0.0.227][56885] -> [...184.25.56.53][...80]
-             idle: [....61] [ip4][..udp] [.....10.0.0.151][.1900] -> [.....10.0.0.227][57547] [SSDP][Unknown][System][Acceptable]
-             idle: [....24] [ip4][..tcp] [.....10.0.0.227][56917] -> [...184.25.56.77][...80] [HTTP][Unknown][ConnCheck][Acceptable][detectportal.firefox.com]
              idle: [....69] [ip4][.icmp] [.......10.0.0.1] -> [......224.0.0.1] [ICMP][Unknown][Network][Acceptable]
              idle: [....21] [ip4][....2] [.....10.0.0.213] -> [....224.0.0.251] [IGMP][Unknown][Network][Acceptable]
              idle: [....20] [ip4][....2] [.....10.0.0.213] -> [......224.0.0.2] [IGMP][Unknown][Network][Acceptable]
              idle: [.....6] [ip4][....2] [.....10.0.0.149] -> [....224.0.0.251] [IGMP][Unknown][Network][Acceptable]
              idle: [.....4] [ip4][....2] [.......10.0.0.1] -> [......224.0.0.1] [IGMP][Unknown][Network][Acceptable]
              idle: [....67] [ip4][..udp] [.....10.0.0.227][..137] -> [.....10.0.0.255][..137] [NetBIOS][Unknown][System][Acceptable][lp-rkerur-osx]
-             idle: [....29] [ip4][..tcp] [.....10.0.0.227][56910] -> [...35.201.124.9][..443] [TLS][GoogleCloud][Web][Safe]
-             idle: [....31] [ip4][..udp] [.....10.0.0.227][64972] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable]
-                   RISK: Error Code
-             idle: [....66] [ip4][..udp] [.....10.0.0.149][51382] -> [.....10.0.0.227][57547] [SSDP][Unknown][System][Acceptable]
-             idle: [....26] [ip4][..udp] [.....10.0.0.227][54851] -> [....75.75.76.76][...53] [DNS][Unknown][Network][Acceptable][print.viasat.com]
-                   RISK: Error Code
-             idle: [....22] [ip4][..udp] [.....10.0.0.227][.5353] -> [.....10.0.0.213][.5353] [MDNS][Unknown][Network][Acceptable][_companion-link._tcp.local]
-             idle: [....16] [ip4][..udp] [.....10.0.0.227][63107] -> [....75.75.76.76][...53] [DNS][Unknown][Network][Acceptable][local]
-                   RISK: Error Code
-             idle: [....34] [ip4][..udp] [.....10.0.0.227][52879] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][vcacrashplan01.hq.corp.viasat.com]
-                   RISK: Error Code
-             idle: [.....9] [ip4][..udp] [.....10.0.0.227][52879] -> [....75.75.76.76][...53] [DNS][Unknown][Network][Acceptable][vco.pandion.viasat.com]
-             idle: [....43] [ip4][..tcp] [.....10.0.0.227][56879] -> [..52.10.115.210][..443] [TLS][AmazonAWS][Web][Safe]
-             idle: [....58] [ip4][..udp] [.....10.0.0.227][54107] -> [....8.37.102.91][..443] [DTLS][Unknown][Web][Safe]
-                   RISK: Obsolete TLS (v1.1 or older)
-             idle: [....36] [ip4][..udp] [.....10.0.0.227][57017] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][lp-rkerur-osx.hsd1.ca.comcast.net]
-                   RISK: Error Code
              idle: [.....5] [ip6][icmp6] [..............fe80::2e7e:81ff:feb0:4aa1] -> [................................ff02::1] [ICMPV6][Unknown][Network][Acceptable]
-             idle: [....68] [ip4][..udp] [.....10.0.0.149][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable][_googlezone._tcp.local]
-             idle: [....18] [ip4][..udp] [.....10.0.0.213][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable][_raop._tcp.local]
-             idle: [....35] [ip4][..udp] [.....10.0.0.227][59222] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][lp-rkerur-osx.hsd1.ca.comcast.net]
-                   RISK: Error Code
-             idle: [....46] [ip4][..udp] [.....10.0.0.227][51060] -> [....75.75.75.75][...53] [DNS.ApplePush][Unknown][Network][Acceptable][1-courier.push.apple.com]
-             idle: [....41] [ip4][..udp] [.....10.0.0.227][57253] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][mozilla.org]
-             idle: [....33] [ip4][..udp] [.....10.0.0.227][57261] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][vcacrashplan01.hq.corp.viasat.com]
-                   RISK: Error Code
-             idle: [....17] [ip4][.icmp] [.....10.0.0.227] -> [....75.75.76.76] [ICMP][Unknown][Network][Acceptable]
-             idle: [.....3] [ip4][..tcp] [.....10.0.0.227][56320] -> [.....10.0.0.149][.8009] [TLS][Unknown][Web][Safe]
-                   RISK: Known Proto on Non Std Port
-             idle: [....10] [ip4][..udp] [.....10.0.0.227][61387] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][vco.pandion.viasat.com]
-             idle: [....64] [ip4][..udp] [.....10.0.0.149][49816] -> [.....10.0.0.227][57547] [SSDP][Unknown][System][Acceptable]
-              end: [....44] [ip4][..tcp] [.....10.0.0.227][56886] -> [..17.57.144.116][.5223] [TLS][Apple][Web][Safe]
-                   RISK: Known Proto on Non Std Port
-             idle: [....30] [ip4][..tcp] [.....10.0.0.227][56921] -> [....8.37.96.194][.4287] [TLS][Unknown][Web][Safe]
-                   RISK: Known Proto on Non Std Port, Self-signed Cert, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
-             idle: [....23] [ip6][icmp6] [...............fe80::408:3e45:3abc:1552] -> [...............................ff02::16] [ICMPV6][Unknown][Network][Acceptable]
-             idle: [....32] [ip4][..udp] [.....10.0.0.227][61613] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable]
-                   RISK: Error Code
-             idle: [....47] [ip4][..udp] [.....10.0.0.227][59582] -> [....75.75.75.75][...53] [DNS.ApplePush][Unknown][Network][Acceptable][1-courier.sandbox.push.apple.com]
-             idle: [....59] [ip4][..udp] [.....10.0.0.149][50081] -> [.....10.0.0.227][57547] [SSDP][Unknown][System][Acceptable]
           guessed: [....51] [ip4][..tcp] [.....10.0.0.227][56871] -> [...8.37.103.196][..443] [TLS][Unknown][Web][Safe]
               end: [....51] [ip4][..tcp] [.....10.0.0.227][56871] -> [...8.37.103.196][..443]
-             idle: [....65] [ip4][..udp] [.....10.0.0.149][48166] -> [.....10.0.0.227][57547] [SSDP][Unknown][System][Acceptable]
               end: [....12] [ip4][..tcp] [.....10.0.0.227][56918] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe]
                    RISK: Weak TLS Cipher, Missing SNI TLS Extn, ALPN/SNI Mismatch
               end: [....15] [ip4][..tcp] [.....10.0.0.227][56919] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe]
                    RISK: Weak TLS Cipher, Missing SNI TLS Extn, ALPN/SNI Mismatch
              idle: [....38] [ip4][..tcp] [.....10.0.0.227][56929] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
-          guessed: [....53] [ip4][..tcp] [.....10.0.0.227][56874] -> [.74.125.197.188][..443] [TLS][Google][Web][Safe]
-              end: [....53] [ip4][..tcp] [.....10.0.0.227][56874] -> [.74.125.197.188][..443]
              idle: [....14] [ip4][..tcp] [.....10.0.0.227][56914] -> [..52.37.243.173][..443] [TLS][AmazonAWS][Web][Safe]
              idle: [....13] [ip4][..tcp] [.....10.0.0.227][56915] -> [..52.37.243.173][..443] [TLS][AmazonAWS][Web][Safe]
+             idle: [....55] [ip4][..udp] [.....10.0.0.149][38616] -> [.....10.0.0.227][61328] [SSDP][Unknown][System][Acceptable]
+             idle: [....23] [ip6][icmp6] [...............fe80::408:3e45:3abc:1552] -> [...............................ff02::16] [ICMPV6][Unknown][Network][Acceptable]
+             idle: [....50] [ip4][..udp] [.....10.0.0.227][49781] -> [....75.75.75.75][...53] [DNS.Apple][Unknown][Network][Safe][apple.com]
+             idle: [....46] [ip4][..udp] [.....10.0.0.227][51060] -> [....75.75.75.75][...53] [DNS.ApplePush][Unknown][Network][Acceptable][1-courier.push.apple.com]
+             idle: [....30] [ip4][..tcp] [.....10.0.0.227][56921] -> [....8.37.96.194][.4287] [TLS][Unknown][Web][Safe]
+                   RISK: Known Proto on Non Std Port, Self-signed Cert, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
+             idle: [....49] [ip4][..udp] [.....10.0.0.227][51990] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][mail.viasat.com]
+             idle: [....34] [ip4][..udp] [.....10.0.0.227][52879] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][vcacrashplan01.hq.corp.viasat.com]
+                   RISK: Error Code
+             idle: [.....9] [ip4][..udp] [.....10.0.0.227][52879] -> [....75.75.76.76][...53] [DNS][Unknown][Network][Acceptable][vco.pandion.viasat.com]
+             idle: [....65] [ip4][..udp] [.....10.0.0.149][48166] -> [.....10.0.0.227][57547] [SSDP][Unknown][System][Acceptable]
+             idle: [....26] [ip4][..udp] [.....10.0.0.227][54851] -> [....75.75.76.76][...53] [DNS][Unknown][Network][Acceptable][print.viasat.com]
+                   RISK: Error Code
+             idle: [....64] [ip4][..udp] [.....10.0.0.149][49816] -> [.....10.0.0.227][57547] [SSDP][Unknown][System][Acceptable]
+             idle: [....59] [ip4][..udp] [.....10.0.0.149][50081] -> [.....10.0.0.227][57547] [SSDP][Unknown][System][Acceptable]
+             idle: [....29] [ip4][..tcp] [.....10.0.0.227][56910] -> [...35.201.124.9][..443] [TLS][GoogleCloud][Web][Safe]
+             idle: [....66] [ip4][..udp] [.....10.0.0.149][51382] -> [.....10.0.0.227][57547] [SSDP][Unknown][System][Acceptable]
+             idle: [....22] [ip4][..udp] [.....10.0.0.227][.5353] -> [.....10.0.0.213][.5353] [MDNS][Unknown][Network][Acceptable][_companion-link._tcp.local]
+             idle: [....36] [ip4][..udp] [.....10.0.0.227][57017] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][lp-rkerur-osx.hsd1.ca.comcast.net]
+                   RISK: Error Code
+             idle: [....68] [ip4][..udp] [.....10.0.0.149][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable][_googlezone._tcp.local]
+             idle: [....18] [ip4][..udp] [.....10.0.0.213][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable][_raop._tcp.local]
+             idle: [....41] [ip4][..udp] [.....10.0.0.227][57253] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][mozilla.org]
+             idle: [....33] [ip4][..udp] [.....10.0.0.227][57261] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][vcacrashplan01.hq.corp.viasat.com]
+                   RISK: Error Code
+              end: [....44] [ip4][..tcp] [.....10.0.0.227][56886] -> [..17.57.144.116][.5223] [TLS][Apple][Web][Safe]
+                   RISK: Known Proto on Non Std Port
+             idle: [....52] [ip4][..udp] [.....10.0.0.227][58074] -> [....75.75.75.75][...53] [DNS.Outlook][Unknown][Network][Acceptable][www.outlook.com]
+             idle: [....27] [ip4][..udp] [.....10.0.0.227][58155] -> [....75.75.76.76][...53] [DNS.Slack][Unknown][Network][Acceptable][slack.com]
+             idle: [....35] [ip4][..udp] [.....10.0.0.227][59222] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][lp-rkerur-osx.hsd1.ca.comcast.net]
+                   RISK: Error Code
+             idle: [....47] [ip4][..udp] [.....10.0.0.227][59582] -> [....75.75.75.75][...53] [DNS.ApplePush][Unknown][Network][Acceptable][1-courier.sandbox.push.apple.com]
+             idle: [....19] [ip6][..udp] [...............fe80::408:3e45:3abc:1552][.5353] -> [...............................ff02::fb][.5353] [MDNS][Unknown][Network][Acceptable][_raop._tcp.local]
+              end: [....28] [ip4][..tcp] [.....10.0.0.227][56920] -> [...99.86.34.156][..443] [TLS.Slack][AmazonAWS][Collaborative][Acceptable]
+             idle: [....45] [ip4][..udp] [.....10.0.0.227][60341] -> [....75.75.75.75][...53] [DNS.Apple][Unknown][Network][Safe][www.apple.com]
+             idle: [....10] [ip4][..udp] [.....10.0.0.227][61387] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][vco.pandion.viasat.com]
+             idle: [....32] [ip4][..udp] [.....10.0.0.227][61613] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable]
+                   RISK: Error Code
+          guessed: [....37] [ip4][..tcp] [.....10.0.0.227][56881] -> [.162.222.43.153][..443] [TLS][Unknown][Web][Safe]
+             idle: [....37] [ip4][..tcp] [.....10.0.0.227][56881] -> [.162.222.43.153][..443]
+             idle: [....11] [ip4][..udp] [.....10.0.0.227][62322] -> [....75.75.76.76][...53] [DNS][Unknown][Network][Acceptable][vco.pandion.viasat.com]
+             idle: [....42] [ip4][..udp] [.....10.0.0.227][62427] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][detectportal.firefox.com]
+             idle: [....16] [ip4][..udp] [.....10.0.0.227][63107] -> [....75.75.76.76][...53] [DNS][Unknown][Network][Acceptable][local]
+                   RISK: Error Code
+             idle: [....48] [ip4][..udp] [.....10.0.0.227][64193] -> [....75.75.75.75][...53] [DNS.ApplePush][Unknown][Network][Acceptable][24-courier.push.apple.com]
+             idle: [....31] [ip4][..udp] [.....10.0.0.227][64972] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable]
+                   RISK: Error Code
+             idle: [....17] [ip4][.icmp] [.....10.0.0.227] -> [....75.75.76.76] [ICMP][Unknown][Network][Acceptable]
+     not-detected: [....60] [ip4][..udp] [.....10.0.0.227][52595] -> [.......10.0.0.1][..192] [Unknown][Unknown][Unrated]
+                   RISK: Unidirectional Traffic
+             idle: [....60] [ip4][..udp] [.....10.0.0.227][52595] -> [.......10.0.0.1][..192]
+          guessed: [....53] [ip4][..tcp] [.....10.0.0.227][56874] -> [.74.125.197.188][..443] [TLS][Google][Web][Safe]
+              end: [....53] [ip4][..tcp] [.....10.0.0.227][56874] -> [.74.125.197.188][..443]
+             idle: [....57] [ip4][..udp] [.....10.0.0.227][57547] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
+             idle: [....61] [ip4][..udp] [.....10.0.0.151][.1900] -> [.....10.0.0.227][57547] [SSDP][Unknown][System][Acceptable]
+             idle: [....43] [ip4][..tcp] [.....10.0.0.227][56879] -> [..52.10.115.210][..443] [TLS][AmazonAWS][Web][Safe]
+             idle: [....54] [ip4][..udp] [.....10.0.0.227][61328] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
+             idle: [....56] [ip4][..udp] [.....10.0.0.151][.1900] -> [.....10.0.0.227][61328] [SSDP][Unknown][System][Acceptable]
+             idle: [....25] [ip4][..tcp] [.....10.0.0.227][56884] -> [...184.25.56.77][...80] [HTTP][Unknown][ConnCheck][Acceptable][detectportal.firefox.com]
+          guessed: [.....1] [ip4][..tcp] [.....10.0.0.227][56885] -> [...184.25.56.53][...80] [HTTP][Unknown][Web][Acceptable][]
+              end: [.....1] [ip4][..tcp] [.....10.0.0.227][56885] -> [...184.25.56.53][...80]
+             idle: [....24] [ip4][..tcp] [.....10.0.0.227][56917] -> [...184.25.56.77][...80] [HTTP][Unknown][ConnCheck][Acceptable][detectportal.firefox.com]
+             idle: [....58] [ip4][..udp] [.....10.0.0.227][54107] -> [....8.37.102.91][..443] [DTLS][Unknown][Web][Safe]
+                   RISK: Obsolete TLS (v1.1 or older)
+             idle: [.....3] [ip4][..tcp] [.....10.0.0.227][56320] -> [.....10.0.0.149][.8009] [TLS][Unknown][Web][Safe]
+                   RISK: Known Proto on Non Std Port
           guessed: [....39] [ip4][..tcp] [.....10.0.0.227][56865] -> [.....10.0.0.149][.8008] [CiscoVPN][Unknown][VPN][Acceptable]
               end: [....39] [ip4][..tcp] [.....10.0.0.227][56865] -> [.....10.0.0.149][.8008]
           guessed: [.....2] [ip4][..tcp] [.....10.0.0.227][56916] -> [.....10.0.0.151][.8009] [AJP][Unknown][Web][Acceptable]
@@ -298,26 +316,8 @@
               end: [....40] [ip4][..tcp] [.....10.0.0.227][56866] -> [.....10.0.0.151][.8060]
              idle: [....62] [ip4][..tcp] [.....10.0.0.227][56954] -> [.....10.0.0.149][.8008] [HTTP][Unknown][Web][Acceptable][10.0.0.149]
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
-             idle: [....19] [ip6][..udp] [...............fe80::408:3e45:3abc:1552][.5353] -> [...............................ff02::fb][.5353] [MDNS][Unknown][Network][Acceptable][_raop._tcp.local]
-             idle: [....50] [ip4][..udp] [.....10.0.0.227][49781] -> [....75.75.75.75][...53] [DNS.Apple][Unknown][Network][Safe][apple.com]
               end: [....63] [ip4][..tcp] [.....10.0.0.227][56955] -> [.....10.0.0.151][.8060] [HTTP][Unknown][Web][Acceptable][10.0.0.151]
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
-     not-detected: [....60] [ip4][..udp] [.....10.0.0.227][52595] -> [.......10.0.0.1][..192] [Unknown][Unknown][Unrated]
-                   RISK: Unidirectional Traffic
-             idle: [....60] [ip4][..udp] [.....10.0.0.227][52595] -> [.......10.0.0.1][..192]
-             idle: [....48] [ip4][..udp] [.....10.0.0.227][64193] -> [....75.75.75.75][...53] [DNS.ApplePush][Unknown][Network][Acceptable][24-courier.push.apple.com]
-             idle: [....52] [ip4][..udp] [.....10.0.0.227][58074] -> [....75.75.75.75][...53] [DNS.Outlook][Unknown][Network][Acceptable][www.outlook.com]
-              end: [....28] [ip4][..tcp] [.....10.0.0.227][56920] -> [...99.86.34.156][..443] [TLS.Slack][AmazonAWS][Collaborative][Acceptable]
-             idle: [....55] [ip4][..udp] [.....10.0.0.149][38616] -> [.....10.0.0.227][61328] [SSDP][Unknown][System][Acceptable]
-          guessed: [....37] [ip4][..tcp] [.....10.0.0.227][56881] -> [.162.222.43.153][..443] [TLS][Unknown][Web][Safe]
-             idle: [....37] [ip4][..tcp] [.....10.0.0.227][56881] -> [.162.222.43.153][..443]
-             idle: [....49] [ip4][..udp] [.....10.0.0.227][51990] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][mail.viasat.com]
-             idle: [....27] [ip4][..udp] [.....10.0.0.227][58155] -> [....75.75.76.76][...53] [DNS.Slack][Unknown][Network][Acceptable][slack.com]
-             idle: [....54] [ip4][..udp] [.....10.0.0.227][61328] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
-             idle: [....11] [ip4][..udp] [.....10.0.0.227][62322] -> [....75.75.76.76][...53] [DNS][Unknown][Network][Acceptable][vco.pandion.viasat.com]
-             idle: [....56] [ip4][..udp] [.....10.0.0.151][.1900] -> [.....10.0.0.227][61328] [SSDP][Unknown][System][Acceptable]
-             idle: [....45] [ip4][..udp] [.....10.0.0.227][60341] -> [....75.75.75.75][...53] [DNS.Apple][Unknown][Network][Safe][www.apple.com]
-             idle: [....42] [ip4][..udp] [.....10.0.0.227][62427] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][detectportal.firefox.com]
              idle: [.....8] [ip4][....2] [.....10.0.0.149] -> [239.255.255.250] [IGMP][Unknown][Network][Acceptable]
              idle: [.....7] [ip4][....2] [.....10.0.0.149] -> [...239.255.3.22] [IGMP][Unknown][Network][Acceptable]
      DAEMON-EVENT: shutdown

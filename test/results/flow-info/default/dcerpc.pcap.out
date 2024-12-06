@@ -13,12 +13,12 @@
               new: [.....4] [ip4][..udp] [...192.168.1.11][49154] -> [...192.168.1.20][49162]
          detected: [.....4] [ip4][..udp] [...192.168.1.11][49154] -> [...192.168.1.20][49162] [DCERPC.PROFINET_IO][Unknown][IoT-Scada][Acceptable]
                    RISK: Known Proto on Non Std Port
-             idle: [.....4] [ip4][..udp] [...192.168.1.11][49154] -> [...192.168.1.20][49162] [DCERPC.PROFINET_IO][Unknown][IoT-Scada][Acceptable]
-                   RISK: Known Proto on Non Std Port
-             idle: [.....2] [ip4][..udp] [...192.168.1.20][49161] -> [...192.168.1.11][49155] [DCERPC.PROFINET_IO][Unknown][IoT-Scada][Acceptable]
-                   RISK: Known Proto on Non Std Port
              idle: [.....1] [ip4][..udp] [...192.168.1.11][49155] -> [...192.168.1.20][34964] [DCERPC.PROFINET_IO][Unknown][IoT-Scada][Acceptable]
                    RISK: Known Proto on Non Std Port
              idle: [.....3] [ip4][..udp] [...192.168.1.20][49162] -> [...192.168.1.11][34964] [DCERPC.PROFINET_IO][Unknown][IoT-Scada][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [.....4] [ip4][..udp] [...192.168.1.11][49154] -> [...192.168.1.20][49162] [DCERPC.PROFINET_IO][Unknown][IoT-Scada][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [.....2] [ip4][..udp] [...192.168.1.20][49161] -> [...192.168.1.11][49155] [DCERPC.PROFINET_IO][Unknown][IoT-Scada][Acceptable]
                    RISK: Known Proto on Non Std Port
      DAEMON-EVENT: shutdown

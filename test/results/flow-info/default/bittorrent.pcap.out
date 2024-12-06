@@ -85,33 +85,21 @@
                    RISK: Known Proto on Non Std Port
               end: [....11] [ip4][..tcp] [....192.168.1.3][52906] -> [....82.57.97.83][53137] [BitTorrent][Unknown][Download][Acceptable]
                    RISK: Known Proto on Non Std Port
-              end: [.....3] [ip4][..tcp] [....192.168.1.3][52895] -> [.83.216.184.241][51413] [BitTorrent][Unknown][Download][Acceptable]
-             idle: [....22] [ip4][..tcp] [....192.168.1.3][52927] -> [.83.216.184.241][51413] [BitTorrent][Unknown][Download][Acceptable]
-              end: [....21] [ip4][..tcp] [....192.168.1.3][52922] -> [..95.237.193.34][11321] [BitTorrent][Unknown][Download][Acceptable]
-                   RISK: Known Proto on Non Std Port
-              end: [....13] [ip4][..tcp] [....192.168.1.3][52912] -> [.151.72.255.163][59928] [BitTorrent][Unknown][Download][Acceptable]
-                   RISK: Known Proto on Non Std Port
-             idle: [.....6] [ip4][..tcp] [....192.168.1.3][52897] -> [...151.26.95.30][22673] [BitTorrent][Unknown][Download][Acceptable]
-                   RISK: Known Proto on Non Std Port
-             idle: [....12] [ip4][..tcp] [....192.168.1.3][52911] -> [...151.26.95.30][22673] [BitTorrent][Unknown][Download][Acceptable]
-                   RISK: Known Proto on Non Std Port
               end: [....20] [ip4][..tcp] [....192.168.1.3][52921] -> [..95.234.159.16][41205] [BitTorrent][Unknown][Download][Acceptable]
                    RISK: Known Proto on Non Std Port
-              end: [....23] [ip4][..tcp] [....192.168.1.3][52926] -> [..93.65.249.100][31336] [BitTorrent][Unknown][Download][Acceptable]
-                   RISK: Known Proto on Non Std Port
              idle: [....24] [ip4][..tcp] [....192.168.1.3][52925] -> [..93.65.227.100][19116] [BitTorrent][Unknown][Download][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              end: [....21] [ip4][..tcp] [....192.168.1.3][52922] -> [..95.237.193.34][11321] [BitTorrent][Unknown][Download][Acceptable]
                    RISK: Known Proto on Non Std Port
               end: [.....9] [ip4][..tcp] [....192.168.1.3][52902] -> [.190.103.195.56][46633] [BitTorrent][Unknown][Download][Acceptable]
                    RISK: Known Proto on Non Std Port
              idle: [....18] [ip4][..tcp] [....192.168.1.3][52914] -> [.190.103.195.56][46633] [BitTorrent][Unknown][Download][Acceptable]
                    RISK: Known Proto on Non Std Port
-              end: [.....4] [ip4][..tcp] [....192.168.1.3][52896] -> [....79.53.228.2][14627] [BitTorrent][Unknown][Download][Acceptable]
+              end: [.....3] [ip4][..tcp] [....192.168.1.3][52895] -> [.83.216.184.241][51413] [BitTorrent][Unknown][Download][Acceptable]
+             idle: [....22] [ip4][..tcp] [....192.168.1.3][52927] -> [.83.216.184.241][51413] [BitTorrent][Unknown][Download][Acceptable]
+              end: [....13] [ip4][..tcp] [....192.168.1.3][52912] -> [.151.72.255.163][59928] [BitTorrent][Unknown][Download][Acceptable]
                    RISK: Known Proto on Non Std Port
-             idle: [....14] [ip4][..tcp] [....192.168.1.3][52909] -> [....79.53.228.2][14627] [BitTorrent][Unknown][Download][Acceptable]
-                   RISK: Known Proto on Non Std Port
-             idle: [.....7] [ip4][..tcp] [....192.168.1.3][52893] -> [...79.55.129.22][12097] [BitTorrent][Unknown][Download][Acceptable]
-                   RISK: Known Proto on Non Std Port
-             idle: [....16] [ip4][..tcp] [....192.168.1.3][52908] -> [...79.55.129.22][12097] [BitTorrent][Unknown][Download][Acceptable]
+              end: [....23] [ip4][..tcp] [....192.168.1.3][52926] -> [..93.65.249.100][31336] [BitTorrent][Unknown][Download][Acceptable]
                    RISK: Known Proto on Non Std Port
               end: [....19] [ip4][..tcp] [....192.168.1.3][52917] -> [..151.15.48.189][47001] [BitTorrent][Unknown][Download][Acceptable]
                    RISK: Known Proto on Non Std Port
@@ -126,5 +114,17 @@
              idle: [.....5] [ip4][..tcp] [....192.168.1.3][52894] -> [..120.62.33.241][39332] [BitTorrent][Unknown][Download][Acceptable]
                    RISK: Known Proto on Non Std Port
              idle: [....15] [ip4][..tcp] [....192.168.1.3][52910] -> [..120.62.33.241][39332] [BitTorrent][Unknown][Download][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [.....7] [ip4][..tcp] [....192.168.1.3][52893] -> [...79.55.129.22][12097] [BitTorrent][Unknown][Download][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....16] [ip4][..tcp] [....192.168.1.3][52908] -> [...79.55.129.22][12097] [BitTorrent][Unknown][Download][Acceptable]
+                   RISK: Known Proto on Non Std Port
+              end: [.....4] [ip4][..tcp] [....192.168.1.3][52896] -> [....79.53.228.2][14627] [BitTorrent][Unknown][Download][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....14] [ip4][..tcp] [....192.168.1.3][52909] -> [....79.53.228.2][14627] [BitTorrent][Unknown][Download][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [.....6] [ip4][..tcp] [....192.168.1.3][52897] -> [...151.26.95.30][22673] [BitTorrent][Unknown][Download][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [....12] [ip4][..tcp] [....192.168.1.3][52911] -> [...151.26.95.30][22673] [BitTorrent][Unknown][Download][Acceptable]
                    RISK: Known Proto on Non Std Port
      DAEMON-EVENT: shutdown

@@ -30,7 +30,7 @@
      DAEMON-EVENT: [Flows][active: 2 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 1]
            update: [.....2] [ip4][..udp] [......10.0.2.15][34417] -> [..93.47.224.241][36037] [TeamViewer][Unknown][RemoteAccess][Acceptable]
                    RISK: Known Proto on Non Std Port, Desktop/File Sharing
+             idle: [.....1] [ip4][..tcp] [......10.0.2.15][35732] -> [..162.250.2.170][.5938] [TeamViewer][Unknown][RemoteAccess][Acceptable]
              idle: [.....2] [ip4][..udp] [......10.0.2.15][34417] -> [..93.47.224.241][36037] [TeamViewer][Unknown][RemoteAccess][Acceptable]
                    RISK: Known Proto on Non Std Port, Desktop/File Sharing
-             idle: [.....1] [ip4][..tcp] [......10.0.2.15][35732] -> [..162.250.2.170][.5938] [TeamViewer][Unknown][RemoteAccess][Acceptable]
      DAEMON-EVENT: shutdown

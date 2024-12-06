@@ -13,7 +13,7 @@
          detected: [.....3] [ip4][..tcp] [..192.168.12.67][43446] -> [..59.82.122.224][..443] [TLS.Taobao][Alibaba][Shopping][Acceptable][umdc.taobao.com]
  detection-update: [.....3] [ip4][..tcp] [..192.168.12.67][43446] -> [..59.82.122.224][..443] [TLS.Taobao][Alibaba][Shopping][Acceptable][umdc.taobao.com]
  detection-update: [.....3] [ip4][..tcp] [..192.168.12.67][43446] -> [..59.82.122.224][..443] [TLS.Taobao][Alibaba][Shopping][Acceptable][umdc.taobao.com]
-             idle: [.....1] [ip4][..tcp] [..192.168.12.67][46892] -> [...2.23.155.106][..443] [TLS.Shein][Unknown][Shopping][Acceptable]
-             idle: [.....2] [ip4][..tcp] [..192.168.12.67][47694] -> [......20.15.0.9][..443] [TLS.Temu][Azure][Shopping][Acceptable]
              idle: [.....3] [ip4][..tcp] [..192.168.12.67][43446] -> [..59.82.122.224][..443] [TLS.Taobao][Alibaba][Shopping][Acceptable]
+             idle: [.....2] [ip4][..tcp] [..192.168.12.67][47694] -> [......20.15.0.9][..443] [TLS.Temu][Azure][Shopping][Acceptable]
+             idle: [.....1] [ip4][..tcp] [..192.168.12.67][46892] -> [...2.23.155.106][..443] [TLS.Shein][Unknown][Shopping][Acceptable]
      DAEMON-EVENT: shutdown

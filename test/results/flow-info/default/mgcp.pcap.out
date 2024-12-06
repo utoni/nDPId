@@ -23,6 +23,6 @@
      DAEMON-EVENT: [Flows][active: 1 / 4|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 1]
               new: [.....5] [ip4][..udp] [.92.173.166.213][51954] -> [..83.250.239.33][.2427]
          detected: [.....5] [ip4][..udp] [.92.173.166.213][51954] -> [..83.250.239.33][.2427] [MGCP][Unknown][VoIP][Acceptable]
-             idle: [.....5] [ip4][..udp] [.92.173.166.213][51954] -> [..83.250.239.33][.2427] [MGCP][Unknown][VoIP][Acceptable][gateway44.myplace.com]
              idle: [.....4] [ip4][..udp] [.67.232.180.250][38238] -> [186.112.128.179][.2427] [MGCP][Unknown][VoIP][Acceptable][gateway44.myplace.com]
+             idle: [.....5] [ip4][..udp] [.92.173.166.213][51954] -> [..83.250.239.33][.2427] [MGCP][Unknown][VoIP][Acceptable][gateway44.myplace.com]
      DAEMON-EVENT: shutdown

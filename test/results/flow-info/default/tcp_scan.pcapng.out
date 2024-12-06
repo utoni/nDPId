@@ -8,25 +8,25 @@
               new: [.....5] [ip4][..tcp] [..192.168.1.178][62971] -> [....192.168.1.2][.3390] [MIDSTREAM]
               new: [.....6] [ip4][..tcp] [..192.168.1.178][57916] -> [....192.168.1.2][.3391] [MIDSTREAM]
               new: [.....7] [ip4][..tcp] [..192.168.1.178][63243] -> [....192.168.1.2][.3392] [MIDSTREAM]
-     not-detected: [.....6] [ip4][..tcp] [..192.168.1.178][57916] -> [....192.168.1.2][.3391] [Unknown][Unknown][Unrated]
-                   RISK: TCP Connection Issues
-              end: [.....6] [ip4][..tcp] [..192.168.1.178][57916] -> [....192.168.1.2][.3391]
-     not-detected: [.....5] [ip4][..tcp] [..192.168.1.178][62971] -> [....192.168.1.2][.3390] [Unknown][Unknown][Unrated]
-                   RISK: TCP Connection Issues
-              end: [.....5] [ip4][..tcp] [..192.168.1.178][62971] -> [....192.168.1.2][.3390]
-          guessed: [.....1] [ip4][..tcp] [..192.168.1.178][56272] -> [....192.168.1.2][...80] [HTTP][Unknown][Web][Acceptable][]
-                   RISK: TCP Connection Issues
-              end: [.....1] [ip4][..tcp] [..192.168.1.178][56272] -> [....192.168.1.2][...80]
-     not-detected: [.....7] [ip4][..tcp] [..192.168.1.178][63243] -> [....192.168.1.2][.3392] [Unknown][Unknown][Unrated]
-                   RISK: TCP Connection Issues
-              end: [.....7] [ip4][..tcp] [..192.168.1.178][63243] -> [....192.168.1.2][.3392]
           guessed: [.....4] [ip4][..tcp] [..192.168.1.178][43067] -> [....192.168.1.2][.3389] [RDP][Unknown][RemoteAccess][Acceptable]
                    RISK: Desktop/File Sharing, TCP Connection Issues
               end: [.....4] [ip4][..tcp] [..192.168.1.178][43067] -> [....192.168.1.2][.3389]
+          guessed: [.....1] [ip4][..tcp] [..192.168.1.178][56272] -> [....192.168.1.2][...80] [HTTP][Unknown][Web][Acceptable][]
+                   RISK: TCP Connection Issues
+              end: [.....1] [ip4][..tcp] [..192.168.1.178][56272] -> [....192.168.1.2][...80]
           guessed: [.....2] [ip4][..tcp] [..192.168.1.178][56273] -> [....192.168.1.2][..443] [TLS][Unknown][Web][Safe]
                    RISK: TCP Connection Issues
               end: [.....2] [ip4][..tcp] [..192.168.1.178][56273] -> [....192.168.1.2][..443]
           guessed: [.....3] [ip4][..tcp] [..192.168.1.178][56274] -> [....192.168.1.2][..445] [SMBv23][Unknown][System][Acceptable]
                    RISK: TCP Connection Issues
               end: [.....3] [ip4][..tcp] [..192.168.1.178][56274] -> [....192.168.1.2][..445]
+     not-detected: [.....6] [ip4][..tcp] [..192.168.1.178][57916] -> [....192.168.1.2][.3391] [Unknown][Unknown][Unrated]
+                   RISK: TCP Connection Issues
+              end: [.....6] [ip4][..tcp] [..192.168.1.178][57916] -> [....192.168.1.2][.3391]
+     not-detected: [.....5] [ip4][..tcp] [..192.168.1.178][62971] -> [....192.168.1.2][.3390] [Unknown][Unknown][Unrated]
+                   RISK: TCP Connection Issues
+              end: [.....5] [ip4][..tcp] [..192.168.1.178][62971] -> [....192.168.1.2][.3390]
+     not-detected: [.....7] [ip4][..tcp] [..192.168.1.178][63243] -> [....192.168.1.2][.3392] [Unknown][Unknown][Unrated]
+                   RISK: TCP Connection Issues
+              end: [.....7] [ip4][..tcp] [..192.168.1.178][63243] -> [....192.168.1.2][.3392]
      DAEMON-EVENT: shutdown

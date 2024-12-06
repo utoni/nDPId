@@ -54,10 +54,10 @@
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
  detection-update: [.....6] [ip4][..tcp] [....10.4.25.101][49804] -> [138.197.147.101][..443] [TLS][Unknown][Web][Safe][]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
-             idle: [.....4] [ip4][..tcp] [....10.4.25.101][49797] -> [..77.105.36.156][...80] [HTTP][Unknown][Download][Acceptable][filmmogzivota.rs]
-                   RISK: Binary App Transfer, HTTP Susp User-Agent, Binary File/Data Transfer (Attempt)
              idle: [.....5] [ip4][..tcp] [....10.4.25.101][49803] -> [138.197.147.101][..443] [TLS][Unknown][Web][Safe]
                    RISK: Self-signed Cert, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
               end: [.....6] [ip4][..tcp] [....10.4.25.101][49804] -> [138.197.147.101][..443] [TLS][Unknown][Web][Safe]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
+             idle: [.....4] [ip4][..tcp] [....10.4.25.101][49797] -> [..77.105.36.156][...80] [HTTP][Unknown][Download][Acceptable][filmmogzivota.rs]
+                   RISK: Binary App Transfer, HTTP Susp User-Agent, Binary File/Data Transfer (Attempt)
      DAEMON-EVENT: shutdown

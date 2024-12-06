@@ -55,9 +55,9 @@
                    RISK: Susp Entropy
              idle: [.....4] [ip4][..udp] [..192.168.1.105][40461] -> [...172.217.16.3][..443]
              idle: [.....6] [ip4][..udp] [..192.168.1.105][48445] -> [.216.58.214.110][..443] [QUIC.YouTube][Google][Media][Fun][i.ytimg.com]
-             idle: [.....5] [ip4][..udp] [..192.168.1.105][34438] -> [.216.58.210.238][..443] [QUIC.YouTube][Google][Media][Fun][www.youtube.com]
              idle: [.....3] [ip4][..udp] [..192.168.1.105][45669] -> [...172.217.16.4][..443] [QUIC.Google][Google][Web][Acceptable][www.google.com]
-             idle: [....10] [ip4][..udp] [..192.168.1.109][35236] -> [.216.58.210.206][..443] [QUIC.YouTube][Google][Media][Fun][www.youtube.com]
              idle: [.....9] [ip4][..udp] [..192.168.1.105][53817] -> [.216.58.210.225][..443] [QUIC.YouTube][Google][Media][Fun][yt3.ggpht.com]
              idle: [.....8] [ip4][..udp] [..192.168.1.105][55934] -> [.216.58.201.238][..443] [QUIC.YouTube][Google][Media][Fun][s.ytimg.com]
+             idle: [.....5] [ip4][..udp] [..192.168.1.105][34438] -> [.216.58.210.238][..443] [QUIC.YouTube][Google][Media][Fun][www.youtube.com]
+             idle: [....10] [ip4][..udp] [..192.168.1.109][35236] -> [.216.58.210.206][..443] [QUIC.YouTube][Google][Media][Fun][www.youtube.com]
      DAEMON-EVENT: shutdown

@@ -7,7 +7,7 @@
          detected: [.....2] [ip4][..udp] [.192.168.88.231][45318] -> [.192.168.88.138][17225] [TRDP][Unknown][IoT-Scada][Acceptable]
               new: [.....3] [ip4][..udp] [.192.168.88.231][47228] -> [.192.168.88.138][17224]
          detected: [.....3] [ip4][..udp] [.192.168.88.231][47228] -> [.192.168.88.138][17224] [TRDP][Unknown][IoT-Scada][Acceptable]
-             idle: [.....3] [ip4][..udp] [.192.168.88.231][47228] -> [.192.168.88.138][17224] [TRDP][Unknown][IoT-Scada][Acceptable]
              idle: [.....2] [ip4][..udp] [.192.168.88.231][45318] -> [.192.168.88.138][17225] [TRDP][Unknown][IoT-Scada][Acceptable]
               end: [.....1] [ip4][..tcp] [.192.168.88.231][45482] -> [.192.168.88.138][17225] [TRDP][Unknown][IoT-Scada][Acceptable]
+             idle: [.....3] [ip4][..udp] [.192.168.88.231][47228] -> [.192.168.88.138][17224] [TRDP][Unknown][IoT-Scada][Acceptable]
      DAEMON-EVENT: shutdown

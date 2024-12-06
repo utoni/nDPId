@@ -18,15 +18,15 @@
               new: [.....5] [ip4][..tcp] [..192.168.1.128][48854] -> [..104.16.209.12][..443]
          detected: [.....5] [ip4][..tcp] [..192.168.1.128][48854] -> [..104.16.209.12][..443] [TLS.Ookla][Cloudflare][Network][Safe][www.speedtest.net]
  detection-update: [.....5] [ip4][..tcp] [..192.168.1.128][48854] -> [..104.16.209.12][..443] [TLS.Ookla][Cloudflare][Network][Safe][www.speedtest.net]
-             idle: [.....4] [ip4][..tcp] [....192.168.1.7][51215] -> [..46.44.253.187][.8080] [Ookla][Unknown][Network][Safe]
               end: [.....3] [ip4][..tcp] [....192.168.1.7][51207] -> [..46.44.253.187][...80] [HTTP.Ookla][Unknown][Network][Safe][massarosa-1.speedtest.welcomeitalia.it]
                    RISK: HTTP Obsolete Server
+             idle: [.....4] [ip4][..tcp] [....192.168.1.7][51215] -> [..46.44.253.187][.8080] [Ookla][Unknown][Network][Safe]
               new: [.....6] [ip4][..tcp] [..192.168.1.128][35830] -> [..89.96.108.170][.8080]
          detected: [.....6] [ip4][..tcp] [..192.168.1.128][35830] -> [..89.96.108.170][.8080] [TLS][Unknown][Web][Safe][spd-pub-mi-01-01.fastwebnet.it]
                    RISK: Known Proto on Non Std Port
  detection-update: [.....6] [ip4][..tcp] [..192.168.1.128][35830] -> [..89.96.108.170][.8080] [TLS][Unknown][Web][Safe][spd-pub-mi-01-01.fastwebnet.it]
                    RISK: Known Proto on Non Std Port
-             idle: [.....5] [ip4][..tcp] [..192.168.1.128][48854] -> [..104.16.209.12][..443] [TLS.Ookla][Cloudflare][Network][Safe]
              idle: [.....6] [ip4][..tcp] [..192.168.1.128][35830] -> [..89.96.108.170][.8080] [TLS][Unknown][Web][Safe]
                    RISK: Known Proto on Non Std Port
+             idle: [.....5] [ip4][..tcp] [..192.168.1.128][48854] -> [..104.16.209.12][..443] [TLS.Ookla][Cloudflare][Network][Safe]
      DAEMON-EVENT: shutdown

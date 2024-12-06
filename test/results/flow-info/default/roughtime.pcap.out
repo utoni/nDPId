@@ -13,6 +13,6 @@
              idle: [.....1] [ip4][..udp] [..192.168.2.100][36225] -> [.64.233.164.158][.2002] [Roughtime][Google][System][Acceptable]
               new: [.....4] [ip4][..udp] [...35.192.98.51][.2002] -> [..192.168.2.100][57626]
          detected: [.....4] [ip4][..udp] [...35.192.98.51][.2002] -> [..192.168.2.100][57626] [Roughtime][GoogleCloud][System][Acceptable]
-             idle: [.....4] [ip4][..udp] [...35.192.98.51][.2002] -> [..192.168.2.100][57626] [Roughtime][GoogleCloud][System][Acceptable]
              idle: [.....3] [ip4][..udp] [..162.159.200.1][.2002] -> [..192.168.2.100][49021] [Roughtime][Cloudflare][System][Acceptable]
+             idle: [.....4] [ip4][..udp] [...35.192.98.51][.2002] -> [..192.168.2.100][57626] [Roughtime][GoogleCloud][System][Acceptable]
      DAEMON-EVENT: shutdown

@@ -12,8 +12,8 @@
      DAEMON-EVENT: [Flows][active: 2 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 1|updates: 0]
               new: [.....3] [ip4][..udp] [...10.215.173.1][38704] -> [...43.131.34.20][.7948]
          detected: [.....3] [ip4][..udp] [...10.215.173.1][38704] -> [...43.131.34.20][.7948] [CoD_Mobile][Tencent][Game][Fun]
+             idle: [.....2] [ip4][..udp] [...10.215.173.1][40282] -> [.23.248.172.158][.7500] [CoD_Mobile][Unknown][Game][Fun]
              idle: [.....3] [ip4][..udp] [...10.215.173.1][38704] -> [...43.131.34.20][.7948] [CoD_Mobile][Tencent][Game][Fun]
              idle: [.....1] [ip4][..tcp] [...10.215.173.1][45028] -> [...49.51.177.25][.8013] [TLS.CoD_Mobile][Tencent][Game][Fun]
                    RISK: Known Proto on Non Std Port
-             idle: [.....2] [ip4][..udp] [...10.215.173.1][40282] -> [.23.248.172.158][.7500] [CoD_Mobile][Unknown][Game][Fun]
      DAEMON-EVENT: shutdown
