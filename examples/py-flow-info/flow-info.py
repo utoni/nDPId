@@ -380,7 +380,7 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
                         return True
             ndpi_proto_categ_breed += '[' + str(json_dict['ndpi']['breed']) + ']'
 
-        if 'flow_risk' in json_dict['ndpi']:
+        if 'flow_risk' in json_dict['ndpi'] and args.hide_risk_info == False:
             severity = 0
             cnt = 0
 
@@ -562,10 +562,14 @@ if __name__ == '__main__':
     argparser = nDPIsrvd.defaultArgumentParser('Prettify and print events using the nDPIsrvd Python interface.', True)
     argparser.add_argument('--no-color', action='store_true', default=False,
                            help='Disable all terminal colors.')
+    argparser.add_argument('--no-blink', action='store_true', default=False,
+                           help='Disable all blink effects.')
     argparser.add_argument('--no-statusbar', action='store_true', default=False,
                            help='Disable informational status bar.')
     argparser.add_argument('--hide-instance-info', action='store_true', default=False,
                            help='Hide instance Alias/Source prefixed every line.')
+    argparser.add_argument('--hide-risk-info', action='store_true', default=False,
+                           help='Skip printing risks.')
     argparser.add_argument('--print-timestamp', action='store_true', default=False,
                            help='Print received event timestamps.')
     argparser.add_argument('--print-first-seen', action='store_true', default=False,
@@ -604,6 +608,9 @@ if __name__ == '__main__':
 
     if args.no_color is True:
         TermColor.disableColor()
+
+    if args.no_blink is True:
+        TermColor.disableBlink()
 
     if args.ipwhois is True:
         import dns, ipwhois

@@ -64,6 +64,10 @@ class TermColor:
         USE_COLORAMA      = False
 
     @staticmethod
+    def disableBlink():
+        TermColor.BLINK   = ''
+
+    @staticmethod
     def calcColorHash(string):
         h = 0
         for char in string:
