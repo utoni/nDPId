@@ -86,10 +86,7 @@
         volatile uint64_t var;                                                                                         \
         pthread_mutex_t var_mutex;                                                                                     \
     } name
-#define MT_INIT(value)                                                                                                 \
-    {                                                                                                                  \
-        value, PTHREAD_MUTEX_INITIALIZER                                                                               \
-    }
+#define MT_INIT(value) {value, PTHREAD_MUTEX_INITIALIZER}
 #define MT_INIT2(name, value)                                                                                          \
     do                                                                                                                 \
     {                                                                                                                  \
@@ -5367,6 +5364,7 @@ static void print_usage(char const * const arg0)
     static char const usage[] =
         "Usage: %s "
         "[-f config-file]\n"
+        "\t  \t"
         "[-i pcap-file/interface] [-I] [-E] [-B bpf-filter]\n"
         "\t  \t"
         "[-l] [-L logfile] [-c address] [-e]"
@@ -5402,6 +5400,12 @@ static void print_usage(char const * const arg0)
         "\t  \tDefault: disabled\n"
         "\t-c\tPath to a UNIX socket (nDPIsrvd Collector) or a custom UDP endpoint.\n"
         "\t  \tDefault: `%s'\n"
+#ifdef ENABLE_CRYPTO
+        "\t-k\tPath to the local private key file (PEM format)\n"
+        "\t  \tDefault: disabled\n"
+        "\t-K\tPath to the remote public key file (PEM format)\n"
+        "\t  \tDefault: disabled\n"
+#endif
 #ifdef ENABLE_EPOLL
         "\t-e\tUse poll() instead of epoll().\n"
         "\t  \tDefault: epoll() on Linux, poll() otherwise\n"

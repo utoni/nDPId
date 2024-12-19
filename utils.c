@@ -45,7 +45,14 @@ void set_config_defaults(struct confopt * const co_array, size_t array_length)
             switch (co_array[i].opt->type)
             {
                 case CMDTYPE_INVALID:
-                    logger_early(1, "BUG: Config option `%s' has CMDTYPE_INVALID!", co_array[i].key);
+                    if (co_array[i].key != NULL)
+                    {
+                        logger_early(1, "BUG: Config option `%s' has CMDTYPE_INVALID!", co_array[i].key);
+                    }
+                    else
+                    {
+                        logger_early(1, "%s", "BUG: Config option has CMDTYPE_INVALID!");
+                    }
                     break;
                 case CMDTYPE_STRING:
                     if (co_array[i].opt->string.default_value == NULL)
@@ -97,7 +104,14 @@ int set_config_from(struct confopt * const co, char const * const from)
             }
             else
             {
-                logger_early(1, "Config key `%s' has a value not of type bool: `%s'", co->key, from);
+                if (co->key != NULL)
+                {
+                    logger_early(1, "Config key `%s' has a value not of type bool: `%s'", co->key, from);
+                }
+                else
+                {
+                    logger_early(1, "Config key has a value not of type bool: `%s'", from);
+                }
                 return 1;
             }
             set_cmdarg_boolean(co->opt, enabled);
@@ -110,12 +124,26 @@ int set_config_from(struct confopt * const co, char const * const from)
 
             if (from == endptr)
             {
-                logger_early(1, "Subopt `%s': Value `%s' is not a valid number.", co->key, from);
+                if (co->key != NULL)
+                {
+                    logger_early(1, "Subopt `%s': Value `%s' is not a valid number.", co->key, from);
+                }
+                else
+                {
+                    logger_early(1, "Subopt: Value `%s' is not a valid number.", from);
+                }
                 return 1;
             }
             if (errno == ERANGE)
             {
-                logger_early(1, "Subopt `%s': Number too large.", co->key);
+                if (co->key != NULL)
+                {
+                    logger_early(1, "Subopt `%s': Number too large.", co->key);
+                }
+                else
+                {
+                    logger_early(1, "%s", "Subopt: Number too large.");
+                }
                 return 1;
             }
             set_cmdarg_ull(co->opt, value_llu);
