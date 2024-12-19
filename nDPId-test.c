@@ -1673,7 +1673,8 @@ static int ncrypt_selftest()
     {
         ret++;
     }
-    if (ncrypt_init_decrypt(&nc_peer2, nc_peer1.iv) != 0)
+    memcpy(&nc_peer2.iv, &nc_peer1.iv, sizeof(nc_peer1.iv));
+    if (ncrypt_init_decrypt(&nc_peer2) != 0)
     {
         ret++;
     }

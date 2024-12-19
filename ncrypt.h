@@ -56,6 +56,11 @@ struct ncrypt_buffer
     size_t write_offset; // partial write; offset to next bytes of data
 };
 
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
+_Static_assert(sizeof(((struct ncrypt_buffer *)0)->encrypted) == sizeof(((struct ncrypt_buffer *)0)->encrypted.raw),
+               "Raw buffer and iv/tag/data sizes differ");
+#endif
+
 int ncrypt_keygen(unsigned char priv_key[NCRYPT_X25519_KEYLEN], unsigned char pub_key[NCRYPT_X25519_KEYLEN]);
 
 int ncrypt_load_privkey(char const * const private_key_file, unsigned char priv_key[NCRYPT_X25519_KEYLEN]);
@@ -68,7 +73,7 @@ int ncrypt_init(struct ncrypt * const nc,
 
 int ncrypt_init_encrypt(struct ncrypt * const nc);
 
-int ncrypt_init_decrypt(struct ncrypt * const nc, unsigned char iv[NCRYPT_AES_IVLEN]);
+int ncrypt_init_decrypt(struct ncrypt * const nc);
 
 void ncrypt_free(struct ncrypt * const nc);
 
