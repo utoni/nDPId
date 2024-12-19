@@ -5551,6 +5551,12 @@ static void print_usage(char const * const arg0)
         "\t  \tDefault: disabled\n"
         "\t-c\tPath to a UNIX socket (nDPIsrvd Collector) or a custom UDP endpoint.\n"
         "\t  \tDefault: `%s'\n"
+#ifdef ENABLE_CRYPTO
+        "\t-k\tPath to the local private key file (PEM format)\n"
+        "\t  \tDefault: disabled\n"
+        "\t-K\tPath to the remote public key file (PEM format)\n"
+        "\t  \tDefault: disabled\n"
+#endif
 #ifdef ENABLE_EPOLL
         "\t-e\tUse poll() instead of epoll().\n"
         "\t  \tDefault: epoll() on Linux, poll() otherwise\n"

@@ -11,21 +11,12 @@
 #define INI_MAX_NAME 50
 
 #define CMDARG_STR(_default_value)                                                                                     \
-    {                                                                                                                  \
-        .is_set = 0, .type = CMDTYPE_STRING, .string.value = NULL, .string.default_value = (_default_value)            \
-    }
+    {.is_set = 0, .type = CMDTYPE_STRING, .string.value = NULL, .string.default_value = (_default_value)}
 #define CMDARG_BOOL(_default_value)                                                                                    \
-    {                                                                                                                  \
-        .is_set = 0, .type = CMDTYPE_BOOLEAN, .boolean.value = 0, .boolean.default_value = (_default_value)            \
-    }
+    {.is_set = 0, .type = CMDTYPE_BOOLEAN, .boolean.value = 0, .boolean.default_value = (_default_value)}
 #define CMDARG_ULL(_default_value)                                                                                     \
-    {                                                                                                                  \
-        .is_set = 0, .type = CMDTYPE_ULL, .ull.value = 0ull, .ull.default_value = (_default_value)                     \
-    }
-#define CONFOPT(_key, _opt)                                                                                            \
-    {                                                                                                                  \
-        .key = _key, .opt = _opt                                                                                       \
-    }
+    {.is_set = 0, .type = CMDTYPE_ULL, .ull.value = 0ull, .ull.default_value = (_default_value)}
+#define CONFOPT(_key, _opt) {.key = _key, .opt = _opt}
 #define GET_CMDARG_STR(cmdarg) ((cmdarg).string.value)
 #define GET_CMDARG_BOOL(cmdarg) ((cmdarg).boolean.value)
 #define GET_CMDARG_ULL(cmdarg) ((cmdarg).ull.value)
