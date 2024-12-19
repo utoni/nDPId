@@ -1,18 +1,18 @@
-From a9e21c707e5edaf1db14b3dd78d5cc397ebc624c Mon Sep 17 00:00:00 2001
+From dd4b50f34008f636e31e0a0c6c05df6791767231 Mon Sep 17 00:00:00 2001
 From: Toni Uhlig <matzeton@googlemail.com>
-Date: Mon, 12 Jun 2023 19:54:31 +0200
+Date: Mon, 9 Dec 2024 16:26:09 +0100
 Subject: [PATCH] Allow in-source builds required for OpenWrt toolchain.
 
 Signed-off-by: Toni Uhlig <matzeton@googlemail.com>
 ---
- CMakeLists.txt | 7 -------
- 1 file changed, 7 deletions(-)
+ CMakeLists.txt | 8 --------
+ 1 file changed, 8 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 43f8f31b..b88f0f0c 100644
+index 14a0ec829..5d7d45073 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -10,13 +10,6 @@ if(CMAKE_COMPILER_IS_GNUCXX)
+@@ -10,14 +10,6 @@ if(CMAKE_COMPILER_IS_GNUCXX)
  endif(CMAKE_COMPILER_IS_GNUCXX)
  set(CMAKE_C_STANDARD 11)
  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c11 -D_DEFAULT_SOURCE=1 -D_GNU_SOURCE=1")
@@ -21,11 +21,12 @@ index 43f8f31b..b88f0f0c 100644
 -                        "Please remove ${PROJECT_SOURCE_DIR}/CMakeCache.txt\n"
 -                        "and\n"
 -                        "${PROJECT_SOURCE_DIR}/CMakeFiles\n"
--                        "Create a build directory somewhere and run CMake again.")
+-                        "Create a build directory somewhere and run CMake again.\n"
+-                        "Or run: 'cmake -S ${PROJECT_SOURCE_DIR} -B ./your-custom-build-dir [CMAKE-OPTIONS]'")
 -endif()
  set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
  find_package(PkgConfig REQUIRED)
  
 -- 
-2.30.2
+2.39.5
 
