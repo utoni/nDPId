@@ -278,7 +278,7 @@ int ncrypt_init_encrypt(struct ncrypt * const nc)
     return 0;
 }
 
-int ncrypt_init_decrypt(struct ncrypt * const nc, unsigned char iv[NCRYPT_AES_IVLEN])
+int ncrypt_init_decrypt(struct ncrypt * const nc)
 {
     if (nc->aesctx == NULL)
     {
@@ -298,8 +298,6 @@ int ncrypt_init_decrypt(struct ncrypt * const nc, unsigned char iv[NCRYPT_AES_IV
             return -3;
         }
     }
-
-    memcpy(nc->iv, iv, NCRYPT_AES_IVLEN);
 
     if (EVP_DecryptInit_ex(nc->aesctx, NULL, NULL, nc->shared_secret, nc->iv) == 0)
     {
