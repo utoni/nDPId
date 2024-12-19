@@ -105,10 +105,11 @@ int udp_server(struct ncrypt * const nc)
         int bytes_read = ncrypt_decrypt_recv(nc, sock_fd, &read_buf);
         if (bytes_read <= 0)
         {
+            logger(1, "Crypto error: %d", bytes_read);
             break;
         }
 
-        printf("read %d bytes\n", bytes_read);
+        printf("read %d bytes: %.*s", bytes_read, (int)read_buf.data_used, read_buf.plaintext.data);
     }
 
     return 0;
@@ -142,7 +143,7 @@ int main(int argc, char ** argv)
         return 1;
     }
 
-    struct ncrypt nc;
+    struct ncrypt nc = {};
     {
         int ret;
         unsigned char priv_key[NCRYPT_X25519_KEYLEN];
@@ -171,6 +172,12 @@ int main(int argc, char ** argv)
         if (ret != 0)
         {
             logger_early(1, "Crypto initialization failed: %d", ret);
+            return 1;
+        }
+        ret = ncrypt_init_decrypt(&nc);
+        if (ret != 0)
+        {
+            logger_early(1, "Crypto decrypt initialization failed: %d", ret);
             return 1;
         }
     }
