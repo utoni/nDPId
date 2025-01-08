@@ -1618,7 +1618,14 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
             free_workflow(&workflow);
             return NULL;
         }
-        rv = ncrypt_init_encrypt(&workflow->crypto);
+        rv = ncrypt_add_peer(&workflow->crypto, &nDPId_options.parsed_collector_address);
+        if (rv != 0)
+        {
+            logger(1, "Could not add peer: %d", rv);
+            free_workflow(&workflow);
+            return NULL;
+        }
+        rv = ncrypt_init_encrypt2(&workflow->crypto, &nDPId_options.parsed_collector_address);
         if (rv != 0)
         {
             logger_early(1, "Could not init encryption mode: %d", rv);
@@ -2691,18 +2698,18 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
         IS_CMDARG_SET(nDPId_options.remote_public_key_file) != 0)
     {
         int rv;
-        struct ncrypt_buffer buf = {.data_used = s_ret};
 
-        memcpy(buf.plaintext.data, newline_json_msg, s_ret);
-        rv = ncrypt_encrypt_send(&workflow->crypto, reader_thread->collector_sockfd, &buf);
-        if (rv - (NCRYPT_AES_IVLEN + NCRYPT_TAG_SIZE) != s_ret)
+        errno = 0;
+        rv = ncrypt_dgram_send(&workflow->crypto, reader_thread->collector_sockfd, newline_json_msg, (size_t)s_ret);
+        if (rv != 0)
         {
             logger(1,
-                   "[%8llu, %zu] Crypto: encrypt and send returned %d, but expected %d",
+                   "[%8llu, %zu] Crypto: encrypt and send returned %d (buffer size %d): %s",
                    workflow->packets_captured,
                    reader_thread->array_index,
                    rv,
-                   s_ret + (NCRYPT_AES_IVLEN + NCRYPT_TAG_SIZE));
+                   s_ret,
+                   strerror(errno));
         }
         return;
     }

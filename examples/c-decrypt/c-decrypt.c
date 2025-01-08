@@ -14,9 +14,13 @@ struct
     struct cmdarg listen_address;
     struct cmdarg local_private_key_file;
     struct cmdarg remote_public_key_file;
+    struct cmdarg parse_json_lines;
+    struct cmdarg quiet;
 } options = {.listen_address = CMDARG_STR("127.0.0.1:7443"),
              .local_private_key_file = CMDARG_STR(NULL),
-             .remote_public_key_file = CMDARG_STR(NULL)};
+             .remote_public_key_file = CMDARG_STR(NULL),
+             .parse_json_lines = CMDARG_BOOL(0),
+             .quiet = CMDARG_BOOL(0)};
 
 struct confopt config_map[] = {CONFOPT(NULL, &options.listen_address),
                                CONFOPT(NULL, &options.local_private_key_file),
@@ -26,7 +30,6 @@ static void print_usage(char const * const arg0)
 {
     static char const usage[] =
         "Usage: %s "
-        "\t \t"
         "[-l] [-L listen-address] [-k private-key-file] [-K public-key-file]\n"
         "\t  \t"
         "[-h]\n\n"
@@ -35,6 +38,8 @@ static void print_usage(char const * const arg0)
         "\t  \t(encrypted) UDP packets sent by nDPId\n"
         "\t-k\tThe path to the local private X25519 key file (PEM format)\n"
         "\t-K\tThe path to the remote public X25519 key file (PEM format)\n"
+        "\t-p\tParse decrypted JSON lines\n"
+        "\t-q\tQuiet mode, print errors only\n"
         "\t-h\tthis\n";
 
     fprintf(stderr, usage, arg0);
@@ -44,7 +49,7 @@ static int parse_options(int argc, char ** argv)
 {
     int opt;
 
-    while ((opt = getopt(argc, argv, "lL:k:K:h")) != -1)
+    while ((opt = getopt(argc, argv, "lL:k:K:pqh")) != -1)
     {
         switch (opt)
         {
@@ -59,6 +64,12 @@ static int parse_options(int argc, char ** argv)
                 break;
             case 'K':
                 set_cmdarg_string(&options.remote_public_key_file, optarg);
+                break;
+            case 'p':
+                set_cmdarg_boolean(&options.parse_json_lines, 1);
+                break;
+            case 'q':
+                set_cmdarg_boolean(&options.quiet, 1);
                 break;
 
             case 'h':
@@ -99,17 +110,44 @@ int udp_server(struct ncrypt * const nc)
         return 1;
     }
 
-    struct ncrypt_buffer read_buf = {};
+    size_t msgs_recvd = 0;
+    char read_buffer[NCRYPT_BUFFER_SIZE];
+    struct nDPIsrvd_json_buffer json_buf;
+    struct nDPIsrvd_jsmn json_ctx;
     for (;;)
     {
-        int bytes_read = ncrypt_decrypt_recv(nc, sock_fd, &read_buf);
-        if (bytes_read <= 0)
+        nDPIsrvd_json_buffer_reset(&json_buf);
+        size_t read_buffer_size = sizeof(read_buffer);
+        int ret = ncrypt_dgram_recv(nc, sock_fd, read_buffer, read_buffer_size);
+        if (ret < 0)
         {
-            logger(1, "Crypto error: %d", bytes_read);
+            logger(1, "Crypto error: %d", ret);
             break;
         }
+        msgs_recvd++;
 
-        printf("read %d bytes: %.*s", bytes_read, (int)read_buf.data_used, read_buf.plaintext.data);
+        if (GET_CMDARG_BOOL(options.quiet) == 0)
+        {
+            printf("received: %.*s\n", (int)read_buffer_size, read_buffer);
+            if ((msgs_recvd % 25) == 0)
+            {
+                printf("*** Messages received: %zu ***\n", msgs_recvd);
+            }
+        }
+
+        if (GET_CMDARG_BOOL(options.parse_json_lines) != 0)
+        {
+            json_buf.buf.ptr.raw = (uint8_t *)read_buffer;
+            json_buf.buf.used = json_buf.buf.max = read_buffer_size;
+
+            enum nDPIsrvd_parse_return ret = nDPIsrvd_parse_line(&json_buf, &json_ctx);
+            if (ret != PARSE_OK)
+            {
+                logger(1, "JSON parsing failed with: %d", ret);
+                break;
+            }
+            json_ctx.tokens_found = 0;
+        }
     }
 
     return 0;
@@ -172,12 +210,6 @@ int main(int argc, char ** argv)
         if (ret != 0)
         {
             logger_early(1, "Crypto initialization failed: %d", ret);
-            return 1;
-        }
-        ret = ncrypt_init_decrypt(&nc);
-        if (ret != 0)
-        {
-            logger_early(1, "Crypto decrypt initialization failed: %d", ret);
             return 1;
         }
     }

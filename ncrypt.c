@@ -6,12 +6,14 @@
 #include <openssl/err.h>
 #include <openssl/evp.h>
 #include <openssl/pem.h>
+#include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
 #define OPENSSL_DUMP(ptr, siz)                                                                                         \
     do                                                                                                                 \
     {                                                                                                                  \
+        fprintf(stderr, "Raw output (%s, %zu):\n", #ptr, siz);                                                         \
         BIO_dump_indent_fp(stderr, ptr, siz, 2);                                                                       \
         fputc('\n', stderr);                                                                                           \
     } while (0);
@@ -30,6 +32,73 @@ union iv
     } __attribute__((__packed__)) numeric;
     unsigned char buffer[NCRYPT_AES_IVLEN];
 };
+
+union packet
+{
+    unsigned char raw[NCRYPT_PACKET_BUFFER_SIZE];
+    struct
+    {
+        unsigned char iv[NCRYPT_AES_IVLEN];
+        unsigned char tag[NCRYPT_TAG_SIZE];
+        unsigned char data[NCRYPT_BUFFER_SIZE];
+    } __attribute__((__packed__));
+} __attribute__((__packed__));
+
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
+_Static_assert(sizeof(((union iv *)0)->buffer) == sizeof(((union iv *)0)->numeric),
+               "IV buffer must be of the same size as the numerics");
+#endif
+
+static inline nDPIsrvd_hashkey peer_build_hashkey(struct nDPIsrvd_address const * const peer_address)
+{
+    uint32_t hash = nDPIsrvd_HASHKEY_SEED;
+
+    socklen_t slen = peer_address->size;
+    while (slen-- > 0)
+    {
+        hash = ((hash << 5) + hash) + ((uint8_t *)&peer_address->raw)[slen];
+    }
+
+    return hash;
+}
+
+int ncrypt_add_peer(struct ncrypt * const nc, struct nDPIsrvd_address const * const peer_address)
+{
+    nDPIsrvd_hashkey peer_key = peer_build_hashkey(peer_address);
+    if (peer_key == nDPIsrvd_HASHKEY_SEED)
+    {
+        return -1;
+    }
+
+    struct peer * peer = (struct peer *)calloc(1, sizeof(*peer));
+    if (peer == NULL)
+    {
+        return -2;
+    }
+
+    peer->hash_key = peer_key;
+    peer->address = *peer_address;
+    HASH_ADD_INT(nc->peers, hash_key, peer);
+    return 0;
+}
+
+struct peer * ncrypt_get_peer(struct ncrypt * const nc, struct nDPIsrvd_address const * const peer_address)
+{
+    nDPIsrvd_hashkey peer_key = peer_build_hashkey(peer_address);
+    if (peer_key == nDPIsrvd_HASHKEY_SEED)
+    {
+        return NULL;
+    }
+
+    struct peer * peer;
+    HASH_FIND_INT(nc->peers, &peer_key, peer);
+    if (peer == NULL)
+    {
+        return NULL;
+    }
+
+    return peer;
+}
 
 int ncrypt_keygen(unsigned char priv_key[NCRYPT_X25519_KEYLEN], unsigned char pub_key[NCRYPT_X25519_KEYLEN])
 {
@@ -109,7 +178,7 @@ int ncrypt_load_pubkey(char const * const public_key_file, unsigned char pub_key
     return 0;
 }
 
-static int init_iv(struct ncrypt * const nc)
+static int init_iv(struct peer * const peer)
 {
     FILE * rnd_fp;
 
@@ -120,7 +189,7 @@ static int init_iv(struct ncrypt * const nc)
         return -1;
     }
 
-    if (fread(&nc->iv[0], sizeof(nc->iv[0]), sizeof(nc->iv) / sizeof(nc->iv[0]), rnd_fp) != NCRYPT_AES_IVLEN)
+    if (fread(&peer->iv[0], sizeof(peer->iv[0]), sizeof(peer->iv) / sizeof(peer->iv[0]), rnd_fp) != NCRYPT_AES_IVLEN)
     {
         fclose(rnd_fp);
         return -2;
@@ -131,9 +200,9 @@ static int init_iv(struct ncrypt * const nc)
     return 0;
 }
 
-static void next_iv(struct ncrypt * const nc)
+static void next_iv(struct peer * const peer)
 {
-    union iv * const iv = (union iv *)&nc->iv[0];
+    union iv * const iv = (union iv *)&peer->iv[0];
 
     uint64_t lower = be64toh(iv->numeric.lower);
     lower++;
@@ -151,9 +220,19 @@ int ncrypt_init(struct ncrypt * const nc,
                 unsigned char local_priv_key[NCRYPT_X25519_KEYLEN],
                 unsigned char remote_pub_key[NCRYPT_X25519_KEYLEN])
 {
-    EVP_PKEY_CTX * key_ctx;
+    int rv = 0;
+    EVP_PKEY_CTX * key_ctx = NULL;
     size_t pub_key_datalen = 0;
     size_t secret_len = 0;
+    struct
+    {
+        EVP_PKEY * priv_key;
+        unsigned char pub_key[NCRYPT_X25519_KEYLEN];
+    } local = {.priv_key = NULL, .pub_key = {}};
+    struct
+    {
+        EVP_PKEY * pub_key;
+    } remote = {.pub_key = NULL};
 
     if (nc->libctx != NULL)
     {
@@ -165,112 +244,143 @@ int ncrypt_init(struct ncrypt * const nc,
         return -2;
     }
 
-    nc->local.priv_key =
+    local.priv_key =
         EVP_PKEY_new_raw_private_key_ex(nc->libctx, "X25519", nc->propq, local_priv_key, NCRYPT_X25519_KEYLEN);
-    if (nc->local.priv_key == NULL)
+    if (local.priv_key == NULL)
     {
         return -3;
     }
 
-    if (EVP_PKEY_get_octet_string_param(nc->local.priv_key,
-                                        OSSL_PKEY_PARAM_PUB_KEY,
-                                        nc->local.pub_key,
-                                        sizeof(nc->local.pub_key),
-                                        &pub_key_datalen) == 0)
+    if (EVP_PKEY_get_octet_string_param(
+            local.priv_key, OSSL_PKEY_PARAM_PUB_KEY, local.pub_key, sizeof(local.pub_key), &pub_key_datalen) == 0)
     {
-        return -4;
+        rv = -4;
+        goto error;
     }
     if (pub_key_datalen != NCRYPT_X25519_KEYLEN)
     {
-        return -5;
+        rv = -5;
+        goto error;
     }
 
-    nc->remote.pub_key =
+    remote.pub_key =
         EVP_PKEY_new_raw_public_key_ex(nc->libctx, "X25519", nc->propq, remote_pub_key, NCRYPT_X25519_KEYLEN);
-    if (nc->remote.pub_key == NULL)
+    if (remote.pub_key == NULL)
     {
-        return -6;
+        rv = -6;
+        goto error;
     }
 
-    key_ctx = EVP_PKEY_CTX_new_from_pkey(nc->libctx, nc->local.priv_key, nc->propq);
+    key_ctx = EVP_PKEY_CTX_new_from_pkey(nc->libctx, local.priv_key, nc->propq);
     if (key_ctx == NULL)
     {
-        return -7;
+        rv = -7;
+        goto error;
     }
 
     if (EVP_PKEY_derive_init(key_ctx) == 0)
     {
-        EVP_PKEY_CTX_free(key_ctx);
-        return -8;
+        rv = -8;
+        goto error;
     }
 
-    if (EVP_PKEY_derive_set_peer(key_ctx, nc->remote.pub_key) == 0)
+    if (EVP_PKEY_derive_set_peer(key_ctx, remote.pub_key) == 0)
     {
-        EVP_PKEY_CTX_free(key_ctx);
-        return -9;
+        rv = -9;
+        goto error;
     }
 
     if (EVP_PKEY_derive(key_ctx, NULL, &secret_len) == 0)
     {
-        EVP_PKEY_CTX_free(key_ctx);
-        return -10;
+        rv = -10;
+        goto error;
     }
     if (secret_len != NCRYPT_X25519_KEYLEN)
     {
-        EVP_PKEY_CTX_free(key_ctx);
-        return -11;
+        rv = -11;
+        goto error;
     }
 
-    nc->shared_secret = OPENSSL_malloc(secret_len);
-    if (nc->shared_secret == NULL)
-    {
-        EVP_PKEY_CTX_free(key_ctx);
-        return -12;
-    }
     if (EVP_PKEY_derive(key_ctx, nc->shared_secret, &secret_len) == 0)
     {
-        EVP_PKEY_CTX_free(key_ctx);
-        OPENSSL_clear_free(nc->shared_secret, secret_len);
-        nc->shared_secret = NULL;
-        return -13;
+        rv = -12;
+        OPENSSL_cleanse(nc->shared_secret, NCRYPT_X25519_KEYLEN);
+        goto error;
     }
-
-    nc->iv_mismatches = 0;
 
     OPENSSL_cleanse(local_priv_key, NCRYPT_X25519_KEYLEN);
     OPENSSL_cleanse(remote_pub_key, NCRYPT_X25519_KEYLEN);
 
+error:
     EVP_PKEY_CTX_free(key_ctx);
-    return 0;
+    EVP_PKEY_free(local.priv_key);
+    EVP_PKEY_free(remote.pub_key);
+
+    return rv;
 }
 
-int ncrypt_init_encrypt(struct ncrypt * const nc)
+int ncrypt_init_encrypt(struct ncrypt * const nc, struct aes * const aes)
 {
-    if (nc->aesctx == NULL)
+    aes->ctx = EVP_CIPHER_CTX_new();
+    if (aes->ctx == NULL)
     {
-        nc->aesctx = EVP_CIPHER_CTX_new();
-        if (nc->aesctx == NULL)
-        {
-            return -1;
-        }
-
-        if (EVP_EncryptInit_ex(nc->aesctx, EVP_aes_256_gcm(), NULL, NULL, NULL) == 0)
-        {
-            return -2;
-        }
-
-        if (EVP_CIPHER_CTX_ctrl(nc->aesctx, EVP_CTRL_GCM_SET_IVLEN, NCRYPT_AES_IVLEN, NULL) == 0)
-        {
-            return -3;
-        }
+        return -3;
     }
 
-    if (init_iv(nc) != 0)
+    if (EVP_EncryptInit_ex(aes->ctx, EVP_aes_256_gcm(), NULL, NULL, NULL) == 0)
     {
         return -4;
     }
 
-    if (EVP_EncryptInit_ex(nc->aesctx, NULL, NULL, nc->shared_secret, nc->iv) == 0)
+    if (EVP_CIPHER_CTX_ctrl(aes->ctx, EVP_CTRL_GCM_SET_IVLEN, NCRYPT_AES_IVLEN, NULL) == 0)
+    {
+        return -5;
+    }
+
+    if (EVP_EncryptInit_ex(aes->ctx, NULL, NULL, nc->shared_secret, NULL) == 0)
+    {
+        return -6;
+    }
+
+    return 0;
+}
+
+int ncrypt_init_encrypt2(struct ncrypt * const nc, struct nDPIsrvd_address * const peer_address)
+{
+    struct peer * const peer = ncrypt_get_peer(nc, peer_address);
+
+    if (peer == NULL)
+    {
+        return -1;
+    }
+
+    if (init_iv(peer) != 0)
+    {
+        return -2;
+    }
+
+    return ncrypt_init_encrypt(nc, &peer->aes);
+}
+
+int ncrypt_init_decrypt(struct ncrypt * const nc, struct aes * const aes)
+{
+    aes->ctx = EVP_CIPHER_CTX_new();
+    if (aes->ctx == NULL)
+    {
+        return -2;
+    }
+
+    if (EVP_DecryptInit_ex(aes->ctx, EVP_aes_256_gcm(), NULL, NULL, NULL) == 0)
+    {
+        return -3;
+    }
+
+    if (EVP_CIPHER_CTX_ctrl(aes->ctx, EVP_CTRL_GCM_SET_IVLEN, NCRYPT_AES_IVLEN, NULL) == 0)
+    {
+        return -4;
+    }
+
+    if (EVP_DecryptInit_ex(aes->ctx, NULL, NULL, nc->shared_secret, NULL) == 0)
     {
         return -5;
     }
@@ -278,93 +388,81 @@ int ncrypt_init_encrypt(struct ncrypt * const nc)
     return 0;
 }
 
-int ncrypt_init_decrypt(struct ncrypt * const nc)
+int ncrypt_init_decrypt2(struct ncrypt * const nc, struct nDPIsrvd_address * const peer_address)
 {
-    if (nc->aesctx == NULL)
+    struct peer * const peer = ncrypt_get_peer(nc, peer_address);
+
+    if (peer == NULL)
     {
-        nc->aesctx = EVP_CIPHER_CTX_new();
-        if (nc->aesctx == NULL)
-        {
-            return -1;
-        }
-
-        if (EVP_DecryptInit_ex(nc->aesctx, EVP_aes_256_gcm(), NULL, NULL, NULL) == 0)
-        {
-            return -2;
-        }
-
-        if (EVP_CIPHER_CTX_ctrl(nc->aesctx, EVP_CTRL_GCM_SET_IVLEN, NCRYPT_AES_IVLEN, NULL) == 0)
-        {
-            return -3;
-        }
+        return -1;
     }
 
-    if (EVP_DecryptInit_ex(nc->aesctx, NULL, NULL, nc->shared_secret, nc->iv) == 0)
+    return ncrypt_init_decrypt(nc, &peer->aes);
+}
+
+void ncrypt_free_aes(struct aes * const aes)
+{
+    EVP_CIPHER_CTX_free(aes->ctx);
+    aes->ctx = NULL;
+}
+
+static void cleanup_peers(struct ncrypt * const nc)
+{
+    struct peer * current_peer;
+    struct peer * ctmp;
+
+    if (nc->peers == NULL)
     {
-        return -4;
+        return;
     }
 
-    return 0;
+    HASH_ITER(hh, nc->peers, current_peer, ctmp)
+    {
+        ncrypt_free_aes(&current_peer->aes);
+        HASH_DEL(nc->peers, current_peer);
+        free(current_peer);
+    }
 }
 
 void ncrypt_free(struct ncrypt * const nc)
 {
-    if (nc->aesctx != NULL)
-    {
-        EVP_CIPHER_CTX_free(nc->aesctx);
-        nc->aesctx = NULL;
-    }
-
-    if (nc->shared_secret != NULL)
-    {
-        OPENSSL_clear_free(nc->shared_secret, NCRYPT_X25519_KEYLEN);
-        nc->shared_secret = NULL;
-    }
-
-    if (nc->local.priv_key != NULL)
-    {
-        EVP_PKEY_free(nc->local.priv_key);
-        nc->local.priv_key = NULL;
-    }
-
-    if (nc->remote.pub_key != NULL)
-    {
-        EVP_PKEY_free(nc->remote.pub_key);
-        nc->remote.pub_key = NULL;
-    }
+    OPENSSL_cleanse(nc->shared_secret, NCRYPT_X25519_KEYLEN);
 
     if (nc->libctx != NULL)
     {
         OSSL_LIB_CTX_free(nc->libctx);
         nc->libctx = NULL;
     }
+
+    cleanup_peers(nc);
 }
 
-static int encrypt(struct ncrypt * const nc,
-                   unsigned char const * const plaintext,
-                   size_t used,
+static int encrypt(struct aes * const aes,
+                   char const * const plaintext,
+                   size_t plaintext_size,
+                   unsigned char const iv[NCRYPT_AES_IVLEN],
                    unsigned char encrypted[NCRYPT_BUFFER_SIZE],
                    unsigned char tag[NCRYPT_TAG_SIZE])
 {
     int encrypted_used;
     int remaining;
 
-    if (EVP_EncryptInit_ex(nc->aesctx, NULL, NULL, NULL, nc->iv) == 0)
+    if (EVP_EncryptInit_ex(aes->ctx, NULL, NULL, NULL, iv) == 0)
     {
         return -2;
     }
 
-    if (EVP_EncryptUpdate(nc->aesctx, encrypted, &encrypted_used, plaintext, used) == 0)
+    if (EVP_EncryptUpdate(aes->ctx, encrypted, &encrypted_used, (const unsigned char *)plaintext, plaintext_size) == 0)
     {
         return -3;
     }
 
-    if (EVP_EncryptFinal_ex(nc->aesctx, encrypted + encrypted_used, &remaining) == 0)
+    if (EVP_EncryptFinal_ex(aes->ctx, encrypted + encrypted_used, &remaining) == 0)
     {
         return -4;
     }
 
-    if (EVP_CIPHER_CTX_ctrl(nc->aesctx, EVP_CTRL_GCM_GET_TAG, NCRYPT_TAG_SIZE, tag) == 0)
+    if (EVP_CIPHER_CTX_ctrl(aes->ctx, EVP_CTRL_GCM_GET_TAG, NCRYPT_TAG_SIZE, tag) == 0)
     {
         return -5;
     }
@@ -372,47 +470,47 @@ static int encrypt(struct ncrypt * const nc,
     return encrypted_used + remaining;
 }
 
-int ncrypt_encrypt(struct ncrypt * const nc,
-                   unsigned char const * const plaintext,
-                   size_t used,
+int ncrypt_encrypt(struct aes * const aes,
+                   char const * const plaintext,
+                   size_t plaintext_size,
+                   unsigned char const iv[NCRYPT_AES_IVLEN],
                    unsigned char encrypted[NCRYPT_BUFFER_SIZE],
                    unsigned char tag[NCRYPT_TAG_SIZE])
 {
-    if (used > NCRYPT_BUFFER_SIZE)
+    if (plaintext_size > NCRYPT_BUFFER_SIZE)
     {
         return -1;
     }
 
-    next_iv(nc);
-
-    return encrypt(nc, plaintext, used, encrypted, tag);
+    return encrypt(aes, plaintext, plaintext_size, iv, encrypted, tag);
 }
 
-int decrypt(struct ncrypt * const nc,
-            unsigned char const * const encrypted,
-            size_t used,
-            unsigned char tag[NCRYPT_TAG_SIZE],
-            unsigned char plaintext[NCRYPT_BUFFER_SIZE])
+static int decrypt(struct aes * const aes,
+                   unsigned char const * const encrypted,
+                   size_t encrypt_size,
+                   unsigned char const iv[NCRYPT_AES_IVLEN],
+                   unsigned char tag[NCRYPT_TAG_SIZE],
+                   char plaintext[NCRYPT_BUFFER_SIZE])
 {
     int decrypted_used;
     int remaining;
 
-    if (EVP_DecryptInit_ex(nc->aesctx, NULL, NULL, NULL, nc->iv) == 0)
+    if (EVP_DecryptInit_ex(aes->ctx, NULL, NULL, NULL, iv) == 0)
     {
         return -2;
     }
 
-    if (EVP_DecryptUpdate(nc->aesctx, plaintext, &decrypted_used, encrypted, used) == 0)
+    if (EVP_DecryptUpdate(aes->ctx, (unsigned char *)plaintext, &decrypted_used, encrypted, encrypt_size) == 0)
     {
         return -3;
     }
 
-    if (EVP_CIPHER_CTX_ctrl(nc->aesctx, EVP_CTRL_GCM_SET_TAG, NCRYPT_TAG_SIZE, tag) == 0)
+    if (EVP_CIPHER_CTX_ctrl(aes->ctx, EVP_CTRL_GCM_SET_TAG, NCRYPT_TAG_SIZE, tag) == 0)
     {
         return -4;
     }
 
-    if (EVP_DecryptFinal_ex(nc->aesctx, plaintext + decrypted_used, &remaining) == 0)
+    if (EVP_DecryptFinal_ex(aes->ctx, (unsigned char *)plaintext + decrypted_used, &remaining) == 0)
     {
         return -5;
     }
@@ -420,78 +518,117 @@ int decrypt(struct ncrypt * const nc,
     return decrypted_used + remaining;
 }
 
-int ncrypt_decrypt(struct ncrypt * const nc,
+int ncrypt_decrypt(struct aes * const aes,
                    unsigned char const * const encrypted,
-                   size_t used,
+                   size_t encrypt_size,
+                   unsigned char const iv[NCRYPT_AES_IVLEN],
                    unsigned char tag[NCRYPT_TAG_SIZE],
-                   unsigned char plaintext[NCRYPT_BUFFER_SIZE])
+                   char plaintext[NCRYPT_BUFFER_SIZE])
 {
-    if (used > NCRYPT_BUFFER_SIZE)
+    if (encrypt_size > NCRYPT_BUFFER_SIZE)
     {
         return -1;
     }
 
-    next_iv(nc);
-
-    return decrypt(nc, encrypted, used, tag, plaintext);
+    return decrypt(aes, encrypted, encrypt_size, iv, tag, plaintext);
 }
 
-int ncrypt_encrypt_send(struct ncrypt * const nc, int fd, struct ncrypt_buffer * const buf)
+int ncrypt_dgram_send(struct ncrypt * const nc, int fd, char const * const plaintext, size_t plaintext_size)
 {
-    int encrypted_used = encrypt(nc, buf->plaintext.data, buf->data_used, buf->encrypted.data, buf->encrypted.tag);
-    if (encrypted_used < 0)
+    if (plaintext_size > NCRYPT_BUFFER_SIZE)
     {
         return -1;
     }
 
-    memcpy(buf->encrypted.iv, nc->iv, NCRYPT_AES_IVLEN);
-    ssize_t bytes_written = write(fd, buf->encrypted.raw, NCRYPT_AES_IVLEN + NCRYPT_TAG_SIZE + encrypted_used);
-    next_iv(nc);
-
-    if (bytes_written < 0)
+    int retval = 0;
+    struct peer * current_peer;
+    struct peer * tmp_peer;
+    union packet encrypted;
+    HASH_ITER(hh, nc->peers, current_peer, tmp_peer)
     {
-        return -2;
-    }
-    if (bytes_written != NCRYPT_AES_IVLEN + NCRYPT_TAG_SIZE + encrypted_used)
-    {
-        nc->partial_writes++;
-        buf->write_offset += bytes_written;
+        int encrypted_used =
+            encrypt(&current_peer->aes, plaintext, plaintext_size, current_peer->iv, encrypted.data, encrypted.tag);
+        if (encrypted_used < 0 || encrypted_used > (int)NCRYPT_BUFFER_SIZE)
+        {
+            current_peer->crypto_errors++;
+            retval++;
+            continue;
+        }
+
+        memcpy(encrypted.iv, current_peer->iv, NCRYPT_AES_IVLEN);
+        ssize_t bytes_written = sendto(fd,
+                                       encrypted.raw,
+                                       NCRYPT_PACKET_OVERHEAD + encrypted_used,
+                                       0,
+                                       &current_peer->address.raw,
+                                       current_peer->address.size);
+        next_iv(current_peer);
+
+        if (bytes_written < 0)
+        {
+            current_peer->send_errors++;
+            retval++;
+            continue;
+        }
+        if (bytes_written != NCRYPT_PACKET_OVERHEAD + encrypted_used)
+        {
+            current_peer->partial_writes++;
+            retval++;
+            continue;
+        }
     }
 
-    return (int)bytes_written;
+    return retval;
 }
 
-int ncrypt_decrypt_recv(struct ncrypt * const nc, int fd, struct ncrypt_buffer * const buf)
+int ncrypt_dgram_recv(struct ncrypt * const nc, int fd, char * const plaintext, size_t plaintext_size)
 {
-    ssize_t bytes_read = read(fd, buf->encrypted.raw, sizeof(buf->encrypted.raw));
+    if (plaintext_size > NCRYPT_BUFFER_SIZE)
+    {
+        return -1;
+    }
+
+    struct nDPIsrvd_address remote = {.size = sizeof(remote.raw)};
+    union packet encrypted;
+    ssize_t bytes_read = recvfrom(fd, encrypted.raw, sizeof(encrypted.raw), 0, &remote.raw, &remote.size);
 
     if (bytes_read < 0)
     {
-        return -1;
-    }
-    if (bytes_read < NCRYPT_AES_IVLEN + NCRYPT_TAG_SIZE + 1)
-    {
         return -2;
     }
-
-    if (memcmp(nc->iv, buf->encrypted.iv, NCRYPT_AES_IVLEN) != 0)
-    {
-        nc->iv_mismatches++;
-    }
-    memcpy(nc->iv, buf->encrypted.iv, NCRYPT_AES_IVLEN);
-    int decrypted_used = decrypt(nc,
-                                 buf->encrypted.data,
-                                 bytes_read - NCRYPT_AES_IVLEN - NCRYPT_TAG_SIZE,
-                                 buf->encrypted.tag,
-                                 buf->plaintext.data);
-    next_iv(nc);
-
-    if (decrypted_used < 0)
+    if (bytes_read < NCRYPT_PACKET_MIN_SIZE)
     {
         return -3;
     }
+    if (plaintext_size < (size_t)bytes_read - NCRYPT_PACKET_OVERHEAD)
+    {
+        return -4;
+    }
 
-    buf->data_used = decrypted_used;
+    struct peer * peer = ncrypt_get_peer(nc, &remote);
+    if (peer == NULL)
+    {
+        if (ncrypt_add_peer(nc, &remote) != 0)
+        {
+            return -5;
+        }
+        peer = ncrypt_get_peer(nc, &remote);
+        ncrypt_init_decrypt(nc, &peer->aes);
+    }
 
-    return (int)bytes_read;
+    if (memcmp(peer->iv, encrypted.iv, NCRYPT_AES_IVLEN) != 0)
+    {
+        peer->iv_mismatches++;
+        memcpy(peer->iv, encrypted.iv, NCRYPT_AES_IVLEN);
+    }
+    int decrypted_used =
+        decrypt(&peer->aes, encrypted.data, bytes_read - NCRYPT_PACKET_OVERHEAD, peer->iv, encrypted.tag, plaintext);
+    next_iv(peer);
+
+    if (decrypted_used < 0)
+    {
+        return -6;
+    }
+
+    return 0;
 }

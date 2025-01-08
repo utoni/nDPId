@@ -141,10 +141,10 @@ struct distributor_return_value
 };
 
 #define TC_INIT(initial, wanted)                                                                                       \
-    {                                                                                                                  \
-        .mutex = PTHREAD_MUTEX_INITIALIZER, .condition = PTHREAD_COND_INITIALIZER, .value = initial,                   \
-        .wanted_value = wanted                                                                                         \
-    }
+    {.mutex = PTHREAD_MUTEX_INITIALIZER,                                                                               \
+     .condition = PTHREAD_COND_INITIALIZER,                                                                            \
+     .value = initial,                                                                                                 \
+     .wanted_value = wanted}
 struct thread_condition
 {
     pthread_mutex_t mutex;
@@ -1647,11 +1647,19 @@ static int ncrypt_selftest()
     int ret = 0;
     struct ncrypt nc_peer1 = {};
     struct ncrypt nc_peer2 = {};
+    struct aes aes_peer1 = {};
+    struct aes aes_peer2 = {};
     unsigned char peer1_priv_key[NCRYPT_X25519_KEYLEN];
     unsigned char peer2_priv_key[NCRYPT_X25519_KEYLEN];
     unsigned char peer1_pub_key[NCRYPT_X25519_KEYLEN];
     unsigned char peer2_pub_key[NCRYPT_X25519_KEYLEN];
     unsigned char iv[NCRYPT_AES_IVLEN];
+    char const plaintext[] = "Secret Message!";
+    unsigned char encrypted[NCRYPT_BUFFER_SIZE];
+    unsigned char tag[NCRYPT_TAG_SIZE];
+    char decrypted[NCRYPT_BUFFER_SIZE];
+
+    memset(iv, 0x41, sizeof(iv));
 
     if (ncrypt_keygen(peer1_priv_key, peer1_pub_key) != 0)
     {
@@ -1669,176 +1677,74 @@ static int ncrypt_selftest()
     {
         ret++;
     }
-    if (ncrypt_init_encrypt(&nc_peer1) != 0)
+    if (ncrypt_init_encrypt(&nc_peer1, &aes_peer1) != 0)
     {
         ret++;
     }
-    memcpy(&nc_peer2.iv, &nc_peer1.iv, sizeof(nc_peer1.iv));
-    if (ncrypt_init_decrypt(&nc_peer2) != 0)
+    if (ncrypt_init_decrypt(&nc_peer2, &aes_peer2) != 0)
     {
         ret++;
     }
-    if (memcmp(nc_peer1.shared_secret, nc_peer2.shared_secret, NCRYPT_X25519_KEYLEN) != 0)
+    int enc_bytes = ncrypt_encrypt(&aes_peer1, plaintext, sizeof(plaintext), iv, encrypted, tag);
+    int dec_bytes = ncrypt_decrypt(&aes_peer2, encrypted, enc_bytes, iv, tag, decrypted);
+    if (enc_bytes < 0 || dec_bytes < 0)
     {
         ret++;
     }
-    if (memcmp(nc_peer1.iv, nc_peer2.iv, NCRYPT_AES_IVLEN) != 0)
-    {
-        ret++;
-    }
-
-    memcpy(iv, nc_peer1.iv, NCRYPT_AES_IVLEN);
-    unsigned char plaintext[] = "Secret Message";
-    unsigned char encrypted1[NCRYPT_BUFFER_SIZE];
-    unsigned char tag1[NCRYPT_TAG_SIZE];
-    unsigned char encrypted2[NCRYPT_BUFFER_SIZE];
-    unsigned char tag2[NCRYPT_TAG_SIZE];
-    unsigned char tmp1[NETWORK_BUFFER_MAX_SIZE];
-    unsigned char tmp2[NETWORK_BUFFER_MAX_SIZE];
-
-    memset(encrypted1, 0xFF, sizeof(encrypted1));
-    memset(encrypted2, 0xFF, sizeof(encrypted2));
-    memset(tag1, 0xFF, sizeof(tag1));
-    memset(tag2, 0xFF, sizeof(tag2));
-
-    int enc_bytes;
-    int dec_bytes;
-
-    enc_bytes = ncrypt_encrypt(&nc_peer1, plaintext, sizeof(plaintext), encrypted1, tag1);
-    dec_bytes = ncrypt_decrypt(&nc_peer2, encrypted1, enc_bytes, tag1, tmp1);
-
-    if (enc_bytes != dec_bytes)
-    {
-        ret++;
-    }
-    if (memcmp(plaintext, tmp1, dec_bytes) != 0)
-    {
-        ret++;
-    }
-    memset(tmp1, 0xFF, sizeof(tmp1));
-
-    enc_bytes = ncrypt_encrypt(&nc_peer1, plaintext, sizeof(plaintext), encrypted2, tag2);
-    dec_bytes = ncrypt_decrypt(&nc_peer2, encrypted2, enc_bytes, tag2, tmp1);
-
-    if (enc_bytes != dec_bytes)
-    {
-        ret++;
-    }
-    if (memcmp(plaintext, tmp1, dec_bytes) != 0)
+    if (memcmp(plaintext, decrypted, sizeof(plaintext)) != 0)
     {
         ret++;
     }
 
-    if (memcmp(tag1, tag2, NCRYPT_TAG_SIZE) == 0)
+    ncrypt_free_aes(&aes_peer2);
+    ncrypt_free_aes(&aes_peer1);
+    memset(decrypted, '\0', sizeof(decrypted));
+
+    struct nDPIsrvd_address listen_address;
+    if (nDPIsrvd_setup_address(&listen_address, "127.0.0.1:17443") != 0)
     {
         ret++;
     }
-    if (memcmp(encrypted1, encrypted2, enc_bytes) == 0)
+    if (ncrypt_add_peer(&nc_peer1, &listen_address) != 0)
+    {
+        ret++;
+    }
+    if (ncrypt_init_encrypt2(&nc_peer1, &listen_address) != 0)
     {
         ret++;
     }
 
-    if (memcmp(iv, nc_peer1.iv, NCRYPT_AES_IVLEN) == 0)
+    int udp_sockfd_listen = socket(listen_address.raw.sa_family, SOCK_DGRAM, 0);
+    int udp_sockfd_connect = socket(listen_address.raw.sa_family, SOCK_DGRAM, 0);
+    if (udp_sockfd_listen < 0 || udp_sockfd_connect < 0)
+    {
+        ret++;
+    }
+    if (bind(udp_sockfd_listen, &listen_address.raw, listen_address.size) != 0)
+    {
+        ret++;
+    }
+    if (connect(udp_sockfd_connect, &listen_address.raw, listen_address.size) < 0)
     {
         ret++;
     }
 
-    memset(encrypted1, 0xFF, sizeof(encrypted1));
-    memset(tag1, 0xFF, sizeof(tag1));
-    memset(tmp1, 0x41, sizeof(tmp1));
-    enc_bytes = ncrypt_encrypt(&nc_peer1, tmp1, sizeof(tmp1), encrypted1, tag1);
-    dec_bytes = ncrypt_decrypt(&nc_peer2, encrypted1, enc_bytes, tag1, tmp2);
-    if (enc_bytes != sizeof(tmp1) || dec_bytes != sizeof(tmp2))
+    if (ncrypt_dgram_send(&nc_peer1, udp_sockfd_connect, plaintext, sizeof(plaintext)) != 0)
     {
         ret++;
     }
-    if (memcmp(tmp1, tmp2, sizeof(tmp1)) != 0)
+    if (ncrypt_dgram_recv(&nc_peer2, udp_sockfd_listen, decrypted, sizeof(decrypted)) != 0)
     {
         ret++;
     }
 
-    enc_bytes = ncrypt_encrypt(&nc_peer1, tmp1, sizeof(tmp1), encrypted2, tag2);
-    dec_bytes = ncrypt_decrypt(&nc_peer2, encrypted2, enc_bytes, tag2, tmp2);
-    if (enc_bytes != sizeof(tmp1) || dec_bytes != sizeof(tmp2))
-    {
-        ret++;
-    }
-    if (memcmp(tmp1, tmp2, sizeof(tmp1)) != 0)
+    if (memcmp(plaintext, decrypted, sizeof(plaintext)) != 0)
     {
         ret++;
     }
 
-    if (enc_bytes != dec_bytes)
-    {
-        ret++;
-    }
-    if (memcmp(tmp2, encrypted1, dec_bytes) == 0)
-    {
-        ret++;
-    }
-    if (memcmp(tag1, tag2, NCRYPT_TAG_SIZE) == 0)
-    {
-        ret++;
-    }
-    if (memcmp(encrypted1, encrypted2, enc_bytes) == 0)
-    {
-        ret++;
-    }
-    if (memcmp(iv, nc_peer1.iv, NCRYPT_AES_IVLEN) == 0)
-    {
-        ret++;
-    }
-    if (memcmp(nc_peer1.iv, nc_peer2.iv, NCRYPT_AES_IVLEN) != 0)
-    {
-        ret++;
-    }
-
-    int pipefds[2] = {-1, -1};
-    if (pipe2(pipefds, O_DIRECT) != 0)
-    {
-        ret++;
-    }
-
-    struct ncrypt_buffer encrypted_buf = {};
-    struct ncrypt_buffer decrypted_buf = {};
-    memcpy(encrypted_buf.plaintext.data, plaintext, sizeof(plaintext));
-    encrypted_buf.data_used = sizeof(plaintext);
-
-    int sent;
-    sent = ncrypt_encrypt_send(&nc_peer1, pipefds[1], &encrypted_buf);
-    if (sent < 0)
-    {
-        ret++;
-    }
-
-    int received = ncrypt_decrypt_recv(&nc_peer2, pipefds[0], &decrypted_buf);
-    if (received < 0)
-    {
-        ret++;
-    }
-
-    if (received != sent)
-    {
-        ret++;
-    }
-
-    sent = ncrypt_encrypt_send(&nc_peer1, pipefds[1], &encrypted_buf);
-    int sent2 = ncrypt_encrypt_send(&nc_peer1, pipefds[1], &encrypted_buf);
-    if (sent < 0 || sent != sent2)
-    {
-        ret++;
-    }
-
-    received = ncrypt_decrypt_recv(&nc_peer2, pipefds[0], &decrypted_buf);
-    int received2 = ncrypt_decrypt_recv(&nc_peer2, pipefds[0], &decrypted_buf);
-    if (received < 0 || received != received2)
-    {
-        ret++;
-    }
-
-    close(pipefds[0]);
-    close(pipefds[1]);
-
+    close(udp_sockfd_listen);
+    close(udp_sockfd_connect);
     ncrypt_free(&nc_peer2);
     ncrypt_free(&nc_peer1);
 
