@@ -132,6 +132,21 @@ int udp_server(struct ncrypt * const nc)
             if ((msgs_recvd % 25) == 0)
             {
                 printf("*** Messages received: %zu ***\n", msgs_recvd);
+                struct peer * current_peer;
+                struct peer * ctmp;
+                HASH_ITER(hh, nc->peers, current_peer, ctmp)
+                {
+                    printf(
+                        "*** Peer: %8X | Cryptions: %5zu | Crypto Errors: %2zu | IV Mismatches: %2zu | Send Errors: "
+                        "%2zu | "
+                        "Partial Writes: %2zu ***\n",
+                        current_peer->hash_key,
+                        current_peer->cryptions,
+                        current_peer->crypto_errors,
+                        current_peer->iv_mismatches,
+                        current_peer->send_errors,
+                        current_peer->partial_writes);
+                }
             }
         }
 
