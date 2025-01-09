@@ -24,10 +24,10 @@ struct peer
     nDPIsrvd_hashkey hash_key;
     struct nDPIsrvd_address address;
     unsigned char iv[NCRYPT_AES_IVLEN];
+    size_t cryptions;
     size_t crypto_errors;
     size_t iv_mismatches;
     size_t send_errors;
-    size_t recv_errors;
     size_t partial_writes;
     struct aes aes;
     UT_hash_handle hh;

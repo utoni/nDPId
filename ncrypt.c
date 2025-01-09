@@ -554,6 +554,7 @@ int ncrypt_dgram_send(struct ncrypt * const nc, int fd, char const * const plain
             retval++;
             continue;
         }
+        current_peer->cryptions++;
 
         memcpy(encrypted.iv, current_peer->iv, NCRYPT_AES_IVLEN);
         ssize_t bytes_written = sendto(fd,
@@ -629,6 +630,7 @@ int ncrypt_dgram_recv(struct ncrypt * const nc, int fd, char * const plaintext, 
     {
         return -6;
     }
+    peer->cryptions++;
 
     return 0;
 }
