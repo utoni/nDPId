@@ -1723,16 +1723,15 @@ static int ncrypt_selftest()
     if (bind(udp_sockfd_listen, &listen_address.raw, listen_address.size) != 0)
     {
         ret++;
-    }
+    } else
     if (connect(udp_sockfd_connect, &listen_address.raw, listen_address.size) < 0)
     {
         ret++;
-    }
-
+    } else
     if (ncrypt_dgram_send(&nc_peer1, udp_sockfd_connect, plaintext, sizeof(plaintext)) != 0)
     {
         ret++;
-    }
+    } else
     if (ncrypt_dgram_recv(&nc_peer2, udp_sockfd_listen, decrypted, sizeof(decrypted)) != 0)
     {
         ret++;

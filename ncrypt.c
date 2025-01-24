@@ -23,13 +23,18 @@
         fprintf(stderr, "OpenSSL Error: %s\n", ERR_error_string(ERR_get_error(), NULL));                               \
     } while (0);
 
+#define PACKET_TYPE_KEYEX 0x00u
+#define PACKET_TYPE_DATA 0xFFu
+
+#define NCRYPT_PACKED __attribute__((__packed__))
+
 union iv
 {
     struct
     {
         uint32_t upper;
         uint64_t lower;
-    } __attribute__((__packed__)) numeric;
+    } NCRYPT_PACKED numeric;
     unsigned char buffer[NCRYPT_AES_IVLEN];
 };
 
@@ -38,13 +43,29 @@ union packet
     unsigned char raw[NCRYPT_PACKET_BUFFER_SIZE];
     struct
     {
+        union
+        {
+            unsigned char raw[NCRYPT_AAD_SIZE];
+            struct
+            {
+                unsigned char type;
+                uint16_t size;
+            } NCRYPT_PACKED;
+        } NCRYPT_PACKED aad;
         unsigned char iv[NCRYPT_AES_IVLEN];
         unsigned char tag[NCRYPT_TAG_SIZE];
         unsigned char data[NCRYPT_BUFFER_SIZE];
-    } __attribute__((__packed__));
-} __attribute__((__packed__));
+    } NCRYPT_PACKED;
+} NCRYPT_PACKED;
 
 #if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
+_Static_assert(sizeof(((union packet *)0)->aad.raw) ==
+                   sizeof(((union packet *)0)->aad.type) + sizeof(((union packet *)0)->aad.size),
+               "NCrypt packet AAD is not equal the expected size");
+_Static_assert(sizeof(((union packet *)0)->raw) == sizeof(((union packet *)0)->aad) + sizeof(((union packet *)0)->iv) +
+                                                       sizeof(((union packet *)0)->tag) +
+                                                       sizeof(((union packet *)0)->data),
+               "NCrypt packet is not equal the expected size");
 _Static_assert(sizeof(((union iv *)0)->buffer) == sizeof(((union iv *)0)->numeric),
                "IV buffer must be of the same size as the numerics");
 #endif
@@ -442,7 +463,8 @@ static int encrypt(struct aes * const aes,
                    size_t plaintext_size,
                    unsigned char const iv[NCRYPT_AES_IVLEN],
                    unsigned char encrypted[NCRYPT_BUFFER_SIZE],
-                   unsigned char tag[NCRYPT_TAG_SIZE])
+                   unsigned char tag[NCRYPT_TAG_SIZE],
+                   unsigned char const aad[NCRYPT_AAD_SIZE])
 {
     int encrypted_used;
     int remaining;
@@ -452,19 +474,24 @@ static int encrypt(struct aes * const aes,
         return -2;
     }
 
-    if (EVP_EncryptUpdate(aes->ctx, encrypted, &encrypted_used, (const unsigned char *)plaintext, plaintext_size) == 0)
+    if (EVP_EncryptUpdate(aes->ctx, NULL, &encrypted_used, aad, NCRYPT_AAD_SIZE) == 0)
     {
         return -3;
     }
 
-    if (EVP_EncryptFinal_ex(aes->ctx, encrypted + encrypted_used, &remaining) == 0)
+    if (EVP_EncryptUpdate(aes->ctx, encrypted, &encrypted_used, (const unsigned char *)plaintext, plaintext_size) == 0)
     {
         return -4;
     }
 
-    if (EVP_CIPHER_CTX_ctrl(aes->ctx, EVP_CTRL_GCM_GET_TAG, NCRYPT_TAG_SIZE, tag) == 0)
+    if (EVP_EncryptFinal_ex(aes->ctx, encrypted + encrypted_used, &remaining) == 0)
     {
         return -5;
+    }
+
+    if (EVP_CIPHER_CTX_ctrl(aes->ctx, EVP_CTRL_GCM_GET_TAG, NCRYPT_TAG_SIZE, tag) == 0)
+    {
+        return -6;
     }
 
     return encrypted_used + remaining;
@@ -477,12 +504,14 @@ int ncrypt_encrypt(struct aes * const aes,
                    unsigned char encrypted[NCRYPT_BUFFER_SIZE],
                    unsigned char tag[NCRYPT_TAG_SIZE])
 {
+    unsigned char const aad[NCRYPT_AAD_SIZE] = {0x00, 0x00, 0x00}; // garbage
+
     if (plaintext_size > NCRYPT_BUFFER_SIZE)
     {
         return -1;
     }
 
-    return encrypt(aes, plaintext, plaintext_size, iv, encrypted, tag);
+    return encrypt(aes, plaintext, plaintext_size, iv, encrypted, tag, aad);
 }
 
 static int decrypt(struct aes * const aes,
@@ -490,7 +519,8 @@ static int decrypt(struct aes * const aes,
                    size_t encrypt_size,
                    unsigned char const iv[NCRYPT_AES_IVLEN],
                    unsigned char tag[NCRYPT_TAG_SIZE],
-                   char plaintext[NCRYPT_BUFFER_SIZE])
+                   char plaintext[NCRYPT_BUFFER_SIZE],
+                   unsigned char const aad[NCRYPT_AAD_SIZE])
 {
     int decrypted_used;
     int remaining;
@@ -500,19 +530,24 @@ static int decrypt(struct aes * const aes,
         return -2;
     }
 
-    if (EVP_DecryptUpdate(aes->ctx, (unsigned char *)plaintext, &decrypted_used, encrypted, encrypt_size) == 0)
+    if (EVP_DecryptUpdate(aes->ctx, NULL, &decrypted_used, aad, NCRYPT_AAD_SIZE) == 0)
     {
         return -3;
     }
 
-    if (EVP_CIPHER_CTX_ctrl(aes->ctx, EVP_CTRL_GCM_SET_TAG, NCRYPT_TAG_SIZE, tag) == 0)
+    if (EVP_DecryptUpdate(aes->ctx, (unsigned char *)plaintext, &decrypted_used, encrypted, encrypt_size) == 0)
     {
         return -4;
     }
 
-    if (EVP_DecryptFinal_ex(aes->ctx, (unsigned char *)plaintext + decrypted_used, &remaining) == 0)
+    if (EVP_CIPHER_CTX_ctrl(aes->ctx, EVP_CTRL_GCM_SET_TAG, NCRYPT_TAG_SIZE, tag) == 0)
     {
         return -5;
+    }
+
+    if (EVP_DecryptFinal_ex(aes->ctx, (unsigned char *)plaintext + decrypted_used, &remaining) == 0)
+    {
+        return -6;
     }
 
     return decrypted_used + remaining;
@@ -525,12 +560,14 @@ int ncrypt_decrypt(struct aes * const aes,
                    unsigned char tag[NCRYPT_TAG_SIZE],
                    char plaintext[NCRYPT_BUFFER_SIZE])
 {
+    unsigned char const aad[NCRYPT_AAD_SIZE] = {0x00, 0x00, 0x00}; // garbage
+
     if (encrypt_size > NCRYPT_BUFFER_SIZE)
     {
         return -1;
     }
 
-    return decrypt(aes, encrypted, encrypt_size, iv, tag, plaintext);
+    return decrypt(aes, encrypted, encrypt_size, iv, tag, plaintext, aad);
 }
 
 int ncrypt_dgram_send(struct ncrypt * const nc, int fd, char const * const plaintext, size_t plaintext_size)
@@ -546,8 +583,13 @@ int ncrypt_dgram_send(struct ncrypt * const nc, int fd, char const * const plain
     union packet encrypted;
     HASH_ITER(hh, nc->peers, current_peer, tmp_peer)
     {
-        int encrypted_used =
-            encrypt(&current_peer->aes, plaintext, plaintext_size, current_peer->iv, encrypted.data, encrypted.tag);
+        int encrypted_used = encrypt(&current_peer->aes,
+                                     plaintext,
+                                     plaintext_size,
+                                     current_peer->iv,
+                                     encrypted.data,
+                                     encrypted.tag,
+                                     encrypted.aad.raw);
         if (encrypted_used < 0 || encrypted_used > (int)NCRYPT_BUFFER_SIZE)
         {
             current_peer->crypto_errors++;
@@ -622,8 +664,13 @@ int ncrypt_dgram_recv(struct ncrypt * const nc, int fd, char * const plaintext, 
         peer->iv_mismatches++;
         memcpy(peer->iv, encrypted.iv, NCRYPT_AES_IVLEN);
     }
-    int decrypted_used =
-        decrypt(&peer->aes, encrypted.data, bytes_read - NCRYPT_PACKET_OVERHEAD, peer->iv, encrypted.tag, plaintext);
+    int decrypted_used = decrypt(&peer->aes,
+                                 encrypted.data,
+                                 bytes_read - NCRYPT_PACKET_OVERHEAD,
+                                 peer->iv,
+                                 encrypted.tag,
+                                 plaintext,
+                                 encrypted.aad.raw);
     next_iv(peer);
 
     if (decrypted_used < 0)
