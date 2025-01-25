@@ -27,7 +27,7 @@
          detected: [....13] [ip4][..tcp] [....192.168.2.4][49201] -> [..17.178.104.12][..443] [TLS.Apple][Apple][Web][Safe][query.ess.apple.com]
                    RISK: TLS (probably) Not Carrying HTTPS
  detection-update: [....13] [ip4][..tcp] [....192.168.2.4][49201] -> [..17.178.104.12][..443] [TLS.Apple][Apple][Web][Safe][query.ess.apple.com]
-                   RISK: TLS (probably) Not Carrying HTTPS
+                   RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS
               new: [....16] [ip4][..tcp] [....192.168.2.4][49193] -> [..17.110.229.14][.5223] [MIDSTREAM]
          detected: [....16] [ip4][..tcp] [....192.168.2.4][49193] -> [..17.110.229.14][.5223] [ApplePush][Apple][Cloud][Acceptable]
          detected: [....14] [ip4][..tcp] [....192.168.2.4][49202] -> [.184.173.179.37][.5222] [WhatsApp][Unknown][Chat][Acceptable]
@@ -55,7 +55,7 @@
          detected: [....17] [ip4][..tcp] [....192.168.2.4][49204] -> [..17.173.66.102][..443] [TLS.AppleStore][Apple][SoftwareUpdate][Safe][p53-buy.itunes.apple.com]
                    RISK: TLS (probably) Not Carrying HTTPS
  detection-update: [....17] [ip4][..tcp] [....192.168.2.4][49204] -> [..17.173.66.102][..443] [TLS.AppleStore][Apple][SoftwareUpdate][Safe][p53-buy.itunes.apple.com]
-                   RISK: TLS (probably) Not Carrying HTTPS
+                   RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS
           analyse: [....17] [ip4][..tcp] [....192.168.2.4][49204] -> [..17.173.66.102][..443] [TLS.AppleStore][Apple][SoftwareUpdate][Safe]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.246|     0.057|     0.089|         7910.915|    3.400]
@@ -253,7 +253,7 @@
          detected: [....57] [ip4][..tcp] [....192.168.2.4][49205] -> [..17.173.66.102][..443] [TLS.AppleStore][Apple][SoftwareUpdate][Safe][p53-buy.itunes.apple.com]
                    RISK: TLS (probably) Not Carrying HTTPS
  detection-update: [....57] [ip4][..tcp] [....192.168.2.4][49205] -> [..17.173.66.102][..443] [TLS.AppleStore][Apple][SoftwareUpdate][Safe][p53-buy.itunes.apple.com]
-                   RISK: TLS (probably) Not Carrying HTTPS
+                   RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS
           analyse: [....57] [ip4][..tcp] [....192.168.2.4][49205] -> [..17.173.66.102][..443] [TLS.AppleStore][Apple][SoftwareUpdate][Safe]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.272|     0.058|     0.092|         8444.798|    3.300]
@@ -282,7 +282,7 @@
               end: [.....7] [ip4][..tcp] [....192.168.2.4][49174] -> [....5.178.42.26][...80]
               end: [.....6] [ip4][..tcp] [....192.168.2.4][49172] -> [..23.50.148.228][..443] [TLS][Unknown][Web][Safe]
           guessed: [....15] [ip4][..tcp] [....192.168.2.4][49203] -> [..17.178.104.14][..443] [TLS][Apple][Web][Safe]
-                   RISK: TCP Connection Issues
+                   RISK: TCP Connection Issues, Probing Attempt
               end: [....15] [ip4][..tcp] [....192.168.2.4][49203] -> [..17.178.104.14][..443]
           guessed: [.....5] [ip4][..tcp] [....192.168.2.4][49173] -> [..93.186.135.82][...80] [HTTP][Unknown][Web][Acceptable][]
               end: [.....5] [ip4][..tcp] [....192.168.2.4][49173] -> [..93.186.135.82][...80]
@@ -345,15 +345,15 @@
           guessed: [....21] [ip4][..tcp] [....192.168.2.4][49181] -> [..17.172.100.37][..443] [TLS][Apple][Web][Safe]
               end: [....21] [ip4][..tcp] [....192.168.2.4][49181] -> [..17.172.100.37][..443]
               end: [....17] [ip4][..tcp] [....192.168.2.4][49204] -> [..17.173.66.102][..443] [TLS.AppleStore][Apple][SoftwareUpdate][Safe][p53-buy.itunes.apple.com]
-                   RISK: TLS (probably) Not Carrying HTTPS
+                   RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS
              idle: [....57] [ip4][..tcp] [....192.168.2.4][49205] -> [..17.173.66.102][..443] [TLS.AppleStore][Apple][SoftwareUpdate][Safe][p53-buy.itunes.apple.com]
-                   RISK: TLS (probably) Not Carrying HTTPS
+                   RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS
              idle: [.....1] [ip4][..tcp] [....192.168.2.4][49199] -> [..17.172.100.70][..993] [IMAPS][Apple][Email][Safe]
              idle: [....55] [ip4][..udp] [....192.168.2.4][52794] -> [..91.253.176.65][.9665] [SRTP.WhatsAppCall][Unknown][VoIP][Acceptable]
                    RISK: Known Proto on Non Std Port
              idle: [....11] [ip4][..udp] [....192.168.2.4][51897] -> [....192.168.2.1][...53] [DNS.Apple][Unknown][Network][Safe][query.ess.apple.com]
               end: [....13] [ip4][..tcp] [....192.168.2.4][49201] -> [..17.178.104.12][..443] [TLS.Apple][Apple][Web][Safe][query.ess.apple.com]
-                   RISK: TLS (probably) Not Carrying HTTPS
+                   RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS
              idle: [....12] [ip4][..udp] [....192.168.2.4][52190] -> [....192.168.2.1][...53] [DNS.WhatsApp][Unknown][Network][Acceptable][e13.whatsapp.net]
              idle: [....38] [ip4][..udp] [....192.168.2.4][51518] -> [...1.194.90.191][60312] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic

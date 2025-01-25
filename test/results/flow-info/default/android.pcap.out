@@ -111,7 +111,6 @@
          detected: [....41] [ip4][..udp] [...192.168.2.16][40580] -> [....192.168.2.1][...53] [DNS.Google][Unknown][Network][Acceptable][www.google.com]
  detection-update: [....41] [ip4][..udp] [...192.168.2.16][40580] -> [....192.168.2.1][...53] [DNS.Google][Unknown][Network][Acceptable][www.google.com]
          detected: [....39] [ip4][..tcp] [...192.168.2.16][36834] -> [.173.194.79.114][...80] [HTTP.DataSaver][Google][Web][Fun][check.googlezip.net]
-                   RISK: Susp Entropy
  detection-update: [....38] [ip4][..tcp] [...192.168.2.16][32990] -> [.216.239.38.120][..443] [TLS.PlayStore][Google][SoftwareUpdate][Safe][android.clients.google.com]
                    RISK: TLS (probably) Not Carrying HTTPS
  detection-update: [....34] [ip4][..tcp] [...192.168.2.16][32986] -> [.216.239.38.120][..443] [TLS.PlayStore][Google][SoftwareUpdate][Safe][android.clients.google.com]
@@ -158,7 +157,6 @@
  detection-update: [....54] [ip4][..udp] [...192.168.2.16][18379] -> [....192.168.2.1][...53] [DNS.DataSaver][Unknown][Network][Fun][datasaver.googleapis.com]
               new: [....55] [ip4][..tcp] [...192.168.2.16][51944] -> [.172.217.21.202][..443]
          detected: [....52] [ip4][..tcp] [...192.168.2.16][36848] -> [.173.194.79.114][...80] [HTTP.DataSaver][Google][Web][Fun][check.googlezip.net]
-                   RISK: Susp Entropy
               new: [....56] [ip4][..udp] [...192.168.2.16][10677] -> [....192.168.2.1][...53]
          detected: [....56] [ip4][..udp] [...192.168.2.16][10677] -> [....192.168.2.1][...53] [DNS.DataSaver][Unknown][Network][Fun][proxy.googlezip.net]
  detection-update: [....56] [ip4][..udp] [...192.168.2.16][10677] -> [....192.168.2.1][...53] [DNS.DataSaver][Unknown][Network][Fun][proxy.googlezip.net]
@@ -268,9 +266,7 @@
              idle: [....11] [ip4][..udp] [....192.168.2.1][51411] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
              idle: [....56] [ip4][..udp] [...192.168.2.16][10677] -> [....192.168.2.1][...53] [DNS.DataSaver][Unknown][Network][Fun][proxy.googlezip.net]
               end: [....39] [ip4][..tcp] [...192.168.2.16][36834] -> [.173.194.79.114][...80] [HTTP.DataSaver][Google][Web][Fun][check.googlezip.net]
-                   RISK: Susp Entropy
              idle: [....52] [ip4][..tcp] [...192.168.2.16][36848] -> [.173.194.79.114][...80] [HTTP.DataSaver][Google][Web][Fun][check.googlezip.net]
-                   RISK: Susp Entropy
           guessed: [....53] [ip4][..tcp] [...192.168.2.16][36850] -> [.173.194.79.114][...80] [HTTP][Google][Web][Acceptable][]
              idle: [....53] [ip4][..tcp] [...192.168.2.16][36850] -> [.173.194.79.114][...80]
      DAEMON-EVENT: shutdown

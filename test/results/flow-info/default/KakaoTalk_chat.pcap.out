@@ -185,7 +185,7 @@
               end: [....32] [ip4][..tcp] [...10.24.82.188][37557] -> [....31.13.68.84][...80] [HTTP.Facebook][Facebook][SocialNetwork][Fun][www.facebook.com]
              idle: [.....6] [ip4][..udp] [...10.24.82.188][58810] -> [.....10.188.1.1][...53] [DNS.KakaoTalk][Unknown][Network][Acceptable][item.kakao.com]
           guessed: [....16] [ip4][..tcp] [..120.28.26.242][...80] -> [...10.24.82.188][34503] [HTTP][Unknown][Web][Acceptable][]
-                   RISK: Unidirectional Traffic, TCP Connection Issues
+                   RISK: Unidirectional Traffic, TCP Connection Issues, Probing Attempt
               end: [....16] [ip4][..tcp] [..120.28.26.242][...80] -> [...10.24.82.188][34503]
              idle: [....18] [ip4][..udp] [...10.24.82.188][61011] -> [...10.188.191.1][...53] [DNS.KakaoTalk][Unknown][Network][Acceptable][plus-talk.kakao.com]
              idle: [....17] [ip4][..udp] [...10.24.82.188][61011] -> [.....10.188.1.1][...53] [DNS.KakaoTalk][Unknown][Network][Acceptable][plus-talk.kakao.com]

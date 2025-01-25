@@ -83,6 +83,7 @@ PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_category_allowed_site_count" interval
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_category_antimalware_count" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_category_crypto_currency_count" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_category_gambling_count" interval=60 N:0
+PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_category_health_count" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_category_unknown_count" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_confidence_by_port" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_confidence_dpi_partial" interval=60 N:0

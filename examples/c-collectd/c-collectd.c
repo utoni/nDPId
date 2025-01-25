@@ -176,6 +176,7 @@ static struct
         uint64_t flow_category_antimalware_count;
         uint64_t flow_category_crypto_currency_count;
         uint64_t flow_category_gambling_count;
+        uint64_t flow_category_health_count;
         uint64_t flow_category_unknown_count;
 
         uint64_t flow_confidence_by_port;
@@ -226,15 +227,10 @@ struct global_map
     };
 };
 
-#define COLLECTD_STATS_COUNTER_PTR(member)                                                                             \
-    {                                                                                                                  \
-        .global_stat_inc = &(collectd_statistics.counters.member), NULL                                                \
-    }
+#define COLLECTD_STATS_COUNTER_PTR(member) {.global_stat_inc = &(collectd_statistics.counters.member), NULL}
 #define COLLECTD_STATS_GAUGE_PTR(member)                                                                               \
-    {                                                                                                                  \
-        .global_stat_inc = &(collectd_statistics.gauges[0].member),                                                    \
-        .global_stat_dec = &(collectd_statistics.gauges[1].member)                                                     \
-    }
+    {.global_stat_inc = &(collectd_statistics.gauges[0].member),                                                       \
+     .global_stat_dec = &(collectd_statistics.gauges[1].member)}
 #define COLLECTD_STATS_COUNTER_INC(member) (collectd_statistics.counters.member++)
 #define COLLECTD_STATS_GAUGE_RES(member) (collectd_statistics.gauges[0].member--)
 #define COLLECTD_STATS_GAUGE_INC(member) (collectd_statistics.gauges[0].member++)
@@ -335,6 +331,7 @@ static struct global_map const categories_map[] = {
     {"Antimalware", COLLECTD_STATS_GAUGE_PTR(flow_category_antimalware_count)},
     {"Crypto_Currency", COLLECTD_STATS_GAUGE_PTR(flow_category_crypto_currency_count)},
     {"Gambling", COLLECTD_STATS_GAUGE_PTR(flow_category_gambling_count)},
+    {"Health", COLLECTD_STATS_GAUGE_PTR(flow_category_health_count)},
     {NULL, COLLECTD_STATS_GAUGE_PTR(flow_category_unknown_count)}};
 
 static struct global_map const confidence_map[] = {
@@ -655,7 +652,7 @@ static void print_collectd_exec_output(void)
                                                        COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
                                                            COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
                                                                COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
-                                                                   COLLECTD_GAUGE_N_FORMAT(),
+                                                                   COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT(),
 
            COLLECTD_GAUGE_N(flow_category_unspecified_count),
            COLLECTD_GAUGE_N(flow_category_media_count),
@@ -696,6 +693,7 @@ static void print_collectd_exec_output(void)
            COLLECTD_GAUGE_N(flow_category_antimalware_count),
            COLLECTD_GAUGE_N(flow_category_crypto_currency_count),
            COLLECTD_GAUGE_N(flow_category_gambling_count),
+           COLLECTD_GAUGE_N(flow_category_health_count),
            COLLECTD_GAUGE_N(flow_category_unknown_count));
 
     printf(COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
@@ -801,6 +799,7 @@ static void print_collectd_exec_output(void)
     COLLECTD_STATS_GAUGE_SUB(flow_category_antimalware_count);
     COLLECTD_STATS_GAUGE_SUB(flow_category_crypto_currency_count);
     COLLECTD_STATS_GAUGE_SUB(flow_category_gambling_count);
+    COLLECTD_STATS_GAUGE_SUB(flow_category_health_count);
     COLLECTD_STATS_GAUGE_SUB(flow_category_unknown_count);
 
     COLLECTD_STATS_GAUGE_SUB(flow_confidence_by_port);

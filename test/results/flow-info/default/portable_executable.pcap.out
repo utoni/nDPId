@@ -3,10 +3,10 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [..172.16.99.201][.1732] -> [..64.227.107.71][.4444]
               new: [.....2] [ip4][..tcp] [..64.227.107.71][...53] -> [...172.16.99.10][49652]
-     not-detected: [.....1] [ip4][..tcp] [..172.16.99.201][.1732] -> [..64.227.107.71][.4444] [Unknown][Unknown][Unrated]
+          guessed: [.....1] [ip4][..tcp] [..172.16.99.201][.1732] -> [..64.227.107.71][.4444] [DigitalOcean][DigitalOcean][Web][Safe]
                    RISK: Binary App Transfer, Susp Entropy
              idle: [.....1] [ip4][..tcp] [..172.16.99.201][.1732] -> [..64.227.107.71][.4444]
-          guessed: [.....2] [ip4][..tcp] [..64.227.107.71][...53] -> [...172.16.99.10][49652] [DNS][Unknown][Network][Acceptable][]
+          guessed: [.....2] [ip4][..tcp] [..64.227.107.71][...53] -> [...172.16.99.10][49652] [DNS][DigitalOcean][Network][Acceptable][]
                    RISK: Binary App Transfer, Susp Entropy
              idle: [.....2] [ip4][..tcp] [..64.227.107.71][...53] -> [...172.16.99.10][49652]
      DAEMON-EVENT: shutdown

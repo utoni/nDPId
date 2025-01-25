@@ -15,11 +15,11 @@
  detection-update: [.....3] [ip4][..udp] [....192.168.1.6][60813] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][skypedataprdcolneu04.cloudapp.net]
               new: [.....4] [ip4][..tcp] [....192.168.1.6][60532] -> [...52.114.77.33][..443]
               new: [.....5] [ip4][..tcp] [....192.168.1.6][60533] -> [.52.113.194.132][..443]
-         detected: [.....5] [ip4][..tcp] [....192.168.1.6][60533] -> [.52.113.194.132][..443] [TLS.Teams][Skype_Teams][Collaborative][Safe][teams.microsoft.com]
- detection-update: [.....5] [ip4][..tcp] [....192.168.1.6][60533] -> [.52.113.194.132][..443] [TLS.Teams][Skype_Teams][Collaborative][Safe][teams.microsoft.com]
+         detected: [.....5] [ip4][..tcp] [....192.168.1.6][60533] -> [.52.113.194.132][..443] [TLS.Teams][Teams][Collaborative][Safe][teams.microsoft.com]
+ detection-update: [.....5] [ip4][..tcp] [....192.168.1.6][60533] -> [.52.113.194.132][..443] [TLS.Teams][Teams][Collaborative][Safe][teams.microsoft.com]
          detected: [.....4] [ip4][..tcp] [....192.168.1.6][60532] -> [...52.114.77.33][..443] [TLS.Microsoft][Azure][Cloud][Safe][mobile.pipe.aria.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-          analyse: [.....5] [ip4][..tcp] [....192.168.1.6][60533] -> [.52.113.194.132][..443] [TLS.Teams][Skype_Teams][Collaborative][Safe]
+          analyse: [.....5] [ip4][..tcp] [....192.168.1.6][60533] -> [.52.113.194.132][..443] [TLS.Teams][Teams][Collaborative][Safe]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.030|     0.006|     0.009|           77.930|    3.700]
                    [PKTLEN......:     40.000|  1492.000|   393.900|   548.100|       300365.600|    3.900]
@@ -48,8 +48,8 @@
          detected: [.....7] [ip4][..tcp] [....192.168.1.6][60535] -> [...52.114.77.33][..443] [TLS.Microsoft][Azure][Cloud][Safe][mobile.pipe.aria.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [.....8] [ip4][..tcp] [....192.168.1.6][60536] -> [.52.113.194.132][..443]
-         detected: [.....8] [ip4][..tcp] [....192.168.1.6][60536] -> [.52.113.194.132][..443] [TLS.Teams][Skype_Teams][Collaborative][Safe][teams.microsoft.com]
- detection-update: [.....8] [ip4][..tcp] [....192.168.1.6][60536] -> [.52.113.194.132][..443] [TLS.Teams][Skype_Teams][Collaborative][Safe][teams.microsoft.com]
+         detected: [.....8] [ip4][..tcp] [....192.168.1.6][60536] -> [.52.113.194.132][..443] [TLS.Teams][Teams][Collaborative][Safe][teams.microsoft.com]
+ detection-update: [.....8] [ip4][..tcp] [....192.168.1.6][60536] -> [.52.113.194.132][..443] [TLS.Teams][Teams][Collaborative][Safe][teams.microsoft.com]
           analyse: [.....7] [ip4][..tcp] [....192.168.1.6][60535] -> [...52.114.77.33][..443] [TLS.Microsoft][Azure][Cloud][Safe]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.050|     0.018|     0.021|          449.200|    3.900]
@@ -91,26 +91,26 @@
       ERROR-EVENT: Unknown packet type [14/16]
       ERROR-EVENT: Unknown packet type [15/16]
               new: [....16] [ip4][..udp] [....192.168.1.6][51033] -> [....192.168.1.1][...53]
-         detected: [....16] [ip4][..udp] [....192.168.1.6][51033] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][eu-api.asm.skype.com]
+         detected: [....16] [ip4][..udp] [....192.168.1.6][51033] -> [....192.168.1.1][...53] [DNS.Teams][Unknown][Network][Safe][eu-api.asm.skype.com]
               new: [....17] [ip4][..udp] [....192.168.1.6][63106] -> [....192.168.1.1][...53]
          detected: [....17] [ip4][..udp] [....192.168.1.6][63106] -> [....192.168.1.1][...53] [DNS.Teams][Unknown][Network][Safe][eu-prod.asyncgw.teams.microsoft.com]
  detection-update: [....17] [ip4][..udp] [....192.168.1.6][63106] -> [....192.168.1.1][...53] [DNS.Teams][Unknown][Network][Safe][eu-prod.asyncgw.teams.microsoft.com]
               new: [....18] [ip4][..tcp] [....192.168.1.6][60538] -> [...52.114.75.70][..443]
- detection-update: [....16] [ip4][..udp] [....192.168.1.6][51033] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][eu-api.asm.skype.com]
+ detection-update: [....16] [ip4][..udp] [....192.168.1.6][51033] -> [....192.168.1.1][...53] [DNS.Teams][Unknown][Network][Safe][eu-api.asm.skype.com]
               new: [....19] [ip4][..tcp] [....192.168.1.6][60539] -> [...52.114.75.69][..443]
          detected: [....18] [ip4][..tcp] [....192.168.1.6][60538] -> [...52.114.75.70][..443] [TLS.Teams][Azure][Collaborative][Safe][eu-prod.asyncgw.teams.microsoft.com]
-         detected: [....19] [ip4][..tcp] [....192.168.1.6][60539] -> [...52.114.75.69][..443] [TLS.Skype_Teams][Azure][VoIP][Acceptable][eu-api.asm.skype.com]
+         detected: [....19] [ip4][..tcp] [....192.168.1.6][60539] -> [...52.114.75.69][..443] [TLS.Teams][Azure][Collaborative][Safe][eu-api.asm.skype.com]
               new: [....20] [ip4][..tcp] [....192.168.1.6][60540] -> [...52.114.75.70][..443]
               new: [....21] [ip4][..tcp] [....192.168.1.6][60541] -> [...52.114.75.69][..443]
          detected: [....20] [ip4][..tcp] [....192.168.1.6][60540] -> [...52.114.75.70][..443] [TLS.Teams][Azure][Collaborative][Safe][eu-prod.asyncgw.teams.microsoft.com]
-         detected: [....21] [ip4][..tcp] [....192.168.1.6][60541] -> [...52.114.75.69][..443] [TLS.Skype_Teams][Azure][VoIP][Acceptable][eu-api.asm.skype.com]
+         detected: [....21] [ip4][..tcp] [....192.168.1.6][60541] -> [...52.114.75.69][..443] [TLS.Teams][Azure][Collaborative][Safe][eu-api.asm.skype.com]
               new: [....22] [ip4][..udp] [....192.168.1.6][49514] -> [....192.168.1.1][...53]
          detected: [....22] [ip4][..udp] [....192.168.1.6][49514] -> [....192.168.1.1][...53] [DNS.Teams][Unknown][Network][Safe][config.teams.microsoft.com]
- detection-update: [....21] [ip4][..tcp] [....192.168.1.6][60541] -> [...52.114.75.69][..443] [TLS.Skype_Teams][Azure][VoIP][Acceptable][eu-api.asm.skype.com]
+ detection-update: [....21] [ip4][..tcp] [....192.168.1.6][60541] -> [...52.114.75.69][..443] [TLS.Teams][Azure][Collaborative][Safe][eu-api.asm.skype.com]
  detection-update: [....22] [ip4][..udp] [....192.168.1.6][49514] -> [....192.168.1.1][...53] [DNS.Teams][Unknown][Network][Safe][config.teams.microsoft.com]
               new: [....23] [ip4][..tcp] [....192.168.1.6][60542] -> [.52.113.194.132][..443]
-         detected: [....23] [ip4][..tcp] [....192.168.1.6][60542] -> [.52.113.194.132][..443] [TLS.Teams][Skype_Teams][Collaborative][Safe][config.teams.microsoft.com]
- detection-update: [....23] [ip4][..tcp] [....192.168.1.6][60542] -> [.52.113.194.132][..443] [TLS.Teams][Skype_Teams][Collaborative][Safe][config.teams.microsoft.com]
+         detected: [....23] [ip4][..tcp] [....192.168.1.6][60542] -> [.52.113.194.132][..443] [TLS.Teams][Teams][Collaborative][Safe][config.teams.microsoft.com]
+ detection-update: [....23] [ip4][..tcp] [....192.168.1.6][60542] -> [.52.113.194.132][..443] [TLS.Teams][Teams][Collaborative][Safe][config.teams.microsoft.com]
               new: [....24] [ip4][..udp] [....192.168.1.6][65387] -> [....192.168.1.1][...53]
          detected: [....24] [ip4][..udp] [....192.168.1.6][65387] -> [....192.168.1.1][...53] [DNS.Microsoft][Unknown][Network][Safe][northeuropecns.trafficmanager.net]
               new: [....25] [ip4][..tcp] [....192.168.1.6][60543] -> [...52.114.77.33][..443]
@@ -140,9 +140,9 @@
                    [PKTLENS.....: 64,60,52,258,52,1492,1492,52,1375,52,145,52,103,52,1480,1480,1480,52,1480,1480,1480,1480,52,1480,1480,52,1480,1480,1480,1480,52,1480]
                    [ENTROPIES...: 4.4,5.3,5.0,5.9,5.1,7.3,7.3,5.0,7.7,5.0,5.9,5.2,5.6,5.0,7.9,7.8,7.9,5.2,7.9,7.9,7.9,7.9,5.2,7.9,7.9,5.2,7.9,7.9,7.8,7.9,5.2,7.9]
               new: [....30] [ip4][..tcp] [....192.168.1.6][60546] -> [.167.99.215.164][.4434]
-         detected: [....30] [ip4][..tcp] [....192.168.1.6][60546] -> [.167.99.215.164][.4434] [TLS.ntop][Unknown][Network][Safe][dati.ntop.org]
+         detected: [....30] [ip4][..tcp] [....192.168.1.6][60546] -> [.167.99.215.164][.4434] [TLS.ntop][DigitalOcean][Network][Safe][dati.ntop.org]
                    RISK: Known Proto on Non Std Port
- detection-update: [....30] [ip4][..tcp] [....192.168.1.6][60546] -> [.167.99.215.164][.4434] [TLS.ntop][Unknown][Network][Safe][dati.ntop.org]
+ detection-update: [....30] [ip4][..tcp] [....192.168.1.6][60546] -> [.167.99.215.164][.4434] [TLS.ntop][DigitalOcean][Network][Safe][dati.ntop.org]
                    RISK: Known Proto on Non Std Port
           analyse: [....28] [ip4][..tcp] [....192.168.1.6][60545] -> [...52.114.77.58][..443] [TLS.Teams][Azure][Collaborative][Safe][presence.teams.microsoft.com]
                                          min|       max|       avg|    stddev|         variance|  entropy
@@ -180,7 +180,7 @@
               new: [....35] [ip4][..tcp] [....192.168.1.6][60549] -> [...13.107.18.11][..443]
          detected: [....35] [ip4][..tcp] [....192.168.1.6][60549] -> [...13.107.18.11][..443] [TLS.Microsoft365][Outlook][Collaborative][Acceptable][substrate.office.com]
  detection-update: [....35] [ip4][..tcp] [....192.168.1.6][60549] -> [...13.107.18.11][..443] [TLS.Microsoft365][Outlook][Collaborative][Acceptable][substrate.office.com]
-          analyse: [....23] [ip4][..tcp] [....192.168.1.6][60542] -> [.52.113.194.132][..443] [TLS.Teams][Skype_Teams][Collaborative][Safe]
+          analyse: [....23] [ip4][..tcp] [....192.168.1.6][60542] -> [.52.113.194.132][..443] [TLS.Teams][Teams][Collaborative][Safe]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     2.010|     0.146|     0.490|       239614.050|    1.700]
                    [PKTLEN......:     40.000|  1492.000|   305.200|   468.100|       219152.800|    3.800]
@@ -223,12 +223,12 @@
          detected: [....44] [ip4][..udp] [....192.168.1.6][51309] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][skypedataprdcolneu04.cloudapp.net]
               new: [....45] [ip4][..tcp] [....192.168.1.6][60555] -> [...52.114.77.33][..443]
               new: [....46] [ip4][..tcp] [....192.168.1.6][60556] -> [.....40.126.9.7][..443]
-         detected: [....43] [ip4][..tcp] [....192.168.1.6][60554] -> [.52.113.194.132][..443] [TLS.Teams][Skype_Teams][Collaborative][Safe][config.teams.microsoft.com]
+         detected: [....43] [ip4][..tcp] [....192.168.1.6][60554] -> [.52.113.194.132][..443] [TLS.Teams][Teams][Collaborative][Safe][config.teams.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
  detection-update: [....44] [ip4][..udp] [....192.168.1.6][51309] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][skypedataprdcolneu04.cloudapp.net]
          detected: [....40] [ip4][..tcp] [....192.168.1.6][60551] -> [...52.114.15.45][..443] [TLS.Teams][Azure][Collaborative][Safe][trouter2-asse-a.trouter.teams.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [....43] [ip4][..tcp] [....192.168.1.6][60554] -> [.52.113.194.132][..443] [TLS.Teams][Skype_Teams][Collaborative][Safe][config.teams.microsoft.com]
+ detection-update: [....43] [ip4][..tcp] [....192.168.1.6][60554] -> [.52.113.194.132][..443] [TLS.Teams][Teams][Collaborative][Safe][config.teams.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
          detected: [....42] [ip4][..tcp] [....192.168.1.6][60552] -> [...52.114.77.33][..443] [TLS.Microsoft][Azure][Cloud][Safe][mobile.pipe.aria.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
@@ -241,7 +241,7 @@
                    RISK: TLS (probably) Not Carrying HTTPS
  detection-update: [....40] [ip4][..tcp] [....192.168.1.6][60551] -> [...52.114.15.45][..443] [TLS.Teams][Azure][Collaborative][Safe][trouter2-asse-a.trouter.teams.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-          analyse: [....43] [ip4][..tcp] [....192.168.1.6][60554] -> [.52.113.194.132][..443] [TLS.Teams][Skype_Teams][Collaborative][Safe]
+          analyse: [....43] [ip4][..tcp] [....192.168.1.6][60554] -> [.52.113.194.132][..443] [TLS.Teams][Teams][Collaborative][Safe]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.154|     0.015|     0.036|         1274.324|    2.800]
                    [PKTLEN......:     40.000|  1492.000|   585.700|   671.400|       450756.000|    4.000]
@@ -252,9 +252,9 @@
                    [PKTLENS.....: 64,52,40,226,46,1492,1492,40,1492,40,1492,168,40,147,46,91,46,91,40,1122,46,1492,1492,40,1317,40,1492,1492,40,40,1492,1492]
                    [ENTROPIES...: 4.4,4.9,4.5,5.5,4.4,7.3,7.5,4.6,7.5,4.5,7.7,6.7,4.6,6.5,4.5,5.7,4.5,5.6,4.6,7.8,4.6,7.9,7.9,4.6,7.9,4.6,7.9,7.9,4.6,4.5,7.9,7.9]
               new: [....47] [ip4][..tcp] [....192.168.1.6][60557] -> [.52.113.194.132][..443]
-         detected: [....47] [ip4][..tcp] [....192.168.1.6][60557] -> [.52.113.194.132][..443] [TLS.Teams][Skype_Teams][Collaborative][Safe][teams.microsoft.com]
+         detected: [....47] [ip4][..tcp] [....192.168.1.6][60557] -> [.52.113.194.132][..443] [TLS.Teams][Teams][Collaborative][Safe][teams.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [....47] [ip4][..tcp] [....192.168.1.6][60557] -> [.52.113.194.132][..443] [TLS.Teams][Skype_Teams][Collaborative][Safe][teams.microsoft.com]
+ detection-update: [....47] [ip4][..tcp] [....192.168.1.6][60557] -> [.52.113.194.132][..443] [TLS.Teams][Teams][Collaborative][Safe][teams.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [....48] [ip4][..tcp] [....192.168.1.6][60559] -> [...52.114.77.33][..443]
          detected: [....48] [ip4][..tcp] [....192.168.1.6][60559] -> [...52.114.77.33][..443] [TLS.Microsoft][Azure][Cloud][Safe][mobile.pipe.aria.microsoft.com]
@@ -281,10 +281,10 @@
          detected: [....52] [ip4][..udp] [....192.168.1.6][54069] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][api.microsoftstream.com]
  detection-update: [....52] [ip4][..udp] [....192.168.1.6][54069] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][api.microsoftstream.com]
               new: [....53] [ip4][..tcp] [....192.168.1.6][60562] -> [.104.40.187.151][..443]
-         detected: [....53] [ip4][..tcp] [....192.168.1.6][60562] -> [.104.40.187.151][..443] [TLS.Skype_Teams][Azure][VoIP][Acceptable][api.microsoftstream.com]
+         detected: [....53] [ip4][..tcp] [....192.168.1.6][60562] -> [.104.40.187.151][..443] [TLS.Teams][Azure][Collaborative][Safe][api.microsoftstream.com]
  detection-update: [....51] [ip4][..tcp] [....192.168.1.6][60561] -> [...52.114.77.33][..443] [TLS.Microsoft][Azure][Cloud][Safe][mobile.pipe.aria.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-          analyse: [....53] [ip4][..tcp] [....192.168.1.6][60562] -> [.104.40.187.151][..443] [TLS.Skype_Teams][Azure][VoIP][Acceptable]
+          analyse: [....53] [ip4][..tcp] [....192.168.1.6][60562] -> [.104.40.187.151][..443] [TLS.Teams][Azure][Collaborative][Safe]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.126|     0.019|     0.032|         1006.354|    3.400]
                    [PKTLEN......:     52.000|  1492.000|   345.200|   499.900|       249913.200|    3.900]
@@ -308,12 +308,12 @@
                    [IATS(ms)....: 48.4,48.5,0.5,88.2,136.5,113.7,0.2,161.8,0.1,0.1,1.1,74.6,73.5,1.1,0.0,0.0,50.1,49.0,0.0,0.0,0.0,48.4,48.4,0.0,0.0,0.0,1.6,1.5,46.9,1.1,1.7]
                    [PKTLENS.....: 64,60,52,258,258,64,1492,1492,52,1375,52,145,103,52,1480,1480,1480,52,1480,1480,1480,1480,52,1480,1480,1480,1480,52,1462,52,52,52]
                    [ENTROPIES...: 4.4,5.3,4.9,6.0,6.0,5.1,7.3,7.3,5.0,7.7,5.0,6.0,5.6,5.0,7.9,7.9,7.9,5.2,7.9,7.9,7.9,7.9,5.1,7.9,7.9,7.9,7.9,5.2,7.9,5.2,5.2,5.2]
-         detected: [....55] [ip4][..tcp] [....192.168.1.6][60563] -> [.52.169.186.119][..443] [TLS.Skype_Teams][Azure][VoIP][Acceptable][euno-1.api.microsoftstream.com]
+         detected: [....55] [ip4][..tcp] [....192.168.1.6][60563] -> [.52.169.186.119][..443] [TLS.Teams][Azure][Collaborative][Safe][euno-1.api.microsoftstream.com]
               new: [....56] [ip4][..udp] [....192.168.1.6][63930] -> [....192.168.1.1][...53]
          detected: [....56] [ip4][..udp] [....192.168.1.6][63930] -> [....192.168.1.1][...53] [DNS.Microsoft][Unknown][Network][Safe][dc.applicationinsights.microsoft.com]
  detection-update: [....56] [ip4][..udp] [....192.168.1.6][63930] -> [....192.168.1.1][...53] [DNS.Microsoft][Unknown][Network][Safe][dc.applicationinsights.microsoft.com]
               new: [....57] [ip4][..tcp] [....192.168.1.6][60564] -> [...40.79.138.41][..443]
-         detected: [....57] [ip4][..tcp] [....192.168.1.6][60564] -> [...40.79.138.41][..443] [TLS.Skype_Teams][Azure][VoIP][Acceptable][gate.hockeyapp.net]
+         detected: [....57] [ip4][..tcp] [....192.168.1.6][60564] -> [...40.79.138.41][..443] [TLS.Teams][Azure][Collaborative][Safe][gate.hockeyapp.net]
               new: [....58] [ip4][..udp] [....192.168.1.6][62863] -> [....192.168.1.1][...53]
          detected: [....58] [ip4][..udp] [....192.168.1.6][62863] -> [....192.168.1.1][...53] [DNS.Teams][Unknown][Network][Safe][emea.ng.msg.teams-msgapi.trafficmanager.net]
  detection-update: [....58] [ip4][..udp] [....192.168.1.6][62863] -> [....192.168.1.1][...53] [DNS.Teams][Unknown][Network][Safe][emea.ng.msg.teams-msgapi.trafficmanager.net]
@@ -341,13 +341,13 @@
                    [ENTROPIES...: 4.3,4.9,4.6,5.6,7.4,7.3,4.7,4.6,4.6,7.5,7.6,7.1,4.7,4.6,6.5,6.1,7.6,5.4,4.6,5.9,4.6,5.2,4.5,7.4,4.7,4.5,7.8,4.6,7.4,7.5,5.6,5.5]
               new: [....60] [ip4][..tcp] [..151.11.50.139][.2222] -> [....192.168.1.6][54750] [MIDSTREAM]
               new: [....61] [ip4][..tcp] [....192.168.1.6][60566] -> [.167.99.215.164][.4434]
-         detected: [....61] [ip4][..tcp] [....192.168.1.6][60566] -> [.167.99.215.164][.4434] [TLS.ntop][Unknown][Network][Safe][dati.ntop.org]
+         detected: [....61] [ip4][..tcp] [....192.168.1.6][60566] -> [.167.99.215.164][.4434] [TLS.ntop][DigitalOcean][Network][Safe][dati.ntop.org]
                    RISK: Known Proto on Non Std Port
- detection-update: [....61] [ip4][..tcp] [....192.168.1.6][60566] -> [.167.99.215.164][.4434] [TLS.ntop][Unknown][Network][Safe][dati.ntop.org]
+ detection-update: [....61] [ip4][..tcp] [....192.168.1.6][60566] -> [.167.99.215.164][.4434] [TLS.ntop][DigitalOcean][Network][Safe][dati.ntop.org]
                    RISK: Known Proto on Non Std Port
               new: [....62] [ip4][..udp] [....192.168.1.6][51681] -> [..52.114.77.136][.3478]
               new: [....63] [ip4][..udp] [....192.168.1.6][50016] -> [.52.114.250.123][.3478]
-         detected: [....63] [ip4][..udp] [....192.168.1.6][50016] -> [.52.114.250.123][.3478] [STUN.Skype_TeamsCall][Azure][VoIP][Acceptable][]
+         detected: [....63] [ip4][..udp] [....192.168.1.6][50016] -> [.52.114.250.123][.3478] [STUN.TeamsCall][Azure][VoIP][Acceptable][]
               new: [....64] [ip4][..tcp] [....192.168.1.6][50018] -> [.52.114.250.123][..443]
               new: [....65] [ip4][..udp] [....192.168.1.6][55765] -> [....192.168.1.1][...53]
          detected: [....65] [ip4][..udp] [....192.168.1.6][55765] -> [....192.168.1.1][...53] [DNS.Azure][Unknown][Network][Acceptable][b-tr-teams-euno-05.northeurope.cloudapp.azure.com]
@@ -355,25 +355,25 @@
          detected: [....64] [ip4][..tcp] [....192.168.1.6][50018] -> [.52.114.250.123][..443] [TLS.Teams][Azure][Collaborative][Safe][euaz.tr.teams.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [....66] [ip4][..udp] [....192.168.1.6][50036] -> [.52.114.250.123][.3478]
-         detected: [....66] [ip4][..udp] [....192.168.1.6][50036] -> [.52.114.250.123][.3478] [STUN.Skype_TeamsCall][Azure][VoIP][Acceptable][]
+         detected: [....66] [ip4][..udp] [....192.168.1.6][50036] -> [.52.114.250.123][.3478] [STUN.TeamsCall][Azure][VoIP][Acceptable][]
               new: [....67] [ip4][..tcp] [....192.168.1.6][50021] -> [.52.114.250.123][..443]
               new: [....68] [ip4][..udp] [....192.168.1.6][50016] -> [.52.114.250.141][.3478]
-         detected: [....68] [ip4][..udp] [....192.168.1.6][50016] -> [.52.114.250.141][.3478] [STUN.Skype_TeamsCall][Azure][VoIP][Acceptable][]
+         detected: [....68] [ip4][..udp] [....192.168.1.6][50016] -> [.52.114.250.141][.3478] [STUN.TeamsCall][Azure][VoIP][Acceptable][]
               new: [....69] [ip4][..udp] [....192.168.1.6][50017] -> [.52.114.250.141][.3478]
-         detected: [....69] [ip4][..udp] [....192.168.1.6][50017] -> [.52.114.250.141][.3478] [STUN.Skype_TeamsCall][Azure][VoIP][Acceptable][]
+         detected: [....69] [ip4][..udp] [....192.168.1.6][50017] -> [.52.114.250.141][.3478] [STUN.TeamsCall][Azure][VoIP][Acceptable][]
          detected: [....67] [ip4][..tcp] [....192.168.1.6][50021] -> [.52.114.250.123][..443] [TLS.Teams][Azure][Collaborative][Safe][euaz.tr.teams.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [....70] [ip4][..udp] [....192.168.1.6][50036] -> [.52.114.250.137][.3478]
-         detected: [....70] [ip4][..udp] [....192.168.1.6][50036] -> [.52.114.250.137][.3478] [STUN.Skype_TeamsCall][Azure][VoIP][Acceptable][]
+         detected: [....70] [ip4][..udp] [....192.168.1.6][50036] -> [.52.114.250.137][.3478] [STUN.TeamsCall][Azure][VoIP][Acceptable][]
               new: [....71] [ip4][..udp] [....192.168.1.6][50037] -> [.52.114.250.137][.3478]
-         detected: [....71] [ip4][..udp] [....192.168.1.6][50037] -> [.52.114.250.137][.3478] [STUN.Skype_TeamsCall][Azure][VoIP][Acceptable][]
- detection-update: [....69] [ip4][..udp] [....192.168.1.6][50017] -> [.52.114.250.141][.3478] [STUN.Skype_TeamsCall][Azure][VoIP][Acceptable][]
- detection-update: [....71] [ip4][..udp] [....192.168.1.6][50037] -> [.52.114.250.137][.3478] [STUN.Skype_TeamsCall][Azure][VoIP][Acceptable][]
+         detected: [....71] [ip4][..udp] [....192.168.1.6][50037] -> [.52.114.250.137][.3478] [STUN.TeamsCall][Azure][VoIP][Acceptable][]
+ detection-update: [....69] [ip4][..udp] [....192.168.1.6][50017] -> [.52.114.250.141][.3478] [STUN.TeamsCall][Azure][VoIP][Acceptable][]
+ detection-update: [....71] [ip4][..udp] [....192.168.1.6][50037] -> [.52.114.250.137][.3478] [STUN.TeamsCall][Azure][VoIP][Acceptable][]
               new: [....72] [ip4][..tcp] [....192.168.1.6][50014] -> [.52.114.250.152][..443]
               new: [....73] [ip4][..tcp] [....192.168.1.6][50036] -> [.52.114.250.153][..443]
-         detected: [....72] [ip4][..tcp] [....192.168.1.6][50014] -> [.52.114.250.152][..443] [TLS.Skype_Teams][Azure][VoIP][Acceptable][52.114.250.152]
+         detected: [....72] [ip4][..tcp] [....192.168.1.6][50014] -> [.52.114.250.152][..443] [TLS.Teams][Azure][Collaborative][Safe][52.114.250.152]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, TLS (probably) Not Carrying HTTPS
-         detected: [....73] [ip4][..tcp] [....192.168.1.6][50036] -> [.52.114.250.153][..443] [TLS.Skype_Teams][Azure][VoIP][Acceptable][52.114.250.153]
+         detected: [....73] [ip4][..tcp] [....192.168.1.6][50036] -> [.52.114.250.153][..443] [TLS.Teams][Azure][Collaborative][Safe][52.114.250.153]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, TLS (probably) Not Carrying HTTPS
  detection-update: [....72] [ip4][..tcp] [....192.168.1.6][50014] -> [.52.114.250.152][..443] [TLS.Teams][Azure][Collaborative][Safe][52.114.250.152]
                    RISK: TLS Cert Mismatch, TLS (probably) Not Carrying HTTPS
@@ -386,28 +386,28 @@
          detected: [....74] [ip4][..tcp] [....192.168.1.6][60567] -> [..52.114.77.136][..443] [TLS.Teams][Azure][Collaborative][Safe][api.flightproxy.teams.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [....76] [ip4][..udp] [....192.168.1.6][50016] -> [....192.168.0.4][50005]
-         detected: [....76] [ip4][..udp] [....192.168.1.6][50016] -> [....192.168.0.4][50005] [STUN.Skype_TeamsCall][Unknown][VoIP][Acceptable][]
+         detected: [....76] [ip4][..udp] [....192.168.1.6][50016] -> [....192.168.0.4][50005] [STUN.TeamsCall][Unknown][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port
               new: [....77] [ip4][..udp] [....192.168.1.6][50036] -> [....192.168.0.4][50020]
-         detected: [....77] [ip4][..udp] [....192.168.1.6][50036] -> [....192.168.0.4][50020] [STUN.Skype_TeamsCall][Unknown][VoIP][Acceptable][]
+         detected: [....77] [ip4][..udp] [....192.168.1.6][50036] -> [....192.168.0.4][50020] [STUN.TeamsCall][Unknown][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port
               new: [....78] [ip4][..udp] [..93.71.110.205][16332] -> [....192.168.1.6][50016]
-         detected: [....78] [ip4][..udp] [..93.71.110.205][16332] -> [....192.168.1.6][50016] [STUN.Skype_TeamsCall][Unknown][VoIP][Acceptable][]
+         detected: [....78] [ip4][..udp] [..93.71.110.205][16332] -> [....192.168.1.6][50016] [STUN.TeamsCall][Unknown][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port
               new: [....79] [ip4][..udp] [..93.71.110.205][16333] -> [....192.168.1.6][50036]
-         detected: [....79] [ip4][..udp] [..93.71.110.205][16333] -> [....192.168.1.6][50036] [STUN.Skype_TeamsCall][Unknown][VoIP][Acceptable][]
+         detected: [....79] [ip4][..udp] [..93.71.110.205][16333] -> [....192.168.1.6][50036] [STUN.TeamsCall][Unknown][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port
- detection-update: [....68] [ip4][..udp] [....192.168.1.6][50016] -> [.52.114.250.141][.3478] [STUN.Skype_TeamsCall][Azure][VoIP][Acceptable][]
+ detection-update: [....68] [ip4][..udp] [....192.168.1.6][50016] -> [.52.114.250.141][.3478] [STUN.TeamsCall][Azure][VoIP][Acceptable][]
                    RISK: Unidirectional Traffic
- detection-update: [....70] [ip4][..udp] [....192.168.1.6][50036] -> [.52.114.250.137][.3478] [STUN.Skype_TeamsCall][Azure][VoIP][Acceptable][]
+ detection-update: [....70] [ip4][..udp] [....192.168.1.6][50036] -> [.52.114.250.137][.3478] [STUN.TeamsCall][Azure][VoIP][Acceptable][]
                    RISK: Unidirectional Traffic
- detection-update: [....68] [ip4][..udp] [....192.168.1.6][50016] -> [.52.114.250.141][.3478] [STUN.Skype_TeamsCall][Azure][VoIP][Acceptable][]
- detection-update: [....70] [ip4][..udp] [....192.168.1.6][50036] -> [.52.114.250.137][.3478] [STUN.Skype_TeamsCall][Azure][VoIP][Acceptable][]
+ detection-update: [....68] [ip4][..udp] [....192.168.1.6][50016] -> [.52.114.250.141][.3478] [STUN.TeamsCall][Azure][VoIP][Acceptable][]
+ detection-update: [....70] [ip4][..udp] [....192.168.1.6][50036] -> [.52.114.250.137][.3478] [STUN.TeamsCall][Azure][VoIP][Acceptable][]
               new: [....80] [ip4][..udp] [..52.114.252.21][.3480] -> [....192.168.1.6][50036]
-         detected: [....80] [ip4][..udp] [..52.114.252.21][.3480] -> [....192.168.1.6][50036] [STUN.Skype_TeamsCall][Azure][VoIP][Acceptable][]
+         detected: [....80] [ip4][..udp] [..52.114.252.21][.3480] -> [....192.168.1.6][50036] [STUN.TeamsCall][Azure][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port
               new: [....81] [ip4][..udp] [...52.114.252.8][.3479] -> [....192.168.1.6][50016]
-         detected: [....81] [ip4][..udp] [...52.114.252.8][.3479] -> [....192.168.1.6][50016] [STUN.Skype_TeamsCall][Azure][VoIP][Acceptable][]
+         detected: [....81] [ip4][..udp] [...52.114.252.8][.3479] -> [....192.168.1.6][50016] [STUN.TeamsCall][Azure][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port
           analyse: [....64] [ip4][..tcp] [....192.168.1.6][50018] -> [.52.114.250.123][..443] [TLS.Teams][Azure][Collaborative][Safe][euaz.tr.teams.microsoft.com]
                                          min|       max|       avg|    stddev|         variance|  entropy
@@ -419,15 +419,15 @@
                    [IATS(ms)....: 45.0,45.1,0.2,47.4,47.2,0.2,0.0,0.1,0.0,0.1,0.0,0.1,0.0,0.1,0.0,0.1,0.0,0.0,8.0,0.0,0.0,52.4,1.2,45.6,48.6,92.2,43.7,69.1,0.3,113.5,1566.9]
                    [PKTLENS.....: 64,52,40,227,1492,52,1492,588,52,52,1492,588,52,40,588,166,40,40,40,147,46,85,46,91,40,141,224,40,71,40,46,46]
                    [ENTROPIES...: 4.4,4.9,4.5,5.4,7.5,4.6,7.4,6.2,4.7,4.7,7.7,7.0,4.7,4.5,7.6,6.6,4.4,4.5,4.5,6.4,4.5,5.8,4.6,5.4,4.6,6.4,6.9,4.5,5.4,4.4,4.6,4.6]
- detection-update: [....76] [ip4][..udp] [....192.168.1.6][50016] -> [....192.168.0.4][50005] [STUN.Skype_TeamsCall][Unknown][VoIP][Acceptable][]
+ detection-update: [....76] [ip4][..udp] [....192.168.1.6][50016] -> [....192.168.0.4][50005] [STUN.TeamsCall][Unknown][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
- detection-update: [....77] [ip4][..udp] [....192.168.1.6][50036] -> [....192.168.0.4][50020] [STUN.Skype_TeamsCall][Unknown][VoIP][Acceptable][]
+ detection-update: [....77] [ip4][..udp] [....192.168.1.6][50036] -> [....192.168.0.4][50020] [STUN.TeamsCall][Unknown][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
               new: [....82] [ip4][..tcp] [....192.168.1.6][60568] -> [...40.79.138.41][..443]
-         detected: [....82] [ip4][..tcp] [....192.168.1.6][60568] -> [...40.79.138.41][..443] [TLS.Skype_Teams][Azure][VoIP][Acceptable][gate.hockeyapp.net]
+         detected: [....82] [ip4][..tcp] [....192.168.1.6][60568] -> [...40.79.138.41][..443] [TLS.Teams][Azure][Collaborative][Safe][gate.hockeyapp.net]
               new: [....83] [ip4][.icmp] [..93.71.110.205] -> [....192.168.1.6]
          detected: [....83] [ip4][.icmp] [..93.71.110.205] -> [....192.168.1.6] [ICMP][Unknown][Network][Acceptable]
-          analyse: [....78] [ip4][..udp] [..93.71.110.205][16332] -> [....192.168.1.6][50016] [STUN.Skype_TeamsCall][Unknown][VoIP][Acceptable]
+          analyse: [....78] [ip4][..udp] [..93.71.110.205][16332] -> [....192.168.1.6][50016] [STUN.TeamsCall][Unknown][VoIP][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     1.168|     0.160|     0.366|       133702.353|    2.700]
                    [PKTLEN......:     66.000|  1242.000|   253.400|   374.400|       140199.200|    4.000]
@@ -439,12 +439,12 @@
                    [ENTROPIES...: 5.4,5.4,5.6,5.5,5.5,5.5,6.4,5.5,5.3,7.8,7.8,5.4,6.1,5.3,7.8,7.8,5.4,6.9,6.4,5.9,6.0,6.1,5.4,6.3,6.1,6.0,6.3,6.0,6.1,6.2,6.1,6.2]
              idle: [....13] [ip4][..udp] [........0.0.0.0][...68] -> [255.255.255.255][...67] [DHCP][Unknown][Network][Acceptable]
              idle: [....35] [ip4][..tcp] [....192.168.1.6][60549] -> [...13.107.18.11][..443] [TLS.Microsoft365][Outlook][Collaborative][Acceptable][substrate.office.com]
-             idle: [.....5] [ip4][..tcp] [....192.168.1.6][60533] -> [.52.113.194.132][..443] [TLS.Teams][Skype_Teams][Collaborative][Safe][teams.microsoft.com]
-             idle: [.....8] [ip4][..tcp] [....192.168.1.6][60536] -> [.52.113.194.132][..443] [TLS.Teams][Skype_Teams][Collaborative][Safe]
-             idle: [....23] [ip4][..tcp] [....192.168.1.6][60542] -> [.52.113.194.132][..443] [TLS.Teams][Skype_Teams][Collaborative][Safe][config.teams.microsoft.com]
-             idle: [....43] [ip4][..tcp] [....192.168.1.6][60554] -> [.52.113.194.132][..443] [TLS.Teams][Skype_Teams][Collaborative][Safe][config.teams.microsoft.com]
+             idle: [.....5] [ip4][..tcp] [....192.168.1.6][60533] -> [.52.113.194.132][..443] [TLS.Teams][Teams][Collaborative][Safe][teams.microsoft.com]
+             idle: [.....8] [ip4][..tcp] [....192.168.1.6][60536] -> [.52.113.194.132][..443] [TLS.Teams][Teams][Collaborative][Safe]
+             idle: [....23] [ip4][..tcp] [....192.168.1.6][60542] -> [.52.113.194.132][..443] [TLS.Teams][Teams][Collaborative][Safe][config.teams.microsoft.com]
+             idle: [....43] [ip4][..tcp] [....192.168.1.6][60554] -> [.52.113.194.132][..443] [TLS.Teams][Teams][Collaborative][Safe][config.teams.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-             idle: [....47] [ip4][..tcp] [....192.168.1.6][60557] -> [.52.113.194.132][..443] [TLS.Teams][Skype_Teams][Collaborative][Safe]
+             idle: [....47] [ip4][..tcp] [....192.168.1.6][60557] -> [.52.113.194.132][..443] [TLS.Teams][Teams][Collaborative][Safe]
                    RISK: TLS (probably) Not Carrying HTTPS
               end: [.....4] [ip4][..tcp] [....192.168.1.6][60532] -> [...52.114.77.33][..443] [TLS.Microsoft][Azure][Cloud][Safe][mobile.pipe.aria.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
@@ -453,9 +453,9 @@
               end: [.....9] [ip4][..tcp] [....192.168.1.6][60537] -> [...52.114.77.33][..443] [TLS.Microsoft][Azure][Cloud][Safe]
                    RISK: TLS (probably) Not Carrying HTTPS
              idle: [....18] [ip4][..tcp] [....192.168.1.6][60538] -> [...52.114.75.70][..443] [TLS.Teams][Azure][Collaborative][Safe][eu-prod.asyncgw.teams.microsoft.com]
-             idle: [....19] [ip4][..tcp] [....192.168.1.6][60539] -> [...52.114.75.69][..443] [TLS.Skype_Teams][Azure][VoIP][Acceptable][eu-api.asm.skype.com]
+             idle: [....19] [ip4][..tcp] [....192.168.1.6][60539] -> [...52.114.75.69][..443] [TLS.Teams][Azure][Collaborative][Safe][eu-api.asm.skype.com]
              idle: [....20] [ip4][..tcp] [....192.168.1.6][60540] -> [...52.114.75.70][..443] [TLS.Teams][Azure][Collaborative][Safe][eu-prod.asyncgw.teams.microsoft.com]
-             idle: [....21] [ip4][..tcp] [....192.168.1.6][60541] -> [...52.114.75.69][..443] [TLS.Skype_Teams][Azure][VoIP][Acceptable]
+             idle: [....21] [ip4][..tcp] [....192.168.1.6][60541] -> [...52.114.75.69][..443] [TLS.Teams][Azure][Collaborative][Safe]
               end: [....25] [ip4][..tcp] [....192.168.1.6][60543] -> [...52.114.77.33][..443] [TLS.Microsoft][Azure][Cloud][Safe][mobile.pipe.aria.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
              idle: [....26] [ip4][..tcp] [....192.168.1.6][60544] -> [...52.114.76.48][..443] [TLS.Teams][Azure][Collaborative][Safe][northeurope.notifications.teams.microsoft.com]
@@ -476,9 +476,9 @@
              idle: [....59] [ip4][..tcp] [....192.168.1.6][60565] -> [...52.114.108.8][..443] [TLS.Teams][Azure][Collaborative][Safe][emea.ng.msg.teams.microsoft.com]
              idle: [....74] [ip4][..tcp] [....192.168.1.6][60567] -> [..52.114.77.136][..443] [TLS.Teams][Azure][Collaborative][Safe][api.flightproxy.teams.microsoft.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-              end: [....30] [ip4][..tcp] [....192.168.1.6][60546] -> [.167.99.215.164][.4434] [TLS.ntop][Unknown][Network][Safe]
+              end: [....30] [ip4][..tcp] [....192.168.1.6][60546] -> [.167.99.215.164][.4434] [TLS.ntop][DigitalOcean][Network][Safe]
                    RISK: Known Proto on Non Std Port
-             idle: [....61] [ip4][..tcp] [....192.168.1.6][60566] -> [.167.99.215.164][.4434] [TLS.ntop][Unknown][Network][Safe]
+             idle: [....61] [ip4][..tcp] [....192.168.1.6][60566] -> [.167.99.215.164][.4434] [TLS.ntop][DigitalOcean][Network][Safe]
                    RISK: Known Proto on Non Std Port
      not-detected: [....60] [ip4][..tcp] [..151.11.50.139][.2222] -> [....192.168.1.6][54750] [Unknown][Unknown][Unrated]
              idle: [....60] [ip4][..tcp] [..151.11.50.139][.2222] -> [....192.168.1.6][54750]
@@ -489,7 +489,7 @@
               end: [....46] [ip4][..tcp] [....192.168.1.6][60556] -> [.....40.126.9.7][..443] [TLS.Microsoft365][Microsoft365][Collaborative][Acceptable][login.microsoftonline.com]
               end: [....50] [ip4][..tcp] [....192.168.1.6][60560] -> [....40.126.9.67][..443] [TLS.Microsoft365][Microsoft365][Collaborative][Acceptable]
              idle: [....39] [ip4][..udp] [....192.168.1.6][50653] -> [....192.168.1.1][...53] [DNS.Teams][Unknown][Network][Safe][api.flightproxy.teams.microsoft.com]
-             idle: [....16] [ip4][..udp] [....192.168.1.6][51033] -> [....192.168.1.1][...53] [DNS.Skype_Teams][Unknown][Network][Acceptable][eu-api.asm.skype.com]
+             idle: [....16] [ip4][..udp] [....192.168.1.6][51033] -> [....192.168.1.1][...53] [DNS.Teams][Unknown][Network][Safe][eu-api.asm.skype.com]
              idle: [....44] [ip4][..udp] [....192.168.1.6][51309] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][skypedataprdcolneu04.cloudapp.net]
              idle: [....37] [ip4][..udp] [....192.168.1.6][53678] -> [....192.168.1.1][...53] [DNS.Teams][Unknown][Network][Safe][trouter2-asse-a.trouter.teams.microsoft.com]
              idle: [....52] [ip4][..udp] [....192.168.1.6][54069] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][api.microsoftstream.com]
@@ -506,8 +506,8 @@
              idle: [....34] [ip4][..udp] [....192.168.1.6][59403] -> [....192.168.1.1][...53] [DNS.Microsoft365][Unknown][Network][Acceptable][substrate.office.com]
              idle: [.....3] [ip4][..udp] [....192.168.1.6][60813] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][skypedataprdcolneu04.cloudapp.net]
              idle: [....75] [ip4][..udp] [....192.168.1.6][60837] -> [....192.168.1.1][...53] [DNS.Teams][Unknown][Network][Safe][c-flightproxy-euno-01-teams.cloudapp.net]
-             idle: [....53] [ip4][..tcp] [....192.168.1.6][60562] -> [.104.40.187.151][..443] [TLS.Skype_Teams][Azure][VoIP][Acceptable][api.microsoftstream.com]
-             idle: [....55] [ip4][..tcp] [....192.168.1.6][60563] -> [.52.169.186.119][..443] [TLS.Skype_Teams][Azure][VoIP][Acceptable]
+             idle: [....53] [ip4][..tcp] [....192.168.1.6][60562] -> [.104.40.187.151][..443] [TLS.Teams][Azure][Collaborative][Safe][api.microsoftstream.com]
+             idle: [....55] [ip4][..tcp] [....192.168.1.6][60563] -> [.52.169.186.119][..443] [TLS.Teams][Azure][Collaborative][Safe]
              idle: [....36] [ip4][..udp] [....192.168.1.6][61245] -> [....192.168.1.1][...53] [DNS.Teams][Unknown][Network][Safe][euaz.tr.teams.microsoft.com]
                    RISK: Minor Issues
              idle: [....54] [ip4][..udp] [....192.168.1.6][62735] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][euno-1.api.microsoftstream.com]
@@ -519,9 +519,9 @@
              idle: [....38] [ip4][..udp] [....192.168.1.6][65230] -> [....192.168.1.1][...53] [DNS.Teams][Unknown][Network][Safe][trouter2-asse-a.trouter.teams.microsoft.com]
              idle: [....24] [ip4][..udp] [....192.168.1.6][65387] -> [....192.168.1.1][...53] [DNS.Microsoft][Unknown][Network][Safe][northeuropecns.trafficmanager.net]
               end: [....14] [ip4][..tcp] [..93.62.150.157][..443] -> [....192.168.1.6][60512] [TLS][Unknown][Web][Safe]
-             idle: [....76] [ip4][..udp] [....192.168.1.6][50016] -> [....192.168.0.4][50005] [STUN.Skype_TeamsCall][Unknown][VoIP][Acceptable]
+             idle: [....76] [ip4][..udp] [....192.168.1.6][50016] -> [....192.168.0.4][50005] [STUN.TeamsCall][Unknown][VoIP][Acceptable]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
-             idle: [....77] [ip4][..udp] [....192.168.1.6][50036] -> [....192.168.0.4][50020] [STUN.Skype_TeamsCall][Unknown][VoIP][Acceptable]
+             idle: [....77] [ip4][..udp] [....192.168.1.6][50036] -> [....192.168.0.4][50020] [STUN.TeamsCall][Unknown][VoIP][Acceptable]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
              idle: [....12] [ip4][..udp] [....192.168.1.6][17500] -> [..192.168.1.255][17500] [Dropbox][Unknown][Cloud][Acceptable]
              idle: [....72] [ip4][..tcp] [....192.168.1.6][50014] -> [.52.114.250.152][..443] [TLS.Teams][Azure][Collaborative][Safe]
@@ -532,24 +532,24 @@
                    RISK: TLS (probably) Not Carrying HTTPS
               end: [....73] [ip4][..tcp] [....192.168.1.6][50036] -> [.52.114.250.153][..443] [TLS.Teams][Azure][Collaborative][Safe]
                    RISK: TLS Cert Mismatch, TLS (probably) Not Carrying HTTPS
-             idle: [....57] [ip4][..tcp] [....192.168.1.6][60564] -> [...40.79.138.41][..443] [TLS.Skype_Teams][Azure][VoIP][Acceptable][gate.hockeyapp.net]
-             idle: [....82] [ip4][..tcp] [....192.168.1.6][60568] -> [...40.79.138.41][..443] [TLS.Skype_Teams][Azure][VoIP][Acceptable][gate.hockeyapp.net]
-             idle: [....68] [ip4][..udp] [....192.168.1.6][50016] -> [.52.114.250.141][.3478] [STUN.Skype_TeamsCall][Azure][VoIP][Acceptable]
-             idle: [....63] [ip4][..udp] [....192.168.1.6][50016] -> [.52.114.250.123][.3478] [STUN.Skype_TeamsCall][Azure][VoIP][Acceptable]
-             idle: [....81] [ip4][..udp] [...52.114.252.8][.3479] -> [....192.168.1.6][50016] [STUN.Skype_TeamsCall][Azure][VoIP][Acceptable]
+             idle: [....57] [ip4][..tcp] [....192.168.1.6][60564] -> [...40.79.138.41][..443] [TLS.Teams][Azure][Collaborative][Safe][gate.hockeyapp.net]
+             idle: [....82] [ip4][..tcp] [....192.168.1.6][60568] -> [...40.79.138.41][..443] [TLS.Teams][Azure][Collaborative][Safe][gate.hockeyapp.net]
+             idle: [....68] [ip4][..udp] [....192.168.1.6][50016] -> [.52.114.250.141][.3478] [STUN.TeamsCall][Azure][VoIP][Acceptable]
+             idle: [....63] [ip4][..udp] [....192.168.1.6][50016] -> [.52.114.250.123][.3478] [STUN.TeamsCall][Azure][VoIP][Acceptable]
+             idle: [....81] [ip4][..udp] [...52.114.252.8][.3479] -> [....192.168.1.6][50016] [STUN.TeamsCall][Azure][VoIP][Acceptable]
                    RISK: Known Proto on Non Std Port
-             idle: [....69] [ip4][..udp] [....192.168.1.6][50017] -> [.52.114.250.141][.3478] [STUN.Skype_TeamsCall][Azure][VoIP][Acceptable]
-             idle: [....70] [ip4][..udp] [....192.168.1.6][50036] -> [.52.114.250.137][.3478] [STUN.Skype_TeamsCall][Azure][VoIP][Acceptable]
-             idle: [....66] [ip4][..udp] [....192.168.1.6][50036] -> [.52.114.250.123][.3478] [STUN.Skype_TeamsCall][Azure][VoIP][Acceptable]
-             idle: [....71] [ip4][..udp] [....192.168.1.6][50037] -> [.52.114.250.137][.3478] [STUN.Skype_TeamsCall][Azure][VoIP][Acceptable]
-             idle: [....80] [ip4][..udp] [..52.114.252.21][.3480] -> [....192.168.1.6][50036] [STUN.Skype_TeamsCall][Azure][VoIP][Acceptable]
+             idle: [....69] [ip4][..udp] [....192.168.1.6][50017] -> [.52.114.250.141][.3478] [STUN.TeamsCall][Azure][VoIP][Acceptable]
+             idle: [....70] [ip4][..udp] [....192.168.1.6][50036] -> [.52.114.250.137][.3478] [STUN.TeamsCall][Azure][VoIP][Acceptable]
+             idle: [....66] [ip4][..udp] [....192.168.1.6][50036] -> [.52.114.250.123][.3478] [STUN.TeamsCall][Azure][VoIP][Acceptable]
+             idle: [....71] [ip4][..udp] [....192.168.1.6][50037] -> [.52.114.250.137][.3478] [STUN.TeamsCall][Azure][VoIP][Acceptable]
+             idle: [....80] [ip4][..udp] [..52.114.252.21][.3480] -> [....192.168.1.6][50036] [STUN.TeamsCall][Azure][VoIP][Acceptable]
                    RISK: Known Proto on Non Std Port
              idle: [....83] [ip4][.icmp] [..93.71.110.205] -> [....192.168.1.6] [ICMP][Unknown][Network][Acceptable]
-          guessed: [....62] [ip4][..udp] [....192.168.1.6][51681] -> [..52.114.77.136][.3478] [Skype_TeamsCall][Azure][VoIP][Acceptable]
+          guessed: [....62] [ip4][..udp] [....192.168.1.6][51681] -> [..52.114.77.136][.3478] [TeamsCall][Azure][VoIP][Acceptable]
                    RISK: Susp Entropy
              idle: [....62] [ip4][..udp] [....192.168.1.6][51681] -> [..52.114.77.136][.3478]
-             idle: [....78] [ip4][..udp] [..93.71.110.205][16332] -> [....192.168.1.6][50016] [STUN.Skype_TeamsCall][Unknown][VoIP][Acceptable]
+             idle: [....78] [ip4][..udp] [..93.71.110.205][16332] -> [....192.168.1.6][50016] [STUN.TeamsCall][Unknown][VoIP][Acceptable]
                    RISK: Known Proto on Non Std Port
-             idle: [....79] [ip4][..udp] [..93.71.110.205][16333] -> [....192.168.1.6][50036] [STUN.Skype_TeamsCall][Unknown][VoIP][Acceptable]
+             idle: [....79] [ip4][..udp] [..93.71.110.205][16333] -> [....192.168.1.6][50036] [STUN.TeamsCall][Unknown][VoIP][Acceptable]
                    RISK: Known Proto on Non Std Port
      DAEMON-EVENT: shutdown

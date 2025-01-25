@@ -2194,7 +2194,7 @@
                    RISK: Unidirectional Traffic
              idle: [..1062] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][31038]
      not-detected: [...109] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][31337] [Unknown][Unknown][Unrated]
-                   RISK: TCP Connection Issues
+                   RISK: TCP Connection Issues, Probing Attempt
               end: [...109] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][31337]
      not-detected: [..1189] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][64623] [Unknown][Unknown][Unrated]
                    RISK: Unidirectional Traffic
@@ -2415,7 +2415,7 @@
                    RISK: Unidirectional Traffic
              idle: [...157] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][...24]
           guessed: [....35] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][...25] [SMTP][Unknown][Email][Acceptable][]
-                   RISK: TCP Connection Issues
+                   RISK: TCP Connection Issues, Probing Attempt
               end: [....35] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][...25]
      not-detected: [...293] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][...26] [Unknown][Unknown][Unrated]
                    RISK: Unidirectional Traffic
@@ -2468,7 +2468,7 @@
           guessed: [.....9] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][...53] [DNS][Unknown][Network][Acceptable][]
              idle: [.....9] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][...53]
      not-detected: [..1184] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][...70] [Unknown][Unknown][Unrated]
-                   RISK: TCP Connection Issues
+                   RISK: TCP Connection Issues, Probing Attempt
               end: [..1184] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][...70]
      not-detected: [..1196] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][...79] [Unknown][Unknown][Unrated]
                    RISK: Unidirectional Traffic
@@ -2563,7 +2563,7 @@
                    RISK: Unidirectional Traffic
              idle: [....25] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][..111]
      not-detected: [....12] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][..113] [Unknown][Unknown][Unrated]
-                   RISK: TCP Connection Issues
+                   RISK: TCP Connection Issues, Probing Attempt
               end: [....12] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][..113]
      not-detected: [..1593] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][..119] [Unknown][Unknown][Unrated]
                    RISK: Unidirectional Traffic
@@ -2572,7 +2572,7 @@
                    RISK: Unidirectional Traffic
              idle: [..1657] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][..119]
      not-detected: [...523] [ip4][..tcp] [.....172.16.0.8][36061] -> [...64.13.134.52][..113] [Unknown][Unknown][Unrated]
-                   RISK: TCP Connection Issues
+                   RISK: TCP Connection Issues, Probing Attempt
               end: [...523] [ip4][..tcp] [.....172.16.0.8][36061] -> [...64.13.134.52][..113]
      not-detected: [...723] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][..125] [Unknown][Unknown][Unrated]
                    RISK: Unidirectional Traffic

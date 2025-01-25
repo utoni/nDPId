@@ -198,7 +198,7 @@
              idle: [....28] [ip6][icmp6] [...............fe80::abe:acff:fe0b:176e] -> [................................ff02::2] [ICMPV6][Unknown][Network][Acceptable]
              idle: [....11] [ip4][..udp] [...192.168.12.1][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable]
           guessed: [.....3] [ip4][..tcp] [.192.168.12.169][37948] -> [.149.154.167.91][..443] [Telegram][Telegram][Chat][Acceptable]
-                   RISK: TCP Connection Issues
+                   RISK: TCP Connection Issues, Probing Attempt
               end: [.....3] [ip4][..tcp] [.192.168.12.169][37948] -> [.149.154.167.91][..443]
              idle: [.....4] [ip4][..tcp] [.192.168.12.169][37950] -> [.149.154.167.91][..443] [Telegram][Telegram][Chat][Acceptable]
                    RISK: Susp Entropy

@@ -21,7 +21,6 @@
       ERROR-EVENT: Unknown packet type [12/16]
               new: [.....4] [ip4][..udp] [192.168.239.129][..138] -> [192.168.239.255][..138]
          detected: [.....4] [ip4][..udp] [192.168.239.129][..138] -> [192.168.239.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][mdjr98]
-                   RISK: Unsafe Protocol
       ERROR-EVENT: Unknown packet type [13/16]
       ERROR-EVENT: Unknown packet type [14/16]
       ERROR-EVENT: Unknown packet type [15/16]
@@ -46,12 +45,10 @@
       ERROR-EVENT: Unknown packet type [15/16]
       ERROR-EVENT: Unknown packet type [16/16]
            update: [.....4] [ip4][..udp] [192.168.239.129][..138] -> [192.168.239.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][mdjr98]
-                   RISK: Unsafe Protocol
            update: [.....2] [ip4][.icmp] [192.168.239.129] -> [......224.0.0.2] [ICMP][Unknown][Network][Acceptable]
            update: [.....1] [ip4][..udp] [192.168.239.129][..137] -> [..192.168.239.2][..137] [NetBIOS][Unknown][System][Acceptable][mdjr98]
            update: [.....3] [ip4][..udp] [192.168.239.129][..137] -> [192.168.239.255][..137] [NetBIOS][Unknown][System][Acceptable][mdjr98]
            update: [.....4] [ip4][..udp] [192.168.239.129][..138] -> [192.168.239.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][mdjr98]
-                   RISK: Unsafe Protocol
       ERROR-EVENT: Unknown packet type [1/16]
       ERROR-EVENT: Unknown packet type [2/16]
       ERROR-EVENT: Unknown packet type [3/16]
@@ -69,5 +66,4 @@
              idle: [.....3] [ip4][..udp] [192.168.239.129][..137] -> [192.168.239.255][..137] [NetBIOS][Unknown][System][Acceptable][mdjr98]
              idle: [.....1] [ip4][..udp] [192.168.239.129][..137] -> [..192.168.239.2][..137] [NetBIOS][Unknown][System][Acceptable][mdjr98]
              idle: [.....4] [ip4][..udp] [192.168.239.129][..138] -> [192.168.239.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][mdjr98]
-                   RISK: Unsafe Protocol
      DAEMON-EVENT: shutdown

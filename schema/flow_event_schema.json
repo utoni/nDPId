@@ -244,6 +244,9 @@
                 "proto_by_ip_id": {
                     "type": "number"
                 },
+                "stream_content": {
+                    "type": "string"
+                },
                 "category": {
                     "type": "string",
                     "enum": [
@@ -254,7 +257,7 @@
                         "Shopping", "Productivity", "FileSharing", "ConnCheck", "IoT-Scada",
                         "VirtAssistant", "Cybersecurity", "AdultContent", "Mining", "Malware",
                         "Advertisement", "Banned_Site", "Site_Unavailable", "Allowed_Site",
-                        "Antimalware", "Crypto_Currency", "Gambling"
+                        "Antimalware", "Crypto_Currency", "Gambling", "Health"
                     ]
                 },
                 "category_id": {
@@ -1316,7 +1319,7 @@
                                     "properties": {
                                         "total": { "type": "number", "minimum": 10, "maximum": 610 },
                                         "client": { "type": "number", "minimum": 5, "maximum": 485 },
-                                        "server": { "type": "number", "minimum": 5, "maximum": 130 },
+                                        "server": { "type": "number", "minimum": 5, "maximum": 135 },
                                         "additionalProperties": false
                                     }
                                 }
@@ -1411,6 +1414,9 @@
                 "mdns": {
                     "type": "object"
                 },
+                "mikrotik": {
+                    "type": "object"
+                },
                 "natpmp": {
                     "type": "object"
                 },
@@ -1449,6 +1455,18 @@
                 },
                 "ftp": {
                     "type": "object"
+                },
+                "sip": {
+                    "type": "object",
+                    "properties": {
+                        "from": {
+                            "type": "string"
+                        },
+                        "to": {
+                            "type": "string"
+                        }
+                    },
+                    "additionalProperties": false
                 },
                 "snmp": {
                     "type": "object"

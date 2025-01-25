@@ -1,0 +1,50 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..udp] [..192.168.12.67][45419] -> [.35.216.234.234][.3478]
+         detected: [.....1] [ip4][..udp] [..192.168.12.67][45419] -> [.35.216.234.234][.3478] [STUN][GoogleCloud][Network][Acceptable][]
+              new: [.....2] [ip4][..udp] [..192.168.12.67][45419] -> [.35.219.252.146][.3478]
+         detected: [.....2] [ip4][..udp] [..192.168.12.67][45419] -> [.35.219.252.146][.3478] [STUN][GoogleCloud][Network][Acceptable][]
+ detection-update: [.....2] [ip4][..udp] [..192.168.12.67][45419] -> [.35.219.252.146][.3478] [STUN][GoogleCloud][Network][Acceptable][]
+                   RISK: Unidirectional Traffic
+ detection-update: [.....2] [ip4][..udp] [..192.168.12.67][45419] -> [.35.219.252.146][.3478] [STUN][GoogleCloud][Network][Acceptable][]
+ detection-update: [.....2] [ip4][..udp] [..192.168.12.67][45419] -> [.35.219.252.146][.3478] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable][signal.org]
+ detection-update: [.....1] [ip4][..udp] [..192.168.12.67][45419] -> [.35.216.234.234][.3478] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable][]
+ detection-update: [.....1] [ip4][..udp] [..192.168.12.67][45419] -> [.35.216.234.234][.3478] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable][signal.org]
+              new: [.....3] [ip4][..udp] [..192.168.12.67][45419] -> [..35.219.226.11][12261]
+         detected: [.....3] [ip4][..udp] [..192.168.12.67][45419] -> [..35.219.226.11][12261] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable][]
+                   RISK: Known Proto on Non Std Port
+              new: [.....4] [ip4][..udp] [..192.168.12.67][45419] -> [..35.219.226.11][54116]
+         detected: [.....4] [ip4][..udp] [..192.168.12.67][45419] -> [..35.219.226.11][54116] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable][]
+                   RISK: Known Proto on Non Std Port
+          analyse: [.....2] [ip4][..udp] [..192.168.12.67][45419] -> [.35.219.252.146][.3478] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable][signal.org]
+                                         min|       max|       avg|    stddev|         variance|  entropy
+                   [IAT.........: <    0.001|     1.009|     0.193|     0.329|       108144.574|    3.400]
+                   [PKTLEN......:     48.000|   168.000|   115.100|    39.100|         1531.700|    4.900]
+                   [BINS(c->s)..: 6,0,0,7,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 0,4,6,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [DIRECTIONS..: 0,0,1,1,0,1,0,1,0,1,0,1,0,1,0,1,1,0,0,1,0,1,1,0,0,1,0,0,0,1,1,1]
+                   [IATS(ms)....: 1.7,3.7,1.2,10.3,10.2,26.7,26.6,250.2,250.3,501.2,501.1,1004.0,1009.3,956.1,950.7,3.8,9.0,1.1,5.3,38.9,115.9,0.0,84.9,11.6,28.8,13.0,35.9,1.2,42.5,17.7,63.5]
+                   [PKTLENS.....: 48,56,80,112,144,112,56,108,56,108,56,108,56,108,148,80,168,148,128,80,160,168,136,128,168,168,128,168,148,80,136,136]
+                   [ENTROPIES...: 5.1,4.9,5.5,5.7,5.8,5.7,4.9,5.7,4.9,5.7,4.9,5.6,4.9,5.7,5.8,5.9,6.1,5.8,5.9,5.7,6.0,6.2,6.0,5.8,5.9,6.1,5.8,5.9,5.9,5.9,6.0,5.9]
+ detection-update: [.....4] [ip4][..udp] [..192.168.12.67][45419] -> [..35.219.226.11][54116] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable][]
+                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+ detection-update: [.....4] [ip4][..udp] [..192.168.12.67][45419] -> [..35.219.226.11][54116] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable][]
+                   RISK: Known Proto on Non Std Port
+          analyse: [.....4] [ip4][..udp] [..192.168.12.67][45419] -> [..35.219.226.11][54116] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable]
+                                         min|       max|       avg|    stddev|         variance|  entropy
+                   [IAT.........:      0.008|     2.229|     0.465|     0.655|       429159.809|    3.800]
+                   [PKTLEN......:     56.000|   132.000|   101.400|    22.200|          491.600|    5.000]
+                   [BINS(c->s)..: 2,2,6,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 1,1,7,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [DIRECTIONS..: 0,0,1,0,1,0,1,1,0,1,1,0,0,1,1,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1]
+                   [IATS(ms)....: 49.2,63.8,48.7,39.3,9.0,8.0,43.1,50.0,8.0,41.1,51.3,943.4,1038.3,262.2,355.0,260.4,75.7,606.2,10.9,31.2,394.5,279.9,364.3,2145.8,28.8,2221.2,290.3,345.1,931.1,1204.6,2229.2]
+                   [PKTLENS.....: 124,124,92,132,124,92,92,124,92,92,124,92,132,92,124,92,56,84,84,56,124,92,124,92,124,56,92,124,92,84,124,92]
+                   [ENTROPIES...: 6.0,5.9,5.9,5.8,6.0,5.8,5.8,5.9,5.8,5.9,5.9,5.8,5.7,5.8,5.9,5.7,5.2,5.9,5.7,5.2,5.8,5.9,5.9,5.8,5.9,5.2,5.8,6.0,5.7,5.8,5.9,5.8]
+             idle: [.....4] [ip4][..udp] [..192.168.12.67][45419] -> [..35.219.226.11][54116] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [.....1] [ip4][..udp] [..192.168.12.67][45419] -> [.35.216.234.234][.3478] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable][signal.org]
+             idle: [.....2] [ip4][..udp] [..192.168.12.67][45419] -> [.35.219.252.146][.3478] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable][signal.org]
+             idle: [.....3] [ip4][..udp] [..192.168.12.67][45419] -> [..35.219.226.11][12261] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable]
+                   RISK: Known Proto on Non Std Port
+     DAEMON-EVENT: shutdown

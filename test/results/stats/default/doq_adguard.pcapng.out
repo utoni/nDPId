@@ -1,5 +1,5 @@
 PUTVAL "localhost/exec-nDPIsrvd/counter-json_lines" interval=60 N:12
-PUTVAL "localhost/exec-nDPIsrvd/counter-json_bytes" interval=60 N:17296
+PUTVAL "localhost/exec-nDPIsrvd/counter-json_bytes" interval=60 N:17255
 PUTVAL "localhost/exec-nDPIsrvd/counter-flow_new_count" interval=60 N:1
 PUTVAL "localhost/exec-nDPIsrvd/counter-flow_end_count" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/counter-flow_idle_count" interval=60 N:1
@@ -83,6 +83,7 @@ PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_category_allowed_site_count" interval
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_category_antimalware_count" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_category_crypto_currency_count" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_category_gambling_count" interval=60 N:0
+PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_category_health_count" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_category_unknown_count" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_confidence_by_port" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/gauge-flow_confidence_dpi_partial" interval=60 N:0

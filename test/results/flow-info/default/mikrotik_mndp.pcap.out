@@ -1,0 +1,15 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip6][..udp] [...............fe80::4e5e:cff:fe9a:ec54][.5678] -> [................................ff02::1][.5678]
+         detected: [.....1] [ip6][..udp] [...............fe80::4e5e:cff:fe9a:ec54][.5678] -> [................................ff02::1][.5678] [Mikrotik][Unknown][Network][Acceptable]
+              new: [.....2] [ip6][..udp] [................fe80::4e5e:cff:feea:365][.5678] -> [................................ff02::1][.5678]
+         detected: [.....2] [ip6][..udp] [................fe80::4e5e:cff:feea:365][.5678] -> [................................ff02::1][.5678] [Mikrotik][Unknown][Network][Acceptable]
+     DAEMON-EVENT: [Processed: 2 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 2 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....3] [ip4][..udp] [..192.168.2.106][.5678] -> [255.255.255.255][.5678]
+         detected: [.....3] [ip4][..udp] [..192.168.2.106][.5678] -> [255.255.255.255][.5678] [Mikrotik][Unknown][Network][Acceptable]
+             idle: [.....2] [ip6][..udp] [................fe80::4e5e:cff:feea:365][.5678] -> [................................ff02::1][.5678] [Mikrotik][Unknown][Network][Acceptable]
+             idle: [.....1] [ip6][..udp] [...............fe80::4e5e:cff:fe9a:ec54][.5678] -> [................................ff02::1][.5678] [Mikrotik][Unknown][Network][Acceptable]
+             idle: [.....3] [ip4][..udp] [..192.168.2.106][.5678] -> [255.255.255.255][.5678] [Mikrotik][Unknown][Network][Acceptable]
+     DAEMON-EVENT: shutdown

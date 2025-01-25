@@ -93,7 +93,7 @@ jobs:
             upload: false
             ndpi_min_version: "4.12"
           - compiler: "clang-12"
-            os: "ubuntu-latest"
+            os: "ubuntu-20.04"
             ndpi_build: "-DBUILD_NDPI=ON"
             ndpid_examples: "-DBUILD_EXAMPLES=ON"
             ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"

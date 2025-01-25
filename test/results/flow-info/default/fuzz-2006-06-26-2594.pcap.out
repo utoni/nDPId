@@ -905,7 +905,6 @@
       ERROR-EVENT: nDPI IPv4/L4 payload detection failed [1/16]
               new: [...141] [ip4][..udp] [....192.168.1.2][..138] -> [..192.168.1.255][..138]
          detected: [...141] [ip4][..udp] [....192.168.1.2][..138] -> [..192.168.1.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][d002465]
-                   RISK: Unsafe Protocol
              idle: [...109] [ip4][..udp] [....192.168.1.2][.2755] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][1.0.0.127.in-addr.arpa]
            update: [....58] [ip4][..120] [....192.168.1.2] -> [..212.242.33.35]
            update: [...130] [ip4][..udp] [....192.168.1.2][.2767] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][1.0.0.127.in-addr.arpa]
@@ -985,7 +984,6 @@
              idle: [...115] [ip4][..udp] [....192.168.1.2][.2758] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
                    RISK: Unidirectional Traffic
            update: [...141] [ip4][..udp] [....192.168.1.2][..138] -> [..192.168.1.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][d002465]
-                   RISK: Unsafe Protocol
            update: [...130] [ip4][..udp] [....192.168.1.2][.2767] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][1.0.0.127.in-addr.arpa]
            update: [...131] [ip4][..udp] [....192.168.1.2][.2768] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
                    RISK: Malformed Packet, Unidirectional Traffic
@@ -1067,7 +1065,6 @@
              idle: [...123] [ip4][..udp] [....192.168.1.2][.2764] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
                    RISK: Malformed Packet, Non-Printable/Invalid Chars Detected, Error Code, Unidirectional Traffic
            update: [...141] [ip4][..udp] [....192.168.1.2][..138] -> [..192.168.1.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][d002465]
-                   RISK: Unsafe Protocol
            update: [...130] [ip4][..udp] [....192.168.1.2][.2767] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][1.0.0.127.in-addr.arpa]
            update: [...131] [ip4][..udp] [....192.168.1.2][.2768] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
                    RISK: Malformed Packet, Unidirectional Traffic
@@ -1176,7 +1173,6 @@
  detection-update: [...167] [ip4][..udp] [....192.168.1.2][.2789] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cybercity.dk]
                    RISK: Malformed Packet, Unidirectional Traffic
            update: [...141] [ip4][..udp] [....192.168.1.2][..138] -> [..192.168.1.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][d002465]
-                   RISK: Unsafe Protocol
            update: [...139] [ip4][..udp] [...192.168.1.57][.2771] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
            update: [...140] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2771] [DNS][Unknown][Network][Acceptable][1.0.0.127.in-addr.arpa]
            update: [...142] [ip4][..udp] [....192.168.1.2][.2772] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
@@ -1204,7 +1200,6 @@
          detected: [...174] [ip4][..udp] [....192.168.1.2][.2791] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][_sip._udp.sip.cybercity.dk]
              idle: [...138] [ip4][..udp] [....192.168.1.2][..137] -> [..120.168.1.255][..137] [NetBIOS][Unknown][System][Acceptable][eci_doma]
              idle: [...141] [ip4][..udp] [....192.168.1.2][..138] -> [..192.168.1.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][d002465]
-                   RISK: Unsafe Protocol
              idle: [...137] [ip4][..udp] [....192.168.1.2][.2770] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable]
                    RISK: Malformed Packet, Unidirectional Traffic
              idle: [...140] [ip4][..udp] [....192.168.1.1][...53] -> [....192.168.1.2][.2771] [DNS][Unknown][Network][Acceptable][1.0.0.127.in-addr.arpa]
@@ -1374,7 +1369,6 @@
            update: [...172] [ip4][..udp] [....192.168.1.2][..137] -> [..192.194.1.255][..137] [NetBIOS][Unknown][System][Acceptable][eci_domain]
               new: [...180] [ip4][..udp] [...192.168.1.41][..138] -> [..192.168.1.255][..138]
          detected: [...180] [ip4][..udp] [...192.168.1.41][..138] -> [..192.168.1.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][lab111]
-                   RISK: Unsafe Protocol
               new: [...181] [ip4][..udp] [.192.184.189.41][..137] -> [..192.168.1.255][..137]
          detected: [...181] [ip4][..udp] [.192.184.189.41][..137] -> [..192.168.1.255][..137] [NetBIOS][Unknown][System][Acceptable][workg]
               new: [...182] [ip4][..udp] [...192.168.1.41][..137] -> [..192.168.1.255][..137]
@@ -1428,7 +1422,6 @@
            update: [...182] [ip4][..udp] [...192.168.1.41][..137] -> [..192.168.1.255][..137] [NetBIOS][Unknown][System][Acceptable][workgroup]
            update: [...185] [ip4][..udp] [...192.168.1.41][..137] -> [.192.168.37.115][..137] [NetBIOS][Unknown][System][Acceptable][workgroup]
            update: [...180] [ip4][..udp] [...192.168.1.41][..138] -> [..192.168.1.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][lab111]
-                   RISK: Unsafe Protocol
            update: [...181] [ip4][..udp] [.192.184.189.41][..137] -> [..192.168.1.255][..137] [NetBIOS][Unknown][System][Acceptable][workg]
            update: [...186] [ip4][..udp] [....192.168.1.2][43690] -> [192.168.170.170][43690]
            update: [...179] [ip4][..udp] [....192.136.1.2][..137] -> [..192.168.1.255][..137] [NetBIOS][Unknown][System][Acceptable][5ci_dombin]
@@ -1455,7 +1448,6 @@
            update: [...185] [ip4][..udp] [...192.168.1.41][..137] -> [.192.168.37.115][..137] [NetBIOS][Unknown][System][Acceptable][workgroup]
            update: [...182] [ip4][..udp] [...192.168.1.41][..137] -> [..192.168.1.255][..137] [NetBIOS][Unknown][System][Acceptable][workgroup]
            update: [...180] [ip4][..udp] [...192.168.1.41][..138] -> [..192.168.1.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][lab111]
-                   RISK: Unsafe Protocol
            update: [...189] [ip4][..udp] [...192.168.1.41][..138] -> [..192.168.1.255][..394]
            update: [...181] [ip4][..udp] [.192.184.189.41][..137] -> [..192.168.1.255][..137] [NetBIOS][Unknown][System][Acceptable][workg]
               new: [...192] [ip4][..udp] [....192.168.1.2][.2795] -> [....192.168.1.1][...53]
@@ -1518,7 +1510,6 @@
            update: [...185] [ip4][..udp] [...192.168.1.41][..137] -> [.192.168.37.115][..137] [NetBIOS][Unknown][System][Acceptable][workgroup]
            update: [...182] [ip4][..udp] [...192.168.1.41][..137] -> [..192.168.1.255][..137] [NetBIOS][Unknown][System][Acceptable][workgroup]
            update: [...180] [ip4][..udp] [...192.168.1.41][..138] -> [..192.168.1.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][lab111]
-                   RISK: Unsafe Protocol
            update: [...189] [ip4][..udp] [...192.168.1.41][..138] -> [..192.168.1.255][..394]
            update: [...190] [ip4][..udp] [....192.168.1.2][.2793] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][reg.sippstar.com]
                    RISK: Non-Printable/Invalid Chars Detected
@@ -1558,7 +1549,6 @@
              idle: [...184] [ip4][..udp] [.....115.0.1.41][..137] -> [..192.168.1.255][..137] [NetBIOS][Unknown][System][Acceptable][workgroup]
              idle: [...183] [ip4][..udp] [...192.168.1.41][..137] -> [..107.168.1.255][..137] [NetBIOS][Unknown][System][Acceptable][workgroup]
              idle: [...180] [ip4][..udp] [...192.168.1.41][..138] -> [..192.168.1.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][lab111]
-                   RISK: Unsafe Protocol
              idle: [...181] [ip4][..udp] [.192.184.189.41][..137] -> [..192.168.1.255][..137] [NetBIOS][Unknown][System][Acceptable][workg]
            update: [...198] [ip4][..udp] [..212.242.33.35][.5060] -> [....192.168.1.2][.5060] [SIP][Unknown][VoIP][Acceptable]
            update: [...197] [ip4][..udp] [....192.168.1.2][.2797] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][1.0.0.127.in-addr.arpa]

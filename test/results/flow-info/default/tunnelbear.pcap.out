@@ -1,6 +1,6 @@
      DAEMON-EVENT: init
               new: [.....1] [ip4][..udp] [......10.0.2.15][57636] -> [...142.93.78.79][51820]
-         detected: [.....1] [ip4][..udp] [......10.0.2.15][57636] -> [...142.93.78.79][51820] [WireGuard.TunnelBear][Unknown][VPN][Acceptable]
+         detected: [.....1] [ip4][..udp] [......10.0.2.15][57636] -> [...142.93.78.79][51820] [WireGuard.TunnelBear][DigitalOcean][VPN][Acceptable]
      DAEMON-EVENT: [Processed: 12 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....2] [ip4][..tcp] [.......10.8.0.1][50178] -> [.104.17.154.236][..443]
@@ -47,7 +47,7 @@
                    [IATS(ms)....: 3.4,3.9,2.0,2.9,57.3,108.0,0.8,51.4,0.3,0.1,0.1,0.1,0.1,0.1,50.9,51.9,1.0,50.4,50.8,196.8,233.7,37.7,51.5,50.9,51.1,0.1,51.0,0.5,0.2,0.4,1.0]
                    [PKTLENS.....: 60,40,40,557,40,196,40,91,40,576,40,576,40,303,40,118,363,40,78,40,789,40,213,40,78,40,71,40,40,40,40,40]
                    [ENTROPIES...: 4.5,4.6,4.6,6.1,4.5,6.1,4.7,5.4,4.5,7.4,4.6,7.6,4.5,7.2,4.5,5.9,7.4,4.6,5.3,4.6,7.7,4.7,6.8,4.7,5.3,4.6,5.1,4.5,4.5,4.4,4.5,4.5]
-             idle: [.....1] [ip4][..udp] [......10.0.2.15][57636] -> [...142.93.78.79][51820] [WireGuard.TunnelBear][Unknown][VPN][Acceptable]
+             idle: [.....1] [ip4][..udp] [......10.0.2.15][57636] -> [...142.93.78.79][51820] [WireGuard.TunnelBear][DigitalOcean][VPN][Acceptable]
               new: [....10] [ip4][..tcp] [..10.158.132.91][38398] -> [..104.17.114.40][..443] [MIDSTREAM]
          detected: [....10] [ip4][..tcp] [..10.158.132.91][38398] -> [..104.17.114.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable][api.polargrizzly.com]
                    RISK: Unidirectional Traffic

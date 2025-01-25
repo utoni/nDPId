@@ -45,18 +45,18 @@
              idle: [.....3] [ip4][..tcp] [....10.4.20.102][54319] -> [107.161.178.210][...80] [HTTP][Unknown][Download][Acceptable][gandhitoday.org]
                    RISK: Binary App Transfer, Binary File/Data Transfer (Attempt)
               new: [.....5] [ip4][..tcp] [....10.4.25.101][49803] -> [138.197.147.101][..443]
-         detected: [.....5] [ip4][..tcp] [....10.4.25.101][49803] -> [138.197.147.101][..443] [TLS][Unknown][Web][Safe][]
+         detected: [.....5] [ip4][..tcp] [....10.4.25.101][49803] -> [138.197.147.101][..443] [TLS][DigitalOcean][Web][Safe][]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
- detection-update: [.....5] [ip4][..tcp] [....10.4.25.101][49803] -> [138.197.147.101][..443] [TLS][Unknown][Web][Safe][]
+ detection-update: [.....5] [ip4][..tcp] [....10.4.25.101][49803] -> [138.197.147.101][..443] [TLS][DigitalOcean][Web][Safe][]
                    RISK: Self-signed Cert, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
               new: [.....6] [ip4][..tcp] [....10.4.25.101][49804] -> [138.197.147.101][..443]
-         detected: [.....6] [ip4][..tcp] [....10.4.25.101][49804] -> [138.197.147.101][..443] [TLS][Unknown][Web][Safe][]
+         detected: [.....6] [ip4][..tcp] [....10.4.25.101][49804] -> [138.197.147.101][..443] [TLS][DigitalOcean][Web][Safe][]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
- detection-update: [.....6] [ip4][..tcp] [....10.4.25.101][49804] -> [138.197.147.101][..443] [TLS][Unknown][Web][Safe][]
+ detection-update: [.....6] [ip4][..tcp] [....10.4.25.101][49804] -> [138.197.147.101][..443] [TLS][DigitalOcean][Web][Safe][]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
-             idle: [.....5] [ip4][..tcp] [....10.4.25.101][49803] -> [138.197.147.101][..443] [TLS][Unknown][Web][Safe]
+             idle: [.....5] [ip4][..tcp] [....10.4.25.101][49803] -> [138.197.147.101][..443] [TLS][DigitalOcean][Web][Safe]
                    RISK: Self-signed Cert, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
-              end: [.....6] [ip4][..tcp] [....10.4.25.101][49804] -> [138.197.147.101][..443] [TLS][Unknown][Web][Safe]
+              end: [.....6] [ip4][..tcp] [....10.4.25.101][49804] -> [138.197.147.101][..443] [TLS][DigitalOcean][Web][Safe]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
              idle: [.....4] [ip4][..tcp] [....10.4.25.101][49797] -> [..77.105.36.156][...80] [HTTP][Unknown][Download][Acceptable][filmmogzivota.rs]
                    RISK: Binary App Transfer, HTTP Susp User-Agent, Binary File/Data Transfer (Attempt)

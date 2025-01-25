@@ -36,7 +36,6 @@
       ERROR-EVENT: Unknown packet type [16/16]
               new: [.....5] [ip4][..udp] [..192.168.1.252][..138] -> [..192.168.1.255][..138]
          detected: [.....5] [ip4][..udp] [..192.168.1.252][..138] -> [..192.168.1.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][endian-pc]
-                   RISK: Unsafe Protocol
           analyse: [.....3] [ip4][..tcp] [..192.168.1.252][51112] -> [...38.229.70.53][..443] [TLS.Tor][Unknown][VPN][Potentially Dangerous]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|    31.166|     2.329|     7.550|     56997495.964|    1.900]
@@ -60,7 +59,6 @@
            update: [.....4] [ip4][..udp] [....192.168.1.1][17500] -> [..192.168.1.255][17500] [Dropbox][Unknown][Cloud][Acceptable]
               new: [.....6] [ip4][..tcp] [..192.168.1.252][51104] -> [...157.56.30.46][..443] [MIDSTREAM]
            update: [.....5] [ip4][..udp] [..192.168.1.252][..138] -> [..192.168.1.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][endian-pc]
-                   RISK: Unsafe Protocol
           analyse: [.....2] [ip4][..tcp] [..192.168.1.252][51111] -> [....46.59.52.31][..443] [TLS.Tor][Unknown][VPN][Potentially Dangerous]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|    71.328|     4.658|    14.789|    218716025.389|    1.800]
@@ -109,7 +107,6 @@
               end: [.....2] [ip4][..tcp] [..192.168.1.252][51111] -> [....46.59.52.31][..443] [TLS.Tor][Unknown][VPN][Potentially Dangerous][www.e6r5p57kbafwrxj3plz.com]
                    RISK: Obsolete TLS (v1.1 or older), Susp DGA Domain name, Unsafe Protocol
              idle: [.....5] [ip4][..udp] [..192.168.1.252][..138] -> [..192.168.1.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][endian-pc]
-                   RISK: Unsafe Protocol
            update: [.....4] [ip4][..udp] [....192.168.1.1][17500] -> [..192.168.1.255][17500] [Dropbox][Unknown][Cloud][Acceptable]
       ERROR-EVENT: Unknown packet type [6/16]
       ERROR-EVENT: Unknown packet type [7/16]

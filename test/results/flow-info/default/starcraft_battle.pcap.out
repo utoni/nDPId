@@ -186,10 +186,10 @@
           guessed: [....34] [ip4][..udp] [..192.168.1.100][53146] -> [...5.42.180.154][.1119] [Starcraft][Unknown][Game][Fun]
              idle: [....34] [ip4][..udp] [..192.168.1.100][53146] -> [...5.42.180.154][.1119]
           guessed: [.....3] [ip4][..tcp] [..80.239.186.26][..443] -> [..192.168.1.100][.3476] [TLS][Unknown][Web][Safe]
-                   RISK: Unidirectional Traffic, TCP Connection Issues
+                   RISK: Unidirectional Traffic, TCP Connection Issues, Probing Attempt
               end: [.....3] [ip4][..tcp] [..80.239.186.26][..443] -> [..192.168.1.100][.3476]
           guessed: [.....5] [ip4][..tcp] [..80.239.186.40][..443] -> [..192.168.1.100][.3478] [TLS][Unknown][Web][Safe]
-                   RISK: Unidirectional Traffic, TCP Connection Issues
+                   RISK: Unidirectional Traffic, TCP Connection Issues, Probing Attempt
               end: [.....5] [ip4][..tcp] [..80.239.186.40][..443] -> [..192.168.1.100][.3478]
              idle: [....27] [ip4][....2] [..192.168.1.107] -> [.....224.0.0.22] [IGMP][Unknown][Network][Acceptable]
           guessed: [....10] [ip4][..tcp] [..192.168.1.100][.3427] -> [.80.239.208.193][.1119] [Starcraft][Unknown][Game][Fun]

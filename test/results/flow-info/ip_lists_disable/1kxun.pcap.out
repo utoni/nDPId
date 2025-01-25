@@ -133,7 +133,6 @@
                    [ENTROPIES...: 4.5,4.5,5.0,4.8,4.8,5.8,5.8,4.3,5.6,6.7,7.7,7.8,7.7,7.7,7.7,7.7,7.6,4.1,6.3,4.8,4.8,7.7,7.8,7.7,7.7,7.7,4.8,4.8,7.7,7.7,5.6,3.0]
               new: [....35] [ip4][..udp] [...192.168.5.67][..138] -> [192.168.255.255][..138]
          detected: [....35] [ip4][..udp] [...192.168.5.67][..138] -> [192.168.255.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][sanji-lifebook-]
-                   RISK: Unsafe Protocol
               new: [....36] [ip4][..tcp] [..192.168.115.8][49605] -> [.106.185.35.110][...80]
               new: [....37] [ip4][..tcp] [..192.168.115.8][49606] -> [.106.185.35.110][...80]
          detected: [....36] [ip4][..tcp] [..192.168.115.8][49605] -> [.106.185.35.110][...80] [HTTP.1kxun][Unknown][Streaming][Fun][jp.kankan.1kxun.mobi]
@@ -213,6 +212,7 @@
               new: [....59] [ip4][..tcp] [...192.168.5.16][53624] -> [.68.233.253.133][...80]
          detected: [....59] [ip4][..tcp] [...192.168.5.16][53624] -> [.68.233.253.133][...80] [HTTP][Unknown][Web][Acceptable][api.magicansoft.com]
               new: [....60] [ip6][..udp] [...............fe80::4e5e:cff:fe9a:ec54][.5678] -> [................................ff02::1][.5678]
+         detected: [....60] [ip6][..udp] [...............fe80::4e5e:cff:fe9a:ec54][.5678] -> [................................ff02::1][.5678] [Mikrotik][Unknown][Network][Acceptable]
  detection-update: [....59] [ip4][..tcp] [...192.168.5.16][53624] -> [.68.233.253.133][...80] [HTTP][Unknown][Web][Acceptable][api.magicansoft.com]
                    RISK: Error Code
               new: [....61] [ip4][..tcp] [..192.168.115.8][49581] -> [.64.233.189.128][...80] [MIDSTREAM]
@@ -232,7 +232,6 @@
          detected: [....69] [ip4][..udp] [...192.168.5.45][..137] -> [192.168.255.255][..137] [NetBIOS][Unknown][System][Acceptable][nasfile]
               new: [....70] [ip4][..udp] [...192.168.5.45][..138] -> [192.168.255.255][..138]
          detected: [....70] [ip4][..udp] [...192.168.5.45][..138] -> [192.168.255.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][macbookair-e1d0]
-                   RISK: Unsafe Protocol
               new: [....71] [ip4][..udp] [...192.168.10.7][62976] -> [255.255.255.255][62976]
               new: [....72] [ip6][..udp] [..............fe80::4568:efbc:40b1:1346][50194] -> [..............................ff02::1:3][.5355]
          detected: [....72] [ip6][..udp] [..............fe80::4568:efbc:40b1:1346][50194] -> [..............................ff02::1:3][.5355] [LLMNR][Unknown][Network][Acceptable]
@@ -248,6 +247,7 @@
               new: [....78] [ip4][..udp] [...192.168.5.48][59797] -> [....224.0.0.252][.5355]
          detected: [....78] [ip4][..udp] [...192.168.5.48][59797] -> [....224.0.0.252][.5355] [LLMNR][Unknown][Network][Acceptable]
               new: [....79] [ip4][..udp] [..192.168.0.100][50925] -> [255.255.255.255][.5678]
+         detected: [....79] [ip4][..udp] [..192.168.0.100][50925] -> [255.255.255.255][.5678] [Mikrotik][Unknown][Network][Acceptable]
               new: [....80] [ip4][..udp] [...192.168.5.57][65150] -> [....224.0.0.252][.5355]
          detected: [....80] [ip4][..udp] [...192.168.5.57][65150] -> [....224.0.0.252][.5355] [LLMNR][Unknown][Network][Acceptable]
               new: [....81] [ip6][..udp] [...............fe80::e034:7be:d8f9:6197][62756] -> [..............................ff02::1:3][.5355]
@@ -267,7 +267,9 @@
  detection-update: [....87] [ip4][..tcp] [...192.168.5.16][53625] -> [.192.168.115.75][..443] [TLS][Unknown][Web][Safe][192.168.115.75]
                    RISK: Weak TLS Cipher, HTTP/TLS/QUIC Numeric Hostname/SNI, TLS (probably) Not Carrying HTTPS
               new: [....88] [ip4][..udp] [..192.168.119.1][56861] -> [255.255.255.255][.5678]
+         detected: [....88] [ip4][..udp] [..192.168.119.1][56861] -> [255.255.255.255][.5678] [Mikrotik][Unknown][Network][Acceptable]
               new: [....89] [ip6][..udp] [................fe80::4e5e:cff:feea:365][.5678] -> [................................ff02::1][.5678]
+         detected: [....89] [ip6][..udp] [................fe80::4e5e:cff:feea:365][.5678] -> [................................ff02::1][.5678] [Mikrotik][Unknown][Network][Acceptable]
               new: [....90] [ip6][..udp] [..............fe80::5d92:62a8:ebde:1319][49735] -> [..............................ff02::1:3][.5355]
          detected: [....90] [ip6][..udp] [..............fe80::5d92:62a8:ebde:1319][49735] -> [..............................ff02::1:3][.5355] [LLMNR][Unknown][Network][Acceptable]
               new: [....91] [ip4][..udp] [..192.168.3.236][62069] -> [....224.0.0.252][.5355]
@@ -277,6 +279,7 @@
               new: [....93] [ip6][..udp] [..............fe80::beee:7bff:fe0c:b3de][..546] -> [..............................ff02::1:2][..547]
          detected: [....93] [ip6][..udp] [..............fe80::beee:7bff:fe0c:b3de][..546] -> [..............................ff02::1:2][..547] [DHCPV6][Unknown][Network][Acceptable]
               new: [....94] [ip4][..udp] [..192.168.119.2][43786] -> [255.255.255.255][.5678]
+         detected: [....94] [ip4][..udp] [..192.168.119.2][43786] -> [255.255.255.255][.5678] [Mikrotik][Unknown][Network][Acceptable]
               new: [....95] [ip6][..udp] [..............fe80::edf5:240a:c8c0:8312][53962] -> [..............................ff02::1:3][.5355]
          detected: [....95] [ip6][..udp] [..............fe80::edf5:240a:c8c0:8312][53962] -> [..............................ff02::1:3][.5355] [LLMNR][Unknown][Network][Acceptable]
               new: [....96] [ip4][..udp] [...192.168.5.47][53962] -> [....224.0.0.252][.5355]
@@ -407,7 +410,6 @@
            update: [....52] [ip6][..udp] [...............fe80::9bd:81dd:2fdc:5750][61548] -> [..............................ff02::1:3][.5355] [LLMNR][Unknown][Network][Acceptable][caesar-thinkpad]
            update: [....55] [ip4][..udp] [...192.168.5.16][...68] -> [..192.168.119.1][...67] [DHCP][Unknown][Network][Acceptable][macbook-air]
            update: [....35] [ip4][..udp] [...192.168.5.67][..138] -> [192.168.255.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][sanji-lifebook-]
-                   RISK: Unsafe Protocol
            update: [....54] [ip4][..udp] [...192.168.5.49][51704] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
            update: [....33] [ip6][..udp] [..............fe80::e98f:bae2:19f7:6b0f][54888] -> [..............................ff02::1:3][.5355] [LLMNR][Unknown][Network][Acceptable][????????????]
                    RISK: Non-Printable/Invalid Chars Detected
@@ -441,9 +443,7 @@
              idle: [....38] [ip4][..tcp] [..192.168.115.8][49607] -> [218.244.135.170][.9099] [HTTP][Alibaba][Web][Acceptable][218.244.135.170]
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [....39] [ip4][..udp] [..192.168.115.8][54420] -> [........8.8.8.8][...53] [DNS.QQ][Google][Network][Fun][vv.video.qq.com]
-     not-detected: [....79] [ip4][..udp] [..192.168.0.100][50925] -> [255.255.255.255][.5678] [Unknown][Unknown][Unrated]
-                   RISK: Susp Entropy
-             idle: [....79] [ip4][..udp] [..192.168.0.100][50925] -> [255.255.255.255][.5678]
+             idle: [....79] [ip4][..udp] [..192.168.0.100][50925] -> [255.255.255.255][.5678] [Mikrotik][Unknown][Network][Acceptable]
              idle: [....98] [ip4][..udp] [...192.168.3.95][51451] -> [....224.0.0.252][.5355] [LLMNR][Unknown][Network][Acceptable][????????????]
                    RISK: Non-Printable/Invalid Chars Detected
              idle: [....13] [ip4][..udp] [..192.168.115.8][51458] -> [....224.0.0.252][.5355] [LLMNR][Unknown][Network][Acceptable][wpad]
@@ -459,12 +459,8 @@
              idle: [.....9] [ip6][..udp] [...............fe80::406:55a8:6453:25dd][..546] -> [..............................ff02::1:2][..547] [DHCPV6][Unknown][Network][Acceptable]
              idle: [....19] [ip6][..udp] [..............fe80::e98f:bae2:19f7:6b0f][58779] -> [..............................ff02::1:3][.5355] [LLMNR][Unknown][Network][Acceptable][????????????]
                    RISK: Non-Printable/Invalid Chars Detected
-     not-detected: [....89] [ip6][..udp] [................fe80::4e5e:cff:feea:365][.5678] -> [................................ff02::1][.5678] [Unknown][Unknown][Unrated]
-                   RISK: Susp Entropy
-             idle: [....89] [ip6][..udp] [................fe80::4e5e:cff:feea:365][.5678] -> [................................ff02::1][.5678]
-     not-detected: [....60] [ip6][..udp] [...............fe80::4e5e:cff:fe9a:ec54][.5678] -> [................................ff02::1][.5678] [Unknown][Unknown][Unrated]
-                   RISK: Susp Entropy
-             idle: [....60] [ip6][..udp] [...............fe80::4e5e:cff:fe9a:ec54][.5678] -> [................................ff02::1][.5678]
+             idle: [....89] [ip6][..udp] [................fe80::4e5e:cff:feea:365][.5678] -> [................................ff02::1][.5678] [Mikrotik][Unknown][Network][Acceptable]
+             idle: [....60] [ip6][..udp] [...............fe80::4e5e:cff:fe9a:ec54][.5678] -> [................................ff02::1][.5678] [Mikrotik][Unknown][Network][Acceptable]
              idle: [...128] [ip6][..udp] [..............fe80::5d92:62a8:ebde:1319][58468] -> [..............................ff02::1:3][.5355] [LLMNR][Unknown][Network][Acceptable][wangs-ltw]
              idle: [....44] [ip4][..udp] [...192.168.5.37][57325] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
              idle: [...125] [ip6][..udp] [...............fe80::e034:7be:d8f9:6197][49766] -> [..............................ff02::1:3][.5355] [LLMNR][Unknown][Network][Acceptable][charming-pc]
@@ -489,9 +485,7 @@
              idle: [...114] [ip6][..udp] [..............fe80::5d92:62a8:ebde:1319][61172] -> [..............................ff02::1:3][.5355] [LLMNR][Unknown][Network][Acceptable][sonusav]
              idle: [....43] [ip4][..udp] [...192.168.5.37][56366] -> [....224.0.0.252][.5355] [LLMNR][Unknown][Network][Acceptable][notebook]
              idle: [....12] [ip4][..udp] [...192.168.5.47][60267] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
-     not-detected: [....88] [ip4][..udp] [..192.168.119.1][56861] -> [255.255.255.255][.5678] [Unknown][Unknown][Unrated]
-                   RISK: Susp Entropy
-             idle: [....88] [ip4][..udp] [..192.168.119.1][56861] -> [255.255.255.255][.5678]
+             idle: [....88] [ip4][..udp] [..192.168.119.1][56861] -> [255.255.255.255][.5678] [Mikrotik][Unknown][Network][Acceptable]
              idle: [...124] [ip4][..udp] [...192.168.5.50][57143] -> [....224.0.0.252][.5355] [LLMNR][Unknown][Network][Acceptable][charming-pc]
              idle: [....26] [ip4][..udp] [..192.168.115.8][60724] -> [........8.8.8.8][...53] [DNS.1kxun][Google][Network][Fun][pic.1kxun.com]
              idle: [....48] [ip4][..udp] [....192.168.5.9][58456] -> [....224.0.0.252][.5355] [LLMNR][Unknown][Network][Acceptable][joanna-pc]
@@ -565,9 +559,7 @@
              idle: [....64] [ip4][..udp] [..192.168.3.236][..137] -> [192.168.255.255][..137] [NetBIOS][Unknown][System][Acceptable][isatap]
              idle: [....18] [ip4][..udp] [..192.168.115.8][..137] -> [192.168.255.255][..137] [NetBIOS][Unknown][System][Acceptable][wpad]
              idle: [....70] [ip4][..udp] [...192.168.5.45][..138] -> [192.168.255.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][macbookair-e1d0]
-                   RISK: Unsafe Protocol
              idle: [....35] [ip4][..udp] [...192.168.5.67][..138] -> [192.168.255.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][sanji-lifebook-]
-                   RISK: Unsafe Protocol
              idle: [....76] [ip4][..udp] [...192.168.5.64][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable]
           guessed: [....61] [ip4][..tcp] [..192.168.115.8][49581] -> [.64.233.189.128][...80] [HTTP][Google][Web][Acceptable][]
              idle: [....61] [ip4][..tcp] [..192.168.115.8][49581] -> [.64.233.189.128][...80]
@@ -585,9 +577,7 @@
              idle: [...116] [ip6][..udp] [..............fe80::f65c:89ff:fe89:e607][..546] -> [..............................ff02::1:2][..547] [DHCPV6][Unknown][Network][Acceptable]
           guessed: [...101] [ip4][..tcp] [.119.235.235.84][..443] -> [...192.168.5.16][53406] [TLS][Line][Web][Safe]
              idle: [...101] [ip4][..tcp] [.119.235.235.84][..443] -> [...192.168.5.16][53406]
-     not-detected: [....94] [ip4][..udp] [..192.168.119.2][43786] -> [255.255.255.255][.5678] [Unknown][Unknown][Unrated]
-                   RISK: Susp Entropy
-             idle: [....94] [ip4][..udp] [..192.168.119.2][43786] -> [255.255.255.255][.5678]
+             idle: [....94] [ip4][..udp] [..192.168.119.2][43786] -> [255.255.255.255][.5678] [Mikrotik][Unknown][Network][Acceptable]
              idle: [....90] [ip6][..udp] [..............fe80::5d92:62a8:ebde:1319][49735] -> [..............................ff02::1:3][.5355] [LLMNR][Unknown][Network][Acceptable][wangs-ltw]
               end: [....46] [ip4][..tcp] [..192.168.115.8][49612] -> [.183.131.48.145][...80] [HTTP][Unknown][Web][Acceptable][183.131.48.145]
                    RISK: HTTP Susp User-Agent, HTTP/TLS/QUIC Numeric Hostname/SNI
@@ -658,7 +648,6 @@
          detected: [...152] [ip4][..tcp] [..192.168.2.126][45424] -> [..161.117.13.29][...80] [HTTP][Alibaba][Streaming][Acceptable][tcad.wedolook.com]
               new: [...153] [ip4][..tcp] [..192.168.2.126][41390] -> [....18.64.79.37][...80] [MIDSTREAM]
          detected: [...153] [ip4][..tcp] [..192.168.2.126][41390] -> [....18.64.79.37][...80] [HTTP.Google][AmazonAWS][Web][Acceptable][google.open-js.com]
-                   RISK: Susp Entropy
           analyse: [...146] [ip4][..tcp] [..192.168.2.126][45380] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Streaming][Fun][mangaweb.1kxun.mobi]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.409|     0.085|     0.132|        17528.007|    3.300]
@@ -709,7 +698,6 @@
                    [ENTROPIES...: 5.9,5.9,7.3,7.9,7.9,7.9,7.8,7.8,7.8,7.9,8.0,7.8,7.8,7.8,7.9,7.9,7.9,7.9,5.9,5.8,8.0,8.0,7.9,7.9,8.0,7.9,8.0,7.7,5.9,5.9,7.9,8.0]
               new: [...163] [ip4][..tcp] [..192.168.2.126][44368] -> [..172.217.18.98][...80] [MIDSTREAM]
          detected: [...163] [ip4][..tcp] [..192.168.2.126][44368] -> [..172.217.18.98][...80] [HTTP.GoogleServices][Google][Web][Acceptable][www.googletagservices.com]
-                   RISK: Susp Entropy
               new: [...164] [ip4][..tcp] [..192.168.2.126][50140] -> [..161.117.13.29][...80] [MIDSTREAM]
          detected: [...164] [ip4][..tcp] [..192.168.2.126][50140] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Streaming][Fun][mangaweb.1kxun.mobi]
               new: [...165] [ip4][..tcp] [..192.168.2.126][50148] -> [..161.117.13.29][...80] [MIDSTREAM]
@@ -796,7 +784,6 @@
          detected: [...193] [ip4][..tcp] [..192.168.2.126][40204] -> [...18.235.204.9][...80] [HTTP][AmazonAWS][Web][Acceptable][adexp.liftoff.io]
               new: [...194] [ip4][..tcp] [..192.168.2.126][53416] -> [.172.217.16.142][...80] [MIDSTREAM]
          detected: [...194] [ip4][..tcp] [..192.168.2.126][53416] -> [.172.217.16.142][...80] [HTTP.Google][Google][Web][Acceptable][play.google.com]
-                   RISK: Susp Entropy
               new: [...195] [ip4][..tcp] [..192.168.2.126][33042] -> [...3.122.190.70][...80] [MIDSTREAM]
          detected: [...195] [ip4][..tcp] [..192.168.2.126][33042] -> [...3.122.190.70][...80] [HTTP][AmazonAWS][Web][Acceptable][click.liftoff.io]
               new: [...196] [ip4][..tcp] [..192.168.2.126][35426] -> [..8.209.112.118][...80] [MIDSTREAM]
@@ -815,7 +802,6 @@
              idle: [...196] [ip4][..tcp] [..192.168.2.126][35426] -> [..8.209.112.118][...80] [HTTP][Alibaba][Web][Acceptable][analytics.rayjump.com]
              idle: [...172] [ip4][..tcp] [..192.168.2.126][59324] -> [.104.117.221.10][...80] [HTTP][Unknown][Web][Acceptable][m.vpon.com]
              idle: [...153] [ip4][..tcp] [..192.168.2.126][41390] -> [....18.64.79.37][...80] [HTTP.Google][AmazonAWS][Web][Acceptable][google.open-js.com]
-                   RISK: Susp Entropy
              idle: [...191] [ip4][..tcp] [..192.168.2.126][41940] -> [....18.64.79.50][...80] [HTTP][AmazonAWS][Web][Acceptable][tknet-cdn.rayjump.com]
              idle: [...154] [ip4][..tcp] [..192.168.2.126][51888] -> [.119.28.164.143][...80] [HTTP][Tencent][Web][Acceptable]
              idle: [...177] [ip4][..tcp] [..192.168.2.126][43266] -> [....18.64.79.58][...80] [HTTP][AmazonAWS][Web][Acceptable]
@@ -828,7 +814,6 @@
              idle: [...169] [ip4][..tcp] [..192.168.2.126][38326] -> [.172.105.121.82][...80] [HTTP.1kxun][Unknown][Streaming][Fun][pic.1kxun.com]
              idle: [...134] [ip4][..tcp] [..192.168.2.126][41134] -> [.129.226.107.77][...80] [HTTP.QQ][Tencent][Chat][Fun][cgi.connect.qq.com]
              idle: [...163] [ip4][..tcp] [..192.168.2.126][44368] -> [..172.217.18.98][...80] [HTTP.GoogleServices][Google][Web][Acceptable][www.googletagservices.com]
-                   RISK: Susp Entropy
              idle: [...193] [ip4][..tcp] [..192.168.2.126][40204] -> [...18.235.204.9][...80] [HTTP][AmazonAWS][Web][Acceptable][adexp.liftoff.io]
              idle: [...197] [ip4][..tcp] [..192.168.2.126][51686] -> [....18.64.79.64][...80] [HTTP][AmazonAWS][Web][Acceptable][net.rayjump.com]
              idle: [...156] [ip4][..tcp] [..192.168.2.126][36732] -> [142.250.186.174][...80] [HTTP.Google][Google][Advertisement][Acceptable][www.google-analytics.com]
@@ -852,7 +837,6 @@
              idle: [...140] [ip4][..tcp] [..192.168.2.126][49242] -> [.172.104.119.80][...80] [HTTP.1kxun][Unknown][Streaming][Fun][android.yingshi.tcclick.1kxun.com]
                    RISK: Error Code
              idle: [...194] [ip4][..tcp] [..192.168.2.126][53416] -> [.172.217.16.142][...80] [HTTP.Google][Google][Web][Acceptable][play.google.com]
-                   RISK: Susp Entropy
              idle: [...133] [ip4][..tcp] [..192.168.2.126][47230] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Download][Fun][kankan.1kxun.mobi]
                    RISK: Binary File/Data Transfer (Attempt)
              idle: [...188] [ip4][..tcp] [..192.168.2.126][37100] -> [..52.29.177.177][...80] [HTTP][AmazonAWS][Web][Acceptable][adx-tk.rayjump.com]

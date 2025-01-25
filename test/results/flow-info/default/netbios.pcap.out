@@ -7,7 +7,6 @@
          detected: [.....2] [ip4][..udp] [.....10.0.5.233][..137] -> [.....10.0.5.255][..137] [NetBIOS][Unknown][System][Acceptable][ozi]
               new: [.....3] [ip4][..udp] [.......10.0.5.9][..138] -> [.....10.0.5.255][..138]
          detected: [.....3] [ip4][..udp] [.......10.0.5.9][..138] -> [.....10.0.5.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][nvr9]
-                   RISK: Unsafe Protocol
               new: [.....4] [ip4][..tcp] [......10.0.4.24][..139] -> [.....10.0.4.131][.1398] [MIDSTREAM]
           analyse: [.....1] [ip4][..udp] [.....10.0.4.131][..137] -> [.....10.0.5.255][..137] [NetBIOS][Unknown][System][Acceptable][xstream_hy]
                                          min|       max|       avg|    stddev|         variance|  entropy
@@ -35,7 +34,6 @@
          detected: [....11] [ip4][..udp] [.......10.0.5.1][..137] -> [......10.0.4.24][..137] [NetBIOS][Unknown][System][Acceptable][guru]
               new: [....12] [ip4][..udp] [......10.0.5.93][..138] -> [.....10.0.5.255][..138]
          detected: [....12] [ip4][..udp] [......10.0.5.93][..138] -> [.....10.0.5.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][bowie]
-                   RISK: Unsafe Protocol
               new: [....13] [ip4][..udp] [.....10.0.5.233][..137] -> [......10.0.4.24][..137]
          detected: [....13] [ip4][..udp] [.....10.0.5.233][..137] -> [......10.0.4.24][..137] [NetBIOS][Unknown][System][Acceptable][*]
               new: [....14] [ip4][..udp] [......10.0.4.14][..137] -> [.....10.0.5.255][..137]
@@ -55,7 +53,6 @@
            update: [.....1] [ip4][..udp] [.....10.0.4.131][..137] -> [.....10.0.5.255][..137] [NetBIOS][Unknown][System][Acceptable][xstream_hy]
            update: [.....2] [ip4][..udp] [.....10.0.5.233][..137] -> [.....10.0.5.255][..137] [NetBIOS][Unknown][System][Acceptable][ozi]
            update: [.....3] [ip4][..udp] [.......10.0.5.9][..138] -> [.....10.0.5.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][nvr9]
-                   RISK: Unsafe Protocol
            update: [.....6] [ip4][..udp] [.....10.0.4.101][..137] -> [.....10.0.5.255][..137] [NetBIOS][Unknown][System][Acceptable][muli]
            update: [.....5] [ip4][..udp] [......10.0.1.87][57836] -> [......10.0.4.24][..137] [NetBIOS][Unknown][System][Acceptable][*]
      DAEMON-EVENT: [Processed: 260 pkts][ZLib][compressions: 0|diff: 0 / 0]
@@ -73,9 +70,7 @@
              idle: [.....6] [ip4][..udp] [.....10.0.4.101][..137] -> [.....10.0.5.255][..137] [NetBIOS][Unknown][System][Acceptable][muli]
              idle: [.....1] [ip4][..udp] [.....10.0.4.131][..137] -> [.....10.0.5.255][..137] [NetBIOS][Unknown][System][Acceptable][xstream_hy]
              idle: [....12] [ip4][..udp] [......10.0.5.93][..138] -> [.....10.0.5.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][bowie]
-                   RISK: Unsafe Protocol
              idle: [.....3] [ip4][..udp] [.......10.0.5.9][..138] -> [.....10.0.5.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][nvr9]
-                   RISK: Unsafe Protocol
           guessed: [.....4] [ip4][..tcp] [......10.0.4.24][..139] -> [.....10.0.4.131][.1398] [NetBIOS][Unknown][System][Acceptable][]
              idle: [.....4] [ip4][..tcp] [......10.0.4.24][..139] -> [.....10.0.4.131][.1398]
              idle: [.....5] [ip4][..udp] [......10.0.1.87][57836] -> [......10.0.4.24][..137] [NetBIOS][Unknown][System][Acceptable][*]

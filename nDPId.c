@@ -485,7 +485,7 @@ static struct
     struct cmdarg custom_risk_domain_file;
     struct cmdarg custom_protocols_file;
     struct cmdarg custom_categories_file;
-    struct cmdarg custom_ja3_file;
+    struct cmdarg custom_ja4_file;
     struct cmdarg custom_sha1_file;
     struct cmdarg collector_address;
     struct cmdarg instance_alias;
@@ -534,7 +534,7 @@ static struct
                    .custom_risk_domain_file = CMDARG_STR(NULL),
                    .custom_protocols_file = CMDARG_STR(NULL),
                    .custom_categories_file = CMDARG_STR(NULL),
-                   .custom_ja3_file = CMDARG_STR(NULL),
+                   .custom_ja4_file = CMDARG_STR(NULL),
                    .custom_sha1_file = CMDARG_STR(NULL),
                    .collector_address = CMDARG_STR(COLLECTOR_UNIX_SOCKET),
                    .instance_alias = CMDARG_STR(NULL),
@@ -591,7 +591,7 @@ struct confopt general_config_map[] = {CONFOPT("netif", &nDPId_options.pcap_file
                                        CONFOPT("riskdomains", &nDPId_options.custom_risk_domain_file),
                                        CONFOPT("protocols", &nDPId_options.custom_protocols_file),
                                        CONFOPT("categories", &nDPId_options.custom_categories_file),
-                                       CONFOPT("ja3", &nDPId_options.custom_ja3_file),
+                                       CONFOPT("ja4", &nDPId_options.custom_ja4_file),
                                        CONFOPT("sha1", &nDPId_options.custom_sha1_file),
                                        CONFOPT("collector", &nDPId_options.collector_address),
                                        CONFOPT("alias", &nDPId_options.instance_alias),
@@ -1543,9 +1543,9 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     {
         ndpi_load_categories_file(workflow->ndpi_struct, GET_CMDARG_STR(nDPId_options.custom_categories_file), NULL);
     }
-    if (IS_CMDARG_SET(nDPId_options.custom_ja3_file) != 0)
+    if (IS_CMDARG_SET(nDPId_options.custom_ja4_file) != 0)
     {
-        ndpi_load_malicious_ja3_file(workflow->ndpi_struct, GET_CMDARG_STR(nDPId_options.custom_ja3_file));
+        ndpi_load_malicious_ja4_file(workflow->ndpi_struct, GET_CMDARG_STR(nDPId_options.custom_ja4_file));
     }
     if (IS_CMDARG_SET(nDPId_options.custom_sha1_file) != 0)
     {
@@ -5320,8 +5320,7 @@ static void print_usage(char const * const arg0)
         "\t  \tDefault: disabled\n"
         "\t-C\tLoad a nDPI custom categories file.\n"
         "\t  \tDefault: disabled\n"
-        "\t-J\tLoad a nDPI JA3 hash blacklist file.\n"
-        "\t  \tSee: https://sslbl.abuse.ch/blacklist/ja3_fingerprints.csv\n"
+        "\t-J\tLoad a nDPI JA4 hash blacklist file.\n"
         "\t  \tDefault: disabled\n"
         "\t-S\tLoad a nDPI SSL SHA1 hash blacklist file.\n"
         "\t  \tSee: https://sslbl.abuse.ch/blacklist/sslblacklist.csv\n"
@@ -5490,7 +5489,7 @@ static int nDPId_parse_options(int argc, char ** argv)
                 set_cmdarg_string(&nDPId_options.custom_categories_file, optarg);
                 break;
             case 'J':
-                set_cmdarg_string(&nDPId_options.custom_ja3_file, optarg);
+                set_cmdarg_string(&nDPId_options.custom_ja4_file, optarg);
                 break;
             case 'S':
                 set_cmdarg_string(&nDPId_options.custom_sha1_file, optarg);

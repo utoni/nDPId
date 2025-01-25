@@ -66,7 +66,6 @@
                    RISK: Known Proto on Non Std Port, Binary File/Data Transfer (Attempt)
               new: [....16] [ip4][..tcp] [..10.54.169.250][56381] -> [..54.179.140.65][...80] [MIDSTREAM]
          detected: [....16] [ip4][..tcp] [..10.54.169.250][56381] -> [..54.179.140.65][...80] [HTTP.Xiaomi][AmazonAWS][Web][Acceptable][api.account.xiaomi.com]
-                   RISK: Susp Entropy
               new: [....17] [ip4][..tcp] [..10.54.169.250][52017] -> [...120.28.35.40][...80] [MIDSTREAM]
          detected: [....17] [ip4][..tcp] [..10.54.169.250][52017] -> [...120.28.35.40][...80] [HTTP][Unknown][Streaming][Acceptable][vod-singtelhawk.quickplay.com]
               end: [....13] [ip4][..tcp] [..10.54.169.250][54885] -> [203.205.151.160][...80] [HTTP_Proxy.QQ][Unknown][Download][Fun][hkextshort.weixin.qq.com]
@@ -95,7 +94,6 @@
              idle: [....14] [ip4][..tcp] [..10.54.169.250][42762] -> [203.205.129.101][...80] [HTTP_Proxy.QQ][Tencent][Download][Fun][hkextshort.weixin.qq.com]
                    RISK: Known Proto on Non Std Port, Binary File/Data Transfer (Attempt)
              idle: [....16] [ip4][..tcp] [..10.54.169.250][56381] -> [..54.179.140.65][...80] [HTTP.Xiaomi][AmazonAWS][Web][Acceptable][api.account.xiaomi.com]
-                   RISK: Susp Entropy
              idle: [.....3] [ip4][..tcp] [..10.54.169.250][33064] -> [....120.28.5.18][...80] [HTTP][Unknown][Streaming][Acceptable]
              idle: [.....6] [ip4][..tcp] [..10.54.169.250][33277] -> [..120.28.26.231][...80] [HTTP.Google][Unknown][ConnCheck][Acceptable][clients3.google.com]
              idle: [....10] [ip4][..tcp] [..10.54.169.250][54883] -> [203.205.151.160][...80] [HTTP_Proxy.QQ][Unknown][Chat][Fun]

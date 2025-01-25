@@ -119,7 +119,7 @@
           guessed: [....13] [ip4][..tcp] [.....172.20.3.5][.2603] -> [....172.20.3.13][...80] [HTTP][Unknown][Web][Acceptable][]
               end: [....13] [ip4][..tcp] [.....172.20.3.5][.2603] -> [....172.20.3.13][...80]
           guessed: [....19] [ip4][..tcp] [....172.20.3.13][...80] -> [....172.20.68.5][.2604] [HTTP][Unknown][Web][Acceptable][]
-                   RISK: Unidirectional Traffic, TCP Connection Issues
+                   RISK: Unidirectional Traffic, TCP Connection Issues, Probing Attempt
               end: [....19] [ip4][..tcp] [....172.20.3.13][...80] -> [....172.20.68.5][.2604]
               end: [....18] [ip4][..tcp] [.....172.20.3.5][.2604] -> [....172.20.3.13][...80] [HTTP][Unknown][Web][Acceptable][172.20.3.13]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI

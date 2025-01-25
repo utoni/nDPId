@@ -42,7 +42,6 @@
          detected: [....19] [ip4][..udp] [......10.0.2.15][63964] -> [239.255.255.250][.3702] [WSD][Unknown][Network][Acceptable]
               new: [....20] [ip4][..udp] [......10.0.2.15][..138] -> [.....10.0.2.255][..138]
          detected: [....20] [ip4][..udp] [......10.0.2.15][..138] -> [.....10.0.2.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][msedgewin10]
-                   RISK: Unsafe Protocol
               new: [....21] [ip4][..udp] [......10.0.2.15][55708] -> [239.255.255.250][.1900]
          detected: [....21] [ip4][..udp] [......10.0.2.15][55708] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
               new: [....22] [ip6][..udp] [..............fe80::c50d:519f:96a4:e108][62539] -> [..............................ff02::1:3][.5355]
@@ -157,7 +156,6 @@
            update: [.....6] [ip4][..udp] [.......10.0.2.2][...67] -> [......10.0.2.15][...68] [DHCP][Unknown][Network][Acceptable]
            update: [....13] [ip4][..udp] [......10.0.2.15][..137] -> [.....10.0.2.255][..137] [NetBIOS][Unknown][System][Acceptable][msedgewin10]
            update: [....20] [ip4][..udp] [......10.0.2.15][..138] -> [.....10.0.2.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][msedgewin10]
-                   RISK: Unsafe Protocol
            update: [....16] [ip4][..udp] [......10.0.2.15][63962] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
            update: [....15] [ip4][..udp] [......10.0.2.15][63957] -> [239.255.255.250][.3702] [WSD][Unknown][Network][Acceptable]
            update: [....19] [ip4][..udp] [......10.0.2.15][63964] -> [239.255.255.250][.3702] [WSD][Unknown][Network][Acceptable]
@@ -864,14 +862,14 @@
               new: [...333] [ip4][..tcp] [......10.0.2.15][50327] -> [.69.118.162.229][46906]
               new: [...334] [ip4][..tcp] [......10.0.2.15][50328] -> [..189.147.72.83][26108]
          detected: [...333] [ip4][..tcp] [......10.0.2.15][50327] -> [.69.118.162.229][46906] [HTTP.Gnutella][Unknown][Download][Potentially Dangerous][69.118.162.229]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol, Susp Entropy
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol
          detected: [...334] [ip4][..tcp] [......10.0.2.15][50328] -> [..189.147.72.83][26108] [HTTP.Gnutella][Unknown][Download][Potentially Dangerous][189.147.72.83]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol, Susp Entropy
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol
               new: [...335] [ip4][..udp] [......10.0.2.15][28681] -> [.14.200.255.229][37058]
  detection-update: [...333] [ip4][..tcp] [......10.0.2.15][50327] -> [.69.118.162.229][46906] [HTTP.Gnutella][Unknown][Media][Potentially Dangerous][69.118.162.229]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol, Susp Entropy, Binary File/Data Transfer (Attempt)
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol, Binary File/Data Transfer (Attempt)
  detection-update: [...334] [ip4][..tcp] [......10.0.2.15][50328] -> [..189.147.72.83][26108] [HTTP.Gnutella][Unknown][Media][Potentially Dangerous][189.147.72.83]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol, Susp Entropy, Binary File/Data Transfer (Attempt)
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol, Binary File/Data Transfer (Attempt)
               new: [...336] [ip4][..udp] [......10.0.2.15][28681] -> [...80.7.252.192][.6888]
          detected: [...336] [ip4][..udp] [......10.0.2.15][28681] -> [...80.7.252.192][.6888] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
@@ -889,7 +887,6 @@
            update: [.....6] [ip4][..udp] [.......10.0.2.2][...67] -> [......10.0.2.15][...68] [DHCP][Unknown][Network][Acceptable]
            update: [....13] [ip4][..udp] [......10.0.2.15][..137] -> [.....10.0.2.255][..137] [NetBIOS][Unknown][System][Acceptable][msedgewin10]
            update: [....20] [ip4][..udp] [......10.0.2.15][..138] -> [.....10.0.2.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][msedgewin10]
-                   RISK: Unsafe Protocol
            update: [....16] [ip4][..udp] [......10.0.2.15][63962] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
            update: [...117] [ip4][..udp] [......10.0.2.15][28681] -> [200.120.243.143][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
@@ -1017,7 +1014,7 @@
                    RISK: Unsafe Protocol
               new: [...345] [ip4][..tcp] [......10.0.2.15][50330] -> [.69.118.162.229][46906]
          detected: [...345] [ip4][..tcp] [......10.0.2.15][50330] -> [.69.118.162.229][46906] [HTTP.Gnutella][Unknown][Download][Potentially Dangerous][69.118.162.229]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol, Susp Entropy
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol
               new: [...346] [ip4][..udp] [......10.0.2.15][28681] -> [..76.226.85.105][.6346]
          detected: [...346] [ip4][..udp] [......10.0.2.15][28681] -> [..76.226.85.105][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
@@ -1358,7 +1355,6 @@
            update: [.....6] [ip4][..udp] [.......10.0.2.2][...67] -> [......10.0.2.15][...68] [DHCP][Unknown][Network][Acceptable]
            update: [....13] [ip4][..udp] [......10.0.2.15][..137] -> [.....10.0.2.255][..137] [NetBIOS][Unknown][System][Acceptable][msedgewin10]
            update: [....20] [ip4][..udp] [......10.0.2.15][..138] -> [.....10.0.2.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][msedgewin10]
-                   RISK: Unsafe Protocol
            update: [....16] [ip4][..udp] [......10.0.2.15][63962] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
            update: [...117] [ip4][..udp] [......10.0.2.15][28681] -> [200.120.243.143][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
@@ -1650,7 +1646,7 @@
               end: [...119] [ip4][..tcp] [......10.0.2.15][50250] -> [...27.94.154.53][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
      not-detected: [....61] [ip4][..tcp] [......10.0.2.15][50220] -> [.36.233.196.226][.3820] [Unknown][Unknown][Unrated]
-                   RISK: TCP Connection Issues
+                   RISK: TCP Connection Issues, Probing Attempt
               end: [....61] [ip4][..tcp] [......10.0.2.15][50220] -> [.36.233.196.226][.3820]
               end: [...122] [ip4][..tcp] [......10.0.2.15][50253] -> [103.232.107.100][43508] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
@@ -1661,12 +1657,12 @@
               end: [....51] [ip4][..tcp] [......10.0.2.15][50211] -> [...14.199.10.60][23458] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
      not-detected: [....63] [ip4][..tcp] [......10.0.2.15][50222] -> [.119.14.143.237][.6523] [Unknown][Unknown][Unrated]
-                   RISK: TCP Connection Issues
+                   RISK: TCP Connection Issues, Probing Attempt
               end: [....63] [ip4][..tcp] [......10.0.2.15][50222] -> [.119.14.143.237][.6523]
               end: [....43] [ip4][..tcp] [......10.0.2.15][50203] -> [..61.222.160.99][18994] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
      not-detected: [....69] [ip4][..tcp] [......10.0.2.15][50228] -> [..111.241.31.96][14384] [Unknown][Unknown][Unrated]
-                   RISK: TCP Connection Issues
+                   RISK: TCP Connection Issues, Probing Attempt
               end: [....69] [ip4][..tcp] [......10.0.2.15][50228] -> [..111.241.31.96][14384]
               end: [....35] [ip4][..tcp] [......10.0.2.15][50196] -> [...218.250.6.59][12556] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
@@ -1781,7 +1777,7 @@
               end: [...289] [ip4][..tcp] [......10.0.2.15][50313] -> [...96.65.68.194][35481] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
      not-detected: [...237] [ip4][..tcp] [......10.0.2.15][50283] -> [..51.68.153.214][35004] [Unknown][Unknown][Unrated]
-                   RISK: TCP Connection Issues
+                   RISK: TCP Connection Issues, Probing Attempt
               end: [...237] [ip4][..tcp] [......10.0.2.15][50283] -> [..51.68.153.214][35004]
               end: [...296] [ip4][..tcp] [......10.0.2.15][50320] -> [194.163.180.126][10825] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
@@ -1791,7 +1787,7 @@
              idle: [....14] [ip6][..udp] [..............fe80::c50d:519f:96a4:e108][63958] -> [................................ff02::c][.3702] [WSD][Unknown][Network][Acceptable]
              idle: [....18] [ip6][..udp] [..............fe80::c50d:519f:96a4:e108][63965] -> [................................ff02::c][.3702] [WSD][Unknown][Network][Acceptable]
      not-detected: [...153] [ip4][..tcp] [......10.0.2.15][50266] -> [.219.70.175.103][.4315] [Unknown][Unknown][Unrated]
-                   RISK: TCP Connection Issues
+                   RISK: TCP Connection Issues, Probing Attempt
               end: [...153] [ip4][..tcp] [......10.0.2.15][50266] -> [.219.70.175.103][.4315]
               end: [...279] [ip4][..tcp] [......10.0.2.15][50303] -> [..88.120.73.215][24562] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
@@ -1808,7 +1804,7 @@
               end: [...223] [ip4][..tcp] [......10.0.2.15][50269] -> [..218.103.139.2][.3186] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
      not-detected: [...143] [ip4][..tcp] [......10.0.2.15][50256] -> [.36.233.201.161][.2886] [Unknown][Unknown][Unrated]
-                   RISK: TCP Connection Issues
+                   RISK: TCP Connection Issues, Probing Attempt
               end: [...143] [ip4][..tcp] [......10.0.2.15][50256] -> [.36.233.201.161][.2886]
               end: [...269] [ip4][..tcp] [......10.0.2.15][50293] -> [..97.83.183.148][.8890] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
@@ -1899,7 +1895,6 @@
              idle: [....25] [ip4][..udp] [......10.0.2.15][50435] -> [....224.0.0.252][.5355] [LLMNR][Unknown][Network][Acceptable][puppet]
              idle: [....24] [ip6][..udp] [..............fe80::c50d:519f:96a4:e108][50435] -> [..............................ff02::1:3][.5355] [LLMNR][Unknown][Network][Acceptable][puppet]
            update: [....20] [ip4][..udp] [......10.0.2.15][..138] -> [.....10.0.2.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][msedgewin10]
-                   RISK: Unsafe Protocol
            update: [...117] [ip4][..udp] [......10.0.2.15][28681] -> [200.120.243.143][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
            update: [...135] [ip4][..udp] [......10.0.2.15][28681] -> [.193.250.99.158][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -2528,7 +2523,7 @@
              idle: [...105] [ip4][..udp] [......10.0.2.15][28681] -> [...219.85.11.85][10722] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
               end: [...345] [ip4][..tcp] [......10.0.2.15][50330] -> [.69.118.162.229][46906] [HTTP.Gnutella][Unknown][Download][Potentially Dangerous][69.118.162.229]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol, Susp Entropy
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol
              idle: [....99] [ip4][..udp] [......10.0.2.15][28681] -> [....114.38.9.82][24223] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [....97] [ip4][..udp] [......10.0.2.15][28681] -> [..24.78.134.188][49046] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -2627,7 +2622,6 @@
            update: [...329] [ip4][..udp] [......10.0.2.15][28681] -> [..92.117.249.98][.6815] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
            update: [....20] [ip4][..udp] [......10.0.2.15][..138] -> [.....10.0.2.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][msedgewin10]
-                   RISK: Unsafe Protocol
            update: [...117] [ip4][..udp] [......10.0.2.15][28681] -> [200.120.243.143][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
            update: [...135] [ip4][..udp] [......10.0.2.15][28681] -> [.193.250.99.158][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -3064,7 +3058,7 @@
          detected: [...745] [ip4][.icmp] [..164.132.10.25] -> [......10.0.2.15] [ICMP][Unknown][Network][Acceptable]
                    RISK: Susp Entropy
      not-detected: [....29] [ip4][..tcp] [......10.0.2.15][50191] -> [.207.38.163.228][.6778] [Unknown][Unknown][Unrated]
-                   RISK: TCP Connection Issues
+                   RISK: TCP Connection Issues, Probing Attempt
               end: [....29] [ip4][..tcp] [......10.0.2.15][50191] -> [.207.38.163.228][.6778]
              idle: [...320] [ip4][..udp] [......10.0.2.15][28681] -> [185.236.200.137][48142] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
@@ -3075,13 +3069,13 @@
              idle: [...305] [ip4][..udp] [......10.0.2.15][28681] -> [..88.168.175.31][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
      not-detected: [....31] [ip4][..tcp] [......10.0.2.15][50193] -> [....89.75.52.19][46010] [Unknown][Unknown][Unrated]
-                   RISK: TCP Connection Issues
+                   RISK: TCP Connection Issues, Probing Attempt
               end: [....31] [ip4][..tcp] [......10.0.2.15][50193] -> [....89.75.52.19][46010]
      not-detected: [....28] [ip4][..tcp] [......10.0.2.15][50190] -> [..80.140.63.147][29545] [Unknown][Unknown][Unrated]
-                   RISK: TCP Connection Issues
+                   RISK: TCP Connection Issues, Probing Attempt
               end: [....28] [ip4][..tcp] [......10.0.2.15][50190] -> [..80.140.63.147][29545]
      not-detected: [....30] [ip4][..tcp] [......10.0.2.15][50192] -> [....45.65.87.24][16201] [Unknown][Unknown][Unrated]
-                   RISK: TCP Connection Issues
+                   RISK: TCP Connection Issues, Probing Attempt
               end: [....30] [ip4][..tcp] [......10.0.2.15][50192] -> [....45.65.87.24][16201]
              idle: [...322] [ip4][..udp] [......10.0.2.15][28681] -> [..45.88.117.219][.6909] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
@@ -3487,7 +3481,7 @@
              idle: [...177] [ip4][..udp] [......10.0.2.15][28681] -> [.69.157.183.106][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
      not-detected: [....90] [ip4][..tcp] [......10.0.2.15][50245] -> [..73.62.225.181][46843] [Unknown][Unknown][Unrated]
-                   RISK: TCP Connection Issues
+                   RISK: TCP Connection Issues, Probing Attempt
               end: [....90] [ip4][..tcp] [......10.0.2.15][50245] -> [..73.62.225.181][46843]
      not-detected: [...300] [ip4][..udp] [......10.0.2.15][28681] -> [104.238.172.250][23548] [Unknown][Unknown][Unrated]
                    RISK: Susp Entropy
@@ -3502,7 +3496,6 @@
                    RISK: Unsafe Protocol
            update: [.....8] [ip4][....2] [......10.0.2.15] -> [.....224.0.0.22] [IGMP][Unknown][Network][Acceptable]
            update: [....20] [ip4][..udp] [......10.0.2.15][..138] -> [.....10.0.2.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][msedgewin10]
-                   RISK: Unsafe Protocol
            update: [...117] [ip4][..udp] [......10.0.2.15][28681] -> [200.120.243.143][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
            update: [...135] [ip4][..udp] [......10.0.2.15][28681] -> [.193.250.99.158][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -4230,7 +4223,6 @@
              idle: [...308] [ip4][..udp] [......10.0.2.15][28681] -> [...81.205.91.45][40137] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
            update: [....20] [ip4][..udp] [......10.0.2.15][..138] -> [.....10.0.2.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][msedgewin10]
-                   RISK: Unsafe Protocol
            update: [...117] [ip4][..udp] [......10.0.2.15][28681] -> [200.120.243.143][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
            update: [...748] [ip4][..udp] [......10.0.2.15][28681] -> [.....92.8.59.80][35192] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -4327,7 +4319,6 @@
          detected: [...756] [ip4][..udp] [......10.0.2.15][28681] -> [..41.100.68.255][12838] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [....20] [ip4][..udp] [......10.0.2.15][..138] -> [.....10.0.2.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][msedgewin10]
-                   RISK: Unsafe Protocol
              idle: [...173] [ip4][..udp] [......10.0.2.15][28681] -> [..121.99.222.36][44988] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [...136] [ip4][..udp] [......10.0.2.15][28681] -> [.80.236.247.120][16047] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -5004,7 +4995,6 @@
                    RISK: Unsafe Protocol
               new: [...760] [ip4][..udp] [......10.0.2.15][..138] -> [.....10.0.2.255][..138]
          detected: [...760] [ip4][..udp] [......10.0.2.15][..138] -> [.....10.0.2.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][msedgewin10]
-                   RISK: Unsafe Protocol
               new: [...761] [ip4][..udp] [......10.0.2.15][28681] -> [..195.132.75.56][56009]
          detected: [...761] [ip4][..udp] [......10.0.2.15][28681] -> [..195.132.75.56][56009] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
@@ -6387,7 +6377,6 @@
              idle: [...684] [ip4][..udp] [......10.0.2.15][28681] -> [..50.58.238.149][54436]
            update: [.....8] [ip4][....2] [......10.0.2.15] -> [.....224.0.0.22] [IGMP][Unknown][Network][Acceptable]
            update: [...760] [ip4][..udp] [......10.0.2.15][..138] -> [.....10.0.2.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][msedgewin10]
-                   RISK: Unsafe Protocol
            update: [...117] [ip4][..udp] [......10.0.2.15][28681] -> [200.120.243.143][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
            update: [...748] [ip4][..udp] [......10.0.2.15][28681] -> [.....92.8.59.80][35192] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -6724,7 +6713,6 @@
               new: [...794] [ip4][..udp] [......10.0.2.15][50214] -> [239.255.255.250][.1900]
          detected: [...794] [ip4][..udp] [......10.0.2.15][50214] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
            update: [...760] [ip4][..udp] [......10.0.2.15][..138] -> [.....10.0.2.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][msedgewin10]
-                   RISK: Unsafe Protocol
            update: [...117] [ip4][..udp] [......10.0.2.15][28681] -> [200.120.243.143][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
            update: [...748] [ip4][..udp] [......10.0.2.15][28681] -> [.....92.8.59.80][35192] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -6920,7 +6908,6 @@
              idle: [...757] [ip4][..udp] [......10.0.2.15][28681] -> [.104.156.226.72][53258] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
            update: [...760] [ip4][..udp] [......10.0.2.15][..138] -> [.....10.0.2.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][msedgewin10]
-                   RISK: Unsafe Protocol
            update: [...117] [ip4][..udp] [......10.0.2.15][28681] -> [200.120.243.143][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
            update: [...748] [ip4][..udp] [......10.0.2.15][28681] -> [.....92.8.59.80][35192] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -7036,7 +7023,6 @@
      DAEMON-EVENT: [Flows][active: 169 / 801|skipped: 0|!detected: 311|guessed: 1|detection-updates: 5|updates: 2519]
              idle: [.....8] [ip4][....2] [......10.0.2.15] -> [.....224.0.0.22] [IGMP][Unknown][Network][Acceptable]
              idle: [...760] [ip4][..udp] [......10.0.2.15][..138] -> [.....10.0.2.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][msedgewin10]
-                   RISK: Unsafe Protocol
              idle: [...798] [ip4][..udp] [......10.0.2.15][63962] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250:1900]
              idle: [...117] [ip4][..udp] [......10.0.2.15][28681] -> [200.120.243.143][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
@@ -7223,7 +7209,7 @@
                    RISK: Unidirectional Traffic
              idle: [....45] [ip4][..tcp] [......10.0.2.15][50205] -> [.114.46.139.171][52120]
              idle: [...334] [ip4][..tcp] [......10.0.2.15][50328] -> [..189.147.72.83][26108] [HTTP.Gnutella][Unknown][Media][Potentially Dangerous][189.147.72.83]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol, Susp Entropy, Binary File/Data Transfer (Attempt)
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol, Binary File/Data Transfer (Attempt)
              idle: [...138] [ip4][..udp] [......10.0.2.15][28681] -> [167.114.170.156][23844] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
      not-detected: [...777] [ip4][..udp] [......10.0.2.15][28681] -> [.124.244.211.43][23459] [Unknown][Unknown][Unrated]
@@ -7407,7 +7393,7 @@
              idle: [...172] [ip4][..udp] [......10.0.2.15][28681] -> [..87.69.142.133][15471] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [...333] [ip4][..tcp] [......10.0.2.15][50327] -> [.69.118.162.229][46906] [HTTP.Gnutella][Unknown][Media][Potentially Dangerous][69.118.162.229]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol, Susp Entropy, Binary File/Data Transfer (Attempt)
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol, Binary File/Data Transfer (Attempt)
      not-detected: [...281] [ip4][..tcp] [......10.0.2.15][50305] -> [....94.54.66.82][63637] [Unknown][Unknown][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...281] [ip4][..tcp] [......10.0.2.15][50305] -> [....94.54.66.82][63637]

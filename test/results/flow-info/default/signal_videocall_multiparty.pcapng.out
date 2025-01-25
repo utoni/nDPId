@@ -1,0 +1,23 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..udp] [..192.168.1.117][59446] -> [...35.207.67.68][10000]
+         detected: [.....1] [ip4][..udp] [..192.168.1.117][59446] -> [...35.207.67.68][10000] [STUN][GoogleCloud][Network][Acceptable][]
+                   RISK: Known Proto on Non Std Port
+ detection-update: [.....1] [ip4][..udp] [..192.168.1.117][59446] -> [...35.207.67.68][10000] [STUN.RTP][GoogleCloud][Media][Acceptable][]
+                   RISK: Known Proto on Non Std Port
+ detection-update: [.....1] [ip4][..udp] [..192.168.1.117][59446] -> [...35.207.67.68][10000] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable][]
+                   RISK: Known Proto on Non Std Port
+          analyse: [.....1] [ip4][..udp] [..192.168.1.117][59446] -> [...35.207.67.68][10000] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable]
+                                         min|       max|       avg|    stddev|         variance|  entropy
+                   [IAT.........: <    0.001|     1.071|     0.337|     0.396|       156437.676|    3.900]
+                   [PKTLEN......:     56.000|   128.000|    92.700|    28.200|          793.400|    4.900]
+                   [BINS(c->s)..: 1,14,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 0,5,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [DIRECTIONS..: 0,1,0,0,1,0,1,0,0,0,0,1,1,0,0,0,1,1,0,0,0,0,1,0,0,1,0,0,0,1,0,1]
+                   [IATS(ms)....: 32.9,48.8,0.3,44.5,50.5,44.1,223.8,0.4,25.3,800.7,1030.9,20.6,201.5,0.7,800.8,981.7,21.3,210.6,0.8,118.5,13.4,1043.7,879.5,0.9,1071.1,1007.2,0.7,274.5,390.9,400.1,691.0]
+                   [PKTLENS.....: 128,128,64,128,128,128,128,83,64,64,128,74,128,83,64,128,74,128,83,64,76,56,74,83,64,74,83,64,128,128,64,74]
+                   [ENTROPIES...: 5.6,5.7,5.1,5.7,5.7,5.8,5.8,5.8,5.2,5.0,5.8,5.4,5.8,5.7,5.1,5.6,5.4,5.7,5.8,5.1,5.8,5.2,5.4,5.7,5.2,5.4,5.9,5.2,5.6,5.8,5.0,5.4]
+             idle: [.....1] [ip4][..udp] [..192.168.1.117][59446] -> [...35.207.67.68][10000] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable]
+                   RISK: Known Proto on Non Std Port
+     DAEMON-EVENT: shutdown

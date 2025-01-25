@@ -107,7 +107,6 @@
          detected: [....28] [ip4][..udp] [........0.0.0.0][...68] -> [255.255.255.255][...67] [DHCP][Unknown][Network][Acceptable][]
               new: [....29] [ip4][..udp] [...192.168.1.43][..138] -> [..192.168.1.255][..138]
          detected: [....29] [ip4][..udp] [...192.168.1.43][..138] -> [..192.168.1.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][desktop-rb5t12g]
-                   RISK: Unsafe Protocol
               new: [....30] [ip4][..udp] [...192.168.1.77][..137] -> [..192.168.1.255][..137]
          detected: [....30] [ip4][..udp] [...192.168.1.77][..137] -> [..192.168.1.255][..137] [NetBIOS][Unknown][System][Acceptable][workgroup]
               new: [....31] [ip4][..udp] [...192.168.1.77][49764] -> [....192.168.1.1][...53]
@@ -219,7 +218,6 @@
              idle: [....11] [ip6][..udp] [..............fe80::18a0:a412:8935:c01b][.5353] -> [...............................ff02::fb][.5353] [MDNS][Unknown][Network][Acceptable]
              idle: [....30] [ip4][..udp] [...192.168.1.77][..137] -> [..192.168.1.255][..137] [NetBIOS][Unknown][System][Acceptable][workgroup]
              idle: [....29] [ip4][..udp] [...192.168.1.43][..138] -> [..192.168.1.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][desktop-rb5t12g]
-                   RISK: Unsafe Protocol
              idle: [.....5] [ip4][..udp] [...192.168.1.75][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable][_dacp._tcp.local]
              idle: [.....4] [ip4][..udp] [...192.168.1.69][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable][_spotify-connect._tcp.local]
              idle: [....17] [ip4][..udp] [...192.168.1.52][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable]

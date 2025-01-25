@@ -84,7 +84,7 @@
          detected: [....32] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][52271] -> [..2a00:ac00:4000:400:2e0:4cff:fe68:199d][.4434] [QUIC][Unknown][Web][Acceptable]
                    RISK: Known Proto on Non Std Port
               new: [....33] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][51040] -> [............2604:a880:800:a1::1279:3001][.4433]
-         detected: [....33] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][51040] -> [............2604:a880:800:a1::1279:3001][.4433] [QUIC][Unknown][Web][Acceptable]
+         detected: [....33] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][51040] -> [............2604:a880:800:a1::1279:3001][.4433] [QUIC][DigitalOcean][Web][Acceptable]
                    RISK: Known Proto on Non Std Port
               new: [....34] [ip4][.icmp] [.131.159.24.198] -> [..192.168.1.128]
          detected: [....34] [ip4][.icmp] [.131.159.24.198] -> [..192.168.1.128] [ICMP][Unknown][Network][Acceptable]
@@ -146,7 +146,7 @@
  detection-update: [....12] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][32957] -> [.................2606:4700:10::6816:826][.4433] [QUIC][Cloudflare][Web][Acceptable]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
               new: [....53] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][53760] -> [............2604:a880:800:a1::1279:3001][.4434]
-         detected: [....53] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][53760] -> [............2604:a880:800:a1::1279:3001][.4434] [QUIC][Unknown][Web][Acceptable]
+         detected: [....53] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][53760] -> [............2604:a880:800:a1::1279:3001][.4434] [QUIC][DigitalOcean][Web][Acceptable]
                    RISK: Known Proto on Non Std Port
  detection-update: [....13] [ip4][..udp] [..192.168.1.128][60784] -> [...3.121.242.54][.4433] [QUIC][AmazonAWS][Web][Acceptable]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
@@ -167,7 +167,7 @@
          detected: [....58] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][41857] -> [.................2606:4700:10::6816:826][.4434] [QUIC][Cloudflare][Web][Acceptable]
                    RISK: Known Proto on Non Std Port
               new: [....59] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][56073] -> [............2604:a880:800:a1::1279:3001][..443]
-         detected: [....59] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][56073] -> [............2604:a880:800:a1::1279:3001][..443] [QUIC][Unknown][Web][Acceptable]
+         detected: [....59] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][56073] -> [............2604:a880:800:a1::1279:3001][..443] [QUIC][DigitalOcean][Web][Acceptable]
               new: [....60] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][43645] -> [......................2001:19f0:4:34::1][..443]
          detected: [....60] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][43645] -> [......................2001:19f0:4:34::1][..443] [QUIC][Unknown][Web][Acceptable]
  detection-update: [....21] [ip4][..udp] [..192.168.1.128][59171] -> [..193.190.10.98][.4433] [QUIC][Unknown][Web][Acceptable]
@@ -237,7 +237,7 @@
  detection-update: [....47] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][46242] -> [2600:1f18:2310:d230:5103:7d9e:7d75:374f][..443] [QUIC][AmazonAWS][Web][Acceptable]
                    RISK: Unidirectional Traffic
               new: [....73] [ip6][icmp6] [............2604:a880:800:a1::1279:3001] -> [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d]
-         detected: [....73] [ip6][icmp6] [............2604:a880:800:a1::1279:3001] -> [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d] [ICMPV6][Unknown][Network][Acceptable]
+         detected: [....73] [ip6][icmp6] [............2604:a880:800:a1::1279:3001] -> [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d] [ICMPV6][DigitalOcean][Network][Acceptable]
  detection-update: [....52] [ip4][..udp] [..192.168.1.128][35263] -> [.202.238.220.92][.4434] [QUIC][Unknown][Web][Acceptable]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
               new: [....74] [ip4][.icmp] [..192.168.1.128] -> [..40.112.191.60]
@@ -321,7 +321,7 @@
                    RISK: Known Proto on Non Std Port
              idle: [....31] [ip4][..udp] [..192.168.1.128][38933] -> [.202.238.220.92][..443] [QUIC][Unknown][Web][Acceptable]
                    RISK: Unidirectional Traffic
-             idle: [....33] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][51040] -> [............2604:a880:800:a1::1279:3001][.4433] [QUIC][Unknown][Web][Acceptable]
+             idle: [....33] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][51040] -> [............2604:a880:800:a1::1279:3001][.4433] [QUIC][DigitalOcean][Web][Acceptable]
                    RISK: Known Proto on Non Std Port
              idle: [....19] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][39945] -> [.2a05:d018:ce9:8100:cd2a:e2fd:b3be:c5ab][.4433] [QUIC][AmazonAWS][Web][Acceptable]
                    RISK: Known Proto on Non Std Port
@@ -331,10 +331,10 @@
                    RISK: Known Proto on Non Std Port
              idle: [....24] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][52080] -> [2600:1f18:2310:d230:5103:7d9e:7d75:374f][.4434] [QUIC][AmazonAWS][Web][Acceptable]
                    RISK: Known Proto on Non Std Port
-             idle: [....59] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][56073] -> [............2604:a880:800:a1::1279:3001][..443] [QUIC][Unknown][Web][Acceptable]
+             idle: [....59] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][56073] -> [............2604:a880:800:a1::1279:3001][..443] [QUIC][DigitalOcean][Web][Acceptable]
              idle: [....62] [ip4][..udp] [..192.168.1.128][42468] -> [.138.91.188.147][.4433] [QUIC][Azure][Web][Acceptable]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
-             idle: [....53] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][53760] -> [............2604:a880:800:a1::1279:3001][.4434] [QUIC][Unknown][Web][Acceptable]
+             idle: [....53] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][53760] -> [............2604:a880:800:a1::1279:3001][.4434] [QUIC][DigitalOcean][Web][Acceptable]
                    RISK: Known Proto on Non Std Port
              idle: [....10] [ip4][..udp] [..192.168.1.128][38366] -> [.202.238.220.92][.4433] [QUIC][Unknown][Web][Acceptable]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
@@ -363,7 +363,7 @@
              idle: [.....4] [ip6][..udp] [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d][34442] -> [.2001:4800:7817:101:be76:4eff:fe04:631d][..443] [QUIC][Unknown][Web][Acceptable]
              idle: [....68] [ip6][icmp6] [......................2001:19f0:4:34::1] -> [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d] [ICMPV6][Unknown][Network][Acceptable]
              idle: [....51] [ip6][icmp6] [.....2001:19f0:5:c21:5400:1ff:fe33:3b96] -> [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d] [ICMPV6][Unknown][Network][Acceptable]
-             idle: [....73] [ip6][icmp6] [............2604:a880:800:a1::1279:3001] -> [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d] [ICMPV6][Unknown][Network][Acceptable]
+             idle: [....73] [ip6][icmp6] [............2604:a880:800:a1::1279:3001] -> [..2001:b07:ac9:d5ae:a4d3:fe47:691e:807d] [ICMPV6][DigitalOcean][Network][Acceptable]
              idle: [.....5] [ip4][..udp] [..192.168.1.128][47010] -> [...3.121.242.54][..443] [QUIC][AmazonAWS][Web][Acceptable]
              idle: [....57] [ip4][..udp] [..192.168.1.128][50705] -> [.138.91.188.147][.4434] [QUIC][Azure][Web][Acceptable]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic

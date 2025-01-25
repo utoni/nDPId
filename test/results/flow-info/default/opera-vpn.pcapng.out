@@ -841,7 +841,7 @@
              idle: [....51] [ip4][..tcp] [...192.168.1.29][51455] -> [..77.111.247.69][..443] [TLS.OperaVPN][Unknown][VPN][Acceptable][eu0.sec-tunnel.com]
              idle: [....52] [ip4][..tcp] [...192.168.1.29][51456] -> [..77.111.247.69][..443] [TLS.OperaVPN][Unknown][VPN][Acceptable][eu0.sec-tunnel.com]
           guessed: [....53] [ip4][..tcp] [...192.168.1.29][51457] -> [..77.111.247.69][..443] [TLS][Unknown][Web][Safe]
-                   RISK: TCP Connection Issues
+                   RISK: TCP Connection Issues, Probing Attempt
               end: [....53] [ip4][..tcp] [...192.168.1.29][51457] -> [..77.111.247.69][..443]
               end: [....54] [ip4][..tcp] [...192.168.1.29][51458] -> [..77.111.247.69][..443] [TLS.OperaVPN][Unknown][VPN][Acceptable][eu0.sec-tunnel.com]
              idle: [....55] [ip4][..tcp] [...192.168.1.29][51459] -> [..77.111.247.69][..443] [TLS.OperaVPN][Unknown][VPN][Acceptable][eu0.sec-tunnel.com]

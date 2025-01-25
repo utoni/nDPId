@@ -71,7 +71,7 @@ start_ndpid_instance() {
 	args="$args$(print_arg_bool "$cfg" 'use_poll' '-e')"
 	args="$args$(print_arg_str "$cfg" 'proto_file' '-P')"
 	args="$args$(print_arg_str "$cfg" 'cat_file' '-C')"
-	args="$args$(print_arg_str "$cfg" 'ja3_file' '-J')"
+	args="$args$(print_arg_str "$cfg" 'ja4_file' '-J')"
 	args="$args$(print_arg_str "$cfg" 'ssl_file' '-S')"
 	args="$args$(print_arg_str "$cfg" 'alias' '-a')"
 	args="$args$(print_arg_bool "$cfg" 'analysis' '-A')"
@@ -118,7 +118,7 @@ validate_ndpid_section() {
 		'udp_connect:string' \
 		'proto_file:string' \
 		'cat_file:string' \
-		'ja3_file:string' \
+		'ja4_file:string' \
 		'ssl_file:string' \
 		'alias:string' \
 		'analysis:bool:0' \

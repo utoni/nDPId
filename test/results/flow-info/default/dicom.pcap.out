@@ -1,0 +1,18 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [......127.0.0.1][49531] -> [......127.0.0.1][..104] [MIDSTREAM]
+         detected: [.....1] [ip4][..tcp] [......127.0.0.1][49531] -> [......127.0.0.1][..104] [DICOM][Unknown][Health][Acceptable]
+              new: [.....2] [ip4][..tcp] [......127.0.0.1][49541] -> [......127.0.0.1][..104] [MIDSTREAM]
+         detected: [.....2] [ip4][..tcp] [......127.0.0.1][49541] -> [......127.0.0.1][..104] [DICOM][Unknown][Health][Acceptable]
+     DAEMON-EVENT: [Processed: 3 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 2 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....3] [ip4][..tcp] [......127.0.0.1][52180] -> [......127.0.0.1][..104] [MIDSTREAM]
+         detected: [.....3] [ip4][..tcp] [......127.0.0.1][52180] -> [......127.0.0.1][..104] [DICOM][Unknown][Health][Acceptable]
+             idle: [.....1] [ip4][..tcp] [......127.0.0.1][49531] -> [......127.0.0.1][..104] [DICOM][Unknown][Health][Acceptable]
+             idle: [.....2] [ip4][..tcp] [......127.0.0.1][49541] -> [......127.0.0.1][..104] [DICOM][Unknown][Health][Acceptable]
+              new: [.....4] [ip4][..tcp] [......127.0.0.1][52228] -> [......127.0.0.1][..104] [MIDSTREAM]
+         detected: [.....4] [ip4][..tcp] [......127.0.0.1][52228] -> [......127.0.0.1][..104] [DICOM][Unknown][Health][Acceptable]
+             idle: [.....3] [ip4][..tcp] [......127.0.0.1][52180] -> [......127.0.0.1][..104] [DICOM][Unknown][Health][Acceptable]
+             idle: [.....4] [ip4][..tcp] [......127.0.0.1][52228] -> [......127.0.0.1][..104] [DICOM][Unknown][Health][Acceptable]
+     DAEMON-EVENT: shutdown

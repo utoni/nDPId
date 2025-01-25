@@ -13,7 +13,7 @@
 #riskdomains = /path/to/libnDPI/example/risky_domains.txt
 #protocols   = /path/to/libnDPI/example/protos.txt
 #categories  = /path/to/libnDPI/example/categories.txt
-#ja3         = /path/to/libnDPI/example/ja3_fingerprints.csv
+#ja4         = /path/to/libnDPI/example/ja4_fingerprints.csv
 #sha1        = /path/to/libnDPI/example/sha1_fingerprints.csv
 
 # Collector endpoint as UNIX socket (usually nDPIsrvd)

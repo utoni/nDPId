@@ -99,7 +99,7 @@
               end: [.....4] [ip4][..tcp] [...10.24.82.188][48489] -> [203.205.147.215][...80] [HTTP_Proxy.QQ][Tencent][Download][Fun][hkminorshort.weixin.qq.com]
                    RISK: Known Proto on Non Std Port, Binary File/Data Transfer (Attempt)
           guessed: [.....5] [ip4][..tcp] [.216.58.220.161][..443] -> [...10.24.82.188][56697] [TLS][Google][Web][Safe]
-                   RISK: Unidirectional Traffic, TCP Connection Issues
+                   RISK: Unidirectional Traffic, TCP Connection Issues, Probing Attempt
               end: [.....5] [ip4][..tcp] [.216.58.220.161][..443] -> [...10.24.82.188][56697]
              idle: [....20] [ip4][..udp] [...10.24.82.188][25223] -> [.....10.188.1.1][...53] [DNS.Facebook][Unknown][Network][Fun][mqtt.facebook.com]
           guessed: [.....2] [ip4][..tcp] [..120.28.26.242][...80] -> [...10.24.82.188][34533] [HTTP][Unknown][Web][Acceptable][]
@@ -108,7 +108,7 @@
                    RISK: Unidirectional Traffic
              idle: [....16] [ip4][..tcp] [...10.24.82.188][53974] -> [203.205.151.233][.8080]
           guessed: [....15] [ip4][..tcp] [..173.252.122.1][..443] -> [...10.24.82.188][52123] [TLS][Facebook][Web][Safe]
-                   RISK: Unidirectional Traffic, TCP Connection Issues
+                   RISK: Unidirectional Traffic, TCP Connection Issues, Probing Attempt
               end: [....15] [ip4][..tcp] [..173.252.122.1][..443] -> [...10.24.82.188][52123]
              idle: [....13] [ip4][..udp] [...10.24.82.188][10268] -> [....1.201.1.174][23046] [RTP][Unknown][Media][Acceptable]
              idle: [....11] [ip4][..udp] [...10.24.82.188][10269] -> [....1.201.1.174][23047] [KakaoTalk_Voice][Unknown][VoIP][Acceptable]
@@ -120,7 +120,7 @@
              idle: [.....8] [ip4][..tcp] [...10.24.82.188][58857] -> [..110.76.143.50][.9001] [TLS.KakaoTalk][Unknown][Chat][Acceptable]
                    RISK: Known Proto on Non Std Port, Self-signed Cert, Obsolete TLS (v1.1 or older), Weak TLS Cipher
           guessed: [....17] [ip4][..tcp] [173.194.117.229][..443] -> [...10.24.82.188][38380] [TLS][Google][Web][Safe]
-                   RISK: Unidirectional Traffic, TCP Connection Issues
+                   RISK: Unidirectional Traffic, TCP Connection Issues, Probing Attempt
               end: [....17] [ip4][..tcp] [173.194.117.229][..443] -> [...10.24.82.188][38380]
           guessed: [.....1] [ip4][..tcp] [...10.24.82.188][51021] -> [.103.246.57.251][.8080] [HTTP_Proxy][Unknown][Web][Acceptable][]
              idle: [.....1] [ip4][..tcp] [...10.24.82.188][51021] -> [.103.246.57.251][.8080]

@@ -389,7 +389,7 @@
               end: [....57] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][36968] -> [...............2a00:1450:4007:80f::2001][..443] [TLS.Google][Google][Advertisement][Acceptable]
               end: [....58] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][36970] -> [...............2a00:1450:4007:80f::2001][..443] [TLS.Google][Google][Advertisement][Acceptable]
           guessed: [....59] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][36972] -> [...............2a00:1450:4007:80f::2001][..443] [TLS][Google][Web][Safe]
-                   RISK: TCP Connection Issues
+                   RISK: TCP Connection Issues, Probing Attempt
               end: [....59] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][36972] -> [...............2a00:1450:4007:80f::2001][..443]
              idle: [....33] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][44264] -> [.....................64:ff9b::1736:86f1][..443] [TLS.ADS_Analytic_Track][Unknown][Advertisement][Tracker/Ads]
              idle: [....54] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][38166] -> [...............2a00:1450:4007:811::200a][..443] [TLS.GoogleServices][Google][Web][Acceptable][fonts.googleapis.com]

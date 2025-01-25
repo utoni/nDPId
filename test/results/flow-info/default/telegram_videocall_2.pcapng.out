@@ -1,0 +1,63 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..udp] [...192.168.12.1][.5353] -> [....224.0.0.251][.5353]
+         detected: [.....1] [ip4][..udp] [...192.168.12.1][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable][_ipps._tcp.local]
+              new: [.....2] [ip6][..udp] [..............fe80::76da:38ff:feed:5332][.5353] -> [...............................ff02::fb][.5353]
+         detected: [.....2] [ip6][..udp] [..............fe80::76da:38ff:feed:5332][.5353] -> [...............................ff02::fb][.5353] [MDNS][Unknown][Network][Acceptable][_ipps._tcp.local]
+              new: [.....3] [ip4][..udp] [..192.168.12.67][39968] -> [...91.108.9.106][.1400]
+         detected: [.....3] [ip4][..udp] [..192.168.12.67][39968] -> [...91.108.9.106][.1400] [STUN][Telegram][Network][Acceptable][]
+                   RISK: Known Proto on Non Std Port
+              new: [.....4] [ip4][..udp] [..192.168.12.67][39329] -> [....91.108.13.3][.1400]
+         detected: [.....4] [ip4][..udp] [..192.168.12.67][39329] -> [....91.108.13.3][.1400] [STUN][Telegram][Network][Acceptable][]
+                   RISK: Known Proto on Non Std Port
+              new: [.....5] [ip4][..udp] [..192.168.12.67][44679] -> [...91.108.17.49][.1400]
+         detected: [.....5] [ip4][..udp] [..192.168.12.67][44679] -> [...91.108.17.49][.1400] [STUN][Telegram][Network][Acceptable][]
+                   RISK: Known Proto on Non Std Port
+              new: [.....6] [ip4][..udp] [..192.168.12.67][44275] -> [....91.108.9.10][..597]
+         detected: [.....6] [ip4][..udp] [..192.168.12.67][44275] -> [....91.108.9.10][..597] [Telegram][Telegram][Chat][Acceptable]
+              new: [.....7] [ip4][..udp] [..192.168.12.67][46675] -> [....91.108.17.8][..597]
+         detected: [.....7] [ip4][..udp] [..192.168.12.67][46675] -> [....91.108.17.8][..597] [Telegram][Telegram][Chat][Acceptable]
+              new: [.....8] [ip4][..udp] [..192.168.12.67][42417] -> [...91.108.13.26][..598]
+         detected: [.....8] [ip4][..udp] [..192.168.12.67][42417] -> [...91.108.13.26][..598] [Telegram][Telegram][Chat][Acceptable]
+ detection-update: [.....3] [ip4][..udp] [..192.168.12.67][39968] -> [...91.108.9.106][.1400] [STUN.TelegramVoip][Telegram][VoIP][Acceptable][telegram.org]
+                   RISK: Known Proto on Non Std Port
+ detection-update: [.....4] [ip4][..udp] [..192.168.12.67][39329] -> [....91.108.13.3][.1400] [STUN][Telegram][Network][Acceptable][]
+                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+ detection-update: [.....5] [ip4][..udp] [..192.168.12.67][44679] -> [...91.108.17.49][.1400] [STUN][Telegram][Network][Acceptable][]
+                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+ detection-update: [.....6] [ip4][..udp] [..192.168.12.67][44275] -> [....91.108.9.10][..597] [STUN.TelegramVoip][Telegram][VoIP][Acceptable][]
+ detection-update: [.....8] [ip4][..udp] [..192.168.12.67][42417] -> [...91.108.13.26][..598] [STUN.TelegramVoip][Telegram][VoIP][Acceptable][]
+ detection-update: [.....7] [ip4][..udp] [..192.168.12.67][46675] -> [....91.108.17.8][..597] [STUN.TelegramVoip][Telegram][VoIP][Acceptable][]
+          analyse: [.....3] [ip4][..udp] [..192.168.12.67][39968] -> [...91.108.9.106][.1400] [STUN.TelegramVoip][Telegram][VoIP][Acceptable][telegram.org]
+                                         min|       max|       avg|    stddev|         variance|  entropy
+                   [IAT.........: <    0.001|     0.633|     0.087|     0.150|        22365.106|    3.700]
+                   [PKTLEN......:     56.000|   680.000|   146.800|   107.000|        11452.500|    4.800]
+                   [BINS(c->s)..: 1,1,4,5,3,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 0,3,8,3,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [DIRECTIONS..: 0,1,0,1,0,1,0,1,0,0,1,1,0,1,0,0,1,0,1,1,0,0,0,1,1,1,0,0,1,0,1,1]
+                   [IATS(ms)....: 24.4,29.5,32.3,633.2,629.0,42.4,122.6,119.6,0.6,39.8,5.4,31.6,39.5,41.7,145.5,160.6,48.0,92.4,8.6,65.3,0.3,0.7,20.9,96.3,0.0,115.5,8.2,23.5,57.9,62.0,6.6]
+                   [PKTLENS.....: 56,120,152,120,156,88,160,144,164,680,88,128,96,128,96,128,113,128,96,121,85,101,237,96,113,97,97,149,233,150,290,89]
+                   [ENTROPIES...: 4.9,5.7,5.7,5.8,5.8,5.9,5.7,6.0,5.6,6.6,5.9,5.5,5.8,5.3,5.7,5.4,5.8,5.4,5.8,5.9,5.2,5.5,6.8,5.7,5.9,5.5,5.4,6.5,6.8,6.5,7.2,5.9]
+          analyse: [.....6] [ip4][..udp] [..192.168.12.67][44275] -> [....91.108.9.10][..597] [STUN.TelegramVoip][Telegram][VoIP][Acceptable]
+                                         min|       max|       avg|    stddev|         variance|  entropy
+                   [IAT.........: <    0.001|     0.699|     0.109|     0.168|        28175.655|    3.800]
+                   [PKTLEN......:     68.000|   624.000|   160.000|   120.100|        14426.000|    4.700]
+                   [BINS(c->s)..: 0,2,4,9,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 0,0,9,4,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [DIRECTIONS..: 0,1,0,1,0,1,0,0,1,0,1,1,0,1,0,0,1,0,1,0,1,1,1,1,0,0,0,0,1,0,1,0]
+                   [IATS(ms)....: 24.1,514.6,513.6,39.7,23.0,13.8,37.2,83.7,46.8,52.5,0.0,53.8,48.2,41.9,1.1,8.1,49.4,47.9,10.1,16.1,39.4,38.9,30.0,122.7,10.1,52.8,64.0,152.2,227.3,304.3,699.0]
+                   [PKTLENS.....: 68,92,68,92,148,148,116,148,116,148,148,116,116,148,116,148,116,148,148,116,212,116,116,600,624,136,148,176,116,148,116,148]
+                   [ENTROPIES...: 4.6,4.7,4.6,4.7,5.7,5.8,6.0,5.7,6.1,5.7,5.8,6.1,6.1,5.8,6.0,5.7,6.0,5.8,5.8,6.0,5.2,6.1,6.2,6.8,7.5,6.1,5.8,6.4,6.1,5.7,6.2,5.7]
+             idle: [.....2] [ip6][..udp] [..............fe80::76da:38ff:feed:5332][.5353] -> [...............................ff02::fb][.5353] [MDNS][Unknown][Network][Acceptable]
+             idle: [.....4] [ip4][..udp] [..192.168.12.67][39329] -> [....91.108.13.3][.1400] [STUN][Telegram][Network][Acceptable]
+                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+             idle: [.....3] [ip4][..udp] [..192.168.12.67][39968] -> [...91.108.9.106][.1400] [STUN.TelegramVoip][Telegram][VoIP][Acceptable][telegram.org]
+                   RISK: Known Proto on Non Std Port
+             idle: [.....8] [ip4][..udp] [..192.168.12.67][42417] -> [...91.108.13.26][..598] [STUN.TelegramVoip][Telegram][VoIP][Acceptable]
+             idle: [.....6] [ip4][..udp] [..192.168.12.67][44275] -> [....91.108.9.10][..597] [STUN.TelegramVoip][Telegram][VoIP][Acceptable]
+             idle: [.....5] [ip4][..udp] [..192.168.12.67][44679] -> [...91.108.17.49][.1400] [STUN][Telegram][Network][Acceptable]
+                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+             idle: [.....7] [ip4][..udp] [..192.168.12.67][46675] -> [....91.108.17.8][..597] [STUN.TelegramVoip][Telegram][VoIP][Acceptable]
+             idle: [.....1] [ip4][..udp] [...192.168.12.1][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable]
+     DAEMON-EVENT: shutdown

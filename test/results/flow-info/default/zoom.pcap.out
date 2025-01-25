@@ -7,9 +7,9 @@
               new: [.....2] [ip4][..udp] [..192.168.1.117][.5353] -> [....224.0.0.251][.5353]
          detected: [.....2] [ip4][..udp] [..192.168.1.117][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable][_spotify-connect._tcp.local]
               new: [.....3] [ip4][..tcp] [..192.168.1.117][54863] -> [.167.99.215.164][.4434]
-         detected: [.....3] [ip4][..tcp] [..192.168.1.117][54863] -> [.167.99.215.164][.4434] [TLS.ntop][Unknown][Network][Safe][dati.ntop.org]
+         detected: [.....3] [ip4][..tcp] [..192.168.1.117][54863] -> [.167.99.215.164][.4434] [TLS.ntop][DigitalOcean][Network][Safe][dati.ntop.org]
                    RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
- detection-update: [.....3] [ip4][..tcp] [..192.168.1.117][54863] -> [.167.99.215.164][.4434] [TLS.ntop][Unknown][Network][Safe][dati.ntop.org]
+ detection-update: [.....3] [ip4][..tcp] [..192.168.1.117][54863] -> [.167.99.215.164][.4434] [TLS.ntop][DigitalOcean][Network][Safe][dati.ntop.org]
                    RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
       ERROR-EVENT: Unknown packet type [1/16]
               new: [.....4] [ip4][..tcp] [..192.168.1.117][54341] -> [.62.149.152.153][..993] [MIDSTREAM]
@@ -219,9 +219,9 @@
              idle: [....30] [ip4][..tcp] [..192.168.1.117][54871] -> [..109.94.160.99][..443] [TLS.Zoom][Unknown][Video][Acceptable][zoomfrn99mmr.zoom.us]
                    RISK: TLS (probably) Not Carrying HTTPS
           guessed: [....11] [ip4][..tcp] [..192.168.1.117][54798] -> [..13.225.84.182][..443] [TLS][AmazonAWS][Web][Safe]
-                   RISK: TCP Connection Issues
+                   RISK: TCP Connection Issues, Probing Attempt
               end: [....11] [ip4][..tcp] [..192.168.1.117][54798] -> [..13.225.84.182][..443]
-              end: [.....3] [ip4][..tcp] [..192.168.1.117][54863] -> [.167.99.215.164][.4434] [TLS.ntop][Unknown][Network][Safe]
+              end: [.....3] [ip4][..tcp] [..192.168.1.117][54863] -> [.167.99.215.164][.4434] [TLS.ntop][DigitalOcean][Network][Safe]
                    RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
               end: [....27] [ip4][..tcp] [..192.168.1.117][54869] -> [.213.244.140.85][..443] [TLS.Zoom][Zoom][Video][Acceptable]
                    RISK: TLS (probably) Not Carrying HTTPS
