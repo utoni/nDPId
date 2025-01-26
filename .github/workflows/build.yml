@@ -203,6 +203,10 @@ jobs:
         if: startsWith(matrix.ndpid_extras, '-D')
         run: |
           sudo apt-get install libmaxminddb-dev libpcre2-dev
+      - name: Install Ubuntu Prerequisites (libnl-genl-3-dev)
+        if: endsWith(matrix.compiler, 'gcc-7') == false && startsWith(matrix.ndpi_build, '-DBUILD_NDPI=ON') && startsWith(matrix.coverage, '-DENABLE_COVERAGE=OFF') && startsWith(matrix.sanitizer, '-DENABLE_SANITIZER=ON') && startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=OFF') && startsWith(matrix.ndpid_zlib, '-DENABLE_ZLIB=ON')
+        run: |
+          sudo apt-get install libnl-genl-3-dev
       - name: Checking Network Buffer Size
         run: |
           C_VAL=$(cat config.h | sed -n 's/^#define\s\+NETWORK_BUFFER_MAX_SIZE\s\+\([0-9]\+\).*$/\1/gp')
