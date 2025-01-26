@@ -75,7 +75,7 @@ EOF
 
 if ! `ls -l cfgs/*/pcap/*.pcap cfgs/*/pcap/*.pcapng cfgs/*/pcap/*.cap >/dev/null 2>/dev/null`; then
     printf '\n%s\n' "Could not find any PCAP files."
-    exit 7
+    exit 6
 fi
 
 mkdir -p /tmp/nDPId-cfgtest-stderr
@@ -90,9 +90,11 @@ if [ $? -ne 1 ]; then
     exit 7
 fi
 
+DOTS_PER_LINE=80
 for cfg_file in ${MYDIR}/configs/*.conf; do
     cfg_name="$(basename ${cfg_file})"
     printf 'Config: %s\n' "${cfg_name}"
+    DOTS=0
     for pcap_file in cfgs/*/pcap/*.pcap cfgs/*/pcap/*.pcapng cfgs/*/pcap/*.cap; do
         if [ ! -r "${pcap_file}" ]; then
             printf '%s: %s\n' "${0}" "${pcap_file} does not exist!"
@@ -112,7 +114,13 @@ for cfg_file in ${MYDIR}/configs/*.conf; do
         nDPId_test_RETVAL=$?
 
         if [ ${nDPId_test_RETVAL} -eq 0 ]; then
-            printf '%s' '.'
+            DOTS=$((DOTS + 1))
+            if [ ${DOTS} -eq ${DOTS_PER_LINE} ]; then
+                printf '%s\n' '.'
+                DOTS=0
+            else
+                printf '%s' '.'
+            fi
         else
             printf '%s\n' '[FAIL]'
             printf '%s\n' '----------------------------------------'
@@ -120,6 +128,7 @@ for cfg_file in ${MYDIR}/configs/*.conf; do
             cat "${stderr_file}"
             test -r "/tmp/nDPId-test-stderr/${pcap_name}.strace.out" && cat "/tmp/nDPId-test-stderr/${pcap_name}.strace.out"
             TESTS_FAILED=$((TESTS_FAILED + 1))
+            test ${TESTS_FAILED} -eq 0 || exit ${TESTS_FAILED}
         fi
     done
 
