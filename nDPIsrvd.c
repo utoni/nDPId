@@ -1,3 +1,6 @@
+#if defined(__FreeBSD__) || defined(__APPLE__)
+#include <sys/stat.h>
+#endif
 #include <arpa/inet.h>
 #include <errno.h>
 #include <fcntl.h>
