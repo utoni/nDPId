@@ -24,7 +24,7 @@ jobs:
       run: |
         pip install gcovr==5.0 # 5.1 is not supported
     - name: Install sonar-scanner and build-wrapper
-      uses: SonarSource/sonarcloud-github-c-cpp@v3.1.0
+      uses: SonarSource/sonarcloud-github-c-cpp@v3.2.0
     - name: Install Prerequisites
       run: |
         sudo apt-get update

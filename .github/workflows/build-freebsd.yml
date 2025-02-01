@@ -1,0 +1,39 @@
+name: FreeBSD Build
+
+on:
+  schedule:
+    # At the end of every day
+    - cron: '0 0 * * *'
+  push:
+    branches:
+      - main
+      - tmp
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened]
+  release:
+    types: [created]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Build and Test
+    steps:
+    - uses: actions/checkout@v4
+    - name: Test in FreeBSD
+      id: test
+      uses: vmactions/freebsd-vm@v1
+      with:
+        usesh: true
+        prepare: |
+          pkg install -y bash autoconf automake cmake gmake libtool gettext pkgconf gcc \
+            git wget unzip flock \
+            json-c flex bison libpcap curl openssl dbus
+        run: |
+          echo "Working Directory: $(pwd)"
+          echo "User.............: $(whoami)"
+          echo "FreeBSD Version..: $(freebsd-version)"
+          # TODO: Make examples I/O event agnostic i.e. use nio
+          cmake -S . -B build -DBUILD_NDPI=ON -DBUILD_EXAMPLES=OFF #-DENABLE_CURL=ON -DENABLE_DBUS=ON
+          cmake --build build

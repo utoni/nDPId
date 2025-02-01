@@ -6,6 +6,7 @@ GIT_EXEC="$(command -v git || printf '%s' "")"
 WGET_EXEC="$(command -v wget || printf '%s' "")"
 UNZIP_EXEC="$(command -v unzip || printf '%s' "")"
 MAKE_EXEC="$(command -v make || printf '%s' "")"
+FLOCK_EXEC="$(command -v flock || printf '%s' "")"
 
 if [ -z "${NDPI_COMMIT_HASH}" ]; then
     NDPI_COMMIT_HASH="dev"
@@ -14,15 +15,15 @@ else
     GITHUB_FALLBACK_URL="https://github.com/ntop/nDPI/archive/${NDPI_COMMIT_HASH}.zip"
 fi
 
-if [ -z "${GIT_EXEC}" -o -z "${WGET_EXEC}" -o -z "${UNZIP_EXEC}" -o -z "${MAKE_EXEC}" ]; then
-    printf '%s\n' "Required Executables missing: git, wget, unzip, make" >&2
+if [ -z "${GIT_EXEC}" -o -z "${WGET_EXEC}" -o -z "${UNZIP_EXEC}" -o -z "${MAKE_EXEC}" -o -z "${FLOCK_EXEC}" ]; then
+    printf '%s\n' "Required Executables missing: git, wget, unzip, make, flock" >&2
     exit 1
 fi
 
 LOCKFILE="$(realpath "${0}").lock"
 touch "${LOCKFILE}"
 exec 42< "${LOCKFILE}"
-flock -x -n 42 || {
+${FLOCK_EXEC} -x -n 42 || {
     printf '%s\n' "Could not aquire file lock for ${0}. Already running instance?" >&2;
     exit 1;
 }
