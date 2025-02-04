@@ -5,6 +5,7 @@
 #include <openssl/core_names.h>
 #include <openssl/err.h>
 #include <openssl/evp.h>
+#include <openssl/kdf.h>
 #include <openssl/pem.h>
 #include <stdlib.h>
 #include <string.h>
@@ -27,6 +28,12 @@
 #define PACKET_TYPE_DATA 0xFFu
 
 #define NCRYPT_PACKED __attribute__((__packed__))
+
+static unsigned char hkdf_salt[] = {0xf2, 0xad, 0xc9, 0xca, 0x6e, 0xb3, 0xd9, 0xcd, 0x3b, 0x34, 0xf3, 0x8d, 0x75,
+                                    0x91, 0x84, 0xbe, 0x7b, 0x1a, 0x5f, 0x80, 0x5f, 0x20, 0x86, 0x97, 0x37, 0xec,
+                                    0x72, 0x25, 0x2a, 0x4c, 0x9d, 0x0e, 0x10, 0x8e, 0xaf, 0xf0, 0x43, 0x04, 0xb4,
+                                    0x9e, 0xe5, 0x46, 0x41, 0xb0, 0xb1, 0xc3, 0x7c, 0x5a, 0x35, 0x2b, 0x75, 0xa9,
+                                    0x36, 0xfc, 0x5e, 0x6c, 0xed, 0x32, 0x00, 0xd1, 0xf0, 0xb1, 0xc3, 0x0d};
 
 union iv
 {
@@ -237,6 +244,32 @@ static void next_iv(struct peer * const peer)
     }
 }
 
+static int hkdf_x25519(unsigned char shared_secret[NCRYPT_X25519_KEYLEN],
+                       char * label,
+                       unsigned char out[NCRYPT_X25519_KEYLEN])
+{
+    EVP_KDF * kdf;
+    EVP_KDF_CTX * kctx;
+    OSSL_PARAM params[5], *p = params;
+
+    kdf = EVP_KDF_fetch(NULL, "HKDF", NULL);
+    kctx = EVP_KDF_CTX_new(kdf);
+    EVP_KDF_free(kdf);
+
+    *p++ = OSSL_PARAM_construct_utf8_string(OSSL_KDF_PARAM_DIGEST, SN_sha256, strlen(SN_sha256));
+    *p++ = OSSL_PARAM_construct_octet_string(OSSL_KDF_PARAM_KEY, shared_secret, NCRYPT_X25519_KEYLEN);
+    *p++ = OSSL_PARAM_construct_octet_string(OSSL_KDF_PARAM_INFO, label, strlen(label));
+    *p++ = OSSL_PARAM_construct_octet_string(OSSL_KDF_PARAM_SALT, hkdf_salt, sizeof(hkdf_salt));
+    *p = OSSL_PARAM_construct_end();
+    if (EVP_KDF_derive(kctx, out, NCRYPT_X25519_KEYLEN, params) <= 0)
+    {
+        return -1;
+    }
+
+    EVP_KDF_CTX_free(kctx);
+    return 0;
+}
+
 int ncrypt_init(struct ncrypt * const nc,
                 unsigned char local_priv_key[NCRYPT_X25519_KEYLEN],
                 unsigned char remote_pub_key[NCRYPT_X25519_KEYLEN])
@@ -254,6 +287,7 @@ int ncrypt_init(struct ncrypt * const nc,
     {
         EVP_PKEY * pub_key;
     } remote = {.pub_key = NULL};
+    unsigned char uni_dist_shared_key[NCRYPT_X25519_KEYLEN];
 
     if (nc->libctx != NULL)
     {
@@ -328,7 +362,16 @@ int ncrypt_init(struct ncrypt * const nc,
         OPENSSL_cleanse(nc->shared_secret, NCRYPT_X25519_KEYLEN);
         goto error;
     }
+    OPENSSL_DUMP(nc->shared_secret, sizeof(nc->shared_secret));
+    if (hkdf_x25519(nc->shared_secret, "ncrypt initial keygen", uni_dist_shared_key) != 0)
+    {
+        rv = -13;
+        OPENSSL_cleanse(nc->shared_secret, NCRYPT_X25519_KEYLEN);
+        goto error;
+    }
 
+    memcpy(nc->shared_secret, uni_dist_shared_key, NCRYPT_X25519_KEYLEN);
+    OPENSSL_DUMP(nc->shared_secret, sizeof(nc->shared_secret));
     OPENSSL_cleanse(local_priv_key, NCRYPT_X25519_KEYLEN);
     OPENSSL_cleanse(remote_pub_key, NCRYPT_X25519_KEYLEN);
 
