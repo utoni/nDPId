@@ -25,7 +25,7 @@
     } while (0);
 
 #define PACKET_TYPE_KEYEX 0x00u
-#define PACKET_TYPE_DATA 0xFFu
+#define PACKET_TYPE_JSON 0xFFu
 
 #define NCRYPT_PACKED __attribute__((__packed__))
 
@@ -59,9 +59,20 @@ union packet
                 uint16_t size;
             } NCRYPT_PACKED;
         } NCRYPT_PACKED aad;
-        unsigned char iv[NCRYPT_AES_IVLEN];
-        unsigned char tag[NCRYPT_TAG_SIZE];
-        unsigned char data[NCRYPT_BUFFER_SIZE];
+        union
+        {
+            struct
+            {
+                unsigned char pubkey[NCRYPT_X25519_KEYLEN];
+                unsigned char signature[32];
+            } keyex;
+            struct
+            {
+                unsigned char iv[NCRYPT_AES_IVLEN];
+                unsigned char tag[NCRYPT_TAG_SIZE];
+                unsigned char data[NCRYPT_BUFFER_SIZE];
+            } json;
+        };
     } NCRYPT_PACKED;
 } NCRYPT_PACKED;
 
@@ -69,9 +80,9 @@ union packet
 _Static_assert(sizeof(((union packet *)0)->aad.raw) ==
                    sizeof(((union packet *)0)->aad.type) + sizeof(((union packet *)0)->aad.size),
                "NCrypt packet AAD is not equal the expected size");
-_Static_assert(sizeof(((union packet *)0)->raw) == sizeof(((union packet *)0)->aad) + sizeof(((union packet *)0)->iv) +
-                                                       sizeof(((union packet *)0)->tag) +
-                                                       sizeof(((union packet *)0)->data),
+_Static_assert(sizeof(((union packet *)0)->raw) ==
+                   sizeof(((union packet *)0)->aad) + sizeof(((union packet *)0)->json.iv) +
+                       sizeof(((union packet *)0)->json.tag) + sizeof(((union packet *)0)->json.data),
                "NCrypt packet is not equal the expected size");
 _Static_assert(sizeof(((union iv *)0)->buffer) == sizeof(((union iv *)0)->numeric),
                "IV buffer must be of the same size as the numerics");
@@ -280,14 +291,13 @@ int ncrypt_init(struct ncrypt * const nc,
     size_t secret_len = 0;
     struct
     {
-        EVP_PKEY * priv_key;
         unsigned char pub_key[NCRYPT_X25519_KEYLEN];
-    } local = {.priv_key = NULL, .pub_key = {}};
+        unsigned char uni_dist_shared_key[NCRYPT_X25519_KEYLEN];
+    } local = {.pub_key = {}, .uni_dist_shared_key = {}};
     struct
     {
         EVP_PKEY * pub_key;
     } remote = {.pub_key = NULL};
-    unsigned char uni_dist_shared_key[NCRYPT_X25519_KEYLEN];
 
     if (nc->libctx != NULL)
     {
@@ -299,15 +309,15 @@ int ncrypt_init(struct ncrypt * const nc,
         return -2;
     }
 
-    local.priv_key =
+    nc->private_key =
         EVP_PKEY_new_raw_private_key_ex(nc->libctx, "X25519", nc->propq, local_priv_key, NCRYPT_X25519_KEYLEN);
-    if (local.priv_key == NULL)
+    if (nc->private_key == NULL)
     {
         return -3;
     }
 
     if (EVP_PKEY_get_octet_string_param(
-            local.priv_key, OSSL_PKEY_PARAM_PUB_KEY, local.pub_key, sizeof(local.pub_key), &pub_key_datalen) == 0)
+            nc->private_key, OSSL_PKEY_PARAM_PUB_KEY, local.pub_key, sizeof(local.pub_key), &pub_key_datalen) == 0)
     {
         rv = -4;
         goto error;
@@ -326,7 +336,7 @@ int ncrypt_init(struct ncrypt * const nc,
         goto error;
     }
 
-    key_ctx = EVP_PKEY_CTX_new_from_pkey(nc->libctx, local.priv_key, nc->propq);
+    key_ctx = EVP_PKEY_CTX_new_from_pkey(nc->libctx, nc->private_key, nc->propq);
     if (key_ctx == NULL)
     {
         rv = -7;
@@ -362,22 +372,19 @@ int ncrypt_init(struct ncrypt * const nc,
         OPENSSL_cleanse(nc->shared_secret, NCRYPT_X25519_KEYLEN);
         goto error;
     }
-    OPENSSL_DUMP(nc->shared_secret, sizeof(nc->shared_secret));
-    if (hkdf_x25519(nc->shared_secret, "ncrypt initial keygen", uni_dist_shared_key) != 0)
+    if (hkdf_x25519(nc->shared_secret, "ncrypt initial keygen", local.uni_dist_shared_key) != 0)
     {
         rv = -13;
         OPENSSL_cleanse(nc->shared_secret, NCRYPT_X25519_KEYLEN);
         goto error;
     }
 
-    memcpy(nc->shared_secret, uni_dist_shared_key, NCRYPT_X25519_KEYLEN);
-    OPENSSL_DUMP(nc->shared_secret, sizeof(nc->shared_secret));
+    memcpy(nc->shared_secret, local.uni_dist_shared_key, NCRYPT_X25519_KEYLEN);
     OPENSSL_cleanse(local_priv_key, NCRYPT_X25519_KEYLEN);
     OPENSSL_cleanse(remote_pub_key, NCRYPT_X25519_KEYLEN);
 
 error:
     EVP_PKEY_CTX_free(key_ctx);
-    EVP_PKEY_free(local.priv_key);
     EVP_PKEY_free(remote.pub_key);
 
     return rv;
@@ -490,6 +497,8 @@ static void cleanup_peers(struct ncrypt * const nc)
 
 void ncrypt_free(struct ncrypt * const nc)
 {
+    EVP_PKEY_free(nc->private_key);
+    nc->private_key = NULL;
     OPENSSL_cleanse(nc->shared_secret, NCRYPT_X25519_KEYLEN);
 
     if (nc->libctx != NULL)
@@ -624,14 +633,16 @@ int ncrypt_dgram_send(struct ncrypt * const nc, int fd, char const * const plain
     struct peer * current_peer;
     struct peer * tmp_peer;
     union packet encrypted;
+    encrypted.aad.type = PACKET_TYPE_JSON;
     HASH_ITER(hh, nc->peers, current_peer, tmp_peer)
     {
+        encrypted.aad.size = htons(NCRYPT_AES_IVLEN + NCRYPT_TAG_SIZE + plaintext_size);
         int encrypted_used = encrypt(&current_peer->aes,
                                      plaintext,
                                      plaintext_size,
                                      current_peer->iv,
-                                     encrypted.data,
-                                     encrypted.tag,
+                                     encrypted.json.data,
+                                     encrypted.json.tag,
                                      encrypted.aad.raw);
         if (encrypted_used < 0 || encrypted_used > (int)NCRYPT_BUFFER_SIZE)
         {
@@ -641,7 +652,7 @@ int ncrypt_dgram_send(struct ncrypt * const nc, int fd, char const * const plain
         }
         current_peer->cryptions++;
 
-        memcpy(encrypted.iv, current_peer->iv, NCRYPT_AES_IVLEN);
+        memcpy(encrypted.json.iv, current_peer->iv, NCRYPT_AES_IVLEN);
         ssize_t bytes_written = sendto(fd,
                                        encrypted.raw,
                                        NCRYPT_PACKET_OVERHEAD + encrypted_used,
@@ -667,6 +678,40 @@ int ncrypt_dgram_send(struct ncrypt * const nc, int fd, char const * const plain
     return retval;
 }
 
+static size_t check_packet_size(union packet const * const pkt, size_t bytes_read)
+{
+    size_t payload_size = 0;
+
+    if (bytes_read < NCRYPT_AAD_SIZE)
+    {
+        return 0;
+    }
+    payload_size = ntohs(pkt->aad.size);
+    switch (pkt->aad.type)
+    {
+        case PACKET_TYPE_KEYEX:
+            if (payload_size != sizeof(pkt->keyex))
+            {
+                return 0;
+            }
+            break;
+        case PACKET_TYPE_JSON:
+            if (payload_size < NCRYPT_AES_IVLEN + NCRYPT_TAG_SIZE + 1)
+            {
+                return 0;
+            }
+            break;
+        default:
+            return 0;
+    }
+    if (bytes_read != NCRYPT_AAD_SIZE + payload_size)
+    {
+        return 0;
+    }
+
+    return payload_size;
+}
+
 int ncrypt_dgram_recv(struct ncrypt * const nc, int fd, char * const plaintext, size_t plaintext_size)
 {
     if (plaintext_size > NCRYPT_BUFFER_SIZE)
@@ -682,11 +727,12 @@ int ncrypt_dgram_recv(struct ncrypt * const nc, int fd, char * const plaintext, 
     {
         return -2;
     }
-    if (bytes_read < NCRYPT_PACKET_MIN_SIZE)
+    size_t payload_size = check_packet_size(&encrypted, bytes_read);
+    if (payload_size == 0)
     {
         return -3;
     }
-    if (plaintext_size < (size_t)bytes_read - NCRYPT_PACKET_OVERHEAD)
+    if (plaintext_size < payload_size)
     {
         return -4;
     }
@@ -699,26 +745,30 @@ int ncrypt_dgram_recv(struct ncrypt * const nc, int fd, char * const plaintext, 
             return -5;
         }
         peer = ncrypt_get_peer(nc, &remote);
+        if (peer == NULL)
+        {
+            return -6;
+        }
         ncrypt_init_decrypt(nc, &peer->aes);
     }
 
-    if (memcmp(peer->iv, encrypted.iv, NCRYPT_AES_IVLEN) != 0)
+    if (memcmp(peer->iv, encrypted.json.iv, NCRYPT_AES_IVLEN) != 0)
     {
         peer->iv_mismatches++;
-        memcpy(peer->iv, encrypted.iv, NCRYPT_AES_IVLEN);
+        memcpy(peer->iv, encrypted.json.iv, NCRYPT_AES_IVLEN);
     }
     int decrypted_used = decrypt(&peer->aes,
-                                 encrypted.data,
-                                 bytes_read - NCRYPT_PACKET_OVERHEAD,
+                                 encrypted.json.data,
+                                 payload_size - NCRYPT_AES_IVLEN - NCRYPT_TAG_SIZE,
                                  peer->iv,
-                                 encrypted.tag,
+                                 encrypted.json.tag,
                                  plaintext,
                                  encrypted.aad.raw);
     next_iv(peer);
 
     if (decrypted_used < 0)
     {
-        return -6;
+        return -7;
     }
     peer->cryptions++;
 
