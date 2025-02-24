@@ -13,7 +13,6 @@
 #define NCRYPT_BUFFER_SIZE NETWORK_BUFFER_MAX_SIZE
 #define NCRYPT_PACKET_OVERHEAD (NCRYPT_AAD_SIZE + NCRYPT_AES_IVLEN + NCRYPT_TAG_SIZE)
 #define NCRYPT_PACKET_BUFFER_SIZE (NCRYPT_PACKET_OVERHEAD + NCRYPT_BUFFER_SIZE)
-#define NCRYPT_PACKET_MIN_SIZE (NCRYPT_PACKET_OVERHEAD + NETWORK_BUFFER_LENGTH_DIGITS + 3 /* "{}\n" */)
 
 struct aes
 {
@@ -39,6 +38,7 @@ struct ncrypt
 {
     void * libctx;
     const char * propq;
+    void * private_key;
     unsigned char shared_secret[NCRYPT_X25519_KEYLEN];
     struct peer * peers;
 };
