@@ -56,6 +56,9 @@
 #define DLT_DSA_TAG_EDSA 285
 #endif
 
+#define PPP_P_IP 0x0021
+#define PPP_P_IPV6 0x0057
+
 #define NDPI_VERSION_CHECK ((NDPI_MAJOR == 4 && NDPI_MINOR < 9) || NDPI_MAJOR < 4)
 
 #if NDPI_VERSION_CHECK
@@ -381,18 +384,17 @@ enum error_event
     PACKET_TYPE_UNKNOWN,
     PACKET_HEADER_INVALID,
     IP4_PACKET_TOO_SHORT,
-    IP4_SIZE_SMALLER_THAN_HEADER,
     IP4_L4_PAYLOAD_DETECTION_FAILED,
-    IP6_PACKET_TOO_SHORT, // 10
-    IP6_SIZE_SMALLER_THAN_HEADER,
-    IP6_L4_PAYLOAD_DETECTION_FAILED,
+    IP6_PACKET_TOO_SHORT,
+    IP6_L4_PAYLOAD_DETECTION_FAILED, // 10
+    TUNNEL_DECODE_FAILED,
     TCP_PACKET_TOO_SHORT,
     UDP_PACKET_TOO_SHORT,
     CAPTURE_SIZE_SMALLER_THAN_PACKET_SIZE,
     MAX_FLOW_TO_TRACK,
-    FLOW_MEMORY_ALLOCATION_FAILED,
+    FLOW_MEMORY_ALLOCATION_FAILED, // 16
 
-    ERROR_EVENT_COUNT // 17
+    ERROR_EVENT_COUNT
 };
 
 enum daemon_event
@@ -432,11 +434,10 @@ static char const * const error_event_name_table[ERROR_EVENT_COUNT] = {
     [PACKET_TYPE_UNKNOWN] = "Unknown packet type",
     [PACKET_HEADER_INVALID] = "Packet header invalid",
     [IP4_PACKET_TOO_SHORT] = "IP4 packet too short",
-    [IP4_SIZE_SMALLER_THAN_HEADER] = "Packet smaller than IP4 header",
     [IP4_L4_PAYLOAD_DETECTION_FAILED] = "nDPI IPv4/L4 payload detection failed",
     [IP6_PACKET_TOO_SHORT] = "IP6 packet too short",
-    [IP6_SIZE_SMALLER_THAN_HEADER] = "Packet smaller than IP6 header",
     [IP6_L4_PAYLOAD_DETECTION_FAILED] = "nDPI IPv6/L4 payload detection failed",
+    [TUNNEL_DECODE_FAILED] = "Tunnel decoding failed",
     [TCP_PACKET_TOO_SHORT] = "TCP packet smaller than expected",
     [UDP_PACKET_TOO_SHORT] = "UDP packet smaller than expected",
     [CAPTURE_SIZE_SMALLER_THAN_PACKET_SIZE] = "Captured packet size is smaller than expected packet size",
@@ -479,6 +480,7 @@ static struct
     struct cmdarg config_file;
     struct cmdarg pcap_file_or_interface;
     struct cmdarg bpf_str;
+    struct cmdarg decode_tunnel;
     struct cmdarg pidfile;
     struct cmdarg user;
     struct cmdarg group;
@@ -528,6 +530,7 @@ static struct
 } nDPId_options = {.config_file = CMDARG_STR(NULL),
                    .pcap_file_or_interface = CMDARG_STR(NULL),
                    .bpf_str = CMDARG_STR(NULL),
+                   .decode_tunnel = CMDARG_BOOL(0),
                    .pidfile = CMDARG_STR(nDPId_PIDFILE),
                    .user = CMDARG_STR(DEFAULT_CHUSER),
                    .group = CMDARG_STR(NULL),
@@ -585,6 +588,7 @@ static struct
                    .error_event_threshold_time = CMDARG_ULL(nDPId_ERROR_EVENT_THRESHOLD_TIME)};
 struct confopt general_config_map[] = {CONFOPT("netif", &nDPId_options.pcap_file_or_interface),
                                        CONFOPT("bpf", &nDPId_options.bpf_str),
+                                       CONFOPT("decode-tunnel", &nDPId_options.decode_tunnel),
                                        CONFOPT("pidfile", &nDPId_options.pidfile),
                                        CONFOPT("user", &nDPId_options.user),
                                        CONFOPT("group", &nDPId_options.group),
@@ -2289,7 +2293,9 @@ static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enu
 #endif
     ndpi_serialize_string_string(&workflow->ndpi_serializer, "ndpi_version", ndpi_revision());
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "ndpi_api_version", ndpi_get_api_version());
-    ndpi_serialize_string_uint64(&workflow->ndpi_serializer, "size_per_flow", (uint64_t)(sizeof(struct nDPId_flow) + sizeof(struct nDPId_detection_data)));
+    ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
+                                 "size_per_flow",
+                                 (uint64_t)(sizeof(struct nDPId_flow) + sizeof(struct nDPId_detection_data)));
 
     switch (event)
     {
@@ -3486,7 +3492,21 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
         case DLT_NULL:
         {
             /* DLT header values can be stored as big or little endian. */
-
+            if (header->caplen < sizeof(uint32_t))
+            {
+                if (is_error_event_threshold(reader_thread->workflow) == 0)
+                {
+                    jsonize_error_eventf(reader_thread,
+                                         PACKET_TOO_SHORT,
+                                         "%s%u %s%zu",
+                                         "size",
+                                         header->caplen,
+                                         "expected",
+                                         sizeof(uint32_t));
+                    jsonize_packet_event(reader_thread, header, packet, 0, 0, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
+                }
+                return 1;
+            }
             uint32_t dlt_hdr = *((uint32_t const *)&packet[eth_offset]);
 
             if (dlt_hdr == 0x02000000 || dlt_hdr == 0x02)
@@ -3758,54 +3778,8 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
             switch (*layer3_type)
             {
                 case ETH_P_IP: /* IPv4 */
-                    if (header->caplen < sizeof(struct ndpi_ethhdr) + sizeof(struct ndpi_iphdr))
-                    {
-                        if (is_error_event_threshold(reader_thread->workflow) == 0)
-                        {
-                            jsonize_error_eventf(reader_thread,
-                                                 IP4_PACKET_TOO_SHORT,
-                                                 "%s%u %s%zu",
-                                                 "size",
-                                                 header->caplen,
-                                                 "expected",
-                                                 sizeof(struct ndpi_ethhdr) + sizeof(struct ndpi_iphdr));
-                            jsonize_packet_event(reader_thread,
-                                                 header,
-                                                 packet,
-                                                 *layer3_type,
-                                                 *ip_offset,
-                                                 0,
-                                                 0,
-                                                 NULL,
-                                                 PACKET_EVENT_PAYLOAD);
-                        }
-                        return 1;
-                    }
                     break;
                 case ETH_P_IPV6: /* IPV6 */
-                    if (header->caplen < sizeof(struct ndpi_ethhdr) + sizeof(struct ndpi_ipv6hdr))
-                    {
-                        if (is_error_event_threshold(reader_thread->workflow) == 0)
-                        {
-                            jsonize_error_eventf(reader_thread,
-                                                 IP6_PACKET_TOO_SHORT,
-                                                 "%s%u %s%zu",
-                                                 "size",
-                                                 header->caplen,
-                                                 "expected",
-                                                 sizeof(struct ndpi_ethhdr) + sizeof(struct ndpi_ipv6hdr));
-                            jsonize_packet_event(reader_thread,
-                                                 header,
-                                                 packet,
-                                                 *layer3_type,
-                                                 *ip_offset,
-                                                 0,
-                                                 0,
-                                                 NULL,
-                                                 PACKET_EVENT_PAYLOAD);
-                        }
-                        return 1;
-                    }
                     break;
                 case ETHERTYPE_PAE: /* 802.1X Authentication */
                     return 1;
@@ -3927,6 +3901,119 @@ static int distribute_single_packet(struct nDPId_reader_thread * const reader_th
             reader_thread->array_index);
 }
 
+/* See libnDPI: `ndpi_is_valid_gre_tunnel()` in example/reader_util.c */
+static uint32_t is_valid_gre_tunnel(struct pcap_pkthdr const * const header,
+                                    uint8_t const * const packet,
+                                    uint8_t const * const l4_ptr)
+{
+
+    if (header->caplen < (l4_ptr - packet) + sizeof(struct ndpi_gre_basehdr))
+    {
+        return 0; /* Too short for GRE header*/
+    }
+    uint32_t offset = (l4_ptr - packet);
+    struct ndpi_gre_basehdr * grehdr = (struct ndpi_gre_basehdr *)&packet[offset];
+    offset += sizeof(struct ndpi_gre_basehdr);
+
+    /*
+     * The GRE flags are encoded in the first two octets.  Bit 0 is the
+     * most significant bit, bit 15 is the least significant bit.  Bits
+     * 13 through 15 are reserved for the Version field.  Bits 9 through
+     * 12 are reserved for future use and MUST be transmitted as zero.
+     */
+    if (NDPI_GRE_IS_FLAGS(grehdr->flags))
+    {
+        return 0;
+    }
+    if (NDPI_GRE_IS_REC(grehdr->flags))
+    {
+        return 0;
+    }
+
+    /* GRE rfc 2890 that update 1701 */
+    if (NDPI_GRE_IS_VERSION_0(grehdr->flags))
+    {
+        if (NDPI_GRE_IS_CSUM(grehdr->flags))
+        {
+            if (header->caplen < offset + 4)
+            {
+                return 0;
+            }
+            /* checksum field and offset field */
+            offset += 4;
+        }
+        if (NDPI_GRE_IS_KEY(grehdr->flags))
+        {
+            if (header->caplen < offset + 4)
+            {
+                return 0;
+            }
+            offset += 4;
+        }
+        if (NDPI_GRE_IS_SEQ(grehdr->flags))
+        {
+            if (header->caplen < offset + 4)
+            {
+                return 0;
+            }
+            offset += 4;
+        }
+    }
+    else if (NDPI_GRE_IS_VERSION_1(grehdr->flags))
+    {
+        /* rfc-2637 section 4.1 enhanced gre */
+        if (NDPI_GRE_IS_CSUM(grehdr->flags))
+        {
+            return 0;
+        }
+        if (NDPI_GRE_IS_ROUTING(grehdr->flags))
+        {
+            return 0;
+        }
+        if (!NDPI_GRE_IS_KEY(grehdr->flags))
+        {
+            return 0;
+        }
+        if (NDPI_GRE_IS_STRICT(grehdr->flags))
+        {
+            return 0;
+        }
+        if (grehdr->protocol != NDPI_GRE_PROTO_PPP)
+        {
+            return 0;
+        }
+        /* key field */
+        if (header->caplen < offset + 4)
+        {
+            return 0;
+        }
+        offset += 4;
+        if (NDPI_GRE_IS_SEQ(grehdr->flags))
+        {
+            if (header->caplen < offset + 4)
+            {
+                return 0;
+            }
+            offset += 4;
+        }
+        if (NDPI_GRE_IS_ACK(grehdr->flags))
+        {
+            if (header->caplen < offset + 4)
+            {
+                return 0;
+            }
+            offset += 4;
+        }
+    }
+    else
+    {
+        /* support only ver 0, 1 */
+        return 0;
+    }
+
+    return offset;
+}
+
 static void ndpi_process_packet(uint8_t * const args,
                                 struct pcap_pkthdr const * const header,
                                 uint8_t const * const packet)
@@ -3988,15 +4075,46 @@ static void ndpi_process_packet(uint8_t * const args,
         return;
     }
 
+process_layer3_again:
     if (type == ETH_P_IP)
     {
         ip = (struct ndpi_iphdr *)&packet[ip_offset];
         ip6 = NULL;
+        if (header->caplen < ip_offset + sizeof(*ip))
+        {
+            if (distribute_single_packet(reader_thread) != 0 && is_error_event_threshold(reader_thread->workflow) == 0)
+            {
+                jsonize_error_eventf(reader_thread,
+                                     IP4_PACKET_TOO_SHORT,
+                                     "%s%u %s%zu",
+                                     "size",
+                                     header->caplen,
+                                     "expected",
+                                     sizeof(struct ndpi_ethhdr) + sizeof(struct ndpi_iphdr));
+                jsonize_packet_event(reader_thread, header, packet, type, ip_offset, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
+            }
+            return;
+        }
     }
     else if (type == ETH_P_IPV6)
     {
         ip = NULL;
         ip6 = (struct ndpi_ipv6hdr *)&packet[ip_offset];
+        if (header->caplen < ip_offset + sizeof(*ip6))
+        {
+            if (distribute_single_packet(reader_thread) != 0 && is_error_event_threshold(reader_thread->workflow) == 0)
+            {
+                jsonize_error_eventf(reader_thread,
+                                     IP4_PACKET_TOO_SHORT,
+                                     "%s%u %s%zu",
+                                     "size",
+                                     header->caplen,
+                                     "expected",
+                                     sizeof(struct ndpi_ethhdr) + sizeof(struct ndpi_iphdr));
+                jsonize_packet_event(reader_thread, header, packet, type, ip_offset, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
+            }
+            return;
+        }
     }
     else
     {
@@ -4009,43 +4127,22 @@ static void ndpi_process_packet(uint8_t * const args,
     }
     ip_size = header->caplen - ip_offset;
 
-    if (type == ETH_P_IP && header->caplen >= ip_offset)
+    if (header->caplen >= ip_offset && header->caplen < header->len && distribute_single_packet(reader_thread) != 0 &&
+        is_error_event_threshold(reader_thread->workflow) == 0)
     {
-        if (header->caplen < header->len)
-        {
-            if (distribute_single_packet(reader_thread) != 0 && is_error_event_threshold(reader_thread->workflow) == 0)
-            {
-                jsonize_error_eventf(reader_thread,
-                                     CAPTURE_SIZE_SMALLER_THAN_PACKET_SIZE,
-                                     "%s%u %s%u",
-                                     "size",
-                                     header->caplen,
-                                     "expected",
-                                     header->len);
-                jsonize_packet_event(reader_thread, header, packet, type, ip_offset, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
-            }
-        }
+        jsonize_error_eventf(reader_thread,
+                             CAPTURE_SIZE_SMALLER_THAN_PACKET_SIZE,
+                             "%s%u %s%u",
+                             "size",
+                             header->caplen,
+                             "expected",
+                             header->len);
+        jsonize_packet_event(reader_thread, header, packet, type, ip_offset, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
     }
 
     /* process layer3 e.g. IPv4 / IPv6 */
     if (ip != NULL && ip->version == 4)
     {
-        if (ip_size < sizeof(*ip))
-        {
-            if (distribute_single_packet(reader_thread) != 0 && is_error_event_threshold(reader_thread->workflow) == 0)
-            {
-                jsonize_error_eventf(reader_thread,
-                                     IP4_SIZE_SMALLER_THAN_HEADER,
-                                     "%s%u %s%zu",
-                                     "size",
-                                     ip_size,
-                                     "expected",
-                                     sizeof(*ip));
-                jsonize_packet_event(reader_thread, header, packet, type, ip_offset, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
-            }
-            return;
-        }
-
         flow_basic.l3_type = L3_IP;
 
         if (ndpi_detection_get_l4(
@@ -4063,26 +4160,10 @@ static void ndpi_process_packet(uint8_t * const args,
         flow_basic.src.v4.ip = ip->saddr;
         flow_basic.dst.v4.ip = ip->daddr;
         uint32_t min_addr = (flow_basic.src.v4.ip > flow_basic.dst.v4.ip ? flow_basic.dst.v4.ip : flow_basic.src.v4.ip);
-        thread_index = min_addr + ip->protocol;
+        thread_index += min_addr + ip->protocol;
     }
     else if (ip6 != NULL)
     {
-        if (ip_size < sizeof(ip6->ip6_hdr))
-        {
-            if (distribute_single_packet(reader_thread) != 0 && is_error_event_threshold(reader_thread->workflow) == 0)
-            {
-                jsonize_error_eventf(reader_thread,
-                                     IP6_SIZE_SMALLER_THAN_HEADER,
-                                     "%s%u %s%zu",
-                                     "size",
-                                     ip_size,
-                                     "expected",
-                                     sizeof(ip6->ip6_hdr));
-                jsonize_packet_event(reader_thread, header, packet, type, ip_offset, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
-            }
-            return;
-        }
-
         flow_basic.l3_type = L3_IP6;
         if (ndpi_detection_get_l4(
                 (uint8_t *)ip6, ip_size, &l4_ptr, &l4_len, &flow_basic.l4_protocol, NDPI_DETECTION_ONLY_IPV6) != 0)
@@ -4113,7 +4194,7 @@ static void ndpi_process_packet(uint8_t * const args,
             min_addr[0] = flow_basic.src.v6.ip[0];
             min_addr[1] = flow_basic.src.v6.ip[1];
         }
-        thread_index = min_addr[0] + min_addr[1] + ip6->ip6_hdr.ip6_un1_nxt;
+        thread_index += min_addr[0] + min_addr[1] + ip6->ip6_hdr.ip6_un1_nxt;
     }
     else
     {
@@ -4123,6 +4204,79 @@ static void ndpi_process_packet(uint8_t * const args,
             jsonize_packet_event(reader_thread, header, packet, type, ip_offset, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
         }
         return;
+    }
+
+    /* process intermediate protocols i.e. layer4 tunnel protocols */
+    if (IS_CMDARG_SET(nDPId_options.decode_tunnel) != 0 && flow_basic.l4_protocol == IPPROTO_GRE)
+    {
+        uint32_t const offset = is_valid_gre_tunnel(header, packet, l4_ptr);
+
+        if (offset == 0)
+        {
+            if (is_error_event_threshold(reader_thread->workflow) == 0)
+            {
+                jsonize_error_eventf(reader_thread, TUNNEL_DECODE_FAILED, "%s%u", "protocol", flow_basic.l4_protocol);
+                jsonize_packet_event(reader_thread, header, packet, type, ip_offset, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
+            }
+            return;
+        }
+        else
+        {
+            struct ndpi_gre_basehdr const * const grehdr = (struct ndpi_gre_basehdr const *)l4_ptr;
+
+            if (grehdr->protocol == ntohs(ETH_P_IP) || grehdr->protocol == ntohs(ETH_P_IPV6))
+            {
+                type = ntohs(grehdr->protocol);
+                ip_offset = offset;
+                goto process_layer3_again;
+            }
+            else if (grehdr->protocol == NDPI_GRE_PROTO_PPP)
+            {
+                /* Point to Point Protocol */
+                if (header->caplen < offset + sizeof(struct ndpi_chdlc))
+                {
+                    if (is_error_event_threshold(reader_thread->workflow) == 0)
+                    {
+                        jsonize_error_eventf(reader_thread,
+                                             TUNNEL_DECODE_FAILED,
+                                             "%s%u %s%u %s%zu",
+                                             "protocol",
+                                             flow_basic.l4_protocol,
+                                             "size",
+                                             header->caplen,
+                                             "expected",
+                                             offset + sizeof(struct ndpi_chdlc));
+                        jsonize_packet_event(reader_thread, header, packet, 0, 0, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
+                    }
+                    return;
+                }
+
+                struct ndpi_chdlc const * const chdlc = (struct ndpi_chdlc const *)&packet[offset];
+                type = ntohs(chdlc->proto_code);
+                switch (type)
+                {
+                    case PPP_P_IP:
+                        type = ETH_P_IP;
+                        break;
+                    case PPP_P_IPV6:
+                        type = ETH_P_IPV6;
+                        break;
+                    default:
+                        if (is_error_event_threshold(reader_thread->workflow) == 0)
+                        {
+                            jsonize_error_eventf(reader_thread, TUNNEL_DECODE_FAILED, "%s%u", "ppp-protocol", type);
+                            jsonize_packet_event(reader_thread, header, packet, 0, 0, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
+                        }
+                        return;
+                }
+                ip_offset = offset + sizeof(*chdlc);
+                goto process_layer3_again;
+            }
+            else
+            {
+                // TODO: Check Layer1 / Layer2 again?
+            }
+        }
     }
 
     /* process layer4 e.g. TCP / UDP */
@@ -5267,6 +5421,7 @@ static void print_usage(char const * const arg0)
     static char const usage[] =
         "Usage: %s "
         "[-f config-file]\n"
+        "\t  \t"
         "[-i pcap-file/interface] [-I] [-E] [-B bpf-filter]\n"
         "\t  \t"
         "[-l] [-L logfile] [-c address] [-e]"
@@ -5296,6 +5451,8 @@ static void print_usage(char const * const arg0)
         "\t  \tDefault: disabled\n"
         "\t-B\tSet an optional PCAP filter string. (BPF format)\n"
         "\t  \tDefault: empty\n"
+        "\t-t\tEnable tunnel decapsulation. Supported protocols: GRE\n"
+        "\t  \tDefault: disabled\n"
         "\t-l\tLog all messages to stderr.\n"
         "\t  \tDefault: disabled\n"
         "\t-L\tLog all messages to a log file.\n"
@@ -5420,7 +5577,7 @@ static int nDPId_parse_options(int argc, char ** argv)
 {
     int opt;
 
-    while ((opt = getopt(argc, argv, "f:i:rIEB:lL:c:edp:u:g:R:P:C:J:S:a:U:Azo:vh")) != -1)
+    while ((opt = getopt(argc, argv, "f:i:rIEB:tlL:c:edp:u:g:R:P:C:J:S:a:U:Azo:vh")) != -1)
     {
         switch (opt)
         {
@@ -5446,6 +5603,9 @@ static int nDPId_parse_options(int argc, char ** argv)
                 break;
             case 'B':
                 set_cmdarg_string(&nDPId_options.bpf_str, optarg);
+                break;
+            case 't':
+                set_cmdarg_boolean(&nDPId_options.decode_tunnel, 1);
                 break;
             case 'l':
                 enable_console_logger();
