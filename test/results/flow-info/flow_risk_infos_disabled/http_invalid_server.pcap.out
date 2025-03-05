@@ -1,0 +1,11 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [...192.168.1.29][51536] -> [.143.204.14.183][...80]
+         detected: [.....1] [ip4][..tcp] [...192.168.1.29][51536] -> [.143.204.14.183][...80] [HTTP][AmazonAWS][Web][Acceptable][ocsp.rootg2.amazontrust.com]
+                   RISK: HTTP Susp User-Agent
+ detection-update: [.....1] [ip4][..tcp] [...192.168.1.29][51536] -> [.143.204.14.183][...80] [HTTP.OCSP][AmazonAWS][Web][Safe][ocsp.rootg2.amazontrust.com]
+                   RISK: HTTP Susp User-Agent, HTTP Susp Header
+              end: [.....1] [ip4][..tcp] [...192.168.1.29][51536] -> [.143.204.14.183][...80] [HTTP.OCSP][AmazonAWS][Web][Safe][ocsp.rootg2.amazontrust.com]
+                   RISK: HTTP Susp User-Agent, HTTP Susp Header
+     DAEMON-EVENT: shutdown

@@ -81,7 +81,7 @@
                    RISK: Unidirectional Traffic
              idle: [....22] [ip4][..tcp] [....172.20.3.13][...80] -> [....172.20.76.5][65069]
      not-detected: [....39] [ip4][..115] [....172.20.3.13] -> [.....172.20.3.5] [Unknown][Unknown][Unrated]
-                   RISK: Unidirectional Traffic
+                   RISK: Susp Entropy, Unidirectional Traffic
              idle: [....39] [ip4][..115] [....172.20.3.13] -> [.....172.20.3.5]
      not-detected: [....24] [ip4][..tcp] [170.170.170.170][43690] -> [170.170.170.170][43690] [Unknown][Unknown][Unrated]
              idle: [....24] [ip4][..tcp] [170.170.170.170][43690] -> [170.170.170.170][43690]

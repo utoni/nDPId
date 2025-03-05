@@ -1471,6 +1471,9 @@
                 "snmp": {
                     "type": "object"
                 },
+                "ssdp": {
+                    "type": "object"
+                },
                 "ssh": {
                     "type": "object"
                 },

@@ -86,18 +86,18 @@
           guessed: [.....7] [ip4][..tcp] [..192.168.0.103][33976] -> [....77.67.29.17][...80] [HTTP][Unknown][Web][Acceptable][]
                    RISK: Susp Entropy
               new: [....17] [ip4][..udp] [..192.168.0.103][51219] -> [........8.8.8.8][...53]
-         detected: [....17] [ip4][..udp] [..192.168.0.103][51219] -> [........8.8.8.8][...53] [DNS.Instagram][Google][Network][Fun][igcdn-photos-h-a.akamaihd.net]
+         detected: [....17] [ip4][..udp] [..192.168.0.103][51219] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][igcdn-photos-h-a.akamaihd.net]
               new: [....18] [ip4][..udp] [..192.168.0.103][33603] -> [........8.8.8.8][...53]
-         detected: [....18] [ip4][..udp] [..192.168.0.103][33603] -> [........8.8.8.8][...53] [DNS.Instagram][Google][Network][Fun][igcdn-photos-a-a.akamaihd.net]
+         detected: [....18] [ip4][..udp] [..192.168.0.103][33603] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][igcdn-photos-a-a.akamaihd.net]
               new: [....19] [ip4][..tcp] [..192.168.0.103][57966] -> [...82.85.26.185][...80] [MIDSTREAM]
               new: [....20] [ip4][..udp] [..192.168.0.103][26540] -> [........8.8.8.8][...53]
-         detected: [....20] [ip4][..udp] [..192.168.0.103][26540] -> [........8.8.8.8][...53] [DNS.Instagram][Google][Network][Fun][igcdn-photos-g-a.akamaihd.net]
- detection-update: [....17] [ip4][..udp] [..192.168.0.103][51219] -> [........8.8.8.8][...53] [DNS.Instagram][Google][Network][Fun][igcdn-photos-h-a.akamaihd.net]
+         detected: [....20] [ip4][..udp] [..192.168.0.103][26540] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][igcdn-photos-g-a.akamaihd.net]
+ detection-update: [....17] [ip4][..udp] [..192.168.0.103][51219] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][igcdn-photos-h-a.akamaihd.net]
               new: [....21] [ip4][..tcp] [..192.168.0.103][44558] -> [...46.33.70.174][..443]
- detection-update: [....18] [ip4][..udp] [..192.168.0.103][33603] -> [........8.8.8.8][...53] [DNS.Instagram][Google][Network][Fun][igcdn-photos-a-a.akamaihd.net]
+ detection-update: [....18] [ip4][..udp] [..192.168.0.103][33603] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][igcdn-photos-a-a.akamaihd.net]
               new: [....22] [ip4][..tcp] [..192.168.0.103][41181] -> [...82.85.26.154][..443]
               new: [....23] [ip4][..tcp] [..192.168.0.103][41182] -> [...82.85.26.154][..443]
- detection-update: [....20] [ip4][..udp] [..192.168.0.103][26540] -> [........8.8.8.8][...53] [DNS.Instagram][Google][Network][Fun][igcdn-photos-g-a.akamaihd.net]
+ detection-update: [....20] [ip4][..udp] [..192.168.0.103][26540] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][igcdn-photos-g-a.akamaihd.net]
               new: [....24] [ip4][..tcp] [..192.168.0.103][60908] -> [...46.33.70.136][..443]
          detected: [....21] [ip4][..tcp] [..192.168.0.103][44558] -> [...46.33.70.174][..443] [TLS.Instagram][Unknown][SocialNetwork][Fun][igcdn-photos-h-a.akamaihd.net]
                    RISK: Obsolete TLS (v1.1 or older)
@@ -155,7 +155,7 @@
               new: [....30] [ip4][..tcp] [..192.168.0.103][58690] -> [...46.33.70.159][..443] [MIDSTREAM]
          detected: [....30] [ip4][..tcp] [..192.168.0.103][58690] -> [...46.33.70.159][..443] [TLS][Unknown][Web][Safe]
               new: [....31] [ip4][..udp] [..192.168.0.103][27124] -> [........8.8.8.8][...53]
-         detected: [....31] [ip4][..udp] [..192.168.0.103][27124] -> [........8.8.8.8][...53] [DNS.Instagram][Google][Network][Fun][photos-b.ak.instagram.com]
+         detected: [....31] [ip4][..udp] [..192.168.0.103][27124] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][photos-b.ak.instagram.com]
           analyse: [....29] [ip4][..tcp] [....2.22.236.51][...80] -> [..192.168.0.103][44151]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.004|     0.001|     0.001|            1.362|    4.300]
@@ -188,9 +188,9 @@
              idle: [.....1] [ip4][..tcp] [..192.168.0.103][56382] -> [..173.252.107.4][..443] [TLS.Instagram][Facebook][SocialNetwork][Fun]
                    RISK: Obsolete TLS (v1.1 or older)
              idle: [.....8] [ip4][..tcp] [..192.168.0.103][37350] -> [...82.85.26.153][...80] [HTTP.Instagram][Unknown][SocialNetwork][Fun]
-             idle: [....20] [ip4][..udp] [..192.168.0.103][26540] -> [........8.8.8.8][...53] [DNS.Instagram][Google][Network][Fun][igcdn-photos-g-a.akamaihd.net]
+             idle: [....20] [ip4][..udp] [..192.168.0.103][26540] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][igcdn-photos-g-a.akamaihd.net]
              idle: [....28] [ip4][..tcp] [....31.13.86.52][...80] -> [..192.168.0.103][58216] [HTTP][Facebook][Web][Acceptable]
-             idle: [....31] [ip4][..udp] [..192.168.0.103][27124] -> [........8.8.8.8][...53] [DNS.Instagram][Google][Network][Fun]
+             idle: [....31] [ip4][..udp] [..192.168.0.103][27124] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable]
              idle: [....22] [ip4][..tcp] [..192.168.0.103][41181] -> [...82.85.26.154][..443] [TLS.Instagram][Unknown][SocialNetwork][Fun]
                    RISK: Obsolete TLS (v1.1 or older)
              idle: [....23] [ip4][..tcp] [..192.168.0.103][41182] -> [...82.85.26.154][..443] [TLS.Instagram][Unknown][SocialNetwork][Fun]
@@ -198,7 +198,7 @@
               end: [.....5] [ip4][..tcp] [..192.168.0.103][44379] -> [...82.85.26.186][...80] [HTTP.Instagram][Unknown][SocialNetwork][Fun][photos-e.ak.instagram.com]
               end: [....30] [ip4][..tcp] [..192.168.0.103][58690] -> [...46.33.70.159][..443] [TLS][Unknown][Web][Safe]
              idle: [.....9] [ip4][..udp] [..192.168.0.106][17500] -> [255.255.255.255][17500] [Dropbox][Unknown][Cloud][Acceptable]
-             idle: [....18] [ip4][..udp] [..192.168.0.103][33603] -> [........8.8.8.8][...53] [DNS.Instagram][Google][Network][Fun][igcdn-photos-a-a.akamaihd.net]
+             idle: [....18] [ip4][..udp] [..192.168.0.103][33603] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][igcdn-photos-a-a.akamaihd.net]
              idle: [....24] [ip4][..tcp] [..192.168.0.103][60908] -> [...46.33.70.136][..443] [TLS.Instagram][Unknown][SocialNetwork][Fun]
                    RISK: Obsolete TLS (v1.1 or older)
              idle: [....15] [ip4][..tcp] [..192.168.0.103][33763] -> [....31.13.93.52][..443] [TLS][Facebook][Web][Safe]
@@ -225,7 +225,7 @@
              idle: [....29] [ip4][..tcp] [....2.22.236.51][...80] -> [..192.168.0.103][44151] [HTTP][Unknown][Web][Acceptable]
               end: [.....7] [ip4][..tcp] [..192.168.0.103][33976] -> [....77.67.29.17][...80] [HTTP][Unknown][Web][Acceptable]
                    RISK: Susp Entropy
-             idle: [....17] [ip4][..udp] [..192.168.0.103][51219] -> [........8.8.8.8][...53] [DNS.Instagram][Google][Network][Fun][igcdn-photos-h-a.akamaihd.net]
+             idle: [....17] [ip4][..udp] [..192.168.0.103][51219] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][igcdn-photos-h-a.akamaihd.net]
              idle: [....21] [ip4][..tcp] [..192.168.0.103][44558] -> [...46.33.70.174][..443] [TLS.Instagram][Unknown][SocialNetwork][Fun]
                    RISK: Obsolete TLS (v1.1 or older)
               new: [....37] [ip4][..tcp] [...192.168.2.17][49360] -> [....31.13.86.52][..443]

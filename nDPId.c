@@ -86,10 +86,7 @@
         volatile uint64_t var;                                                                                         \
         pthread_mutex_t var_mutex;                                                                                     \
     } name
-#define MT_INIT(value)                                                                                                 \
-    {                                                                                                                  \
-        value, PTHREAD_MUTEX_INITIALIZER                                                                               \
-    }
+#define MT_INIT(value) {value, PTHREAD_MUTEX_INITIALIZER}
 #define MT_INIT2(name, value)                                                                                          \
     do                                                                                                                 \
     {                                                                                                                  \
@@ -3454,8 +3451,8 @@ static uint32_t calculate_ndpi_flow_struct_hash(struct ndpi_flow_struct const * 
 /* mask for FCF */
 #define WIFI_DATA 0x2
 #define FCF_TYPE(fc) (((fc) >> 2) & 0x3) /* 0000 0011 = 0x3 */
-#define FCF_TO_DS(fc) ((fc)&0x0100)
-#define FCF_FROM_DS(fc) ((fc)&0x0200)
+#define FCF_TO_DS(fc) ((fc) & 0x0100)
+#define FCF_FROM_DS(fc) ((fc) & 0x0200)
 /* mask for Bad FCF presence */
 #define BAD_FCS 0x50 /* 0101 0000 */
 static int process_datalink_layer(struct nDPId_reader_thread * const reader_thread,
@@ -4716,7 +4713,9 @@ process_layer3_again:
                 flow_to_process->flow_extended.packets_processed[FD_DST2SRC] ==
             1)
         {
-            ndpi_unset_risk(&flow_to_process->info.detection_data->flow, NDPI_UNIDIRECTIONAL_TRAFFIC);
+            ndpi_unset_risk(workflow->ndpi_struct,
+                            &flow_to_process->info.detection_data->flow,
+                            NDPI_UNIDIRECTIONAL_TRAFFIC);
         }
         jsonize_flow_detection_event(reader_thread, flow_to_process, FLOW_EVENT_DETECTED);
         flow_to_process->info.detection_data->last_ndpi_flow_struct_hash =

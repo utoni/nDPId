@@ -80,10 +80,10 @@
               new: [....18] [ip4][..tcp] [.173.252.88.128][..443] -> [...10.24.82.188][59912] [MIDSTREAM]
               new: [....19] [ip4][..tcp] [...10.24.82.188][59954] -> [.173.252.88.128][..443]
               new: [....20] [ip4][..udp] [...10.24.82.188][25223] -> [.....10.188.1.1][...53]
-         detected: [....20] [ip4][..udp] [...10.24.82.188][25223] -> [.....10.188.1.1][...53] [DNS.Facebook][Unknown][Network][Fun][mqtt.facebook.com]
+         detected: [....20] [ip4][..udp] [...10.24.82.188][25223] -> [.....10.188.1.1][...53] [DNS][Unknown][Network][Acceptable][mqtt.facebook.com]
          detected: [....19] [ip4][..tcp] [...10.24.82.188][59954] -> [.173.252.88.128][..443] [TLS][Facebook][Web][Safe][]
                    RISK: Obsolete TLS (v1.1 or older)
- detection-update: [....20] [ip4][..udp] [...10.24.82.188][25223] -> [.....10.188.1.1][...53] [DNS.Facebook][Unknown][Network][Fun][mqtt.facebook.com]
+ detection-update: [....20] [ip4][..udp] [...10.24.82.188][25223] -> [.....10.188.1.1][...53] [DNS][Unknown][Network][Acceptable][mqtt.facebook.com]
  detection-update: [....19] [ip4][..tcp] [...10.24.82.188][59954] -> [.173.252.88.128][..443] [TLS][Facebook][Web][Safe][]
                    RISK: Obsolete TLS (v1.1 or older)
           guessed: [....18] [ip4][..tcp] [.173.252.88.128][..443] -> [...10.24.82.188][59912] [TLS][Facebook][Web][Safe]
@@ -101,7 +101,7 @@
           guessed: [.....5] [ip4][..tcp] [.216.58.220.161][..443] -> [...10.24.82.188][56697] [TLS][Google][Web][Safe]
                    RISK: Unidirectional Traffic, TCP Connection Issues, Probing Attempt
               end: [.....5] [ip4][..tcp] [.216.58.220.161][..443] -> [...10.24.82.188][56697]
-             idle: [....20] [ip4][..udp] [...10.24.82.188][25223] -> [.....10.188.1.1][...53] [DNS.Facebook][Unknown][Network][Fun][mqtt.facebook.com]
+             idle: [....20] [ip4][..udp] [...10.24.82.188][25223] -> [.....10.188.1.1][...53] [DNS][Unknown][Network][Acceptable][mqtt.facebook.com]
           guessed: [.....2] [ip4][..tcp] [..120.28.26.242][...80] -> [...10.24.82.188][34533] [HTTP][Unknown][Web][Acceptable][]
               end: [.....2] [ip4][..tcp] [..120.28.26.242][...80] -> [...10.24.82.188][34533]
           guessed: [....16] [ip4][..tcp] [...10.24.82.188][53974] -> [203.205.151.233][.8080] [HTTP_Proxy][Unknown][Web][Acceptable][]

@@ -24,7 +24,6 @@
               new: [.....5] [ip6][..udp] [................2a00:1450:400c:c00::106][54430] -> [..................2001:470:765b::a25:53][...53]
          detected: [.....5] [ip6][..udp] [................2a00:1450:400c:c00::106][54430] -> [..................2001:470:765b::a25:53][...53] [DNS][Google][Network][Acceptable][fg2.weberlab.de]
  detection-update: [.....5] [ip6][..udp] [................2a00:1450:400c:c00::106][54430] -> [..................2001:470:765b::a25:53][...53] [DNS][Google][Network][Acceptable][fg2.weberlab.de]
-                   RISK: Large DNS Packet (512+ bytes)
               new: [.....6] [ip4][..udp] [..74.125.47.136][59330] -> [.193.24.227.238][...53]
          detected: [.....6] [ip4][..udp] [..74.125.47.136][59330] -> [.193.24.227.238][...53] [DNS][Google][Network][Acceptable][weberlab.de]
  detection-update: [.....6] [ip4][..udp] [..74.125.47.136][59330] -> [.193.24.227.238][...53] [DNS][Google][Network][Acceptable][weberlab.de]
@@ -33,7 +32,6 @@
               new: [.....7] [ip6][..udp] [................2a00:1450:4013:c05::10e][34944] -> [..................2001:470:765b::a25:53][...53]
          detected: [.....7] [ip6][..udp] [................2a00:1450:4013:c05::10e][34944] -> [..................2001:470:765b::a25:53][...53] [DNS][Google][Network][Acceptable][fg2.weberlab.de]
  detection-update: [.....7] [ip6][..udp] [................2a00:1450:4013:c05::10e][34944] -> [..................2001:470:765b::a25:53][...53] [DNS][Google][Network][Acceptable][fg2.weberlab.de]
-                   RISK: Large DNS Packet (512+ bytes)
      DAEMON-EVENT: [Processed: 14 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 7 / 7|skipped: 0|!detected: 0|guessed: 0|detection-updates: 7|updates: 0]
               new: [.....8] [ip6][..udp] [..2001:470:1f0b:16b0:20c:29ff:fe7c:a4cb][47634] -> [..................2001:470:765b::a25:53][...53]
@@ -49,7 +47,6 @@
          detected: [....11] [ip6][..udp] [..2001:470:1f0b:16b0:20c:29ff:fe7c:a4cb][46440] -> [..................2001:470:765b::a25:53][...53] [DNS][Unknown][Network][Acceptable][fg2-mgmt.weberlab.de]
  detection-update: [....11] [ip6][..udp] [..2001:470:1f0b:16b0:20c:29ff:fe7c:a4cb][46440] -> [..................2001:470:765b::a25:53][...53] [DNS][Unknown][Network][Acceptable][fg2-mgmt.weberlab.de]
              idle: [.....7] [ip6][..udp] [................2a00:1450:4013:c05::10e][34944] -> [..................2001:470:765b::a25:53][...53] [DNS][Google][Network][Acceptable][fg2.weberlab.de]
-                   RISK: Large DNS Packet (512+ bytes)
              idle: [.....2] [ip6][..udp] [................2a00:1450:4013:c03::10a][46433] -> [..................2001:470:765b::a25:53][...53] [DNS][Google][Network][Acceptable][pa.weberlab.de]
                    RISK: Large DNS Packet (512+ bytes), Fragmented DNS Message
              idle: [.....4] [ip4][..udp] [173.194.169.104][59464] -> [.193.24.227.238][...53] [DNS][Google][Network][Acceptable][fg2.weberlab.de]
@@ -57,7 +54,6 @@
              idle: [.....1] [ip4][..udp] [..172.217.40.76][56680] -> [.193.24.227.238][...53] [DNS][Google][Network][Acceptable][weberlab.de]
                    RISK: Large DNS Packet (512+ bytes), Fragmented DNS Message
              idle: [.....5] [ip6][..udp] [................2a00:1450:400c:c00::106][54430] -> [..................2001:470:765b::a25:53][...53] [DNS][Google][Network][Acceptable][fg2.weberlab.de]
-                   RISK: Large DNS Packet (512+ bytes)
              idle: [.....3] [ip6][..udp] [................2a00:1450:4013:c06::105][63369] -> [..................2001:470:765b::a25:53][...53] [DNS][Google][Network][Acceptable][fg2.weberlab.de]
                    RISK: Large DNS Packet (512+ bytes), Fragmented DNS Message
              idle: [.....6] [ip4][..udp] [..74.125.47.136][59330] -> [.193.24.227.238][...53] [DNS][Google][Network][Acceptable][weberlab.de]

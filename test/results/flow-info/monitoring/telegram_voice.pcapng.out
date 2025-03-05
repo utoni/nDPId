@@ -6,8 +6,8 @@
               new: [.....2] [ip6][..udp] [..............fe80::76da:38ff:feed:5332][.5353] -> [...............................ff02::fb][.5353]
          detected: [.....2] [ip6][..udp] [..............fe80::76da:38ff:feed:5332][.5353] -> [...............................ff02::fb][.5353] [MDNS][Unknown][Network][Acceptable][_ipps._tcp.local]
               new: [.....3] [ip4][..udp] [..192.168.12.67][44574] -> [...192.168.12.1][...53]
-         detected: [.....3] [ip4][..udp] [..192.168.12.67][44574] -> [...192.168.12.1][...53] [DNS.GoogleServices][Unknown][Network][Acceptable][crashlyticsreports-pa.googleapis.com]
- detection-update: [.....3] [ip4][..udp] [..192.168.12.67][44574] -> [...192.168.12.1][...53] [DNS.GoogleServices][Unknown][Network][Acceptable][crashlyticsreports-pa.googleapis.com]
+         detected: [.....3] [ip4][..udp] [..192.168.12.67][44574] -> [...192.168.12.1][...53] [DNS][Unknown][Network][Acceptable][crashlyticsreports-pa.googleapis.com]
+ detection-update: [.....3] [ip4][..udp] [..192.168.12.67][44574] -> [...192.168.12.1][...53] [DNS][Unknown][Network][Acceptable][crashlyticsreports-pa.googleapis.com]
               new: [.....4] [ip4][..udp] [..192.168.12.67][44405] -> [...91.108.17.41][.1400]
          detected: [.....4] [ip4][..udp] [..192.168.12.67][44405] -> [...91.108.17.41][.1400] [STUN][Telegram][Network][Acceptable][]
                    RISK: Known Proto on Non Std Port
@@ -71,5 +71,5 @@
                    RISK: Known Proto on Non Std Port
              idle: [.....8] [ip4][..udp] [..192.168.12.67][46868] -> [....91.108.17.7][..597] [Telegram][Telegram][Chat][Acceptable]
              idle: [.....1] [ip4][..udp] [...192.168.12.1][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable]
-             idle: [.....3] [ip4][..udp] [..192.168.12.67][44574] -> [...192.168.12.1][...53] [DNS.GoogleServices][Unknown][Network][Acceptable][crashlyticsreports-pa.googleapis.com]
+             idle: [.....3] [ip4][..udp] [..192.168.12.67][44574] -> [...192.168.12.1][...53] [DNS][Unknown][Network][Acceptable][crashlyticsreports-pa.googleapis.com]
      DAEMON-EVENT: shutdown

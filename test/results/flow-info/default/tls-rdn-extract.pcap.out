@@ -6,8 +6,8 @@
                    RISK: Obsolete TLS (v1.1 or older)
  detection-update: [.....1] [ip4][..tcp] [.......10.0.0.1][31337] -> [213.199.149.251][..443] [TLS][Unknown][Web][Safe][ads1.msads.net]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
- detection-update: [.....1] [ip4][..tcp] [.......10.0.0.1][31337] -> [213.199.149.251][..443] [TLS.Microsoft][Unknown][Web][Safe][ads1.msads.net]
+ detection-update: [.....1] [ip4][..tcp] [.......10.0.0.1][31337] -> [213.199.149.251][..443] [TLS.Azure][Unknown][Cloud][Acceptable][ads1.msads.net]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher, TLS Cert Expired
-             idle: [.....1] [ip4][..tcp] [.......10.0.0.1][31337] -> [213.199.149.251][..443] [TLS.Microsoft][Unknown][Web][Safe]
+             idle: [.....1] [ip4][..tcp] [.......10.0.0.1][31337] -> [213.199.149.251][..443] [TLS.Azure][Unknown][Cloud][Acceptable]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher, TLS Cert Expired
      DAEMON-EVENT: shutdown

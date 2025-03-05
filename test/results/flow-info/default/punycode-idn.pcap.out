@@ -2,8 +2,8 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [..192.168.2.140][45520] -> [....192.168.2.1][...53]
-         detected: [.....1] [ip4][..udp] [..192.168.2.140][45520] -> [....192.168.2.1][...53] [DNS.Spotify][Unknown][Network][Fun][i.scdn.co]
- detection-update: [.....1] [ip4][..udp] [..192.168.2.140][45520] -> [....192.168.2.1][...53] [DNS.Spotify][Unknown][Network][Fun][i.scdn.co]
+         detected: [.....1] [ip4][..udp] [..192.168.2.140][45520] -> [....192.168.2.1][...53] [DNS][Unknown][Network][Acceptable][i.scdn.co]
+ detection-update: [.....1] [ip4][..udp] [..192.168.2.140][45520] -> [....192.168.2.1][...53] [DNS][Unknown][Network][Acceptable][i.scdn.co]
               new: [.....2] [ip4][..udp] [..192.168.2.140][60156] -> [....192.168.2.1][...53]
          detected: [.....2] [ip4][..udp] [..192.168.2.140][60156] -> [....192.168.2.1][...53] [DNS][Unknown][Network][Acceptable][www.xn--mnich-kva.com]
                    RISK: IDN Domain Name
@@ -14,7 +14,7 @@
                    RISK: IDN Domain Name
  detection-update: [.....3] [ip4][..tcp] [..192.168.2.140][56011] -> [...170.33.9.230][...80] [HTTP][Alibaba][Web][Acceptable][www.love.xn--55qx5d]
                    RISK: IDN Domain Name, Error Code
-             idle: [.....1] [ip4][..udp] [..192.168.2.140][45520] -> [....192.168.2.1][...53] [DNS.Spotify][Unknown][Network][Fun][i.scdn.co]
+             idle: [.....1] [ip4][..udp] [..192.168.2.140][45520] -> [....192.168.2.1][...53] [DNS][Unknown][Network][Acceptable][i.scdn.co]
               end: [.....3] [ip4][..tcp] [..192.168.2.140][56011] -> [...170.33.9.230][...80] [HTTP][Alibaba][Web][Acceptable][www.love.xn--55qx5d]
                    RISK: IDN Domain Name, Error Code
              idle: [.....2] [ip4][..udp] [..192.168.2.140][60156] -> [....192.168.2.1][...53] [DNS][Unknown][Network][Acceptable]

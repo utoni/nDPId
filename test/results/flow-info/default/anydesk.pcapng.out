@@ -24,11 +24,11 @@
      DAEMON-EVENT: [Processed: 61 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 2 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 2|updates: 0]
               new: [.....3] [ip4][..udp] [..192.168.1.187][59511] -> [....192.168.1.1][...53]
-         detected: [.....3] [ip4][..udp] [..192.168.1.187][59511] -> [....192.168.1.1][...53] [DNS.AnyDesk][Unknown][Network][Acceptable][relay-3185a847.net.anydesk.com]
- detection-update: [.....3] [ip4][..udp] [..192.168.1.187][59511] -> [....192.168.1.1][...53] [DNS.AnyDesk][Unknown][Network][Acceptable][relay-3185a847.net.anydesk.com]
+         detected: [.....3] [ip4][..udp] [..192.168.1.187][59511] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][relay-3185a847.net.anydesk.com]
+ detection-update: [.....3] [ip4][..udp] [..192.168.1.187][59511] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][relay-3185a847.net.anydesk.com]
               new: [.....4] [ip4][..udp] [..192.168.1.187][55376] -> [....192.168.1.1][...53]
-         detected: [.....4] [ip4][..udp] [..192.168.1.187][55376] -> [....192.168.1.1][...53] [DNS.AnyDesk][Unknown][Network][Acceptable][relay-9b6827f2.net.anydesk.com]
- detection-update: [.....4] [ip4][..udp] [..192.168.1.187][55376] -> [....192.168.1.1][...53] [DNS.AnyDesk][Unknown][Network][Acceptable][relay-9b6827f2.net.anydesk.com]
+         detected: [.....4] [ip4][..udp] [..192.168.1.187][55376] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][relay-9b6827f2.net.anydesk.com]
+ detection-update: [.....4] [ip4][..udp] [..192.168.1.187][55376] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][relay-9b6827f2.net.anydesk.com]
              idle: [.....1] [ip4][..tcp] [192.168.149.129][36351] -> [..51.83.239.144][...80] [TLS][AnyDesk][Web][Safe]
                    RISK: Known Proto on Non Std Port
              idle: [.....2] [ip4][..tcp] [192.168.149.129][43535] -> [..51.83.238.219][...80] [TLS.AnyDesk][AnyDesk][RemoteAccess][Acceptable]
@@ -72,10 +72,10 @@
                    [IATS(ms)....: 17.7,17.8,0.9,17.8,3.4,20.3,0.1,0.0,3.8,21.9,18.1,0.1,0.0,0.9,64.2,13.4,76.8,1.5,18.4,206.6,224.8,0.0,0.0,18.7,0.0,62.8,0.0,80.2,8427.9,8444.6,314.0]
                    [PKTLENS.....: 60,60,52,341,52,1500,52,1132,52,1146,103,52,92,52,199,52,198,52,137,52,145,1500,1500,1273,52,52,92,90,52,137,52,145]
                    [ENTROPIES...: 4.8,5.3,5.1,5.6,5.1,7.5,5.1,7.7,5.1,7.7,6.0,5.1,6.1,5.1,6.9,5.2,6.9,5.2,6.6,5.2,6.6,7.9,7.9,7.8,5.2,5.2,6.1,5.9,5.1,6.5,5.2,6.6]
-             idle: [.....4] [ip4][..udp] [..192.168.1.187][55376] -> [....192.168.1.1][...53] [DNS.AnyDesk][Unknown][Network][Acceptable][relay-9b6827f2.net.anydesk.com]
+             idle: [.....4] [ip4][..udp] [..192.168.1.187][55376] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][relay-9b6827f2.net.anydesk.com]
               end: [.....6] [ip4][..tcp] [..192.168.1.178][52039] -> [..192.168.1.187][.7070] [TLS.AnyDesk][Unknown][RemoteAccess][Acceptable]
                    RISK: Known Proto on Non Std Port, Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Desktop/File Sharing
-             idle: [.....3] [ip4][..udp] [..192.168.1.187][59511] -> [....192.168.1.1][...53] [DNS.AnyDesk][Unknown][Network][Acceptable][relay-3185a847.net.anydesk.com]
+             idle: [.....3] [ip4][..udp] [..192.168.1.187][59511] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][relay-3185a847.net.anydesk.com]
              idle: [.....5] [ip4][..tcp] [..192.168.1.187][54164] -> [..192.168.1.178][.7070] [TLS.AnyDesk][Unknown][RemoteAccess][Acceptable]
                    RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Desktop/File Sharing
              idle: [.....7] [ip4][..tcp] [..192.168.1.128][48260] -> [195.181.174.176][..443] [TLS.AnyDesk][Unknown][RemoteAccess][Acceptable]

@@ -2,7 +2,7 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [.192.168.122.11][51696] -> [........9.9.9.9][...53]
-         detected: [.....1] [ip4][..udp] [.192.168.122.11][51696] -> [........9.9.9.9][...53] [DNS.Mullvad][Unknown][Network][Acceptable][www.mullvad.net]
- detection-update: [.....1] [ip4][..udp] [.192.168.122.11][51696] -> [........9.9.9.9][...53] [DNS.Mullvad][Unknown][Network][Acceptable][www.mullvad.net]
-             idle: [.....1] [ip4][..udp] [.192.168.122.11][51696] -> [........9.9.9.9][...53] [DNS.Mullvad][Unknown][Network][Acceptable][www.mullvad.net]
+         detected: [.....1] [ip4][..udp] [.192.168.122.11][51696] -> [........9.9.9.9][...53] [DNS][Unknown][Network][Acceptable][www.mullvad.net]
+ detection-update: [.....1] [ip4][..udp] [.192.168.122.11][51696] -> [........9.9.9.9][...53] [DNS][Unknown][Network][Acceptable][www.mullvad.net]
+             idle: [.....1] [ip4][..udp] [.192.168.122.11][51696] -> [........9.9.9.9][...53] [DNS][Unknown][Network][Acceptable][www.mullvad.net]
      DAEMON-EVENT: shutdown

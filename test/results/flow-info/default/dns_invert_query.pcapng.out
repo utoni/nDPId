@@ -3,5 +3,8 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [173.147.108.174][18427] -> [...244.187.95.1][...53]
          detected: [.....1] [ip4][..udp] [173.147.108.174][18427] -> [...244.187.95.1][...53] [DNS][Unknown][Network][Acceptable][216.58.202.4]
+ detection-update: [.....1] [ip4][..udp] [173.147.108.174][18427] -> [...244.187.95.1][...53] [DNS][Unknown][Network][Acceptable][216.58.202.4]
+                   RISK: Error Code
              idle: [.....1] [ip4][..udp] [173.147.108.174][18427] -> [...244.187.95.1][...53] [DNS][Unknown][Network][Acceptable]
+                   RISK: Error Code
      DAEMON-EVENT: shutdown

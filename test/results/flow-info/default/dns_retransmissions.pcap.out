@@ -1,0 +1,10 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1][.103] [ip4][..udp] [..37.41.101.140][11892] -> [.208.67.222.222][...53]
+         detected: [.....1][.103] [ip4][..udp] [..37.41.101.140][11892] -> [.208.67.222.222][...53] [DNS][OpenDNS][Network][Acceptable][api.msn.com]
+ detection-update: [.....1][.103] [ip4][..udp] [..37.41.101.140][11892] -> [.208.67.222.222][...53] [DNS][OpenDNS][Network][Acceptable][api.msn.com]
+                   RISK: Unidirectional Traffic
+ detection-update: [.....1][.103] [ip4][..udp] [..37.41.101.140][11892] -> [.208.67.222.222][...53] [DNS][OpenDNS][Network][Acceptable][api.msn.com]
+             idle: [.....1][.103] [ip4][..udp] [..37.41.101.140][11892] -> [.208.67.222.222][...53] [DNS][OpenDNS][Network][Acceptable][api.msn.com]
+     DAEMON-EVENT: shutdown

@@ -243,10 +243,10 @@
               new: [....45] [ip4][..udp] [..198.234.25.53][.1812] -> [....10.12.64.30][29200]
          detected: [....45] [ip4][..udp] [..198.234.25.53][.1812] -> [....10.12.64.30][29200] [Radius][Unknown][Network][Acceptable]
      not-detected: [....17] [ip4][...88] [..198.226.25.53] -> [....10.12.64.30] [Unknown][Unknown][Unrated]
-                   RISK: Unidirectional Traffic
+                   RISK: Susp Entropy, Unidirectional Traffic
              idle: [....17] [ip4][...88] [..198.226.25.53] -> [....10.12.64.30]
      not-detected: [....18] [ip4][..254] [....10.12.64.30] -> [..198.226.25.53] [Unknown][Unknown][Unrated]
-                   RISK: Unidirectional Traffic
+                   RISK: Susp Entropy, Unidirectional Traffic
              idle: [....18] [ip4][..254] [....10.12.64.30] -> [..198.226.25.53]
            update: [....36] [ip4][..udp] [.....37.0.25.62][.1812] -> [....10.12.64.30][29200] [Radius][Unknown][Network][Acceptable]
            update: [.....3] [ip4][..udp] [....10.12.64.30][29200] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
@@ -305,7 +305,7 @@
              idle: [....38] [ip4][..udp] [..198.226.25.62][.1812] -> [....10.12.64.30][29295] [Radius][Unknown][Network][Acceptable]
              idle: [....39] [ip4][..udp] [....10.12.64.30][29304] -> [..198.226.25.53][.1812] [Radius][Unknown][Network][Acceptable]
      not-detected: [....23] [ip4][...85] [..198.226.25.62] -> [....10.12.64.30] [Unknown][Unknown][Unrated]
-                   RISK: Unidirectional Traffic
+                   RISK: Susp Entropy, Unidirectional Traffic
              idle: [....23] [ip4][...85] [..198.226.25.62] -> [....10.12.64.30]
           guessed: [....42] [ip4][..udp] [....10.12.64.30][29200] -> [..198.119.25.53][.1812] [Radius][Unknown][Network][Acceptable]
                    RISK: Unidirectional Traffic
@@ -474,6 +474,6 @@
                    RISK: Susp Entropy, Unidirectional Traffic
              idle: [....74] [ip4][..udp] [..198.226.25.53][.1814] -> [....10.12.64.30][29200]
      not-detected: [....79] [ip4][...37] [..198.226.25.53] -> [....10.12.64.30] [Unknown][Unknown][Unrated]
-                   RISK: Unidirectional Traffic
+                   RISK: Susp Entropy, Unidirectional Traffic
              idle: [....79] [ip4][...37] [..198.226.25.53] -> [....10.12.64.30]
      DAEMON-EVENT: shutdown
