@@ -93,7 +93,7 @@ jobs:
             upload: false
             ndpi_min_version: "4.14"
           - compiler: "clang-12"
-            os: "ubuntu-20.04"
+            os: "ubuntu-22.04"
             ndpi_build: "-DBUILD_NDPI=ON"
             ndpid_examples: "-DBUILD_EXAMPLES=ON"
             ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
@@ -105,7 +105,7 @@ jobs:
             upload: false
             ndpi_min_version: "4.14"
           - compiler: "gcc-10"
-            os: "ubuntu-20.04"
+            os: "ubuntu-22.04"
             ndpi_build: "-DBUILD_NDPI=ON"
             ndpid_examples: "-DBUILD_EXAMPLES=ON"
             ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
@@ -116,8 +116,8 @@ jobs:
             poll: "-DFORCE_POLL=ON"
             upload: false
             ndpi_min_version: "4.14"
-          - compiler: "gcc-7"
-            os: "ubuntu-20.04"
+          - compiler: "gcc-9"
+            os: "ubuntu-22.04"
             ndpi_build: "-DBUILD_NDPI=ON"
             ndpid_examples: "-DBUILD_EXAMPLES=ON"
             ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
@@ -169,7 +169,7 @@ jobs:
       - name: Install MacOS Prerequisites
         if: startsWith(matrix.os, 'macOS')
         run: |
-          brew install coreutils flock automake make unzip cmake pkg-config git wget
+          brew install coreutils automake make unzip
           wget 'https://www.tcpdump.org/release/libpcap-1.10.4.tar.gz'
           tar -xzvf libpcap-1.10.4.tar.gz
           cd libpcap-1.10.4
@@ -204,7 +204,7 @@ jobs:
         run: |
           sudo apt-get install libmaxminddb-dev libpcre2-dev
       - name: Install Ubuntu Prerequisites (libnl-genl-3-dev)
-        if: endsWith(matrix.compiler, 'gcc-7') == false && startsWith(matrix.ndpi_build, '-DBUILD_NDPI=ON') && startsWith(matrix.coverage, '-DENABLE_COVERAGE=OFF') && startsWith(matrix.sanitizer, '-DENABLE_SANITIZER=ON') && startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=OFF') && startsWith(matrix.ndpid_zlib, '-DENABLE_ZLIB=ON')
+        if: startsWith(matrix.ndpi_build, '-DBUILD_NDPI=ON') && startsWith(matrix.coverage, '-DENABLE_COVERAGE=OFF') && startsWith(matrix.sanitizer, '-DENABLE_SANITIZER=ON') && startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=OFF') && startsWith(matrix.ndpid_zlib, '-DENABLE_ZLIB=ON')
         run: |
           sudo apt-get install libnl-genl-3-dev
       - name: Checking Network Buffer Size
@@ -237,7 +237,7 @@ jobs:
             -I. -I./dependencies -I./dependencies/jsmn -I./dependencies/uthash/include \
             -o /tmp/a.out
       - name: Build single nDPId/nDPIsrvd executables (invoke CC directly - static nDPI lib)
-        if: endsWith(matrix.compiler, 'gcc-7') == false && startsWith(matrix.ndpi_build, '-DBUILD_NDPI=ON') && startsWith(matrix.coverage, '-DENABLE_COVERAGE=OFF') && startsWith(matrix.sanitizer, '-DENABLE_SANITIZER=ON') && startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=OFF') && startsWith(matrix.ndpid_zlib, '-DENABLE_ZLIB=ON')
+        if: startsWith(matrix.ndpi_build, '-DBUILD_NDPI=ON') && startsWith(matrix.coverage, '-DENABLE_COVERAGE=OFF') && startsWith(matrix.sanitizer, '-DENABLE_SANITIZER=ON') && startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=OFF') && startsWith(matrix.ndpid_zlib, '-DENABLE_ZLIB=ON')
         run: |
           cc -Wall -Wextra -std=gnu99 ${{ matrix.poll }} -DENABLE_ZLIB=1 -DENABLE_MEMORY_PROFILING=1 \
             -fsanitize=address -fsanitize=undefined -fno-sanitize=alignment -fsanitize=enum -fsanitize=leak \
@@ -308,7 +308,7 @@ jobs:
           sudo systemctl stop ndpisrvd.service
           journalctl --no-tail --no-pager -u ndpisrvd.service -u ndpid@lo.service
       - name: Build PF_RING and nDPId (invoke CC directly - dynamic nDPI lib)
-        if: endsWith(matrix.compiler, 'gcc-7') == false && startsWith(matrix.ndpi_build, '-DBUILD_NDPI=ON') && startsWith(matrix.coverage, '-DENABLE_COVERAGE=OFF') && startsWith(matrix.sanitizer, '-DENABLE_SANITIZER=ON') && startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=OFF') && startsWith(matrix.ndpid_zlib, '-DENABLE_ZLIB=ON')
+        if: startsWith(matrix.ndpi_build, '-DBUILD_NDPI=ON') && startsWith(matrix.coverage, '-DENABLE_COVERAGE=OFF') && startsWith(matrix.sanitizer, '-DENABLE_SANITIZER=ON') && startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=OFF') && startsWith(matrix.ndpid_zlib, '-DENABLE_ZLIB=ON')
         run: |
           git clone --depth=1 https://github.com/ntop/PF_RING.git
           cd PF_RING && make all && sudo make install prefix=/usr
