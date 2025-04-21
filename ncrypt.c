@@ -23,10 +23,10 @@
     {                                                                                                                  \
         fprintf(stderr, "OpenSSL Error: %s\n", ERR_error_string(ERR_get_error(), NULL));                               \
     } while (0);
-
 #define PACKET_TYPE_KEYEX 0x00u
 #define PACKET_TYPE_JSON 0xFFu
-
+#define PACKET_JSON_OVERHEAD (NCRYPT_AAD_SIZE + NCRYPT_AES_IVLEN + NCRYPT_TAG_SIZE)
+#define PACKET_BUFFER_SIZE (PACKET_JSON_OVERHEAD + NCRYPT_BUFFER_SIZE)
 #define NCRYPT_PACKED __attribute__((__packed__))
 
 static unsigned char hkdf_salt[] = {0xf2, 0xad, 0xc9, 0xca, 0x6e, 0xb3, 0xd9, 0xcd, 0x3b, 0x34, 0xf3, 0x8d, 0x75,
@@ -47,7 +47,7 @@ union iv
 
 union packet
 {
-    unsigned char raw[NCRYPT_PACKET_BUFFER_SIZE];
+    unsigned char raw[PACKET_BUFFER_SIZE];
     struct
     {
         union
@@ -622,6 +622,35 @@ int ncrypt_decrypt(struct aes * const aes,
     return decrypt(aes, encrypted, encrypt_size, iv, tag, plaintext, aad);
 }
 
+static size_t keyex_packet()
+{
+    return 0;
+}
+
+static size_t json_packet(struct peer * const current_peer,
+                          union packet * const pkt,
+                          char const * const plaintext,
+                          size_t plaintext_size)
+{
+    pkt->aad.type = PACKET_TYPE_JSON;
+    pkt->aad.size = htons(NCRYPT_AES_IVLEN + NCRYPT_TAG_SIZE + plaintext_size);
+
+    int encrypted_used = encrypt(
+        &current_peer->aes, plaintext, plaintext_size, current_peer->iv, pkt->json.data, pkt->json.tag, pkt->aad.raw);
+    if (encrypted_used < 0 || encrypted_used > (int)NCRYPT_BUFFER_SIZE)
+    {
+        current_peer->crypto_errors++;
+        return 0;
+    }
+    encrypted_used += PACKET_JSON_OVERHEAD;
+
+    current_peer->cryptions++;
+    memcpy(pkt->json.iv, current_peer->iv, NCRYPT_AES_IVLEN);
+    next_iv(current_peer);
+
+    return encrypted_used;
+}
+
 int ncrypt_dgram_send(struct ncrypt * const nc, int fd, char const * const plaintext, size_t plaintext_size)
 {
     if (plaintext_size > NCRYPT_BUFFER_SIZE)
@@ -633,41 +662,37 @@ int ncrypt_dgram_send(struct ncrypt * const nc, int fd, char const * const plain
     struct peer * current_peer;
     struct peer * tmp_peer;
     union packet encrypted;
-    encrypted.aad.type = PACKET_TYPE_JSON;
     HASH_ITER(hh, nc->peers, current_peer, tmp_peer)
     {
-        encrypted.aad.size = htons(NCRYPT_AES_IVLEN + NCRYPT_TAG_SIZE + plaintext_size);
-        int encrypted_used = encrypt(&current_peer->aes,
-                                     plaintext,
-                                     plaintext_size,
-                                     current_peer->iv,
-                                     encrypted.json.data,
-                                     encrypted.json.tag,
-                                     encrypted.aad.raw);
-        if (encrypted_used < 0 || encrypted_used > (int)NCRYPT_BUFFER_SIZE)
+        ssize_t used;
+
+        if (current_peer->ephemeral.current_private_key != NULL)
         {
-            current_peer->crypto_errors++;
-            retval++;
-            continue;
+            used = keyex_packet();
+            if (used == 0)
+            {
+                retval++;
+                continue;
+            }
         }
-        current_peer->cryptions++;
-
-        memcpy(encrypted.json.iv, current_peer->iv, NCRYPT_AES_IVLEN);
-        ssize_t bytes_written = sendto(fd,
-                                       encrypted.raw,
-                                       NCRYPT_PACKET_OVERHEAD + encrypted_used,
-                                       0,
-                                       &current_peer->address.raw,
-                                       current_peer->address.size);
-        next_iv(current_peer);
-
+        else
+        {
+            used = json_packet(current_peer, &encrypted, plaintext, plaintext_size);
+            if (used == 0)
+            {
+                retval++;
+                continue;
+            }
+        }
+        ssize_t bytes_written =
+            sendto(fd, encrypted.raw, used, 0, &current_peer->address.raw, current_peer->address.size);
         if (bytes_written < 0)
         {
             current_peer->send_errors++;
             retval++;
             continue;
         }
-        if (bytes_written != NCRYPT_PACKET_OVERHEAD + encrypted_used)
+        if (bytes_written != used)
         {
             current_peer->partial_writes++;
             retval++;
