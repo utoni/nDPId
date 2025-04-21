@@ -11,8 +11,6 @@
 #define NCRYPT_TAG_SIZE 16
 #define NCRYPT_AAD_SIZE 3 // packet type + packet size
 #define NCRYPT_BUFFER_SIZE NETWORK_BUFFER_MAX_SIZE
-#define NCRYPT_PACKET_OVERHEAD (NCRYPT_AAD_SIZE + NCRYPT_AES_IVLEN + NCRYPT_TAG_SIZE)
-#define NCRYPT_PACKET_BUFFER_SIZE (NCRYPT_PACKET_OVERHEAD + NCRYPT_BUFFER_SIZE)
 
 struct aes
 {
@@ -24,6 +22,11 @@ struct peer
     nDPIsrvd_hashkey hash_key;
     struct nDPIsrvd_address address;
     unsigned char iv[NCRYPT_AES_IVLEN];
+    struct
+    {
+        void * last_private_key;
+        void * current_private_key;
+    } ephemeral;
     size_t key_rotations;
     size_t cryptions;
     size_t crypto_errors;
