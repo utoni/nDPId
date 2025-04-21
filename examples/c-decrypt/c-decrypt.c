@@ -122,7 +122,7 @@ int udp_server(struct ncrypt * const nc)
         if (ret < 0)
         {
             logger(1, "Crypto error: %d", ret);
-            break;
+            continue;
         }
         msgs_recvd++;
 
@@ -137,10 +137,12 @@ int udp_server(struct ncrypt * const nc)
                 HASH_ITER(hh, nc->peers, current_peer, ctmp)
                 {
                     printf(
-                        "*** Peer: %8X | Cryptions: %5zu | Crypto Errors: %2zu | IV Mismatches: %2zu | Send Errors: "
+                        "*** Peer: %8X | Key Rotations: %5zu | Cryptions: %5zu | Crypto Errors: %2zu | IV Mismatches: "
+                        "%2zu | Send Errors: "
                         "%2zu | "
                         "Partial Writes: %2zu ***\n",
                         current_peer->hash_key,
+                        current_peer->key_rotations,
                         current_peer->cryptions,
                         current_peer->crypto_errors,
                         current_peer->iv_mismatches,
@@ -159,11 +161,13 @@ int udp_server(struct ncrypt * const nc)
             if (ret != PARSE_OK)
             {
                 logger(1, "JSON parsing failed with: %d", ret);
-                break;
+                continue;
             }
             json_ctx.tokens_found = 0;
         }
     }
+
+    ncrypt_free(nc);
 
     return 0;
 }
