@@ -93,6 +93,10 @@ Required by `tests/run_tests.sh`
 Validate nDPId JSON messages against internal event semantics.
 Required by `tests/run_tests.sh`
 
+## rs-simple
+
+A straight forward Rust deserialization/parsing example.
+
 ## yaml-filebeat
 An example filebeat configuration to parse and send nDPId JSON 
 messages to Elasticsearch. Allowing long term storage and data visualization with kibana
