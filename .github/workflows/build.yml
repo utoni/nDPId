@@ -311,8 +311,8 @@ jobs:
         if: startsWith(matrix.ndpi_build, '-DBUILD_NDPI=ON') && startsWith(matrix.coverage, '-DENABLE_COVERAGE=OFF') && startsWith(matrix.sanitizer, '-DENABLE_SANITIZER=ON') && startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=OFF') && startsWith(matrix.ndpid_zlib, '-DENABLE_ZLIB=ON')
         run: |
           git clone --depth=1 https://github.com/ntop/PF_RING.git
-          cd PF_RING && make all && sudo make install prefix=/usr
-          cd ..
+          cd PF_RING/userland && ./configure && make && sudo make install prefix=/usr
+          cd ../..
           cc -Wall -Wextra -std=gnu99 ${{ matrix.poll }} -DENABLE_PFRING=1 -DENABLE_ZLIB=1 -DENABLE_MEMORY_PROFILING=1 \
             -fsanitize=address -fsanitize=undefined -fno-sanitize=alignment -fsanitize=enum -fsanitize=leak \
             nDPId.c npfring.c nio.c utils.c \
@@ -320,7 +320,7 @@ jobs:
             -I./build/libnDPI/include/ndpi \
             -I./PF_RING/userland/lib -I./PF_RING/kernel \
             -o /tmp/a.out \
-            -ldl ./PF_RING/userland/lib/libpfring.a -lpcap ./build/libnDPI/lib/libndpi.a -pthread -lm -lz
+            -ldl /usr/lib/libpfring.a -lpcap ./build/libnDPI/lib/libndpi.a -pthread -lm -lz
       - name: Build against libnDPI-${{ matrix.ndpi_min_version }}
         if: startsWith(matrix.os, 'ubuntu')
         run: |
