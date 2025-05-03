@@ -6,9 +6,15 @@ edition = "2024"
 
 [dependencies]
 bytes = "1"
-tokio = { version = "1", features = ["full"] }
-serde = { version = "1", features = ["derive"] }
-serde_json = "1.0"
-tui = "0.19.0"
 crossterm = "0.29.0"
 io = "0.0.2"
+moka = { version = "0.12.10", features = ["future"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1", features = ["full"] }
+tui = "0.19.0"
+
+[profile.release]
+strip = true
+lto = true
+codegen-units = 1
