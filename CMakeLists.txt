@@ -94,6 +94,7 @@ option(ENABLE_MEMORY_PROFILING "Enable dynamic memory tracking." OFF)
 option(ENABLE_ZLIB "Enable zlib support for nDPId (experimental)." OFF)
 option(ENABLE_SYSTEMD "Install systemd components." OFF)
 option(BUILD_EXAMPLES "Build C examples." ON)
+option(BUILD_RUST_EXAMPLES "Build Rust examples." OFF)
 if(BUILD_EXAMPLES)
 option(ENABLE_DBUS "Build DBus notification example." OFF)
 option(ENABLE_CURL "Build influxdb data write example." OFF)
@@ -555,6 +556,18 @@ if(BUILD_EXAMPLES)
     install(DIRECTORY examples/c-collectd/www DESTINATION share/nDPId/nDPIsrvd-collectd)
 endif()
 
+if(BUILD_RUST_EXAMPLES)
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/target/release/rs-simple
+        COMMAND cargo build --release
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/examples/rs-simple
+        COMMENT "Build Rust executable with cargo: rs-simple"
+    )
+    add_custom_target(rs-simple ALL
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/target/release/rs-simple
+    )
+endif()
+
 if(ENABLE_SYSTEMD)
     configure_file(packages/systemd/ndpisrvd.service.in ndpisrvd.service @ONLY)
     configure_file(packages/systemd/ndpid@.service.in ndpid@.service @ONLY)
@@ -621,6 +634,7 @@ message(STATUS "ENABLE_MEMORY_PROFILING..: ${ENABLE_MEMORY_PROFILING}")
 message(STATUS "ENABLE_ZLIB..............: ${ENABLE_ZLIB}")
 message(STATUS "BUILD_NDPI...............: ${BUILD_NDPI}")
 message(STATUS "BUILD_EXAMPLES...........: ${BUILD_EXAMPLES}")
+message(STATUS "BUILD_RUST_EXAMPLES......: ${BUILD_RUST_EXAMPLES}")
 if(BUILD_EXAMPLES)
 message(STATUS "ENABLE_DBUS..............: ${ENABLE_DBUS}")
 message(STATUS "ENABLE_CURL..............: ${ENABLE_CURL}")

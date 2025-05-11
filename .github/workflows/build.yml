@@ -33,6 +33,7 @@ jobs:
             os: "ubuntu-latest"
             ndpi_build: "-DBUILD_NDPI=ON"
             ndpid_examples: "-DBUILD_EXAMPLES=ON"
+            ndpid_rust_examples: "-DBUILD_RUST_EXAMPLES=ON"
             ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
             ndpid_zlib: "-DENABLE_ZLIB=ON"
             ndpid_extras: ""
@@ -46,6 +47,7 @@ jobs:
             os: "ubuntu-latest"
             ndpi_build: "-DBUILD_NDPI=ON"
             ndpid_examples: "-DBUILD_EXAMPLES=ON"
+            ndpid_rust_examples: ""
             ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=ON"
             ndpid_zlib: "-DENABLE_ZLIB=ON"
             ndpid_extras: "-DNDPI_WITH_MAXMINDDB=ON -DNDPI_WITH_PCRE=ON -DENABLE_MEMORY_PROFILING=ON"
@@ -59,6 +61,7 @@ jobs:
             os: "ubuntu-latest"
             ndpi_build: "-DBUILD_NDPI=ON"
             ndpid_examples: "-DBUILD_EXAMPLES=ON"
+            ndpid_rust_examples: ""
             ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
             ndpid_zlib: "-DENABLE_ZLIB=OFF"
             ndpid_extras: ""
@@ -72,6 +75,7 @@ jobs:
             os: "ubuntu-latest"
             ndpi_build: "-DBUILD_NDPI=ON"
             ndpid_examples: "-DBUILD_EXAMPLES=ON"
+            ndpid_rust_examples: ""
             ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
             ndpid_zlib: "-DENABLE_ZLIB=ON"
             ndpid_extras: ""
@@ -84,6 +88,7 @@ jobs:
             os: "ubuntu-latest"
             ndpi_build: "-DBUILD_NDPI=ON"
             ndpid_examples: "-DBUILD_EXAMPLES=ON"
+            ndpid_rust_examples: ""
             ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
             ndpid_zlib: "-DENABLE_ZLIB=ON"
             ndpid_extras: ""
@@ -96,6 +101,7 @@ jobs:
             os: "ubuntu-22.04"
             ndpi_build: "-DBUILD_NDPI=ON"
             ndpid_examples: "-DBUILD_EXAMPLES=ON"
+            ndpid_rust_examples: ""
             ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
             ndpid_zlib: "-DENABLE_ZLIB=ON"
             ndpid_extras: ""
@@ -108,6 +114,7 @@ jobs:
             os: "ubuntu-22.04"
             ndpi_build: "-DBUILD_NDPI=ON"
             ndpid_examples: "-DBUILD_EXAMPLES=ON"
+            ndpid_rust_examples: ""
             ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
             ndpid_zlib: "-DENABLE_ZLIB=OFF"
             ndpid_extras: ""
@@ -120,6 +127,7 @@ jobs:
             os: "ubuntu-22.04"
             ndpi_build: "-DBUILD_NDPI=ON"
             ndpid_examples: "-DBUILD_EXAMPLES=ON"
+            ndpid_rust_examples: ""
             ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
             ndpid_zlib: "-DENABLE_ZLIB=ON"
             ndpid_extras: ""
@@ -132,6 +140,7 @@ jobs:
             os: "macOS-13"
             ndpi_build: "-DBUILD_NDPI=OFF"
             ndpid_examples: "-DBUILD_EXAMPLES=OFF"
+            ndpid_rust_examples: ""
             ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
             ndpid_zlib: "-DENABLE_ZLIB=ON"
             ndpid_extras: ""
@@ -191,6 +200,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install autoconf automake cmake libtool pkg-config gettext libjson-c-dev flex bison libpcap-dev zlib1g-dev libcurl4-openssl-dev libdbus-1-dev
           sudo apt-get install ${{ matrix.compiler }} lcov iproute2
+      - name: Install Ubuntu Prerequisites (Rust/Cargo)
+        if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.ndpid_rust_examples, '-DBUILD_RUST_EXAMPLES=ON')
+        run: |
+          sudo apt-get install cargo
       - name: Install Ubuntu Prerequisites (libgcrypt)
         if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.ndpid_gcrypt, '-DNDPI_WITH_GCRYPT=ON')
         run: |
@@ -217,7 +230,7 @@ jobs:
           cmake -S . -B build -DCMAKE_C_COMPILER="$CMAKE_C_COMPILER" -DCMAKE_C_FLAGS="$CMAKE_C_FLAGS" -DCMAKE_MODULE_LINKER_FLAGS="$CMAKE_MODULE_LINKER_FLAGS" -DCMAKE_C_EXE_LINKER_FLAGS="$CMAKE_C_EXE_LINKER_FLAGS" \
             -DENABLE_DBUS=ON -DENABLE_CURL=ON -DENABLE_SYSTEMD=ON \
             ${{ matrix.poll }} ${{ matrix.coverage }} ${{ matrix.sanitizer }} ${{ matrix.ndpi_build }} \
-            ${{ matrix.ndpid_examples }} ${{ matrix.ndpid_zlib }} ${{ matrix.ndpid_gcrypt }} ${{ matrix.ndpid_extras }}
+            ${{ matrix.ndpid_examples }} ${{ matrix.ndpid_rust_examples }} ${{ matrix.ndpid_zlib }} ${{ matrix.ndpid_gcrypt }} ${{ matrix.ndpid_extras }}
       - name: Build nDPId
         run: |
           cmake --build build --verbose
@@ -276,7 +289,7 @@ jobs:
           cmake -S . -B ./build \
             -DENABLE_DBUS=ON -DENABLE_CURL=ON -DENABLE_SYSTEMD=ON \
             ${{ matrix.poll }} ${{ matrix.coverage }} ${{ matrix.sanitizer }} ${{ matrix.ndpi_build }} \
-            ${{ matrix.ndpid_examples }} ${{ matrix.ndpid_zlib }} ${{ matrix.ndpid_gcrypt }} ${{ matrix.ndpid_extras }}
+            ${{ matrix.ndpid_examples }} ${{ matrix.ndpid_rust_examples }} ${{ matrix.ndpid_zlib }} ${{ matrix.ndpid_gcrypt }} ${{ matrix.ndpid_extras }}
           cd ../..
           rm -rf "nDPId-dist-${RAND_ID}"
       - name: CPack DEB
@@ -351,7 +364,7 @@ jobs:
                     -DBUILD_NDPI=OFF -DBUILD_EXAMPLES=ON \
                     -DENABLE_DBUS=ON -DENABLE_CURL=ON -DENABLE_SYSTEMD=ON \
                     ${{ matrix.poll }} ${{ matrix.coverage }} \
-                    ${{ matrix.sanitizer }} ${{ matrix.ndpid_examples }}; }
+                    ${{ matrix.sanitizer }} ${{ matrix.ndpid_examples }} ${{ matrix.ndpid_rust_examples }}; }
           test $WGET_RET -ne 0 || { echo "Running Make.. (pkgconfig)"; \
                 cmake --build ./build-local-pkgconfig --verbose; }
           test $WGET_RET -ne 0 || { echo "Testing Executable.. (pkgconfig)"; \
@@ -366,7 +379,7 @@ jobs:
                     -DENABLE_DBUS=ON -DENABLE_CURL=ON -DENABLE_SYSTEMD=ON \
                     -DNDPI_NO_PKGCONFIG=ON -DSTATIC_LIBNDPI_INSTALLDIR=/usr \
                     ${{ matrix.poll }} ${{ matrix.coverage }} ${{ matrix.ndpid_gcrypt }} \
-                    ${{ matrix.sanitizer }} ${{ matrix.ndpid_examples }}; }
+                    ${{ matrix.sanitizer }} ${{ matrix.ndpid_examples }} ${{ matrix.ndpid_rust_examples }}; }
           test $WGET_RET -ne 0 || { echo "Running Make.. (static)"; \
                 cmake --build ./build-local-static --verbose; }
           test $WGET_RET -ne 0 || { echo "Testing Executable.. (static)"; \
@@ -383,7 +396,7 @@ jobs:
                     -DPFRING_LINK_STATIC=OFF \
                     -DPFRING_INSTALLDIR=/usr -DPFRING_KERNEL_INC="$(realpath ./PF_RING/kernel)" \
                     ${{ matrix.poll }} ${{ matrix.coverage }} ${{ matrix.ndpid_gcrypt }} \
-                    ${{ matrix.sanitizer }} ${{ matrix.ndpid_examples }}; }
+                    ${{ matrix.sanitizer }} ${{ matrix.ndpid_examples }} ${{ matrix.ndpid_rust_examples }}; }
           test $WGET_RET -ne 0 || test ! -d ./PF_RING || { echo "Running Make.. (PF_RING)"; \
                 cmake --build ./build-local-pfring --verbose; }
           test $WGET_RET -ne 0 || test ! -d ./PF_RING || { echo "Testing Executable.. (PF_RING)"; \
