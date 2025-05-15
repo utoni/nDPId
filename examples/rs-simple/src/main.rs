@@ -13,7 +13,7 @@ use std::{
     hash::{Hash, Hasher},
     io::self,
     sync::Arc,
-    time::{Duration, Instant, UNIX_EPOCH},
+    time::{Duration, Instant, SystemTime, UNIX_EPOCH},
 };
 use tokio::io::AsyncReadExt;
 use tokio::sync::mpsc;
@@ -41,7 +41,7 @@ impl From<serde_json::Error> for ParseError {
     }
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(rename_all = "lowercase")]
 enum EventName {
     Invalid, New, End, Idle, Update, Analyse,
@@ -131,7 +131,9 @@ struct FlowValue {
     total_dst_packets: u64,
     total_src_bytes: u64,
     total_dst_bytes: u64,
-    first_seen: (u64, u64, u64, u64),
+    first_seen: std::time::SystemTime,
+    last_seen: std::time::SystemTime,
+    timeout_in: std::time::SystemTime,
 }
 
 impl Default for State {
@@ -286,7 +288,7 @@ async fn main() {
             Some(KeyCode::Char('q')) => break,
             Some(KeyCode::Up) => {
                 table_selected = match table_selected {
-                    i if i == 0 && flows.len() == 0 => 0,
+                    _ if flows.len() == 0 => 0,
                     i if i == 0 => flows.len() - 1,
                     i => i - 1,
                 };
@@ -297,7 +299,30 @@ async fn main() {
                     i => i + 1,
                 };
             },
-            Some(KeyCode::Enter) => break,
+            Some(KeyCode::PageUp) => {
+                table_selected = match table_selected {
+                    _ if flows.len() == 0 => 0,
+                    i if i == 0 => flows.len() - 1,
+                    i if i < 10 => 0,
+                    i => i - 10,
+                };
+            },
+            Some(KeyCode::PageDown) => {
+                table_selected = match table_selected {
+                    i if flows.len() == 0 || i >= flows.len() - 1 => 0,
+                    i if flows.len() < 10 || i >= flows.len() - 10 => flows.len() - 1,
+                    i => i + 10,
+                };
+            },
+            Some(KeyCode::Home) => {
+                table_selected = 0;
+            },
+            Some(KeyCode::End) => {
+                table_selected = match table_selected {
+                    _ if flows.len() == 0 => 0,
+                    _ => flows.len() - 1,
+                };
+            },
             Some(_) => (),
             None => ()
         };
@@ -371,30 +396,41 @@ async fn update_stats(event: &EventType, stats: &mut MutexGuard<'_, Stats>, cach
         EventType::Flow(flow_event) => {
             stats.flow_events += 1;
             stats.flow_count = cache.entry_count();
+            let key = FlowKey { id: flow_event.id };
+
+            if flow_event.name == EventName::End ||
+               flow_event.name == EventName::Idle
+            {
+                cache.remove(&key).await;
+                return;
+            }
 
             let first_seen_seconds = flow_event.first_seen / 1_000_000;
             let first_seen_nanos = (flow_event.first_seen % 1_000_000) * 1_000;
             let first_seen_epoch = std::time::Duration::new(first_seen_seconds, first_seen_nanos as u32);
             let first_seen_system = UNIX_EPOCH + first_seen_epoch;
-            let time_tuple = match first_seen_system.elapsed() {
-                Ok(elapsed) => {
-                    let seconds = elapsed.as_secs();
-                    let minutes = seconds / 60;
-                    let hours = minutes / 60;
-                    let days = hours / 24;
-                    (seconds, minutes, hours, days)
-                }
-                Err(_) => (0, 0, 0, 0)
-            };
 
-            let key = FlowKey { id: flow_event.id };
+            let last_seen = std::cmp::max(flow_event.src_last_pkt_time,
+                                          flow_event.dst_last_pkt_time);
+            let last_seen_seconds = last_seen / 1_000_000;
+            let last_seen_nanos = (last_seen % 1_000_000) * 1_000;
+            let last_seen_epoch = std::time::Duration::new(last_seen_seconds, last_seen_nanos as u32);
+            let last_seen_system = UNIX_EPOCH + last_seen_epoch;
+
+            let timeout_seconds = (last_seen + flow_event.idle_time) / 1_000_000;
+            let timeout_nanos = ((last_seen + flow_event.idle_time) % 1_000_000) * 1_000; 
+            let timeout_epoch = std::time::Duration::new(timeout_seconds, timeout_nanos as u32);
+            let timeout_system = UNIX_EPOCH + timeout_epoch;
+
             let value = FlowValue {
                 state: flow_event.state,
                 total_src_packets: flow_event.src_packets_processed,
                 total_dst_packets: flow_event.dst_packets_processed,
                 total_src_bytes: flow_event.src_tot_l4_payload_len,
                 total_dst_bytes: flow_event.dst_tot_l4_payload_len,
-                first_seen: time_tuple,
+                first_seen: first_seen_system,
+                last_seen: last_seen_system,
+                timeout_in: timeout_system,
             };
             cache.insert(key, (Expiration::FlowIdleTime(flow_event.idle_time), value)).await;
         }
@@ -408,6 +444,22 @@ async fn update_stats(event: &EventType, stats: &mut MutexGuard<'_, Stats>, cach
     }
 }
 
+fn format_bytes(bytes: u64) -> String {
+    const KB: u64 = 1024;
+    const MB: u64 = KB * 1024;
+    const GB: u64 = MB * 1024;
+
+    if bytes >= GB {
+        format!("{} GB", bytes / GB)
+    } else if bytes >= MB {
+        format!("{} MB", bytes / MB)
+    } else if bytes >= KB {
+        format!("{} kB", bytes / KB)
+    } else {
+        format!("{} B", bytes)
+    }
+}
+
 fn draw_ui<B: tui::backend::Backend>(terminal: &mut Terminal<B>, table_state: &mut TableState, table_selected: usize, data: &MutexGuard<Stats>, flows: &Vec<(FlowKey, (Expiration, FlowValue))>) {
     let general_items = vec![
         ListItem::new("TUI Updates..: ".to_owned() + &data.ui_updates.to_string()),
@@ -418,30 +470,63 @@ fn draw_ui<B: tui::backend::Backend>(terminal: &mut Terminal<B>, table_state: &m
         ListItem::new("Packet Events: ".to_owned() + &data.packet_events.to_string()),
     ];
     let packet_items = vec![
-        ListItem::new("Total Capture Length: ".to_owned() + &data.total_caplen.to_string()),
-        ListItem::new("Total Length........: ".to_owned() + &data.total_len.to_string()),
-        ListItem::new("Total L4 Length.....: ".to_owned() + &data.total_l4_len.to_string()),
+        ListItem::new("Total Capture Length: ".to_owned() + &format_bytes(data.total_caplen)),
+        ListItem::new("Total Length........: ".to_owned() + &format_bytes(data.total_len)),
+        ListItem::new("Total L4 Length.....: ".to_owned() + &format_bytes(data.total_l4_len)),
     ];
     let table_rows: Vec<Row> = flows
         .into_iter()
-        .map(|(key, (exp, val))| {
-            let first_seen_display = match (val.first_seen.0, val.first_seen.1,
-                                            val.first_seen.2, val.first_seen.3)
-            {
-                (_, _, _, d) if d > 0 => format!("{} day(s) ago", d),
-                (_, _, h, _) if h > 0 => format!("{} hour(s) ago", h),
-                (_, m, _, _) if m > 0 => format!("{} min(s) ago", m),
-                (s, _, _, _) if s > 0 => format!("{} sec(s) ago", s),
-                _ => format!("{} sec(s) ago", val.first_seen.0),
+        .map(|(key, (_exp, val))| {
+            let first_seen_display = match val.first_seen.elapsed() {
+                Ok(elapsed) => {
+                    match elapsed.as_secs() {
+                        t if t > (3_600 * 24) => format!("{} d ago", t / (3_600 * 24)),
+                        t if t > 3_600 => format!("{} h ago", t / 3_600),
+                        t if t > 60 => format!("{} min ago", t / 60),
+                        t if t > 0 => format!("{} s ago", t),
+                        t if t == 0 => "< 1 s ago".to_string(),
+                        t => format!("INVALID: {}", t),
+                    }
+                }
+                Err(err) => format!("ERROR: {}", err)
+            };
+
+            let last_seen_display = match val.last_seen.elapsed() {
+                Ok(elapsed) => {
+                    match elapsed.as_secs() {
+                        t if t > (3_600 * 24) => format!("{} d ago", t / (3_600 * 24)),
+                        t if t > 3_600 => format!("{} h ago", t / 3_600),
+                        t if t > 60 => format!("{} min ago", t / 60),
+                        t if t > 0 => format!("{} s ago", t),
+                        t if t == 0 => "< 1 s ago".to_string(),
+                        t => format!("INVALID: {}", t),
+                    }
+                }
+                Err(_err) => "ERROR".to_string()
+            };
+
+            let timeout_display = match val.timeout_in.duration_since(SystemTime::now()) {
+                Ok(elapsed) => {
+                    match elapsed.as_secs() {
+                        t if t > (3_600 * 24) => format!("in {} d", t / (3_600 * 24)),
+                        t if t > 3_600 => format!("in {} h", t / 3_600),
+                        t if t > 60 => format!("in {} min", t / 60),
+                        t if t > 0 => format!("in {} s", t),
+                        t if t == 0 => "in < 1 s".to_string(),
+                        t => format!("INVALID: {}", t),
+                    }
+                }
+                Err(_err) => "EXPIRED".to_string()
             };
 
             Row::new(vec![
                 key.id.to_string(),
                 val.state.to_string(),
                 first_seen_display,
-                exp.to_string(),
+                last_seen_display,
+                timeout_display,
                 (val.total_src_packets + val.total_dst_packets).to_string(),
-                (val.total_src_bytes + val.total_dst_bytes).to_string(),
+                format_bytes(val.total_src_bytes + val.total_dst_bytes),
             ])
         })
         .collect();
@@ -453,8 +538,8 @@ fn draw_ui<B: tui::backend::Backend>(terminal: &mut Terminal<B>, table_state: &m
             .direction(Direction::Vertical)
             .constraints(
                 [
-                    Constraint::Percentage(20),
-                    Constraint::Percentage(50),
+                    Constraint::Percentage(18),
+                    Constraint::Percentage(82),
                 ].as_ref()
             )
             .split(size);
@@ -474,7 +559,7 @@ fn draw_ui<B: tui::backend::Backend>(terminal: &mut Terminal<B>, table_state: &m
             i => i + 1,
         };
         let table = Table::new(table_rows)
-            .header(Row::new(vec!["Flow ID", "State", "First Seen", "Timeout", "Total Packets", "Total Bytes"])
+            .header(Row::new(vec!["Flow ID", "State", "First Seen", "Last Seen", "Timeout", "Total Packets", "Total Bytes"])
                 .style(Style::default().fg(Color::Yellow).add_modifier(Modifier::BOLD)))
                 .block(Block::default().title("Flow Table (selected: ".to_string() +
                                               &table_selected_abs.to_string() +
@@ -483,6 +568,7 @@ fn draw_ui<B: tui::backend::Backend>(terminal: &mut Terminal<B>, table_state: &m
                                               " item(s)").borders(Borders::ALL))
                 .highlight_style(Style::default().bg(Color::Blue))
                 .widths(&[
+                    Constraint::Length(20),
                     Constraint::Length(20),
                     Constraint::Length(20),
                     Constraint::Length(20),
