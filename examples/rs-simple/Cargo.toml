@@ -5,6 +5,7 @@ authors = ["Toni Uhlig <toni@impl.cc>"]
 edition = "2024"
 
 [dependencies]
+argh = "0.1"
 bytes = "1"
 crossterm = "0.29.0"
 io = "0.0.2"

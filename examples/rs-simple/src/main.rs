@@ -1,3 +1,4 @@
+use argh::FromArgs;
 use bytes::BytesMut;
 use crossterm::{
     cursor,
@@ -28,6 +29,14 @@ use tui::{
     Terminal,
     widgets::{Block, Borders, List, ListItem, Row, Table, TableState},
 };
+
+#[derive(FromArgs, Debug)]
+/// Simple Rust nDPIsrvd Client Example
+struct Args {
+    /// nDPIsrvd host(s) to connect to
+    #[argh(option)]
+    host: Vec<String>,
+}
 
 #[derive(Debug)]
 enum ParseError {
@@ -326,15 +335,24 @@ impl PartialEq for DaemonKey {
 
 #[tokio::main]
 async fn main() {
-    let server_address = "127.0.0.1:7000";
+    let args: Args = argh::from_env();
+    if args.host.len() == 0 {
+        eprintln!("At least one --host required");
+        return;
+    }
 
-    let mut stream = match TcpStream::connect(server_address).await {
-        Ok(stream) => stream,
-        Err(e) => {
-            eprintln!("Connection to {} failed: {}", server_address, e);
-            return;
+    let mut connections: Vec<TcpStream> = Vec::new();
+    for host in args.host {
+        match TcpStream::connect(host.clone()).await {
+            Ok(stream) => {
+                connections.push(stream);
+            }
+            Err(e) => {
+                eprintln!("Fehler bei Verbindung zu {}: {}", host, e);
+            }
         }
-    };
+    }
+
     if let Err(e) = terminal::enable_raw_mode() {
         eprintln!("Could not enable terminal raw mode: {}", e);
         return;
@@ -351,7 +369,6 @@ async fn main() {
     let backend = CrosstermBackend::new(stdout);
     let mut terminal = Terminal::new(backend);
 
-    let mut buffer = BytesMut::with_capacity(33792usize);
     let (tx, mut rx): (mpsc::Sender<String>, mpsc::Receiver<String>) = mpsc::channel(1024);
     let data = Arc::new(Mutex::new(Stats::default()));
     let data_tx = Arc::clone(&data);
@@ -379,36 +396,50 @@ async fn main() {
             }
         }
     });
-    tokio::spawn(async move {
-        loop {
-            let n = match stream.read_buf(&mut buffer).await {
-                Ok(len) => len,
-                Err(_) => {
-                    continue; // Versuche es erneut, wenn ein Fehler auftritt
-                }
-            };
-            if n == 0 {
-                break;
-            }
 
-            while let Some(message) = parse_message(&mut buffer) {
-                match tx.send(message).await {
-                    Ok(_) => (),
-                    Err(_) => return
+    for mut stream in connections {
+        let cloned_tx = tx.clone();
+        tokio::spawn(async move {
+            let mut buffer = BytesMut::with_capacity(33792usize);
+
+            loop {
+                let n = match stream.read_buf(&mut buffer).await {
+                    Ok(len) => len,
+                    Err(_) => {
+                        continue; // Versuche es erneut, wenn ein Fehler auftritt
+                    }
+                };
+                if n == 0 {
+                    break;
+                }
+
+                while let Some(message) = parse_message(&mut buffer) {
+                    match cloned_tx.send(message).await {
+                        Ok(_) => (),
+                        Err(_) => return
+                    }
                 }
             }
-        }
-    });
+        });
+    }
 
     let mut table_state = TableState::default();
+    let mut old_selected: Option<FlowKey> = None;
 
     loop {
         let flows: Vec<(FlowKey, (FlowExpiration, FlowValue))> = flow_cache_rx.iter().map(|(k, v)| (k.as_ref().clone(), v.clone())).collect();
         let mut table_selected = match table_state.selected() {
-            Some(table_index) => {
+            Some(mut table_index) => {
                 if flows.len() > 0 && table_index >= flows.len() {
                     flows.len() - 1
                 } else {
+                    if let Some(ref old_flow_key_selected) = old_selected {
+                        if let Some(old_index) = flows.iter().position(|x| x.0 == *old_flow_key_selected) {
+                            if old_index != table_index {
+                                table_index = old_index;
+                            }
+                        }
+                    }
                     table_index
                 }
             }
@@ -424,12 +455,14 @@ async fn main() {
                     i if i == 0 => flows.len() - 1,
                     i => i - 1,
                 };
+                old_selected = Some(flows.get(table_selected).unwrap().0.clone());
             },
             Some(KeyCode::Down) => {
                 table_selected = match table_selected {
                     i if flows.len() == 0 || i >= flows.len() - 1 => 0,
                     i => i + 1,
                 };
+                old_selected = Some(flows.get(table_selected).unwrap().0.clone());
             },
             Some(KeyCode::PageUp) => {
                 table_selected = match table_selected {
@@ -438,6 +471,7 @@ async fn main() {
                     i if i < 25 => 0,
                     i => i - 25,
                 };
+                old_selected = Some(flows.get(table_selected).unwrap().0.clone());
             },
             Some(KeyCode::PageDown) => {
                 table_selected = match table_selected {
@@ -445,15 +479,18 @@ async fn main() {
                     i if flows.len() < 25 || i >= flows.len() - 25 => flows.len() - 1,
                     i => i + 25,
                 };
+                old_selected = Some(flows.get(table_selected).unwrap().0.clone());
             },
             Some(KeyCode::Home) => {
                 table_selected = 0;
+                old_selected = Some(flows.get(table_selected).unwrap().0.clone());
             },
             Some(KeyCode::End) => {
                 table_selected = match table_selected {
                     _ if flows.len() == 0 => 0,
                     _ => flows.len() - 1,
                 };
+                old_selected = Some(flows.get(table_selected).unwrap().0.clone());
             },
             Some(_) => (),
             None => ()
