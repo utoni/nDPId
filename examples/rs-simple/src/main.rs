@@ -427,17 +427,21 @@ async fn main() {
     let mut old_selected: Option<FlowKey> = None;
 
     loop {
-        let flows: Vec<(FlowKey, (FlowExpiration, FlowValue))> = flow_cache_rx.iter().map(|(k, v)| (k.as_ref().clone(), v.clone())).collect();
+        let flows: Vec<(FlowKey, (FlowExpiration, FlowValue))> = flow_cache_rx.iter().map(|(k, v)| (k.as_ref().clone(), v.clone()))
+                                                                     .take(1024)
+                                                                     .collect();
         let mut table_selected = match table_state.selected() {
             Some(mut table_index) => {
-                if flows.len() > 0 && table_index >= flows.len() {
-                    flows.len() - 1
+                if table_index >= flows.len() {
+                    flows.len().saturating_sub(1)
                 } else {
                     if let Some(ref old_flow_key_selected) = old_selected {
                         if let Some(old_index) = flows.iter().position(|x| x.0 == *old_flow_key_selected) {
                             if old_index != table_index {
                                 table_index = old_index;
                             }
+                        } else {
+                            old_selected = Some(flows.get(table_index).unwrap().0.clone());
                         }
                     }
                     table_index
@@ -451,46 +455,55 @@ async fn main() {
             Some(KeyCode::Char('q')) => break,
             Some(KeyCode::Up) => {
                 table_selected = match table_selected {
-                    _ if flows.len() == 0 => 0,
-                    i if i == 0 => flows.len() - 1,
+                    i if i == 0 => flows.len().saturating_sub(1),
                     i => i - 1,
                 };
-                old_selected = Some(flows.get(table_selected).unwrap().0.clone());
+                if let Some(new_selected) = flows.get(table_selected) {
+                    old_selected = Some(new_selected.0.clone());
+                }
             },
             Some(KeyCode::Down) => {
                 table_selected = match table_selected {
-                    i if flows.len() == 0 || i >= flows.len() - 1 => 0,
+                    i if i >= flows.len().saturating_sub(1) => 0,
                     i => i + 1,
                 };
-                old_selected = Some(flows.get(table_selected).unwrap().0.clone());
+                if let Some(new_selected) = flows.get(table_selected) {
+                    old_selected = Some(new_selected.0.clone());
+                }
             },
             Some(KeyCode::PageUp) => {
                 table_selected = match table_selected {
-                    _ if flows.len() == 0 => 0,
-                    i if i == 0 => flows.len() - 1,
+                    i if i == 0 => flows.len().saturating_sub(1),
                     i if i < 25 => 0,
                     i => i - 25,
                 };
-                old_selected = Some(flows.get(table_selected).unwrap().0.clone());
+                if let Some(new_selected) = flows.get(table_selected) {
+                    old_selected = Some(new_selected.0.clone());
+                }
             },
             Some(KeyCode::PageDown) => {
                 table_selected = match table_selected {
-                    i if flows.len() == 0 || i >= flows.len() - 1 => 0,
-                    i if flows.len() < 25 || i >= flows.len() - 25 => flows.len() - 1,
+                    i if i >= flows.len().saturating_sub(1) => 0,
+                    i if i >= flows.len().saturating_sub(25) => flows.len().saturating_sub(1),
                     i => i + 25,
                 };
-                old_selected = Some(flows.get(table_selected).unwrap().0.clone());
+                if let Some(new_selected) = flows.get(table_selected) {
+                    old_selected = Some(new_selected.0.clone());
+                }
             },
             Some(KeyCode::Home) => {
                 table_selected = 0;
-                old_selected = Some(flows.get(table_selected).unwrap().0.clone());
+                if let Some(new_selected) = flows.get(table_selected) {
+                    old_selected = Some(new_selected.0.clone());
+                }
             },
             Some(KeyCode::End) => {
                 table_selected = match table_selected {
-                    _ if flows.len() == 0 => 0,
-                    _ => flows.len() - 1,
+                    _ => flows.len().saturating_sub(1),
                 };
-                old_selected = Some(flows.get(table_selected).unwrap().0.clone());
+                if let Some(new_selected) = flows.get(table_selected) {
+                    old_selected = Some(new_selected.0.clone());
+                }
             },
             Some(_) => (),
             None => ()
@@ -518,7 +531,7 @@ async fn main() {
 }
 
 fn read_keypress() -> Option<KeyCode> {
-    if event::poll(Duration::from_millis(500)).unwrap() {
+    if event::poll(Duration::from_millis(1000)).unwrap() {
         if let event::Event::Key(KeyEvent { code, .. }) = event::read().unwrap() {
             return Some(code);
         }
