@@ -63,26 +63,32 @@
      DAEMON-EVENT: [Flows][active: 1 / 7|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....8] [ip4][..tcp] [..192.168.2.100][34218] -> [.160.44.201.102][.5223]
          detected: [.....8] [ip4][..tcp] [..192.168.2.100][34218] -> [.160.44.201.102][.5223] [Jabber][Unknown][Web][Acceptable]
+                   RISK: Susp Entropy
               end: [.....7] [ip4][..tcp] [...192.168.58.1][53460] -> [.192.168.58.153][.5222] [Jabber][Unknown][Web][Acceptable]
      DAEMON-EVENT: [Processed: 298 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 8|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....9] [ip4][..tcp] [..192.168.2.100][37614] -> [.160.44.201.102][.5223]
          detected: [.....9] [ip4][..tcp] [..192.168.2.100][37614] -> [.160.44.201.102][.5223] [Jabber][Unknown][Web][Acceptable]
              idle: [.....8] [ip4][..tcp] [..192.168.2.100][34218] -> [.160.44.201.102][.5223] [Jabber][Unknown][Web][Acceptable]
+                   RISK: Susp Entropy
      DAEMON-EVENT: [Processed: 313 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 9|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [....10] [ip4][..tcp] [..192.168.2.100][58388] -> [.160.44.201.102][.5223]
          detected: [....10] [ip4][..tcp] [..192.168.2.100][58388] -> [.160.44.201.102][.5223] [Jabber][Unknown][Web][Acceptable]
+                   RISK: Susp Entropy
              idle: [.....9] [ip4][..tcp] [..192.168.2.100][37614] -> [.160.44.201.102][.5223] [Jabber][Unknown][Web][Acceptable]
      DAEMON-EVENT: [Processed: 328 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 10|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [....11] [ip4][..tcp] [..192.168.2.100][41420] -> [.160.44.201.102][.5223]
          detected: [....11] [ip4][..tcp] [..192.168.2.100][41420] -> [.160.44.201.102][.5223] [Jabber][Unknown][Web][Acceptable]
              idle: [....10] [ip4][..tcp] [..192.168.2.100][58388] -> [.160.44.201.102][.5223] [Jabber][Unknown][Web][Acceptable]
+                   RISK: Susp Entropy
      DAEMON-EVENT: [Processed: 343 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 11|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [....12] [ip4][..tcp] [..192.168.2.100][34070] -> [.160.44.201.102][.5223]
          detected: [....12] [ip4][..tcp] [..192.168.2.100][34070] -> [.160.44.201.102][.5223] [Jabber][Unknown][Web][Acceptable]
+                   RISK: Susp Entropy
              idle: [....11] [ip4][..tcp] [..192.168.2.100][41420] -> [.160.44.201.102][.5223] [Jabber][Unknown][Web][Acceptable]
              idle: [....12] [ip4][..tcp] [..192.168.2.100][34070] -> [.160.44.201.102][.5223] [Jabber][Unknown][Web][Acceptable]
+                   RISK: Susp Entropy
      DAEMON-EVENT: shutdown

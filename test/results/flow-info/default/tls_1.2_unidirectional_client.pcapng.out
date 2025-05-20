@@ -3,7 +3,5 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [.192.168.12.156][43854] -> [..216.58.209.42][..443]
          detected: [.....1] [ip4][..tcp] [.192.168.12.156][43854] -> [..216.58.209.42][..443] [TLS.GoogleServices][Google][Web][Acceptable][notifications-pa.googleapis.com]
-                   RISK: Unidirectional Traffic
               end: [.....1] [ip4][..tcp] [.192.168.12.156][43854] -> [..216.58.209.42][..443] [TLS.GoogleServices][Google][Web][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

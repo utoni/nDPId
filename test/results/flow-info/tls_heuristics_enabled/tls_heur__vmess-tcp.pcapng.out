@@ -6,7 +6,6 @@
               new: [.....2] [ip4][..udp] [......127.0.0.1][35957] -> [.....127.0.0.53][...53]
          detected: [.....2] [ip4][..udp] [......127.0.0.1][35957] -> [.....127.0.0.53][...53] [DNS][Unknown][Network][Acceptable][www.youtube.com]
  detection-update: [.....2] [ip4][..udp] [......127.0.0.1][35957] -> [.....127.0.0.53][...53] [DNS][Unknown][Network][Acceptable][www.youtube.com]
-                   RISK: Unidirectional Traffic
  detection-update: [.....2] [ip4][..udp] [......127.0.0.1][35957] -> [.....127.0.0.53][...53] [DNS][Unknown][Network][Acceptable][www.youtube.com]
               new: [.....3] [ip4][..tcp] [......127.0.0.1][40818] -> [......127.0.0.1][.1234]
               new: [.....4] [ip6][..tcp] [..2001:b07:a3d:c112:8628:88aa:8b00:913c][48302] -> [...............2a00:1450:4006:80d::200e][..443]
@@ -24,8 +23,7 @@
                    [ENTROPIES...: 4.9,4.8,4.9,5.4,5.2,4.8,5.2,7.9,7.8,5.2,5.2,7.8,7.9,5.2,5.2,6.4,6.6,7.7,5.9,6.4,5.9,5.2,7.9,7.2,7.9,5.2,7.9,5.2,7.9,5.2,7.9,5.2]
              idle: [.....2] [ip4][..udp] [......127.0.0.1][35957] -> [.....127.0.0.53][...53] [DNS][Unknown][Network][Acceptable][www.youtube.com]
              idle: [.....1] [ip4][..tcp] [......127.0.0.1][37218] -> [......127.0.0.1][.1080] [SOCKS][Unknown][Web][Acceptable]
-     not-detected: [.....3] [ip4][..tcp] [......127.0.0.1][40818] -> [......127.0.0.1][.1234] [Unknown][Unknown][Unrated]
-                   RISK: Fully Encrypted Flow
+     not-detected: [.....3] [ip4][..tcp] [......127.0.0.1][40818] -> [......127.0.0.1][.1234] [Unknown][Unknown][Unspecified][Unrated]
              idle: [.....3] [ip4][..tcp] [......127.0.0.1][40818] -> [......127.0.0.1][.1234]
              idle: [.....4] [ip6][..tcp] [..2001:b07:a3d:c112:8628:88aa:8b00:913c][48302] -> [...............2a00:1450:4006:80d::200e][..443] [TLS.YouTube][Google][Media][Fun][www.youtube.com]
      DAEMON-EVENT: shutdown

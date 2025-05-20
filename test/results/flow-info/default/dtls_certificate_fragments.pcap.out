@@ -14,7 +14,7 @@
          detected: [.....2] [ip4][..udp] [...192.168.1.26][43594] -> [.104.153.87.149][50001] [DTLS][Discord][Web][Safe]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
  detection-update: [.....2] [ip4][..udp] [...192.168.1.26][43594] -> [.104.153.87.149][50001] [DTLS][Discord][Web][Safe]
-                   RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Unidirectional Traffic
+                   RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
  detection-update: [.....2] [ip4][..udp] [...192.168.1.26][43594] -> [.104.153.87.149][50001] [DTLS][Discord][Web][Safe]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
  detection-update: [.....2] [ip4][..udp] [...192.168.1.26][43594] -> [.104.153.87.149][50001] [DTLS.Discord][Discord][Collaborative][Fun]

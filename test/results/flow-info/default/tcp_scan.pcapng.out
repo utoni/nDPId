@@ -20,13 +20,13 @@
           guessed: [.....3] [ip4][..tcp] [..192.168.1.178][56274] -> [....192.168.1.2][..445] [SMBv23][Unknown][System][Acceptable]
                    RISK: TCP Connection Issues, Probing Attempt
               end: [.....3] [ip4][..tcp] [..192.168.1.178][56274] -> [....192.168.1.2][..445]
-     not-detected: [.....6] [ip4][..tcp] [..192.168.1.178][57916] -> [....192.168.1.2][.3391] [Unknown][Unknown][Unrated]
+     not-detected: [.....6] [ip4][..tcp] [..192.168.1.178][57916] -> [....192.168.1.2][.3391] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: TCP Connection Issues, Probing Attempt
               end: [.....6] [ip4][..tcp] [..192.168.1.178][57916] -> [....192.168.1.2][.3391]
-     not-detected: [.....5] [ip4][..tcp] [..192.168.1.178][62971] -> [....192.168.1.2][.3390] [Unknown][Unknown][Unrated]
+     not-detected: [.....5] [ip4][..tcp] [..192.168.1.178][62971] -> [....192.168.1.2][.3390] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: TCP Connection Issues, Probing Attempt
               end: [.....5] [ip4][..tcp] [..192.168.1.178][62971] -> [....192.168.1.2][.3390]
-     not-detected: [.....7] [ip4][..tcp] [..192.168.1.178][63243] -> [....192.168.1.2][.3392] [Unknown][Unknown][Unrated]
+     not-detected: [.....7] [ip4][..tcp] [..192.168.1.178][63243] -> [....192.168.1.2][.3392] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: TCP Connection Issues, Probing Attempt
               end: [.....7] [ip4][..tcp] [..192.168.1.178][63243] -> [....192.168.1.2][.3392]
      DAEMON-EVENT: shutdown

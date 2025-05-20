@@ -4,9 +4,10 @@
               new: [.....1] [ip4][..tcp] [....192.168.0.1][.1044] -> [.....10.10.10.1][...80]
               new: [.....2] [ip4][..tcp] [..192.168.1.146][...80] -> [..192.168.1.103][.1044]
          detected: [.....1] [ip4][..tcp] [....192.168.0.1][.1044] -> [.....10.10.10.1][...80] [HTTP][Unknown][Web][Acceptable][proxy.wiresharkfest.acropolis.local]
-                   RISK: Unidirectional Traffic
          detected: [.....2] [ip4][..tcp] [..192.168.1.146][...80] -> [..192.168.1.103][.1044] [HTTP][Unknown][Web][Acceptable][]
-                   RISK: HTTP Susp User-Agent, Susp Entropy, Unidirectional Traffic
+                   RISK: HTTP Susp User-Agent, Susp Entropy
+ detection-update: [.....1] [ip4][..tcp] [....192.168.0.1][.1044] -> [.....10.10.10.1][...80] [HTTP][Unknown][Web][Acceptable][proxy.wiresharkfest.acropolis.local]
+                   RISK: Unidirectional Traffic
  detection-update: [.....2] [ip4][..tcp] [..192.168.1.146][...80] -> [..192.168.1.103][.1044] [HTTP][Unknown][Web][Acceptable][]
                    RISK: HTTP Susp User-Agent, Susp Entropy, Error Code, Unidirectional Traffic
               end: [.....1] [ip4][..tcp] [....192.168.0.1][.1044] -> [.....10.10.10.1][...80] [HTTP][Unknown][Web][Acceptable][proxy.wiresharkfest.acropolis.local]

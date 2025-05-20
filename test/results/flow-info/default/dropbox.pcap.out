@@ -54,16 +54,10 @@
               new: [.....5] [ip4][..udp] [..192.168.1.105][55407] -> [..192.168.1.254][...53]
          detected: [.....5] [ip4][..udp] [..192.168.1.105][55407] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][client.dropbox.com]
  detection-update: [.....5] [ip4][..udp] [..192.168.1.105][55407] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][client.dropbox.com]
-                   RISK: Unidirectional Traffic
- detection-update: [.....5] [ip4][..udp] [..192.168.1.105][55407] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][client.dropbox.com]
               new: [.....6] [ip4][..udp] [..192.168.1.105][49112] -> [..192.168.1.254][...53]
          detected: [.....6] [ip4][..udp] [..192.168.1.105][49112] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][client-cf.dropbox.com]
- detection-update: [.....6] [ip4][..udp] [..192.168.1.105][49112] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][client-cf.dropbox.com]
-                   RISK: Unidirectional Traffic
               new: [.....7] [ip4][..udp] [..192.168.1.105][50789] -> [..192.168.1.254][...53]
          detected: [.....7] [ip4][..udp] [..192.168.1.105][50789] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][d.dropbox.com]
- detection-update: [.....7] [ip4][..udp] [..192.168.1.105][50789] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][d.dropbox.com]
-                   RISK: Unidirectional Traffic
  detection-update: [.....6] [ip4][..udp] [..192.168.1.105][49112] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][client-cf.dropbox.com]
  detection-update: [.....7] [ip4][..udp] [..192.168.1.105][50789] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][d.dropbox.com]
              idle: [.....1] [ip4][..udp] [...192.168.56.1][50311] -> [.192.168.56.101][17500] [Dropbox][Unknown][Cloud][Acceptable]
@@ -73,9 +67,6 @@
               new: [.....8] [ip4][..udp] [..192.168.1.105][36173] -> [..192.168.1.254][...53]
          detected: [.....8] [ip4][..udp] [..192.168.1.105][36173] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][log.getdropbox.com]
  detection-update: [.....8] [ip4][..udp] [..192.168.1.105][36173] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][log.getdropbox.com]
-                   RISK: Unidirectional Traffic
- detection-update: [.....8] [ip4][..udp] [..192.168.1.105][36173] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][log.getdropbox.com]
-                   RISK: Unidirectional Traffic
  detection-update: [.....8] [ip4][..udp] [..192.168.1.105][36173] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][log.getdropbox.com]
               new: [.....9] [ip4][..udp] [..192.168.1.105][17500] -> [255.255.255.255][17500]
          detected: [.....9] [ip4][..udp] [..192.168.1.105][17500] -> [255.255.255.255][17500] [Dropbox][Unknown][Cloud][Acceptable]
@@ -84,10 +75,8 @@
               new: [....11] [ip4][..udp] [..192.168.1.105][33189] -> [..192.168.1.254][...53]
          detected: [....11] [ip4][..udp] [..192.168.1.105][33189] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][notify.dropbox.com]
  detection-update: [....11] [ip4][..udp] [..192.168.1.105][33189] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][notify.dropbox.com]
-                   RISK: Unidirectional Traffic
- detection-update: [....11] [ip4][..udp] [..192.168.1.105][33189] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][notify.dropbox.com]
      DAEMON-EVENT: [Processed: 836 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 7 / 11|skipped: 0|!detected: 0|guessed: 0|detection-updates: 11|updates: 0]
+     DAEMON-EVENT: [Flows][active: 7 / 11|skipped: 0|!detected: 0|guessed: 0|detection-updates: 6|updates: 0]
               new: [....12] [ip4][..udp] [....192.168.1.6][17500] -> [255.255.255.255][17500]
          detected: [....12] [ip4][..udp] [....192.168.1.6][17500] -> [255.255.255.255][17500] [Dropbox][Unknown][Cloud][Acceptable]
               new: [....13] [ip4][..udp] [....192.168.1.6][17500] -> [..192.168.1.255][17500]

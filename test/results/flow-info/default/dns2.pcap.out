@@ -4,7 +4,6 @@
               new: [.....1] [ip4][..udp] [192.168.255.251][56550] -> [........8.8.8.8][...53]
          detected: [.....1] [ip4][..udp] [192.168.255.251][56550] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][www.github.com]
  detection-update: [.....1] [ip4][..udp] [192.168.255.251][56550] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][www.github.com]
-                   RISK: Unidirectional Traffic
  detection-update: [.....1] [ip4][..udp] [192.168.255.251][56550] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][www.github.com]
              idle: [.....1] [ip4][..udp] [192.168.255.251][56550] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][www.github.com]
      DAEMON-EVENT: shutdown

@@ -4,20 +4,12 @@
               new: [.....1] [ip4][..udp] [.192.168.43.169][48854] -> [.134.224.90.111][.8801]
          detected: [.....1] [ip4][..udp] [.192.168.43.169][48854] -> [.134.224.90.111][.8801] [STUN][Zoom][Network][Acceptable][]
                    RISK: Known Proto on Non Std Port
- detection-update: [.....1] [ip4][..udp] [.192.168.43.169][48854] -> [.134.224.90.111][.8801] [STUN][Zoom][Network][Acceptable][]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
- detection-update: [.....1] [ip4][..udp] [.192.168.43.169][48854] -> [.134.224.90.111][.8801] [STUN][Zoom][Network][Acceptable][]
-                   RISK: Known Proto on Non Std Port
  detection-update: [.....1] [ip4][..udp] [.192.168.43.169][48854] -> [.134.224.90.111][.8801] [DTLS][Zoom][Network][Safe]
               new: [.....2] [ip4][..udp] [.192.168.43.169][53065] -> [.134.224.90.111][.8801]
          detected: [.....2] [ip4][..udp] [.192.168.43.169][53065] -> [.134.224.90.111][.8801] [STUN][Zoom][Network][Acceptable][]
                    RISK: Known Proto on Non Std Port
- detection-update: [.....2] [ip4][..udp] [.192.168.43.169][53065] -> [.134.224.90.111][.8801] [STUN][Zoom][Network][Acceptable][]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
  detection-update: [.....1] [ip4][..udp] [.192.168.43.169][48854] -> [.134.224.90.111][.8801] [DTLS][Zoom][Network][Safe]
  detection-update: [.....1] [ip4][..udp] [.192.168.43.169][48854] -> [.134.224.90.111][.8801] [DTLS.Zoom][Zoom][Video][Acceptable]
- detection-update: [.....2] [ip4][..udp] [.192.168.43.169][53065] -> [.134.224.90.111][.8801] [STUN][Zoom][Network][Acceptable][]
-                   RISK: Known Proto on Non Std Port
  detection-update: [.....2] [ip4][..udp] [.192.168.43.169][53065] -> [.134.224.90.111][.8801] [DTLS][Zoom][Network][Safe]
           analyse: [.....2] [ip4][..udp] [.192.168.43.169][53065] -> [.134.224.90.111][.8801] [DTLS][Zoom][Network][Safe]
                                          min|       max|       avg|    stddev|         variance|  entropy

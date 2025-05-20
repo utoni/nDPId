@@ -9,10 +9,10 @@
           guessed: [.....1] [ip4][..tcp] [..192.168.1.245][56866] -> [........3.3.3.3][..443] [TLS][Unknown][Web][Safe]
                    RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..tcp] [..192.168.1.245][56866] -> [........3.3.3.3][..443]
-     not-detected: [.....3] [ip4][..tcp] [..192.168.1.245][58288] -> [........3.3.3.3][..446] [Unknown][Unknown][Unrated]
+     not-detected: [.....3] [ip4][..tcp] [..192.168.1.245][58288] -> [........3.3.3.3][..446] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [.....3] [ip4][..tcp] [..192.168.1.245][58288] -> [........3.3.3.3][..446]
-     not-detected: [.....2] [ip4][..tcp] [..192.168.1.245][59682] -> [........3.3.3.3][..444] [Unknown][Unknown][Unrated]
+     not-detected: [.....2] [ip4][..tcp] [..192.168.1.245][59682] -> [........3.3.3.3][..444] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..tcp] [..192.168.1.245][59682] -> [........3.3.3.3][..444]
      DAEMON-EVENT: shutdown

@@ -2,55 +2,51 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [......127.0.0.1][....1] -> [......127.0.0.1][....2]
-         detected: [.....1] [ip4][..udp] [......127.0.0.1][....1] -> [......127.0.0.1][....2] [HalfLife2][Unknown][Game][Fun]
      DAEMON-EVENT: [Processed: 2 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....2] [ip4][..udp] [......127.0.0.1][.1119] -> [......127.0.0.1][.1120]
-             idle: [.....1] [ip4][..udp] [......127.0.0.1][....1] -> [......127.0.0.1][....2] [HalfLife2][Unknown][Game][Fun]
+     not-detected: [.....1] [ip4][..udp] [......127.0.0.1][....1] -> [......127.0.0.1][....2] [Unknown][Unknown][Unspecified][Unrated]
+             idle: [.....1] [ip4][..udp] [......127.0.0.1][....1] -> [......127.0.0.1][....2]
            update: [.....2] [ip4][..udp] [......127.0.0.1][.1119] -> [......127.0.0.1][.1120]
          detected: [.....2] [ip4][..udp] [......127.0.0.1][.1119] -> [......127.0.0.1][.1120] [Protobuf][Unknown][Network][Safe]
                    RISK: Unidirectional Traffic
            update: [.....2] [ip4][..udp] [......127.0.0.1][.1119] -> [......127.0.0.1][.1120] [Protobuf][Unknown][Network][Safe]
                    RISK: Unidirectional Traffic
      DAEMON-EVENT: [Processed: 10 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 1 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 2]
+     DAEMON-EVENT: [Flows][active: 1 / 2|skipped: 0|!detected: 1|guessed: 0|detection-updates: 0|updates: 2]
               new: [.....3] [ip4][..tcp] [..192.168.1.128][....1] -> [.12.129.206.130][.1119] [MIDSTREAM]
-         detected: [.....3] [ip4][..tcp] [..192.168.1.128][....1] -> [.12.129.206.130][.1119] [Starcraft][Unknown][Game][Fun]
-                   RISK: TCP Connection Issues
              idle: [.....2] [ip4][..udp] [......127.0.0.1][.1119] -> [......127.0.0.1][.1120] [Protobuf][Unknown][Network][Safe]
                    RISK: Unidirectional Traffic
               new: [.....4] [ip4][..tcp] [..192.168.1.128][....1] -> [121.254.200.130][.1119] [MIDSTREAM]
-         detected: [.....4] [ip4][..tcp] [..192.168.1.128][....1] -> [121.254.200.130][.1119] [Starcraft][Unknown][Game][Fun]
-                   RISK: TCP Connection Issues
               new: [.....5] [ip4][..tcp] [..192.168.1.128][....1] -> [....202.9.66.76][.1119] [MIDSTREAM]
-         detected: [.....5] [ip4][..tcp] [..192.168.1.128][....1] -> [....202.9.66.76][.1119] [Starcraft][Starcraft][Game][Fun]
-                   RISK: TCP Connection Issues
               new: [.....6] [ip4][..tcp] [..192.168.1.128][....1] -> [.12.129.236.254][.1119] [MIDSTREAM]
-         detected: [.....6] [ip4][..tcp] [..192.168.1.128][....1] -> [.12.129.236.254][.1119] [Starcraft][Unknown][Game][Fun]
-                   RISK: TCP Connection Issues
      DAEMON-EVENT: [Processed: 14 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 4 / 6|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 2]
+     DAEMON-EVENT: [Flows][active: 4 / 6|skipped: 0|!detected: 1|guessed: 0|detection-updates: 0|updates: 2]
               new: [.....7] [ip4][..udp] [......127.0.0.1][..100] -> [......127.0.0.1][..200]
            update: [.....7] [ip4][..udp] [......127.0.0.1][..100] -> [......127.0.0.1][..200]
      DAEMON-EVENT: [Processed: 16 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 5 / 7|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 3]
+     DAEMON-EVENT: [Flows][active: 5 / 7|skipped: 0|!detected: 1|guessed: 0|detection-updates: 0|updates: 3]
               new: [.....8] [ip4][..udp] [......127.0.0.1][17788] -> [......127.0.0.1][17788]
-     not-detected: [.....7] [ip4][..udp] [......127.0.0.1][..100] -> [......127.0.0.1][..200] [Unknown][Unknown][Unrated]
+     not-detected: [.....7] [ip4][..udp] [......127.0.0.1][..100] -> [......127.0.0.1][..200] [Unknown][Unknown][Unspecified][Unrated]
              idle: [.....7] [ip4][..udp] [......127.0.0.1][..100] -> [......127.0.0.1][..200]
-             idle: [.....4] [ip4][..tcp] [..192.168.1.128][....1] -> [121.254.200.130][.1119] [Starcraft][Unknown][Game][Fun]
-                   RISK: TCP Connection Issues
-             idle: [.....6] [ip4][..tcp] [..192.168.1.128][....1] -> [.12.129.236.254][.1119] [Starcraft][Unknown][Game][Fun]
-                   RISK: TCP Connection Issues
-             idle: [.....3] [ip4][..tcp] [..192.168.1.128][....1] -> [.12.129.206.130][.1119] [Starcraft][Unknown][Game][Fun]
-                   RISK: TCP Connection Issues
-             idle: [.....5] [ip4][..tcp] [..192.168.1.128][....1] -> [....202.9.66.76][.1119] [Starcraft][Starcraft][Game][Fun]
-                   RISK: TCP Connection Issues
+          guessed: [.....4] [ip4][..tcp] [..192.168.1.128][....1] -> [121.254.200.130][.1119] [Blizzard][Unknown][Game][Fun]
+                   RISK: Unidirectional Traffic, TCP Connection Issues
+             idle: [.....4] [ip4][..tcp] [..192.168.1.128][....1] -> [121.254.200.130][.1119]
+          guessed: [.....6] [ip4][..tcp] [..192.168.1.128][....1] -> [.12.129.236.254][.1119] [Blizzard][Unknown][Game][Fun]
+                   RISK: Unidirectional Traffic, TCP Connection Issues
+             idle: [.....6] [ip4][..tcp] [..192.168.1.128][....1] -> [.12.129.236.254][.1119]
+          guessed: [.....3] [ip4][..tcp] [..192.168.1.128][....1] -> [.12.129.206.130][.1119] [Blizzard][Unknown][Game][Fun]
+                   RISK: Unidirectional Traffic, TCP Connection Issues
+             idle: [.....3] [ip4][..tcp] [..192.168.1.128][....1] -> [.12.129.206.130][.1119]
+          guessed: [.....5] [ip4][..tcp] [..192.168.1.128][....1] -> [....202.9.66.76][.1119] [Blizzard][Blizzard][Game][Fun]
+                   RISK: Unidirectional Traffic, TCP Connection Issues
+             idle: [.....5] [ip4][..tcp] [..192.168.1.128][....1] -> [....202.9.66.76][.1119]
      DAEMON-EVENT: [Processed: 17 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 1 / 8|skipped: 0|!detected: 1|guessed: 0|detection-updates: 0|updates: 3]
+     DAEMON-EVENT: [Flows][active: 1 / 8|skipped: 0|!detected: 2|guessed: 4|detection-updates: 0|updates: 3]
               new: [.....9] [ip4][..tcp] [..192.168.1.128][....1] -> [........1.2.3.4][...10] [MIDSTREAM]
          detected: [.....9] [ip4][..tcp] [..192.168.1.128][....1] -> [........1.2.3.4][...10] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol, Unidirectional Traffic, TCP Connection Issues
-     not-detected: [.....8] [ip4][..udp] [......127.0.0.1][17788] -> [......127.0.0.1][17788] [Unknown][Unknown][Unrated]
+     not-detected: [.....8] [ip4][..udp] [......127.0.0.1][17788] -> [......127.0.0.1][17788] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [.....8] [ip4][..udp] [......127.0.0.1][17788] -> [......127.0.0.1][17788]
               new: [....10] [ip4][..tcp] [..192.168.1.128][....1] -> [........1.2.3.4][...11] [MIDSTREAM]

@@ -1,10 +1,5 @@
-Flow 6 risky: tcp 2a01:cb01:2049:8b07:991d:ec85:28df:f629:42908 -> 64:ff9b::98c7:1593:443
 Flow 6 midstream: tcp 2a01:cb01:2049:8b07:991d:ec85:28df:f629:42908 -> 64:ff9b::98c7:1593:443
-Flow 9 risky: tcp 2a01:cb01:2049:8b07:991d:ec85:28df:f629:43434 -> 64:ff9b::c000:4d28:443
 Flow 9 midstream: tcp 2a01:cb01:2049:8b07:991d:ec85:28df:f629:43434 -> 64:ff9b::c000:4d28:443
-Flow 2 risky: tcp 2a01:cb01:2049:8b07:991d:ec85:28df:f629:48240 -> 64:ff9b::9765:789d:443
 Flow 2 midstream: tcp 2a01:cb01:2049:8b07:991d:ec85:28df:f629:48240 -> 64:ff9b::9765:789d:443
-Flow 15 risky: tcp 2a01:cb01:2049:8b07:991d:ec85:28df:f629:51874 -> 64:ff9b::c000:4c03:443
 Flow 15 midstream: tcp 2a01:cb01:2049:8b07:991d:ec85:28df:f629:51874 -> 64:ff9b::c000:4c03:443
-Flow 14 risky: tcp 2a01:cb01:2049:8b07:991d:ec85:28df:f629:56794 -> 64:ff9b::c000:4d03:443
 Flow 14 midstream: tcp 2a01:cb01:2049:8b07:991d:ec85:28df:f629:56794 -> 64:ff9b::c000:4d03:443

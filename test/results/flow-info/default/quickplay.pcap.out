@@ -17,20 +17,10 @@
          detected: [.....7] [ip4][..tcp] [..10.54.169.250][44793] -> [....31.13.68.49][...80] [HTTP.Facebook][Facebook][SocialNetwork][Fun][www.facebook.com]
               new: [.....8] [ip4][..tcp] [..10.54.169.250][44256] -> [....120.28.5.41][...80] [MIDSTREAM]
          detected: [.....8] [ip4][..tcp] [..10.54.169.250][44256] -> [....120.28.5.41][...80] [HTTP][Unknown][Streaming][Acceptable][play-singtelhawk.quickplay.com]
- detection-update: [.....8] [ip4][..tcp] [..10.54.169.250][44256] -> [....120.28.5.41][...80] [HTTP][Unknown][Streaming][Acceptable][play-singtelhawk.quickplay.com]
-                   RISK: Unidirectional Traffic
- detection-update: [.....8] [ip4][..tcp] [..10.54.169.250][44256] -> [....120.28.5.41][...80] [HTTP][Unknown][Streaming][Acceptable][play-singtelhawk.quickplay.com]
               new: [.....9] [ip4][..tcp] [..10.54.169.250][52007] -> [...120.28.35.40][...80] [MIDSTREAM]
          detected: [.....9] [ip4][..tcp] [..10.54.169.250][52007] -> [...120.28.35.40][...80] [HTTP][Unknown][Streaming][Acceptable][vod-singtelhawk.quickplay.com]
- detection-update: [.....9] [ip4][..tcp] [..10.54.169.250][52007] -> [...120.28.35.40][...80] [HTTP][Unknown][Streaming][Acceptable][vod-singtelhawk.quickplay.com]
-                   RISK: Unidirectional Traffic
               new: [....10] [ip4][..tcp] [..10.54.169.250][54883] -> [203.205.151.160][...80] [MIDSTREAM]
          detected: [....10] [ip4][..tcp] [..10.54.169.250][54883] -> [203.205.151.160][...80] [HTTP_Proxy.QQ][Unknown][Chat][Fun][hkextshort.weixin.qq.com]
-                   RISK: Known Proto on Non Std Port
- detection-update: [.....9] [ip4][..tcp] [..10.54.169.250][52007] -> [...120.28.35.40][...80] [HTTP][Unknown][Streaming][Acceptable][vod-singtelhawk.quickplay.com]
- detection-update: [....10] [ip4][..tcp] [..10.54.169.250][54883] -> [203.205.151.160][...80] [HTTP_Proxy.QQ][Unknown][Chat][Fun][hkextshort.weixin.qq.com]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
- detection-update: [....10] [ip4][..tcp] [..10.54.169.250][54883] -> [203.205.151.160][...80] [HTTP_Proxy.QQ][Unknown][Chat][Fun][hkextshort.weixin.qq.com]
                    RISK: Known Proto on Non Std Port
               new: [....11] [ip4][..tcp] [..10.54.169.250][52009] -> [...120.28.35.40][...80] [MIDSTREAM]
          detected: [....11] [ip4][..tcp] [..10.54.169.250][52009] -> [...120.28.35.40][...80] [HTTP][Unknown][Streaming][Acceptable][vod-singtelhawk.quickplay.com]

@@ -1,0 +1,51 @@
+     DAEMON-EVENT: init
+              new: [.....1] [ip4][..tcp] [..192.168.1.205][50082] -> [..37.244.28.101][.1119]
+         detected: [.....1] [ip4][..tcp] [..192.168.1.205][50082] -> [..37.244.28.101][.1119] [Blizzard][Blizzard][Game][Fun]
+              new: [.....2] [ip4][..tcp] [..192.168.1.205][50056] -> [.137.221.106.59][.1119]
+         detected: [.....2] [ip4][..tcp] [..192.168.1.205][50056] -> [.137.221.106.59][.1119] [Blizzard][Blizzard][Game][Fun]
+     DAEMON-EVENT: [Processed: 44 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 2 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....3] [ip4][..tcp] [..192.168.12.67][42710] -> [137.221.107.220][.3724]
+         detected: [.....3] [ip4][..tcp] [..192.168.12.67][42710] -> [137.221.107.220][.3724] [Blizzard][Blizzard][Game][Fun]
+                   RISK: Known Proto on Non Std Port
+             idle: [.....2] [ip4][..tcp] [..192.168.1.205][50056] -> [.137.221.106.59][.1119] [Blizzard][Blizzard][Game][Fun]
+             idle: [.....1] [ip4][..tcp] [..192.168.1.205][50082] -> [..37.244.28.101][.1119] [Blizzard][Blizzard][Game][Fun]
+     DAEMON-EVENT: [Processed: 65 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 1 / 3|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....4] [ip4][..udp] [..192.168.12.67][.1120] -> [...34.171.17.90][50000]
+         detected: [.....4] [ip4][..udp] [..192.168.12.67][.1120] -> [...34.171.17.90][50000] [Blizzard][GoogleCloud][Game][Fun]
+                   RISK: Known Proto on Non Std Port
+             idle: [.....3] [ip4][..tcp] [..192.168.12.67][42710] -> [137.221.107.220][.3724] [Blizzard][Blizzard][Game][Fun]
+                   RISK: Known Proto on Non Std Port
+              new: [.....5] [ip4][..udp] [..192.168.12.67][44282] -> [...34.22.163.26][.7521]
+         detected: [.....5] [ip4][..udp] [..192.168.12.67][44282] -> [...34.22.163.26][.7521] [Blizzard][GoogleCloud][Game][Fun]
+                   RISK: Known Proto on Non Std Port
+           update: [.....4] [ip4][..udp] [..192.168.12.67][.1120] -> [...34.171.17.90][50000] [Blizzard][GoogleCloud][Game][Fun]
+                   RISK: Known Proto on Non Std Port
+     DAEMON-EVENT: [Processed: 109 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 2 / 5|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 1]
+              new: [.....6] [ip4][..tcp] [..192.168.1.117][50015] -> [..66.40.180.215][.3724]
+         detected: [.....6] [ip4][..tcp] [..192.168.1.117][50015] -> [..66.40.180.215][.3724] [WorldOfWarcraft][Blizzard][Game][Fun]
+             idle: [.....5] [ip4][..udp] [..192.168.12.67][44282] -> [...34.22.163.26][.7521] [Blizzard][GoogleCloud][Game][Fun]
+                   RISK: Known Proto on Non Std Port
+             idle: [.....4] [ip4][..udp] [..192.168.12.67][.1120] -> [...34.171.17.90][50000] [Blizzard][GoogleCloud][Game][Fun]
+                   RISK: Known Proto on Non Std Port
+     DAEMON-EVENT: [Processed: 140 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 1 / 6|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 1]
+              new: [.....7] [ip4][..tcp] [..192.168.1.117][60378] -> [..66.40.191.253][.3724]
+         detected: [.....7] [ip4][..tcp] [..192.168.1.117][60378] -> [..66.40.191.253][.3724] [Blizzard][Blizzard][Game][Fun]
+                   RISK: Known Proto on Non Std Port
+              new: [.....8] [ip4][..udp] [..192.168.1.117][63711] -> [..137.221.72.99][29523]
+         detected: [.....8] [ip4][..udp] [..192.168.1.117][63711] -> [..137.221.72.99][29523] [Blizzard][Blizzard][Game][Fun]
+                   RISK: Known Proto on Non Std Port
+              end: [.....6] [ip4][..tcp] [..192.168.1.117][50015] -> [..66.40.180.215][.3724] [WorldOfWarcraft][Blizzard][Game][Fun]
+              new: [.....9] [ip4][..udp] [..192.168.1.117][58787] -> [.137.221.82.101][29503]
+         detected: [.....9] [ip4][..udp] [..192.168.1.117][58787] -> [.137.221.82.101][29503] [Blizzard][Blizzard][Game][Fun]
+                   RISK: Known Proto on Non Std Port
+             idle: [.....7] [ip4][..tcp] [..192.168.1.117][60378] -> [..66.40.191.253][.3724] [Blizzard][Blizzard][Game][Fun]
+                   RISK: Known Proto on Non Std Port
+             idle: [.....9] [ip4][..udp] [..192.168.1.117][58787] -> [.137.221.82.101][29503] [Blizzard][Blizzard][Game][Fun]
+                   RISK: Known Proto on Non Std Port
+             idle: [.....8] [ip4][..udp] [..192.168.1.117][63711] -> [..137.221.72.99][29523] [Blizzard][Blizzard][Game][Fun]
+                   RISK: Known Proto on Non Std Port
+     DAEMON-EVENT: shutdown

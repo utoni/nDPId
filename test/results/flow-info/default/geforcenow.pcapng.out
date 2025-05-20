@@ -21,10 +21,6 @@
               new: [.....2] [ip4][..udp] [..192.168.1.245][52441] -> [..80.84.167.206][18452]
          detected: [.....2] [ip4][..udp] [..192.168.1.245][52441] -> [..80.84.167.206][18452] [STUN][Nvidia][Network][Acceptable][]
                    RISK: Known Proto on Non Std Port
- detection-update: [.....2] [ip4][..udp] [..192.168.1.245][52441] -> [..80.84.167.206][18452] [STUN][Nvidia][Network][Acceptable][]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
- detection-update: [.....2] [ip4][..udp] [..192.168.1.245][52441] -> [..80.84.167.206][18452] [STUN][Nvidia][Network][Acceptable][]
-                   RISK: Known Proto on Non Std Port
  detection-update: [.....2] [ip4][..udp] [..192.168.1.245][52441] -> [..80.84.167.206][18452] [DTLS][Nvidia][Network][Safe]
  detection-update: [.....2] [ip4][..udp] [..192.168.1.245][52441] -> [..80.84.167.206][18452] [DTLS.GeForceNow][Nvidia][Game][Fun]
                    RISK: TLS Cert Validity Too Long

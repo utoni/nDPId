@@ -14,8 +14,6 @@
       ERROR-EVENT: Unknown packet type [1/16]
               new: [.....4] [ip4][..tcp] [..192.168.1.117][54341] -> [.62.149.152.153][..993] [MIDSTREAM]
          detected: [.....4] [ip4][..tcp] [..192.168.1.117][54341] -> [.62.149.152.153][..993] [IMAPS][Unknown][Email][Safe]
- detection-update: [.....1] [ip4][..tcp] [..192.168.1.117][54854] -> [..172.217.21.72][..443] [TLS.GoogleServices][Google][Web][Acceptable][www.googletagmanager.com]
-                   RISK: Obsolete TLS (v1.1 or older), Unidirectional Traffic
               new: [.....5] [ip4][..udp] [..192.168.1.117][57025] -> [239.255.255.250][.1900]
          detected: [.....5] [ip4][..udp] [..192.168.1.117][57025] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250]
               new: [.....6] [ip4][..udp] [..192.168.1.117][..137] -> [..192.168.1.255][..137]
@@ -44,8 +42,6 @@
               new: [....15] [ip4][..tcp] [..192.168.1.117][53867] -> [..104.199.65.42][...80] [MIDSTREAM]
               new: [....16] [ip4][..tcp] [..192.168.1.117][53872] -> [..35.186.224.53][..443] [MIDSTREAM]
          detected: [....16] [ip4][..tcp] [..192.168.1.117][53872] -> [..35.186.224.53][..443] [TLS][GoogleCloud][Web][Safe]
-                   RISK: Unidirectional Traffic
- detection-update: [....16] [ip4][..tcp] [..192.168.1.117][53872] -> [..35.186.224.53][..443] [TLS][GoogleCloud][Web][Safe]
               new: [....17] [ip4][.icmp] [..192.168.1.117] -> [..162.255.38.14]
          detected: [....17] [ip4][.icmp] [..192.168.1.117] -> [..162.255.38.14] [ICMP][Zoom][Network][Acceptable]
       ERROR-EVENT: Unknown packet type [2/16]
@@ -118,8 +114,6 @@
                    RISK: TLS (probably) Not Carrying HTTPS
  detection-update: [....30] [ip4][..tcp] [..192.168.1.117][54871] -> [..109.94.160.99][..443] [TLS.Zoom][Unknown][Video][Acceptable][zoomfrn99mmr.zoom.us]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [.....4] [ip4][..tcp] [..192.168.1.117][54341] -> [.62.149.152.153][..993] [IMAPS][Unknown][Email][Safe]
-                   RISK: Unidirectional Traffic
           analyse: [....30] [ip4][..tcp] [..192.168.1.117][54871] -> [..109.94.160.99][..443] [TLS.Zoom][Unknown][Video][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.156|     0.028|     0.040|         1628.090|    3.800]
@@ -148,7 +142,7 @@
               new: [....33] [ip4][..udp] [..192.168.1.117][61731] -> [..109.94.160.99][.8801]
          detected: [....33] [ip4][..udp] [..192.168.1.117][61731] -> [..109.94.160.99][.8801] [Zoom][Unknown][Video][Acceptable]
      DAEMON-EVENT: [Processed: 697 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 33 / 33|skipped: 0|!detected: 0|guessed: 0|detection-updates: 26|updates: 0]
+     DAEMON-EVENT: [Flows][active: 33 / 33|skipped: 0|!detected: 0|guessed: 0|detection-updates: 23|updates: 0]
       ERROR-EVENT: Unknown packet type [1/16]
       ERROR-EVENT: Unknown packet type [2/16]
       ERROR-EVENT: Unknown packet type [3/16]
@@ -193,7 +187,6 @@
               end: [....26] [ip4][..tcp] [..192.168.1.117][54868] -> [.213.19.144.104][..443] [TLS.Zoom][Zoom][Video][Acceptable]
                    RISK: TLS (probably) Not Carrying HTTPS
              idle: [.....4] [ip4][..tcp] [..192.168.1.117][54341] -> [.62.149.152.153][..993] [IMAPS][Unknown][Email][Safe]
-                   RISK: Unidirectional Traffic
              idle: [....32] [ip4][..udp] [..192.168.1.117][60620] -> [..109.94.160.99][.8801] [Zoom][Unknown][Video][Acceptable]
              idle: [....29] [ip4][..udp] [..192.168.1.117][51185] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][zoomfrn99mmr.zoom.us]
              idle: [....33] [ip4][..udp] [..192.168.1.117][61731] -> [..109.94.160.99][.8801] [Zoom][Unknown][Video][Acceptable]
@@ -215,7 +208,7 @@
              idle: [.....6] [ip4][..udp] [..192.168.1.117][..137] -> [..192.168.1.255][..137] [NetBIOS][Unknown][System][Acceptable][workgroup]
              idle: [.....2] [ip4][..udp] [..192.168.1.117][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable]
              idle: [.....1] [ip4][..tcp] [..192.168.1.117][54854] -> [..172.217.21.72][..443] [TLS.GoogleServices][Google][Web][Acceptable]
-                   RISK: Obsolete TLS (v1.1 or older), Unidirectional Traffic
+                   RISK: Obsolete TLS (v1.1 or older)
              idle: [....30] [ip4][..tcp] [..192.168.1.117][54871] -> [..109.94.160.99][..443] [TLS.Zoom][Unknown][Video][Acceptable][zoomfrn99mmr.zoom.us]
                    RISK: TLS (probably) Not Carrying HTTPS
           guessed: [....11] [ip4][..tcp] [..192.168.1.117][54798] -> [..13.225.84.182][..443] [TLS][AmazonAWS][Web][Safe]

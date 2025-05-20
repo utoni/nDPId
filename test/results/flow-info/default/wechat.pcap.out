@@ -538,8 +538,6 @@
               new: [....83] [ip4][..tcp] [..192.168.1.103][34981] -> [...95.101.34.33][...80] [MIDSTREAM]
               new: [....84] [ip4][..udp] [..192.168.1.103][37578] -> [193.204.114.233][..123]
          detected: [....84] [ip4][..udp] [..192.168.1.103][37578] -> [193.204.114.233][..123] [NTP][Unknown][System][Acceptable]
- detection-update: [....76] [ip4][..tcp] [..192.168.1.103][54183] -> [203.205.151.162][..443] [TLS][Unknown][Web][Safe]
-                   RISK: Unidirectional Traffic
               new: [....85] [ip4][..tcp] [..192.168.1.103][58143] -> [.216.58.205.131][..443] [MIDSTREAM]
               new: [....86] [ip4][..tcp] [..192.168.1.103][39195] -> [...95.101.34.34][...80] [MIDSTREAM]
               new: [....87] [ip4][..tcp] [..192.168.1.103][52020] -> [.95.101.180.179][...80] [MIDSTREAM]
@@ -550,8 +548,6 @@
          detected: [....90] [ip4][..udp] [..192.168.1.103][43317] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][webpush.web.wechat.com]
               new: [....91] [ip4][..udp] [..192.168.1.103][56367] -> [..192.168.1.254][...53]
          detected: [....91] [ip4][..udp] [..192.168.1.103][56367] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][webpush.web.wechat.com]
- detection-update: [....91] [ip4][..udp] [..192.168.1.103][56367] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][webpush.web.wechat.com]
-                   RISK: Unidirectional Traffic
               new: [....92] [ip4][..udp] [..192.168.1.103][33915] -> [..192.168.1.254][...53]
          detected: [....92] [ip4][..udp] [..192.168.1.103][33915] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][webpush.web.wechat.com]
               new: [....93] [ip4][....2] [..192.168.1.254] -> [......224.0.0.1]
@@ -568,12 +564,10 @@
          detected: [....98] [ip6][..udp] [..............fe80::7a92:9cff:fe0f:a88e][.5353] -> [...............................ff02::fb][.5353] [MDNS][Unknown][Network][Acceptable][_googlecast._tcp.local]
            update: [....84] [ip4][..udp] [..192.168.1.103][37578] -> [193.204.114.233][..123] [NTP][Unknown][System][Acceptable]
            update: [....91] [ip4][..udp] [..192.168.1.103][56367] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....89] [ip4][..udp] [..192.168.1.103][58165] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable]
            update: [....92] [ip4][..udp] [..192.168.1.103][33915] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable]
            update: [....90] [ip4][..udp] [..192.168.1.103][43317] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable]
          detected: [....85] [ip4][..tcp] [..192.168.1.103][58143] -> [.216.58.205.131][..443] [TLS][Google][Web][Safe]
-                   RISK: Unidirectional Traffic
               new: [....99] [ip4][..udp] [..192.168.1.103][45366] -> [..192.168.1.254][...53]
          detected: [....99] [ip4][..udp] [..192.168.1.103][45366] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][webpush.web.wechat.com]
               new: [...100] [ip4][..udp] [..192.168.1.103][59567] -> [..192.168.1.254][...53]
@@ -585,31 +579,21 @@
               new: [...103] [ip4][..udp] [..192.168.1.103][44063] -> [..192.168.1.254][...53]
          detected: [...103] [ip4][..udp] [..192.168.1.103][44063] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][1.debian.pool.ntp.org]
  detection-update: [...103] [ip4][..udp] [..192.168.1.103][44063] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][1.debian.pool.ntp.org]
-                   RISK: Unidirectional Traffic
               new: [...104] [ip4][..udp] [..192.168.1.100][..138] -> [..192.168.1.255][..138]
          detected: [...104] [ip4][..udp] [..192.168.1.100][..138] -> [..192.168.1.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][giovanni-pc]
- detection-update: [....99] [ip4][..udp] [..192.168.1.103][45366] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][webpush.web.wechat.com]
-                   RISK: Unidirectional Traffic
               new: [...105] [ip4][..udp] [..192.168.1.103][42589] -> [..192.168.1.254][...53]
          detected: [...105] [ip4][..udp] [..192.168.1.103][42589] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][ssl.gstatic.com]
- detection-update: [...101] [ip4][..udp] [..192.168.1.103][42074] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][ssl.gstatic.com.lan]
-                   RISK: Unidirectional Traffic
- detection-update: [...102] [ip4][..udp] [..192.168.1.103][43705] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][webpush.web.wechat.com.lan]
-                   RISK: Unidirectional Traffic
               new: [...106] [ip4][..udp] [..192.168.1.103][42856] -> [..192.168.1.254][...53]
          detected: [...106] [ip4][..udp] [..192.168.1.103][42856] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][1.debian.pool.ntp.org.lan]
  detection-update: [...106] [ip4][..udp] [..192.168.1.103][42856] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][1.debian.pool.ntp.org.lan]
-                   RISK: Unidirectional Traffic
               new: [...107] [ip4][..udp] [..192.168.1.103][44346] -> [..192.168.1.254][...53]
          detected: [...107] [ip4][..udp] [..192.168.1.103][44346] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][webpush.web.wechat.com.lan]
               new: [...108] [ip4][..udp] [..192.168.1.103][41759] -> [..192.168.1.254][...53]
          detected: [...108] [ip4][..udp] [..192.168.1.103][41759] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][2.debian.pool.ntp.org]
  detection-update: [...108] [ip4][..udp] [..192.168.1.103][41759] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][2.debian.pool.ntp.org]
-                   RISK: Unidirectional Traffic
               new: [...109] [ip4][..udp] [..192.168.1.103][53515] -> [..192.168.1.254][...53]
          detected: [...109] [ip4][..udp] [..192.168.1.103][53515] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][webpush.web.wechat.com.lan]
              idle: [....99] [ip4][..udp] [..192.168.1.103][45366] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....84] [ip4][..udp] [..192.168.1.103][37578] -> [193.204.114.233][..123] [NTP][Unknown][System][Acceptable]
           guessed: [....83] [ip4][..tcp] [..192.168.1.103][34981] -> [...95.101.34.33][...80] [HTTP][Unknown][Web][Acceptable][]
                    RISK: Unidirectional Traffic
@@ -641,17 +625,14 @@
              idle: [....94] [ip4][....2] [..192.168.1.103] -> [.....224.0.0.22] [IGMP][Unknown][Network][Acceptable]
              idle: [....93] [ip4][....2] [..192.168.1.254] -> [......224.0.0.1] [IGMP][Unknown][Network][Acceptable]
              idle: [....91] [ip4][..udp] [..192.168.1.103][56367] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
           guessed: [....12] [ip4][..tcp] [..192.168.1.103][36017] -> [.64.233.167.188][.5228] [Google][Google][Web][Acceptable]
              idle: [....12] [ip4][..tcp] [..192.168.1.103][36017] -> [.64.233.167.188][.5228]
              idle: [....89] [ip4][..udp] [..192.168.1.103][58165] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable]
              idle: [...100] [ip4][..udp] [..192.168.1.103][59567] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable]
              idle: [....98] [ip6][..udp] [..............fe80::7a92:9cff:fe0f:a88e][.5353] -> [...............................ff02::fb][.5353] [MDNS][Unknown][Network][Acceptable]
               end: [....85] [ip4][..tcp] [..192.168.1.103][58143] -> [.216.58.205.131][..443] [TLS][Google][Web][Safe]
-                   RISK: Unidirectional Traffic
              idle: [....13] [ip4][..tcp] [203.205.151.162][..443] -> [..192.168.1.103][54058] [TLS][Unknown][Web][Safe]
              idle: [....76] [ip4][..tcp] [..192.168.1.103][54183] -> [203.205.151.162][..443] [TLS][Unknown][Web][Safe]
-                   RISK: Unidirectional Traffic
              idle: [...104] [ip4][..udp] [..192.168.1.100][..138] -> [..192.168.1.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][giovanni-pc]
              idle: [....97] [ip4][..udp] [..192.168.1.103][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable]
              idle: [....92] [ip4][..udp] [..192.168.1.103][33915] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable]
@@ -667,16 +648,11 @@
                    RISK: Unidirectional Traffic
              idle: [....77] [ip4][..tcp] [..192.168.1.103][54205] -> [.64.233.167.188][..443]
              idle: [...108] [ip4][..udp] [..192.168.1.103][41759] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [...101] [ip4][..udp] [..192.168.1.103][42074] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [...105] [ip4][..udp] [..192.168.1.103][42589] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable]
              idle: [...106] [ip4][..udp] [..192.168.1.103][42856] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....90] [ip4][..udp] [..192.168.1.103][43317] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable]
              idle: [...102] [ip4][..udp] [..192.168.1.103][43705] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [...103] [ip4][..udp] [..192.168.1.103][44063] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [...107] [ip4][..udp] [..192.168.1.103][44346] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable]
      DAEMON-EVENT: shutdown

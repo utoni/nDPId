@@ -12,12 +12,12 @@
                    [IATS(ms)....: 0.0,1.5,1.5,0.0,1.2,1.2,0.0,30097.7,30099.5,1.8,0.0,1.2,1.2,30097.5,0.0,30099.3,1.8,1.2,30097.4,1.8,0.0,30101.7,1.2,30097.5,30165.6,1.3,69.4,30031.1,0.0,30032.8,1.7]
                    [PKTLENS.....: 65,65,126,52,52,777,52,52,65,106,52,52,765,52,65,65,106,52,52,65,52,52,777,52,65,106,777,52,65,65,106,52]
                    [ENTROPIES...: 5.5,5.5,3.0,5.2,5.2,5.3,5.2,5.2,5.4,5.6,5.1,5.1,0.5,5.1,5.4,5.4,5.6,5.2,5.2,5.5,5.1,5.2,5.3,5.1,5.4,5.6,5.3,5.0,5.4,5.4,5.6,5.2]
-     not-detected: [.....1] [ip4][..tcp] [192.168.145.147][51218] -> [...10.209.8.148][21999] [Unknown][Unknown][Unrated]
+     not-detected: [.....1] [ip4][..tcp] [192.168.145.147][51218] -> [...10.209.8.148][21999] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Susp Entropy
      DAEMON-EVENT: [Processed: 93 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 1|guessed: 0|detection-updates: 0|updates: 0]
      DAEMON-EVENT: [Processed: 169 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 1|guessed: 0|detection-updates: 0|updates: 0]
-              end: [.....1] [ip4][..tcp] [192.168.145.147][51218] -> [...10.209.8.148][21999] [Unknown][Unknown][Unrated]
+              end: [.....1] [ip4][..tcp] [192.168.145.147][51218] -> [...10.209.8.148][21999] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Susp Entropy
      DAEMON-EVENT: shutdown

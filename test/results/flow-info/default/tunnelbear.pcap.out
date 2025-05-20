@@ -50,7 +50,6 @@
              idle: [.....1] [ip4][..udp] [......10.0.2.15][57636] -> [...142.93.78.79][51820] [WireGuard.TunnelBear][DigitalOcean][VPN][Acceptable]
               new: [....10] [ip4][..tcp] [..10.158.132.91][38398] -> [..104.17.114.40][..443] [MIDSTREAM]
          detected: [....10] [ip4][..tcp] [..10.158.132.91][38398] -> [..104.17.114.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable][api.polargrizzly.com]
-                   RISK: Unidirectional Traffic
               new: [....11] [ip4][..tcp] [..10.158.132.91][51120] -> [........8.8.8.8][...53] [MIDSTREAM]
               new: [....12] [ip4][..tcp] [.......10.8.0.1][60224] -> [...157.240.7.32][..443]
          detected: [....12] [ip4][..tcp] [.......10.8.0.1][60224] -> [...157.240.7.32][..443] [TLS.FacebookMessenger][Facebook][Chat][Acceptable][mqtt-mini.facebook.com]
@@ -119,7 +118,6 @@
              idle: [.....7] [ip4][..tcp] [.......10.8.0.1][47496] -> [162.247.243.188][..443] [TLS.ADS_Analytic_Track][Unknown][Advertisement][Tracker/Ads]
              idle: [....21] [ip4][..tcp] [.......10.8.0.1][48222] -> [162.247.243.188][..443] [TLS.ADS_Analytic_Track][Unknown][Advertisement][Tracker/Ads]
               end: [....10] [ip4][..tcp] [..10.158.132.91][38398] -> [..104.17.114.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable]
-                   RISK: Unidirectional Traffic
              idle: [....14] [ip4][..tcp] [.......10.8.0.1][47046] -> [.74.125.200.188][.5228] [TLS.GoogleServices][Google][Web][Acceptable]
                    RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
              idle: [.....2] [ip4][..tcp] [.......10.8.0.1][50178] -> [.104.17.154.236][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable]

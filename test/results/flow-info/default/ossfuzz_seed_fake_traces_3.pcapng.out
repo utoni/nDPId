@@ -1,7 +1,0 @@
-     DAEMON-EVENT: init
-     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1] [ip4][..tcp] [.192.168.16.173][60546] -> [..93.184.216.34][...80]
-         detected: [.....1] [ip4][..tcp] [.192.168.16.173][60546] -> [..93.184.216.34][...80] [MapleStory][Edgecast][Game][Fun]
-             idle: [.....1] [ip4][..tcp] [.192.168.16.173][60546] -> [..93.184.216.34][...80] [MapleStory][Edgecast][Game][Fun]
-     DAEMON-EVENT: shutdown

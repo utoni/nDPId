@@ -6,7 +6,6 @@
               new: [.....2] [ip4][..udp] [......127.0.0.1][52786] -> [.....127.0.0.53][...53]
          detected: [.....2] [ip4][..udp] [......127.0.0.1][52786] -> [.....127.0.0.53][...53] [DNS][Unknown][Network][Acceptable][www.youtube.com]
  detection-update: [.....2] [ip4][..udp] [......127.0.0.1][52786] -> [.....127.0.0.53][...53] [DNS][Unknown][Network][Acceptable][www.youtube.com]
-                   RISK: Unidirectional Traffic
               new: [.....3] [ip4][..udp] [..192.168.1.183][46451] -> [..192.168.1.253][...53]
          detected: [.....3] [ip4][..udp] [..192.168.1.183][46451] -> [..192.168.1.253][...53] [DNS][Unknown][Network][Acceptable][www.youtube.com]
               new: [.....4] [ip4][..udp] [..192.168.1.183][54260] -> [..192.168.1.253][...53]

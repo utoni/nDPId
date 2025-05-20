@@ -77,8 +77,6 @@
       ERROR-EVENT: Unknown packet type [11/16]
       ERROR-EVENT: Unknown packet type [12/16]
  detection-update: [....10] [ip4][..udp] [....192.168.1.6][64046] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][b._dns-sd._udp.ntop.org]
-                   RISK: Unidirectional Traffic
- detection-update: [....10] [ip4][..udp] [....192.168.1.6][64046] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][b._dns-sd._udp.ntop.org]
                    RISK: Error Code
               new: [....13] [ip4][..udp] [........0.0.0.0][...68] -> [255.255.255.255][...67]
          detected: [....13] [ip4][..udp] [........0.0.0.0][...68] -> [255.255.255.255][...67] [DHCP][Unknown][Network][Acceptable][]
@@ -397,12 +395,6 @@
               new: [....79] [ip4][..udp] [..93.71.110.205][16333] -> [....192.168.1.6][50036]
          detected: [....79] [ip4][..udp] [..93.71.110.205][16333] -> [....192.168.1.6][50036] [STUN.TeamsCall][Unknown][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port
- detection-update: [....68] [ip4][..udp] [....192.168.1.6][50016] -> [.52.114.250.141][.3478] [STUN.TeamsCall][Azure][VoIP][Acceptable][]
-                   RISK: Unidirectional Traffic
- detection-update: [....70] [ip4][..udp] [....192.168.1.6][50036] -> [.52.114.250.137][.3478] [STUN.TeamsCall][Azure][VoIP][Acceptable][]
-                   RISK: Unidirectional Traffic
- detection-update: [....68] [ip4][..udp] [....192.168.1.6][50016] -> [.52.114.250.141][.3478] [STUN.TeamsCall][Azure][VoIP][Acceptable][]
- detection-update: [....70] [ip4][..udp] [....192.168.1.6][50036] -> [.52.114.250.137][.3478] [STUN.TeamsCall][Azure][VoIP][Acceptable][]
               new: [....80] [ip4][..udp] [..52.114.252.21][.3480] -> [....192.168.1.6][50036]
          detected: [....80] [ip4][..udp] [..52.114.252.21][.3480] -> [....192.168.1.6][50036] [STUN.TeamsCall][Azure][VoIP][Acceptable][]
                    RISK: Known Proto on Non Std Port
@@ -419,10 +411,6 @@
                    [IATS(ms)....: 45.0,45.1,0.2,47.4,47.2,0.2,0.0,0.1,0.0,0.1,0.0,0.1,0.0,0.1,0.0,0.1,0.0,0.0,8.0,0.0,0.0,52.4,1.2,45.6,48.6,92.2,43.7,69.1,0.3,113.5,1566.9]
                    [PKTLENS.....: 64,52,40,227,1492,52,1492,588,52,52,1492,588,52,40,588,166,40,40,40,147,46,85,46,91,40,141,224,40,71,40,46,46]
                    [ENTROPIES...: 4.4,4.9,4.5,5.4,7.5,4.6,7.4,6.2,4.7,4.7,7.7,7.0,4.7,4.5,7.6,6.6,4.4,4.5,4.5,6.4,4.5,5.8,4.6,5.4,4.6,6.4,6.9,4.5,5.4,4.4,4.6,4.6]
- detection-update: [....76] [ip4][..udp] [....192.168.1.6][50016] -> [....192.168.0.4][50005] [STUN.TeamsCall][Unknown][VoIP][Acceptable][]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
- detection-update: [....77] [ip4][..udp] [....192.168.1.6][50036] -> [....192.168.0.4][50020] [STUN.TeamsCall][Unknown][VoIP][Acceptable][]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
               new: [....82] [ip4][..tcp] [....192.168.1.6][60568] -> [...40.79.138.41][..443]
          detected: [....82] [ip4][..tcp] [....192.168.1.6][60568] -> [...40.79.138.41][..443] [TLS.Teams][Azure][Collaborative][Safe][gate.hockeyapp.net]
               new: [....83] [ip4][.icmp] [..93.71.110.205] -> [....192.168.1.6]
@@ -480,7 +468,7 @@
                    RISK: Known Proto on Non Std Port
              idle: [....61] [ip4][..tcp] [....192.168.1.6][60566] -> [.167.99.215.164][.4434] [TLS.ntop][DigitalOcean][Network][Safe]
                    RISK: Known Proto on Non Std Port
-     not-detected: [....60] [ip4][..tcp] [..151.11.50.139][.2222] -> [....192.168.1.6][54750] [Unknown][Unknown][Unrated]
+     not-detected: [....60] [ip4][..tcp] [..151.11.50.139][.2222] -> [....192.168.1.6][54750] [Unknown][Unknown][Unspecified][Unrated]
              idle: [....60] [ip4][..tcp] [..151.11.50.139][.2222] -> [....192.168.1.6][54750]
              idle: [....22] [ip4][..udp] [....192.168.1.6][49514] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][config.teams.microsoft.com]
              idle: [....49] [ip4][..udp] [..192.168.1.112][57621] -> [..192.168.1.255][57621] [Spotify][Unknown][Music][Fun]
@@ -520,9 +508,9 @@
              idle: [....24] [ip4][..udp] [....192.168.1.6][65387] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][northeuropecns.trafficmanager.net]
               end: [....14] [ip4][..tcp] [..93.62.150.157][..443] -> [....192.168.1.6][60512] [TLS][Unknown][Web][Safe]
              idle: [....76] [ip4][..udp] [....192.168.1.6][50016] -> [....192.168.0.4][50005] [STUN.TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
              idle: [....77] [ip4][..udp] [....192.168.1.6][50036] -> [....192.168.0.4][50020] [STUN.TeamsCall][Unknown][VoIP][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
              idle: [....12] [ip4][..udp] [....192.168.1.6][17500] -> [..192.168.1.255][17500] [Dropbox][Unknown][Cloud][Acceptable]
              idle: [....72] [ip4][..tcp] [....192.168.1.6][50014] -> [.52.114.250.152][..443] [TLS.Teams][Azure][Collaborative][Safe]
                    RISK: TLS Cert Mismatch, TLS (probably) Not Carrying HTTPS

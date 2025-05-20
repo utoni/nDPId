@@ -26,7 +26,7 @@
                    [PKTLENS.....: 52,52,40,128,46,140,423,136,1500,1500,1500,40,140,116,252,863,152,46,728,46,298,160,383,164,405,40,1457,46,142,46,143,46]
                    [ENTROPIES...: 4.6,4.9,4.8,6.5,4.5,6.6,7.0,6.6,7.9,7.9,7.9,4.9,6.5,6.3,7.0,7.7,6.6,4.9,7.7,4.9,7.2,6.5,7.4,6.5,7.5,4.9,7.8,5.0,6.6,4.8,6.6,4.9]
           guessed: [.....3] [ip4][..tcp] [..192.168.1.204][49766] -> [.212.129.45.224][..995] [POPS][NordVPN][Email][Safe]
-                   RISK: Fully Encrypted Flow
+                   RISK: Susp Entropy
               new: [.....4] [ip4][..tcp] [..192.168.1.204][49788] -> [...45.80.28.142][.8443]
          detected: [.....4] [ip4][..tcp] [..192.168.1.204][49788] -> [...45.80.28.142][.8443] [TLS.NordVPN][NordVPN][VPN][Acceptable][it315.nordvpn.com]
                    RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
@@ -38,5 +38,5 @@
              idle: [.....4] [ip4][..tcp] [..192.168.1.204][49788] -> [...45.80.28.142][.8443] [TLS.NordVPN][NordVPN][VPN][Acceptable]
                    RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
              idle: [.....3] [ip4][..tcp] [..192.168.1.204][49766] -> [.212.129.45.224][..995] [POPS][NordVPN][Email][Safe]
-                   RISK: Fully Encrypted Flow
+                   RISK: Susp Entropy
      DAEMON-EVENT: shutdown

@@ -4,7 +4,6 @@
               new: [.....1] [ip4][..udp] [.192.168.88.231][49377] -> [....172.17.8.75][...53]
          detected: [.....1] [ip4][..udp] [.192.168.88.231][49377] -> [....172.17.8.75][...53] [DNS][Unknown][Network][Acceptable][data-detect.nie.easebar.com]
  detection-update: [.....1] [ip4][..udp] [.192.168.88.231][49377] -> [....172.17.8.75][...53] [DNS][Unknown][Network][Acceptable][data-detect.nie.easebar.com]
-                   RISK: Unidirectional Traffic
  detection-update: [.....1] [ip4][..udp] [.192.168.88.231][49377] -> [....172.17.8.75][...53] [DNS][Unknown][Network][Acceptable][data-detect.nie.easebar.com]
               new: [.....2] [ip4][..tcp] [.192.168.88.231][50402] -> [....35.73.71.94][..443]
          detected: [.....2] [ip4][..tcp] [.192.168.88.231][50402] -> [....35.73.71.94][..443] [TLS.NetEaseGames][AmazonAWS][Game][Fun][data-detect.nie.easebar.com]

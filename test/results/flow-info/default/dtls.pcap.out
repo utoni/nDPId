@@ -5,7 +5,7 @@
          detected: [.....1] [ip4][..udp] [.192.168.13.203][40739] -> [..192.168.13.57][56515] [DTLS][Unknown][Web][Safe]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
  detection-update: [.....1] [ip4][..udp] [.192.168.13.203][40739] -> [..192.168.13.57][56515] [DTLS][Unknown][Web][Safe]
-                   RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Unidirectional Traffic
+                   RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
      DAEMON-EVENT: [Processed: 2 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 1|updates: 0]
       ERROR-EVENT: Unknown packet type [1/16]
@@ -22,5 +22,5 @@
              idle: [.....2] [ip4][..udp] [......127.0.0.1][40983] -> [......127.0.0.1][11111] [DTLS][Unknown][Web][Safe]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
              idle: [.....1] [ip4][..udp] [.192.168.13.203][40739] -> [..192.168.13.57][56515] [DTLS][Unknown][Web][Safe]
-                   RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Unidirectional Traffic
+                   RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
      DAEMON-EVENT: shutdown

@@ -71,8 +71,8 @@
         },
         "size_per_flow": {
             "type": "number",
-            "minimum": 1400,
-            "maximum": 1500
+            "minimum": 1384,
+            "maximum": 1400
         },
 
         "max-flows-per-thread": {

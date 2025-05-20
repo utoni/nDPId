@@ -49,7 +49,7 @@
            update: [.....4] [ip4][..udp] [....192.168.1.2][30001] -> [..212.242.33.36][40393]
            update: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]
              idle: [.....3] [ip4][..udp] [....192.168.1.2][30000] -> [..212.242.33.36][40392] [RTP][Unknown][Media][Acceptable]
-     not-detected: [.....4] [ip4][..udp] [....192.168.1.2][30001] -> [..212.242.33.36][40393] [Unknown][Unknown][Unrated]
+     not-detected: [.....4] [ip4][..udp] [....192.168.1.2][30001] -> [..212.242.33.36][40393] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Susp Entropy, Unidirectional Traffic
              idle: [.....4] [ip4][..udp] [....192.168.1.2][30001] -> [..212.242.33.36][40393]
              idle: [.....1] [ip4][..udp] [....192.168.1.2][.5060] -> [..212.242.33.35][.5060] [SIP][Unknown][VoIP][Acceptable]

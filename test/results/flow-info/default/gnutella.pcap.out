@@ -1634,7 +1634,7 @@
              idle: [.....5] [ip4][..udp] [........0.0.0.0][...68] -> [255.255.255.255][...67] [DHCP][Unknown][Network][Acceptable][msedgewin10]
              idle: [.....6] [ip4][..udp] [.......10.0.2.2][...67] -> [......10.0.2.15][...68] [DHCP][Unknown][Network][Acceptable]
              idle: [....12] [ip4][..udp] [......10.0.2.15][63717] -> [....224.0.0.252][.5355] [LLMNR][Unknown][Network][Acceptable][msedgewin10]
-     not-detected: [....42] [ip4][..tcp] [......10.0.2.15][50202] -> [.61.238.173.128][57648] [Unknown][Unknown][Unrated]
+     not-detected: [....42] [ip4][..tcp] [......10.0.2.15][50202] -> [.61.238.173.128][57648] [Unknown][Unknown][Unspecified][Unrated]
               end: [....42] [ip4][..tcp] [......10.0.2.15][50202] -> [.61.238.173.128][57648]
               end: [....46] [ip4][..tcp] [......10.0.2.15][50206] -> [175.181.156.244][.8255] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
@@ -1645,7 +1645,7 @@
                    RISK: Unsafe Protocol
               end: [...119] [ip4][..tcp] [......10.0.2.15][50250] -> [...27.94.154.53][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [....61] [ip4][..tcp] [......10.0.2.15][50220] -> [.36.233.196.226][.3820] [Unknown][Unknown][Unrated]
+     not-detected: [....61] [ip4][..tcp] [......10.0.2.15][50220] -> [.36.233.196.226][.3820] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: TCP Connection Issues, Probing Attempt
               end: [....61] [ip4][..tcp] [......10.0.2.15][50220] -> [.36.233.196.226][.3820]
               end: [...122] [ip4][..tcp] [......10.0.2.15][50253] -> [103.232.107.100][43508] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -1656,12 +1656,12 @@
                    RISK: Unsafe Protocol
               end: [....51] [ip4][..tcp] [......10.0.2.15][50211] -> [...14.199.10.60][23458] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [....63] [ip4][..tcp] [......10.0.2.15][50222] -> [.119.14.143.237][.6523] [Unknown][Unknown][Unrated]
+     not-detected: [....63] [ip4][..tcp] [......10.0.2.15][50222] -> [.119.14.143.237][.6523] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: TCP Connection Issues, Probing Attempt
               end: [....63] [ip4][..tcp] [......10.0.2.15][50222] -> [.119.14.143.237][.6523]
               end: [....43] [ip4][..tcp] [......10.0.2.15][50203] -> [..61.222.160.99][18994] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [....69] [ip4][..tcp] [......10.0.2.15][50228] -> [..111.241.31.96][14384] [Unknown][Unknown][Unrated]
+     not-detected: [....69] [ip4][..tcp] [......10.0.2.15][50228] -> [..111.241.31.96][14384] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: TCP Connection Issues, Probing Attempt
               end: [....69] [ip4][..tcp] [......10.0.2.15][50228] -> [..111.241.31.96][14384]
               end: [....35] [ip4][..tcp] [......10.0.2.15][50196] -> [...218.250.6.59][12556] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -1776,7 +1776,7 @@
                    RISK: Unsafe Protocol
               end: [...289] [ip4][..tcp] [......10.0.2.15][50313] -> [...96.65.68.194][35481] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...237] [ip4][..tcp] [......10.0.2.15][50283] -> [..51.68.153.214][35004] [Unknown][Unknown][Unrated]
+     not-detected: [...237] [ip4][..tcp] [......10.0.2.15][50283] -> [..51.68.153.214][35004] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: TCP Connection Issues, Probing Attempt
               end: [...237] [ip4][..tcp] [......10.0.2.15][50283] -> [..51.68.153.214][35004]
               end: [...296] [ip4][..tcp] [......10.0.2.15][50320] -> [194.163.180.126][10825] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -1786,7 +1786,7 @@
                    RISK: Unsafe Protocol
              idle: [....14] [ip6][..udp] [..............fe80::c50d:519f:96a4:e108][63958] -> [................................ff02::c][.3702] [WSD][Unknown][Network][Acceptable]
              idle: [....18] [ip6][..udp] [..............fe80::c50d:519f:96a4:e108][63965] -> [................................ff02::c][.3702] [WSD][Unknown][Network][Acceptable]
-     not-detected: [...153] [ip4][..tcp] [......10.0.2.15][50266] -> [.219.70.175.103][.4315] [Unknown][Unknown][Unrated]
+     not-detected: [...153] [ip4][..tcp] [......10.0.2.15][50266] -> [.219.70.175.103][.4315] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: TCP Connection Issues, Probing Attempt
               end: [...153] [ip4][..tcp] [......10.0.2.15][50266] -> [.219.70.175.103][.4315]
               end: [...279] [ip4][..tcp] [......10.0.2.15][50303] -> [..88.120.73.215][24562] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -1803,7 +1803,7 @@
                    RISK: Unsafe Protocol
               end: [...223] [ip4][..tcp] [......10.0.2.15][50269] -> [..218.103.139.2][.3186] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...143] [ip4][..tcp] [......10.0.2.15][50256] -> [.36.233.201.161][.2886] [Unknown][Unknown][Unrated]
+     not-detected: [...143] [ip4][..tcp] [......10.0.2.15][50256] -> [.36.233.201.161][.2886] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: TCP Connection Issues, Probing Attempt
               end: [...143] [ip4][..tcp] [......10.0.2.15][50256] -> [.36.233.201.161][.2886]
               end: [...269] [ip4][..tcp] [......10.0.2.15][50293] -> [..97.83.183.148][.8890] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -2560,7 +2560,7 @@
                    RISK: Unsafe Protocol
              idle: [...202] [ip4][..udp] [......10.0.2.15][28681] -> [.176.134.139.39][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...220] [ip4][..udp] [......10.0.2.15][28681] -> [.113.252.86.162][.9239] [Unknown][Unknown][Unrated]
+     not-detected: [...220] [ip4][..udp] [......10.0.2.15][28681] -> [.113.252.86.162][.9239] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Susp Entropy
              idle: [...220] [ip4][..udp] [......10.0.2.15][28681] -> [.113.252.86.162][.9239]
              idle: [...162] [ip4][..udp] [......10.0.2.15][28681] -> [.88.123.159.111][44729] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -3057,7 +3057,7 @@
               new: [...745] [ip4][.icmp] [..164.132.10.25] -> [......10.0.2.15]
          detected: [...745] [ip4][.icmp] [..164.132.10.25] -> [......10.0.2.15] [ICMP][Unknown][Network][Acceptable]
                    RISK: Susp Entropy
-     not-detected: [....29] [ip4][..tcp] [......10.0.2.15][50191] -> [.207.38.163.228][.6778] [Unknown][Unknown][Unrated]
+     not-detected: [....29] [ip4][..tcp] [......10.0.2.15][50191] -> [.207.38.163.228][.6778] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: TCP Connection Issues, Probing Attempt
               end: [....29] [ip4][..tcp] [......10.0.2.15][50191] -> [.207.38.163.228][.6778]
              idle: [...320] [ip4][..udp] [......10.0.2.15][28681] -> [185.236.200.137][48142] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -3068,13 +3068,13 @@
                    RISK: Unsafe Protocol
              idle: [...305] [ip4][..udp] [......10.0.2.15][28681] -> [..88.168.175.31][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [....31] [ip4][..tcp] [......10.0.2.15][50193] -> [....89.75.52.19][46010] [Unknown][Unknown][Unrated]
+     not-detected: [....31] [ip4][..tcp] [......10.0.2.15][50193] -> [....89.75.52.19][46010] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: TCP Connection Issues, Probing Attempt
               end: [....31] [ip4][..tcp] [......10.0.2.15][50193] -> [....89.75.52.19][46010]
-     not-detected: [....28] [ip4][..tcp] [......10.0.2.15][50190] -> [..80.140.63.147][29545] [Unknown][Unknown][Unrated]
+     not-detected: [....28] [ip4][..tcp] [......10.0.2.15][50190] -> [..80.140.63.147][29545] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: TCP Connection Issues, Probing Attempt
               end: [....28] [ip4][..tcp] [......10.0.2.15][50190] -> [..80.140.63.147][29545]
-     not-detected: [....30] [ip4][..tcp] [......10.0.2.15][50192] -> [....45.65.87.24][16201] [Unknown][Unknown][Unrated]
+     not-detected: [....30] [ip4][..tcp] [......10.0.2.15][50192] -> [....45.65.87.24][16201] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: TCP Connection Issues, Probing Attempt
               end: [....30] [ip4][..tcp] [......10.0.2.15][50192] -> [....45.65.87.24][16201]
              idle: [...322] [ip4][..udp] [......10.0.2.15][28681] -> [..45.88.117.219][.6909] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -3480,10 +3480,10 @@
                    RISK: Unsafe Protocol
              idle: [...177] [ip4][..udp] [......10.0.2.15][28681] -> [.69.157.183.106][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [....90] [ip4][..tcp] [......10.0.2.15][50245] -> [..73.62.225.181][46843] [Unknown][Unknown][Unrated]
+     not-detected: [....90] [ip4][..tcp] [......10.0.2.15][50245] -> [..73.62.225.181][46843] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: TCP Connection Issues, Probing Attempt
               end: [....90] [ip4][..tcp] [......10.0.2.15][50245] -> [..73.62.225.181][46843]
-     not-detected: [...300] [ip4][..udp] [......10.0.2.15][28681] -> [104.238.172.250][23548] [Unknown][Unknown][Unrated]
+     not-detected: [...300] [ip4][..udp] [......10.0.2.15][28681] -> [104.238.172.250][23548] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Susp Entropy
              idle: [...300] [ip4][..udp] [......10.0.2.15][28681] -> [104.238.172.250][23548]
              idle: [...324] [ip4][..udp] [......10.0.2.15][28681] -> [.73.250.179.237][20848] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -4189,9 +4189,9 @@
                    RISK: Unsafe Protocol
              idle: [...355] [ip4][..udp] [......10.0.2.15][28681] -> [.181.118.53.212][29998] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...301] [ip4][..udp] [......10.0.2.15][28681] -> [..188.61.52.183][11852] [Unknown][Unknown][Unrated]
+     not-detected: [...301] [ip4][..udp] [......10.0.2.15][28681] -> [..188.61.52.183][11852] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...301] [ip4][..udp] [......10.0.2.15][28681] -> [..188.61.52.183][11852]
-     not-detected: [...243] [ip4][..udp] [......10.0.2.15][28681] -> [.104.156.226.72][53258] [Unknown][Unknown][Unrated]
+     not-detected: [...243] [ip4][..udp] [......10.0.2.15][28681] -> [.104.156.226.72][53258] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Susp Entropy
              idle: [...243] [ip4][..udp] [......10.0.2.15][28681] -> [.104.156.226.72][53258]
              idle: [...360] [ip4][..udp] [......10.0.2.15][28681] -> [..198.58.218.12][47912] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -4217,7 +4217,7 @@
               new: [...755] [ip4][..udp] [......10.0.2.15][28681] -> [..83.134.107.32][38836]
          detected: [...755] [ip4][..udp] [......10.0.2.15][28681] -> [..83.134.107.32][38836] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...242] [ip4][..udp] [......10.0.2.15][28681] -> [..75.133.101.93][52367] [Unknown][Unknown][Unrated]
+     not-detected: [...242] [ip4][..udp] [......10.0.2.15][28681] -> [..75.133.101.93][52367] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Susp Entropy, Unidirectional Traffic
              idle: [...242] [ip4][..udp] [......10.0.2.15][28681] -> [..75.133.101.93][52367]
              idle: [...308] [ip4][..udp] [......10.0.2.15][28681] -> [...81.205.91.45][40137] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -4872,7 +4872,7 @@
               new: [...759] [ip4][..udp] [......10.0.2.15][28681] -> [104.238.172.250][23548]
          detected: [...759] [ip4][..udp] [......10.0.2.15][28681] -> [104.238.172.250][23548] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...369] [ip4][..udp] [......10.0.2.15][28681] -> [.89.187.171.240][.6346] [Unknown][Unknown][Unrated]
+     not-detected: [...369] [ip4][..udp] [......10.0.2.15][28681] -> [.89.187.171.240][.6346] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...369] [ip4][..udp] [......10.0.2.15][28681] -> [.89.187.171.240][.6346]
            update: [...754] [ip4][..udp] [......10.0.2.15][28681] -> [..84.125.218.84][17561]
@@ -5007,7 +5007,7 @@
                    RISK: Unsafe Protocol
              idle: [...418] [ip4][..udp] [......10.0.2.15][28681] -> [.75.129.149.103][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...385] [ip4][..udp] [......10.0.2.15][28681] -> [..66.223.143.31][47978] [Unknown][Unknown][Unrated]
+     not-detected: [...385] [ip4][..udp] [......10.0.2.15][28681] -> [..66.223.143.31][47978] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...385] [ip4][..udp] [......10.0.2.15][28681] -> [..66.223.143.31][47978]
              idle: [...432] [ip4][..udp] [......10.0.2.15][28681] -> [...104.6.118.53][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -5018,7 +5018,7 @@
                    RISK: Unsafe Protocol
              idle: [...413] [ip4][..udp] [......10.0.2.15][28681] -> [...87.65.188.29][24676] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...399] [ip4][..udp] [......10.0.2.15][28681] -> [.175.39.219.223][31728] [Unknown][Unknown][Unrated]
+     not-detected: [...399] [ip4][..udp] [......10.0.2.15][28681] -> [.175.39.219.223][31728] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...399] [ip4][..udp] [......10.0.2.15][28681] -> [.175.39.219.223][31728]
              idle: [...430] [ip4][..udp] [......10.0.2.15][28681] -> [....90.8.95.165][40763] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -5031,7 +5031,7 @@
                    RISK: Unsafe Protocol
              idle: [...435] [ip4][..udp] [......10.0.2.15][28681] -> [.109.24.146.101][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...392] [ip4][..udp] [......10.0.2.15][28681] -> [....42.0.69.215][12608] [Unknown][Unknown][Unrated]
+     not-detected: [...392] [ip4][..udp] [......10.0.2.15][28681] -> [....42.0.69.215][12608] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...392] [ip4][..udp] [......10.0.2.15][28681] -> [....42.0.69.215][12608]
              idle: [...427] [ip4][..udp] [......10.0.2.15][28681] -> [...81.249.13.30][15138] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -5050,7 +5050,7 @@
                    RISK: Unsafe Protocol
              idle: [...431] [ip4][..udp] [......10.0.2.15][28681] -> [..88.124.71.246][49035] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...395] [ip4][..udp] [......10.0.2.15][28681] -> [..191.114.88.39][18751] [Unknown][Unknown][Unrated]
+     not-detected: [...395] [ip4][..udp] [......10.0.2.15][28681] -> [..191.114.88.39][18751] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...395] [ip4][..udp] [......10.0.2.15][28681] -> [..191.114.88.39][18751]
              idle: [...125] [ip4][..udp] [......10.0.2.15][28681] -> [..83.92.178.182][57302] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -5061,7 +5061,7 @@
                    RISK: Unsafe Protocol
              idle: [...409] [ip4][..udp] [......10.0.2.15][28681] -> [...86.194.53.68][33770] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...390] [ip4][..udp] [......10.0.2.15][28681] -> [144.134.132.206][16401] [Unknown][Unknown][Unrated]
+     not-detected: [...390] [ip4][..udp] [......10.0.2.15][28681] -> [144.134.132.206][16401] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...390] [ip4][..udp] [......10.0.2.15][28681] -> [144.134.132.206][16401]
              idle: [...412] [ip4][..udp] [......10.0.2.15][28681] -> [...58.177.52.73][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -5070,7 +5070,7 @@
                    RISK: Unsafe Protocol
              idle: [...407] [ip4][..udp] [......10.0.2.15][28681] -> [195.181.151.217][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...389] [ip4][..udp] [......10.0.2.15][28681] -> [..94.215.183.71][31310] [Unknown][Unknown][Unrated]
+     not-detected: [...389] [ip4][..udp] [......10.0.2.15][28681] -> [..94.215.183.71][31310] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...389] [ip4][..udp] [......10.0.2.15][28681] -> [..94.215.183.71][31310]
              idle: [...417] [ip4][..udp] [......10.0.2.15][28681] -> [.94.187.236.179][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -5079,15 +5079,15 @@
                    RISK: Unsafe Protocol
              idle: [...436] [ip4][..udp] [......10.0.2.15][28681] -> [.219.68.179.137][.6406] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...398] [ip4][..udp] [......10.0.2.15][28681] -> [.62.102.148.166][31332] [Unknown][Unknown][Unrated]
+     not-detected: [...398] [ip4][..udp] [......10.0.2.15][28681] -> [.62.102.148.166][31332] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...398] [ip4][..udp] [......10.0.2.15][28681] -> [.62.102.148.166][31332]
              idle: [...482] [ip4][..udp] [......10.0.2.15][28681] -> [..86.193.23.172][42227] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...397] [ip4][..udp] [......10.0.2.15][28681] -> [...80.7.252.192][24634] [Unknown][Unknown][Unrated]
+     not-detected: [...397] [ip4][..udp] [......10.0.2.15][28681] -> [...80.7.252.192][24634] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...397] [ip4][..udp] [......10.0.2.15][28681] -> [...80.7.252.192][24634]
-     not-detected: [...396] [ip4][..udp] [......10.0.2.15][28681] -> [..112.119.59.24][28755] [Unknown][Unknown][Unrated]
+     not-detected: [...396] [ip4][..udp] [......10.0.2.15][28681] -> [..112.119.59.24][28755] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...396] [ip4][..udp] [......10.0.2.15][28681] -> [..112.119.59.24][28755]
              idle: [...416] [ip4][..udp] [......10.0.2.15][28681] -> [..92.139.61.103][24096] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -5096,14 +5096,14 @@
                    RISK: Unsafe Protocol
              idle: [...402] [ip4][..udp] [......10.0.2.15][28681] -> [...78.219.202.2][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...391] [ip4][..udp] [......10.0.2.15][28681] -> [...161.81.38.67][.9539] [Unknown][Unknown][Unrated]
+     not-detected: [...391] [ip4][..udp] [......10.0.2.15][28681] -> [...161.81.38.67][.9539] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...391] [ip4][..udp] [......10.0.2.15][28681] -> [...161.81.38.67][.9539]
              idle: [...419] [ip4][..udp] [......10.0.2.15][28681] -> [...78.193.236.8][46557] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [...406] [ip4][..udp] [......10.0.2.15][28681] -> [....109.27.3.68][57380] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...303] [ip4][..udp] [......10.0.2.15][28681] -> [.142.132.165.13][30566] [Unknown][Unknown][Unrated]
+     not-detected: [...303] [ip4][..udp] [......10.0.2.15][28681] -> [.142.132.165.13][30566] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Susp Entropy
              idle: [...303] [ip4][..udp] [......10.0.2.15][28681] -> [.142.132.165.13][30566]
              idle: [...420] [ip4][..udp] [......10.0.2.15][28681] -> [..86.227.127.34][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -5116,10 +5116,10 @@
                    RISK: Unsafe Protocol
              idle: [...429] [ip4][..udp] [......10.0.2.15][28681] -> [165.169.215.213][23576] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...304] [ip4][..udp] [......10.0.2.15][28681] -> [.193.32.126.214][59596] [Unknown][Unknown][Unrated]
+     not-detected: [...304] [ip4][..udp] [......10.0.2.15][28681] -> [.193.32.126.214][59596] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Susp Entropy
              idle: [...304] [ip4][..udp] [......10.0.2.15][28681] -> [.193.32.126.214][59596]
-     not-detected: [...387] [ip4][..udp] [......10.0.2.15][28681] -> [....220.135.8.7][.1219] [Unknown][Unknown][Unrated]
+     not-detected: [...387] [ip4][..udp] [......10.0.2.15][28681] -> [....220.135.8.7][.1219] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...387] [ip4][..udp] [......10.0.2.15][28681] -> [....220.135.8.7][.1219]
              idle: [...438] [ip4][..udp] [......10.0.2.15][28681] -> [..71.86.190.163][14142] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -5480,7 +5480,7 @@
                    RISK: Unsafe Protocol
              idle: [...434] [ip4][..udp] [......10.0.2.15][28681] -> [.114.24.182.130][22232] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...483] [ip4][..udp] [.......10.0.2.2][.1026] -> [......10.0.2.15][28681] [Unknown][Unknown][Unrated]
+     not-detected: [...483] [ip4][..udp] [.......10.0.2.2][.1026] -> [......10.0.2.15][28681] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...483] [ip4][..udp] [.......10.0.2.2][.1026] -> [......10.0.2.15][28681]
            update: [...449] [ip4][..udp] [......10.0.2.15][28681] -> [.61.238.173.128][.8826]
@@ -5592,204 +5592,204 @@
                    RISK: Unsafe Protocol
              idle: [...495] [ip4][..udp] [......10.0.2.15][28681] -> [...81.247.89.20][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...449] [ip4][..udp] [......10.0.2.15][28681] -> [.61.238.173.128][.8826] [Unknown][Unknown][Unrated]
+     not-detected: [...449] [ip4][..udp] [......10.0.2.15][28681] -> [.61.238.173.128][.8826] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...449] [ip4][..udp] [......10.0.2.15][28681] -> [.61.238.173.128][.8826]
-     not-detected: [...636] [ip4][..udp] [......10.0.2.15][28681] -> [.80.193.171.146][53143] [Unknown][Unknown][Unrated]
+     not-detected: [...636] [ip4][..udp] [......10.0.2.15][28681] -> [.80.193.171.146][53143] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...636] [ip4][..udp] [......10.0.2.15][28681] -> [.80.193.171.146][53143]
-     not-detected: [...685] [ip4][..udp] [......10.0.2.15][28681] -> [..111.241.31.96][.8349] [Unknown][Unknown][Unrated]
+     not-detected: [...685] [ip4][..udp] [......10.0.2.15][28681] -> [..111.241.31.96][.8349] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...685] [ip4][..udp] [......10.0.2.15][28681] -> [..111.241.31.96][.8349]
-     not-detected: [...661] [ip4][..udp] [......10.0.2.15][28681] -> [...24.127.1.235][37814] [Unknown][Unknown][Unrated]
+     not-detected: [...661] [ip4][..udp] [......10.0.2.15][28681] -> [...24.127.1.235][37814] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...661] [ip4][..udp] [......10.0.2.15][28681] -> [...24.127.1.235][37814]
-     not-detected: [...650] [ip4][..udp] [......10.0.2.15][28681] -> [..114.47.227.91][58856] [Unknown][Unknown][Unrated]
+     not-detected: [...650] [ip4][..udp] [......10.0.2.15][28681] -> [..114.47.227.91][58856] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...650] [ip4][..udp] [......10.0.2.15][28681] -> [..114.47.227.91][58856]
-     not-detected: [...576] [ip4][..udp] [......10.0.2.15][28681] -> [104.238.172.250][42925] [Unknown][Unknown][Unrated]
+     not-detected: [...576] [ip4][..udp] [......10.0.2.15][28681] -> [104.238.172.250][42925] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...576] [ip4][..udp] [......10.0.2.15][28681] -> [104.238.172.250][42925]
              idle: [...253] [ip4][..udp] [......10.0.2.15][28681] -> [.193.37.255.130][61616] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...575] [ip4][..udp] [......10.0.2.15][28681] -> [.123.202.31.113][19768] [Unknown][Unknown][Unrated]
+     not-detected: [...575] [ip4][..udp] [......10.0.2.15][28681] -> [.123.202.31.113][19768] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...575] [ip4][..udp] [......10.0.2.15][28681] -> [.123.202.31.113][19768]
-     not-detected: [...479] [ip4][..udp] [......10.0.2.15][28681] -> [.123.205.13.148][51896] [Unknown][Unknown][Unrated]
+     not-detected: [...479] [ip4][..udp] [......10.0.2.15][28681] -> [.123.205.13.148][51896] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...479] [ip4][..udp] [......10.0.2.15][28681] -> [.123.205.13.148][51896]
-     not-detected: [...444] [ip4][..udp] [......10.0.2.15][28681] -> [.122.117.100.78][.9010] [Unknown][Unknown][Unrated]
+     not-detected: [...444] [ip4][..udp] [......10.0.2.15][28681] -> [.122.117.100.78][.9010] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...444] [ip4][..udp] [......10.0.2.15][28681] -> [.122.117.100.78][.9010]
-     not-detected: [...676] [ip4][..udp] [......10.0.2.15][28681] -> [...1.64.208.110][55550] [Unknown][Unknown][Unrated]
+     not-detected: [...676] [ip4][..udp] [......10.0.2.15][28681] -> [...1.64.208.110][55550] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...676] [ip4][..udp] [......10.0.2.15][28681] -> [...1.64.208.110][55550]
-     not-detected: [...697] [ip4][..udp] [......10.0.2.15][28681] -> [...14.199.10.60][53906] [Unknown][Unknown][Unrated]
+     not-detected: [...697] [ip4][..udp] [......10.0.2.15][28681] -> [...14.199.10.60][53906] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...697] [ip4][..udp] [......10.0.2.15][28681] -> [...14.199.10.60][53906]
              idle: [...260] [ip4][..udp] [......10.0.2.15][28681] -> [.46.128.114.107][.6578] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...604] [ip4][..udp] [......10.0.2.15][28681] -> [.123.202.31.113][53291] [Unknown][Unknown][Unrated]
+     not-detected: [...604] [ip4][..udp] [......10.0.2.15][28681] -> [.123.202.31.113][53291] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...604] [ip4][..udp] [......10.0.2.15][28681] -> [.123.202.31.113][53291]
-     not-detected: [...378] [ip4][..udp] [......10.0.2.15][28681] -> [.118.241.204.61][43366] [Unknown][Unknown][Unrated]
+     not-detected: [...378] [ip4][..udp] [......10.0.2.15][28681] -> [.118.241.204.61][43366] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...378] [ip4][..udp] [......10.0.2.15][28681] -> [.118.241.204.61][43366]
              idle: [...505] [ip4][..udp] [......10.0.2.15][28681] -> [.....42.2.62.28][.6387] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...698] [ip4][..udp] [......10.0.2.15][28681] -> [..70.81.219.111][19210] [Unknown][Unknown][Unrated]
+     not-detected: [...698] [ip4][..udp] [......10.0.2.15][28681] -> [..70.81.219.111][19210] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...698] [ip4][..udp] [......10.0.2.15][28681] -> [..70.81.219.111][19210]
-     not-detected: [...644] [ip4][..udp] [......10.0.2.15][28681] -> [...173.22.22.94][34245] [Unknown][Unknown][Unrated]
+     not-detected: [...644] [ip4][..udp] [......10.0.2.15][28681] -> [...173.22.22.94][34245] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...644] [ip4][..udp] [......10.0.2.15][28681] -> [...173.22.22.94][34245]
              idle: [...507] [ip4][..udp] [......10.0.2.15][28681] -> [...50.4.204.220][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...602] [ip4][..udp] [......10.0.2.15][28681] -> [.123.203.72.224][53658] [Unknown][Unknown][Unrated]
+     not-detected: [...602] [ip4][..udp] [......10.0.2.15][28681] -> [.123.203.72.224][53658] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...602] [ip4][..udp] [......10.0.2.15][28681] -> [.123.203.72.224][53658]
-     not-detected: [...610] [ip4][..udp] [......10.0.2.15][28681] -> [..61.10.174.159][.4841] [Unknown][Unknown][Unrated]
+     not-detected: [...610] [ip4][..udp] [......10.0.2.15][28681] -> [..61.10.174.159][.4841] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...610] [ip4][..udp] [......10.0.2.15][28681] -> [..61.10.174.159][.4841]
-     not-detected: [...671] [ip4][..udp] [......10.0.2.15][28681] -> [180.218.135.222][49867] [Unknown][Unknown][Unrated]
+     not-detected: [...671] [ip4][..udp] [......10.0.2.15][28681] -> [180.218.135.222][49867] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...671] [ip4][..udp] [......10.0.2.15][28681] -> [180.218.135.222][49867]
-     not-detected: [...709] [ip4][..udp] [......10.0.2.15][28681] -> [.223.16.121.156][.3624] [Unknown][Unknown][Unrated]
+     not-detected: [...709] [ip4][..udp] [......10.0.2.15][28681] -> [.223.16.121.156][.3624] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...709] [ip4][..udp] [......10.0.2.15][28681] -> [.223.16.121.156][.3624]
-     not-detected: [...569] [ip4][..udp] [......10.0.2.15][28681] -> [....73.89.249.8][50649] [Unknown][Unknown][Unrated]
+     not-detected: [...569] [ip4][..udp] [......10.0.2.15][28681] -> [....73.89.249.8][50649] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...569] [ip4][..udp] [......10.0.2.15][28681] -> [....73.89.249.8][50649]
-     not-detected: [...603] [ip4][..udp] [......10.0.2.15][28681] -> [....1.36.249.91][64577] [Unknown][Unknown][Unrated]
+     not-detected: [...603] [ip4][..udp] [......10.0.2.15][28681] -> [....1.36.249.91][64577] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...603] [ip4][..udp] [......10.0.2.15][28681] -> [....1.36.249.91][64577]
              idle: [...336] [ip4][..udp] [......10.0.2.15][28681] -> [...80.7.252.192][.6888] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...447] [ip4][..udp] [......10.0.2.15][28681] -> [...14.199.10.60][23458] [Unknown][Unknown][Unrated]
+     not-detected: [...447] [ip4][..udp] [......10.0.2.15][28681] -> [...14.199.10.60][23458] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...447] [ip4][..udp] [......10.0.2.15][28681] -> [...14.199.10.60][23458]
-     not-detected: [...375] [ip4][..udp] [......10.0.2.15][28681] -> [..73.182.136.42][27873] [Unknown][Unknown][Unrated]
+     not-detected: [...375] [ip4][..udp] [......10.0.2.15][28681] -> [..73.182.136.42][27873] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...375] [ip4][..udp] [......10.0.2.15][28681] -> [..73.182.136.42][27873]
              idle: [...498] [ip4][..udp] [......10.0.2.15][28681] -> [...8.44.149.207][30551] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...672] [ip4][..udp] [......10.0.2.15][28681] -> [....223.16.83.5][.4765] [Unknown][Unknown][Unrated]
+     not-detected: [...672] [ip4][..udp] [......10.0.2.15][28681] -> [....223.16.83.5][.4765] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...672] [ip4][..udp] [......10.0.2.15][28681] -> [....223.16.83.5][.4765]
-     not-detected: [...640] [ip4][..udp] [......10.0.2.15][28681] -> [....1.36.249.91][65430] [Unknown][Unknown][Unrated]
+     not-detected: [...640] [ip4][..udp] [......10.0.2.15][28681] -> [....1.36.249.91][65430] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...640] [ip4][..udp] [......10.0.2.15][28681] -> [....1.36.249.91][65430]
-     not-detected: [...682] [ip4][..udp] [......10.0.2.15][28681] -> [203.220.198.244][50896] [Unknown][Unknown][Unrated]
+     not-detected: [...682] [ip4][..udp] [......10.0.2.15][28681] -> [203.220.198.244][50896] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...682] [ip4][..udp] [......10.0.2.15][28681] -> [203.220.198.244][50896]
-     not-detected: [...654] [ip4][..udp] [......10.0.2.15][28681] -> [.84.118.116.198][44616] [Unknown][Unknown][Unrated]
+     not-detected: [...654] [ip4][..udp] [......10.0.2.15][28681] -> [.84.118.116.198][44616] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...654] [ip4][..udp] [......10.0.2.15][28681] -> [.84.118.116.198][44616]
-     not-detected: [...653] [ip4][..udp] [......10.0.2.15][28681] -> [....82.12.1.136][.6348] [Unknown][Unknown][Unrated]
+     not-detected: [...653] [ip4][..udp] [......10.0.2.15][28681] -> [....82.12.1.136][.6348] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...653] [ip4][..udp] [......10.0.2.15][28681] -> [....82.12.1.136][.6348]
-     not-detected: [...712] [ip4][..udp] [......10.0.2.15][28681] -> [.185.187.74.173][59978] [Unknown][Unknown][Unrated]
+     not-detected: [...712] [ip4][..udp] [......10.0.2.15][28681] -> [.185.187.74.173][59978] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...712] [ip4][..udp] [......10.0.2.15][28681] -> [.185.187.74.173][59978]
              idle: [...361] [ip4][..udp] [......10.0.2.15][28681] -> [..86.129.196.84][.9915] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...394] [ip4][..udp] [......10.0.2.15][28681] -> [.165.84.134.136][21407] [Unknown][Unknown][Unrated]
+     not-detected: [...394] [ip4][..udp] [......10.0.2.15][28681] -> [.165.84.134.136][21407] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...394] [ip4][..udp] [......10.0.2.15][28681] -> [.165.84.134.136][21407]
-     not-detected: [...621] [ip4][..udp] [......10.0.2.15][28681] -> [182.155.128.228][.3227] [Unknown][Unknown][Unrated]
+     not-detected: [...621] [ip4][..udp] [......10.0.2.15][28681] -> [182.155.128.228][.3227] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...621] [ip4][..udp] [......10.0.2.15][28681] -> [182.155.128.228][.3227]
-     not-detected: [...738] [ip4][..udp] [......10.0.2.15][28681] -> [182.155.128.228][.3256] [Unknown][Unknown][Unrated]
+     not-detected: [...738] [ip4][..udp] [......10.0.2.15][28681] -> [182.155.128.228][.3256] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...738] [ip4][..udp] [......10.0.2.15][28681] -> [182.155.128.228][.3256]
-     not-detected: [...572] [ip4][..udp] [......10.0.2.15][28681] -> [...86.153.21.93][36696] [Unknown][Unknown][Unrated]
+     not-detected: [...572] [ip4][..udp] [......10.0.2.15][28681] -> [...86.153.21.93][36696] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...572] [ip4][..udp] [......10.0.2.15][28681] -> [...86.153.21.93][36696]
-     not-detected: [...520] [ip4][..udp] [......10.0.2.15][28681] -> [182.155.128.228][.3339] [Unknown][Unknown][Unrated]
+     not-detected: [...520] [ip4][..udp] [......10.0.2.15][28681] -> [182.155.128.228][.3339] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...520] [ip4][..udp] [......10.0.2.15][28681] -> [182.155.128.228][.3339]
-     not-detected: [...619] [ip4][..udp] [......10.0.2.15][28681] -> [...1.163.14.246][.1630] [Unknown][Unknown][Unrated]
+     not-detected: [...619] [ip4][..udp] [......10.0.2.15][28681] -> [...1.163.14.246][.1630] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...619] [ip4][..udp] [......10.0.2.15][28681] -> [...1.163.14.246][.1630]
              idle: [...513] [ip4][..udp] [......10.0.2.15][28681] -> [..78.196.216.12][58910] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...568] [ip4][..udp] [......10.0.2.15][28681] -> [.123.205.118.77][56562] [Unknown][Unknown][Unrated]
+     not-detected: [...568] [ip4][..udp] [......10.0.2.15][28681] -> [.123.205.118.77][56562] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...568] [ip4][..udp] [......10.0.2.15][28681] -> [.123.205.118.77][56562]
-     not-detected: [...600] [ip4][..udp] [......10.0.2.15][28681] -> [....1.64.156.63][60092] [Unknown][Unknown][Unrated]
+     not-detected: [...600] [ip4][..udp] [......10.0.2.15][28681] -> [....1.64.156.63][60092] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...600] [ip4][..udp] [......10.0.2.15][28681] -> [....1.64.156.63][60092]
              idle: [...250] [ip4][..udp] [......10.0.2.15][28681] -> [..51.68.153.214][26253] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...645] [ip4][..udp] [......10.0.2.15][28681] -> [...59.104.173.5][49803] [Unknown][Unknown][Unrated]
+     not-detected: [...645] [ip4][..udp] [......10.0.2.15][28681] -> [...59.104.173.5][49803] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...645] [ip4][..udp] [......10.0.2.15][28681] -> [...59.104.173.5][49803]
-     not-detected: [...626] [ip4][..udp] [......10.0.2.15][28681] -> [...59.104.173.5][49815] [Unknown][Unknown][Unrated]
+     not-detected: [...626] [ip4][..udp] [......10.0.2.15][28681] -> [...59.104.173.5][49815] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...626] [ip4][..udp] [......10.0.2.15][28681] -> [...59.104.173.5][49815]
-     not-detected: [...456] [ip4][..udp] [......10.0.2.15][28681] -> [.89.241.112.255][14766] [Unknown][Unknown][Unrated]
+     not-detected: [...456] [ip4][..udp] [......10.0.2.15][28681] -> [.89.241.112.255][14766] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...456] [ip4][..udp] [......10.0.2.15][28681] -> [.89.241.112.255][14766]
-     not-detected: [...681] [ip4][..udp] [......10.0.2.15][28681] -> [..61.220.41.241][53072] [Unknown][Unknown][Unrated]
+     not-detected: [...681] [ip4][..udp] [......10.0.2.15][28681] -> [..61.220.41.241][53072] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...681] [ip4][..udp] [......10.0.2.15][28681] -> [..61.220.41.241][53072]
-     not-detected: [...706] [ip4][..udp] [......10.0.2.15][28681] -> [218.164.200.235][.1968] [Unknown][Unknown][Unrated]
+     not-detected: [...706] [ip4][..udp] [......10.0.2.15][28681] -> [218.164.200.235][.1968] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...706] [ip4][..udp] [......10.0.2.15][28681] -> [218.164.200.235][.1968]
-     not-detected: [...741] [ip4][..udp] [......10.0.2.15][28681] -> [182.155.128.228][.4364] [Unknown][Unknown][Unrated]
+     not-detected: [...741] [ip4][..udp] [......10.0.2.15][28681] -> [182.155.128.228][.4364] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...741] [ip4][..udp] [......10.0.2.15][28681] -> [182.155.128.228][.4364]
-     not-detected: [...715] [ip4][..udp] [......10.0.2.15][28681] -> [...219.71.72.88][58808] [Unknown][Unknown][Unrated]
+     not-detected: [...715] [ip4][..udp] [......10.0.2.15][28681] -> [...219.71.72.88][58808] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...715] [ip4][..udp] [......10.0.2.15][28681] -> [...219.71.72.88][58808]
-     not-detected: [...457] [ip4][..udp] [......10.0.2.15][28681] -> [119.247.240.113][13867] [Unknown][Unknown][Unrated]
+     not-detected: [...457] [ip4][..udp] [......10.0.2.15][28681] -> [119.247.240.113][13867] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...457] [ip4][..udp] [......10.0.2.15][28681] -> [119.247.240.113][13867]
-     not-detected: [...564] [ip4][..udp] [......10.0.2.15][28681] -> [..61.222.160.99][53144] [Unknown][Unknown][Unrated]
+     not-detected: [...564] [ip4][..udp] [......10.0.2.15][28681] -> [..61.222.160.99][53144] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...564] [ip4][..udp] [......10.0.2.15][28681] -> [..61.222.160.99][53144]
-     not-detected: [...658] [ip4][..udp] [......10.0.2.15][28681] -> [.119.14.143.237][.8075] [Unknown][Unknown][Unrated]
+     not-detected: [...658] [ip4][..udp] [......10.0.2.15][28681] -> [.119.14.143.237][.8075] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...658] [ip4][..udp] [......10.0.2.15][28681] -> [.119.14.143.237][.8075]
-     not-detected: [...657] [ip4][..udp] [......10.0.2.15][28681] -> [..61.222.160.99][53195] [Unknown][Unknown][Unrated]
+     not-detected: [...657] [ip4][..udp] [......10.0.2.15][28681] -> [..61.222.160.99][53195] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...657] [ip4][..udp] [......10.0.2.15][28681] -> [..61.222.160.99][53195]
-     not-detected: [...448] [ip4][..udp] [......10.0.2.15][28681] -> [116.241.162.162][15677] [Unknown][Unknown][Unrated]
+     not-detected: [...448] [ip4][..udp] [......10.0.2.15][28681] -> [116.241.162.162][15677] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...448] [ip4][..udp] [......10.0.2.15][28681] -> [116.241.162.162][15677]
              idle: [...316] [ip4][..udp] [......10.0.2.15][28681] -> [....94.54.66.82][63637] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...605] [ip4][..udp] [......10.0.2.15][28681] -> [180.149.125.139][.6578] [Unknown][Unknown][Unrated]
+     not-detected: [...605] [ip4][..udp] [......10.0.2.15][28681] -> [180.149.125.139][.6578] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...605] [ip4][..udp] [......10.0.2.15][28681] -> [180.149.125.139][.6578]
-     not-detected: [...586] [ip4][..udp] [......10.0.2.15][28681] -> [..221.124.66.33][13060] [Unknown][Unknown][Unrated]
+     not-detected: [...586] [ip4][..udp] [......10.0.2.15][28681] -> [..221.124.66.33][13060] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...586] [ip4][..udp] [......10.0.2.15][28681] -> [..221.124.66.33][13060]
              idle: [...509] [ip4][..udp] [......10.0.2.15][28681] -> [.92.142.109.190][41370] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...669] [ip4][..udp] [......10.0.2.15][28681] -> [218.164.200.235][.2846] [Unknown][Unknown][Unrated]
+     not-detected: [...669] [ip4][..udp] [......10.0.2.15][28681] -> [218.164.200.235][.2846] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...669] [ip4][..udp] [......10.0.2.15][28681] -> [218.164.200.235][.2846]
-     not-detected: [...713] [ip4][..udp] [......10.0.2.15][28681] -> [..218.103.139.2][51379] [Unknown][Unknown][Unrated]
+     not-detected: [...713] [ip4][..udp] [......10.0.2.15][28681] -> [..218.103.139.2][51379] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...713] [ip4][..udp] [......10.0.2.15][28681] -> [..218.103.139.2][51379]
-     not-detected: [...471] [ip4][..udp] [......10.0.2.15][28681] -> [...80.7.252.192][43457] [Unknown][Unknown][Unrated]
+     not-detected: [...471] [ip4][..udp] [......10.0.2.15][28681] -> [...80.7.252.192][43457] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...471] [ip4][..udp] [......10.0.2.15][28681] -> [...80.7.252.192][43457]
-     not-detected: [...707] [ip4][..udp] [......10.0.2.15][28681] -> [..183.179.14.31][64871] [Unknown][Unknown][Unrated]
+     not-detected: [...707] [ip4][..udp] [......10.0.2.15][28681] -> [..183.179.14.31][64871] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...707] [ip4][..udp] [......10.0.2.15][28681] -> [..183.179.14.31][64871]
-     not-detected: [...598] [ip4][..udp] [......10.0.2.15][28681] -> [...1.172.184.48][.1512] [Unknown][Unknown][Unrated]
+     not-detected: [...598] [ip4][..udp] [......10.0.2.15][28681] -> [...1.172.184.48][.1512] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...598] [ip4][..udp] [......10.0.2.15][28681] -> [...1.172.184.48][.1512]
-     not-detected: [...446] [ip4][..udp] [......10.0.2.15][28681] -> [..61.70.199.107][60475] [Unknown][Unknown][Unrated]
+     not-detected: [...446] [ip4][..udp] [......10.0.2.15][28681] -> [..61.70.199.107][60475] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...446] [ip4][..udp] [......10.0.2.15][28681] -> [..61.70.199.107][60475]
-     not-detected: [...623] [ip4][..udp] [......10.0.2.15][28681] -> [.210.209.249.84][24751] [Unknown][Unknown][Unrated]
+     not-detected: [...623] [ip4][..udp] [......10.0.2.15][28681] -> [.210.209.249.84][24751] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...623] [ip4][..udp] [......10.0.2.15][28681] -> [.210.209.249.84][24751]
-     not-detected: [...727] [ip4][..udp] [......10.0.2.15][28681] -> [101.136.187.253][10914] [Unknown][Unknown][Unrated]
+     not-detected: [...727] [ip4][..udp] [......10.0.2.15][28681] -> [101.136.187.253][10914] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...727] [ip4][..udp] [......10.0.2.15][28681] -> [101.136.187.253][10914]
-     not-detected: [...742] [ip4][..udp] [......10.0.2.15][28681] -> [194.163.180.126][36780] [Unknown][Unknown][Unrated]
+     not-detected: [...742] [ip4][..udp] [......10.0.2.15][28681] -> [194.163.180.126][36780] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...742] [ip4][..udp] [......10.0.2.15][28681] -> [194.163.180.126][36780]
-     not-detected: [...469] [ip4][..udp] [......10.0.2.15][28681] -> [..87.123.54.234][47184] [Unknown][Unknown][Unrated]
+     not-detected: [...469] [ip4][..udp] [......10.0.2.15][28681] -> [..87.123.54.234][47184] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...469] [ip4][..udp] [......10.0.2.15][28681] -> [..87.123.54.234][47184]
-     not-detected: [...665] [ip4][..udp] [......10.0.2.15][28681] -> [..82.36.106.134][.3927] [Unknown][Unknown][Unrated]
+     not-detected: [...665] [ip4][..udp] [......10.0.2.15][28681] -> [..82.36.106.134][.3927] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...665] [ip4][..udp] [......10.0.2.15][28681] -> [..82.36.106.134][.3927]
-     not-detected: [...677] [ip4][..udp] [......10.0.2.15][28681] -> [....223.16.83.5][.9128] [Unknown][Unknown][Unrated]
+     not-detected: [...677] [ip4][..udp] [......10.0.2.15][28681] -> [....223.16.83.5][.9128] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...677] [ip4][..udp] [......10.0.2.15][28681] -> [....223.16.83.5][.9128]
              idle: [...255] [ip4][..udp] [......10.0.2.15][28681] -> [..80.61.221.246][30577] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -5798,154 +5798,154 @@
                    RISK: Unsafe Protocol
              idle: [...518] [ip4][..udp] [......10.0.2.15][28681] -> [..202.151.63.59][.7624] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...445] [ip4][..udp] [......10.0.2.15][28681] -> [118.165.153.100][.4509] [Unknown][Unknown][Unrated]
+     not-detected: [...445] [ip4][..udp] [......10.0.2.15][28681] -> [118.165.153.100][.4509] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...445] [ip4][..udp] [......10.0.2.15][28681] -> [118.165.153.100][.4509]
              idle: [...515] [ip4][..udp] [......10.0.2.15][28681] -> [220.137.106.173][11625] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...475] [ip4][..udp] [......10.0.2.15][28681] -> [..188.61.52.183][63978] [Unknown][Unknown][Unrated]
+     not-detected: [...475] [ip4][..udp] [......10.0.2.15][28681] -> [..188.61.52.183][63978] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...475] [ip4][..udp] [......10.0.2.15][28681] -> [..188.61.52.183][63978]
-     not-detected: [...630] [ip4][..udp] [......10.0.2.15][28681] -> [..118.168.15.71][.3931] [Unknown][Unknown][Unrated]
+     not-detected: [...630] [ip4][..udp] [......10.0.2.15][28681] -> [..118.168.15.71][.3931] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...630] [ip4][..udp] [......10.0.2.15][28681] -> [..118.168.15.71][.3931]
-     not-detected: [...565] [ip4][..udp] [......10.0.2.15][28681] -> [...114.45.40.28][.2656] [Unknown][Unknown][Unrated]
+     not-detected: [...565] [ip4][..udp] [......10.0.2.15][28681] -> [...114.45.40.28][.2656] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...565] [ip4][..udp] [......10.0.2.15][28681] -> [...114.45.40.28][.2656]
-     not-detected: [...597] [ip4][..udp] [......10.0.2.15][28681] -> [..36.236.203.37][52274] [Unknown][Unknown][Unrated]
+     not-detected: [...597] [ip4][..udp] [......10.0.2.15][28681] -> [..36.236.203.37][52274] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...597] [ip4][..udp] [......10.0.2.15][28681] -> [..36.236.203.37][52274]
              idle: [...501] [ip4][..udp] [......10.0.2.15][28681] -> [.88.160.214.137][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [...506] [ip4][..udp] [......10.0.2.15][28681] -> [..136.32.84.139][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...614] [ip4][..udp] [......10.0.2.15][28681] -> [.123.205.118.77][60482] [Unknown][Unknown][Unrated]
+     not-detected: [...614] [ip4][..udp] [......10.0.2.15][28681] -> [.123.205.118.77][60482] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...614] [ip4][..udp] [......10.0.2.15][28681] -> [.123.205.118.77][60482]
-     not-detected: [...670] [ip4][..udp] [......10.0.2.15][28681] -> [..36.236.203.37][52669] [Unknown][Unknown][Unrated]
+     not-detected: [...670] [ip4][..udp] [......10.0.2.15][28681] -> [..36.236.203.37][52669] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...670] [ip4][..udp] [......10.0.2.15][28681] -> [..36.236.203.37][52669]
              idle: [...508] [ip4][..udp] [......10.0.2.15][28681] -> [...92.144.99.73][10745] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...582] [ip4][..udp] [......10.0.2.15][28681] -> [....223.16.83.5][10624] [Unknown][Unknown][Unrated]
+     not-detected: [...582] [ip4][..udp] [......10.0.2.15][28681] -> [....223.16.83.5][10624] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...582] [ip4][..udp] [......10.0.2.15][28681] -> [....223.16.83.5][10624]
-     not-detected: [...376] [ip4][..udp] [......10.0.2.15][28681] -> [....156.57.42.2][33476] [Unknown][Unknown][Unrated]
+     not-detected: [...376] [ip4][..udp] [......10.0.2.15][28681] -> [....156.57.42.2][33476] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Susp Entropy
              idle: [...376] [ip4][..udp] [......10.0.2.15][28681] -> [....156.57.42.2][33476]
-     not-detected: [...662] [ip4][..udp] [......10.0.2.15][28681] -> [..96.59.117.166][33192] [Unknown][Unknown][Unrated]
+     not-detected: [...662] [ip4][..udp] [......10.0.2.15][28681] -> [..96.59.117.166][33192] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...662] [ip4][..udp] [......10.0.2.15][28681] -> [..96.59.117.166][33192]
-     not-detected: [...678] [ip4][..udp] [......10.0.2.15][28681] -> [150.116.225.105][51438] [Unknown][Unknown][Unrated]
+     not-detected: [...678] [ip4][..udp] [......10.0.2.15][28681] -> [150.116.225.105][51438] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...678] [ip4][..udp] [......10.0.2.15][28681] -> [150.116.225.105][51438]
-     not-detected: [...651] [ip4][..udp] [......10.0.2.15][28681] -> [....1.64.156.63][65023] [Unknown][Unknown][Unrated]
+     not-detected: [...651] [ip4][..udp] [......10.0.2.15][28681] -> [....1.64.156.63][65023] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...651] [ip4][..udp] [......10.0.2.15][28681] -> [....1.64.156.63][65023]
-     not-detected: [...625] [ip4][..udp] [......10.0.2.15][28681] -> [113.252.206.254][49737] [Unknown][Unknown][Unrated]
+     not-detected: [...625] [ip4][..udp] [......10.0.2.15][28681] -> [113.252.206.254][49737] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...625] [ip4][..udp] [......10.0.2.15][28681] -> [113.252.206.254][49737]
-     not-detected: [...522] [ip4][..udp] [......10.0.2.15][28681] -> [119.247.152.218][51153] [Unknown][Unknown][Unrated]
+     not-detected: [...522] [ip4][..udp] [......10.0.2.15][28681] -> [119.247.152.218][51153] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...522] [ip4][..udp] [......10.0.2.15][28681] -> [119.247.152.218][51153]
           guessed: [...462] [ip4][..udp] [......10.0.2.15][28681] -> [..164.132.10.25][47808] [BACnet][Unknown][IoT-Scada][Safe]
                    RISK: Unidirectional Traffic
              idle: [...462] [ip4][..udp] [......10.0.2.15][28681] -> [..164.132.10.25][47808]
-     not-detected: [...664] [ip4][..udp] [......10.0.2.15][28681] -> [..1.172.183.237][.4983] [Unknown][Unknown][Unrated]
+     not-detected: [...664] [ip4][..udp] [......10.0.2.15][28681] -> [..1.172.183.237][.4983] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...664] [ip4][..udp] [......10.0.2.15][28681] -> [..1.172.183.237][.4983]
-     not-detected: [...708] [ip4][..udp] [......10.0.2.15][28681] -> [..124.244.68.65][51967] [Unknown][Unknown][Unrated]
+     not-detected: [...708] [ip4][..udp] [......10.0.2.15][28681] -> [..124.244.68.65][51967] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...708] [ip4][..udp] [......10.0.2.15][28681] -> [..124.244.68.65][51967]
-     not-detected: [...442] [ip4][..udp] [......10.0.2.15][28681] -> [..89.204.130.55][29545] [Unknown][Unknown][Unrated]
+     not-detected: [...442] [ip4][..udp] [......10.0.2.15][28681] -> [..89.204.130.55][29545] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...442] [ip4][..udp] [......10.0.2.15][28681] -> [..89.204.130.55][29545]
-     not-detected: [...592] [ip4][..udp] [......10.0.2.15][28681] -> [....1.36.249.91][.7190] [Unknown][Unknown][Unrated]
+     not-detected: [...592] [ip4][..udp] [......10.0.2.15][28681] -> [....1.36.249.91][.7190] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...592] [ip4][..udp] [......10.0.2.15][28681] -> [....1.36.249.91][.7190]
-     not-detected: [...740] [ip4][..udp] [......10.0.2.15][28681] -> [...36.237.25.47][21293] [Unknown][Unknown][Unrated]
+     not-detected: [...740] [ip4][..udp] [......10.0.2.15][28681] -> [...36.237.25.47][21293] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...740] [ip4][..udp] [......10.0.2.15][28681] -> [...36.237.25.47][21293]
-     not-detected: [...646] [ip4][..udp] [......10.0.2.15][28681] -> [..36.237.10.152][21293] [Unknown][Unknown][Unrated]
+     not-detected: [...646] [ip4][..udp] [......10.0.2.15][28681] -> [..36.237.10.152][21293] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...646] [ip4][..udp] [......10.0.2.15][28681] -> [..36.237.10.152][21293]
-     not-detected: [...675] [ip4][..udp] [......10.0.2.15][28681] -> [.123.205.118.77][62191] [Unknown][Unknown][Unrated]
+     not-detected: [...675] [ip4][..udp] [......10.0.2.15][28681] -> [.123.205.118.77][62191] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...675] [ip4][..udp] [......10.0.2.15][28681] -> [.123.205.118.77][62191]
-     not-detected: [...524] [ip4][..udp] [......10.0.2.15][28681] -> [.80.193.171.146][65362] [Unknown][Unknown][Unrated]
+     not-detected: [...524] [ip4][..udp] [......10.0.2.15][28681] -> [.80.193.171.146][65362] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...524] [ip4][..udp] [......10.0.2.15][28681] -> [.80.193.171.146][65362]
-     not-detected: [...642] [ip4][..udp] [......10.0.2.15][28681] -> [.220.39.142.122][.6346] [Unknown][Unknown][Unrated]
+     not-detected: [...642] [ip4][..udp] [......10.0.2.15][28681] -> [.220.39.142.122][.6346] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...642] [ip4][..udp] [......10.0.2.15][28681] -> [.220.39.142.122][.6346]
-     not-detected: [...744] [ip4][..udp] [......10.0.2.15][28681] -> [..164.132.10.25][48250] [Unknown][Unknown][Unrated]
+     not-detected: [...744] [ip4][..udp] [......10.0.2.15][28681] -> [..164.132.10.25][48250] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...744] [ip4][..udp] [......10.0.2.15][28681] -> [..164.132.10.25][48250]
              idle: [...344] [ip4][..udp] [......10.0.2.15][28681] -> [.207.38.163.228][.6778] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...720] [ip4][..udp] [......10.0.2.15][28681] -> [..76.26.178.132][10053] [Unknown][Unknown][Unrated]
+     not-detected: [...720] [ip4][..udp] [......10.0.2.15][28681] -> [..76.26.178.132][10053] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...720] [ip4][..udp] [......10.0.2.15][28681] -> [..76.26.178.132][10053]
-     not-detected: [...606] [ip4][..udp] [......10.0.2.15][28681] -> [.149.28.163.175][42288] [Unknown][Unknown][Unrated]
+     not-detected: [...606] [ip4][..udp] [......10.0.2.15][28681] -> [.149.28.163.175][42288] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...606] [ip4][..udp] [......10.0.2.15][28681] -> [.149.28.163.175][42288]
-     not-detected: [...613] [ip4][..udp] [......10.0.2.15][28681] -> [119.247.152.218][51920] [Unknown][Unknown][Unrated]
+     not-detected: [...613] [ip4][..udp] [......10.0.2.15][28681] -> [119.247.152.218][51920] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...613] [ip4][..udp] [......10.0.2.15][28681] -> [119.247.152.218][51920]
              idle: [...499] [ip4][..udp] [......10.0.2.15][28681] -> [....1.161.80.82][.8656] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [...257] [ip4][..udp] [......10.0.2.15][28681] -> [.82.181.251.218][36368] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...704] [ip4][..udp] [......10.0.2.15][28681] -> [..123.192.83.59][33513] [Unknown][Unknown][Unrated]
+     not-detected: [...704] [ip4][..udp] [......10.0.2.15][28681] -> [..123.192.83.59][33513] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...704] [ip4][..udp] [......10.0.2.15][28681] -> [..123.192.83.59][33513]
-     not-detected: [...711] [ip4][..udp] [......10.0.2.15][28681] -> [..220.129.86.65][49723] [Unknown][Unknown][Unrated]
+     not-detected: [...711] [ip4][..udp] [......10.0.2.15][28681] -> [..220.129.86.65][49723] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...711] [ip4][..udp] [......10.0.2.15][28681] -> [..220.129.86.65][49723]
-     not-detected: [...732] [ip4][..udp] [......10.0.2.15][28681] -> [..85.168.34.105][39908] [Unknown][Unknown][Unrated]
+     not-detected: [...732] [ip4][..udp] [......10.0.2.15][28681] -> [..85.168.34.105][39908] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...732] [ip4][..udp] [......10.0.2.15][28681] -> [..85.168.34.105][39908]
              idle: [...261] [ip4][..udp] [......10.0.2.15][28681] -> [..60.241.48.194][21301] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...686] [ip4][..udp] [......10.0.2.15][28681] -> [.119.14.143.237][13965] [Unknown][Unknown][Unrated]
+     not-detected: [...686] [ip4][..udp] [......10.0.2.15][28681] -> [.119.14.143.237][13965] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...686] [ip4][..udp] [......10.0.2.15][28681] -> [.119.14.143.237][13965]
-     not-detected: [...702] [ip4][..udp] [......10.0.2.15][28681] -> [...114.27.24.95][10728] [Unknown][Unknown][Unrated]
+     not-detected: [...702] [ip4][..udp] [......10.0.2.15][28681] -> [...114.27.24.95][10728] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...702] [ip4][..udp] [......10.0.2.15][28681] -> [...114.27.24.95][10728]
-     not-detected: [...659] [ip4][..udp] [......10.0.2.15][28681] -> [...114.27.24.95][10791] [Unknown][Unknown][Unrated]
+     not-detected: [...659] [ip4][..udp] [......10.0.2.15][28681] -> [...114.27.24.95][10791] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...659] [ip4][..udp] [......10.0.2.15][28681] -> [...114.27.24.95][10791]
-     not-detected: [...699] [ip4][..udp] [......10.0.2.15][28681] -> [..77.222.213.44][26536] [Unknown][Unknown][Unrated]
+     not-detected: [...699] [ip4][..udp] [......10.0.2.15][28681] -> [..77.222.213.44][26536] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...699] [ip4][..udp] [......10.0.2.15][28681] -> [..77.222.213.44][26536]
-     not-detected: [...580] [ip4][..udp] [......10.0.2.15][28681] -> [...76.119.55.28][20347] [Unknown][Unknown][Unrated]
+     not-detected: [...580] [ip4][..udp] [......10.0.2.15][28681] -> [...76.119.55.28][20347] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...580] [ip4][..udp] [......10.0.2.15][28681] -> [...76.119.55.28][20347]
-     not-detected: [...590] [ip4][..udp] [......10.0.2.15][28681] -> [...95.10.205.67][48380] [Unknown][Unknown][Unrated]
+     not-detected: [...590] [ip4][..udp] [......10.0.2.15][28681] -> [...95.10.205.67][48380] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...590] [ip4][..udp] [......10.0.2.15][28681] -> [...95.10.205.67][48380]
-     not-detected: [...441] [ip4][..udp] [......10.0.2.15][28681] -> [.36.237.199.108][56040] [Unknown][Unknown][Unrated]
+     not-detected: [...441] [ip4][..udp] [......10.0.2.15][28681] -> [.36.237.199.108][56040] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...441] [ip4][..udp] [......10.0.2.15][28681] -> [.36.237.199.108][56040]
              idle: [...511] [ip4][..udp] [......10.0.2.15][28681] -> [...68.47.223.27][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...616] [ip4][..udp] [......10.0.2.15][28681] -> [220.208.167.152][30628] [Unknown][Unknown][Unrated]
+     not-detected: [...616] [ip4][..udp] [......10.0.2.15][28681] -> [220.208.167.152][30628] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...616] [ip4][..udp] [......10.0.2.15][28681] -> [220.208.167.152][30628]
-     not-detected: [...381] [ip4][..udp] [......10.0.2.15][28681] -> [...77.58.211.52][.3806] [Unknown][Unknown][Unrated]
+     not-detected: [...381] [ip4][..udp] [......10.0.2.15][28681] -> [...77.58.211.52][.3806] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...381] [ip4][..udp] [......10.0.2.15][28681] -> [...77.58.211.52][.3806]
-     not-detected: [...386] [ip4][..udp] [......10.0.2.15][28681] -> [...85.172.10.90][40162] [Unknown][Unknown][Unrated]
+     not-detected: [...386] [ip4][..udp] [......10.0.2.15][28681] -> [...85.172.10.90][40162] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...386] [ip4][..udp] [......10.0.2.15][28681] -> [...85.172.10.90][40162]
              idle: [...246] [ip4][..udp] [......10.0.2.15][28681] -> [...96.65.68.194][35481] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...666] [ip4][..udp] [......10.0.2.15][28681] -> [.159.196.95.223][.2003] [Unknown][Unknown][Unrated]
+     not-detected: [...666] [ip4][..udp] [......10.0.2.15][28681] -> [.159.196.95.223][.2003] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...666] [ip4][..udp] [......10.0.2.15][28681] -> [.159.196.95.223][.2003]
-     not-detected: [...725] [ip4][..udp] [......10.0.2.15][28681] -> [..219.91.30.216][61635] [Unknown][Unknown][Unrated]
+     not-detected: [...725] [ip4][..udp] [......10.0.2.15][28681] -> [..219.91.30.216][61635] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...725] [ip4][..udp] [......10.0.2.15][28681] -> [..219.91.30.216][61635]
-     not-detected: [...585] [ip4][..udp] [......10.0.2.15][28681] -> [..51.68.153.214][35004] [Unknown][Unknown][Unrated]
+     not-detected: [...585] [ip4][..udp] [......10.0.2.15][28681] -> [..51.68.153.214][35004] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...585] [ip4][..udp] [......10.0.2.15][28681] -> [..51.68.153.214][35004]
-     not-detected: [...589] [ip4][..udp] [......10.0.2.15][28681] -> [.113.255.250.32][52647] [Unknown][Unknown][Unrated]
+     not-detected: [...589] [ip4][..udp] [......10.0.2.15][28681] -> [.113.255.250.32][52647] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...589] [ip4][..udp] [......10.0.2.15][28681] -> [.113.255.250.32][52647]
-     not-detected: [...525] [ip4][..udp] [......10.0.2.15][28681] -> [.113.255.250.32][52660] [Unknown][Unknown][Unrated]
+     not-detected: [...525] [ip4][..udp] [......10.0.2.15][28681] -> [.113.255.250.32][52660] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...525] [ip4][..udp] [......10.0.2.15][28681] -> [.113.255.250.32][52660]
              idle: [...248] [ip4][..udp] [......10.0.2.15][28681] -> [..66.30.221.181][12012] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -5954,425 +5954,425 @@
                    RISK: Unsafe Protocol
              idle: [...514] [ip4][..udp] [......10.0.2.15][28681] -> [..83.114.40.175][23552] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...452] [ip4][..udp] [......10.0.2.15][28681] -> [..68.227.193.37][27481] [Unknown][Unknown][Unrated]
+     not-detected: [...452] [ip4][..udp] [......10.0.2.15][28681] -> [..68.227.193.37][27481] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...452] [ip4][..udp] [......10.0.2.15][28681] -> [..68.227.193.37][27481]
              idle: [...339] [ip4][..udp] [......10.0.2.15][28681] -> [..87.123.54.234][54130] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...624] [ip4][..udp] [......10.0.2.15][28681] -> [.61.238.173.128][57492] [Unknown][Unknown][Unrated]
+     not-detected: [...624] [ip4][..udp] [......10.0.2.15][28681] -> [.61.238.173.128][57492] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...624] [ip4][..udp] [......10.0.2.15][28681] -> [.61.238.173.128][57492]
-     not-detected: [...730] [ip4][..udp] [......10.0.2.15][28681] -> [124.217.188.105][62849] [Unknown][Unknown][Unrated]
+     not-detected: [...730] [ip4][..udp] [......10.0.2.15][28681] -> [124.217.188.105][62849] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...730] [ip4][..udp] [......10.0.2.15][28681] -> [124.217.188.105][62849]
-     not-detected: [...652] [ip4][..udp] [......10.0.2.15][28681] -> [..94.139.21.182][50110] [Unknown][Unknown][Unrated]
+     not-detected: [...652] [ip4][..udp] [......10.0.2.15][28681] -> [..94.139.21.182][50110] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...652] [ip4][..udp] [......10.0.2.15][28681] -> [..94.139.21.182][50110]
-     not-detected: [...382] [ip4][..udp] [......10.0.2.15][28681] -> [..76.175.11.126][40958] [Unknown][Unknown][Unrated]
+     not-detected: [...382] [ip4][..udp] [......10.0.2.15][28681] -> [..76.175.11.126][40958] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...382] [ip4][..udp] [......10.0.2.15][28681] -> [..76.175.11.126][40958]
-     not-detected: [...689] [ip4][..udp] [......10.0.2.15][28681] -> [...1.65.217.224][.3688] [Unknown][Unknown][Unrated]
+     not-detected: [...689] [ip4][..udp] [......10.0.2.15][28681] -> [...1.65.217.224][.3688] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...689] [ip4][..udp] [......10.0.2.15][28681] -> [...1.65.217.224][.3688]
              idle: [...340] [ip4][..udp] [......10.0.2.15][28681] -> [.38.142.119.234][49732] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...649] [ip4][..udp] [......10.0.2.15][28681] -> [.122.117.100.78][56128] [Unknown][Unknown][Unrated]
+     not-detected: [...649] [ip4][..udp] [......10.0.2.15][28681] -> [.122.117.100.78][56128] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...649] [ip4][..udp] [......10.0.2.15][28681] -> [.122.117.100.78][56128]
-     not-detected: [...635] [ip4][..udp] [......10.0.2.15][28681] -> [...219.70.48.23][.2556] [Unknown][Unknown][Unrated]
+     not-detected: [...635] [ip4][..udp] [......10.0.2.15][28681] -> [...219.70.48.23][.2556] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...635] [ip4][..udp] [......10.0.2.15][28681] -> [...219.70.48.23][.2556]
-     not-detected: [...722] [ip4][..udp] [......10.0.2.15][28681] -> [.213.32.245.121][12333] [Unknown][Unknown][Unrated]
+     not-detected: [...722] [ip4][..udp] [......10.0.2.15][28681] -> [.213.32.245.121][12333] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...722] [ip4][..udp] [......10.0.2.15][28681] -> [.213.32.245.121][12333]
-     not-detected: [...737] [ip4][..udp] [......10.0.2.15][28681] -> [174.115.127.251][23897] [Unknown][Unknown][Unrated]
+     not-detected: [...737] [ip4][..udp] [......10.0.2.15][28681] -> [174.115.127.251][23897] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...737] [ip4][..udp] [......10.0.2.15][28681] -> [174.115.127.251][23897]
-     not-detected: [...683] [ip4][..udp] [......10.0.2.15][28681] -> [.113.252.86.162][54459] [Unknown][Unknown][Unrated]
+     not-detected: [...683] [ip4][..udp] [......10.0.2.15][28681] -> [.113.252.86.162][54459] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...683] [ip4][..udp] [......10.0.2.15][28681] -> [.113.252.86.162][54459]
              idle: [...323] [ip4][..udp] [......10.0.2.15][28681] -> [.96.246.156.126][56070] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...691] [ip4][..udp] [......10.0.2.15][28681] -> [..61.93.150.146][62507] [Unknown][Unknown][Unrated]
+     not-detected: [...691] [ip4][..udp] [......10.0.2.15][28681] -> [..61.93.150.146][62507] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...691] [ip4][..udp] [......10.0.2.15][28681] -> [..61.93.150.146][62507]
-     not-detected: [...688] [ip4][..udp] [......10.0.2.15][28681] -> [.114.36.234.196][11629] [Unknown][Unknown][Unrated]
+     not-detected: [...688] [ip4][..udp] [......10.0.2.15][28681] -> [.114.36.234.196][11629] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...688] [ip4][..udp] [......10.0.2.15][28681] -> [.114.36.234.196][11629]
-     not-detected: [...384] [ip4][..udp] [......10.0.2.15][28681] -> [....75.64.6.175][.4743] [Unknown][Unknown][Unrated]
+     not-detected: [...384] [ip4][..udp] [......10.0.2.15][28681] -> [....75.64.6.175][.4743] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...384] [ip4][..udp] [......10.0.2.15][28681] -> [....75.64.6.175][.4743]
-     not-detected: [...656] [ip4][..udp] [......10.0.2.15][28681] -> [.113.252.86.162][54914] [Unknown][Unknown][Unrated]
+     not-detected: [...656] [ip4][..udp] [......10.0.2.15][28681] -> [.113.252.86.162][54914] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...656] [ip4][..udp] [......10.0.2.15][28681] -> [.113.252.86.162][54914]
-     not-detected: [...694] [ip4][..udp] [......10.0.2.15][28681] -> [..50.58.238.149][.6514] [Unknown][Unknown][Unrated]
+     not-detected: [...694] [ip4][..udp] [......10.0.2.15][28681] -> [..50.58.238.149][.6514] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...694] [ip4][..udp] [......10.0.2.15][28681] -> [..50.58.238.149][.6514]
-     not-detected: [...660] [ip4][..udp] [......10.0.2.15][28681] -> [..50.58.238.149][.6527] [Unknown][Unknown][Unrated]
+     not-detected: [...660] [ip4][..udp] [......10.0.2.15][28681] -> [..50.58.238.149][.6527] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...660] [ip4][..udp] [......10.0.2.15][28681] -> [..50.58.238.149][.6527]
-     not-detected: [...731] [ip4][..udp] [......10.0.2.15][28681] -> [..50.58.238.163][.6564] [Unknown][Unknown][Unrated]
+     not-detected: [...731] [ip4][..udp] [......10.0.2.15][28681] -> [..50.58.238.163][.6564] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...731] [ip4][..udp] [......10.0.2.15][28681] -> [..50.58.238.163][.6564]
-     not-detected: [...747] [ip4][..udp] [......10.0.2.15][28681] -> [..50.58.238.163][.6599] [Unknown][Unknown][Unrated]
+     not-detected: [...747] [ip4][..udp] [......10.0.2.15][28681] -> [..50.58.238.163][.6599] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...747] [ip4][..udp] [......10.0.2.15][28681] -> [..50.58.238.163][.6599]
-     not-detected: [...458] [ip4][..udp] [......10.0.2.15][28681] -> [118.165.228.167][12201] [Unknown][Unknown][Unrated]
+     not-detected: [...458] [ip4][..udp] [......10.0.2.15][28681] -> [118.165.228.167][12201] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...458] [ip4][..udp] [......10.0.2.15][28681] -> [118.165.228.167][12201]
-     not-detected: [...583] [ip4][..udp] [......10.0.2.15][28681] -> [...87.75.180.80][35361] [Unknown][Unknown][Unrated]
+     not-detected: [...583] [ip4][..udp] [......10.0.2.15][28681] -> [...87.75.180.80][35361] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...583] [ip4][..udp] [......10.0.2.15][28681] -> [...87.75.180.80][35361]
-     not-detected: [...638] [ip4][..udp] [......10.0.2.15][28681] -> [182.155.242.225][15068] [Unknown][Unknown][Unrated]
+     not-detected: [...638] [ip4][..udp] [......10.0.2.15][28681] -> [182.155.242.225][15068] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...638] [ip4][..udp] [......10.0.2.15][28681] -> [182.155.242.225][15068]
-     not-detected: [...728] [ip4][..udp] [......10.0.2.15][28681] -> [..112.10.134.44][19739] [Unknown][Unknown][Unrated]
+     not-detected: [...728] [ip4][..udp] [......10.0.2.15][28681] -> [..112.10.134.44][19739] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...728] [ip4][..udp] [......10.0.2.15][28681] -> [..112.10.134.44][19739]
-     not-detected: [...588] [ip4][..udp] [......10.0.2.15][28681] -> [.219.70.175.103][.4315] [Unknown][Unknown][Unrated]
+     not-detected: [...588] [ip4][..udp] [......10.0.2.15][28681] -> [.219.70.175.103][.4315] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...588] [ip4][..udp] [......10.0.2.15][28681] -> [.219.70.175.103][.4315]
-     not-detected: [...609] [ip4][..udp] [......10.0.2.15][28681] -> [116.241.162.162][59016] [Unknown][Unknown][Unrated]
+     not-detected: [...609] [ip4][..udp] [......10.0.2.15][28681] -> [116.241.162.162][59016] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...609] [ip4][..udp] [......10.0.2.15][28681] -> [116.241.162.162][59016]
-     not-detected: [...690] [ip4][..udp] [......10.0.2.15][28681] -> [..61.18.212.223][50637] [Unknown][Unknown][Unrated]
+     not-detected: [...690] [ip4][..udp] [......10.0.2.15][28681] -> [..61.18.212.223][50637] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...690] [ip4][..udp] [......10.0.2.15][28681] -> [..61.18.212.223][50637]
-     not-detected: [...450] [ip4][..udp] [......10.0.2.15][28681] -> [113.252.206.254][23458] [Unknown][Unknown][Unrated]
+     not-detected: [...450] [ip4][..udp] [......10.0.2.15][28681] -> [113.252.206.254][23458] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...450] [ip4][..udp] [......10.0.2.15][28681] -> [113.252.206.254][23458]
              idle: [...254] [ip4][..udp] [......10.0.2.15][28681] -> [..88.120.73.215][24562] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...733] [ip4][..udp] [......10.0.2.15][28681] -> [...99.199.148.6][.4338] [Unknown][Unknown][Unrated]
+     not-detected: [...733] [ip4][..udp] [......10.0.2.15][28681] -> [...99.199.148.6][.4338] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...733] [ip4][..udp] [......10.0.2.15][28681] -> [...99.199.148.6][.4338]
-     not-detected: [...335] [ip4][..udp] [......10.0.2.15][28681] -> [.14.200.255.229][37058] [Unknown][Unknown][Unrated]
+     not-detected: [...335] [ip4][..udp] [......10.0.2.15][28681] -> [.14.200.255.229][37058] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...335] [ip4][..udp] [......10.0.2.15][28681] -> [.14.200.255.229][37058]
-     not-detected: [...667] [ip4][..udp] [......10.0.2.15][28681] -> [.223.18.211.177][18085] [Unknown][Unknown][Unrated]
+     not-detected: [...667] [ip4][..udp] [......10.0.2.15][28681] -> [.223.18.211.177][18085] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...667] [ip4][..udp] [......10.0.2.15][28681] -> [.223.18.211.177][18085]
-     not-detected: [...622] [ip4][..udp] [......10.0.2.15][28681] -> [..36.234.18.166][61319] [Unknown][Unknown][Unrated]
+     not-detected: [...622] [ip4][..udp] [......10.0.2.15][28681] -> [..36.234.18.166][61319] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...622] [ip4][..udp] [......10.0.2.15][28681] -> [..36.234.18.166][61319]
-     not-detected: [...587] [ip4][..udp] [......10.0.2.15][28681] -> [.94.134.154.158][54130] [Unknown][Unknown][Unrated]
+     not-detected: [...587] [ip4][..udp] [......10.0.2.15][28681] -> [.94.134.154.158][54130] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...587] [ip4][..udp] [......10.0.2.15][28681] -> [.94.134.154.158][54130]
-     not-detected: [...631] [ip4][..udp] [......10.0.2.15][28681] -> [..36.231.59.187][62234] [Unknown][Unknown][Unrated]
+     not-detected: [...631] [ip4][..udp] [......10.0.2.15][28681] -> [..36.231.59.187][62234] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...631] [ip4][..udp] [......10.0.2.15][28681] -> [..36.231.59.187][62234]
-     not-detected: [...521] [ip4][..udp] [......10.0.2.15][28681] -> [.113.255.250.32][23458] [Unknown][Unknown][Unrated]
+     not-detected: [...521] [ip4][..udp] [......10.0.2.15][28681] -> [.113.255.250.32][23458] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...521] [ip4][..udp] [......10.0.2.15][28681] -> [.113.255.250.32][23458]
-     not-detected: [...455] [ip4][..udp] [......10.0.2.15][28681] -> [.58.153.206.183][16919] [Unknown][Unknown][Unrated]
+     not-detected: [...455] [ip4][..udp] [......10.0.2.15][28681] -> [.58.153.206.183][16919] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...455] [ip4][..udp] [......10.0.2.15][28681] -> [.58.153.206.183][16919]
-     not-detected: [...679] [ip4][..udp] [......10.0.2.15][28681] -> [.113.252.83.132][57131] [Unknown][Unknown][Unrated]
+     not-detected: [...679] [ip4][..udp] [......10.0.2.15][28681] -> [.113.252.83.132][57131] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...679] [ip4][..udp] [......10.0.2.15][28681] -> [.113.252.83.132][57131]
-     not-detected: [...716] [ip4][..udp] [......10.0.2.15][28681] -> [...98.249.190.8][25198] [Unknown][Unknown][Unrated]
+     not-detected: [...716] [ip4][..udp] [......10.0.2.15][28681] -> [...98.249.190.8][25198] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...716] [ip4][..udp] [......10.0.2.15][28681] -> [...98.249.190.8][25198]
-     not-detected: [...527] [ip4][..udp] [......10.0.2.15][28681] -> [..42.72.149.140][37848] [Unknown][Unknown][Unrated]
+     not-detected: [...527] [ip4][..udp] [......10.0.2.15][28681] -> [..42.72.149.140][37848] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...527] [ip4][..udp] [......10.0.2.15][28681] -> [..42.72.149.140][37848]
-     not-detected: [...723] [ip4][..udp] [......10.0.2.15][28681] -> [.175.39.219.223][13482] [Unknown][Unknown][Unrated]
+     not-detected: [...723] [ip4][..udp] [......10.0.2.15][28681] -> [.175.39.219.223][13482] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...723] [ip4][..udp] [......10.0.2.15][28681] -> [.175.39.219.223][13482]
              idle: [...319] [ip4][..udp] [......10.0.2.15][28681] -> [..164.132.10.25][55302] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [...500] [ip4][..udp] [......10.0.2.15][28681] -> [.220.143.34.225][20071] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...736] [ip4][..udp] [......10.0.2.15][28681] -> [118.166.252.163][14391] [Unknown][Unknown][Unrated]
+     not-detected: [...736] [ip4][..udp] [......10.0.2.15][28681] -> [118.166.252.163][14391] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...736] [ip4][..udp] [......10.0.2.15][28681] -> [118.166.252.163][14391]
              idle: [...367] [ip4][..udp] [......10.0.2.15][28681] -> [.149.28.163.175][49956] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...618] [ip4][..udp] [......10.0.2.15][28681] -> [...1.172.184.48][13281] [Unknown][Unknown][Unrated]
+     not-detected: [...618] [ip4][..udp] [......10.0.2.15][28681] -> [...1.172.184.48][13281] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...618] [ip4][..udp] [......10.0.2.15][28681] -> [...1.172.184.48][13281]
-     not-detected: [...461] [ip4][..udp] [......10.0.2.15][28681] -> [..69.27.193.124][50555] [Unknown][Unknown][Unrated]
+     not-detected: [...461] [ip4][..udp] [......10.0.2.15][28681] -> [..69.27.193.124][50555] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...461] [ip4][..udp] [......10.0.2.15][28681] -> [..69.27.193.124][50555]
              idle: [...265] [ip4][..udp] [......10.0.2.15][28681] -> [203.220.198.244][.1194] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...746] [ip4][..udp] [......10.0.2.15][28681] -> [123.205.126.102][.5193] [Unknown][Unknown][Unrated]
+     not-detected: [...746] [ip4][..udp] [......10.0.2.15][28681] -> [123.205.126.102][.5193] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...746] [ip4][..udp] [......10.0.2.15][28681] -> [123.205.126.102][.5193]
-     not-detected: [...703] [ip4][..udp] [......10.0.2.15][28681] -> [..114.40.67.191][14971] [Unknown][Unknown][Unrated]
+     not-detected: [...703] [ip4][..udp] [......10.0.2.15][28681] -> [..114.40.67.191][14971] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...703] [ip4][..udp] [......10.0.2.15][28681] -> [..114.40.67.191][14971]
-     not-detected: [...460] [ip4][..udp] [......10.0.2.15][28681] -> [.210.194.116.78][.8342] [Unknown][Unknown][Unrated]
+     not-detected: [...460] [ip4][..udp] [......10.0.2.15][28681] -> [.210.194.116.78][.8342] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...460] [ip4][..udp] [......10.0.2.15][28681] -> [.210.194.116.78][.8342]
              idle: [...342] [ip4][..udp] [......10.0.2.15][28681] -> [..98.208.26.154][.4994] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [...504] [ip4][..udp] [......10.0.2.15][28681] -> [..85.203.45.107][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...611] [ip4][..udp] [......10.0.2.15][28681] -> [.113.252.86.162][59384] [Unknown][Unknown][Unrated]
+     not-detected: [...611] [ip4][..udp] [......10.0.2.15][28681] -> [.113.252.86.162][59384] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...611] [ip4][..udp] [......10.0.2.15][28681] -> [.113.252.86.162][59384]
-     not-detected: [...724] [ip4][..udp] [......10.0.2.15][28681] -> [...1.65.217.224][.9070] [Unknown][Unknown][Unrated]
+     not-detected: [...724] [ip4][..udp] [......10.0.2.15][28681] -> [...1.65.217.224][.9070] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...724] [ip4][..udp] [......10.0.2.15][28681] -> [...1.65.217.224][.9070]
-     not-detected: [...668] [ip4][..udp] [......10.0.2.15][28681] -> [..218.103.139.2][64731] [Unknown][Unknown][Unrated]
+     not-detected: [...668] [ip4][..udp] [......10.0.2.15][28681] -> [..218.103.139.2][64731] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...668] [ip4][..udp] [......10.0.2.15][28681] -> [..218.103.139.2][64731]
-     not-detected: [...599] [ip4][..udp] [......10.0.2.15][28681] -> [.113.252.86.162][59875] [Unknown][Unknown][Unrated]
+     not-detected: [...599] [ip4][..udp] [......10.0.2.15][28681] -> [.113.252.86.162][59875] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...599] [ip4][..udp] [......10.0.2.15][28681] -> [.113.252.86.162][59875]
              idle: [...519] [ip4][..udp] [......10.0.2.15][28681] -> [...219.70.48.23][.8070] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...632] [ip4][..udp] [......10.0.2.15][28681] -> [...188.149.2.44][20964] [Unknown][Unknown][Unrated]
+     not-detected: [...632] [ip4][..udp] [......10.0.2.15][28681] -> [...188.149.2.44][20964] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...632] [ip4][..udp] [......10.0.2.15][28681] -> [...188.149.2.44][20964]
-     not-detected: [...700] [ip4][..udp] [......10.0.2.15][28681] -> [...91.206.27.26][.6578] [Unknown][Unknown][Unrated]
+     not-detected: [...700] [ip4][..udp] [......10.0.2.15][28681] -> [...91.206.27.26][.6578] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...700] [ip4][..udp] [......10.0.2.15][28681] -> [...91.206.27.26][.6578]
-     not-detected: [...701] [ip4][..udp] [......10.0.2.15][28681] -> [119.237.190.184][64163] [Unknown][Unknown][Unrated]
+     not-detected: [...701] [ip4][..udp] [......10.0.2.15][28681] -> [119.237.190.184][64163] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...701] [ip4][..udp] [......10.0.2.15][28681] -> [119.237.190.184][64163]
-     not-detected: [...477] [ip4][..udp] [......10.0.2.15][28681] -> [....94.54.66.82][45640] [Unknown][Unknown][Unrated]
+     not-detected: [...477] [ip4][..udp] [......10.0.2.15][28681] -> [....94.54.66.82][45640] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...477] [ip4][..udp] [......10.0.2.15][28681] -> [....94.54.66.82][45640]
-     not-detected: [...478] [ip4][..udp] [......10.0.2.15][28681] -> [...36.235.85.44][64914] [Unknown][Unknown][Unrated]
+     not-detected: [...478] [ip4][..udp] [......10.0.2.15][28681] -> [...36.235.85.44][64914] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...478] [ip4][..udp] [......10.0.2.15][28681] -> [...36.235.85.44][64914]
-     not-detected: [...472] [ip4][..udp] [......10.0.2.15][28681] -> [....94.54.66.82][45744] [Unknown][Unknown][Unrated]
+     not-detected: [...472] [ip4][..udp] [......10.0.2.15][28681] -> [....94.54.66.82][45744] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...472] [ip4][..udp] [......10.0.2.15][28681] -> [....94.54.66.82][45744]
-     not-detected: [...739] [ip4][..udp] [......10.0.2.15][28681] -> [.104.156.226.72][19814] [Unknown][Unknown][Unrated]
+     not-detected: [...739] [ip4][..udp] [......10.0.2.15][28681] -> [.104.156.226.72][19814] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...739] [ip4][..udp] [......10.0.2.15][28681] -> [.104.156.226.72][19814]
              idle: [...494] [ip4][..udp] [......10.0.2.15][28681] -> [...86.210.81.59][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...454] [ip4][..udp] [......10.0.2.15][28681] -> [.223.16.121.156][23183] [Unknown][Unknown][Unrated]
+     not-detected: [...454] [ip4][..udp] [......10.0.2.15][28681] -> [.223.16.121.156][23183] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...454] [ip4][..udp] [......10.0.2.15][28681] -> [.223.16.121.156][23183]
-     not-detected: [...674] [ip4][..udp] [......10.0.2.15][28681] -> [...219.70.1.236][.9369] [Unknown][Unknown][Unrated]
+     not-detected: [...674] [ip4][..udp] [......10.0.2.15][28681] -> [...219.70.1.236][.9369] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...674] [ip4][..udp] [......10.0.2.15][28681] -> [...219.70.1.236][.9369]
-     not-detected: [...735] [ip4][..udp] [......10.0.2.15][28681] -> [..45.31.152.112][52420] [Unknown][Unknown][Unrated]
+     not-detected: [...735] [ip4][..udp] [......10.0.2.15][28681] -> [..45.31.152.112][52420] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...735] [ip4][..udp] [......10.0.2.15][28681] -> [..45.31.152.112][52420]
-     not-detected: [...634] [ip4][..udp] [......10.0.2.15][28681] -> [..24.179.18.242][47329] [Unknown][Unknown][Unrated]
+     not-detected: [...634] [ip4][..udp] [......10.0.2.15][28681] -> [..24.179.18.242][47329] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...634] [ip4][..udp] [......10.0.2.15][28681] -> [..24.179.18.242][47329]
-     not-detected: [...595] [ip4][..udp] [......10.0.2.15][28681] -> [.175.182.21.156][13732] [Unknown][Unknown][Unrated]
+     not-detected: [...595] [ip4][..udp] [......10.0.2.15][28681] -> [.175.182.21.156][13732] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...595] [ip4][..udp] [......10.0.2.15][28681] -> [.175.182.21.156][13732]
-     not-detected: [...648] [ip4][..udp] [......10.0.2.15][28681] -> [180.218.135.222][.4548] [Unknown][Unknown][Unrated]
+     not-detected: [...648] [ip4][..udp] [......10.0.2.15][28681] -> [180.218.135.222][.4548] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...648] [ip4][..udp] [......10.0.2.15][28681] -> [180.218.135.222][.4548]
-     not-detected: [...579] [ip4][..udp] [......10.0.2.15][28681] -> [.223.16.170.108][23458] [Unknown][Unknown][Unrated]
+     not-detected: [...579] [ip4][..udp] [......10.0.2.15][28681] -> [.223.16.170.108][23458] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...579] [ip4][..udp] [......10.0.2.15][28681] -> [.223.16.170.108][23458]
-     not-detected: [...574] [ip4][..udp] [......10.0.2.15][28681] -> [..223.17.132.18][23458] [Unknown][Unknown][Unrated]
+     not-detected: [...574] [ip4][..udp] [......10.0.2.15][28681] -> [..223.17.132.18][23458] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...574] [ip4][..udp] [......10.0.2.15][28681] -> [..223.17.132.18][23458]
-     not-detected: [...726] [ip4][..udp] [......10.0.2.15][28681] -> [....1.171.82.65][50072] [Unknown][Unknown][Unrated]
+     not-detected: [...726] [ip4][..udp] [......10.0.2.15][28681] -> [....1.171.82.65][50072] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...726] [ip4][..udp] [......10.0.2.15][28681] -> [....1.171.82.65][50072]
-     not-detected: [...687] [ip4][..udp] [......10.0.2.15][28681] -> [..66.30.221.181][53454] [Unknown][Unknown][Unrated]
+     not-detected: [...687] [ip4][..udp] [......10.0.2.15][28681] -> [..66.30.221.181][53454] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...687] [ip4][..udp] [......10.0.2.15][28681] -> [..66.30.221.181][53454]
-     not-detected: [...577] [ip4][..udp] [......10.0.2.15][28681] -> [.59.148.100.237][23459] [Unknown][Unknown][Unrated]
+     not-detected: [...577] [ip4][..udp] [......10.0.2.15][28681] -> [.59.148.100.237][23459] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...577] [ip4][..udp] [......10.0.2.15][28681] -> [.59.148.100.237][23459]
-     not-detected: [...526] [ip4][..udp] [......10.0.2.15][28681] -> [..36.234.197.93][.1483] [Unknown][Unknown][Unrated]
+     not-detected: [...526] [ip4][..udp] [......10.0.2.15][28681] -> [..36.234.197.93][.1483] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...526] [ip4][..udp] [......10.0.2.15][28681] -> [..36.234.197.93][.1483]
-     not-detected: [...474] [ip4][..udp] [......10.0.2.15][28681] -> [..80.61.221.246][45880] [Unknown][Unknown][Unrated]
+     not-detected: [...474] [ip4][..udp] [......10.0.2.15][28681] -> [..80.61.221.246][45880] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...474] [ip4][..udp] [......10.0.2.15][28681] -> [..80.61.221.246][45880]
-     not-detected: [...637] [ip4][..udp] [......10.0.2.15][28681] -> [..36.233.194.73][.1995] [Unknown][Unknown][Unrated]
+     not-detected: [...637] [ip4][..udp] [......10.0.2.15][28681] -> [..36.233.194.73][.1995] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...637] [ip4][..udp] [......10.0.2.15][28681] -> [..36.233.194.73][.1995]
-     not-detected: [...550] [ip4][..udp] [......10.0.2.15][28681] -> [.220.238.145.82][33527] [Unknown][Unknown][Unrated]
+     not-detected: [...550] [ip4][..udp] [......10.0.2.15][28681] -> [.220.238.145.82][33527] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...550] [ip4][..udp] [......10.0.2.15][28681] -> [.220.238.145.82][33527]
-     not-detected: [...721] [ip4][..udp] [......10.0.2.15][28681] -> [.123.203.72.224][.9897] [Unknown][Unknown][Unrated]
+     not-detected: [...721] [ip4][..udp] [......10.0.2.15][28681] -> [.123.203.72.224][.9897] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...721] [ip4][..udp] [......10.0.2.15][28681] -> [.123.203.72.224][.9897]
-     not-detected: [...470] [ip4][..udp] [......10.0.2.15][28681] -> [.185.187.74.173][46790] [Unknown][Unknown][Unrated]
+     not-detected: [...470] [ip4][..udp] [......10.0.2.15][28681] -> [.185.187.74.173][46790] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...470] [ip4][..udp] [......10.0.2.15][28681] -> [.185.187.74.173][46790]
-     not-detected: [...641] [ip4][..udp] [......10.0.2.15][28681] -> [.36.233.199.103][.2625] [Unknown][Unknown][Unrated]
+     not-detected: [...641] [ip4][..udp] [......10.0.2.15][28681] -> [.36.233.199.103][.2625] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...641] [ip4][..udp] [......10.0.2.15][28681] -> [.36.233.199.103][.2625]
-     not-detected: [...633] [ip4][..udp] [......10.0.2.15][28681] -> [..68.174.18.115][50679] [Unknown][Unknown][Unrated]
+     not-detected: [...633] [ip4][..udp] [......10.0.2.15][28681] -> [..68.174.18.115][50679] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...633] [ip4][..udp] [......10.0.2.15][28681] -> [..68.174.18.115][50679]
              idle: [...317] [ip4][..udp] [......10.0.2.15][28681] -> [...96.236.205.7][34794] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...673] [ip4][..udp] [......10.0.2.15][28681] -> [.125.59.215.249][14571] [Unknown][Unknown][Unrated]
+     not-detected: [...673] [ip4][..udp] [......10.0.2.15][28681] -> [.125.59.215.249][14571] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...673] [ip4][..udp] [......10.0.2.15][28681] -> [.125.59.215.249][14571]
-     not-detected: [...627] [ip4][..udp] [......10.0.2.15][28681] -> [..73.62.225.181][46843] [Unknown][Unknown][Unrated]
+     not-detected: [...627] [ip4][..udp] [......10.0.2.15][28681] -> [..73.62.225.181][46843] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...627] [ip4][..udp] [......10.0.2.15][28681] -> [..73.62.225.181][46843]
-     not-detected: [...647] [ip4][..udp] [......10.0.2.15][28681] -> [..61.18.212.223][58290] [Unknown][Unknown][Unrated]
+     not-detected: [...647] [ip4][..udp] [......10.0.2.15][28681] -> [..61.18.212.223][58290] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...647] [ip4][..udp] [......10.0.2.15][28681] -> [..61.18.212.223][58290]
-     not-detected: [...570] [ip4][..udp] [......10.0.2.15][28681] -> [..97.83.183.148][.8890] [Unknown][Unknown][Unrated]
+     not-detected: [...570] [ip4][..udp] [......10.0.2.15][28681] -> [..97.83.183.148][.8890] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...570] [ip4][..udp] [......10.0.2.15][28681] -> [..97.83.183.148][.8890]
-     not-detected: [...463] [ip4][..udp] [......10.0.2.15][28681] -> [..200.7.155.210][28365] [Unknown][Unknown][Unrated]
+     not-detected: [...463] [ip4][..udp] [......10.0.2.15][28681] -> [..200.7.155.210][28365] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...463] [ip4][..udp] [......10.0.2.15][28681] -> [..200.7.155.210][28365]
-     not-detected: [...743] [ip4][..udp] [......10.0.2.15][28681] -> [...27.94.154.53][.6346] [Unknown][Unknown][Unrated]
+     not-detected: [...743] [ip4][..udp] [......10.0.2.15][28681] -> [...27.94.154.53][.6346] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...743] [ip4][..udp] [......10.0.2.15][28681] -> [...27.94.154.53][.6346]
-     not-detected: [...710] [ip4][..udp] [......10.0.2.15][28681] -> [113.254.140.225][63637] [Unknown][Unknown][Unrated]
+     not-detected: [...710] [ip4][..udp] [......10.0.2.15][28681] -> [113.254.140.225][63637] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...710] [ip4][..udp] [......10.0.2.15][28681] -> [113.254.140.225][63637]
              idle: [...510] [ip4][..udp] [......10.0.2.15][28681] -> [...79.94.85.113][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...480] [ip4][..udp] [......10.0.2.15][28681] -> [..112.119.74.26][65498] [Unknown][Unknown][Unrated]
+     not-detected: [...480] [ip4][..udp] [......10.0.2.15][28681] -> [..112.119.74.26][65498] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...480] [ip4][..udp] [......10.0.2.15][28681] -> [..112.119.74.26][65498]
-     not-detected: [...655] [ip4][..udp] [......10.0.2.15][28681] -> [.119.237.116.22][.2566] [Unknown][Unknown][Unrated]
+     not-detected: [...655] [ip4][..udp] [......10.0.2.15][28681] -> [.119.237.116.22][.2566] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...655] [ip4][..udp] [......10.0.2.15][28681] -> [.119.237.116.22][.2566]
-     not-detected: [...548] [ip4][..udp] [......10.0.2.15][28681] -> [..74.50.147.205][17735] [Unknown][Unknown][Unrated]
+     not-detected: [...548] [ip4][..udp] [......10.0.2.15][28681] -> [..74.50.147.205][17735] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...548] [ip4][..udp] [......10.0.2.15][28681] -> [..74.50.147.205][17735]
-     not-detected: [...377] [ip4][..udp] [......10.0.2.15][28681] -> [.180.200.236.13][12082] [Unknown][Unknown][Unrated]
+     not-detected: [...377] [ip4][..udp] [......10.0.2.15][28681] -> [.180.200.236.13][12082] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...377] [ip4][..udp] [......10.0.2.15][28681] -> [.180.200.236.13][12082]
              idle: [...496] [ip4][..udp] [......10.0.2.15][28681] -> [.218.173.230.98][19004] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [...493] [ip4][..udp] [......10.0.2.15][57552] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250]
-     not-detected: [...596] [ip4][..udp] [......10.0.2.15][28681] -> [..61.18.212.223][58954] [Unknown][Unknown][Unrated]
+     not-detected: [...596] [ip4][..udp] [......10.0.2.15][28681] -> [..61.18.212.223][58954] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...596] [ip4][..udp] [......10.0.2.15][28681] -> [..61.18.212.223][58954]
              idle: [...332] [ip4][..udp] [......10.0.2.15][28681] -> [213.229.111.224][.4876] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...620] [ip4][..udp] [......10.0.2.15][28681] -> [..118.168.15.71][53516] [Unknown][Unknown][Unrated]
+     not-detected: [...620] [ip4][..udp] [......10.0.2.15][28681] -> [..118.168.15.71][53516] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...620] [ip4][..udp] [......10.0.2.15][28681] -> [..118.168.15.71][53516]
-     not-detected: [...591] [ip4][..udp] [......10.0.2.15][28681] -> [..118.168.15.71][53707] [Unknown][Unknown][Unrated]
+     not-detected: [...591] [ip4][..udp] [......10.0.2.15][28681] -> [..118.168.15.71][53707] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...591] [ip4][..udp] [......10.0.2.15][28681] -> [..118.168.15.71][53707]
-     not-detected: [...629] [ip4][..udp] [......10.0.2.15][28681] -> [.14.200.255.229][45710] [Unknown][Unknown][Unrated]
+     not-detected: [...629] [ip4][..udp] [......10.0.2.15][28681] -> [.14.200.255.229][45710] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...629] [ip4][..udp] [......10.0.2.15][28681] -> [.14.200.255.229][45710]
-     not-detected: [...451] [ip4][..udp] [......10.0.2.15][28681] -> [...218.35.66.21][22234] [Unknown][Unknown][Unrated]
+     not-detected: [...451] [ip4][..udp] [......10.0.2.15][28681] -> [...218.35.66.21][22234] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...451] [ip4][..udp] [......10.0.2.15][28681] -> [...218.35.66.21][22234]
-     not-detected: [...717] [ip4][..udp] [......10.0.2.15][28681] -> [...79.191.58.38][48157] [Unknown][Unknown][Unrated]
+     not-detected: [...717] [ip4][..udp] [......10.0.2.15][28681] -> [...79.191.58.38][48157] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...717] [ip4][..udp] [......10.0.2.15][28681] -> [...79.191.58.38][48157]
              idle: [...321] [ip4][..udp] [......10.0.2.15][28681] -> [188.165.203.190][21995] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...705] [ip4][..udp] [......10.0.2.15][28681] -> [..124.218.26.16][.8658] [Unknown][Unknown][Unrated]
+     not-detected: [...705] [ip4][..udp] [......10.0.2.15][28681] -> [..124.218.26.16][.8658] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...705] [ip4][..udp] [......10.0.2.15][28681] -> [..124.218.26.16][.8658]
              idle: [...313] [ip4][..udp] [......10.0.2.15][28681] -> [..176.99.176.20][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...696] [ip4][..udp] [......10.0.2.15][28681] -> [188.165.203.190][55050] [Unknown][Unknown][Unrated]
+     not-detected: [...696] [ip4][..udp] [......10.0.2.15][28681] -> [188.165.203.190][55050] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...696] [ip4][..udp] [......10.0.2.15][28681] -> [188.165.203.190][55050]
-     not-detected: [...680] [ip4][..udp] [......10.0.2.15][28681] -> [.61.227.198.100][.6910] [Unknown][Unknown][Unrated]
+     not-detected: [...680] [ip4][..udp] [......10.0.2.15][28681] -> [.61.227.198.100][.6910] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...680] [ip4][..udp] [......10.0.2.15][28681] -> [.61.227.198.100][.6910]
-     not-detected: [...566] [ip4][..udp] [......10.0.2.15][28681] -> [...58.176.62.40][52755] [Unknown][Unknown][Unrated]
+     not-detected: [...566] [ip4][..udp] [......10.0.2.15][28681] -> [...58.176.62.40][52755] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...566] [ip4][..udp] [......10.0.2.15][28681] -> [...58.176.62.40][52755]
-     not-detected: [...601] [ip4][..udp] [......10.0.2.15][28681] -> [113.255.200.161][65274] [Unknown][Unknown][Unrated]
+     not-detected: [...601] [ip4][..udp] [......10.0.2.15][28681] -> [113.255.200.161][65274] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...601] [ip4][..udp] [......10.0.2.15][28681] -> [113.255.200.161][65274]
-     not-detected: [...608] [ip4][..udp] [......10.0.2.15][28681] -> [...1.163.14.246][23461] [Unknown][Unknown][Unrated]
+     not-detected: [...608] [ip4][..udp] [......10.0.2.15][28681] -> [...1.163.14.246][23461] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...608] [ip4][..udp] [......10.0.2.15][28681] -> [...1.163.14.246][23461]
-     not-detected: [...549] [ip4][..udp] [......10.0.2.15][28681] -> [..84.211.151.48][11105] [Unknown][Unknown][Unrated]
+     not-detected: [...549] [ip4][..udp] [......10.0.2.15][28681] -> [..84.211.151.48][11105] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...549] [ip4][..udp] [......10.0.2.15][28681] -> [..84.211.151.48][11105]
-     not-detected: [...567] [ip4][..udp] [......10.0.2.15][28681] -> [...58.176.62.40][52889] [Unknown][Unknown][Unrated]
+     not-detected: [...567] [ip4][..udp] [......10.0.2.15][28681] -> [...58.176.62.40][52889] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...567] [ip4][..udp] [......10.0.2.15][28681] -> [...58.176.62.40][52889]
              idle: [...262] [ip4][..udp] [......10.0.2.15][28681] -> [....89.75.52.19][46010] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [...497] [ip4][..udp] [......10.0.2.15][28681] -> [..84.100.76.123][39628] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...379] [ip4][..udp] [......10.0.2.15][28681] -> [..80.140.63.147][29545] [Unknown][Unknown][Unrated]
+     not-detected: [...379] [ip4][..udp] [......10.0.2.15][28681] -> [..80.140.63.147][29545] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...379] [ip4][..udp] [......10.0.2.15][28681] -> [..80.140.63.147][29545]
-     not-detected: [...719] [ip4][..udp] [......10.0.2.15][28681] -> [...219.85.11.85][10722] [Unknown][Unknown][Unrated]
+     not-detected: [...719] [ip4][..udp] [......10.0.2.15][28681] -> [...219.85.11.85][10722] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...719] [ip4][..udp] [......10.0.2.15][28681] -> [...219.85.11.85][10722]
-     not-detected: [...523] [ip4][..udp] [......10.0.2.15][28681] -> [..1.162.138.200][24018] [Unknown][Unknown][Unrated]
+     not-detected: [...523] [ip4][..udp] [......10.0.2.15][28681] -> [..1.162.138.200][24018] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...523] [ip4][..udp] [......10.0.2.15][28681] -> [..1.162.138.200][24018]
-     not-detected: [...628] [ip4][..udp] [......10.0.2.15][28681] -> [....45.65.87.24][16201] [Unknown][Unknown][Unrated]
+     not-detected: [...628] [ip4][..udp] [......10.0.2.15][28681] -> [....45.65.87.24][16201] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...628] [ip4][..udp] [......10.0.2.15][28681] -> [....45.65.87.24][16201]
-     not-detected: [...593] [ip4][..udp] [......10.0.2.15][28681] -> [..124.218.26.16][.9747] [Unknown][Unknown][Unrated]
+     not-detected: [...593] [ip4][..udp] [......10.0.2.15][28681] -> [..124.218.26.16][.9747] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...593] [ip4][..udp] [......10.0.2.15][28681] -> [..124.218.26.16][.9747]
-     not-detected: [...571] [ip4][..udp] [......10.0.2.15][28681] -> [.114.40.163.123][55341] [Unknown][Unknown][Unrated]
+     not-detected: [...571] [ip4][..udp] [......10.0.2.15][28681] -> [.114.40.163.123][55341] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...571] [ip4][..udp] [......10.0.2.15][28681] -> [.114.40.163.123][55341]
-     not-detected: [...578] [ip4][..udp] [......10.0.2.15][28681] -> [..77.205.243.44][46006] [Unknown][Unknown][Unrated]
+     not-detected: [...578] [ip4][..udp] [......10.0.2.15][28681] -> [..77.205.243.44][46006] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...578] [ip4][..udp] [......10.0.2.15][28681] -> [..77.205.243.44][46006]
-     not-detected: [...714] [ip4][..udp] [......10.0.2.15][28681] -> [..76.174.174.69][21358] [Unknown][Unknown][Unrated]
+     not-detected: [...714] [ip4][..udp] [......10.0.2.15][28681] -> [..76.174.174.69][21358] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...714] [ip4][..udp] [......10.0.2.15][28681] -> [..76.174.174.69][21358]
-     not-detected: [...563] [ip4][..udp] [......10.0.2.15][28681] -> [...112.105.52.2][.6831] [Unknown][Unknown][Unrated]
+     not-detected: [...563] [ip4][..udp] [......10.0.2.15][28681] -> [...112.105.52.2][.6831] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...563] [ip4][..udp] [......10.0.2.15][28681] -> [...112.105.52.2][.6831]
-     not-detected: [...729] [ip4][..udp] [......10.0.2.15][28681] -> [..114.47.227.91][54463] [Unknown][Unknown][Unrated]
+     not-detected: [...729] [ip4][..udp] [......10.0.2.15][28681] -> [..114.47.227.91][54463] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...729] [ip4][..udp] [......10.0.2.15][28681] -> [..114.47.227.91][54463]
-     not-detected: [...607] [ip4][..udp] [......10.0.2.15][28681] -> [..111.241.31.96][.4814] [Unknown][Unknown][Unrated]
+     not-detected: [...607] [ip4][..udp] [......10.0.2.15][28681] -> [..111.241.31.96][.4814] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...607] [ip4][..udp] [......10.0.2.15][28681] -> [..111.241.31.96][.4814]
-     not-detected: [...380] [ip4][..udp] [......10.0.2.15][28681] -> [...83.86.49.195][12019] [Unknown][Unknown][Unrated]
+     not-detected: [...380] [ip4][..udp] [......10.0.2.15][28681] -> [...83.86.49.195][12019] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...380] [ip4][..udp] [......10.0.2.15][28681] -> [...83.86.49.195][12019]
-     not-detected: [...581] [ip4][..udp] [......10.0.2.15][28681] -> [..58.115.108.10][.4641] [Unknown][Unknown][Unrated]
+     not-detected: [...581] [ip4][..udp] [......10.0.2.15][28681] -> [..58.115.108.10][.4641] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...581] [ip4][..udp] [......10.0.2.15][28681] -> [..58.115.108.10][.4641]
-     not-detected: [...612] [ip4][..udp] [......10.0.2.15][28681] -> [.106.104.88.139][.7423] [Unknown][Unknown][Unrated]
+     not-detected: [...612] [ip4][..udp] [......10.0.2.15][28681] -> [.106.104.88.139][.7423] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...612] [ip4][..udp] [......10.0.2.15][28681] -> [.106.104.88.139][.7423]
-     not-detected: [...459] [ip4][..udp] [......10.0.2.15][28681] -> [...100.89.84.59][11603] [Unknown][Unknown][Unrated]
+     not-detected: [...459] [ip4][..udp] [......10.0.2.15][28681] -> [...100.89.84.59][11603] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...459] [ip4][..udp] [......10.0.2.15][28681] -> [...100.89.84.59][11603]
-     not-detected: [...393] [ip4][..udp] [......10.0.2.15][28681] -> [.58.115.158.103][.5110] [Unknown][Unknown][Unrated]
+     not-detected: [...393] [ip4][..udp] [......10.0.2.15][28681] -> [.58.115.158.103][.5110] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...393] [ip4][..udp] [......10.0.2.15][28681] -> [.58.115.158.103][.5110]
-     not-detected: [...464] [ip4][..udp] [......10.0.2.15][28681] -> [...101.128.66.8][34512] [Unknown][Unknown][Unrated]
+     not-detected: [...464] [ip4][..udp] [......10.0.2.15][28681] -> [...101.128.66.8][34512] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...464] [ip4][..udp] [......10.0.2.15][28681] -> [...101.128.66.8][34512]
-     not-detected: [...473] [ip4][..udp] [......10.0.2.15][28681] -> [.142.132.165.13][33564] [Unknown][Unknown][Unrated]
+     not-detected: [...473] [ip4][..udp] [......10.0.2.15][28681] -> [.142.132.165.13][33564] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...473] [ip4][..udp] [......10.0.2.15][28681] -> [.142.132.165.13][33564]
-     not-detected: [...693] [ip4][..udp] [......10.0.2.15][28681] -> [.98.215.130.156][12405] [Unknown][Unknown][Unrated]
+     not-detected: [...693] [ip4][..udp] [......10.0.2.15][28681] -> [.98.215.130.156][12405] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...693] [ip4][..udp] [......10.0.2.15][28681] -> [.98.215.130.156][12405]
              idle: [...331] [ip4][..udp] [......10.0.2.15][28681] -> [..45.31.152.112][26851] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [...516] [ip4][..udp] [......10.0.2.15][28681] -> [.119.246.147.72][.4572] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...584] [ip4][..udp] [......10.0.2.15][28681] -> [.80.193.171.146][18360] [Unknown][Unknown][Unrated]
+     not-detected: [...584] [ip4][..udp] [......10.0.2.15][28681] -> [.80.193.171.146][18360] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...584] [ip4][..udp] [......10.0.2.15][28681] -> [.80.193.171.146][18360]
-     not-detected: [...476] [ip4][..udp] [......10.0.2.15][28681] -> [..98.18.172.208][63172] [Unknown][Unknown][Unrated]
+     not-detected: [...476] [ip4][..udp] [......10.0.2.15][28681] -> [..98.18.172.208][63172] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...476] [ip4][..udp] [......10.0.2.15][28681] -> [..98.18.172.208][63172]
-     not-detected: [...443] [ip4][..udp] [......10.0.2.15][28681] -> [..183.179.14.31][54754] [Unknown][Unknown][Unrated]
+     not-detected: [...443] [ip4][..udp] [......10.0.2.15][28681] -> [..183.179.14.31][54754] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...443] [ip4][..udp] [......10.0.2.15][28681] -> [..183.179.14.31][54754]
-     not-detected: [...594] [ip4][..udp] [......10.0.2.15][28681] -> [.119.237.116.22][.7375] [Unknown][Unknown][Unrated]
+     not-detected: [...594] [ip4][..udp] [......10.0.2.15][28681] -> [.119.237.116.22][.7375] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...594] [ip4][..udp] [......10.0.2.15][28681] -> [.119.237.116.22][.7375]
-     not-detected: [...617] [ip4][..udp] [......10.0.2.15][28681] -> [.119.237.116.22][.7380] [Unknown][Unknown][Unrated]
+     not-detected: [...617] [ip4][..udp] [......10.0.2.15][28681] -> [.119.237.116.22][.7380] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...617] [ip4][..udp] [......10.0.2.15][28681] -> [.119.237.116.22][.7380]
-     not-detected: [...692] [ip4][..udp] [......10.0.2.15][28681] -> [.76.110.153.177][40022] [Unknown][Unknown][Unrated]
+     not-detected: [...692] [ip4][..udp] [......10.0.2.15][28681] -> [.76.110.153.177][40022] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...692] [ip4][..udp] [......10.0.2.15][28681] -> [.76.110.153.177][40022]
-     not-detected: [...718] [ip4][..udp] [......10.0.2.15][28681] -> [218.102.208.175][.9167] [Unknown][Unknown][Unrated]
+     not-detected: [...718] [ip4][..udp] [......10.0.2.15][28681] -> [218.102.208.175][.9167] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...718] [ip4][..udp] [......10.0.2.15][28681] -> [218.102.208.175][.9167]
-     not-detected: [...453] [ip4][..udp] [......10.0.2.15][28681] -> [..74.127.26.138][.3083] [Unknown][Unknown][Unrated]
+     not-detected: [...453] [ip4][..udp] [......10.0.2.15][28681] -> [..74.127.26.138][.3083] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...453] [ip4][..udp] [......10.0.2.15][28681] -> [..74.127.26.138][.3083]
-     not-detected: [...615] [ip4][..udp] [......10.0.2.15][28681] -> [.74.195.236.249][18557] [Unknown][Unknown][Unrated]
+     not-detected: [...615] [ip4][..udp] [......10.0.2.15][28681] -> [.74.195.236.249][18557] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...615] [ip4][..udp] [......10.0.2.15][28681] -> [.74.195.236.249][18557]
-     not-detected: [...388] [ip4][..udp] [......10.0.2.15][28681] -> [...121.7.145.36][33905] [Unknown][Unknown][Unrated]
+     not-detected: [...388] [ip4][..udp] [......10.0.2.15][28681] -> [...121.7.145.36][33905] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...388] [ip4][..udp] [......10.0.2.15][28681] -> [...121.7.145.36][33905]
-     not-detected: [...643] [ip4][..udp] [......10.0.2.15][28681] -> [..31.20.248.147][30706] [Unknown][Unknown][Unrated]
+     not-detected: [...643] [ip4][..udp] [......10.0.2.15][28681] -> [..31.20.248.147][30706] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...643] [ip4][..udp] [......10.0.2.15][28681] -> [..31.20.248.147][30706]
-     not-detected: [...639] [ip4][..udp] [......10.0.2.15][28681] -> [.119.237.116.22][.7849] [Unknown][Unknown][Unrated]
+     not-detected: [...639] [ip4][..udp] [......10.0.2.15][28681] -> [.119.237.116.22][.7849] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...639] [ip4][..udp] [......10.0.2.15][28681] -> [.119.237.116.22][.7849]
-     not-detected: [...302] [ip4][..udp] [......10.0.2.15][28681] -> [.185.187.74.173][53489] [Unknown][Unknown][Unrated]
+     not-detected: [...302] [ip4][..udp] [......10.0.2.15][28681] -> [.185.187.74.173][53489] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Susp Entropy
              idle: [...302] [ip4][..udp] [......10.0.2.15][28681] -> [.185.187.74.173][53489]
              idle: [...512] [ip4][..udp] [......10.0.2.15][28681] -> [..209.204.207.5][49256] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...734] [ip4][..udp] [......10.0.2.15][28681] -> [.113.252.91.201][.4297] [Unknown][Unknown][Unrated]
+     not-detected: [...734] [ip4][..udp] [......10.0.2.15][28681] -> [.113.252.91.201][.4297] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...734] [ip4][..udp] [......10.0.2.15][28681] -> [.113.252.91.201][.4297]
              idle: [...517] [ip4][..udp] [......10.0.2.15][28681] -> [..36.239.162.27][.7986] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...684] [ip4][..udp] [......10.0.2.15][28681] -> [..50.58.238.149][54436] [Unknown][Unknown][Unrated]
+     not-detected: [...684] [ip4][..udp] [......10.0.2.15][28681] -> [..50.58.238.149][54436] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...684] [ip4][..udp] [......10.0.2.15][28681] -> [..50.58.238.149][54436]
            update: [.....8] [ip4][....2] [......10.0.2.15] -> [.....224.0.0.22] [IGMP][Unknown][Network][Acceptable]
@@ -6600,108 +6600,108 @@
                    RISK: Unsafe Protocol
              idle: [...259] [ip4][..udp] [......10.0.2.15][28681] -> [103.232.107.100][43508] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...538] [ip4][..udp] [......10.0.2.15][28681] -> [.124.218.41.253][14339] [Unknown][Unknown][Unrated]
+     not-detected: [...538] [ip4][..udp] [......10.0.2.15][28681] -> [.124.218.41.253][14339] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...538] [ip4][..udp] [......10.0.2.15][28681] -> [.124.218.41.253][14339]
-     not-detected: [...554] [ip4][..udp] [......10.0.2.15][28681] -> [.123.203.72.224][55577] [Unknown][Unknown][Unrated]
+     not-detected: [...554] [ip4][..udp] [......10.0.2.15][28681] -> [.123.203.72.224][55577] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...554] [ip4][..udp] [......10.0.2.15][28681] -> [.123.203.72.224][55577]
-     not-detected: [...553] [ip4][..udp] [......10.0.2.15][28681] -> [182.155.128.228][.3259] [Unknown][Unknown][Unrated]
+     not-detected: [...553] [ip4][..udp] [......10.0.2.15][28681] -> [182.155.128.228][.3259] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...553] [ip4][..udp] [......10.0.2.15][28681] -> [182.155.128.228][.3259]
-     not-detected: [...555] [ip4][..udp] [......10.0.2.15][28681] -> [..124.218.26.16][20387] [Unknown][Unknown][Unrated]
+     not-detected: [...555] [ip4][..udp] [......10.0.2.15][28681] -> [..124.218.26.16][20387] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...555] [ip4][..udp] [......10.0.2.15][28681] -> [..124.218.26.16][20387]
-     not-detected: [...556] [ip4][..udp] [......10.0.2.15][28681] -> [...59.104.173.5][49787] [Unknown][Unknown][Unrated]
+     not-detected: [...556] [ip4][..udp] [......10.0.2.15][28681] -> [...59.104.173.5][49787] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...556] [ip4][..udp] [......10.0.2.15][28681] -> [...59.104.173.5][49787]
-     not-detected: [...539] [ip4][..udp] [......10.0.2.15][28681] -> [.119.14.143.237][.7510] [Unknown][Unknown][Unrated]
+     not-detected: [...539] [ip4][..udp] [......10.0.2.15][28681] -> [.119.14.143.237][.7510] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...539] [ip4][..udp] [......10.0.2.15][28681] -> [.119.14.143.237][.7510]
-     not-detected: [...537] [ip4][..udp] [......10.0.2.15][28681] -> [218.164.200.235][.2034] [Unknown][Unknown][Unrated]
+     not-detected: [...537] [ip4][..udp] [......10.0.2.15][28681] -> [218.164.200.235][.2034] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...537] [ip4][..udp] [......10.0.2.15][28681] -> [218.164.200.235][.2034]
-     not-detected: [...557] [ip4][..udp] [......10.0.2.15][28681] -> [..61.222.160.99][53163] [Unknown][Unknown][Unrated]
+     not-detected: [...557] [ip4][..udp] [......10.0.2.15][28681] -> [..61.222.160.99][53163] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...557] [ip4][..udp] [......10.0.2.15][28681] -> [..61.222.160.99][53163]
-     not-detected: [...544] [ip4][..udp] [......10.0.2.15][28681] -> [..111.184.29.35][30582] [Unknown][Unknown][Unrated]
+     not-detected: [...544] [ip4][..udp] [......10.0.2.15][28681] -> [..111.184.29.35][30582] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...544] [ip4][..udp] [......10.0.2.15][28681] -> [..111.184.29.35][30582]
-     not-detected: [...531] [ip4][..udp] [......10.0.2.15][28681] -> [..218.103.139.2][51497] [Unknown][Unknown][Unrated]
+     not-detected: [...531] [ip4][..udp] [......10.0.2.15][28681] -> [..218.103.139.2][51497] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...531] [ip4][..udp] [......10.0.2.15][28681] -> [..218.103.139.2][51497]
-     not-detected: [...542] [ip4][..udp] [......10.0.2.15][28681] -> [..218.103.139.2][51675] [Unknown][Unknown][Unrated]
+     not-detected: [...542] [ip4][..udp] [......10.0.2.15][28681] -> [..218.103.139.2][51675] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...542] [ip4][..udp] [......10.0.2.15][28681] -> [..218.103.139.2][51675]
-     not-detected: [...540] [ip4][..udp] [......10.0.2.15][28681] -> [..36.236.203.37][52131] [Unknown][Unknown][Unrated]
+     not-detected: [...540] [ip4][..udp] [......10.0.2.15][28681] -> [..36.236.203.37][52131] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...540] [ip4][..udp] [......10.0.2.15][28681] -> [..36.236.203.37][52131]
-     not-detected: [...535] [ip4][..udp] [......10.0.2.15][28681] -> [...114.27.24.95][10655] [Unknown][Unknown][Unrated]
+     not-detected: [...535] [ip4][..udp] [......10.0.2.15][28681] -> [...114.27.24.95][10655] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...535] [ip4][..udp] [......10.0.2.15][28681] -> [...114.27.24.95][10655]
-     not-detected: [...532] [ip4][..udp] [......10.0.2.15][28681] -> [...114.27.24.95][10677] [Unknown][Unknown][Unrated]
+     not-detected: [...532] [ip4][..udp] [......10.0.2.15][28681] -> [...114.27.24.95][10677] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...532] [ip4][..udp] [......10.0.2.15][28681] -> [...114.27.24.95][10677]
-     not-detected: [...541] [ip4][..udp] [......10.0.2.15][28681] -> [...114.27.24.95][11141] [Unknown][Unknown][Unrated]
+     not-detected: [...541] [ip4][..udp] [......10.0.2.15][28681] -> [...114.27.24.95][11141] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...541] [ip4][..udp] [......10.0.2.15][28681] -> [...114.27.24.95][11141]
-     not-detected: [...561] [ip4][..udp] [......10.0.2.15][28681] -> [.61.238.173.128][57466] [Unknown][Unknown][Unrated]
+     not-detected: [...561] [ip4][..udp] [......10.0.2.15][28681] -> [.61.238.173.128][57466] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...561] [ip4][..udp] [......10.0.2.15][28681] -> [.61.238.173.128][57466]
-     not-detected: [...546] [ip4][..udp] [......10.0.2.15][28681] -> [.38.142.119.234][49867] [Unknown][Unknown][Unrated]
+     not-detected: [...546] [ip4][..udp] [......10.0.2.15][28681] -> [.38.142.119.234][49867] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...546] [ip4][..udp] [......10.0.2.15][28681] -> [.38.142.119.234][49867]
-     not-detected: [...534] [ip4][..udp] [......10.0.2.15][28681] -> [.113.252.86.162][54436] [Unknown][Unknown][Unrated]
+     not-detected: [...534] [ip4][..udp] [......10.0.2.15][28681] -> [.113.252.86.162][54436] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...534] [ip4][..udp] [......10.0.2.15][28681] -> [.113.252.86.162][54436]
-     not-detected: [...551] [ip4][..udp] [......10.0.2.15][28681] -> [..92.24.129.230][14766] [Unknown][Unknown][Unrated]
+     not-detected: [...551] [ip4][..udp] [......10.0.2.15][28681] -> [..92.24.129.230][14766] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...551] [ip4][..udp] [......10.0.2.15][28681] -> [..92.24.129.230][14766]
-     not-detected: [...559] [ip4][..udp] [......10.0.2.15][28681] -> [.113.252.86.162][55080] [Unknown][Unknown][Unrated]
+     not-detected: [...559] [ip4][..udp] [......10.0.2.15][28681] -> [.113.252.86.162][55080] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...559] [ip4][..udp] [......10.0.2.15][28681] -> [.113.252.86.162][55080]
-     not-detected: [...529] [ip4][..udp] [......10.0.2.15][28681] -> [116.241.162.162][57929] [Unknown][Unknown][Unrated]
+     not-detected: [...529] [ip4][..udp] [......10.0.2.15][28681] -> [116.241.162.162][57929] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...529] [ip4][..udp] [......10.0.2.15][28681] -> [116.241.162.162][57929]
-     not-detected: [...663] [ip4][..udp] [......10.0.2.15][28681] -> [..50.58.238.163][.6594] [Unknown][Unknown][Unrated]
+     not-detected: [...663] [ip4][..udp] [......10.0.2.15][28681] -> [..50.58.238.163][.6594] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...663] [ip4][..udp] [......10.0.2.15][28681] -> [..50.58.238.163][.6594]
-     not-detected: [...695] [ip4][..udp] [......10.0.2.15][28681] -> [..76.189.72.230][.8161] [Unknown][Unknown][Unrated]
+     not-detected: [...695] [ip4][..udp] [......10.0.2.15][28681] -> [..76.189.72.230][.8161] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...695] [ip4][..udp] [......10.0.2.15][28681] -> [..76.189.72.230][.8161]
-     not-detected: [...562] [ip4][..udp] [......10.0.2.15][28681] -> [112.119.242.110][59879] [Unknown][Unknown][Unrated]
+     not-detected: [...562] [ip4][..udp] [......10.0.2.15][28681] -> [112.119.242.110][59879] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...562] [ip4][..udp] [......10.0.2.15][28681] -> [112.119.242.110][59879]
-     not-detected: [...552] [ip4][..udp] [......10.0.2.15][28681] -> [...218.250.6.59][60012] [Unknown][Unknown][Unrated]
+     not-detected: [...552] [ip4][..udp] [......10.0.2.15][28681] -> [...218.250.6.59][60012] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...552] [ip4][..udp] [......10.0.2.15][28681] -> [...218.250.6.59][60012]
-     not-detected: [...560] [ip4][..udp] [......10.0.2.15][28681] -> [..118.168.15.71][53883] [Unknown][Unknown][Unrated]
+     not-detected: [...560] [ip4][..udp] [......10.0.2.15][28681] -> [..118.168.15.71][53883] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...560] [ip4][..udp] [......10.0.2.15][28681] -> [..118.168.15.71][53883]
-     not-detected: [...533] [ip4][..udp] [......10.0.2.15][28681] -> [..36.229.185.60][.6898] [Unknown][Unknown][Unrated]
+     not-detected: [...533] [ip4][..udp] [......10.0.2.15][28681] -> [..36.229.185.60][.6898] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...533] [ip4][..udp] [......10.0.2.15][28681] -> [..36.229.185.60][.6898]
-     not-detected: [...536] [ip4][..udp] [......10.0.2.15][28681] -> [118.167.222.160][56121] [Unknown][Unknown][Unrated]
+     not-detected: [...536] [ip4][..udp] [......10.0.2.15][28681] -> [118.167.222.160][56121] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...536] [ip4][..udp] [......10.0.2.15][28681] -> [118.167.222.160][56121]
-     not-detected: [...558] [ip4][..udp] [......10.0.2.15][28681] -> [...112.105.52.2][.6466] [Unknown][Unknown][Unrated]
+     not-detected: [...558] [ip4][..udp] [......10.0.2.15][28681] -> [...112.105.52.2][.6466] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...558] [ip4][..udp] [......10.0.2.15][28681] -> [...112.105.52.2][.6466]
-     not-detected: [...543] [ip4][..udp] [......10.0.2.15][28681] -> [..114.39.159.60][56896] [Unknown][Unknown][Unrated]
+     not-detected: [...543] [ip4][..udp] [......10.0.2.15][28681] -> [..114.39.159.60][56896] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...543] [ip4][..udp] [......10.0.2.15][28681] -> [..114.39.159.60][56896]
-     not-detected: [...545] [ip4][..udp] [......10.0.2.15][28681] -> [..116.49.159.77][55915] [Unknown][Unknown][Unrated]
+     not-detected: [...545] [ip4][..udp] [......10.0.2.15][28681] -> [..116.49.159.77][55915] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...545] [ip4][..udp] [......10.0.2.15][28681] -> [..116.49.159.77][55915]
-     not-detected: [...528] [ip4][..udp] [......10.0.2.15][28681] -> [..118.168.15.71][58442] [Unknown][Unknown][Unrated]
+     not-detected: [...528] [ip4][..udp] [......10.0.2.15][28681] -> [..118.168.15.71][58442] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...528] [ip4][..udp] [......10.0.2.15][28681] -> [..118.168.15.71][58442]
              idle: [...753] [ip4][..udp] [......10.0.2.15][28681] -> [..165.84.140.96][14400] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...547] [ip4][..udp] [......10.0.2.15][28681] -> [213.229.111.224][43316] [Unknown][Unknown][Unrated]
+     not-detected: [...547] [ip4][..udp] [......10.0.2.15][28681] -> [213.229.111.224][43316] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...547] [ip4][..udp] [......10.0.2.15][28681] -> [213.229.111.224][43316]
-     not-detected: [...530] [ip4][..udp] [......10.0.2.15][28681] -> [118.167.248.220][59304] [Unknown][Unknown][Unrated]
+     not-detected: [...530] [ip4][..udp] [......10.0.2.15][28681] -> [118.167.248.220][59304] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...530] [ip4][..udp] [......10.0.2.15][28681] -> [118.167.248.220][59304]
            update: [...754] [ip4][..udp] [......10.0.2.15][28681] -> [..84.125.218.84][17561]
@@ -6826,12 +6826,12 @@
                    RISK: Unsafe Protocol
              idle: [....98] [ip4][..udp] [......10.0.2.15][28681] -> [.203.222.14.170][23332] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...754] [ip4][..udp] [......10.0.2.15][28681] -> [..84.125.218.84][17561] [Unknown][Unknown][Unrated]
+     not-detected: [...754] [ip4][..udp] [......10.0.2.15][28681] -> [..84.125.218.84][17561] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...754] [ip4][..udp] [......10.0.2.15][28681] -> [..84.125.218.84][17561]
-     not-detected: [...573] [ip4][..udp] [......10.0.2.15][28681] -> [..71.239.173.18][23327] [Unknown][Unknown][Unrated]
+     not-detected: [...573] [ip4][..udp] [......10.0.2.15][28681] -> [..71.239.173.18][23327] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...573] [ip4][..udp] [......10.0.2.15][28681] -> [..71.239.173.18][23327]
-     not-detected: [...383] [ip4][..udp] [......10.0.2.15][28681] -> [...84.71.243.60][34498] [Unknown][Unknown][Unrated]
+     not-detected: [...383] [ip4][..udp] [......10.0.2.15][28681] -> [...84.71.243.60][34498] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...383] [ip4][..udp] [......10.0.2.15][28681] -> [...84.71.243.60][34498]
            update: [...778] [ip4][..udp] [......10.0.2.15][28681] -> [.122.117.100.78][.9010]
            update: [...485] [ip4][..udp] [......10.0.2.15][28681] -> [...154.3.42.209][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -7028,62 +7028,62 @@
                    RISK: Unsafe Protocol
              idle: [...748] [ip4][..udp] [......10.0.2.15][28681] -> [.....92.8.59.80][35192] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [....49] [ip4][..tcp] [......10.0.2.15][50209] -> [113.252.206.254][49587] [Unknown][Unknown][Unrated]
+     not-detected: [....49] [ip4][..tcp] [......10.0.2.15][50209] -> [113.252.206.254][49587] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....49] [ip4][..tcp] [......10.0.2.15][50209] -> [113.252.206.254][49587]
-     not-detected: [....68] [ip4][..tcp] [......10.0.2.15][50227] -> [.111.246.157.94][51175] [Unknown][Unknown][Unrated]
+     not-detected: [....68] [ip4][..tcp] [......10.0.2.15][50227] -> [.111.246.157.94][51175] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....68] [ip4][..tcp] [......10.0.2.15][50227] -> [.111.246.157.94][51175]
              idle: [...797] [ip4][.icmp] [...154.3.42.209] -> [......10.0.2.15] [ICMP][Unknown][Network][Acceptable]
                    RISK: Susp Entropy
              idle: [...135] [ip4][..udp] [......10.0.2.15][28681] -> [.193.250.99.158][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [....81] [ip4][..tcp] [......10.0.2.15][50240] -> [..36.237.10.152][21293] [Unknown][Unknown][Unrated]
+     not-detected: [....81] [ip4][..tcp] [......10.0.2.15][50240] -> [..36.237.10.152][21293] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....81] [ip4][..tcp] [......10.0.2.15][50240] -> [..36.237.10.152][21293]
              idle: [...160] [ip4][..udp] [......10.0.2.15][28681] -> [...83.150.49.35][32448] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [...130] [ip4][..udp] [......10.0.2.15][28681] -> [..119.224.95.97][46356] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [....79] [ip4][..tcp] [......10.0.2.15][50238] -> [.124.218.41.253][59144] [Unknown][Unknown][Unrated]
+     not-detected: [....79] [ip4][..tcp] [......10.0.2.15][50238] -> [.124.218.41.253][59144] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....79] [ip4][..tcp] [......10.0.2.15][50238] -> [.124.218.41.253][59144]
              idle: [...137] [ip4][..udp] [......10.0.2.15][28681] -> [...82.65.70.197][21693] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [...756] [ip4][..udp] [......10.0.2.15][28681] -> [..41.100.68.255][12838] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [....32] [ip4][..tcp] [......10.0.2.15][50194] -> [..92.152.66.153][43771] [Unknown][Unknown][Unrated]
+     not-detected: [....32] [ip4][..tcp] [......10.0.2.15][50194] -> [..92.152.66.153][43771] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....32] [ip4][..tcp] [......10.0.2.15][50194] -> [..92.152.66.153][43771]
-     not-detected: [...231] [ip4][..tcp] [......10.0.2.15][50277] -> [.82.181.251.218][36368] [Unknown][Unknown][Unrated]
+     not-detected: [...231] [ip4][..tcp] [......10.0.2.15][50277] -> [.82.181.251.218][36368] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...231] [ip4][..tcp] [......10.0.2.15][50277] -> [.82.181.251.218][36368]
              idle: [...800] [ip4][..udp] [......10.0.2.15][63957] -> [239.255.255.250][.3702] [WSD][Unknown][Network][Acceptable]
-     not-detected: [...778] [ip4][..udp] [......10.0.2.15][28681] -> [.122.117.100.78][.9010] [Unknown][Unknown][Unrated]
+     not-detected: [...778] [ip4][..udp] [......10.0.2.15][28681] -> [.122.117.100.78][.9010] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...778] [ip4][..udp] [......10.0.2.15][28681] -> [.122.117.100.78][.9010]
-     not-detected: [....71] [ip4][..tcp] [......10.0.2.15][50230] -> [....73.3.103.37][17296] [Unknown][Unknown][Unrated]
+     not-detected: [....71] [ip4][..tcp] [......10.0.2.15][50230] -> [....73.3.103.37][17296] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....71] [ip4][..tcp] [......10.0.2.15][50230] -> [....73.3.103.37][17296]
-     not-detected: [...244] [ip4][..tcp] [......10.0.2.15][50288] -> [...76.119.55.28][20347] [Unknown][Unknown][Unrated]
+     not-detected: [...244] [ip4][..tcp] [......10.0.2.15][50288] -> [...76.119.55.28][20347] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...244] [ip4][..tcp] [......10.0.2.15][50288] -> [...76.119.55.28][20347]
-     not-detected: [...151] [ip4][..tcp] [......10.0.2.15][50264] -> [...95.10.205.67][48380] [Unknown][Unknown][Unrated]
+     not-detected: [...151] [ip4][..tcp] [......10.0.2.15][50264] -> [...95.10.205.67][48380] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...151] [ip4][..tcp] [......10.0.2.15][50264] -> [...95.10.205.67][48380]
              idle: [...156] [ip4][..udp] [......10.0.2.15][28681] -> [..86.244.228.86][10131] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...224] [ip4][..tcp] [......10.0.2.15][50270] -> [...114.27.24.95][11427] [Unknown][Unknown][Unrated]
+     not-detected: [...224] [ip4][..tcp] [......10.0.2.15][50270] -> [...114.27.24.95][11427] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...224] [ip4][..tcp] [......10.0.2.15][50270] -> [...114.27.24.95][11427]
              idle: [...485] [ip4][..udp] [......10.0.2.15][28681] -> [...154.3.42.209][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...147] [ip4][..tcp] [......10.0.2.15][50260] -> [113.255.200.161][51394] [Unknown][Unknown][Unrated]
+     not-detected: [...147] [ip4][..tcp] [......10.0.2.15][50260] -> [113.255.200.161][51394] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...147] [ip4][..tcp] [......10.0.2.15][50260] -> [113.255.200.161][51394]
              idle: [...185] [ip4][..udp] [......10.0.2.15][28681] -> [.109.132.196.58][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...769] [ip4][..udp] [......10.0.2.15][28681] -> [.123.110.61.169][11973] [Unknown][Unknown][Unrated]
+     not-detected: [...769] [ip4][..udp] [......10.0.2.15][28681] -> [.123.110.61.169][11973] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...769] [ip4][..udp] [......10.0.2.15][28681] -> [.123.110.61.169][11973]
              idle: [...788] [ip4][..udp] [......10.0.2.15][28681] -> [.220.134.167.82][.5820] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -7096,66 +7096,66 @@
                    RISK: Unsafe Protocol
              idle: [...128] [ip4][..udp] [......10.0.2.15][28681] -> [..77.141.219.27][37580] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...152] [ip4][..tcp] [......10.0.2.15][50265] -> [.113.255.250.32][52647] [Unknown][Unknown][Unrated]
+     not-detected: [...152] [ip4][..tcp] [......10.0.2.15][50265] -> [.113.255.250.32][52647] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...152] [ip4][..tcp] [......10.0.2.15][50265] -> [.113.255.250.32][52647]
              idle: [...801] [ip6][icmp6] [..............fe80::c50d:519f:96a4:e108] -> [...............................ff02::16] [ICMPV6][Unknown][Network][Acceptable]
-     not-detected: [....59] [ip4][..tcp] [......10.0.2.15][50218] -> [..90.103.247.94][59045] [Unknown][Unknown][Unrated]
+     not-detected: [....59] [ip4][..tcp] [......10.0.2.15][50218] -> [..90.103.247.94][59045] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....59] [ip4][..tcp] [......10.0.2.15][50218] -> [..90.103.247.94][59045]
              idle: [....85] [ip4][..udp] [......10.0.2.15][28681] -> [..85.138.20.110][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...230] [ip4][..tcp] [......10.0.2.15][50276] -> [.96.246.156.126][56070] [Unknown][Unknown][Unrated]
+     not-detected: [...230] [ip4][..tcp] [......10.0.2.15][50276] -> [.96.246.156.126][56070] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...230] [ip4][..tcp] [......10.0.2.15][50276] -> [.96.246.156.126][56070]
-     not-detected: [....60] [ip4][..tcp] [......10.0.2.15][50219] -> [.193.121.165.12][55376] [Unknown][Unknown][Unrated]
+     not-detected: [....60] [ip4][..tcp] [......10.0.2.15][50219] -> [.193.121.165.12][55376] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....60] [ip4][..tcp] [......10.0.2.15][50219] -> [.193.121.165.12][55376]
               end: [...239] [ip4][..tcp] [......10.0.2.15][50285] -> [..75.133.101.93][52367] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...144] [ip4][..tcp] [......10.0.2.15][50257] -> [...219.70.48.23][.3054] [Unknown][Unknown][Unrated]
+     not-detected: [...144] [ip4][..tcp] [......10.0.2.15][50257] -> [...219.70.48.23][.3054] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...144] [ip4][..tcp] [......10.0.2.15][50257] -> [...219.70.48.23][.3054]
-     not-detected: [....58] [ip4][..tcp] [......10.0.2.15][50217] -> [.113.252.86.162][54958] [Unknown][Unknown][Unrated]
+     not-detected: [....58] [ip4][..tcp] [......10.0.2.15][50217] -> [.113.252.86.162][54958] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....58] [ip4][..tcp] [......10.0.2.15][50217] -> [.113.252.86.162][54958]
-     not-detected: [...773] [ip4][..udp] [......10.0.2.15][28681] -> [...86.153.21.93][36696] [Unknown][Unknown][Unrated]
+     not-detected: [...773] [ip4][..udp] [......10.0.2.15][28681] -> [...86.153.21.93][36696] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...773] [ip4][..udp] [......10.0.2.15][28681] -> [...86.153.21.93][36696]
-     not-detected: [....74] [ip4][..tcp] [......10.0.2.15][50233] -> [...1.163.14.246][12854] [Unknown][Unknown][Unrated]
+     not-detected: [....74] [ip4][..tcp] [......10.0.2.15][50233] -> [...1.163.14.246][12854] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....74] [ip4][..tcp] [......10.0.2.15][50233] -> [...1.163.14.246][12854]
              idle: [...799] [ip6][..udp] [..............fe80::c50d:519f:96a4:e108][63958] -> [................................ff02::c][.3702] [WSD][Unknown][Network][Acceptable]
              idle: [...187] [ip4][..udp] [......10.0.2.15][28681] -> [....92.88.92.56][21009] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...784] [ip4][..udp] [......10.0.2.15][28681] -> [..23.19.141.110][.6346] [Unknown][Unknown][Unrated]
+     not-detected: [...784] [ip4][..udp] [......10.0.2.15][28681] -> [..23.19.141.110][.6346] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...784] [ip4][..udp] [......10.0.2.15][28681] -> [..23.19.141.110][.6346]
-     not-detected: [...234] [ip4][..tcp] [......10.0.2.15][50280] -> [...99.199.148.6][.4338] [Unknown][Unknown][Unrated]
+     not-detected: [...234] [ip4][..tcp] [......10.0.2.15][50280] -> [...99.199.148.6][.4338] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...234] [ip4][..tcp] [......10.0.2.15][50280] -> [...99.199.148.6][.4338]
-     not-detected: [....50] [ip4][..tcp] [......10.0.2.15][50210] -> [..36.234.18.166][61404] [Unknown][Unknown][Unrated]
+     not-detected: [....50] [ip4][..tcp] [......10.0.2.15][50210] -> [..36.234.18.166][61404] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....50] [ip4][..tcp] [......10.0.2.15][50210] -> [..36.234.18.166][61404]
-     not-detected: [...235] [ip4][..tcp] [......10.0.2.15][50281] -> [.94.134.154.158][54130] [Unknown][Unknown][Unrated]
+     not-detected: [...235] [ip4][..tcp] [......10.0.2.15][50281] -> [.94.134.154.158][54130] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...235] [ip4][..tcp] [......10.0.2.15][50281] -> [.94.134.154.158][54130]
-     not-detected: [...232] [ip4][..tcp] [......10.0.2.15][50278] -> [..36.231.59.187][62234] [Unknown][Unknown][Unrated]
+     not-detected: [...232] [ip4][..tcp] [......10.0.2.15][50278] -> [..36.231.59.187][62234] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...232] [ip4][..tcp] [......10.0.2.15][50278] -> [..36.231.59.187][62234]
              idle: [...114] [ip4][..udp] [......10.0.2.15][28681] -> [....86.23.75.69][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [...126] [ip4][..udp] [......10.0.2.15][28681] -> [..91.69.159.133][28000] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...226] [ip4][..tcp] [......10.0.2.15][50272] -> [...1.172.184.48][13298] [Unknown][Unknown][Unrated]
+     not-detected: [...226] [ip4][..tcp] [......10.0.2.15][50272] -> [...1.172.184.48][13298] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...226] [ip4][..tcp] [......10.0.2.15][50272] -> [...1.172.184.48][13298]
-     not-detected: [...771] [ip4][..udp] [......10.0.2.15][28681] -> [...202.27.193.6][.6346] [Unknown][Unknown][Unrated]
+     not-detected: [...771] [ip4][..udp] [......10.0.2.15][28681] -> [...202.27.193.6][.6346] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...771] [ip4][..udp] [......10.0.2.15][28681] -> [...202.27.193.6][.6346]
-     not-detected: [....47] [ip4][..tcp] [......10.0.2.15][50207] -> [..90.78.171.204][.6346] [Unknown][Unknown][Unrated]
+     not-detected: [....47] [ip4][..tcp] [......10.0.2.15][50207] -> [..90.78.171.204][.6346] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....47] [ip4][..tcp] [......10.0.2.15][50207] -> [..90.78.171.204][.6346]
-     not-detected: [....92] [ip4][..tcp] [......10.0.2.15][50247] -> [..66.30.221.181][51560] [Unknown][Unknown][Unrated]
+     not-detected: [....92] [ip4][..tcp] [......10.0.2.15][50247] -> [..66.30.221.181][51560] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....92] [ip4][..tcp] [......10.0.2.15][50247] -> [..66.30.221.181][51560]
              idle: [...171] [ip4][..udp] [......10.0.2.15][28681] -> [196.217.132.111][25394] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -7164,12 +7164,12 @@
                    RISK: Unsafe Protocol
              idle: [...158] [ip4][..udp] [......10.0.2.15][28681] -> [.118.166.226.70][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [....83] [ip4][..tcp] [......10.0.2.15][50242] -> [109.210.203.131][.6346] [Unknown][Unknown][Unrated]
+     not-detected: [....83] [ip4][..tcp] [......10.0.2.15][50242] -> [109.210.203.131][.6346] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....83] [ip4][..tcp] [......10.0.2.15][50242] -> [109.210.203.131][.6346]
              idle: [...183] [ip4][..udp] [......10.0.2.15][28681] -> [..91.172.15.182][37829] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...227] [ip4][..tcp] [......10.0.2.15][50273] -> [..24.179.18.242][47329] [Unknown][Unknown][Unrated]
+     not-detected: [...227] [ip4][..tcp] [......10.0.2.15][50273] -> [..24.179.18.242][47329] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...227] [ip4][..tcp] [......10.0.2.15][50273] -> [..24.179.18.242][47329]
               end: [...276] [ip4][..tcp] [......10.0.2.15][50300] -> [..188.61.52.183][11852] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -7184,56 +7184,56 @@
                    RISK: Unsafe Protocol
              idle: [...792] [ip4][..udp] [......10.0.2.15][28681] -> [.36.239.213.146][21750] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...781] [ip4][..udp] [......10.0.2.15][28681] -> [...112.105.52.2][23458] [Unknown][Unknown][Unrated]
+     not-detected: [...781] [ip4][..udp] [......10.0.2.15][28681] -> [...112.105.52.2][23458] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...781] [ip4][..udp] [......10.0.2.15][28681] -> [...112.105.52.2][23458]
              idle: [...783] [ip4][.icmp] [.65.182.231.232] -> [......10.0.2.15] [ICMP][Unknown][Network][Acceptable]
                    RISK: Susp Entropy
-     not-detected: [...766] [ip4][..udp] [......10.0.2.15][28681] -> [...76.119.55.28][20347] [Unknown][Unknown][Unrated]
+     not-detected: [...766] [ip4][..udp] [......10.0.2.15][28681] -> [...76.119.55.28][20347] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...766] [ip4][..udp] [......10.0.2.15][28681] -> [...76.119.55.28][20347]
-     not-detected: [....72] [ip4][..tcp] [......10.0.2.15][50231] -> [..76.68.138.207][45079] [Unknown][Unknown][Unrated]
+     not-detected: [....72] [ip4][..tcp] [......10.0.2.15][50231] -> [..76.68.138.207][45079] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....72] [ip4][..tcp] [......10.0.2.15][50231] -> [..76.68.138.207][45079]
-     not-detected: [...228] [ip4][..tcp] [......10.0.2.15][50274] -> [..68.174.18.115][50679] [Unknown][Unknown][Unrated]
+     not-detected: [...228] [ip4][..tcp] [......10.0.2.15][50274] -> [..68.174.18.115][50679] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...228] [ip4][..tcp] [......10.0.2.15][50274] -> [..68.174.18.115][50679]
-     not-detected: [....84] [ip4][..tcp] [......10.0.2.15][50243] -> [176.138.129.252][27962] [Unknown][Unknown][Unrated]
+     not-detected: [....84] [ip4][..tcp] [......10.0.2.15][50243] -> [176.138.129.252][27962] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....84] [ip4][..tcp] [......10.0.2.15][50243] -> [176.138.129.252][27962]
              idle: [...209] [ip4][..udp] [......10.0.2.15][28681] -> [..91.179.98.234][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...297] [ip4][..tcp] [......10.0.2.15][50321] -> [213.229.111.224][.4876] [Unknown][Unknown][Unrated]
+     not-detected: [...297] [ip4][..tcp] [......10.0.2.15][50321] -> [213.229.111.224][.4876] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...297] [ip4][..tcp] [......10.0.2.15][50321] -> [213.229.111.224][.4876]
-     not-detected: [....45] [ip4][..tcp] [......10.0.2.15][50205] -> [.114.46.139.171][52120] [Unknown][Unknown][Unrated]
+     not-detected: [....45] [ip4][..tcp] [......10.0.2.15][50205] -> [.114.46.139.171][52120] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....45] [ip4][..tcp] [......10.0.2.15][50205] -> [.114.46.139.171][52120]
              idle: [...334] [ip4][..tcp] [......10.0.2.15][50328] -> [..189.147.72.83][26108] [HTTP.Gnutella][Unknown][Media][Potentially Dangerous][189.147.72.83]
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol, Binary File/Data Transfer (Attempt)
              idle: [...138] [ip4][..udp] [......10.0.2.15][28681] -> [167.114.170.156][23844] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...777] [ip4][..udp] [......10.0.2.15][28681] -> [.124.244.211.43][23459] [Unknown][Unknown][Unrated]
+     not-detected: [...777] [ip4][..udp] [......10.0.2.15][28681] -> [.124.244.211.43][23459] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...777] [ip4][..udp] [......10.0.2.15][28681] -> [.124.244.211.43][23459]
-     not-detected: [....75] [ip4][..tcp] [......10.0.2.15][50234] -> [...66.189.28.17][16269] [Unknown][Unknown][Unrated]
+     not-detected: [....75] [ip4][..tcp] [......10.0.2.15][50234] -> [...66.189.28.17][16269] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....75] [ip4][..tcp] [......10.0.2.15][50234] -> [...66.189.28.17][16269]
              idle: [...796] [ip4][..udp] [......10.0.2.15][28681] -> [..41.249.63.200][22582] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...774] [ip4][..udp] [......10.0.2.15][28681] -> [..50.58.238.149][.6599] [Unknown][Unknown][Unrated]
+     not-detected: [...774] [ip4][..udp] [......10.0.2.15][28681] -> [..50.58.238.149][.6599] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...774] [ip4][..udp] [......10.0.2.15][28681] -> [..50.58.238.149][.6599]
              idle: [...116] [ip4][..udp] [......10.0.2.15][28681] -> [.124.44.190.145][10170] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...145] [ip4][..tcp] [......10.0.2.15][50258] -> [122.100.216.210][.7097] [Unknown][Unknown][Unrated]
+     not-detected: [...145] [ip4][..tcp] [......10.0.2.15][50258] -> [122.100.216.210][.7097] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...145] [ip4][..tcp] [......10.0.2.15][50258] -> [122.100.216.210][.7097]
-     not-detected: [....44] [ip4][..tcp] [......10.0.2.15][50204] -> [..124.218.26.16][.9728] [Unknown][Unknown][Unrated]
+     not-detected: [....44] [ip4][..tcp] [......10.0.2.15][50204] -> [..124.218.26.16][.9728] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....44] [ip4][..tcp] [......10.0.2.15][50204] -> [..124.218.26.16][.9728]
-     not-detected: [...782] [ip4][..udp] [......10.0.2.15][28681] -> [.65.182.231.232][.7890] [Unknown][Unknown][Unrated]
+     not-detected: [...782] [ip4][..udp] [......10.0.2.15][28681] -> [.65.182.231.232][.7890] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...782] [ip4][..udp] [......10.0.2.15][28681] -> [.65.182.231.232][.7890]
-     not-detected: [....80] [ip4][..tcp] [......10.0.2.15][50239] -> [...112.105.52.2][.6384] [Unknown][Unknown][Unrated]
+     not-detected: [....80] [ip4][..tcp] [......10.0.2.15][50239] -> [...112.105.52.2][.6384] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....80] [ip4][..tcp] [......10.0.2.15][50239] -> [...112.105.52.2][.6384]
               end: [....94] [ip4][..tcp] [......10.0.2.15][50249] -> [.86.208.180.181][45883] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -7242,22 +7242,22 @@
                    RISK: Unsafe Protocol
              idle: [...352] [ip4][..udp] [......10.0.2.15][28681] -> [.176.191.49.159][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...768] [ip4][..udp] [......10.0.2.15][28681] -> [.14.200.255.229][37058] [Unknown][Unknown][Unrated]
+     not-detected: [...768] [ip4][..udp] [......10.0.2.15][28681] -> [.14.200.255.229][37058] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...768] [ip4][..udp] [......10.0.2.15][28681] -> [.14.200.255.229][37058]
              idle: [...111] [ip4][..udp] [......10.0.2.15][28681] -> [..90.65.141.157][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [....56] [ip4][..tcp] [......10.0.2.15][50215] -> [.124.244.64.237][.4704] [Unknown][Unknown][Unrated]
+     not-detected: [....56] [ip4][..tcp] [......10.0.2.15][50215] -> [.124.244.64.237][.4704] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....56] [ip4][..tcp] [......10.0.2.15][50215] -> [.124.244.64.237][.4704]
              idle: [...794] [ip4][..udp] [......10.0.2.15][50214] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250]
              idle: [...764] [ip4][..udp] [......10.0.2.15][28681] -> [.208.92.106.151][32476] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...241] [ip4][..tcp] [......10.0.2.15][50287] -> [.98.215.130.156][12405] [Unknown][Unknown][Unrated]
+     not-detected: [...241] [ip4][..tcp] [......10.0.2.15][50287] -> [.98.215.130.156][12405] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...241] [ip4][..tcp] [......10.0.2.15][50287] -> [.98.215.130.156][12405]
              idle: [...486] [ip4][..udp] [......10.0.2.15][28681] -> [...88.68.45.203][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [....82] [ip4][..tcp] [......10.0.2.15][50241] -> [..98.18.172.208][63172] [Unknown][Unknown][Unrated]
+     not-detected: [....82] [ip4][..tcp] [......10.0.2.15][50241] -> [..98.18.172.208][63172] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....82] [ip4][..tcp] [......10.0.2.15][50241] -> [..98.18.172.208][63172]
              idle: [...140] [ip4][..udp] [......10.0.2.15][28681] -> [.77.197.111.186][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -7266,55 +7266,55 @@
                    RISK: Unsafe Protocol
              idle: [...763] [ip4][..udp] [......10.0.2.15][28681] -> [.85.170.209.214][46210] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...286] [ip4][..tcp] [......10.0.2.15][50310] -> [.76.110.153.177][40022] [Unknown][Unknown][Unrated]
+     not-detected: [...286] [ip4][..tcp] [......10.0.2.15][50310] -> [.76.110.153.177][40022] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...286] [ip4][..tcp] [......10.0.2.15][50310] -> [.76.110.153.177][40022]
              idle: [...761] [ip4][..udp] [......10.0.2.15][28681] -> [..195.132.75.56][56009] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [...312] [ip4][..udp] [......10.0.2.15][28681] -> [..24.167.201.53][47282] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...245] [ip4][..tcp] [......10.0.2.15][50289] -> [.74.195.236.249][18557] [Unknown][Unknown][Unrated]
+     not-detected: [...245] [ip4][..tcp] [......10.0.2.15][50289] -> [.74.195.236.249][18557] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...245] [ip4][..tcp] [......10.0.2.15][50289] -> [.74.195.236.249][18557]
              idle: [...787] [ip4][..udp] [......10.0.2.15][28681] -> [220.133.122.217][23458] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...233] [ip4][..tcp] [......10.0.2.15][50279] -> [.113.252.91.201][.4297] [Unknown][Unknown][Unrated]
+     not-detected: [...233] [ip4][..tcp] [......10.0.2.15][50279] -> [.113.252.91.201][.4297] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...233] [ip4][..tcp] [......10.0.2.15][50279] -> [.113.252.91.201][.4297]
              idle: [...793] [ip4][..udp] [......10.0.2.15][28681] -> [123.205.126.102][.5193] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...123] [ip4][..tcp] [......10.0.2.15][50254] -> [..24.78.134.188][49046] [Unknown][Unknown][Unrated]
+     not-detected: [...123] [ip4][..tcp] [......10.0.2.15][50254] -> [..24.78.134.188][49046] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...123] [ip4][..tcp] [......10.0.2.15][50254] -> [..24.78.134.188][49046]
-     not-detected: [....48] [ip4][..tcp] [......10.0.2.15][50208] -> [.119.237.116.22][.8683] [Unknown][Unknown][Unrated]
+     not-detected: [....48] [ip4][..tcp] [......10.0.2.15][50208] -> [.119.237.116.22][.8683] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....48] [ip4][..tcp] [......10.0.2.15][50208] -> [.119.237.116.22][.8683]
-     not-detected: [....78] [ip4][..tcp] [......10.0.2.15][50237] -> [.88.123.202.175][37910] [Unknown][Unknown][Unrated]
+     not-detected: [....78] [ip4][..tcp] [......10.0.2.15][50237] -> [.88.123.202.175][37910] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....78] [ip4][..tcp] [......10.0.2.15][50237] -> [.88.123.202.175][37910]
              idle: [...749] [ip4][..udp] [......10.0.2.15][28681] -> [...78.159.27.22][17563] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...225] [ip4][..tcp] [......10.0.2.15][50271] -> [.218.164.198.27][60202] [Unknown][Unknown][Unrated]
+     not-detected: [...225] [ip4][..tcp] [......10.0.2.15][50271] -> [.218.164.198.27][60202] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...225] [ip4][..tcp] [......10.0.2.15][50271] -> [.218.164.198.27][60202]
-     not-detected: [....33] [ip4][..tcp] [......10.0.2.15][50195] -> [162.157.143.201][29762] [Unknown][Unknown][Unrated]
+     not-detected: [....33] [ip4][..tcp] [......10.0.2.15][50195] -> [162.157.143.201][29762] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....33] [ip4][..tcp] [......10.0.2.15][50195] -> [162.157.143.201][29762]
-     not-detected: [...772] [ip4][..udp] [......10.0.2.15][28681] -> [.73.192.231.237][.9676] [Unknown][Unknown][Unrated]
+     not-detected: [...772] [ip4][..udp] [......10.0.2.15][28681] -> [.73.192.231.237][.9676] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...772] [ip4][..udp] [......10.0.2.15][28681] -> [.73.192.231.237][.9676]
-     not-detected: [...120] [ip4][..tcp] [......10.0.2.15][50251] -> [...24.127.1.235][37814] [Unknown][Unknown][Unrated]
+     not-detected: [...120] [ip4][..tcp] [......10.0.2.15][50251] -> [...24.127.1.235][37814] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...120] [ip4][..tcp] [......10.0.2.15][50251] -> [...24.127.1.235][37814]
-     not-detected: [....40] [ip4][..tcp] [......10.0.2.15][50201] -> [..78.122.93.185][.6346] [Unknown][Unknown][Unrated]
+     not-detected: [....40] [ip4][..tcp] [......10.0.2.15][50201] -> [..78.122.93.185][.6346] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....40] [ip4][..tcp] [......10.0.2.15][50201] -> [..78.122.93.185][.6346]
-     not-detected: [....55] [ip4][..tcp] [......10.0.2.15][50214] -> [.80.193.171.146][53808] [Unknown][Unknown][Unrated]
+     not-detected: [....55] [ip4][..tcp] [......10.0.2.15][50214] -> [.80.193.171.146][53808] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....55] [ip4][..tcp] [......10.0.2.15][50214] -> [.80.193.171.146][53808]
              idle: [...118] [ip4][..udp] [......10.0.2.15][28681] -> [...5.180.62.100][46385] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [....65] [ip4][..tcp] [......10.0.2.15][50224] -> [...78.125.63.97][.6346] [Unknown][Unknown][Unrated]
+     not-detected: [....65] [ip4][..tcp] [......10.0.2.15][50224] -> [...78.125.63.97][.6346] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....65] [ip4][..tcp] [......10.0.2.15][50224] -> [...78.125.63.97][.6346]
              idle: [...503] [ip4][..udp] [......10.0.2.15][28681] -> [..74.210.244.72][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -7323,44 +7323,44 @@
                    RISK: Unsafe Protocol
              idle: [...167] [ip4][..udp] [......10.0.2.15][28681] -> [..93.29.107.176][20363] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...229] [ip4][..tcp] [......10.0.2.15][50275] -> [.122.117.100.78][.9010] [Unknown][Unknown][Unrated]
+     not-detected: [...229] [ip4][..tcp] [......10.0.2.15][50275] -> [.122.117.100.78][.9010] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...229] [ip4][..tcp] [......10.0.2.15][50275] -> [.122.117.100.78][.9010]
-     not-detected: [...775] [ip4][..udp] [......10.0.2.15][28681] -> [..223.17.132.18][23458] [Unknown][Unknown][Unrated]
+     not-detected: [...775] [ip4][..udp] [......10.0.2.15][28681] -> [..223.17.132.18][23458] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...775] [ip4][..udp] [......10.0.2.15][28681] -> [..223.17.132.18][23458]
              idle: [...795] [ip4][..udp] [......10.0.2.15][28681] -> [..213.120.26.86][29946] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [...219] [ip4][..udp] [......10.0.2.15][28681] -> [...76.30.86.144][53821] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [....64] [ip4][..tcp] [......10.0.2.15][50223] -> [118.167.248.220][63108] [Unknown][Unknown][Unrated]
+     not-detected: [....64] [ip4][..tcp] [......10.0.2.15][50223] -> [118.167.248.220][63108] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....64] [ip4][..tcp] [......10.0.2.15][50223] -> [118.167.248.220][63108]
-     not-detected: [...266] [ip4][..tcp] [......10.0.2.15][50290] -> [....73.89.249.8][50649] [Unknown][Unknown][Unrated]
+     not-detected: [...266] [ip4][..tcp] [......10.0.2.15][50290] -> [....73.89.249.8][50649] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...266] [ip4][..tcp] [......10.0.2.15][50290] -> [....73.89.249.8][50649]
              idle: [...762] [ip4][..udp] [......10.0.2.15][28681] -> [...86.75.43.182][43502] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [....70] [ip4][..tcp] [......10.0.2.15][50229] -> [....1.36.249.91][64920] [Unknown][Unknown][Unrated]
+     not-detected: [....70] [ip4][..tcp] [......10.0.2.15][50229] -> [....1.36.249.91][64920] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....70] [ip4][..tcp] [......10.0.2.15][50229] -> [....1.36.249.91][64920]
              idle: [...109] [ip4][..udp] [......10.0.2.15][28681] -> [...88.169.2.153][52414] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...770] [ip4][..udp] [......10.0.2.15][28681] -> [..97.83.183.148][.8890] [Unknown][Unknown][Unrated]
+     not-detected: [...770] [ip4][..udp] [......10.0.2.15][28681] -> [..97.83.183.148][.8890] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...770] [ip4][..udp] [......10.0.2.15][28681] -> [..97.83.183.148][.8890]
              idle: [...790] [ip4][..udp] [......10.0.2.15][28681] -> [.218.164.39.233][20855] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...150] [ip4][..tcp] [......10.0.2.15][50263] -> [..73.182.136.42][27873] [Unknown][Unknown][Unrated]
+     not-detected: [...150] [ip4][..tcp] [......10.0.2.15][50263] -> [..73.182.136.42][27873] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...150] [ip4][..tcp] [......10.0.2.15][50263] -> [..73.182.136.42][27873]
              idle: [...166] [ip4][..udp] [......10.0.2.15][28681] -> [..90.59.253.186][15555] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...776] [ip4][..udp] [......10.0.2.15][28681] -> [...219.85.10.83][.8797] [Unknown][Unknown][Unrated]
+     not-detected: [...776] [ip4][..udp] [......10.0.2.15][28681] -> [...219.85.10.83][.8797] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...776] [ip4][..udp] [......10.0.2.15][28681] -> [...219.85.10.83][.8797]
-     not-detected: [...765] [ip4][..udp] [......10.0.2.15][28681] -> [213.229.111.224][.4876] [Unknown][Unknown][Unrated]
+     not-detected: [...765] [ip4][..udp] [......10.0.2.15][28681] -> [213.229.111.224][.4876] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Susp Entropy
              idle: [...765] [ip4][..udp] [......10.0.2.15][28681] -> [213.229.111.224][.4876]
-     not-detected: [...240] [ip4][..tcp] [......10.0.2.15][50286] -> [.84.118.116.198][44616] [Unknown][Unknown][Unrated]
+     not-detected: [...240] [ip4][..tcp] [......10.0.2.15][50286] -> [.84.118.116.198][44616] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...240] [ip4][..tcp] [......10.0.2.15][50286] -> [.84.118.116.198][44616]
              idle: [...141] [ip4][..udp] [......10.0.2.15][28681] -> [..172.97.199.14][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
@@ -7371,66 +7371,66 @@
                    RISK: Unsafe Protocol
              idle: [...157] [ip4][..udp] [......10.0.2.15][28681] -> [.86.227.162.150][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [....57] [ip4][..tcp] [......10.0.2.15][50216] -> [182.155.128.228][.3256] [Unknown][Unknown][Unrated]
+     not-detected: [....57] [ip4][..tcp] [......10.0.2.15][50216] -> [182.155.128.228][.3256] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....57] [ip4][..tcp] [......10.0.2.15][50216] -> [182.155.128.228][.3256]
              idle: [...129] [ip4][..udp] [......10.0.2.15][28681] -> [.176.138.50.179][29411] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [....87] [ip4][..udp] [......10.0.2.15][28681] -> [..92.131.85.245][31743] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [....62] [ip4][..tcp] [......10.0.2.15][50221] -> [...59.104.173.5][49956] [Unknown][Unknown][Unrated]
+     not-detected: [....62] [ip4][..tcp] [......10.0.2.15][50221] -> [...59.104.173.5][49956] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....62] [ip4][..tcp] [......10.0.2.15][50221] -> [...59.104.173.5][49956]
              idle: [...791] [ip4][..udp] [......10.0.2.15][28681] -> [...219.85.11.85][10722] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [....52] [ip4][..tcp] [......10.0.2.15][50212] -> [...95.17.124.40][.6776] [Unknown][Unknown][Unrated]
+     not-detected: [....52] [ip4][..tcp] [......10.0.2.15][50212] -> [...95.17.124.40][.6776] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....52] [ip4][..tcp] [......10.0.2.15][50212] -> [...95.17.124.40][.6776]
              idle: [...752] [ip4][..udp] [......10.0.2.15][28681] -> [...78.231.73.14][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...767] [ip4][..udp] [......10.0.2.15][28681] -> [....45.65.87.24][16201] [Unknown][Unknown][Unrated]
+     not-detected: [...767] [ip4][..udp] [......10.0.2.15][28681] -> [....45.65.87.24][16201] [Unknown][Unknown][Unspecified][Unrated]
              idle: [...767] [ip4][..udp] [......10.0.2.15][28681] -> [....45.65.87.24][16201]
              idle: [...172] [ip4][..udp] [......10.0.2.15][28681] -> [..87.69.142.133][15471] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
              idle: [...333] [ip4][..tcp] [......10.0.2.15][50327] -> [.69.118.162.229][46906] [HTTP.Gnutella][Unknown][Media][Potentially Dangerous][69.118.162.229]
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Unsafe Protocol, Binary File/Data Transfer (Attempt)
-     not-detected: [...281] [ip4][..tcp] [......10.0.2.15][50305] -> [....94.54.66.82][63637] [Unknown][Unknown][Unrated]
+     not-detected: [...281] [ip4][..tcp] [......10.0.2.15][50305] -> [....94.54.66.82][63637] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...281] [ip4][..tcp] [......10.0.2.15][50305] -> [....94.54.66.82][63637]
-     not-detected: [...236] [ip4][..tcp] [......10.0.2.15][50282] -> [..221.124.66.33][13060] [Unknown][Unknown][Unrated]
+     not-detected: [...236] [ip4][..tcp] [......10.0.2.15][50282] -> [..221.124.66.33][13060] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...236] [ip4][..tcp] [......10.0.2.15][50282] -> [..221.124.66.33][13060]
              idle: [...786] [ip4][..udp] [......10.0.2.15][28681] -> [....114.38.9.82][24223] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [....39] [ip4][..tcp] [......10.0.2.15][50200] -> [176.128.217.128][45194] [Unknown][Unknown][Unrated]
+     not-detected: [....39] [ip4][..tcp] [......10.0.2.15][50200] -> [176.128.217.128][45194] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....39] [ip4][..tcp] [......10.0.2.15][50200] -> [176.128.217.128][45194]
-     not-detected: [....66] [ip4][..tcp] [......10.0.2.15][50225] -> [.109.210.81.147][24800] [Unknown][Unknown][Unrated]
+     not-detected: [....66] [ip4][..tcp] [......10.0.2.15][50225] -> [.109.210.81.147][24800] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....66] [ip4][..tcp] [......10.0.2.15][50225] -> [.109.210.81.147][24800]
-     not-detected: [...780] [ip4][..udp] [......10.0.2.15][28681] -> [...68.66.94.132][17735] [Unknown][Unknown][Unrated]
+     not-detected: [...780] [ip4][..udp] [......10.0.2.15][28681] -> [...68.66.94.132][17735] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...780] [ip4][..udp] [......10.0.2.15][28681] -> [...68.66.94.132][17735]
              idle: [...184] [ip4][..udp] [......10.0.2.15][28681] -> [..86.239.62.213][.6346] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [...779] [ip4][..udp] [......10.0.2.15][28681] -> [...1.65.217.224][18381] [Unknown][Unknown][Unrated]
+     not-detected: [...779] [ip4][..udp] [......10.0.2.15][28681] -> [...1.65.217.224][18381] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...779] [ip4][..udp] [......10.0.2.15][28681] -> [...1.65.217.224][18381]
              idle: [...751] [ip4][..udp] [......10.0.2.15][28681] -> [142.115.218.152][.5900] [Gnutella][Unknown][Download][Potentially Dangerous]
                    RISK: Unsafe Protocol
-     not-detected: [....89] [ip4][..tcp] [......10.0.2.15][50244] -> [..188.61.52.183][63978] [Unknown][Unknown][Unrated]
+     not-detected: [....89] [ip4][..tcp] [......10.0.2.15][50244] -> [..188.61.52.183][63978] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....89] [ip4][..tcp] [......10.0.2.15][50244] -> [..188.61.52.183][63978]
-     not-detected: [...268] [ip4][..tcp] [......10.0.2.15][50292] -> [...95.10.205.67][11603] [Unknown][Unknown][Unrated]
+     not-detected: [...268] [ip4][..tcp] [......10.0.2.15][50292] -> [...95.10.205.67][11603] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...268] [ip4][..tcp] [......10.0.2.15][50292] -> [...95.10.205.67][11603]
-     not-detected: [...142] [ip4][..tcp] [......10.0.2.15][50255] -> [..36.236.203.37][52165] [Unknown][Unknown][Unrated]
+     not-detected: [...142] [ip4][..tcp] [......10.0.2.15][50255] -> [..36.236.203.37][52165] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...142] [ip4][..tcp] [......10.0.2.15][50255] -> [..36.236.203.37][52165]
-     not-detected: [....53] [ip4][..tcp] [......10.0.2.15][50213] -> [...85.117.153.7][50138] [Unknown][Unknown][Unrated]
+     not-detected: [....53] [ip4][..tcp] [......10.0.2.15][50213] -> [...85.117.153.7][50138] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....53] [ip4][..tcp] [......10.0.2.15][50213] -> [...85.117.153.7][50138]
-     not-detected: [....91] [ip4][..tcp] [......10.0.2.15][50246] -> [...80.7.252.192][45685] [Unknown][Unknown][Unrated]
+     not-detected: [....91] [ip4][..tcp] [......10.0.2.15][50246] -> [...80.7.252.192][45685] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....91] [ip4][..tcp] [......10.0.2.15][50246] -> [...80.7.252.192][45685]
      DAEMON-EVENT: shutdown

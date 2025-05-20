@@ -47,7 +47,16 @@
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....2] [ip4][..udp] [.192.168.12.156][37649] -> [..57.128.172.97][.9981]
              idle: [.....1][.107] [ip4][..udp] [...10.126.70.67][23784] -> [...10.236.7.225][50160] [RTP][Unknown][Media][Acceptable]
-     not-detected: [.....2] [ip4][..udp] [.192.168.12.156][37649] -> [..57.128.172.97][.9981] [Unknown][Unknown][Unrated]
+     DAEMON-EVENT: [Processed: 36 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 1 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....3][..77] [ip4][..tcp] [..91.238.181.21][35888] -> [....89.31.79.12][.3389]
+         detected: [.....3][..77] [ip4][..tcp] [..91.238.181.21][35888] -> [....89.31.79.12][.3389] [RDP][Unknown][RemoteAccess][Acceptable]
+                   RISK: Desktop/File Sharing
+ detection-update: [.....3][..77] [ip4][..tcp] [..91.238.181.21][35888] -> [....89.31.79.12][.3389] [TLS.RDP][Unknown][RemoteAccess][Acceptable][]
+                   RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Desktop/File Sharing, TLS Susp Extn, Non-Printable/Invalid Chars Detected, Possible Exploit Attempt
+             idle: [.....3][..77] [ip4][..tcp] [..91.238.181.21][35888] -> [....89.31.79.12][.3389] [TLS.RDP][Unknown][RemoteAccess][Acceptable]
+                   RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Desktop/File Sharing, TLS Susp Extn, Non-Printable/Invalid Chars Detected, Possible Exploit Attempt
+     not-detected: [.....2] [ip4][..udp] [.192.168.12.156][37649] -> [..57.128.172.97][.9981] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Susp Entropy
              idle: [.....2] [ip4][..udp] [.192.168.12.156][37649] -> [..57.128.172.97][.9981]
      DAEMON-EVENT: shutdown

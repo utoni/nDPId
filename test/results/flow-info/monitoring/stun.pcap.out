@@ -3,20 +3,19 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1][1611] [ip4][..tcp] [...10.77.110.51][41588] -> [..10.206.50.239][42000]
          detected: [.....1][1611] [ip4][..tcp] [...10.77.110.51][41588] -> [..10.206.50.239][42000] [STUN.TeamsCall][Unknown][VoIP][Acceptable][]
+                   RISK: Known Proto on Non Std Port
      DAEMON-EVENT: [Processed: 15 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....2] [ip4][..udp] [.192.168.12.169][43016] -> [.74.125.247.128][.3478]
          detected: [.....2] [ip4][..udp] [.192.168.12.169][43016] -> [.74.125.247.128][.3478] [STUN][Google][Network][Acceptable][]
- detection-update: [.....2] [ip4][..udp] [.192.168.12.169][43016] -> [.74.125.247.128][.3478] [STUN][Google][Network][Acceptable][]
-                   RISK: Unidirectional Traffic
- detection-update: [.....2] [ip4][..udp] [.192.168.12.169][43016] -> [.74.125.247.128][.3478] [STUN][Google][Network][Acceptable][]
  detection-update: [.....2] [ip4][..udp] [.192.168.12.169][43016] -> [.74.125.247.128][.3478] [STUN.GoogleCall][Google][VoIP][Acceptable][turn.l.google.com]
               new: [.....3] [ip4][.icmp] [.192.168.12.169] -> [.74.125.247.128]
          detected: [.....3] [ip4][.icmp] [.192.168.12.169] -> [.74.125.247.128] [ICMP][Google][Network][Acceptable]
                    RISK: Susp Entropy
               end: [.....1][1611] [ip4][..tcp] [...10.77.110.51][41588] -> [..10.206.50.239][42000] [STUN.TeamsCall][Unknown][VoIP][Acceptable]
+                   RISK: Known Proto on Non Std Port
      DAEMON-EVENT: [Processed: 24 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 2 / 3|skipped: 0|!detected: 0|guessed: 0|detection-updates: 3|updates: 0]
+     DAEMON-EVENT: [Flows][active: 2 / 3|skipped: 0|!detected: 0|guessed: 0|detection-updates: 1|updates: 0]
               new: [.....4] [ip6][..udp] [3516:bf0b:fc53:75e7:70af:f67f:8e49:f603][56880] -> [....2a38:e156:8167:a333:face:b00c::24d9][.3478]
          detected: [.....4] [ip6][..udp] [3516:bf0b:fc53:75e7:70af:f67f:8e49:f603][56880] -> [....2a38:e156:8167:a333:face:b00c::24d9][.3478] [STUN][Unknown][Network][Acceptable][]
              idle: [.....3] [ip4][.icmp] [.192.168.12.169] -> [.74.125.247.128] [ICMP][Google][Network][Acceptable]
@@ -36,7 +35,7 @@
                    [ENTROPIES...: 5.4,5.5,5.4,5.5,5.5,5.5,5.5,5.5,5.5,5.6,5.5,5.6,5.4,5.6,5.5,5.6,5.4,5.5,5.5,5.5,5.4,5.6,5.4,5.5,5.5,5.6,5.5,5.6,5.5,5.5,5.4,5.5]
            update: [.....4] [ip6][..udp] [3516:bf0b:fc53:75e7:70af:f67f:8e49:f603][56880] -> [....2a38:e156:8167:a333:face:b00c::24d9][.3478] [STUN][Unknown][Network][Acceptable]
      DAEMON-EVENT: [Processed: 66 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 1 / 4|skipped: 0|!detected: 0|guessed: 0|detection-updates: 3|updates: 3]
+     DAEMON-EVENT: [Flows][active: 1 / 4|skipped: 0|!detected: 0|guessed: 0|detection-updates: 1|updates: 3]
               new: [.....5] [ip4][..udp] [.192.168.12.169][38123] -> [....31.13.86.54][40003]
          detected: [.....5] [ip4][..udp] [.192.168.12.169][38123] -> [....31.13.86.54][40003] [STUN][Facebook][Network][Acceptable][]
                    RISK: Known Proto on Non Std Port
@@ -54,14 +53,14 @@
                    [ENTROPIES...: 4.9,5.6,5.9,5.8,5.9,6.0,5.6,5.8,5.5,5.6,5.9,6.0,6.0,5.9,5.8,5.5,6.0,5.9,6.0,5.9,5.9,6.0,5.8,6.0,5.9,6.0,5.9,5.9,5.8,5.6,6.1,6.0]
              idle: [.....4] [ip6][..udp] [3516:bf0b:fc53:75e7:70af:f67f:8e49:f603][56880] -> [....2a38:e156:8167:a333:face:b00c::24d9][.3478] [STUN][Unknown][Network][Acceptable]
      DAEMON-EVENT: [Processed: 141 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 1 / 5|skipped: 0|!detected: 0|guessed: 0|detection-updates: 4|updates: 3]
+     DAEMON-EVENT: [Flows][active: 1 / 5|skipped: 0|!detected: 0|guessed: 0|detection-updates: 2|updates: 3]
               new: [.....6] [ip4][..tcp] [...87.47.100.17][.3478] -> [....54.1.57.155][37257]
          detected: [.....6] [ip4][..tcp] [...87.47.100.17][.3478] -> [....54.1.57.155][37257] [STUN][Unknown][Network][Acceptable][]
  detection-update: [.....6] [ip4][..tcp] [...87.47.100.17][.3478] -> [....54.1.57.155][37257] [STUN][Unknown][Network][Acceptable][apps-host.com]
              idle: [.....5] [ip4][..udp] [.192.168.12.169][38123] -> [....31.13.86.54][40003] [STUN.FacebookVoip][Facebook][VoIP][Acceptable][turner.facebook]
                    RISK: Known Proto on Non Std Port
      DAEMON-EVENT: [Processed: 161 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 1 / 6|skipped: 0|!detected: 0|guessed: 0|detection-updates: 5|updates: 3]
+     DAEMON-EVENT: [Flows][active: 1 / 6|skipped: 0|!detected: 0|guessed: 0|detection-updates: 3|updates: 3]
               new: [.....7] [ip4][..udp] [.192.168.12.169][49153] -> [..142.250.82.99][.3478]
          detected: [.....7] [ip4][..udp] [.192.168.12.169][49153] -> [..142.250.82.99][.3478] [STUN.GoogleCall][Google][VoIP][Acceptable][]
  detection-update: [.....7] [ip4][..udp] [.192.168.12.169][49153] -> [..142.250.82.99][.3478] [DTLS.GoogleCall][Google][VoIP][Acceptable]
@@ -78,22 +77,17 @@
                    [ENTROPIES...: 5.9,5.9,5.0,5.9,7.3,6.7,5.8,5.7,7.4,5.7,6.0,6.2,6.4,5.9,6.1,5.4,5.4,5.6,5.9,5.3,5.2,5.9,5.8,5.2,6.1,5.9,6.0,6.1,6.0,5.9,6.1,5.9]
              idle: [.....6] [ip4][..tcp] [...87.47.100.17][.3478] -> [....54.1.57.155][37257] [STUN][Unknown][Network][Acceptable][apps-host.com]
      DAEMON-EVENT: [Processed: 194 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 1 / 7|skipped: 0|!detected: 0|guessed: 0|detection-updates: 7|updates: 3]
+     DAEMON-EVENT: [Flows][active: 1 / 7|skipped: 0|!detected: 0|guessed: 0|detection-updates: 5|updates: 3]
               new: [.....8] [ip4][..udp] [.192.168.43.169][48854] -> [.134.224.90.111][.8801]
          detected: [.....8] [ip4][..udp] [.192.168.43.169][48854] -> [.134.224.90.111][.8801] [STUN][Zoom][Network][Acceptable][]
                    RISK: Known Proto on Non Std Port
  detection-update: [.....8] [ip4][..udp] [.192.168.43.169][48854] -> [.134.224.90.111][.8801] [STUN][Zoom][Network][Acceptable][]
-                   RISK: Unidirectional Traffic
- detection-update: [.....8] [ip4][..udp] [.192.168.43.169][48854] -> [.134.224.90.111][.8801] [STUN][Zoom][Network][Acceptable][]
  detection-update: [.....8] [ip4][..udp] [.192.168.43.169][48854] -> [.134.224.90.111][.8801] [DTLS][Zoom][Network][Safe]
              idle: [.....7] [ip4][..udp] [.192.168.12.169][49153] -> [..142.250.82.99][.3478] [DTLS.GoogleCall][Google][VoIP][Acceptable]
      DAEMON-EVENT: [Processed: 198 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 1 / 8|skipped: 0|!detected: 0|guessed: 0|detection-updates: 10|updates: 3]
+     DAEMON-EVENT: [Flows][active: 1 / 8|skipped: 0|!detected: 0|guessed: 0|detection-updates: 7|updates: 3]
               new: [.....9] [ip6][..udp] [.............2600:1900:4160:5999:0:19::][.3478] -> [..2001:b07:a3d:c112:48a1:1094:1227:281e][48094]
          detected: [.....9] [ip6][..udp] [.............2600:1900:4160:5999:0:19::][.3478] -> [..2001:b07:a3d:c112:48a1:1094:1227:281e][48094] [STUN][GoogleCloud][Network][Acceptable][]
- detection-update: [.....9] [ip6][..udp] [.............2600:1900:4160:5999:0:19::][.3478] -> [..2001:b07:a3d:c112:48a1:1094:1227:281e][48094] [STUN][GoogleCloud][Network][Acceptable][]
-                   RISK: Unidirectional Traffic
              idle: [.....8] [ip4][..udp] [.192.168.43.169][48854] -> [.134.224.90.111][.8801] [DTLS][Zoom][Network][Safe]
              idle: [.....9] [ip6][..udp] [.............2600:1900:4160:5999:0:19::][.3478] -> [..2001:b07:a3d:c112:48a1:1094:1227:281e][48094] [STUN][GoogleCloud][Network][Acceptable]
-                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

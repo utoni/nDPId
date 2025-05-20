@@ -80,8 +80,6 @@
               new: [....16] [ip6][..udp] [..2001:470:1f0b:16b0:20c:29ff:fe7c:a4cb][55729] -> [..................2001:470:765b::a25:53][...53]
          detected: [....16] [ip6][..udp] [..2001:470:1f0b:16b0:20c:29ff:fe7c:a4cb][55729] -> [..................2001:470:765b::a25:53][...53] [DNS][Unknown][Network][Acceptable][weberlab.de]
  detection-update: [....16] [ip6][..udp] [..2001:470:1f0b:16b0:20c:29ff:fe7c:a4cb][55729] -> [..................2001:470:765b::a25:53][...53] [DNS][Unknown][Network][Acceptable][weberlab.de]
-                   RISK: Unidirectional Traffic
- detection-update: [....16] [ip6][..udp] [..2001:470:1f0b:16b0:20c:29ff:fe7c:a4cb][55729] -> [..................2001:470:765b::a25:53][...53] [DNS][Unknown][Network][Acceptable][weberlab.de]
                    RISK: Large DNS Packet (512+ bytes), Fragmented DNS Message
       ERROR-EVENT: nDPI IPv6/L4 payload detection failed [1/16]
               new: [....17] [ip4][..udp] [....194.247.5.6][51791] -> [.193.24.227.238][...53]

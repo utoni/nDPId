@@ -4,6 +4,7 @@
               new: [.....1] [ip4][..tcp] [..10.158.134.93][55512] -> [.142.251.42.106][..443] [MIDSTREAM]
               new: [.....2] [ip4][..tcp] [.......10.8.0.1][42344] -> [..159.138.85.48][.5223]
          detected: [.....2] [ip4][..tcp] [.......10.8.0.1][42344] -> [..159.138.85.48][.5223] [Jabber][Unknown][Web][Acceptable]
+                   RISK: Susp Entropy
               new: [.....3] [ip4][..tcp] [.......10.8.0.1][40214] -> [..157.240.16.32][..443]
          detected: [.....3] [ip4][..tcp] [.......10.8.0.1][40214] -> [..157.240.16.32][..443] [TLS.FacebookMessenger][Facebook][Chat][Acceptable][mqtt-mini.facebook.com]
                    RISK: TLS (probably) Not Carrying HTTPS
@@ -29,6 +30,7 @@
              idle: [.....8] [ip4][..tcp] [.......10.8.0.1][43600] -> [172.217.194.188][.5228]
              idle: [.....9] [ip4][..udp] [...192.168.1.84][60555] -> [..162.159.192.7][.2408] [CloudflareWarp][CloudflareWarp][VPN][Acceptable]
              idle: [.....2] [ip4][..tcp] [.......10.8.0.1][42344] -> [..159.138.85.48][.5223] [Jabber][Unknown][Web][Acceptable]
+                   RISK: Susp Entropy
              idle: [.....7] [ip4][..tcp] [.......10.8.0.1][51296] -> [142.250.183.163][..443] [TLS.GoogleServices][Google][Web][Acceptable]
              idle: [.....5] [ip4][..tcp] [.......10.8.0.1][45606] -> [..104.18.47.234][..443] [TLS.CloudflareWarp][Cloudflare][VPN][Acceptable]
              idle: [.....6] [ip4][..tcp] [.......10.8.0.1][45610] -> [..104.18.47.234][..443] [TLS.CloudflareWarp][Cloudflare][VPN][Acceptable]

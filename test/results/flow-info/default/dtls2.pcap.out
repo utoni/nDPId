@@ -4,18 +4,18 @@
               new: [.....1] [ip4][..udp] [..61.68.110.153][53045] -> [..212.32.214.39][61457]
          detected: [.....1] [ip4][..udp] [..61.68.110.153][53045] -> [..212.32.214.39][61457] [DTLS][Unknown][Web][Safe]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
- detection-update: [.....1] [ip4][..udp] [..61.68.110.153][53045] -> [..212.32.214.39][61457] [DTLS][Unknown][Web][Safe]
+ detection-update: [.....1] [ip4][..udp] [..61.68.110.153][53045] -> [..212.32.214.39][61457] [DTLS.RockstarGames][Unknown][Game][Fun]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
-           update: [.....1] [ip4][..udp] [..61.68.110.153][53045] -> [..212.32.214.39][61457] [DTLS][Unknown][Web][Safe]
+           update: [.....1] [ip4][..udp] [..61.68.110.153][53045] -> [..212.32.214.39][61457] [DTLS.RockstarGames][Unknown][Game][Fun]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
-           update: [.....1] [ip4][..udp] [..61.68.110.153][53045] -> [..212.32.214.39][61457] [DTLS][Unknown][Web][Safe]
+           update: [.....1] [ip4][..udp] [..61.68.110.153][53045] -> [..212.32.214.39][61457] [DTLS.RockstarGames][Unknown][Game][Fun]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
-           update: [.....1] [ip4][..udp] [..61.68.110.153][53045] -> [..212.32.214.39][61457] [DTLS][Unknown][Web][Safe]
+           update: [.....1] [ip4][..udp] [..61.68.110.153][53045] -> [..212.32.214.39][61457] [DTLS.RockstarGames][Unknown][Game][Fun]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
-           update: [.....1] [ip4][..udp] [..61.68.110.153][53045] -> [..212.32.214.39][61457] [DTLS][Unknown][Web][Safe]
+           update: [.....1] [ip4][..udp] [..61.68.110.153][53045] -> [..212.32.214.39][61457] [DTLS.RockstarGames][Unknown][Game][Fun]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
-           update: [.....1] [ip4][..udp] [..61.68.110.153][53045] -> [..212.32.214.39][61457] [DTLS][Unknown][Web][Safe]
+           update: [.....1] [ip4][..udp] [..61.68.110.153][53045] -> [..212.32.214.39][61457] [DTLS.RockstarGames][Unknown][Game][Fun]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
-             idle: [.....1] [ip4][..udp] [..61.68.110.153][53045] -> [..212.32.214.39][61457] [DTLS][Unknown][Web][Safe]
+             idle: [.....1] [ip4][..udp] [..61.68.110.153][53045] -> [..212.32.214.39][61457] [DTLS.RockstarGames][Unknown][Game][Fun]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
      DAEMON-EVENT: shutdown

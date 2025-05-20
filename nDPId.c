@@ -3428,12 +3428,12 @@ static uint32_t calculate_ndpi_flow_struct_hash(struct ndpi_flow_struct const * 
                                                                       // future)
     hash += ndpi_flow->confidence;
 
-    const size_t protocol_bitmask_size = sizeof(ndpi_flow->excluded_protocol_bitmask.fds_bits) /
-                                         sizeof(ndpi_flow->excluded_protocol_bitmask.fds_bits[0]);
+    const size_t protocol_bitmask_size = sizeof(ndpi_flow->excluded_dissectors_bitmask.fds_bits) /
+                                         sizeof(ndpi_flow->excluded_dissectors_bitmask.fds_bits[0]);
     for (size_t i = 0; i < protocol_bitmask_size; ++i)
     {
-        hash += ndpi_flow->excluded_protocol_bitmask.fds_bits[i];
-        hash += ndpi_flow->excluded_protocol_bitmask.fds_bits[i];
+        hash += ndpi_flow->excluded_dissectors_bitmask.fds_bits[i];
+        hash += ndpi_flow->excluded_dissectors_bitmask.fds_bits[i];
     }
 
     size_t host_server_name_len =

@@ -7,10 +7,8 @@
               new: [.....2] [ip4][..tcp] [..172.18.82.243][...80] -> [..172.18.82.242][51634] [MIDSTREAM]
          detected: [.....2] [ip4][..tcp] [..172.18.82.243][...80] -> [..172.18.82.242][51634] [HTTP.WebSocket][Unknown][Web][Acceptable][]
                    RISK: HTTP Susp User-Agent
- detection-update: [.....2] [ip4][..tcp] [..172.18.82.243][...80] -> [..172.18.82.242][51634] [HTTP.WebSocket][Unknown][Web][Acceptable][]
-                   RISK: HTTP Susp User-Agent, Unidirectional Traffic
              idle: [.....1] [ip4][..tcp] [..172.18.82.242][41986] -> [..172.18.82.243][...80] [HTTP.WebSocket][Unknown][Web][Acceptable][something1.tld]
                    RISK: Obfuscated Traffic
              idle: [.....2] [ip4][..tcp] [..172.18.82.243][...80] -> [..172.18.82.242][51634] [HTTP.WebSocket][Unknown][Web][Acceptable]
-                   RISK: HTTP Susp User-Agent, Unidirectional Traffic
+                   RISK: HTTP Susp User-Agent
      DAEMON-EVENT: shutdown

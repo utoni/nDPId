@@ -288,7 +288,7 @@
              idle: [....31] [ip4][..udp] [.....10.0.0.227][64972] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable]
                    RISK: Error Code
              idle: [....17] [ip4][.icmp] [.....10.0.0.227] -> [....75.75.76.76] [ICMP][Unknown][Network][Acceptable]
-     not-detected: [....60] [ip4][..udp] [.....10.0.0.227][52595] -> [.......10.0.0.1][..192] [Unknown][Unknown][Unrated]
+     not-detected: [....60] [ip4][..udp] [.....10.0.0.227][52595] -> [.......10.0.0.1][..192] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [....60] [ip4][..udp] [.....10.0.0.227][52595] -> [.......10.0.0.1][..192]
           guessed: [....53] [ip4][..tcp] [.....10.0.0.227][56874] -> [.74.125.197.188][..443] [TLS][Google][Web][Safe]
@@ -311,7 +311,7 @@
           guessed: [.....2] [ip4][..tcp] [.....10.0.0.227][56916] -> [.....10.0.0.151][.8009] [AJP][Unknown][Web][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..tcp] [.....10.0.0.227][56916] -> [.....10.0.0.151][.8009]
-     not-detected: [....40] [ip4][..tcp] [.....10.0.0.227][56866] -> [.....10.0.0.151][.8060] [Unknown][Unknown][Unrated]
+     not-detected: [....40] [ip4][..tcp] [.....10.0.0.227][56866] -> [.....10.0.0.151][.8060] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
               end: [....40] [ip4][..tcp] [.....10.0.0.227][56866] -> [.....10.0.0.151][.8060]
              idle: [....62] [ip4][..tcp] [.....10.0.0.227][56954] -> [.....10.0.0.149][.8008] [HTTP][Unknown][Web][Acceptable][10.0.0.149]

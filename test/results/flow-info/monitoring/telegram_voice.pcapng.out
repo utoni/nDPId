@@ -26,10 +26,6 @@
  detection-update: [.....6] [ip4][..udp] [..192.168.12.67][42567] -> [....91.108.9.34][.1400] [STUN.TelegramVoip][Telegram][VoIP][Acceptable][telegram.org]
                    RISK: Known Proto on Non Std Port
  detection-update: [.....9] [ip4][..udp] [..192.168.12.67][41011] -> [....91.108.9.68][..596] [STUN.TelegramVoip][Telegram][VoIP][Acceptable][]
- detection-update: [.....4] [ip4][..udp] [..192.168.12.67][44405] -> [...91.108.17.41][.1400] [STUN][Telegram][Network][Acceptable][]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
- detection-update: [.....5] [ip4][..udp] [..192.168.12.67][46013] -> [...91.108.13.52][.1400] [STUN][Telegram][Network][Acceptable][]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
  detection-update: [.....7] [ip4][..udp] [..192.168.12.67][39027] -> [...91.108.13.51][..597] [STUN.TelegramVoip][Telegram][VoIP][Acceptable][]
           analyse: [.....9] [ip4][..udp] [..192.168.12.67][41011] -> [....91.108.9.68][..596] [STUN.TelegramVoip][Telegram][VoIP][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy

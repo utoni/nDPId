@@ -5,12 +5,7 @@
          detected: [.....1] [ip4][..udp] [..192.168.12.67][47926] -> [.35.216.234.234][.3478] [STUN][GoogleCloud][Network][Acceptable][]
               new: [.....2] [ip4][..udp] [..192.168.12.67][47926] -> [.35.219.252.146][.3478]
          detected: [.....2] [ip4][..udp] [..192.168.12.67][47926] -> [.35.219.252.146][.3478] [STUN][GoogleCloud][Network][Acceptable][]
- detection-update: [.....2] [ip4][..udp] [..192.168.12.67][47926] -> [.35.219.252.146][.3478] [STUN][GoogleCloud][Network][Acceptable][]
-                   RISK: Unidirectional Traffic
- detection-update: [.....2] [ip4][..udp] [..192.168.12.67][47926] -> [.35.219.252.146][.3478] [STUN][GoogleCloud][Network][Acceptable][]
  detection-update: [.....2] [ip4][..udp] [..192.168.12.67][47926] -> [.35.219.252.146][.3478] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable][signal.org]
- detection-update: [.....1] [ip4][..udp] [..192.168.12.67][47926] -> [.35.216.234.234][.3478] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable][]
-                   RISK: Unidirectional Traffic
  detection-update: [.....1] [ip4][..udp] [..192.168.12.67][47926] -> [.35.216.234.234][.3478] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable][]
  detection-update: [.....1] [ip4][..udp] [..192.168.12.67][47926] -> [.35.216.234.234][.3478] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable][signal.org]
               new: [.....3] [ip4][..udp] [..192.168.12.67][47926] -> [.35.219.252.146][56377]

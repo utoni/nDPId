@@ -93,10 +93,10 @@
                    RISK: Unidirectional Traffic
               new: [....13] [ip4][..udp] [.192.168.12.156][49579] -> [...10.78.14.178][49586]
          detected: [....13] [ip4][..udp] [.192.168.12.156][49579] -> [...10.78.14.178][49586] [Zoom][Unknown][Video][Acceptable]
- detection-update: [....13] [ip4][..udp] [.192.168.12.156][49579] -> [...10.78.14.178][49586] [Zoom][Unknown][Video][Acceptable]
-                   RISK: Unidirectional Traffic
            update: [....10] [ip4][.icmp] [.206.247.10.253] -> [.192.168.12.156] [ICMP][Zoom][Network][Acceptable]
                    RISK: Susp Entropy
+ detection-update: [....13] [ip4][..udp] [.192.168.12.156][49579] -> [...10.78.14.178][49586] [Zoom][Unknown][Video][Acceptable]
+                   RISK: Unidirectional Traffic
           analyse: [....12] [ip4][..udp] [.192.168.12.156][42208] -> [...10.78.14.178][47312] [Zoom][Unknown][Video][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.052|     0.013|     0.016|          253.890|    4.000]

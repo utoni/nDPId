@@ -32,7 +32,7 @@
               new: [.....8][..50] [ip4][..tcp] [....10.10.10.18][64566] -> [....10.10.10.19][30000]
          detected: [.....7][.300] [ip4][..tcp] [....10.10.10.18][64566] -> [....10.10.10.19][30000] [MongoDB][Unknown][Database][Acceptable]
                    RISK: Known Proto on Non Std Port
-     not-detected: [.....8][..50] [ip4][..tcp] [....10.10.10.18][64566] -> [....10.10.10.19][30000] [Unknown][Unknown][Unrated]
+     not-detected: [.....8][..50] [ip4][..tcp] [....10.10.10.18][64566] -> [....10.10.10.19][30000] [Unknown][Unknown][Unspecified][Unrated]
              idle: [.....8][..50] [ip4][..tcp] [....10.10.10.18][64566] -> [....10.10.10.19][30000]
              idle: [.....7][.300] [ip4][..tcp] [....10.10.10.18][64566] -> [....10.10.10.19][30000] [MongoDB][Unknown][Database][Acceptable]
                    RISK: Known Proto on Non Std Port

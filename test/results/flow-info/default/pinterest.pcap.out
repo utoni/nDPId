@@ -135,9 +135,6 @@
  detection-update: [....21] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][47790] -> [...............2a00:1450:4007:816::200a][..443] [TLS.GoogleServices][Google][Web][Acceptable][content-autofill.googleapis.com]
               new: [....22] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][43562] -> [...............2a00:1450:4007:805::2003][..443] [MIDSTREAM]
          detected: [....22] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][43562] -> [...............2a00:1450:4007:805::2003][..443] [TLS][Google][Web][Safe]
- detection-update: [....22] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][43562] -> [...............2a00:1450:4007:805::2003][..443] [TLS][Google][Web][Safe]
-                   RISK: Unidirectional Traffic
- detection-update: [....22] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][43562] -> [...............2a00:1450:4007:805::2003][..443] [TLS][Google][Web][Safe]
           analyse: [....22] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][43562] -> [...............2a00:1450:4007:805::2003][..443] [TLS][Google][Web][Safe]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........:      0.000|     0.029|     0.002|     0.006|           41.161|    1.800]

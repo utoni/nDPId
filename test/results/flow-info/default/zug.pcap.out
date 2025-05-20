@@ -20,7 +20,7 @@
      DAEMON-EVENT: [Flows][active: 1 / 4|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 1]
               new: [.....5] [ip4][..udp] [..173.46.102.72][41686] -> [.204.88.149.147][19000]
          detected: [.....5] [ip4][..udp] [..173.46.102.72][41686] -> [.204.88.149.147][19000] [ZUG][Unknown][Crypto_Currency][Acceptable]
-     not-detected: [.....4] [ip4][..udp] [..61.59.105.181][19000] -> [..199.24.15.231][48793] [Unknown][Unknown][Unrated]
+     not-detected: [.....4] [ip4][..udp] [..61.59.105.181][19000] -> [..199.24.15.231][48793] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Susp Entropy, Unidirectional Traffic
              idle: [.....4] [ip4][..udp] [..61.59.105.181][19000] -> [..199.24.15.231][48793]
      DAEMON-EVENT: [Processed: 5 pkts][ZLib][compressions: 0|diff: 0 / 0]

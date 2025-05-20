@@ -8,17 +8,8 @@
          detected: [.....4] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][41266] -> [....2620:116:800d:21:8c6e:cf2c:8d6:9fb5][..443] [TLS][Unknown][Web][Safe]
               new: [.....5] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][57286] -> [.....................64:ff9b::8fcc:d927][..443] [MIDSTREAM]
          detected: [.....5] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][57286] -> [.....................64:ff9b::8fcc:d927][..443] [TLS][Unknown][Web][Safe]
- detection-update: [.....4] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][41266] -> [....2620:116:800d:21:8c6e:cf2c:8d6:9fb5][..443] [TLS][Unknown][Web][Safe]
-                   RISK: Unidirectional Traffic
- detection-update: [.....5] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][57286] -> [.....................64:ff9b::8fcc:d927][..443] [TLS][Unknown][Web][Safe]
-                   RISK: Unidirectional Traffic
               new: [.....6] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][42908] -> [.....................64:ff9b::98c7:1593][..443] [MIDSTREAM]
          detected: [.....6] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][42908] -> [.....................64:ff9b::98c7:1593][..443] [TLS][Unknown][Web][Safe]
- detection-update: [.....6] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][42908] -> [.....................64:ff9b::98c7:1593][..443] [TLS][Unknown][Web][Safe]
-                   RISK: Unidirectional Traffic
- detection-update: [.....4] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][41266] -> [....2620:116:800d:21:8c6e:cf2c:8d6:9fb5][..443] [TLS][Unknown][Web][Safe]
- detection-update: [.....5] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][57286] -> [.....................64:ff9b::8fcc:d927][..443] [TLS][Unknown][Web][Safe]
- detection-update: [.....6] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][42908] -> [.....................64:ff9b::98c7:1593][..443] [TLS][Unknown][Web][Safe]
               new: [.....7] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][56782] -> [.....................64:ff9b::68f4:2ac8][..443] [MIDSTREAM]
           analyse: [.....6] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][42908] -> [.....................64:ff9b::98c7:1593][..443] [TLS][Unknown][Web][Safe]
                                          min|       max|       avg|    stddev|         variance|  entropy
@@ -32,16 +23,10 @@
                    [ENTROPIES...: 7.5,6.0,6.0,5.1,5.1,5.1,5.8,5.2,7.8,5.2,5.9,6.7,5.0,5.1,7.9,5.2,5.4,7.9,7.9,7.9,7.8,7.7,7.8,7.9,5.2,5.2,5.2,5.2,5.2,5.2,5.2,5.2]
               new: [.....8] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][43420] -> [.....................64:ff9b::c000:4d28][..443] [MIDSTREAM]
          detected: [.....8] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][43420] -> [.....................64:ff9b::c000:4d28][..443] [TLS][Unknown][Web][Safe]
- detection-update: [.....8] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][43420] -> [.....................64:ff9b::c000:4d28][..443] [TLS][Unknown][Web][Safe]
-                   RISK: Unidirectional Traffic
               new: [.....9] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][43434] -> [.....................64:ff9b::c000:4d28][..443] [MIDSTREAM]
          detected: [.....9] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][43434] -> [.....................64:ff9b::c000:4d28][..443] [TLS][Unknown][Web][Safe]
- detection-update: [.....9] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][43434] -> [.....................64:ff9b::c000:4d28][..443] [TLS][Unknown][Web][Safe]
-                   RISK: Unidirectional Traffic
- detection-update: [.....8] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][43420] -> [.....................64:ff9b::c000:4d28][..443] [TLS][Unknown][Web][Safe]
               new: [....10] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][58380] -> [..2606:2800:135:155a:23ba:b2a:25ff:122d][..443]
- detection-update: [.....9] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][43434] -> [.....................64:ff9b::c000:4d28][..443] [TLS][Unknown][Web][Safe]
-         detected: [....10] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][58380] -> [..2606:2800:135:155a:23ba:b2a:25ff:122d][..443] [TLS][Edgecast][Web][Safe][consent.cmp.oath.com]
+         detected: [....10] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][58380] -> [..2606:2800:135:155a:23ba:b2a:25ff:122d][..443] [TLS][Unknown][Web][Safe][consent.cmp.oath.com]
           analyse: [.....9] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][43434] -> [.....................64:ff9b::c000:4d28][..443] [TLS][Unknown][Web][Safe]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.045|     0.004|     0.009|           88.667|    2.800]
@@ -53,10 +38,10 @@
                    [PKTLENS.....: 184,111,183,172,72,72,72,72,1472,72,1472,72,1472,1472,72,72,1472,1472,72,72,1472,1472,72,72,1472,1472,72,72,1472,1472,72,72]
                    [ENTROPIES...: 6.6,5.9,6.6,6.5,5.0,5.0,4.9,5.0,7.9,5.1,7.9,5.1,7.9,7.8,5.1,5.1,7.9,7.8,5.1,5.1,7.9,7.9,5.1,5.1,7.9,7.8,5.1,5.1,7.9,7.9,5.1,5.1]
               new: [....11] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][58382] -> [..2606:2800:135:155a:23ba:b2a:25ff:122d][..443]
- detection-update: [....10] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][58380] -> [..2606:2800:135:155a:23ba:b2a:25ff:122d][..443] [TLS][Edgecast][Web][Safe][consent.cmp.oath.com]
-         detected: [....11] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][58382] -> [..2606:2800:135:155a:23ba:b2a:25ff:122d][..443] [TLS][Edgecast][Web][Safe][consent.cmp.oath.com]
- detection-update: [....11] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][58382] -> [..2606:2800:135:155a:23ba:b2a:25ff:122d][..443] [TLS][Edgecast][Web][Safe][consent.cmp.oath.com]
-          analyse: [....10] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][58380] -> [..2606:2800:135:155a:23ba:b2a:25ff:122d][..443] [TLS][Edgecast][Web][Safe]
+ detection-update: [....10] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][58380] -> [..2606:2800:135:155a:23ba:b2a:25ff:122d][..443] [TLS][Unknown][Web][Safe][consent.cmp.oath.com]
+         detected: [....11] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][58382] -> [..2606:2800:135:155a:23ba:b2a:25ff:122d][..443] [TLS][Unknown][Web][Safe][consent.cmp.oath.com]
+ detection-update: [....11] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][58382] -> [..2606:2800:135:155a:23ba:b2a:25ff:122d][..443] [TLS][Unknown][Web][Safe][consent.cmp.oath.com]
+          analyse: [....10] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][58380] -> [..2606:2800:135:155a:23ba:b2a:25ff:122d][..443] [TLS][Unknown][Web][Safe]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........:      0.000|     0.048|     0.010|     0.016|          259.261|    3.200]
                    [PKTLEN......:     72.000|  1280.000|   300.700|   381.900|       145812.800|    4.100]
@@ -73,9 +58,6 @@
  detection-update: [....12] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][39152] -> [......................64:ff9b::6006:749][..443] [TLS.ADS_Analytic_Track][Unknown][Advertisement][Tracker/Ads][sb.scorecardresearch.com]
               new: [....14] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][56794] -> [.....................64:ff9b::c000:4d03][..443] [MIDSTREAM]
          detected: [....14] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][56794] -> [.....................64:ff9b::c000:4d03][..443] [TLS][Unknown][Web][Safe]
- detection-update: [....14] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][56794] -> [.....................64:ff9b::c000:4d03][..443] [TLS][Unknown][Web][Safe]
-                   RISK: Unidirectional Traffic
- detection-update: [....14] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][56794] -> [.....................64:ff9b::c000:4d03][..443] [TLS][Unknown][Web][Safe]
           analyse: [....14] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][56794] -> [.....................64:ff9b::c000:4d03][..443] [TLS][Unknown][Web][Safe]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........:      0.000|     0.037|     0.003|     0.009|           73.545|    2.400]
@@ -88,9 +70,6 @@
                    [ENTROPIES...: 6.8,5.7,6.6,6.7,6.3,5.8,5.0,5.0,5.0,5.0,5.0,7.8,5.1,7.9,5.1,7.8,5.3,7.9,5.1,5.0,7.9,5.3,7.9,5.6,5.1,5.1,5.7,7.9,5.1,5.3,7.9,5.1]
               new: [....15] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][51874] -> [.....................64:ff9b::c000:4c03][..443] [MIDSTREAM]
          detected: [....15] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][51874] -> [.....................64:ff9b::c000:4c03][..443] [TLS][Unknown][Web][Safe]
- detection-update: [....15] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][51874] -> [.....................64:ff9b::c000:4c03][..443] [TLS][Unknown][Web][Safe]
-                   RISK: Unidirectional Traffic
- detection-update: [....15] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][51874] -> [.....................64:ff9b::c000:4c03][..443] [TLS][Unknown][Web][Safe]
  detection-update: [....13] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][47118] -> [.................2001:4998:14:800::1001][..443] [TLS.Yahoo][Unknown][Web][Safe][cookiex.ngd.yahoo.com]
               new: [....16] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][56582] -> [.....................64:ff9b::9765:798c][..443] [MIDSTREAM]
               new: [....17] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][56564] -> [.....................64:ff9b::9765:798c][..443] [MIDSTREAM]
@@ -136,10 +115,8 @@
                    [ENTROPIES...: 4.8,5.3,5.3,4.6,5.1,7.2,5.2,7.3,7.6,5.2,5.2,7.6,5.2,6.2,6.5,7.6,5.1,5.1,5.1,7.0,6.3,5.2,5.2,5.7,5.1,7.9,5.2,7.9,5.2,7.9,5.2,7.9]
               new: [....43] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][49548] -> [...............2a00:1450:4007:809::200e][..443]
          detected: [.....2] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][48240] -> [.....................64:ff9b::9765:789d][..443] [TLS][Unknown][Web][Safe]
-                   RISK: Unidirectional Traffic
          detected: [....43] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][49548] -> [...............2a00:1450:4007:809::200e][..443] [TLS.Google][Google][Web][Acceptable][apis.google.com]
               new: [....44] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][38608] -> [...............2a00:1450:4007:80b::200a][..443]
- detection-update: [.....2] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][48240] -> [.....................64:ff9b::9765:789d][..443] [TLS][Unknown][Web][Safe]
           analyse: [.....2] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][48240] -> [.....................64:ff9b::9765:789d][..443] [TLS][Unknown][Web][Safe]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........:      0.000|    19.514|     1.259|     4.789|     22930555.666|    1.000]
@@ -218,8 +195,8 @@
           guessed: [....47] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][40190] -> [...............2a00:1450:4007:80a::200a][..443] [TLS][Google][Web][Safe]
              idle: [....47] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][40190] -> [...............2a00:1450:4007:80a::200a][..443]
              idle: [.....2] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][48240] -> [.....................64:ff9b::9765:789d][..443] [TLS][Unknown][Web][Safe]
-             idle: [....10] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][58380] -> [..2606:2800:135:155a:23ba:b2a:25ff:122d][..443] [TLS][Edgecast][Web][Safe][consent.cmp.oath.com]
-              end: [....11] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][58382] -> [..2606:2800:135:155a:23ba:b2a:25ff:122d][..443] [TLS][Edgecast][Web][Safe]
+             idle: [....10] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][58380] -> [..2606:2800:135:155a:23ba:b2a:25ff:122d][..443] [TLS][Unknown][Web][Safe][consent.cmp.oath.com]
+              end: [....11] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][58382] -> [..2606:2800:135:155a:23ba:b2a:25ff:122d][..443] [TLS][Unknown][Web][Safe]
           guessed: [....35] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][50906] -> [.....................64:ff9b::d83a:d582][..443] [TLS][Unknown][Web][Safe]
              idle: [....35] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][50906] -> [.....................64:ff9b::d83a:d582][..443]
           guessed: [....31] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][44164] -> [...............2a00:1450:4007:805::2003][..443] [TLS][Google][Web][Safe]

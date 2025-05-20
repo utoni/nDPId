@@ -5,10 +5,6 @@
          detected: [.....1] [ip4][..udp] [...37.188.4.115][56453] -> [....70.66.6.128][..443] [DTLS][Unknown][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older)
  detection-update: [.....1] [ip4][..udp] [...37.188.4.115][56453] -> [....70.66.6.128][..443] [DTLS][Unknown][Web][Safe]
-                   RISK: Obsolete TLS (v1.1 or older), Unidirectional Traffic
- detection-update: [.....1] [ip4][..udp] [...37.188.4.115][56453] -> [....70.66.6.128][..443] [DTLS][Unknown][Web][Safe]
-                   RISK: Obsolete TLS (v1.1 or older)
- detection-update: [.....1] [ip4][..udp] [...37.188.4.115][56453] -> [....70.66.6.128][..443] [DTLS][Unknown][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
              idle: [.....1] [ip4][..udp] [...37.188.4.115][56453] -> [....70.66.6.128][..443] [DTLS][Unknown][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher

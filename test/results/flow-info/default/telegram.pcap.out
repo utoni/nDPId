@@ -101,7 +101,7 @@
                    [IATS(ms)....: 176.6,505.7,492.8,1175.3,327.6,331.9,1681.3,64.2,63.5,64.3,42.3,63.9,1998.8,63.8,58.3,64.1,69.6,64.4,57.8,43.1,58.1,62.2,58.1,63.8,58.2,64.2,58.2,62.0,69.6,66.6,57.7]
                    [PKTLENS.....: 108,108,108,76,92,76,92,220,252,268,252,252,236,204,220,220,220,204,188,220,204,204,204,220,204,204,204,204,220,204,220,220]
                    [ENTROPIES...: 6.4,6.1,6.3,5.8,6.0,5.8,6.0,6.9,7.1,7.2,7.1,7.1,7.1,7.0,7.0,7.1,7.0,6.9,6.8,7.0,7.0,7.0,6.9,6.9,6.9,6.9,6.9,6.9,7.0,6.9,7.0,7.1]
-     not-detected: [....25] [ip4][..udp] [...192.168.1.77][23174] -> [...192.168.1.52][31480] [Unknown][Unknown][Unrated]
+     not-detected: [....25] [ip4][..udp] [...192.168.1.77][23174] -> [...192.168.1.52][31480] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Susp Entropy
               new: [....28] [ip4][..udp] [........0.0.0.0][...68] -> [255.255.255.255][...67]
          detected: [....28] [ip4][..udp] [........0.0.0.0][...68] -> [255.255.255.255][...67] [DHCP][Unknown][Network][Acceptable][]
@@ -137,8 +137,6 @@
          detected: [....41] [ip4][..udp] [...192.168.1.77][28150] -> [....91.108.12.5][..537] [Telegram][Telegram][Chat][Acceptable]
               new: [....42] [ip4][..udp] [...192.168.1.77][28150] -> [....91.108.16.3][..537]
          detected: [....42] [ip4][..udp] [...192.168.1.77][28150] -> [....91.108.16.3][..537] [Telegram][Telegram][Chat][Acceptable]
- detection-update: [....33] [ip4][..udp] [...192.168.1.77][54595] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][b._dns-sd._udp.ntop.org]
-                   RISK: Unidirectional Traffic
  detection-update: [....33] [ip4][..udp] [...192.168.1.77][54595] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][b._dns-sd._udp.ntop.org]
                    RISK: Error Code
               new: [....43] [ip4][..udp] [...192.168.1.77][52127] -> [239.255.255.250][.1900]
@@ -195,7 +193,7 @@
              idle: [....27] [ip4][..udp] [...192.168.1.77][47127] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][www.googletagservices.com]
                    RISK: Minor Issues
              idle: [....18] [ip6][..udp] [...............fe80::4dc:edec:5b0c:a661][.5353] -> [...............................ff02::fb][.5353] [MDNS][Unknown][Network][Acceptable]
-     not-detected: [....44] [ip4][..udp] [...192.168.1.77][28150] -> [..87.11.205.195][59772] [Unknown][Unknown][Unrated]
+     not-detected: [....44] [ip4][..udp] [...192.168.1.77][28150] -> [..87.11.205.195][59772] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Susp Entropy, Unidirectional Traffic
              idle: [....44] [ip4][..udp] [...192.168.1.77][28150] -> [..87.11.205.195][59772]
              idle: [....46] [ip4][..udp] [...192.168.1.53][56384] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250]
@@ -207,7 +205,7 @@
              idle: [....13] [ip4][..udp] [...192.168.1.77][52118] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][in.appcenter.ms]
              idle: [....33] [ip4][..udp] [...192.168.1.77][54595] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][b._dns-sd._udp.ntop.org]
                    RISK: Error Code
-             idle: [....25] [ip4][..udp] [...192.168.1.77][23174] -> [...192.168.1.52][31480] [Unknown][Unknown][Unrated]
+             idle: [....25] [ip4][..udp] [...192.168.1.77][23174] -> [...192.168.1.52][31480] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Susp Entropy
              idle: [.....1] [ip4][..udp] [....192.168.0.1][...68] -> [255.255.255.255][...67] [DHCP][Unknown][Network][Acceptable][tl-sg116e]
              idle: [....35] [ip4][..udp] [...192.168.1.77][50822] -> [..216.58.205.68][..443] [QUIC.Google][Google][Web][Acceptable][www.google.com]
@@ -237,7 +235,7 @@
              idle: [....12] [ip4][..udp] [...192.168.1.77][.5353] -> [...192.168.1.53][.5353] [MDNS][Unknown][Network][Acceptable][_companion-link._tcp.local]
              idle: [.....7] [ip4][..udp] [...192.168.1.77][.5353] -> [...192.168.1.75][.5353] [MDNS][Unknown][Network][Acceptable][_companion-link._tcp.local]
              idle: [....43] [ip4][..udp] [...192.168.1.77][52127] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250]
-     not-detected: [....26] [ip4][..udp] [...192.168.1.77][23174] -> [..87.11.205.195][60723] [Unknown][Unknown][Unrated]
+     not-detected: [....26] [ip4][..udp] [...192.168.1.77][23174] -> [..87.11.205.195][60723] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Susp Entropy, Unidirectional Traffic
              idle: [....26] [ip4][..udp] [...192.168.1.77][23174] -> [..87.11.205.195][60723]
      DAEMON-EVENT: shutdown

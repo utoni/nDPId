@@ -5,7 +5,6 @@
               new: [.....2] [ip4][..udp] [....192.168.1.7][51543] -> [....192.168.1.1][...53]
          detected: [.....2] [ip4][..udp] [....192.168.1.7][51543] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][ios.nccp.netflix.com]
  detection-update: [.....2] [ip4][..udp] [....192.168.1.7][51543] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][ios.nccp.netflix.com]
-                   RISK: Unidirectional Traffic
  detection-update: [.....2] [ip4][..udp] [....192.168.1.7][51543] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][ios.nccp.netflix.com]
               new: [.....3] [ip4][..udp] [....192.168.1.7][52116] -> [....192.168.1.1][...53]
          detected: [.....3] [ip4][..udp] [....192.168.1.7][52116] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][ichnaea.us-west-2.prodaa.netflix.com]
@@ -461,7 +460,6 @@
               new: [....52] [ip4][..udp] [....192.168.1.7][51622] -> [....192.168.1.1][...53]
          detected: [....52] [ip4][..udp] [....192.168.1.7][51622] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][ios.nccp.netflix.com]
  detection-update: [....52] [ip4][..udp] [....192.168.1.7][51622] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][ios.nccp.netflix.com]
-                   RISK: Unidirectional Traffic
  detection-update: [....52] [ip4][..udp] [....192.168.1.7][51622] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][ios.nccp.netflix.com]
               new: [....53] [ip4][..tcp] [....192.168.1.7][53238] -> [...52.32.22.214][..443]
          detected: [....53] [ip4][..tcp] [....192.168.1.7][53238] -> [...52.32.22.214][..443] [TLS.NetFlix][AmazonAWS][Video][Fun][ios.nccp.netflix.com]

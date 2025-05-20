@@ -156,15 +156,13 @@
                    [PKTLENS.....: 60,44,40,224,44,40,1320,1320,1027,40,40,40,162,40,87,40,562,40,69,40,199,312,40,40,78,40,69,40,67,116,40,40]
                    [ENTROPIES...: 4.7,5.0,4.9,5.2,4.7,5.0,6.5,7.1,6.7,4.8,4.9,4.9,6.5,4.9,5.9,4.8,7.7,5.0,5.6,4.8,6.9,7.1,5.0,5.0,5.8,4.9,5.5,4.9,5.6,6.3,5.0,5.0]
            update: [....19] [ip4][.icmp] [...10.24.82.188] -> [...10.188.191.1] [ICMP][Unknown][Network][Acceptable]
- detection-update: [....30] [ip4][..tcp] [...10.24.82.188][58927] -> [.54.255.253.199][.5223] [TLS][AmazonAWS][Web][Safe]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
               new: [....38] [ip4][..tcp] [...10.24.82.188][58964] -> [.54.255.253.199][.5223]
          detected: [....38] [ip4][..tcp] [...10.24.82.188][58964] -> [.54.255.253.199][.5223] [TLS][AmazonAWS][Web][Safe][]
                    RISK: Known Proto on Non Std Port, Obsolete TLS (v1.1 or older)
              idle: [.....5] [ip4][..udp] [...10.24.82.188][12908] -> [.....10.188.1.1][...53] [DNS][Unknown][Network][Acceptable][up-m.talk.kakao.com]
              idle: [....28] [ip4][..udp] [...10.24.82.188][14650] -> [.....10.188.1.1][...53] [DNS][Unknown][Network][Acceptable][2.97.252.173.in-addr.arpa]
               end: [....30] [ip4][..tcp] [...10.24.82.188][58927] -> [.54.255.253.199][.5223] [TLS][AmazonAWS][Web][Safe]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Known Proto on Non Std Port
              idle: [....38] [ip4][..tcp] [...10.24.82.188][58964] -> [.54.255.253.199][.5223] [TLS][AmazonAWS][Web][Safe]
                    RISK: Known Proto on Non Std Port, Obsolete TLS (v1.1 or older)
              idle: [....37] [ip4][..tcp] [...10.24.82.188][49217] -> [.216.58.220.174][..443] [TLS][Google][Web][Safe]
@@ -209,7 +207,6 @@
              idle: [.....1] [ip4][..udp] [...10.24.82.188][38448] -> [.....10.188.1.1][...53] [DNS][Unknown][Network][Acceptable][auth.kakao.com]
              idle: [.....7] [ip4][..udp] [...10.24.82.188][.5929] -> [.....10.188.1.1][...53] [DNS][Unknown][Network][Acceptable][up-p.talk.kakao.com]
           guessed: [....13] [ip4][..tcp] [...10.24.82.188][51021] -> [.103.246.57.251][.8080] [HTTP_Proxy][Unknown][Web][Acceptable][]
-                   RISK: Fully Encrypted Flow
              idle: [....13] [ip4][..tcp] [...10.24.82.188][51021] -> [.103.246.57.251][.8080]
              idle: [....36] [ip4][..tcp] [...10.24.82.188][34686] -> [.173.194.72.188][.5228] [TLS][Google][Web][Safe]
                    RISK: Known Proto on Non Std Port

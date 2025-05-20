@@ -5,9 +5,9 @@
          detected: [.....1] [ip4][..udp] [..192.168.0.123][55566] -> [...192.168.0.16][...53] [DNS][Unknown][Network][Acceptable][checkappexec.microsoft.com]
  detection-update: [.....1] [ip4][..udp] [..192.168.0.123][55566] -> [...192.168.0.16][...53] [DNS][Unknown][Network][Acceptable][checkappexec.microsoft.com]
               new: [.....2] [ip4][..tcp] [..192.168.0.123][64613] -> [172.211.159.152][..443]
-         detected: [.....2] [ip4][..tcp] [..192.168.0.123][64613] -> [172.211.159.152][..443] [TLS.Microsoft365][Azure][Web][Acceptable][checkappexec.microsoft.com]
- detection-update: [.....2] [ip4][..tcp] [..192.168.0.123][64613] -> [172.211.159.152][..443] [TLS.Microsoft365][Azure][Web][Acceptable][checkappexec.microsoft.com]
- detection-update: [.....2] [ip4][..tcp] [..192.168.0.123][64613] -> [172.211.159.152][..443] [TLS.Microsoft365][Azure][Web][Acceptable][checkappexec.microsoft.com]
+         detected: [.....2] [ip4][..tcp] [..192.168.0.123][64613] -> [172.211.159.152][..443] [TLS.Microsoft][Azure][Web][Safe][checkappexec.microsoft.com]
+ detection-update: [.....2] [ip4][..tcp] [..192.168.0.123][64613] -> [172.211.159.152][..443] [TLS.Microsoft][Azure][Web][Safe][checkappexec.microsoft.com]
+ detection-update: [.....2] [ip4][..tcp] [..192.168.0.123][64613] -> [172.211.159.152][..443] [TLS.Microsoft][Azure][Web][Safe][checkappexec.microsoft.com]
               new: [.....3] [ip4][..tcp] [..192.168.0.123][64621] -> [....86.3.18.251][..443]
               new: [.....4] [ip4][..tcp] [..192.168.0.123][64622] -> [.178.17.170.254][..443]
          detected: [.....4] [ip4][..tcp] [..192.168.0.123][64622] -> [.178.17.170.254][..443] [TLS.Tor][Tor][VPN][Potentially Dangerous][www.v2trefdg62xsck3upw2iad5y.com]
@@ -66,5 +66,5 @@
                    RISK: TLS (probably) Not Carrying HTTPS, Susp DGA Domain name, Unsafe Protocol
              idle: [.....5] [ip4][.icmp] [...192.168.0.16] -> [..192.168.0.123] [ICMP][Unknown][Network][Acceptable]
                    RISK: Susp Entropy
-             idle: [.....2] [ip4][..tcp] [..192.168.0.123][64613] -> [172.211.159.152][..443] [TLS.Microsoft365][Azure][Web][Acceptable]
+             idle: [.....2] [ip4][..tcp] [..192.168.0.123][64613] -> [172.211.159.152][..443] [TLS.Microsoft][Azure][Web][Safe]
      DAEMON-EVENT: shutdown

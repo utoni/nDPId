@@ -3,10 +3,7 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [..192.168.1.119][51331] -> [.104.16.249.249][..443] [MIDSTREAM]
          detected: [.....1] [ip4][..tcp] [..192.168.1.119][51331] -> [.104.16.249.249][..443] [TLS][Cloudflare][Web][Safe]
- detection-update: [.....1] [ip4][..tcp] [..192.168.1.119][51331] -> [.104.16.249.249][..443] [TLS][Cloudflare][Web][Safe]
-                   RISK: Unidirectional Traffic
               new: [.....2] [ip4][..tcp] [..192.168.1.119][51606] -> [.104.16.249.249][..443]
- detection-update: [.....1] [ip4][..tcp] [..192.168.1.119][51331] -> [.104.16.249.249][..443] [TLS][Cloudflare][Web][Safe]
          detected: [.....2] [ip4][..tcp] [..192.168.1.119][51606] -> [.104.16.249.249][..443] [TLS.DoH_DoT][Cloudflare][Network][Acceptable][mozilla.cloudflare-dns.com]
  detection-update: [.....2] [ip4][..tcp] [..192.168.1.119][51606] -> [.104.16.249.249][..443] [TLS.DoH_DoT][Cloudflare][Network][Acceptable][mozilla.cloudflare-dns.com]
               new: [.....3] [ip4][..tcp] [..192.168.1.119][51612] -> [..104.16.124.96][..443]
@@ -21,9 +18,9 @@
                    [PKTLENS.....: 64,52,40,656,46,210,46,722,40,102,46,40,124,46,71,40,191,126,100,132,71,46,46,46,366,71,40,40,46,293,71,40]
                    [ENTROPIES...: 4.4,4.9,4.5,7.1,4.6,7.0,4.4,7.7,4.6,6.1,4.5,4.6,6.3,4.4,5.6,4.5,6.8,6.4,6.2,6.4,5.5,4.4,4.4,4.4,7.3,5.7,4.6,4.6,4.5,7.3,5.6,4.6]
          detected: [.....3] [ip4][..tcp] [..192.168.1.119][51612] -> [..104.16.124.96][..443] [TLS][Cloudflare][Web][Safe][]
-                   RISK: TLS Susp ESNI Usage, Missing SNI TLS Extn, ALPN/SNI Mismatch
+                   RISK: Missing SNI TLS Extn, TLS Susp Extn, ALPN/SNI Mismatch
  detection-update: [.....3] [ip4][..tcp] [..192.168.1.119][51612] -> [..104.16.124.96][..443] [TLS][Cloudflare][Web][Safe][]
-                   RISK: TLS Susp ESNI Usage, Missing SNI TLS Extn, ALPN/SNI Mismatch
+                   RISK: Missing SNI TLS Extn, TLS Susp Extn, ALPN/SNI Mismatch
           analyse: [.....3] [ip4][..tcp] [..192.168.1.119][51612] -> [..104.16.124.96][..443] [TLS][Cloudflare][Web][Safe]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.473|     0.050|     0.107|        11455.737|    3.000]
@@ -42,19 +39,19 @@
          detected: [.....4] [ip4][..tcp] [..192.168.1.119][51635] -> [..104.17.198.37][..443] [TLS][Cloudflare][Web][Safe][951c558a-5e07-47ca-a0c0-225da1b33163.is-cf.help.every1dns.net]
          detected: [.....5] [ip4][..tcp] [..192.168.1.119][51636] -> [..104.17.198.37][..443] [TLS][Cloudflare][Web][Safe][951c558a-5e07-47ca-a0c0-225da1b33163.is-doh.help.every1dns.net]
          detected: [.....6] [ip4][..tcp] [..192.168.1.119][51637] -> [..104.22.72.170][..443] [TLS][Cloudflare][Web][Safe][]
-                   RISK: TLS Susp ESNI Usage, Missing SNI TLS Extn, ALPN/SNI Mismatch
+                   RISK: Missing SNI TLS Extn, TLS Susp Extn, ALPN/SNI Mismatch
          detected: [.....8] [ip4][..tcp] [..192.168.1.119][51639] -> [..104.22.72.170][..443] [TLS][Cloudflare][Web][Safe][]
-                   RISK: TLS Susp ESNI Usage, Missing SNI TLS Extn, ALPN/SNI Mismatch
+                   RISK: Missing SNI TLS Extn, TLS Susp Extn, ALPN/SNI Mismatch
          detected: [.....7] [ip4][..tcp] [..192.168.1.119][51638] -> [..104.22.72.170][..443] [TLS][Cloudflare][Web][Safe][]
-                   RISK: TLS Susp ESNI Usage, Missing SNI TLS Extn, ALPN/SNI Mismatch
+                   RISK: Missing SNI TLS Extn, TLS Susp Extn, ALPN/SNI Mismatch
  detection-update: [.....4] [ip4][..tcp] [..192.168.1.119][51635] -> [..104.17.198.37][..443] [TLS][Cloudflare][Web][Safe][951c558a-5e07-47ca-a0c0-225da1b33163.is-cf.help.every1dns.net]
  detection-update: [.....5] [ip4][..tcp] [..192.168.1.119][51636] -> [..104.17.198.37][..443] [TLS][Cloudflare][Web][Safe][951c558a-5e07-47ca-a0c0-225da1b33163.is-doh.help.every1dns.net]
  detection-update: [.....6] [ip4][..tcp] [..192.168.1.119][51637] -> [..104.22.72.170][..443] [TLS][Cloudflare][Web][Safe][]
-                   RISK: TLS Susp ESNI Usage, Missing SNI TLS Extn, ALPN/SNI Mismatch
+                   RISK: Missing SNI TLS Extn, TLS Susp Extn, ALPN/SNI Mismatch
  detection-update: [.....8] [ip4][..tcp] [..192.168.1.119][51639] -> [..104.22.72.170][..443] [TLS][Cloudflare][Web][Safe][]
-                   RISK: TLS Susp ESNI Usage, Missing SNI TLS Extn, ALPN/SNI Mismatch
+                   RISK: Missing SNI TLS Extn, TLS Susp Extn, ALPN/SNI Mismatch
  detection-update: [.....7] [ip4][..tcp] [..192.168.1.119][51638] -> [..104.22.72.170][..443] [TLS][Cloudflare][Web][Safe][]
-                   RISK: TLS Susp ESNI Usage, Missing SNI TLS Extn, ALPN/SNI Mismatch
+                   RISK: Missing SNI TLS Extn, TLS Susp Extn, ALPN/SNI Mismatch
           analyse: [.....6] [ip4][..tcp] [..192.168.1.119][51637] -> [..104.22.72.170][..443] [TLS][Cloudflare][Web][Safe]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.144|     0.032|     0.043|         1852.691|    3.800]
@@ -68,13 +65,13 @@
               end: [.....1] [ip4][..tcp] [..192.168.1.119][51331] -> [.104.16.249.249][..443] [TLS][Cloudflare][Web][Safe]
              idle: [.....2] [ip4][..tcp] [..192.168.1.119][51606] -> [.104.16.249.249][..443] [TLS.DoH_DoT][Cloudflare][Network][Acceptable][mozilla.cloudflare-dns.com]
              idle: [.....3] [ip4][..tcp] [..192.168.1.119][51612] -> [..104.16.124.96][..443] [TLS][Cloudflare][Web][Safe]
-                   RISK: TLS Susp ESNI Usage, Missing SNI TLS Extn, ALPN/SNI Mismatch
+                   RISK: Missing SNI TLS Extn, TLS Susp Extn, ALPN/SNI Mismatch
              idle: [.....4] [ip4][..tcp] [..192.168.1.119][51635] -> [..104.17.198.37][..443] [TLS][Cloudflare][Web][Safe]
              idle: [.....5] [ip4][..tcp] [..192.168.1.119][51636] -> [..104.17.198.37][..443] [TLS][Cloudflare][Web][Safe]
              idle: [.....6] [ip4][..tcp] [..192.168.1.119][51637] -> [..104.22.72.170][..443] [TLS][Cloudflare][Web][Safe]
-                   RISK: TLS Susp ESNI Usage, Missing SNI TLS Extn, ALPN/SNI Mismatch
+                   RISK: Missing SNI TLS Extn, TLS Susp Extn, ALPN/SNI Mismatch
               end: [.....7] [ip4][..tcp] [..192.168.1.119][51638] -> [..104.22.72.170][..443] [TLS][Cloudflare][Web][Safe]
-                   RISK: TLS Susp ESNI Usage, Missing SNI TLS Extn, ALPN/SNI Mismatch
+                   RISK: Missing SNI TLS Extn, TLS Susp Extn, ALPN/SNI Mismatch
               end: [.....8] [ip4][..tcp] [..192.168.1.119][51639] -> [..104.22.72.170][..443] [TLS][Cloudflare][Web][Safe]
-                   RISK: TLS Susp ESNI Usage, Missing SNI TLS Extn, ALPN/SNI Mismatch
+                   RISK: Missing SNI TLS Extn, TLS Susp Extn, ALPN/SNI Mismatch
      DAEMON-EVENT: shutdown
