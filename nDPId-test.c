@@ -10,9 +10,6 @@ extern void nDPIsrvd_memprof_log_free(size_t free_size);
 // #define VERBOSE_MEMORY_PROFILING 1
 #define NO_MAIN 1
 #include "utils.c"
-#ifdef ENABLE_CRYPTO
-#include "ncrypt.c"
-#endif
 #include "nio.c"
 #include "nDPIsrvd.c"
 #include "nDPId.c"
@@ -1542,7 +1539,7 @@ static int nio_selftest()
         goto error;
     }
 
-    int pipefds[2];
+    int pipefds[2] = {-1, -1};
     int rv = pipe(pipefds);
     if (rv < 0)
     {
@@ -1635,121 +1632,15 @@ static int nio_selftest()
     }
 
     nio_free(&io);
+    close(pipefds[0]);
+    close(pipefds[1]);
     return 0;
 error:
     nio_free(&io);
+    close(pipefds[0]);
+    close(pipefds[1]);
     return 1;
 }
-
-#ifdef ENABLE_CRYPTO
-static int ncrypt_selftest()
-{
-    int ret = 0;
-    struct ncrypt nc_peer1 = {};
-    struct ncrypt nc_peer2 = {};
-    struct aes aes_peer1 = {};
-    struct aes aes_peer2 = {};
-    unsigned char peer1_priv_key[NCRYPT_X25519_KEYLEN];
-    unsigned char peer2_priv_key[NCRYPT_X25519_KEYLEN];
-    unsigned char peer1_pub_key[NCRYPT_X25519_KEYLEN];
-    unsigned char peer2_pub_key[NCRYPT_X25519_KEYLEN];
-    unsigned char iv[NCRYPT_AES_IVLEN];
-    char const plaintext[] = "Secret Message!";
-    unsigned char encrypted[NCRYPT_BUFFER_SIZE];
-    unsigned char tag[NCRYPT_TAG_SIZE];
-    char decrypted[NCRYPT_BUFFER_SIZE];
-
-    memset(iv, 0x41, sizeof(iv));
-
-    if (ncrypt_keygen(peer1_priv_key, peer1_pub_key) != 0)
-    {
-        ret++;
-    }
-    if (ncrypt_keygen(peer2_priv_key, peer2_pub_key) != 0)
-    {
-        ret++;
-    }
-    if (ncrypt_init(&nc_peer1, peer1_priv_key, peer2_pub_key) != 0)
-    {
-        ret++;
-    }
-    if (ncrypt_init(&nc_peer2, peer2_priv_key, peer1_pub_key) != 0)
-    {
-        ret++;
-    }
-    if (ncrypt_init_encrypt(&nc_peer1, &aes_peer1) != 0)
-    {
-        ret++;
-    }
-    if (ncrypt_init_decrypt(&nc_peer2, &aes_peer2) != 0)
-    {
-        ret++;
-    }
-    int enc_bytes = ncrypt_encrypt(&aes_peer1, plaintext, sizeof(plaintext), iv, encrypted, tag);
-    int dec_bytes = ncrypt_decrypt(&aes_peer2, encrypted, enc_bytes, iv, tag, decrypted);
-    if (enc_bytes < 0 || dec_bytes < 0)
-    {
-        ret++;
-    }
-    if (memcmp(plaintext, decrypted, sizeof(plaintext)) != 0)
-    {
-        ret++;
-    }
-
-    ncrypt_free_aes(&aes_peer2);
-    ncrypt_free_aes(&aes_peer1);
-    memset(decrypted, '\0', sizeof(decrypted));
-
-    struct nDPIsrvd_address listen_address;
-    if (nDPIsrvd_setup_address(&listen_address, "127.0.0.1:17443") != 0)
-    {
-        ret++;
-    }
-    if (ncrypt_add_peer(&nc_peer1, &listen_address) != 0)
-    {
-        ret++;
-    }
-    if (ncrypt_init_encrypt2(&nc_peer1, &listen_address) != 0)
-    {
-        ret++;
-    }
-
-    int udp_sockfd_listen = socket(listen_address.raw.sa_family, SOCK_DGRAM, 0);
-    int udp_sockfd_connect = socket(listen_address.raw.sa_family, SOCK_DGRAM, 0);
-    if (udp_sockfd_listen < 0 || udp_sockfd_connect < 0)
-    {
-        ret++;
-    }
-    if (bind(udp_sockfd_listen, &listen_address.raw, listen_address.size) != 0)
-    {
-        ret++;
-    } else
-    if (connect(udp_sockfd_connect, &listen_address.raw, listen_address.size) < 0)
-    {
-        ret++;
-    } else
-    if (ncrypt_dgram_send(&nc_peer1, udp_sockfd_connect, plaintext, sizeof(plaintext)) != 0)
-    {
-        ret++;
-    } else
-    if (ncrypt_dgram_recv(&nc_peer2, udp_sockfd_listen, decrypted, sizeof(decrypted)) != 0)
-    {
-        ret++;
-    }
-
-    if (memcmp(plaintext, decrypted, sizeof(plaintext)) != 0)
-    {
-        ret++;
-    }
-
-    close(udp_sockfd_listen);
-    close(udp_sockfd_connect);
-    ncrypt_free(&nc_peer2);
-    ncrypt_free(&nc_peer1);
-
-    return ret;
-}
-#endif
 
 #define THREADS_RETURNED_ERROR()                                                                                       \
     (nDPId_return.thread_return_value.val != 0 || nDPIsrvd_return.val != 0 ||                                          \
@@ -1784,9 +1675,6 @@ int main(int argc, char ** argv)
 
         retval += base64_selftest();
         retval += nio_selftest();
-#ifdef ENABLE_CRYPTO
-        retval += ncrypt_selftest();
-#endif
 
         logger(1, "Selftest returned: %d%s", retval, (retval == 0 ? " (OK)" : ""));
         return retval;

@@ -1,93 +1,56 @@
 #ifndef NCRYPT_H
 #define NCRYPT_H 1
 
-#include <stdlib.h>
+#define ncrypt_ctx_init(x)                                                                                             \
+    do                                                                                                                 \
+    {                                                                                                                  \
+        (x)->ssl_ctx = NULL;                                                                                           \
+    } while (0);
+#define ncrypt_entity_init(x)                                                                                          \
+    do                                                                                                                 \
+    {                                                                                                                  \
+        (x)->ssl = NULL;                                                                                               \
+        (x)->handshake_done = 0;                                                                                       \
+    } while (0);
 
-#include "config.h"
-#include "nDPIsrvd.h"
-
-#define NCRYPT_X25519_KEYLEN 32
-#define NCRYPT_AES_IVLEN 12
-#define NCRYPT_TAG_SIZE 16
-#define NCRYPT_AAD_SIZE 3 // packet type + packet size
-#define NCRYPT_BUFFER_SIZE NETWORK_BUFFER_MAX_SIZE
-
-struct aes
+enum
 {
-    void * ctx;
+    NCRYPT_SUCCESS = 0,
+    NCRYPT_NOT_INITIALIZED = -1,
+    NCRYPT_ALREADY_INITIALIZED = -2,
+    NCRYPT_NULL_PTR = -3,
+    NCRYPT_PEM_LOAD_FAILED = -4,
 };
 
-struct peer
+struct ncrypt_ctx
 {
-    nDPIsrvd_hashkey hash_key;
-    struct nDPIsrvd_address address;
-    unsigned char iv[NCRYPT_AES_IVLEN];
-    struct
-    {
-        void * last_private_key;
-        void * current_private_key;
-    } ephemeral;
-    size_t key_rotations;
-    size_t cryptions;
-    size_t crypto_errors;
-    size_t iv_mismatches;
-    size_t send_errors;
-    size_t partial_writes;
-    struct aes aes;
-    UT_hash_handle hh;
+    void * ssl_ctx;
 };
 
-struct ncrypt
+struct ncrypt_entity
 {
-    void * libctx;
-    const char * propq;
-    void * private_key;
-    unsigned char shared_secret[NCRYPT_X25519_KEYLEN];
-    struct peer * peers;
+    void * ssl;
+    int handshake_done;
 };
 
-int ncrypt_keygen(unsigned char priv_key[NCRYPT_X25519_KEYLEN], unsigned char pub_key[NCRYPT_X25519_KEYLEN]);
+int ncrypt_init(void);
 
-int ncrypt_load_privkey(char const * const private_key_file, unsigned char priv_key[NCRYPT_X25519_KEYLEN]);
+int ncrypt_init_client(struct ncrypt_ctx * const ctx,
+                       char const * const ca_path,
+                       char const * const privkey_pem_path,
+                       char const * const pubkey_pem_path);
 
-int ncrypt_load_pubkey(char const * const public_key_file, unsigned char pub_key[NCRYPT_X25519_KEYLEN]);
+int ncrypt_init_server(struct ncrypt_ctx * const ctx,
+                       char const * const ca_path,
+                       char const * const privkey_pem_path,
+                       char const * const pubkey_pem_path);
 
-int ncrypt_init(struct ncrypt * const nc,
-                unsigned char local_priv_key[NCRYPT_X25519_KEYLEN],
-                unsigned char remote_pub_key[NCRYPT_X25519_KEYLEN]);
+int ncrypt_on_connect(struct ncrypt_ctx * const ctx, int connect_fd, struct ncrypt_entity * const ent);
 
-int ncrypt_init_encrypt(struct ncrypt * const nc, struct aes * const aes);
+int ncrypt_on_accept(struct ncrypt_ctx * const ctx, int accept_fd, struct ncrypt_entity * const ent);
 
-int ncrypt_init_encrypt2(struct ncrypt * const nc, struct nDPIsrvd_address * const peer_address);
+void ncrypt_free_entity(struct ncrypt_entity * const ent);
 
-int ncrypt_init_decrypt(struct ncrypt * const nc, struct aes * const aes);
-
-int ncrypt_init_decrypt2(struct ncrypt * const nc, struct nDPIsrvd_address * const peer_address);
-
-void ncrypt_free_aes(struct aes * const aes);
-
-void ncrypt_free(struct ncrypt * const nc);
-
-int ncrypt_add_peer(struct ncrypt * const nc, struct nDPIsrvd_address const * const peer_address);
-
-struct peer * ncrypt_get_peer(struct ncrypt * const nc, struct nDPIsrvd_address const * const peer_address);
-
-int ncrypt_encrypt(struct aes * const aes,
-                   char const * const plaintext,
-                   size_t plaintext_size,
-                   unsigned char const iv[NCRYPT_AES_IVLEN],
-                   unsigned char encrypted[NCRYPT_BUFFER_SIZE],
-                   unsigned char tag[NCRYPT_TAG_SIZE]);
-
-int ncrypt_decrypt(struct aes * const aes,
-                   unsigned char const * const encrypted,
-                   size_t encrypted_size,
-                   unsigned char const iv[NCRYPT_AES_IVLEN],
-                   unsigned char tag[NCRYPT_TAG_SIZE],
-                   char plaintext[NCRYPT_BUFFER_SIZE]);
-
-int ncrypt_dgram_send(struct ncrypt * const nc, int fd, char const * const plaintext, size_t plaintext_size);
-
-int ncrypt_dgram_recv(struct ncrypt * const nc, int fd, char * const plaintext, size_t plaintext_size);
+void ncrypt_free_ctx(struct ncrypt_ctx * const ctx);
 
 #endif
