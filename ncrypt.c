@@ -112,13 +112,7 @@ int ncrypt_on_connect(struct ncrypt_ctx * const ctx, int connect_fd, struct ncry
 
     int rv = SSL_do_handshake(ent->ssl);
     if (rv != 1)
-    {
-        int err = SSL_get_error(ent->ssl, rv);
-        if (err == SSL_ERROR_WANT_READ || err == SSL_ERROR_WANT_WRITE)
-            return NCRYPT_SUCCESS;
-
-        return err;
-    }
+        return SSL_get_error(ent->ssl, rv);
 
     return NCRYPT_SUCCESS;
 }
@@ -138,13 +132,7 @@ int ncrypt_on_accept(struct ncrypt_ctx * const ctx, int accept_fd, struct ncrypt
 
     int rv = SSL_accept(ent->ssl);
     if (rv != 1)
-    {
-        int err = SSL_get_error(ent->ssl, rv);
-        if (err == SSL_ERROR_WANT_READ || err == SSL_ERROR_WANT_WRITE)
-            return NCRYPT_SUCCESS;
-
-        return err;
-    }
+        return SSL_get_error(ent->ssl, rv);
 
     return NCRYPT_SUCCESS;
 }

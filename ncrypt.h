@@ -1,17 +1,28 @@
 #ifndef NCRYPT_H
 #define NCRYPT_H 1
 
-#define ncrypt_ctx_init(x)                                                                                             \
+#define ncrypt_ctx(x)                                                                                                  \
     do                                                                                                                 \
     {                                                                                                                  \
         (x)->ssl_ctx = NULL;                                                                                           \
     } while (0);
-#define ncrypt_entity_init(x)                                                                                          \
+#define ncrypt_entity(x)                                                                                               \
     do                                                                                                                 \
     {                                                                                                                  \
         (x)->ssl = NULL;                                                                                               \
         (x)->handshake_done = 0;                                                                                       \
     } while (0);
+#define ncrypt_handshake_done(x) ((x)->handshake_done)
+#define ncrypt_set_handshake(x)                                                                                        \
+    do                                                                                                                 \
+    {                                                                                                                  \
+        (x)->handshake_done = 1;                                                                                       \
+    } while (0)
+#define ncrypt_clear_handshake(x)                                                                                      \
+    do                                                                                                                 \
+    {                                                                                                                  \
+        (x)->handshake_done = 0;                                                                                       \
+    } while (0)
 
 enum
 {
