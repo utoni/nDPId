@@ -208,7 +208,7 @@ if(ENABLE_CRYPTO)
 endif()
 add_executable(nDPId nDPId.c ${NDPID_PFRING_SRCS} ${CRYPTO_SRCS} nio.c utils.c)
 add_executable(nDPIsrvd nDPIsrvd.c nio.c utils.c)
-add_executable(nDPId-test nDPId-test.c ${NDPID_PFRING_SRCS})
+add_executable(nDPId-test nDPId-test.c ${NDPID_PFRING_SRCS} ${CRYPTO_SRCS})
 
 add_custom_target(umask_check)
 add_custom_command(

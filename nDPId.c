@@ -2520,6 +2520,9 @@ static int connect_to_collector(struct nDPId_reader_thread * const reader_thread
     if (reader_thread->collector_sockfd >= 0)
     {
         close(reader_thread->collector_sockfd);
+#ifdef ENABLE_CRYPTO
+        ncrypt_clear_handshake(&reader_thread->workflow->ncrypt_entity);
+#endif
     }
 
     int sock_type = SOCK_STREAM;
@@ -2536,7 +2539,10 @@ static int connect_to_collector(struct nDPId_reader_thread * const reader_thread
         return 1;
     }
 
-    if (set_collector_nonblock(reader_thread) != 0)
+    struct timeval sock_read;
+    sock_read.tv_sec = 5;
+    sock_read.tv_usec = 0;
+    if (setsockopt(reader_thread->collector_sockfd, SOL_SOCKET, SO_RCVTIMEO, &sock_read, sizeof(sock_read)) < 0)
     {
         return 1;
     }
@@ -2546,6 +2552,11 @@ static int connect_to_collector(struct nDPId_reader_thread * const reader_thread
                 nDPId_options.parsed_collector_address.size) < 0)
     {
         reader_thread->collector_sock_last_errno = errno;
+        return 1;
+    }
+
+    if (set_collector_nonblock(reader_thread) != 0)
+    {
         return 1;
     }
 
@@ -2608,7 +2619,7 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
             if (saved_errno != reader_thread->collector_sock_last_errno)
             {
                 logger(1,
-                       "[%8llu, %zu] Could not connect to nDPIsrvd Collector at %s, will try again later. Error: %s",
+                       "[%8llu, %zu] Could not reconnect to nDPIsrvd Collector at %s, will try again later. Error: %s",
                        workflow->packets_captured,
                        reader_thread->array_index,
                        GET_CMDARG_STR(nDPId_options.collector_address),
@@ -2626,6 +2637,7 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
         if (ncrypt_handshake_done(&workflow->ncrypt_entity) == 0)
         {
             set_collector_block(reader_thread);
+            ncrypt_free_entity(&workflow->ncrypt_entity);
             int rv = ncrypt_on_connect(&ncrypt_ctx, reader_thread->collector_sockfd, &workflow->ncrypt_entity);
             if (rv != NCRYPT_SUCCESS)
             {
@@ -4976,6 +4988,7 @@ static void run_capture_loop(struct nDPId_reader_thread * const reader_thread)
 
         sigaddset(&thread_signal_set, SIGINT);
         sigaddset(&thread_signal_set, SIGTERM);
+        sigaddset(&thread_signal_set, SIGPIPE);
         sigaddset(&thread_signal_set, SIGUSR1);
         int signal_fd = signalfd(-1, &thread_signal_set, SFD_NONBLOCK);
         if (signal_fd < 0 || set_fd_cloexec(signal_fd) < 0)
@@ -5095,6 +5108,7 @@ static void run_capture_loop(struct nDPId_reader_thread * const reader_thread)
                     }
                     else
                     {
+                        int silenced = 0;
                         int is_valid_signal = 0;
                         char const * signame = "unknown";
                         switch (fdsi.ssi_signo)
@@ -5109,19 +5123,25 @@ static void run_capture_loop(struct nDPId_reader_thread * const reader_thread)
                                 signame = "SIGTERM";
                                 sighandler(SIGTERM);
                                 break;
+                            case SIGPIPE:
+                                silenced = 1;
+                                break;
                             case SIGUSR1:
                                 is_valid_signal = 1;
                                 signame = "SIGUSR1";
                                 log_all_flows(reader_thread);
                                 break;
                         }
-                        if (is_valid_signal != 0)
+                        if (silenced == 0)
                         {
-                            logger(1, "Received signal %d (%s)", fdsi.ssi_signo, signame);
-                        }
-                        else
-                        {
-                            logger(1, "Received signal %d (%s), ignored", fdsi.ssi_signo, signame);
+                            if (is_valid_signal != 0)
+                            {
+                                logger(1, "Received signal %d (%s)", fdsi.ssi_signo, signame);
+                            }
+                            else
+                            {
+                                logger(1, "Received signal %d (%s), ignored", fdsi.ssi_signo, signame);
+                            }
                         }
                     }
                 }
@@ -6067,6 +6087,16 @@ static int validate_options(void)
                      "%s",
                      "Encryption requires a client certificate, key and a server CA file to be set. See `-k', `-K' and "
                      "`-F'.");
+        retval = 1;
+    }
+
+    if ((IS_CMDARG_SET(nDPId_options.client_crt_pem_file) != 0 ||
+         IS_CMDARG_SET(nDPId_options.client_key_pem_file) != 0 ||
+         IS_CMDARG_SET(nDPId_options.server_ca_pem_file) != 0) &&
+        (IS_CMDARG_SET(nDPId_options.collector_address) == 0 ||
+         nDPId_options.parsed_collector_address.raw.sa_family == AF_UNIX))
+    {
+        logger_early(1, "%s", "Encryption requires an TCP endpoint set with `-c'.");
         retval = 1;
     }
 #endif
