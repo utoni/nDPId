@@ -2522,7 +2522,7 @@ static int connect_to_collector(struct nDPId_reader_thread * const reader_thread
         close(reader_thread->collector_sockfd);
     }
 
-    int sock_type = (nDPId_options.parsed_collector_address.raw.sa_family == AF_UNIX ? SOCK_STREAM : SOCK_DGRAM);
+    int sock_type = SOCK_STREAM;
     reader_thread->collector_sockfd = socket(nDPId_options.parsed_collector_address.raw.sa_family, sock_type, 0);
     if (reader_thread->collector_sockfd < 0 || set_fd_cloexec(reader_thread->collector_sockfd) < 0)
     {
@@ -2544,12 +2544,6 @@ static int connect_to_collector(struct nDPId_reader_thread * const reader_thread
     if (connect(reader_thread->collector_sockfd,
                 &nDPId_options.parsed_collector_address.raw,
                 nDPId_options.parsed_collector_address.size) < 0)
-    {
-        reader_thread->collector_sock_last_errno = errno;
-        return 1;
-    }
-
-    if (shutdown(reader_thread->collector_sockfd, SHUT_RD) != 0)
     {
         reader_thread->collector_sock_last_errno = errno;
         return 1;
@@ -2602,15 +2596,12 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
 
         if (connect_to_collector(reader_thread) == 0)
         {
-            if (nDPId_options.parsed_collector_address.raw.sa_family == AF_UNIX)
-            {
-                logger(1,
-                       "[%8llu, %zu] Reconnected to nDPIsrvd Collector at %s",
-                       workflow->packets_captured,
-                       reader_thread->array_index,
-                       GET_CMDARG_STR(nDPId_options.collector_address));
-                jsonize_daemon(reader_thread, DAEMON_EVENT_RECONNECT);
-            }
+            logger(1,
+                   "[%8llu, %zu] Reconnected to nDPIsrvd Collector at %s",
+                   workflow->packets_captured,
+                   reader_thread->array_index,
+                   GET_CMDARG_STR(nDPId_options.collector_address));
+            jsonize_daemon(reader_thread, DAEMON_EVENT_RECONNECT);
         }
         else
         {
@@ -2653,9 +2644,24 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
 #endif
 
     errno = 0;
+    if (reader_thread->collector_sock_last_errno != 0)
+    {
+        return;
+    }
+
     ssize_t written;
-    if (reader_thread->collector_sock_last_errno == 0 &&
-        (written = write(reader_thread->collector_sockfd, newline_json_msg, s_ret)) != s_ret)
+#ifdef ENABLE_CRYPTO
+    if (IS_CMDARG_SET(nDPId_options.server_ca_pem_file) != 0)
+    {
+        written = ncrypt_write(&workflow->ncrypt_entity, newline_json_msg, s_ret);
+    }
+    else
+#endif
+    {
+        written = write(reader_thread->collector_sockfd, newline_json_msg, s_ret);
+    }
+
+    if (written != s_ret)
     {
         saved_errno = errno;
         if (saved_errno == EPIPE || written == 0)
@@ -2667,24 +2673,29 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
         }
         if (saved_errno != EAGAIN)
         {
-            if (saved_errno == ECONNREFUSED)
-            {
-                logger(1,
-                       "[%8llu, %zu] %s to %s refused by endpoint",
-                       workflow->packets_captured,
-                       reader_thread->array_index,
-                       (nDPId_options.parsed_collector_address.raw.sa_family == AF_UNIX ? "Connection" : "Datagram"),
-                       GET_CMDARG_STR(nDPId_options.collector_address));
-            }
             reader_thread->collector_sock_last_errno = saved_errno;
         }
-        else if (nDPId_options.parsed_collector_address.raw.sa_family == AF_UNIX)
+        else
         {
             size_t pos = (written < 0 ? 0 : written);
             set_collector_block(reader_thread);
-            while ((size_t)(written = write(reader_thread->collector_sockfd, newline_json_msg + pos, s_ret - pos)) !=
-                   s_ret - pos)
+            while (1)
             {
+#ifdef ENABLE_CRYPTO
+                if (IS_CMDARG_SET(nDPId_options.server_ca_pem_file) != 0)
+                {
+                    written = ncrypt_write(&workflow->ncrypt_entity, newline_json_msg + pos, s_ret - pos);
+                }
+                else
+#endif
+                {
+                    written = write(reader_thread->collector_sockfd, newline_json_msg + pos, s_ret - pos);
+                }
+                if ((size_t)written == s_ret - pos)
+                {
+                    break;
+                }
+
                 saved_errno = errno;
                 if (saved_errno == EPIPE || written == 0)
                 {
