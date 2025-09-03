@@ -1,6 +1,8 @@
 #ifndef NCRYPT_H
 #define NCRYPT_H 1
 
+#include <stdlib.h>
+
 #define ncrypt_ctx(x)                                                                                                  \
     do                                                                                                                 \
     {                                                                                                                  \
@@ -30,7 +32,7 @@ enum
     NCRYPT_NOT_INITIALIZED = -1,
     NCRYPT_ALREADY_INITIALIZED = -2,
     NCRYPT_NULL_PTR = -3,
-    NCRYPT_PEM_LOAD_FAILED = -4,
+    NCRYPT_PEM_LOAD_FAILED = -4
 };
 
 struct ncrypt_ctx
@@ -59,6 +61,10 @@ int ncrypt_init_server(struct ncrypt_ctx * const ctx,
 int ncrypt_on_connect(struct ncrypt_ctx * const ctx, int connect_fd, struct ncrypt_entity * const ent);
 
 int ncrypt_on_accept(struct ncrypt_ctx * const ctx, int accept_fd, struct ncrypt_entity * const ent);
+
+ssize_t ncrypt_read(struct ncrypt_entity * const ent, char * const json_msg, size_t json_msg_len);
+
+ssize_t ncrypt_write(struct ncrypt_entity * const ent, char const * const json_msg, size_t json_msg_len);
 
 void ncrypt_free_entity(struct ncrypt_entity * const ent);
 

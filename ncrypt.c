@@ -112,7 +112,9 @@ int ncrypt_on_connect(struct ncrypt_ctx * const ctx, int connect_fd, struct ncry
 
     int rv = SSL_do_handshake(ent->ssl);
     if (rv != 1)
+    {
         return SSL_get_error(ent->ssl, rv);
+    }
 
     return NCRYPT_SUCCESS;
 }
@@ -132,9 +134,63 @@ int ncrypt_on_accept(struct ncrypt_ctx * const ctx, int accept_fd, struct ncrypt
 
     int rv = SSL_accept(ent->ssl);
     if (rv != 1)
+    {
         return SSL_get_error(ent->ssl, rv);
+    }
 
     return NCRYPT_SUCCESS;
+}
+
+ssize_t ncrypt_read(struct ncrypt_entity * const ent, char * const json_msg, size_t json_msg_len)
+{
+    if (ent->ssl == NULL)
+    {
+        errno = EPROTO;
+        return -1;
+    }
+
+    int rv = SSL_read(ent->ssl, json_msg, json_msg_len);
+    if (rv <= 0)
+    {
+        int err = SSL_get_error(ent->ssl, rv);
+        if (err == SSL_ERROR_WANT_WRITE || err == SSL_ERROR_WANT_READ)
+        {
+            errno = EAGAIN;
+        }
+        else if (err != SSL_ERROR_SYSCALL)
+        {
+            errno = EPROTO;
+        }
+        return -1;
+    }
+
+    return rv;
+}
+
+ssize_t ncrypt_write(struct ncrypt_entity * const ent, char const * const json_msg, size_t json_msg_len)
+{
+    if (ent->ssl == NULL)
+    {
+        errno = EPROTO;
+        return -1;
+    }
+
+    int rv = SSL_write(ent->ssl, json_msg, json_msg_len);
+    if (rv <= 0)
+    {
+        int err = SSL_get_error(ent->ssl, rv);
+        if (err == SSL_ERROR_WANT_WRITE || err == SSL_ERROR_WANT_READ)
+        {
+            errno = EAGAIN;
+        }
+        else if (err != SSL_ERROR_SYSCALL)
+        {
+            errno = EPROTO;
+        }
+        return -1;
+    }
+
+    return rv;
 }
 
 void ncrypt_free_entity(struct ncrypt_entity * const ent)
