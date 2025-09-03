@@ -2629,6 +2629,29 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
         }
     }
 
+#ifdef ENABLE_CRYPTO
+    if (IS_CMDARG_SET(nDPId_options.server_ca_pem_file) != 0)
+    {
+        if (ncrypt_handshake_done(&workflow->ncrypt_entity) == 0)
+        {
+            set_collector_block(reader_thread);
+            int rv = ncrypt_on_connect(&ncrypt_ctx, reader_thread->collector_sockfd, &workflow->ncrypt_entity);
+            if (rv != NCRYPT_SUCCESS)
+            {
+                logger(1,
+                       "[%8llu, %zu] TLS handshake failed with: %d",
+                       workflow->packets_captured,
+                       reader_thread->array_index,
+                       rv);
+                reader_thread->collector_sock_last_errno = EPIPE;
+                return;
+            }
+            ncrypt_set_handshake(&workflow->ncrypt_entity);
+            set_collector_nonblock(reader_thread);
+        }
+    }
+#endif
+
     errno = 0;
     ssize_t written;
     if (reader_thread->collector_sock_last_errno == 0 &&
@@ -6027,10 +6050,12 @@ static int validate_options(void)
          IS_CMDARG_SET(nDPId_options.client_key_pem_file) == 0) ||
         (IS_CMDARG_SET(nDPId_options.client_crt_pem_file) == 0 &&
          IS_CMDARG_SET(nDPId_options.client_key_pem_file) != 0) ||
-        (IS_CMDARG_SET(nDPId_options.client_crt_pem_file) != 0 &&
-         IS_CMDARG_SET(nDPId_options.server_ca_pem_file) == 0))
+        (IS_CMDARG_SET(nDPId_options.client_crt_pem_file) != 0 && IS_CMDARG_SET(nDPId_options.server_ca_pem_file) == 0))
     {
-        logger_early(1, "%s", "Encryption requires a client certificate, key and a server CA file to be set. See `-k', `-K' and `-F'.");
+        logger_early(1,
+                     "%s",
+                     "Encryption requires a client certificate, key and a server CA file to be set. See `-k', `-K' and "
+                     "`-F'.");
         retval = 1;
     }
 #endif
@@ -6129,7 +6154,7 @@ int main(int argc, char ** argv)
     init_logging("nDPId");
 #ifdef ENABLE_CRYPTO
     ncrypt_init();
-    ncrypt_ctx_init(&ncrypt_ctx);
+    ncrypt_ctx(&ncrypt_ctx);
 #endif
 
     if (nDPId_parse_options(argc, argv) != 0)
@@ -6170,7 +6195,8 @@ int main(int argc, char ** argv)
 
 #ifdef ENABLE_CRYPTO
     if (IS_CMDARG_SET(nDPId_options.server_ca_pem_file) != 0 &&
-        ncrypt_init_client(&ncrypt_ctx, GET_CMDARG_STR(nDPId_options.server_ca_pem_file),
+        ncrypt_init_client(&ncrypt_ctx,
+                           GET_CMDARG_STR(nDPId_options.server_ca_pem_file),
                            GET_CMDARG_STR(nDPId_options.client_key_pem_file),
                            GET_CMDARG_STR(nDPId_options.client_crt_pem_file)) != NCRYPT_SUCCESS)
     {
@@ -6244,6 +6270,10 @@ int main(int argc, char ** argv)
     daemonize_shutdown(GET_CMDARG_STR(nDPId_options.pidfile));
     logger(0, "%s", "Bye.");
     shutdown_logging();
+
+#ifdef ENABLE_CRYPTO
+    ncrypt_free_ctx(&ncrypt_ctx);
+#endif
 
     return 0;
 }
