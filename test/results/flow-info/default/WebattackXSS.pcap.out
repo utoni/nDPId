@@ -75,7 +75,7 @@
               new: [....42] [ip4][..tcp] [.....172.16.0.1][52924] -> [..192.168.10.50][...80]
               new: [....43] [ip4][..tcp] [.....172.16.0.1][52938] -> [..192.168.10.50][...80]
          detected: [....41] [ip4][..tcp] [.....172.16.0.1][52910] -> [..192.168.10.50][...80] [HTTP][Unknown][Web][Acceptable][205.174.165.68]
-                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp Header
+                   RISK: XSS Attack, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp Header
               new: [....44] [ip4][..tcp] [.....172.16.0.1][52964] -> [..192.168.10.50][...80]
               new: [....45] [ip4][..tcp] [.....172.16.0.1][52978] -> [..192.168.10.50][...80]
               new: [....46] [ip4][..tcp] [.....172.16.0.1][53004] -> [..192.168.10.50][...80]
@@ -254,7 +254,7 @@
               new: [...115] [ip4][..tcp] [.....172.16.0.1][54282] -> [..192.168.10.50][...80]
               new: [...116] [ip4][..tcp] [.....172.16.0.1][54296] -> [..192.168.10.50][...80]
          detected: [...114] [ip4][..tcp] [.....172.16.0.1][54268] -> [..192.168.10.50][...80] [HTTP][Unknown][Web][Acceptable][205.174.165.68]
-                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp Header
+                   RISK: XSS Attack, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp Header
               new: [...117] [ip4][..tcp] [.....172.16.0.1][54322] -> [..192.168.10.50][...80]
               new: [...118] [ip4][..tcp] [.....172.16.0.1][54336] -> [..192.168.10.50][...80]
           guessed: [....43] [ip4][..tcp] [.....172.16.0.1][52938] -> [..192.168.10.50][...80] [HTTP][Unknown][Web][Acceptable][]
@@ -502,7 +502,7 @@
               end: [...116] [ip4][..tcp] [.....172.16.0.1][54296] -> [..192.168.10.50][...80]
               new: [...192] [ip4][..tcp] [.....172.16.0.1][55672] -> [..192.168.10.50][...80]
          detected: [...190] [ip4][..tcp] [.....172.16.0.1][55632] -> [..192.168.10.50][...80] [HTTP][Unknown][Web][Acceptable][205.174.165.68]
-                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp Header
+                   RISK: XSS Attack, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp Header
               new: [...193] [ip4][..tcp] [.....172.16.0.1][55686] -> [..192.168.10.50][...80]
               new: [...194] [ip4][..tcp] [.....172.16.0.1][55700] -> [..192.168.10.50][...80]
               new: [...195] [ip4][..tcp] [.....172.16.0.1][55726] -> [..192.168.10.50][...80]
@@ -746,7 +746,7 @@
               new: [...267] [ip4][..tcp] [.....172.16.0.1][57022] -> [..192.168.10.50][...80]
               new: [...268] [ip4][..tcp] [.....172.16.0.1][57036] -> [..192.168.10.50][...80]
          detected: [...265] [ip4][..tcp] [.....172.16.0.1][56994] -> [..192.168.10.50][...80] [HTTP][Unknown][Web][Acceptable][205.174.165.68]
-                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp Header
+                   RISK: XSS Attack, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp Header
               end: [...152] [ip4][..tcp] [.....172.16.0.1][54956] -> [..192.168.10.50][...80] [HTTP][Unknown][Web][Acceptable][205.174.165.68]
                    RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp Header
           guessed: [...189] [ip4][..tcp] [.....172.16.0.1][55618] -> [..192.168.10.50][...80] [HTTP][Unknown][Web][Acceptable][]
@@ -1004,7 +1004,7 @@
               new: [...343] [ip4][..tcp] [.....172.16.0.1][58386] -> [..192.168.10.50][...80]
               new: [...344] [ip4][..tcp] [.....172.16.0.1][58400] -> [..192.168.10.50][...80]
          detected: [...342] [ip4][..tcp] [.....172.16.0.1][58360] -> [..192.168.10.50][...80] [HTTP][Unknown][Web][Acceptable][205.174.165.68]
-                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp Header
+                   RISK: XSS Attack, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp Header
               new: [...345] [ip4][..tcp] [.....172.16.0.1][58414] -> [..192.168.10.50][...80]
               new: [...346] [ip4][..tcp] [.....172.16.0.1][58440] -> [..192.168.10.50][...80]
               new: [...347] [ip4][..tcp] [.....172.16.0.1][58454] -> [..192.168.10.50][...80]
@@ -1263,7 +1263,7 @@
               end: [...345] [ip4][..tcp] [.....172.16.0.1][58414] -> [..192.168.10.50][...80]
               new: [...421] [ip4][..tcp] [.....172.16.0.1][59772] -> [..192.168.10.50][...80]
          detected: [...419] [ip4][..tcp] [.....172.16.0.1][59732] -> [..192.168.10.50][...80] [HTTP][Unknown][Web][Acceptable][205.174.165.68]
-                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp Header
+                   RISK: XSS Attack, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp Header
               new: [...422] [ip4][..tcp] [.....172.16.0.1][59786] -> [..192.168.10.50][...80]
               new: [...423] [ip4][..tcp] [.....172.16.0.1][59812] -> [..192.168.10.50][...80]
               new: [...424] [ip4][..tcp] [.....172.16.0.1][59826] -> [..192.168.10.50][...80]
@@ -1511,7 +1511,7 @@
               new: [...496] [ip4][..tcp] [.....172.16.0.1][32932] -> [..192.168.10.50][...80]
               new: [...497] [ip4][..tcp] [.....172.16.0.1][32946] -> [..192.168.10.50][...80]
          detected: [...495] [ip4][..tcp] [.....172.16.0.1][32906] -> [..192.168.10.50][...80] [HTTP][Unknown][Web][Acceptable][205.174.165.68]
-                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp Header
+                   RISK: XSS Attack, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp Header
               new: [...498] [ip4][..tcp] [.....172.16.0.1][32960] -> [..192.168.10.50][...80]
           guessed: [...420] [ip4][..tcp] [.....172.16.0.1][59758] -> [..192.168.10.50][...80] [HTTP][Unknown][Web][Acceptable][]
               end: [...420] [ip4][..tcp] [.....172.16.0.1][59758] -> [..192.168.10.50][...80]
@@ -1764,7 +1764,7 @@
               new: [...569] [ip4][..tcp] [.....172.16.0.1][34278] -> [..192.168.10.50][...80]
               new: [...570] [ip4][..tcp] [.....172.16.0.1][34292] -> [..192.168.10.50][...80]
          detected: [...569] [ip4][..tcp] [.....172.16.0.1][34278] -> [..192.168.10.50][...80] [HTTP][Unknown][Web][Acceptable][205.174.165.68]
-                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp Header
+                   RISK: XSS Attack, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp Header
               new: [...571] [ip4][..tcp] [.....172.16.0.1][34318] -> [..192.168.10.50][...80]
               new: [...572] [ip4][..tcp] [.....172.16.0.1][34332] -> [..192.168.10.50][...80]
               new: [...573] [ip4][..tcp] [.....172.16.0.1][34346] -> [..192.168.10.50][...80]
@@ -2016,7 +2016,7 @@
               end: [...573] [ip4][..tcp] [.....172.16.0.1][34346] -> [..192.168.10.50][...80]
               new: [...646] [ip4][..tcp] [.....172.16.0.1][35668] -> [..192.168.10.50][...80]
          detected: [...643] [ip4][..tcp] [.....172.16.0.1][35626] -> [..192.168.10.50][...80] [HTTP][Unknown][Web][Acceptable][205.174.165.68]
-                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp Header
+                   RISK: XSS Attack, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp Header
               new: [...647] [ip4][..tcp] [.....172.16.0.1][35682] -> [..192.168.10.50][...80]
               new: [...648] [ip4][..tcp] [.....172.16.0.1][35696] -> [..192.168.10.50][...80]
               new: [...649] [ip4][..tcp] [.....172.16.0.1][35722] -> [..192.168.10.50][...80]

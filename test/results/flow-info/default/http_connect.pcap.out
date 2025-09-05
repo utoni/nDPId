@@ -1,16 +1,23 @@
      DAEMON-EVENT: init
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1] [ip4][..tcp] [..192.168.1.103][.1714] -> [..192.168.1.146][.8080]
-         detected: [.....1] [ip4][..tcp] [..192.168.1.103][.1714] -> [..192.168.1.146][.8080] [HTTP_Connect][Unknown][Web][Acceptable][apache.org]
+              new: [.....1][1606] [ip4][..tcp] [...10.10.109.10][.3128] -> [...10.100.3.133][50474]
+         detected: [.....1][1606] [ip4][..tcp] [...10.10.109.10][.3128] -> [...10.100.3.133][50474] [HTTP][Unknown][Web][Acceptable][]
+                   RISK: Known Proto on Non Std Port, HTTP Susp User-Agent, Susp Entropy, Error Code
+ detection-update: [.....1][1606] [ip4][..tcp] [...10.10.109.10][.3128] -> [...10.100.3.133][50474] [HTTP_Connect.WindowsUpdate][Unknown][SoftwareUpdate][Safe][fe3cr.delivery.mp.microsoft.com]
+                   RISK: Known Proto on Non Std Port, HTTP Susp User-Agent, Susp Entropy
+     DAEMON-EVENT: [Processed: 8 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 1|updates: 0]
+              new: [.....2] [ip4][..tcp] [..192.168.1.103][.1714] -> [..192.168.1.146][.8080]
+         detected: [.....2] [ip4][..tcp] [..192.168.1.103][.1714] -> [..192.168.1.146][.8080] [HTTP_Connect][Unknown][Web][Acceptable][apache.org]
                    RISK: Susp Entropy
-              new: [.....2] [ip4][..udp] [..192.168.1.146][47767] -> [....192.168.1.2][...53]
-         detected: [.....2] [ip4][..udp] [..192.168.1.146][47767] -> [....192.168.1.2][...53] [DNS][Unknown][Network][Acceptable][apache.org]
- detection-update: [.....2] [ip4][..udp] [..192.168.1.146][47767] -> [....192.168.1.2][...53] [DNS][Unknown][Network][Acceptable][apache.org]
-              new: [.....3] [ip4][..tcp] [..192.168.1.146][35968] -> [..151.101.2.132][..443]
-         detected: [.....3] [ip4][..tcp] [..192.168.1.146][35968] -> [..151.101.2.132][..443] [TLS][Unknown][Web][Safe][apache.org]
- detection-update: [.....3] [ip4][..tcp] [..192.168.1.146][35968] -> [..151.101.2.132][..443] [TLS][Unknown][Web][Safe][apache.org]
-          analyse: [.....3] [ip4][..tcp] [..192.168.1.146][35968] -> [..151.101.2.132][..443] [TLS][Unknown][Web][Safe]
+              new: [.....3] [ip4][..udp] [..192.168.1.146][47767] -> [....192.168.1.2][...53]
+         detected: [.....3] [ip4][..udp] [..192.168.1.146][47767] -> [....192.168.1.2][...53] [DNS][Unknown][Network][Acceptable][apache.org]
+ detection-update: [.....3] [ip4][..udp] [..192.168.1.146][47767] -> [....192.168.1.2][...53] [DNS][Unknown][Network][Acceptable][apache.org]
+              new: [.....4] [ip4][..tcp] [..192.168.1.146][35968] -> [..151.101.2.132][..443]
+         detected: [.....4] [ip4][..tcp] [..192.168.1.146][35968] -> [..151.101.2.132][..443] [TLS][Unknown][Web][Safe][apache.org]
+ detection-update: [.....4] [ip4][..tcp] [..192.168.1.146][35968] -> [..151.101.2.132][..443] [TLS][Unknown][Web][Safe][apache.org]
+          analyse: [.....4] [ip4][..tcp] [..192.168.1.146][35968] -> [..151.101.2.132][..443] [TLS][Unknown][Web][Safe]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.016|     0.003|     0.005|           23.691|    3.400]
                    [PKTLEN......:     52.000|  1436.000|   549.000|   627.700|       394029.600|    4.000]
@@ -20,7 +27,7 @@
                    [IATS(ms)....: 8.8,8.9,2.8,11.3,7.5,16.0,0.1,0.1,0.0,0.0,0.0,0.0,7.3,0.5,15.0,0.0,4.0,11.3,0.7,0.7,0.0,0.0,0.0,0.0,0.0,0.0,0.1,0.1,0.0,0.0,0.1]
                    [PKTLENS.....: 60,60,52,569,52,1436,52,1436,52,1436,52,971,52,116,541,52,52,111,52,1436,52,1436,52,1436,52,1436,52,1436,52,1436,52,1436]
                    [ENTROPIES...: 4.7,5.1,5.1,5.3,5.1,7.8,5.1,7.9,5.1,7.9,5.1,7.8,5.1,6.1,7.6,5.0,5.0,6.1,5.1,7.9,5.1,7.9,5.1,7.9,5.1,7.9,5.1,7.9,5.0,7.9,5.1,7.9]
-          analyse: [.....1] [ip4][..tcp] [..192.168.1.103][.1714] -> [..192.168.1.146][.8080] [HTTP_Connect][Unknown][Web][Acceptable][apache.org]
+          analyse: [.....2] [ip4][..tcp] [..192.168.1.103][.1714] -> [..192.168.1.146][.8080] [HTTP_Connect][Unknown][Web][Acceptable][apache.org]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.053|     0.007|     0.013|          164.772|    3.400]
                    [PKTLEN......:     40.000|  5576.000|   799.000|  1594.600|      2542806.000|    3.200]
@@ -30,8 +37,10 @@
                    [IATS(ms)....: 0.0,2.7,0.4,3.1,9.6,12.4,2.7,16.2,17.3,6.1,7.2,0.5,0.5,0.0,0.0,11.4,0.7,0.1,0.2,12.6,0.0,0.2,0.0,0.1,0.1,0.7,4.0,50.2,53.4,1.2,1.2]
                    [PKTLENS.....: 52,52,46,243,40,116,557,40,5111,46,104,40,210,40,359,40,99,5576,2808,1424,71,46,40,46,5576,1424,949,46,173,40,115,40]
                    [ENTROPIES...: 4.4,4.8,4.5,5.7,4.6,5.7,5.2,4.6,8.0,4.5,6.1,4.7,7.0,4.7,7.4,4.6,6.0,8.0,7.9,7.9,5.6,4.4,4.6,4.5,8.0,7.9,7.8,4.5,6.7,4.7,6.3,4.7]
-             idle: [.....2] [ip4][..udp] [..192.168.1.146][47767] -> [....192.168.1.2][...53] [DNS][Unknown][Network][Acceptable][apache.org]
-             idle: [.....3] [ip4][..tcp] [..192.168.1.146][35968] -> [..151.101.2.132][..443] [TLS][Unknown][Web][Safe][apache.org]
-             idle: [.....1] [ip4][..tcp] [..192.168.1.103][.1714] -> [..192.168.1.146][.8080] [HTTP_Connect][Unknown][Web][Acceptable][apache.org]
+             idle: [.....3] [ip4][..udp] [..192.168.1.146][47767] -> [....192.168.1.2][...53] [DNS][Unknown][Network][Acceptable][apache.org]
+             idle: [.....4] [ip4][..tcp] [..192.168.1.146][35968] -> [..151.101.2.132][..443] [TLS][Unknown][Web][Safe][apache.org]
+              end: [.....1][1606] [ip4][..tcp] [...10.10.109.10][.3128] -> [...10.100.3.133][50474] [HTTP_Connect.WindowsUpdate][Unknown][SoftwareUpdate][Safe]
+                   RISK: Known Proto on Non Std Port, HTTP Susp User-Agent, Susp Entropy
+             idle: [.....2] [ip4][..tcp] [..192.168.1.103][.1714] -> [..192.168.1.146][.8080] [HTTP_Connect][Unknown][Web][Acceptable][apache.org]
                    RISK: Susp Entropy
      DAEMON-EVENT: shutdown

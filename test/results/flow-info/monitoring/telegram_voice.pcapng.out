@@ -10,13 +10,10 @@
  detection-update: [.....3] [ip4][..udp] [..192.168.12.67][44574] -> [...192.168.12.1][...53] [DNS][Unknown][Network][Acceptable][crashlyticsreports-pa.googleapis.com]
               new: [.....4] [ip4][..udp] [..192.168.12.67][44405] -> [...91.108.17.41][.1400]
          detected: [.....4] [ip4][..udp] [..192.168.12.67][44405] -> [...91.108.17.41][.1400] [STUN][Telegram][Network][Acceptable][]
-                   RISK: Known Proto on Non Std Port
               new: [.....5] [ip4][..udp] [..192.168.12.67][46013] -> [...91.108.13.52][.1400]
          detected: [.....5] [ip4][..udp] [..192.168.12.67][46013] -> [...91.108.13.52][.1400] [STUN][Telegram][Network][Acceptable][]
-                   RISK: Known Proto on Non Std Port
               new: [.....6] [ip4][..udp] [..192.168.12.67][42567] -> [....91.108.9.34][.1400]
          detected: [.....6] [ip4][..udp] [..192.168.12.67][42567] -> [....91.108.9.34][.1400] [STUN][Telegram][Network][Acceptable][]
-                   RISK: Known Proto on Non Std Port
               new: [.....7] [ip4][..udp] [..192.168.12.67][39027] -> [...91.108.13.51][..597]
          detected: [.....7] [ip4][..udp] [..192.168.12.67][39027] -> [...91.108.13.51][..597] [Telegram][Telegram][Chat][Acceptable]
               new: [.....8] [ip4][..udp] [..192.168.12.67][46868] -> [....91.108.17.7][..597]
@@ -24,7 +21,6 @@
               new: [.....9] [ip4][..udp] [..192.168.12.67][41011] -> [....91.108.9.68][..596]
          detected: [.....9] [ip4][..udp] [..192.168.12.67][41011] -> [....91.108.9.68][..596] [Telegram][Telegram][Chat][Acceptable]
  detection-update: [.....6] [ip4][..udp] [..192.168.12.67][42567] -> [....91.108.9.34][.1400] [STUN.TelegramVoip][Telegram][VoIP][Acceptable][telegram.org]
-                   RISK: Known Proto on Non Std Port
  detection-update: [.....9] [ip4][..udp] [..192.168.12.67][41011] -> [....91.108.9.68][..596] [STUN.TelegramVoip][Telegram][VoIP][Acceptable][]
  detection-update: [.....7] [ip4][..udp] [..192.168.12.67][39027] -> [...91.108.13.51][..597] [STUN.TelegramVoip][Telegram][VoIP][Acceptable][]
           analyse: [.....9] [ip4][..udp] [..192.168.12.67][41011] -> [....91.108.9.68][..596] [STUN.TelegramVoip][Telegram][VoIP][Acceptable]
@@ -48,9 +44,7 @@
                    [PKTLENS.....: 56,120,152,120,156,160,88,160,144,160,144,176,128,164,148,144,176,128,88,121,113,97,237,97,168,167,167,167,70,202,82,82]
                    [ENTROPIES...: 5.0,5.7,5.7,5.9,5.7,5.7,5.8,5.6,5.9,5.7,6.0,5.8,5.8,5.7,6.0,6.0,5.8,5.8,5.9,5.9,5.7,5.5,6.9,5.4,6.7,6.6,6.7,6.7,5.5,6.9,5.7,5.9]
  detection-update: [.....4] [ip4][..udp] [..192.168.12.67][44405] -> [...91.108.17.41][.1400] [STUN.TelegramVoip][Telegram][VoIP][Acceptable][telegram.org]
-                   RISK: Known Proto on Non Std Port
  detection-update: [.....5] [ip4][..udp] [..192.168.12.67][46013] -> [...91.108.13.52][.1400] [STUN.TelegramVoip][Telegram][VoIP][Acceptable][telegram.org]
-                   RISK: Known Proto on Non Std Port
               new: [....10] [ip4][.icmp] [..192.168.12.67] -> [....91.108.9.34]
          detected: [....10] [ip4][.icmp] [..192.168.12.67] -> [....91.108.9.34] [ICMP][Telegram][Network][Acceptable]
                    RISK: Susp Entropy
@@ -60,11 +54,8 @@
              idle: [.....7] [ip4][..udp] [..192.168.12.67][39027] -> [...91.108.13.51][..597] [STUN.TelegramVoip][Telegram][VoIP][Acceptable]
              idle: [.....9] [ip4][..udp] [..192.168.12.67][41011] -> [....91.108.9.68][..596] [STUN.TelegramVoip][Telegram][VoIP][Acceptable]
              idle: [.....6] [ip4][..udp] [..192.168.12.67][42567] -> [....91.108.9.34][.1400] [STUN.TelegramVoip][Telegram][VoIP][Acceptable][telegram.org]
-                   RISK: Known Proto on Non Std Port
              idle: [.....4] [ip4][..udp] [..192.168.12.67][44405] -> [...91.108.17.41][.1400] [STUN.TelegramVoip][Telegram][VoIP][Acceptable][telegram.org]
-                   RISK: Known Proto on Non Std Port
              idle: [.....5] [ip4][..udp] [..192.168.12.67][46013] -> [...91.108.13.52][.1400] [STUN.TelegramVoip][Telegram][VoIP][Acceptable][telegram.org]
-                   RISK: Known Proto on Non Std Port
              idle: [.....8] [ip4][..udp] [..192.168.12.67][46868] -> [....91.108.17.7][..597] [Telegram][Telegram][Chat][Acceptable]
              idle: [.....1] [ip4][..udp] [...192.168.12.1][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable]
              idle: [.....3] [ip4][..udp] [..192.168.12.67][44574] -> [...192.168.12.1][...53] [DNS][Unknown][Network][Acceptable][crashlyticsreports-pa.googleapis.com]

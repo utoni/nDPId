@@ -3,7 +3,6 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [.192.168.12.156][37967] -> [..142.250.82.76][19305]
          detected: [.....1] [ip4][..udp] [.192.168.12.156][37967] -> [..142.250.82.76][19305] [STUN.GoogleCall][Google][VoIP][Acceptable][]
-                   RISK: Known Proto on Non Std Port
  detection-update: [.....1] [ip4][..udp] [.192.168.12.156][37967] -> [..142.250.82.76][19305] [DTLS.GoogleCall][Google][VoIP][Acceptable]
  detection-update: [.....1] [ip4][..udp] [.192.168.12.156][37967] -> [..142.250.82.76][19305] [DTLS.GoogleCall][Google][VoIP][Acceptable]
           analyse: [.....1] [ip4][..udp] [.192.168.12.156][37967] -> [..142.250.82.76][19305] [DTLS.GoogleCall][Google][VoIP][Acceptable]

@@ -3,9 +3,8 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [..52.115.136.55][.3479] -> [.......10.0.0.1][50006]
          detected: [.....1] [ip4][..udp] [..52.115.136.55][.3479] -> [.......10.0.0.1][50006] [STUN.TeamsCall][Azure][VoIP][Acceptable][]
-                   RISK: Known Proto on Non Std Port
  detection-update: [.....1] [ip4][..udp] [..52.115.136.55][.3479] -> [.......10.0.0.1][50006] [STUN.TeamsCall][Azure][VoIP][Acceptable][]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Unidirectional Traffic
              idle: [.....1] [ip4][..udp] [..52.115.136.55][.3479] -> [.......10.0.0.1][50006] [STUN.TeamsCall][Azure][VoIP][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

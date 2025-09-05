@@ -1,0 +1,13 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [...192.168.1.15][49797] -> [..67.210.208.31][13008]
+         detected: [.....1] [ip4][..tcp] [...192.168.1.15][49797] -> [..67.210.208.31][13008] [Crossfire][Unknown][RPC][Fun]
+              new: [.....2] [ip4][..udp] [...192.168.1.15][58790] -> [..67.210.208.40][14037]
+         detected: [.....2] [ip4][..udp] [...192.168.1.15][58790] -> [..67.210.208.40][14037] [Crossfire][Unknown][RPC][Fun]
+              new: [.....3] [ip4][..udp] [...192.168.1.15][51836] -> [..67.210.208.38][12007]
+         detected: [.....3] [ip4][..udp] [...192.168.1.15][51836] -> [..67.210.208.38][12007] [Crossfire][Unknown][RPC][Fun]
+             idle: [.....2] [ip4][..udp] [...192.168.1.15][58790] -> [..67.210.208.40][14037] [Crossfire][Unknown][RPC][Fun]
+              end: [.....1] [ip4][..tcp] [...192.168.1.15][49797] -> [..67.210.208.31][13008] [Crossfire][Unknown][RPC][Fun]
+             idle: [.....3] [ip4][..udp] [...192.168.1.15][51836] -> [..67.210.208.38][12007] [Crossfire][Unknown][RPC][Fun]
+     DAEMON-EVENT: shutdown

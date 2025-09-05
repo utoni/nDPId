@@ -5,26 +5,26 @@
          detected: [.....1] [ip4][..udp] [..192.168.0.123][55566] -> [...192.168.0.16][...53] [DNS][Unknown][Network][Acceptable][checkappexec.microsoft.com]
  detection-update: [.....1] [ip4][..udp] [..192.168.0.123][55566] -> [...192.168.0.16][...53] [DNS][Unknown][Network][Acceptable][checkappexec.microsoft.com]
               new: [.....2] [ip4][..tcp] [..192.168.0.123][64613] -> [172.211.159.152][..443]
-         detected: [.....2] [ip4][..tcp] [..192.168.0.123][64613] -> [172.211.159.152][..443] [TLS.Microsoft][Azure][Web][Safe][checkappexec.microsoft.com]
- detection-update: [.....2] [ip4][..tcp] [..192.168.0.123][64613] -> [172.211.159.152][..443] [TLS.Microsoft][Azure][Web][Safe][checkappexec.microsoft.com]
- detection-update: [.....2] [ip4][..tcp] [..192.168.0.123][64613] -> [172.211.159.152][..443] [TLS.Microsoft][Azure][Web][Safe][checkappexec.microsoft.com]
+         detected: [.....2] [ip4][..tcp] [..192.168.0.123][64613] -> [172.211.159.152][..443] [TLS.Microsoft][Azure][Web][Acceptable][checkappexec.microsoft.com]
+ detection-update: [.....2] [ip4][..tcp] [..192.168.0.123][64613] -> [172.211.159.152][..443] [TLS.Microsoft][Azure][Web][Acceptable][checkappexec.microsoft.com]
+ detection-update: [.....2] [ip4][..tcp] [..192.168.0.123][64613] -> [172.211.159.152][..443] [TLS.Microsoft][Azure][Web][Acceptable][checkappexec.microsoft.com]
               new: [.....3] [ip4][..tcp] [..192.168.0.123][64621] -> [....86.3.18.251][..443]
               new: [.....4] [ip4][..tcp] [..192.168.0.123][64622] -> [.178.17.170.254][..443]
-         detected: [.....4] [ip4][..tcp] [..192.168.0.123][64622] -> [.178.17.170.254][..443] [TLS.Tor][Tor][VPN][Potentially Dangerous][www.v2trefdg62xsck3upw2iad5y.com]
+         detected: [.....4] [ip4][..tcp] [..192.168.0.123][64622] -> [.178.17.170.254][..443] [TLS.Tor][Tor][VPN][Potentially_Dangerous][www.v2trefdg62xsck3upw2iad5y.com]
                    RISK: TLS (probably) Not Carrying HTTPS, Susp DGA Domain name, Unsafe Protocol
               new: [.....5] [ip4][.icmp] [...192.168.0.16] -> [..192.168.0.123]
          detected: [.....5] [ip4][.icmp] [...192.168.0.16] -> [..192.168.0.123] [ICMP][Unknown][Network][Acceptable]
                    RISK: Susp Entropy
-         detected: [.....3] [ip4][..tcp] [..192.168.0.123][64621] -> [....86.3.18.251][..443] [TLS.Tor][Tor][VPN][Potentially Dangerous][www.w2f34byk6sroic.com]
+         detected: [.....3] [ip4][..tcp] [..192.168.0.123][64621] -> [....86.3.18.251][..443] [TLS.Tor][Tor][VPN][Potentially_Dangerous][www.w2f34byk6sroic.com]
                    RISK: TLS (probably) Not Carrying HTTPS, Susp DGA Domain name, Unsafe Protocol
               new: [.....6] [ip4][..tcp] [..192.168.0.123][64282] -> [.155.133.248.43][..443] [MIDSTREAM]
          detected: [.....6] [ip4][..tcp] [..192.168.0.123][64282] -> [.155.133.248.43][..443] [TLS][Steam][Web][Safe]
               new: [.....7] [ip4][..tcp] [..192.168.0.123][64623] -> [....86.3.18.251][..443]
-         detected: [.....7] [ip4][..tcp] [..192.168.0.123][64623] -> [....86.3.18.251][..443] [TLS.Tor][Tor][VPN][Potentially Dangerous][www.sodinn6.com]
+         detected: [.....7] [ip4][..tcp] [..192.168.0.123][64623] -> [....86.3.18.251][..443] [TLS.Tor][Tor][VPN][Potentially_Dangerous][www.sodinn6.com]
                    RISK: TLS (probably) Not Carrying HTTPS, Unsafe Protocol
- detection-update: [.....7] [ip4][..tcp] [..192.168.0.123][64623] -> [....86.3.18.251][..443] [TLS.Tor][Tor][VPN][Potentially Dangerous][www.sodinn6.com]
+ detection-update: [.....7] [ip4][..tcp] [..192.168.0.123][64623] -> [....86.3.18.251][..443] [TLS.Tor][Tor][VPN][Potentially_Dangerous][www.sodinn6.com]
                    RISK: TLS (probably) Not Carrying HTTPS, Unsafe Protocol
-          analyse: [.....7] [ip4][..tcp] [..192.168.0.123][64623] -> [....86.3.18.251][..443] [TLS.Tor][Tor][VPN][Potentially Dangerous]
+          analyse: [.....7] [ip4][..tcp] [..192.168.0.123][64623] -> [....86.3.18.251][..443] [TLS.Tor][Tor][VPN][Potentially_Dangerous]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........:      0.000|     0.184|     0.085|     0.047|         2172.756|    4.600]
                    [PKTLEN......:     40.000|  2118.000|   563.500|   530.800|       281728.400|    4.400]
@@ -35,14 +35,14 @@
                    [PKTLENS.....: 52,52,40,557,46,1213,120,119,73,119,1400,40,742,2118,46,1400,244,40,1604,46,576,576,1112,1090,576,576,576,576,576,576,576,576]
                    [ENTROPIES...: 4.4,4.7,4.6,4.6,4.4,7.8,6.2,6.4,5.5,6.4,7.9,4.6,7.7,7.9,4.5,7.8,7.1,4.6,7.9,4.5,7.7,7.6,7.8,7.8,7.6,7.6,7.6,7.6,7.6,7.6,7.6,7.6]
               new: [.....8] [ip4][..tcp] [..192.168.0.123][64624] -> [.178.17.170.254][..443]
-         detected: [.....8] [ip4][..tcp] [..192.168.0.123][64624] -> [.178.17.170.254][..443] [TLS.Tor][Tor][VPN][Potentially Dangerous][www.2xik.com]
+         detected: [.....8] [ip4][..tcp] [..192.168.0.123][64624] -> [.178.17.170.254][..443] [TLS.Tor][Tor][VPN][Potentially_Dangerous][www.2xik.com]
                    RISK: TLS (probably) Not Carrying HTTPS, Unsafe Protocol
- detection-update: [.....8] [ip4][..tcp] [..192.168.0.123][64624] -> [.178.17.170.254][..443] [TLS.Tor][Tor][VPN][Potentially Dangerous][www.2xik.com]
+ detection-update: [.....8] [ip4][..tcp] [..192.168.0.123][64624] -> [.178.17.170.254][..443] [TLS.Tor][Tor][VPN][Potentially_Dangerous][www.2xik.com]
                    RISK: TLS (probably) Not Carrying HTTPS, Unsafe Protocol
               new: [.....9] [ip4][..tcp] [..192.168.0.123][64625] -> [.194.164.197.45][..443]
-         detected: [.....9] [ip4][..tcp] [..192.168.0.123][64625] -> [.194.164.197.45][..443] [TLS.Tor][Tor][VPN][Potentially Dangerous][www.raww4onzy3tam7cip372snd.com]
+         detected: [.....9] [ip4][..tcp] [..192.168.0.123][64625] -> [.194.164.197.45][..443] [TLS.Tor][Tor][VPN][Potentially_Dangerous][www.raww4onzy3tam7cip372snd.com]
                    RISK: TLS (probably) Not Carrying HTTPS, Susp DGA Domain name, Unsafe Protocol
-          analyse: [.....8] [ip4][..tcp] [..192.168.0.123][64624] -> [.178.17.170.254][..443] [TLS.Tor][Tor][VPN][Potentially Dangerous]
+          analyse: [.....8] [ip4][..tcp] [..192.168.0.123][64624] -> [.178.17.170.254][..443] [TLS.Tor][Tor][VPN][Potentially_Dangerous]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........:      0.000|     0.102|     0.057|     0.029|          830.465|    4.700]
                    [PKTLEN......:     40.000|  2118.000|   595.800|   546.500|       298628.700|    4.400]
@@ -52,19 +52,19 @@
                    [IATS(ms)....: 60.6,60.7,0.3,60.9,10.9,72.3,62.0,61.2,60.4,0.5,64.6,64.0,61.4,86.2,11.0,0.0,96.1,1.4,62.4,39.7,101.6,61.2,61.7,86.7,85.9,85.4,85.4,61.4,61.6,67.3,66.7]
                    [PKTLENS.....: 52,48,40,557,46,1210,120,119,73,119,1400,40,731,2118,46,1400,244,40,1604,46,576,576,1112,1090,576,576,576,576,1112,1090,576,576]
                    [ENTROPIES...: 4.5,4.9,4.6,4.5,4.4,7.8,6.3,6.4,5.6,6.4,7.9,4.5,7.7,7.9,4.4,7.9,7.0,4.7,7.9,4.5,7.6,7.6,7.8,7.8,7.6,7.6,7.6,7.7,7.8,7.8,7.6,7.7]
-              end: [.....3] [ip4][..tcp] [..192.168.0.123][64621] -> [....86.3.18.251][..443] [TLS.Tor][Tor][VPN][Potentially Dangerous]
+              end: [.....3] [ip4][..tcp] [..192.168.0.123][64621] -> [....86.3.18.251][..443] [TLS.Tor][Tor][VPN][Potentially_Dangerous]
                    RISK: TLS (probably) Not Carrying HTTPS, Susp DGA Domain name, Unsafe Protocol
-             idle: [.....7] [ip4][..tcp] [..192.168.0.123][64623] -> [....86.3.18.251][..443] [TLS.Tor][Tor][VPN][Potentially Dangerous][www.sodinn6.com]
+             idle: [.....7] [ip4][..tcp] [..192.168.0.123][64623] -> [....86.3.18.251][..443] [TLS.Tor][Tor][VPN][Potentially_Dangerous][www.sodinn6.com]
                    RISK: TLS (probably) Not Carrying HTTPS, Unsafe Protocol
              idle: [.....1] [ip4][..udp] [..192.168.0.123][55566] -> [...192.168.0.16][...53] [DNS][Unknown][Network][Acceptable][checkappexec.microsoft.com]
              idle: [.....6] [ip4][..tcp] [..192.168.0.123][64282] -> [.155.133.248.43][..443] [TLS][Steam][Web][Safe]
-              end: [.....4] [ip4][..tcp] [..192.168.0.123][64622] -> [.178.17.170.254][..443] [TLS.Tor][Tor][VPN][Potentially Dangerous]
+              end: [.....4] [ip4][..tcp] [..192.168.0.123][64622] -> [.178.17.170.254][..443] [TLS.Tor][Tor][VPN][Potentially_Dangerous]
                    RISK: TLS (probably) Not Carrying HTTPS, Susp DGA Domain name, Unsafe Protocol
-             idle: [.....8] [ip4][..tcp] [..192.168.0.123][64624] -> [.178.17.170.254][..443] [TLS.Tor][Tor][VPN][Potentially Dangerous][www.2xik.com]
+             idle: [.....8] [ip4][..tcp] [..192.168.0.123][64624] -> [.178.17.170.254][..443] [TLS.Tor][Tor][VPN][Potentially_Dangerous][www.2xik.com]
                    RISK: TLS (probably) Not Carrying HTTPS, Unsafe Protocol
-             idle: [.....9] [ip4][..tcp] [..192.168.0.123][64625] -> [.194.164.197.45][..443] [TLS.Tor][Tor][VPN][Potentially Dangerous]
+             idle: [.....9] [ip4][..tcp] [..192.168.0.123][64625] -> [.194.164.197.45][..443] [TLS.Tor][Tor][VPN][Potentially_Dangerous]
                    RISK: TLS (probably) Not Carrying HTTPS, Susp DGA Domain name, Unsafe Protocol
              idle: [.....5] [ip4][.icmp] [...192.168.0.16] -> [..192.168.0.123] [ICMP][Unknown][Network][Acceptable]
                    RISK: Susp Entropy
-             idle: [.....2] [ip4][..tcp] [..192.168.0.123][64613] -> [172.211.159.152][..443] [TLS.Microsoft][Azure][Web][Safe]
+             idle: [.....2] [ip4][..tcp] [..192.168.0.123][64613] -> [172.211.159.152][..443] [TLS.Microsoft][Azure][Web][Acceptable]
      DAEMON-EVENT: shutdown

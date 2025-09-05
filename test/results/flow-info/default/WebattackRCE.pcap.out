@@ -3391,7 +3391,7 @@
              idle: [...499] [ip4][..tcp] [......127.0.0.1][50560] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
                    RISK: Known Proto on Non Std Port, HTTP Susp User-Agent, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [...500] [ip4][..tcp] [......127.0.0.1][50562] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp URL, Possible Exploit Attempt
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, Possible Exploit Attempt
              idle: [...501] [ip4][..tcp] [......127.0.0.1][50564] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [...502] [ip4][..tcp] [......127.0.0.1][50566] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
@@ -3449,9 +3449,9 @@
              idle: [...528] [ip4][..tcp] [......127.0.0.1][50618] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [...529] [ip4][..tcp] [......127.0.0.1][50620] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp URL
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [...530] [ip4][..tcp] [......127.0.0.1][50622] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp URL
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [...531] [ip4][..tcp] [......127.0.0.1][50624] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [...532] [ip4][..tcp] [......127.0.0.1][50626] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
@@ -3847,25 +3847,25 @@
              idle: [...727] [ip4][..tcp] [......127.0.0.1][51016] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [...728] [ip4][..tcp] [......127.0.0.1][51018] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp URL
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [...729] [ip4][..tcp] [......127.0.0.1][51020] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp URL
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [...730] [ip4][..tcp] [......127.0.0.1][51022] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp URL
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [...731] [ip4][..tcp] [......127.0.0.1][51024] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp URL
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [...732] [ip4][..tcp] [......127.0.0.1][51026] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp URL
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [...733] [ip4][..tcp] [......127.0.0.1][51028] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp URL
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [...734] [ip4][..tcp] [......127.0.0.1][51030] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp URL
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [...735] [ip4][..tcp] [......127.0.0.1][51032] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp URL
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [...736] [ip4][..tcp] [......127.0.0.1][51034] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp URL
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [...737] [ip4][..tcp] [......127.0.0.1][51036] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp URL
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [...738] [ip4][..tcp] [......127.0.0.1][51038] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [...739] [ip4][..tcp] [......127.0.0.1][51040] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
@@ -3877,27 +3877,27 @@
              idle: [...742] [ip4][..tcp] [......127.0.0.1][51046] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [...743] [ip4][..tcp] [......127.0.0.1][51048] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp URL
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [...744] [ip4][..tcp] [......127.0.0.1][51050] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp URL
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [...745] [ip4][..tcp] [......127.0.0.1][51052] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp URL
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [...746] [ip4][..tcp] [......127.0.0.1][51054] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp URL
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [...747] [ip4][..tcp] [......127.0.0.1][51056] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp URL
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [...748] [ip4][..tcp] [......127.0.0.1][51058] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp URL
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [...749] [ip4][..tcp] [......127.0.0.1][51060] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp URL
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [...750] [ip4][..tcp] [......127.0.0.1][51062] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp URL
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [...751] [ip4][..tcp] [......127.0.0.1][51064] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp URL
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [...752] [ip4][..tcp] [......127.0.0.1][51066] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp URL
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [...753] [ip4][..tcp] [......127.0.0.1][51068] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, HTTP Susp URL
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [...754] [ip4][..tcp] [......127.0.0.1][51070] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [...755] [ip4][..tcp] [......127.0.0.1][51072] -> [......127.0.0.1][.8080] [HTTP][Unknown][Web][Acceptable]

@@ -32,7 +32,7 @@
               new: [....12] [ip4][..udp] [..192.168.1.254][38605] -> [239.255.255.250][.1900]
          detected: [....12] [ip4][..udp] [..192.168.1.254][38605] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250]
               new: [....13] [ip4][..tcp] [..192.168.1.100][.3506] -> [173.194.113.224][...80]
-         detected: [....13] [ip4][..tcp] [..192.168.1.100][.3506] -> [173.194.113.224][...80] [HTTP.Google][Google][Advertisement][Acceptable][www.google-analytics.com]
+         detected: [....13] [ip4][..tcp] [..192.168.1.100][.3506] -> [173.194.113.224][...80] [HTTP.Google][Google][Advertisement][Tracker_Ads][www.google-analytics.com]
               new: [....14] [ip4][..udp] [..192.168.1.100][60026] -> [..192.168.1.254][...53]
          detected: [....14] [ip4][..udp] [..192.168.1.100][60026] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][llnw.blizzard.com]
  detection-update: [....14] [ip4][..udp] [..192.168.1.100][60026] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][llnw.blizzard.com]
@@ -212,7 +212,7 @@
              idle: [....35] [ip4][..udp] [..192.168.1.100][53146] -> [..62.115.246.51][.1119]
           guessed: [.....8] [ip4][..tcp] [..192.168.1.100][.3052] -> [.216.58.212.110][..443] [TLS][Google][Web][Safe]
              idle: [.....8] [ip4][..tcp] [..192.168.1.100][.3052] -> [.216.58.212.110][..443]
-              end: [....13] [ip4][..tcp] [..192.168.1.100][.3506] -> [173.194.113.224][...80] [HTTP.Google][Google][Advertisement][Acceptable][www.google-analytics.com]
+              end: [....13] [ip4][..tcp] [..192.168.1.100][.3506] -> [173.194.113.224][...80] [HTTP.Google][Google][Advertisement][Tracker_Ads][www.google-analytics.com]
           guessed: [....26] [ip4][..tcp] [..192.168.1.100][.3484] -> [173.194.113.224][..443] [TLS][Google][Web][Safe]
               end: [....26] [ip4][..tcp] [..192.168.1.100][.3484] -> [173.194.113.224][..443]
      DAEMON-EVENT: shutdown

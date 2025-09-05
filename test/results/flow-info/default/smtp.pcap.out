@@ -3,6 +3,7 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [..194.7.248.153][.2127] -> [.172.16.114.207][...25]
          detected: [.....1] [ip4][..tcp] [..194.7.248.153][.2127] -> [.172.16.114.207][...25] [SMTP][Unknown][Email][Acceptable][pigeon.eyrie.af.mil]
+                   RISK: Malicious Fingerprint
           analyse: [.....1] [ip4][..tcp] [..194.7.248.153][.2127] -> [.172.16.114.207][...25] [SMTP][Unknown][Email][Acceptable][pigeon.eyrie.af.mil]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.055|     0.006|     0.012|          143.094|    3.200]
@@ -14,4 +15,5 @@
                    [PKTLENS.....: 46,46,46,124,46,62,46,66,62,84,76,83,79,78,79,78,80,79,79,78,79,78,80,79,78,77,77,76,80,79,78,77]
                    [ENTROPIES...: 4.2,5.0,4.4,5.6,4.4,5.4,4.4,5.4,5.4,5.5,5.5,5.5,5.5,5.6,5.5,5.6,5.6,5.6,5.5,5.6,5.5,5.6,5.5,5.5,5.5,5.5,5.5,5.5,5.5,5.6,5.5,5.5]
               end: [.....1] [ip4][..tcp] [..194.7.248.153][.2127] -> [.172.16.114.207][...25] [SMTP][Unknown][Email][Acceptable][pigeon.eyrie.af.mil]
+                   RISK: Malicious Fingerprint
      DAEMON-EVENT: shutdown

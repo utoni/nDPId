@@ -1,0 +1,8 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1][..77] [ip4][..tcp] [.104.234.115.90][21893] -> [....89.31.73.45][10847]
+     not-detected: [.....1][..77] [ip4][..tcp] [.104.234.115.90][21893] -> [....89.31.73.45][10847] [Unknown][Unknown][Unspecified][Unrated]
+                   RISK: Malicious Fingerprint, Unidirectional Traffic
+             idle: [.....1][..77] [ip4][..tcp] [.104.234.115.90][21893] -> [....89.31.73.45][10847]
+     DAEMON-EVENT: shutdown

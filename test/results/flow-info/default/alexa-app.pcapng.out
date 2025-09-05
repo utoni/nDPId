@@ -54,11 +54,11 @@
          detected: [....17] [ip4][..udp] [..172.16.42.216][19967] -> [....172.16.42.1][...53] [DNS][Unknown][Network][Acceptable][mads.amazon-adsystem.com]
  detection-update: [....17] [ip4][..udp] [..172.16.42.216][19967] -> [....172.16.42.1][...53] [DNS][Unknown][Network][Acceptable][mads.amazon-adsystem.com]
               new: [....18] [ip4][..tcp] [..172.16.42.216][33556] -> [....52.94.232.0][..443]
-         detected: [....18] [ip4][..tcp] [..172.16.42.216][33556] -> [....52.94.232.0][..443] [TLS.ADS_Analytic_Track][AmazonAWS][Advertisement][Tracker/Ads][mads.amazon-adsystem.com]
+         detected: [....18] [ip4][..tcp] [..172.16.42.216][33556] -> [....52.94.232.0][..443] [TLS][AmazonAWS][Advertisement][Tracker_Ads][mads.amazon-adsystem.com]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [....18] [ip4][..tcp] [..172.16.42.216][33556] -> [....52.94.232.0][..443] [TLS.ADS_Analytic_Track][AmazonAWS][Advertisement][Tracker/Ads][mads.amazon-adsystem.com]
+ detection-update: [....18] [ip4][..tcp] [..172.16.42.216][33556] -> [....52.94.232.0][..443] [TLS][AmazonAWS][Advertisement][Tracker_Ads][mads.amazon-adsystem.com]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [....18] [ip4][..tcp] [..172.16.42.216][33556] -> [....52.94.232.0][..443] [TLS.ADS_Analytic_Track][AmazonAWS][Advertisement][Tracker/Ads][mads.amazon-adsystem.com]
+ detection-update: [....18] [ip4][..tcp] [..172.16.42.216][33556] -> [....52.94.232.0][..443] [TLS][AmazonAWS][Advertisement][Tracker_Ads][mads.amazon-adsystem.com]
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [....19] [ip4][..udp] [..172.16.42.216][.7358] -> [....172.16.42.1][...53]
          detected: [....19] [ip4][..udp] [..172.16.42.216][.7358] -> [....172.16.42.1][...53] [DNS][Unknown][Network][Acceptable][firs-ta-g7g.amazon.com]
@@ -1078,7 +1078,7 @@
              idle: [....17] [ip4][..udp] [..172.16.42.216][19967] -> [....172.16.42.1][...53] [DNS][Unknown][Network][Acceptable][mads.amazon-adsystem.com]
              idle: [.....9] [ip4][..udp] [..172.16.42.216][53188] -> [....172.16.42.1][...53] [DNS][Unknown][Network][Acceptable][mtalk.google.com]
              idle: [...108] [ip4][..udp] [..172.16.42.216][20922] -> [....172.16.42.1][...53] [DNS][Unknown][Network][Acceptable][pitangui.amazon.com]
-              end: [....18] [ip4][..tcp] [..172.16.42.216][33556] -> [....52.94.232.0][..443] [TLS.ADS_Analytic_Track][AmazonAWS][Advertisement][Tracker/Ads]
+              end: [....18] [ip4][..tcp] [..172.16.42.216][33556] -> [....52.94.232.0][..443] [TLS][AmazonAWS][Advertisement][Tracker_Ads]
                    RISK: TLS (probably) Not Carrying HTTPS
              idle: [....34] [ip4][..udp] [..172.16.42.216][21391] -> [....172.16.42.1][...53] [DNS][Unknown][Network][Acceptable][mobileanalytics.us-east-1.amazonaws.com]
              idle: [....13] [ip4][..tcp] [..172.16.42.216][35540] -> [..172.217.9.142][...80] [HTTP.Google][Google][ConnCheck][Acceptable][connectivitycheck.android.com]

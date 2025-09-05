@@ -171,6 +171,56 @@ static struct
         uint64_t flow_category_crypto_currency_count;
         uint64_t flow_category_gambling_count;
         uint64_t flow_category_health_count;
+        uint64_t flow_category_ai_count;
+        uint64_t flow_category_finance_count;
+        uint64_t flow_category_news_count;
+        uint64_t flow_category_sport_count;
+        uint64_t flow_category_business_count;
+        uint64_t flow_category_internet_count;
+        uint64_t flow_category_blockchain_count;
+        uint64_t flow_category_blog_count;
+        uint64_t flow_category_gov_count;
+        uint64_t flow_category_edu_count;
+        uint64_t flow_category_cdn_count;
+        uint64_t flow_category_hwsw_count;
+        uint64_t flow_category_dating_count;
+        uint64_t flow_category_travel_count;
+        uint64_t flow_category_food_count;
+        uint64_t flow_category_bots_count;
+        uint64_t flow_category_scanners_count;
+        uint64_t flow_category_hosting_count;
+        uint64_t flow_category_art_count;
+        uint64_t flow_category_fashion_count;
+        uint64_t flow_category_books_count;
+        uint64_t flow_category_science_count;
+        uint64_t flow_category_maps_count;
+        uint64_t flow_category_login_count;
+        uint64_t flow_category_legal_count;
+        uint64_t flow_category_envsrv_count;
+        uint64_t flow_category_culture_count;
+        uint64_t flow_category_housing_count;
+        uint64_t flow_category_telecom_count;
+        uint64_t flow_category_transport_count;
+        uint64_t flow_category_design_count;
+        uint64_t flow_category_employ_count;
+        uint64_t flow_category_events_count;
+        uint64_t flow_category_weather_count;
+        uint64_t flow_category_lifestyle_count;
+        uint64_t flow_category_real_count;
+        uint64_t flow_category_security_count;
+        uint64_t flow_category_env_count;
+        uint64_t flow_category_hobby_count;
+        uint64_t flow_category_comp_count;
+        uint64_t flow_category_const_count;
+        uint64_t flow_category_eng_count;
+        uint64_t flow_category_reli_count;
+        uint64_t flow_category_enter_count;
+        uint64_t flow_category_agri_count;
+        uint64_t flow_category_tech_count;
+        uint64_t flow_category_beauty_count;
+        uint64_t flow_category_history_count;
+        uint64_t flow_category_polit_count;
+        uint64_t flow_category_vehi_count;
         uint64_t flow_category_unknown_count;
 
         uint64_t flow_confidence_by_port;
@@ -221,10 +271,15 @@ struct global_map
     };
 };
 
-#define ANALYSED_STATS_COUNTER_PTR(member) {.global_stat_inc = &(analysed_statistics.counters.member), NULL}
+#define ANALYSED_STATS_COUNTER_PTR(member)                                                                             \
+    {                                                                                                                  \
+        .global_stat_inc = &(analysed_statistics.counters.member), NULL                                                \
+    }
 #define ANALYSED_STATS_GAUGE_PTR(member)                                                                               \
-    {.global_stat_inc = &(analysed_statistics.gauges[0].member),                                                       \
-     .global_stat_dec = &(analysed_statistics.gauges[1].member)}
+    {                                                                                                                  \
+        .global_stat_inc = &(analysed_statistics.gauges[0].member),                                                    \
+        .global_stat_dec = &(analysed_statistics.gauges[1].member)                                                     \
+    }
 #define ANALYSED_STATS_COUNTER_INC(member) (analysed_statistics.counters.member++)
 #define ANALYSED_STATS_GAUGE_RES(member) (analysed_statistics.gauges[0].member--)
 #define ANALYSED_STATS_GAUGE_INC(member) (analysed_statistics.gauges[0].member++)
@@ -277,10 +332,9 @@ static struct global_map const breeds_map[] = {{"Safe", ANALYSED_STATS_GAUGE_PTR
                                                {"Acceptable", ANALYSED_STATS_GAUGE_PTR(flow_breed_acceptable_count)},
                                                {"Fun", ANALYSED_STATS_GAUGE_PTR(flow_breed_fun_count)},
                                                {"Unsafe", ANALYSED_STATS_GAUGE_PTR(flow_breed_unsafe_count)},
-                                               {"Potentially Dangerous",
+                                               {"Potentially_Dangerous",
                                                 ANALYSED_STATS_GAUGE_PTR(flow_breed_potentially_dangerous_count)},
-                                               {"Tracker\\/Ads",
-                                                ANALYSED_STATS_GAUGE_PTR(flow_breed_tracker_ads_count)},
+                                               {"Tracker_Ads", ANALYSED_STATS_GAUGE_PTR(flow_breed_tracker_ads_count)},
                                                {"Dangerous", ANALYSED_STATS_GAUGE_PTR(flow_breed_dangerous_count)},
                                                {"Unrated", ANALYSED_STATS_GAUGE_PTR(flow_breed_unrated_count)},
                                                {NULL, ANALYSED_STATS_GAUGE_PTR(flow_breed_unknown_count)}};
@@ -326,6 +380,56 @@ static struct global_map const categories_map[] = {
     {"Crypto_Currency", ANALYSED_STATS_GAUGE_PTR(flow_category_crypto_currency_count)},
     {"Gambling", ANALYSED_STATS_GAUGE_PTR(flow_category_gambling_count)},
     {"Health", ANALYSED_STATS_GAUGE_PTR(flow_category_health_count)},
+    {"ArtifIntelligence", ANALYSED_STATS_GAUGE_PTR(flow_category_ai_count)},
+    {"Finance", ANALYSED_STATS_GAUGE_PTR(flow_category_finance_count)},
+    {"News", ANALYSED_STATS_GAUGE_PTR(flow_category_news_count)},
+    {"Sport", ANALYSED_STATS_GAUGE_PTR(flow_category_sport_count)},
+    {"Business", ANALYSED_STATS_GAUGE_PTR(flow_category_business_count)},
+    {"Internet", ANALYSED_STATS_GAUGE_PTR(flow_category_internet_count)},
+    {"Blockchain_Crypto", ANALYSED_STATS_GAUGE_PTR(flow_category_blockchain_count)},
+    {"Blog_Forum", ANALYSED_STATS_GAUGE_PTR(flow_category_blog_count)},
+    {"Government", ANALYSED_STATS_GAUGE_PTR(flow_category_gov_count)},
+    {"Education", ANALYSED_STATS_GAUGE_PTR(flow_category_edu_count)},
+    {"CDN_Proxy", ANALYSED_STATS_GAUGE_PTR(flow_category_cdn_count)},
+    {"Hw_Sw", ANALYSED_STATS_GAUGE_PTR(flow_category_hwsw_count)},
+    {"Dating", ANALYSED_STATS_GAUGE_PTR(flow_category_dating_count)},
+    {"Travel", ANALYSED_STATS_GAUGE_PTR(flow_category_travel_count)},
+    {"Food", ANALYSED_STATS_GAUGE_PTR(flow_category_food_count)},
+    {"Bots", ANALYSED_STATS_GAUGE_PTR(flow_category_bots_count)},
+    {"Scanners", ANALYSED_STATS_GAUGE_PTR(flow_category_scanners_count)},
+    {"Hosting", ANALYSED_STATS_GAUGE_PTR(flow_category_hosting_count)},
+    {"Art", ANALYSED_STATS_GAUGE_PTR(flow_category_art_count)},
+    {"Fashion", ANALYSED_STATS_GAUGE_PTR(flow_category_fashion_count)},
+    {"Books", ANALYSED_STATS_GAUGE_PTR(flow_category_books_count)},
+    {"Science", ANALYSED_STATS_GAUGE_PTR(flow_category_science_count)},
+    {"Maps_Navigation", ANALYSED_STATS_GAUGE_PTR(flow_category_maps_count)},
+    {"Login_Portal", ANALYSED_STATS_GAUGE_PTR(flow_category_login_count)},
+    {"Legal", ANALYSED_STATS_GAUGE_PTR(flow_category_legal_count)},
+    {"Environmental_Services", ANALYSED_STATS_GAUGE_PTR(flow_category_envsrv_count)},
+    {"Culture", ANALYSED_STATS_GAUGE_PTR(flow_category_culture_count)},
+    {"Housing", ANALYSED_STATS_GAUGE_PTR(flow_category_housing_count)},
+    {"Telecommunication", ANALYSED_STATS_GAUGE_PTR(flow_category_telecom_count)},
+    {"Transportation", ANALYSED_STATS_GAUGE_PTR(flow_category_transport_count)},
+    {"Design", ANALYSED_STATS_GAUGE_PTR(flow_category_design_count)},
+    {"Employment", ANALYSED_STATS_GAUGE_PTR(flow_category_employ_count)},
+    {"Events", ANALYSED_STATS_GAUGE_PTR(flow_category_events_count)},
+    {"Weather", ANALYSED_STATS_GAUGE_PTR(flow_category_weather_count)},
+    {"Lifestyle", ANALYSED_STATS_GAUGE_PTR(flow_category_lifestyle_count)},
+    {"Real_Estate", ANALYSED_STATS_GAUGE_PTR(flow_category_real_count)},
+    {"Security", ANALYSED_STATS_GAUGE_PTR(flow_category_security_count)},
+    {"Environment", ANALYSED_STATS_GAUGE_PTR(flow_category_env_count)},
+    {"Hobby", ANALYSED_STATS_GAUGE_PTR(flow_category_hobby_count)},
+    {"Computer_Science", ANALYSED_STATS_GAUGE_PTR(flow_category_comp_count)},
+    {"Construction", ANALYSED_STATS_GAUGE_PTR(flow_category_const_count)},
+    {"Engineering", ANALYSED_STATS_GAUGE_PTR(flow_category_eng_count)},
+    {"Religion", ANALYSED_STATS_GAUGE_PTR(flow_category_reli_count)},
+    {"Entertainment", ANALYSED_STATS_GAUGE_PTR(flow_category_enter_count)},
+    {"Agriculture", ANALYSED_STATS_GAUGE_PTR(flow_category_agri_count)},
+    {"Technology", ANALYSED_STATS_GAUGE_PTR(flow_category_tech_count)},
+    {"Beauty", ANALYSED_STATS_GAUGE_PTR(flow_category_beauty_count)},
+    {"History", ANALYSED_STATS_GAUGE_PTR(flow_category_history_count)},
+    {"Politics", ANALYSED_STATS_GAUGE_PTR(flow_category_polit_count)},
+    {"Vehicles", ANALYSED_STATS_GAUGE_PTR(flow_category_vehi_count)},
     {NULL, ANALYSED_STATS_GAUGE_PTR(flow_category_unknown_count)}};
 
 static struct global_map const confidence_map[] = {
@@ -1698,61 +1802,129 @@ static int write_global_flow_stats(void)
                      ANALYSEDB_VALUE_GAUGE(flow_breed_unknown_count));
     CHECK_SNPRINTF_RET(bytes);
 
-    bytes =
-        snprintf(buf,
-                 siz,
-                 ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
-                     ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
-                         ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
-                             ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
-                                 ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
-                                     ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
-                                         ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
-                                             ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
-                                                 ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
-                                                     ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT(),
+    bytes = snprintf(
+        buf,
+        siz,
+        ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
+            ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
+                ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
+                    ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
+                        ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
+                            ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
+                                ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
+                                    ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
+                                        ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
+                                            ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
+                                                ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
+                                                    ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
+                                                        ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
+                                                            ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
+                                                                ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
+                                                                    ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
+                                                                        ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
+                                                                            ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
+                                                                                ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
+                                                                                    ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
+                                                                                        ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
+                                                                                            ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
+                                                                                                ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
+                                                                                                    ANALYSEDB_FORMAT()
+                                                                                                        ANALYSEDB_FORMAT()
+                                                                                                            ANALYSEDB_FORMAT()
+                                                                                                                ANALYSEDB_FORMAT()
+                                                                                                                    ANALYSEDB_FORMAT(),
 
-                 ANALYSEDB_VALUE_GAUGE(flow_category_unspecified_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_media_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_vpn_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_email_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_data_transfer_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_web_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_social_network_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_download_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_game_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_chat_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_voip_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_database_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_remote_access_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_cloud_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_network_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_collaborative_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_rpc_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_streaming_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_system_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_software_update_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_music_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_video_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_shopping_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_productivity_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_file_sharing_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_conn_check_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_iot_scada_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_virt_assistant_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_cybersecurity_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_adult_content_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_mining_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_malware_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_advertisment_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_banned_site_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_site_unavail_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_allowed_site_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_antimalware_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_crypto_currency_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_gambling_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_health_count),
-                 ANALYSEDB_VALUE_GAUGE(flow_category_unknown_count));
+        ANALYSEDB_VALUE_GAUGE(flow_category_unspecified_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_media_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_vpn_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_email_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_data_transfer_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_web_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_social_network_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_download_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_game_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_chat_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_voip_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_database_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_remote_access_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_cloud_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_network_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_collaborative_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_rpc_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_streaming_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_system_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_software_update_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_music_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_video_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_shopping_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_productivity_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_file_sharing_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_conn_check_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_iot_scada_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_virt_assistant_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_cybersecurity_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_adult_content_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_mining_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_malware_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_advertisment_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_banned_site_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_site_unavail_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_allowed_site_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_antimalware_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_crypto_currency_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_gambling_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_health_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_ai_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_finance_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_news_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_sport_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_business_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_internet_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_blockchain_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_blog_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_gov_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_edu_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_cdn_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_hwsw_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_dating_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_travel_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_food_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_bots_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_scanners_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_hosting_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_art_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_fashion_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_books_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_science_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_maps_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_login_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_legal_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_envsrv_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_culture_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_housing_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_telecom_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_transport_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_design_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_employ_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_events_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_weather_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_lifestyle_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_real_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_security_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_env_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_hobby_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_comp_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_const_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_eng_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_reli_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_enter_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_agri_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_tech_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_beauty_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_history_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_polit_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_vehi_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_unknown_count));
     CHECK_SNPRINTF_RET(bytes);
 
     bytes = snprintf(buf,

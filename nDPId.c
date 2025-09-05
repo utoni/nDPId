@@ -1529,9 +1529,6 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
         return NULL;
     }
 
-    NDPI_PROTOCOL_BITMASK protos;
-    NDPI_BITMASK_SET_ALL(protos);
-    ndpi_set_protocol_detection_bitmask2(workflow->ndpi_struct, &protos);
     if (IS_CMDARG_SET(nDPId_options.custom_risk_domain_file) != 0)
     {
         ndpi_load_risk_domain_file(workflow->ndpi_struct, GET_CMDARG_STR(nDPId_options.custom_risk_domain_file));
@@ -3427,14 +3424,6 @@ static uint32_t calculate_ndpi_flow_struct_hash(struct ndpi_flow_struct const * 
     hash += (ndpi_flow->risk & 0xFFFFFFFF) + (ndpi_flow->risk >> 32); // nDPI Risks are u64's (might change in the
                                                                       // future)
     hash += ndpi_flow->confidence;
-
-    const size_t protocol_bitmask_size = sizeof(ndpi_flow->excluded_dissectors_bitmask.fds_bits) /
-                                         sizeof(ndpi_flow->excluded_dissectors_bitmask.fds_bits[0]);
-    for (size_t i = 0; i < protocol_bitmask_size; ++i)
-    {
-        hash += ndpi_flow->excluded_dissectors_bitmask.fds_bits[i];
-        hash += ndpi_flow->excluded_dissectors_bitmask.fds_bits[i];
-    }
 
     size_t host_server_name_len =
         strnlen((const char *)ndpi_flow->host_server_name, sizeof(ndpi_flow->host_server_name));

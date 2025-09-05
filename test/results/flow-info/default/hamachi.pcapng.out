@@ -1,0 +1,17 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [...192.168.1.30][61356] -> [.158.120.16.201][12975]
+         detected: [.....1] [ip4][..tcp] [...192.168.1.30][61356] -> [.158.120.16.201][12975] [Hamachi][Unknown][VPN][Acceptable]
+              new: [.....2] [ip4][..tcp] [...192.168.1.30][56766] -> [.158.120.16.205][..443]
+         detected: [.....2] [ip4][..tcp] [...192.168.1.30][56766] -> [.158.120.16.205][..443] [TLS.Hamachi][Unknown][VPN][Acceptable][secure.logmein.com]
+                   RISK: TLS (probably) Not Carrying HTTPS
+              new: [.....3] [ip4][..udp] [...192.168.1.30][55865] -> [.158.120.24.193][17771]
+         detected: [.....3] [ip4][..udp] [...192.168.1.30][55865] -> [.158.120.24.193][17771] [Hamachi][Unknown][VPN][Acceptable]
+                   RISK: Susp Entropy
+             idle: [.....2] [ip4][..tcp] [...192.168.1.30][56766] -> [.158.120.16.205][..443] [TLS.Hamachi][Unknown][VPN][Acceptable]
+                   RISK: TLS (probably) Not Carrying HTTPS
+             idle: [.....3] [ip4][..udp] [...192.168.1.30][55865] -> [.158.120.24.193][17771] [Hamachi][Unknown][VPN][Acceptable]
+                   RISK: Susp Entropy
+             idle: [.....1] [ip4][..tcp] [...192.168.1.30][61356] -> [.158.120.16.201][12975] [Hamachi][Unknown][VPN][Acceptable]
+     DAEMON-EVENT: shutdown

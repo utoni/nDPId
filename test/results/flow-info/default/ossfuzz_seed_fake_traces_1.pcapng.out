@@ -44,16 +44,14 @@
      DAEMON-EVENT: [Processed: 17 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 8|skipped: 0|!detected: 2|guessed: 4|detection-updates: 0|updates: 3]
               new: [.....9] [ip4][..tcp] [..192.168.1.128][....1] -> [........1.2.3.4][...10] [MIDSTREAM]
-         detected: [.....9] [ip4][..tcp] [..192.168.1.128][....1] -> [........1.2.3.4][...10] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic, TCP Connection Issues
      not-detected: [.....8] [ip4][..udp] [......127.0.0.1][17788] -> [......127.0.0.1][17788] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [.....8] [ip4][..udp] [......127.0.0.1][17788] -> [......127.0.0.1][17788]
               new: [....10] [ip4][..tcp] [..192.168.1.128][....1] -> [........1.2.3.4][...11] [MIDSTREAM]
-         detected: [....10] [ip4][..tcp] [..192.168.1.128][....1] -> [........1.2.3.4][...11] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic, TCP Connection Issues
-             idle: [.....9] [ip4][..tcp] [..192.168.1.128][....1] -> [........1.2.3.4][...10] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic, TCP Connection Issues
-             idle: [....10] [ip4][..tcp] [..192.168.1.128][....1] -> [........1.2.3.4][...11] [Gnutella][Unknown][Download][Potentially Dangerous]
-                   RISK: Unsafe Protocol, Unidirectional Traffic, TCP Connection Issues
+     not-detected: [.....9] [ip4][..tcp] [..192.168.1.128][....1] -> [........1.2.3.4][...10] [Unknown][Unknown][Unspecified][Unrated]
+                   RISK: Unidirectional Traffic, TCP Connection Issues
+             idle: [.....9] [ip4][..tcp] [..192.168.1.128][....1] -> [........1.2.3.4][...10]
+     not-detected: [....10] [ip4][..tcp] [..192.168.1.128][....1] -> [........1.2.3.4][...11] [Unknown][Unknown][Unspecified][Unrated]
+                   RISK: Unidirectional Traffic, TCP Connection Issues
+             idle: [....10] [ip4][..tcp] [..192.168.1.128][....1] -> [........1.2.3.4][...11]
      DAEMON-EVENT: shutdown

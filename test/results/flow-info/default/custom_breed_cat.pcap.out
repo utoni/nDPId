@@ -1,0 +1,20 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip6][..tcp] [............................2001:db8::1][33408] -> [..........2001:db8::c2fd:b817:5ca8:82dd][16690]
+              new: [.....2] [ip6][..tcp] [............................2001:db8::2][33408] -> [..........2001:db8::cba5:51b2:8733:6d9e][38542]
+              new: [.....3] [ip6][..tcp] [............................2003:db8::3][33408] -> [...........2001:db8::cc14:67e6:fcd:b96d][37464]
+              new: [.....4] [ip6][..tcp] [............................2003:db8::4][33408] -> [...........2001:db8::7b51:316f:9fe:4940][42695]
+     not-detected: [.....3] [ip6][..tcp] [............................2003:db8::3][33408] -> [...........2001:db8::cc14:67e6:fcd:b96d][37464] [Unknown][Unknown][Unspecified][Unrated]
+                   RISK: Unidirectional Traffic
+             idle: [.....3] [ip6][..tcp] [............................2003:db8::3][33408] -> [...........2001:db8::cc14:67e6:fcd:b96d][37464]
+     not-detected: [.....2] [ip6][..tcp] [............................2001:db8::2][33408] -> [..........2001:db8::cba5:51b2:8733:6d9e][38542] [Unknown][Unknown][Unspecified][Unrated]
+                   RISK: Unidirectional Traffic
+             idle: [.....2] [ip6][..tcp] [............................2001:db8::2][33408] -> [..........2001:db8::cba5:51b2:8733:6d9e][38542]
+     not-detected: [.....1] [ip6][..tcp] [............................2001:db8::1][33408] -> [..........2001:db8::c2fd:b817:5ca8:82dd][16690] [Unknown][Unknown][Unspecified][Unrated]
+                   RISK: Unidirectional Traffic
+             idle: [.....1] [ip6][..tcp] [............................2001:db8::1][33408] -> [..........2001:db8::c2fd:b817:5ca8:82dd][16690]
+     not-detected: [.....4] [ip6][..tcp] [............................2003:db8::4][33408] -> [...........2001:db8::7b51:316f:9fe:4940][42695] [Unknown][Unknown][Unspecified][Unrated]
+                   RISK: Unidirectional Traffic
+             idle: [.....4] [ip6][..tcp] [............................2003:db8::4][33408] -> [...........2001:db8::7b51:316f:9fe:4940][42695]
+     DAEMON-EVENT: shutdown

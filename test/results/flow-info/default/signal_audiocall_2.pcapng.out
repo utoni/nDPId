@@ -3,11 +3,11 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [..192.168.12.67][47464] -> [..76.223.92.165][..443]
               new: [.....2] [ip4][..tcp] [..192.168.12.67][47466] -> [..76.223.92.165][..443]
-         detected: [.....2] [ip4][..tcp] [..192.168.12.67][47466] -> [..76.223.92.165][..443] [TLS.Signal][AmazonAWS][Chat][Fun][chat.signal.org]
-         detected: [.....1] [ip4][..tcp] [..192.168.12.67][47464] -> [..76.223.92.165][..443] [TLS.Signal][AmazonAWS][Chat][Fun][chat.signal.org]
- detection-update: [.....1] [ip4][..tcp] [..192.168.12.67][47464] -> [..76.223.92.165][..443] [TLS.Signal][AmazonAWS][Chat][Fun][chat.signal.org]
- detection-update: [.....2] [ip4][..tcp] [..192.168.12.67][47466] -> [..76.223.92.165][..443] [TLS.Signal][AmazonAWS][Chat][Fun][chat.signal.org]
-          analyse: [.....2] [ip4][..tcp] [..192.168.12.67][47466] -> [..76.223.92.165][..443] [TLS.Signal][AmazonAWS][Chat][Fun]
+         detected: [.....2] [ip4][..tcp] [..192.168.12.67][47466] -> [..76.223.92.165][..443] [TLS.Signal][AmazonAWS][Chat][Acceptable][chat.signal.org]
+         detected: [.....1] [ip4][..tcp] [..192.168.12.67][47464] -> [..76.223.92.165][..443] [TLS.Signal][AmazonAWS][Chat][Acceptable][chat.signal.org]
+ detection-update: [.....1] [ip4][..tcp] [..192.168.12.67][47464] -> [..76.223.92.165][..443] [TLS.Signal][AmazonAWS][Chat][Acceptable][chat.signal.org]
+ detection-update: [.....2] [ip4][..tcp] [..192.168.12.67][47466] -> [..76.223.92.165][..443] [TLS.Signal][AmazonAWS][Chat][Acceptable][chat.signal.org]
+          analyse: [.....2] [ip4][..tcp] [..192.168.12.67][47466] -> [..76.223.92.165][..443] [TLS.Signal][AmazonAWS][Chat][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|    29.945|     1.996|     7.336|     53823422.857|    1.300]
                    [PKTLEN......:     52.000|  1500.000|   234.800|   363.000|       131748.400|    4.000]
@@ -17,7 +17,7 @@
                    [IATS(ms)....: 2.6,5.0,9.4,14.7,193.3,0.0,0.0,0.0,15.5,228.5,2.3,9.9,4.1,1.4,6.0,42.7,11.9,12.2,87.8,0.0,101.2,12.1,0.0,29.8,29913.7,29945.1,101.6,143.7,427.5,469.0,100.3]
                    [PKTLENS.....: 60,60,52,312,52,185,1500,1500,246,246,52,52,52,52,64,132,52,409,52,140,140,52,337,140,52,291,52,844,52,111,52,120]
                    [ENTROPIES...: 4.8,5.3,5.2,6.2,5.2,6.5,7.9,7.9,7.2,7.2,5.2,5.3,5.3,5.3,5.2,6.3,5.3,7.4,5.3,6.4,6.6,5.3,7.3,6.5,5.2,7.1,5.2,7.7,5.2,6.2,5.2,6.3]
-          analyse: [.....1] [ip4][..tcp] [..192.168.12.67][47464] -> [..76.223.92.165][..443] [TLS.Signal][AmazonAWS][Chat][Fun]
+          analyse: [.....1] [ip4][..tcp] [..192.168.12.67][47464] -> [..76.223.92.165][..443] [TLS.Signal][AmazonAWS][Chat][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|    30.483|     2.018|     7.472|     55827184.484|    1.200]
                    [PKTLEN......:     52.000|  1500.000|   215.800|   351.100|       123252.700|    3.900]
@@ -32,12 +32,10 @@
  detection-update: [.....3] [ip4][..udp] [..192.168.12.67][43281] -> [...141.101.90.1][.3478] [STUN.SignalVoip][Cloudflare][VoIP][Acceptable][turn.cloudflare.com]
               new: [.....4] [ip4][..udp] [..192.168.12.67][43281] -> [...10.219.164.8][50017]
          detected: [.....4] [ip4][..udp] [..192.168.12.67][43281] -> [...10.219.164.8][50017] [STUN.SignalVoip][Unknown][VoIP][Acceptable][]
-                   RISK: Known Proto on Non Std Port
               new: [.....5] [ip4][..udp] [..192.168.12.67][43281] -> [...93.40.63.219][49514]
          detected: [.....5] [ip4][..udp] [..192.168.12.67][43281] -> [...93.40.63.219][49514] [STUN.SignalVoip][Unknown][VoIP][Acceptable][]
-                   RISK: Known Proto on Non Std Port
  detection-update: [.....4] [ip4][..udp] [..192.168.12.67][43281] -> [...10.219.164.8][50017] [STUN.SignalVoip][Unknown][VoIP][Acceptable][]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Unidirectional Traffic
           analyse: [.....5] [ip4][..udp] [..192.168.12.67][43281] -> [...93.40.63.219][49514] [STUN.SignalVoip][Unknown][VoIP][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........:      0.015|     2.310|     0.647|     0.844|       712545.796|    3.900]
@@ -49,10 +47,9 @@
                    [PKTLENS.....: 124,92,132,92,124,92,124,92,124,92,124,92,124,92,124,92,124,92,124,92,124,92,124,92,124,92,124,92,124,92,124,92]
                    [ENTROPIES...: 5.8,5.7,5.7,5.8,5.9,5.7,5.9,5.7,5.9,5.7,5.9,5.7,5.9,5.6,5.8,5.8,5.9,5.7,5.9,5.8,5.8,5.7,5.9,5.7,5.9,5.7,5.8,5.8,5.8,5.8,6.0,5.8]
              idle: [.....5] [ip4][..udp] [..192.168.12.67][43281] -> [...93.40.63.219][49514] [STUN.SignalVoip][Unknown][VoIP][Acceptable]
-                   RISK: Known Proto on Non Std Port
-             idle: [.....1] [ip4][..tcp] [..192.168.12.67][47464] -> [..76.223.92.165][..443] [TLS.Signal][AmazonAWS][Chat][Fun][chat.signal.org]
-             idle: [.....2] [ip4][..tcp] [..192.168.12.67][47466] -> [..76.223.92.165][..443] [TLS.Signal][AmazonAWS][Chat][Fun][chat.signal.org]
+             idle: [.....1] [ip4][..tcp] [..192.168.12.67][47464] -> [..76.223.92.165][..443] [TLS.Signal][AmazonAWS][Chat][Acceptable][chat.signal.org]
+             idle: [.....2] [ip4][..tcp] [..192.168.12.67][47466] -> [..76.223.92.165][..443] [TLS.Signal][AmazonAWS][Chat][Acceptable][chat.signal.org]
              idle: [.....3] [ip4][..udp] [..192.168.12.67][43281] -> [...141.101.90.1][.3478] [STUN.SignalVoip][Cloudflare][VoIP][Acceptable][turn.cloudflare.com]
              idle: [.....4] [ip4][..udp] [..192.168.12.67][43281] -> [...10.219.164.8][50017] [STUN.SignalVoip][Unknown][VoIP][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown
