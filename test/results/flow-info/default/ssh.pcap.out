@@ -3,10 +3,6 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [...172.16.238.1][58395] -> [.172.16.238.168][...22]
          detected: [.....1] [ip4][..tcp] [...172.16.238.1][58395] -> [.172.16.238.168][...22] [SSH][Unknown][RemoteAccess][Acceptable]
-                   RISK: SSH Obsolete Cli Vers/Cipher
- detection-update: [.....1] [ip4][..tcp] [...172.16.238.1][58395] -> [.172.16.238.168][...22] [SSH][Unknown][RemoteAccess][Acceptable]
-                   RISK: SSH Obsolete Cli Vers/Cipher
- detection-update: [.....1] [ip4][..tcp] [...172.16.238.1][58395] -> [.172.16.238.168][...22] [SSH][Unknown][RemoteAccess][Acceptable]
                    RISK: SSH Obsolete Cli Vers/Cipher, SSH Obsolete Ser Vers/Cipher
  detection-update: [.....1] [ip4][..tcp] [...172.16.238.1][58395] -> [.172.16.238.168][...22] [SSH][Unknown][RemoteAccess][Acceptable]
                    RISK: SSH Obsolete Cli Vers/Cipher, SSH Obsolete Ser Vers/Cipher
@@ -23,19 +19,26 @@
                    [PKTLENS.....: 64,60,52,73,52,73,52,956,52,836,52,76,204,52,196,772,52,68,52,100,52,100,52,116,52,132,52,196,52,132,52,196]
                    [ENTROPIES...: 4.5,5.0,4.9,5.4,4.9,5.4,4.9,5.1,4.9,5.2,4.9,4.4,6.5,5.0,6.7,7.5,4.9,4.5,4.8,6.0,4.9,6.0,4.9,6.3,4.9,6.4,4.9,6.8,4.9,6.3,4.9,6.8]
      DAEMON-EVENT: [Processed: 258 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 4|updates: 0]
-              new: [.....2] [ip4][..tcp] [......127.0.0.1][58496] -> [......127.0.0.1][.8000]
-         detected: [.....2] [ip4][..tcp] [......127.0.0.1][58496] -> [......127.0.0.1][.8000] [SSH][Unknown][RemoteAccess][Acceptable]
+     DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 2|updates: 0]
+              new: [.....2] [ip4][..tcp] [177.225.151.243][.1240] -> [..147.83.42.187][...22]
+         detected: [.....2] [ip4][..tcp] [177.225.151.243][.1240] -> [..147.83.42.187][...22] [SSH][Unknown][RemoteAccess][Acceptable]
+                   RISK: SSH Obsolete Ser Vers/Cipher
+ detection-update: [.....2] [ip4][..tcp] [177.225.151.243][.1240] -> [..147.83.42.187][...22] [SSH][Unknown][RemoteAccess][Acceptable]
+                   RISK: SSH Obsolete Ser Vers/Cipher
+              end: [.....1] [ip4][..tcp] [...172.16.238.1][58395] -> [.172.16.238.168][...22] [SSH][Unknown][RemoteAccess][Acceptable]
+                   RISK: SSH Obsolete Cli Vers/Cipher, SSH Obsolete Ser Vers/Cipher
+     DAEMON-EVENT: [Processed: 285 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 1 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 3|updates: 0]
+              new: [.....3] [ip4][..tcp] [......127.0.0.1][58496] -> [......127.0.0.1][.8000]
+         detected: [.....3] [ip4][..tcp] [......127.0.0.1][58496] -> [......127.0.0.1][.8000] [SSH][Unknown][RemoteAccess][Acceptable]
                    RISK: Known Proto on Non Std Port
- detection-update: [.....2] [ip4][..tcp] [......127.0.0.1][58496] -> [......127.0.0.1][.8000] [SSH][Unknown][RemoteAccess][Acceptable]
-                   RISK: Known Proto on Non Std Port
- detection-update: [.....2] [ip4][..tcp] [......127.0.0.1][58496] -> [......127.0.0.1][.8000] [SSH][Unknown][RemoteAccess][Acceptable]
+ detection-update: [.....3] [ip4][..tcp] [......127.0.0.1][58496] -> [......127.0.0.1][.8000] [SSH][Unknown][RemoteAccess][Acceptable]
                    RISK: Known Proto on Non Std Port, SSH Obsolete Ser Vers/Cipher
- detection-update: [.....2] [ip4][..tcp] [......127.0.0.1][58496] -> [......127.0.0.1][.8000] [SSH][Unknown][RemoteAccess][Acceptable]
+ detection-update: [.....3] [ip4][..tcp] [......127.0.0.1][58496] -> [......127.0.0.1][.8000] [SSH][Unknown][RemoteAccess][Acceptable]
                    RISK: Known Proto on Non Std Port, SSH Obsolete Ser Vers/Cipher
- detection-update: [.....2] [ip4][..tcp] [......127.0.0.1][58496] -> [......127.0.0.1][.8000] [SSH][Unknown][RemoteAccess][Acceptable]
+ detection-update: [.....3] [ip4][..tcp] [......127.0.0.1][58496] -> [......127.0.0.1][.8000] [SSH][Unknown][RemoteAccess][Acceptable]
                    RISK: Known Proto on Non Std Port, SSH Obsolete Ser Vers/Cipher
-          analyse: [.....2] [ip4][..tcp] [......127.0.0.1][58496] -> [......127.0.0.1][.8000] [SSH][Unknown][RemoteAccess][Acceptable]
+          analyse: [.....3] [ip4][..tcp] [......127.0.0.1][58496] -> [......127.0.0.1][.8000] [SSH][Unknown][RemoteAccess][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     1.760|     0.137|     0.429|       184135.827|    2.000]
                    [PKTLEN......:     52.000|  1588.000|   222.500|   339.500|       115254.500|    4.000]
@@ -45,8 +48,8 @@
                    [IATS(ms)....: 0.0,0.0,0.4,0.4,18.2,18.3,0.8,7.3,7.5,42.1,159.7,241.1,40.4,0.0,1760.4,1760.4,5.2,5.2,16.5,16.5,0.1,0.4,41.8,41.5,0.0,0.1,6.9,16.5,17.5,8.0,16.5]
                    [PKTLENS.....: 60,60,52,94,52,79,52,1588,1084,132,52,700,52,68,52,68,52,120,52,136,52,136,136,52,152,52,440,408,712,120,120,136]
                    [ENTROPIES...: 4.3,4.7,4.6,5.4,4.5,5.1,4.6,4.9,5.1,5.9,4.6,7.5,4.6,4.8,4.5,4.2,4.5,6.0,4.5,6.2,4.5,6.3,6.2,4.5,6.3,4.5,7.4,7.4,7.7,6.0,5.9,6.1]
-             idle: [.....2] [ip4][..tcp] [......127.0.0.1][58496] -> [......127.0.0.1][.8000] [SSH][Unknown][RemoteAccess][Acceptable]
+             idle: [.....3] [ip4][..tcp] [......127.0.0.1][58496] -> [......127.0.0.1][.8000] [SSH][Unknown][RemoteAccess][Acceptable]
                    RISK: Known Proto on Non Std Port, SSH Obsolete Ser Vers/Cipher
-              end: [.....1] [ip4][..tcp] [...172.16.238.1][58395] -> [.172.16.238.168][...22] [SSH][Unknown][RemoteAccess][Acceptable]
-                   RISK: SSH Obsolete Cli Vers/Cipher, SSH Obsolete Ser Vers/Cipher
+              end: [.....2] [ip4][..tcp] [177.225.151.243][.1240] -> [..147.83.42.187][...22] [SSH][Unknown][RemoteAccess][Acceptable]
+                   RISK: SSH Obsolete Ser Vers/Cipher
      DAEMON-EVENT: shutdown

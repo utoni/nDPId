@@ -139,7 +139,7 @@
  detection-update: [....20] [ip4][..tcp] [.......10.8.0.1][47841] -> [..114.29.200.11][..443] [TLS.Webex][Webex][VoIP][Acceptable][]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
               new: [....25] [ip4][..tcp] [.......10.8.0.1][43433] -> [..216.58.208.40][..443]
-         detected: [....25] [ip4][..tcp] [.......10.8.0.1][43433] -> [..216.58.208.40][..443] [TLS.Google][Google][Advertisement][Acceptable][ssl.google-analytics.com]
+         detected: [....25] [ip4][..tcp] [.......10.8.0.1][43433] -> [..216.58.208.40][..443] [TLS.Google][Google][Advertisement][Tracker_Ads][ssl.google-analytics.com]
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [....26] [ip4][..tcp] [.......10.8.0.1][47135] -> [.114.29.202.139][..443]
               new: [....27] [ip4][..tcp] [.......10.8.0.1][41757] -> [.114.29.213.212][..443]
@@ -170,7 +170,7 @@
                    RISK: Obsolete TLS (v1.1 or older)
          detected: [....35] [ip4][..tcp] [.......10.8.0.1][33512] -> [...80.74.110.68][..443] [TLS][Unknown][Web][Safe][]
                    RISK: Obsolete TLS (v1.1 or older)
- detection-update: [....25] [ip4][..tcp] [.......10.8.0.1][43433] -> [..216.58.208.40][..443] [TLS.Google][Google][Advertisement][Acceptable][ssl.google-analytics.com]
+ detection-update: [....25] [ip4][..tcp] [.......10.8.0.1][43433] -> [..216.58.208.40][..443] [TLS.Google][Google][Advertisement][Tracker_Ads][ssl.google-analytics.com]
                    RISK: TLS (probably) Not Carrying HTTPS
  detection-update: [....35] [ip4][..tcp] [.......10.8.0.1][33512] -> [...80.74.110.68][..443] [TLS][Unknown][Web][Safe][]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
@@ -385,7 +385,7 @@
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
           guessed: [....53] [ip4][..udp] [.......10.8.0.1][51772] -> [.62.109.229.158][.9000] [Webex][Webex][VoIP][Acceptable]
              idle: [....53] [ip4][..udp] [.......10.8.0.1][51772] -> [.62.109.229.158][.9000]
-             idle: [....25] [ip4][..tcp] [.......10.8.0.1][43433] -> [..216.58.208.40][..443] [TLS.Google][Google][Advertisement][Acceptable]
+             idle: [....25] [ip4][..tcp] [.......10.8.0.1][43433] -> [..216.58.208.40][..443] [TLS.Google][Google][Advertisement][Tracker_Ads]
                    RISK: TLS (probably) Not Carrying HTTPS
              idle: [.....1] [ip4][..tcp] [.......10.8.0.1][41346] -> [..64.68.105.103][..443] [TLS.Webex][Webex][VoIP][Acceptable][radcom.webex.com]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS

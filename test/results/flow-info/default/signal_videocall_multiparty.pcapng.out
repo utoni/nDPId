@@ -3,11 +3,8 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [..192.168.1.117][59446] -> [...35.207.67.68][10000]
          detected: [.....1] [ip4][..udp] [..192.168.1.117][59446] -> [...35.207.67.68][10000] [STUN][GoogleCloud][Network][Acceptable][]
-                   RISK: Known Proto on Non Std Port
  detection-update: [.....1] [ip4][..udp] [..192.168.1.117][59446] -> [...35.207.67.68][10000] [STUN.RTP][GoogleCloud][Media][Acceptable][]
-                   RISK: Known Proto on Non Std Port
  detection-update: [.....1] [ip4][..udp] [..192.168.1.117][59446] -> [...35.207.67.68][10000] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable][]
-                   RISK: Known Proto on Non Std Port
           analyse: [.....1] [ip4][..udp] [..192.168.1.117][59446] -> [...35.207.67.68][10000] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     1.071|     0.337|     0.396|       156437.676|    3.900]
@@ -19,5 +16,4 @@
                    [PKTLENS.....: 128,128,64,128,128,128,128,83,64,64,128,74,128,83,64,128,74,128,83,64,76,56,74,83,64,74,83,64,128,128,64,74]
                    [ENTROPIES...: 5.6,5.7,5.1,5.7,5.7,5.8,5.8,5.8,5.2,5.0,5.8,5.4,5.8,5.7,5.1,5.6,5.4,5.7,5.8,5.1,5.8,5.2,5.4,5.7,5.2,5.4,5.9,5.2,5.6,5.8,5.0,5.4]
              idle: [.....1] [ip4][..udp] [..192.168.1.117][59446] -> [...35.207.67.68][10000] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable]
-                   RISK: Known Proto on Non Std Port
      DAEMON-EVENT: shutdown

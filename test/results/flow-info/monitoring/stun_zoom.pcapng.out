@@ -3,15 +3,13 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [.192.168.43.169][48854] -> [.134.224.90.111][.8801]
          detected: [.....1] [ip4][..udp] [.192.168.43.169][48854] -> [.134.224.90.111][.8801] [STUN][Zoom][Network][Acceptable][]
-                   RISK: Known Proto on Non Std Port
- detection-update: [.....1] [ip4][..udp] [.192.168.43.169][48854] -> [.134.224.90.111][.8801] [DTLS][Zoom][Network][Safe]
+ detection-update: [.....1] [ip4][..udp] [.192.168.43.169][48854] -> [.134.224.90.111][.8801] [DTLS][Zoom][Network][Acceptable]
               new: [.....2] [ip4][..udp] [.192.168.43.169][53065] -> [.134.224.90.111][.8801]
          detected: [.....2] [ip4][..udp] [.192.168.43.169][53065] -> [.134.224.90.111][.8801] [STUN][Zoom][Network][Acceptable][]
-                   RISK: Known Proto on Non Std Port
- detection-update: [.....1] [ip4][..udp] [.192.168.43.169][48854] -> [.134.224.90.111][.8801] [DTLS][Zoom][Network][Safe]
+ detection-update: [.....1] [ip4][..udp] [.192.168.43.169][48854] -> [.134.224.90.111][.8801] [DTLS][Zoom][Network][Acceptable]
  detection-update: [.....1] [ip4][..udp] [.192.168.43.169][48854] -> [.134.224.90.111][.8801] [DTLS.Zoom][Zoom][Video][Acceptable]
- detection-update: [.....2] [ip4][..udp] [.192.168.43.169][53065] -> [.134.224.90.111][.8801] [DTLS][Zoom][Network][Safe]
-          analyse: [.....2] [ip4][..udp] [.192.168.43.169][53065] -> [.134.224.90.111][.8801] [DTLS][Zoom][Network][Safe]
+ detection-update: [.....2] [ip4][..udp] [.192.168.43.169][53065] -> [.134.224.90.111][.8801] [DTLS][Zoom][Network][Acceptable]
+          analyse: [.....2] [ip4][..udp] [.192.168.43.169][53065] -> [.134.224.90.111][.8801] [DTLS][Zoom][Network][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.194|     0.048|     0.051|         2615.352|    4.100]
                    [PKTLEN......:     42.000|  1080.000|   270.100|   313.100|        98043.500|    4.300]
@@ -22,5 +20,5 @@
                    [PKTLENS.....: 184,184,184,184,92,184,217,217,184,184,217,92,92,92,184,192,78,92,1080,1080,1080,1080,399,186,92,92,186,92,186,95,101,42]
                    [ENTROPIES...: 5.8,5.8,5.8,5.8,5.6,5.8,5.2,5.2,5.9,5.8,5.2,5.7,5.6,5.7,5.9,5.3,4.1,5.7,7.0,7.3,7.3,7.4,7.2,6.1,5.7,5.7,6.1,5.7,6.1,5.4,6.0,4.3]
              idle: [.....1] [ip4][..udp] [.192.168.43.169][48854] -> [.134.224.90.111][.8801] [DTLS.Zoom][Zoom][Video][Acceptable]
-             idle: [.....2] [ip4][..udp] [.192.168.43.169][53065] -> [.134.224.90.111][.8801] [DTLS][Zoom][Network][Safe]
+             idle: [.....2] [ip4][..udp] [.192.168.43.169][53065] -> [.134.224.90.111][.8801] [DTLS][Zoom][Network][Acceptable]
      DAEMON-EVENT: shutdown

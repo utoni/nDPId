@@ -3,7 +3,6 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [...192.168.2.20][49282] -> [...104.46.40.49][60642]
          detected: [.....1] [ip4][..udp] [...192.168.2.20][49282] -> [...104.46.40.49][60642] [STUN.TeamsCall][Azure][VoIP][Acceptable][]
-                   RISK: Known Proto on Non Std Port
           analyse: [.....1] [ip4][..udp] [...192.168.2.20][49282] -> [...104.46.40.49][60642] [STUN.TeamsCall][Azure][VoIP][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.100|     0.011|     0.022|          503.840|    3.000]
@@ -15,5 +14,4 @@
                    [PKTLENS.....: 132,132,100,100,132,100,136,138,131,123,195,63,155,155,155,155,155,155,155,155,155,155,100,71,943,943,943,943,943,943,155,121]
                    [ENTROPIES...: 5.5,5.4,5.7,5.6,5.4,5.7,5.6,6.5,6.5,6.4,6.8,5.2,6.5,6.5,6.6,6.6,6.5,6.5,6.4,6.6,6.5,6.5,5.6,5.6,7.8,7.8,7.8,7.8,7.8,7.8,6.6,6.3]
              idle: [.....1] [ip4][..udp] [...192.168.2.20][49282] -> [...104.46.40.49][60642] [STUN.TeamsCall][Azure][VoIP][Acceptable]
-                   RISK: Known Proto on Non Std Port
      DAEMON-EVENT: shutdown

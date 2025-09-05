@@ -42,10 +42,8 @@
          detected: [.....9] [ip4][..udp] [........0.0.0.0][...68] -> [255.255.255.255][...67] [DHCP][Unknown][Network][Acceptable][lucas-imac]
               new: [....10] [ip4][..udp] [...192.168.2.12][53688] -> [.....1.60.78.64][59491]
          detected: [....10] [ip4][..udp] [...192.168.2.12][53688] -> [.....1.60.78.64][59491] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable][]
-                   RISK: Known Proto on Non Std Port
               new: [....11] [ip4][..udp] [...192.168.2.12][53688] -> [...91.252.56.51][32641]
          detected: [....11] [ip4][..udp] [...192.168.2.12][53688] -> [...91.252.56.51][32641] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable][]
-                   RISK: Known Proto on Non Std Port
           analyse: [....11] [ip4][..udp] [...192.168.2.12][53688] -> [...91.252.56.51][32641] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     1.979|     0.150|     0.383|       146861.081|    2.700]
@@ -57,7 +55,7 @@
                    [PKTLENS.....: 72,72,72,72,72,72,72,156,72,165,150,130,899,899,899,898,1146,194,143,198,1022,1022,1022,1022,1022,1020,150,920,920,920,1048,210]
                    [ENTROPIES...: 5.6,5.7,5.5,5.6,5.4,5.5,5.6,6.6,5.7,6.7,6.5,6.4,7.7,7.8,7.8,7.8,7.8,6.7,6.4,6.9,7.8,7.8,7.8,7.8,7.8,7.8,6.6,7.8,7.8,7.8,7.8,7.0]
  detection-update: [....10] [ip4][..udp] [...192.168.2.12][53688] -> [.....1.60.78.64][59491] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable][]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Unidirectional Traffic
               new: [....12] [ip4][..udp] [....192.168.2.1][17500] -> [..192.168.2.255][17500]
          detected: [....12] [ip4][..udp] [....192.168.2.1][17500] -> [..192.168.2.255][17500] [Dropbox][Unknown][Cloud][Acceptable]
               new: [....13] [ip4][..udp] [...192.168.2.12][65025] -> [239.255.255.250][.1900]
@@ -68,7 +66,7 @@
              idle: [.....1] [ip4][..udp] [....192.168.2.1][57621] -> [..192.168.2.255][57621] [Spotify][Unknown][Music][Fun]
              idle: [.....3] [ip4][..udp] [...192.168.2.12][53688] -> [....31.13.86.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
              idle: [....10] [ip4][..udp] [...192.168.2.12][53688] -> [.....1.60.78.64][59491] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
-                   RISK: Known Proto on Non Std Port, Unidirectional Traffic
+                   RISK: Unidirectional Traffic
              idle: [....13] [ip4][..udp] [...192.168.2.12][65025] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250]
              idle: [.....6] [ip4][..udp] [...192.168.2.12][53688] -> [..179.60.192.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
              idle: [.....4] [ip4][..udp] [...192.168.2.12][53688] -> [..185.60.216.51][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
@@ -76,7 +74,6 @@
              idle: [.....2] [ip4][..tcp] [...192.168.2.12][49355] -> [..157.240.20.53][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
                    RISK: Susp Entropy
              idle: [....11] [ip4][..udp] [...192.168.2.12][53688] -> [...91.252.56.51][32641] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
-                   RISK: Known Proto on Non Std Port
              idle: [.....8] [ip4][..udp] [...192.168.2.12][51277] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250]
              idle: [.....7] [ip4][..udp] [...192.168.2.12][53688] -> [.157.240.196.62][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
              idle: [.....5] [ip4][..udp] [...192.168.2.12][53688] -> [.157.240.193.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]

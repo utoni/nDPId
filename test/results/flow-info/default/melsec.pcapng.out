@@ -1,0 +1,13 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [...172.17.0.158][40260] -> [...172.17.0.134][.5007]
+         detected: [.....1] [ip4][..tcp] [...172.17.0.158][40260] -> [...172.17.0.134][.5007] [MELSEC][Unknown][IoT-Scada][Acceptable]
+              new: [.....2] [ip4][..udp] [..192.168.3.101][49156] -> [255.255.255.255][.5560]
+         detected: [.....2] [ip4][..udp] [..192.168.3.101][49156] -> [255.255.255.255][.5560] [MELSEC][Unknown][IoT-Scada][Acceptable]
+              new: [.....3] [ip4][..udp] [..192.168.3.250][.5560] -> [255.255.255.255][49156]
+         detected: [.....3] [ip4][..udp] [..192.168.3.250][.5560] -> [255.255.255.255][49156] [MELSEC][Unknown][IoT-Scada][Acceptable]
+              end: [.....1] [ip4][..tcp] [...172.17.0.158][40260] -> [...172.17.0.134][.5007] [MELSEC][Unknown][IoT-Scada][Acceptable]
+             idle: [.....3] [ip4][..udp] [..192.168.3.250][.5560] -> [255.255.255.255][49156] [MELSEC][Unknown][IoT-Scada][Acceptable]
+             idle: [.....2] [ip4][..udp] [..192.168.3.101][49156] -> [255.255.255.255][.5560] [MELSEC][Unknown][IoT-Scada][Acceptable]
+     DAEMON-EVENT: shutdown

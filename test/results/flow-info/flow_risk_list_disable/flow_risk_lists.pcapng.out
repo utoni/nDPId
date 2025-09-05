@@ -1,0 +1,12 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [..23.98.142.176][53684] -> [........8.8.8.8][...80]
+              new: [.....2] [ip6][..tcp] [..................2a02:26f7:d198:400::1][44878] -> [........................2001:db8:200::1][..443]
+          guessed: [.....2] [ip6][..tcp] [..................2a02:26f7:d198:400::1][44878] -> [........................2001:db8:200::1][..443] [TLS][Unknown][Web][Safe]
+                   RISK: Anonymous Subscriber, Unidirectional Traffic
+             idle: [.....2] [ip6][..tcp] [..................2a02:26f7:d198:400::1][44878] -> [........................2001:db8:200::1][..443]
+          guessed: [.....1] [ip4][..tcp] [..23.98.142.176][53684] -> [........8.8.8.8][...80] [HTTP][Google][Web][Acceptable][]
+                   RISK: Crawler/Bot, Unidirectional Traffic
+             idle: [.....1] [ip4][..tcp] [..23.98.142.176][53684] -> [........8.8.8.8][...80]
+     DAEMON-EVENT: shutdown

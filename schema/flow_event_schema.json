@@ -274,7 +274,7 @@
                     "type": "string",
                     "enum": [
                         "Safe", "Acceptable", "Fun", "Unsafe",
-                        "Potentially Dangerous", "Tracker/Ads",
+                        "Potentially_Dangerous", "Tracker_Ads",
                         "Dangerous", "Unrated"
                     ]
                 },
@@ -798,8 +798,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string", "enum": [ "Malicious JA3 Fingerp." ] },
-                                "severity": { "type": "string", "enum": [ "Medium" ] },
+                                "risk": { "type": "string", "enum": [ "Malicious Fingerprint" ] },
+                                "severity": { "type": "string", "enum": [ "High" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],

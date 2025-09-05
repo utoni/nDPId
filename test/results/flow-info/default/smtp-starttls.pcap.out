@@ -24,11 +24,11 @@
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 4|updates: 0]
               new: [.....2] [ip6][..tcp] [...2003:de:2016:125:fc36:8317:4e86:cb72][.7562] -> [...............2003:de:2016:120::a08:53][...25]
          detected: [.....2] [ip6][..tcp] [...2003:de:2016:125:fc36:8317:4e86:cb72][.7562] -> [...............2003:de:2016:120::a08:53][...25] [SMTP][Unknown][Email][Acceptable][jw-vm08-int-dns.webernetz.net]
- detection-update: [.....2] [ip6][..tcp] [...2003:de:2016:125:fc36:8317:4e86:cb72][.7562] -> [...............2003:de:2016:120::a08:53][...25] [SMTPS][Unknown][Email][Safe]
+ detection-update: [.....2] [ip6][..tcp] [...2003:de:2016:125:fc36:8317:4e86:cb72][.7562] -> [...............2003:de:2016:120::a08:53][...25] [SMTPS][Unknown][Email][Acceptable]
                    RISK: TLS (probably) Not Carrying HTTPS, TLS Susp Extn
- detection-update: [.....2] [ip6][..tcp] [...2003:de:2016:125:fc36:8317:4e86:cb72][.7562] -> [...............2003:de:2016:120::a08:53][...25] [SMTPS][Unknown][Email][Safe]
+ detection-update: [.....2] [ip6][..tcp] [...2003:de:2016:125:fc36:8317:4e86:cb72][.7562] -> [...............2003:de:2016:120::a08:53][...25] [SMTPS][Unknown][Email][Acceptable]
                    RISK: Self-signed Cert, TLS (probably) Not Carrying HTTPS, TLS Susp Extn
-          analyse: [.....2] [ip6][..tcp] [...2003:de:2016:125:fc36:8317:4e86:cb72][.7562] -> [...............2003:de:2016:120::a08:53][...25] [SMTPS][Unknown][Email][Safe]
+          analyse: [.....2] [ip6][..tcp] [...2003:de:2016:125:fc36:8317:4e86:cb72][.7562] -> [...............2003:de:2016:120::a08:53][...25] [SMTPS][Unknown][Email][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.203|     0.019|     0.049|         2372.381|    2.800]
                    [PKTLEN......:     60.000|  1200.000|   180.500|   257.100|        66086.800|    4.200]
@@ -40,6 +40,6 @@
                    [ENTROPIES...: 4.3,5.0,4.6,5.6,5.4,4.8,5.6,4.9,5.2,5.4,7.6,6.2,5.9,7.2,6.9,4.7,6.1,5.7,5.6,5.7,5.2,6.1,4.8,7.8,4.8,6.1,5.1,5.8,5.0,4.6,5.5,4.4]
               end: [.....1] [ip4][..tcp] [.......10.0.0.1][57406] -> [..173.194.68.26][...25] [SMTPS.Google][Google][Email][Acceptable][mx.google.com]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
-              end: [.....2] [ip6][..tcp] [...2003:de:2016:125:fc36:8317:4e86:cb72][.7562] -> [...............2003:de:2016:120::a08:53][...25] [SMTPS][Unknown][Email][Safe][dovecot.weberlab.de]
+              end: [.....2] [ip6][..tcp] [...2003:de:2016:125:fc36:8317:4e86:cb72][.7562] -> [...............2003:de:2016:120::a08:53][...25] [SMTPS][Unknown][Email][Acceptable][dovecot.weberlab.de]
                    RISK: Self-signed Cert, TLS (probably) Not Carrying HTTPS, TLS Susp Extn
      DAEMON-EVENT: shutdown

@@ -1,0 +1,44 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [...192.168.2.61][42416] -> [...192.168.2.65][...80]
+              new: [.....2] [ip4][..tcp] [...192.168.2.61][38482] -> [....192.168.2.4][...80]
+              new: [.....3] [ip4][..tcp] [...192.168.2.61][57862] -> [...192.168.2.50][...80]
+              new: [.....4] [ip4][..tcp] [...192.168.2.61][47290] -> [..192.168.2.245][...80]
+              new: [.....5] [ip4][..tcp] [...192.168.2.61][36368] -> [..192.168.2.237][...80]
+              new: [.....6] [ip4][..tcp] [...192.168.2.61][48731] -> [..192.168.2.165][...80]
+              new: [.....7] [ip4][..tcp] [...192.168.2.61][51197] -> [..192.168.2.108][...80]
+              new: [.....8] [ip4][..tcp] [...192.168.2.61][49523] -> [..192.168.2.215][...80]
+              new: [.....9] [ip4][..tcp] [...192.168.2.61][56788] -> [..192.168.2.249][...80]
+              new: [....10] [ip4][..tcp] [...192.168.2.61][40049] -> [...192.168.2.41][...80]
+          guessed: [.....4] [ip4][..tcp] [...192.168.2.61][47290] -> [..192.168.2.245][...80] [HTTP][Unknown][Web][Acceptable][]
+                   RISK: Malicious Fingerprint, Unidirectional Traffic
+             idle: [.....4] [ip4][..tcp] [...192.168.2.61][47290] -> [..192.168.2.245][...80]
+          guessed: [.....6] [ip4][..tcp] [...192.168.2.61][48731] -> [..192.168.2.165][...80] [HTTP][Unknown][Web][Acceptable][]
+                   RISK: Malicious Fingerprint, Unidirectional Traffic
+             idle: [.....6] [ip4][..tcp] [...192.168.2.61][48731] -> [..192.168.2.165][...80]
+          guessed: [.....8] [ip4][..tcp] [...192.168.2.61][49523] -> [..192.168.2.215][...80] [HTTP][Unknown][Web][Acceptable][]
+                   RISK: Malicious Fingerprint, Unidirectional Traffic
+             idle: [.....8] [ip4][..tcp] [...192.168.2.61][49523] -> [..192.168.2.215][...80]
+          guessed: [.....7] [ip4][..tcp] [...192.168.2.61][51197] -> [..192.168.2.108][...80] [HTTP][Unknown][Web][Acceptable][]
+                   RISK: Malicious Fingerprint, Unidirectional Traffic
+             idle: [.....7] [ip4][..tcp] [...192.168.2.61][51197] -> [..192.168.2.108][...80]
+          guessed: [.....9] [ip4][..tcp] [...192.168.2.61][56788] -> [..192.168.2.249][...80] [HTTP][Unknown][Web][Acceptable][]
+                   RISK: Malicious Fingerprint, Unidirectional Traffic
+             idle: [.....9] [ip4][..tcp] [...192.168.2.61][56788] -> [..192.168.2.249][...80]
+          guessed: [.....3] [ip4][..tcp] [...192.168.2.61][57862] -> [...192.168.2.50][...80] [HTTP][Unknown][Web][Acceptable][]
+                   RISK: Malicious Fingerprint, Unidirectional Traffic
+             idle: [.....3] [ip4][..tcp] [...192.168.2.61][57862] -> [...192.168.2.50][...80]
+          guessed: [.....5] [ip4][..tcp] [...192.168.2.61][36368] -> [..192.168.2.237][...80] [HTTP][Unknown][Web][Acceptable][]
+                   RISK: Malicious Fingerprint, Unidirectional Traffic
+             idle: [.....5] [ip4][..tcp] [...192.168.2.61][36368] -> [..192.168.2.237][...80]
+          guessed: [.....2] [ip4][..tcp] [...192.168.2.61][38482] -> [....192.168.2.4][...80] [HTTP][Unknown][Web][Acceptable][]
+                   RISK: Malicious Fingerprint, Unidirectional Traffic
+             idle: [.....2] [ip4][..tcp] [...192.168.2.61][38482] -> [....192.168.2.4][...80]
+          guessed: [....10] [ip4][..tcp] [...192.168.2.61][40049] -> [...192.168.2.41][...80] [HTTP][Unknown][Web][Acceptable][]
+                   RISK: Malicious Fingerprint, Unidirectional Traffic
+             idle: [....10] [ip4][..tcp] [...192.168.2.61][40049] -> [...192.168.2.41][...80]
+          guessed: [.....1] [ip4][..tcp] [...192.168.2.61][42416] -> [...192.168.2.65][...80] [HTTP][Unknown][Web][Acceptable][]
+                   RISK: Malicious Fingerprint, Unidirectional Traffic
+             idle: [.....1] [ip4][..tcp] [...192.168.2.61][42416] -> [...192.168.2.65][...80]
+     DAEMON-EVENT: shutdown

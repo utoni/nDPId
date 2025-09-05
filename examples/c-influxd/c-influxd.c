@@ -171,6 +171,56 @@ static struct
         uint64_t flow_category_crypto_currency_count;
         uint64_t flow_category_gambling_count;
         uint64_t flow_category_health_count;
+        uint64_t flow_category_ai_count;
+        uint64_t flow_category_finance_count;
+        uint64_t flow_category_news_count;
+        uint64_t flow_category_sport_count;
+        uint64_t flow_category_business_count;
+        uint64_t flow_category_internet_count;
+        uint64_t flow_category_blockchain_count;
+        uint64_t flow_category_blog_count;
+        uint64_t flow_category_gov_count;
+        uint64_t flow_category_edu_count;
+        uint64_t flow_category_cdn_count;
+        uint64_t flow_category_hwsw_count;
+        uint64_t flow_category_dating_count;
+        uint64_t flow_category_travel_count;
+        uint64_t flow_category_food_count;
+        uint64_t flow_category_bots_count;
+        uint64_t flow_category_scanners_count;
+        uint64_t flow_category_hosting_count;
+        uint64_t flow_category_art_count;
+        uint64_t flow_category_fashion_count;
+        uint64_t flow_category_books_count;
+        uint64_t flow_category_science_count;
+        uint64_t flow_category_maps_count;
+        uint64_t flow_category_login_count;
+        uint64_t flow_category_legal_count;
+        uint64_t flow_category_envsrv_count;
+        uint64_t flow_category_culture_count;
+        uint64_t flow_category_housing_count;
+        uint64_t flow_category_telecom_count;
+        uint64_t flow_category_transport_count;
+        uint64_t flow_category_design_count;
+        uint64_t flow_category_employ_count;
+        uint64_t flow_category_events_count;
+        uint64_t flow_category_weather_count;
+        uint64_t flow_category_lifestyle_count;
+        uint64_t flow_category_real_count;
+        uint64_t flow_category_security_count;
+        uint64_t flow_category_env_count;
+        uint64_t flow_category_hobby_count;
+        uint64_t flow_category_comp_count;
+        uint64_t flow_category_const_count;
+        uint64_t flow_category_eng_count;
+        uint64_t flow_category_reli_count;
+        uint64_t flow_category_enter_count;
+        uint64_t flow_category_agri_count;
+        uint64_t flow_category_tech_count;
+        uint64_t flow_category_beauty_count;
+        uint64_t flow_category_history_count;
+        uint64_t flow_category_polit_count;
+        uint64_t flow_category_vehi_count;
         uint64_t flow_category_unknown_count;
 
         uint64_t flow_confidence_by_port;
@@ -221,10 +271,15 @@ struct global_map
     };
 };
 
-#define INFLUXD_STATS_COUNTER_PTR(member) {.global_stat_inc = &(influxd_statistics.counters.member), NULL}
+#define INFLUXD_STATS_COUNTER_PTR(member)                                                                              \
+    {                                                                                                                  \
+        .global_stat_inc = &(influxd_statistics.counters.member), NULL                                                 \
+    }
 #define INFLUXD_STATS_GAUGE_PTR(member)                                                                                \
-    {.global_stat_inc = &(influxd_statistics.gauges[0].member),                                                        \
-     .global_stat_dec = &(influxd_statistics.gauges[1].member)}
+    {                                                                                                                  \
+        .global_stat_inc = &(influxd_statistics.gauges[0].member),                                                     \
+        .global_stat_dec = &(influxd_statistics.gauges[1].member)                                                      \
+    }
 #define INFLUXD_STATS_COUNTER_INC(member) (influxd_statistics.counters.member++)
 #define INFLUXD_STATS_GAUGE_RES(member) (influxd_statistics.gauges[0].member--)
 #define INFLUXD_STATS_GAUGE_INC(member) (influxd_statistics.gauges[0].member++)
@@ -277,9 +332,9 @@ static struct global_map const breeds_map[] = {{"Safe", INFLUXD_STATS_GAUGE_PTR(
                                                {"Acceptable", INFLUXD_STATS_GAUGE_PTR(flow_breed_acceptable_count)},
                                                {"Fun", INFLUXD_STATS_GAUGE_PTR(flow_breed_fun_count)},
                                                {"Unsafe", INFLUXD_STATS_GAUGE_PTR(flow_breed_unsafe_count)},
-                                               {"Potentially Dangerous",
+                                               {"Potentially_Dangerous",
                                                 INFLUXD_STATS_GAUGE_PTR(flow_breed_potentially_dangerous_count)},
-                                               {"Tracker\\/Ads", INFLUXD_STATS_GAUGE_PTR(flow_breed_tracker_ads_count)},
+                                               {"Tracker_Ads", INFLUXD_STATS_GAUGE_PTR(flow_breed_tracker_ads_count)},
                                                {"Dangerous", INFLUXD_STATS_GAUGE_PTR(flow_breed_dangerous_count)},
                                                {"Unrated", INFLUXD_STATS_GAUGE_PTR(flow_breed_unrated_count)},
                                                {NULL, INFLUXD_STATS_GAUGE_PTR(flow_breed_unknown_count)}};
@@ -325,6 +380,56 @@ static struct global_map const categories_map[] = {
     {"Crypto_Currency", INFLUXD_STATS_GAUGE_PTR(flow_category_crypto_currency_count)},
     {"Gambling", INFLUXD_STATS_GAUGE_PTR(flow_category_gambling_count)},
     {"Health", INFLUXD_STATS_GAUGE_PTR(flow_category_health_count)},
+    {"ArtifIntelligence", INFLUXD_STATS_GAUGE_PTR(flow_category_ai_count)},
+    {"Finance", INFLUXD_STATS_GAUGE_PTR(flow_category_finance_count)},
+    {"News", INFLUXD_STATS_GAUGE_PTR(flow_category_news_count)},
+    {"Sport", INFLUXD_STATS_GAUGE_PTR(flow_category_sport_count)},
+    {"Business", INFLUXD_STATS_GAUGE_PTR(flow_category_business_count)},
+    {"Internet", INFLUXD_STATS_GAUGE_PTR(flow_category_internet_count)},
+    {"Blockchain_Crypto", INFLUXD_STATS_GAUGE_PTR(flow_category_blockchain_count)},
+    {"Blog_Forum", INFLUXD_STATS_GAUGE_PTR(flow_category_blog_count)},
+    {"Government", INFLUXD_STATS_GAUGE_PTR(flow_category_gov_count)},
+    {"Education", INFLUXD_STATS_GAUGE_PTR(flow_category_edu_count)},
+    {"CDN_Proxy", INFLUXD_STATS_GAUGE_PTR(flow_category_cdn_count)},
+    {"Hw_Sw", INFLUXD_STATS_GAUGE_PTR(flow_category_hwsw_count)},
+    {"Dating", INFLUXD_STATS_GAUGE_PTR(flow_category_dating_count)},
+    {"Travel", INFLUXD_STATS_GAUGE_PTR(flow_category_travel_count)},
+    {"Food", INFLUXD_STATS_GAUGE_PTR(flow_category_food_count)},
+    {"Bots", INFLUXD_STATS_GAUGE_PTR(flow_category_bots_count)},
+    {"Scanners", INFLUXD_STATS_GAUGE_PTR(flow_category_scanners_count)},
+    {"Hosting", INFLUXD_STATS_GAUGE_PTR(flow_category_hosting_count)},
+    {"Art", INFLUXD_STATS_GAUGE_PTR(flow_category_art_count)},
+    {"Fashion", INFLUXD_STATS_GAUGE_PTR(flow_category_fashion_count)},
+    {"Books", INFLUXD_STATS_GAUGE_PTR(flow_category_books_count)},
+    {"Science", INFLUXD_STATS_GAUGE_PTR(flow_category_science_count)},
+    {"Maps_Navigation", INFLUXD_STATS_GAUGE_PTR(flow_category_maps_count)},
+    {"Login_Portal", INFLUXD_STATS_GAUGE_PTR(flow_category_login_count)},
+    {"Legal", INFLUXD_STATS_GAUGE_PTR(flow_category_legal_count)},
+    {"Environmental_Services", INFLUXD_STATS_GAUGE_PTR(flow_category_envsrv_count)},
+    {"Culture", INFLUXD_STATS_GAUGE_PTR(flow_category_culture_count)},
+    {"Housing", INFLUXD_STATS_GAUGE_PTR(flow_category_housing_count)},
+    {"Telecommunication", INFLUXD_STATS_GAUGE_PTR(flow_category_telecom_count)},
+    {"Transportation", INFLUXD_STATS_GAUGE_PTR(flow_category_transport_count)},
+    {"Design", INFLUXD_STATS_GAUGE_PTR(flow_category_design_count)},
+    {"Employment", INFLUXD_STATS_GAUGE_PTR(flow_category_employ_count)},
+    {"Events", INFLUXD_STATS_GAUGE_PTR(flow_category_events_count)},
+    {"Weather", INFLUXD_STATS_GAUGE_PTR(flow_category_weather_count)},
+    {"Lifestyle", INFLUXD_STATS_GAUGE_PTR(flow_category_lifestyle_count)},
+    {"Real_Estate", INFLUXD_STATS_GAUGE_PTR(flow_category_real_count)},
+    {"Security", INFLUXD_STATS_GAUGE_PTR(flow_category_security_count)},
+    {"Environment", INFLUXD_STATS_GAUGE_PTR(flow_category_env_count)},
+    {"Hobby", INFLUXD_STATS_GAUGE_PTR(flow_category_hobby_count)},
+    {"Computer_Science", INFLUXD_STATS_GAUGE_PTR(flow_category_comp_count)},
+    {"Construction", INFLUXD_STATS_GAUGE_PTR(flow_category_const_count)},
+    {"Engineering", INFLUXD_STATS_GAUGE_PTR(flow_category_eng_count)},
+    {"Religion", INFLUXD_STATS_GAUGE_PTR(flow_category_reli_count)},
+    {"Entertainment", INFLUXD_STATS_GAUGE_PTR(flow_category_enter_count)},
+    {"Agriculture", INFLUXD_STATS_GAUGE_PTR(flow_category_agri_count)},
+    {"Technology", INFLUXD_STATS_GAUGE_PTR(flow_category_tech_count)},
+    {"Beauty", INFLUXD_STATS_GAUGE_PTR(flow_category_beauty_count)},
+    {"History", INFLUXD_STATS_GAUGE_PTR(flow_category_history_count)},
+    {"Politics", INFLUXD_STATS_GAUGE_PTR(flow_category_polit_count)},
+    {"Vehicles", INFLUXD_STATS_GAUGE_PTR(flow_category_vehi_count)},
     {NULL, INFLUXD_STATS_GAUGE_PTR(flow_category_unknown_count)}};
 
 static struct global_map const confidence_map[] = {
@@ -472,61 +577,130 @@ static int serialize_influx_line(char * buf, size_t siz)
                      INFLUXDB_VALUE_GAUGE(flow_breed_unknown_count));
     CHECK_SNPRINTF_RET(bytes);
 
-    bytes = snprintf(buf,
-                     siz,
-                     "%s " INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
-                         INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
-                             INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
-                                 INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
-                                     INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
-                                         INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
-                                             INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
-                                                 INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
-                                                     INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
-                                                         INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT_END(),
+    bytes = snprintf(
+        buf,
+        siz,
+        "%s " INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
+            INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
+                INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
+                    INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
+                        INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
+                            INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
+                                INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
+                                    INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
+                                        INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
+                                            INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
+                                                INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
+                                                    INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
+                                                        INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
+                                                            INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
+                                                                INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
+                                                                    INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
+                                                                        INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
+                                                                            INFLUXDB_FORMAT() INFLUXDB_FORMAT()
+                                                                                INFLUXDB_FORMAT() INFLUXDB_FORMAT()
+                                                                                    INFLUXDB_FORMAT() INFLUXDB_FORMAT()
+                                                                                        INFLUXDB_FORMAT() INFLUXDB_FORMAT()
+                                                                                            INFLUXDB_FORMAT() INFLUXDB_FORMAT()
+                                                                                                INFLUXDB_FORMAT() INFLUXDB_FORMAT()
+                                                                                                    INFLUXDB_FORMAT()
+                                                                                                        INFLUXDB_FORMAT()
+                                                                                                            INFLUXDB_FORMAT()
+                                                                                                                INFLUXDB_FORMAT()
+                                                                                                                    INFLUXDB_FORMAT_END(),
 
-                     "category",
-                     INFLUXDB_VALUE_GAUGE(flow_category_unspecified_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_media_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_vpn_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_email_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_data_transfer_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_web_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_social_network_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_download_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_game_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_chat_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_voip_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_database_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_remote_access_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_cloud_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_network_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_collaborative_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_rpc_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_streaming_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_system_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_software_update_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_music_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_video_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_shopping_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_productivity_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_file_sharing_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_conn_check_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_iot_scada_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_virt_assistant_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_cybersecurity_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_adult_content_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_mining_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_malware_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_advertisment_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_banned_site_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_site_unavail_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_allowed_site_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_antimalware_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_crypto_currency_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_gambling_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_health_count),
-                     INFLUXDB_VALUE_GAUGE(flow_category_unknown_count));
+        "category",
+        INFLUXDB_VALUE_GAUGE(flow_category_unspecified_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_media_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_vpn_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_email_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_data_transfer_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_web_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_social_network_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_download_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_game_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_chat_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_voip_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_database_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_remote_access_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_cloud_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_network_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_collaborative_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_rpc_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_streaming_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_system_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_software_update_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_music_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_video_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_shopping_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_productivity_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_file_sharing_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_conn_check_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_iot_scada_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_virt_assistant_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_cybersecurity_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_adult_content_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_mining_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_malware_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_advertisment_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_banned_site_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_site_unavail_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_allowed_site_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_antimalware_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_crypto_currency_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_gambling_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_health_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_ai_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_finance_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_news_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_sport_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_business_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_internet_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_blockchain_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_blog_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_gov_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_edu_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_cdn_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_hwsw_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_dating_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_travel_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_food_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_bots_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_scanners_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_hosting_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_art_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_fashion_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_books_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_science_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_maps_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_login_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_legal_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_envsrv_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_culture_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_housing_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_telecom_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_transport_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_design_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_employ_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_events_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_weather_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_lifestyle_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_real_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_security_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_env_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_hobby_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_comp_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_const_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_eng_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_reli_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_enter_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_agri_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_tech_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_beauty_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_history_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_polit_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_vehi_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_unknown_count));
     CHECK_SNPRINTF_RET(bytes);
 
     bytes = snprintf(buf,

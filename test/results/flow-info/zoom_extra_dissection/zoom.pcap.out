@@ -38,7 +38,6 @@
          detected: [....13] [ip4][..udp] [..192.168.1.117][23903] -> [..162.255.38.14][.3478] [STUN.Zoom][Zoom][Video][Acceptable][]
               new: [....14] [ip4][..udp] [..192.168.1.117][23903] -> [..162.255.38.14][.3479]
          detected: [....14] [ip4][..udp] [..192.168.1.117][23903] -> [..162.255.38.14][.3479] [STUN.Zoom][Zoom][Video][Acceptable][]
-                   RISK: Known Proto on Non Std Port
               new: [....15] [ip4][..tcp] [..192.168.1.117][53867] -> [..104.199.65.42][...80] [MIDSTREAM]
               new: [....16] [ip4][..tcp] [..192.168.1.117][53872] -> [..35.186.224.53][..443] [MIDSTREAM]
          detected: [....16] [ip4][..tcp] [..192.168.1.117][53872] -> [..35.186.224.53][..443] [TLS][GoogleCloud][Web][Safe]
@@ -180,7 +179,6 @@
              idle: [....13] [ip4][..udp] [..192.168.1.117][23903] -> [..162.255.38.14][.3478] [STUN.Zoom][Zoom][Video][Acceptable]
              idle: [....12] [ip4][..udp] [..192.168.1.117][23903] -> [..162.255.37.14][.3478] [STUN.Zoom][Zoom][Video][Acceptable]
              idle: [....14] [ip4][..udp] [..192.168.1.117][23903] -> [..162.255.38.14][.3479] [STUN.Zoom][Zoom][Video][Acceptable]
-                   RISK: Known Proto on Non Std Port
              idle: [....22] [ip4][..udp] [..192.168.1.117][57621] -> [..192.168.1.255][57621] [Spotify][Unknown][Music][Fun]
               end: [....25] [ip4][..tcp] [..192.168.1.117][54867] -> [.213.19.144.105][..443] [TLS.Zoom][Zoom][Video][Acceptable]
                    RISK: TLS (probably) Not Carrying HTTPS

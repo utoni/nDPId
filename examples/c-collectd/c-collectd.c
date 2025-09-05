@@ -177,6 +177,56 @@ static struct
         uint64_t flow_category_crypto_currency_count;
         uint64_t flow_category_gambling_count;
         uint64_t flow_category_health_count;
+        uint64_t flow_category_ai_count;
+        uint64_t flow_category_finance_count;
+        uint64_t flow_category_news_count;
+        uint64_t flow_category_sport_count;
+        uint64_t flow_category_business_count;
+        uint64_t flow_category_internet_count;
+        uint64_t flow_category_blockchain_count;
+        uint64_t flow_category_blog_count;
+        uint64_t flow_category_gov_count;
+        uint64_t flow_category_edu_count;
+        uint64_t flow_category_cdn_count;
+        uint64_t flow_category_hwsw_count;
+        uint64_t flow_category_dating_count;
+        uint64_t flow_category_travel_count;
+        uint64_t flow_category_food_count;
+        uint64_t flow_category_bots_count;
+        uint64_t flow_category_scanners_count;
+        uint64_t flow_category_hosting_count;
+        uint64_t flow_category_art_count;
+        uint64_t flow_category_fashion_count;
+        uint64_t flow_category_books_count;
+        uint64_t flow_category_science_count;
+        uint64_t flow_category_maps_count;
+        uint64_t flow_category_login_count;
+        uint64_t flow_category_legal_count;
+        uint64_t flow_category_envsrv_count;
+        uint64_t flow_category_culture_count;
+        uint64_t flow_category_housing_count;
+        uint64_t flow_category_telecom_count;
+        uint64_t flow_category_transport_count;
+        uint64_t flow_category_design_count;
+        uint64_t flow_category_employ_count;
+        uint64_t flow_category_events_count;
+        uint64_t flow_category_weather_count;
+        uint64_t flow_category_lifestyle_count;
+        uint64_t flow_category_real_count;
+        uint64_t flow_category_security_count;
+        uint64_t flow_category_env_count;
+        uint64_t flow_category_hobby_count;
+        uint64_t flow_category_comp_count;
+        uint64_t flow_category_const_count;
+        uint64_t flow_category_eng_count;
+        uint64_t flow_category_reli_count;
+        uint64_t flow_category_enter_count;
+        uint64_t flow_category_agri_count;
+        uint64_t flow_category_tech_count;
+        uint64_t flow_category_beauty_count;
+        uint64_t flow_category_history_count;
+        uint64_t flow_category_polit_count;
+        uint64_t flow_category_vehi_count;
         uint64_t flow_category_unknown_count;
 
         uint64_t flow_confidence_by_port;
@@ -227,10 +277,15 @@ struct global_map
     };
 };
 
-#define COLLECTD_STATS_COUNTER_PTR(member) {.global_stat_inc = &(collectd_statistics.counters.member), NULL}
+#define COLLECTD_STATS_COUNTER_PTR(member)                                                                             \
+    {                                                                                                                  \
+        .global_stat_inc = &(collectd_statistics.counters.member), NULL                                                \
+    }
 #define COLLECTD_STATS_GAUGE_PTR(member)                                                                               \
-    {.global_stat_inc = &(collectd_statistics.gauges[0].member),                                                       \
-     .global_stat_dec = &(collectd_statistics.gauges[1].member)}
+    {                                                                                                                  \
+        .global_stat_inc = &(collectd_statistics.gauges[0].member),                                                    \
+        .global_stat_dec = &(collectd_statistics.gauges[1].member)                                                     \
+    }
 #define COLLECTD_STATS_COUNTER_INC(member) (collectd_statistics.counters.member++)
 #define COLLECTD_STATS_GAUGE_RES(member) (collectd_statistics.gauges[0].member--)
 #define COLLECTD_STATS_GAUGE_INC(member) (collectd_statistics.gauges[0].member++)
@@ -283,10 +338,9 @@ static struct global_map const breeds_map[] = {{"Safe", COLLECTD_STATS_GAUGE_PTR
                                                {"Acceptable", COLLECTD_STATS_GAUGE_PTR(flow_breed_acceptable_count)},
                                                {"Fun", COLLECTD_STATS_GAUGE_PTR(flow_breed_fun_count)},
                                                {"Unsafe", COLLECTD_STATS_GAUGE_PTR(flow_breed_unsafe_count)},
-                                               {"Potentially Dangerous",
+                                               {"Potentially_Dangerous",
                                                 COLLECTD_STATS_GAUGE_PTR(flow_breed_potentially_dangerous_count)},
-                                               {"Tracker\\/Ads",
-                                                COLLECTD_STATS_GAUGE_PTR(flow_breed_tracker_ads_count)},
+                                               {"Tracker_Ads", COLLECTD_STATS_GAUGE_PTR(flow_breed_tracker_ads_count)},
                                                {"Dangerous", COLLECTD_STATS_GAUGE_PTR(flow_breed_dangerous_count)},
                                                {"Unrated", COLLECTD_STATS_GAUGE_PTR(flow_breed_unrated_count)},
                                                {NULL, COLLECTD_STATS_GAUGE_PTR(flow_breed_unknown_count)}};
@@ -332,6 +386,56 @@ static struct global_map const categories_map[] = {
     {"Crypto_Currency", COLLECTD_STATS_GAUGE_PTR(flow_category_crypto_currency_count)},
     {"Gambling", COLLECTD_STATS_GAUGE_PTR(flow_category_gambling_count)},
     {"Health", COLLECTD_STATS_GAUGE_PTR(flow_category_health_count)},
+    {"ArtifIntelligence", COLLECTD_STATS_GAUGE_PTR(flow_category_ai_count)},
+    {"Finance", COLLECTD_STATS_GAUGE_PTR(flow_category_finance_count)},
+    {"News", COLLECTD_STATS_GAUGE_PTR(flow_category_news_count)},
+    {"Sport", COLLECTD_STATS_GAUGE_PTR(flow_category_sport_count)},
+    {"Business", COLLECTD_STATS_GAUGE_PTR(flow_category_business_count)},
+    {"Internet", COLLECTD_STATS_GAUGE_PTR(flow_category_internet_count)},
+    {"Blockchain_Crypto", COLLECTD_STATS_GAUGE_PTR(flow_category_blockchain_count)},
+    {"Blog_Forum", COLLECTD_STATS_GAUGE_PTR(flow_category_blog_count)},
+    {"Government", COLLECTD_STATS_GAUGE_PTR(flow_category_gov_count)},
+    {"Education", COLLECTD_STATS_GAUGE_PTR(flow_category_edu_count)},
+    {"CDN_Proxy", COLLECTD_STATS_GAUGE_PTR(flow_category_cdn_count)},
+    {"Hw_Sw", COLLECTD_STATS_GAUGE_PTR(flow_category_hwsw_count)},
+    {"Dating", COLLECTD_STATS_GAUGE_PTR(flow_category_dating_count)},
+    {"Travel", COLLECTD_STATS_GAUGE_PTR(flow_category_travel_count)},
+    {"Food", COLLECTD_STATS_GAUGE_PTR(flow_category_food_count)},
+    {"Bots", COLLECTD_STATS_GAUGE_PTR(flow_category_bots_count)},
+    {"Scanners", COLLECTD_STATS_GAUGE_PTR(flow_category_scanners_count)},
+    {"Hosting", COLLECTD_STATS_GAUGE_PTR(flow_category_hosting_count)},
+    {"Art", COLLECTD_STATS_GAUGE_PTR(flow_category_art_count)},
+    {"Fashion", COLLECTD_STATS_GAUGE_PTR(flow_category_fashion_count)},
+    {"Books", COLLECTD_STATS_GAUGE_PTR(flow_category_books_count)},
+    {"Science", COLLECTD_STATS_GAUGE_PTR(flow_category_science_count)},
+    {"Maps_Navigation", COLLECTD_STATS_GAUGE_PTR(flow_category_maps_count)},
+    {"Login_Portal", COLLECTD_STATS_GAUGE_PTR(flow_category_login_count)},
+    {"Legal", COLLECTD_STATS_GAUGE_PTR(flow_category_legal_count)},
+    {"Environmental_Services", COLLECTD_STATS_GAUGE_PTR(flow_category_envsrv_count)},
+    {"Culture", COLLECTD_STATS_GAUGE_PTR(flow_category_culture_count)},
+    {"Housing", COLLECTD_STATS_GAUGE_PTR(flow_category_housing_count)},
+    {"Telecommunication", COLLECTD_STATS_GAUGE_PTR(flow_category_telecom_count)},
+    {"Transportation", COLLECTD_STATS_GAUGE_PTR(flow_category_transport_count)},
+    {"Design", COLLECTD_STATS_GAUGE_PTR(flow_category_design_count)},
+    {"Employment", COLLECTD_STATS_GAUGE_PTR(flow_category_employ_count)},
+    {"Events", COLLECTD_STATS_GAUGE_PTR(flow_category_events_count)},
+    {"Weather", COLLECTD_STATS_GAUGE_PTR(flow_category_weather_count)},
+    {"Lifestyle", COLLECTD_STATS_GAUGE_PTR(flow_category_lifestyle_count)},
+    {"Real_Estate", COLLECTD_STATS_GAUGE_PTR(flow_category_real_count)},
+    {"Security", COLLECTD_STATS_GAUGE_PTR(flow_category_security_count)},
+    {"Environment", COLLECTD_STATS_GAUGE_PTR(flow_category_env_count)},
+    {"Hobby", COLLECTD_STATS_GAUGE_PTR(flow_category_hobby_count)},
+    {"Computer_Science", COLLECTD_STATS_GAUGE_PTR(flow_category_comp_count)},
+    {"Construction", COLLECTD_STATS_GAUGE_PTR(flow_category_const_count)},
+    {"Engineering", COLLECTD_STATS_GAUGE_PTR(flow_category_eng_count)},
+    {"Religion", COLLECTD_STATS_GAUGE_PTR(flow_category_reli_count)},
+    {"Entertainment", COLLECTD_STATS_GAUGE_PTR(flow_category_enter_count)},
+    {"Agriculture", COLLECTD_STATS_GAUGE_PTR(flow_category_agri_count)},
+    {"Technology", COLLECTD_STATS_GAUGE_PTR(flow_category_tech_count)},
+    {"Beauty", COLLECTD_STATS_GAUGE_PTR(flow_category_beauty_count)},
+    {"History", COLLECTD_STATS_GAUGE_PTR(flow_category_history_count)},
+    {"Politics", COLLECTD_STATS_GAUGE_PTR(flow_category_polit_count)},
+    {"Vehicles", COLLECTD_STATS_GAUGE_PTR(flow_category_vehi_count)},
     {NULL, COLLECTD_STATS_GAUGE_PTR(flow_category_unknown_count)}};
 
 static struct global_map const confidence_map[] = {
@@ -638,63 +742,132 @@ static void print_collectd_exec_output(void)
            COLLECTD_GAUGE_N(flow_breed_unrated_count),
            COLLECTD_GAUGE_N(flow_breed_unknown_count));
 
-    printf(COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
-               COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
-                   COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
-                       COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
-                           COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
-                               COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
-                                   COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
-                                       COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
-                                           COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
-                                               COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
-                                                   COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
-                                                       COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
-                                                           COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
-                                                               COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
-                                                                   COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT(),
+    printf(
+        COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
+            COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
+                COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
+                    COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
+                        COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
+                            COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
+                                COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
+                                    COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
+                                        COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
+                                            COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
+                                                COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
+                                                    COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
+                                                        COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
+                                                            COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
+                                                                COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
+                                                                    COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
+                                                                        COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
+                                                                            COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
+                                                                                COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
+                                                                                    COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
+                                                                                        COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
+                                                                                            COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
+                                                                                                COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
+                                                                                                    COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
+                                                                                                        COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
+                                                                                                            COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
+                                                                                                                COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
+                                                                                                                    COLLECTD_GAUGE_N_FORMAT()
+                                                                                                                        COLLECTD_GAUGE_N_FORMAT()
+                                                                                                                            COLLECTD_GAUGE_N_FORMAT()
+                                                                                                                                COLLECTD_GAUGE_N_FORMAT()
+                                                                                                                                    COLLECTD_GAUGE_N_FORMAT()
+                                                                                                                                        COLLECTD_GAUGE_N_FORMAT(),
 
-           COLLECTD_GAUGE_N(flow_category_unspecified_count),
-           COLLECTD_GAUGE_N(flow_category_media_count),
-           COLLECTD_GAUGE_N(flow_category_vpn_count),
-           COLLECTD_GAUGE_N(flow_category_email_count),
-           COLLECTD_GAUGE_N(flow_category_data_transfer_count),
-           COLLECTD_GAUGE_N(flow_category_web_count),
-           COLLECTD_GAUGE_N(flow_category_social_network_count),
-           COLLECTD_GAUGE_N(flow_category_download_count),
-           COLLECTD_GAUGE_N(flow_category_game_count),
-           COLLECTD_GAUGE_N(flow_category_chat_count),
-           COLLECTD_GAUGE_N(flow_category_voip_count),
-           COLLECTD_GAUGE_N(flow_category_database_count),
-           COLLECTD_GAUGE_N(flow_category_remote_access_count),
-           COLLECTD_GAUGE_N(flow_category_cloud_count),
-           COLLECTD_GAUGE_N(flow_category_network_count),
-           COLLECTD_GAUGE_N(flow_category_collaborative_count),
-           COLLECTD_GAUGE_N(flow_category_rpc_count),
-           COLLECTD_GAUGE_N(flow_category_streaming_count),
-           COLLECTD_GAUGE_N(flow_category_system_count),
-           COLLECTD_GAUGE_N(flow_category_software_update_count),
-           COLLECTD_GAUGE_N(flow_category_music_count),
-           COLLECTD_GAUGE_N(flow_category_video_count),
-           COLLECTD_GAUGE_N(flow_category_shopping_count),
-           COLLECTD_GAUGE_N(flow_category_productivity_count),
-           COLLECTD_GAUGE_N(flow_category_file_sharing_count),
-           COLLECTD_GAUGE_N(flow_category_conn_check_count),
-           COLLECTD_GAUGE_N(flow_category_iot_scada_count),
-           COLLECTD_GAUGE_N(flow_category_virt_assistant_count),
-           COLLECTD_GAUGE_N(flow_category_cybersecurity_count),
-           COLLECTD_GAUGE_N(flow_category_adult_content_count),
-           COLLECTD_GAUGE_N(flow_category_mining_count),
-           COLLECTD_GAUGE_N(flow_category_malware_count),
-           COLLECTD_GAUGE_N(flow_category_advertisment_count),
-           COLLECTD_GAUGE_N(flow_category_banned_site_count),
-           COLLECTD_GAUGE_N(flow_category_site_unavail_count),
-           COLLECTD_GAUGE_N(flow_category_allowed_site_count),
-           COLLECTD_GAUGE_N(flow_category_antimalware_count),
-           COLLECTD_GAUGE_N(flow_category_crypto_currency_count),
-           COLLECTD_GAUGE_N(flow_category_gambling_count),
-           COLLECTD_GAUGE_N(flow_category_health_count),
-           COLLECTD_GAUGE_N(flow_category_unknown_count));
+        COLLECTD_GAUGE_N(flow_category_unspecified_count),
+        COLLECTD_GAUGE_N(flow_category_media_count),
+        COLLECTD_GAUGE_N(flow_category_vpn_count),
+        COLLECTD_GAUGE_N(flow_category_email_count),
+        COLLECTD_GAUGE_N(flow_category_data_transfer_count),
+        COLLECTD_GAUGE_N(flow_category_web_count),
+        COLLECTD_GAUGE_N(flow_category_social_network_count),
+        COLLECTD_GAUGE_N(flow_category_download_count),
+        COLLECTD_GAUGE_N(flow_category_game_count),
+        COLLECTD_GAUGE_N(flow_category_chat_count),
+        COLLECTD_GAUGE_N(flow_category_voip_count),
+        COLLECTD_GAUGE_N(flow_category_database_count),
+        COLLECTD_GAUGE_N(flow_category_remote_access_count),
+        COLLECTD_GAUGE_N(flow_category_cloud_count),
+        COLLECTD_GAUGE_N(flow_category_network_count),
+        COLLECTD_GAUGE_N(flow_category_collaborative_count),
+        COLLECTD_GAUGE_N(flow_category_rpc_count),
+        COLLECTD_GAUGE_N(flow_category_streaming_count),
+        COLLECTD_GAUGE_N(flow_category_system_count),
+        COLLECTD_GAUGE_N(flow_category_software_update_count),
+        COLLECTD_GAUGE_N(flow_category_music_count),
+        COLLECTD_GAUGE_N(flow_category_video_count),
+        COLLECTD_GAUGE_N(flow_category_shopping_count),
+        COLLECTD_GAUGE_N(flow_category_productivity_count),
+        COLLECTD_GAUGE_N(flow_category_file_sharing_count),
+        COLLECTD_GAUGE_N(flow_category_conn_check_count),
+        COLLECTD_GAUGE_N(flow_category_iot_scada_count),
+        COLLECTD_GAUGE_N(flow_category_virt_assistant_count),
+        COLLECTD_GAUGE_N(flow_category_cybersecurity_count),
+        COLLECTD_GAUGE_N(flow_category_adult_content_count),
+        COLLECTD_GAUGE_N(flow_category_mining_count),
+        COLLECTD_GAUGE_N(flow_category_malware_count),
+        COLLECTD_GAUGE_N(flow_category_advertisment_count),
+        COLLECTD_GAUGE_N(flow_category_banned_site_count),
+        COLLECTD_GAUGE_N(flow_category_site_unavail_count),
+        COLLECTD_GAUGE_N(flow_category_allowed_site_count),
+        COLLECTD_GAUGE_N(flow_category_antimalware_count),
+        COLLECTD_GAUGE_N(flow_category_crypto_currency_count),
+        COLLECTD_GAUGE_N(flow_category_gambling_count),
+        COLLECTD_GAUGE_N(flow_category_health_count),
+        COLLECTD_GAUGE_N(flow_category_ai_count),
+        COLLECTD_GAUGE_N(flow_category_finance_count),
+        COLLECTD_GAUGE_N(flow_category_news_count),
+        COLLECTD_GAUGE_N(flow_category_sport_count),
+        COLLECTD_GAUGE_N(flow_category_business_count),
+        COLLECTD_GAUGE_N(flow_category_internet_count),
+        COLLECTD_GAUGE_N(flow_category_blockchain_count),
+        COLLECTD_GAUGE_N(flow_category_blog_count),
+        COLLECTD_GAUGE_N(flow_category_gov_count),
+        COLLECTD_GAUGE_N(flow_category_edu_count),
+        COLLECTD_GAUGE_N(flow_category_cdn_count),
+        COLLECTD_GAUGE_N(flow_category_hwsw_count),
+        COLLECTD_GAUGE_N(flow_category_dating_count),
+        COLLECTD_GAUGE_N(flow_category_travel_count),
+        COLLECTD_GAUGE_N(flow_category_food_count),
+        COLLECTD_GAUGE_N(flow_category_bots_count),
+        COLLECTD_GAUGE_N(flow_category_scanners_count),
+        COLLECTD_GAUGE_N(flow_category_hosting_count),
+        COLLECTD_GAUGE_N(flow_category_art_count),
+        COLLECTD_GAUGE_N(flow_category_fashion_count),
+        COLLECTD_GAUGE_N(flow_category_books_count),
+        COLLECTD_GAUGE_N(flow_category_science_count),
+        COLLECTD_GAUGE_N(flow_category_maps_count),
+        COLLECTD_GAUGE_N(flow_category_login_count),
+        COLLECTD_GAUGE_N(flow_category_legal_count),
+        COLLECTD_GAUGE_N(flow_category_envsrv_count),
+        COLLECTD_GAUGE_N(flow_category_culture_count),
+        COLLECTD_GAUGE_N(flow_category_housing_count),
+        COLLECTD_GAUGE_N(flow_category_telecom_count),
+        COLLECTD_GAUGE_N(flow_category_transport_count),
+        COLLECTD_GAUGE_N(flow_category_design_count),
+        COLLECTD_GAUGE_N(flow_category_employ_count),
+        COLLECTD_GAUGE_N(flow_category_events_count),
+        COLLECTD_GAUGE_N(flow_category_weather_count),
+        COLLECTD_GAUGE_N(flow_category_lifestyle_count),
+        COLLECTD_GAUGE_N(flow_category_real_count),
+        COLLECTD_GAUGE_N(flow_category_security_count),
+        COLLECTD_GAUGE_N(flow_category_env_count),
+        COLLECTD_GAUGE_N(flow_category_hobby_count),
+        COLLECTD_GAUGE_N(flow_category_comp_count),
+        COLLECTD_GAUGE_N(flow_category_const_count),
+        COLLECTD_GAUGE_N(flow_category_eng_count),
+        COLLECTD_GAUGE_N(flow_category_reli_count),
+        COLLECTD_GAUGE_N(flow_category_enter_count),
+        COLLECTD_GAUGE_N(flow_category_agri_count),
+        COLLECTD_GAUGE_N(flow_category_tech_count),
+        COLLECTD_GAUGE_N(flow_category_beauty_count),
+        COLLECTD_GAUGE_N(flow_category_history_count),
+        COLLECTD_GAUGE_N(flow_category_polit_count),
+        COLLECTD_GAUGE_N(flow_category_vehi_count),
+        COLLECTD_GAUGE_N(flow_category_unknown_count));
 
     printf(COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
                COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()

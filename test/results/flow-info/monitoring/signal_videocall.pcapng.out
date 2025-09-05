@@ -10,7 +10,6 @@
  detection-update: [.....1] [ip4][..udp] [..192.168.12.67][47926] -> [.35.216.234.234][.3478] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable][signal.org]
               new: [.....3] [ip4][..udp] [..192.168.12.67][47926] -> [.35.219.252.146][56377]
          detected: [.....3] [ip4][..udp] [..192.168.12.67][47926] -> [.35.219.252.146][56377] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable][]
-                   RISK: Known Proto on Non Std Port
           analyse: [.....3] [ip4][..udp] [..192.168.12.67][47926] -> [.35.219.252.146][56377] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........:      0.008|     2.449|     0.473|     0.711|       505100.075|    3.700]
@@ -22,7 +21,6 @@
                    [PKTLENS.....: 124,92,132,132,92,92,124,92,124,92,124,92,124,92,124,92,56,84,124,92,84,56,124,92,124,92,124,92,56,124,92,124]
                    [ENTROPIES...: 6.0,5.9,5.7,5.9,5.7,5.9,6.0,5.8,6.0,5.7,5.9,5.7,5.9,5.8,5.9,5.8,5.2,5.8,5.9,5.8,5.7,5.1,5.9,5.9,5.8,5.8,5.9,5.7,5.1,5.8,5.8,6.0]
              idle: [.....3] [ip4][..udp] [..192.168.12.67][47926] -> [.35.219.252.146][56377] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable]
-                   RISK: Known Proto on Non Std Port
              idle: [.....1] [ip4][..udp] [..192.168.12.67][47926] -> [.35.216.234.234][.3478] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable][signal.org]
              idle: [.....2] [ip4][..udp] [..192.168.12.67][47926] -> [.35.219.252.146][.3478] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable][signal.org]
      DAEMON-EVENT: shutdown

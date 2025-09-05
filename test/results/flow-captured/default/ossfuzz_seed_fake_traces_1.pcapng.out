@@ -2,7 +2,7 @@ Flow 1 not-detected: udp 127.0.0.1:1 -> 127.0.0.1:2
 Flow 2 risky: udp 127.0.0.1:1119 -> 127.0.0.1:1120
 Flow 7 not-detected: udp 127.0.0.1:100 -> 127.0.0.1:200
 Flow 8 not-detected: udp 127.0.0.1:17788 -> 127.0.0.1:17788
-Flow 9 risky: tcp 192.168.1.128:1 -> 1.2.3.4:10
+Flow 9 not-detected: tcp 192.168.1.128:1 -> 1.2.3.4:10
 Flow 9 midstream: tcp 192.168.1.128:1 -> 1.2.3.4:10
-Flow 10 risky: tcp 192.168.1.128:1 -> 1.2.3.4:11
+Flow 10 not-detected: tcp 192.168.1.128:1 -> 1.2.3.4:11
 Flow 10 midstream: tcp 192.168.1.128:1 -> 1.2.3.4:11

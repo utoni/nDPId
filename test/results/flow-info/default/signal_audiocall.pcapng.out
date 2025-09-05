@@ -10,10 +10,8 @@
  detection-update: [.....1] [ip4][..udp] [..192.168.12.67][45419] -> [.35.216.234.234][.3478] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable][signal.org]
               new: [.....3] [ip4][..udp] [..192.168.12.67][45419] -> [..35.219.226.11][12261]
          detected: [.....3] [ip4][..udp] [..192.168.12.67][45419] -> [..35.219.226.11][12261] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable][]
-                   RISK: Known Proto on Non Std Port
               new: [.....4] [ip4][..udp] [..192.168.12.67][45419] -> [..35.219.226.11][54116]
          detected: [.....4] [ip4][..udp] [..192.168.12.67][45419] -> [..35.219.226.11][54116] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable][]
-                   RISK: Known Proto on Non Std Port
           analyse: [.....2] [ip4][..udp] [..192.168.12.67][45419] -> [.35.219.252.146][.3478] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable][signal.org]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     1.009|     0.193|     0.329|       108144.574|    3.400]
@@ -35,9 +33,7 @@
                    [PKTLENS.....: 124,124,92,132,124,92,92,124,92,92,124,92,132,92,124,92,56,84,84,56,124,92,124,92,124,56,92,124,92,84,124,92]
                    [ENTROPIES...: 6.0,5.9,5.9,5.8,6.0,5.8,5.8,5.9,5.8,5.9,5.9,5.8,5.7,5.8,5.9,5.7,5.2,5.9,5.7,5.2,5.8,5.9,5.9,5.8,5.9,5.2,5.8,6.0,5.7,5.8,5.9,5.8]
              idle: [.....4] [ip4][..udp] [..192.168.12.67][45419] -> [..35.219.226.11][54116] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable]
-                   RISK: Known Proto on Non Std Port
              idle: [.....1] [ip4][..udp] [..192.168.12.67][45419] -> [.35.216.234.234][.3478] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable][signal.org]
              idle: [.....2] [ip4][..udp] [..192.168.12.67][45419] -> [.35.219.252.146][.3478] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable][signal.org]
              idle: [.....3] [ip4][..udp] [..192.168.12.67][45419] -> [..35.219.226.11][12261] [STUN.SignalVoip][GoogleCloud][VoIP][Acceptable]
-                   RISK: Known Proto on Non Std Port
      DAEMON-EVENT: shutdown

@@ -54,9 +54,24 @@
                    RISK: Desktop/File Sharing
  detection-update: [.....3][..77] [ip4][..tcp] [..91.238.181.21][35888] -> [....89.31.79.12][.3389] [TLS.RDP][Unknown][RemoteAccess][Acceptable][]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Desktop/File Sharing, TLS Susp Extn, Non-Printable/Invalid Chars Detected, Possible Exploit Attempt
-             idle: [.....3][..77] [ip4][..tcp] [..91.238.181.21][35888] -> [....89.31.79.12][.3389] [TLS.RDP][Unknown][RemoteAccess][Acceptable]
-                   RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Desktop/File Sharing, TLS Susp Extn, Non-Printable/Invalid Chars Detected, Possible Exploit Attempt
      not-detected: [.....2] [ip4][..udp] [.192.168.12.156][37649] -> [..57.128.172.97][.9981] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Susp Entropy
              idle: [.....2] [ip4][..udp] [.192.168.12.156][37649] -> [..57.128.172.97][.9981]
+     DAEMON-EVENT: [Processed: 41 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 1 / 3|skipped: 0|!detected: 1|guessed: 0|detection-updates: 1|updates: 0]
+              new: [.....4] [ip4][..tcp] [....10.17.24.50][.4343] -> [.....20.1.35.76][...25]
+         detected: [.....4] [ip4][..tcp] [....10.17.24.50][.4343] -> [.....20.1.35.76][...25] [SMTP][Azure][Email][Acceptable][server-1402abab.example.int]
+          analyse: [.....4] [ip4][..tcp] [....10.17.24.50][.4343] -> [.....20.1.35.76][...25] [SMTP][Azure][Email][Acceptable][server-1402abab.example.int]
+                                         min|       max|       avg|    stddev|         variance|  entropy
+                   [IAT.........:      0.000|<    0.001|<    0.001|<    0.001|<           0.001|    1.900]
+                   [PKTLEN......:     52.000|  1500.000|   613.000|   680.300|       462870.600|    4.100]
+                   [BINS(c->s)..: 6,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,11,0,0]
+                   [BINS(s->c)..: 4,5,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [DIRECTIONS..: 0,1,0,1,0,1,0,1,0,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,1,1,0,1,0,1,0]
+                   [IATS(ms)....: 0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+                   [PKTLENS.....: 56,56,52,138,85,339,85,97,86,87,58,98,1500,1500,1500,1500,52,1500,1500,1500,1500,1500,1500,1500,1362,52,98,58,101,52,52,52]
+                   [ENTROPIES...: 4.6,5.1,5.0,5.8,5.6,5.2,5.6,5.5,5.6,5.5,5.1,5.6,5.4,4.7,4.7,4.7,5.0,4.7,4.7,4.7,4.6,4.7,4.7,4.6,4.9,5.0,5.5,5.1,5.5,5.0,5.1,5.0]
+              end: [.....4] [ip4][..tcp] [....10.17.24.50][.4343] -> [.....20.1.35.76][...25] [SMTP][Azure][Email][Acceptable][server-1402abab.example.int]
+             idle: [.....3][..77] [ip4][..tcp] [..91.238.181.21][35888] -> [....89.31.79.12][.3389] [TLS.RDP][Unknown][RemoteAccess][Acceptable]
+                   RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Desktop/File Sharing, TLS Susp Extn, Non-Printable/Invalid Chars Detected, Possible Exploit Attempt
      DAEMON-EVENT: shutdown
