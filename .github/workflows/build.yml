@@ -92,7 +92,7 @@ jobs:
             ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=OFF"
             ndpid_zlib: "-DENABLE_ZLIB=ON"
             ndpid_extras: ""
-            sanitizer: "-DENABLE_SANITIZER=ON" 
+            sanitizer: "-DENABLE_SANITIZER=ON"
             coverage: "-DENABLE_COVERAGE=OFF"
             poll: "-DFORCE_POLL=OFF"
             upload: false
