@@ -138,10 +138,10 @@ struct distributor_return_value
 };
 
 #define TC_INIT(initial, wanted)                                                                                       \
-    {                                                                                                                  \
-        .mutex = PTHREAD_MUTEX_INITIALIZER, .condition = PTHREAD_COND_INITIALIZER, .value = initial,                   \
-        .wanted_value = wanted                                                                                         \
-    }
+    {.mutex = PTHREAD_MUTEX_INITIALIZER,                                                                               \
+     .condition = PTHREAD_COND_INITIALIZER,                                                                            \
+     .value = initial,                                                                                                 \
+     .wanted_value = wanted}
 struct thread_condition
 {
     pthread_mutex_t mutex;
@@ -1539,7 +1539,7 @@ static int nio_selftest()
         goto error;
     }
 
-    int pipefds[2];
+    int pipefds[2] = {-1, -1};
     int rv = pipe(pipefds);
     if (rv < 0)
     {
@@ -1632,9 +1632,13 @@ static int nio_selftest()
     }
 
     nio_free(&io);
+    close(pipefds[0]);
+    close(pipefds[1]);
     return 0;
 error:
     nio_free(&io);
+    close(pipefds[0]);
+    close(pipefds[1]);
     return 1;
 }
 
@@ -1672,7 +1676,7 @@ int main(int argc, char ** argv)
         retval += base64_selftest();
         retval += nio_selftest();
 
-        logger(1, "Selftest returned: %d", retval);
+        logger(1, "Selftest returned: %d%s", retval, (retval == 0 ? " (OK)" : ""));
         return retval;
     }
 

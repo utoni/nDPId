@@ -34,6 +34,9 @@
 
 #include "config.h"
 #include "nDPIsrvd.h"
+#ifdef ENABLE_CRYPTO
+#include "ncrypt.h"
+#endif
 #include "nio.h"
 #ifdef ENABLE_PFRING
 #include "npfring.h"
@@ -307,6 +310,9 @@ struct nDPId_workflow
     uint64_t total_compression_diff;
     uint64_t current_compression_diff;
 #endif
+#ifdef ENABLE_CRYPTO
+    struct ncrypt_entity ncrypt_entity;
+#endif
 
     uint64_t last_scan_time;
     uint64_t last_status_time;
@@ -466,6 +472,9 @@ static MT_VALUE(zlib_compression_diff, uint64_t) = MT_INIT(0);
 static MT_VALUE(zlib_compression_bytes, uint64_t) = MT_INIT(0);
 #endif
 
+#ifdef ENABLE_CRYPTO
+static struct ncrypt_ctx ncrypt_ctx;
+#endif
 static struct
 {
     /* options which are resolved automatically */
@@ -500,6 +509,11 @@ static struct
 #endif
 #ifdef ENABLE_PFRING
     struct cmdarg use_pfring;
+#endif
+#ifdef ENABLE_CRYPTO
+    struct cmdarg client_crt_pem_file;
+    struct cmdarg client_key_pem_file;
+    struct cmdarg server_ca_pem_file;
 #endif
     /* subopts */
     struct cmdarg max_flows_per_thread;
@@ -550,6 +564,11 @@ static struct
 #endif
 #ifdef ENABLE_PFRING
                    .use_pfring = CMDARG_BOOL(0),
+#endif
+#ifdef ENABLE_CRYPTO
+                   .client_crt_pem_file = CMDARG_STR(NULL),
+                   .client_key_pem_file = CMDARG_STR(NULL),
+                   .server_ca_pem_file = CMDARG_STR(NULL),
 #endif
                    .max_flows_per_thread = CMDARG_ULL(nDPId_MAX_FLOWS_PER_THREAD / 2),
                    .max_idle_flows_per_thread = CMDARG_ULL(nDPId_MAX_IDLE_FLOWS_PER_THREAD / 2),
@@ -2501,9 +2520,12 @@ static int connect_to_collector(struct nDPId_reader_thread * const reader_thread
     if (reader_thread->collector_sockfd >= 0)
     {
         close(reader_thread->collector_sockfd);
+#ifdef ENABLE_CRYPTO
+        ncrypt_clear_handshake(&reader_thread->workflow->ncrypt_entity);
+#endif
     }
 
-    int sock_type = (nDPId_options.parsed_collector_address.raw.sa_family == AF_UNIX ? SOCK_STREAM : SOCK_DGRAM);
+    int sock_type = SOCK_STREAM;
     reader_thread->collector_sockfd = socket(nDPId_options.parsed_collector_address.raw.sa_family, sock_type, 0);
     if (reader_thread->collector_sockfd < 0 || set_fd_cloexec(reader_thread->collector_sockfd) < 0)
     {
@@ -2517,7 +2539,10 @@ static int connect_to_collector(struct nDPId_reader_thread * const reader_thread
         return 1;
     }
 
-    if (set_collector_nonblock(reader_thread) != 0)
+    struct timeval sock_read;
+    sock_read.tv_sec = 5;
+    sock_read.tv_usec = 0;
+    if (setsockopt(reader_thread->collector_sockfd, SOL_SOCKET, SO_RCVTIMEO, &sock_read, sizeof(sock_read)) < 0)
     {
         return 1;
     }
@@ -2530,9 +2555,8 @@ static int connect_to_collector(struct nDPId_reader_thread * const reader_thread
         return 1;
     }
 
-    if (shutdown(reader_thread->collector_sockfd, SHUT_RD) != 0)
+    if (set_collector_nonblock(reader_thread) != 0)
     {
-        reader_thread->collector_sock_last_errno = errno;
         return 1;
     }
 
@@ -2583,22 +2607,19 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
 
         if (connect_to_collector(reader_thread) == 0)
         {
-            if (nDPId_options.parsed_collector_address.raw.sa_family == AF_UNIX)
-            {
-                logger(1,
-                       "[%8llu, %zu] Reconnected to nDPIsrvd Collector at %s",
-                       workflow->packets_captured,
-                       reader_thread->array_index,
-                       GET_CMDARG_STR(nDPId_options.collector_address));
-                jsonize_daemon(reader_thread, DAEMON_EVENT_RECONNECT);
-            }
+            logger(1,
+                   "[%8llu, %zu] Reconnected to nDPIsrvd Collector at %s",
+                   workflow->packets_captured,
+                   reader_thread->array_index,
+                   GET_CMDARG_STR(nDPId_options.collector_address));
+            jsonize_daemon(reader_thread, DAEMON_EVENT_RECONNECT);
         }
         else
         {
             if (saved_errno != reader_thread->collector_sock_last_errno)
             {
                 logger(1,
-                       "[%8llu, %zu] Could not connect to nDPIsrvd Collector at %s, will try again later. Error: %s",
+                       "[%8llu, %zu] Could not reconnect to nDPIsrvd Collector at %s, will try again later. Error: %s",
                        workflow->packets_captured,
                        reader_thread->array_index,
                        GET_CMDARG_STR(nDPId_options.collector_address),
@@ -2610,10 +2631,49 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
         }
     }
 
+#ifdef ENABLE_CRYPTO
+    if (IS_CMDARG_SET(nDPId_options.server_ca_pem_file) != 0)
+    {
+        if (ncrypt_handshake_done(&workflow->ncrypt_entity) == 0)
+        {
+            set_collector_block(reader_thread);
+            ncrypt_free_entity(&workflow->ncrypt_entity);
+            int rv = ncrypt_on_connect(&ncrypt_ctx, reader_thread->collector_sockfd, &workflow->ncrypt_entity);
+            if (rv != NCRYPT_SUCCESS)
+            {
+                logger(1,
+                       "[%8llu, %zu] TLS handshake failed with: %d",
+                       workflow->packets_captured,
+                       reader_thread->array_index,
+                       rv);
+                reader_thread->collector_sock_last_errno = EPIPE;
+                return;
+            }
+            ncrypt_set_handshake(&workflow->ncrypt_entity);
+            set_collector_nonblock(reader_thread);
+        }
+    }
+#endif
+
     errno = 0;
+    if (reader_thread->collector_sock_last_errno != 0)
+    {
+        return;
+    }
+
     ssize_t written;
-    if (reader_thread->collector_sock_last_errno == 0 &&
-        (written = write(reader_thread->collector_sockfd, newline_json_msg, s_ret)) != s_ret)
+#ifdef ENABLE_CRYPTO
+    if (IS_CMDARG_SET(nDPId_options.server_ca_pem_file) != 0)
+    {
+        written = ncrypt_write(&workflow->ncrypt_entity, newline_json_msg, s_ret);
+    }
+    else
+#endif
+    {
+        written = write(reader_thread->collector_sockfd, newline_json_msg, s_ret);
+    }
+
+    if (written != s_ret)
     {
         saved_errno = errno;
         if (saved_errno == EPIPE || written == 0)
@@ -2625,24 +2685,29 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
         }
         if (saved_errno != EAGAIN)
         {
-            if (saved_errno == ECONNREFUSED)
-            {
-                logger(1,
-                       "[%8llu, %zu] %s to %s refused by endpoint",
-                       workflow->packets_captured,
-                       reader_thread->array_index,
-                       (nDPId_options.parsed_collector_address.raw.sa_family == AF_UNIX ? "Connection" : "Datagram"),
-                       GET_CMDARG_STR(nDPId_options.collector_address));
-            }
             reader_thread->collector_sock_last_errno = saved_errno;
         }
-        else if (nDPId_options.parsed_collector_address.raw.sa_family == AF_UNIX)
+        else
         {
             size_t pos = (written < 0 ? 0 : written);
             set_collector_block(reader_thread);
-            while ((size_t)(written = write(reader_thread->collector_sockfd, newline_json_msg + pos, s_ret - pos)) !=
-                   s_ret - pos)
+            while (1)
             {
+#ifdef ENABLE_CRYPTO
+                if (IS_CMDARG_SET(nDPId_options.server_ca_pem_file) != 0)
+                {
+                    written = ncrypt_write(&workflow->ncrypt_entity, newline_json_msg + pos, s_ret - pos);
+                }
+                else
+#endif
+                {
+                    written = write(reader_thread->collector_sockfd, newline_json_msg + pos, s_ret - pos);
+                }
+                if ((size_t)written == s_ret - pos)
+                {
+                    break;
+                }
+
                 saved_errno = errno;
                 if (saved_errno == EPIPE || written == 0)
                 {
@@ -4923,6 +4988,7 @@ static void run_capture_loop(struct nDPId_reader_thread * const reader_thread)
 
         sigaddset(&thread_signal_set, SIGINT);
         sigaddset(&thread_signal_set, SIGTERM);
+        sigaddset(&thread_signal_set, SIGPIPE);
         sigaddset(&thread_signal_set, SIGUSR1);
         int signal_fd = signalfd(-1, &thread_signal_set, SFD_NONBLOCK);
         if (signal_fd < 0 || set_fd_cloexec(signal_fd) < 0)
@@ -5042,6 +5108,7 @@ static void run_capture_loop(struct nDPId_reader_thread * const reader_thread)
                     }
                     else
                     {
+                        int silenced = 0;
                         int is_valid_signal = 0;
                         char const * signame = "unknown";
                         switch (fdsi.ssi_signo)
@@ -5056,19 +5123,25 @@ static void run_capture_loop(struct nDPId_reader_thread * const reader_thread)
                                 signame = "SIGTERM";
                                 sighandler(SIGTERM);
                                 break;
+                            case SIGPIPE:
+                                silenced = 1;
+                                break;
                             case SIGUSR1:
                                 is_valid_signal = 1;
                                 signame = "SIGUSR1";
                                 log_all_flows(reader_thread);
                                 break;
                         }
-                        if (is_valid_signal != 0)
+                        if (silenced == 0)
                         {
-                            logger(1, "Received signal %d (%s)", fdsi.ssi_signo, signame);
-                        }
-                        else
-                        {
-                            logger(1, "Received signal %d (%s), ignored", fdsi.ssi_signo, signame);
+                            if (is_valid_signal != 0)
+                            {
+                                logger(1, "Received signal %d (%s)", fdsi.ssi_signo, signame);
+                            }
+                            else
+                            {
+                                logger(1, "Received signal %d (%s), ignored", fdsi.ssi_signo, signame);
+                            }
                         }
                     }
                 }
@@ -5453,6 +5526,14 @@ static void print_usage(char const * const arg0)
         "\t  \tDefault: disabled\n"
         "\t-c\tPath to a UNIX socket (nDPIsrvd Collector) or a custom UDP endpoint.\n"
         "\t  \tDefault: `%s'\n"
+#ifdef ENABLE_CRYPTO
+        "\t-k\tPath to the client certificate file (PEM format)\n"
+        "\t  \tDefault: disabled\n"
+        "\t-K\tPath to the client key file (PEM format)\n"
+        "\t  \tDefault: disabled\n"
+        "\t-F\tPath to the server CA file (PEM format)\n"
+        "\t  \tDefault: disabled\n"
+#endif
 #ifdef ENABLE_EPOLL
         "\t-e\tUse poll() instead of epoll().\n"
         "\t  \tDefault: epoll() on Linux, poll() otherwise\n"
@@ -5571,7 +5652,7 @@ static int nDPId_parse_options(int argc, char ** argv)
 {
     int opt;
 
-    while ((opt = getopt(argc, argv, "f:i:rIEB:tlL:c:edp:u:g:R:P:C:J:S:a:U:Azo:vh")) != -1)
+    while ((opt = getopt(argc, argv, "f:i:rIEB:tlL:c:k:K:F:edp:u:g:R:P:C:J:S:a:U:Azo:vh")) != -1)
     {
         switch (opt)
         {
@@ -5613,6 +5694,30 @@ static int nDPId_parse_options(int argc, char ** argv)
             case 'c':
                 set_cmdarg_string(&nDPId_options.collector_address, optarg);
                 break;
+            case 'k':
+#ifdef ENABLE_CRYPTO
+                set_cmdarg_string(&nDPId_options.client_crt_pem_file, optarg);
+                break;
+#else
+                logger(1, "%s", "nDPId was built w/o OpenSSL/Crypto support");
+                return 1;
+#endif
+            case 'K':
+#ifdef ENABLE_CRYPTO
+                set_cmdarg_string(&nDPId_options.client_key_pem_file, optarg);
+                break;
+#else
+                logger(1, "%s", "nDPId was built w/o OpenSSL/Crypto support");
+                return 1;
+#endif
+            case 'F':
+#ifdef ENABLE_CRYPTO
+                set_cmdarg_string(&nDPId_options.server_ca_pem_file, optarg);
+                break;
+#else
+                logger(1, "%s", "nDPId was built w/o OpenSSL/Crypto support");
+                return 1;
+#endif
             case 'e':
 #ifdef ENABLE_EPOLL
                 set_cmdarg_boolean(&nDPId_options.use_poll, 1);
@@ -5971,6 +6076,30 @@ static int validate_options(void)
     {
         logger_early(1, "%s", "Higher values of max-packets-per-flow-to-send may cause superfluous network usage.");
     }
+#ifdef ENABLE_CRYPTO
+    if ((IS_CMDARG_SET(nDPId_options.client_crt_pem_file) != 0 &&
+         IS_CMDARG_SET(nDPId_options.client_key_pem_file) == 0) ||
+        (IS_CMDARG_SET(nDPId_options.client_crt_pem_file) == 0 &&
+         IS_CMDARG_SET(nDPId_options.client_key_pem_file) != 0) ||
+        (IS_CMDARG_SET(nDPId_options.client_crt_pem_file) != 0 && IS_CMDARG_SET(nDPId_options.server_ca_pem_file) == 0))
+    {
+        logger_early(1,
+                     "%s",
+                     "Encryption requires a client certificate, key and a server CA file to be set. See `-k', `-K' and "
+                     "`-F'.");
+        retval = 1;
+    }
+
+    if ((IS_CMDARG_SET(nDPId_options.client_crt_pem_file) != 0 ||
+         IS_CMDARG_SET(nDPId_options.client_key_pem_file) != 0 ||
+         IS_CMDARG_SET(nDPId_options.server_ca_pem_file) != 0) &&
+        (IS_CMDARG_SET(nDPId_options.collector_address) == 0 ||
+         nDPId_options.parsed_collector_address.raw.sa_family == AF_UNIX))
+    {
+        logger_early(1, "%s", "Encryption requires an TCP endpoint set with `-c'.");
+        retval = 1;
+    }
+#endif
 
     return retval;
 }
@@ -6064,6 +6193,10 @@ int main(int argc, char ** argv)
     set_ndpi_flow_free(NULL);
 
     init_logging("nDPId");
+#ifdef ENABLE_CRYPTO
+    ncrypt_init();
+    ncrypt_ctx(&ncrypt_ctx);
+#endif
 
     if (nDPId_parse_options(argc, argv) != 0)
     {
@@ -6100,6 +6233,18 @@ int main(int argc, char ** argv)
         logger_early(1, "%s", "Option validation failed.");
         return 1;
     }
+
+#ifdef ENABLE_CRYPTO
+    if (IS_CMDARG_SET(nDPId_options.server_ca_pem_file) != 0 &&
+        ncrypt_init_client(&ncrypt_ctx,
+                           GET_CMDARG_STR(nDPId_options.server_ca_pem_file),
+                           GET_CMDARG_STR(nDPId_options.client_key_pem_file),
+                           GET_CMDARG_STR(nDPId_options.client_crt_pem_file)) != NCRYPT_SUCCESS)
+    {
+        logger_early(1, "%s", "Could not initialize crypto.");
+        return 1;
+    }
+#endif
 
     log_app_info();
 
@@ -6166,6 +6311,10 @@ int main(int argc, char ** argv)
     daemonize_shutdown(GET_CMDARG_STR(nDPId_options.pidfile));
     logger(0, "%s", "Bye.");
     shutdown_logging();
+
+#ifdef ENABLE_CRYPTO
+    ncrypt_free_ctx(&ncrypt_ctx);
+#endif
 
     return 0;
 }
