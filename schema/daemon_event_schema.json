@@ -67,7 +67,7 @@
         },
         "ndpi_api_version": {
             "type": "number",
-            "minimum": 11500
+            "minimum": 0
         },
         "size_per_flow": {
             "type": "number",

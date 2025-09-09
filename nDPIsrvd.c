@@ -158,7 +158,7 @@ static int drain_write_buffers_blocking(struct remote_desc * const remote);
 static void nDPIsrvd_buffer_array_copy(void * dst, const void * src)
 {
     struct nDPIsrvd_write_buffer * const buf_dst = (struct nDPIsrvd_write_buffer *)dst;
-    struct nDPIsrvd_write_buffer const * const buf_src = (struct nDPIsrvd_write_buffer *)src;
+    struct nDPIsrvd_write_buffer const * const buf_src = (struct nDPIsrvd_write_buffer const *)src;
 
     buf_dst->buf.ptr.raw = NULL;
     if (nDPIsrvd_buffer_init(&buf_dst->buf, buf_src->buf.used) != 0)

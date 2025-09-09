@@ -1935,7 +1935,7 @@ static int is_error_event_threshold(struct nDPId_workflow * const workflow)
 static void ndpi_idle_scan_walker(void const * const A, ndpi_VISIT which, int depth, void * const user_data)
 {
     struct nDPId_workflow * const workflow = (struct nDPId_workflow *)user_data;
-    struct nDPId_flow_basic * const flow_basic = *(struct nDPId_flow_basic **)A;
+    struct nDPId_flow_basic * const flow_basic = *(struct nDPId_flow_basic * const *)A;
 
     (void)depth;
 
@@ -1976,8 +1976,8 @@ static void ndpi_idle_scan_walker(void const * const A, ndpi_VISIT which, int de
 
 static int ndpi_workflow_node_cmp(void const * const A, void const * const B)
 {
-    struct nDPId_flow_basic const * const flow_basic_a = (struct nDPId_flow_basic *)A;
-    struct nDPId_flow_basic const * const flow_basic_b = (struct nDPId_flow_basic *)B;
+    struct nDPId_flow_basic const * const flow_basic_a = (struct nDPId_flow_basic const *)A;
+    struct nDPId_flow_basic const * const flow_basic_b = (struct nDPId_flow_basic const *)B;
 
     if (flow_basic_a->hashval < flow_basic_b->hashval)
     {
@@ -2121,7 +2121,7 @@ static void ndpi_flow_update_scan_walker(void const * const A, ndpi_VISIT which,
 {
     struct nDPId_reader_thread * const reader_thread = (struct nDPId_reader_thread *)user_data;
     struct nDPId_workflow * const workflow = reader_thread->workflow;
-    struct nDPId_flow_basic * const flow_basic = *(struct nDPId_flow_basic **)A;
+    struct nDPId_flow_basic * const flow_basic = *(struct nDPId_flow_basic * const *)A;
 
     (void)depth;
 
@@ -2280,6 +2280,7 @@ static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enu
     }
 
     jsonize_basic(reader_thread, 1);
+#ifndef NO_MAIN
 #ifndef PKG_VERSION
     ndpi_serialize_string_string(&workflow->ndpi_serializer, "version", "unknown");
 #else
@@ -2287,6 +2288,11 @@ static void jsonize_daemon(struct nDPId_reader_thread * const reader_thread, enu
 #endif
     ndpi_serialize_string_string(&workflow->ndpi_serializer, "ndpi_version", ndpi_revision());
     ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "ndpi_api_version", ndpi_get_api_version());
+#else
+    ndpi_serialize_string_string(&workflow->ndpi_serializer, "version", "");
+    ndpi_serialize_string_string(&workflow->ndpi_serializer, "ndpi_version", "");
+    ndpi_serialize_string_uint32(&workflow->ndpi_serializer, "ndpi_api_version", 0);
+#endif
     ndpi_serialize_string_uint64(&workflow->ndpi_serializer,
                                  "size_per_flow",
                                  (uint64_t)(sizeof(struct nDPId_flow) + sizeof(struct nDPId_detection_data)));
@@ -3709,7 +3715,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
                 return 1;
             }
 
-            ethernet = (struct ndpi_ethhdr *)&packet[eth_offset];
+            ethernet = (struct ndpi_ethhdr const *)&packet[eth_offset];
             *ip_offset = sizeof(struct ndpi_ethhdr) + eth_offset;
             *layer3_type = ntohs(ethernet->h_proto);
 
@@ -3801,7 +3807,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
                                      UNKNOWN_DATALINK_LAYER,
                                      "%s%u",
                                      "layer_type",
-                                     ntohl(*((uint32_t *)&packet[eth_offset])));
+                                     ntohl(*((uint32_t const *)&packet[eth_offset])));
                 jsonize_packet_event(reader_thread, header, packet, 0, 0, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
             }
             return 1;
@@ -3898,7 +3904,7 @@ static uint32_t is_valid_gre_tunnel(struct pcap_pkthdr const * const header,
         return 0; /* Too short for GRE header*/
     }
     uint32_t offset = (l4_ptr - packet);
-    struct ndpi_gre_basehdr * grehdr = (struct ndpi_gre_basehdr *)&packet[offset];
+    struct ndpi_gre_basehdr const * const grehdr = (struct ndpi_gre_basehdr const *)&packet[offset];
     offset += sizeof(struct ndpi_gre_basehdr);
 
     /*
@@ -4064,7 +4070,7 @@ static void ndpi_process_packet(uint8_t * const args,
 process_layer3_again:
     if (type == ETH_P_IP)
     {
-        ip = (struct ndpi_iphdr *)&packet[ip_offset];
+        ip = (struct ndpi_iphdr const *)&packet[ip_offset];
         ip6 = NULL;
         if (header->caplen < ip_offset + sizeof(*ip))
         {
@@ -4132,7 +4138,7 @@ process_layer3_again:
         flow_basic.l3_type = L3_IP;
 
         if (ndpi_detection_get_l4(
-                (uint8_t *)ip, ip_size, &l4_ptr, &l4_len, &flow_basic.l4_protocol, NDPI_DETECTION_ONLY_IPV4) != 0)
+                (uint8_t const *)ip, ip_size, &l4_ptr, &l4_len, &flow_basic.l4_protocol, NDPI_DETECTION_ONLY_IPV4) != 0)
         {
             if (distribute_single_packet(reader_thread) != 0 && is_error_event_threshold(reader_thread->workflow) == 0)
             {
@@ -4291,7 +4297,7 @@ process_layer3_again:
             }
             return;
         }
-        tcp = (struct ndpi_tcphdr *)l4_ptr;
+        tcp = (struct ndpi_tcphdr const *)l4_ptr;
         l4_payload_len = ndpi_max(0, l4_len - 4 * tcp->doff);
         flow_basic.tcp_fin_rst_seen = (tcp->fin == 1 || tcp->rst == 1 ? 1 : 0);
         flow_basic.tcp_is_midstream_flow = (tcp->syn == 0 ? 1 : 0);
@@ -4325,7 +4331,7 @@ process_layer3_again:
             }
             return;
         }
-        udp = (struct ndpi_udphdr *)l4_ptr;
+        udp = (struct ndpi_udphdr const *)l4_ptr;
         l4_payload_len = (l4_len > sizeof(struct ndpi_udphdr)) ? l4_len - sizeof(struct ndpi_udphdr) : 0;
         flow_basic.src_port = ntohs(udp->source);
         flow_basic.dst_port = ntohs(udp->dest);
@@ -4656,7 +4662,7 @@ process_layer3_again:
                      1);
         flow_to_process->flow_extended.flow_analysis
             ->entropies[(total_flow_packets - 1) % GET_CMDARG_ULL(nDPId_options.max_packets_per_flow_to_analyse)] =
-            ndpi_entropy((ip != NULL ? (uint8_t *)ip : (uint8_t *)ip6), ip_size);
+            ndpi_entropy((ip != NULL ? (uint8_t const *)ip : (uint8_t const *)ip6), ip_size);
 
         if (total_flow_packets == GET_CMDARG_ULL(nDPId_options.max_packets_per_flow_to_analyse))
         {
@@ -4793,8 +4799,8 @@ static void get_current_time(struct timeval * const tval)
 #if !defined(__FreeBSD__) && !defined(__APPLE__)
 static void ndpi_log_flow_walker(void const * const A, ndpi_VISIT which, int depth, void * const user_data)
 {
-    struct nDPId_reader_thread const * const reader_thread = (struct nDPId_reader_thread *)user_data;
-    struct nDPId_flow_basic const * const flow_basic = *(struct nDPId_flow_basic **)A;
+    struct nDPId_reader_thread const * const reader_thread = (struct nDPId_reader_thread const *)user_data;
+    struct nDPId_flow_basic const * const flow_basic = *(struct nDPId_flow_basic const * const *)A;
 
     (void)depth;
     (void)user_data;
@@ -4819,7 +4825,7 @@ static void ndpi_log_flow_walker(void const * const A, ndpi_VISIT which, int dep
 
             case FS_FINISHED:
             {
-                struct nDPId_flow const * const flow = (struct nDPId_flow *)flow_basic;
+                struct nDPId_flow const * const flow = (struct nDPId_flow const *)flow_basic;
 
                 uint64_t last_seen = get_last_pkt_time(flow_basic);
                 uint64_t idle_time = get_l4_protocol_idle_time_external(flow->flow_extended.flow_basic.l4_protocol);
@@ -4839,7 +4845,7 @@ static void ndpi_log_flow_walker(void const * const A, ndpi_VISIT which, int dep
 
             case FS_INFO:
             {
-                struct nDPId_flow const * const flow = (struct nDPId_flow *)flow_basic;
+                struct nDPId_flow const * const flow = (struct nDPId_flow const *)flow_basic;
 
                 uint64_t last_seen = get_last_pkt_time(flow_basic);
                 uint64_t idle_time = get_l4_protocol_idle_time_external(flow->flow_extended.flow_basic.l4_protocol);
@@ -5233,7 +5239,7 @@ static int start_reader_threads(void)
 static void ndpi_shutdown_walker(void const * const A, ndpi_VISIT which, int depth, void * const user_data)
 {
     struct nDPId_workflow * const workflow = (struct nDPId_workflow *)user_data;
-    struct nDPId_flow_basic * const flow_basic = *(struct nDPId_flow_basic **)A;
+    struct nDPId_flow_basic * const flow_basic = *(struct nDPId_flow_basic * const *)A;
 
     (void)depth;
 
