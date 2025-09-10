@@ -592,13 +592,10 @@ install(FILES config.h
 install(TARGETS nDPId DESTINATION sbin)
 install(TARGETS nDPIsrvd nDPId-test DESTINATION bin)
 if(BUILD_EXAMPLES)
-    install(FILES dependencies/nDPIsrvd.py examples/py-flow-dashboard/plotly_dash.py
+    install(FILES dependencies/nDPIsrvd.py
             DESTINATION share/nDPId)
     install(FILES examples/py-flow-info/flow-info.py
             DESTINATION bin RENAME nDPIsrvd-flow-info.py
-            PERMISSIONS OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
-    install(FILES examples/py-flow-dashboard/flow-dash.py
-            DESTINATION bin RENAME nDPIsrvd-flow-dash.py
             PERMISSIONS OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
     install(FILES examples/py-json-stdout/json-stdout.py
             DESTINATION bin RENAME nDPIsrvd-json-stdout.py

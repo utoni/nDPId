@@ -1,3 +1,0 @@
-dash
-dash_daq
-Werkzeug==3.0.6

@@ -428,7 +428,7 @@ async fn main() {
 
     loop {
         let flows: Vec<(FlowKey, (FlowExpiration, FlowValue))> = flow_cache_rx.iter().map(|(k, v)| (k.as_ref().clone(), v.clone()))
-                                                                     .take(1024)
+                                                                     .take(128)
                                                                      .collect();
         let mut table_selected = match table_state.selected() {
             Some(mut table_index) => {

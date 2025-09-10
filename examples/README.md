@@ -69,11 +69,6 @@ Unfortunately, I can not provide any datasets due to some privacy concerns.
 
 But you may use a [pre-trained model](https://drive.google.com/file/d/1KEwbP-Gx7KJr54wNoa63I56VI4USCAPL/view?usp=sharing) with `--load-model`.
 
-## py-flow-dashboard
-
-A realtime web based graph using Plotly/Dash.
-Probably the most informative example.
-
 ## py-flow-multiprocess
 
 Simple Python Multiprocess example spawning two worker processes, one connecting to nDPIsrvd and one printing flow id's to STDOUT.

@@ -2626,7 +2626,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Potentially Dangerous"
+                "value": "Potentially_Dangerous"
               }
             ]
           },
@@ -2650,7 +2650,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Tracker/Ads"
+                "value": "Tracker_Ads"
               }
             ]
           },
