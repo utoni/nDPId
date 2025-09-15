@@ -104,10 +104,6 @@ endif()
 option(ENABLE_PFRING "Enable PF_RING support for nDPId (experimental)" OFF)
 option(BUILD_NDPI "Clone and build nDPI from github." OFF)
 
-if(ENABLE_CRYPTO AND ENABLE_MEMORY_PROFILING)
-    message(FATAL_ERROR "ENABLE_CRYPTO and ENABLE_MEMORY_PROFILING do currently not like each other. "
-                        "This will change in the future.")
-endif()
 if(ENABLE_PFRING)
     option(PFRING_LINK_STATIC "Link against a static version of pfring." ON)
     set(PFRING_KERNEL_INC "" CACHE STRING "Path to PFRING kernel module include directory.")
