@@ -723,6 +723,18 @@
                   "value": "Probing Attempt"
                 }
               ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "flow_risk_56_count"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Obfuscated Traffic"
+                }
+              ]
             }
           ]
         },
@@ -855,7 +867,7 @@
       }
     ]
   },
-  "editable": false,
+  "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
@@ -2626,7 +2638,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Potentially_Dangerous"
+                "value": "Potentially Dangerous"
               }
             ]
           },
@@ -2650,7 +2662,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Tracker_Ads"
+                "value": "Tracker/Ads"
               }
             ]
           },
@@ -3080,488 +3092,7 @@
             ]
           }
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_adult_content_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Adult Content"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_advertisment_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Advertisment"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_allowed_site_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Allowed Site"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_antimalware_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Anti Malware"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_banned_site_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Banned Site"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_chat_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Chat"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_cloud_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Cloud"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_collaborative_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Collaborative"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_conn_check_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Connection Check"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_crypto_currency_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Crypto Currency"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_cybersecurity_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Cybersecurity"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_data_transfer_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Data Transfer"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_database_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Database"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_download_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Download"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_email_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "E-Mail"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_file_sharing_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "File Sharing"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_gambling_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Gambling"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_game_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Game"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_iot_scada_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "IoT/Scada"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_malware_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Malware"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_media_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Media"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_mining_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Mining"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_music_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Music"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_network_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Network"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_productivity_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Productivity"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_remote_access_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Remote Access"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_rpc_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "RPC"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_shopping_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Shopping"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_site_unavail_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Site Unavailable"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_social_network_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Social Network"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_software_update_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Software Update"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_streaming_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Streaming"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_system_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "System"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_unknown_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Unknown"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_unspecified_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Unspecified"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_video_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Video"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_virt_assistant_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Virtual Assistant"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_voip_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "VoIP"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_vpn_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "VPN"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "flow_category_web_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Web"
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 27,
@@ -3620,6 +3151,20 @@
                 "handlerKey": "max"
               }
             ]
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "^flow_category_([a-z]+)_count$",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "^flow_category_([a-z]+_[a-z]+)_count$",
+            "renamePattern": "$1"
           }
         }
       ],
@@ -4027,7 +3572,8 @@
             "mode": "percentage",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           }
@@ -4096,7 +3642,8 @@
             "mode": "percentage",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           }
@@ -4373,7 +3920,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "yellow",
@@ -5127,7 +4675,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -5302,7 +4851,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           }
@@ -5336,7 +4886,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green"
+                      "color": "green",
+                      "value": null
                     },
                     {
                       "color": "yellow",
@@ -5363,7 +4914,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green"
+                      "color": "green",
+                      "value": null
                     },
                     {
                       "color": "red",
@@ -5437,7 +4989,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "yellow",
@@ -6463,6 +6016,6 @@
   "timezone": "",
   "title": "nDPId",
   "uid": "e57b37c0-d0ba-4f50-9b2d-f83e71ae8c27",
-  "version": 111,
+  "version": 116,
   "weekStart": ""
 }
