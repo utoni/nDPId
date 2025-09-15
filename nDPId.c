@@ -5699,7 +5699,7 @@ static int nDPId_parse_options(int argc, char ** argv)
                 set_cmdarg_string(&nDPId_options.client_crt_pem_file, optarg);
                 break;
 #else
-                logger(1, "%s", "nDPId was built w/o OpenSSL/Crypto support");
+                logger(1, "Client cert PEM file: %s", "nDPId was built w/o OpenSSL/Crypto support");
                 return 1;
 #endif
             case 'K':
@@ -5707,7 +5707,7 @@ static int nDPId_parse_options(int argc, char ** argv)
                 set_cmdarg_string(&nDPId_options.client_key_pem_file, optarg);
                 break;
 #else
-                logger(1, "%s", "nDPId was built w/o OpenSSL/Crypto support");
+                logger(1, "Client key PEM file: %s", "nDPId was built w/o OpenSSL/Crypto support");
                 return 1;
 #endif
             case 'F':
@@ -5715,7 +5715,7 @@ static int nDPId_parse_options(int argc, char ** argv)
                 set_cmdarg_string(&nDPId_options.server_ca_pem_file, optarg);
                 break;
 #else
-                logger(1, "%s", "nDPId was built w/o OpenSSL/Crypto support");
+                logger(1, "Server CA PEM file: %s", "nDPId was built w/o OpenSSL/Crypto support");
                 return 1;
 #endif
             case 'e':

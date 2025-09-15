@@ -1529,6 +1529,8 @@ static int nio_selftest()
     logger(0, "%s", "Using poll for nio");
 #endif
 
+    int pipefds[2] = {-1, -1};
+
 #ifdef ENABLE_EPOLL
     if (nio_use_epoll(&io, 32) != NIO_SUCCESS)
 #else
@@ -1539,7 +1541,6 @@ static int nio_selftest()
         goto error;
     }
 
-    int pipefds[2] = {-1, -1};
     int rv = pipe(pipefds);
     if (rv < 0)
     {
@@ -1637,8 +1638,12 @@ static int nio_selftest()
     return 0;
 error:
     nio_free(&io);
-    close(pipefds[0]);
-    close(pipefds[1]);
+    if (pipefds[0] >= 0) {
+        close(pipefds[0]);
+    }
+    if (pipefds[1] >= 0) {
+        close(pipefds[1]);
+    }
     return 1;
 }
 
