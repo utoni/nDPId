@@ -263,13 +263,15 @@ if(ENABLE_COVERAGE)
     add_custom_command(
         TARGET coverage-clean
         COMMAND find "${CMAKE_BINARY_DIR}" "${CMAKE_SOURCE_DIR}/libnDPI" -name "*.gcda" -delete
+        POST_BUILD
     )
     add_custom_target(coverage-view)
     add_custom_command(
         TARGET  coverage-view
         COMMAND cd "${CMAKE_BINARY_DIR}/coverage_report" && python3 -m http.server
-        DEPENDS "${CMAKE_BINARY_DIR}/coverage_report/nDPId/index.html"
+        POST_BUILD
     )
+    add_dependencies(coverage-view coverage)
 endif()
 if(ENABLE_SANITIZER)
     # TODO: Check for `-fsanitize-memory-track-origins` and add if available?
