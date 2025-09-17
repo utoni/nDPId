@@ -4087,7 +4087,7 @@ static void ndpi_process_packet(uint8_t * const args,
     uint8_t is_new_flow = 0;
 
     const struct ndpi_iphdr * ip;
-    struct ndpi_ipv6hdr * ip6;
+    const struct ndpi_ipv6hdr * ip6;
     const struct ndpi_tcphdr * tcp = NULL;
 
     uint64_t time_us;
@@ -4156,7 +4156,7 @@ process_layer3_again:
     else if (type == ETH_P_IPV6)
     {
         ip = NULL;
-        ip6 = (struct ndpi_ipv6hdr *)&packet[ip_offset];
+        ip6 = (struct ndpi_ipv6hdr const *)&packet[ip_offset];
         if (header->caplen < ip_offset + sizeof(*ip6))
         {
             if (distribute_single_packet(reader_thread) != 0 && is_error_event_threshold(reader_thread->workflow) == 0)
@@ -4223,7 +4223,7 @@ process_layer3_again:
     {
         flow_basic.l3_type = L3_IP6;
         if (ndpi_detection_get_l4(
-                (uint8_t *)ip6, ip_size, &l4_ptr, &l4_len, &flow_basic.l4_protocol, NDPI_DETECTION_ONLY_IPV6) != 0)
+                (uint8_t const *)ip6, ip_size, &l4_ptr, &l4_len, &flow_basic.l4_protocol, NDPI_DETECTION_ONLY_IPV6) != 0)
         {
             if (distribute_single_packet(reader_thread) != 0 && is_error_event_threshold(reader_thread->workflow) == 0)
             {
@@ -4755,7 +4755,7 @@ process_layer3_again:
     flow_to_process->flow_extended.detected_l7_protocol =
         ndpi_detection_process_packet(workflow->ndpi_struct,
                                       &flow_to_process->info.detection_data->flow,
-                                      ip != NULL ? (uint8_t *)ip : (uint8_t *)ip6,
+                                      ip != NULL ? (uint8_t const *)ip : (uint8_t const *)ip6,
                                       ip_size,
                                       workflow->last_thread_time / 1000,
                                       NULL);

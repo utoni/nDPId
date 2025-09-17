@@ -300,10 +300,10 @@ static int add_to_additional_write_buffers(struct remote_desc * const remote,
     return 0;
 }
 
-static void logger_nDPIsrvd(struct remote_desc const * const remote,
-                            char const * const prefix,
-                            char const * const format,
-                            ...)
+static __attribute__((format(printf, 3, 4))) void logger_nDPIsrvd(struct remote_desc const * const remote,
+                                                                  char const * const prefix,
+                                                                  char const * const format,
+                                                                  ...)
 {
     char logbuf[512];
     va_list ap;
@@ -1105,7 +1105,7 @@ static int new_connection(struct nio * const io, int eventfd)
             current->event_collector_un.pid = ucred.pid;
 #endif
 
-            logger_nDPIsrvd(current, "New collector connection from", "");
+            logger_nDPIsrvd(current, "New collector connection from", "%s", "");
             break;
         case DISTRIBUTOR_UN:
         case DISTRIBUTOR_IN:
@@ -1176,7 +1176,7 @@ static int new_connection(struct nio * const io, int eventfd)
                 }
             }
 
-            logger_nDPIsrvd(current, "New distributor connection from", "");
+            logger_nDPIsrvd(current, "New distributor connection from", "%s", "");
             break;
     }
 

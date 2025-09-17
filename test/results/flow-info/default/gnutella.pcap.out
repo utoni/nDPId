@@ -808,7 +808,7 @@
          detected: [...324] [ip4][..udp] [......10.0.2.15][28681] -> [.73.250.179.237][20848] [Gnutella][Unknown][Download][Potentially_Dangerous]
                    RISK: Unsafe Protocol
               new: [...325] [ip4][..udp] [......10.0.2.15][28681] -> [..83.160.143.48][37036]
-         detected: [...325] [ip4][..udp] [......10.0.2.15][28681] -> [..83.160.143.48][37036] [Gnutella][Unknown][Download][Potentially_Dangerous]
+         detected: [...325] [ip4][..udp] [......10.0.2.15][28681] -> [..83.160.143.48][37036] [Gnutella][AmazonAWS][Download][Potentially_Dangerous]
                    RISK: Unsafe Protocol
               new: [...326] [ip4][..udp] [......10.0.2.15][28681] -> [..100.1.231.138][56558]
          detected: [...326] [ip4][..udp] [......10.0.2.15][28681] -> [..100.1.231.138][56558] [Gnutella][Unknown][Download][Potentially_Dangerous]
@@ -1311,7 +1311,7 @@
                    RISK: Unsafe Protocol
            update: [...320] [ip4][..udp] [......10.0.2.15][28681] -> [185.236.200.137][48142] [Gnutella][Unknown][Download][Potentially_Dangerous]
                    RISK: Unsafe Protocol
-           update: [...325] [ip4][..udp] [......10.0.2.15][28681] -> [..83.160.143.48][37036] [Gnutella][Unknown][Download][Potentially_Dangerous]
+           update: [...325] [ip4][..udp] [......10.0.2.15][28681] -> [..83.160.143.48][37036] [Gnutella][AmazonAWS][Download][Potentially_Dangerous]
                    RISK: Unsafe Protocol
            update: [...330] [ip4][..udp] [......10.0.2.15][28681] -> [....82.64.44.11][.1352] [Gnutella][Unknown][Download][Potentially_Dangerous]
                    RISK: Unsafe Protocol
@@ -1879,7 +1879,7 @@
                    RISK: Unsafe Protocol
            update: [...320] [ip4][..udp] [......10.0.2.15][28681] -> [185.236.200.137][48142] [Gnutella][Unknown][Download][Potentially_Dangerous]
                    RISK: Unsafe Protocol
-           update: [...325] [ip4][..udp] [......10.0.2.15][28681] -> [..83.160.143.48][37036] [Gnutella][Unknown][Download][Potentially_Dangerous]
+           update: [...325] [ip4][..udp] [......10.0.2.15][28681] -> [..83.160.143.48][37036] [Gnutella][AmazonAWS][Download][Potentially_Dangerous]
                    RISK: Unsafe Protocol
            update: [...330] [ip4][..udp] [......10.0.2.15][28681] -> [....82.64.44.11][.1352] [Gnutella][Unknown][Download][Potentially_Dangerous]
                    RISK: Unsafe Protocol
@@ -2815,7 +2815,7 @@
                    RISK: Unsafe Protocol
            update: [...114] [ip4][..udp] [......10.0.2.15][28681] -> [....86.23.75.69][.6346] [Gnutella][Unknown][Download][Potentially_Dangerous]
                    RISK: Unsafe Protocol
-           update: [...325] [ip4][..udp] [......10.0.2.15][28681] -> [..83.160.143.48][37036] [Gnutella][Unknown][Download][Potentially_Dangerous]
+           update: [...325] [ip4][..udp] [......10.0.2.15][28681] -> [..83.160.143.48][37036] [Gnutella][AmazonAWS][Download][Potentially_Dangerous]
                    RISK: Unsafe Protocol
            update: [...126] [ip4][..udp] [......10.0.2.15][28681] -> [..91.69.159.133][28000] [Gnutella][Unknown][Download][Potentially_Dangerous]
                    RISK: Unsafe Protocol
@@ -3676,7 +3676,7 @@
                    RISK: Unsafe Protocol
              idle: [...314] [ip4][..udp] [......10.0.2.15][28681] -> [..71.237.202.91][16117] [Gnutella][Unknown][Download][Potentially_Dangerous]
                    RISK: Unsafe Protocol
-             idle: [...325] [ip4][..udp] [......10.0.2.15][28681] -> [..83.160.143.48][37036] [Gnutella][Unknown][Download][Potentially_Dangerous]
+             idle: [...325] [ip4][..udp] [......10.0.2.15][28681] -> [..83.160.143.48][37036] [Gnutella][AmazonAWS][Download][Potentially_Dangerous]
                    RISK: Unsafe Protocol
              idle: [...305] [ip4][..udp] [......10.0.2.15][28681] -> [..88.168.175.31][.6346] [Gnutella][Unknown][Download][Potentially_Dangerous]
                    RISK: Unsafe Protocol
