@@ -452,7 +452,7 @@ static void print_usage(char const * const arg0)
 static int set_defaults(void)
 {
     char const * const default_severities[] = {"High", "Severe", "Critical", "Emergency"};
-    char const * const default_breeds[] = {"Unsafe", "Potentially Dangerous", "Dangerous", "Unrated"};
+    char const * const default_breeds[] = {"Unsafe", "Potentially_Dangerous", "Dangerous", "Unrated"};
     char const * const default_categories[] = {"Mining", "Malware", "Banned_Site", "Crypto_Currency"};
 
     for (size_t i = 0; i < nDPIsrvd_ARRAY_LENGTH(default_severities); ++i)
