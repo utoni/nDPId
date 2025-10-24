@@ -356,6 +356,7 @@ jobs:
                 echo "Configure arguments: '$NDPI_CONFIGURE_ARGS'"
                 ./autogen.sh --prefix=/usr --with-only-libndpi $NDPI_CONFIGURE_ARGS CC="${{ matrix.compiler }}" CXX=false \
                     CFLAGS="$CMAKE_C_FLAGS" && make && sudo make install; cd ..; }
+          ls -alhR /usr/include/ndpi
           cd ..
           test $WGET_RET -ne 0 || { echo "Running CMake.. (pkgconfig)"; \
                 cmake -S . -B ./build-local-pkgconfig \
