@@ -50,13 +50,13 @@
  detection-update: [....16] [ip4][..udp] [..192.168.1.121][55578] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][e13678.dscb.akamaiedge.net]
               new: [....18] [ip4][..tcp] [..192.168.1.121][53912] -> [....2.22.33.235][...80]
  detection-update: [....15] [ip4][..udp] [..192.168.1.121][58161] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][www.microsoft.com]
-         detected: [....18] [ip4][..tcp] [..192.168.1.121][53912] -> [....2.22.33.235][...80] [HTTP.Microsoft][Unknown][Web][Acceptable][www.microsoft.com]
+         detected: [....18] [ip4][..tcp] [..192.168.1.121][53912] -> [....2.22.33.235][...80] [HTTP.Microsoft][Akamai][Web][Acceptable][www.microsoft.com]
  detection-update: [....17] [ip4][..udp] [..192.168.1.121][54561] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][e13678.dscb.akamaiedge.net]
- detection-update: [....18] [ip4][..tcp] [..192.168.1.121][53912] -> [....2.22.33.235][...80] [HTTP.Microsoft][Unknown][Download][Acceptable][www.microsoft.com]
+ detection-update: [....18] [ip4][..tcp] [..192.168.1.121][53912] -> [....2.22.33.235][...80] [HTTP.Microsoft][Akamai][Download][Acceptable][www.microsoft.com]
                    RISK: HTTP Susp Header, Binary File/Data Transfer (Attempt)
               new: [....19] [ip4][..tcp] [..192.168.1.121][53913] -> [....2.22.33.235][...80]
-         detected: [....19] [ip4][..tcp] [..192.168.1.121][53913] -> [....2.22.33.235][...80] [HTTP.Microsoft][Unknown][Web][Acceptable][www.microsoft.com]
- detection-update: [....19] [ip4][..tcp] [..192.168.1.121][53913] -> [....2.22.33.235][...80] [HTTP.Microsoft][Unknown][Download][Acceptable][www.microsoft.com]
+         detected: [....19] [ip4][..tcp] [..192.168.1.121][53913] -> [....2.22.33.235][...80] [HTTP.Microsoft][Akamai][Web][Acceptable][www.microsoft.com]
+ detection-update: [....19] [ip4][..tcp] [..192.168.1.121][53913] -> [....2.22.33.235][...80] [HTTP.Microsoft][Akamai][Download][Acceptable][www.microsoft.com]
                    RISK: HTTP Susp Header, Binary File/Data Transfer (Attempt)
               new: [....20] [ip4][..tcp] [..192.168.1.121][53905] -> [..140.82.113.26][..443] [MIDSTREAM]
               new: [....21] [ip4][..udp] [..192.168.1.121][65213] -> [........8.8.8.8][...53]
@@ -133,9 +133,9 @@
              idle: [....16] [ip4][..udp] [..192.168.1.121][55578] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][e13678.dscb.akamaiedge.net]
           guessed: [.....1] [ip4][..tcp] [..192.168.1.121][52746] -> [...52.149.21.60][..443] [TLS][Azure][Web][Safe]
              idle: [.....1] [ip4][..tcp] [..192.168.1.121][52746] -> [...52.149.21.60][..443]
-              end: [....18] [ip4][..tcp] [..192.168.1.121][53912] -> [....2.22.33.235][...80] [HTTP.Microsoft][Unknown][Download][Acceptable][www.microsoft.com]
+              end: [....18] [ip4][..tcp] [..192.168.1.121][53912] -> [....2.22.33.235][...80] [HTTP.Microsoft][Akamai][Download][Acceptable][www.microsoft.com]
                    RISK: HTTP Susp Header, Binary File/Data Transfer (Attempt)
-              end: [....19] [ip4][..tcp] [..192.168.1.121][53913] -> [....2.22.33.235][...80] [HTTP.Microsoft][Unknown][Download][Acceptable][www.microsoft.com]
+              end: [....19] [ip4][..tcp] [..192.168.1.121][53913] -> [....2.22.33.235][...80] [HTTP.Microsoft][Akamai][Download][Acceptable][www.microsoft.com]
                    RISK: HTTP Susp Header, Binary File/Data Transfer (Attempt)
              idle: [....15] [ip4][..udp] [..192.168.1.121][58161] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][www.microsoft.com]
              idle: [....31] [ip4][..udp] [..192.168.1.121][65099] -> [..17.253.54.251][..123] [NTP][Apple][System][Acceptable]

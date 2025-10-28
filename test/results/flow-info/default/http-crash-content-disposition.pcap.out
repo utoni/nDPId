@@ -2,6 +2,6 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [..192.168.0.103][51171] -> [...174.129.0.10][...80]
-         detected: [.....1] [ip4][..tcp] [..192.168.0.103][51171] -> [...174.129.0.10][...80] [HTTP][AmazonAWS][Web][Acceptable][khu.sh]
-             idle: [.....1] [ip4][..tcp] [..192.168.0.103][51171] -> [...174.129.0.10][...80] [HTTP][AmazonAWS][Web][Acceptable][khu.sh]
+         detected: [.....1] [ip4][..tcp] [..192.168.0.103][51171] -> [...174.129.0.10][...80] [HTTP][AWS_EC2][Web][Acceptable][khu.sh]
+             idle: [.....1] [ip4][..tcp] [..192.168.0.103][51171] -> [...174.129.0.10][...80] [HTTP][AWS_EC2][Web][Acceptable][khu.sh]
      DAEMON-EVENT: shutdown

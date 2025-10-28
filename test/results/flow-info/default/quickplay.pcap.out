@@ -12,7 +12,9 @@
               new: [.....5] [ip4][..tcp] [..10.54.169.250][52288] -> [..173.252.74.22][...80] [MIDSTREAM]
          detected: [.....5] [ip4][..tcp] [..10.54.169.250][52288] -> [..173.252.74.22][...80] [HTTP.Facebook][Facebook][SocialNetwork][Fun][www.facebook.com]
               new: [.....6] [ip4][..tcp] [..10.54.169.250][33277] -> [..120.28.26.231][...80] [MIDSTREAM]
-         detected: [.....6] [ip4][..tcp] [..10.54.169.250][33277] -> [..120.28.26.231][...80] [HTTP.Google][Unknown][ConnCheck][Acceptable][clients3.google.com]
+         detected: [.....6] [ip4][..tcp] [..10.54.169.250][33277] -> [..120.28.26.231][...80] [HTTP.Google][Unknown][Web][Acceptable][clients3.google.com]
+ detection-update: [.....6] [ip4][..tcp] [..10.54.169.250][33277] -> [..120.28.26.231][...80] [HTTP.Google][Unknown][Web][Acceptable][clients3.google.com]
+                   RISK: Mismatching Protocol with server IP address
               new: [.....7] [ip4][..tcp] [..10.54.169.250][44793] -> [....31.13.68.49][...80] [MIDSTREAM]
          detected: [.....7] [ip4][..tcp] [..10.54.169.250][44793] -> [....31.13.68.49][...80] [HTTP.Facebook][Facebook][SocialNetwork][Fun][www.facebook.com]
               new: [.....8] [ip4][..tcp] [..10.54.169.250][44256] -> [....120.28.5.41][...80] [MIDSTREAM]
@@ -55,7 +57,7 @@
  detection-update: [....15] [ip4][..tcp] [..10.54.169.250][35670] -> [203.205.147.215][...80] [HTTP_Proxy.QQ][Tencent][Download][Fun][hkminorshort.weixin.qq.com]
                    RISK: Known Proto on Non Std Port, Binary File/Data Transfer (Attempt)
               new: [....16] [ip4][..tcp] [..10.54.169.250][56381] -> [..54.179.140.65][...80] [MIDSTREAM]
-         detected: [....16] [ip4][..tcp] [..10.54.169.250][56381] -> [..54.179.140.65][...80] [HTTP.Xiaomi][AmazonAWS][Web][Fun][api.account.xiaomi.com]
+         detected: [....16] [ip4][..tcp] [..10.54.169.250][56381] -> [..54.179.140.65][...80] [HTTP.Xiaomi][AWS_EC2][Web][Fun][api.account.xiaomi.com]
               new: [....17] [ip4][..tcp] [..10.54.169.250][52017] -> [...120.28.35.40][...80] [MIDSTREAM]
          detected: [....17] [ip4][..tcp] [..10.54.169.250][52017] -> [...120.28.35.40][...80] [HTTP][Unknown][Streaming][Fun][vod-singtelhawk.quickplay.com]
               end: [....13] [ip4][..tcp] [..10.54.169.250][54885] -> [203.205.151.160][...80] [HTTP_Proxy.QQ][Unknown][Download][Fun][hkextshort.weixin.qq.com]
@@ -83,9 +85,10 @@
                    RISK: Known Proto on Non Std Port, Binary File/Data Transfer (Attempt)
              idle: [....14] [ip4][..tcp] [..10.54.169.250][42762] -> [203.205.129.101][...80] [HTTP_Proxy.QQ][Tencent][Download][Fun][hkextshort.weixin.qq.com]
                    RISK: Known Proto on Non Std Port, Binary File/Data Transfer (Attempt)
-             idle: [....16] [ip4][..tcp] [..10.54.169.250][56381] -> [..54.179.140.65][...80] [HTTP.Xiaomi][AmazonAWS][Web][Fun][api.account.xiaomi.com]
+             idle: [....16] [ip4][..tcp] [..10.54.169.250][56381] -> [..54.179.140.65][...80] [HTTP.Xiaomi][AWS_EC2][Web][Fun][api.account.xiaomi.com]
              idle: [.....3] [ip4][..tcp] [..10.54.169.250][33064] -> [....120.28.5.18][...80] [HTTP][Unknown][Streaming][Fun]
-             idle: [.....6] [ip4][..tcp] [..10.54.169.250][33277] -> [..120.28.26.231][...80] [HTTP.Google][Unknown][ConnCheck][Acceptable][clients3.google.com]
+             idle: [.....6] [ip4][..tcp] [..10.54.169.250][33277] -> [..120.28.26.231][...80] [HTTP.Google][Unknown][Web][Acceptable][clients3.google.com]
+                   RISK: Mismatching Protocol with server IP address
              idle: [....10] [ip4][..tcp] [..10.54.169.250][54883] -> [203.205.151.160][...80] [HTTP_Proxy.QQ][Unknown][Chat][Fun]
                    RISK: Known Proto on Non Std Port
              idle: [.....7] [ip4][..tcp] [..10.54.169.250][44793] -> [....31.13.68.49][...80] [HTTP.Facebook][Facebook][SocialNetwork][Fun][www.facebook.com]

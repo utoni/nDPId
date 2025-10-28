@@ -6,9 +6,9 @@
  detection-update: [.....1] [ip4][..udp] [.192.168.88.231][49377] -> [....172.17.8.75][...53] [DNS][Unknown][Network][Acceptable][data-detect.nie.easebar.com]
  detection-update: [.....1] [ip4][..udp] [.192.168.88.231][49377] -> [....172.17.8.75][...53] [DNS][Unknown][Network][Acceptable][data-detect.nie.easebar.com]
               new: [.....2] [ip4][..tcp] [.192.168.88.231][50402] -> [....35.73.71.94][..443]
-         detected: [.....2] [ip4][..tcp] [.192.168.88.231][50402] -> [....35.73.71.94][..443] [TLS.NetEaseGames][AmazonAWS][Game][Fun][data-detect.nie.easebar.com]
+         detected: [.....2] [ip4][..tcp] [.192.168.88.231][50402] -> [....35.73.71.94][..443] [TLS.NetEaseGames][AWS_EC2][Game][Fun][data-detect.nie.easebar.com]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [.....2] [ip4][..tcp] [.192.168.88.231][50402] -> [....35.73.71.94][..443] [TLS.NetEaseGames][AmazonAWS][Game][Fun][data-detect.nie.easebar.com]
+ detection-update: [.....2] [ip4][..tcp] [.192.168.88.231][50402] -> [....35.73.71.94][..443] [TLS.NetEaseGames][AWS_EC2][Game][Fun][data-detect.nie.easebar.com]
                    RISK: TLS (probably) Not Carrying HTTPS
      DAEMON-EVENT: [Processed: 10 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 2 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 3|updates: 0]
@@ -23,7 +23,7 @@
          detected: [.....5] [ip4][..udp] [.192.168.88.231][58951] -> [...34.141.75.90][28203] [NetEaseGames][GoogleCloud][Game][Fun]
              idle: [.....5] [ip4][..udp] [.192.168.88.231][58951] -> [...34.141.75.90][28203] [NetEaseGames][GoogleCloud][Game][Fun]
              idle: [.....3] [ip4][..udp] [.192.168.88.231][56588] -> [..35.246.207.19][.4513] [NetEaseGames][GoogleCloud][Game][Fun]
-             idle: [.....2] [ip4][..tcp] [.192.168.88.231][50402] -> [....35.73.71.94][..443] [TLS.NetEaseGames][AmazonAWS][Game][Fun]
+             idle: [.....2] [ip4][..tcp] [.192.168.88.231][50402] -> [....35.73.71.94][..443] [TLS.NetEaseGames][AWS_EC2][Game][Fun]
                    RISK: TLS (probably) Not Carrying HTTPS
              idle: [.....4] [ip4][..udp] [.192.168.88.231][41040] -> [..35.228.32.209][.4170] [NetEaseGames][GoogleCloud][Game][Fun]
      DAEMON-EVENT: shutdown

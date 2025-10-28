@@ -93,7 +93,7 @@
                    RISK: Obsolete TLS (v1.1 or older)
              idle: [.....6] [ip4][..tcp] [...10.24.82.188][32968] -> [..110.76.143.50][.8080] [TLS.KakaoTalk][Unknown][Chat][Acceptable]
                    RISK: Known Proto on Non Std Port, Self-signed Cert, Obsolete TLS (v1.1 or older), Weak TLS Cipher
-          guessed: [.....3] [ip4][..tcp] [...10.24.82.188][58916] -> [.54.255.185.236][.5222] [AmazonAWS][AmazonAWS][Cloud][Acceptable]
+          guessed: [.....3] [ip4][..tcp] [...10.24.82.188][58916] -> [.54.255.185.236][.5222] [AWS_EC2][AWS_EC2][Cloud][Acceptable]
              idle: [.....3] [ip4][..tcp] [...10.24.82.188][58916] -> [.54.255.185.236][.5222]
              idle: [....14] [ip4][..tcp] [...10.24.82.188][49217] -> [.216.58.220.174][..443] [TLS][Google][Web][Safe]
               end: [.....4] [ip4][..tcp] [...10.24.82.188][48489] -> [203.205.147.215][...80] [HTTP_Proxy.QQ][Tencent][Download][Fun][hkminorshort.weixin.qq.com]

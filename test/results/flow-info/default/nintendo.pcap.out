@@ -8,9 +8,9 @@
               new: [.....3] [ip4][..udp] [.192.168.12.114][52119] -> [..109.21.255.11][50251]
          detected: [.....3] [ip4][..udp] [.192.168.12.114][52119] -> [..109.21.255.11][50251] [Nintendo][Unknown][Game][Fun]
               new: [.....4] [ip4][..tcp] [..54.187.10.185][..443] -> [.192.168.12.114][48328] [MIDSTREAM]
-         detected: [.....4] [ip4][..tcp] [..54.187.10.185][..443] -> [.192.168.12.114][48328] [TLS][AmazonAWS][Web][Safe]
+         detected: [.....4] [ip4][..tcp] [..54.187.10.185][..443] -> [.192.168.12.114][48328] [TLS][AWS_EC2][Web][Safe]
               new: [.....5] [ip4][..udp] [.192.168.12.114][52119] -> [...35.158.74.61][33335]
-         detected: [.....5] [ip4][..udp] [.192.168.12.114][52119] -> [...35.158.74.61][33335] [Nintendo][AmazonAWS][Game][Fun]
+         detected: [.....5] [ip4][..udp] [.192.168.12.114][52119] -> [...35.158.74.61][33335] [Nintendo][AWS_EC2][Game][Fun]
           analyse: [.....1] [ip4][..udp] [.192.168.12.114][52119] -> [....91.8.243.35][49432] [Nintendo][Unknown][Game][Fun]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     1.730|     0.194|     0.332|       110172.324|    3.600]
@@ -26,11 +26,11 @@
          detected: [.....7] [ip4][..udp] [.192.168.12.114][18874] -> [...192.168.12.1][...53] [DNS][Unknown][Network][Acceptable][e0d67c509fb203858ebcb2fe3f88c2aa.baas.nintendo.com]
  detection-update: [.....7] [ip4][..udp] [.192.168.12.114][18874] -> [...192.168.12.1][...53] [DNS][Unknown][Network][Acceptable][e0d67c509fb203858ebcb2fe3f88c2aa.baas.nintendo.com]
               new: [.....8] [ip4][..tcp] [.192.168.12.114][41517] -> [..54.192.27.217][..443]
-         detected: [.....8] [ip4][..tcp] [.192.168.12.114][41517] -> [..54.192.27.217][..443] [TLS.Nintendo][AmazonAWS][Game][Fun][e0d67c509fb203858ebcb2fe3f88c2aa.baas.nintendo.com]
+         detected: [.....8] [ip4][..tcp] [.192.168.12.114][41517] -> [..54.192.27.217][..443] [TLS.Nintendo][AWS_Cloudfront][Game][Fun][e0d67c509fb203858ebcb2fe3f88c2aa.baas.nintendo.com]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [.....8] [ip4][..tcp] [.192.168.12.114][41517] -> [..54.192.27.217][..443] [TLS.Nintendo][AmazonAWS][Game][Fun][e0d67c509fb203858ebcb2fe3f88c2aa.baas.nintendo.com]
+ detection-update: [.....8] [ip4][..tcp] [.192.168.12.114][41517] -> [..54.192.27.217][..443] [TLS.Nintendo][AWS_Cloudfront][Game][Fun][e0d67c509fb203858ebcb2fe3f88c2aa.baas.nintendo.com]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [.....8] [ip4][..tcp] [.192.168.12.114][41517] -> [..54.192.27.217][..443] [TLS.Nintendo][AmazonAWS][Game][Fun][e0d67c509fb203858ebcb2fe3f88c2aa.baas.nintendo.com]
+ detection-update: [.....8] [ip4][..tcp] [.192.168.12.114][41517] -> [..54.192.27.217][..443] [TLS.Nintendo][AWS_Cloudfront][Game][Fun][e0d67c509fb203858ebcb2fe3f88c2aa.baas.nintendo.com]
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [.....9] [ip4][..tcp] [.192.168.12.114][11534] -> [..54.146.242.74][..443] [MIDSTREAM]
               new: [....10] [ip4][..udp] [.192.168.12.114][55915] -> [...35.158.74.61][33334]
@@ -46,13 +46,13 @@
          detected: [....15] [ip4][..udp] [.192.168.12.114][51035] -> [...192.168.12.1][...53] [DNS][Unknown][Network][Acceptable][e0d67c509fb203858ebcb2fe3f88c2aa.baas.nintendo.com]
  detection-update: [....15] [ip4][..udp] [.192.168.12.114][51035] -> [...192.168.12.1][...53] [DNS][Unknown][Network][Acceptable][e0d67c509fb203858ebcb2fe3f88c2aa.baas.nintendo.com]
               new: [....16] [ip4][..tcp] [.192.168.12.114][31329] -> [....54.192.27.8][..443]
-         detected: [....16] [ip4][..tcp] [.192.168.12.114][31329] -> [....54.192.27.8][..443] [TLS.Nintendo][AmazonAWS][Game][Fun][e0d67c509fb203858ebcb2fe3f88c2aa.baas.nintendo.com]
+         detected: [....16] [ip4][..tcp] [.192.168.12.114][31329] -> [....54.192.27.8][..443] [TLS.Nintendo][AWS_Cloudfront][Game][Fun][e0d67c509fb203858ebcb2fe3f88c2aa.baas.nintendo.com]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [....16] [ip4][..tcp] [.192.168.12.114][31329] -> [....54.192.27.8][..443] [TLS.Nintendo][AmazonAWS][Game][Fun][e0d67c509fb203858ebcb2fe3f88c2aa.baas.nintendo.com]
+ detection-update: [....16] [ip4][..tcp] [.192.168.12.114][31329] -> [....54.192.27.8][..443] [TLS.Nintendo][AWS_Cloudfront][Game][Fun][e0d67c509fb203858ebcb2fe3f88c2aa.baas.nintendo.com]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [....16] [ip4][..tcp] [.192.168.12.114][31329] -> [....54.192.27.8][..443] [TLS.Nintendo][AmazonAWS][Game][Fun][e0d67c509fb203858ebcb2fe3f88c2aa.baas.nintendo.com]
+ detection-update: [....16] [ip4][..tcp] [.192.168.12.114][31329] -> [....54.192.27.8][..443] [TLS.Nintendo][AWS_Cloudfront][Game][Fun][e0d67c509fb203858ebcb2fe3f88c2aa.baas.nintendo.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-          analyse: [.....4] [ip4][..tcp] [..54.187.10.185][..443] -> [.192.168.12.114][48328] [TLS][AmazonAWS][Web][Safe]
+          analyse: [.....4] [ip4][..tcp] [..54.187.10.185][..443] -> [.192.168.12.114][48328] [TLS][AWS_EC2][Web][Safe]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|    14.019|     1.263|     3.443|     11853821.379|    2.400]
                    [PKTLEN......:     52.000|   457.000|   120.200|    98.400|         9678.600|    4.600]
@@ -102,37 +102,37 @@
                    [IATS(ms)....: 0.3,0.4,313.5,0.3,0.3,284.3,0.1,0.4,629.4,5.2,43.7,5.3,61.4,0.1,131.6,65.4,7.9,0.2,0.8,31.1,0.4,67.6,2.9,0.5,7.5,105.9,5.7,103.3,9.8,549.4,649.3]
                    [PKTLENS.....: 104,104,104,104,104,104,104,104,104,104,104,104,104,104,104,168,88,104,104,168,104,104,88,104,104,872,88,872,88,104,104,88]
                    [ENTROPIES...: 6.1,6.1,6.1,6.0,6.2,6.2,6.2,6.2,6.1,6.0,6.1,6.1,6.1,6.1,6.1,6.7,6.0,6.1,6.2,6.8,6.2,6.2,5.9,6.2,6.2,5.5,5.9,5.6,6.0,6.2,6.1,6.0]
-          guessed: [.....6] [ip4][..udp] [.192.168.12.114][52119] -> [..52.10.205.177][34343] [AmazonAWS][AmazonAWS][Cloud][Acceptable]
+          guessed: [.....6] [ip4][..udp] [.192.168.12.114][52119] -> [..52.10.205.177][34343] [AWS_EC2][AWS_EC2][Cloud][Acceptable]
                    RISK: Susp Entropy, Unidirectional Traffic
              idle: [.....6] [ip4][..udp] [.192.168.12.114][52119] -> [..52.10.205.177][34343]
              idle: [....20] [ip4][..udp] [.192.168.12.114][55915] -> [..81.61.158.138][51769] [Nintendo][Unknown][Game][Fun]
-              end: [.....8] [ip4][..tcp] [.192.168.12.114][41517] -> [..54.192.27.217][..443] [TLS.Nintendo][AmazonAWS][Game][Fun]
+              end: [.....8] [ip4][..tcp] [.192.168.12.114][41517] -> [..54.192.27.217][..443] [TLS.Nintendo][AWS_Cloudfront][Game][Fun]
                    RISK: TLS (probably) Not Carrying HTTPS
-          guessed: [....14] [ip4][..udp] [.192.168.12.114][55915] -> [..52.10.205.177][34343] [AmazonAWS][AmazonAWS][Cloud][Acceptable]
+          guessed: [....14] [ip4][..udp] [.192.168.12.114][55915] -> [..52.10.205.177][34343] [AWS_EC2][AWS_EC2][Cloud][Acceptable]
                    RISK: Susp Entropy, Unidirectional Traffic
              idle: [....14] [ip4][..udp] [.192.168.12.114][55915] -> [..52.10.205.177][34343]
-             idle: [.....5] [ip4][..udp] [.192.168.12.114][52119] -> [...35.158.74.61][33335] [Nintendo][AmazonAWS][Game][Fun]
+             idle: [.....5] [ip4][..udp] [.192.168.12.114][52119] -> [...35.158.74.61][33335] [Nintendo][AWS_EC2][Game][Fun]
              idle: [....15] [ip4][..udp] [.192.168.12.114][51035] -> [...192.168.12.1][...53] [DNS][Unknown][Network][Acceptable][e0d67c509fb203858ebcb2fe3f88c2aa.baas.nintendo.com]
              idle: [.....7] [ip4][..udp] [.192.168.12.114][18874] -> [...192.168.12.1][...53] [DNS][Unknown][Network][Acceptable][e0d67c509fb203858ebcb2fe3f88c2aa.baas.nintendo.com]
-             idle: [.....4] [ip4][..tcp] [..54.187.10.185][..443] -> [.192.168.12.114][48328] [TLS][AmazonAWS][Web][Safe]
-          guessed: [....10] [ip4][..udp] [.192.168.12.114][55915] -> [...35.158.74.61][33334] [AmazonAWS][AmazonAWS][Cloud][Acceptable]
+             idle: [.....4] [ip4][..tcp] [..54.187.10.185][..443] -> [.192.168.12.114][48328] [TLS][AWS_EC2][Web][Safe]
+          guessed: [....10] [ip4][..udp] [.192.168.12.114][55915] -> [...35.158.74.61][33334] [AWS_EC2][AWS_EC2][Cloud][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....10] [ip4][..udp] [.192.168.12.114][55915] -> [...35.158.74.61][33334]
-          guessed: [....12] [ip4][..udp] [.192.168.12.114][55915] -> [...35.158.74.61][33335] [AmazonAWS][AmazonAWS][Cloud][Acceptable]
+          guessed: [....12] [ip4][..udp] [.192.168.12.114][55915] -> [...35.158.74.61][33335] [AWS_EC2][AWS_EC2][Cloud][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....12] [ip4][..udp] [.192.168.12.114][55915] -> [...35.158.74.61][33335]
              idle: [....21] [ip4][.icmp] [...151.6.184.98] -> [.192.168.12.114] [ICMP][Unknown][Network][Acceptable]
              idle: [....18] [ip4][.icmp] [..151.6.184.100] -> [.192.168.12.114] [ICMP][Unknown][Network][Acceptable]
              idle: [.....1] [ip4][..udp] [.192.168.12.114][52119] -> [....91.8.243.35][49432] [Nintendo][Unknown][Game][Fun]
-          guessed: [....11] [ip4][..udp] [.192.168.12.114][55915] -> [...35.158.74.61][10025] [AmazonAWS][AmazonAWS][Cloud][Acceptable]
+          guessed: [....11] [ip4][..udp] [.192.168.12.114][55915] -> [...35.158.74.61][10025] [AWS_EC2][AWS_EC2][Cloud][Acceptable]
              idle: [....11] [ip4][..udp] [.192.168.12.114][55915] -> [...35.158.74.61][10025]
              idle: [....19] [ip4][..udp] [.192.168.12.114][55915] -> [.93.237.131.235][56066] [Nintendo][Unknown][Game][Fun]
              idle: [.....3] [ip4][..udp] [.192.168.12.114][52119] -> [..109.21.255.11][50251] [Nintendo][Unknown][Game][Fun]
              idle: [.....2] [ip4][..udp] [.192.168.12.114][52119] -> [...134.3.248.25][56955] [Nintendo][Unknown][Game][Fun]
-              end: [....16] [ip4][..tcp] [.192.168.12.114][31329] -> [....54.192.27.8][..443] [TLS.Nintendo][AmazonAWS][Game][Fun]
+              end: [....16] [ip4][..tcp] [.192.168.12.114][31329] -> [....54.192.27.8][..443] [TLS.Nintendo][AWS_Cloudfront][Game][Fun]
                    RISK: TLS (probably) Not Carrying HTTPS
              idle: [....17] [ip4][..udp] [.192.168.12.114][55915] -> [.185.118.169.65][27520] [Nintendo][Unknown][Game][Fun]
-          guessed: [.....9] [ip4][..tcp] [.192.168.12.114][11534] -> [..54.146.242.74][..443] [TLS][AmazonAWS][Web][Safe]
+          guessed: [.....9] [ip4][..tcp] [.192.168.12.114][11534] -> [..54.146.242.74][..443] [TLS][AWS_EC2][Web][Safe]
              idle: [.....9] [ip4][..tcp] [.192.168.12.114][11534] -> [..54.146.242.74][..443]
              idle: [....13] [ip4][..udp] [.192.168.12.114][10184] -> [...192.168.12.1][...53] [DNS][Unknown][Network][Acceptable][g2df33d01-lp1.p.srv.nintendo.net]
      DAEMON-EVENT: shutdown

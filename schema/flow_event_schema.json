@@ -665,8 +665,8 @@
                             "type": "object",
                             "required": [ "risk", "severity", "risk_score" ],
                             "properties": {
-                                "risk": { "type": "string", "enum": [ "TLS Susp ESNI Usage" ] },
-                                "severity": { "type": "string", "enum": [ "Medium" ] },
+                                "risk": { "type": "string", "enum": [ "Mismatching Protocol with server IP address" ] },
+                                "severity": { "type": "string", "enum": [ "High" ] },
                                 "risk_score": {
                                     "type": "object",
                                     "required": [ "total", "client", "server" ],

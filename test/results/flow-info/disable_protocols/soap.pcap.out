@@ -2,16 +2,16 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [..192.168.2.100][50100] -> [...23.2.213.165][...80]
-         detected: [.....1] [ip4][..tcp] [..192.168.2.100][50100] -> [...23.2.213.165][...80] [SOAP][Unknown][RPC][Acceptable]
+         detected: [.....1] [ip4][..tcp] [..192.168.2.100][50100] -> [...23.2.213.165][...80] [SOAP][Akamai][RPC][Acceptable]
               new: [.....2] [ip4][..tcp] [..192.168.2.100][50100] -> [...23.2.213.165][.4176] [MIDSTREAM]
-         detected: [.....2] [ip4][..tcp] [..192.168.2.100][50100] -> [...23.2.213.165][.4176] [HTTP.SOAP][Unknown][Collaborative][Acceptable][go.microsoft.com]
+         detected: [.....2] [ip4][..tcp] [..192.168.2.100][50100] -> [...23.2.213.165][.4176] [HTTP.SOAP][Akamai][Collaborative][Acceptable][go.microsoft.com]
                    RISK: Known Proto on Non Std Port
      DAEMON-EVENT: [Processed: 15 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 2 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....3][.808] [ip4][..tcp] [..185.32.192.30][...80] -> [.85.154.114.113][56028]
          detected: [.....3][.808] [ip4][..tcp] [..185.32.192.30][...80] -> [.85.154.114.113][56028] [SOAP][Unknown][RPC][Acceptable]
              idle: [.....3][.808] [ip4][..tcp] [..185.32.192.30][...80] -> [.85.154.114.113][56028] [SOAP][Unknown][RPC][Acceptable]
-              end: [.....1] [ip4][..tcp] [..192.168.2.100][50100] -> [...23.2.213.165][...80] [SOAP][Unknown][RPC][Acceptable]
-             idle: [.....2] [ip4][..tcp] [..192.168.2.100][50100] -> [...23.2.213.165][.4176] [HTTP.SOAP][Unknown][Collaborative][Acceptable]
+              end: [.....1] [ip4][..tcp] [..192.168.2.100][50100] -> [...23.2.213.165][...80] [SOAP][Akamai][RPC][Acceptable]
+             idle: [.....2] [ip4][..tcp] [..192.168.2.100][50100] -> [...23.2.213.165][.4176] [HTTP.SOAP][Akamai][Collaborative][Acceptable]
                    RISK: Known Proto on Non Std Port
      DAEMON-EVENT: shutdown

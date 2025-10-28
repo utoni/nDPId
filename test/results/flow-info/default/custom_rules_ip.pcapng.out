@@ -1,0 +1,17 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [..192.168.1.126][42176] -> [..213.75.170.11][..443]
+              new: [.....2] [ip4][..tcp] [..192.168.1.126][41162] -> [...8.248.73.247][..443]
+              new: [.....3] [ip4][..tcp] [..192.168.1.126][56052] -> [...54.80.47.130][...80]
+         detected: [.....3] [ip4][..tcp] [..192.168.1.126][56052] -> [...54.80.47.130][...80] [HTTP][AWS_EC2][Web][Acceptable][54.80.47.130]
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
+          guessed: [.....1] [ip4][..tcp] [..192.168.1.126][42176] -> [..213.75.170.11][..443] [TLS][Unknown][Web][Safe]
+                   RISK: Unidirectional Traffic
+             idle: [.....1] [ip4][..tcp] [..192.168.1.126][42176] -> [..213.75.170.11][..443]
+          guessed: [.....2] [ip4][..tcp] [..192.168.1.126][41162] -> [...8.248.73.247][..443] [TLS][Unknown][Web][Safe]
+                   RISK: Unidirectional Traffic
+             idle: [.....2] [ip4][..tcp] [..192.168.1.126][41162] -> [...8.248.73.247][..443]
+              end: [.....3] [ip4][..tcp] [..192.168.1.126][56052] -> [...54.80.47.130][...80] [HTTP][AWS_EC2][Web][Acceptable]
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
+     DAEMON-EVENT: shutdown

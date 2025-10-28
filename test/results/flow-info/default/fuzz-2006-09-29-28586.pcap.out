@@ -91,7 +91,7 @@
              idle: [.....4] [ip4][..tcp] [......0.20.3.13][...80] -> [.....172.20.3.5][.2601]
              idle: [....23] [ip4][..tcp] [....172.20.3.13][...80] -> [......44.20.3.5][.2605] [HTTP][Unknown][Web][Acceptable]
                    RISK: HTTP Susp User-Agent
-          guessed: [....21] [ip4][..tcp] [......51.20.3.5][.2605] -> [....172.20.3.13][...80] [HTTP][AmazonAWS][Web][Acceptable][]
+          guessed: [....21] [ip4][..tcp] [......51.20.3.5][.2605] -> [....172.20.3.13][...80] [HTTP][AWS_EC2][Web][Acceptable][]
                    RISK: Susp Entropy, Unidirectional Traffic
              idle: [....21] [ip4][..tcp] [......51.20.3.5][.2605] -> [....172.20.3.13][...80]
           guessed: [....15] [ip4][..tcp] [.....172.20.3.5][.2603] -> [.....72.20.3.13][...80] [HTTP][Unknown][Web][Acceptable][]

@@ -49,9 +49,9 @@
  detection-update: [.....7] [ip4][..tcp] [.......10.8.0.1][41354] -> [..64.68.105.103][..443] [TLS.Webex][Webex][VoIP][Acceptable][]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
               new: [.....8] [ip4][..tcp] [.......10.8.0.1][49048] -> [..23.44.253.243][..443]
-         detected: [.....8] [ip4][..tcp] [.......10.8.0.1][49048] -> [..23.44.253.243][..443] [TLS][Unknown][Web][Safe][]
+         detected: [.....8] [ip4][..tcp] [.......10.8.0.1][49048] -> [..23.44.253.243][..443] [TLS][Akamai][Web][Safe][]
                    RISK: Obsolete TLS (v1.1 or older)
- detection-update: [.....8] [ip4][..tcp] [.......10.8.0.1][49048] -> [..23.44.253.243][..443] [TLS.Webex][Unknown][VoIP][Acceptable][]
+ detection-update: [.....8] [ip4][..tcp] [.......10.8.0.1][49048] -> [..23.44.253.243][..443] [TLS.Webex][Akamai][VoIP][Acceptable][]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
               new: [.....9] [ip4][..tcp] [.......10.8.0.1][41358] -> [..64.68.105.103][..443]
          detected: [.....9] [ip4][..tcp] [.......10.8.0.1][41358] -> [..64.68.105.103][..443] [TLS][Webex][Web][Safe][]
@@ -232,7 +232,7 @@
          detected: [....43] [ip4][..tcp] [.......10.8.0.1][51839] -> [.62.109.229.158][..443] [TLS][Webex][Web][Safe][]
                    RISK: Obsolete TLS (v1.1 or older)
               new: [....44] [ip4][..tcp] [.......10.8.0.1][46211] -> [...54.241.32.14][..443]
-         detected: [....44] [ip4][..tcp] [.......10.8.0.1][46211] -> [...54.241.32.14][..443] [TLS][AmazonAWS][Web][Safe][api.crittercism.com]
+         detected: [....44] [ip4][..tcp] [.......10.8.0.1][46211] -> [...54.241.32.14][..443] [TLS][AWS_EC2][Web][Safe][api.crittercism.com]
                    RISK: Obsolete TLS (v1.1 or older)
               new: [....45] [ip4][..tcp] [.......10.8.0.1][59756] -> [...78.46.237.91][...80]
               new: [....46] [ip4][..tcp] [.......10.8.0.1][59757] -> [...78.46.237.91][...80]
@@ -242,9 +242,9 @@
                    RISK: HTTP Obsolete Server
  detection-update: [....46] [ip4][..tcp] [.......10.8.0.1][59757] -> [...78.46.237.91][...80] [HTTP][Unknown][Web][Acceptable][cp.pushwoosh.com]
                    RISK: HTTP Obsolete Server
- detection-update: [....44] [ip4][..tcp] [.......10.8.0.1][46211] -> [...54.241.32.14][..443] [TLS][AmazonAWS][Web][Safe][api.crittercism.com]
+ detection-update: [....44] [ip4][..tcp] [.......10.8.0.1][46211] -> [...54.241.32.14][..443] [TLS][AWS_EC2][Web][Safe][api.crittercism.com]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
- detection-update: [....44] [ip4][..tcp] [.......10.8.0.1][46211] -> [...54.241.32.14][..443] [TLS][AmazonAWS][Web][Safe][api.crittercism.com]
+ detection-update: [....44] [ip4][..tcp] [.......10.8.0.1][46211] -> [...54.241.32.14][..443] [TLS][AWS_EC2][Web][Safe][api.crittercism.com]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
               new: [....47] [ip4][..tcp] [.......10.8.0.1][33551] -> [...80.74.110.68][..443]
          detected: [....47] [ip4][..tcp] [.......10.8.0.1][33551] -> [...80.74.110.68][..443] [TLS][Unknown][Web][Safe][]
@@ -300,7 +300,7 @@
  detection-update: [....56] [ip4][..tcp] [.......10.8.0.1][51194] -> [.62.109.224.120][..443] [TLS.Webex][Webex][VoIP][Acceptable][]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
            update: [....24] [ip4][..udp] [.......10.8.0.1][64538] -> [....172.16.1.75][.5060] [SIP][Unknown][VoIP][Acceptable]
-          guessed: [.....6] [ip4][..tcp] [..10.133.206.47][59447] -> [..107.20.242.44][..443] [TLS][AmazonAWS][Web][Safe]
+          guessed: [.....6] [ip4][..tcp] [..10.133.206.47][59447] -> [..107.20.242.44][..443] [TLS][AWS_EC2][Web][Safe]
               end: [.....6] [ip4][..tcp] [..10.133.206.47][59447] -> [..107.20.242.44][..443]
               end: [....12] [ip4][..tcp] [.......10.8.0.1][47498] -> [209.197.222.159][..443] [TLS.Webex][Webex][VoIP][Acceptable]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
@@ -321,7 +321,7 @@
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
               end: [....13] [ip4][..tcp] [.......10.8.0.1][57647] -> [..64.68.121.153][..443] [TLS.Webex][Webex][VoIP][Acceptable]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
-              end: [....44] [ip4][..tcp] [.......10.8.0.1][46211] -> [...54.241.32.14][..443] [TLS][AmazonAWS][Web][Safe]
+              end: [....44] [ip4][..tcp] [.......10.8.0.1][46211] -> [...54.241.32.14][..443] [TLS][AWS_EC2][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
               end: [....31] [ip4][..tcp] [.......10.8.0.1][51134] -> [.62.109.224.120][..443] [TLS][Webex][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older)
@@ -409,7 +409,7 @@
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
               end: [....28] [ip4][..tcp] [.......10.8.0.1][51676] -> [..114.29.204.49][..443] [TLS][Webex][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older)
-              end: [.....8] [ip4][..tcp] [.......10.8.0.1][49048] -> [..23.44.253.243][..443] [TLS.Webex][Unknown][VoIP][Acceptable]
+              end: [.....8] [ip4][..tcp] [.......10.8.0.1][49048] -> [..23.44.253.243][..443] [TLS.Webex][Akamai][VoIP][Acceptable]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
               end: [....15] [ip4][..tcp] [.......10.8.0.1][44492] -> [..64.68.104.140][..443] [TLS.Webex][Webex][VoIP][Acceptable]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher

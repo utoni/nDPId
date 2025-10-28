@@ -100,7 +100,7 @@
  detection-update: [....29] [ip4][..tcp] [...10.24.82.188][45211] -> [....31.13.68.84][..443] [TLS.Facebook][Facebook][SocialNetwork][Fun][developers.facebook.com]
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [....30] [ip4][..tcp] [...10.24.82.188][58927] -> [.54.255.253.199][.5223] [MIDSTREAM]
-         detected: [....30] [ip4][..tcp] [...10.24.82.188][58927] -> [.54.255.253.199][.5223] [TLS][AmazonAWS][Web][Safe]
+         detected: [....30] [ip4][..tcp] [...10.24.82.188][58927] -> [.54.255.253.199][.5223] [TLS][AWS_EC2][Web][Safe]
                    RISK: Known Proto on Non Std Port
           analyse: [....26] [ip4][..tcp] [...10.24.82.188][43581] -> [....31.13.68.70][..443] [TLS.Facebook][Facebook][SocialNetwork][Fun]
                                          min|       max|       avg|    stddev|         variance|  entropy
@@ -157,13 +157,13 @@
                    [ENTROPIES...: 4.7,5.0,4.9,5.2,4.7,5.0,6.5,7.1,6.7,4.8,4.9,4.9,6.5,4.9,5.9,4.8,7.7,5.0,5.6,4.8,6.9,7.1,5.0,5.0,5.8,4.9,5.5,4.9,5.6,6.3,5.0,5.0]
            update: [....19] [ip4][.icmp] [...10.24.82.188] -> [...10.188.191.1] [ICMP][Unknown][Network][Acceptable]
               new: [....38] [ip4][..tcp] [...10.24.82.188][58964] -> [.54.255.253.199][.5223]
-         detected: [....38] [ip4][..tcp] [...10.24.82.188][58964] -> [.54.255.253.199][.5223] [TLS][AmazonAWS][Web][Safe][]
+         detected: [....38] [ip4][..tcp] [...10.24.82.188][58964] -> [.54.255.253.199][.5223] [TLS][AWS_EC2][Web][Safe][]
                    RISK: Known Proto on Non Std Port, Obsolete TLS (v1.1 or older)
              idle: [.....5] [ip4][..udp] [...10.24.82.188][12908] -> [.....10.188.1.1][...53] [DNS][Unknown][Network][Acceptable][up-m.talk.kakao.com]
              idle: [....28] [ip4][..udp] [...10.24.82.188][14650] -> [.....10.188.1.1][...53] [DNS][Unknown][Network][Acceptable][2.97.252.173.in-addr.arpa]
-              end: [....30] [ip4][..tcp] [...10.24.82.188][58927] -> [.54.255.253.199][.5223] [TLS][AmazonAWS][Web][Safe]
+              end: [....30] [ip4][..tcp] [...10.24.82.188][58927] -> [.54.255.253.199][.5223] [TLS][AWS_EC2][Web][Safe]
                    RISK: Known Proto on Non Std Port
-             idle: [....38] [ip4][..tcp] [...10.24.82.188][58964] -> [.54.255.253.199][.5223] [TLS][AmazonAWS][Web][Safe]
+             idle: [....38] [ip4][..tcp] [...10.24.82.188][58964] -> [.54.255.253.199][.5223] [TLS][AWS_EC2][Web][Safe]
                    RISK: Known Proto on Non Std Port, Obsolete TLS (v1.1 or older)
              idle: [....37] [ip4][..tcp] [...10.24.82.188][49217] -> [.216.58.220.174][..443] [TLS][Google][Web][Safe]
               end: [....20] [ip4][..tcp] [...10.24.82.188][37821] -> [.210.103.240.15][..443] [TLS.KakaoTalk][Unknown][Chat][Acceptable]

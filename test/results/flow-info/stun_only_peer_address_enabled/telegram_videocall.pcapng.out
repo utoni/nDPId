@@ -133,15 +133,15 @@
          detected: [....33] [ip4][.icmp] [.192.168.12.169] -> [....91.108.17.2] [ICMP][Telegram][Network][Acceptable]
                    RISK: Susp Entropy
               new: [....34] [ip4][..tcp] [..18.195.162.93][..443] -> [.192.168.12.169][38956] [MIDSTREAM]
-         detected: [....34] [ip4][..tcp] [..18.195.162.93][..443] -> [.192.168.12.169][38956] [TLS][AmazonAWS][Web][Safe]
-              end: [....34] [ip4][..tcp] [..18.195.162.93][..443] -> [.192.168.12.169][38956] [TLS][AmazonAWS][Web][Safe]
+         detected: [....34] [ip4][..tcp] [..18.195.162.93][..443] -> [.192.168.12.169][38956] [TLS][AWS_EC2][Web][Safe]
+              end: [....34] [ip4][..tcp] [..18.195.162.93][..443] -> [.192.168.12.169][38956] [TLS][AWS_EC2][Web][Safe]
              idle: [....33] [ip4][.icmp] [.192.168.12.169] -> [....91.108.17.2] [ICMP][Telegram][Network][Acceptable]
                    RISK: Susp Entropy
              idle: [....32] [ip4][.icmp] [.192.168.12.169] -> [...91.108.13.23] [ICMP][Telegram][Network][Acceptable]
                    RISK: Susp Entropy
              idle: [....31] [ip4][.icmp] [.192.168.12.169] -> [....91.108.9.35] [ICMP][Telegram][Network][Acceptable]
                    RISK: Susp Entropy
-          guessed: [....30] [ip4][..tcp] [.192.168.12.169][40710] -> [....52.58.18.25][.5222] [AmazonAWS][AmazonAWS][Cloud][Acceptable]
+          guessed: [....30] [ip4][..tcp] [.192.168.12.169][40710] -> [....52.58.18.25][.5222] [AWS_EC2][AWS_EC2][Cloud][Acceptable]
              idle: [....30] [ip4][..tcp] [.192.168.12.169][40710] -> [....52.58.18.25][.5222]
              idle: [....25] [ip4][..udp] [.192.168.12.169][40906] -> [..10.46.103.200][42554] [STUN.TelegramVoip][Unknown][VoIP][Acceptable]
                    RISK: Unidirectional Traffic

@@ -8,9 +8,9 @@
          detected: [.....2] [ip6][..udp] [...............2a00:1450:4002:411::200e][..443] -> [...2001:b07:a3d:c112:91b7:b97e:6e2:fad8][33144] [QUIC][Google][Web][Acceptable]
                    RISK: Susp Entropy
               new: [.....3] [ip4][..udp] [..192.168.1.245][40408] -> [..13.226.175.53][..443]
-         detected: [.....3] [ip4][..udp] [..192.168.1.245][40408] -> [..13.226.175.53][..443] [QUIC][AmazonAWS][Web][Acceptable]
+         detected: [.....3] [ip4][..udp] [..192.168.1.245][40408] -> [..13.226.175.53][..443] [QUIC][AWS_Cloudfront][Web][Acceptable]
                    RISK: Unidirectional Traffic
-             idle: [.....3] [ip4][..udp] [..192.168.1.245][40408] -> [..13.226.175.53][..443] [QUIC][AmazonAWS][Web][Acceptable]
+             idle: [.....3] [ip4][..udp] [..192.168.1.245][40408] -> [..13.226.175.53][..443] [QUIC][AWS_Cloudfront][Web][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [.....2] [ip6][..udp] [...............2a00:1450:4002:411::200e][..443] -> [...2001:b07:a3d:c112:91b7:b97e:6e2:fad8][33144] [QUIC][Google][Web][Acceptable]
                    RISK: Susp Entropy

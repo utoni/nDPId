@@ -595,27 +595,27 @@
          detected: [...109] [ip4][..udp] [..192.168.1.103][53515] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][webpush.web.wechat.com.lan]
              idle: [....99] [ip4][..udp] [..192.168.1.103][45366] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable]
              idle: [....84] [ip4][..udp] [..192.168.1.103][37578] -> [193.204.114.233][..123] [NTP][Unknown][System][Acceptable]
-          guessed: [....83] [ip4][..tcp] [..192.168.1.103][34981] -> [...95.101.34.33][...80] [HTTP][Unknown][Web][Acceptable][]
+          guessed: [....83] [ip4][..tcp] [..192.168.1.103][34981] -> [...95.101.34.33][...80] [HTTP][Akamai][Web][Acceptable][]
                    RISK: Unidirectional Traffic
               end: [....83] [ip4][..tcp] [..192.168.1.103][34981] -> [...95.101.34.33][...80]
-          guessed: [....79] [ip4][..tcp] [..192.168.1.103][34996] -> [...95.101.34.33][...80] [HTTP][Unknown][Web][Acceptable][]
+          guessed: [....79] [ip4][..tcp] [..192.168.1.103][34996] -> [...95.101.34.33][...80] [HTTP][Akamai][Web][Acceptable][]
                    RISK: Unidirectional Traffic
               end: [....79] [ip4][..tcp] [..192.168.1.103][34996] -> [...95.101.34.33][...80]
-          guessed: [....80] [ip4][..tcp] [..192.168.1.103][34999] -> [...95.101.34.33][...80] [HTTP][Unknown][Web][Acceptable][]
+          guessed: [....80] [ip4][..tcp] [..192.168.1.103][34999] -> [...95.101.34.33][...80] [HTTP][Akamai][Web][Acceptable][]
                    RISK: Unidirectional Traffic
               end: [....80] [ip4][..tcp] [..192.168.1.103][34999] -> [...95.101.34.33][...80]
-          guessed: [....81] [ip4][..tcp] [..192.168.1.103][35000] -> [...95.101.34.33][...80] [HTTP][Unknown][Web][Acceptable][]
+          guessed: [....81] [ip4][..tcp] [..192.168.1.103][35000] -> [...95.101.34.33][...80] [HTTP][Akamai][Web][Acceptable][]
                    RISK: Unidirectional Traffic
               end: [....81] [ip4][..tcp] [..192.168.1.103][35000] -> [...95.101.34.33][...80]
              idle: [.....5] [ip4][..tcp] [..192.168.1.103][38657] -> [..172.217.22.14][..443] [TLS.Google][Google][Web][Acceptable][safebrowsing.googleusercontent.com]
              idle: [...109] [ip4][..udp] [..192.168.1.103][53515] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable]
-          guessed: [....86] [ip4][..tcp] [..192.168.1.103][39195] -> [...95.101.34.34][...80] [HTTP][Unknown][Web][Acceptable][]
+          guessed: [....86] [ip4][..tcp] [..192.168.1.103][39195] -> [...95.101.34.34][...80] [HTTP][Akamai][Web][Acceptable][]
                    RISK: Unidirectional Traffic
               end: [....86] [ip4][..tcp] [..192.168.1.103][39195] -> [...95.101.34.34][...80]
-          guessed: [....78] [ip4][..tcp] [..192.168.1.103][39207] -> [...95.101.34.34][...80] [HTTP][Unknown][Web][Acceptable][]
+          guessed: [....78] [ip4][..tcp] [..192.168.1.103][39207] -> [...95.101.34.34][...80] [HTTP][Akamai][Web][Acceptable][]
                    RISK: Unidirectional Traffic
               end: [....78] [ip4][..tcp] [..192.168.1.103][39207] -> [...95.101.34.34][...80]
-          guessed: [....82] [ip4][..tcp] [..192.168.1.103][39231] -> [...95.101.34.34][...80] [HTTP][Unknown][Web][Acceptable][]
+          guessed: [....82] [ip4][..tcp] [..192.168.1.103][39231] -> [...95.101.34.34][...80] [HTTP][Akamai][Web][Acceptable][]
                    RISK: Unidirectional Traffic
               end: [....82] [ip4][..tcp] [..192.168.1.103][39231] -> [...95.101.34.34][...80]
           guessed: [....21] [ip4][..tcp] [..192.168.1.103][49787] -> [.216.58.205.142][..443] [TLS][Google][Web][Safe]
@@ -636,7 +636,7 @@
              idle: [...104] [ip4][..udp] [..192.168.1.100][..138] -> [..192.168.1.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][giovanni-pc]
              idle: [....97] [ip4][..udp] [..192.168.1.103][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable]
              idle: [....92] [ip4][..udp] [..192.168.1.103][33915] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable]
-          guessed: [....87] [ip4][..tcp] [..192.168.1.103][52020] -> [.95.101.180.179][...80] [HTTP][Unknown][Web][Acceptable][]
+          guessed: [....87] [ip4][..tcp] [..192.168.1.103][52020] -> [.95.101.180.179][...80] [HTTP][Akamai][Web][Acceptable][]
                    RISK: Unidirectional Traffic
               end: [....87] [ip4][..tcp] [..192.168.1.103][52020] -> [.95.101.180.179][...80]
           guessed: [....75] [ip4][..tcp] [..192.168.1.103][58043] -> [203.205.147.171][..443] [TLS][Tencent][Web][Safe]

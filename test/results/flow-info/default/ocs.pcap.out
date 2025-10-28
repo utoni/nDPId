@@ -22,7 +22,7 @@
               new: [....10] [ip4][..tcp] [..192.168.180.2][41223] -> [..216.58.208.46][..443]
          detected: [....10] [ip4][..tcp] [..192.168.180.2][41223] -> [..216.58.208.46][..443] [TLS][Google][Web][Safe][]
                    RISK: Obsolete TLS (v1.1 or older)
-         detected: [.....6] [ip4][..tcp] [..192.168.180.2][39263] -> [..23.21.230.199][..443] [TLS.Crashlytics][AmazonAWS][DataTransfer][Acceptable][settings.crashlytics.com]
+         detected: [.....6] [ip4][..tcp] [..192.168.180.2][39263] -> [..23.21.230.199][..443] [TLS.Crashlytics][AWS_EC2][DataTransfer][Acceptable][settings.crashlytics.com]
                    RISK: Obsolete TLS (v1.1 or older)
               new: [....11] [ip4][..udp] [..192.168.180.2][.3621] -> [........8.8.8.8][...53]
          detected: [....11] [ip4][..udp] [..192.168.180.2][.3621] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][xmpp.device06.eu01.capptain.com]
@@ -96,7 +96,7 @@
              idle: [.....3] [ip4][..udp] [..192.168.180.2][40097] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable]
              idle: [....18] [ip4][..tcp] [..192.168.180.2][47803] -> [..64.233.166.95][..443] [TLS][Google][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older)
-              end: [.....6] [ip4][..tcp] [..192.168.180.2][39263] -> [..23.21.230.199][..443] [TLS.Crashlytics][AmazonAWS][DataTransfer][Acceptable]
+              end: [.....6] [ip4][..tcp] [..192.168.180.2][39263] -> [..23.21.230.199][..443] [TLS.Crashlytics][AWS_EC2][DataTransfer][Acceptable]
                    RISK: Obsolete TLS (v1.1 or older)
              idle: [.....5] [ip4][..tcp] [..192.168.180.2][48250] -> [.178.248.208.54][...80] [HTTP.OCS][OCS][Media][Fun]
              idle: [....17] [ip4][..udp] [..192.168.180.2][11793] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable]

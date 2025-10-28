@@ -2,9 +2,9 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [.192.168.88.208][51807] -> [...3.162.112.93][..443]
-         detected: [.....1] [ip4][..tcp] [.192.168.88.208][51807] -> [...3.162.112.93][..443] [TLS.Paltalk][AmazonAWS][Chat][Acceptable][paltalk.com]
+         detected: [.....1] [ip4][..tcp] [.192.168.88.208][51807] -> [...3.162.112.93][..443] [TLS.Paltalk][AWS_Cloudfront][Chat][Acceptable][paltalk.com]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [.....1] [ip4][..tcp] [.192.168.88.208][51807] -> [...3.162.112.93][..443] [TLS.Paltalk][AmazonAWS][Chat][Acceptable][paltalk.com]
+ detection-update: [.....1] [ip4][..tcp] [.192.168.88.208][51807] -> [...3.162.112.93][..443] [TLS.Paltalk][AWS_Cloudfront][Chat][Acceptable][paltalk.com]
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [.....2] [ip4][..tcp] [.158.69.169.104][.6845] -> [.192.168.88.208][51887]
          detected: [.....2] [ip4][..tcp] [.158.69.169.104][.6845] -> [.192.168.88.208][51887] [Paltalk][Unknown][Chat][Acceptable]
@@ -13,10 +13,10 @@
               new: [.....3] [ip4][..tcp] [.192.168.88.208][50728] -> [...84.17.44.229][.7970]
          detected: [.....3] [ip4][..tcp] [.192.168.88.208][50728] -> [...84.17.44.229][.7970] [Paltalk][Unknown][Chat][Acceptable]
               new: [.....4] [ip4][..tcp] [.192.168.88.208][51825] -> [.44.194.181.195][...80]
-         detected: [.....4] [ip4][..tcp] [.192.168.88.208][51825] -> [.44.194.181.195][...80] [HTTP.Paltalk][AmazonAWS][Chat][Acceptable][qos.paltalkconnect.com]
-             idle: [.....1] [ip4][..tcp] [.192.168.88.208][51807] -> [...3.162.112.93][..443] [TLS.Paltalk][AmazonAWS][Chat][Acceptable]
+         detected: [.....4] [ip4][..tcp] [.192.168.88.208][51825] -> [.44.194.181.195][...80] [HTTP.Paltalk][AWS_EC2][Chat][Acceptable][qos.paltalkconnect.com]
+             idle: [.....1] [ip4][..tcp] [.192.168.88.208][51807] -> [...3.162.112.93][..443] [TLS.Paltalk][AWS_Cloudfront][Chat][Acceptable]
                    RISK: TLS (probably) Not Carrying HTTPS
              idle: [.....3] [ip4][..tcp] [.192.168.88.208][50728] -> [...84.17.44.229][.7970] [Paltalk][Unknown][Chat][Acceptable]
-             idle: [.....4] [ip4][..tcp] [.192.168.88.208][51825] -> [.44.194.181.195][...80] [HTTP.Paltalk][AmazonAWS][Chat][Acceptable]
+             idle: [.....4] [ip4][..tcp] [.192.168.88.208][51825] -> [.44.194.181.195][...80] [HTTP.Paltalk][AWS_EC2][Chat][Acceptable]
              idle: [.....2] [ip4][..tcp] [.158.69.169.104][.6845] -> [.192.168.88.208][51887] [Paltalk][Unknown][Chat][Acceptable]
      DAEMON-EVENT: shutdown

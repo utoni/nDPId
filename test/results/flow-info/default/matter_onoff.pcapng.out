@@ -1,0 +1,23 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..udp] [..192.168.86.49][.5353] -> [....224.0.0.251][.5353]
+         detected: [.....1] [ip4][..udp] [..192.168.86.49][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable][_services._dns-sd._udp.local]
+              new: [.....2] [ip6][..udp] [..............fe80::9f50:74d7:96c5:1a4f][.5353] -> [...............................ff02::fb][.5353]
+         detected: [.....2] [ip6][..udp] [..............fe80::9f50:74d7:96c5:1a4f][.5353] -> [...............................ff02::fb][.5353] [MDNS][Unknown][Network][Acceptable][_services._dns-sd._udp.local]
+              new: [.....3] [ip6][..udp] [....fd5e:a43d:fedd::af13:b2b3:fc69:f7e0][.5542] -> [....fd5e:a43d:fedd::af13:b2b3:fc69:f7e0][.5540]
+         detected: [.....3] [ip6][..udp] [....fd5e:a43d:fedd::af13:b2b3:fc69:f7e0][.5542] -> [....fd5e:a43d:fedd::af13:b2b3:fc69:f7e0][.5540] [Matter][Unknown][IoT-Scada][Acceptable]
+          analyse: [.....3] [ip6][..udp] [....fd5e:a43d:fedd::af13:b2b3:fc69:f7e0][.5542] -> [....fd5e:a43d:fedd::af13:b2b3:fc69:f7e0][.5540] [Matter][Unknown][IoT-Scada][Acceptable]
+                                         min|       max|       avg|    stddev|         variance|  entropy
+                   [IAT.........: <    0.001|     0.007|     0.002|     0.002|            3.671|    4.200]
+                   [PKTLEN......:     66.000|   607.000|   184.800|   162.200|        26323.500|    4.600]
+                   [BINS(c->s)..: 1,11,6,0,0,1,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 1,0,4,1,1,0,0,0,0,0,0,1,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [DIRECTIONS..: 0,1,0,1,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0]
+                   [IATS(ms)....: 0.8,1.5,2.5,2.5,1.0,0.5,0.1,0.8,1.1,0.1,1.9,1.8,0.1,1.2,1.1,0.1,1.1,1.0,0.1,2.9,5.2,0.2,4.3,2.7,0.2,2.2,1.0,0.1,7.4,7.3,0.9]
+                   [PKTLENS.....: 118,177,136,171,103,74,114,66,112,117,82,112,107,82,585,107,82,607,139,82,458,139,82,422,344,82,112,604,82,118,82,216]
+                   [ENTROPIES...: 5.7,6.4,6.1,6.6,5.6,4.5,6.0,4.7,5.9,6.0,5.3,6.1,5.9,5.4,7.6,5.8,5.4,7.6,6.3,5.4,7.5,6.3,5.4,7.5,7.2,5.4,6.1,7.5,5.4,6.1,5.3,6.6]
+             idle: [.....3] [ip6][..udp] [....fd5e:a43d:fedd::af13:b2b3:fc69:f7e0][.5542] -> [....fd5e:a43d:fedd::af13:b2b3:fc69:f7e0][.5540] [Matter][Unknown][IoT-Scada][Acceptable]
+             idle: [.....1] [ip4][..udp] [..192.168.86.49][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable][_services._dns-sd._udp.local]
+             idle: [.....2] [ip6][..udp] [..............fe80::9f50:74d7:96c5:1a4f][.5353] -> [...............................ff02::fb][.5353] [MDNS][Unknown][Network][Acceptable][_services._dns-sd._udp.local]
+     DAEMON-EVENT: shutdown

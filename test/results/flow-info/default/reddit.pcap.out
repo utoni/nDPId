@@ -197,10 +197,10 @@
               new: [....36] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][56186] -> [...2600:9000:219c:ee00:6:44e3:f8c0:93a1][..443]
          detected: [....34] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][51100] -> [.....................64:ff9b::d83a:d1e6][..443] [TLS.Google][Unknown][Advertisement][Tracker_Ads][ad.doubleclick.net]
          detected: [....35] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][51102] -> [.....................64:ff9b::d83a:d1e6][..443] [TLS.Google][Unknown][Advertisement][Tracker_Ads][ad.doubleclick.net]
-         detected: [....36] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][56186] -> [...2600:9000:219c:ee00:6:44e3:f8c0:93a1][..443] [TLS][AmazonAWS][Web][Safe][rules.quantcount.com]
+         detected: [....36] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][56186] -> [...2600:9000:219c:ee00:6:44e3:f8c0:93a1][..443] [TLS][AWS_Cloudfront][Web][Safe][rules.quantcount.com]
  detection-update: [....34] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][51100] -> [.....................64:ff9b::d83a:d1e6][..443] [TLS.Google][Unknown][Advertisement][Tracker_Ads][ad.doubleclick.net]
  detection-update: [....35] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][51102] -> [.....................64:ff9b::d83a:d1e6][..443] [TLS.Google][Unknown][Advertisement][Tracker_Ads][ad.doubleclick.net]
- detection-update: [....36] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][56186] -> [...2600:9000:219c:ee00:6:44e3:f8c0:93a1][..443] [TLS][AmazonAWS][Web][Safe][rules.quantcount.com]
+ detection-update: [....36] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][56186] -> [...2600:9000:219c:ee00:6:44e3:f8c0:93a1][..443] [TLS][AWS_Cloudfront][Web][Safe][rules.quantcount.com]
           analyse: [....34] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][51100] -> [.....................64:ff9b::d83a:d1e6][..443] [TLS.Google][Unknown][Advertisement][Tracker_Ads]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.043|     0.011|     0.015|          223.794|    3.600]
@@ -211,6 +211,8 @@
                    [IATS(ms)....: 41.1,41.1,0.2,31.9,11.0,42.7,0.5,0.0,0.5,0.0,2.8,1.3,0.1,34.2,10.2,0.0,40.2,0.5,1.5,0.0,0.9,16.6,0.0,0.0,16.5,0.0,0.0,4.4,0.3,12.7,24.5]
                    [PKTLENS.....: 80,80,72,589,72,1460,72,1460,172,72,72,136,164,486,72,652,72,72,103,72,103,72,793,103,111,72,72,72,111,107,282,72]
                    [ENTROPIES...: 4.9,5.3,5.3,4.5,5.1,7.8,5.3,7.9,6.5,5.3,5.3,6.1,6.5,7.4,5.2,7.6,5.1,5.3,5.9,5.1,5.8,5.3,7.7,5.7,6.0,5.3,5.3,5.3,6.1,5.9,7.1,5.2]
+ detection-update: [....34] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][51100] -> [.....................64:ff9b::d83a:d1e6][..443] [TLS.Google][Unknown][Advertisement][Tracker_Ads][ad.doubleclick.net]
+                   RISK: Mismatching Protocol with server IP address
           analyse: [....29] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][56782] -> [.....................64:ff9b::68f4:2ac8][..443] [TLS.Twitter][Unknown][SocialNetwork][Fun]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........:      0.000|     0.217|     0.047|     0.068|         4568.099|    3.600]
@@ -296,9 +298,7 @@
  detection-update: [....45] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][51006] -> [...............2a00:1450:4007:805::2002][..443] [TLS.Google][Google][Web][Acceptable][adservice.google.fr]
  detection-update: [....46] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][59336] -> [...............2a00:1450:4007:80b::2002][..443] [TLS.Google][Google][Advertisement][Tracker_Ads][adservice.google.com]
          detected: [....48] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][59624] -> [...............2a00:1450:4007:80b::2001][..443] [TLS.Google][Google][Advertisement][Tracker_Ads][8a755a3fef0b189d8ab5b0d10758f68a.safeframe.googlesyndication.com]
-                   RISK: Non-Printable/Invalid Chars Detected, Possible Exploit Attempt
  detection-update: [....48] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][59624] -> [...............2a00:1450:4007:80b::2001][..443] [TLS.Google][Google][Advertisement][Tracker_Ads][8a755a3fef0b189d8ab5b0d10758f68a.safeframe.googlesyndication.com]
-                   RISK: Non-Printable/Invalid Chars Detected, Possible Exploit Attempt
  detection-update: [....47] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][46646] -> [.....................64:ff9b::345f:7ca5][..443] [TLS][Unknown][Advertisement][Tracker_Ads][aax-eu.amazon-adsystem.com]
  detection-update: [....47] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][46646] -> [.....................64:ff9b::345f:7ca5][..443] [TLS][Unknown][Advertisement][Tracker_Ads][aax-eu.amazon-adsystem.com]
           analyse: [....46] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][59336] -> [...............2a00:1450:4007:80b::2002][..443] [TLS.Google][Google][Advertisement][Tracker_Ads]
@@ -377,12 +377,11 @@
  detection-update: [....60] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][47006] -> [.....................64:ff9b::34d3:acec][..443] [TLS][Unknown][Web][Safe][d9.flashtalking.com]
  detection-update: [....60] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][47006] -> [.....................64:ff9b::34d3:acec][..443] [TLS][Unknown][Web][Safe][d9.flashtalking.com]
              idle: [....39] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][57282] -> [...............2a00:1450:4007:805::2004][..443] [TLS.Google][Google][Web][Acceptable][www.google.com]
-             idle: [....36] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][56186] -> [...2600:9000:219c:ee00:6:44e3:f8c0:93a1][..443] [TLS][AmazonAWS][Web][Safe]
+             idle: [....36] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][56186] -> [...2600:9000:219c:ee00:6:44e3:f8c0:93a1][..443] [TLS][AWS_Cloudfront][Web][Safe]
              idle: [....40] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][58122] -> [...............2a00:1450:4007:805::2001][..443] [TLS.YouTube][Google][Media][Fun][yt3.ggpht.com]
              idle: [....28] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][32970] -> [.....................64:ff9b::6853:b3d1][..443] [TLS][Unknown][Web][Safe]
              idle: [....46] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][59336] -> [...............2a00:1450:4007:80b::2002][..443] [TLS.Google][Google][Advertisement][Tracker_Ads][adservice.google.com]
              idle: [....48] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][59624] -> [...............2a00:1450:4007:80b::2001][..443] [TLS.Google][Google][Advertisement][Tracker_Ads][8a755a3fef0b189d8ab5b0d10758f68a.safeframe.googlesyndication.com]
-                   RISK: Non-Printable/Invalid Chars Detected, Possible Exploit Attempt
              idle: [....32] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][48648] -> [...2620:116:800d:21:f916:5049:f87f:108e][..443] [TLS][Unknown][Web][Safe][secure.quantserve.com]
              idle: [....24] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][38320] -> [.....................64:ff9b::6853:b3b6][..443] [TLS][Unknown][Web][Safe]
              idle: [....30] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][39626] -> [.....................64:ff9b::2278:cf94][..443] [TLS][Unknown][Web][Safe]
@@ -404,6 +403,7 @@
              idle: [....26] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][48240] -> [.....................64:ff9b::9765:789d][..443] [TLS.Twitter][Unknown][SocialNetwork][Fun]
              idle: [....25] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][51026] -> [.....................64:ff9b::acd9:12c2][..443] [TLS.Google][Unknown][Advertisement][Tracker_Ads]
              idle: [....34] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][51100] -> [.....................64:ff9b::d83a:d1e6][..443] [TLS.Google][Unknown][Advertisement][Tracker_Ads][ad.doubleclick.net]
+                   RISK: Mismatching Protocol with server IP address
               end: [....35] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][51102] -> [.....................64:ff9b::d83a:d1e6][..443] [TLS.Google][Unknown][Advertisement][Tracker_Ads]
              idle: [....49] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][46806] -> [...............2a00:1450:4007:808::2001][..443] [TLS.Google][Google][Web][Acceptable]
               end: [....50] [ip6][..tcp] [2a01:cb01:2049:8b07:991d:ec85:28df:f629][46808] -> [...............2a00:1450:4007:808::2001][..443] [TLS.Google][Google][Web][Acceptable]

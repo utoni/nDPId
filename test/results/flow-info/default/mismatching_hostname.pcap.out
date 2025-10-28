@@ -1,0 +1,23 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [....192.168.2.7][35162] -> [....51.38.65.98][..443]
+         detected: [.....1] [ip4][..tcp] [....192.168.2.7][35162] -> [....51.38.65.98][..443] [TLS.Facebook][Unknown][SocialNetwork][Fun][facebook.com]
+                   RISK: TLS (probably) Not Carrying HTTPS
+ detection-update: [.....1] [ip4][..tcp] [....192.168.2.7][35162] -> [....51.38.65.98][..443] [TLS.Facebook][Unknown][SocialNetwork][Fun][facebook.com]
+                   RISK: TLS (probably) Not Carrying HTTPS
+          analyse: [.....1] [ip4][..tcp] [....192.168.2.7][35162] -> [....51.38.65.98][..443] [TLS.Facebook][Unknown][SocialNetwork][Fun]
+                                         min|       max|       avg|    stddev|         variance|  entropy
+                   [IAT.........: <    0.001|     0.313|     0.043|     0.063|         4023.491|    3.900]
+                   [PKTLEN......:     52.000|  1492.000|   286.900|   411.500|       169326.600|    4.000]
+                   [BINS(c->s)..: 9,2,2,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                   [BINS(s->c)..: 6,1,1,0,0,0,0,3,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,2,0,0]
+                   [DIRECTIONS..: 0,1,0,0,1,1,1,1,0,0,0,0,1,1,0,1,0,1,0,1,0,1,1,0,0,1,0,1,1,0,1,0]
+                   [IATS(ms)....: 49.9,53.9,4.4,39.9,2.1,0.1,0.0,39.8,2.5,0.0,2.7,43.0,0.1,36.6,13.3,12.7,24.9,24.9,89.9,89.6,36.0,7.0,87.2,192.3,313.0,76.6,34.7,0.7,36.3,8.7,8.6]
+                   [PKTLENS.....: 60,60,52,306,52,1492,1492,279,52,52,52,116,307,307,87,114,52,1154,1090,52,122,52,574,52,90,52,264,52,142,52,450,52]
+                   [ENTROPIES...: 4.8,5.3,5.1,6.1,5.2,7.9,7.9,7.2,5.2,5.1,5.2,6.0,7.3,7.2,5.8,6.3,5.1,7.8,7.8,5.2,6.4,5.1,7.6,5.2,5.9,5.2,7.1,5.2,6.6,5.2,7.5,5.2]
+ detection-update: [.....1] [ip4][..tcp] [....192.168.2.7][35162] -> [....51.38.65.98][..443] [TLS.Facebook][Unknown][SocialNetwork][Fun][facebook.com]
+                   RISK: TLS (probably) Not Carrying HTTPS, Mismatching Protocol with server IP address
+             idle: [.....1] [ip4][..tcp] [....192.168.2.7][35162] -> [....51.38.65.98][..443] [TLS.Facebook][Unknown][SocialNetwork][Fun][facebook.com]
+                   RISK: TLS (probably) Not Carrying HTTPS, Mismatching Protocol with server IP address
+     DAEMON-EVENT: shutdown

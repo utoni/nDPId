@@ -2,9 +2,9 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [...192.168.1.23][50624] -> [.92.123.164.188][..443]
-         detected: [.....1] [ip4][..tcp] [...192.168.1.23][50624] -> [.92.123.164.188][..443] [TLS.RockstarGames][Unknown][Game][Fun][gamedownloads.rockstargames.com]
+         detected: [.....1] [ip4][..tcp] [...192.168.1.23][50624] -> [.92.123.164.188][..443] [TLS.RockstarGames][Akamai][Game][Fun][gamedownloads.rockstargames.com]
                    RISK: TLS (probably) Not Carrying HTTPS
- detection-update: [.....1] [ip4][..tcp] [...192.168.1.23][50624] -> [.92.123.164.188][..443] [TLS.RockstarGames][Unknown][Game][Fun][gamedownloads.rockstargames.com]
+ detection-update: [.....1] [ip4][..tcp] [...192.168.1.23][50624] -> [.92.123.164.188][..443] [TLS.RockstarGames][Akamai][Game][Fun][gamedownloads.rockstargames.com]
                    RISK: TLS (probably) Not Carrying HTTPS
      DAEMON-EVENT: [Processed: 6 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 1|updates: 0]
@@ -12,9 +12,9 @@
          detected: [.....2] [ip4][..tcp] [...192.168.1.27][64057] -> [.104.255.105.53][..443] [TLS.RockstarGames][Unknown][Game][Fun][rgl.rockstargames.com]
  detection-update: [.....2] [ip4][..tcp] [...192.168.1.27][64057] -> [.104.255.105.53][..443] [TLS.RockstarGames][Unknown][Game][Fun][rgl.rockstargames.com]
               new: [.....3] [ip4][..tcp] [...192.168.1.23][50630] -> [....23.38.18.80][..443]
-         detected: [.....3] [ip4][..tcp] [...192.168.1.23][50630] -> [....23.38.18.80][..443] [TLS.RockstarGames][Unknown][Game][Fun][s.rsg.sc]
- detection-update: [.....3] [ip4][..tcp] [...192.168.1.23][50630] -> [....23.38.18.80][..443] [TLS.RockstarGames][Unknown][Game][Fun][s.rsg.sc]
-             idle: [.....1] [ip4][..tcp] [...192.168.1.23][50624] -> [.92.123.164.188][..443] [TLS.RockstarGames][Unknown][Game][Fun]
+         detected: [.....3] [ip4][..tcp] [...192.168.1.23][50630] -> [....23.38.18.80][..443] [TLS.RockstarGames][Akamai][Game][Fun][s.rsg.sc]
+ detection-update: [.....3] [ip4][..tcp] [...192.168.1.23][50630] -> [....23.38.18.80][..443] [TLS.RockstarGames][Akamai][Game][Fun][s.rsg.sc]
+             idle: [.....1] [ip4][..tcp] [...192.168.1.23][50624] -> [.92.123.164.188][..443] [TLS.RockstarGames][Akamai][Game][Fun]
                    RISK: TLS (probably) Not Carrying HTTPS
      DAEMON-EVENT: [Processed: 18 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 2 / 3|skipped: 0|!detected: 0|guessed: 0|detection-updates: 3|updates: 0]
@@ -23,7 +23,7 @@
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
  detection-update: [.....4] [ip4][..udp] [...192.168.1.42][59487] -> [.192.81.241.191][61457] [DTLS.RockstarGames][Unknown][Game][Fun]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
-             idle: [.....3] [ip4][..tcp] [...192.168.1.23][50630] -> [....23.38.18.80][..443] [TLS.RockstarGames][Unknown][Game][Fun]
+             idle: [.....3] [ip4][..tcp] [...192.168.1.23][50630] -> [....23.38.18.80][..443] [TLS.RockstarGames][Akamai][Game][Fun]
              idle: [.....2] [ip4][..tcp] [...192.168.1.27][64057] -> [.104.255.105.53][..443] [TLS.RockstarGames][Unknown][Game][Fun]
              idle: [.....4] [ip4][..udp] [...192.168.1.42][59487] -> [.192.81.241.191][61457] [DTLS.RockstarGames][Unknown][Game][Fun]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
