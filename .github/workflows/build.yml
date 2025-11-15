@@ -42,7 +42,7 @@ jobs:
             poll: "-DFORCE_POLL=OFF"
             upload: true
             upload_suffix: ""
-            ndpi_min_version: "4.16"
+            ndpi_min_version: "5.0"
           - compiler: "gcc"
             os: "ubuntu-latest"
             ndpi_build: "-DBUILD_NDPI=ON"
@@ -56,7 +56,7 @@ jobs:
             poll: "-DFORCE_POLL=OFF"
             upload: true
             upload_suffix: "-host-gcrypt"
-            ndpi_min_version: "4.16"
+            ndpi_min_version: "5.0"
           - compiler: "clang"
             os: "ubuntu-latest"
             ndpi_build: "-DBUILD_NDPI=ON"
@@ -70,7 +70,7 @@ jobs:
             poll: "-DFORCE_POLL=OFF"
             upload: true
             upload_suffix: "-no-zlib"
-            ndpi_min_version: "4.16"
+            ndpi_min_version: "5.0"
           - compiler: "gcc"
             os: "ubuntu-latest"
             ndpi_build: "-DBUILD_NDPI=ON"
@@ -83,7 +83,7 @@ jobs:
             coverage: "-DENABLE_COVERAGE=ON"
             poll: "-DFORCE_POLL=ON"
             upload: false
-            ndpi_min_version: "4.16"
+            ndpi_min_version: "5.0"
           - compiler: "clang"
             os: "ubuntu-latest"
             ndpi_build: "-DBUILD_NDPI=ON"
@@ -96,7 +96,7 @@ jobs:
             coverage: "-DENABLE_COVERAGE=OFF"
             poll: "-DFORCE_POLL=OFF"
             upload: false
-            ndpi_min_version: "4.16"
+            ndpi_min_version: "5.0"
           - compiler: "clang-12"
             os: "ubuntu-22.04"
             ndpi_build: "-DBUILD_NDPI=ON"
@@ -109,7 +109,7 @@ jobs:
             coverage: "-DENABLE_COVERAGE=OFF"
             poll:
             upload: false
-            ndpi_min_version: "4.16"
+            ndpi_min_version: "5.0"
           - compiler: "gcc-10"
             os: "ubuntu-22.04"
             ndpi_build: "-DBUILD_NDPI=ON"
@@ -122,7 +122,7 @@ jobs:
             coverage: "-DENABLE_COVERAGE=OFF"
             poll: "-DFORCE_POLL=ON"
             upload: false
-            ndpi_min_version: "4.16"
+            ndpi_min_version: "5.0"
           - compiler: "gcc-9"
             os: "ubuntu-22.04"
             ndpi_build: "-DBUILD_NDPI=ON"
@@ -135,7 +135,7 @@ jobs:
             coverage: "-DENABLE_COVERAGE=OFF"
             poll: "-DFORCE_POLL=OFF"
             upload: false
-            ndpi_min_version: "4.16"
+            ndpi_min_version: "5.0"
           - compiler: "cc"
             os: "macOS-13"
             ndpi_build: "-DBUILD_NDPI=OFF"
@@ -149,7 +149,7 @@ jobs:
             coverage: "-DENABLE_COVERAGE=OFF"
             poll:
             upload: false
-            ndpi_min_version: "4.16"
+            ndpi_min_version: "5.0"
 
     steps:
       - name: Print Matrix
@@ -187,7 +187,8 @@ jobs:
           wget 'https://github.com/ntop/nDPI/archive/refs/heads/dev.zip' -O libndpi-dev.zip
           unzip libndpi-dev.zip
           cd nDPI-dev
-          ./autogen.sh --prefix=/usr/local --with-only-libndpi && make install
+          ./autogen.sh
+          ./configure --prefix=/usr/local --with-only-libndpi && make install
       - name: Fix kernel mmap rnd bits on Ubuntu
         if: startsWith(matrix.os, 'ubuntu')
         run: |
@@ -353,8 +354,9 @@ jobs:
                 NDPI_CONFIGURE_ARGS=''; \
                 test 'x${{ matrix.ndpid_gcrypt }}' != 'x-DNDPI_WITH_GCRYPT=ON' || NDPI_CONFIGURE_ARGS="$NDPI_CONFIGURE_ARGS --with-local-libgcrypt"; \
                 test 'x${{ matrix.sanitizer }}' != 'x-DENABLE_SANITIZER=ON' || NDPI_CONFIGURE_ARGS="$NDPI_CONFIGURE_ARGS --with-sanitizer"; \
-                echo "Configure arguments: '$NDPI_CONFIGURE_ARGS'"
-                ./autogen.sh --prefix=/usr --with-only-libndpi $NDPI_CONFIGURE_ARGS CC="${{ matrix.compiler }}" CXX=false \
+                echo "Configure arguments: '$NDPI_CONFIGURE_ARGS'"; \
+                ./autogen.sh; \
+                ./configure --prefix=/usr --with-only-libndpi $NDPI_CONFIGURE_ARGS CC="${{ matrix.compiler }}" CXX=false \
                     CFLAGS="$CMAKE_C_FLAGS" && make && sudo make install; cd ..; }
           ls -alhR /usr/include/ndpi
           cd ..

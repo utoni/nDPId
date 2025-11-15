@@ -377,6 +377,8 @@
                    RISK: TLS Cert Mismatch, TLS (probably) Not Carrying HTTPS
  detection-update: [....73] [ip4][..tcp] [....192.168.1.6][50036] -> [.52.114.250.153][..443] [TLS.Teams][Azure][Collaborative][Acceptable][52.114.250.153]
                    RISK: TLS Cert Mismatch, TLS (probably) Not Carrying HTTPS
+          guessed: [....62] [ip4][..udp] [....192.168.1.6][51681] -> [..52.114.77.136][.3478] [STUN][Azure][Network][Acceptable][]
+                   RISK: Susp Entropy
               new: [....74] [ip4][..tcp] [....192.168.1.6][60567] -> [..52.114.77.136][..443]
               new: [....75] [ip4][..udp] [....192.168.1.6][60837] -> [....192.168.1.1][...53]
          detected: [....75] [ip4][..udp] [....192.168.1.6][60837] -> [....192.168.1.1][...53] [DNS][Unknown][Network][Acceptable][c-flightproxy-euno-01-teams.cloudapp.net]
@@ -523,9 +525,8 @@
              idle: [....71] [ip4][..udp] [....192.168.1.6][50037] -> [.52.114.250.137][.3478] [STUN.TeamsCall][Azure][VoIP][Acceptable]
              idle: [....80] [ip4][..udp] [..52.114.252.21][.3480] -> [....192.168.1.6][50036] [STUN.TeamsCall][Azure][VoIP][Acceptable]
              idle: [....83] [ip4][.icmp] [..93.71.110.205] -> [....192.168.1.6] [ICMP][Unknown][Network][Acceptable]
-          guessed: [....62] [ip4][..udp] [....192.168.1.6][51681] -> [..52.114.77.136][.3478] [STUN][Azure][Network][Acceptable][]
+             idle: [....62] [ip4][..udp] [....192.168.1.6][51681] -> [..52.114.77.136][.3478] [STUN][Azure][Network][Acceptable]
                    RISK: Susp Entropy
-             idle: [....62] [ip4][..udp] [....192.168.1.6][51681] -> [..52.114.77.136][.3478]
              idle: [....78] [ip4][..udp] [..93.71.110.205][16332] -> [....192.168.1.6][50016] [STUN.TeamsCall][Unknown][VoIP][Acceptable]
              idle: [....79] [ip4][..udp] [..93.71.110.205][16333] -> [....192.168.1.6][50036] [STUN.TeamsCall][Unknown][VoIP][Acceptable]
      DAEMON-EVENT: shutdown

@@ -217,6 +217,8 @@
            update: [.....5] [ip6][icmp6] [..............fe80::2e7e:81ff:feb0:4aa1] -> [................................ff02::1] [ICMPV6][Unknown][Network][Acceptable]
            update: [....23] [ip6][icmp6] [...............fe80::408:3e45:3abc:1552] -> [...............................ff02::16] [ICMPV6][Unknown][Network][Acceptable]
            update: [....17] [ip4][.icmp] [.....10.0.0.227] -> [....75.75.76.76] [ICMP][Unknown][Network][Acceptable]
+     not-detected: [....60] [ip4][..udp] [.....10.0.0.227][52595] -> [.......10.0.0.1][..192] [Unknown][Unknown][Unspecified][Unrated]
+                   RISK: Unidirectional Traffic
               new: [....68] [ip4][..udp] [.....10.0.0.149][.5353] -> [....224.0.0.251][.5353]
          detected: [....68] [ip4][..udp] [.....10.0.0.149][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable][_googlezone._tcp.local]
  detection-update: [....68] [ip4][..udp] [.....10.0.0.149][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable][79d88e83-725c-b71b-bad0-5862d5b22386._googlezone._tcp.local]
@@ -288,9 +290,8 @@
              idle: [....31] [ip4][..udp] [.....10.0.0.227][64972] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable]
                    RISK: Error Code
              idle: [....17] [ip4][.icmp] [.....10.0.0.227] -> [....75.75.76.76] [ICMP][Unknown][Network][Acceptable]
-     not-detected: [....60] [ip4][..udp] [.....10.0.0.227][52595] -> [.......10.0.0.1][..192] [Unknown][Unknown][Unspecified][Unrated]
+             idle: [....60] [ip4][..udp] [.....10.0.0.227][52595] -> [.......10.0.0.1][..192] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
-             idle: [....60] [ip4][..udp] [.....10.0.0.227][52595] -> [.......10.0.0.1][..192]
           guessed: [....53] [ip4][..tcp] [.....10.0.0.227][56874] -> [.74.125.197.188][..443] [TLS][Google][Web][Safe]
               end: [....53] [ip4][..tcp] [.....10.0.0.227][56874] -> [.74.125.197.188][..443]
              idle: [....57] [ip4][..udp] [.....10.0.0.227][57547] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250]

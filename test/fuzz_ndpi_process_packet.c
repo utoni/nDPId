@@ -10,10 +10,8 @@ int LLVMFuzzerTestOneInput(const uint8_t * data, size_t size)
 {
     if (reader_threads[0].workflow == NULL)
     {
-        set_ndpi_malloc(ndpi_malloc_wrapper);
-        set_ndpi_free(ndpi_free_wrapper);
-        set_ndpi_flow_malloc(NULL);
-        set_ndpi_flow_free(NULL);
+        ndpi_set_memory_alloction_functions(ndpi_malloc_wrapper, ndpi_free_wrapper, ndpi_calloc_wrapper,
+                                            ndpi_realloc_wrapper, NULL, NULL, NULL, NULL);
 
         init_logging("fuzz_ndpi_process_packet");
         log_app_info();

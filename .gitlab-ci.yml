@@ -107,7 +107,8 @@ build_dynamic_libndpi:
     # pkg-config dynamic linked build
     - git clone https://github.com/ntop/nDPI.git
     - cd nDPI
-    - ./autogen.sh --prefix="$(realpath ../_install)" --enable-option-checking=fatal
+    - ./autogen.sh
+    - ./configure --prefix="$(realpath ../_install)" --enable-option-checking=fatal
     - make install V=s
     - cd ..
     - tree ./_install

@@ -1143,12 +1143,53 @@ static void * ndpi_malloc_wrapper(size_t const size)
 
 static void ndpi_free_wrapper(void * const freeable)
 {
+    if (freeable == NULL) {
+        return;
+    }
+
     void * p = (uint8_t *)freeable - sizeof(uint64_t);
 
     MT_GET_AND_ADD(ndpi_memory_free_count, 1);
     MT_GET_AND_ADD(ndpi_memory_free_bytes, *(uint64_t *)p);
 
     free(p);
+}
+
+static void * ndpi_calloc_wrapper(size_t nmemb, size_t size)
+{
+    void * p = ndpi_malloc_wrapper(nmemb * size);
+    if (p == NULL)
+    {
+        return NULL;
+    }
+    memset(p, 0x00, nmemb * size);
+
+    return p;
+}
+
+static void * ndpi_realloc_wrapper(void * const reallocable, size_t new_size)
+{
+    if (reallocable == NULL) {
+        return ndpi_malloc_wrapper(new_size);
+    }
+
+    void * const p = (uint8_t *)reallocable - sizeof(uint64_t);
+    void * const new_ptr = realloc(p, sizeof(uint64_t) + new_size);
+
+    if (new_ptr == NULL) {
+        return (uint8_t *)p + sizeof(uint64_t);
+    }
+
+    size_t old_size = *(uint64_t *)new_ptr;
+    *(uint64_t *)new_ptr = new_size;
+
+    if (old_size > new_size) {
+        MT_GET_AND_SUB(ndpi_memory_alloc_bytes, old_size - new_size);
+    } else {
+        MT_GET_AND_ADD(ndpi_memory_alloc_bytes, new_size - old_size);
+    }
+
+    return (uint8_t *)new_ptr + sizeof(uint64_t);
 }
 
 #ifdef ENABLE_MEMORY_PROFILING
@@ -2082,21 +2123,15 @@ static void process_idle_flow(struct nDPId_reader_thread * const reader_thread, 
 
                 if (flow->info.detection_completed == 0)
                 {
-                    uint8_t protocol_was_guessed = 0;
-
                     if (ndpi_is_protocol_detected(flow->info.detection_data->guessed_l7_protocol) == 0)
                     {
                         flow->info.detection_data->guessed_l7_protocol =
                             ndpi_detection_giveup(workflow->ndpi_struct,
-                                                  &flow->info.detection_data->flow,
-                                                  &protocol_was_guessed);
-                    }
-                    else
-                    {
-                        protocol_was_guessed = 1;
+                                                  &flow->info.detection_data->flow);
+
                     }
 
-                    if (protocol_was_guessed != 0)
+                    if (flow->info.detection_data->flow.protocol_was_guessed != 0)
                     {
                         workflow->total_guessed_flows++;
                         jsonize_flow_detection_event(reader_thread, flow, FLOW_EVENT_GUESSED);
@@ -4761,6 +4796,7 @@ process_layer3_again:
                                       NULL);
 
     if (ndpi_is_protocol_detected(flow_to_process->flow_extended.detected_l7_protocol) != 0 &&
+        flow_to_process->info.detection_data->flow.protocol_was_guessed == 0 &&
         flow_to_process->info.detection_completed == 0)
     {
         flow_to_process->info.detection_completed = 1;
@@ -4792,17 +4828,18 @@ process_layer3_again:
         }
     }
 
-    if (flow_to_process->info.detection_data->flow.num_processed_pkts ==
-            GET_CMDARG_ULL(nDPId_options.max_packets_per_flow_to_process) &&
-        flow_to_process->info.detection_completed == 0)
+    if ((flow_to_process->info.detection_data->flow.num_processed_pkts ==
+             GET_CMDARG_ULL(nDPId_options.max_packets_per_flow_to_process) &&
+         flow_to_process->info.detection_completed == 0) ||
+        (flow_to_process->flow_extended.detected_l7_protocol.state == NDPI_STATE_CLASSIFIED &&
+         (ndpi_is_protocol_detected(flow_to_process->flow_extended.detected_l7_protocol) == 0 ||
+          flow_to_process->info.detection_data->flow.protocol_was_guessed != 0)))
     {
         /* last chance to guess something, better then nothing */
-        uint8_t protocol_was_guessed = 0;
         flow_to_process->info.detection_data->guessed_l7_protocol =
             ndpi_detection_giveup(workflow->ndpi_struct,
-                                  &flow_to_process->info.detection_data->flow,
-                                  &protocol_was_guessed);
-        if (protocol_was_guessed != 0)
+                                  &flow_to_process->info.detection_data->flow);
+        if (flow_to_process->info.detection_data->flow.protocol_was_guessed != 0)
         {
             workflow->total_guessed_flows++;
             jsonize_flow_detection_event(reader_thread, flow_to_process, FLOW_EVENT_GUESSED);
@@ -4816,8 +4853,7 @@ process_layer3_again:
 
     if (flow_to_process->info.detection_data->flow.num_processed_pkts ==
             GET_CMDARG_ULL(nDPId_options.max_packets_per_flow_to_process) ||
-        (ndpi_is_protocol_detected(flow_to_process->flow_extended.detected_l7_protocol) != 0 &&
-         ndpi_extra_dissection_possible(workflow->ndpi_struct, &flow_to_process->info.detection_data->flow) == 0))
+        flow_to_process->flow_extended.detected_l7_protocol.state == NDPI_STATE_CLASSIFIED)
     {
         struct ndpi_proto detected_l7_protocol = flow_to_process->flow_extended.detected_l7_protocol;
         if (ndpi_is_protocol_detected(detected_l7_protocol) == 0)
@@ -6187,10 +6223,8 @@ int main(int argc, char ** argv)
         return 1;
     }
 
-    set_ndpi_malloc(ndpi_malloc_wrapper);
-    set_ndpi_free(ndpi_free_wrapper);
-    set_ndpi_flow_malloc(NULL);
-    set_ndpi_flow_free(NULL);
+    ndpi_set_memory_alloction_functions(ndpi_malloc_wrapper, ndpi_free_wrapper, ndpi_calloc_wrapper,
+                                        ndpi_realloc_wrapper, NULL, NULL, NULL, NULL);
 
     init_logging("nDPId");
 #ifdef ENABLE_CRYPTO

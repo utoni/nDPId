@@ -1658,10 +1658,8 @@ int main(int argc, char ** argv)
         return 1;
     }
 
-    set_ndpi_malloc(ndpi_malloc_wrapper);
-    set_ndpi_free(ndpi_free_wrapper);
-    set_ndpi_flow_malloc(NULL);
-    set_ndpi_flow_free(NULL);
+    ndpi_set_memory_alloction_functions(ndpi_malloc_wrapper, ndpi_free_wrapper, ndpi_calloc_wrapper,
+                                        ndpi_realloc_wrapper, NULL, NULL, NULL, NULL);
 
     init_logging("nDPId-test");
     log_app_info();

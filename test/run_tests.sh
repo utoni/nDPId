@@ -123,6 +123,10 @@ for pcap_file in cfgs/*/pcap/*.pcap cfgs/*/pcap/*.pcapng cfgs/*/pcap/*.cap; do
         TESTS_FAILED=$((TESTS_FAILED + 1))
         continue
     fi
+    if echo "${pcap_file}" | grep -qE '/fuzz-.*$'; then
+        echo "Fuzzed PCAP file disabled: ${pcap_file}"
+        continue
+    fi
     pcap_cfg="$(basename $(dirname $(dirname ${pcap_file})))"
     pcap_name="$(basename ${pcap_file})"
     pcap_path="$(realpath ${pcap_file})"
