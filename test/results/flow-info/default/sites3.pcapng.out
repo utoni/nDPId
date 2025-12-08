@@ -38,5 +38,11 @@
               end: [.....3] [ip4][..tcp] [.192.168.43.159][19191] -> [...172.67.42.21][..443] [TLS.Boosteroid][Cloudflare][Game][Fun][cloud.boosteroid.com]
               end: [.....1] [ip4][..tcp] [.192.168.43.159][19127] -> [.52.215.125.151][..443] [TLS.Blacknut][AWS_EC2][Game][Fun][www.blacknut.com]
               end: [.....2] [ip4][..tcp] [.192.168.43.159][19180] -> [..172.98.56.177][..443] [TLS.Rumble][Unknown][Streaming][Fun]
+     DAEMON-EVENT: [Processed: 164 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 1 / 4|skipped: 0|!detected: 0|guessed: 0|detection-updates: 4|updates: 0]
+              new: [.....5] [ip4][..tcp] [..192.168.1.126][44490] -> [...185.88.181.3][..443]
+         detected: [.....5] [ip4][..tcp] [..192.168.1.126][44490] -> [...185.88.181.3][..443] [TLS][Unknown][AdultContent][Acceptable][xvideos.com]
+ detection-update: [.....5] [ip4][..tcp] [..192.168.1.126][44490] -> [...185.88.181.3][..443] [TLS][Unknown][AdultContent][Acceptable][xvideos.com]
+              end: [.....5] [ip4][..tcp] [..192.168.1.126][44490] -> [...185.88.181.3][..443] [TLS][Unknown][AdultContent][Acceptable]
              idle: [.....4] [ip4][..tcp] [..192.168.1.126][52752] -> [...3.124.173.63][..443] [TLS.Espn][AWS_EC2][Streaming][Fun]
      DAEMON-EVENT: shutdown

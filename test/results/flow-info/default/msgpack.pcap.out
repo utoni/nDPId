@@ -1,0 +1,60 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..udp] [......127.0.0.1][31337] -> [......127.0.0.1][.1337]
+         detected: [.....1] [ip4][..udp] [......127.0.0.1][31337] -> [......127.0.0.1][.1337] [MessagePack][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+           update: [.....1] [ip4][..udp] [......127.0.0.1][31337] -> [......127.0.0.1][.1337] [MessagePack][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+           update: [.....1] [ip4][..udp] [......127.0.0.1][31337] -> [......127.0.0.1][.1337] [MessagePack][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+              new: [.....2] [ip4][..udp] [......127.0.0.1][33861] -> [......127.0.0.1][55471]
+         detected: [.....2] [ip4][..udp] [......127.0.0.1][33861] -> [......127.0.0.1][55471] [MessagePack][Unknown][Network][Acceptable]
+              new: [.....3] [ip4][..udp] [......127.0.0.1][58940] -> [......127.0.0.1][19044]
+         detected: [.....3] [ip4][..udp] [......127.0.0.1][58940] -> [......127.0.0.1][19044] [MessagePack][Unknown][Network][Acceptable]
+              new: [.....4] [ip4][..udp] [......127.0.0.1][31337] -> [......127.0.0.1][.1338]
+         detected: [.....4] [ip4][..udp] [......127.0.0.1][31337] -> [......127.0.0.1][.1338] [MessagePack][Unknown][Network][Acceptable]
+           update: [.....1] [ip4][..udp] [......127.0.0.1][31337] -> [......127.0.0.1][.1337] [MessagePack][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+           update: [.....3] [ip4][..udp] [......127.0.0.1][58940] -> [......127.0.0.1][19044] [MessagePack][Unknown][Network][Acceptable]
+           update: [.....2] [ip4][..udp] [......127.0.0.1][33861] -> [......127.0.0.1][55471] [MessagePack][Unknown][Network][Acceptable]
+     DAEMON-EVENT: [Processed: 11 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 4 / 4|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 5]
+              new: [.....5] [ip4][..udp] [......127.0.0.1][31337] -> [......127.0.0.1][.1339]
+             idle: [.....1] [ip4][..udp] [......127.0.0.1][31337] -> [......127.0.0.1][.1337] [MessagePack][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [.....4] [ip4][..udp] [......127.0.0.1][31337] -> [......127.0.0.1][.1338] [MessagePack][Unknown][Network][Acceptable]
+             idle: [.....3] [ip4][..udp] [......127.0.0.1][58940] -> [......127.0.0.1][19044] [MessagePack][Unknown][Network][Acceptable]
+             idle: [.....2] [ip4][..udp] [......127.0.0.1][33861] -> [......127.0.0.1][55471] [MessagePack][Unknown][Network][Acceptable]
+         detected: [.....5] [ip4][..udp] [......127.0.0.1][31337] -> [......127.0.0.1][.1339] [MessagePack][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+           update: [.....5] [ip4][..udp] [......127.0.0.1][31337] -> [......127.0.0.1][.1339] [MessagePack][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+           update: [.....5] [ip4][..udp] [......127.0.0.1][31337] -> [......127.0.0.1][.1339] [MessagePack][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+           update: [.....5] [ip4][..udp] [......127.0.0.1][31337] -> [......127.0.0.1][.1339] [MessagePack][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+     DAEMON-EVENT: [Processed: 19 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 1 / 5|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 8]
+              new: [.....6] [ip4][..udp] [......127.0.0.1][15913] -> [......127.0.0.1][16549]
+         detected: [.....6] [ip4][..udp] [......127.0.0.1][15913] -> [......127.0.0.1][16549] [MessagePack][Unknown][Network][Acceptable]
+             idle: [.....5] [ip4][..udp] [......127.0.0.1][31337] -> [......127.0.0.1][.1339] [MessagePack][Unknown][Network][Acceptable]
+                   RISK: Unidirectional Traffic
+              new: [.....7] [ip4][..udp] [......127.0.0.1][47907] -> [......127.0.0.1][.5056]
+         detected: [.....7] [ip4][..udp] [......127.0.0.1][47907] -> [......127.0.0.1][.5056] [MessagePack][Unknown][Network][Acceptable]
+     DAEMON-EVENT: [Processed: 21 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 2 / 7|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 8]
+              new: [.....8] [ip4][..tcp] [......127.0.0.1][41948] -> [......127.0.0.1][.1337] [MIDSTREAM]
+         detected: [.....8] [ip4][..tcp] [......127.0.0.1][41948] -> [......127.0.0.1][.1337] [MessagePack][Unknown][Network][Acceptable]
+             idle: [.....7] [ip4][..udp] [......127.0.0.1][47907] -> [......127.0.0.1][.5056] [MessagePack][Unknown][Network][Acceptable]
+             idle: [.....6] [ip4][..udp] [......127.0.0.1][15913] -> [......127.0.0.1][16549] [MessagePack][Unknown][Network][Acceptable]
+              new: [.....9] [ip4][..tcp] [......127.0.0.1][38090] -> [......127.0.0.1][.1337]
+              end: [.....8] [ip4][..tcp] [......127.0.0.1][41948] -> [......127.0.0.1][.1337] [MessagePack][Unknown][Network][Acceptable]
+     DAEMON-EVENT: [Processed: 36 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 1 / 9|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 8]
+              new: [....10] [ip4][..tcp] [......127.0.0.1][37856] -> [......127.0.0.1][.1337] [MIDSTREAM]
+     not-detected: [.....9] [ip4][..tcp] [......127.0.0.1][38090] -> [......127.0.0.1][.1337] [Unknown][Unknown][Unspecified][Unrated]
+              end: [.....9] [ip4][..tcp] [......127.0.0.1][38090] -> [......127.0.0.1][.1337]
+         detected: [....10] [ip4][..tcp] [......127.0.0.1][37856] -> [......127.0.0.1][.1337] [MessagePack][Unknown][Network][Acceptable]
+              end: [....10] [ip4][..tcp] [......127.0.0.1][37856] -> [......127.0.0.1][.1337] [MessagePack][Unknown][Network][Acceptable]
+     DAEMON-EVENT: shutdown
