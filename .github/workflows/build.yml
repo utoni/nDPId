@@ -137,7 +137,7 @@ jobs:
             upload: false
             ndpi_min_version: "5.0"
           - compiler: "cc"
-            os: "macOS-13"
+            os: "macOS-14"
             ndpi_build: "-DBUILD_NDPI=OFF"
             ndpid_examples: "-DBUILD_EXAMPLES=OFF"
             ndpid_rust_examples: ""
@@ -182,13 +182,13 @@ jobs:
           wget 'https://www.tcpdump.org/release/libpcap-1.10.4.tar.gz'
           tar -xzvf libpcap-1.10.4.tar.gz
           cd libpcap-1.10.4
-          ./configure && make install
+          ./configure && sudo make install
           cd ..
           wget 'https://github.com/ntop/nDPI/archive/refs/heads/dev.zip' -O libndpi-dev.zip
           unzip libndpi-dev.zip
           cd nDPI-dev
           ./autogen.sh
-          ./configure --prefix=/usr/local --with-only-libndpi && make install
+          ./configure --prefix=/usr/local --with-only-libndpi --enable-shared --enable-static --disable-plugin-system && sudo make install
       - name: Fix kernel mmap rnd bits on Ubuntu
         if: startsWith(matrix.os, 'ubuntu')
         run: |
