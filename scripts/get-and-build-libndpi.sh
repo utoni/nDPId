@@ -102,6 +102,8 @@ HOST_ARG="--host=${HOST_TRIPLET}"
 ./autogen.sh
 ./configure --enable-option-checking=fatal \
     --prefix="/" \
+		--disable-plugin-support \
+    --disable-shared --enable-static \
     --with-only-libndpi ${HOST_ARG} ${ADDITIONAL_ARGS} || { cat config.log | grep -v '^|'; false; }
 ${MAKE_PROGRAM} ${MAKEFLAGS} install DESTDIR="${DEST_INSTALL}"
 
