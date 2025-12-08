@@ -32,12 +32,11 @@ jobs:
           yum -y install yum-utils dnf-plugins-core epel-release
           dnf config-manager --set-enabled powertools
           yum -y update
-          yum -y install rpm-build gcc gcc-c++ autoconf automake make cmake flex bison gettext pkg-config libtool ndpi-dev libpcap-devel zlib-devel python3.8 git wget unzip /usr/lib64/libasan.so.5.0.0 /usr/lib64/libubsan.so.1.0.0
+          yum -y install rpm-build gcc gcc-c++ autoconf automake make cmake flex bison gettext pkg-config libtool ndpi-dev libpcap-devel zlib-devel python3.8 git wget unzip
           repoquery -l ndpi-dev
       - name: Configure nDPId
         run: |
-          mkdir build && cd build
-          cmake .. -DENABLE_SYSTEMD=ON -DBUILD_EXAMPLES=ON -DENABLE_SANITIZER=ON -DNDPI_NO_PKGCONFIG=ON -DSTATIC_LIBNDPI_INSTALLDIR=/usr
+          cmake -S . -B build -Werror=dev -Werror=deprecated -DENABLE_SYSTEMD=ON -DBUILD_EXAMPLES=ON -DNDPI_NO_PKGCONFIG=ON -DNDPI_WITH_PLUGIN_SYSTEM=ON -DSTATIC_LIBNDPI_INSTALLDIR=/usr
       - name: Build nDPId
         run: |
           make -C build all VERBOSE=1

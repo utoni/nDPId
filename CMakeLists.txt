@@ -187,10 +187,12 @@ else()
 endif()
 
 if(STATIC_LIBNDPI_INSTALLDIR OR BUILD_NDPI OR NDPI_NO_PKGCONFIG)
+    option(NDPI_WITH_PLUGIN_SYSTEM "Link static libndpi library against dl for dlopen() and dlsym()." OFF)
     option(NDPI_WITH_GCRYPT "Link static libndpi library against libgcrypt." OFF)
     option(NDPI_WITH_PCRE "Link static libndpi library against libpcre." OFF)
     option(NDPI_WITH_MAXMINDDB "Link static libndpi library against libmaxminddb." OFF)
 else()
+    unset(NDPI_WITH_PLUGIN_SYSTEM CACHE)
     unset(NDPI_WITH_GCRYPT CACHE)
     unset(NDPI_WITH_PCRE CACHE)
     unset(NDPI_WITH_MAXMINDDB CACHE)
@@ -399,6 +401,10 @@ if(ENABLE_CRYPTO)
 endif()
 
 if(STATIC_LIBNDPI_INSTALLDIR OR BUILD_NDPI OR NDPI_NO_PKGCONFIG)
+    if(NDPI_WITH_PLUGIN_SYSTEM)
+        set(DYNLDR "dl")
+    endif()
+
     if(NDPI_WITH_GCRYPT)
         find_package(GCRYPT "1.4.2" REQUIRED)
     endif()
@@ -467,7 +473,7 @@ target_include_directories(nDPId PRIVATE "${STATIC_LIBNDPI_INC}" "${DEFAULT_NDPI
 target_link_libraries(nDPId "${STATIC_LIBNDPI_LIB}" "${STATIC_PFRING_LIB}" "${pkgcfg_lib_PCAP_pcap}" "${pkgcfg_lib_NDPI_ndpi}"
                             "${pkgcfg_lib_PCRE_pcre2-8}" "${pkgcfg_lib_MAXMINDDB_maxminddb}" "${pkgcfg_lib_ZLIB_z}"
                             "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}" "${LIBM_LIB}" "${PF_RING_LIB}"
-                            "${OSSL_LIBRARY}" "-pthread")
+                            "${OSSL_LIBRARY}" "${DYNLDR}" "-pthread")
 
 target_compile_definitions(nDPIsrvd PRIVATE -D_GNU_SOURCE=1 -DPKG_VERSION=\"${PKG_VERSION}\" -DGIT_VERSION=\"${GIT_VERSION}\" ${NDPID_DEFS} ${EPOLL_DEFS})
 target_include_directories(nDPIsrvd PRIVATE ${NDPID_DEPS_INC})
@@ -480,7 +486,7 @@ target_include_directories(nDPId-test PRIVATE
 target_link_libraries(nDPId-test "${STATIC_LIBNDPI_LIB}" "${STATIC_PFRING_LIB}" "${pkgcfg_lib_PCAP_pcap}" "${pkgcfg_lib_NDPI_ndpi}"
                                  "${pkgcfg_lib_PCRE_pcre2-8}" "${pkgcfg_lib_MAXMINDDB_maxminddb}" "${pkgcfg_lib_ZLIB_z}"
                                  "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}" "${LIBM_LIB}" "${PF_RING_LIB}"
-                                 "${OSSL_LIBRARY}" "-pthread")
+                                 "${OSSL_LIBRARY}" "${DYNLDR}" "-pthread")
 
 if(CMAKE_C_COMPILER_ID STREQUAL "Clang")
     add_executable(fuzz_ndpi_process_packet test/fuzz_ndpi_process_packet.c)
@@ -670,6 +676,7 @@ endif()
 if(STATIC_LIBNDPI_INSTALLDIR OR BUILD_NDPI OR NDPI_NO_PKGCONFIG)
 message(STATUS "- STATIC_LIBNDPI_INC.....: ${STATIC_LIBNDPI_INC}")
 message(STATUS "- STATIC_LIBNDPI_LIB.....: ${STATIC_LIBNDPI_LIB}")
+message(STATUS "- NDPI_WITH_PLUGIN_SYSTEM: ${NDPI_WITH_PLUGIN_SYSTEM}")
 message(STATUS "- NDPI_WITH_GCRYPT.......: ${NDPI_WITH_GCRYPT}")
 message(STATUS "- NDPI_WITH_PCRE.........: ${NDPI_WITH_PCRE}")
 message(STATUS "- NDPI_WITH_MAXMINDDB....: ${NDPI_WITH_MAXMINDDB}")
