@@ -346,7 +346,7 @@ jobs:
                 tar -xzvf ${{ matrix.ndpi_min_version }}.tar.gz; }
           test $WGET_RET -ne 8 || { \
                 echo "::warning file=nDPId.c::New libnDPI release required to build against release tarball, falling back to dev branch."; \
-                wget 'http://github.com/ntop/nDPI/archive/refs/heads/dev.tar.gz'; \
+                wget 'https://github.com/ntop/nDPI/archive/refs/heads/dev.tar.gz'; \
                 WGET_RET=$?; \
                 tar -xzvf dev.tar.gz; \
                 mv -v 'nDPI-dev' 'nDPI-${{ matrix.ndpi_min_version }}'; }
