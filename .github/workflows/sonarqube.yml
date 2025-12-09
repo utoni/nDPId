@@ -1,0 +1,51 @@
+on:
+  push:
+    branches:
+      - main
+      - tmp
+  pull_request:
+      types: [opened, synchronize, reopened]
+
+name: SonarQube Scan
+jobs:
+  build:
+    name: Build and analyze
+    runs-on: ubuntu-latest
+    env:
+      BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Install Prerequisites
+      run: |
+        sudo apt-get update
+        sudo apt-get install autoconf automake cmake libtool pkg-config gettext flex bison libpcap-dev zlib1g-dev libcurl4-openssl-dev libdbus-1-dev
+    - name: Install Build Wrapper
+      uses: SonarSource/sonarqube-scan-action/install-build-wrapper@v6
+    - name: Run Build Wrapper
+      run: |
+        mkdir build
+        cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+          -DENABLE_COVERAGE=ON \
+          -DBUILD_NDPI=ON \
+          -DBUILD_EXAMPLES=ON \
+          -DENABLE_CURL=ON \
+          -DENABLE_ZLIB=ON \
+          -DNDPI_WITH_GCRYPT=OFF
+        build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} cmake --build build/ --config Release
+    - name: SonarQube Scan
+      uses: SonarSource/sonarqube-scan-action@v6
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      with:
+        args: >
+          --define sonar.projectName=nDPId
+          --define sonar.projectVersion=1.7
+          --define sonar.sourceEncoding=UTF-8
+          --define sonar.organization=lnslbrty
+          --define sonar.projectKey=lnslbrty_nDPId
+          --define sonar.python.version=3.8
+          --define sonar.cfamily.compile-commands=${{ env.BUILD_WRAPPER_OUT_DIR }}/compile_commands.json
+          --define sonar.cfamily.gcov.reportsPath=gcov_report
+          --define sonar.exclusions=libnDPI/**,test/results/**,dependencies/jsmn/**,dependencies/uthash/**,examples/c-collectd/www/**
