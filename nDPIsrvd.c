@@ -8,9 +8,9 @@
 #include <netinet/tcp.h>
 #include <pwd.h>
 #include <signal.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdint.h>
 #include <string.h>
 #if !defined(__FreeBSD__) && !defined(__APPLE__)
 #include <sys/signalfd.h>
@@ -21,12 +21,16 @@
 
 #include "config.h"
 #include "nDPIsrvd.h"
+#ifdef ENABLE_CRYPTO
+#include "ncrypt.h"
+#endif
 #include "nio.h"
 #include "utils.h"
 
 enum sock_type
 {
     COLLECTOR_UN,
+    COLLECTOR_IN,
     DISTRIBUTOR_UN,
     DISTRIBUTOR_IN,
 };
@@ -54,6 +58,17 @@ struct remote_desc
 
             struct nDPIsrvd_json_buffer main_read_buffer;
         } event_collector_un;
+        struct
+        {
+            struct sockaddr_in peer;
+            char peer_addr[INET_ADDRSTRLEN];
+#ifdef ENABLE_CRYPTO
+            struct ncrypt_entity ncrypt_entity;
+#endif
+
+            struct nDPIsrvd_json_buffer main_read_buffer;
+            UT_array * additional_write_buffers;
+        } event_collector_in; /* TCP/IP socket */
         struct
         {
             struct sockaddr_un peer;
@@ -85,11 +100,15 @@ static struct
 
 static int nDPIsrvd_main_thread_shutdown = 0;
 static int collector_un_sockfd = -1;
+static int collector_in_sockfd = -1;
 static int distributor_un_sockfd = -1;
 static int distributor_in_sockfd = -1;
 static struct nDPIsrvd_address distributor_in_address = {
     .raw.sa_family = (sa_family_t)0xFFFF,
 };
+#ifdef ENABLE_CRYPTO
+static struct ncrypt_ctx ncrypt_ctx;
+#endif
 
 static struct
 {
@@ -108,6 +127,11 @@ static struct
 #ifdef ENABLE_EPOLL
     struct cmdarg use_poll;
 #endif
+#ifdef ENABLE_CRYPTO
+    struct cmdarg server_crt_pem_file;
+    struct cmdarg server_key_pem_file;
+    struct cmdarg server_ca_pem_file;
+#endif
 } nDPIsrvd_options = {.config_file = CMDARG_STR(NULL),
                       .pidfile = CMDARG_STR(nDPIsrvd_PIDFILE),
                       .collector_un_sockpath = CMDARG_STR(COLLECTOR_UNIX_SOCKET),
@@ -124,6 +148,12 @@ static struct
                           ,
                       .use_poll = CMDARG_BOOL(0)
 #endif
+#ifdef ENABLE_CRYPTO
+                          ,
+                      .server_crt_pem_file = CMDARG_STR(NULL),
+                      .server_key_pem_file = CMDARG_STR(NULL),
+                      .server_ca_pem_file = CMDARG_STR(NULL)
+#endif
 };
 struct confopt config_map[] = {CONFOPT("pidfile", &nDPIsrvd_options.pidfile),
                                CONFOPT("collector", &nDPIsrvd_options.collector_un_sockpath),
@@ -139,6 +169,12 @@ struct confopt config_map[] = {CONFOPT("pidfile", &nDPIsrvd_options.pidfile),
 #ifdef ENABLE_EPOLL
                                    ,
                                CONFOPT("poll", &nDPIsrvd_options.use_poll)
+#endif
+#ifdef ENABLE_CRYPTO
+                                   ,
+                               CONFOPT("cert", &nDPIsrvd_options.server_crt_pem_file),
+                               CONFOPT("key", &nDPIsrvd_options.server_key_pem_file),
+                               CONFOPT("ca", &nDPIsrvd_options.server_ca_pem_file)
 #endif
 };
 
@@ -214,6 +250,8 @@ static struct nDPIsrvd_json_buffer * get_read_buffer(struct remote_desc * const 
     {
         case COLLECTOR_UN:
             return &remote->event_collector_un.main_read_buffer;
+        case COLLECTOR_IN:
+            return &remote->event_collector_in.main_read_buffer;
 
         case DISTRIBUTOR_UN:
         case DISTRIBUTOR_IN:
@@ -228,6 +266,8 @@ static struct nDPIsrvd_write_buffer * get_write_buffer(struct remote_desc * cons
     switch (remote->sock_type)
     {
         case COLLECTOR_UN:
+            return NULL;
+        case COLLECTOR_IN:
             return NULL;
 
         case DISTRIBUTOR_UN:
@@ -245,6 +285,8 @@ static UT_array * get_additional_write_buffers(struct remote_desc * const remote
     switch (remote->sock_type)
     {
         case COLLECTOR_UN:
+            return NULL;
+        case COLLECTOR_IN:
             return NULL;
 
         case DISTRIBUTOR_UN:
@@ -340,6 +382,15 @@ static __attribute__((format(printf, 3, 4))) void logger_nDPIsrvd(struct remote_
 #else
             logger(1, "%s %s", prefix, logbuf);
 #endif
+            break;
+        case COLLECTOR_IN:
+            logger(1,
+                   "%s %.*s:%u %s",
+                   prefix,
+                   (int)sizeof(remote->event_collector_in.peer_addr),
+                   remote->event_collector_in.peer_addr,
+                   ntohs(remote->event_collector_in.peer.sin_port),
+                   logbuf);
             break;
     }
 
@@ -692,6 +743,14 @@ static struct remote_desc * get_remote_descriptor(enum sock_type type, int remot
                         return NULL;
                     }
                     break;
+                case COLLECTOR_IN:
+                    if (nDPIsrvd_json_buffer_init(&remotes.desc[i].event_collector_in.main_read_buffer,
+                                                  max_buffer_size) != 0)
+                    {
+                        logger(1, "Read/JSON buffer init failed, size: %zu bytes", max_buffer_size);
+                        return NULL;
+                    }
+                    break;
                 case DISTRIBUTOR_UN:
                     write_buffer = &remotes.desc[i].event_distributor_un.main_write_buffer;
                     additional_write_buffers = &remotes.desc[i].event_distributor_un.additional_write_buffers;
@@ -750,6 +809,13 @@ static void free_remote(struct nio * const io, struct remote_desc * remote)
                     logger_nDPIsrvd(remote, "Error closing collector connection", ": %s", strerror(errno));
                 }
                 nDPIsrvd_json_buffer_free(&remote->event_collector_un.main_read_buffer);
+                break;
+            case COLLECTOR_IN:
+                if (errno != 0)
+                {
+                    logger_nDPIsrvd(remote, "Error closing collector connection", ": %s", strerror(errno));
+                }
+                nDPIsrvd_json_buffer_free(&remote->event_collector_in.main_read_buffer);
                 break;
             case DISTRIBUTOR_UN:
                 if (errno != 0)
@@ -830,7 +896,7 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
 {
     int opt;
 
-    while ((opt = getopt(argc, argv, "f:lL:c:dp:s:S:G:m:u:g:C:Dvh")) != -1)
+    while ((opt = getopt(argc, argv, "f:lL:c:k:K:F:dp:s:S:G:m:u:g:C:Dvh")) != -1)
     {
         switch (opt)
         {
@@ -849,6 +915,33 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
             case 'c':
                 set_cmdarg_string(&nDPIsrvd_options.collector_un_sockpath, optarg);
                 break;
+            case 'k':
+#ifdef ENABLE_CRYPTO
+                set_cmdarg_string(&nDPIsrvd_options.server_crt_pem_file, optarg);
+                break;
+#else
+                logger(1, "Server cert PEM file: %s",
+                       "nDPId was built w/o OpenSSL/Crypto support");
+                return 1;
+#endif
+            case 'K':
+#ifdef ENABLE_CRYPTO
+                set_cmdarg_string(&nDPIsrvd_options.server_key_pem_file, optarg);
+                break;
+#else
+                logger(1, "Server key PEM file: %s",
+                       "nDPId was built w/o OpenSSL/Crypto support");
+                return 1;
+#endif
+            case 'F':
+#ifdef ENABLE_CRYPTO
+                set_cmdarg_string(&nDPIsrvd_options.server_ca_pem_file, optarg);
+                break;
+#else
+                logger(1, "Server CA PEM file: %s",
+                       "nDPId was built w/o OpenSSL/Crypto support");
+                return 1;
+#endif
             case 'e':
 #ifdef ENABLE_EPOLL
                 set_cmdarg_boolean(&nDPIsrvd_options.use_poll, 1);
@@ -1044,6 +1137,7 @@ static int new_connection(struct nio * const io, int eventfd)
     union
     {
         struct sockaddr_un saddr_collector_un;
+        struct sockaddr_in saddr_collector_in;
         struct sockaddr_un saddr_distributor_un;
         struct sockaddr_in saddr_distributor_in;
     } sockaddr;
@@ -1056,6 +1150,12 @@ static int new_connection(struct nio * const io, int eventfd)
         peer_addr_len = sizeof(sockaddr.saddr_collector_un);
         stype = COLLECTOR_UN;
         server_fd = collector_un_sockfd;
+    }
+    else if (eventfd == collector_in_sockfd)
+    {
+        peer_addr_len = sizeof(sockaddr.saddr_collector_in);
+        stype = COLLECTOR_IN;
+        server_fd = collector_in_sockfd;
     }
     else if (eventfd == distributor_un_sockfd)
     {
@@ -1105,6 +1205,19 @@ static int new_connection(struct nio * const io, int eventfd)
             current->event_collector_un.pid = ucred.pid;
 #endif
 
+            logger_nDPIsrvd(current, "New collector connection from", "%s", "");
+            break;
+        case COLLECTOR_IN:
+            current->event_collector_in.peer = sockaddr.saddr_collector_in;
+
+            if (inet_ntop(current->event_collector_in.peer.sin_family,
+                          &current->event_collector_in.peer.sin_addr,
+                          &current->event_collector_in.peer_addr[0],
+                          sizeof(current->event_collector_in.peer_addr)) == NULL)
+            {
+                logger(1, "Error converting an internet address: %s", strerror(errno));
+                return 1;
+            }
             logger_nDPIsrvd(current, "New collector connection from", "%s", "");
             break;
         case DISTRIBUTOR_UN:
@@ -1506,6 +1619,7 @@ static int mainloop(struct nio * const io)
                     switch (current->sock_type)
                     {
                         case COLLECTOR_UN:
+                        case COLLECTOR_IN:
                             logger_nDPIsrvd(current, "Collector connection", "closed");
                             break;
                         case DISTRIBUTOR_UN:
@@ -1701,6 +1815,10 @@ int main(int argc, char ** argv)
 
     nio_init(&io);
     init_logging("nDPIsrvd");
+#ifdef ENABLE_CRYPTO
+    ncrypt_init();
+    ncrypt_ctx(&ncrypt_ctx);
+#endif
 
     if (nDPIsrvd_parse_options(argc, argv) != 0)
     {
@@ -1732,6 +1850,17 @@ int main(int argc, char ** argv)
             return 1;
         }
     }
+#ifdef ENABLE_CRYPTO
+    if (IS_CMDARG_SET(nDPIsrvd_options.server_ca_pem_file) != 0 &&
+        ncrypt_init_client(&ncrypt_ctx,
+                           GET_CMDARG_STR(nDPIsrvd_options.server_ca_pem_file),
+                           GET_CMDARG_STR(nDPIsrvd_options.server_key_pem_file),
+                           GET_CMDARG_STR(nDPIsrvd_options.server_crt_pem_file)) != NCRYPT_SUCCESS)
+    {
+        logger_early(1, "%s", "Could not initialize crypto.");
+        return 1;
+    }
+#endif
 
     if (is_daemonize_enabled() != 0 && is_console_logger_enabled() != 0)
     {
@@ -1928,6 +2057,9 @@ error:
     close(distributor_in_sockfd);
 
     daemonize_shutdown(GET_CMDARG_STR(nDPIsrvd_options.pidfile));
+#ifdef ENABLE_CRYPTO
+    ncrypt_free_ctx(&ncrypt_ctx);
+#endif
     logger(0, "Bye.");
     shutdown_logging();
 

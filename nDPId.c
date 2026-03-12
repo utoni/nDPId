@@ -5560,7 +5560,7 @@ static void print_usage(char const * const arg0)
         "\t  \tDefault: disabled\n"
         "\t-L\tLog all messages to a log file.\n"
         "\t  \tDefault: disabled\n"
-        "\t-c\tPath to a UNIX socket (nDPIsrvd Collector) or a custom UDP endpoint.\n"
+        "\t-c\tPath to a UNIX socket (nDPIsrvd Collector) or a custom TCP endpoint.\n"
         "\t  \tDefault: `%s'\n"
 #ifdef ENABLE_CRYPTO
         "\t-k\tPath to the client certificate file (PEM format)\n"
@@ -6343,12 +6343,11 @@ int main(int argc, char ** argv)
     global_context = NULL;
 
     daemonize_shutdown(GET_CMDARG_STR(nDPId_options.pidfile));
-    logger(0, "%s", "Bye.");
-    shutdown_logging();
-
 #ifdef ENABLE_CRYPTO
     ncrypt_free_ctx(&ncrypt_ctx);
 #endif
+    logger(0, "%s", "Bye.");
+    shutdown_logging();
 
     return 0;
 }
