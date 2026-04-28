@@ -890,7 +890,7 @@ static int init_influx_ctx(struct influx_ctx * const ctx, char const * const url
         return -1;
     }
     ctx->http_header = curl_slist_append(ctx->http_header, auth);
-    memset(auth, '\0', sizeof(auth));
+    for (size_t i = 0; i < sizeof(auth); i++) { *(volatile char *)(auth + i) = 0; }
     if (ctx->http_header == NULL)
     {
         return -1;

@@ -42,16 +42,16 @@ test -z "$(which ss)" && { printf '%s\n' 'ss not found'; exit 1; }
 test -z "$(which cat)" && { printf '%s\n' 'cat not found'; exit 1; }
 test -z "$(which grep)" && { printf '%s\n' 'grep not found'; exit 1; }
 
-if [ $# -eq 0 -a -x "${MYDIR}/../libnDPI/tests/cfgs" ]; then
+if [[ $# -eq 0 && -x "${MYDIR}/../libnDPI/tests/cfgs" ]]; then
     nDPI_SOURCE_ROOT="${MYDIR}/../libnDPI"
-elif [ $# -ne 1 -a $# -ne 2 -a $# -ne 3 -a $# -ne 4 ]; then
+elif [[ $# -ne 1 && $# -ne 2 && $# -ne 3 && $# -ne 4 ]]; then
     usage
     exit 2
 else
     nDPI_SOURCE_ROOT="$(realpath "${1}")"
 fi
 
-if [ ! -x "${nDPI_SOURCE_ROOT}/tests/cfgs" ]; then
+if [[ ! -x "${nDPI_SOURCE_ROOT}/tests/cfgs" ]]; then
     printf 'Test config directory %s does not exist or you do not have the permission to access it.\n' "${nDPI_SOURCE_ROOT}/tests/cfgs" >&2
     printf '%s\n' 'Please make also sure that your nDPI library is not too old.'
     exit 2
@@ -75,7 +75,7 @@ function sighandler()
 }
 trap sighandler SIGINT SIGTERM
 
-if [ ! -x "${nDPId_test_EXEC}" ]; then
+if [[ ! -x "${nDPId_test_EXEC}" ]]; then
     usage
     printf '\n%s\n' "Required nDPId-test executable does not exist; ${nDPId_test_EXEC}"
     exit 5
@@ -112,13 +112,13 @@ set +e
 TESTS_FAILED=0
 
 ${nDPId_test_EXEC} -h 2>/dev/null
-if [ $? -ne 1 ]; then
+if [[ $? -ne 1 ]]; then
     printf '%s\n' "nDPId-test: ${nDPId_test_EXEC} seems to be an invalid executable"
     exit 7
 fi
 
 for pcap_file in cfgs/*/pcap/*.pcap cfgs/*/pcap/*.pcapng cfgs/*/pcap/*.cap; do
-    if [ ! -r "${pcap_file}" ]; then
+    if [[ ! -r "${pcap_file}" ]]; then
         printf '%s: %s\n' "${0}" "${pcap_file} does not exist!"
         TESTS_FAILED=$((TESTS_FAILED + 1))
         continue
@@ -137,7 +137,7 @@ for pcap_file in cfgs/*/pcap/*.pcap cfgs/*/pcap/*.pcapng cfgs/*/pcap/*.cap; do
 
     printf "%-${LINE_SPACES}s\t" "${pcap_name}"
 
-    if [ -r "${MYDIR}/configs/${pcap_cfg}.ndpiconf" ]; then
+    if [[ -r "${MYDIR}/configs/${pcap_cfg}.ndpiconf" ]]; then
         nDPId_test_cfg="${MYDIR}/configs/${pcap_cfg}.ndpiconf"
     else
         nDPId_test_cfg=""
@@ -148,12 +148,12 @@ for pcap_file in cfgs/*/pcap/*.pcap cfgs/*/pcap/*.pcapng cfgs/*/pcap/*.cap; do
     printf '%s\n' "-- OUT: ${result_file}" \
         >>${stderr_file}
 
-    if [ ! -z "${STRACE_EXEC}" ]; then
+    if [[ ! -z "${STRACE_EXEC}" ]]; then
         STRACE_CMD="${STRACE_EXEC} -f -e decode-fds=path,socket,dev,pidfd -s 1024 -o /tmp/nDPId-test-stderr/${pcap_name}.strace.out"
     else
         STRACE_CMD=""
     fi
-    if [ "x${nDPId_test_cfg}" != "x" ]; then
+    if [[ "x${nDPId_test_cfg}" != "x" ]]; then
         timeout --foreground -k 3 -s SIGINT 60 ${STRACE_CMD} ${nDPId_test_EXEC} "${pcap_file}" "${nDPId_test_cfg}" \
             >${stdout_file} \
             2>>${stderr_file}
@@ -164,8 +164,8 @@ for pcap_file in cfgs/*/pcap/*.pcap cfgs/*/pcap/*.pcapng cfgs/*/pcap/*.cap; do
     fi
     nDPId_test_RETVAL=$?
 
-    if [ ${nDPId_test_RETVAL} -eq 0 ]; then
-        if [ ! -r "${result_file}" ]; then
+    if [[ ${nDPId_test_RETVAL} -eq 0 ]]; then
+        if [[ ! -r "${result_file}" ]]; then
             printf '%s\n' '[NEW]'
             test ${IS_GIT} -eq 1 && \
                 mv "${stdout_file}" "${result_file}"
@@ -193,7 +193,7 @@ done
 for out_file in ${MYDIR}/results/*/*.out; do
     pcap_file="$(basename ${out_file%.out})"
     pcap_cfg="$(basename $(dirname ${out_file%.out}))"
-    if [ ! -r "cfgs/${pcap_cfg}/pcap/${pcap_file}" ]; then
+    if [[ ! -r "cfgs/${pcap_cfg}/pcap/${pcap_file}" ]]; then
         printf "%-${LINE_SPACES}s\t%s\n" "${pcap_file}" "[MISSING][config: ${pcap_cfg}]"
         TESTS_FAILED=$((TESTS_FAILED + 1))
     fi
@@ -211,7 +211,7 @@ function validate_results()
     printf "%s %-$((${LINE_SPACES} - ${#prefix_str}))s\t" "${prefix_str}" "${pcap_name}"
     printf '%s\n' "-- ${prefix_str}" >>"${stderr_file}"
 
-    if [ ! -r "${result_file}" ]; then
+    if [[ ! -r "${result_file}" ]]; then
         printf ' %s\n' "[MISSING][config: ${pcap_cfg}]"
         return 1
     fi
@@ -221,7 +221,7 @@ function validate_results()
     nc_pid=$!
     printf '%s\n' "-- ${validator_exec}" >>"${stderr_file}"
     ${validator_exec} 2>>"${stderr_file}"
-    if [ $? -eq 0 ]; then
+    if [[ $? -eq 0 ]]; then
         printf ' %s\n' '[OK]'
         rc=0
     else
@@ -248,7 +248,7 @@ EOF
 cd "${MYDIR}"
 mkdir -p "${MYDIR}/results/flow-info"
 for out_file in results/*/*.out; do
-    if [ ! -r "${out_file}" ]; then
+    if [[ ! -r "${out_file}" ]]; then
         printf '%s: %s\n' "${0}" "${out_file} does not exist!"
         TESTS_FAILED=$((TESTS_FAILED + 1))
         continue
@@ -267,7 +267,7 @@ for out_file in results/*/*.out; do
         --print-analyse-results --print-hostname >"${stdout_file}" 2>>"${stderr_file}"
     kill -SIGTERM ${nc_pid} 2>/dev/null
     wait ${nc_pid} 2>/dev/null
-    if [ ! -r "${result_file}" ]; then
+    if [[ ! -r "${result_file}" ]]; then
         printf '%s\n' '[NEW]'
         test ${IS_GIT} -eq 1 && \
             mv "${stdout_file}" "${result_file}"
@@ -285,14 +285,14 @@ for out_file in results/*/*.out; do
 done
 
 for out_file in ${MYDIR}/results/flow-info/*/*.out; do
-    if [ ! -r "${out_file}" ]; then
+    if [[ ! -r "${out_file}" ]]; then
         printf '%s: %s\n' "${0}" "${out_file} does not exist!"
         TESTS_FAILED=$((TESTS_FAILED + 1))
         continue
     fi
     result_file="$(basename ${out_file})"
     pcap_cfg="$(basename $(dirname ${out_file%.out}))"
-    if [ ! -r "${MYDIR}/results/${pcap_cfg}/${result_file}" ]; then
+    if [[ ! -r "${MYDIR}/results/${pcap_cfg}/${result_file}" ]]; then
         printf "%-${LINE_SPACES}s\t%s\n" "${result_file}" "[MISSING][config: ${pcap_cfg}]"
         TESTS_FAILED=$((TESTS_FAILED + 1))
     fi
@@ -307,10 +307,10 @@ cat <<EOF
 EOF
 
 mkdir -p "${MYDIR}/results/flow-analyse"
-if [ -x "${NDPISRVD_ANALYSED}" ]; then
+if [[ -x "${NDPISRVD_ANALYSED}" ]]; then
     cd "${MYDIR}"
     for out_file in results/*/*.out; do
-        if [ ! -r "${out_file}" ]; then
+        if [[ ! -r "${out_file}" ]]; then
             printf '%s: %s\n' "${0}" "${out_file} does not exist!"
             TESTS_FAILED=$((TESTS_FAILED + 1))
             continue
@@ -332,7 +332,7 @@ if [ -x "${NDPISRVD_ANALYSED}" ]; then
         kill -SIGTERM ${nc_pid} 2>/dev/null
         wait ${nc_pid} 2>/dev/null
         while ss -x -t -n -l | grep -q "${NETCAT_SOCK}"; do sleep 0.1; printf '%s\n' "Waiting until socket ${NETCAT_SOCK} is not available anymore.." >>"${stderr_file}"; done
-        if [ ! -r "${result_file}" ]; then
+        if [[ ! -r "${result_file}" ]]; then
             printf '%s\n' '[NEW]'
             test ${IS_GIT} -eq 1 && \
                 mv "${flow_stats_file}" "${result_file}"
@@ -350,14 +350,14 @@ if [ -x "${NDPISRVD_ANALYSED}" ]; then
     done
 
     for out_file in ${MYDIR}/results/flow-analyse/*/*.out; do
-        if [ ! -r "${out_file}" ]; then
+        if [[ ! -r "${out_file}" ]]; then
             printf '%s: %s\n' "${0}" "${out_file} does not exist!"
             TESTS_FAILED=$((TESTS_FAILED + 1))
             continue
         fi
         result_file="$(basename ${out_file})"
         pcap_cfg="$(basename $(dirname ${out_file%.out}))"
-        if [ ! -r "${MYDIR}/results/${pcap_cfg}/${result_file}" ]; then
+        if [[ ! -r "${MYDIR}/results/${pcap_cfg}/${result_file}" ]]; then
             printf "%-${LINE_SPACES}s\t%s\n" "${result_file}" "[MISSING][config: ${pcap_cfg}]"
             TESTS_FAILED=$((TESTS_FAILED + 1))
         fi
@@ -375,10 +375,10 @@ cat <<EOF
 EOF
 
 mkdir -p "${MYDIR}/results/flow-captured"
-if [ -x "${NDPISRVD_CAPTURED}" ]; then
+if [[ -x "${NDPISRVD_CAPTURED}" ]]; then
     cd "${MYDIR}"
     for out_file in results/*/*.out; do
-        if [ ! -r "${out_file}" ]; then
+        if [[ ! -r "${out_file}" ]]; then
             printf '%s: %s\n' "${0}" "${out_file} does not exist!"
             TESTS_FAILED=$((TESTS_FAILED + 1))
             continue
@@ -397,7 +397,7 @@ if [ -x "${NDPISRVD_CAPTURED}" ]; then
         kill -SIGTERM ${nc_pid} 2>/dev/null
         wait ${nc_pid} 2>/dev/null
         while ss -x -t -n -l | grep -q "${NETCAT_SOCK}"; do sleep 0.1; printf '%s\n' "Waiting until socket ${NETCAT_SOCK} is not available anymore.." >>"${stderr_file}"; done
-        if [ ! -r "${result_file}" ]; then
+        if [[ ! -r "${result_file}" ]]; then
             printf '%s\n' '[NEW]'
             test ${IS_GIT} -eq 1 && \
                 mv "${stdout_file}" "${result_file}"
@@ -415,14 +415,14 @@ if [ -x "${NDPISRVD_CAPTURED}" ]; then
     done
 
     for out_file in ${MYDIR}/results/flow-captured/*/*.out; do
-        if [ ! -r "${out_file}" ]; then
+        if [[ ! -r "${out_file}" ]]; then
             printf '%s: %s\n' "${0}" "${out_file} does not exist!"
             TESTS_FAILED=$((TESTS_FAILED + 1))
             continue
         fi
         result_file="$(basename ${out_file})"
         pcap_cfg="$(basename $(dirname ${out_file%.out}))"
-        if [ ! -r "${MYDIR}/results/${pcap_cfg}/${result_file}" ]; then
+        if [[ ! -r "${MYDIR}/results/${pcap_cfg}/${result_file}" ]]; then
             printf "%-${LINE_SPACES}s\t%s\n" "${result_file}" "[MISSING][config: ${pcap_cfg}]"
             TESTS_FAILED=$((TESTS_FAILED + 1))
         fi
@@ -439,10 +439,10 @@ cat <<EOF
 
 EOF
 
-if [ -x "${NDPISRVD_COLLECTD}" ]; then
+if [[ -x "${NDPISRVD_COLLECTD}" ]]; then
     cd "${MYDIR}"
     for out_file in results/*/*.out; do
-        if [ ! -r "${out_file}" ]; then
+        if  [[ ! -r "${out_file}" ]]; then
             printf '%s: %s\n' "${0}" "${out_file} does not exist!"
             TESTS_FAILED=$((TESTS_FAILED + 1))
             continue
@@ -463,14 +463,14 @@ if [ -x "${NDPISRVD_COLLECTD}" ]; then
         while ss -x -t -n -l | grep -q "${NETCAT_SOCK}"; do sleep 0.1; printf '%s\n' "Waiting until socket ${NETCAT_SOCK} is not available anymore.." >>"${stderr_file}"; done
 
         unknown_count="$(cat "${stdout_file}" | grep -E 'flow_.*_unknown' | wc -l || printf '%s' '0')"
-        if [ "${unknown_count}" -ne 5 ]; then
+        if [[ "${unknown_count}" -ne 5 ]]; then
             printf '%s: Unknown count: %s\n' '[INTERNAL]' "${unknown_count}"
             TESTS_FAILED=$((TESTS_FAILED + 1))
         elif cat "${stdout_file}" | grep -E 'flow_.*_unknown' | grep -qvE 'N:0'; then
             printf '%s\n' '[INTERNAL]'
             cat "${stdout_file}" | grep -E 'flow_.*_unknown' | grep -vE 'N:0' || true
             TESTS_FAILED=$((TESTS_FAILED + 1))
-        elif [ ! -r "${result_file}" ]; then
+        elif [[ ! -r "${result_file}" ]]; then
             printf '%s\n' '[NEW]'
             test ${IS_GIT} -eq 1 && \
                 mv "${stdout_file}" "${result_file}"
@@ -488,14 +488,14 @@ if [ -x "${NDPISRVD_COLLECTD}" ]; then
     done
 
     for out_file in ${MYDIR}/results/stats/*/*.out; do
-        if [ ! -r "${out_file}" ]; then
+        if [[ ! -r "${out_file}" ]]; then
             printf '%s: %s\n' "${0}" "${out_file} does not exist!"
             TESTS_FAILED=$((TESTS_FAILED + 1))
             continue
         fi
         result_file="$(basename ${out_file})"
         pcap_cfg="$(basename $(dirname ${out_file%.out}))"
-        if [ ! -r "${MYDIR}/results/${pcap_cfg}/${result_file}" ]; then
+        if [[ ! -r "${MYDIR}/results/${pcap_cfg}/${result_file}" ]]; then
             printf "%-${LINE_SPACES}s\t%s\n" "${result_file}" "[MISSING][config: ${pcap_cfg}]"
             TESTS_FAILED=$((TESTS_FAILED + 1))
         fi
@@ -512,10 +512,10 @@ cat <<EOF
 
 EOF
 
-if [ -x "${NDPISRVD_INFLUXD}" ]; then
+if [[ -x "${NDPISRVD_INFLUXD}" ]]; then
     cd "${MYDIR}"
     for out_file in results/*/*.out; do
-        if [ ! -r "${out_file}" ]; then
+        if [[ ! -r "${out_file}" ]]; then
             printf '%s: %s\n' "${0}" "${out_file} does not exist!"
             TESTS_FAILED=$((TESTS_FAILED + 1))
             continue
@@ -536,14 +536,14 @@ if [ -x "${NDPISRVD_INFLUXD}" ]; then
         while ss -x -t -n -l | grep -q "${NETCAT_SOCK}"; do sleep 0.1; printf '%s\n' "Waiting until socket ${NETCAT_SOCK} is not available anymore.." >>"${stderr_file}"; done
 
         unknown_count="$(cat "${stdout_file}" | tr ' ' '\n' | tr ',' '\n' | grep -E '^flow.*_unknown' | wc -l || printf '%s' '0')"
-        if [ "${unknown_count}" -ne 5 ]; then
+        if [[ "${unknown_count}" -ne 5 ]]; then
             printf '%s: Unknown count: %s\n' '[INTERNAL]' "${unknown_count}"
             TESTS_FAILED=$((TESTS_FAILED + 1))
         elif cat "${stdout_file}" | tr ' ' '\n' | tr ',' '\n' | grep -E '^flow.*_unknown' | grep -qvE '=0'; then
             printf '%s\n' '[INTERNAL]'
             cat "${stdout_file}" | tr ' ' '\n' | tr ',' '\n' | grep -E '^flow.*_unknown' | grep -vE '=0' || true
             TESTS_FAILED=$((TESTS_FAILED + 1))
-        elif [ ! -r "${result_file}" ]; then
+        elif [[ ! -r "${result_file}" ]]; then
             printf '%s\n' '[NEW]'
             test ${IS_GIT} -eq 1 && \
                 mv "${stdout_file}" "${result_file}"
@@ -561,14 +561,14 @@ if [ -x "${NDPISRVD_INFLUXD}" ]; then
     done
 
     for out_file in ${MYDIR}/results/influxd/*/*.out; do
-        if [ ! -r "${out_file}" ]; then
+        if [[ ! -r "${out_file}" ]]; then
             printf '%s: %s\n' "${0}" "${out_file} does not exist!"
             TESTS_FAILED=$((TESTS_FAILED + 1))
             continue
         fi
         result_file="$(basename ${out_file})"
         pcap_cfg="$(basename $(dirname ${out_file%.out}))"
-        if [ ! -r "${MYDIR}/results/${pcap_cfg}/${result_file}" ]; then
+        if [[ ! -r "${MYDIR}/results/${pcap_cfg}/${result_file}" ]]; then
             printf "%-${LINE_SPACES}s\t%s\n" "${result_file}" "[MISSING][config: ${pcap_cfg}]"
             TESTS_FAILED=$((TESTS_FAILED + 1))
         fi
@@ -589,7 +589,7 @@ EOF
 
 cd "${MYDIR}"
 for out_file in results/*/*.out; do
-    if [ ! -r "${out_file}" ]; then
+    if [[ ! -r "${out_file}" ]]; then
         printf '%s: %s\n' "${0}" "${out_file} does not exist!"
         TESTS_FAILED=$((TESTS_FAILED + 1))
         continue
@@ -597,20 +597,20 @@ for out_file in results/*/*.out; do
     out_name="$(basename ${out_file})"
     pcap_cfg="$(basename $(dirname ${out_file%.out}))"
     result_file="${MYDIR}/results/${pcap_cfg}/${out_name}"
-    if [ ! -r "${result_file}" ]; then
+    if [[ ! -r "${result_file}" ]]; then
         printf "%-${LINE_SPACES}s\t%s\n" "${out_name}" "[MISSING][config: ${pcap_cfg}]"
         TESTS_FAILED=$((TESTS_FAILED + 1))
     else
         validate_results "SCHEMA  " "${pcap_cfg}" "${out_name%.out}" "${out_file}" \
             "${JSON_VALIDATOR} --unix ${NETCAT_SOCK}"
-        if [ $? -ne 0 ]; then
+        if [[ $? -ne 0 ]]; then
             TESTS_FAILED=$((TESTS_FAILED + 1))
             continue
         fi
 
         validate_results "SEMANTIC" "${pcap_cfg}" "${out_name%.out}" "${out_file}" \
             "${SEMN_VALIDATOR} --unix ${NETCAT_SOCK} --strict"
-        if [ $? -ne 0 ]; then
+        if [[ $? -ne 0 ]]; then
             TESTS_FAILED=$((TESTS_FAILED + 1))
             continue
         fi
@@ -625,7 +625,7 @@ Done. For more information see text files in:
 
 EOF
 
-if [ ${TESTS_FAILED} -eq 0 ]; then
+if [[ ${TESTS_FAILED} -eq 0 ]]; then
 cat <<EOF
 
 --------------------------

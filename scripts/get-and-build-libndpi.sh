@@ -8,14 +8,14 @@ UNZIP_EXEC="$(command -v unzip || printf '%s' "")"
 MAKE_EXEC="$(command -v make || printf '%s' "")"
 FLOCK_EXEC="$(command -v flock || printf '%s' "")"
 
-if [ -z "${NDPI_COMMIT_HASH}" ]; then
+if [[ -z "${NDPI_COMMIT_HASH}" ]]; then
     NDPI_COMMIT_HASH="dev"
     GITHUB_FALLBACK_URL='https://github.com/ntop/nDPI/archive/refs/heads/dev.zip'
 else
     GITHUB_FALLBACK_URL="https://github.com/ntop/nDPI/archive/${NDPI_COMMIT_HASH}.zip"
 fi
 
-if [ -z "${GIT_EXEC}" -o -z "${WGET_EXEC}" -o -z "${UNZIP_EXEC}" -o -z "${MAKE_EXEC}" -o -z "${FLOCK_EXEC}" ]; then
+if [[ -z "${GIT_EXEC}" || -z "${WGET_EXEC}" || -z "${UNZIP_EXEC}" || -z "${MAKE_EXEC}" || -z "${FLOCK_EXEC}" ]]; then
     printf '%s\n' "Required Executables missing: git, wget, unzip, make, flock" >&2
     exit 1
 fi
@@ -28,7 +28,7 @@ ${FLOCK_EXEC} -x -n 42 || {
     exit 1;
 }
 
-if [ ! -z "${CC}" ]; then
+if [[ ! -z "${CC}" ]]; then
     HOST_TRIPLET="$(${CC} ${CFLAGS} -dumpmachine)"
 fi
 
@@ -58,17 +58,17 @@ set -x
 cd "$(dirname "${0}")/.."
 
 GIT_SUCCESS=0
-if [ -d ./.git -o -f ./.git ]; then
+if [[ -d ./.git || -f ./.git ]]; then
     GIT_SUCCESS=1
 
-    if [ ! -z "${FORCE_GIT_UPDATE}" -a "${FORCE_GIT_UPDATE}" != "OFF" ]; then
+    if [[ ! -z "${FORCE_GIT_UPDATE}" && "${FORCE_GIT_UPDATE}" != "OFF" ]]; then
         git submodule deinit --force -- ./libnDPI || { GIT_SUCCESS=0; true; }
         LINES_CHANGED=0
     else
         LINES_CHANGED="$(git --no-pager diff ./libnDPI 2>/dev/null | wc -l || printf '0')"
     fi
 
-    if [ ${LINES_CHANGED} -eq 0 ]; then
+    if [[ ${LINES_CHANGED} -eq 0 ]]; then
         git submodule update --progress --init ./libnDPI || { GIT_SUCCESS=0; true; }
     else
         set +x
@@ -79,7 +79,7 @@ if [ -d ./.git -o -f ./.git ]; then
     fi
 fi
 
-if [ ${GIT_SUCCESS} -eq 0 ]; then
+if [[ ${GIT_SUCCESS} -eq 0 ]]; then
     set +x
     printf '%s\n' '-----------------------------------'
     printf 'WARNING: %s is supposed to be a GIT repository. But it is not.\n' "$(realpath $(dirname "${0}")/..)"
