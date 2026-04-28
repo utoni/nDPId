@@ -21,16 +21,16 @@ return 0
 test -z "$(which flock)" && { printf '%s\n' 'flock not found'; exit 1; }
 test -z "$(which pkill)" && { printf '%s\n' 'pkill not found'; exit 1; }
 
-if [ $# -eq 0 -a -x "${MYDIR}/../libnDPI/tests/cfgs" ]; then
+if [[ $# -eq 0 && -x "${MYDIR}/../libnDPI/tests/cfgs" ]]; then
     nDPI_SOURCE_ROOT="${MYDIR}/../libnDPI"
-elif [ $# -ne 1 -a $# -ne 2 -a $# -ne 3 -a $# -ne 4 ]; then
+elif [[ $# -ne 1 && $# -ne 2 && $# -ne 3 && $# -ne 4 ]]; then
     usage
     exit 2
 else
     nDPI_SOURCE_ROOT="$(realpath "${1}")"
 fi
 
-if [ ! -x "${nDPI_SOURCE_ROOT}/tests/cfgs" ]; then
+if [[ ! -x "${nDPI_SOURCE_ROOT}/tests/cfgs" ]]; then
     printf 'Test config directory %s does not exist or you do not have the permission to access it.\n' "${nDPI_SOURCE_ROOT}/tests/cfgs" >&2
     printf '%s\n' 'Please make also sure that your nDPI library is not too old.'
     exit 2
@@ -54,7 +54,7 @@ function sighandler()
 }
 trap sighandler SIGINT SIGTERM
 
-if [ ! -x "${nDPId_test_EXEC}" ]; then
+if [[ ! -x "${nDPId_test_EXEC}" ]]; then
     usage
     printf '\n%s\n' "Required nDPId-test executable does not exist; ${nDPId_test_EXEC}"
     exit 5
@@ -85,7 +85,7 @@ set +e
 TESTS_FAILED=0
 
 ${nDPId_test_EXEC} -h 2>/dev/null
-if [ $? -ne 1 ]; then
+if [[ $? -ne 1 ]]; then
     printf '%s\n' "nDPId-test: ${nDPId_test_EXEC} seems to be an invalid executable"
     exit 7
 fi
@@ -96,7 +96,7 @@ for cfg_file in ${MYDIR}/configs/*.conf; do
     printf 'Config: %s\n' "${cfg_name}"
     DOTS=0
     for pcap_file in cfgs/*/pcap/*.pcap cfgs/*/pcap/*.pcapng cfgs/*/pcap/*.cap; do
-        if [ ! -r "${pcap_file}" ]; then
+        if [[ ! -r "${pcap_file}" ]]; then
             printf '%s: %s\n' "${0}" "${pcap_file} does not exist!"
             TESTS_FAILED=$((TESTS_FAILED + 1))
             continue
@@ -113,9 +113,9 @@ for cfg_file in ${MYDIR}/configs/*.conf; do
             2>>${stderr_file}
         nDPId_test_RETVAL=$?
 
-        if [ ${nDPId_test_RETVAL} -eq 0 ]; then
+        if [[ ${nDPId_test_RETVAL} -eq 0 ]]; then
             DOTS=$((DOTS + 1))
-            if [ ${DOTS} -eq ${DOTS_PER_LINE} ]; then
+            if [[ ${DOTS} -eq ${DOTS_PER_LINE} ]]; then
                 printf '%s\n' '.'
                 DOTS=0
             else

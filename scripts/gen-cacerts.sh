@@ -2,19 +2,19 @@
 
 printf 'usage: %s [out-dir] [client-cname] [server-cname]\n' "${0}"
 
-if [ -z "${1}" ]; then
+if [[ -z "${1}" ]]; then
     OUT_DIR="$(dirname ${0})/pki"
 else
     OUT_DIR="${1}"
 fi
 
-if [ -z "${2}" ]; then
+if [[ -z "${2}" ]]; then
     CLIENT_CN="unknown"
 else
     CLIENT_CN="${2}"
 fi
 
-if [ -z "${3}" ]; then
+if [[ -z "${3}" ]]; then
     SERVER_CN="unknown"
 else
     SERVER_CN="${3}"
@@ -31,13 +31,13 @@ OLDPWD="$(pwd)"
 mkdir -p "${OUT_DIR}"
 cd "${OUT_DIR}"
 
-if [ ! -r ./ca.key -o ! -r ./ca.crt ]; then
+if [[ ! -r ./ca.key || ! -r ./ca.crt ]]; then
     printf '%s\n' '[*] Create CA...'
     openssl genrsa -out ./ca.key 4096
     openssl req -x509 -new -nodes -key ./ca.key -sha256 -days 3650 -out ./ca.crt -subj "/CN=nDPId Root CA"
 fi
 
-if [ ! -r ./server_${SERVER_CN}.key -o ! -r ./server_${SERVER_CN}.crt ]; then
+if [[ ! -r ./server_${SERVER_CN}.key || ! -r ./server_${SERVER_CN}.crt ]]; then
     printf '[*] Create Server Cert: %s\n' "${SERVER_CN}"
     openssl genrsa -out ./server_${SERVER_CN}.key 2048
     openssl req -new -key ./server_${SERVER_CN}.key -out ./server_${SERVER_CN}.csr -subj "/CN=${SERVER_CN}"
@@ -45,7 +45,7 @@ if [ ! -r ./server_${SERVER_CN}.key -o ! -r ./server_${SERVER_CN}.crt ]; then
         -out ./server_${SERVER_CN}.crt -days 825 -sha256
 fi
 
-if [ ! -r ./client_${CLIENT_CN}.key -o ! -r ./client_${CLIENT_CN}.crt ]; then
+if [[ ! -r ./client_${CLIENT_CN}.key || ! -r ./client_${CLIENT_CN}.crt ]]; then
     printf '[*] Create Client Cert: %s\n' "${CLIENT_CN}"
     openssl genrsa -out ./client_${CLIENT_CN}.key 2048
     openssl req -new -key ./client_${CLIENT_CN}.key -out ./client_${CLIENT_CN}.csr -subj "/CN=${CLIENT_CN}"
