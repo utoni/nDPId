@@ -1659,7 +1659,7 @@ static int parse_options(int argc, char ** argv)
         }
         if (analysed_interval_ull == 0)
         {
-            logger_early(0, "%s", "Global Stats CSV write interval is zero, summarizing stats during termination");
+            logger(0, "%s", "Global Stats CSV write interval is zero, summarizing stats during termination");
         }
     }
 

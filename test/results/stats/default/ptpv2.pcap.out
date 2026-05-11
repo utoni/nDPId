@@ -1,5 +1,5 @@
 PUTVAL "localhost/exec-nDPIsrvd/counter-json_lines" interval=60 N:23
-PUTVAL "localhost/exec-nDPIsrvd/counter-json_bytes" interval=60 N:17370
+PUTVAL "localhost/exec-nDPIsrvd/counter-json_bytes" interval=60 N:17376
 PUTVAL "localhost/exec-nDPIsrvd/counter-flow_new_count" interval=60 N:3
 PUTVAL "localhost/exec-nDPIsrvd/counter-flow_end_count" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/counter-flow_idle_count" interval=60 N:3
@@ -9,8 +9,8 @@ PUTVAL "localhost/exec-nDPIsrvd/counter-flow_guessed_count" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/counter-flow_detected_count" interval=60 N:3
 PUTVAL "localhost/exec-nDPIsrvd/counter-flow_detection_update_count" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/counter-flow_not_detected_count" interval=60 N:0
-PUTVAL "localhost/exec-nDPIsrvd/counter-flow_src_total_bytes" interval=60 N:796
-PUTVAL "localhost/exec-nDPIsrvd/counter-flow_dst_total_bytes" interval=60 N:0
+PUTVAL "localhost/exec-nDPIsrvd/counter-flow_src_total_bytes" interval=60 N:382
+PUTVAL "localhost/exec-nDPIsrvd/counter-flow_dst_total_bytes" interval=60 N:414
 PUTVAL "localhost/exec-nDPIsrvd/counter-flow_risky_count" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/counter-packet_count" interval=60 N:0
 PUTVAL "localhost/exec-nDPIsrvd/counter-packet_flow_count" interval=60 N:11

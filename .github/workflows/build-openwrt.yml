@@ -4,14 +4,15 @@ on:
   schedule:
     # At the end of every day
     - cron: '0 0 * * *'
-  push:
-    branches:
-      - main
-      - tmp
-  pull_request:
-    branches:
-      - main
-    types: [opened, synchronize, reopened]
+  # TODO: Enable after openwrt/gh-action-sdk is working again.
+  #push:
+  #  branches:
+  #    - main
+  #    - tmp
+  #pull_request:
+  #  branches:
+  #    - main
+  #  types: [opened, synchronize, reopened]
   release:
     types: [created]
 
@@ -23,8 +24,11 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - arch: arm_cortex-a9_vfpv3-d16
-            target: mvebu-cortexa9
+          - arch: aarch64_generic
+            target: aarch64-generic
+
+          - arch: mips_24kc
+            target: mips-24kc
 
           - arch: arm_cortex-a15_neon-vfpv4
             target: armvirt-32
@@ -39,7 +43,7 @@ jobs:
           fetch-depth: 1
 
       - name: Build
-        uses: openwrt/gh-action-sdk@main
+        uses: openwrt/gh-action-sdk@797d0e3d0eb13b355c3447f60d0179d4b43089e2
         env:
           ARCH: ${{ matrix.arch }}-snapshot
           FEED_DIR: ${{ github.workspace }}/packages/openwrt

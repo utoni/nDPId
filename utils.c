@@ -120,7 +120,7 @@ int set_config_from(struct confopt * const co, char const * const from)
         case CMDTYPE_ULL:
         {
             char * endptr;
-            long int value_llu = strtoull(from, &endptr, 10);
+            unsigned long long int value_llu = strtoull(from, &endptr, 10);
 
             if (from == endptr)
             {
@@ -234,7 +234,7 @@ static int is_daemon_running(char const * const pidfile, pid_str ps)
 
     close(pfd);
 
-    if (snprintf(proc_path, sizeof(pid_str), "/proc/%s", ps) <= 0)
+    if (snprintf(proc_path, sizeof(proc_path), "/proc/%s", ps) <= 0)
     {
         return 1;
     }
@@ -305,7 +305,7 @@ int daemonize_with_pidfile(char const * const pidfile)
             return 1;
         }
 
-        nullfd = open("/dev/null", O_NONBLOCK, O_WRONLY);
+        nullfd = open("/dev/null", O_WRONLY | O_NONBLOCK, 0);
         if (nullfd < 0 || dup2(nullfd, STDIN_FILENO) < 0 || dup2(nullfd, STDOUT_FILENO) < 0 ||
             dup2(nullfd, STDERR_FILENO) < 0)
         {

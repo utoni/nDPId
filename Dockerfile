@@ -33,8 +33,8 @@ RUN apt-get -y update \
     && apt-get clean
 
 USER nobody
-RUN /usr/bin/nDPIsrvd -h || { RC=$?; test ${RC} -eq 1; }; \
-    /usr/sbin/nDPId -h || { RC=$?; test ${RC} -eq 1; }
+RUN /usr/bin/nDPIsrvd -h || { RC="$?"; test "${RC}" -eq 1; }; \
+    /usr/sbin/nDPId -h || { RC="$?"; test "${RC}" -eq 1; }
 
 FROM archlinux:base-devel AS builder-archlinux
 

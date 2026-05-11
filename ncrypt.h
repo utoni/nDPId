@@ -62,9 +62,9 @@ int ncrypt_on_connect(struct ncrypt_ctx * const ctx, int connect_fd, struct ncry
 
 int ncrypt_on_accept(struct ncrypt_ctx * const ctx, int accept_fd, struct ncrypt_entity * const ent);
 
-ssize_t ncrypt_read(struct ncrypt_entity * const ent, char * const json_msg, size_t json_msg_len);
+ssize_t ncrypt_read(struct ncrypt_entity * const ent, char * const json_msg, int json_msg_len);
 
-ssize_t ncrypt_write(struct ncrypt_entity * const ent, char const * const json_msg, size_t json_msg_len);
+ssize_t ncrypt_write(struct ncrypt_entity * const ent, char const * const json_msg, int json_msg_len);
 
 void ncrypt_free_entity(struct ncrypt_entity * const ent);
 
