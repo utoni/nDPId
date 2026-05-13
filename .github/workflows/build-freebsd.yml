@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Test
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - name: Test in FreeBSD
       id: test
       uses: vmactions/freebsd-vm@v1.2.9

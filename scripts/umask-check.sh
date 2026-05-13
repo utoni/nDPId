@@ -2,7 +2,7 @@
 
 UMASK=$(umask)
 
-if [ "${UMASK}" != "0002" -a "${UMASK}" != "0022" ]; then
+if [[ "${UMASK}" != "0002" && "${UMASK}" != "0022" ]]; then
     cat <<EOF
 ********************************************
 * WARNING: 'cpack -G DEB' / 'cpack -G RPM' *

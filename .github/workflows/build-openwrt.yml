@@ -33,7 +33,7 @@ jobs:
             target: x86-64
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: false
           fetch-depth: 1
@@ -48,7 +48,7 @@ jobs:
           V: s
 
       - name: Store packages
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: nDPId-${{ matrix.arch}}-${{ matrix.target }}
           path: bin/packages/${{ matrix.arch }}/ndpid_openwrt_packages_ci/*.ipk
