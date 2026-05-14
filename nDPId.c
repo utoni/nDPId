@@ -670,7 +670,9 @@ static int set_collector_nonblock(struct nDPId_reader_thread * const reader_thre
 {
     int current_flags;
 
-    while ((current_flags = fcntl(reader_thread->collector_sockfd, F_GETFL, 0)) == -1 && errno == EINTR) {}
+    while ((current_flags = fcntl(reader_thread->collector_sockfd, F_GETFL, 0)) == -1 && errno == EINTR) {
+        // Retry if interrupted by a signal.
+    }
     if (current_flags == -1) {
         reader_thread->collector_sock_last_errno = errno;
         logger(1,
@@ -704,7 +706,9 @@ static int set_collector_block(struct nDPId_reader_thread * const reader_thread)
 {
     int current_flags;
 
-    while ((current_flags = fcntl(reader_thread->collector_sockfd, F_GETFL, 0)) == -1 && errno == EINTR) {}
+    while ((current_flags = fcntl(reader_thread->collector_sockfd, F_GETFL, 0)) == -1 && errno == EINTR) {
+        // Retry if interrupted by a signal.
+    }
     if (current_flags == -1) {
         reader_thread->collector_sock_last_errno = errno;
         logger(1,

@@ -4,7 +4,7 @@ WORKDIR /root
 RUN apt-get -y update \
     && apt-get install -y --no-install-recommends \
     autoconf automake build-essential ca-certificates cmake git \
-    libpcap-dev libcurl4-openssl-dev libdbus-1-dev libtool make pkg-config unzip wget \
+    libcurl4-openssl-dev libdbus-1-dev libpcap-dev libtool make pkg-config unzip wget \
     && apt-get clean \
     && git clone https://github.com/utoni/nDPId.git
 
