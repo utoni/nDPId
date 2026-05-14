@@ -26,6 +26,7 @@
 #if !defined(__FreeBSD__) && !defined(__APPLE__)
 #include <sys/signalfd.h>
 #endif
+#include <sys/stat.h>
 #include <sys/un.h>
 #include <unistd.h>
 #ifdef ENABLE_ZLIB
@@ -670,7 +671,15 @@ static int set_collector_nonblock(struct nDPId_reader_thread * const reader_thre
     int current_flags;
 
     while ((current_flags = fcntl(reader_thread->collector_sockfd, F_GETFL, 0)) == -1 && errno == EINTR) {}
-    if (current_flags == -1) {}
+    if (current_flags == -1) {
+        reader_thread->collector_sock_last_errno = errno;
+        logger(1,
+               "[%8llu] Could not get collector fd %d flags: %s",
+               reader_thread->workflow->packets_processed,
+               reader_thread->collector_sockfd,
+               strerror(errno));
+        return 1;
+    }
 
     while ((current_flags = fcntl(reader_thread->collector_sockfd, F_SETFL, current_flags | O_NONBLOCK)) == -1 &&
            errno == EINTR)
@@ -693,9 +702,25 @@ static int set_collector_nonblock(struct nDPId_reader_thread * const reader_thre
 
 static int set_collector_block(struct nDPId_reader_thread * const reader_thread)
 {
-    int current_flags = fcntl(reader_thread->collector_sockfd, F_GETFL, 0);
+    int current_flags;
 
-    if (current_flags == -1 || fcntl(reader_thread->collector_sockfd, F_SETFL, current_flags & ~O_NONBLOCK) == -1)
+    while ((current_flags = fcntl(reader_thread->collector_sockfd, F_GETFL, 0)) == -1 && errno == EINTR) {}
+    if (current_flags == -1) {
+        reader_thread->collector_sock_last_errno = errno;
+        logger(1,
+               "[%8llu] Could not get collector fd %d flags: %s",
+               reader_thread->workflow->packets_processed,
+               reader_thread->collector_sockfd,
+               strerror(errno));
+        return 1;
+    }
+
+    while ((current_flags = fcntl(reader_thread->collector_sockfd, F_SETFL, current_flags & ~O_NONBLOCK)) == -1 &&
+           errno == EINTR)
+    {
+        // Retry if interrupted by a signal.
+    }
+    if (current_flags == -1)
     {
         reader_thread->collector_sock_last_errno = errno;
         logger(1,
@@ -837,6 +862,12 @@ static int detection_data_deflate(struct nDPId_flow * const flow)
         return ZLIB_ERROR_COMPRESSED_SIZE;
     }
 
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
+    _Static_assert(sizeof(*flow->info.detection_data) <= UINT16_MAX / 2u,
+                   "Size of the detection data is too large."
+                   " zLib deflate might not work correctly."
+                   " Please review manually.");
+#endif
     size = zlib_deflate(flow->info.detection_data, sizeof(*flow->info.detection_data), tmpOut, sizeof(tmpOut));
     if (size == 0 || size > sizeof(*flow->info.detection_data))
     {
@@ -1157,6 +1188,11 @@ static void ndpi_free_wrapper(void * const freeable)
 
 static void * ndpi_calloc_wrapper(size_t nmemb, size_t size)
 {
+    if (nmemb != 0 && size > SIZE_MAX / nmemb)
+    {
+        return NULL;
+    }
+
     void * p = ndpi_malloc_wrapper(nmemb * size);
     if (p == NULL)
     {
@@ -1177,7 +1213,9 @@ static void * ndpi_realloc_wrapper(void * const reallocable, size_t new_size)
     void * const new_ptr = realloc(p, sizeof(uint64_t) + new_size);
 
     if (new_ptr == NULL) {
-        return (uint8_t *)p + sizeof(uint64_t);
+        // Do not return the valid pointer as it is old pointer of old size
+        ndpi_free_wrapper(reallocable);
+        return NULL;
     }
 
     size_t old_size = *(uint64_t *)new_ptr;
@@ -1454,9 +1492,8 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     else
 #endif
     {
-        errno = 0;
-
-        if (access(file_or_device, R_OK) != 0 && errno == ENOENT)
+        struct stat st;
+        if (stat(file_or_device, &st) != 0 || !S_ISREG(st.st_mode))
         {
             workflow->pcap_handle = pcap_open_live(file_or_device, 65535, 1, 250, pcap_error_buffer);
         }
@@ -1781,6 +1818,10 @@ static char * get_default_pcapdev(char * errbuf)
     {
         return NULL;
     }
+    if (all_devices == NULL)
+    {
+        return NULL;
+    }
 
     ifname = strdup(all_devices[0].name);
     pcap_freealldevs(all_devices);
@@ -1812,8 +1853,8 @@ static int setup_reader_threads(void)
                      GET_CMDARG_STR(nDPId_options.pcap_file_or_interface));
     }
 
-    errno = 0;
-    if (access(GET_CMDARG_STR(nDPId_options.pcap_file_or_interface), R_OK) != 0 && errno == ENOENT)
+    struct stat st;
+    if (stat(GET_CMDARG_STR(nDPId_options.pcap_file_or_interface), &st) != 0 || !S_ISREG(st.st_mode))
     {
         errno = 0;
         if (get_ip_netmask_from_pcap_dev(GET_CMDARG_STR(nDPId_options.pcap_file_or_interface)) != 0)
@@ -1878,7 +1919,7 @@ static int ip_tuples_compare(struct nDPId_flow_basic const * const A, struct nDP
     }
     else if (A->l3_type == L3_IP6 && B->l3_type == L3_IP6)
     {
-        if (A->src.v6.ip[0] < B->src.v6.ip[0] && A->src.v6.ip[1] < B->src.v6.ip[1])
+        if (A->src.v6.ip[0] < B->src.v6.ip[0] || A->src.v6.ip[1] < B->src.v6.ip[1])
         {
             return -1;
         }
@@ -1886,7 +1927,7 @@ static int ip_tuples_compare(struct nDPId_flow_basic const * const A, struct nDP
         {
             return 1;
         }
-        if (A->dst.v6.ip[0] < B->dst.v6.ip[0] && A->dst.v6.ip[1] < B->dst.v6.ip[1])
+        if (A->dst.v6.ip[0] < B->dst.v6.ip[0] || A->dst.v6.ip[1] < B->dst.v6.ip[1])
         {
             return -1;
         }
@@ -2738,7 +2779,7 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
                 {
                     written = write(reader_thread->collector_sockfd, newline_json_msg + pos, s_ret - pos);
                 }
-                if ((size_t)written == s_ret - pos)
+                if (written > 0 && (size_t)written == s_ret - pos)
                 {
                     break;
                 }
@@ -3063,7 +3104,7 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
                reader_thread->workflow->packets_captured,
                reader_thread->array_index);
     }
-    else if (base64_data_len > 0 &&
+    else if (base64_data_len > 0 && base64_data_len <= NETWORK_BUFFER_MAX_SIZE &&
              ndpi_serialize_string_binary(&workflow->ndpi_serializer, "pkt", base64_data, (uint16_t)base64_data_len) !=
                  0)
     {
@@ -3488,7 +3529,8 @@ static uint32_t murmur3_32(uint8_t const * key, size_t len, uint32_t seed)
     /* Read in groups of 4. */
     for (size_t i = len >> 2; i; i--)
     {
-        k = htole32(*(uint32_t *)key);
+        memcpy(&k, key, sizeof(k));
+        k = htole32(k);
         key += sizeof(uint32_t);
         h ^= murmur_32_scramble(k);
         h = (h << 13) | (h >> 19);
@@ -5670,13 +5712,13 @@ static int read_uuid_from_file(char const * const path)
         fclose(fp);
         return 1;
     }
-    if (uuid_len > 36)
+    if (uuid_len >= 36)
     {
         uuid[36] = '\0';
     }
     else
     {
-        uuid[uuid_len - 1] = '\0';
+        uuid[uuid_len] = '\0';
     }
     fclose(fp);
 

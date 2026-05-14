@@ -1267,7 +1267,8 @@ error:
     close(mock_nullfds[PIPE_NULL_READ]);
     close(mock_arpafds[PIPE_ARPA_READ]);
 #if !defined(__FreeBSD__) && !defined(__APPLE__)
-    close(signalfd);
+    if (signalfd >= 0)
+        close(signalfd);
 #endif
     nio_free(&io);
 

@@ -15,7 +15,7 @@ NDPISRVD_ANALYSED="$(realpath "${6:-"$(dirname ${nDPId_test_EXEC})/nDPIsrvd-anal
 NDPISRVD_CAPTURED="$(realpath "${6:-"$(dirname ${nDPId_test_EXEC})/nDPIsrvd-captured"}")"
 NDPISRVD_COLLECTD="$(realpath "${6:-"$(dirname ${nDPId_test_EXEC})/nDPIsrvd-collectd"}")"
 NDPISRVD_INFLUXD="$(realpath "${6:-"$(dirname ${nDPId_test_EXEC})/nDPIsrvd-influxd"}")"
-IS_GIT=$(test -d "${MYDIR}/../.git" -o -f "${MYDIR}/../.git" && printf '1' || printf '0')
+IS_GIT=$([[ -d "${MYDIR}/../.git" || -f "${MYDIR}/../.git" ]] && printf '1' || printf '0')
 
 function usage()
 {
@@ -35,12 +35,12 @@ EOF
 return 0
 }
 
-test -z "$(which flock)" && { printf '%s\n' 'flock not found'; exit 1; }
-test -z "$(which pkill)" && { printf '%s\n' 'pkill not found'; exit 1; }
-test -z "$(which nc)" && { printf '%s\n' 'nc not found'; exit 1; }
-test -z "$(which ss)" && { printf '%s\n' 'ss not found'; exit 1; }
-test -z "$(which cat)" && { printf '%s\n' 'cat not found'; exit 1; }
-test -z "$(which grep)" && { printf '%s\n' 'grep not found'; exit 1; }
+[[ -z "$(which flock)" ]] && { printf '%s\n' 'flock not found'; exit 1; }
+[[ -z "$(which pkill)" ]] && { printf '%s\n' 'pkill not found'; exit 1; }
+[[ -z "$(which nc)" ]] && { printf '%s\n' 'nc not found'; exit 1; }
+[[ -z "$(which ss)" ]] && { printf '%s\n' 'ss not found'; exit 1; }
+[[ -z "$(which cat)" ]] && { printf '%s\n' 'cat not found'; exit 1; }
+[[ -z "$(which grep)" ]] && { printf '%s\n' 'grep not found'; exit 1; }
 
 if [[ $# -eq 0 && -x "${MYDIR}/../libnDPI/tests/cfgs" ]]; then
     nDPI_SOURCE_ROOT="${MYDIR}/../libnDPI"
@@ -167,7 +167,7 @@ for pcap_file in cfgs/*/pcap/*.pcap cfgs/*/pcap/*.pcapng cfgs/*/pcap/*.cap; do
     if [[ ${nDPId_test_RETVAL} -eq 0 ]]; then
         if [[ ! -r "${result_file}" ]]; then
             printf '%s\n' '[NEW]'
-            test ${IS_GIT} -eq 1 && \
+            [[ ${IS_GIT} -eq 1 ]] && \
                 mv "${stdout_file}" "${result_file}"
             TESTS_FAILED=$((TESTS_FAILED + 1))
         elif diff -u0 "${result_file}" "${stdout_file}" >/dev/null; then
@@ -176,7 +176,7 @@ for pcap_file in cfgs/*/pcap/*.pcap cfgs/*/pcap/*.pcapng cfgs/*/pcap/*.cap; do
         else
             printf '%s\n' '[DIFF]'
             diff -u0 "${result_file}" "${stdout_file}"
-            test ${IS_GIT} -eq 1 && \
+            [[ ${IS_GIT} -eq 1 ]] && \
                 mv "${stdout_file}" "${result_file}"
             TESTS_FAILED=$((TESTS_FAILED + 1))
         fi
@@ -185,7 +185,7 @@ for pcap_file in cfgs/*/pcap/*.pcap cfgs/*/pcap/*.pcapng cfgs/*/pcap/*.cap; do
         printf '%s\n' '----------------------------------------'
         printf '%s\n' "-- STDERR of ${pcap_file}: ${stderr_file}"
         cat "${stderr_file}"
-        test -r "/tmp/nDPId-test-stderr/${pcap_name}.strace.out" && cat "/tmp/nDPId-test-stderr/${pcap_name}.strace.out"
+        [[ -r "/tmp/nDPId-test-stderr/${pcap_name}.strace.out" ]] && cat "/tmp/nDPId-test-stderr/${pcap_name}.strace.out"
         TESTS_FAILED=$((TESTS_FAILED + 1))
     fi
 done
@@ -269,7 +269,7 @@ for out_file in results/*/*.out; do
     wait ${nc_pid} 2>/dev/null
     if [[ ! -r "${result_file}" ]]; then
         printf '%s\n' '[NEW]'
-        test ${IS_GIT} -eq 1 && \
+        [[ ${IS_GIT} -eq 1 ]] && \
             mv "${stdout_file}" "${result_file}"
         TESTS_FAILED=$((TESTS_FAILED + 1))
     elif diff -u0 "${result_file}" "${stdout_file}" >/dev/null; then
@@ -278,7 +278,7 @@ for out_file in results/*/*.out; do
     else
         printf '%s\n' '[DIFF]'
         diff -u0 "${result_file}" "${stdout_file}"
-        test ${IS_GIT} -eq 1 && \
+        [[ ${IS_GIT} -eq 1 ]] && \
             mv "${stdout_file}" "${result_file}"
         TESTS_FAILED=$((TESTS_FAILED + 1))
     fi
@@ -334,7 +334,7 @@ if [[ -x "${NDPISRVD_ANALYSED}" ]]; then
         while ss -x -t -n -l | grep -q "${NETCAT_SOCK}"; do sleep 0.1; printf '%s\n' "Waiting until socket ${NETCAT_SOCK} is not available anymore.." >>"${stderr_file}"; done
         if [[ ! -r "${result_file}" ]]; then
             printf '%s\n' '[NEW]'
-            test ${IS_GIT} -eq 1 && \
+            [[ ${IS_GIT} -eq 1 ]] && \
                 mv "${flow_stats_file}" "${result_file}"
             TESTS_FAILED=$((TESTS_FAILED + 1))
         elif diff -u0 "${result_file}" "${flow_stats_file}" >/dev/null; then
@@ -343,7 +343,7 @@ if [[ -x "${NDPISRVD_ANALYSED}" ]]; then
         else
             printf '%s\n' '[DIFF]'
             diff -u0 "${result_file}" "${flow_stats_file}"
-            test ${IS_GIT} -eq 1 && \
+            [[ ${IS_GIT} -eq 1 ]] && \
                 mv "${flow_stats_file}" "${result_file}"
             TESTS_FAILED=$((TESTS_FAILED + 1))
         fi
@@ -399,7 +399,7 @@ if [[ -x "${NDPISRVD_CAPTURED}" ]]; then
         while ss -x -t -n -l | grep -q "${NETCAT_SOCK}"; do sleep 0.1; printf '%s\n' "Waiting until socket ${NETCAT_SOCK} is not available anymore.." >>"${stderr_file}"; done
         if [[ ! -r "${result_file}" ]]; then
             printf '%s\n' '[NEW]'
-            test ${IS_GIT} -eq 1 && \
+            [[ ${IS_GIT} -eq 1 ]] && \
                 mv "${stdout_file}" "${result_file}"
             TESTS_FAILED=$((TESTS_FAILED + 1))
         elif diff -u0 "${result_file}" "${stdout_file}" >/dev/null; then
@@ -408,7 +408,7 @@ if [[ -x "${NDPISRVD_CAPTURED}" ]]; then
         else
             printf '%s\n' '[DIFF]'
             diff -u0 "${result_file}" "${stdout_file}"
-            test ${IS_GIT} -eq 1 && \
+            [[ ${IS_GIT} -eq 1 ]] && \
                 mv "${stdout_file}" "${result_file}"
             TESTS_FAILED=$((TESTS_FAILED + 1))
         fi
@@ -472,7 +472,7 @@ if [[ -x "${NDPISRVD_COLLECTD}" ]]; then
             TESTS_FAILED=$((TESTS_FAILED + 1))
         elif [[ ! -r "${result_file}" ]]; then
             printf '%s\n' '[NEW]'
-            test ${IS_GIT} -eq 1 && \
+            [[ ${IS_GIT} -eq 1 ]] && \
                 mv "${stdout_file}" "${result_file}"
             TESTS_FAILED=$((TESTS_FAILED + 1))
         elif diff -u0 "${result_file}" "${stdout_file}" >/dev/null; then
@@ -481,7 +481,7 @@ if [[ -x "${NDPISRVD_COLLECTD}" ]]; then
         else
             printf '%s\n' '[DIFF]'
             diff -u0 "${result_file}" "${stdout_file}"
-            test ${IS_GIT} -eq 1 && \
+            [[ ${IS_GIT} -eq 1 ]] && \
                 mv "${stdout_file}" "${result_file}"
             TESTS_FAILED=$((TESTS_FAILED + 1))
         fi
@@ -545,7 +545,7 @@ if [[ -x "${NDPISRVD_INFLUXD}" ]]; then
             TESTS_FAILED=$((TESTS_FAILED + 1))
         elif [[ ! -r "${result_file}" ]]; then
             printf '%s\n' '[NEW]'
-            test ${IS_GIT} -eq 1 && \
+            [[ ${IS_GIT} -eq 1 ]] && \
                 mv "${stdout_file}" "${result_file}"
             TESTS_FAILED=$((TESTS_FAILED + 1))
         elif diff -u0 "${result_file}" "${stdout_file}" >/dev/null; then
@@ -554,7 +554,7 @@ if [[ -x "${NDPISRVD_INFLUXD}" ]]; then
         else
             printf '%s\n' '[DIFF]'
             diff -u0 "${result_file}" "${stdout_file}"
-            test ${IS_GIT} -eq 1 && \
+            [[ ${IS_GIT} -eq 1 ]] && \
                 mv "${stdout_file}" "${result_file}"
             TESTS_FAILED=$((TESTS_FAILED + 1))
         fi

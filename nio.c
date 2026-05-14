@@ -30,13 +30,15 @@ int nio_use_poll(struct nio * io, nfds_t max_fds)
     io->poll_ptrs = calloc(max_fds, sizeof(*io->poll_ptrs));
     io->poll_fds_set = calloc(max_fds, sizeof(*io->poll_fds_set));
 
+    if (io->poll_fds == NULL)
+        return NIO_ERROR_INTERNAL;
+
     for (size_t i = 0; i < max_fds; ++i)
     {
         io->poll_fds[i].fd = -1;
     }
 
-    return io->poll_fds == NULL || io->poll_ptrs == NULL || io->poll_fds_set == NULL; // return NIO_ERROR_INTERNAL on
-                                                                                      // error
+    return io->poll_ptrs == NULL || io->poll_fds_set == NULL ? NIO_ERROR_INTERNAL : NIO_SUCCESS;
 }
 
 int nio_use_epoll(struct nio * io, int max_events)

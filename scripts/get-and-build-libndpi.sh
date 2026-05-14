@@ -95,7 +95,7 @@ if [[ ${GIT_SUCCESS} -eq 0 ]]; then
 fi
 
 cd ./libnDPI
-test ! -r Makefile || { make distclean || true; }
+[[ ! -r Makefile ]] || { make distclean || true; }
 DEST_INSTALL="${DEST_INSTALL:-$(realpath ./install)}"
 MAKE_PROGRAM="${MAKE_PROGRAM:-make -j4}"
 HOST_ARG="--host=${HOST_TRIPLET}"

@@ -141,7 +141,7 @@ int ncrypt_on_accept(struct ncrypt_ctx * const ctx, int accept_fd, struct ncrypt
     return NCRYPT_SUCCESS;
 }
 
-ssize_t ncrypt_read(struct ncrypt_entity * const ent, char * const json_msg, size_t json_msg_len)
+ssize_t ncrypt_read(struct ncrypt_entity * const ent, char * const json_msg, int json_msg_len)
 {
     if (ent->ssl == NULL)
     {
@@ -167,7 +167,7 @@ ssize_t ncrypt_read(struct ncrypt_entity * const ent, char * const json_msg, siz
     return rv;
 }
 
-ssize_t ncrypt_write(struct ncrypt_entity * const ent, char const * const json_msg, size_t json_msg_len)
+ssize_t ncrypt_write(struct ncrypt_entity * const ent, char const * const json_msg, int json_msg_len)
 {
     if (ent->ssl == NULL)
     {
@@ -203,5 +203,4 @@ void ncrypt_free_ctx(struct ncrypt_ctx * const ctx)
 {
     SSL_CTX_free(ctx->ssl_ctx);
     ctx->ssl_ctx = NULL;
-    EVP_cleanup();
 }

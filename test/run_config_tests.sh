@@ -5,7 +5,7 @@ set -e
 LINE_SPACES=${LINE_SPACES:-48}
 MYDIR="$(realpath "$(dirname ${0})")"
 nDPId_test_EXEC="$(realpath "${2:-"${MYDIR}/../nDPId-test"}")"
-IS_GIT=$(test -d "${MYDIR}/../.git" -o -f "${MYDIR}/../.git" && printf '1' || printf '0')
+IS_GIT=$([[ -d "${MYDIR}/../.git" || -f "${MYDIR}/../.git" ]] && printf '1' || printf '0' ]])
 
 function usage()
 {
@@ -18,8 +18,8 @@ EOF
 return 0
 }
 
-test -z "$(which flock)" && { printf '%s\n' 'flock not found'; exit 1; }
-test -z "$(which pkill)" && { printf '%s\n' 'pkill not found'; exit 1; }
+[[ -z "$(which flock)" ]] && { printf '%s\n' 'flock not found'; exit 1; }
+[[ -z "$(which pkill)" ]] && { printf '%s\n' 'pkill not found'; exit 1; }
 
 if [[ $# -eq 0 && -x "${MYDIR}/../libnDPI/tests/cfgs" ]]; then
     nDPI_SOURCE_ROOT="${MYDIR}/../libnDPI"
@@ -126,9 +126,9 @@ for cfg_file in ${MYDIR}/configs/*.conf; do
             printf '%s\n' '----------------------------------------'
             printf '%s\n' "-- STDERR of ${pcap_file}: ${stderr_file}"
             cat "${stderr_file}"
-            test -r "/tmp/nDPId-test-stderr/${pcap_name}.strace.out" && cat "/tmp/nDPId-test-stderr/${pcap_name}.strace.out"
+            [[ -r "/tmp/nDPId-test-stderr/${pcap_name}.strace.out" ]] && cat "/tmp/nDPId-test-stderr/${pcap_name}.strace.out"
             TESTS_FAILED=$((TESTS_FAILED + 1))
-            test ${TESTS_FAILED} -eq 0 || exit ${TESTS_FAILED}
+            [[ ${TESTS_FAILED} -eq 0 ]] || exit ${TESTS_FAILED}
         fi
     done
 
