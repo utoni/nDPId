@@ -427,6 +427,13 @@ static int drain_write_buffers(struct remote_desc * const remote)
             case 0:
                 return -1;
             default:
+                if ((size_t)written > buf->buf.max)
+                {
+                    logger_nDPIsrvd(remote, "BUG: Buffer write offset would overshoot",
+                                    "Bytes written > buffer size (%zd > %zu)",
+                                    written, buf->buf.max);
+                    return -1;
+                }
                 buf->written += written;
                 if (buf->written == buf->buf.max)
                 {
@@ -736,7 +743,7 @@ static void free_remote(struct nio * const io, struct remote_desc * remote)
         {
             logger_nDPIsrvd(remote,
                             "Could not delete event from queue for connection",
-                            ": %s",
+                            "(%s)",
                             (errno != 0 ? strerror(errno) : "Internal Error"));
         }
         errno = 0;
@@ -1030,9 +1037,16 @@ static struct remote_desc * accept_remote(int server_fd,
         return NULL;
     }
 
+    if (set_fd_cloexec(client_fd) < 0)
+    {
+        logger(1, "Set close on exec() for fd %d failed: %s", client_fd, strerror(errno));
+        return NULL;
+    }
+
     struct remote_desc * current = get_remote_descriptor(socktype, client_fd, NETWORK_BUFFER_MAX_SIZE);
     if (current == NULL)
     {
+        logger(1, "Could not acquire remote descriptor from the internal descriptor table, too many clients connected?");
         return NULL;
     }
 
@@ -1077,7 +1091,7 @@ static int new_connection(struct nio * const io, int eventfd)
     struct remote_desc * const current = accept_remote(server_fd, stype, (struct sockaddr *)&sockaddr, &peer_addr_len);
     if (current == NULL)
     {
-        return 1;
+        goto error;
     }
 
     int sockopt;
@@ -1091,7 +1105,7 @@ static int new_connection(struct nio * const io, int eventfd)
             if (setsockopt(current->fd, SOL_SOCKET, SO_RCVBUF, &sockopt, sizeof(sockopt)) < 0)
             {
                 logger(1, "Error setting socket option SO_RCVBUF: %s", strerror(errno));
-                return 1;
+                goto error;
             }
 
 #if !defined(__FreeBSD__) && !defined(__APPLE__)
@@ -1100,7 +1114,7 @@ static int new_connection(struct nio * const io, int eventfd)
             if (getsockopt(current->fd, SOL_SOCKET, SO_PEERCRED, &ucred, &ucred_len) == -1)
             {
                 logger(1, "Error getting credentials from UNIX socket: %s", strerror(errno));
-                return 1;
+                goto error;
             }
             current->event_collector_un.pid = ucred.pid;
 #endif
@@ -1119,7 +1133,7 @@ static int new_connection(struct nio * const io, int eventfd)
                 if (getsockopt(current->fd, SOL_SOCKET, SO_PEERCRED, &ucred, &ucred_len) == -1)
                 {
                     logger(1, "Error getting credentials from UNIX socket: %s", strerror(errno));
-                    return 1;
+                    goto error;
                 }
 
                 struct passwd pwnam = {};
@@ -1133,7 +1147,7 @@ static int new_connection(struct nio * const io, int eventfd)
                 if (getpwuid_r(ucred.uid, &pwnam, &buf[0], pwsiz, &pwres) != 0 || pwres == NULL)
                 {
                     logger(1, "Could not get passwd entry for user id %u", ucred.uid);
-                    return 1;
+                    goto error;
                 }
 
                 current->event_distributor_un.pid = ucred.pid;
@@ -1148,7 +1162,7 @@ static int new_connection(struct nio * const io, int eventfd)
                 if (setsockopt(current->fd, SOL_SOCKET, SO_RCVBUF, &sockopt, sizeof(sockopt)) < 0)
                 {
                     logger(1, "Error setting socket option SO_RCVBUF: %s", strerror(errno));
-                    return 1;
+                    goto error;
                 }
 
                 if (inet_ntop(current->event_distributor_in.peer.sin_family,
@@ -1157,7 +1171,7 @@ static int new_connection(struct nio * const io, int eventfd)
                               sizeof(current->event_distributor_in.peer_addr)) == NULL)
                 {
                     logger(1, "Error converting an internet address: %s", strerror(errno));
-                    return 1;
+                    goto error;
                 }
             }
 
@@ -1165,7 +1179,7 @@ static int new_connection(struct nio * const io, int eventfd)
             if (setsockopt(current->fd, SOL_SOCKET, SO_SNDBUF, &sockopt, sizeof(sockopt)) < 0)
             {
                 logger(1, "Error setting socket option SO_SNDBUF: %s", strerror(errno));
-                return 1;
+                goto error;
             }
 
             {
@@ -1184,8 +1198,7 @@ static int new_connection(struct nio * const io, int eventfd)
     if (fcntl_add_flags(current->fd, O_NONBLOCK) != 0)
     {
         logger(1, "Error setting fd flags to non-blocking mode: %s", strerror(errno));
-        disconnect_client(io, current);
-        return 1;
+        goto error;
     }
 
     /* shutdown writing end for collector clients */
@@ -1200,11 +1213,13 @@ static int new_connection(struct nio * const io, int eventfd)
     if (add_in_event(io, current) != NIO_SUCCESS)
     {
         logger(1, "Error adding input event to %d: %s", current->fd, (errno != 0 ? strerror(errno) : "Internal Error"));
-        disconnect_client(io, current);
-        return 1;
+        goto error;
     }
 
     return 0;
+error:
+    disconnect_client(io, current);
+    return 1;
 }
 
 static int handle_collector_protocol(struct nio * const io, struct remote_desc * const current)
@@ -1229,14 +1244,13 @@ static int handle_collector_protocol(struct nio * const io, struct remote_desc *
 
     errno = 0;
     current->event_collector_un.json_bytes = strtoull(json_read_buffer->buf.ptr.text, &json_msg_start, 10);
-    current->event_collector_un.json_bytes += json_msg_start - json_read_buffer->buf.ptr.text;
-
     if (errno == ERANGE)
     {
         logger_nDPIsrvd(current, "BUG: Collector connection", "JSON message length exceeds numceric limits");
         disconnect_client(io, current);
         return 1;
     }
+    current->event_collector_un.json_bytes += json_msg_start - json_read_buffer->buf.ptr.text;
 
     if (json_msg_start == json_read_buffer->buf.ptr.text)
     {

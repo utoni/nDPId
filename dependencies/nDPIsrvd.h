@@ -432,13 +432,13 @@ static inline struct nDPIsrvd_socket * nDPIsrvd_socket_init(size_t global_user_d
                                                             instance_cleanup_callback instance_cleanup_cb,
                                                             flow_cleanup_callback flow_cleanup_callback_cb)
 {
-    static const UT_icd json_token_icd = {sizeof(struct nDPIsrvd_json_token), NULL, NULL, NULL};
-    struct nDPIsrvd_socket * sock = (struct nDPIsrvd_socket *)nDPIsrvd_calloc(1, sizeof(*sock) + global_user_data_size);
-
     if (json_cb == NULL)
     {
-        goto error;
+        return NULL;
     }
+
+    static const UT_icd json_token_icd = {sizeof(struct nDPIsrvd_json_token), NULL, NULL, NULL};
+    struct nDPIsrvd_socket * sock = (struct nDPIsrvd_socket *)nDPIsrvd_calloc(1, sizeof(*sock) + global_user_data_size);
 
     if (sock != NULL)
     {
@@ -785,9 +785,14 @@ static inline enum nDPIsrvd_conversion_return str_value_to_ull(char const * cons
 {
     char * endptr = NULL;
     errno = 0;
+
+    if (value_as_string == NULL)
+    {
+        return CONVERSION_NOT_A_NUMBER;
+    }
     *value = strtoull(value_as_string, &endptr, 10);
 
-    if (value_as_string == NULL || value_as_string == endptr)
+    if (value_as_string == endptr)
     {
         return CONVERSION_NOT_A_NUMBER;
     }

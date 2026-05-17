@@ -796,8 +796,12 @@ static uLong zlib_deflate(void * const src, int srcLen, void * const dst, int ds
         {
             ret = strm.total_out;
             MT_GET_AND_ADD(zlib_compressions, 1);
-            MT_GET_AND_ADD(zlib_compression_diff, srcLen - ret);
-            MT_GET_AND_ADD(zlib_compression_bytes, ret);
+            if (ret < (uLong)srcLen) {
+                MT_GET_AND_ADD(zlib_compression_diff, srcLen - ret);
+                MT_GET_AND_ADD(zlib_compression_bytes, ret);
+            } else {
+                // TODO: Compression did not improve anything, use a new stats counter?
+            }
         }
         else
         {
@@ -838,7 +842,11 @@ static uLong zlib_inflate(void * const src, int srcLen, void * const dst, int ds
         {
             ret = strm.total_out;
             MT_GET_AND_ADD(zlib_decompressions, 1);
-            MT_GET_AND_SUB(zlib_compression_diff, ret - srcLen);
+            if (ret > (uLong)srcLen) {
+                MT_GET_AND_SUB(zlib_compression_diff, ret - srcLen);
+            } else {
+                // TODO: See deflate above.
+            }
         }
         else
         {
@@ -1217,8 +1225,6 @@ static void * ndpi_realloc_wrapper(void * const reallocable, size_t new_size)
     void * const new_ptr = realloc(p, sizeof(uint64_t) + new_size);
 
     if (new_ptr == NULL) {
-        // Do not return the valid pointer as it is old pointer of old size
-        ndpi_free_wrapper(reallocable);
         return NULL;
     }
 
@@ -2800,6 +2806,10 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
                 }
                 else if (written < 0)
                 {
+                    if (saved_errno == EINTR)
+                    {
+                        continue;
+                    }
                     logger(1,
                            "[%8llu, %zu] Send data (blocking I/O) to nDPIsrvd Collector at %s failed: %s",
                            workflow->packets_captured,
@@ -4047,9 +4057,13 @@ static uint32_t is_valid_gre_tunnel(struct pcap_pkthdr const * const header,
 
     if (header->caplen < (l4_ptr - packet) + sizeof(struct ndpi_gre_basehdr))
     {
-        return 0; /* Too short for GRE header*/
+        return 0; /* Too short for GRE header */
     }
     uint32_t offset = (l4_ptr - packet);
+    if (offset > UINT16_MAX)
+    {
+        return 0; /* Invalid GRE offset */
+    }
     struct ndpi_gre_basehdr const * const grehdr = (struct ndpi_gre_basehdr const *)&packet[offset];
     offset += sizeof(struct ndpi_gre_basehdr);
 

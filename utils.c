@@ -226,7 +226,8 @@ static int is_daemon_running(char const * const pidfile, pid_str ps)
         return 0;
     }
 
-    if (read(pfd, ps, sizeof(pid_str)) <= 0)
+    memset(ps, 0x00, sizeof(pid_str));
+    if (read(pfd, ps, sizeof(pid_str) - 1) <= 0)
     {
         close(pfd);
         return 1;
@@ -288,7 +289,7 @@ int is_path_absolute(char const * const prefix, char const * const path)
 
 int daemonize_with_pidfile(char const * const pidfile)
 {
-    pid_str ps = {};
+    pid_str ps;
     int nullfd;
 
     if (daemonize != 0)
@@ -795,16 +796,19 @@ int parse_config_file(char const * const config_file, config_line_callback cb, v
     }
     if (fstat(file_fd, &sbuf) != 0)
     {
+        close(file_fd);
         return -1;
     }
     if ((sbuf.st_mode & S_IFMT) != S_IFREG)
     {
+        close(file_fd);
         return -ENOENT;
     }
 
     file = fdopen(file_fd, "r");
     if (file == NULL)
     {
+        close(file_fd);
         return -1;
     }
 
