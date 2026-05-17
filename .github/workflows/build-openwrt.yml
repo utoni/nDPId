@@ -1,58 +1,93 @@
-name: OpenWrt Build
+name: Build OpenWrt Packages
 
 on:
-  schedule:
-    # At the end of every day
-    - cron: '0 0 * * *'
-  # TODO: Enable after openwrt/gh-action-sdk is working again.
-  #push:
-  #  branches:
-  #    - main
-  #    - tmp
-  #pull_request:
-  #  branches:
-  #    - main
-  #  types: [opened, synchronize, reopened]
-  release:
-    types: [created]
+  push:
+  pull_request:
 
 jobs:
   build:
-    name: ${{ matrix.arch }} ${{ matrix.target }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+
     strategy:
-      fail-fast: false
       matrix:
-        include:
-          - arch: aarch64_generic
-            target: aarch64-generic
-
-          - arch: mips_24kc
-            target: mips-24kc
-
-          - arch: arm_cortex-a15_neon-vfpv4
-            target: armvirt-32
-
-          - arch: x86_64
-            target: x86-64
+        target:
+          - x86-64
+          - ramips-mt7621
+          - armsr-armv8
+          - malta-be
 
     steps:
-      - uses: actions/checkout@v6
-        with:
-          submodules: false
-          fetch-depth: 1
+      - name: Checkout
+        uses: actions/checkout@v6
 
-      - name: Build
-        uses: openwrt/gh-action-sdk@797d0e3d0eb13b355c3447f60d0179d4b43089e2
-        env:
-          ARCH: ${{ matrix.arch }}-snapshot
-          FEED_DIR: ${{ github.workspace }}/packages/openwrt
-          FEEDNAME: ndpid_openwrt_packages_ci
-          PACKAGES: nDPId-testing
-          V: s
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y \
+            bison build-essential clang file flex \
+            gawk gcc-multilib gettext git g++ g++-multilib \
+            libncurses5-dev libssl-dev \
+            python3 \
+            rsync \
+            unzip \
+            wget \
+            zlib1g-dev
 
-      - name: Store packages
+      - name: Download SDK
+        run: |
+          SDK_VER="25.12.4"
+          GCC_VER="14.3.0"
+          case "${{ matrix.target }}" in
+            x86-64)
+              SDK_URL="https://downloads.openwrt.org/releases/${SDK_VER}/targets/x86/64/openwrt-sdk-${SDK_VER}-x86-64_gcc-${GCC_VER}_musl.Linux-x86_64.tar.zst"
+              ;;
+            ramips-mt7621)
+              SDK_URL="https://downloads.openwrt.org/releases/${SDK_VER}/targets/ramips/mt7621/openwrt-sdk-${SDK_VER}-ramips-mt7621_gcc-${GCC_VER}_musl.Linux-x86_64.tar.zst"
+              ;;
+            armsr-armv8)
+              SDK_URL="https://downloads.openwrt.org/releases/${SDK_VER}/targets/armsr/armv8/openwrt-sdk-${SDK_VER}-armsr-armv8_gcc-${GCC_VER}_musl.Linux-x86_64.tar.zst"
+              ;;
+            malta-be)
+              SDK_URL="https://downloads.openwrt.org/releases/${SDK_VER}/targets/malta/be/openwrt-sdk-${SDK_VER}-malta-be_gcc-${GCC_VER}_musl.Linux-x86_64.tar.zst"
+              ;;
+          esac
+
+          wget "$SDK_URL" -O sdk.tar.zst
+          tar --zstd -xf sdk.tar.zst
+
+      - name: Find SDK dir
+        run: |
+          echo "SDK_DIR=$(find . -maxdepth 1 -type d -name 'openwrt-sdk-*' | head -n1)" >> $GITHUB_ENV
+
+      - name: Copy package
+        run: |
+          mkdir -p $SDK_DIR/package/openwrt
+          cp -r packages/openwrt/* $SDK_DIR/package/
+
+      - name: Update feeds
+        run: |
+          cd $SDK_DIR
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
+
+      - name: Configure package
+        run: |
+          cd $SDK_DIR
+
+          cat <<EOF >> .config
+          CONFIG_PACKAGE_nDPId-testing=y
+          EOF
+
+          make defconfig
+
+      - name: Build package
+        run: |
+          cd $SDK_DIR
+          make package/nDPId-testing/compile -j$(nproc) V=s
+
+      - name: Upload APK
         uses: actions/upload-artifact@v7
         with:
-          name: nDPId-${{ matrix.arch}}-${{ matrix.target }}
-          path: bin/packages/${{ matrix.arch }}/ndpid_openwrt_packages_ci/*.ipk
+          name: nDPId-testing-${{ matrix.target }}-apk
+          path: |
+            ${{ env.SDK_DIR }}/bin/packages/**/*.apk
