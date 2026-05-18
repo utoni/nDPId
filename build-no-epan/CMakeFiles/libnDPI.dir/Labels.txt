@@ -1,0 +1,13 @@
+# Target labels
+ libnDPI
+# Source files and their labels
+/home/runner/work/nDPId/nDPId/build-no-epan/CMakeFiles/libnDPI
+/home/runner/work/nDPId/nDPId/build-no-epan/CMakeFiles/libnDPI.rule
+/home/runner/work/nDPId/nDPId/build-no-epan/CMakeFiles/libnDPI-complete.rule
+/home/runner/work/nDPId/nDPId/build-no-epan/libnDPI-prefix/src/libnDPI-stamp/libnDPI-build.rule
+/home/runner/work/nDPId/nDPId/build-no-epan/libnDPI-prefix/src/libnDPI-stamp/libnDPI-configure.rule
+/home/runner/work/nDPId/nDPId/build-no-epan/libnDPI-prefix/src/libnDPI-stamp/libnDPI-download.rule
+/home/runner/work/nDPId/nDPId/build-no-epan/libnDPI-prefix/src/libnDPI-stamp/libnDPI-install.rule
+/home/runner/work/nDPId/nDPId/build-no-epan/libnDPI-prefix/src/libnDPI-stamp/libnDPI-mkdir.rule
+/home/runner/work/nDPId/nDPId/build-no-epan/libnDPI-prefix/src/libnDPI-stamp/libnDPI-patch.rule
+/home/runner/work/nDPId/nDPId/build-no-epan/libnDPI-prefix/src/libnDPI-stamp/libnDPI-update.rule

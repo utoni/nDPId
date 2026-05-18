@@ -102,6 +102,7 @@ option(ENABLE_DBUS "Build DBus notification example." OFF)
 option(ENABLE_CURL "Build influxdb data write example." OFF)
 endif()
 option(ENABLE_PFRING "Enable PF_RING support for nDPId (experimental)" OFF)
+option(ENABLE_EPAN "Enable Wireshark EPAN packet dissector support in nDPId (requires libwireshark-dev and libglib2.0-dev)." OFF)
 option(BUILD_NDPI "Clone and build nDPI from github." OFF)
 
 if(ENABLE_PFRING)
@@ -400,6 +401,15 @@ if(ENABLE_CRYPTO)
     set(OSSL_LIBRARY "${OPENSSL_SSL_LIBRARY}" "${OPENSSL_CRYPTO_LIBRARY}")
 endif()
 
+if(ENABLE_EPAN)
+    pkg_check_modules(WIRESHARK REQUIRED wireshark)
+    find_library(WIRETAP_LIBRARY NAMES wiretap REQUIRED)
+    if(NOT WIRETAP_LIBRARY)
+        message(FATAL_ERROR "libwiretap not found. Install libwiretap-dev.")
+    endif()
+    set(EPAN_DEFS "-DENABLE_EPAN=1")
+endif()
+
 if(STATIC_LIBNDPI_INSTALLDIR OR BUILD_NDPI OR NDPI_NO_PKGCONFIG)
     if(NDPI_WITH_PLUGIN_SYSTEM)
         set(DYNLDR "dl")
@@ -468,12 +478,12 @@ endif()
 
 target_compile_options(nDPId PRIVATE "-pthread")
 target_compile_definitions(nDPId PRIVATE -D_GNU_SOURCE=1 -DPKG_VERSION=\"${PKG_VERSION}\" -DGIT_VERSION=\"${GIT_VERSION}\"
-                                         ${NDPID_DEFS} ${EPOLL_DEFS} ${ZLIB_DEFS} ${PFRING_DEFS} ${OSSL_DEFS})
-target_include_directories(nDPId PRIVATE "${STATIC_LIBNDPI_INC}" "${DEFAULT_NDPI_INCLUDE}" ${NDPID_DEPS_INC} ${PFRING_KERNEL_INC} ${PFRING_INC})
+                                         ${NDPID_DEFS} ${EPOLL_DEFS} ${ZLIB_DEFS} ${PFRING_DEFS} ${OSSL_DEFS} ${EPAN_DEFS})
+target_include_directories(nDPId PRIVATE "${STATIC_LIBNDPI_INC}" "${DEFAULT_NDPI_INCLUDE}" ${NDPID_DEPS_INC} ${PFRING_KERNEL_INC} ${PFRING_INC} ${WIRESHARK_INCLUDE_DIRS})
 target_link_libraries(nDPId "${STATIC_LIBNDPI_LIB}" "${STATIC_PFRING_LIB}" "${pkgcfg_lib_PCAP_pcap}" "${pkgcfg_lib_NDPI_ndpi}"
                             "${pkgcfg_lib_PCRE_pcre2-8}" "${pkgcfg_lib_MAXMINDDB_maxminddb}" "${pkgcfg_lib_ZLIB_z}"
                             "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}" "${LIBM_LIB}" "${PF_RING_LIB}"
-                            "${OSSL_LIBRARY}" "${DYNLDR}" "-pthread")
+                            "${OSSL_LIBRARY}" "${DYNLDR}" ${WIRESHARK_LIBRARIES} "${WIRETAP_LIBRARY}" "-pthread")
 
 target_compile_definitions(nDPIsrvd PRIVATE -D_GNU_SOURCE=1 -DPKG_VERSION=\"${PKG_VERSION}\" -DGIT_VERSION=\"${GIT_VERSION}\" ${NDPID_DEFS} ${EPOLL_DEFS})
 target_include_directories(nDPIsrvd PRIVATE ${NDPID_DEPS_INC})
@@ -644,6 +654,7 @@ message(STATUS "ENABLE_PFRING............: ${ENABLE_PFRING}")
 if(ENABLE_PFRING)
 message(STATUS "PFRING_LINK_STATIC.......: ${PFRING_LINK_STATIC}")
 endif()
+message(STATUS "ENABLE_EPAN..............: ${ENABLE_EPAN}")
 message(STATUS "ENABLE_CRYPTO............: ${ENABLE_CRYPTO}")
 message(STATUS "ENABLE_COVERAGE..........: ${ENABLE_COVERAGE}")
 message(STATUS "ENABLE_SANITIZER.........: ${ENABLE_SANITIZER}")
