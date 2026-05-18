@@ -5444,13 +5444,15 @@ static void jsonize_epan_dissection(struct nDPId_reader_thread * const reader_th
             if (fi != NULL && fi->hfinfo != NULL && fi->hfinfo->abbrev != NULL &&
                 fi->hfinfo->abbrev[0] != '\0')
             {
-                if (proto_stack_len > 0 && proto_stack_len < (int)sizeof(proto_stack) - 1)
-                {
-                    proto_stack[proto_stack_len++] = ':';
-                }
                 int const abbrev_len = (int)strlen(fi->hfinfo->abbrev);
-                if (proto_stack_len + abbrev_len < (int)sizeof(proto_stack))
+                /* Need space for separator colon (if not first), abbrev, and NUL terminator. */
+                int const needed = (proto_stack_len > 0 ? 1 : 0) + abbrev_len + 1;
+                if (proto_stack_len + needed <= (int)sizeof(proto_stack))
                 {
+                    if (proto_stack_len > 0)
+                    {
+                        proto_stack[proto_stack_len++] = ':';
+                    }
                     memcpy(proto_stack + proto_stack_len, fi->hfinfo->abbrev, abbrev_len);
                     proto_stack_len += abbrev_len;
                 }
@@ -6547,8 +6549,8 @@ int main(int argc, char ** argv)
         logger_early(1, "%s", "Could not initialize Wireshark EPAN library.");
         return 1;
     }
-    static int epan_prov_dummy = 0;
-    g_epan_session = epan_new((struct packet_provider_data *)&epan_prov_dummy, &ndpid_epan_provider_funcs);
+    static int epan_packet_provider_ctx = 0;
+    g_epan_session = epan_new((struct packet_provider_data *)&epan_packet_provider_ctx, &ndpid_epan_provider_funcs);
     if (g_epan_session == NULL)
     {
         logger_early(1, "%s", "Could not create Wireshark EPAN session.");
