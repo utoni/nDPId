@@ -10,3 +10,6 @@ __pycache__
 
 # building folder
 build
+build-epan
+build-epan-examples
+build-no-epan
