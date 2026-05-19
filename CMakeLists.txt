@@ -102,7 +102,7 @@ option(ENABLE_DBUS "Build DBus notification example." OFF)
 option(ENABLE_CURL "Build influxdb data write example." OFF)
 endif()
 option(ENABLE_PFRING "Enable PF_RING support for nDPId (experimental)" OFF)
-option(ENABLE_EPAN "Enable Wireshark EPAN packet dissector support in nDPId (requires libwireshark-dev and libglib2.0-dev)." OFF)
+option(ENABLE_EPAN "Enable Wireshark EPAN packet dissector support in nDPId." OFF)
 option(BUILD_NDPI "Clone and build nDPI from github." OFF)
 
 if(ENABLE_PFRING)
@@ -185,6 +185,30 @@ else()
     else()
         unset(STATIC_LIBNDPI_INSTALLDIR CACHE)
     endif()
+endif()
+
+if(ENABLE_EPAN)
+    option(BUILD_WIRESHARK "Clone and build Wireshark from source for EPAN support." OFF)
+    if(BUILD_WIRESHARK)
+        option(BUILD_WIRESHARK_FORCE_GIT_UPDATE "Forcefully instruments Wireshark build script to update the git submodule." OFF)
+        unset(WIRESHARK_NO_PKGCONFIG CACHE)
+        unset(STATIC_LIBWIRESHARK_INSTALLDIR CACHE)
+    else()
+        option(WIRESHARK_NO_PKGCONFIG "Do not use pkgconfig to search for libwireshark." OFF)
+        if(WIRESHARK_NO_PKGCONFIG)
+            set(STATIC_LIBWIRESHARK_INSTALLDIR "/opt/libWireshark/usr" CACHE STRING "Path to an installation directory of libwireshark e.g. /opt/libWireshark/usr")
+            if(STATIC_LIBWIRESHARK_INSTALLDIR STREQUAL "")
+                message(FATAL_ERROR "STATIC_LIBWIRESHARK_INSTALLDIR can not be an empty string within your configuration!")
+            endif()
+        else()
+            unset(STATIC_LIBWIRESHARK_INSTALLDIR CACHE)
+        endif()
+    endif()
+else()
+    unset(BUILD_WIRESHARK CACHE)
+    unset(BUILD_WIRESHARK_FORCE_GIT_UPDATE CACHE)
+    unset(WIRESHARK_NO_PKGCONFIG CACHE)
+    unset(STATIC_LIBWIRESHARK_INSTALLDIR CACHE)
 endif()
 
 if(STATIC_LIBNDPI_INSTALLDIR OR BUILD_NDPI OR NDPI_NO_PKGCONFIG)
@@ -395,6 +419,40 @@ if(BUILD_NDPI)
     add_dependencies(nDPId-test libnDPI)
 endif()
 
+if(ENABLE_EPAN AND BUILD_WIRESHARK)
+    include(ExternalProject)
+    ExternalProject_Add(
+        libWireshark
+        SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libWireshark
+        DOWNLOAD_COMMAND ""
+        CONFIGURE_COMMAND env
+            CC=${CMAKE_C_COMPILER}
+            AR=${CMAKE_AR}
+            RANLIB=${CMAKE_RANLIB}
+            PKG_CONFIG=${PKG_CONFIG_EXECUTABLE}
+            CFLAGS=${CMAKE_C_FLAGS}
+            MAKE_PROGRAM=${CMAKE_MAKE_PROGRAM}
+            DEST_INSTALL=${CMAKE_BINARY_DIR}/libWireshark
+            FORCE_GIT_UPDATE=${BUILD_WIRESHARK_FORCE_GIT_UPDATE}
+            ${CMAKE_CURRENT_SOURCE_DIR}/scripts/get-and-build-libwireshark.sh
+        BUILD_BYPRODUCTS
+            ${CMAKE_BINARY_DIR}/libWireshark/lib/libwireshark.so
+            ${CMAKE_BINARY_DIR}/libWireshark/lib/libwiretap.so
+            ${CMAKE_BINARY_DIR}/libWireshark/lib/libwsutil.so
+        BUILD_COMMAND ""
+        INSTALL_COMMAND ""
+        BUILD_IN_SOURCE 1)
+
+    add_custom_target(clean-libWireshark
+        COMMAND ${CMAKE_BUILD_TOOL} clean
+        COMMAND rm -rf ${CMAKE_BINARY_DIR}/libWireshark
+        COMMAND rm -f ${CMAKE_BINARY_DIR}/libWireshark-prefix/src/libWireshark-stamp/libWireshark-configure
+    )
+
+    set(STATIC_LIBWIRESHARK_INSTALLDIR "${CMAKE_BINARY_DIR}/libWireshark")
+    add_dependencies(nDPId libWireshark)
+endif()
+
 if(ENABLE_CRYPTO)
     find_package(OpenSSL REQUIRED)
     set(OSSL_DEFS "-DENABLE_CRYPTO=1")
@@ -402,10 +460,50 @@ if(ENABLE_CRYPTO)
 endif()
 
 if(ENABLE_EPAN)
-    pkg_check_modules(WIRESHARK REQUIRED wireshark)
-    find_library(WIRETAP_LIBRARY NAMES wiretap REQUIRED)
-    if(NOT WIRETAP_LIBRARY)
-        message(FATAL_ERROR "libwiretap not found. Install libwiretap-dev.")
+    if(STATIC_LIBWIRESHARK_INSTALLDIR OR BUILD_WIRESHARK)
+        # Pre-built (WIRESHARK_NO_PKGCONFIG) or self-built (BUILD_WIRESHARK) path.
+        # glib-2.0 is a required wireshark dependency and must be found on the host.
+        pkg_check_modules(GLIB2 REQUIRED glib-2.0)
+        # Wireshark headers live under ${PREFIX}/include/wireshark/epan/ etc.
+        set(WIRESHARK_INCLUDE_DIRS "${STATIC_LIBWIRESHARK_INSTALLDIR}/include/wireshark" ${GLIB2_INCLUDE_DIRS})
+        if(BUILD_WIRESHARK)
+            # Libraries don't exist yet at configure time; construct the expected paths.
+            set(WIRESHARK_LIBRARY "${STATIC_LIBWIRESHARK_INSTALLDIR}/lib/libwireshark.so")
+            set(WSUTIL_LIBRARY    "${STATIC_LIBWIRESHARK_INSTALLDIR}/lib/libwsutil.so")
+            set(WIRETAP_LIBRARY   "${STATIC_LIBWIRESHARK_INSTALLDIR}/lib/libwiretap.so")
+        else()
+            find_library(WIRESHARK_LIBRARY NAMES wireshark
+                PATHS "${STATIC_LIBWIRESHARK_INSTALLDIR}/lib"
+                      "${STATIC_LIBWIRESHARK_INSTALLDIR}/lib64"
+                      "${STATIC_LIBWIRESHARK_INSTALLDIR}/lib/${CMAKE_LIBRARY_ARCHITECTURE}"
+                NO_DEFAULT_PATH REQUIRED)
+            find_library(WSUTIL_LIBRARY NAMES wsutil
+                PATHS "${STATIC_LIBWIRESHARK_INSTALLDIR}/lib"
+                      "${STATIC_LIBWIRESHARK_INSTALLDIR}/lib64"
+                      "${STATIC_LIBWIRESHARK_INSTALLDIR}/lib/${CMAKE_LIBRARY_ARCHITECTURE}"
+                NO_DEFAULT_PATH REQUIRED)
+            find_library(WIRETAP_LIBRARY NAMES wiretap
+                PATHS "${STATIC_LIBWIRESHARK_INSTALLDIR}/lib"
+                      "${STATIC_LIBWIRESHARK_INSTALLDIR}/lib64"
+                      "${STATIC_LIBWIRESHARK_INSTALLDIR}/lib/${CMAKE_LIBRARY_ARCHITECTURE}"
+                NO_DEFAULT_PATH REQUIRED)
+            if(NOT WIRESHARK_LIBRARY OR NOT WSUTIL_LIBRARY OR NOT WIRETAP_LIBRARY)
+                message(FATAL_ERROR "libwireshark, libwsutil or libwiretap not found in \"${STATIC_LIBWIRESHARK_INSTALLDIR}\".\n"
+                                    "Please set STATIC_LIBWIRESHARK_INSTALLDIR to a valid Wireshark installation prefix.")
+            endif()
+        endif()
+        set(WIRESHARK_LIBRARIES "${WIRESHARK_LIBRARY}" "${WSUTIL_LIBRARY}")
+        # Set RPATH so the built nDPId binary finds the Wireshark shared libs at runtime.
+        set_target_properties(nDPId PROPERTIES
+            BUILD_RPATH  "${STATIC_LIBWIRESHARK_INSTALLDIR}/lib;${STATIC_LIBWIRESHARK_INSTALLDIR}/lib64;${STATIC_LIBWIRESHARK_INSTALLDIR}/lib/${CMAKE_LIBRARY_ARCHITECTURE}"
+            INSTALL_RPATH "${STATIC_LIBWIRESHARK_INSTALLDIR}/lib;${STATIC_LIBWIRESHARK_INSTALLDIR}/lib64;${STATIC_LIBWIRESHARK_INSTALLDIR}/lib/${CMAKE_LIBRARY_ARCHITECTURE}")
+    else()
+        # Default: use pkg-config to find a system-installed Wireshark.
+        pkg_check_modules(WIRESHARK REQUIRED wireshark)
+        find_library(WIRETAP_LIBRARY NAMES wiretap REQUIRED)
+        if(NOT WIRETAP_LIBRARY)
+            message(FATAL_ERROR "libwiretap not found. Install libwiretap-dev.")
+        endif()
     endif()
     set(EPAN_DEFS "-DENABLE_EPAN=1")
 endif()
@@ -655,6 +753,9 @@ if(ENABLE_PFRING)
 message(STATUS "PFRING_LINK_STATIC.......: ${PFRING_LINK_STATIC}")
 endif()
 message(STATUS "ENABLE_EPAN..............: ${ENABLE_EPAN}")
+if(ENABLE_EPAN)
+message(STATUS "BUILD_WIRESHARK..........: ${BUILD_WIRESHARK}")
+endif()
 message(STATUS "ENABLE_CRYPTO............: ${ENABLE_CRYPTO}")
 message(STATUS "ENABLE_COVERAGE..........: ${ENABLE_COVERAGE}")
 message(STATUS "ENABLE_SANITIZER.........: ${ENABLE_SANITIZER}")
@@ -672,6 +773,14 @@ if(BUILD_NDPI)
 message(STATUS "NDPI_ADDITIONAL_ARGS.....: ${NDPI_ADDITIONAL_ARGS}")
 endif()
 message(STATUS "NDPI_NO_PKGCONFIG........: ${NDPI_NO_PKGCONFIG}")
+message(STATUS "WIRESHARK_NO_PKGCONFIG...: ${WIRESHARK_NO_PKGCONFIG}")
+message(STATUS "--------------------------")
+if(STATIC_LIBWIRESHARK_INSTALLDIR)
+message(STATUS "STATIC_LIBWIRESHARK_INSTALLDIR: ${STATIC_LIBWIRESHARK_INSTALLDIR}")
+message(STATUS "- WIRESHARK_LIBRARY......: ${WIRESHARK_LIBRARY}")
+message(STATUS "- WSUTIL_LIBRARY.........: ${WSUTIL_LIBRARY}")
+message(STATUS "- WIRETAP_LIBRARY........: ${WIRETAP_LIBRARY}")
+endif()
 message(STATUS "--------------------------")
 if(PFRING_INSTALLDIR)
 message(STATUS "PFRING_INSTALLDIR........: ${PFRING_INSTALLDIR}")
