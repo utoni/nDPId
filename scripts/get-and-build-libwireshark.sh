@@ -20,7 +20,7 @@ LOCKFILE="$(realpath "${0}").lock"
 touch "${LOCKFILE}"
 exec 42< "${LOCKFILE}"
 ${FLOCK_EXEC} -x -n 42 || {
-    printf '%s\n' "Could not aquire file lock for ${0}. Already running instance?" >&2;
+    printf '%s\n' "Could not acquire file lock for ${0}. Already running instance?" >&2;
     exit 1;
 }
 
