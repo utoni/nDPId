@@ -30,6 +30,8 @@ use tui::{
     widgets::{Block, Borders, List, ListItem, Row, Table, TableState},
 };
 
+const MAX_VISIBLE_FLOW_ROWS: usize = 64;
+
 #[derive(FromArgs, Debug)]
 /// Simple Rust nDPIsrvd Client Example
 struct Args {
@@ -424,31 +426,23 @@ async fn main() {
     }
 
     let mut table_state = TableState::default();
+    let mut table_offset: usize = 0;
+    let mut table_selected: usize = 0;
     let mut old_selected: Option<FlowKey> = None;
 
     loop {
         let flows: Vec<(FlowKey, (FlowExpiration, FlowValue))> = flow_cache_rx.iter().map(|(k, v)| (k.as_ref().clone(), v.clone()))
-                                                                     .take(128)
                                                                      .collect();
-        let mut table_selected = match table_state.selected() {
-            Some(mut table_index) => {
-                if table_index >= flows.len() {
-                    flows.len().saturating_sub(1)
-                } else {
-                    if let Some(ref old_flow_key_selected) = old_selected {
-                        if let Some(old_index) = flows.iter().position(|x| x.0 == *old_flow_key_selected) {
-                            if old_index != table_index {
-                                table_index = old_index;
-                            }
-                        } else {
-                            old_selected = Some(flows.get(table_index).unwrap().0.clone());
-                        }
-                    }
-                    table_index
+        if table_selected >= flows.len() {
+            table_selected = flows.len().saturating_sub(1);
+        }
+        if let Some(ref old_flow_key_selected) = old_selected {
+            if let Some(old_index) = flows.iter().position(|x| x.0 == *old_flow_key_selected) {
+                if old_index != table_selected {
+                    table_selected = old_index;
                 }
             }
-            None => 0,
-        };
+        }
 
         match read_keypress() {
             Some(KeyCode::Esc) => break,
@@ -458,18 +452,12 @@ async fn main() {
                     i if i == 0 => flows.len().saturating_sub(1),
                     i => i - 1,
                 };
-                if let Some(new_selected) = flows.get(table_selected) {
-                    old_selected = Some(new_selected.0.clone());
-                }
             },
             Some(KeyCode::Down) => {
                 table_selected = match table_selected {
                     i if i >= flows.len().saturating_sub(1) => 0,
                     i => i + 1,
                 };
-                if let Some(new_selected) = flows.get(table_selected) {
-                    old_selected = Some(new_selected.0.clone());
-                }
             },
             Some(KeyCode::PageUp) => {
                 table_selected = match table_selected {
@@ -477,9 +465,6 @@ async fn main() {
                     i if i < 25 => 0,
                     i => i - 25,
                 };
-                if let Some(new_selected) = flows.get(table_selected) {
-                    old_selected = Some(new_selected.0.clone());
-                }
             },
             Some(KeyCode::PageDown) => {
                 table_selected = match table_selected {
@@ -487,31 +472,30 @@ async fn main() {
                     i if i >= flows.len().saturating_sub(25) => flows.len().saturating_sub(1),
                     i => i + 25,
                 };
-                if let Some(new_selected) = flows.get(table_selected) {
-                    old_selected = Some(new_selected.0.clone());
-                }
             },
             Some(KeyCode::Home) => {
                 table_selected = 0;
-                if let Some(new_selected) = flows.get(table_selected) {
-                    old_selected = Some(new_selected.0.clone());
-                }
             },
             Some(KeyCode::End) => {
                 table_selected = match table_selected {
                     _ => flows.len().saturating_sub(1),
                 };
-                if let Some(new_selected) = flows.get(table_selected) {
-                    old_selected = Some(new_selected.0.clone());
-                }
             },
             Some(_) => (),
             None => ()
         };
 
+        old_selected = flows.get(table_selected).map(|flow| flow.0.clone());
+
+        if table_selected < table_offset {
+            table_offset = table_selected;
+        } else if table_selected >= table_offset + MAX_VISIBLE_FLOW_ROWS {
+            table_offset = (table_selected + 1).saturating_sub(MAX_VISIBLE_FLOW_ROWS);
+        }
+
         let mut data_lock = data_rx.lock().await;
         data_lock.ui_updates += 1;
-        draw_ui(terminal.as_mut().unwrap(), &mut table_state, table_selected, &data_lock, &flows);
+        draw_ui(terminal.as_mut().unwrap(), &mut table_state, table_selected, table_offset, &data_lock, &flows);
     }
 
     if let Err(e) = terminal.unwrap().backend_mut().execute(cursor::Show) {
@@ -668,7 +652,7 @@ async fn update_stats(event: &EventType, stats: &mut MutexGuard<'_, Stats>, cach
             stats.global_free_bytes = 0;
             stats.global_free_count = 0;
             stats.total_events_serialized = 0;
-            let daemons: Vec<DaemonEventStatus> = daemon_cache.iter().map(|(_, v)| (v.clone())).collect();
+            let daemons: Vec<DaemonEventStatus> = daemon_cache.iter().map(|(_, v)| v.clone()).collect();
             for daemon in daemons {
                 stats.packets_captured += daemon.packets_captured;
                 stats.packets_processed += daemon.packets_processed;
@@ -707,7 +691,7 @@ fn format_bytes(bytes: u64) -> String {
     }
 }
 
-fn draw_ui<B: tui::backend::Backend>(terminal: &mut Terminal<B>, table_state: &mut TableState, table_selected: usize, data: &MutexGuard<Stats>, flows: &Vec<(FlowKey, (FlowExpiration, FlowValue))>) {
+fn draw_ui<B: tui::backend::Backend>(terminal: &mut Terminal<B>, table_state: &mut TableState, table_selected: usize, table_offset: usize, data: &MutexGuard<Stats>, flows: &[(FlowKey, (FlowExpiration, FlowValue))]) {
     let general_items = vec![
         ListItem::new("TUI Updates..: ".to_owned() + &data.ui_updates.to_string()),
         ListItem::new("Flows Cached.: ".to_owned() + &data.flow_count.to_string()),
@@ -734,8 +718,22 @@ fn draw_ui<B: tui::backend::Backend>(terminal: &mut Terminal<B>, table_state: &m
         ListItem::new("Total Events Serialized..: ".to_owned() + &data.total_events_serialized.to_string()),
         ListItem::new("Current Flows Active.....: ".to_owned() + &data.flows_current_active.to_string()),
     ];
-    let table_rows: Vec<Row> = flows
-        .into_iter()
+    let visible_start = if flows.is_empty() {
+        0
+    } else {
+        table_offset.min(flows.len().saturating_sub(1))
+    };
+    let visible_end = visible_start.saturating_add(MAX_VISIBLE_FLOW_ROWS).min(flows.len());
+    let visible_flows = &flows[visible_start..visible_end];
+    let table_selected_rel = if visible_flows.is_empty() {
+        0
+    } else {
+        table_selected.saturating_sub(visible_start).min(visible_flows.len().saturating_sub(1))
+    };
+    let table_selected_abs = if flows.is_empty() { 0 } else { table_selected + 1 };
+
+    let table_rows: Vec<Row> = visible_flows
+        .iter()
         .map(|(key, (_exp, val))| {
             let first_seen_display = match val.first_seen.elapsed() {
                 Ok(elapsed) => {
@@ -818,10 +816,6 @@ fn draw_ui<B: tui::backend::Backend>(terminal: &mut Terminal<B>, table_state: &m
             )
             .split(chunks[0]);
 
-        let table_selected_abs = match table_selected {
-            _ if flows.len() == 0 => 0,
-            i => i + 1,
-        };
         let table = Table::new(table_rows)
             .header(Row::new(vec!["Flow ID", "State", "First Seen", "Last Seen", "Timeout", "Total Packets", "Total Bytes", "Risks", "L3/L4", "L7"])
                 .style(Style::default().fg(Color::Yellow).add_modifier(Modifier::BOLD)))
@@ -851,7 +845,11 @@ fn draw_ui<B: tui::backend::Backend>(terminal: &mut Terminal<B>, table_state: &m
         let daemon_list = List::new(daemon_items)
             .block(Block::default().title("Daemon Events").borders(Borders::ALL));
 
-        table_state.select(Some(table_selected));
+        table_state.select(if visible_flows.is_empty() {
+            None
+        } else {
+            Some(table_selected_rel)
+        });
         f.render_widget(general_list, top_chunks[0]);
         f.render_widget(packet_list, top_chunks[1]);
         f.render_widget(daemon_list, top_chunks[2]);

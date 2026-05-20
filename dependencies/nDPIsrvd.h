@@ -1250,7 +1250,7 @@ static inline struct nDPIsrvd_thread_data * nDPIsrvd_get_thread_data(
     }
 
     {
-        nDPIsrvd_ull thread_key;
+        nDPIsrvd_ull thread_key = 0;
         TOKEN_VALUE_TO_ULL(sock, thread_id_token, &thread_key);
         thread_id = (nDPIsrvd_hashkey)thread_key;
     }
@@ -1277,7 +1277,7 @@ static inline struct nDPIsrvd_thread_data * nDPIsrvd_get_thread_data(
 
     if (ts_usec_token != NULL)
     {
-        nDPIsrvd_ull thread_ts_usec;
+        nDPIsrvd_ull thread_ts_usec = 0;
         TOKEN_VALUE_TO_ULL(sock, ts_usec_token, &thread_ts_usec);
 
         if (thread_ts_usec > thread_data->most_recent_flow_time)
@@ -1353,7 +1353,7 @@ static inline struct nDPIsrvd_flow * nDPIsrvd_get_flow(struct nDPIsrvd_socket * 
 
     if (tokens[TOKEN_FLOW_SRC_LAST_PKT_TIME] != NULL)
     {
-        nDPIsrvd_ull nmb;
+        nDPIsrvd_ull nmb = 0;
         TOKEN_VALUE_TO_ULL(sock, tokens[TOKEN_FLOW_SRC_LAST_PKT_TIME], &nmb);
         if (nmb > flow->last_seen)
         {
@@ -1362,7 +1362,7 @@ static inline struct nDPIsrvd_flow * nDPIsrvd_get_flow(struct nDPIsrvd_socket * 
     }
     if (tokens[TOKEN_FLOW_DST_LAST_PKT_TIME] != NULL)
     {
-        nDPIsrvd_ull nmb;
+        nDPIsrvd_ull nmb = 0;
         TOKEN_VALUE_TO_ULL(sock, tokens[TOKEN_FLOW_DST_LAST_PKT_TIME], &nmb);
         if (nmb > flow->last_seen)
         {
@@ -1372,7 +1372,7 @@ static inline struct nDPIsrvd_flow * nDPIsrvd_get_flow(struct nDPIsrvd_socket * 
 
     if (tokens[TOKEN_FLOW_IDLE_TIME] != NULL)
     {
-        nDPIsrvd_ull flow_idle_time;
+        nDPIsrvd_ull flow_idle_time = 0;
         TOKEN_VALUE_TO_ULL(sock, tokens[TOKEN_FLOW_IDLE_TIME], &flow_idle_time);
         flow->idle_time = flow_idle_time;
     }
