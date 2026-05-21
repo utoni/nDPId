@@ -130,7 +130,6 @@ static struct
     struct cmdarg distributor_group;
     struct cmdarg max_remote_descriptors;
     struct cmdarg max_write_buffers;
-    struct cmdarg bufferbloat_fallback_to_blocking;
 #ifdef ENABLE_EPOLL
     struct cmdarg use_poll;
 #endif
@@ -150,8 +149,7 @@ static struct
                       .collector_group = CMDARG_STR(NULL),
                       .distributor_group = CMDARG_STR(NULL),
                       .max_remote_descriptors = CMDARG_ULL(nDPIsrvd_MAX_REMOTE_DESCRIPTORS),
-                      .max_write_buffers = CMDARG_ULL(nDPIsrvd_MAX_WRITE_BUFFERS),
-                      .bufferbloat_fallback_to_blocking = CMDARG_BOOL(1)
+                      .max_write_buffers = CMDARG_ULL(nDPIsrvd_MAX_WRITE_BUFFERS)
 #ifdef ENABLE_EPOLL
                           ,
                       .use_poll = CMDARG_BOOL(0)
@@ -173,8 +171,7 @@ struct confopt config_map[] = {CONFOPT("pidfile", &nDPIsrvd_options.pidfile),
                                CONFOPT("collector-group", &nDPIsrvd_options.collector_group),
                                CONFOPT("distributor-group", &nDPIsrvd_options.distributor_group),
                                CONFOPT("max-remote-descriptors", &nDPIsrvd_options.max_remote_descriptors),
-                               CONFOPT("max-write-buffers", &nDPIsrvd_options.max_write_buffers),
-                               CONFOPT("blocking-io-fallback", &nDPIsrvd_options.bufferbloat_fallback_to_blocking)
+                               CONFOPT("max-write-buffers", &nDPIsrvd_options.max_write_buffers)
 #ifdef ENABLE_EPOLL
                                    ,
                                CONFOPT("poll", &nDPIsrvd_options.use_poll)
@@ -192,13 +189,17 @@ static void logger_nDPIsrvd(struct remote_desc const * const remote,
                             char const * const format,
                             ...);
 static int fcntl_add_flags(int fd, int flags);
+#ifdef NO_MAIN
 static int fcntl_del_flags(int fd, int flags);
+#endif
 static int add_in_event_fd(struct nio * const io, int fd);
 static int add_in_event(struct nio * const io, struct remote_desc * const remote);
 static int del_event(struct nio * const io, int fd);
 static int set_in_event(struct nio * const io, struct remote_desc * const remote);
 static void disconnect_client(struct nio * const io, struct remote_desc * const current);
+#ifdef NO_MAIN
 static int drain_write_buffers_blocking(struct remote_desc * const remote);
+#endif
 
 static void nDPIsrvd_buffer_array_copy(void * dst, const void * src)
 {
@@ -320,26 +321,22 @@ static int add_to_additional_write_buffers(struct remote_desc * const remote,
 
     if (utarray_len(additional_write_buffers) >= GET_CMDARG_ULL(nDPIsrvd_options.max_write_buffers))
     {
-        if (GET_CMDARG_BOOL(nDPIsrvd_options.bufferbloat_fallback_to_blocking) == 0)
+#ifdef NO_MAIN
+        logger_nDPIsrvd(remote,
+                        "Buffer limit for",
+                        "reached, falling back to blocking I/O (NO_MAIN is set for nDPId-test): %u lines",
+                        utarray_len(additional_write_buffers));
+        if (drain_write_buffers_blocking(remote) != 0)
         {
-            logger_nDPIsrvd(remote,
-                            "Buffer limit for",
-                            "for reached, remote too slow: %u lines",
-                            utarray_len(additional_write_buffers));
-            logger_nDPIsrvd(remote, "%s", "You can try to increase buffer limits with `-M'.");
             return -1;
         }
-        else
-        {
-            logger_nDPIsrvd(remote,
-                            "Buffer limit for",
-                            "reached, falling back to blocking I/O: %u lines",
-                            utarray_len(additional_write_buffers));
-            if (drain_write_buffers_blocking(remote) != 0)
-            {
-                return -1;
-            }
-        }
+#else
+        logger_nDPIsrvd(remote,
+                        "Buffer limit for",
+                        "reached, remote too slow: %u lines (increase buffer limit with `-M')",
+                        utarray_len(additional_write_buffers));
+        return -1;
+#endif
     }
 
     buf_src.buf.ptr.raw = buf;
@@ -364,12 +361,20 @@ static __attribute__((format(printf, 3, 4))) void logger_nDPIsrvd(struct remote_
     {
         case DISTRIBUTOR_UN:
 #if !defined(__FreeBSD__) && !defined(__APPLE__)
-            logger(1,
-                   "%s PID %d (User: %s) %s",
-                   prefix,
-                   remote->event_distributor_un.pid,
-                   remote->event_distributor_un.user_name,
-                   logbuf);
+            if (remote->event_distributor_un.pid != 0 &&
+                remote->event_distributor_un.user_name != NULL)
+            {
+                logger(1,
+                       "%s PID %d (User: %s) %s",
+                       prefix,
+                       remote->event_distributor_un.pid,
+                       remote->event_distributor_un.user_name,
+                       logbuf);
+            } else {
+                logger(1,
+                       "%s (PID not set) (User not set) %s",
+                       prefix, logbuf);
+            }
 #else
             logger(1, "%s %s", prefix, logbuf);
 #endif
@@ -385,7 +390,12 @@ static __attribute__((format(printf, 3, 4))) void logger_nDPIsrvd(struct remote_
             break;
         case COLLECTOR_UN:
 #if !defined(__FreeBSD__) && !defined(__APPLE__)
-            logger(1, "%s PID %d %s", prefix, remote->event_collector_un.pid, logbuf);
+            if (remote->event_collector_un.pid != 0)
+            {
+                logger(1, "%s PID %d %s", prefix, remote->event_collector_un.pid, logbuf);
+            } else {
+                logger(1, "%s (PID not set) %s", prefix, logbuf);
+            }
 #else
             logger(1, "%s %s", prefix, logbuf);
 #endif
@@ -538,6 +548,7 @@ static int drain_write_buffers(struct remote_desc * const remote)
     return 0;
 }
 
+#ifdef NO_MAIN
 static int drain_write_buffers_blocking(struct remote_desc * const remote)
 {
     int retval = 0;
@@ -560,6 +571,7 @@ static int drain_write_buffers_blocking(struct remote_desc * const remote)
 
     return retval;
 }
+#endif
 
 static int handle_outgoing_data(struct nio * const io, struct remote_desc * const remote)
 {
@@ -604,6 +616,7 @@ static int fcntl_add_flags(int fd, int flags)
     return fcntl(fd, F_SETFL, cur_flags | flags);
 }
 
+#ifdef NO_MAIN
 static int fcntl_del_flags(int fd, int flags)
 {
     int cur_flags = fcntl(fd, F_GETFL, 0);
@@ -615,6 +628,7 @@ static int fcntl_del_flags(int fd, int flags)
 
     return fcntl(fd, F_SETFL, cur_flags & ~flags);
 }
+#endif
 
 static int create_listen_sockets(void)
 {
@@ -998,7 +1012,7 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
 {
     int opt;
 
-    while ((opt = getopt(argc, argv, "f:lL:c:C:k:K:F:dp:s:S:G:m:u:g:M:Dvh")) != -1)
+    while ((opt = getopt(argc, argv, "f:lL:c:C:k:K:F:dp:s:S:G:m:u:g:M:vh")) != -1)
     {
         switch (opt)
         {
@@ -1114,9 +1128,6 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
                 set_cmdarg_ull(&nDPIsrvd_options.max_write_buffers, tmp);
                 break;
             }
-            case 'D':
-                set_cmdarg_boolean(&nDPIsrvd_options.bufferbloat_fallback_to_blocking, 0);
-                break;
             case 'v':
                 fprintf(stderr, "%s", get_nDPId_version());
                 return 1;
@@ -1151,8 +1162,7 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
                         "\t-u\tChange UID to the numeric value of user.\n"
                         "\t  \tDefault: %s\n"
                         "\t-g\tChange GID to the numeric value of group.\n"
-                        "\t-M\tMax buffered JSON lines before nDPIsrvd disconnects/blocking-IO a client.\n"
-                        "\t-D\tDisconnect a slow client instead of falling back to blocking-IO.\n"
+                        "\t-M\tMax buffered JSON lines before nDPIsrvd disconnects a client to reduce backpressure.\n"
                         "\t-s\tPath to a listening UNIX socket (nDPIsrvd Distributor).\n"
                         "\t  \tDefault: %s\n"
                         "\t-S\tAddress:Port of the listening TCP/IP socket (nDPIsrvd Distributor).\n"
