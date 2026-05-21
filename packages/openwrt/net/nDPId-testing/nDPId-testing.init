@@ -157,7 +157,7 @@ start_ndpisrvd_instance() {
 
 	args="$(print_arg_str "$cfg" 'tcp_listen' '-S')"
 	args="$args$(print_arg_str "$cfg" 'max_remotes' '-m')"
-	args="$args$(print_arg_str "$cfg" 'max_buffered_json_lines' '-C')"
+	args="$args$(print_arg_str "$cfg" 'max_buffered_json_lines' '-M')"
 
 	procd_open_instance
 	procd_set_param command ${NDPISRVD_BIN}

@@ -227,7 +227,7 @@ add_custom_target(daemon)
 add_custom_command(
     TARGET daemon
     POST_BUILD
-    COMMAND env nDPIsrvd_ARGS='-C 1024' "${CMAKE_SOURCE_DIR}/scripts/daemon.sh" "$<TARGET_FILE:nDPId>" "$<TARGET_FILE:nDPIsrvd>"
+    COMMAND env nDPIsrvd_ARGS='-M 1024' "${CMAKE_SOURCE_DIR}/scripts/daemon.sh" "$<TARGET_FILE:nDPId>" "$<TARGET_FILE:nDPIsrvd>"
 )
 add_dependencies(daemon nDPId nDPIsrvd)
 

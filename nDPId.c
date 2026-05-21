@@ -2798,7 +2798,7 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
                 if (saved_errno == EPIPE || written == 0)
                 {
                     logger(1,
-                           "[%8llu, %zu] Lost connection to nDPIsrvd Collector",
+                           "[%8llu, %zu] Lost connection (blocking I/O) to nDPIsrvd Collector",
                            workflow->packets_captured,
                            reader_thread->array_index);
                     reader_thread->collector_sock_last_errno = saved_errno;
@@ -6026,7 +6026,7 @@ static int validate_options(void)
                          "to values lower than %llu / %llu are not recommended.",
                          TIME_S_TO_US(4u),
                          TIME_S_TO_US(6u));
-            logger_early(1, "%s", "Your CPU usage may increase heavily.");
+            logger_early(1, "%s", "Your CPU usage will increase.");
         }
     }
 #endif
@@ -6403,11 +6403,12 @@ int main(int argc, char ** argv)
     global_context = NULL;
 
     daemonize_shutdown(GET_CMDARG_STR(nDPId_options.pidfile));
+    logger(0, "%s", "Bye.");
+    shutdown_logging();
+
 #ifdef ENABLE_CRYPTO
     ncrypt_free_ctx(&ncrypt_ctx);
 #endif
-    logger(0, "%s", "Bye.");
-    shutdown_logging();
 
     return 0;
 }

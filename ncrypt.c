@@ -135,7 +135,16 @@ int ncrypt_on_accept(struct ncrypt_ctx * const ctx, int accept_fd, struct ncrypt
     int rv = SSL_accept(ent->ssl);
     if (rv != 1)
     {
-        return SSL_get_error(ent->ssl, rv);
+        int err = SSL_get_error(ent->ssl, rv);
+        if (err == SSL_ERROR_WANT_WRITE || err == SSL_ERROR_WANT_READ)
+        {
+            errno = EAGAIN;
+        }
+        else if (err != SSL_ERROR_SYSCALL)
+        {
+            errno = EPROTO;
+        }
+        return NCRYPT_HANDSHAKE_FAILED;
     }
 
     return NCRYPT_SUCCESS;
@@ -195,6 +204,7 @@ ssize_t ncrypt_write(struct ncrypt_entity * const ent, char const * const json_m
 
 void ncrypt_free_entity(struct ncrypt_entity * const ent)
 {
+    SSL_shutdown(ent->ssl);
     SSL_free(ent->ssl);
     ent->ssl = NULL;
 }
