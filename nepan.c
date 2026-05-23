@@ -30,6 +30,8 @@ static guint32                nepan_cum_bytes     = 0;
 static nstime_t               nepan_elapsed_time  = NSTIME_INIT_ZERO;
 static frame_data             nepan_first_fdata;
 static const frame_data *     nepan_frame_ref     = NULL;
+/* Opaque context token passed to the packet provider callbacks (never read). */
+static int                    nepan_provider_ctx  = 0;
 
 /* --------------------------------------------------------------------------
  * Packet-provider callbacks required by epan_new()
@@ -89,8 +91,7 @@ int nepan_init(void)
         return 1;
     }
 
-    static int provider_ctx = 0;
-    nepan_session = epan_new((struct packet_provider_data *)&provider_ctx,
+    nepan_session = epan_new((struct packet_provider_data *)&nepan_provider_ctx,
                              &nepan_provider_funcs);
     if (nepan_session == NULL)
     {
@@ -203,6 +204,13 @@ static void serialize_fields(ndpi_serializer * const serializer,
         if (fi != NULL && fi->hfinfo != NULL && fi->hfinfo->abbrev != NULL &&
             fi->hfinfo->abbrev[0] != '\0' && fi->value != NULL)
         {
+            /*
+             * fvalue_to_string_repr() allocates from wmem_packet_scope().
+             * That memory is automatically released when epan_dissect_free()
+             * is called at the end of nepan_jsonize(), so val_str must not
+             * be stored beyond that point.  The ndpi_serialize_string_string()
+             * call below copies the string immediately, so this is safe.
+             */
             char * val_str = fvalue_to_string_repr(wmem_packet_scope(),
                                                    fi->value,
                                                    FTREPR_DISPLAY,
@@ -292,7 +300,13 @@ void nepan_jsonize(ndpi_serializer * const serializer,
     }
 
     frame_data_set_after_dissect(&fd, &nepan_cum_bytes);
-    epan_dissect_free(edt); /* also frees the tvb chain */
+    /*
+     * epan_dissect_free() frees the tvbuff_t chain (the tvb struct and its
+     * internal state).  The underlying raw packet bytes passed via
+     * tvb_new_real_data() are *not* owned by the tvb and remain the caller's
+     * responsibility; they are not freed here.
+     */
+    epan_dissect_free(edt);
     frame_data_destroy(&fd);
 
     pthread_mutex_unlock(&nepan_mutex);
