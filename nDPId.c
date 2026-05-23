@@ -45,17 +45,9 @@
 #include "utils.h"
 
 #ifdef ENABLE_EPAN
-#include <epan/epan.h>
-#include <epan/epan_dissect.h>
-#include <epan/frame_data.h>
-#include <epan/proto.h>
-#include <epan/tvbuff.h>
-#include <epan/addr_resolv.h>
-#include <wiretap/wtap.h>
+#include "nepan.h"
 #include <wiretap/pcap-encap.h>
-#include <wsutil/nstime.h>
-#include <wsutil/privileges.h>
-#include <wsutil/wslog.h>
+#include <wiretap/wtap.h>
 #endif
 
 #ifndef ETHERTYPE_DCE
@@ -476,16 +468,6 @@ static struct nDPId_reader_thread reader_threads[nDPId_MAX_READER_THREADS] = {};
 static MT_VALUE(nDPId_main_thread_shutdown, int) = MT_INIT(0);
 static MT_VALUE(global_flow_id, uint64_t) = MT_INIT(1);
 
-#ifdef ENABLE_EPAN
-static epan_t * g_epan_session = NULL;
-static pthread_mutex_t g_epan_mutex = PTHREAD_MUTEX_INITIALIZER;
-static guint32 g_epan_frame_num = 0;
-static guint32 g_epan_cum_bytes = 0;
-static nstime_t g_epan_elapsed_time = NSTIME_INIT_ZERO;
-static frame_data g_epan_first_fdata;
-static const frame_data * g_epan_frame_ref = NULL;
-#endif
-
 static MT_VALUE(ndpi_memory_alloc_count, uint64_t) = MT_INIT(0);
 static MT_VALUE(ndpi_memory_alloc_bytes, uint64_t) = MT_INIT(0);
 static MT_VALUE(ndpi_memory_free_count, uint64_t) = MT_INIT(0);
@@ -689,11 +671,6 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
 static void jsonize_flow_detection_event(struct nDPId_reader_thread * const reader_thread,
                                          struct nDPId_flow * const flow,
                                          enum flow_event event);
-#ifdef ENABLE_EPAN
-static void jsonize_epan_dissection(struct nDPId_reader_thread * const reader_thread,
-                                    struct pcap_pkthdr const * const header,
-                                    uint8_t const * const packet);
-#endif
 
 static int set_collector_nonblock(struct nDPId_reader_thread * const reader_thread)
 {
@@ -3157,7 +3134,21 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
                reader_thread->array_index);
     }
 #ifdef ENABLE_EPAN
-    jsonize_epan_dissection(reader_thread, header, packet);
+    {
+        int wtap_encap = WTAP_ENCAP_UNKNOWN;
+#ifdef ENABLE_PFRING
+        if (GET_CMDARG_BOOL(nDPId_options.use_pfring) != 0)
+        {
+            wtap_encap = wtap_pcap_encap_to_wtap_encap(npfring_datalink(&reader_thread->workflow->npf));
+        }
+        else
+#endif
+        if (reader_thread->workflow->pcap_handle != NULL)
+        {
+            wtap_encap = wtap_pcap_encap_to_wtap_encap(pcap_datalink(reader_thread->workflow->pcap_handle));
+        }
+        nepan_jsonize(&workflow->ndpi_serializer, wtap_encap, header, packet);
+    }
 #endif
     serialize_and_send(reader_thread);
 }
@@ -5335,145 +5326,6 @@ static void break_pcap_loop(struct nDPId_reader_thread * const reader_thread)
     }
 }
 
-#ifdef ENABLE_EPAN
-static const nstime_t * ndpid_epan_get_frame_ts(struct packet_provider_data * prov,
-                                                guint32 frame_num)
-{
-    (void)prov;
-    (void)frame_num;
-    return NULL;
-}
-
-static const char * ndpid_epan_get_interface_name(struct packet_provider_data * prov,
-                                                   guint32 interface_id)
-{
-    (void)prov;
-    (void)interface_id;
-    return "ndpid";
-}
-
-static const char * ndpid_epan_get_interface_description(struct packet_provider_data * prov,
-                                                          guint32 interface_id)
-{
-    (void)prov;
-    (void)interface_id;
-    return NULL;
-}
-
-static wtap_block_t ndpid_epan_get_modified_block(struct packet_provider_data * prov,
-                                                   const frame_data * fd)
-{
-    (void)prov;
-    (void)fd;
-    return NULL;
-}
-
-static const struct packet_provider_funcs ndpid_epan_provider_funcs = {
-    ndpid_epan_get_frame_ts,
-    ndpid_epan_get_interface_name,
-    ndpid_epan_get_interface_description,
-    ndpid_epan_get_modified_block,
-};
-
-static void jsonize_epan_dissection(struct nDPId_reader_thread * const reader_thread,
-                                    struct pcap_pkthdr const * const header,
-                                    uint8_t const * const packet)
-{
-    if (g_epan_session == NULL)
-    {
-        return;
-    }
-
-    struct nDPId_workflow * const workflow = reader_thread->workflow;
-    wtap_rec rec;
-    frame_data fd;
-    epan_dissect_t * edt;
-    int wtap_encap = WTAP_ENCAP_UNKNOWN;
-
-    memset(&rec, 0, sizeof(rec));
-    rec.rec_type = REC_TYPE_PACKET;
-    rec.presence_flags = WTAP_HAS_TS | WTAP_HAS_CAP_LEN;
-    rec.ts.secs = header->ts.tv_sec;
-    rec.ts.nsecs = (int)(header->ts.tv_usec * 1000);
-    rec.tsprec = WTAP_TSPREC_USEC;
-
-#ifdef ENABLE_PFRING
-    if (GET_CMDARG_BOOL(nDPId_options.use_pfring) != 0)
-    {
-        wtap_encap = wtap_pcap_encap_to_wtap_encap(npfring_datalink(&reader_thread->workflow->npf));
-    }
-    else
-#endif
-    if (reader_thread->workflow->pcap_handle != NULL)
-    {
-        wtap_encap = wtap_pcap_encap_to_wtap_encap(pcap_datalink(reader_thread->workflow->pcap_handle));
-    }
-
-    rec.rec_header.packet_header.caplen = header->caplen;
-    rec.rec_header.packet_header.len = header->len;
-    rec.rec_header.packet_header.pkt_encap = wtap_encap;
-
-    /*
-     * Wireshark EPAN shares global wmem scopes and is not thread-safe.
-     * All dissections must be serialized via g_epan_mutex.
-     */
-    pthread_mutex_lock(&g_epan_mutex);
-
-    g_epan_frame_num++;
-    frame_data_init(&fd, g_epan_frame_num, &rec, 0, g_epan_cum_bytes);
-    frame_data_set_before_dissect(&fd, &g_epan_elapsed_time, &g_epan_frame_ref, NULL);
-
-    if (g_epan_frame_num == 1)
-    {
-        g_epan_first_fdata = fd;
-        g_epan_frame_ref = &g_epan_first_fdata;
-    }
-
-    tvbuff_t * const tvb = tvb_new_real_data(packet, header->caplen, header->len);
-    edt = epan_dissect_new(g_epan_session, TRUE, FALSE);
-    epan_dissect_run(edt, WTAP_FILE_TYPE_SUBTYPE_UNKNOWN, &rec, tvb, &fd, NULL);
-
-    if (edt->tree != NULL)
-    {
-        char proto_stack[256];
-        int proto_stack_len = 0;
-
-        for (proto_node * child = edt->tree->first_child; child != NULL; child = child->next)
-        {
-            field_info * const fi = PNODE_FINFO(child);
-            if (fi != NULL && fi->hfinfo != NULL && fi->hfinfo->abbrev != NULL &&
-                fi->hfinfo->abbrev[0] != '\0')
-            {
-                int const abbrev_len = (int)strlen(fi->hfinfo->abbrev);
-                /* Need space for separator colon (if not first), abbrev, and NUL terminator. */
-                int const needed = (proto_stack_len > 0 ? 1 : 0) + abbrev_len + 1;
-                if (proto_stack_len + needed <= (int)sizeof(proto_stack))
-                {
-                    if (proto_stack_len > 0)
-                    {
-                        proto_stack[proto_stack_len++] = ':';
-                    }
-                    memcpy(proto_stack + proto_stack_len, fi->hfinfo->abbrev, abbrev_len);
-                    proto_stack_len += abbrev_len;
-                }
-            }
-        }
-        proto_stack[proto_stack_len] = '\0';
-
-        if (proto_stack_len > 0)
-        {
-            ndpi_serialize_string_string(&workflow->ndpi_serializer, "epan_proto_stack", proto_stack);
-        }
-    }
-
-    frame_data_set_after_dissect(&fd, &g_epan_cum_bytes);
-    epan_dissect_free(edt); /* also frees the tvb chain */
-    frame_data_destroy(&fd);
-
-    pthread_mutex_unlock(&g_epan_mutex);
-}
-#endif
-
 static void * processing_thread(void * const ndpi_thread_arg)
 {
     struct nDPId_reader_thread * const reader_thread = (struct nDPId_reader_thread *)ndpi_thread_arg;
@@ -5882,7 +5734,7 @@ static void nDPId_print_deps_version(FILE * const out)
     npfring_print_version(out);
 #endif
 #ifdef ENABLE_EPAN
-    fprintf(out, "EPAN version...: %s\n", epan_get_version());
+    fprintf(out, "EPAN version...: %s\n", nepan_get_version());
 #endif
     fprintf(out, "%s", "-------------------------------------------------------\n");
 }
@@ -6541,27 +6393,11 @@ int main(int argc, char ** argv)
 #endif
 
 #ifdef ENABLE_EPAN
-    init_process_policies();
-    ws_log_init("nDPId", NULL);
-    wtap_init(FALSE);
-    if (epan_init(NULL, NULL, FALSE) == FALSE)
+    if (nepan_init() != 0)
     {
         logger_early(1, "%s", "Could not initialize Wireshark EPAN library.");
         return 1;
     }
-    static int epan_packet_provider_ctx = 0;
-    g_epan_session = epan_new((struct packet_provider_data *)&epan_packet_provider_ctx, &ndpid_epan_provider_funcs);
-    if (g_epan_session == NULL)
-    {
-        logger_early(1, "%s", "Could not create Wireshark EPAN session.");
-        return 1;
-    }
-    /* Disable address resolution features that may crash without their databases. */
-    gbl_resolv_flags.maxmind_geoip = FALSE;
-    gbl_resolv_flags.mac_name = FALSE;
-    gbl_resolv_flags.network_name = FALSE;
-    gbl_resolv_flags.transport_name = FALSE;
-    gbl_resolv_flags.dns_pkt_addr_resolution = FALSE;
 #endif
 
     global_context = ndpi_global_init();
@@ -6596,14 +6432,7 @@ int main(int argc, char ** argv)
     free_reader_threads();
 
 #ifdef ENABLE_EPAN
-    if (g_epan_session != NULL)
-    {
-        epan_free(g_epan_session);
-        g_epan_session = NULL;
-    }
-    epan_cleanup();
-    wtap_cleanup();
-    pthread_mutex_destroy(&g_epan_mutex);
+    nepan_cleanup();
 #endif
 
     if (global_context != NULL)
