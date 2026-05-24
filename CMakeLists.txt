@@ -468,7 +468,7 @@ if(ENABLE_EPAN)
         # glib-2.0 is a required wireshark dependency and must be found on the host.
         pkg_check_modules(GLIB2 REQUIRED glib-2.0)
         # Wireshark headers live under ${PREFIX}/include/wireshark/epan/ etc.
-        set(WIRESHARK_INCLUDE_DIRS "${STATIC_LIBWIRESHARK_INSTALLDIR}/include/wireshark" ${GLIB2_INCLUDE_DIRS})
+        set(WIRESHARK_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/libWireshark/include" "${CMAKE_SOURCE_DIR}/libWireshark" "${CMAKE_SOURCE_DIR}/libWireshark-build" ${GLIB2_INCLUDE_DIRS})
         if(BUILD_WIRESHARK)
             # Libraries don't exist yet at configure time; construct the expected paths.
             set(WIRESHARK_LIBRARY "${STATIC_LIBWIRESHARK_INSTALLDIR}/lib/libwireshark.so")

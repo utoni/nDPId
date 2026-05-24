@@ -8,8 +8,8 @@ UNZIP_EXEC="$(command -v unzip || printf '%s' "")"
 CMAKE_EXEC="$(command -v cmake || printf '%s' "")"
 FLOCK_EXEC="$(command -v flock || printf '%s' "")"
 
-WIRESHARK_BRANCH="wireshark-4.2"
-GITHUB_FALLBACK_URL="https://github.com/wireshark/wireshark/archive/refs/heads/${WIRESHARK_BRANCH}.zip"
+WIRESHARK_ARCHIVE="wireshark-v4.2.6"
+GITHUB_FALLBACK_URL="https://gitlab.com/wireshark/wireshark/-/archive/v4.2.6/${WIRESHARK_ARCHIVE}.zip"
 
 if [[ -z "${GIT_EXEC}" || -z "${WGET_EXEC}" || -z "${UNZIP_EXEC}" || -z "${CMAKE_EXEC}" || -z "${FLOCK_EXEC}" ]]; then
     printf '%s\n' "Required Executables missing: git, wget, unzip, cmake, flock" >&2
@@ -36,7 +36,6 @@ AR=${AR:-}
 RANLIB=${RANLIB:-}
 PKG_CONFIG=${PKG_CONFIG:-}
 CFLAGS=${CFLAGS:-}
-MAKE_PROGRAM=${MAKE_PROGRAM:-}
 DEST_INSTALL=${DEST_INSTALL:-}
 FORCE_GIT_UPDATE=${FORCE_GIT_UPDATE:-}
 -----------------------------------
@@ -81,11 +80,10 @@ if [[ ${GIT_SUCCESS} -eq 0 ]]; then
     ${UNZIP_EXEC} ./wireshark-github.zip
     rm -rf ./libWireshark
     # GitHub archives branch zips as wireshark-${BRANCH}/
-    mv "./wireshark-${WIRESHARK_BRANCH}" ./libWireshark
+    mv "./${WIRESHARK_ARCHIVE}" ./libWireshark
 fi
 
 DEST_INSTALL="${DEST_INSTALL:-$(realpath ./libWireshark-install)}"
-MAKE_PROGRAM="${MAKE_PROGRAM:-cmake --build}"
 
 # Use an out-of-source build directory
 BUILD_DIR="$(realpath ./libWireshark-build)"
@@ -142,7 +140,7 @@ if [[ -n "${CFLAGS}" ]]; then
 fi
 
 ${CMAKE_EXEC} "${CMAKE_ARGS[@]}" -S ./libWireshark -B "${BUILD_DIR}"
-${CMAKE_EXEC} --build "${BUILD_DIR}" --parallel
+${CMAKE_EXEC} --build "${BUILD_DIR}"
 ${CMAKE_EXEC} --install "${BUILD_DIR}"
 
 rm -f "${LOCKFILE}"
