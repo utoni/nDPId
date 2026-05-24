@@ -44,7 +44,9 @@ struct ncrypt_ctx
 struct ncrypt_entity
 {
     void * ssl;
-    int handshake_done;
+    unsigned int handshake_done : 1;
+    unsigned int is_collector : 1;
+    unsigned int is_distributor : 1;
 };
 
 int ncrypt_init(void);

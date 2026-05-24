@@ -15,7 +15,7 @@ else
 fi
 
 if [[ -z "${3}" ]]; then
-    SERVER_CN="unknown"
+    SERVER_CN="nDPIsrvd"
 else
     SERVER_CN="${3}"
 fi
@@ -45,12 +45,22 @@ if [[ ! -r ./server_${SERVER_CN}.key || ! -r ./server_${SERVER_CN}.crt ]]; then
         -out ./server_${SERVER_CN}.crt -days 825 -sha256
 fi
 
-if [[ ! -r ./client_${CLIENT_CN}.key || ! -r ./client_${CLIENT_CN}.crt ]]; then
-    printf '[*] Create Client Cert: %s\n' "${CLIENT_CN}"
-    openssl genrsa -out ./client_${CLIENT_CN}.key 2048
-    openssl req -new -key ./client_${CLIENT_CN}.key -out ./client_${CLIENT_CN}.csr -subj "/CN=${CLIENT_CN}"
-    openssl x509 -req -in ./client_${CLIENT_CN}.csr -CA ./ca.crt -CAkey ./ca.key -CAcreateserial \
-        -out ./client_${CLIENT_CN}.crt -days 825 -sha256
+if [[ ! -r ./client_collector_${CLIENT_CN}.key || ! -r ./client_collector_${CLIENT_CN}.crt ]]; then
+    printf '[*] Create Client Cert (Collector): %s\n' "${CLIENT_CN}"
+    openssl genrsa -out ./client_collector_${CLIENT_CN}.key 2048
+    openssl req -new -key ./client_collector_${CLIENT_CN}.key -out ./client_collector_${CLIENT_CN}.csr \
+        -subj "/CN=${CLIENT_CN}" -addext "subjectAltName=DNS:collector"
+    openssl x509 -req -in ./client_collector_${CLIENT_CN}.csr -CA ./ca.crt -CAkey ./ca.key -CAcreateserial \
+        -out ./client_collector_${CLIENT_CN}.crt -days 825 -sha256 -copy_extensions copy
+fi
+
+if [[ ! -r ./client_distributor_${CLIENT_CN}.key || ! -r ./client_distributor_${CLIENT_CN}.crt ]]; then
+    printf '[*] Create Client Cert (Distributor): %s\n' "${CLIENT_CN}"
+    openssl genrsa -out ./client_distributor_${CLIENT_CN}.key 2048
+    openssl req -new -key ./client_distributor_${CLIENT_CN}.key -out ./client_distributor_${CLIENT_CN}.csr \
+        -subj "/CN=${CLIENT_CN}" -addext "subjectAltName=DNS:distributor"
+    openssl x509 -req -in ./client_distributor_${CLIENT_CN}.csr -CA ./ca.crt -CAkey ./ca.key -CAcreateserial \
+        -out ./client_distributor_${CLIENT_CN}.crt -days 825 -sha256 -copy_extensions copy
 fi
 
 printf '%s\n' '[*] Done'
@@ -66,5 +76,9 @@ printf 'openssl s_server -accept %s -cert %s -key %s -CAfile %s -Verify 1 -verif
     "${OUT_DIR}/ca.crt"
 printf 'openssl s_client -connect 127.0.0.1:%s -cert %s -key %s -CAfile %s -verify_return_error -tls1_3\n' \
     "7777" \
-    "${OUT_DIR}/client_${CLIENT_CN}.crt" "${OUT_DIR}/client_${CLIENT_CN}.key" \
+    "${OUT_DIR}/client_collector_${CLIENT_CN}.crt" "${OUT_DIR}/client_collector_${CLIENT_CN}.key" \
+    "${OUT_DIR}/ca.crt"
+printf 'openssl s_client -connect 127.0.0.1:%s -cert %s -key %s -CAfile %s -verify_return_error -tls1_3\n' \
+    "7777" \
+    "${OUT_DIR}/client_distributor_${CLIENT_CN}.crt" "${OUT_DIR}/client_distributor_${CLIENT_CN}.key" \
     "${OUT_DIR}/ca.crt"

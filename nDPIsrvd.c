@@ -855,7 +855,9 @@ static struct remote_desc * get_remote_descriptor(enum sock_type type, int remot
                         return NULL;
                     }
 #ifdef ENABLE_CRYPTO
-                    ncrypt_entity(&remotes.desc[i].event_collector_in.ncrypt_entity);
+                    if (IS_CMDARG_SET(nDPIsrvd_options.server_ca_pem_file) != 0) {
+                        ncrypt_entity(&remotes.desc[i].event_collector_in.ncrypt_entity);
+                    }
 #endif
                     break;
                 case DISTRIBUTOR_UN:
@@ -866,7 +868,9 @@ static struct remote_desc * get_remote_descriptor(enum sock_type type, int remot
                     write_buffer = &remotes.desc[i].event_distributor_in.main_write_buffer;
                     additional_write_buffers = &remotes.desc[i].event_distributor_in.additional_write_buffers;
 #ifdef ENABLE_CRYPTO
-                    ncrypt_entity(&remotes.desc[i].event_distributor_in.ncrypt_entity);
+                    if (IS_CMDARG_SET(nDPIsrvd_options.server_ca_pem_file) != 0) {
+                        ncrypt_entity(&remotes.desc[i].event_distributor_in.ncrypt_entity);
+                    }
 #endif
                     break;
             }
@@ -1682,6 +1686,29 @@ static int handle_incoming_data(struct nio * const io, struct remote_desc * cons
 
         for (size_t i = 0; i < remotes.desc_size; ++i)
         {
+#ifdef ENABLE_CRYPTO
+            if (IS_CMDARG_SET(nDPIsrvd_options.server_ca_pem_file) != 0)
+            {
+                struct ncrypt_entity const * ent = NULL;
+                switch (remotes.desc[i].sock_type) {
+                    case COLLECTOR_UN:
+                        break;
+                    case COLLECTOR_IN:
+                        ent = &remotes.desc[i].event_collector_in.ncrypt_entity;
+                        break;
+                    case DISTRIBUTOR_UN:
+                        break;
+                    case DISTRIBUTOR_IN:
+                        ent = &remotes.desc[i].event_distributor_in.ncrypt_entity;
+                        break;
+                }
+                if (ent != NULL && ncrypt_handshake_done(ent) == 0)
+                {
+                    continue;
+                }
+            }
+#endif
+
             struct nDPIsrvd_write_buffer * const write_buffer = get_write_buffer(&remotes.desc[i]);
             UT_array * const additional_write_buffers = get_additional_write_buffers(&remotes.desc[i]);
 
@@ -1778,7 +1805,25 @@ static int handle_data_event(struct nio * const io, int index)
                 if (errno == EAGAIN)
                     return 0;
                 disconnect_client(io, current);
-                logger_nDPIsrvd(current, "Distributor TLS handshake from", "failed with: %d", rv);
+                if (errno != 0)
+                    logger_nDPIsrvd(current, "TLS handshake from", "failed with: %d (%s)",
+                                    rv, strerror(errno));
+                else
+                    logger_nDPIsrvd(current, "TLS handshake from", "failed with: %d", rv);
+                return 1;
+            }
+            if (current->sock_type == COLLECTOR_IN &&
+                current->event_collector_in.ncrypt_entity.is_collector == 0)
+            {
+                disconnect_client(io, current);
+                logger_nDPIsrvd(current, "TLS ACL denial from", "not a collector");
+                return 1;
+            }
+            if (current->sock_type == DISTRIBUTOR_IN &&
+                current->event_distributor_in.ncrypt_entity.is_distributor == 0)
+            {
+                disconnect_client(io, current);
+                logger_nDPIsrvd(current, "TLS ACL denial from", "not a distributor");
                 return 1;
             }
             ncrypt_set_handshake(ent);
