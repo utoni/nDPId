@@ -832,31 +832,24 @@ static struct remote_desc * get_remote_descriptor(enum sock_type type, int remot
     {
         if (remotes.desc[i].fd == -1)
         {
-            remotes.desc_used++;
-
+            int err = 0;
+            struct nDPIsrvd_json_buffer * read_buffer = NULL;
+#ifdef ENABLE_CRYPTO
+            struct ncrypt_entity * crypt_ent = NULL;
+#endif
             struct nDPIsrvd_write_buffer * write_buffer = NULL;
             UT_array ** additional_write_buffers = NULL;
 
             switch (type)
             {
                 case COLLECTOR_UN:
-                    if (nDPIsrvd_json_buffer_init(&remotes.desc[i].event_collector_un.main_read_buffer,
-                                                  max_buffer_size) != 0)
-                    {
-                        logger(1, "Read/JSON buffer init failed, size: %zu bytes", max_buffer_size);
-                        return NULL;
-                    }
+                    read_buffer = &remotes.desc[i].event_collector_un.main_read_buffer;
                     break;
                 case COLLECTOR_IN:
-                    if (nDPIsrvd_json_buffer_init(&remotes.desc[i].event_collector_in.main_read_buffer,
-                                                  max_buffer_size) != 0)
-                    {
-                        logger(1, "Read/JSON buffer init failed, size: %zu bytes", max_buffer_size);
-                        return NULL;
-                    }
+                    read_buffer = &remotes.desc[i].event_collector_in.main_read_buffer;
 #ifdef ENABLE_CRYPTO
                     if (IS_CMDARG_SET(nDPIsrvd_options.server_ca_pem_file) != 0) {
-                        ncrypt_entity(&remotes.desc[i].event_collector_in.ncrypt_entity);
+                        crypt_ent = &remotes.desc[i].event_collector_in.ncrypt_entity;
                     }
 #endif
                     break;
@@ -869,10 +862,19 @@ static struct remote_desc * get_remote_descriptor(enum sock_type type, int remot
                     additional_write_buffers = &remotes.desc[i].event_distributor_in.additional_write_buffers;
 #ifdef ENABLE_CRYPTO
                     if (IS_CMDARG_SET(nDPIsrvd_options.server_ca_pem_file) != 0) {
-                        ncrypt_entity(&remotes.desc[i].event_distributor_in.ncrypt_entity);
+                        crypt_ent = &remotes.desc[i].event_distributor_in.ncrypt_entity;
                     }
 #endif
                     break;
+            }
+
+            if (read_buffer != NULL)
+            {
+                if (nDPIsrvd_json_buffer_init(read_buffer, max_buffer_size) != 0)
+                {
+                    logger(1, "Read/JSON buffer init failed, size: %zu bytes", max_buffer_size);
+                    err = 1;
+                }
             }
 
             if (additional_write_buffers != NULL && *additional_write_buffers == NULL)
@@ -881,15 +883,33 @@ static struct remote_desc * get_remote_descriptor(enum sock_type type, int remot
                 if (*additional_write_buffers == NULL)
                 {
                     logger(1, "%s", "Could not create additional write buffers");
-                    return NULL;
+                    err = 1;
                 }
             }
             if (write_buffer != NULL && nDPIsrvd_buffer_init(&write_buffer->buf, max_buffer_size) != 0)
             {
                 logger(1, "Write buffer init failed, size: %zu bytes", max_buffer_size);
+                err = 1;
+            }
+
+            if (err != 0) {
+                if (write_buffer != NULL) {
+                    nDPIsrvd_buffer_free(&write_buffer->buf);
+                }
+                if (additional_write_buffers != NULL && *additional_write_buffers != NULL) {
+                    utarray_free(*additional_write_buffers);
+                    *additional_write_buffers = NULL;
+                }
+                if (read_buffer != NULL) {
+                    nDPIsrvd_json_buffer_free(read_buffer);
+                }
+#ifdef ENABLE_CRYPTO
+                ncrypt_free_entity(crypt_ent);
+#endif
                 return NULL;
             }
 
+            remotes.desc_used++;
             remotes.desc[i].sock_type = type;
             remotes.desc[i].fd = remote_fd;
             return &remotes.desc[i];
@@ -902,6 +922,10 @@ static struct remote_desc * get_remote_descriptor(enum sock_type type, int remot
 
 static void free_remote(struct nio * const io, struct remote_desc * remote)
 {
+    if (remote == NULL)
+    {
+        return;
+    }
     if (remote->fd > -1)
     {
         errno = 0;
@@ -1284,7 +1308,7 @@ static struct remote_desc * accept_remote(int server_fd,
     int client_fd;
 
     while ((client_fd = accept(server_fd, sockaddr, addrlen)) < 0 && errno == EINTR) {}
-    if (client_fd < 0 || set_fd_cloexec(client_fd) < 0)
+    if (client_fd < 0)
     {
         logger(1, "Accept failed: %s", strerror(errno));
         return NULL;
@@ -1292,6 +1316,7 @@ static struct remote_desc * accept_remote(int server_fd,
 
     if (set_fd_cloexec(client_fd) < 0)
     {
+        close(client_fd);
         logger(1, "Set close on exec() for fd %d failed: %s", client_fd, strerror(errno));
         return NULL;
     }
@@ -1299,6 +1324,7 @@ static struct remote_desc * accept_remote(int server_fd,
     struct remote_desc * current = get_remote_descriptor(socktype, client_fd, NETWORK_BUFFER_MAX_SIZE);
     if (current == NULL)
     {
+        close(client_fd);
         logger(1, "Could not acquire remote descriptor from the internal descriptor table, too many clients connected?");
         return NULL;
     }
@@ -1655,12 +1681,14 @@ static int handle_incoming_data(struct nio * const io, struct remote_desc * cons
         }
         else
 #endif
-        while ((bytes_read = read(current->fd,
-                                  json_read_buffer->buf.ptr.raw + json_read_buffer->buf.used,
-                                  json_read_buffer->buf.max - json_read_buffer->buf.used)) < 0 &&
-               errno == EINTR)
         {
-            // Retry if interrupted by a signal.
+            while ((bytes_read = read(current->fd,
+                                      json_read_buffer->buf.ptr.raw + json_read_buffer->buf.used,
+                                      json_read_buffer->buf.max - json_read_buffer->buf.used)) < 0 &&
+                   errno == EINTR)
+            {
+                // Retry if interrupted by a signal.
+            }
         }
         if (bytes_read < 0 || errno != 0)
         {
@@ -1668,6 +1696,7 @@ static int handle_incoming_data(struct nio * const io, struct remote_desc * cons
             disconnect_client(io, current);
             return 1;
         }
+
         if (bytes_read == 0)
         {
             logger_nDPIsrvd(current, "Collector connection", "closed during read");
