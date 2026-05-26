@@ -1,7 +1,10 @@
 #ifndef NCRYPT_H
 #define NCRYPT_H 1
 
-#include <stdlib.h>
+#include <time.h>
+#include <unistd.h>
+
+#define TLS_HANDSHAKE_TIMEOUT 5
 
 #define ncrypt_ctx(x)                                                                                                  \
     do                                                                                                                 \
@@ -12,7 +15,10 @@
     do                                                                                                                 \
     {                                                                                                                  \
         (x)->ssl = NULL;                                                                                               \
+        (x)->handshake_started = time(NULL); \
         (x)->handshake_done = 0;                                                                                       \
+        (x)->is_collector = 0; \
+        (x)->is_distributor = 0; \
     } while (0);
 #define ncrypt_handshake_done(x) ((x)->handshake_done)
 #define ncrypt_set_handshake(x)                                                                                        \
@@ -25,6 +31,7 @@
     {                                                                                                                  \
         (x)->handshake_done = 0;                                                                                       \
     } while (0)
+#define ncrypt_since_start(x) ((long long int)(time(NULL) - (x)->handshake_started))
 
 enum
 {
@@ -44,6 +51,7 @@ struct ncrypt_ctx
 struct ncrypt_entity
 {
     void * ssl;
+    time_t handshake_started;
     unsigned int handshake_done : 1;
     unsigned int is_collector : 1;
     unsigned int is_distributor : 1;
@@ -54,12 +62,12 @@ int ncrypt_init(void);
 int ncrypt_init_client(struct ncrypt_ctx * const ctx,
                        char const * const ca_path,
                        char const * const privkey_pem_path,
-                       char const * const pubkey_pem_path);
+                       char const * const cert_pem_path);
 
 int ncrypt_init_server(struct ncrypt_ctx * const ctx,
                        char const * const ca_path,
                        char const * const privkey_pem_path,
-                       char const * const pubkey_pem_path);
+                       char const * const cert_pem_path);
 
 int ncrypt_on_connect(struct ncrypt_ctx * const ctx, int connect_fd, struct ncrypt_entity * const ent);
 

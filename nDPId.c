@@ -44,6 +44,10 @@
 #endif
 #include "utils.h"
 
+#ifdef ENABLE_CRYPTO
+#define nDPId_TLS_USED(...) (IS_CMDARG_SET(nDPId_options.server_ca_pem_file) != 0)
+#endif
+
 #ifndef ETHERTYPE_DCE
 #define ETHERTYPE_DCE 0x8903
 #endif
@@ -627,7 +631,12 @@ struct confopt general_config_map[] = {CONFOPT("netif", &nDPId_options.pcap_file
                                        CONFOPT("poll", &nDPId_options.use_poll),
 #endif
 #ifdef ENABLE_PFRING
-                                       CONFOPT("pfring", &nDPId_options.use_pfring)
+                                       CONFOPT("pfring", &nDPId_options.use_pfring),
+#endif
+#ifdef ENABLE_CRYPTO
+                                       CONFOPT("cert-pem-file", &nDPId_options.client_crt_pem_file),
+                                       CONFOPT("key-pem-file", &nDPId_options.client_key_pem_file),
+                                       CONFOPT("ca-pem-file", &nDPId_options.server_ca_pem_file),
 #endif
 };
 struct confopt tuning_config_map[] = {
@@ -2607,7 +2616,11 @@ static int connect_to_collector(struct nDPId_reader_thread * const reader_thread
     {
         close(reader_thread->collector_sockfd);
 #ifdef ENABLE_CRYPTO
-        ncrypt_clear_handshake(&reader_thread->workflow->ncrypt_entity);
+        if (nDPId_TLS_USED() != 0) {
+            ncrypt_free_entity(&reader_thread->workflow->ncrypt_entity);
+            ncrypt_entity(&reader_thread->workflow->ncrypt_entity);
+            ncrypt_clear_handshake(&reader_thread->workflow->ncrypt_entity);
+        }
 #endif
     }
 
@@ -2718,25 +2731,33 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
     }
 
 #ifdef ENABLE_CRYPTO
-    if (IS_CMDARG_SET(nDPId_options.server_ca_pem_file) != 0)
+    if (nDPId_TLS_USED() != 0)
     {
         if (ncrypt_handshake_done(&workflow->ncrypt_entity) == 0)
         {
-            set_collector_block(reader_thread);
-            ncrypt_free_entity(&workflow->ncrypt_entity);
             int rv = ncrypt_on_connect(&ncrypt_ctx, reader_thread->collector_sockfd, &workflow->ncrypt_entity);
             if (rv != NCRYPT_SUCCESS)
             {
-                logger(1,
-                       "[%8llu, %zu] TLS handshake failed with: %d",
-                       workflow->packets_captured,
-                       reader_thread->array_index,
-                       rv);
-                reader_thread->collector_sock_last_errno = EPIPE;
+                saved_errno = errno;
+                if (ncrypt_since_start(&workflow->ncrypt_entity) >= TLS_HANDSHAKE_TIMEOUT) {
+                    logger(1,
+                           "[%8llu, %zu] TLS handshake timeout after %lld seconds",
+                           workflow->packets_captured,
+                           reader_thread->array_index,
+                           ncrypt_since_start(&workflow->ncrypt_entity));
+                    reader_thread->collector_sock_last_errno = EPIPE;
+                }
+                else if (saved_errno != EAGAIN) {
+                    logger(1,
+                           "[%8llu, %zu] TLS handshake failed with: %d",
+                           workflow->packets_captured,
+                           reader_thread->array_index,
+                           rv);
+                    reader_thread->collector_sock_last_errno = EPIPE;
+                }
                 return;
             }
             ncrypt_set_handshake(&workflow->ncrypt_entity);
-            set_collector_nonblock(reader_thread);
         }
     }
 #endif
@@ -2749,7 +2770,7 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
 
     ssize_t written;
 #ifdef ENABLE_CRYPTO
-    if (IS_CMDARG_SET(nDPId_options.server_ca_pem_file) != 0)
+    if (nDPId_TLS_USED() != 0)
     {
         written = ncrypt_write(&workflow->ncrypt_entity, newline_json_msg, s_ret);
     }
@@ -2780,7 +2801,7 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
             while (1)
             {
 #ifdef ENABLE_CRYPTO
-                if (IS_CMDARG_SET(nDPId_options.server_ca_pem_file) != 0)
+                if (nDPId_TLS_USED() != 0)
                 {
                     written = ncrypt_write(&workflow->ncrypt_entity, newline_json_msg + pos, s_ret - pos);
                 }
@@ -6329,7 +6350,7 @@ int main(int argc, char ** argv)
     }
 
 #ifdef ENABLE_CRYPTO
-    if (IS_CMDARG_SET(nDPId_options.server_ca_pem_file) != 0 &&
+    if (nDPId_TLS_USED() != 0 &&
         ncrypt_init_client(&ncrypt_ctx,
                            GET_CMDARG_STR(nDPId_options.server_ca_pem_file),
                            GET_CMDARG_STR(nDPId_options.client_key_pem_file),

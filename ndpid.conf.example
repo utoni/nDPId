@@ -22,8 +22,13 @@
 
 # Collector endpoint as UNIX socket (usually nDPIsrvd)
 #collector   = /run/nDPIsrvd/collector
-# Collector endpoint as UDP socket (usually a custom application)
+# Collector endpoint as TCP socket (usually nDPIsrvd or a custom application)
 #collector   = 127.0.0.1:7777
+
+# Setup TLS for TCP Collector (PEMs preferably generated with scripts/gen-cacerts.sh)
+#cert-pem-file = /path/to/client-crt.pem
+#key-pem-file  = /path/to/client-key.pem
+#ca-pem-file   = /path/to/ca.pem
 
 # Set a name for this nDPId instance
 #alias       = myhostname

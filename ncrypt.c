@@ -66,9 +66,9 @@ static int ncrypt_load_pems(struct ncrypt_ctx * const ctx,
 int ncrypt_init_client(struct ncrypt_ctx * const ctx,
                        char const * const ca_path,
                        char const * const privkey_pem_path,
-                       char const * const pubkey_pem_path)
+                       char const * const cert_pem_path)
 {
-    if (ca_path == NULL || privkey_pem_path == NULL || pubkey_pem_path == NULL)
+    if (ca_path == NULL || privkey_pem_path == NULL || cert_pem_path == NULL)
     {
         return NCRYPT_NULL_PTR;
     }
@@ -80,15 +80,15 @@ int ncrypt_init_client(struct ncrypt_ctx * const ctx,
         return rv;
     }
 
-    return ncrypt_load_pems(ctx, ca_path, privkey_pem_path, pubkey_pem_path);
+    return ncrypt_load_pems(ctx, ca_path, privkey_pem_path, cert_pem_path);
 }
 
 int ncrypt_init_server(struct ncrypt_ctx * const ctx,
                        char const * const ca_path,
                        char const * const privkey_pem_path,
-                       char const * const pubkey_pem_path)
+                       char const * const cert_pem_path)
 {
-    if (ca_path == NULL || privkey_pem_path == NULL || pubkey_pem_path == NULL)
+    if (ca_path == NULL || privkey_pem_path == NULL || cert_pem_path == NULL)
     {
         return NCRYPT_NULL_PTR;
     }
@@ -100,7 +100,7 @@ int ncrypt_init_server(struct ncrypt_ctx * const ctx,
         return rv;
     }
 
-    return ncrypt_load_pems(ctx, ca_path, privkey_pem_path, pubkey_pem_path);
+    return ncrypt_load_pems(ctx, ca_path, privkey_pem_path, cert_pem_path);
 }
 
 int ncrypt_on_connect(struct ncrypt_ctx * const ctx, int connect_fd, struct ncrypt_entity * const ent)

@@ -16,6 +16,11 @@
 #include <sys/signalfd.h>
 #endif
 #include <sys/socket.h>
+#ifndef __APPLE__
+// bad apples claim to be POSIX compatible, but they aren't
+// TODO: Use kqueue / kevent for Apple, also for FreeBSD if required
+#include <sys/timerfd.h>
+#endif
 #include <sys/types.h>
 #include <unistd.h>
 
@@ -26,6 +31,10 @@
 #endif
 #include "nio.h"
 #include "utils.h"
+
+#ifdef ENABLE_CRYPTO
+#define nDPIsrvd_TLS_USED(...) (IS_CMDARG_SET(nDPIsrvd_options.server_ca_pem_file) != 0)
+#endif
 
 enum sock_type
 {
@@ -178,9 +187,9 @@ struct confopt config_map[] = {CONFOPT("pidfile", &nDPIsrvd_options.pidfile),
 #endif
 #ifdef ENABLE_CRYPTO
                                    ,
-                               CONFOPT("cert", &nDPIsrvd_options.server_crt_pem_file),
-                               CONFOPT("key", &nDPIsrvd_options.server_key_pem_file),
-                               CONFOPT("ca", &nDPIsrvd_options.server_ca_pem_file)
+                               CONFOPT("cert-pem-file", &nDPIsrvd_options.server_crt_pem_file),
+                               CONFOPT("key-pem-file", &nDPIsrvd_options.server_key_pem_file),
+                               CONFOPT("ca-pem-file", &nDPIsrvd_options.server_ca_pem_file)
 #endif
 };
 
@@ -446,7 +455,7 @@ static int drain_main_buffer(struct remote_desc * const remote)
     {
         errno = 0;
 #ifdef ENABLE_CRYPTO
-        if (remote->sock_type == DISTRIBUTOR_IN && IS_CMDARG_SET(nDPIsrvd_options.server_ca_pem_file) != 0)
+        if (remote->sock_type == DISTRIBUTOR_IN && nDPIsrvd_TLS_USED() != 0)
         {
             bytes_written = ncrypt_write(
                 &remote->event_distributor_in.ncrypt_entity, (char const *)write_buffer->buf.ptr.raw, write_buffer->buf.used);
@@ -506,7 +515,7 @@ static int drain_write_buffers(struct remote_desc * const remote)
         {
             errno = 0;
 #ifdef ENABLE_CRYPTO
-            if (remote->sock_type == DISTRIBUTOR_IN && IS_CMDARG_SET(nDPIsrvd_options.server_ca_pem_file) != 0)
+            if (remote->sock_type == DISTRIBUTOR_IN && nDPIsrvd_TLS_USED() != 0)
             {
                 written = ncrypt_write(&remote->event_distributor_in.ncrypt_entity,
                                        (char const *)(buf->buf.ptr.raw + buf->written),
@@ -848,7 +857,7 @@ static struct remote_desc * get_remote_descriptor(enum sock_type type, int remot
                 case COLLECTOR_IN:
                     read_buffer = &remotes.desc[i].event_collector_in.main_read_buffer;
 #ifdef ENABLE_CRYPTO
-                    if (IS_CMDARG_SET(nDPIsrvd_options.server_ca_pem_file) != 0) {
+                    if (nDPIsrvd_TLS_USED() != 0) {
                         crypt_ent = &remotes.desc[i].event_collector_in.ncrypt_entity;
                     }
 #endif
@@ -861,12 +870,18 @@ static struct remote_desc * get_remote_descriptor(enum sock_type type, int remot
                     write_buffer = &remotes.desc[i].event_distributor_in.main_write_buffer;
                     additional_write_buffers = &remotes.desc[i].event_distributor_in.additional_write_buffers;
 #ifdef ENABLE_CRYPTO
-                    if (IS_CMDARG_SET(nDPIsrvd_options.server_ca_pem_file) != 0) {
+                    if (nDPIsrvd_TLS_USED() != 0) {
                         crypt_ent = &remotes.desc[i].event_distributor_in.ncrypt_entity;
                     }
 #endif
                     break;
             }
+
+#ifdef ENABLE_CRYPTO
+            if (crypt_ent != NULL) {
+                ncrypt_entity(crypt_ent);
+            }
+#endif
 
             if (read_buffer != NULL)
             {
@@ -1040,7 +1055,7 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
 {
     int opt;
 
-    while ((opt = getopt(argc, argv, "f:lL:c:C:k:K:F:dp:s:S:G:m:u:g:M:vh")) != -1)
+    while ((opt = getopt(argc, argv, "f:lL:c:C:k:K:F:edp:s:S:G:m:u:g:M:vh")) != -1)
     {
         switch (opt)
         {
@@ -1518,7 +1533,7 @@ static int new_connection(struct nio * const io, int eventfd)
     {
         // Crypto needs to write data
 #ifdef ENABLE_CRYPTO
-        if (IS_CMDARG_SET(nDPIsrvd_options.server_ca_pem_file) == 0)
+        if (nDPIsrvd_TLS_USED() == 0)
 #endif
         {
             shutdown(current->fd, SHUT_WR); // collector
@@ -1630,7 +1645,7 @@ static int handle_incoming_data(struct nio * const io, struct remote_desc * cons
     unsigned long long int * const json_bytes = get_collector_json_bytes(current);
 
 #ifdef ENABLE_CRYPTO
-    if (IS_CMDARG_SET(nDPIsrvd_options.server_ca_pem_file) == 0)
+    if (nDPIsrvd_TLS_USED() == 0)
 #endif
     {
         if (json_read_buffer == NULL)
@@ -1669,7 +1684,7 @@ static int handle_incoming_data(struct nio * const io, struct remote_desc * cons
         ssize_t bytes_read;
 
 #ifdef ENABLE_CRYPTO
-        if (current->sock_type == COLLECTOR_IN && IS_CMDARG_SET(nDPIsrvd_options.server_ca_pem_file) != 0)
+        if (current->sock_type == COLLECTOR_IN && nDPIsrvd_TLS_USED() != 0)
         {
             while ((bytes_read = ncrypt_read(&current->event_collector_in.ncrypt_entity,
                                              (char *)json_read_buffer->buf.ptr.raw + json_read_buffer->buf.used,
@@ -1716,7 +1731,7 @@ static int handle_incoming_data(struct nio * const io, struct remote_desc * cons
         for (size_t i = 0; i < remotes.desc_size; ++i)
         {
 #ifdef ENABLE_CRYPTO
-            if (IS_CMDARG_SET(nDPIsrvd_options.server_ca_pem_file) != 0)
+            if (nDPIsrvd_TLS_USED() != 0)
             {
                 struct ncrypt_entity const * ent = NULL;
                 switch (remotes.desc[i].sock_type) {
@@ -1817,7 +1832,7 @@ static int handle_data_event(struct nio * const io, int index)
     }
 
 #ifdef ENABLE_CRYPTO
-    if (IS_CMDARG_SET(nDPIsrvd_options.server_ca_pem_file) != 0
+    if (nDPIsrvd_TLS_USED() != 0
         && (current->sock_type == COLLECTOR_IN ||
             current->sock_type == DISTRIBUTOR_IN))
     {
@@ -1833,30 +1848,31 @@ static int handle_data_event(struct nio * const io, int index)
             if (rv != NCRYPT_SUCCESS) {
                 if (errno == EAGAIN)
                     return 0;
-                disconnect_client(io, current);
                 if (errno != 0)
                     logger_nDPIsrvd(current, "TLS handshake from", "failed with: %d (%s)",
                                     rv, strerror(errno));
                 else
                     logger_nDPIsrvd(current, "TLS handshake from", "failed with: %d", rv);
+                disconnect_client(io, current);
                 return 1;
             }
             if (current->sock_type == COLLECTOR_IN &&
                 current->event_collector_in.ncrypt_entity.is_collector == 0)
             {
-                disconnect_client(io, current);
                 logger_nDPIsrvd(current, "TLS ACL denial from", "not a collector");
+                disconnect_client(io, current);
                 return 1;
             }
             if (current->sock_type == DISTRIBUTOR_IN &&
                 current->event_distributor_in.ncrypt_entity.is_distributor == 0)
             {
-                disconnect_client(io, current);
                 logger_nDPIsrvd(current, "TLS ACL denial from", "not a distributor");
+                disconnect_client(io, current);
                 return 1;
             }
             ncrypt_set_handshake(ent);
         }
+
         if (current->sock_type == DISTRIBUTOR_IN)
         {
             ssize_t bytes_read;
@@ -1931,6 +1947,44 @@ static int mainloop(struct nio * const io)
 {
 #if !defined(__FreeBSD__) && !defined(__APPLE__)
     int signalfd = setup_signalfd(io);
+    if (signalfd < 0) {
+        logger(1, "Could not initialize signal fd: %s", strerror(errno));
+        return 1;
+    }
+#endif
+#if defined(ENABLE_CRYPTO) && !defined(__APPLE__)
+    int ncrypt_handshake_timerfd = -1;
+    if (nDPIsrvd_TLS_USED() != 0) {
+        ncrypt_handshake_timerfd = timerfd_create(CLOCK_REALTIME, TFD_NONBLOCK | TFD_CLOEXEC);
+        if (ncrypt_handshake_timerfd < 0)
+        {
+            logger(1, "Could not initialize TLS handshake timer: %s", strerror(errno));
+            return 1;
+        }
+        {
+            struct timespec now;
+            struct itimerspec timeout = {};
+
+            if (clock_gettime(CLOCK_REALTIME, &now) != 0)
+            {
+                return 1;
+            }
+            timeout.it_value.tv_sec = now.tv_sec + TLS_HANDSHAKE_TIMEOUT;
+            timeout.it_value.tv_nsec = now.tv_nsec;
+            timeout.it_interval.tv_sec = TLS_HANDSHAKE_TIMEOUT;
+            timeout.it_interval.tv_nsec = 0;
+            if (timerfd_settime(ncrypt_handshake_timerfd, TFD_TIMER_ABSTIME, &timeout, NULL) != 0)
+            {
+                return 1;
+            }
+        }
+        if (add_in_event_fd(io, ncrypt_handshake_timerfd) != 0)
+        {
+            logger(1, "Error adding TLS handshake timer: %s",
+                   (errno != 0 ? strerror(errno) : "Internal Error"));
+            return 1;
+        }
+    }
 #endif
 
     while (nDPIsrvd_main_thread_shutdown == 0)
@@ -2012,6 +2066,44 @@ static int mainloop(struct nio * const io)
                 }
             }
 #endif
+#if defined(ENABLE_CRYPTO) && !defined(__APPLE__)
+            else if (fd == ncrypt_handshake_timerfd)
+            {
+                uint64_t exp;
+                ssize_t s;
+
+                s = read(ncrypt_handshake_timerfd, &exp, sizeof(exp));
+                if (s < 0) {
+                    logger(1, "Timer read failed: %s", strerror(errno));
+                    continue;
+                }
+                if (s != sizeof(exp)) {
+                    logger(1, "Timer read %zd instead of %zu bytes",
+                           s, sizeof(exp));
+                    continue;
+                }
+                for (size_t i = 0; i < remotes.desc_size; ++i)
+                {
+                    if (remotes.desc[i].fd < 0) {
+                        continue;
+                    }
+                    struct ncrypt_entity const * crypt_ent = NULL;
+                    if (remotes.desc[i].sock_type == COLLECTOR_IN) {
+                        crypt_ent = &remotes.desc[i].event_collector_in.ncrypt_entity;
+                    } else if (remotes.desc[i].sock_type == DISTRIBUTOR_IN) {
+                        crypt_ent = &remotes.desc[i].event_distributor_in.ncrypt_entity;
+                    }
+                    if (crypt_ent != NULL && ncrypt_handshake_done(crypt_ent) == 0) {
+                        if (ncrypt_since_start(crypt_ent) >= TLS_HANDSHAKE_TIMEOUT) {
+                            logger_nDPIsrvd(&remotes.desc[i], "TLS handshake timeout for",
+                                            "after %lld seconds", ncrypt_since_start(crypt_ent));
+                            disconnect_client(io, &remotes.desc[i]);
+                            continue;
+                        }
+                    }
+                }
+            }
+#endif
             else
             {
                 /* Incoming data / Outoing data ready to receive / send. */
@@ -2025,6 +2117,9 @@ static int mainloop(struct nio * const io)
 
     free_remotes(io);
     nio_free(io);
+#if defined(ENABLE_CRYPTO) && !defined(__APPLE__)
+    close(ncrypt_handshake_timerfd);
+#endif
 #if !defined(__FreeBSD__) && !defined(__APPLE__)
     close(signalfd);
 #endif
@@ -2228,14 +2323,16 @@ int main(int argc, char ** argv)
     }
 
 #ifdef ENABLE_CRYPTO
-    if (IS_CMDARG_SET(nDPIsrvd_options.server_ca_pem_file) != 0 &&
-        ncrypt_init_server(&ncrypt_ctx,
-                           GET_CMDARG_STR(nDPIsrvd_options.server_ca_pem_file),
-                           GET_CMDARG_STR(nDPIsrvd_options.server_key_pem_file),
-                           GET_CMDARG_STR(nDPIsrvd_options.server_crt_pem_file)) != NCRYPT_SUCCESS)
+    if (nDPIsrvd_TLS_USED() != 0)
     {
-        logger_early(1, "%s", "Could not initialize crypto.");
-        return 1;
+        if (ncrypt_init_server(&ncrypt_ctx,
+                               GET_CMDARG_STR(nDPIsrvd_options.server_ca_pem_file),
+                               GET_CMDARG_STR(nDPIsrvd_options.server_key_pem_file),
+                               GET_CMDARG_STR(nDPIsrvd_options.server_crt_pem_file)) != NCRYPT_SUCCESS)
+        {
+            logger_early(1, "%s", "Could not initialize crypto.");
+            return 1;
+        }
     }
 #endif
 
@@ -2261,7 +2358,7 @@ int main(int argc, char ** argv)
     {
         logger(0, "collector TCP/IP socket listen on `%s'", GET_CMDARG_STR(nDPIsrvd_options.collector_in_address));
 #ifdef ENABLE_CRYPTO
-        if (IS_CMDARG_SET(nDPIsrvd_options.server_ca_pem_file) == 0)
+        if (nDPIsrvd_TLS_USED() == 0)
 #endif
         {
             logger(1,
@@ -2275,7 +2372,7 @@ int main(int argc, char ** argv)
     {
         logger(0, "distributor TCP/IP socket listen on `%s'", GET_CMDARG_STR(nDPIsrvd_options.distributor_in_address));
 #ifdef ENABLE_CRYPTO
-        if (IS_CMDARG_SET(nDPIsrvd_options.server_ca_pem_file) == 0)
+        if (nDPIsrvd_TLS_USED() == 0)
 #endif
         {
             logger(1,

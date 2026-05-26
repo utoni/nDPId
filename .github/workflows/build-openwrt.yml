@@ -76,6 +76,7 @@ jobs:
 
           cat <<EOF >> .config
           CONFIG_PACKAGE_nDPId-testing=y
+          CONFIG_NDPID_TESTING_ENABLE_TLS=y
           CONFIG_NDPID_TESTING_COLLECTD_SUPPORT=y
           CONFIG_NDPID_TESTING_INFLUXDB=y
           CONFIG_NDPID_TESTING_PFRING=n
