@@ -18,7 +18,7 @@
 #include <sys/socket.h>
 #ifndef __APPLE__
 // bad apples claim to be POSIX compatible, but they aren't
-// TODO: Use kqueue / kevent for Apple, also for FreeBSD if required
+// TODO: Use kqueue / kevent based Timer instead
 #include <sys/timerfd.h>
 #endif
 #include <sys/types.h>
@@ -1846,8 +1846,32 @@ static int handle_data_event(struct nio * const io, int index)
             errno = 0;
             int rv = ncrypt_on_accept(&ncrypt_ctx, current->fd, ent);
             if (rv != NCRYPT_SUCCESS) {
-                if (errno == EAGAIN)
+                if (rv == NCRYPT_WANT_READ) {
+                    errno = 0;
+                    if (set_in_event(io, current) != 0)
+                    {
+                        logger_nDPIsrvd(current,
+                                        "Could not add input event to",
+                                        ", disconnecting: %s",
+                                        (errno != 0 ? strerror(errno) : "Internal Error"));
+                        disconnect_client(io, current);
+                        return 1;
+                    }
                     return 0;
+                }
+                if (rv == NCRYPT_WANT_WRITE) {
+                    errno = 0;
+                    if (set_out_event(io, current) != 0)
+                    {
+                        logger_nDPIsrvd(current,
+                                        "Could not add output event to",
+                                        ", disconnecting: %s",
+                                        (errno != 0 ? strerror(errno) : "Internal Error"));
+                        disconnect_client(io, current);
+                        return 1;
+                    }
+                    return 0;
+                }
                 if (errno != 0)
                     logger_nDPIsrvd(current, "TLS handshake from", "failed with: %d (%s)",
                                     rv, strerror(errno));

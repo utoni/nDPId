@@ -715,6 +715,26 @@ static int set_collector_block(struct nDPId_reader_thread * const reader_thread)
 {
     int current_flags;
 
+    struct timeval tv;
+    tv.tv_sec = 5;
+    tv.tv_usec = 0;
+    if (setsockopt(reader_thread->collector_sockfd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv)) != 0)
+    {
+        logger(1, "[%8llu] Could not set receive timeout for collector fd %d: %s",
+               reader_thread->workflow->packets_processed,
+               reader_thread->collector_sockfd,
+               strerror(errno));
+    }
+    tv.tv_sec = 5;
+    tv.tv_usec = 0;
+    if (setsockopt(reader_thread->collector_sockfd, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof(tv)) != 0)
+    {
+        logger(1, "[%8llu] Could not set send timeout for collector fd %d: %s",
+               reader_thread->workflow->packets_processed,
+               reader_thread->collector_sockfd,
+               strerror(errno));
+    }
+
     while ((current_flags = fcntl(reader_thread->collector_sockfd, F_GETFL, 0)) == -1 && errno == EINTR) {
         // Retry if interrupted by a signal.
     }
@@ -2735,28 +2755,25 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
     {
         if (ncrypt_handshake_done(&workflow->ncrypt_entity) == 0)
         {
-            int rv = ncrypt_on_connect(&ncrypt_ctx, reader_thread->collector_sockfd, &workflow->ncrypt_entity);
-            if (rv != NCRYPT_SUCCESS)
+            set_collector_block(reader_thread);
+            if (ncrypt_on_connect(&ncrypt_ctx, reader_thread->collector_sockfd, &workflow->ncrypt_entity) != NCRYPT_SUCCESS)
             {
-                saved_errno = errno;
-                if (ncrypt_since_start(&workflow->ncrypt_entity) >= TLS_HANDSHAKE_TIMEOUT) {
-                    logger(1,
-                           "[%8llu, %zu] TLS handshake timeout after %lld seconds",
-                           workflow->packets_captured,
-                           reader_thread->array_index,
-                           ncrypt_since_start(&workflow->ncrypt_entity));
-                    reader_thread->collector_sock_last_errno = EPIPE;
-                }
-                else if (saved_errno != EAGAIN) {
-                    logger(1,
-                           "[%8llu, %zu] TLS handshake failed with: %d",
-                           workflow->packets_captured,
-                           reader_thread->array_index,
-                           rv);
-                    reader_thread->collector_sock_last_errno = EPIPE;
+                switch (ncrypt_last_error(&workflow->ncrypt_entity)) {
+                    case NCRYPT_WANT_READ:
+                    case NCRYPT_WANT_WRITE:
+                        break;
+                    default:
+                        logger(1,
+                               "[%8llu, %zu] TLS handshake failed with: %d",
+                               workflow->packets_captured,
+                               reader_thread->array_index,
+                               ncrypt_last_error(&workflow->ncrypt_entity));
+                        reader_thread->collector_sock_last_errno = EPIPE;
+                        break;
                 }
                 return;
             }
+            set_collector_nonblock(reader_thread);
             ncrypt_set_handshake(&workflow->ncrypt_entity);
         }
     }

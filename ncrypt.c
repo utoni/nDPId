@@ -110,6 +110,7 @@ int ncrypt_on_connect(struct ncrypt_ctx * const ctx, int connect_fd, struct ncry
         ent->ssl = SSL_new(ctx->ssl_ctx);
         if (ent->ssl == NULL)
         {
+            ent->last_ncrypt_error = NCRYPT_NOT_INITIALIZED;
             return NCRYPT_NOT_INITIALIZED;
         }
         SSL_set1_host(ent->ssl, "nDPIsrvd");
@@ -122,14 +123,17 @@ int ncrypt_on_connect(struct ncrypt_ctx * const ctx, int connect_fd, struct ncry
     if (rv != 1)
     {
         int err = SSL_get_error(ent->ssl, rv);
-        if (err == SSL_ERROR_WANT_WRITE || err == SSL_ERROR_WANT_READ)
+        if (err == SSL_ERROR_WANT_WRITE)
         {
-            errno = EAGAIN;
+            ent->last_ncrypt_error = NCRYPT_WANT_WRITE;
+            return NCRYPT_WANT_WRITE;
         }
-        else if (err != SSL_ERROR_SYSCALL)
+        else if (err != SSL_ERROR_WANT_READ)
         {
-            errno = EPROTO;
+            ent->last_ncrypt_error = NCRYPT_WANT_READ;
+            return NCRYPT_WANT_READ;
         }
+        ent->last_ncrypt_error = NCRYPT_HANDSHAKE_FAILED;
         return NCRYPT_HANDSHAKE_FAILED;
     }
 
@@ -143,6 +147,7 @@ int ncrypt_on_accept(struct ncrypt_ctx * const ctx, int accept_fd, struct ncrypt
         ent->ssl = SSL_new(ctx->ssl_ctx);
         if (ent->ssl == NULL)
         {
+            ent->last_ncrypt_error = NCRYPT_NOT_INITIALIZED;
             return NCRYPT_NOT_INITIALIZED;
         }
         SSL_set_fd(ent->ssl, accept_fd);
@@ -153,21 +158,24 @@ int ncrypt_on_accept(struct ncrypt_ctx * const ctx, int accept_fd, struct ncrypt
     if (rv != 1)
     {
         int err = SSL_get_error(ent->ssl, rv);
-        if (err == SSL_ERROR_WANT_WRITE || err == SSL_ERROR_WANT_READ)
+        if (err == SSL_ERROR_WANT_WRITE)
         {
-            errno = EAGAIN;
+            ent->last_ncrypt_error = NCRYPT_WANT_WRITE;
+            return NCRYPT_WANT_WRITE;
         }
-        else if (err != SSL_ERROR_SYSCALL)
+        else if (err == SSL_ERROR_WANT_READ)
         {
-            errno = EPROTO;
+            ent->last_ncrypt_error = NCRYPT_WANT_READ;
+            return NCRYPT_WANT_READ;
         }
+        ent->last_ncrypt_error = NCRYPT_HANDSHAKE_FAILED;
         return NCRYPT_HANDSHAKE_FAILED;
     }
 
     X509 * const peer = SSL_get_peer_certificate(ent->ssl);
     if (peer == NULL)
     {
-        errno = EPROTO;
+        ent->last_ncrypt_error = NCRYPT_HANDSHAKE_FAILED;
         return NCRYPT_HANDSHAKE_FAILED;
     }
     //PEM_write_X509(stderr, peer);
@@ -211,7 +219,7 @@ int ncrypt_on_accept(struct ncrypt_ctx * const ctx, int accept_fd, struct ncrypt
 
     if (!matched)
     {
-        errno = EPROTO;
+        ent->last_ncrypt_error = EPROTO;
         return NCRYPT_HANDSHAKE_FAILED;
     }
 
@@ -222,13 +230,13 @@ ssize_t ncrypt_read(struct ncrypt_entity * const ent, char * const json_msg, int
 {
     if (ent->ssl == NULL)
     {
-        errno = EPROTO;
+        ent->last_ncrypt_error = NCRYPT_NOT_INITIALIZED;
         return -1;
     }
 
     if (ncrypt_handshake_done(ent) == 0)
     {
-        errno = EPROTO;
+        ent->last_ncrypt_error = NCRYPT_HANDSHAKE_FAILED;
         return -1;
     }
 
@@ -236,13 +244,13 @@ ssize_t ncrypt_read(struct ncrypt_entity * const ent, char * const json_msg, int
     if (rv <= 0)
     {
         int err = SSL_get_error(ent->ssl, rv);
-        if (err == SSL_ERROR_WANT_WRITE || err == SSL_ERROR_WANT_READ)
+        if (err == SSL_ERROR_WANT_WRITE)
         {
-            errno = EAGAIN;
+            ent->last_ncrypt_error = NCRYPT_WANT_WRITE;
         }
-        else if (err != SSL_ERROR_SYSCALL)
+        else if (err == SSL_ERROR_WANT_READ)
         {
-            errno = EPROTO;
+            ent->last_ncrypt_error = NCRYPT_WANT_READ;
         }
         return -1;
     }
@@ -254,13 +262,13 @@ ssize_t ncrypt_write(struct ncrypt_entity * const ent, char const * const json_m
 {
     if (ent->ssl == NULL)
     {
-        errno = EPROTO;
+        ent->last_ncrypt_error = NCRYPT_NOT_INITIALIZED;
         return -1;
     }
 
     if (ncrypt_handshake_done(ent) == 0)
     {
-        errno = EPROTO;
+        ent->last_ncrypt_error = NCRYPT_HANDSHAKE_FAILED;
         return -1;
     }
 
@@ -268,13 +276,13 @@ ssize_t ncrypt_write(struct ncrypt_entity * const ent, char const * const json_m
     if (rv <= 0)
     {
         int err = SSL_get_error(ent->ssl, rv);
-        if (err == SSL_ERROR_WANT_WRITE || err == SSL_ERROR_WANT_READ)
+        if (err == SSL_ERROR_WANT_WRITE)
         {
-            errno = EAGAIN;
+            ent->last_ncrypt_error = NCRYPT_WANT_WRITE;
         }
-        else if (err != SSL_ERROR_SYSCALL)
+        else if (err != SSL_ERROR_WANT_READ)
         {
-            errno = EPROTO;
+            ent->last_ncrypt_error = NCRYPT_WANT_READ;
         }
         return -1;
     }
