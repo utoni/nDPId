@@ -509,6 +509,14 @@ if(ENABLE_EPAN)
         endif()
     endif()
     set(EPAN_DEFS "-DENABLE_EPAN=1")
+    # Prevent archive library symbols (e.g. nDPI's register_dissector) from
+    # being re-exported into the executable's dynamic symbol table.  Without
+    # this, any build with -rdynamic (e.g. -fsanitize=address) causes
+    # libwireshark.so's protocol-registration threads to resolve their own
+    # register_dissector to nDPI's copy, triggering a SIGSEGV in epan_init().
+    if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+        target_link_options(nDPId PRIVATE "-Wl,--exclude-libs,ALL")
+    endif()
 endif()
 
 if(STATIC_LIBNDPI_INSTALLDIR OR BUILD_NDPI OR NDPI_NO_PKGCONFIG)
