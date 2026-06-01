@@ -205,9 +205,10 @@ static int add_in_event_fd(struct nio * const io, int fd);
 static int add_in_event(struct nio * const io, struct remote_desc * const remote);
 static int del_event(struct nio * const io, int fd);
 static int set_in_event(struct nio * const io, struct remote_desc * const remote);
+static int set_out_event(struct nio * const io, struct remote_desc * const remote);
 static void disconnect_client(struct nio * const io, struct remote_desc * const current);
 #ifdef NO_MAIN
-static int drain_write_buffers_blocking(struct remote_desc * const remote);
+static int drain_write_buffers_blocking(struct nio * const io, struct remote_desc * const remote);
 #endif
 
 static void nDPIsrvd_buffer_array_copy(void * dst, const void * src)
@@ -316,7 +317,8 @@ static UT_array * get_additional_write_buffers(struct remote_desc * const remote
     return NULL;
 }
 
-static int add_to_additional_write_buffers(struct remote_desc * const remote,
+static int add_to_additional_write_buffers(struct nio * const io,
+                                           struct remote_desc * const remote,
                                            uint8_t * const buf,
                                            nDPIsrvd_ull json_message_length)
 {
@@ -330,12 +332,18 @@ static int add_to_additional_write_buffers(struct remote_desc * const remote,
 
     if (utarray_len(additional_write_buffers) >= GET_CMDARG_ULL(nDPIsrvd_options.max_write_buffers))
     {
+        if (set_out_event(io, remote) != 0) {
+            logger_nDPIsrvd(remote,
+                            "Can not set out event for",
+                            "%s", strerror(errno));
+            return -1;
+        }
 #ifdef NO_MAIN
         logger_nDPIsrvd(remote,
                         "Buffer limit for",
                         "reached, falling back to blocking I/O (NO_MAIN is set for nDPId-test): %u lines",
                         utarray_len(additional_write_buffers));
-        if (drain_write_buffers_blocking(remote) != 0)
+        if (drain_write_buffers_blocking(io,remote) != 0)
         {
             return -1;
         }
@@ -344,7 +352,7 @@ static int add_to_additional_write_buffers(struct remote_desc * const remote,
                         "Buffer limit for",
                         "reached, remote too slow: %u lines (increase buffer limit with `-M')",
                         utarray_len(additional_write_buffers));
-        return -1;
+        return 0;
 #endif
     }
 
@@ -436,7 +444,7 @@ static unsigned long long int * get_collector_json_bytes(struct remote_desc * co
     }
 }
 
-static int drain_main_buffer(struct remote_desc * const remote)
+static int drain_main_buffer(struct nio * const io, struct remote_desc * const remote)
 {
     ssize_t bytes_written;
     struct nDPIsrvd_write_buffer * const write_buffer = get_write_buffer(remote);
@@ -459,6 +467,13 @@ static int drain_main_buffer(struct remote_desc * const remote)
         {
             bytes_written = ncrypt_write(
                 &remote->event_distributor_in.ncrypt_entity, (char const *)write_buffer->buf.ptr.raw, write_buffer->buf.used);
+            if (bytes_written < 0) {
+                if (ncrypt_last_error(&remote->event_distributor_in.ncrypt_entity) == NCRYPT_WANT_READ ||
+                    ncrypt_last_error(&remote->event_distributor_in.ncrypt_entity) == NCRYPT_WANT_READ)
+                {
+                    errno = EAGAIN;
+                }
+            }
         }
         else
 #endif
@@ -468,6 +483,25 @@ static int drain_main_buffer(struct remote_desc * const remote)
     } while (bytes_written < 0 && errno == EINTR);
     if (errno == EAGAIN)
     {
+#ifdef ENABLE_CRYPTO
+        if (nDPIsrvd_TLS_USED() != 0 &&
+            ncrypt_last_error(&remote->event_distributor_in.ncrypt_entity) == NCRYPT_WANT_READ)
+        {
+            if (set_in_event(io, remote) != 0) {
+                logger_nDPIsrvd(remote,
+                                "Can not set in event for",
+                                "%s", strerror(errno));
+                return -1;
+            }
+            return 0;
+        }
+#endif
+        if (set_out_event(io, remote) != 0) {
+            logger_nDPIsrvd(remote,
+                            "Can not set out event for",
+                            "%s", strerror(errno));
+            return -1;
+        }
         return 0;
     }
     if (bytes_written < 0 || errno != 0)
@@ -495,13 +529,14 @@ static int drain_main_buffer(struct remote_desc * const remote)
     return 0;
 }
 
-static int drain_write_buffers(struct remote_desc * const remote)
+static int drain_write_buffers(struct nio * const io,
+                               struct remote_desc * const remote)
 {
     UT_array * const additional_write_buffers = get_additional_write_buffers(remote);
 
     errno = 0;
 
-    if (drain_main_buffer(remote) != 0 || additional_write_buffers == NULL)
+    if (drain_main_buffer(io, remote) != 0 || additional_write_buffers == NULL)
     {
         return -1;
     }
@@ -520,6 +555,13 @@ static int drain_write_buffers(struct remote_desc * const remote)
                 written = ncrypt_write(&remote->event_distributor_in.ncrypt_entity,
                                        (char const *)(buf->buf.ptr.raw + buf->written),
                                        buf->buf.used - buf->written);
+                if (written < 0) {
+                    if (ncrypt_last_error(&remote->event_distributor_in.ncrypt_entity) == NCRYPT_WANT_READ ||
+                        ncrypt_last_error(&remote->event_distributor_in.ncrypt_entity) == NCRYPT_WANT_READ)
+                    {
+                        errno = EAGAIN;
+                    }
+                }
             }
             else
 #endif
@@ -527,11 +569,31 @@ static int drain_write_buffers(struct remote_desc * const remote)
                 written = write(remote->fd, buf->buf.ptr.raw + buf->written, buf->buf.used - buf->written);
             }
         } while (written < 0 && errno == EINTR);
+
         switch (written)
         {
             case -1:
                 if (errno == EAGAIN)
                 {
+#ifdef ENABLE_CRYPTO
+                    if (nDPIsrvd_TLS_USED() != 0 &&
+                        ncrypt_last_error(&remote->event_distributor_in.ncrypt_entity) == NCRYPT_WANT_READ)
+                    {
+                        if (set_in_event(io, remote) != 0) {
+                            logger_nDPIsrvd(remote,
+                                "Can not set in event for",
+                                "%s", strerror(errno));
+                            return -1;
+                        }
+                        return 0;
+                    }
+#endif
+                    if (set_out_event(io, remote) != 0) {
+                        logger_nDPIsrvd(remote,
+                            "Can not set out event for",
+                            "%s", strerror(errno));
+                        return -1;
+                    }
                     return 0;
                 }
                 return -1;
@@ -558,7 +620,7 @@ static int drain_write_buffers(struct remote_desc * const remote)
 }
 
 #ifdef NO_MAIN
-static int drain_write_buffers_blocking(struct remote_desc * const remote)
+static int drain_write_buffers_blocking(struct nio * const io, struct remote_desc * const remote)
 {
     int retval = 0;
 
@@ -567,7 +629,7 @@ static int drain_write_buffers_blocking(struct remote_desc * const remote)
         logger_nDPIsrvd(remote, "Error setting distributor", "fd flags to blocking mode: %s", strerror(errno));
         return -1;
     }
-    if (drain_write_buffers(remote) != 0)
+    if (drain_write_buffers(io, remote) != 0)
     {
         logger_nDPIsrvd(remote, "Could not drain buffers for", "in blocking I/O: %s", strerror(errno));
         retval = -1;
@@ -590,7 +652,7 @@ static int handle_outgoing_data(struct nio * const io, struct remote_desc * cons
     {
         return -1;
     }
-    if (drain_write_buffers(remote) != 0)
+    if (drain_write_buffers(io, remote) != 0)
     {
         logger_nDPIsrvd(remote, "Could not drain buffers for", ": %s", strerror(errno));
         disconnect_client(io, remote);
@@ -606,7 +668,7 @@ static int handle_outgoing_data(struct nio * const io, struct remote_desc * cons
         }
         else
         {
-            return drain_main_buffer(remote);
+            return drain_main_buffer(io, remote);
         }
     }
 
@@ -1693,6 +1755,7 @@ static int handle_incoming_data(struct nio * const io, struct remote_desc * cons
             {
                 // Retry if interrupted by a signal.
             }
+
         }
         else
 #endif
@@ -1764,20 +1827,8 @@ static int handle_incoming_data(struct nio * const io, struct remote_desc * cons
             if (json_bytes == NULL || *json_bytes > write_buffer->buf.max - write_buffer->buf.used ||
                 utarray_len(additional_write_buffers) > 0)
             {
-                if (utarray_len(additional_write_buffers) == 0)
-                {
-                    errno = 0;
-                    if (set_out_event(io, &remotes.desc[i]) != 0)
-                    {
-                        logger_nDPIsrvd(&remotes.desc[i],
-                                        "Could not add event to",
-                                        ", disconnecting: %s",
-                                        (errno != 0 ? strerror(errno) : "Internal Error"));
-                        disconnect_client(io, &remotes.desc[i]);
-                        continue;
-                    }
-                }
-                if (add_to_additional_write_buffers(&remotes.desc[i],
+                if (add_to_additional_write_buffers(io,
+                                                    &remotes.desc[i],
                                                     json_read_buffer->buf.ptr.raw,
                                                     *json_bytes) != 0)
                 {
@@ -1793,7 +1844,7 @@ static int handle_incoming_data(struct nio * const io, struct remote_desc * cons
                 write_buffer->buf.used += *json_bytes;
             }
 
-            if (drain_main_buffer(&remotes.desc[i]) != 0)
+            if (drain_main_buffer(io, &remotes.desc[i]) != 0)
             {
                 disconnect_client(io, &remotes.desc[i]);
             }

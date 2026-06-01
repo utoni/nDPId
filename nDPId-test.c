@@ -402,13 +402,13 @@ static void * nDPIsrvd_mainloop_thread(void * const arg)
                     do
                     {
                         if (mock_test_desc->fd >= 0)
-                            drain_write_buffers_blocking(mock_test_desc);
+                            drain_write_buffers_blocking(&io, mock_test_desc);
                         if (mock_buff_desc->fd >= 0)
-                            drain_write_buffers_blocking(mock_buff_desc);
+                            drain_write_buffers_blocking(&io, mock_buff_desc);
                         if (mock_null_desc->fd >= 0)
-                            drain_write_buffers_blocking(mock_null_desc);
+                            drain_write_buffers_blocking(&io, mock_null_desc);
                         if (mock_arpa_desc->fd >= 0)
-                            drain_write_buffers_blocking(mock_arpa_desc);
+                            drain_write_buffers_blocking(&io, mock_arpa_desc);
                     } while (handle_data_event(&io, i) == 0);
                 }
                 else if (remote == mock_test_desc)
