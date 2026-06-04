@@ -67,7 +67,8 @@ jobs:
       - name: Update feeds
         run: |
           cd $SDK_DIR
-          ./scripts/feeds update -a
+          ./scripts/feeds update base
+          ./scripts/feeds update packages
           ./scripts/feeds install -a
 
       - name: Configure package

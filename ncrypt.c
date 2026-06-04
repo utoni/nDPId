@@ -128,7 +128,7 @@ int ncrypt_on_connect(struct ncrypt_ctx * const ctx, int connect_fd, struct ncry
             ent->last_ncrypt_error = NCRYPT_WANT_WRITE;
             return NCRYPT_WANT_WRITE;
         }
-        else if (err != SSL_ERROR_WANT_READ)
+        else if (err == SSL_ERROR_WANT_READ)
         {
             ent->last_ncrypt_error = NCRYPT_WANT_READ;
             return NCRYPT_WANT_READ;
@@ -280,7 +280,7 @@ ssize_t ncrypt_write(struct ncrypt_entity * const ent, char const * const json_m
         {
             ent->last_ncrypt_error = NCRYPT_WANT_WRITE;
         }
-        else if (err != SSL_ERROR_WANT_READ)
+        else if (err == SSL_ERROR_WANT_READ)
         {
             ent->last_ncrypt_error = NCRYPT_WANT_READ;
         }

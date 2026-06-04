@@ -332,12 +332,6 @@ static int add_to_additional_write_buffers(struct nio * const io,
 
     if (utarray_len(additional_write_buffers) >= GET_CMDARG_ULL(nDPIsrvd_options.max_write_buffers))
     {
-        if (set_out_event(io, remote) != 0) {
-            logger_nDPIsrvd(remote,
-                            "Can not set out event for",
-                            "%s", strerror(errno));
-            return -1;
-        }
 #ifdef NO_MAIN
         logger_nDPIsrvd(remote,
                         "Buffer limit for",
@@ -352,7 +346,7 @@ static int add_to_additional_write_buffers(struct nio * const io,
                         "Buffer limit for",
                         "reached, remote too slow: %u lines (increase buffer limit with `-M')",
                         utarray_len(additional_write_buffers));
-        return 0;
+        return set_out_event(io, remote);
 #endif
     }
 
@@ -466,12 +460,17 @@ static int drain_main_buffer(struct nio * const io, struct remote_desc * const r
         if (remote->sock_type == DISTRIBUTOR_IN && nDPIsrvd_TLS_USED() != 0)
         {
             bytes_written = ncrypt_write(
-                &remote->event_distributor_in.ncrypt_entity, (char const *)write_buffer->buf.ptr.raw, write_buffer->buf.used);
+                &remote->event_distributor_in.ncrypt_entity,
+                (char const *)write_buffer->buf.ptr.raw,
+                write_buffer->buf.used);
             if (bytes_written < 0) {
-                if (ncrypt_last_error(&remote->event_distributor_in.ncrypt_entity) == NCRYPT_WANT_READ ||
-                    ncrypt_last_error(&remote->event_distributor_in.ncrypt_entity) == NCRYPT_WANT_READ)
+                if (ncrypt_last_error(&remote->event_distributor_in.ncrypt_entity) == NCRYPT_WANT_READ)
                 {
-                    errno = EAGAIN;
+                    return set_in_event(io, remote);
+                }
+                if (ncrypt_last_error(&remote->event_distributor_in.ncrypt_entity) == NCRYPT_WANT_WRITE)
+                {
+                    return set_out_event(io, remote);
                 }
             }
         }
@@ -481,51 +480,33 @@ static int drain_main_buffer(struct nio * const io, struct remote_desc * const r
             bytes_written = write(remote->fd, write_buffer->buf.ptr.raw, write_buffer->buf.used);
         }
     } while (bytes_written < 0 && errno == EINTR);
-    if (errno == EAGAIN)
+
+    switch (bytes_written)
     {
-#ifdef ENABLE_CRYPTO
-        if (nDPIsrvd_TLS_USED() != 0 &&
-            ncrypt_last_error(&remote->event_distributor_in.ncrypt_entity) == NCRYPT_WANT_READ)
-        {
-            if (set_in_event(io, remote) != 0) {
-                logger_nDPIsrvd(remote,
-                                "Can not set in event for",
-                                "%s", strerror(errno));
-                return -1;
+        case -1:
+            if (errno == EAGAIN)
+            {
+                return set_out_event(io, remote);
             }
-            return 0;
-        }
-#endif
-        if (set_out_event(io, remote) != 0) {
-            logger_nDPIsrvd(remote,
-                            "Can not set out event for",
-                            "%s", strerror(errno));
+            logger_nDPIsrvd(remote, "Distributor connection", "closed, send failed: %s", strerror(errno));
             return -1;
-        }
-        return 0;
-    }
-    if (bytes_written < 0 || errno != 0)
-    {
-        logger_nDPIsrvd(remote, "Distributor connection", "closed, send failed: %s", strerror(errno));
-        return -1;
-    }
-    if (bytes_written == 0)
-    {
-        logger_nDPIsrvd(remote, "Distributor connection", "closed");
-        return -1;
-    }
-    if ((size_t)bytes_written < write_buffer->buf.used)
-    {
+        case 0:
+            logger_nDPIsrvd(remote, "Distributor connection", "closed");
+            return -1;
+        default:
+            if ((size_t)bytes_written < write_buffer->buf.used)
+            {
 #if 0
-        logger_nDPIsrvd(
-            remote, "Distributor", "wrote less than expected: %zd < %zu", bytes_written, remote->buf.used);
+                logger_nDPIsrvd(
+                    remote, "Distributor", "wrote less than expected: %zd < %zu", bytes_written, remote->buf.used);
 #endif
-        memmove(write_buffer->buf.ptr.raw,
-                write_buffer->buf.ptr.raw + bytes_written,
-                write_buffer->buf.used - bytes_written);
+                memmove(write_buffer->buf.ptr.raw,
+                        write_buffer->buf.ptr.raw + bytes_written,
+                        write_buffer->buf.used - bytes_written);
+            }
+            write_buffer->buf.used -= bytes_written;
     }
 
-    write_buffer->buf.used -= bytes_written;
     return 0;
 }
 
@@ -556,10 +537,13 @@ static int drain_write_buffers(struct nio * const io,
                                        (char const *)(buf->buf.ptr.raw + buf->written),
                                        buf->buf.used - buf->written);
                 if (written < 0) {
-                    if (ncrypt_last_error(&remote->event_distributor_in.ncrypt_entity) == NCRYPT_WANT_READ ||
-                        ncrypt_last_error(&remote->event_distributor_in.ncrypt_entity) == NCRYPT_WANT_READ)
+                    if (ncrypt_last_error(&remote->event_distributor_in.ncrypt_entity) == NCRYPT_WANT_READ)
                     {
-                        errno = EAGAIN;
+                        return set_in_event(io, remote);
+                    }
+                    if (ncrypt_last_error(&remote->event_distributor_in.ncrypt_entity) == NCRYPT_WANT_WRITE)
+                    {
+                        return set_out_event(io, remote);
                     }
                 }
             }
@@ -575,26 +559,7 @@ static int drain_write_buffers(struct nio * const io,
             case -1:
                 if (errno == EAGAIN)
                 {
-#ifdef ENABLE_CRYPTO
-                    if (nDPIsrvd_TLS_USED() != 0 &&
-                        ncrypt_last_error(&remote->event_distributor_in.ncrypt_entity) == NCRYPT_WANT_READ)
-                    {
-                        if (set_in_event(io, remote) != 0) {
-                            logger_nDPIsrvd(remote,
-                                "Can not set in event for",
-                                "%s", strerror(errno));
-                            return -1;
-                        }
-                        return 0;
-                    }
-#endif
-                    if (set_out_event(io, remote) != 0) {
-                        logger_nDPIsrvd(remote,
-                            "Can not set out event for",
-                            "%s", strerror(errno));
-                        return -1;
-                    }
-                    return 0;
+                    return set_out_event(io, remote);
                 }
                 return -1;
             case 0:
@@ -1095,12 +1060,34 @@ static int add_in_event(struct nio * const io, struct remote_desc * const remote
 
 static int set_out_event(struct nio * const io, struct remote_desc * const remote)
 {
-    return nio_mod_fd(io, remote->fd, NIO_EVENT_OUTPUT, remote) != NIO_SUCCESS;
+    int rv = nio_mod_fd(io, remote->fd, NIO_EVENT_OUTPUT, remote);
+    switch (rv) {
+        case NIO_SUCCESS:
+            return 0;
+        case NIO_ERROR_INTERNAL:
+            logger_nDPIsrvd(remote, "Set output event for", "failed: Internal Error");
+            break;
+        case NIO_ERROR_SYSTEM:
+            logger_nDPIsrvd(remote, "Set output event for", "failed: %s", strerror(errno));
+            break;
+    }
+    return -1;
 }
 
 static int set_in_event(struct nio * const io, struct remote_desc * const remote)
 {
-    return nio_mod_fd(io, remote->fd, NIO_EVENT_INPUT, remote) != NIO_SUCCESS;
+    int rv = nio_mod_fd(io, remote->fd, NIO_EVENT_INPUT, remote);
+    switch (rv) {
+        case NIO_SUCCESS:
+            return 0;
+        case NIO_ERROR_INTERNAL:
+            logger_nDPIsrvd(remote, "Set input event for", "failed: Internal Error");
+            break;
+        case NIO_ERROR_SYSTEM:
+            logger_nDPIsrvd(remote, "Set input event for", "failed: %s", strerror(errno));
+            break;
+    }
+    return -1;
 }
 
 static int del_event(struct nio * const io, int fd)
@@ -1755,7 +1742,19 @@ static int handle_incoming_data(struct nio * const io, struct remote_desc * cons
             {
                 // Retry if interrupted by a signal.
             }
-
+            if (bytes_read < 0) {
+                if (ncrypt_last_error(&current->event_collector_in.ncrypt_entity) == NCRYPT_WANT_READ)
+                {
+                    return set_in_event(io, current);
+                }
+                if (ncrypt_last_error(&current->event_collector_in.ncrypt_entity) == NCRYPT_WANT_WRITE)
+                {
+                    return set_out_event(io, current);
+                }
+                logger_nDPIsrvd(current, "Collector TLS connection", "failed during read with: %s", strerror(errno));
+                disconnect_client(io, current);
+                return 1;
+            }
         }
         else
 #endif
@@ -1767,12 +1766,12 @@ static int handle_incoming_data(struct nio * const io, struct remote_desc * cons
             {
                 // Retry if interrupted by a signal.
             }
-        }
-        if (bytes_read < 0 || errno != 0)
-        {
-            logger_nDPIsrvd(current, "Could not read remote", ": %s", strerror(errno));
-            disconnect_client(io, current);
-            return 1;
+            if (bytes_read < 0)
+            {
+                logger_nDPIsrvd(current, "Could not read remote", ": %s", strerror(errno));
+                disconnect_client(io, current);
+                return 1;
+            }
         }
 
         if (bytes_read == 0)
@@ -1898,36 +1897,16 @@ static int handle_data_event(struct nio * const io, int index)
             int rv = ncrypt_on_accept(&ncrypt_ctx, current->fd, ent);
             if (rv != NCRYPT_SUCCESS) {
                 if (rv == NCRYPT_WANT_READ) {
-                    errno = 0;
-                    if (set_in_event(io, current) != 0)
-                    {
-                        logger_nDPIsrvd(current,
-                                        "Could not add input event to",
-                                        ", disconnecting: %s",
-                                        (errno != 0 ? strerror(errno) : "Internal Error"));
-                        disconnect_client(io, current);
-                        return 1;
-                    }
-                    return 0;
+                    return set_in_event(io, current);
                 }
                 if (rv == NCRYPT_WANT_WRITE) {
-                    errno = 0;
-                    if (set_out_event(io, current) != 0)
-                    {
-                        logger_nDPIsrvd(current,
-                                        "Could not add output event to",
-                                        ", disconnecting: %s",
-                                        (errno != 0 ? strerror(errno) : "Internal Error"));
-                        disconnect_client(io, current);
-                        return 1;
-                    }
-                    return 0;
+                    return set_out_event(io, current);
                 }
                 if (errno != 0)
                     logger_nDPIsrvd(current, "TLS handshake from", "failed with: %d (%s)",
                                     rv, strerror(errno));
                 else
-                    logger_nDPIsrvd(current, "TLS handshake from", "failed with: %d", rv);
+                    logger_nDPIsrvd(current, "TLS handshake from", "failed");
                 disconnect_client(io, current);
                 return 1;
             }
@@ -1946,6 +1925,7 @@ static int handle_data_event(struct nio * const io, int index)
                 return 1;
             }
             ncrypt_set_handshake(ent);
+            return 0;
         }
 
         if (current->sock_type == DISTRIBUTOR_IN)
@@ -1953,13 +1933,31 @@ static int handle_data_event(struct nio * const io, int index)
             ssize_t bytes_read;
             char garbage = 0;
 
+            if (nio_can_output(io, index) == NIO_SUCCESS)
+            {
+                return handle_outgoing_data(io, current);
+            }
+
             while ((bytes_read = ncrypt_read(&current->event_distributor_in.ncrypt_entity,
                                              &garbage, sizeof(garbage))) < 0 &&
                    errno == EINTR)
             {
                 // Retry if interrupted by a signal.
             }
-            if (bytes_read <= 0 && errno != EAGAIN) {
+            if (bytes_read < 0) {
+                if (ncrypt_last_error(&current->event_distributor_in.ncrypt_entity) == NCRYPT_WANT_READ)
+                {
+                    return set_in_event(io, current);
+                }
+                if (ncrypt_last_error(&current->event_distributor_in.ncrypt_entity) == NCRYPT_WANT_WRITE)
+                {
+                    return set_out_event(io, current);
+                }
+                logger_nDPIsrvd(current, "Distributor TLS connection", "failed during read with: %s", strerror(errno));
+                disconnect_client(io, current);
+                return 1;
+            }
+            if (bytes_read == 0) {
                 disconnect_client(io, current);
                 return 1;
             }
@@ -2064,7 +2062,7 @@ static int mainloop(struct nio * const io)
 
     while (nDPIsrvd_main_thread_shutdown == 0)
     {
-        if (nio_run(io, 1000) != NIO_SUCCESS)
+        if (nio_run(io, -1) != NIO_SUCCESS)
         {
             logger(1, "Event I/O returned error: %s", strerror(errno));
         }
@@ -2098,7 +2096,7 @@ static int mainloop(struct nio * const io)
                 {
                     logger(1, "Event I/O error: %s", (errno != 0 ? strerror(errno) : "unknown"));
                 }
-                break;
+                continue;
             }
 
             if (fd == collector_un_sockfd || fd == collector_in_sockfd || fd == distributor_un_sockfd ||
