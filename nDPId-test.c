@@ -476,6 +476,13 @@ static void * nDPIsrvd_mainloop_thread(void * const arg)
             }
             else
             {
+                UT_array const * const additional_write_buffers = get_additional_write_buffers(remote);
+                if (additional_write_buffers != NULL &&
+                    utarray_len(additional_write_buffers) >= GET_CMDARG_ULL(nDPIsrvd_options.max_write_buffers))
+                {
+                    drain_write_buffers_blocking(&io, remote);
+                }
+
                 if (handle_data_event(&io, i) != 0)
                 {
                     if (mock_arpa_desc == remote)

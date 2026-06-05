@@ -219,7 +219,7 @@ int ncrypt_on_accept(struct ncrypt_ctx * const ctx, int accept_fd, struct ncrypt
 
     if (!matched)
     {
-        ent->last_ncrypt_error = EPROTO;
+        ent->last_ncrypt_error = NCRYPT_HANDSHAKE_FAILED;
         return NCRYPT_HANDSHAKE_FAILED;
     }
 
@@ -252,6 +252,10 @@ ssize_t ncrypt_read(struct ncrypt_entity * const ent, char * const json_msg, int
         {
             ent->last_ncrypt_error = NCRYPT_WANT_READ;
         }
+        else
+        {
+            ent->last_ncrypt_error = NCRYPT_IO_ERROR;
+        }
         return -1;
     }
 
@@ -283,6 +287,10 @@ ssize_t ncrypt_write(struct ncrypt_entity * const ent, char const * const json_m
         else if (err == SSL_ERROR_WANT_READ)
         {
             ent->last_ncrypt_error = NCRYPT_WANT_READ;
+        }
+        else
+        {
+            ent->last_ncrypt_error = NCRYPT_IO_ERROR;
         }
         return -1;
     }

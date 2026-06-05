@@ -46,7 +46,8 @@ enum
     NCRYPT_PEM_LOAD_FAILED = -4,
     NCRYPT_WANT_READ = -5,
     NCRYPT_WANT_WRITE = -6,
-    NCRYPT_HANDSHAKE_FAILED = -7
+    NCRYPT_HANDSHAKE_FAILED = -7,
+    NCRYPT_IO_ERROR = -8,
 };
 
 struct ncrypt_ctx
