@@ -115,10 +115,10 @@ static int collector_un_sockfd = -1;
 static int collector_in_sockfd = -1;
 static int distributor_un_sockfd = -1;
 static int distributor_in_sockfd = -1;
-static struct nDPIsrvd_address collector_in_address = {
+static struct nDPIsrvd_address collector_sock_address = {
     .raw.sa_family = (sa_family_t)0xFFFF,
 };
-static struct nDPIsrvd_address distributor_in_address = {
+static struct nDPIsrvd_address distributor_sock_address = {
     .raw.sa_family = (sa_family_t)0xFFFF,
 };
 #ifdef ENABLE_CRYPTO
@@ -623,7 +623,7 @@ static int create_listen_sockets(void)
 
     if (IS_CMDARG_SET(nDPIsrvd_options.collector_in_address) != 0)
     {
-        collector_in_sockfd = socket(collector_in_address.raw.sa_family, SOCK_STREAM, 0);
+        collector_in_sockfd = socket(collector_sock_address.raw.sa_family, SOCK_STREAM, 0);
         if (collector_in_sockfd < 0 || set_fd_cloexec(collector_in_sockfd) < 0)
         {
             logger(1, "Error creating Collector TCP/IP socket: %s", strerror(errno));
@@ -638,7 +638,7 @@ static int create_listen_sockets(void)
 
     if (IS_CMDARG_SET(nDPIsrvd_options.distributor_in_address) != 0)
     {
-        distributor_in_sockfd = socket(distributor_in_address.raw.sa_family, SOCK_STREAM, 0);
+        distributor_in_sockfd = socket(distributor_sock_address.raw.sa_family, SOCK_STREAM, 0);
         if (distributor_in_sockfd < 0 || set_fd_cloexec(distributor_in_sockfd) < 0)
         {
             logger(1, "Error creating TCP/IP socket: %s", strerror(errno));
@@ -690,7 +690,7 @@ static int create_listen_sockets(void)
 
     if (IS_CMDARG_SET(nDPIsrvd_options.collector_in_address) != 0)
     {
-        if (bind(collector_in_sockfd, &collector_in_address.raw, collector_in_address.size) < 0)
+        if (bind(collector_in_sockfd, &collector_sock_address.raw, collector_sock_address.size) < 0)
         {
             logger(1,
                    "Error binding Collector TCP/IP socket to %s: %s",
@@ -748,7 +748,7 @@ static int create_listen_sockets(void)
 
     if (IS_CMDARG_SET(nDPIsrvd_options.distributor_in_address) != 0)
     {
-        if (bind(distributor_in_sockfd, &distributor_in_address.raw, distributor_in_address.size) < 0)
+        if (bind(distributor_in_sockfd, &distributor_sock_address.raw, distributor_sock_address.size) < 0)
         {
             logger(1,
                    "Error binding Distributor TCP/IP socket to %s: %s",
@@ -1014,6 +1014,8 @@ static int set_out_event(struct nio * const io, struct remote_desc * const remot
         case NIO_ERROR_SYSTEM:
             logger_nDPIsrvd(remote, "Set output event for", "failed: %s", strerror(errno));
             break;
+        default:
+            return -1;
     }
     return -1;
 }
@@ -1030,6 +1032,8 @@ static int set_in_event(struct nio * const io, struct remote_desc * const remote
         case NIO_ERROR_SYSTEM:
             logger_nDPIsrvd(remote, "Set input event for", "failed: %s", strerror(errno));
             break;
+        default:
+            return -1;
     }
     return -1;
 }
@@ -1234,7 +1238,7 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
 
     if (IS_CMDARG_SET(nDPIsrvd_options.collector_in_address) != 0)
     {
-        if (nDPIsrvd_setup_address(&collector_in_address, GET_CMDARG_STR(nDPIsrvd_options.collector_in_address)) != 0)
+        if (nDPIsrvd_setup_address(&collector_sock_address, GET_CMDARG_STR(nDPIsrvd_options.collector_in_address)) != 0)
         {
             logger_early(1,
                          "%s: Could not parse address %s",
@@ -1242,7 +1246,7 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
                          GET_CMDARG_STR(nDPIsrvd_options.collector_in_address));
             return 1;
         }
-        if (collector_in_address.raw.sa_family == AF_UNIX)
+        if (collector_sock_address.raw.sa_family == AF_UNIX)
         {
             logger_early(1,
                          "%s: You've requested to setup another UNIX socket `%s', but there is already one at `%s'",
@@ -1255,7 +1259,7 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
 
     if (IS_CMDARG_SET(nDPIsrvd_options.distributor_in_address) != 0)
     {
-        if (nDPIsrvd_setup_address(&distributor_in_address, GET_CMDARG_STR(nDPIsrvd_options.distributor_in_address)) !=
+        if (nDPIsrvd_setup_address(&distributor_sock_address, GET_CMDARG_STR(nDPIsrvd_options.distributor_in_address)) !=
             0)
         {
             logger_early(1,
@@ -1264,7 +1268,7 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
                          GET_CMDARG_STR(nDPIsrvd_options.distributor_in_address));
             return 1;
         }
-        if (distributor_in_address.raw.sa_family == AF_UNIX)
+        if (distributor_sock_address.raw.sa_family == AF_UNIX)
         {
             logger_early(1,
                          "%s: You've requested to setup another UNIX socket `%s', but there is already one at `%s'",

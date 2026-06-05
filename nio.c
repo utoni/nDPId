@@ -289,7 +289,7 @@ int nio_run(struct nio * io, int timeout)
                 }
             }
 
-            io->nready = ready;
+            io->nready = (int)ready;
         }
     }
 

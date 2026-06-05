@@ -610,7 +610,7 @@ static enum nDPIsrvd_callback_return distributor_json_callback(struct nDPIsrvd_s
     }
     global_stats->json_message_len_avg =
         (global_stats->json_message_len_avg +
-         (global_stats->json_message_len_max + global_stats->json_message_len_min) / 2.0f) /
+         (float)(global_stats->json_message_len_max + global_stats->json_message_len_min) / 2.0f) /
         2;
 
     global_stats->total_events_deserialized++;
