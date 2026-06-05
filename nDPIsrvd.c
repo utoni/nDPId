@@ -198,18 +198,12 @@ static void logger_nDPIsrvd(struct remote_desc const * const remote,
                             char const * const format,
                             ...);
 static int fcntl_add_flags(int fd, int flags);
-#ifdef NO_MAIN
-static int fcntl_del_flags(int fd, int flags);
-#endif
 static int add_in_event_fd(struct nio * const io, int fd);
 static int add_in_event(struct nio * const io, struct remote_desc * const remote);
 static int del_event(struct nio * const io, int fd);
 static int set_in_event(struct nio * const io, struct remote_desc * const remote);
 static int set_out_event(struct nio * const io, struct remote_desc * const remote);
 static void disconnect_client(struct nio * const io, struct remote_desc * const current);
-#ifdef NO_MAIN
-static int drain_write_buffers_blocking(struct nio * const io, struct remote_desc * const remote);
-#endif
 
 static void nDPIsrvd_buffer_array_copy(void * dst, const void * src)
 {
@@ -332,22 +326,11 @@ static int add_to_additional_write_buffers(struct nio * const io,
 
     if (utarray_len(additional_write_buffers) >= GET_CMDARG_ULL(nDPIsrvd_options.max_write_buffers))
     {
-#ifdef NO_MAIN
-        logger_nDPIsrvd(remote,
-                        "Buffer limit for",
-                        "reached, falling back to blocking I/O (NO_MAIN is set for nDPId-test): %u lines",
-                        utarray_len(additional_write_buffers));
-        if (drain_write_buffers_blocking(io,remote) != 0)
-        {
-            return -1;
-        }
-#else
         logger_nDPIsrvd(remote,
                         "Buffer limit for",
                         "reached, remote too slow: %u lines (increase buffer limit with `-M')",
                         utarray_len(additional_write_buffers));
         return set_out_event(io, remote);
-#endif
     }
 
     buf_src.buf.ptr.raw = buf;
@@ -584,31 +567,6 @@ static int drain_write_buffers(struct nio * const io,
     return 0;
 }
 
-#ifdef NO_MAIN
-static int drain_write_buffers_blocking(struct nio * const io, struct remote_desc * const remote)
-{
-    int retval = 0;
-
-    if (fcntl_del_flags(remote->fd, O_NONBLOCK) != 0)
-    {
-        logger_nDPIsrvd(remote, "Error setting distributor", "fd flags to blocking mode: %s", strerror(errno));
-        return -1;
-    }
-    if (drain_write_buffers(io, remote) != 0)
-    {
-        logger_nDPIsrvd(remote, "Could not drain buffers for", "in blocking I/O: %s", strerror(errno));
-        retval = -1;
-    }
-    if (fcntl_add_flags(remote->fd, O_NONBLOCK) != 0)
-    {
-        logger_nDPIsrvd(remote, "Error setting distributor", "fd flags to non-blocking mode: %s", strerror(errno));
-        return -1;
-    }
-
-    return retval;
-}
-#endif
-
 static int handle_outgoing_data(struct nio * const io, struct remote_desc * const remote)
 {
     UT_array * const additional_write_buffers = get_additional_write_buffers(remote);
@@ -651,20 +609,6 @@ static int fcntl_add_flags(int fd, int flags)
 
     return fcntl(fd, F_SETFL, cur_flags | flags);
 }
-
-#ifdef NO_MAIN
-static int fcntl_del_flags(int fd, int flags)
-{
-    int cur_flags = fcntl(fd, F_GETFL, 0);
-
-    if (cur_flags == -1)
-    {
-        return -1;
-    }
-
-    return fcntl(fd, F_SETFL, cur_flags & ~flags);
-}
-#endif
 
 static int create_listen_sockets(void)
 {

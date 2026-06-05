@@ -290,6 +290,41 @@ static int setup_pipe(int pipefd[PIPE_FDS])
     return 0;
 }
 
+static int fcntl_del_flags(int fd, int flags)
+{
+    int cur_flags = fcntl(fd, F_GETFL, 0);
+
+    if (cur_flags == -1)
+    {
+        return -1;
+    }
+
+    return fcntl(fd, F_SETFL, cur_flags & ~flags);
+}
+
+static int drain_write_buffers_blocking(struct nio * const io, struct remote_desc * const remote)
+{
+    int retval = 0;
+
+    if (fcntl_del_flags(remote->fd, O_NONBLOCK) != 0)
+    {
+        logger_nDPIsrvd(remote, "Error setting distributor", "fd flags to blocking mode: %s", strerror(errno));
+        return -1;
+    }
+    if (drain_write_buffers(io, remote) != 0)
+    {
+        logger_nDPIsrvd(remote, "Could not drain buffers for", "in blocking I/O: %s", strerror(errno));
+        retval = -1;
+    }
+    if (fcntl_add_flags(remote->fd, O_NONBLOCK) != 0)
+    {
+        logger_nDPIsrvd(remote, "Error setting distributor", "fd flags to non-blocking mode: %s", strerror(errno));
+        return -1;
+    }
+
+    return retval;
+}
+
 static void * nDPIsrvd_mainloop_thread(void * const arg)
 {
     int nDPIsrvd_distributor_disconnects = 0;
@@ -575,7 +610,7 @@ static enum nDPIsrvd_callback_return distributor_json_callback(struct nDPIsrvd_s
     }
     global_stats->json_message_len_avg =
         (global_stats->json_message_len_avg +
-         (global_stats->json_message_len_max + global_stats->json_message_len_min) / 2) /
+         (global_stats->json_message_len_max + global_stats->json_message_len_min) / 2.0f) /
         2;
 
     global_stats->total_events_deserialized++;
@@ -1723,7 +1758,7 @@ int main(int argc, char ** argv)
         }
     }
 
-    set_cmdarg_ull(&nDPIsrvd_options.max_write_buffers, 32);
+    set_cmdarg_ull(&nDPIsrvd_options.max_write_buffers, 65535);
     set_cmdarg_string(&nDPId_options.pcap_file_or_interface, argv[1]);
     set_cmdarg_boolean(&nDPId_options.decode_tunnel, 1);
     set_cmdarg_boolean(&nDPId_options.enable_data_analysis, 1);
