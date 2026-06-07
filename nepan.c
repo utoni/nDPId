@@ -2,6 +2,7 @@
 
 #include <epan/epan.h>
 #include <epan/epan_dissect.h>
+#include <epan/expert.h>
 #include <epan/frame_data.h>
 #include <epan/ftypes/ftypes.h>
 #include <epan/proto.h>
@@ -16,6 +17,8 @@
 
 #include <pthread.h>
 #include <string.h>
+
+#include "utils.h"
 
 /* --------------------------------------------------------------------------
  * Module-private global state
@@ -46,18 +49,22 @@ static const nstime_t * nepan_provider_get_frame_ts(struct packet_provider_data 
 }
 
 static const char * nepan_provider_get_interface_name(struct packet_provider_data * prov,
-                                                       guint32 interface_id)
+                                                      uint32_t interface_id,
+                                                      unsigned section_number)
 {
     (void)prov;
     (void)interface_id;
+    (void)section_number;
     return "nDPId";
 }
 
 static const char * nepan_provider_get_interface_description(struct packet_provider_data * prov,
-                                                              guint32 interface_id)
+                                                             uint32_t interface_id,
+                                                             unsigned section_number)
 {
     (void)prov;
     (void)interface_id;
+    (void)section_number;
     return NULL;
 }
 
@@ -70,21 +77,26 @@ static wtap_block_t nepan_provider_get_modified_block(struct packet_provider_dat
 }
 
 static const struct packet_provider_funcs nepan_provider_funcs = {
-    nepan_provider_get_frame_ts,
-    nepan_provider_get_interface_name,
-    nepan_provider_get_interface_description,
-    nepan_provider_get_modified_block,
+    .get_frame_ts = nepan_provider_get_frame_ts,
+    .get_interface_name = nepan_provider_get_interface_name,
+    .get_interface_description = nepan_provider_get_interface_description,
+    .get_modified_block = nepan_provider_get_modified_block,
 };
 
 /* --------------------------------------------------------------------------
  * Public API
  * -------------------------------------------------------------------------- */
 
+static void nepan_log(const char *fmt, va_list ap)
+{
+    vlogger(1, fmt, ap);
+}
+
 int nepan_init(void)
 {
     init_process_policies();
-    ws_log_init("nDPId", NULL);
-    wtap_init(FALSE);
+    ws_log_init("nDPId", nepan_log);
+    wtap_init(false);
 
     if (epan_init(NULL, NULL, FALSE) == FALSE)
     {
