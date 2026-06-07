@@ -205,7 +205,7 @@ if(ENABLE_CRYPTO)
     set(CRYPTO_SRCS ncrypt.c)
 endif()
 add_executable(nDPId nDPId.c ${NDPID_PFRING_SRCS} ${CRYPTO_SRCS} nio.c utils.c)
-add_executable(nDPIsrvd nDPIsrvd.c nio.c utils.c)
+add_executable(nDPIsrvd nDPIsrvd.c ${CRYPTO_SRCS} nio.c utils.c)
 add_executable(nDPId-test nDPId-test.c ${NDPID_PFRING_SRCS} ${CRYPTO_SRCS})
 
 add_custom_target(umask_check)
@@ -227,7 +227,7 @@ add_custom_target(daemon)
 add_custom_command(
     TARGET daemon
     POST_BUILD
-    COMMAND env nDPIsrvd_ARGS='-C 1024' "${CMAKE_SOURCE_DIR}/scripts/daemon.sh" "$<TARGET_FILE:nDPId>" "$<TARGET_FILE:nDPIsrvd>"
+    COMMAND env nDPIsrvd_ARGS='-M 1024' "${CMAKE_SOURCE_DIR}/scripts/daemon.sh" "$<TARGET_FILE:nDPId>" "$<TARGET_FILE:nDPIsrvd>"
 )
 add_dependencies(daemon nDPId nDPIsrvd)
 
@@ -475,8 +475,9 @@ target_link_libraries(nDPId "${STATIC_LIBNDPI_LIB}" "${STATIC_PFRING_LIB}" "${pk
                             "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}" "${LIBM_LIB}" "${PF_RING_LIB}"
                             "${OSSL_LIBRARY}" "${DYNLDR}" "-pthread")
 
-target_compile_definitions(nDPIsrvd PRIVATE -D_GNU_SOURCE=1 -DPKG_VERSION=\"${PKG_VERSION}\" -DGIT_VERSION=\"${GIT_VERSION}\" ${NDPID_DEFS} ${EPOLL_DEFS})
+target_compile_definitions(nDPIsrvd PRIVATE -D_GNU_SOURCE=1 -DPKG_VERSION=\"${PKG_VERSION}\" -DGIT_VERSION=\"${GIT_VERSION}\" ${NDPID_DEFS} ${EPOLL_DEFS} ${OSSL_DEFS})
 target_include_directories(nDPIsrvd PRIVATE ${NDPID_DEPS_INC})
+target_link_libraries(nDPIsrvd "${OSSL_LIBRARY}")
 
 target_compile_options(nDPId-test PRIVATE "-Wno-unused-function" "-pthread")
 target_compile_definitions(nDPId-test PRIVATE -D_GNU_SOURCE=1 -DNO_MAIN=1 -DPKG_VERSION=\"${PKG_VERSION}\" -DGIT_VERSION=\"${GIT_VERSION}\"
@@ -572,7 +573,9 @@ if(BUILD_EXAMPLES)
     endif()
 
     install(TARGETS nDPIsrvd-analysed nDPIsrvd-collectd nDPIsrvd-captured nDPIsrvd-simple DESTINATION bin)
-    install(FILES examples/c-collectd/plugin_nDPIsrvd.conf examples/c-collectd/rrdgraph.sh DESTINATION share/nDPId/nDPIsrvd-collectd)
+    install(FILES examples/c-collectd/rrdgraph.sh DESTINATION share/nDPId/nDPIsrvd-collectd)
+    install(FILES examples/c-collectd/plugin_nDPIsrvd.conf DESTINATION share/nDPId/nDPIsrvd-collectd
+            PERMISSIONS OWNER_READ GROUP_READ WORLD_READ)
     install(DIRECTORY examples/c-collectd/www DESTINATION share/nDPId/nDPIsrvd-collectd)
 endif()
 
@@ -588,15 +591,24 @@ if(BUILD_RUST_EXAMPLES)
     )
 endif()
 
+if(ENABLE_CRYPTO)
+    install(FILES scripts/gen-cacerts.sh DESTINATION share/nDPId
+            PERMISSIONS OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+endif()
+
 if(ENABLE_SYSTEMD)
     configure_file(packages/systemd/ndpisrvd.service.in ndpisrvd.service @ONLY)
     configure_file(packages/systemd/ndpid@.service.in ndpid@.service @ONLY)
 
     install(DIRECTORY DESTINATION etc/nDPId)
-    install(FILES "ndpid.conf.example" DESTINATION share/nDPId)
-    install(FILES "ndpisrvd.conf.example" DESTINATION share/nDPId)
-    install(FILES "${CMAKE_BINARY_DIR}/ndpisrvd.service" DESTINATION lib/systemd/system)
-    install(FILES "${CMAKE_BINARY_DIR}/ndpid@.service" DESTINATION lib/systemd/system)
+    install(FILES "ndpid.conf.example" DESTINATION share/nDPId
+            PERMISSIONS OWNER_READ GROUP_READ WORLD_READ)
+    install(FILES "ndpisrvd.conf.example" DESTINATION share/nDPId
+            PERMISSIONS OWNER_READ GROUP_READ WORLD_READ)
+    install(FILES "${CMAKE_BINARY_DIR}/ndpisrvd.service" DESTINATION lib/systemd/system
+            PERMISSIONS OWNER_READ GROUP_READ WORLD_READ)
+    install(FILES "${CMAKE_BINARY_DIR}/ndpid@.service" DESTINATION lib/systemd/system
+            PERMISSIONS OWNER_READ GROUP_READ WORLD_READ)
 endif()
 
 install(FILES config.h
@@ -608,12 +620,14 @@ install(FILES config.h
               dependencies/uthash/src/utringbuffer.h
               dependencies/uthash/src/utstack.h
               dependencies/uthash/src/utstring.h
-        DESTINATION include/nDPId)
+        DESTINATION include/nDPId
+        PERMISSIONS OWNER_READ GROUP_READ WORLD_READ)
 install(TARGETS nDPId DESTINATION sbin)
 install(TARGETS nDPIsrvd nDPId-test DESTINATION bin)
 if(BUILD_EXAMPLES)
     install(FILES dependencies/nDPIsrvd.py
-            DESTINATION share/nDPId)
+            DESTINATION share/nDPId
+            PERMISSIONS OWNER_READ GROUP_READ WORLD_READ)
     install(FILES examples/py-flow-info/flow-info.py
             DESTINATION bin RENAME nDPIsrvd-flow-info.py
             PERMISSIONS OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
@@ -631,7 +645,8 @@ if(BUILD_EXAMPLES)
             PERMISSIONS OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
 endif()
 install(FILES schema/error_event_schema.json schema/daemon_event_schema.json
-              schema/flow_event_schema.json schema/packet_event_schema.json DESTINATION share/nDPId/json-schema)
+              schema/flow_event_schema.json schema/packet_event_schema.json DESTINATION share/nDPId/json-schema
+        PERMISSIONS OWNER_READ GROUP_READ WORLD_READ)
 
 message(STATUS "--------------------------")
 message(STATUS "nDPId GIT_VERSION........: ${GIT_VERSION}")

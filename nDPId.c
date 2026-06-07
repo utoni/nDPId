@@ -44,6 +44,10 @@
 #endif
 #include "utils.h"
 
+#ifdef ENABLE_CRYPTO
+#define nDPId_TLS_USED(...) (IS_CMDARG_SET(nDPId_options.server_ca_pem_file) != 0)
+#endif
+
 #ifndef ETHERTYPE_DCE
 #define ETHERTYPE_DCE 0x8903
 #endif
@@ -627,7 +631,12 @@ struct confopt general_config_map[] = {CONFOPT("netif", &nDPId_options.pcap_file
                                        CONFOPT("poll", &nDPId_options.use_poll),
 #endif
 #ifdef ENABLE_PFRING
-                                       CONFOPT("pfring", &nDPId_options.use_pfring)
+                                       CONFOPT("pfring", &nDPId_options.use_pfring),
+#endif
+#ifdef ENABLE_CRYPTO
+                                       CONFOPT("cert-pem-file", &nDPId_options.client_crt_pem_file),
+                                       CONFOPT("key-pem-file", &nDPId_options.client_key_pem_file),
+                                       CONFOPT("ca-pem-file", &nDPId_options.server_ca_pem_file),
 #endif
 };
 struct confopt tuning_config_map[] = {
@@ -705,6 +714,26 @@ static int set_collector_nonblock(struct nDPId_reader_thread * const reader_thre
 static int set_collector_block(struct nDPId_reader_thread * const reader_thread)
 {
     int current_flags;
+
+    struct timeval tv;
+    tv.tv_sec = 5;
+    tv.tv_usec = 0;
+    if (setsockopt(reader_thread->collector_sockfd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv)) != 0)
+    {
+        logger(1, "[%8llu] Could not set receive timeout for collector fd %d: %s",
+               reader_thread->workflow->packets_processed,
+               reader_thread->collector_sockfd,
+               strerror(errno));
+    }
+    tv.tv_sec = 5;
+    tv.tv_usec = 0;
+    if (setsockopt(reader_thread->collector_sockfd, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof(tv)) != 0)
+    {
+        logger(1, "[%8llu] Could not set send timeout for collector fd %d: %s",
+               reader_thread->workflow->packets_processed,
+               reader_thread->collector_sockfd,
+               strerror(errno));
+    }
 
     while ((current_flags = fcntl(reader_thread->collector_sockfd, F_GETFL, 0)) == -1 && errno == EINTR) {
         // Retry if interrupted by a signal.
@@ -2607,7 +2636,11 @@ static int connect_to_collector(struct nDPId_reader_thread * const reader_thread
     {
         close(reader_thread->collector_sockfd);
 #ifdef ENABLE_CRYPTO
-        ncrypt_clear_handshake(&reader_thread->workflow->ncrypt_entity);
+        if (nDPId_TLS_USED() != 0) {
+            ncrypt_free_entity(&reader_thread->workflow->ncrypt_entity);
+            ncrypt_entity(&reader_thread->workflow->ncrypt_entity);
+            ncrypt_clear_handshake(&reader_thread->workflow->ncrypt_entity);
+        }
 #endif
     }
 
@@ -2718,25 +2751,30 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
     }
 
 #ifdef ENABLE_CRYPTO
-    if (IS_CMDARG_SET(nDPId_options.server_ca_pem_file) != 0)
+    if (nDPId_TLS_USED() != 0)
     {
         if (ncrypt_handshake_done(&workflow->ncrypt_entity) == 0)
         {
             set_collector_block(reader_thread);
-            ncrypt_free_entity(&workflow->ncrypt_entity);
-            int rv = ncrypt_on_connect(&ncrypt_ctx, reader_thread->collector_sockfd, &workflow->ncrypt_entity);
-            if (rv != NCRYPT_SUCCESS)
+            if (ncrypt_on_connect(&ncrypt_ctx, reader_thread->collector_sockfd, &workflow->ncrypt_entity) != NCRYPT_SUCCESS)
             {
-                logger(1,
-                       "[%8llu, %zu] TLS handshake failed with: %d",
-                       workflow->packets_captured,
-                       reader_thread->array_index,
-                       rv);
-                reader_thread->collector_sock_last_errno = EPIPE;
+                switch (ncrypt_last_error(&workflow->ncrypt_entity)) {
+                    case NCRYPT_WANT_READ:
+                    case NCRYPT_WANT_WRITE:
+                        break;
+                    default:
+                        logger(1,
+                               "[%8llu, %zu] TLS handshake failed with: %d",
+                               workflow->packets_captured,
+                               reader_thread->array_index,
+                               ncrypt_last_error(&workflow->ncrypt_entity));
+                        reader_thread->collector_sock_last_errno = EPIPE;
+                        break;
+                }
                 return;
             }
-            ncrypt_set_handshake(&workflow->ncrypt_entity);
             set_collector_nonblock(reader_thread);
+            ncrypt_set_handshake(&workflow->ncrypt_entity);
         }
     }
 #endif
@@ -2749,7 +2787,7 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
 
     ssize_t written;
 #ifdef ENABLE_CRYPTO
-    if (IS_CMDARG_SET(nDPId_options.server_ca_pem_file) != 0)
+    if (nDPId_TLS_USED() != 0)
     {
         written = ncrypt_write(&workflow->ncrypt_entity, newline_json_msg, s_ret);
     }
@@ -2780,7 +2818,7 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
             while (1)
             {
 #ifdef ENABLE_CRYPTO
-                if (IS_CMDARG_SET(nDPId_options.server_ca_pem_file) != 0)
+                if (nDPId_TLS_USED() != 0)
                 {
                     written = ncrypt_write(&workflow->ncrypt_entity, newline_json_msg + pos, s_ret - pos);
                 }
@@ -2798,7 +2836,7 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
                 if (saved_errno == EPIPE || written == 0)
                 {
                     logger(1,
-                           "[%8llu, %zu] Lost connection to nDPIsrvd Collector",
+                           "[%8llu, %zu] Lost connection (blocking I/O) to nDPIsrvd Collector",
                            workflow->packets_captured,
                            reader_thread->array_index);
                     reader_thread->collector_sock_last_errno = saved_errno;
@@ -5620,7 +5658,7 @@ static void print_usage(char const * const arg0)
         "\t  \tDefault: disabled\n"
         "\t-L\tLog all messages to a log file.\n"
         "\t  \tDefault: disabled\n"
-        "\t-c\tPath to a UNIX socket (nDPIsrvd Collector) or a custom UDP endpoint.\n"
+        "\t-c\tPath to a UNIX socket (nDPIsrvd Collector) or a custom TCP endpoint.\n"
         "\t  \tDefault: `%s'\n"
 #ifdef ENABLE_CRYPTO
         "\t-k\tPath to the client certificate file (PEM format)\n"
@@ -6026,7 +6064,7 @@ static int validate_options(void)
                          "to values lower than %llu / %llu are not recommended.",
                          TIME_S_TO_US(4u),
                          TIME_S_TO_US(6u));
-            logger_early(1, "%s", "Your CPU usage may increase heavily.");
+            logger_early(1, "%s", "Your CPU usage will increase.");
         }
     }
 #endif
@@ -6329,7 +6367,7 @@ int main(int argc, char ** argv)
     }
 
 #ifdef ENABLE_CRYPTO
-    if (IS_CMDARG_SET(nDPId_options.server_ca_pem_file) != 0 &&
+    if (nDPId_TLS_USED() != 0 &&
         ncrypt_init_client(&ncrypt_ctx,
                            GET_CMDARG_STR(nDPId_options.server_ca_pem_file),
                            GET_CMDARG_STR(nDPId_options.client_key_pem_file),

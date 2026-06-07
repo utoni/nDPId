@@ -26,7 +26,7 @@ define Package/nDPId-testing
  TITLE:=nDPId is a tiny nDPI based daemons / toolkit (nDPId source repository)
  SECTION:=net
  CATEGORY:=Network
- DEPENDS:=@!SMALL_FLASH @!LOW_MEMORY_FOOTPRINT +libpcap +zlib +LIBNDPI_GCRYPT:libgcrypt +NDPID_TESTING_INFLUXDB:libcurl +NDPID_TESTING_PFRING:libpfring
+ DEPENDS:=@!SMALL_FLASH @!LOW_MEMORY_FOOTPRINT +libpcap +zlib +LIBNDPI_GCRYPT:libgcrypt +NDPID_TESTING_ENABLE_TLS:libopenssl +NDPID_TESTING_INFLUXDB:libcurl +NDPID_TESTING_PFRING:libpfring
  URL:=http://github.com/lnslbrty/nDPId
 endef
 
@@ -52,6 +52,13 @@ config NDPID_TESTING_LIBNDPI_COMMIT_HASH
      Set the desired libnDPI git commit hash you want to link nDPId against.
      Leave empty to use the dev branch.
      Disabled by default.
+
+config NDPID_TESTING_ENABLE_TLS
+   bool "nDPId/nDPIsrvd TLS support"
+   depends on PACKAGE_nDPId-testing
+   default n
+   help
+     Enable TLS for Collector (nDPId / nDPIsrvd) and Distributor (nDPIsrvd).
 
 config NDPID_TESTING_INFLUXDB
    bool "nDPIsrvd-influxdb"
@@ -80,6 +87,10 @@ CMAKE_OPTIONS += -DSTATIC_LIBNDPI_INSTALLDIR="$(PKG_BUILD_DIR)/libnDPI/install"
 
 TARGET_CFLAGS += -DLIBNDPI_STATIC=1
 TARGET_CFLAGS += -Werror
+
+ifneq ($(CONFIG_NDPID_TESTING_PFRING),)
+CMAKE_OPTIONS += -DENABLE_CRYPTO=ON
+endif
 
 ifneq ($(CONFIG_NDPID_TESTING_PFRING),)
 # FIXME: PFRING kernel include directory is hardcoded (not installed to linux header directory).

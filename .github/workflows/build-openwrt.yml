@@ -67,7 +67,8 @@ jobs:
       - name: Update feeds
         run: |
           cd $SDK_DIR
-          ./scripts/feeds update -a
+          ./scripts/feeds update base
+          ./scripts/feeds update packages
           ./scripts/feeds install -a
 
       - name: Configure package
@@ -76,6 +77,7 @@ jobs:
 
           cat <<EOF >> .config
           CONFIG_PACKAGE_nDPId-testing=y
+          CONFIG_NDPID_TESTING_ENABLE_TLS=y
           CONFIG_NDPID_TESTING_COLLECTD_SUPPORT=y
           CONFIG_NDPID_TESTING_INFLUXDB=y
           CONFIG_NDPID_TESTING_PFRING=n

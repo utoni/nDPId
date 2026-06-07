@@ -6,11 +6,19 @@
 # Collector listener as UNIX socket
 #collector              = /run/nDPIsrvd/collector
 
+# Collector listener as TCP socket
+#collector-in           = 127.0.0.1:7070
+
 # Distributor listener as UNIX socket
 #distributor-unix       = /run/nDPIsrvd/distributor
 
-# Distributor listener as IP socket
+# Distributor listener as TCP socket
 #distributor-in         = 127.0.0.1:7000
+
+# Setup TLS for TCP Collector and TCP Distributor (PEMs preferably generated with scripts/gen-cacerts.sh)
+#cert-pem-file = /path/to/server-crt.pem
+#key-pem-file  = /path/to/server-key.pem
+#ca-pem-file   = /path/to/ca.pem
 
 # Change group of the collector socket
 #collector-group        = daemon

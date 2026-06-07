@@ -151,8 +151,12 @@ int nio_mod_fd(struct nio * io, int fd, int event_flags, void * ptr)
 
         if ((event_flags & NIO_EVENT_INPUT) != 0)
             event.events |= EPOLLIN;
+        else
+            event.events &= ~EPOLLIN;
         if ((event_flags & NIO_EVENT_OUTPUT) != 0)
             event.events |= EPOLLOUT;
+        else
+            event.events &= ~EPOLLOUT;
         if (event.events == 0)
             return NIO_ERROR_INTERNAL;
 
@@ -184,8 +188,12 @@ int nio_mod_fd(struct nio * io, int fd, int event_flags, void * ptr)
         used_pollfd->events = 0;
         if ((event_flags & NIO_EVENT_INPUT) != 0)
             used_pollfd->events |= POLLIN;
+        else
+            used_pollfd->events &= ~POLLIN;
         if ((event_flags & NIO_EVENT_OUTPUT) != 0)
             used_pollfd->events |= POLLOUT;
+        else
+            used_pollfd->events &= ~POLLOUT;
         if (used_pollfd->events == 0)
             return NIO_ERROR_INTERNAL;
 
@@ -234,6 +242,8 @@ int nio_del_fd(struct nio * io, int fd)
             return NIO_ERROR_INTERNAL;
 
         used_pollfd->fd = -1;
+        used_pollfd->events = 0;
+        used_pollfd->revents = 0;
         *used_ptr = NULL;
 
         return NIO_SUCCESS;
@@ -269,13 +279,17 @@ int nio_run(struct nio * io, int timeout)
 
         if (io->nready > 0)
         {
-            for (nfds_t i = 0, j = 0; i < io->poll_max_fds; ++i)
+            nfds_t ready = 0;
+
+            for (nfds_t i = 0; i < io->poll_max_fds; ++i)
             {
                 if (io->poll_fds[i].fd >= 0 && io->poll_fds[i].revents != 0)
                 {
-                    io->poll_fds_set[j++] = i;
+                    io->poll_fds_set[ready++] = i;
                 }
             }
+
+            io->nready = (int)ready;
         }
     }
 

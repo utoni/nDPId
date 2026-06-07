@@ -31,14 +31,14 @@ To balance the workload to all threads (more or less) equally, a unique identifi
 
 `nDPId` uses libnDPI's JSON serialization interface to generate a JSON messages for each event it receives from the library and which it then sends out to a UNIX-socket (default: `/tmp/ndpid-collector.sock` ). From such a socket, `nDPIsrvd` (or other custom applications) can retrieve incoming JSON-messages and further proceed working/distributing messages to higher-level applications.
 
-Unfortunately, `nDPIsrvd` does not yet support any encryption/authentication for TCP connections (TODO!).
+`nDPIsrvd` can authenticate and encrypt collector and distributor TCP connections with mutual TLS.
 
 # Architecture
 
 This project uses a kind of microservice architecture.
 
 ```text
-                connect to UNIX socket [1]        connect to UNIX/TCP socket [2]                
+                connect to UNIX/TCP socket [1]    connect to UNIX/TCP socket [2]                
 _______________________   |                                 |   __________________________
 |     "producer"      |___|                                 |___|       "consumer"       |
 |---------------------|      _____________________________      |------------------------|
@@ -56,10 +56,10 @@ _______________________   |                                 |   ________________
 ```
 where:
 
-* `nDPId` capture traffic, extract traffic data (with libnDPI) and send a JSON-serialized output stream to an already existing UNIX-socket;
+* `nDPId` capture traffic, extract traffic data (with libnDPI) and send a JSON-serialized output stream to an already existing UNIX/TCP socket;
 * `nDPIsrvd`:
 
-    * create and manage an "incoming" UNIX-socket (ref [1] above), to fetch data from a local `nDPId`;
+    * create and manage an "incoming" UNIX or TCP socket (ref [1] above), to fetch data from a local `nDPId`;
     * apply a buffering logic to received data;
     * create and manage an "outgoing" UNIX or TCP socket (ref [2] above) to relay matched events
       to connected clients
