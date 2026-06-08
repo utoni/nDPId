@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import csv
+import itertools
 import joblib
 import matplotlib.pyplot
 import numpy
@@ -9,6 +10,7 @@ import pandas
 import sklearn
 import sklearn.ensemble
 import sklearn.inspection
+import sklearn.model_selection
 import sys
 import time
 
@@ -217,7 +219,7 @@ if __name__ == '__main__':
                            help='Number of sklearn processes during training.')
     argparser.add_argument('--sklearn-estimators', action='store', type=int, default=1000,
                            help='Number of trees in the forest.')
-    argparser.add_argument('--sklearn-min-samples-leaf', action='store', type=int, default=0.0001,
+    argparser.add_argument('--sklearn-min-samples-leaf', action='store', type=float, default=0.0001,
                            help='The minimum number of samples required to be at a leaf node.')
     argparser.add_argument('--sklearn-class-weight', default='balanced', const='balanced', nargs='?',
                            choices=['balanced', 'balanced_subsample'],
@@ -227,8 +229,14 @@ if __name__ == '__main__':
                            help='The number of features to consider when looking for the best split.')
     argparser.add_argument('--sklearn-max-depth', action='store', type=int, default=128,
                            help='The maximum depth of a tree.')
+    argparser.add_argument('--sklearn-no-bootstrap', action='store_false', dest='sklearn_bootstrap',
+                           help='Disable bootstrap sampling when building trees. ' +
+                                'Bootstrap is enabled by default and allows out-of-bag error estimation.')
     argparser.add_argument('--sklearn-verbosity', action='store', type=int, default=0,
                            help='Controls the verbosity of sklearn\'s random forest classifier.')
+    argparser.add_argument('--test-split', action='store', type=float, default=0.2,
+                           help='Fraction of CSV data to hold out as a test set (e.g. 0.2 for 20%%). ' +
+                                'Reports accuracy on the held-out set after training. Requires --csv.')
     args = argparser.parse_args()
     address = nDPIsrvd.validateAddress(args)
 
@@ -267,8 +275,8 @@ if __name__ == '__main__':
 
     ENABLE_FEATURE_IAT    = args.enable_iat if args.enable_iat is not None else ENABLE_FEATURE_IAT
     ENABLE_FEATURE_PKTLEN = args.enable_pktlen if args.enable_pktlen is not None else ENABLE_FEATURE_PKTLEN
-    ENABLE_FEATURE_DIRS   = args.disable_dirs if args.disable_dirs is not None else ENABLE_FEATURE_DIRS
-    ENABLE_FEATURE_BINS   = args.disable_bins if args.disable_bins is not None else ENABLE_FEATURE_BINS
+    ENABLE_FEATURE_DIRS   = not args.disable_dirs if args.disable_dirs is not None else ENABLE_FEATURE_DIRS
+    ENABLE_FEATURE_BINS   = not args.disable_bins if args.disable_bins is not None else ENABLE_FEATURE_BINS
     PROTO_CLASSES         = args.proto_class
 
     numpy.set_printoptions(formatter={'float_kind': "{:.1f}".format}, sign=' ')
@@ -290,12 +298,14 @@ if __name__ == '__main__':
             X = list()
             y = list()
 
+            first_line = None
             for line in reader:
                 N_DIRS = len(getFeaturesFromArray(line['directions']))
                 N_BINS = len(getFeaturesFromArray(line['bins_c_to_s']))
+                first_line = line
                 break
 
-            for line in reader:
+            for line in itertools.chain([first_line] if first_line is not None else [], reader):
                 try:
                     X += getRelevantFeaturesCSV(line)
                 except RuntimeError as err:
@@ -315,7 +325,7 @@ if __name__ == '__main__':
             sys.stderr.write('CSV data set contains {} entries.\n'.format(len(X)))
 
             if args.load_model is None:
-                model = sklearn.ensemble.RandomForestClassifier(bootstrap=False,
+                model = sklearn.ensemble.RandomForestClassifier(bootstrap        = args.sklearn_bootstrap,
                                                                 class_weight     = args.sklearn_class_weight,
                                                                 n_jobs           = args.sklearn_jobs,
                                                                 n_estimators     = args.sklearn_estimators,
@@ -325,8 +335,24 @@ if __name__ == '__main__':
                                                                 max_depth        = args.sklearn_max_depth
                                                                )
                 options = (ENABLE_FEATURE_IAT, ENABLE_FEATURE_PKTLEN, ENABLE_FEATURE_DIRS, ENABLE_FEATURE_BINS, args.proto_class)
-            sys.stderr.write('Training model..\n')
-            model.fit(X, y)
+
+            if args.test_split > 0.0 and args.load_model is None:
+                try:
+                    X_train, X_test, y_train, y_test = sklearn.model_selection.train_test_split(
+                        X, y, test_size=args.test_split, random_state=42, stratify=y)
+                except ValueError:
+                    sys.stderr.write('Warning: stratified split failed (too few samples per class), ' \
+                                     'falling back to random split.\n')
+                    X_train, X_test, y_train, y_test = sklearn.model_selection.train_test_split(
+                        X, y, test_size=args.test_split, random_state=42)
+                sys.stderr.write('Training model on {} samples, holding out {} for testing..\n'.format(
+                    len(X_train), len(X_test)))
+                model.fit(X_train, y_train)
+                score = model.score(X_test, y_test)
+                sys.stderr.write('Test set accuracy: {:.4f} ({:.1f}%)\n'.format(score, score * 100))
+            else:
+                sys.stderr.write('Training model..\n')
+                model.fit(X, y)
 
             if args.generate_feature_importance is True:
                 sys.stderr.write('Generating feature importance .. this may take some time\n')
@@ -341,10 +367,11 @@ if __name__ == '__main__':
     print('ENABLE_FEATURE_DIRS..: {}'.format(ENABLE_FEATURE_DIRS))
     print('ENABLE_FEATURE_IAT...: {}'.format(ENABLE_FEATURE_IAT))
     print('Map[*] -> [0]')
-    for x in range(len(args.proto_class)):
-        print('Map["{}"] -> [{}]'.format(args.proto_class[x], x + 1))
+    if args.proto_class is not None:
+        for x in range(len(args.proto_class)):
+            print('Map["{}"] -> [{}]'.format(args.proto_class[x], x + 1))
 
-    sys.stderr.write('Predicting realtime traffic..\n')
+    sys.stderr.write('Predicting traffic..\n')
     sys.stderr.write('Recv buffer size: {}\n'.format(nDPIsrvd.NETWORK_BUFFER_MAX_SIZE))
     sys.stderr.write('Connecting to {} ..\n'.format(address[0]+':'+str(address[1]) if type(address) is tuple else address))
     nsock = nDPIsrvdSocket()
