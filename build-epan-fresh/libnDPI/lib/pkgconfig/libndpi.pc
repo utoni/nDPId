@@ -1,0 +1,10 @@
+prefix=/
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: libndpi
+Description: deep packet inspection library
+Version: 5.1.0
+Libs: -L${libdir} -lndpi  -lm 
+Cflags: -I${includedir}/ndpi

@@ -1,0 +1,12 @@
+/tmp/workspace/utoni/nDPId/examples/rs-simple/target/release/deps/gcore-ef8dd73cad957088.d: /home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gcore-1.10.0/src/lib.rs /home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gcore-1.10.0/src/errors.rs /home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gcore-1.10.0/src/exec.rs /home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gcore-1.10.0/src/msg.rs /home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gcore-1.10.0/src/prog.rs /home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gcore-1.10.0/src/utils.rs
+
+/tmp/workspace/utoni/nDPId/examples/rs-simple/target/release/deps/libgcore-ef8dd73cad957088.rlib: /home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gcore-1.10.0/src/lib.rs /home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gcore-1.10.0/src/errors.rs /home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gcore-1.10.0/src/exec.rs /home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gcore-1.10.0/src/msg.rs /home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gcore-1.10.0/src/prog.rs /home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gcore-1.10.0/src/utils.rs
+
+/tmp/workspace/utoni/nDPId/examples/rs-simple/target/release/deps/libgcore-ef8dd73cad957088.rmeta: /home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gcore-1.10.0/src/lib.rs /home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gcore-1.10.0/src/errors.rs /home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gcore-1.10.0/src/exec.rs /home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gcore-1.10.0/src/msg.rs /home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gcore-1.10.0/src/prog.rs /home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gcore-1.10.0/src/utils.rs
+
+/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gcore-1.10.0/src/lib.rs:
+/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gcore-1.10.0/src/errors.rs:
+/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gcore-1.10.0/src/exec.rs:
+/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gcore-1.10.0/src/msg.rs:
+/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gcore-1.10.0/src/prog.rs:
+/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gcore-1.10.0/src/utils.rs:

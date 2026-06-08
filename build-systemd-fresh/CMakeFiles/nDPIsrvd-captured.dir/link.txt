@@ -1,0 +1,1 @@
+/usr/bin/cc  -std=c11 -D_DEFAULT_SOURCE=1 -D_GNU_SOURCE=1 -Wall -Wextra -O0 -g3 -fno-omit-frame-pointer -fno-inline -Wl,--dependency-file=CMakeFiles/nDPIsrvd-captured.dir/link.d "CMakeFiles/nDPIsrvd-captured.dir/examples/c-captured/c-captured.c.o" "CMakeFiles/nDPIsrvd-captured.dir/utils.c.o" -o nDPIsrvd-captured  /usr/lib/x86_64-linux-gnu/libpcap.so
