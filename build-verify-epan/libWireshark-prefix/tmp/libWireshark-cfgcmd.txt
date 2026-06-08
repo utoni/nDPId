@@ -1,1 +1,0 @@
-cmd='env;CC=/usr/bin/cc;AR=/usr/bin/ar;RANLIB=/usr/bin/ranlib;PKG_CONFIG=/usr/bin/pkg-config;CFLAGS=;MAKE_PROGRAM=/usr/bin/gmake;BUILD_DIR=/tmp/workspace/utoni/nDPId/build-verify-epan/libWireshark-build;DEST_INSTALL=/tmp/workspace/utoni/nDPId/build-verify-epan/libWireshark;FORCE_GIT_UPDATE=OFF;/tmp/workspace/utoni/nDPId/scripts/get-and-build-libwireshark.sh'

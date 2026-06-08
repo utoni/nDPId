@@ -1,1 +1,0 @@
-/usr/bin/cc  -std=c11 -D_DEFAULT_SOURCE=1 -D_GNU_SOURCE=1 -Wall -Wextra -O0 -g3 -fno-omit-frame-pointer -fno-inline -Wl,--dependency-file=CMakeFiles/nDPId.dir/link.d CMakeFiles/nDPId.dir/nDPId.c.o CMakeFiles/nDPId.dir/nio.c.o CMakeFiles/nDPId.dir/utils.c.o -o nDPId  libnDPI/lib/libndpi.a /usr/lib/x86_64-linux-gnu/libpcap.so -lm -pthread
