@@ -498,10 +498,18 @@ if(ENABLE_EPAN)
             endif()
         endif()
         set(WIRESHARK_LIBRARIES "${WIRESHARK_LIBRARY}" "${WSUTIL_LIBRARY}")
-        # Set RPATH so the built nDPId binary finds the Wireshark shared libs at runtime.
+        # Wireshark is linked as shared libraries here, so derive runtime lookup paths
+        # from the resolved library locations and apply them to both build and install.
+        get_filename_component(WIRESHARK_LIBRARY_DIR "${WIRESHARK_LIBRARY}" DIRECTORY)
+        get_filename_component(WSUTIL_LIBRARY_DIR "${WSUTIL_LIBRARY}" DIRECTORY)
+        get_filename_component(WIRETAP_LIBRARY_DIR "${WIRETAP_LIBRARY}" DIRECTORY)
+        set(WIRESHARK_RPATHS "${WIRESHARK_LIBRARY_DIR}" "${WSUTIL_LIBRARY_DIR}" "${WIRETAP_LIBRARY_DIR}")
+        list(REMOVE_DUPLICATES WIRESHARK_RPATHS)
+        list(JOIN WIRESHARK_RPATHS ";" WIRESHARK_RPATH)
         set_target_properties(nDPId PROPERTIES
-            BUILD_RPATH  "${STATIC_LIBWIRESHARK_INSTALLDIR}/lib;${STATIC_LIBWIRESHARK_INSTALLDIR}/lib64;${STATIC_LIBWIRESHARK_INSTALLDIR}/lib/${CMAKE_LIBRARY_ARCHITECTURE}"
-            INSTALL_RPATH "${STATIC_LIBWIRESHARK_INSTALLDIR}/lib;${STATIC_LIBWIRESHARK_INSTALLDIR}/lib64;${STATIC_LIBWIRESHARK_INSTALLDIR}/lib/${CMAKE_LIBRARY_ARCHITECTURE}")
+            BUILD_RPATH "${WIRESHARK_RPATH}"
+            INSTALL_RPATH "${WIRESHARK_RPATH}"
+            INSTALL_RPATH_USE_LINK_PATH TRUE)
     else()
         # Default: use pkg-config to find a system-installed Wireshark.
         pkg_check_modules(WIRESHARK REQUIRED wireshark)
