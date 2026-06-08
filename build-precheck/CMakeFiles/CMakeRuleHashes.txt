@@ -1,0 +1,11 @@
+# Hashes of file build rules.
+33ec3c7b155084b9e33afcf4c5e845a6 CMakeFiles/clean-libnDPI
+8d880cfc47ca2502b27b6b8b65745a63 CMakeFiles/libnDPI
+cb4a759feddabebb39a584acc0c62628 CMakeFiles/libnDPI-complete
+796f8360b811141f693046eea4be7413 libnDPI-prefix/src/libnDPI-stamp/libnDPI-build
+934e3cbc06e80abb81b3bf82050686aa libnDPI-prefix/src/libnDPI-stamp/libnDPI-configure
+58a40b713b4b03cd27feea6b0d1e650f libnDPI-prefix/src/libnDPI-stamp/libnDPI-download
+7b593a5e9310ed13ed38b2c69dd935b1 libnDPI-prefix/src/libnDPI-stamp/libnDPI-install
+c2b20ce546ebabf5f445e1e7a652afad libnDPI-prefix/src/libnDPI-stamp/libnDPI-mkdir
+9dd1b67f408e1decbc7dbc467a7a74f6 libnDPI-prefix/src/libnDPI-stamp/libnDPI-patch
+94f0944ede800bacbbbbd759a60df541 libnDPI-prefix/src/libnDPI-stamp/libnDPI-update
