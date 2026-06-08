@@ -505,10 +505,9 @@ if(ENABLE_EPAN)
         get_filename_component(WIRETAP_LIBRARY_DIR "${WIRETAP_LIBRARY}" DIRECTORY)
         set(WIRESHARK_RPATHS "${WIRESHARK_LIBRARY_DIR}" "${WSUTIL_LIBRARY_DIR}" "${WIRETAP_LIBRARY_DIR}")
         list(REMOVE_DUPLICATES WIRESHARK_RPATHS)
-        list(JOIN WIRESHARK_RPATHS ";" WIRESHARK_RPATH)
         set_target_properties(nDPId PROPERTIES
-            BUILD_RPATH "${WIRESHARK_RPATH}"
-            INSTALL_RPATH "${WIRESHARK_RPATH}"
+            BUILD_RPATH "${WIRESHARK_RPATHS}"
+            INSTALL_RPATH "${WIRESHARK_RPATHS}"
             INSTALL_RPATH_USE_LINK_PATH TRUE)
     else()
         # Default: use pkg-config to find a system-installed Wireshark.
