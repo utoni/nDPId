@@ -48,7 +48,6 @@ set(CPACK_PACKAGING_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 set(CMAKE_MACOSX_RPATH 1)
 
 include(CPack)
-include(GNUInstallDirs)
 include(CheckFunctionExists)
 include(CheckLibraryExists)
 include(CheckEpoll)
@@ -506,12 +505,17 @@ if(ENABLE_EPAN)
         get_filename_component(WIRETAP_LIBRARY_DIR "${WIRETAP_LIBRARY}" DIRECTORY)
         set(WIRESHARK_RPATHS "${WIRESHARK_LIBRARY_DIR}" "${WSUTIL_LIBRARY_DIR}" "${WIRETAP_LIBRARY_DIR}")
         list(REMOVE_DUPLICATES WIRESHARK_RPATHS)
-        set(WIRESHARK_INSTALL_LIBDIR "${CMAKE_INSTALL_LIBDIR}/nDPId")
-        set(WIRESHARK_INSTALL_RPATH "${CMAKE_INSTALL_FULL_LIBDIR}/nDPId")
+        if(CMAKE_LIBRARY_ARCHITECTURE)
+            set(WIRESHARK_INSTALL_LIBDIR "/usr/lib/${CMAKE_LIBRARY_ARCHITECTURE}/nDPId")
+        elseif(CMAKE_SIZEOF_VOID_P EQUAL 8 AND EXISTS "/usr/lib64")
+            set(WIRESHARK_INSTALL_LIBDIR "/usr/lib64/nDPId")
+        else()
+            set(WIRESHARK_INSTALL_LIBDIR "/usr/lib/nDPId")
+        endif()
         set(WIRESHARK_INSTALL_LIBRARIES "${WIRESHARK_LIBRARY}" "${WSUTIL_LIBRARY}" "${WIRETAP_LIBRARY}")
         set_target_properties(nDPId PROPERTIES
             BUILD_RPATH "${WIRESHARK_RPATHS}"
-            INSTALL_RPATH "${WIRESHARK_INSTALL_RPATH}"
+            INSTALL_RPATH "${WIRESHARK_INSTALL_LIBDIR}"
             INSTALL_RPATH_USE_LINK_PATH TRUE)
     else()
         # Default: use pkg-config to find a system-installed Wireshark.
