@@ -1,0 +1,43 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/tmp/workspace/utoni/nDPId/build-fresh-j8-verify/CMakeFiles/libnDPI"
+		},
+		{
+			"file" : "/tmp/workspace/utoni/nDPId/build-fresh-j8-verify/CMakeFiles/libnDPI.rule"
+		},
+		{
+			"file" : "/tmp/workspace/utoni/nDPId/build-fresh-j8-verify/CMakeFiles/libnDPI-complete.rule"
+		},
+		{
+			"file" : "/tmp/workspace/utoni/nDPId/build-fresh-j8-verify/libnDPI-prefix/src/libnDPI-stamp/libnDPI-build.rule"
+		},
+		{
+			"file" : "/tmp/workspace/utoni/nDPId/build-fresh-j8-verify/libnDPI-prefix/src/libnDPI-stamp/libnDPI-configure.rule"
+		},
+		{
+			"file" : "/tmp/workspace/utoni/nDPId/build-fresh-j8-verify/libnDPI-prefix/src/libnDPI-stamp/libnDPI-download.rule"
+		},
+		{
+			"file" : "/tmp/workspace/utoni/nDPId/build-fresh-j8-verify/libnDPI-prefix/src/libnDPI-stamp/libnDPI-install.rule"
+		},
+		{
+			"file" : "/tmp/workspace/utoni/nDPId/build-fresh-j8-verify/libnDPI-prefix/src/libnDPI-stamp/libnDPI-mkdir.rule"
+		},
+		{
+			"file" : "/tmp/workspace/utoni/nDPId/build-fresh-j8-verify/libnDPI-prefix/src/libnDPI-stamp/libnDPI-patch.rule"
+		},
+		{
+			"file" : "/tmp/workspace/utoni/nDPId/build-fresh-j8-verify/libnDPI-prefix/src/libnDPI-stamp/libnDPI-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"libnDPI"
+		],
+		"name" : "libnDPI"
+	}
+}
