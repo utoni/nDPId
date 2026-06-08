@@ -1,0 +1,25 @@
+
+# Consider dependencies only in project.
+set(CMAKE_DEPENDS_IN_PROJECT_ONLY OFF)
+
+# The set of languages for which implicit dependencies are needed:
+set(CMAKE_DEPENDS_LANGUAGES
+  )
+
+# The set of dependency files which are needed:
+set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/tmp/workspace/utoni/nDPId/examples/c-captured/c-captured.c" "CMakeFiles/nDPIsrvd-captured.dir/examples/c-captured/c-captured.c.o" "gcc" "CMakeFiles/nDPIsrvd-captured.dir/examples/c-captured/c-captured.c.o.d"
+  "/tmp/workspace/utoni/nDPId/utils.c" "CMakeFiles/nDPIsrvd-captured.dir/utils.c.o" "gcc" "CMakeFiles/nDPIsrvd-captured.dir/utils.c.o.d"
+  "" "nDPIsrvd-captured" "gcc" "CMakeFiles/nDPIsrvd-captured.dir/link.d"
+  )
+
+# Targets to which this target links which contain Fortran sources.
+set(CMAKE_Fortran_TARGET_LINKED_INFO_FILES
+  )
+
+# Targets to which this target links which contain Fortran sources.
+set(CMAKE_Fortran_TARGET_FORWARD_LINKED_INFO_FILES
+  )
+
+# Fortran module output directory.
+set(CMAKE_Fortran_TARGET_MODULE_DIR "")
