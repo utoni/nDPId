@@ -1,0 +1,43 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/tmp/workspace/utoni/nDPId/build-verify-epan/CMakeFiles/libWireshark"
+		},
+		{
+			"file" : "/tmp/workspace/utoni/nDPId/build-verify-epan/CMakeFiles/libWireshark.rule"
+		},
+		{
+			"file" : "/tmp/workspace/utoni/nDPId/build-verify-epan/CMakeFiles/libWireshark-complete.rule"
+		},
+		{
+			"file" : "/tmp/workspace/utoni/nDPId/build-verify-epan/libWireshark-prefix/src/libWireshark-stamp/libWireshark-build.rule"
+		},
+		{
+			"file" : "/tmp/workspace/utoni/nDPId/build-verify-epan/libWireshark-prefix/src/libWireshark-stamp/libWireshark-configure.rule"
+		},
+		{
+			"file" : "/tmp/workspace/utoni/nDPId/build-verify-epan/libWireshark-prefix/src/libWireshark-stamp/libWireshark-download.rule"
+		},
+		{
+			"file" : "/tmp/workspace/utoni/nDPId/build-verify-epan/libWireshark-prefix/src/libWireshark-stamp/libWireshark-install.rule"
+		},
+		{
+			"file" : "/tmp/workspace/utoni/nDPId/build-verify-epan/libWireshark-prefix/src/libWireshark-stamp/libWireshark-mkdir.rule"
+		},
+		{
+			"file" : "/tmp/workspace/utoni/nDPId/build-verify-epan/libWireshark-prefix/src/libWireshark-stamp/libWireshark-patch.rule"
+		},
+		{
+			"file" : "/tmp/workspace/utoni/nDPId/build-verify-epan/libWireshark-prefix/src/libWireshark-stamp/libWireshark-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"libWireshark"
+		],
+		"name" : "libWireshark"
+	}
+}
