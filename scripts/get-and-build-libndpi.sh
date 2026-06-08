@@ -32,8 +32,6 @@ if [[ ! -z "${CC}" ]]; then
     HOST_TRIPLET="$(${CC} ${CFLAGS} -dumpmachine)"
 fi
 
-MAKEFLAGS="-${MAKEFLAGS}"
-
 cat <<EOF
 ------ environment variables ------
 HOST_TRIPLET=${HOST_TRIPLET}
@@ -46,7 +44,7 @@ CFLAGS=${CFLAGS:-}
 LDFLAGS=${LDFLAGS:-}
 ADDITIONAL_ARGS=${ADDITIONAL_ARGS:-}
 MAKE_PROGRAM=${MAKE_PROGRAM:-}
-MAKEFLAGS=${MAKEFLAGS}
+MAKEFLAGS=${MAKEFLAGS:-}
 DEST_INSTALL=${DEST_INSTALL:-}
 NDPI_COMMIT_HASH=${NDPI_COMMIT_HASH:-}
 FORCE_GIT_UPDATE=${FORCE_GIT_UPDATE:-}
@@ -105,6 +103,6 @@ HOST_ARG="--host=${HOST_TRIPLET}"
 		--disable-plugin-support \
     --disable-shared --enable-static \
     --with-only-libndpi ${HOST_ARG} ${ADDITIONAL_ARGS} || { cat config.log | grep -v '^|'; false; }
-${MAKE_PROGRAM} ${MAKEFLAGS} install DESTDIR="${DEST_INSTALL}"
+${MAKE_PROGRAM} install DESTDIR="${DEST_INSTALL}"
 
 rm -f "${LOCKFILE}"
