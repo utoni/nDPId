@@ -57,7 +57,15 @@ if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/nDPId" TYPE FILE FILES
+  list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
+   "/usr/lib/x86_64-linux-gnu/nDPId/libwireshark.so;/usr/lib/x86_64-linux-gnu/nDPId/libwsutil.so;/usr/lib/x86_64-linux-gnu/nDPId/libwiretap.so")
+  if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
+    message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
+  endif()
+  if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
+    message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
+  endif()
+  file(INSTALL DESTINATION "/usr/lib/x86_64-linux-gnu/nDPId" TYPE FILE FILES
     "/usr/lib/x86_64-linux-gnu/libwireshark.so"
     "/usr/lib/x86_64-linux-gnu/libwsutil.so"
     "/usr/lib/x86_64-linux-gnu/libwiretap.so"
@@ -69,15 +77,15 @@ if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/sbin/nDPId")
     file(RPATH_CHECK
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/sbin/nDPId"
-         RPATH "/usr/local/lib/nDPId")
+         RPATH "/usr/lib/x86_64-linux-gnu/nDPId")
   endif()
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/sbin" TYPE EXECUTABLE FILES "/tmp/workspace/utoni/nDPId/build-validate/nDPId")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/sbin/nDPId" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/sbin/nDPId")
     file(RPATH_CHANGE
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/sbin/nDPId"
-         OLD_RPATH "/usr/lib/x86_64-linux-gnu:"
-         NEW_RPATH "/usr/local/lib/nDPId")
+         OLD_RPATH "/usr/lib/x86_64-linux-gnu::::::"
+         NEW_RPATH "/usr/lib/x86_64-linux-gnu/nDPId")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/sbin/nDPId")
     endif()
