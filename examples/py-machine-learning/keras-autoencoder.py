@@ -10,11 +10,13 @@ import multiprocessing as mp
 import numpy as np
 import os
 import queue
+import random
+import struct
 import sys
 
 import tensorflow as tf
-from tensorflow.keras import models, layers, preprocessing
-from tensorflow.keras.layers import Embedding, Masking, Input, Dense
+from tensorflow.keras import models
+from tensorflow.keras.layers import Input, Dense
 from tensorflow.keras.models import Model
 from tensorflow.keras.utils import plot_model
 from tensorflow.keras.losses import MeanSquaredError, KLDivergence
@@ -35,6 +37,15 @@ EPOCH_COUNT   = 3
 BATCH_SIZE    = 16
 LEARNING_RATE = 0.000001
 ES_PATIENCE   = 3
+GENERATED_PACKET_COUNT = 512
+MIN_LATENT_STD = 1e-9
+MIN_PACKET_LENGTH = 1
+PCAP_VERSION_MAJOR = 2
+PCAP_VERSION_MINOR = 4
+PCAP_MAGIC_NUMBER = 0xa1b2c3d4
+PCAP_THISZONE = 0
+PCAP_SIGFIGS = 0
+PCAP_LINKTYPE_ETHERNET = 1
 PLOT          = False
 PLOT_HISTORY  = 100
 TENSORBOARD   = False
@@ -43,13 +54,8 @@ VAE_USE_KLDIV = False
 VAE_USE_SGD   = False
 
 def generate_autoencoder():
-    # TODO: The current model does handle *each* packet separatly.
-    #       But in fact, depending on the nDPId settings (nDPId_PACKETS_PER_FLOW_TO_SEND), packets can be in relation to each other.
-    #       The accuracy may (or may not) improve significantly, but some of changes in the code are required.
-    input_i = Input(shape=(), name='input_i')
-    input_e = Embedding(input_dim=INPUT_SIZE, output_dim=INPUT_SIZE, mask_zero=True, name='input_e')(input_i)
-    masked_e = Masking(mask_value=0.0, name='masked_e')(input_e)
-    encoded_h1 = Dense(4096, activation='relu', name='encoded_h1')(masked_e)
+    input_i = Input(shape=(INPUT_SIZE,), name='input_i')
+    encoded_h1 = Dense(4096, activation='relu', name='encoded_h1')(input_i)
     encoded_h2 = Dense(2048, activation='relu', name='encoded_h2')(encoded_h1)
     encoded_h3 = Dense(1024, activation='relu', name='encoded_h3')(encoded_h2)
     encoded_h4 = Dense(512, activation='relu', name='encoded_h4')(encoded_h3)
@@ -58,7 +64,7 @@ def generate_autoencoder():
     encoded_h7 = Dense(32, activation='relu', name='encoded_h7')(encoded_h6)
     latent = Dense(LATENT_SIZE, activation='relu', name='latent')(encoded_h7)
 
-    input_l = Input(shape=(LATENT_SIZE), name='input_l')
+    input_l = Input(shape=(LATENT_SIZE,), name='input_l')
     decoder_h1 = Dense(32, activation='relu', name='decoder_h1')(input_l)
     decoder_h2 = Dense(64, activation='relu', name='decoder_h2')(decoder_h1)
     decoder_h3 = Dense(128, activation='relu', name='decoder_h3')(decoder_h2)
@@ -68,11 +74,11 @@ def generate_autoencoder():
     decoder_h7 = Dense(4096, activation='relu', name='decoder_h7')(decoder_h6)
     output_i = Dense(INPUT_SIZE, activation='sigmoid', name='output_i')(decoder_h7)
 
-    encoder = Model(input_e, latent, name='encoder')
+    encoder = Model(input_i, latent, name='encoder')
     decoder = Model(input_l, output_i, name='decoder')
     return KLDivergence() if VAE_USE_KLDIV else MeanSquaredError(), \
            SGD() if VAE_USE_SGD else Adam(learning_rate=LEARNING_RATE), \
-           Model(input_e, decoder(encoder(input_e)), name='VAE')
+           Model(input_i, decoder(encoder(input_i)), name='VAE')
 
 def compile_autoencoder():
     loss, optimizer, autoencoder = generate_autoencoder()
@@ -88,6 +94,66 @@ def get_autoencoder(load_from_file=None):
     encoder_submodel = autoencoder.layers[1]
     decoder_submodel = autoencoder.layers[2]
     return encoder_submodel, decoder_submodel, autoencoder
+
+def normalize_packet(raw_packet):
+    int_buf = np.frombuffer(raw_packet, dtype=np.uint8).astype('float64')
+    pkt_len = max(MIN_PACKET_LENGTH, min(len(int_buf), INPUT_SIZE))
+    norm_buf = int_buf / 255.0
+    padded = np.pad(norm_buf[:pkt_len], (0, max(0, INPUT_SIZE - pkt_len)), mode='constant')
+    return padded, pkt_len
+
+def denormalize_packet(packet_vector, pkt_len):
+    clipped = np.clip(packet_vector, 0.0, 1.0)
+    int_values = np.rint(clipped * 255.0).astype(np.uint8)
+    return bytes(int_values[:pkt_len])
+
+def write_pcap(pcap_path, packet_list):
+    if len(packet_list) == 0:
+        return
+
+    with open(pcap_path, 'wb') as pcapf:
+        # pcap global header fields: magic, version_major, version_minor, thiszone, sigfigs, snaplen, network
+        pcapf.write(struct.pack('<IHHIIII',
+                                PCAP_MAGIC_NUMBER,
+                                PCAP_VERSION_MAJOR,
+                                PCAP_VERSION_MINOR,
+                                PCAP_THISZONE,
+                                PCAP_SIGFIGS,
+                                INPUT_SIZE,
+                                PCAP_LINKTYPE_ETHERNET))
+        for packet in packet_list:
+            now = dt.datetime.now(dt.timezone.utc)
+            ts_sec = int(now.timestamp())
+            ts_usec = now.microsecond
+            pkt_len = len(packet)
+            pcapf.write(struct.pack('<IIII', ts_sec, ts_usec, pkt_len, pkt_len))
+            pcapf.write(packet)
+
+def generate_packets(decoder, latent_reference, packet_lengths, packet_count):
+    if packet_count <= 0:
+        return []
+
+    if latent_reference is None or latent_reference.size == 0:
+        latent_reference = np.zeros((1, LATENT_SIZE), dtype='float64')
+
+    latent_mean = np.mean(latent_reference, axis=0)
+    latent_std = np.std(latent_reference, axis=0)
+    latent_std = np.maximum(latent_std, MIN_LATENT_STD)
+    latent_samples = np.random.normal(
+        loc=latent_mean,
+        scale=latent_std,
+        size=(packet_count, LATENT_SIZE)
+    )
+    decoded_packets = decoder.predict(latent_samples, verbose=0)
+    if len(packet_lengths) == 0:
+        packet_lengths = [INPUT_SIZE]
+
+    generated_packets = []
+    for decoded_packet in decoded_packets:
+        packet_len = random.choice(packet_lengths)
+        generated_packets.append(denormalize_packet(decoded_packet, packet_len))
+
+    return generated_packets
 
 def on_json_line(json_dict, instance, current_flow, global_user_data):
     if 'packet_event_name' not in json_dict:
@@ -109,23 +175,8 @@ def on_json_line(json_dict, instance, current_flow, global_user_data):
         sys.stderr.flush()
         return False
 
-    # Generate decimal byte buffer with valus from 0-255
-    int_buf = []
-    for v in buf:
-        int_buf.append(int(v))
-
-    mat = np.array([int_buf], dtype='float64')
-
-    # Normalize the values
-    mat = mat.astype('float64') / 255.0
-
-    # Mean removal
-    matmean = np.mean(mat, dtype='float64')
-    mat -= matmean
-
-    # Pad resulting matrice
-    buf = preprocessing.sequence.pad_sequences(mat, padding="post", maxlen=INPUT_SIZE, truncating='post', dtype='float64')
-    padded_pkts.put(buf[0])
+    normalized_packet, packet_length = normalize_packet(buf)
+    padded_pkts.put((normalized_packet, packet_length))
 
     #print(list(buf[0]))
 
@@ -155,14 +206,14 @@ def ndpisrvd_worker(address, shared_shutdown_event, shared_training_event, share
 
     shared_shutdown_event.set()
 
-def keras_worker(load_model, save_model, shared_shutdown_event, shared_training_event, shared_packet_queue, shared_plot_queue):
+def keras_worker(load_model, save_model, save_pcap, generated_packets_count, shared_shutdown_event, shared_training_event, shared_packet_queue, shared_plot_queue):
     shared_training_event.set()
     try:
-        encoder, _, autoencoder = get_autoencoder(load_model)
+        encoder, decoder, autoencoder = get_autoencoder(load_model)
     except Exception as err:
         sys.stderr.write('Could not load Keras model from file: {}\n'.format(str(err)))
         sys.stderr.flush()
-        encoder, _, autoencoder = get_autoencoder()
+        encoder, decoder, autoencoder = get_autoencoder()
     autoencoder.summary()
     additional_callbacks = []
     if TENSORBOARD is True:
@@ -174,6 +225,8 @@ def keras_worker(load_model, save_model, shared_shutdown_event, shared_training_
 
     try:
         packets = list()
+        packet_lengths = list()
+        latent_reference = None
         while not shared_shutdown_event.is_set():
             try:
                 packet = shared_packet_queue.get(timeout=1)
@@ -183,7 +236,9 @@ def keras_worker(load_model, save_model, shared_shutdown_event, shared_training_
             if packet is None:
                 continue
 
-            packets.append(packet)
+            packet_data, packet_length = packet
+            packets.append(packet_data)
+            packet_lengths.append(packet_length)
             if len(packets) % TRAINING_SIZE == 0:
                 shared_training_event.set()
                 print('\nGot {} packets, training..'.format(len(packets)))
@@ -192,14 +247,14 @@ def keras_worker(load_model, save_model, shared_shutdown_event, shared_training_
                                           tmp, tmp, epochs=EPOCH_COUNT, batch_size=BATCH_SIZE,
                                           validation_split=0.2,
                                           shuffle=True,
-                                          callbacks=[additional_callbacks]
+                                          callbacks=additional_callbacks
                                          )
                 reconstructed_data = autoencoder.predict(tmp)
                 mse = np.mean(np.square(tmp - reconstructed_data))
                 reconstruction_accuracy = (1.0 / mse)
                 encoded_data = encoder.predict(tmp)
-                latent_activations = encoder.predict(tmp)
-                shared_plot_queue.put((reconstruction_accuracy, history.history['val_loss'], encoded_data[:, 0], encoded_data[:, 1], latent_activations))
+                latent_reference = encoded_data
+                shared_plot_queue.put((reconstruction_accuracy, history.history['val_loss'], encoded_data[:, 0], encoded_data[:, 1], encoded_data))
                 packets.clear()
                 shared_training_event.clear()
     except KeyboardInterrupt:
@@ -209,6 +264,14 @@ def keras_worker(load_model, save_model, shared_shutdown_event, shared_training_
             err = 'Unknown'
         sys.stderr.write('\nKeras-Worker Exception: {}\n'.format(str(err)))
     sys.stderr.flush()
+
+    if save_pcap is not None:
+        if len(packets) > 0:
+            latent_reference = encoder.predict(np.array(packets), verbose=0)
+        generated_packets = generate_packets(decoder, latent_reference, packet_lengths, generated_packets_count)
+        write_pcap(save_pcap, generated_packets)
+        sys.stderr.write('Saved {} generated packets to {}\n'.format(len(generated_packets), save_pcap))
+        sys.stderr.flush()
 
     if save_model is not None:
         sys.stderr.write('Saving model to {}\n'.format(save_model))
@@ -288,12 +351,6 @@ def plot_worker(shared_shutdown_event, shared_plot_queue):
         return
 
 if __name__ == '__main__':
-    sys.stderr.write('\b\n***************\n')
-    sys.stderr.write('*** WARNING ***\n')
-    sys.stderr.write('***************\n')
-    sys.stderr.write('\nThis is an unmature Autoencoder example.\n')
-    sys.stderr.write('Please do not rely on any of it\'s output!\n\n')
-
     argparser = nDPIsrvd.defaultArgumentParser()
     argparser.add_argument('--load-model', action='store',
                            help='Load a pre-trained model file.')
@@ -319,6 +376,10 @@ if __name__ == '__main__':
                            help='Use Kullback-Leibler loss function instead of Mean-Squared-Error.')
     argparser.add_argument('--patience', action='store', type=int, default=ES_PATIENCE,
                            help='Epoch value for EarlyStopping. This value forces VAE fitting to if no improvment achieved.')
+    argparser.add_argument('--save-pcap', action='store',
+                           help='Save generated packets as a pcap file after training.')
+    argparser.add_argument('--generated-packets', action='store', type=int, default=GENERATED_PACKET_COUNT,
+                           help='Amount of generated packets written to --save-pcap.')
     args = argparser.parse_args()
     address = nDPIsrvd.validateAddress(args)
 
@@ -332,6 +393,7 @@ if __name__ == '__main__':
     VAE_USE_SGD   = args.use_sgd
     VAE_USE_KLDIV = args.use_kldiv
     ES_PATIENCE   = args.patience
+    GENERATED_PACKET_COUNT = args.generated_packets
 
     sys.stderr.write('Recv buffer size: {}\n'.format(nDPIsrvd.NETWORK_BUFFER_MAX_SIZE))
     sys.stderr.write('Connecting to {} ..\n'.format(address[0]+':'+str(address[1]) if type(address) is tuple else address))
@@ -359,6 +421,8 @@ if __name__ == '__main__':
     keras_job = mp.Process(target=keras_worker, args=(
                                                       args.load_model,
                                                       args.save_model,
+                                                      args.save_pcap,
+                                                      GENERATED_PACKET_COUNT,
                                                       shared_shutdown_event,
                                                       shared_training_event,
                                                       shared_packet_queue,
