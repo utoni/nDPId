@@ -10,6 +10,7 @@ import pandas
 import sklearn
 import sklearn.ensemble
 import sklearn.inspection
+import sklearn.metrics
 import sklearn.model_selection
 import sys
 import time
@@ -25,12 +26,17 @@ from nDPIsrvd import nDPIsrvdSocket, TermColor
 N_DIRS = 0
 N_BINS = 0
 
-ENABLE_FEATURE_IAT    = False
-ENABLE_FEATURE_PKTLEN = False
+ENABLE_FEATURE_IAT    = True
+ENABLE_FEATURE_PKTLEN = True
 ENABLE_FEATURE_DIRS   = True
 ENABLE_FEATURE_BINS   = True
 
 PROTO_CLASSES = None
+
+PREDICTION_MIN_PROBABILITY      = 0.70
+PREDICTION_MIN_MARGIN_TO_NONE   = 1.50
+PREDICTION_MIN_MARGIN_TO_SECOND = 1.00
+MESSAGE_INDENT                  = 46
 
 def getFeatures(json):
     return [json['flow_src_packets_processed'],
@@ -123,6 +129,79 @@ def isProtoClass(proto_class, line):
 
     return 0
 
+def predictClassFromProbabilities(probabilities, log_probabilities,
+                                  min_probability,
+                                  min_margin_to_none,
+                                  min_margin_to_second):
+    predicted_class = int(numpy.argmax(probabilities))
+    rejection_reason = None
+
+    if predicted_class <= 0:
+        return predicted_class, rejection_reason
+
+    predicted_log_probability = log_probabilities[predicted_class]
+    none_log_probability = log_probabilities[0]
+    sorted_classes = numpy.argsort(log_probabilities)[::-1]
+    second_best_class = int(sorted_classes[1]) if len(sorted_classes) > 1 else 0
+    second_best_log_probability = log_probabilities[second_best_class]
+
+    if probabilities[predicted_class] < min_probability:
+        predicted_class = 0
+        rejection_reason = 'min-probability'
+    elif predicted_log_probability - none_log_probability < min_margin_to_none:
+        predicted_class = 0
+        rejection_reason = 'min-margin-to-none'
+    elif predicted_log_probability - second_best_log_probability < min_margin_to_second:
+        predicted_class = 0
+        rejection_reason = 'min-margin-to-second'
+
+    return predicted_class, rejection_reason
+
+def evaluateModel(model, X_test, y_test,
+                  min_probability,
+                  min_margin_to_none,
+                  min_margin_to_second):
+    predicted_probabilities = model.predict_proba(X_test)
+    predicted_log_probabilities = model.predict_log_proba(X_test)
+    y_pred = list()
+
+    for probabilities, log_probabilities in zip(predicted_probabilities, predicted_log_probabilities):
+        predicted_class, _ = predictClassFromProbabilities(probabilities,
+                                                           log_probabilities,
+                                                           min_probability,
+                                                           min_margin_to_none,
+                                                           min_margin_to_second)
+        y_pred.append(predicted_class)
+
+    y_test = numpy.asarray(y_test)
+    y_pred = numpy.asarray(y_pred)
+
+    accepted_prediction_mask = y_pred > 0
+    known_class_mask = y_test > 0
+    false_positive_mask = numpy.logical_and(y_test == 0, y_pred > 0)
+    true_positive_mask = numpy.logical_and(y_test > 0, y_pred == y_test)
+
+    accepted_prediction_count = int(numpy.count_nonzero(accepted_prediction_mask))
+    known_class_count = int(numpy.count_nonzero(known_class_mask))
+    negative_class_count = int(numpy.count_nonzero(y_test == 0))
+    true_positive_count = int(numpy.count_nonzero(true_positive_mask))
+    false_positive_count = int(numpy.count_nonzero(false_positive_mask))
+
+    accepted_precision = (true_positive_count / accepted_prediction_count) if accepted_prediction_count > 0 else 0.0
+    known_class_recall = (true_positive_count / known_class_count) if known_class_count > 0 else 0.0
+    false_positive_rate = (false_positive_count / negative_class_count) if negative_class_count > 0 else 0.0
+    prediction_coverage = (accepted_prediction_count / len(y_pred)) if len(y_pred) > 0 else 0.0
+
+    return {
+        'accuracy': sklearn.metrics.accuracy_score(y_test, y_pred),
+        'balanced_accuracy': sklearn.metrics.balanced_accuracy_score(y_test, y_pred),
+        'macro_precision': sklearn.metrics.precision_score(y_test, y_pred, average='macro', zero_division=0),
+        'accepted_precision': accepted_precision,
+        'known_class_recall': known_class_recall,
+        'false_positive_rate': false_positive_rate,
+        'prediction_coverage': prediction_coverage
+    }
+
 def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
     if 'flow_event_name' not in json_dict:
         return True
@@ -136,17 +215,22 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
 
     #print(json_dict)
 
-    model, proto_class, disable_colors = global_user_data
+    model, proto_class, disable_colors, min_probability, min_margin_to_none, min_margin_to_second = global_user_data
 
     try:
         X = getRelevantFeaturesJSON(json_dict)
-        y = model.predict(X)
-        p = model.predict_log_proba(X)
+        probabilities = model.predict_proba(X)[0]
+        log_probabilities = model.predict_log_proba(X)[0]
+        predicted_class, rejection_reason = predictClassFromProbabilities(probabilities,
+                                                                          log_probabilities,
+                                                                          min_probability,
+                                                                          min_margin_to_none,
+                                                                          min_margin_to_second)
 
-        if y[0] <= 0:
+        if predicted_class <= 0:
             y_text = 'n/a'
         else:
-            y_text = proto_class[y[0] - 1]
+            y_text = proto_class[predicted_class - 1]
 
         color_start = ''
         color_end = ''
@@ -164,19 +248,22 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
                 color_end = TermColor.END
 
         probs = str()
-        for i in range(len(p[0])):
-            if json_dict['ndpi']['proto'].lower().startswith(proto_class[i - 1]) and disable_colors is False:
+        for i in range(len(log_probabilities)):
+            if i > 0 and json_dict['ndpi']['proto'].lower().startswith(proto_class[i - 1]) and disable_colors is False:
                 probs += '{}{:>2.1f}{}, '.format(TermColor.BOLD + TermColor.BLINK if pred_failed is True else '',
-                                               p[0][i], TermColor.END)
-            elif i == y[0]:
-                probs += '{}{:>2.1f}{}, '.format(color_start, p[0][i], color_end)
+                                               log_probabilities[i], TermColor.END)
+            elif i == predicted_class:
+                probs += '{}{:>2.1f}{}, '.format(color_start, log_probabilities[i], color_end)
             else:
-                probs += '{:>2.1f}, '.format(p[0][i])
+                probs += '{:>2.1f}, '.format(log_probabilities[i])
         probs = probs[:-2]
 
         print('DPI Engine detected: {}{:>24}{}, Predicted: {}{:>24}{}, Probabilities: {}'.format(
               color_start, json_dict['ndpi']['proto'].lower(), color_end,
               color_start, y_text, color_end, probs))
+
+        if rejection_reason is not None:
+            print('{:>{}} {} rejected by {}'.format('[*]', MESSAGE_INDENT, y_text, rejection_reason))
 
         if pred_failed is True:
             pclass = isProtoClass(args.proto_class, json_dict['ndpi']['proto'].lower())
@@ -185,7 +272,7 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
             else:
                 msg = 'false negative'
 
-            print('{:>46} {}{}{}'.format('[-]', TermColor.FAIL + TermColor.BOLD + TermColor.BLINK, msg, TermColor.END))
+            print('{:>{}} {}{}{}'.format('[-]', MESSAGE_INDENT, TermColor.FAIL + TermColor.BOLD + TermColor.BLINK, msg, TermColor.END))
 
     except Exception as err:
         print('Got exception `{}\'\nfor json: {}'.format(err, json_dict))
@@ -237,6 +324,12 @@ if __name__ == '__main__':
     argparser.add_argument('--test-split', action='store', type=float, default=0.2,
                            help='Fraction of CSV data to hold out as a test set (e.g. 0.2 for 20%%). ' +
                                 'Reports accuracy on the held-out set after training. Requires --csv.')
+    argparser.add_argument('--prediction-min-probability', action='store', type=float, default=PREDICTION_MIN_PROBABILITY,
+                           help='Minimum predicted class probability required before returning a non-n/a class.')
+    argparser.add_argument('--prediction-min-margin-to-none', action='store', type=float, default=PREDICTION_MIN_MARGIN_TO_NONE,
+                           help='Minimum log-probability margin over class 0 (n/a) required before returning a non-n/a class.')
+    argparser.add_argument('--prediction-min-margin-to-second', action='store', type=float, default=PREDICTION_MIN_MARGIN_TO_SECOND,
+                           help='Minimum log-probability margin over the runner-up class required before returning a non-n/a class.')
     args = argparser.parse_args()
     address = nDPIsrvd.validateAddress(args)
 
@@ -348,8 +441,22 @@ if __name__ == '__main__':
                 sys.stderr.write('Training model on {} samples, holding out {} for testing..\n'.format(
                     len(X_train), len(X_test)))
                 model.fit(X_train, y_train)
-                score = model.score(X_test, y_test)
-                sys.stderr.write('Test set accuracy: {:.4f} ({:.1f}%)\n'.format(score, score * 100))
+                metrics = evaluateModel(model,
+                                        X_test,
+                                        y_test,
+                                        args.prediction_min_probability,
+                                        args.prediction_min_margin_to_none,
+                                        args.prediction_min_margin_to_second)
+                sys.stderr.write('Test set accuracy...............: {:.4f} ({:.1f}%)\n'.format(metrics['accuracy'],
+                                                                                               metrics['accuracy'] * 100))
+                sys.stderr.write('Balanced accuracy...............: {:.4f}\n'.format(metrics['balanced_accuracy']))
+                sys.stderr.write('Macro precision.................: {:.4f}\n'.format(metrics['macro_precision']))
+                sys.stderr.write('Accepted precision..............: {:.4f}\n'.format(metrics['accepted_precision']))
+                sys.stderr.write('Known-class recall..............: {:.4f}\n'.format(metrics['known_class_recall']))
+                sys.stderr.write('False-positive rate on n/a class: {:.4f}\n'.format(metrics['false_positive_rate']))
+                sys.stderr.write('Prediction coverage.............: {:.4f}\n'.format(metrics['prediction_coverage']))
+                sys.stderr.write('Re-training model on the full CSV data set..\n')
+                model.fit(X, y)
             else:
                 sys.stderr.write('Training model..\n')
                 model.fit(X, y)
@@ -362,10 +469,13 @@ if __name__ == '__main__':
         sys.stderr.write('Saving model to {}\n'.format(args.save_model))
         joblib.dump([model, options], args.save_model)
 
-    print('ENABLE_FEATURE_PKTLEN: {}'.format(ENABLE_FEATURE_PKTLEN))
-    print('ENABLE_FEATURE_BINS..: {}'.format(ENABLE_FEATURE_BINS))
-    print('ENABLE_FEATURE_DIRS..: {}'.format(ENABLE_FEATURE_DIRS))
-    print('ENABLE_FEATURE_IAT...: {}'.format(ENABLE_FEATURE_IAT))
+    print('ENABLE_FEATURE_PKTLEN.: {}'.format(ENABLE_FEATURE_PKTLEN))
+    print('ENABLE_FEATURE_BINS...: {}'.format(ENABLE_FEATURE_BINS))
+    print('ENABLE_FEATURE_DIRS...: {}'.format(ENABLE_FEATURE_DIRS))
+    print('ENABLE_FEATURE_IAT....: {}'.format(ENABLE_FEATURE_IAT))
+    print('PRED_MIN_PROBABILITY..: {}'.format(args.prediction_min_probability))
+    print('PRED_MIN_MARGIN_NONE..: {}'.format(args.prediction_min_margin_to_none))
+    print('PRED_MIN_MARGIN_SECOND: {}'.format(args.prediction_min_margin_to_second))
     print('Map[*] -> [0]')
     if args.proto_class is not None:
         for x in range(len(args.proto_class)):
@@ -376,4 +486,9 @@ if __name__ == '__main__':
     sys.stderr.write('Connecting to {} ..\n'.format(address[0]+':'+str(address[1]) if type(address) is tuple else address))
     nsock = nDPIsrvdSocket()
     nsock.connect(address)
-    nsock.loop(onJsonLineRecvd, None, (model, args.proto_class, args.disable_colors))
+    nsock.loop(onJsonLineRecvd, None, (model,
+                                      args.proto_class,
+                                      args.disable_colors,
+                                      args.prediction_min_probability,
+                                      args.prediction_min_margin_to_none,
+                                      args.prediction_min_margin_to_second))
