@@ -92,7 +92,7 @@ option(ENABLE_COVERAGE "Generate a code coverage report using lcov/genhtml." OFF
 option(ENABLE_SANITIZER "Enable ASAN/LSAN/UBSAN." OFF)
 option(ENABLE_SANITIZER_THREAD "Enable TSAN (does not work together with ASAN)." OFF)
 option(ENABLE_MEMORY_PROFILING "Enable dynamic memory tracking." OFF)
-option(ENABLE_ZLIB "Enable zlib support for nDPId (experimental)." OFF)
+option(ENABLE_ZLIB "Enable zlib support for nDPId." OFF)
 option(ENABLE_SYSTEMD "Install systemd components." OFF)
 option(ENABLE_CRYPTO "Enable OpenSSL cryptographic support in nDPId/nDPIsrvd." OFF)
 option(BUILD_EXAMPLES "Build C examples." ON)
@@ -103,6 +103,7 @@ option(ENABLE_CURL "Build influxdb data write example." OFF)
 endif()
 option(ENABLE_PFRING "Enable PF_RING support for nDPId (experimental)" OFF)
 option(BUILD_NDPI "Clone and build nDPI from github." OFF)
+option(ENABLE_EPAN "Enable Wireshark EPAN packet dissector support in nDPId (experimental)." OFF)
 
 if(ENABLE_PFRING)
     option(PFRING_LINK_STATIC "Link against a static version of pfring." ON)
@@ -204,9 +205,12 @@ endif()
 if(ENABLE_CRYPTO)
     set(CRYPTO_SRCS ncrypt.c)
 endif()
-add_executable(nDPId nDPId.c ${NDPID_PFRING_SRCS} ${CRYPTO_SRCS} nio.c utils.c)
+if(ENABLE_EPAN)
+    set(EPAN_SRCS nepan.c)
+endif()
+add_executable(nDPId nDPId.c ${NDPID_PFRING_SRCS} ${CRYPTO_SRCS} ${EPAN_SRCS} nio.c utils.c)
 add_executable(nDPIsrvd nDPIsrvd.c ${CRYPTO_SRCS} nio.c utils.c)
-add_executable(nDPId-test nDPId-test.c ${NDPID_PFRING_SRCS} ${CRYPTO_SRCS})
+add_executable(nDPId-test nDPId-test.c ${NDPID_PFRING_SRCS} ${CRYPTO_SRCS} ${EPAN_SRCS})
 
 add_custom_target(umask_check)
 add_custom_command(
@@ -359,8 +363,11 @@ if(ENABLE_SANITIZER AND ENABLE_SANITIZER_THREAD)
     message(FATAL_ERROR "ENABLE_SANITIZER and ENABLE_SANITIZER_THREAD can not be used together!")
 endif()
 
-if(BUILD_NDPI)
+if(BUILD_NDPI OR ENABLE_EPAN)
     include(ExternalProject)
+endif()
+
+if(BUILD_NDPI)
     ExternalProject_Add(
         libnDPI
         SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libnDPI
@@ -392,6 +399,108 @@ if(BUILD_NDPI)
     set(STATIC_LIBNDPI_INSTALLDIR "${CMAKE_BINARY_DIR}/libnDPI")
     add_dependencies(nDPId libnDPI)
     add_dependencies(nDPId-test libnDPI)
+endif()
+
+if(ENABLE_EPAN)
+    pkg_check_modules(GLIB REQUIRED IMPORTED_TARGET glib-2.0)
+
+    include(GNUInstallDirs)
+    set(nDPId_EPAN_LIBNAME libwireshark.so)
+    set(nDPId_WTAP_LIBNAME libwiretap.so)
+    set(nDPId_WSUTIL_LIBNAME libwsutil.so)
+    set(nDPId_EPAN_INSTALL_SUBDIR ${CMAKE_INSTALL_LIBDIR}/nDPId)
+
+    ExternalProject_Add(wireshark_ext
+        URL        https://gitlab.com/wireshark/wireshark/-/archive/v4.4.16/wireshark-v4.4.16.zip
+        URL_HASH   SHA256=f66d6936bc12c0b825469e78416437ca35d690da5b1a35be43281502536f7817
+        DOWNLOAD_EXTRACT_TIMESTAMP FALSE
+        PREFIX     ${CMAKE_BINARY_DIR}/wireshark_ext
+        CMAKE_ARGS
+            -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+            -DCMAKE_INSTALL_LIBDIR=lib
+            -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+            -DBUILD_SHARED_LIBS=ON
+            # Disable all executables; only the core libraries are needed
+            -DBUILD_wireshark=OFF
+            -DBUILD_tshark=OFF
+            -DBUILD_rawshark=OFF
+            -DBUILD_sharkd=OFF
+            -DBUILD_dumpcap=OFF
+            -DBUILD_androiddump=OFF
+            -DBUILD_sshdump=OFF
+            -DBUILD_ciscodump=OFF
+            -DBUILD_randpktdump=OFF
+            -DBUILD_udpdump=OFF
+            -DBUILD_wifidump=OFF
+            -DBUILD_fuzz_targets=OFF
+            -DBUILD_logray=OFF
+            # Disable optional features that pull in heavy dependencies
+            -DENABLE_PLUGINS=OFF
+            -DENABLE_LUA=OFF
+            -DENABLE_PCAP=OFF
+            -DENABLE_KERBEROS=OFF
+            -DENABLE_SBC=OFF
+            -DENABLE_SPANDSP=OFF
+            -DENABLE_BCG729=OFF
+            -DENABLE_AMRNB=OFF
+            -DENABLE_ILBC=OFF
+            -DENABLE_OPUS=OFF
+            # No Qt GUI
+            -DUSE_qt6=OFF
+            BUILD_BYPRODUCTS <INSTALL_DIR>/lib/${nDPId_EPAN_LIBNAME}
+                             <INSTALL_DIR>/lib/${nDPId_WTAP_LIBNAME}
+                             <INSTALL_DIR>/lib/${nDPId_WSUTIL_LIBNAME}
+            INSTALL_COMMAND ${CMAKE_COMMAND} -E env --unset=DESTDIR --unset=MAKEFLAGS --unset=MFLAGS
+                            ${CMAKE_COMMAND} --build <BINARY_DIR> --target install
+    )
+
+    ExternalProject_Get_Property(wireshark_ext INSTALL_DIR)
+    set(nDPId_EPAN_DIR ${INSTALL_DIR})
+    set(nDPId_EPAN_DEFS -DENABLE_EPAN)
+    set(nDPId_EPAN_INC "${nDPId_EPAN_DIR}/src/wireshark_ext"
+                       "${nDPId_EPAN_DIR}/src/wireshark_ext-build"
+                       "${nDPId_EPAN_DIR}/src/wireshark_ext/include")
+    set(nDPId_EPAN_LIB nDPId::EPAN)
+    set(nDPId_WTAP_LIB nDPId::WTAP)
+    set(nDPId_WSUTIL_LIB nDPId_WSUTIL)
+    set(nDPId_GLIB PkgConfig::GLIB)
+
+    add_library(${nDPId_EPAN_LIB} SHARED IMPORTED GLOBAL)
+    set_target_properties(${nDPId_EPAN_LIB} PROPERTIES
+        IMPORTED_LOCATION ${nDPId_EPAN_DIR}/lib/${nDPId_EPAN_LIBNAME}
+    )
+    add_dependencies(${nDPId_EPAN_LIB} wireshark_ext)
+
+    add_library(${nDPId_WTAP_LIB} SHARED IMPORTED GLOBAL)
+    set_target_properties(${nDPId_WTAP_LIB} PROPERTIES
+        IMPORTED_LOCATION ${nDPId_EPAN_DIR}/lib/${nDPId_WTAP_LIBNAME}
+    )
+    add_dependencies(${nDPId_WTAP_LIB} wireshark_ext)
+
+    add_library(${nDPId_WSUTIL_LIB} SHARED IMPORTED GLOBAL)
+    set_target_properties(${nDPId_WSUTIL_LIB} PROPERTIES
+        IMPORTED_LOCATION ${nDPId_EPAN_DIR}/lib/${nDPId_WSUTIL_LIBNAME}
+    )
+    add_dependencies(${nDPId_WSUTIL_LIB} wireshark_ext)
+
+    set_target_properties(nDPId PROPERTIES
+        BUILD_RPATH   "${nDPId_EPAN_DIR}/lib"
+        INSTALL_RPATH "$ORIGIN/../${nDPId_EPAN_INSTALL_SUBDIR}"
+    )
+    set_target_properties(nDPId-test PROPERTIES
+        BUILD_RPATH   "${nDPId_EPAN_DIR}/lib"
+        INSTALL_RPATH "$ORIGIN/../${nDPId_EPAN_INSTALL_SUBDIR}"
+    )
+    install(DIRECTORY ${nDPId_EPAN_DIR}/lib/
+            DESTINATION ${nDPId_EPAN_INSTALL_SUBDIR}
+            FILES_MATCHING PATTERN "*.so*")
+else()
+    set(nDPId_EPAN_DEFS "")
+    set(nDPId_EPAN_INC "")
+    set(nDPId_EPAN_LIB "")
+    set(nDPId_WTAP_LIB "")
+    set(nDPId_WSUTIL_LIB "")
+    set(nDPId_GLIB "")
 endif()
 
 if(ENABLE_CRYPTO)
@@ -468,26 +577,36 @@ endif()
 
 target_compile_options(nDPId PRIVATE "-pthread")
 target_compile_definitions(nDPId PRIVATE -D_GNU_SOURCE=1 -DPKG_VERSION=\"${PKG_VERSION}\" -DGIT_VERSION=\"${GIT_VERSION}\"
-                                         ${NDPID_DEFS} ${EPOLL_DEFS} ${ZLIB_DEFS} ${PFRING_DEFS} ${OSSL_DEFS})
-target_include_directories(nDPId PRIVATE "${STATIC_LIBNDPI_INC}" "${DEFAULT_NDPI_INCLUDE}" ${NDPID_DEPS_INC} ${PFRING_KERNEL_INC} ${PFRING_INC})
+                           ${NDPID_DEFS} ${EPOLL_DEFS} ${ZLIB_DEFS} ${PFRING_DEFS} ${nDPId_EPAN_DEFS} ${OSSL_DEFS})
+target_include_directories(nDPId PRIVATE "${STATIC_LIBNDPI_INC}" "${DEFAULT_NDPI_INCLUDE}" ${NDPID_DEPS_INC}
+                           ${nDPId_EPAN_INC} ${PFRING_KERNEL_INC} ${PFRING_INC})
 target_link_libraries(nDPId "${STATIC_LIBNDPI_LIB}" "${STATIC_PFRING_LIB}" "${pkgcfg_lib_PCAP_pcap}" "${pkgcfg_lib_NDPI_ndpi}"
                             "${pkgcfg_lib_PCRE_pcre2-8}" "${pkgcfg_lib_MAXMINDDB_maxminddb}" "${pkgcfg_lib_ZLIB_z}"
                             "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}" "${LIBM_LIB}" "${PF_RING_LIB}"
-                            "${OSSL_LIBRARY}" "${DYNLDR}" "-pthread")
+                            "${OSSL_LIBRARY}" "${nDPId_EPAN_LIB}" "${nDPId_WTAP_LIB}" "${nDPId_WSUTIL_LIB}" "${nDPId_GLIB}"
+                            "${DYNLDR}" "-pthread")
 
 target_compile_definitions(nDPIsrvd PRIVATE -D_GNU_SOURCE=1 -DPKG_VERSION=\"${PKG_VERSION}\" -DGIT_VERSION=\"${GIT_VERSION}\" ${NDPID_DEFS} ${EPOLL_DEFS} ${OSSL_DEFS})
 target_include_directories(nDPIsrvd PRIVATE ${NDPID_DEPS_INC})
 target_link_libraries(nDPIsrvd "${OSSL_LIBRARY}")
+if(ENABLE_EPAN)
+    target_link_options(nDPId PRIVATE "-Wl,--exclude-libs,ALL")
+endif()
 
 target_compile_options(nDPId-test PRIVATE "-Wno-unused-function" "-pthread")
 target_compile_definitions(nDPId-test PRIVATE -D_GNU_SOURCE=1 -DNO_MAIN=1 -DPKG_VERSION=\"${PKG_VERSION}\" -DGIT_VERSION=\"${GIT_VERSION}\"
                                               ${NDPID_DEFS} ${EPOLL_DEFS} ${ZLIB_DEFS} ${PFRING_DEFS} ${OSSL_DEFS} ${NDPID_TEST_MPROF_DEFS})
 target_include_directories(nDPId-test PRIVATE
-                           "${STATIC_LIBNDPI_INC}" "${DEFAULT_NDPI_INCLUDE}" ${NDPID_DEPS_INC} ${PFRING_KERNEL_INC} ${PFRING_INC})
+                           "${STATIC_LIBNDPI_INC}" "${DEFAULT_NDPI_INCLUDE}" ${NDPID_DEPS_INC}
+                           ${nDPId_EPAN_INC} ${PFRING_KERNEL_INC} ${PFRING_INC})
 target_link_libraries(nDPId-test "${STATIC_LIBNDPI_LIB}" "${STATIC_PFRING_LIB}" "${pkgcfg_lib_PCAP_pcap}" "${pkgcfg_lib_NDPI_ndpi}"
                                  "${pkgcfg_lib_PCRE_pcre2-8}" "${pkgcfg_lib_MAXMINDDB_maxminddb}" "${pkgcfg_lib_ZLIB_z}"
                                  "${GCRYPT_LIBRARY}" "${GCRYPT_ERROR_LIBRARY}" "${PCAP_LIBRARY}" "${LIBM_LIB}" "${PF_RING_LIB}"
-                                 "${OSSL_LIBRARY}" "${DYNLDR}" "-pthread")
+                                 "${OSSL_LIBRARY}" "${nDPId_EPAN_LIB}" "${nDPId_WTAP_LIB}" "${nDPId_WSUTIL_LIB}" "${nDPId_GLIB}"
+                                 "${DYNLDR}" "-pthread")
+if(ENABLE_EPAN)
+    target_link_options(nDPId-test PRIVATE "-Wl,--exclude-libs,ALL")
+endif()
 
 if(CMAKE_C_COMPILER_ID STREQUAL "Clang")
     add_executable(fuzz_ndpi_process_packet test/fuzz_ndpi_process_packet.c)
@@ -666,6 +785,7 @@ message(STATUS "ENABLE_SANITIZER_THREAD..: ${ENABLE_SANITIZER_THREAD}")
 message(STATUS "ENABLE_MEMORY_PROFILING..: ${ENABLE_MEMORY_PROFILING}")
 message(STATUS "ENABLE_ZLIB..............: ${ENABLE_ZLIB}")
 message(STATUS "BUILD_NDPI...............: ${BUILD_NDPI}")
+message(STATUS "ENABLE_EPAN..............: ${ENABLE_EPAN}")
 message(STATUS "BUILD_EXAMPLES...........: ${BUILD_EXAMPLES}")
 message(STATUS "BUILD_RUST_EXAMPLES......: ${BUILD_RUST_EXAMPLES}")
 if(BUILD_EXAMPLES)
@@ -677,6 +797,13 @@ message(STATUS "NDPI_ADDITIONAL_ARGS.....: ${NDPI_ADDITIONAL_ARGS}")
 endif()
 message(STATUS "NDPI_NO_PKGCONFIG........: ${NDPI_NO_PKGCONFIG}")
 message(STATUS "--------------------------")
+if(ENABLE_EPAN)
+message(STATUS "EPAN_DIR.................: ${nDPId_EPAN_DIR}")
+message(STATUS "EPAN_INC.................: ${nDPId_EPAN_INC}")
+message(STATUS "EPAN_LIB.................: ${nDPId_EPAN_LIB}")
+message(STATUS "WTAP_LIB.................: ${nDPId_WTAP_LIB}")
+message(STATUS "WSUTILS_LIB..............: ${nDPId_WSUTIL_LIB}")
+endif()
 if(PFRING_INSTALLDIR)
 message(STATUS "PFRING_INSTALLDIR........: ${PFRING_INSTALLDIR}")
 message(STATUS "- PFRING_INC.............: ${PFRING_INC}")
