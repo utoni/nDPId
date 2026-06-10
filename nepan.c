@@ -218,10 +218,12 @@ static void serialize_fields(ndpi_serializer * const serializer,
         {
             /*
              * fvalue_to_string_repr() allocates from wmem_packet_scope().
-             * That memory is automatically released when epan_dissect_free()
-             * is called at the end of nepan_jsonize(), so val_str must not
-             * be stored beyond that point.  The ndpi_serialize_string_string()
-             * call below copies the string immediately, so this is safe.
+             * The caller (nepan_jsonize) enters the packet scope before
+             * invoking serialize_fields() and leaves it afterwards; all
+             * allocations here are freed by that wmem_leave_packet_scope()
+             * call.  The ndpi_serialize_string_string() call below copies
+             * the string immediately, so val_str must not be stored beyond
+             * this iteration.
              */
             char * val_str = fvalue_to_string_repr(wmem_packet_scope(),
                                                    fi->value,
@@ -302,11 +304,26 @@ void nepan_jsonize(ndpi_serializer * const serializer,
             ndpi_serialize_string_string(serializer, "epan_proto_stack", proto_stack);
         }
 
-        /* 2. Serialize extracted field values as a nested JSON object. */
+        /* 2. Serialize extracted field values as a nested JSON object.
+         *
+         * epan_dissect_run() internally calls wmem_enter_packet_scope() at
+         * the start of dissection and wmem_leave_packet_scope() before it
+         * returns (inside epan_dissect_run_with_taps()).  The packet scope is
+         * therefore NOT active here.  Re-enter it manually so that
+         * fvalue_to_string_repr(wmem_packet_scope(), ...) inside
+         * serialize_fields() can allocate successfully; leave it immediately
+         * afterwards to free those temporary strings.
+         *
+         * The tree data itself (edt->tree, fi->value) lives in pinfo->pool,
+         * which is separate from wmem_packet_scope() and remains valid until
+         * epan_dissect_free() is called below.
+         */
         if (edt->tree->first_child != NULL)
         {
             ndpi_serialize_start_of_block(serializer, "epan_fields");
+            wmem_enter_packet_scope();
             serialize_fields(serializer, edt->tree->first_child, 0);
+            wmem_leave_packet_scope();
             ndpi_serialize_end_of_block(serializer);
         }
     }
