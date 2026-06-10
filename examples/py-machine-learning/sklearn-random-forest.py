@@ -147,13 +147,20 @@ def predictClassFromProbabilities(probabilities, log_probabilities,
 
     if probabilities[predicted_class] < min_probability:
         predicted_class = 0
-        rejection_reason = 'min-probability'
+        rejection_reason = 'min-probability: {} < {}'.format(
+            round(probabilities[predicted_class], 3), round(min_probability, 3))
     elif predicted_log_probability - none_log_probability < min_margin_to_none:
         predicted_class = 0
-        rejection_reason = 'min-margin-to-none'
+        rejection_reason = 'min-margin-to-none: {} - {} = {} < {}'.format(
+            round(predicted_log_probability, 3), round(none_log_probability, 3),
+            round(predicted_log_probability - none_log_probability, 3),
+            round(min_margin_to_none, 3))
     elif predicted_log_probability - second_best_log_probability < min_margin_to_second:
         predicted_class = 0
-        rejection_reason = 'min-margin-to-second'
+        rejection_reason = 'min-margin-to-second: {} - {} = {} < {}'.format(
+            round(predicted_log_probability, 3), round(second_best_log_probability, 3),
+            round(predicted_log_probability - second_best_log_probability, 3),
+            round(min_margin_to_second, 3))
 
     return predicted_class, rejection_reason
 
@@ -258,12 +265,12 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
                 probs += '{:>2.1f}, '.format(log_probabilities[i])
         probs = probs[:-2]
 
-        print('DPI Engine detected: {}{:>24}{}, Predicted: {}{:>24}{}, Probabilities: {}'.format(
+        print('DPI Engine detected: {}{:>24}{}, Predicted: {}{:>24}{}, L-Probabilities: {}'.format(
               color_start, json_dict['ndpi']['proto'].lower(), color_end,
               color_start, y_text, color_end, probs))
 
         if rejection_reason is not None:
-            print('{:>{}} {} rejected by {}'.format('[*]', MESSAGE_INDENT, y_text, rejection_reason))
+            print('{:>{}} rejected by {}'.format('[*]', MESSAGE_INDENT, rejection_reason))
 
         if pred_failed is True:
             pclass = isProtoClass(args.proto_class, json_dict['ndpi']['proto'].lower())
