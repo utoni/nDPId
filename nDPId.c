@@ -6342,10 +6342,16 @@ static int nDPId_parsed_config_line(
 #ifndef NO_MAIN
 int main(int argc, char ** argv)
 {
-    if (argc == 0 || stdout == NULL || stderr == NULL)
+#ifdef ENABLE_EPAN
+    nepan_worker_run_if_requested(argc, argv);
+#endif
+    if (argc == 0 || argv[0] == NULL || stdout == NULL || stderr == NULL)
     {
         return 1;
     }
+#ifdef ENABLE_EPAN
+    nepan_set_arg0(argv[0]);
+#endif
 
     ndpi_set_memory_alloction_functions(ndpi_malloc_wrapper, ndpi_free_wrapper, ndpi_calloc_wrapper,
                                         ndpi_realloc_wrapper, NULL, NULL, NULL, NULL);
