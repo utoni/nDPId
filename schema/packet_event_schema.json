@@ -124,6 +124,12 @@
         },
         "pkt": {
             "type": "string"
+        },
+        "epan_fields": {
+            "type": "object"
+        },
+        "epan_proto_stack": {
+            "type": "string"
         }
     },
     "additionalProperties": false

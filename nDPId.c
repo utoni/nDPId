@@ -345,6 +345,9 @@ struct nDPId_workflow
 
     ndpi_serializer ndpi_serializer;
     struct ndpi_detection_module_struct * ndpi_struct;
+#ifdef ENABLE_EPAN
+    struct nepan_ctx epan_ctx;
+#endif
 };
 
 struct nDPId_reader_thread
@@ -3185,7 +3188,7 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
         {
             wtap_encap = wtap_pcap_encap_to_wtap_encap(pcap_datalink(reader_thread->workflow->pcap_handle));
         }
-        nepan_jsonize(&workflow->ndpi_serializer, wtap_encap, header, packet);
+        nepan_jsonize(&workflow->epan_ctx, &workflow->ndpi_serializer, wtap_encap, header, packet);
     }
 #endif
     serialize_and_send(reader_thread);
@@ -5450,6 +5453,14 @@ static int start_reader_threads(void)
             break;
         }
 
+#ifdef ENABLE_EPAN
+        if (nepan_init(&reader_threads[i].workflow->epan_ctx) != 0)
+        {
+            logger(1, "%s", "Could not initialize Wireshark EPAN library.");
+            return 1;
+        }
+#endif
+
         if (pthread_create(&reader_threads[i].thread, NULL, processing_thread, &reader_threads[i]) != 0)
         {
             logger(1, "pthread_create: %s", strerror(errno));
@@ -5590,6 +5601,10 @@ static int stop_reader_threads(void)
             reader_threads[i].workflow->total_detected_flows,
             reader_threads[i].workflow->total_flow_detection_updates,
             reader_threads[i].workflow->total_flow_updates);
+
+#ifdef ENABLE_EPAN
+        nepan_cleanup(&reader_threads[i].workflow->epan_ctx);
+#endif
     }
     /* total packets captured: same value for all threads as packet2thread distribution happens later */
     printf("Total packets captured.......: %llu\n",
@@ -6342,10 +6357,16 @@ static int nDPId_parsed_config_line(
 #ifndef NO_MAIN
 int main(int argc, char ** argv)
 {
-    if (argc == 0 || stdout == NULL || stderr == NULL)
+#ifdef ENABLE_EPAN
+    nepan_worker_run_if_requested(argc, argv);
+#endif
+    if (argc == 0 || argv[0] == NULL || stdout == NULL || stderr == NULL)
     {
         return 1;
     }
+#ifdef ENABLE_EPAN
+    nepan_set_arg0(argv[0]);
+#endif
 
     ndpi_set_memory_alloction_functions(ndpi_malloc_wrapper, ndpi_free_wrapper, ndpi_calloc_wrapper,
                                         ndpi_realloc_wrapper, NULL, NULL, NULL, NULL);
@@ -6429,14 +6450,6 @@ int main(int argc, char ** argv)
     logger_early(0, "size/flow........: %zu bytes", sizeof(struct nDPId_flow) + sizeof(struct nDPId_detection_data));
 #endif
 
-#ifdef ENABLE_EPAN
-    if (nepan_init() != 0)
-    {
-        logger_early(1, "%s", "Could not initialize Wireshark EPAN library.");
-        return 1;
-    }
-#endif
-
     global_context = ndpi_global_init();
     if (global_context == NULL)
     {
@@ -6473,10 +6486,6 @@ int main(int argc, char ** argv)
         ndpi_global_deinit(global_context);
     }
     global_context = NULL;
-
-#ifdef ENABLE_EPAN
-    nepan_cleanup();
-#endif
 
     daemonize_shutdown(GET_CMDARG_STR(nDPId_options.pidfile));
     logger(0, "%s", "Bye.");

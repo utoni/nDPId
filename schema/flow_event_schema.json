@@ -250,14 +250,22 @@
                 "category": {
                     "type": "string",
                     "enum": [
-                        "Unspecified", "Media", "VPN", "Email", "DataTransfer",
-                        "Web", "SocialNetwork", "Download", "Game", "Chat", "VoIP",
-                        "Database", "RemoteAccess", "Cloud", "Network", "Collaborative",
-                        "RPC", "Streaming", "System", "SoftwareUpdate", "Music", "Video",
-                        "Shopping", "Productivity", "FileSharing", "ConnCheck", "IoT-Scada",
-                        "VirtAssistant", "Cybersecurity", "AdultContent", "Mining", "Malware",
-                        "Advertisement", "Banned_Site", "Site_Unavailable", "Allowed_Site",
-                        "Antimalware", "Crypto_Currency", "Gambling", "Health"
+                        "Unspecified", "Media", "VPN", "Email", "DataTransfer", "Web",
+                        "SocialNetwork", "Download", "Game", "Chat", "VoIP", "Database",
+                        "RemoteAccess", "Cloud", "Network", "Collaborative", "RPC", "Streaming",
+                        "System", "SoftwareUpdate", "Music", "Video", "Shopping", "Productivity",
+                        "FileSharing", "ConnCheck", "IoT-Scada", "VirtAssistant", "Cybersecurity",
+                        "AdultContent", "Mining", "Malware", "Advertisement", "Banned_Site",
+                        "Site_Unavailable", "Allowed_Site", "Antimalware", "Crypto_Currency",
+                        "Gambling", "Health", "ArtifIntelligence", "Finance", "News", "Sport",
+                        "Business", "Internet", "Blockchain_Crypto", "Blog_Forum", "Government",
+                        "Education", "CDN_Proxy", "Hw_Sw", "Dating", "Travel", "Food", "Bots",
+                        "Scanners", "Hosting", "Art", "Fashion", "Books", "Science", "Maps_Navigation",
+                        "Login_Portal", "Legal", "Environmental_Services", "Culture", "Housing",
+                        "Telecommunication", "Transportation", "Design", "Employment", "Events",
+                        "Weather", "Lifestyle", "Real_Estate", "Security", "Environment", "Hobby",
+                        "Computer_Science", "Construction", "Engineering", "Religion", "Entertainment",
+                        "Agriculture", "Technology", "Beauty", "History", "Politics", "Vehicles"
                     ]
                 },
                 "category_id": {
@@ -1339,6 +1347,25 @@
                                         "total": { "type": "number", "minimum": 350, "maximum": 350 },
                                         "client": { "type": "number", "minimum": 235, "maximum": 235 },
                                         "server": { "type": "number", "minimum": 115, "maximum": 115 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "57": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string", "enum": [ "(Possible) Slow DoS" ] },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 360, "maximum": 360 },
+                                        "client": { "type": "number", "minimum": 240, "maximum": 240 },
+                                        "server": { "type": "number", "minimum": 120, "maximum": 120 },
                                         "additionalProperties": false
                                     }
                                 }
