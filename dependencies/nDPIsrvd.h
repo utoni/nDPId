@@ -29,7 +29,7 @@
 #include <stdarg.h>
 #endif
 
-#define nDPIsrvd_MAX_JSON_TOKENS (512u)
+#define nDPIsrvd_MAX_JSON_TOKENS (768u)
 #define nDPIsrvd_JSON_KEY_STRLEN (32)
 #define nDPIsrvd_HASHKEY_SEED (0x995fd871u)
 
@@ -1102,6 +1102,64 @@ static inline struct nDPIsrvd_json_token * nDPIsrvd_find_token(struct nDPIsrvd_s
     return token;
 }
 
+static inline void nDPIsrvd_token_table_relocate(struct nDPIsrvd_socket * const sock, ptrdiff_t delta)
+{
+    unsigned int i;
+    UT_hash_table * tbl;
+
+    if (delta == 0 || sock->json.token_table == NULL)
+    {
+        return;
+    }
+
+    sock->json.token_table = (struct nDPIsrvd_json_token *)((char *)sock->json.token_table + delta);
+    tbl = sock->json.token_table->hh.tbl;
+
+    for (i = 0; i < utarray_len(sock->json.tokens); ++i)
+    {
+        struct nDPIsrvd_json_token * const elt = (struct nDPIsrvd_json_token *)utarray_eltptr(sock->json.tokens, i);
+        UT_hash_handle * const hh = &elt->hh;
+
+        if (hh->prev != NULL)
+        {
+            hh->prev = (char *)hh->prev + delta;
+        }
+        if (hh->next != NULL)
+        {
+            hh->next = (char *)hh->next + delta;
+        }
+        if (hh->hh_prev != NULL)
+        {
+            hh->hh_prev = (UT_hash_handle *)((char *)hh->hh_prev + delta);
+        }
+        if (hh->hh_next != NULL)
+        {
+            hh->hh_next = (UT_hash_handle *)((char *)hh->hh_next + delta);
+        }
+        if (hh->key != NULL)
+        {
+            hh->key = (const void *)((const char *)hh->key + delta);
+        }
+    }
+
+    if (tbl != NULL)
+    {
+        unsigned int b;
+
+        if (tbl->tail != NULL)
+        {
+            tbl->tail = (UT_hash_handle *)((char *)tbl->tail + delta);
+        }
+        for (b = 0; b < tbl->num_buckets; ++b)
+        {
+            if (tbl->buckets[b].hh_head != NULL)
+            {
+                tbl->buckets[b].hh_head = (UT_hash_handle *)((char *)tbl->buckets[b].hh_head + delta);
+            }
+        }
+    }
+}
+
 static inline struct nDPIsrvd_json_token * nDPIsrvd_add_token(struct nDPIsrvd_socket * const sock,
                                                               nDPIsrvd_hashkey hash_value,
                                                               size_t value_token_index)
@@ -1121,14 +1179,24 @@ static inline struct nDPIsrvd_json_token * nDPIsrvd_add_token(struct nDPIsrvd_so
     }
     else
     {
-        struct nDPIsrvd_json_token jt = {.token_keys_hash = hash_value, .token_index = (int)value_token_index, .hh = {}};
+        struct nDPIsrvd_json_token jt = {.token_keys_hash = hash_value,
+                                         .token_index = (int)value_token_index,
+                                         .hh = {}};
+        char const * const old_base = sock->json.tokens->d;
+        unsigned int const old_len = utarray_len(sock->json.tokens);
+        struct nDPIsrvd_json_token * added;
 
         utarray_push_back(sock->json.tokens, &jt);
-        HASH_ADD_INT(sock->json.token_table,
-                     token_keys_hash,
-                     (struct nDPIsrvd_json_token *)utarray_back(sock->json.tokens));
 
-        return (struct nDPIsrvd_json_token *)utarray_back(sock->json.tokens);
+        if (old_len > 0 && sock->json.tokens->d != old_base)
+        {
+            nDPIsrvd_token_table_relocate(sock, (ptrdiff_t)(sock->json.tokens->d - old_base));
+        }
+
+        added = (struct nDPIsrvd_json_token *)utarray_back(sock->json.tokens);
+        HASH_ADD_INT(sock->json.token_table, token_keys_hash, added);
+
+        return added;
     }
 }
 
@@ -1460,7 +1528,8 @@ static inline enum nDPIsrvd_parse_return nDPIsrvd_parse_line(struct nDPIsrvd_jso
     }
 
     errno = 0;
-    json_buffer->json_message_length = strtoull((const char *)json_buffer->buf.ptr.text, &json_buffer->json_message, 10);
+    json_buffer->json_message_length =
+        strtoull((const char *)json_buffer->buf.ptr.text, &json_buffer->json_message, 10);
     json_buffer->json_message_length += json_buffer->json_message - json_buffer->buf.ptr.text;
     json_buffer->json_message_start = json_buffer->json_message - json_buffer->buf.ptr.text;
 
