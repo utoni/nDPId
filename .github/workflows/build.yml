@@ -50,7 +50,7 @@ jobs:
             ndpid_rust_examples: ""
             ndpid_gcrypt: "-DNDPI_WITH_GCRYPT=ON"
             ndpid_zlib: "-DENABLE_ZLIB=ON"
-            ndpid_extras: "-DENABLE_CRYPTO=ON -DNDPI_WITH_MAXMINDDB=ON -DNDPI_WITH_PCRE=ON -DENABLE_MEMORY_PROFILING=ON"
+            ndpid_extras: "-DENABLE_CRYPTO=ON -DENABLE_EPAN=ON -DNDPI_WITH_MAXMINDDB=ON -DNDPI_WITH_PCRE=ON -DENABLE_MEMORY_PROFILING=ON"
             sanitizer: "-DENABLE_SANITIZER=OFF -DENABLE_SANITIZER_THREAD=OFF"
             coverage: "-DENABLE_COVERAGE=OFF"
             poll: "-DFORCE_POLL=OFF"
@@ -199,7 +199,7 @@ jobs:
         if: startsWith(matrix.os, 'ubuntu')
         run: |
           sudo apt-get update
-          sudo apt-get install autoconf automake cmake libtool pkg-config gettext libjson-c-dev flex bison libpcap-dev zlib1g-dev libcurl4-openssl-dev libdbus-1-dev
+          sudo apt-get install autoconf automake cmake libtool pkg-config gettext libc-ares-dev libglib2.0-dev libjson-c-dev flex bison libpcap-dev zlib1g-dev libcurl4-openssl-dev libdbus-1-dev
           sudo apt-get install ${{ matrix.compiler }} lcov iproute2
       - name: Install Ubuntu Prerequisites (Rust/Cargo)
         if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.ndpid_rust_examples, '-DBUILD_RUST_EXAMPLES=ON')

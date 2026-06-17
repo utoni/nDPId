@@ -26,7 +26,7 @@ define Package/nDPId-testing
  TITLE:=nDPId is a tiny nDPI based daemons / toolkit (nDPId source repository)
  SECTION:=net
  CATEGORY:=Network
- DEPENDS:=@!SMALL_FLASH @!LOW_MEMORY_FOOTPRINT +libpcap +zlib +LIBNDPI_GCRYPT:libgcrypt +NDPID_TESTING_ENABLE_TLS:libopenssl +NDPID_TESTING_INFLUXDB:libcurl +NDPID_TESTING_PFRING:libpfring
+ DEPENDS:=@!SMALL_FLASH @!LOW_MEMORY_FOOTPRINT +libpcap +zlib +LIBNDPI_GCRYPT:libgcrypt +NDPID_TESTING_ENABLE_TLS:libopenssl +NDPID_TESTING_INFLUXDB:libcurl +NDPID_TESTING_PFRING:libpfring +NDPID_TESTING_PFRING:kmod-pf-ring +NDPID_TESTING_ENABLE_EPAN:libcares +NDPID_TESTING_ENABLE_EPAN:glib2 +NDPID_TESTING_ENABLE_EPAN:libgcrypt
  URL:=http://github.com/lnslbrty/nDPId
 endef
 
@@ -38,7 +38,7 @@ endef
 define Package/nDPId-testing/config
 config NDPID_TESTING_COLLECTD_SUPPORT
    bool "nDPId collectd support"
-   depends on PACKAGE_nDPId-testing && PACKAGE_collectd-mod-exec && !CONFIG_NDPID_COLLECTD_SUPPORT
+   depends on PACKAGE_nDPId-testing
    default n
    help
      This option enables collectd to gather nDPId statistics via plugin-exec.
@@ -59,6 +59,14 @@ config NDPID_TESTING_ENABLE_TLS
    default n
    help
      Enable TLS for Collector (nDPId / nDPIsrvd) and Distributor (nDPIsrvd).
+
+config NDPID_TESTING_ENABLE_EPAN
+  bool "nDPId Wireshark EPAN support"
+  depends on PACKAGE_nDPId-testing
+  default n
+  help
+    Enable additional dissection support with Wireshark EPAN.
+    EPAN: Ethereal Packet Analyzer.
 
 config NDPID_TESTING_INFLUXDB
    bool "nDPIsrvd-influxdb"
@@ -88,13 +96,17 @@ CMAKE_OPTIONS += -DSTATIC_LIBNDPI_INSTALLDIR="$(PKG_BUILD_DIR)/libnDPI/install"
 TARGET_CFLAGS += -DLIBNDPI_STATIC=1
 TARGET_CFLAGS += -Werror
 
-ifneq ($(CONFIG_NDPID_TESTING_PFRING),)
+ifneq ($(CONFIG_NDPID_TESTING_ENABLE_TLS),)
 CMAKE_OPTIONS += -DENABLE_CRYPTO=ON
+endif
+
+ifneq ($(CONFIG_NDPID_TESTING_ENABLE_EPAN),)
+CMAKE_OPTIONS += -DENABLE_EPAN=ON
 endif
 
 ifneq ($(CONFIG_NDPID_TESTING_PFRING),)
 # FIXME: PFRING kernel include directory is hardcoded (not installed to linux header directory).
-PF_RING_DIR := $(firstword $(wildcard $(KERNEL_BUILD_DIR)/libpfring-*))
+PF_RING_DIR := $(firstword $(wildcard $(BUILD_DIR)/PF_RING-*))
 CMAKE_OPTIONS += -DENABLE_PFRING=ON \
 	-DPFRING_KERNEL_INC="$(PF_RING_DIR)/kernel" \
 	-DPFRING_INSTALLDIR="$(STAGING_DIR)/usr" \

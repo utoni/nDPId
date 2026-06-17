@@ -48,6 +48,12 @@
 #define nDPId_TLS_USED(...) (IS_CMDARG_SET(nDPId_options.server_ca_pem_file) != 0)
 #endif
 
+#ifdef ENABLE_EPAN
+#include "nepan.h"
+#include <wiretap/pcap-encap.h>
+#include <wiretap/wtap.h>
+#endif
+
 #ifndef ETHERTYPE_DCE
 #define ETHERTYPE_DCE 0x8903
 #endif
@@ -339,6 +345,9 @@ struct nDPId_workflow
 
     ndpi_serializer ndpi_serializer;
     struct ndpi_detection_module_struct * ndpi_struct;
+#ifdef ENABLE_EPAN
+    struct nepan_ctx epan_ctx;
+#endif
 };
 
 struct nDPId_reader_thread
@@ -3165,6 +3174,23 @@ static void jsonize_packet_event(struct nDPId_reader_thread * const reader_threa
                reader_thread->workflow->packets_captured,
                reader_thread->array_index);
     }
+#ifdef ENABLE_EPAN
+    {
+        int wtap_encap = WTAP_ENCAP_UNKNOWN;
+#ifdef ENABLE_PFRING
+        if (GET_CMDARG_BOOL(nDPId_options.use_pfring) != 0)
+        {
+            wtap_encap = wtap_pcap_encap_to_wtap_encap(npfring_datalink(&reader_thread->workflow->npf));
+        }
+        else
+#endif
+        if (reader_thread->workflow->pcap_handle != NULL)
+        {
+            wtap_encap = wtap_pcap_encap_to_wtap_encap(pcap_datalink(reader_thread->workflow->pcap_handle));
+        }
+        nepan_jsonize(&workflow->epan_ctx, &workflow->ndpi_serializer, wtap_encap, header, packet);
+    }
+#endif
     serialize_and_send(reader_thread);
 }
 
@@ -5427,6 +5453,14 @@ static int start_reader_threads(void)
             break;
         }
 
+#ifdef ENABLE_EPAN
+        if (nepan_init(&reader_threads[i].workflow->epan_ctx) != 0)
+        {
+            logger(1, "%s", "Could not initialize Wireshark EPAN library.");
+            return 1;
+        }
+#endif
+
         if (pthread_create(&reader_threads[i].thread, NULL, processing_thread, &reader_threads[i]) != 0)
         {
             logger(1, "pthread_create: %s", strerror(errno));
@@ -5567,6 +5601,10 @@ static int stop_reader_threads(void)
             reader_threads[i].workflow->total_detected_flows,
             reader_threads[i].workflow->total_flow_detection_updates,
             reader_threads[i].workflow->total_flow_updates);
+
+#ifdef ENABLE_EPAN
+        nepan_cleanup(&reader_threads[i].workflow->epan_ctx);
+#endif
     }
     /* total packets captured: same value for all threads as packet2thread distribution happens later */
     printf("Total packets captured.......: %llu\n",
@@ -5746,6 +5784,9 @@ static void nDPId_print_deps_version(FILE * const out)
     }
 #ifdef ENABLE_PFRING
     npfring_print_version(out);
+#endif
+#ifdef ENABLE_EPAN
+    fprintf(out, "EPAN version...: %s\n", nepan_get_version());
 #endif
     fprintf(out, "%s", "-------------------------------------------------------\n");
 }
@@ -6316,10 +6357,16 @@ static int nDPId_parsed_config_line(
 #ifndef NO_MAIN
 int main(int argc, char ** argv)
 {
-    if (argc == 0 || stdout == NULL || stderr == NULL)
+#ifdef ENABLE_EPAN
+    nepan_worker_run_if_requested(argc, argv);
+#endif
+    if (argc == 0 || argv[0] == NULL || stdout == NULL || stderr == NULL)
     {
         return 1;
     }
+#ifdef ENABLE_EPAN
+    nepan_set_arg0(argv[0]);
+#endif
 
     ndpi_set_memory_alloction_functions(ndpi_malloc_wrapper, ndpi_free_wrapper, ndpi_calloc_wrapper,
                                         ndpi_realloc_wrapper, NULL, NULL, NULL, NULL);

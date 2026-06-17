@@ -71,7 +71,7 @@
         },
         "size_per_flow": {
             "type": "number",
-            "minimum": 1384,
+            "minimum": 1360,
             "maximum": 1512
         },
 
