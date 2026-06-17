@@ -416,6 +416,8 @@ if(ENABLE_EPAN)
         DOWNLOAD_EXTRACT_TIMESTAMP FALSE
         PREFIX     ${CMAKE_BINARY_DIR}/wireshark_ext
         CMAKE_ARGS
+            -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+            -DCMAKE_FIND_ROOT_PATH=${CMAKE_FIND_ROOT_PATH}
             -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
             -DCMAKE_INSTALL_LIBDIR=lib
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
@@ -458,6 +460,11 @@ if(ENABLE_EPAN)
             -DENABLE_AMRNB=OFF
             -DENABLE_ILBC=OFF
             -DENABLE_OPUS=OFF
+            -DENABLE_ZLIB=OFF # does not work with OpenWrt
+            -DENABLE_ZLIBNG=OFF
+            -DENABLE_ZSTD=OFF
+            -DHAVE_C99_VSNPRINTF_EXITCODE=0 # fix C99 vsnprintf check
+            -DLEMON_EXECUTABLE=false # important for XCompilation
             # No Qt GUI
             -DUSE_qt6=OFF
             BUILD_BYPRODUCTS <INSTALL_DIR>/lib/${nDPId_EPAN_LIBNAME}

@@ -1287,7 +1287,7 @@ static int mainloop(void)
         if (read_ret == READ_TIMEOUT)
         {
             logger(0,
-                   "No data received during the last %llu second(s).\n",
+                   "No data received during the last %llu second(s).",
                    (long long unsigned int)ndpisrvd_socket->read_timeout.tv_sec);
             continue;
         }
