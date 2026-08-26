@@ -3,6 +3,7 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [..82.243.113.43][64969] -> [....192.168.1.5][40959]
          detected: [.....1] [ip4][..udp] [..82.243.113.43][64969] -> [....192.168.1.5][40959] [BitTorrent][Unknown][Download][Acceptable]
+ detection-update: [.....1] [ip4][..udp] [..82.243.113.43][64969] -> [....192.168.1.5][40959] [BitTorrent][Unknown][Download][Acceptable]
                    RISK: Known Proto on Non Std Port
           analyse: [.....1] [ip4][..udp] [..82.243.113.43][64969] -> [....192.168.1.5][40959] [BitTorrent][Unknown][Download][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
@@ -15,9 +16,10 @@
                    [PKTLENS.....: 132,132,48,58,238,505,48,48,103,257,48,48,132,1500,54,1500,54,1500,54,1500,54,82,1500,54,1500,54,1500,48,48,1037,1037,1037]
                    [ENTROPIES...: 5.8,5.9,4.5,4.2,4.4,5.3,4.7,5.3,3.9,5.4,5.3,4.8,5.8,7.8,4.5,7.8,4.6,7.8,4.6,7.8,4.6,4.1,7.8,4.7,7.6,4.7,7.8,4.9,4.8,7.8,7.8,7.7]
      DAEMON-EVENT: [Processed: 86 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+     DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 1|updates: 0]
               new: [.....2] [ip4][..udp] [......127.0.0.1][49861] -> [......127.0.0.1][33333]
          detected: [.....2] [ip4][..udp] [......127.0.0.1][49861] -> [......127.0.0.1][33333] [BitTorrent][Unknown][Download][Acceptable]
+ detection-update: [.....2] [ip4][..udp] [......127.0.0.1][49861] -> [......127.0.0.1][33333] [BitTorrent][Unknown][Download][Acceptable]
                    RISK: Known Proto on Non Std Port
              idle: [.....1] [ip4][..udp] [..82.243.113.43][64969] -> [....192.168.1.5][40959] [BitTorrent][Unknown][Download][Acceptable]
                    RISK: Known Proto on Non Std Port

@@ -1,0 +1,12 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [...192.168.2.61][39970] -> [116.203.142.127][...80]
+         detected: [.....1] [ip4][..tcp] [...192.168.2.61][39970] -> [116.203.142.127][...80] [HTTP.ntop][Unknown][Network][Safe][packages.ntop.org]
+ detection-update: [.....1] [ip4][..tcp] [...192.168.2.61][39970] -> [116.203.142.127][...80] [HTTP.ntop][Unknown][Network][Safe][packages.ntop.org]
+                   RISK: (Possible) Slow DoS
+ detection-update: [.....1] [ip4][..tcp] [...192.168.2.61][39970] -> [116.203.142.127][...80] [HTTP.ntop][Unknown][Network][Safe][packages.ntop.org]
+                   RISK: Error Code, (Possible) Slow DoS
+              end: [.....1] [ip4][..tcp] [...192.168.2.61][39970] -> [116.203.142.127][...80] [HTTP.ntop][Unknown][Network][Safe][packages.ntop.org]
+                   RISK: Error Code, (Possible) Slow DoS
+     DAEMON-EVENT: shutdown

@@ -21,7 +21,7 @@
               new: [.....7] [ip4][..tcp] [.......10.8.0.1][47496] -> [162.247.243.188][..443]
          detected: [.....7] [ip4][..tcp] [.......10.8.0.1][47496] -> [162.247.243.188][..443] [TLS][Unknown][Advertisement][Tracker_Ads][mobile-collector.newrelic.com]
  detection-update: [.....7] [ip4][..tcp] [.......10.8.0.1][47496] -> [162.247.243.188][..443] [TLS][Unknown][Advertisement][Tracker_Ads][mobile-collector.newrelic.com]
-          analyse: [.....3] [ip4][..tcp] [.......10.8.0.1][45104] -> [..104.17.115.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable]
+          analyse: [.....3] [ip4][..tcp] [.......10.8.0.1][45104] -> [..104.17.115.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable][api.polargrizzly.com]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.266|     0.037|     0.060|         3626.297|    3.500]
                    [PKTLEN......:     40.000|  3697.000|   426.000|   812.300|       659832.900|    3.500]
@@ -37,7 +37,7 @@
          detected: [.....9] [ip4][..tcp] [.......10.8.0.1][45126] -> [..104.17.115.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable][api.polargrizzly.com]
  detection-update: [.....9] [ip4][..tcp] [.......10.8.0.1][45126] -> [..104.17.115.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable][api.polargrizzly.com]
  detection-update: [.....8] [ip4][..tcp] [.......10.8.0.1][45124] -> [..104.17.115.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable][api.polargrizzly.com]
-          analyse: [.....9] [ip4][..tcp] [.......10.8.0.1][45126] -> [..104.17.115.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable]
+          analyse: [.....9] [ip4][..tcp] [.......10.8.0.1][45126] -> [..104.17.115.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable][api.polargrizzly.com]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.234|     0.036|     0.055|         3015.001|    3.600]
                    [PKTLEN......:     40.000|   789.000|   149.700|   198.300|        39337.400|    4.100]
@@ -65,12 +65,12 @@
                    RISK: TLS (probably) Not Carrying HTTPS
               new: [....14] [ip4][..tcp] [.......10.8.0.1][47046] -> [.74.125.200.188][.5228]
          detected: [....14] [ip4][..tcp] [.......10.8.0.1][47046] -> [.74.125.200.188][.5228] [TLS.GoogleServices][Google][Web][Acceptable][mtalk.google.com]
-                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+                   RISK: TLS (probably) Not Carrying HTTPS
               end: [.....3] [ip4][..tcp] [.......10.8.0.1][45104] -> [..104.17.115.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable][api.polargrizzly.com]
-              end: [.....4] [ip4][..tcp] [.......10.8.0.1][45106] -> [..104.17.115.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable]
-              end: [.....5] [ip4][..tcp] [.......10.8.0.1][45108] -> [..104.17.115.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable]
-              end: [.....6] [ip4][..tcp] [.......10.8.0.1][45114] -> [..104.17.115.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable]
-              end: [.....8] [ip4][..tcp] [.......10.8.0.1][45124] -> [..104.17.115.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable]
+              end: [.....4] [ip4][..tcp] [.......10.8.0.1][45106] -> [..104.17.115.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable][api.polargrizzly.com]
+              end: [.....5] [ip4][..tcp] [.......10.8.0.1][45108] -> [..104.17.115.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable][api.polargrizzly.com]
+              end: [.....6] [ip4][..tcp] [.......10.8.0.1][45114] -> [..104.17.115.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable][api.polargrizzly.com]
+              end: [.....8] [ip4][..tcp] [.......10.8.0.1][45124] -> [..104.17.115.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable][api.polargrizzly.com]
               end: [.....9] [ip4][..tcp] [.......10.8.0.1][45126] -> [..104.17.115.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable][api.polargrizzly.com]
  detection-update: [....14] [ip4][..tcp] [.......10.8.0.1][47046] -> [.74.125.200.188][.5228] [TLS.GoogleServices][Google][Web][Acceptable][mtalk.google.com]
                    RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
@@ -95,7 +95,7 @@
  detection-update: [....20] [ip4][..tcp] [.......10.8.0.1][33848] -> [..104.17.114.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable][api.polargrizzly.com]
  detection-update: [....16] [ip4][..tcp] [.......10.8.0.1][50904] -> [.104.17.154.236][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable][api.tunnelbear.com]
  detection-update: [....21] [ip4][..tcp] [.......10.8.0.1][48222] -> [162.247.243.188][..443] [TLS][Unknown][Advertisement][Tracker_Ads][mobile-collector.newrelic.com]
-          analyse: [....15] [ip4][..tcp] [.......10.8.0.1][33830] -> [..104.17.114.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable]
+          analyse: [....15] [ip4][..tcp] [.......10.8.0.1][33830] -> [..104.17.114.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable][api.polargrizzly.com]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.340|     0.040|     0.084|         7024.527|    3.000]
                    [PKTLEN......:     40.000|  2940.000|   240.400|   516.400|       266681.900|    3.500]
@@ -107,22 +107,22 @@
                    [ENTROPIES...: 4.5,4.5,4.5,6.1,4.6,6.0,4.6,5.4,4.6,5.5,4.6,5.9,4.5,7.6,4.5,7.6,4.6,6.8,4.5,5.9,5.3,4.6,5.3,7.2,4.6,7.6,4.6,6.5,4.6,7.3,4.5,7.9]
               new: [....22] [ip4][..tcp] [.......10.8.0.1][33858] -> [..104.17.114.40][..443]
          detected: [....22] [ip4][..tcp] [.......10.8.0.1][33858] -> [..104.17.114.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable][api.polargrizzly.com]
-             idle: [....13] [ip4][..tcp] [.......10.8.0.1][47594] -> [..99.83.135.170][..443] [TLS][AmazonAWS][Web][Safe]
+             idle: [....13] [ip4][..tcp] [.......10.8.0.1][47594] -> [..99.83.135.170][..443] [TLS][AmazonAWS][Web][Safe][capi.grammarly.com]
                    RISK: TLS (probably) Not Carrying HTTPS
               end: [....15] [ip4][..tcp] [.......10.8.0.1][33830] -> [..104.17.114.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable][api.polargrizzly.com]
-              end: [....17] [ip4][..tcp] [.......10.8.0.1][33838] -> [..104.17.114.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable]
-              end: [....18] [ip4][..tcp] [.......10.8.0.1][33842] -> [..104.17.114.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable]
-              end: [....19] [ip4][..tcp] [.......10.8.0.1][33846] -> [..104.17.114.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable]
-              end: [....20] [ip4][..tcp] [.......10.8.0.1][33848] -> [..104.17.114.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable]
+              end: [....17] [ip4][..tcp] [.......10.8.0.1][33838] -> [..104.17.114.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable][api.polargrizzly.com]
+              end: [....18] [ip4][..tcp] [.......10.8.0.1][33842] -> [..104.17.114.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable][api.polargrizzly.com]
+              end: [....19] [ip4][..tcp] [.......10.8.0.1][33846] -> [..104.17.114.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable][api.polargrizzly.com]
+              end: [....20] [ip4][..tcp] [.......10.8.0.1][33848] -> [..104.17.114.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable][api.polargrizzly.com]
              idle: [....22] [ip4][..tcp] [.......10.8.0.1][33858] -> [..104.17.114.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable]
-             idle: [.....7] [ip4][..tcp] [.......10.8.0.1][47496] -> [162.247.243.188][..443] [TLS][Unknown][Advertisement][Tracker_Ads]
-             idle: [....21] [ip4][..tcp] [.......10.8.0.1][48222] -> [162.247.243.188][..443] [TLS][Unknown][Advertisement][Tracker_Ads]
+             idle: [.....7] [ip4][..tcp] [.......10.8.0.1][47496] -> [162.247.243.188][..443] [TLS][Unknown][Advertisement][Tracker_Ads][mobile-collector.newrelic.com]
+             idle: [....21] [ip4][..tcp] [.......10.8.0.1][48222] -> [162.247.243.188][..443] [TLS][Unknown][Advertisement][Tracker_Ads][mobile-collector.newrelic.com]
               end: [....10] [ip4][..tcp] [..10.158.132.91][38398] -> [..104.17.114.40][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable]
-             idle: [....14] [ip4][..tcp] [.......10.8.0.1][47046] -> [.74.125.200.188][.5228] [TLS.GoogleServices][Google][Web][Acceptable]
+             idle: [....14] [ip4][..tcp] [.......10.8.0.1][47046] -> [.74.125.200.188][.5228] [TLS.GoogleServices][Google][Web][Acceptable][mtalk.google.com]
                    RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
-             idle: [.....2] [ip4][..tcp] [.......10.8.0.1][50178] -> [.104.17.154.236][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable]
-             idle: [....16] [ip4][..tcp] [.......10.8.0.1][50904] -> [.104.17.154.236][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable]
-             idle: [....12] [ip4][..tcp] [.......10.8.0.1][60224] -> [...157.240.7.32][..443] [TLS.FacebookMessenger][Facebook][Chat][Acceptable]
+             idle: [.....2] [ip4][..tcp] [.......10.8.0.1][50178] -> [.104.17.154.236][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable][api.tunnelbear.com]
+             idle: [....16] [ip4][..tcp] [.......10.8.0.1][50904] -> [.104.17.154.236][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable][api.tunnelbear.com]
+             idle: [....12] [ip4][..tcp] [.......10.8.0.1][60224] -> [...157.240.7.32][..443] [TLS.FacebookMessenger][Facebook][Chat][Acceptable][mqtt-mini.facebook.com]
                    RISK: TLS (probably) Not Carrying HTTPS
           guessed: [....11] [ip4][..tcp] [..10.158.132.91][51120] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][]
               end: [....11] [ip4][..tcp] [..10.158.132.91][51120] -> [........8.8.8.8][...53]

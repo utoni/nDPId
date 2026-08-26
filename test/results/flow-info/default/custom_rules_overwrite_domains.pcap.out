@@ -4,7 +4,7 @@
               new: [.....1] [ip4][..tcp] [..192.168.1.143][46326] -> [..64.233.167.84][..443]
          detected: [.....1] [ip4][..tcp] [..192.168.1.143][46326] -> [..64.233.167.84][..443] [TLS.Google][Google][Web][Acceptable][accounts.google.com]
  detection-update: [.....1] [ip4][..tcp] [..192.168.1.143][46326] -> [..64.233.167.84][..443] [TLS.Google][Google][Web][Acceptable][accounts.google.com]
-          analyse: [.....1] [ip4][..tcp] [..192.168.1.143][46326] -> [..64.233.167.84][..443] [TLS.Google][Google][Web][Acceptable]
+          analyse: [.....1] [ip4][..tcp] [..192.168.1.143][46326] -> [..64.233.167.84][..443] [TLS.Google][Google][Web][Acceptable][accounts.google.com]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........:      0.000|     0.061|     0.008|     0.014|          202.873|    3.100]
                    [PKTLEN......:     52.000|  4471.000|   421.600|   924.400|       854508.300|    3.200]
@@ -20,7 +20,7 @@
               new: [.....3] [ip4][..tcp] [..192.168.1.143][43052] -> [...23.60.189.51][..443]
          detected: [.....3] [ip4][..tcp] [..192.168.1.143][43052] -> [...23.60.189.51][..443] [TLS.Apple][Akamai][Web][Safe][www.apple.com]
  detection-update: [.....3] [ip4][..tcp] [..192.168.1.143][43052] -> [...23.60.189.51][..443] [TLS.Apple][Akamai][Web][Safe][www.apple.com]
-             idle: [.....3] [ip4][..tcp] [..192.168.1.143][43052] -> [...23.60.189.51][..443] [TLS.Apple][Akamai][Web][Safe]
+             idle: [.....3] [ip4][..tcp] [..192.168.1.143][43052] -> [...23.60.189.51][..443] [TLS.Apple][Akamai][Web][Safe][www.apple.com]
               end: [.....1] [ip4][..tcp] [..192.168.1.143][46326] -> [..64.233.167.84][..443] [TLS.Google][Google][Web][Acceptable][accounts.google.com]
-              end: [.....2] [ip4][..tcp] [..192.168.1.143][46116] -> [..17.253.144.10][..443] [TLS.Apple][Apple][Web][Safe]
+              end: [.....2] [ip4][..tcp] [..192.168.1.143][46116] -> [..17.253.144.10][..443] [TLS.Apple][Apple][Web][Safe][apple.com]
      DAEMON-EVENT: shutdown

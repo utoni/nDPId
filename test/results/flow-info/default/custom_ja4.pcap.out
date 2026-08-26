@@ -3,7 +3,7 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [..192.168.70.96][61765] -> [..144.76.154.14][..432]
          detected: [.....1] [ip4][..tcp] [..192.168.70.96][61765] -> [..144.76.154.14][..432] [TLS][Unknown][Web][Safe][]
-                   RISK: Known Proto on Non Std Port, Missing SNI TLS Extn, ALPN/SNI Mismatch
+                   RISK: Missing SNI TLS Extn, ALPN/SNI Mismatch
  detection-update: [.....1] [ip4][..tcp] [..192.168.70.96][61765] -> [..144.76.154.14][..432] [TLS][Unknown][Web][Safe][]
                    RISK: Known Proto on Non Std Port, Missing SNI TLS Extn, ALPN/SNI Mismatch
           analyse: [.....1] [ip4][..tcp] [..192.168.70.96][61765] -> [..144.76.154.14][..432] [TLS][Unknown][Web][Safe]

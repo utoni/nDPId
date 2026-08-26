@@ -1,0 +1,27 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [..192.168.1.126][58596] -> [....68.34.83.26][.8000]
+         detected: [.....1] [ip4][..tcp] [..192.168.1.126][58596] -> [....68.34.83.26][.8000] [HTTP][Unknown][Web][Acceptable][68.34.83.26]
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
+ detection-update: [.....1] [ip4][..tcp] [..192.168.1.126][58596] -> [....68.34.83.26][.8000] [HTTP.IceCast][Unknown][Media][Fun][68.34.83.26]
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
+     DAEMON-EVENT: [Processed: 20 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 1|updates: 0]
+              new: [.....2] [ip4][..tcp] [..192.168.1.126][38024] -> [.168.119.74.185][.9000]
+         detected: [.....2] [ip4][..tcp] [..192.168.1.126][38024] -> [.168.119.74.185][.9000] [HTTP][Unknown][Web][Acceptable][168.119.74.185]
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
+ detection-update: [.....2] [ip4][..tcp] [..192.168.1.126][38024] -> [.168.119.74.185][.9000] [HTTP.IceCast][Unknown][Media][Fun][168.119.74.185]
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
+              new: [.....3] [ip4][..tcp] [..192.168.1.126][38030] -> [.168.119.74.185][.9000]
+         detected: [.....3] [ip4][..tcp] [..192.168.1.126][38030] -> [.168.119.74.185][.9000] [HTTP][Unknown][Web][Acceptable][168.119.74.185]
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
+ detection-update: [.....3] [ip4][..tcp] [..192.168.1.126][38030] -> [.168.119.74.185][.9000] [HTTP.IceCast][Unknown][Media][Fun][168.119.74.185]
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
+             idle: [.....1] [ip4][..tcp] [..192.168.1.126][58596] -> [....68.34.83.26][.8000] [HTTP.IceCast][Unknown][Media][Fun][68.34.83.26]
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
+              end: [.....2] [ip4][..tcp] [..192.168.1.126][38024] -> [.168.119.74.185][.9000] [HTTP.IceCast][Unknown][Media][Fun][168.119.74.185]
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
+             idle: [.....3] [ip4][..tcp] [..192.168.1.126][38030] -> [.168.119.74.185][.9000] [HTTP.IceCast][Unknown][Media][Fun][168.119.74.185]
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
+     DAEMON-EVENT: shutdown

@@ -24,21 +24,23 @@
          detected: [.....2] [ip4][..tcp] [..10.17.167.141][.5355] -> [...20.1.178.225][...23] [Telnet][Azure][RemoteAccess][Unsafe]
                    RISK: Unsafe Protocol
  detection-update: [.....2] [ip4][..tcp] [..10.17.167.141][.5355] -> [...20.1.178.225][...23] [Telnet][Azure][RemoteAccess][Unsafe]
-                   RISK: Unsafe Protocol, Clear-Text Credentials
+                   RISK: Unsafe Protocol
  detection-update: [.....2] [ip4][..tcp] [..10.17.167.141][.5355] -> [...20.1.178.225][...23] [Telnet][Azure][RemoteAccess][Unsafe]
-                   RISK: Unsafe Protocol, Clear-Text Credentials
+                   RISK: Unsafe Protocol
  detection-update: [.....2] [ip4][..tcp] [..10.17.167.141][.5355] -> [...20.1.178.225][...23] [Telnet][Azure][RemoteAccess][Unsafe]
-                   RISK: Unsafe Protocol, Clear-Text Credentials
+                   RISK: Unsafe Protocol
  detection-update: [.....2] [ip4][..tcp] [..10.17.167.141][.5355] -> [...20.1.178.225][...23] [Telnet][Azure][RemoteAccess][Unsafe]
-                   RISK: Unsafe Protocol, Clear-Text Credentials
+                   RISK: Unsafe Protocol
  detection-update: [.....2] [ip4][..tcp] [..10.17.167.141][.5355] -> [...20.1.178.225][...23] [Telnet][Azure][RemoteAccess][Unsafe]
-                   RISK: Unsafe Protocol, Clear-Text Credentials
+                   RISK: Unsafe Protocol
  detection-update: [.....2] [ip4][..tcp] [..10.17.167.141][.5355] -> [...20.1.178.225][...23] [Telnet][Azure][RemoteAccess][Unsafe]
-                   RISK: Unsafe Protocol, Clear-Text Credentials
+                   RISK: Unsafe Protocol
  detection-update: [.....2] [ip4][..tcp] [..10.17.167.141][.5355] -> [...20.1.178.225][...23] [Telnet][Azure][RemoteAccess][Unsafe]
-                   RISK: Unsafe Protocol, Clear-Text Credentials
+                   RISK: Unsafe Protocol
  detection-update: [.....2] [ip4][..tcp] [..10.17.167.141][.5355] -> [...20.1.178.225][...23] [Telnet][Azure][RemoteAccess][Unsafe]
-                   RISK: Unsafe Protocol, Clear-Text Credentials
+                   RISK: Unsafe Protocol
+ detection-update: [.....2] [ip4][..tcp] [..10.17.167.141][.5355] -> [...20.1.178.225][...23] [Telnet][Azure][RemoteAccess][Unsafe]
+                   RISK: Unsafe Protocol
  detection-update: [.....2] [ip4][..tcp] [..10.17.167.141][.5355] -> [...20.1.178.225][...23] [Telnet][Azure][RemoteAccess][Unsafe]
                    RISK: Unsafe Protocol, Clear-Text Credentials
  detection-update: [.....2] [ip4][..tcp] [..10.17.167.141][.5355] -> [...20.1.178.225][...23] [Telnet][Azure][RemoteAccess][Unsafe]

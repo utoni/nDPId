@@ -53,17 +53,18 @@
          detected: [....18] [ip4][..tcp] [..192.168.1.121][53912] -> [....2.22.33.235][...80] [HTTP.Microsoft][Akamai][Web][Acceptable][www.microsoft.com]
  detection-update: [....17] [ip4][..udp] [..192.168.1.121][54561] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][e13678.dscb.akamaiedge.net]
  detection-update: [....18] [ip4][..tcp] [..192.168.1.121][53912] -> [....2.22.33.235][...80] [HTTP.Microsoft][Akamai][Download][Acceptable][www.microsoft.com]
-                   RISK: HTTP Susp Header, Binary File/Data Transfer (Attempt)
+                   RISK: Binary File/Data Transfer (Attempt)
               new: [....19] [ip4][..tcp] [..192.168.1.121][53913] -> [....2.22.33.235][...80]
          detected: [....19] [ip4][..tcp] [..192.168.1.121][53913] -> [....2.22.33.235][...80] [HTTP.Microsoft][Akamai][Web][Acceptable][www.microsoft.com]
  detection-update: [....19] [ip4][..tcp] [..192.168.1.121][53913] -> [....2.22.33.235][...80] [HTTP.Microsoft][Akamai][Download][Acceptable][www.microsoft.com]
-                   RISK: HTTP Susp Header, Binary File/Data Transfer (Attempt)
+                   RISK: Binary File/Data Transfer (Attempt)
               new: [....20] [ip4][..tcp] [..192.168.1.121][53905] -> [..140.82.113.26][..443] [MIDSTREAM]
               new: [....21] [ip4][..udp] [..192.168.1.121][65213] -> [........8.8.8.8][...53]
          detected: [....21] [ip4][..udp] [..192.168.1.121][65213] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][time-macos.apple.com]
  detection-update: [....21] [ip4][..udp] [..192.168.1.121][65213] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][time-macos.apple.com]
               new: [....22] [ip4][..udp] [..192.168.1.121][49216] -> [..17.253.54.251][..123]
          detected: [....22] [ip4][..udp] [..192.168.1.121][49216] -> [..17.253.54.251][..123] [NTP][Apple][System][Acceptable]
+ detection-update: [....22] [ip4][..udp] [..192.168.1.121][49216] -> [..17.253.54.251][..123] [NTP][Apple][System][Acceptable]
          detected: [....20] [ip4][..tcp] [..192.168.1.121][53905] -> [..140.82.113.26][..443] [TLS][Github][Web][Safe]
               new: [....23] [ip4][..udp] [..192.168.1.121][51998] -> [........8.8.8.8][...53]
          detected: [....23] [ip4][..udp] [..192.168.1.121][51998] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][235.33.22.2.in-addr.arpa]
@@ -103,6 +104,7 @@
                    RISK: TLS Cert Validity Too Long
               new: [....28] [ip4][..udp] [..192.168.1.121][50288] -> [..17.253.54.251][..123]
          detected: [....28] [ip4][..udp] [..192.168.1.121][50288] -> [..17.253.54.251][..123] [NTP][Apple][System][Acceptable]
+ detection-update: [....28] [ip4][..udp] [..192.168.1.121][50288] -> [..17.253.54.251][..123] [NTP][Apple][System][Acceptable]
               new: [....29] [ip4][..tcp] [..192.168.1.121][53916] -> [...40.113.10.47][..443]
               new: [....30] [ip4][..tcp] [..192.168.1.121][53917] -> [...40.113.10.47][..443]
          detected: [....29] [ip4][..tcp] [..192.168.1.121][53916] -> [...40.113.10.47][..443] [TLS.Microsoft][Azure][Web][Acceptable][wdcp.microsoft.com]
@@ -113,6 +115,7 @@
                    RISK: TLS Cert Validity Too Long
               new: [....31] [ip4][..udp] [..192.168.1.121][65099] -> [..17.253.54.251][..123]
          detected: [....31] [ip4][..udp] [..192.168.1.121][65099] -> [..17.253.54.251][..123] [NTP][Apple][System][Acceptable]
+ detection-update: [....31] [ip4][..udp] [..192.168.1.121][65099] -> [..17.253.54.251][..123] [NTP][Apple][System][Acceptable]
               new: [....32] [ip4][..tcp] [..192.168.1.121][53918] -> [...40.113.10.47][..443]
               new: [....33] [ip4][..tcp] [..192.168.1.121][53919] -> [...40.113.10.47][..443]
          detected: [....32] [ip4][..tcp] [..192.168.1.121][53918] -> [...40.113.10.47][..443] [TLS.Microsoft][Azure][Web][Acceptable][wdcp.microsoft.com]
@@ -123,6 +126,7 @@
                    RISK: TLS Cert Validity Too Long
               new: [....34] [ip4][..udp] [..192.168.1.121][56865] -> [..17.253.54.251][..123]
          detected: [....34] [ip4][..udp] [..192.168.1.121][56865] -> [..17.253.54.251][..123] [NTP][Apple][System][Acceptable]
+ detection-update: [....34] [ip4][..udp] [..192.168.1.121][56865] -> [..17.253.54.251][..123] [NTP][Apple][System][Acceptable]
               new: [....35] [ip4][..tcp] [.130.211.33.145][..443] -> [..192.168.1.121][53432] [MIDSTREAM]
          detected: [....35] [ip4][..tcp] [.130.211.33.145][..443] -> [..192.168.1.121][53432] [TLS][GoogleCloud][Web][Safe]
              idle: [....10] [ip4][..udp] [..192.168.1.121][53884] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][wdcp.microsoft.com]
@@ -134,9 +138,9 @@
           guessed: [.....1] [ip4][..tcp] [..192.168.1.121][52746] -> [...52.149.21.60][..443] [TLS][Azure][Web][Safe]
              idle: [.....1] [ip4][..tcp] [..192.168.1.121][52746] -> [...52.149.21.60][..443]
               end: [....18] [ip4][..tcp] [..192.168.1.121][53912] -> [....2.22.33.235][...80] [HTTP.Microsoft][Akamai][Download][Acceptable][www.microsoft.com]
-                   RISK: HTTP Susp Header, Binary File/Data Transfer (Attempt)
+                   RISK: Binary File/Data Transfer (Attempt)
               end: [....19] [ip4][..tcp] [..192.168.1.121][53913] -> [....2.22.33.235][...80] [HTTP.Microsoft][Akamai][Download][Acceptable][www.microsoft.com]
-                   RISK: HTTP Susp Header, Binary File/Data Transfer (Attempt)
+                   RISK: Binary File/Data Transfer (Attempt)
              idle: [....15] [ip4][..udp] [..192.168.1.121][58161] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][www.microsoft.com]
              idle: [....31] [ip4][..udp] [..192.168.1.121][65099] -> [..17.253.54.251][..123] [NTP][Apple][System][Acceptable]
              idle: [.....8] [ip4][....2] [..192.168.1.139] -> [....224.0.0.251] [IGMP][Unknown][Network][Acceptable]
@@ -150,21 +154,21 @@
              idle: [....24] [ip4][..tcp] [..192.168.1.121][53429] -> [...52.98.163.18][..443] [TLS][Outlook][Web][Safe]
              idle: [....22] [ip4][..udp] [..192.168.1.121][49216] -> [..17.253.54.251][..123] [NTP][Apple][System][Acceptable]
              idle: [....28] [ip4][..udp] [..192.168.1.121][50288] -> [..17.253.54.251][..123] [NTP][Apple][System][Acceptable]
-              end: [....12] [ip4][..tcp] [..192.168.1.121][53910] -> [...40.113.10.47][..443] [TLS.Microsoft][Azure][Web][Acceptable]
+              end: [....12] [ip4][..tcp] [..192.168.1.121][53910] -> [...40.113.10.47][..443] [TLS.Microsoft][Azure][Web][Acceptable][wdcp.microsoft.com]
                    RISK: TLS Cert Validity Too Long
-              end: [....13] [ip4][..tcp] [..192.168.1.121][53911] -> [...40.113.10.47][..443] [TLS.Microsoft][Azure][Web][Acceptable]
+              end: [....13] [ip4][..tcp] [..192.168.1.121][53911] -> [...40.113.10.47][..443] [TLS.Microsoft][Azure][Web][Acceptable][wdcp.microsoft.com]
                    RISK: TLS Cert Validity Too Long
-              end: [....26] [ip4][..tcp] [..192.168.1.121][53914] -> [...40.113.10.47][..443] [TLS.Microsoft][Azure][Web][Acceptable]
+              end: [....26] [ip4][..tcp] [..192.168.1.121][53914] -> [...40.113.10.47][..443] [TLS.Microsoft][Azure][Web][Acceptable][wdcp.microsoft.com]
                    RISK: TLS Cert Validity Too Long
-              end: [....27] [ip4][..tcp] [..192.168.1.121][53915] -> [...40.113.10.47][..443] [TLS.Microsoft][Azure][Web][Acceptable]
+              end: [....27] [ip4][..tcp] [..192.168.1.121][53915] -> [...40.113.10.47][..443] [TLS.Microsoft][Azure][Web][Acceptable][wdcp.microsoft.com]
                    RISK: TLS Cert Validity Too Long
-              end: [....29] [ip4][..tcp] [..192.168.1.121][53916] -> [...40.113.10.47][..443] [TLS.Microsoft][Azure][Web][Acceptable]
+              end: [....29] [ip4][..tcp] [..192.168.1.121][53916] -> [...40.113.10.47][..443] [TLS.Microsoft][Azure][Web][Acceptable][wdcp.microsoft.com]
                    RISK: TLS Cert Validity Too Long
-              end: [....30] [ip4][..tcp] [..192.168.1.121][53917] -> [...40.113.10.47][..443] [TLS.Microsoft][Azure][Web][Acceptable]
+              end: [....30] [ip4][..tcp] [..192.168.1.121][53917] -> [...40.113.10.47][..443] [TLS.Microsoft][Azure][Web][Acceptable][wdcp.microsoft.com]
                    RISK: TLS Cert Validity Too Long
-              end: [....32] [ip4][..tcp] [..192.168.1.121][53918] -> [...40.113.10.47][..443] [TLS.Microsoft][Azure][Web][Acceptable]
+              end: [....32] [ip4][..tcp] [..192.168.1.121][53918] -> [...40.113.10.47][..443] [TLS.Microsoft][Azure][Web][Acceptable][wdcp.microsoft.com]
                    RISK: TLS Cert Validity Too Long
-              end: [....33] [ip4][..tcp] [..192.168.1.121][53919] -> [...40.113.10.47][..443] [TLS.Microsoft][Azure][Web][Acceptable]
+              end: [....33] [ip4][..tcp] [..192.168.1.121][53919] -> [...40.113.10.47][..443] [TLS.Microsoft][Azure][Web][Acceptable][wdcp.microsoft.com]
                    RISK: TLS Cert Validity Too Long
      not-detected: [.....2] [ip4][..tcp] [..192.168.1.121][52721] -> [..192.168.1.139][55367] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Susp Entropy

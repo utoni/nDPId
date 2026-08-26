@@ -24,7 +24,7 @@
  detection-update: [.....4] [ip4][..udp] [...192.168.1.42][59487] -> [.192.81.241.191][61457] [DTLS.RockstarGames][Unknown][Game][Fun]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
              idle: [.....3] [ip4][..tcp] [...192.168.1.23][50630] -> [....23.38.18.80][..443] [TLS.RockstarGames][Akamai][Game][Fun]
-             idle: [.....2] [ip4][..tcp] [...192.168.1.27][64057] -> [.104.255.105.53][..443] [TLS.RockstarGames][Unknown][Game][Fun]
+             idle: [.....2] [ip4][..tcp] [...192.168.1.27][64057] -> [.104.255.105.53][..443] [TLS.RockstarGames][Unknown][Game][Fun][rgl.rockstargames.com]
              idle: [.....4] [ip4][..udp] [...192.168.1.42][59487] -> [.192.81.241.191][61457] [DTLS.RockstarGames][Unknown][Game][Fun]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
      DAEMON-EVENT: shutdown

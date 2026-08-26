@@ -1,0 +1,10 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..udp] [..192.168.1.126][41518] -> [.104.29.147.126][19319]
+         detected: [.....1] [ip4][..udp] [..192.168.1.126][41518] -> [.104.29.147.126][19319] [STUN][Unknown][Network][Acceptable][]
+ detection-update: [.....1] [ip4][..udp] [..192.168.1.126][41518] -> [.104.29.147.126][19319] [STUN.DiscordCall][Unknown][VoIP][Acceptable][]
+ detection-update: [.....1] [ip4][..udp] [..192.168.1.126][41518] -> [.104.29.147.126][19319] [DTLS.DiscordCall][Unknown][VoIP][Acceptable]
+ detection-update: [.....1] [ip4][..udp] [..192.168.1.126][41518] -> [.104.29.147.126][19319] [DTLS.DiscordCall][Unknown][VoIP][Acceptable]
+             idle: [.....1] [ip4][..udp] [..192.168.1.126][41518] -> [.104.29.147.126][19319] [DTLS.DiscordCall][Unknown][VoIP][Acceptable]
+     DAEMON-EVENT: shutdown

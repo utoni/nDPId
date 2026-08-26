@@ -40,7 +40,7 @@
  detection-update: [....17] [ip4][..tcp] [..192.168.1.103][54090] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
  detection-update: [....17] [ip4][..tcp] [..192.168.1.103][54090] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
          detected: [....18] [ip4][..tcp] [..192.168.1.103][54091] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
-          analyse: [....16] [ip4][..tcp] [..192.168.1.103][54089] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun]
+          analyse: [....16] [ip4][..tcp] [..192.168.1.103][54089] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.411|     0.155|     0.181|        32640.860|    3.800]
                    [PKTLEN......:     52.000|  5878.000|   715.500|  1101.200|      1212669.600|    3.900]
@@ -69,11 +69,12 @@
               new: [....24] [ip4][..tcp] [..192.168.1.103][54096] -> [203.205.151.162][..443]
  detection-update: [....23] [ip4][..tcp] [..192.168.1.103][54095] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
  detection-update: [....23] [ip4][..tcp] [..192.168.1.103][54095] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
+                   RISK: (Possible) Slow DoS
          detected: [....24] [ip4][..tcp] [..192.168.1.103][54096] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
  detection-update: [....24] [ip4][..tcp] [..192.168.1.103][54096] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
  detection-update: [....24] [ip4][..tcp] [..192.168.1.103][54096] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
               new: [....25] [ip4][..tcp] [..192.168.1.103][40740] -> [203.205.151.211][..443] [MIDSTREAM]
-          analyse: [....22] [ip4][..tcp] [..192.168.1.103][54094] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun]
+          analyse: [....22] [ip4][..tcp] [..192.168.1.103][54094] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     4.544|     0.482|     1.044|      1090167.570|    3.200]
                    [PKTLEN......:     52.000|  1740.000|   523.200|   556.000|       309130.700|    4.200]
@@ -83,7 +84,7 @@
                    [IATS(ms)....: 359.2,359.3,0.4,360.6,1.9,362.1,0.5,0.5,3.6,359.7,357.1,3.3,369.2,32.8,2.8,400.5,15.0,3.3,382.0,38.0,403.1,2.4,369.1,37.0,438.8,4139.7,3.3,4544.3,34.1,398.8,1152.6]
                    [PKTLENS.....: 60,60,52,290,52,1480,52,1740,52,178,103,1292,527,52,1480,221,52,1225,429,52,250,1292,527,52,988,52,1292,527,52,989,52,1220]
                    [ENTROPIES...: 4.6,5.1,5.0,5.9,5.1,6.8,5.1,7.6,5.0,6.3,6.0,7.8,7.5,5.2,7.9,7.1,5.1,7.8,7.4,5.2,7.1,7.8,7.5,5.2,7.8,5.0,7.9,7.6,5.2,7.8,5.0,7.9]
-          analyse: [....23] [ip4][..tcp] [..192.168.1.103][54095] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun]
+          analyse: [....23] [ip4][..tcp] [..192.168.1.103][54095] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     3.384|     0.466|     0.827|       684250.497|    3.400]
                    [PKTLEN......:     52.000|  8277.000|   746.100|  1463.300|      2141136.500|    3.600]
@@ -119,7 +120,7 @@
          detected: [....27] [ip4][..tcp] [..192.168.1.103][54098] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
  detection-update: [....27] [ip4][..tcp] [..192.168.1.103][54098] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
  detection-update: [....27] [ip4][..tcp] [..192.168.1.103][54098] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
-          analyse: [....26] [ip4][..tcp] [..192.168.1.103][54097] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun]
+          analyse: [....26] [ip4][..tcp] [..192.168.1.103][54097] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     6.862|     1.014|     1.948|      3793749.017|    3.100]
                    [PKTLEN......:     52.000|  1740.000|   496.000|   523.800|       274414.800|    4.200]
@@ -129,7 +130,7 @@
                    [IATS(ms)....: 362.7,362.7,0.7,359.8,0.7,359.7,1.8,1.8,3.2,360.0,358.1,7.2,373.9,64.6,431.4,4.5,369.6,40.0,442.3,4042.2,3.3,4448.9,74.4,439.2,6493.5,3.3,6862.2,32.1,397.5,4719.1,3.2]
                    [PKTLENS.....: 60,60,52,290,52,1480,52,1740,52,178,103,1220,521,52,283,1292,527,52,988,52,1220,511,52,283,52,1292,527,52,989,52,1220,516]
                    [ENTROPIES...: 4.7,5.2,5.1,5.9,5.1,6.8,5.0,7.6,4.9,6.4,6.0,7.8,7.6,5.1,7.2,7.8,7.6,5.0,7.8,5.1,7.8,7.5,4.9,7.2,5.0,7.8,7.6,5.2,7.8,5.0,7.8,7.5]
-          analyse: [....27] [ip4][..tcp] [..192.168.1.103][54098] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun]
+          analyse: [....27] [ip4][..tcp] [..192.168.1.103][54098] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     6.095|     1.335|     2.042|      4168801.845|    3.500]
                    [PKTLEN......:     52.000|  1740.000|   437.700|   521.000|       271486.500|    4.100]
@@ -139,7 +140,7 @@
                    [IATS(ms)....: 346.8,346.9,899.5,1092.8,193.2,160.5,1.8,162.3,0.6,0.5,2.9,351.9,387.2,4178.9,3.3,4577.7,29.2,386.6,5733.7,3.7,6095.0,83.0,440.7,5485.5,3.3,5845.9,30.2,387.3,1889.1,2.7,2250.0]
                    [PKTLENS.....: 60,60,52,290,60,52,52,1480,52,1740,52,178,103,52,1292,527,52,989,52,1220,508,52,283,52,1292,527,52,989,52,1220,513,52]
                    [ENTROPIES...: 4.8,5.2,5.0,5.9,5.3,5.1,5.1,6.8,5.0,7.6,4.9,6.4,5.9,5.0,7.8,7.6,5.0,7.8,5.0,7.8,7.6,5.1,7.2,5.1,7.8,7.5,5.1,7.8,5.1,7.8,7.6,5.1]
-          analyse: [.....5] [ip4][..tcp] [..192.168.1.103][38657] -> [..172.217.22.14][..443] [TLS.Google][Google][Web][Acceptable]
+          analyse: [.....5] [ip4][..tcp] [..192.168.1.103][38657] -> [..172.217.22.14][..443] [TLS.Google][Google][Web][Acceptable][safebrowsing.googleusercontent.com]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|    45.056|     5.827|    15.097|    227916113.773|    2.000]
                    [PKTLEN......:     52.000|  1470.000|   253.200|   422.200|       178253.900|    3.700]
@@ -172,6 +173,7 @@
               new: [....34] [ip4][..tcp] [..192.168.1.103][54102] -> [203.205.151.162][..443]
  detection-update: [....32] [ip4][..tcp] [..192.168.1.103][54100] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
  detection-update: [....32] [ip4][..tcp] [..192.168.1.103][54100] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
+                   RISK: (Possible) Slow DoS
          detected: [....34] [ip4][..tcp] [..192.168.1.103][54102] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
               new: [....35] [ip4][..tcp] [..192.168.1.103][54103] -> [203.205.151.162][..443]
          detected: [....33] [ip4][..tcp] [..192.168.1.103][54101] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
@@ -182,7 +184,7 @@
  detection-update: [....35] [ip4][..tcp] [..192.168.1.103][54103] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
  detection-update: [....35] [ip4][..tcp] [..192.168.1.103][54103] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
               new: [....36] [ip4][..tcp] [..192.168.1.103][54104] -> [203.205.151.162][..443]
-          analyse: [....31] [ip4][..tcp] [..192.168.1.103][54099] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun]
+          analyse: [....31] [ip4][..tcp] [..192.168.1.103][54099] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.469|     0.183|     0.190|        36094.243|    4.000]
                    [PKTLEN......:     52.000|  1740.000|   591.500|   612.000|       374517.100|    4.200]
@@ -195,7 +197,7 @@
          detected: [....36] [ip4][..tcp] [..192.168.1.103][54104] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
  detection-update: [....36] [ip4][..tcp] [..192.168.1.103][54104] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
  detection-update: [....36] [ip4][..tcp] [..192.168.1.103][54104] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
-          analyse: [....35] [ip4][..tcp] [..192.168.1.103][54103] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun]
+          analyse: [....35] [ip4][..tcp] [..192.168.1.103][54103] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.647|     0.130|     0.182|        33080.510|    3.500]
                    [PKTLEN......:     52.000|  3120.000|   817.600|   861.600|       742326.200|    4.200]
@@ -205,7 +207,7 @@
                    [IATS(ms)....: 360.8,360.9,1.1,320.2,2.0,321.1,0.8,0.8,0.5,0.5,2.5,331.8,329.8,339.6,0.8,339.8,0.5,4.5,5.1,2.5,2.5,1.1,1.1,271.4,646.7,0.8,376.1,0.5,0.9,1.5,0.5]
                    [PKTLENS.....: 60,60,52,290,52,1480,52,1480,52,312,52,178,103,1140,1480,1480,52,1480,1480,52,2908,52,3120,52,1140,1480,1480,52,1480,1480,52,1480]
                    [ENTROPIES...: 4.7,5.2,5.0,5.9,5.1,6.8,5.1,7.5,5.0,7.3,5.0,6.4,5.8,7.9,7.9,7.9,5.1,7.9,7.9,5.0,7.9,5.0,7.9,5.0,7.8,7.9,7.9,5.0,7.9,7.9,5.1,7.9]
-          analyse: [....33] [ip4][..tcp] [..192.168.1.103][54101] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun]
+          analyse: [....33] [ip4][..tcp] [..192.168.1.103][54101] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.952|     0.213|     0.233|        54375.543|    4.000]
                    [PKTLEN......:     52.000|  1740.000|   543.300|   599.100|       358890.200|    4.100]
@@ -236,22 +238,25 @@
              idle: [....10] [ip4][..udp] [..192.168.1.103][55862] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][docs.google.com]
              idle: [....11] [ip4][..udp] [..192.168.1.103][57591] -> [..216.58.198.46][..443] [QUIC.GoogleDocs][Google][Collaborative][Acceptable][docs.google.com]
               end: [....16] [ip4][..tcp] [..192.168.1.103][54089] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
-              end: [....17] [ip4][..tcp] [..192.168.1.103][54090] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun]
-              end: [....18] [ip4][..tcp] [..192.168.1.103][54091] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun]
-              end: [....19] [ip4][..tcp] [..192.168.1.103][54092] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun]
+              end: [....17] [ip4][..tcp] [..192.168.1.103][54090] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
+              end: [....18] [ip4][..tcp] [..192.168.1.103][54091] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
+              end: [....19] [ip4][..tcp] [..192.168.1.103][54092] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
           guessed: [....20] [ip4][..tcp] [..192.168.1.103][54093] -> [203.205.151.162][..443] [TLS][Unknown][Web][Safe]
+                   RISK: (Possible) Slow DoS
               end: [....20] [ip4][..tcp] [..192.168.1.103][54093] -> [203.205.151.162][..443]
               end: [....22] [ip4][..tcp] [..192.168.1.103][54094] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
               end: [....23] [ip4][..tcp] [..192.168.1.103][54095] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
-              end: [....24] [ip4][..tcp] [..192.168.1.103][54096] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun]
+                   RISK: (Possible) Slow DoS
+              end: [....24] [ip4][..tcp] [..192.168.1.103][54096] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
               end: [....26] [ip4][..tcp] [..192.168.1.103][54097] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
               end: [....27] [ip4][..tcp] [..192.168.1.103][54098] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
               end: [....31] [ip4][..tcp] [..192.168.1.103][54099] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
-              end: [....32] [ip4][..tcp] [..192.168.1.103][54100] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun]
+              end: [....32] [ip4][..tcp] [..192.168.1.103][54100] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
+                   RISK: (Possible) Slow DoS
               end: [....33] [ip4][..tcp] [..192.168.1.103][54101] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
-              end: [....34] [ip4][..tcp] [..192.168.1.103][54102] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun]
+              end: [....34] [ip4][..tcp] [..192.168.1.103][54102] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
               end: [....35] [ip4][..tcp] [..192.168.1.103][54103] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
-              end: [....36] [ip4][..tcp] [..192.168.1.103][54104] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun]
+              end: [....36] [ip4][..tcp] [..192.168.1.103][54104] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
              idle: [.....9] [ip4][..udp] [..192.168.1.103][51507] -> [..172.217.23.67][..443] [QUIC.Google][Google][Web][Acceptable][ssl.gstatic.com]
               end: [.....7] [ip4][..tcp] [..192.168.1.103][53220] -> [..172.217.23.78][..443] [TLS][Google][Web][Safe]
            update: [....28] [ip4][....2] [..192.168.1.254] -> [......224.0.0.1] [IGMP][Unknown][Network][Acceptable]
@@ -270,7 +275,7 @@
               new: [....45] [ip4][..tcp] [..192.168.1.103][43850] -> [.203.205.158.34][..443]
               new: [....46] [ip4][..tcp] [..192.168.1.103][43851] -> [.203.205.158.34][..443]
          detected: [....45] [ip4][..tcp] [..192.168.1.103][43850] -> [.203.205.158.34][..443] [TLS.QQ][Unknown][Chat][Fun][res.wx.qq.com]
-          analyse: [....42] [ip4][..tcp] [..192.168.1.103][54113] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun]
+          analyse: [....42] [ip4][..tcp] [..192.168.1.103][54113] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     6.615|     0.560|     1.552|      2408711.979|    2.600]
                    [PKTLEN......:     52.000|  1480.000|   478.200|   547.100|       299293.400|    4.100]
@@ -304,7 +309,7 @@
            update: [....48] [ip4][..udp] [..192.168.1.103][35601] -> [..172.217.23.67][..443] [QUIC.Google][Google][Web][Acceptable][ssl.gstatic.com]
            update: [....44] [ip4][..udp] [..192.168.1.103][19041] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][res.wx.qq.com]
            update: [....47] [ip4][..udp] [..192.168.1.103][60562] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][ssl.gstatic.com]
-          analyse: [....50] [ip4][..tcp] [..192.168.1.103][54117] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun]
+          analyse: [....50] [ip4][..tcp] [..192.168.1.103][54117] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     7.807|     0.648|     1.839|      3381034.746|    2.500]
                    [PKTLEN......:     52.000|  1480.000|   445.300|   494.600|       244586.200|    4.200]
@@ -342,10 +347,11 @@
          detected: [....53] [ip4][..tcp] [..192.168.1.103][54120] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
  detection-update: [....53] [ip4][..tcp] [..192.168.1.103][54120] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
  detection-update: [....53] [ip4][..tcp] [..192.168.1.103][54120] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
+                   RISK: (Possible) Slow DoS
            update: [.....3] [ip6][..udp] [..............fe80::7a92:9cff:fe0f:a88e][.5353] -> [...............................ff02::fb][.5353] [MDNS][Unknown][Network][Acceptable][_googlecast._tcp.local]
            update: [....49] [ip4][..udp] [..192.168.1.100][..138] -> [..192.168.1.255][..138] [NetBIOS.SMBv1][Unknown][System][Dangerous][giovanni-pc]
            update: [.....2] [ip4][..udp] [..192.168.1.103][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable][_googlecast._tcp.local]
-          analyse: [....52] [ip4][..tcp] [..192.168.1.103][54119] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun]
+          analyse: [....52] [ip4][..tcp] [..192.168.1.103][54119] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     7.133|     0.619|     1.664|      2769657.004|    2.700]
                    [PKTLEN......:     52.000|  1480.000|   478.200|   547.100|       299307.700|    4.100]
@@ -370,7 +376,7 @@
          detected: [....55] [ip4][..tcp] [..192.168.1.103][58036] -> [203.205.147.171][..443] [TLS.WeChat][Tencent][Chat][Fun][web.wechat.com]
  detection-update: [....55] [ip4][..tcp] [..192.168.1.103][58036] -> [203.205.147.171][..443] [TLS.WeChat][Tencent][Chat][Fun][web.wechat.com]
  detection-update: [....55] [ip4][..tcp] [..192.168.1.103][58036] -> [203.205.147.171][..443] [TLS.WeChat][Tencent][Chat][Fun][web.wechat.com]
-              end: [....39] [ip4][..tcp] [..192.168.1.103][54111] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun]
+              end: [....39] [ip4][..tcp] [..192.168.1.103][54111] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
           guessed: [....40] [ip4][..tcp] [..192.168.1.103][54112] -> [203.205.151.162][..443] [TLS][Unknown][Web][Safe]
               end: [....40] [ip4][..tcp] [..192.168.1.103][54112] -> [203.205.151.162][..443]
               new: [....57] [ip4][..tcp] [..192.168.1.103][58038] -> [203.205.147.171][..443]
@@ -378,7 +384,7 @@
          detected: [....57] [ip4][..tcp] [..192.168.1.103][58038] -> [203.205.147.171][..443] [TLS.WeChat][Tencent][Chat][Fun][web.wechat.com]
  detection-update: [....57] [ip4][..tcp] [..192.168.1.103][58038] -> [203.205.147.171][..443] [TLS.WeChat][Tencent][Chat][Fun][web.wechat.com]
  detection-update: [....57] [ip4][..tcp] [..192.168.1.103][58038] -> [203.205.147.171][..443] [TLS.WeChat][Tencent][Chat][Fun][web.wechat.com]
-          analyse: [....57] [ip4][..tcp] [..192.168.1.103][58038] -> [203.205.147.171][..443] [TLS.WeChat][Tencent][Chat][Fun]
+          analyse: [....57] [ip4][..tcp] [..192.168.1.103][58038] -> [203.205.147.171][..443] [TLS.WeChat][Tencent][Chat][Fun][web.wechat.com]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     2.509|     0.286|     0.565|       319614.583|    3.400]
                    [PKTLEN......:     52.000|  1740.000|   537.900|   561.400|       315202.600|    4.200]
@@ -422,15 +428,16 @@
           guessed: [....46] [ip4][..tcp] [..192.168.1.103][43851] -> [.203.205.158.34][..443] [TLS][Unknown][Web][Safe]
               end: [....46] [ip4][..tcp] [..192.168.1.103][43851] -> [.203.205.158.34][..443]
           guessed: [....43] [ip4][..tcp] [..192.168.1.103][54114] -> [203.205.151.162][..443] [TLS][Unknown][Web][Safe]
+                   RISK: (Possible) Slow DoS
               end: [....43] [ip4][..tcp] [..192.168.1.103][54114] -> [203.205.151.162][..443]
            update: [....54] [ip4][..udp] [..192.168.1.103][60356] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][web.wechat.com]
              idle: [....48] [ip4][..udp] [..192.168.1.103][35601] -> [..172.217.23.67][..443] [QUIC.Google][Google][Web][Acceptable][ssl.gstatic.com]
              idle: [....44] [ip4][..udp] [..192.168.1.103][19041] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][res.wx.qq.com]
-              end: [....45] [ip4][..tcp] [..192.168.1.103][43850] -> [.203.205.158.34][..443] [TLS.QQ][Unknown][Chat][Fun]
+              end: [....45] [ip4][..tcp] [..192.168.1.103][43850] -> [.203.205.158.34][..443] [TLS.QQ][Unknown][Chat][Fun][res.wx.qq.com]
                    RISK: Weak TLS Cipher
              idle: [....47] [ip4][..udp] [..192.168.1.103][60562] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][ssl.gstatic.com]
               end: [....50] [ip4][..tcp] [..192.168.1.103][54117] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
-              end: [....51] [ip4][..tcp] [..192.168.1.103][54118] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun]
+              end: [....51] [ip4][..tcp] [..192.168.1.103][54118] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
            update: [....62] [ip4][..udp] [..192.168.1.100][49832] -> [....224.0.0.252][.5355] [LLMNR][Unknown][Network][Acceptable][cansaqcq]
            update: [....61] [ip4][..udp] [..192.168.1.100][54124] -> [....224.0.0.252][.5355] [LLMNR][Unknown][Network][Acceptable][lbjamwptxz]
            update: [....63] [ip4][..udp] [..192.168.1.100][57401] -> [....224.0.0.252][.5355] [LLMNR][Unknown][Network][Acceptable][mcztmpkc]
@@ -456,7 +463,7 @@
          detected: [....72] [ip4][..tcp] [..192.168.1.103][58040] -> [203.205.147.171][..443] [TLS.WeChat][Tencent][Chat][Fun][web.wechat.com]
  detection-update: [....72] [ip4][..tcp] [..192.168.1.103][58040] -> [203.205.147.171][..443] [TLS.WeChat][Tencent][Chat][Fun][web.wechat.com]
  detection-update: [....72] [ip4][..tcp] [..192.168.1.103][58040] -> [203.205.147.171][..443] [TLS.WeChat][Tencent][Chat][Fun][web.wechat.com]
-          analyse: [....72] [ip4][..tcp] [..192.168.1.103][58040] -> [203.205.147.171][..443] [TLS.WeChat][Tencent][Chat][Fun]
+          analyse: [....72] [ip4][..tcp] [..192.168.1.103][58040] -> [203.205.147.171][..443] [TLS.WeChat][Tencent][Chat][Fun][web.wechat.com]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     1.577|     0.182|     0.352|       123851.137|    3.200]
                    [PKTLEN......:     52.000|  1480.000|   545.600|   599.000|       358844.300|    4.100]
@@ -467,14 +474,18 @@
                    [PKTLENS.....: 60,60,52,290,52,1480,52,1480,52,312,52,178,103,1232,1480,1480,1480,1480,1480,315,52,52,52,143,52,1220,513,52,283,52,1292,527]
                    [ENTROPIES...: 4.7,5.2,4.9,5.8,5.0,6.8,4.8,7.5,4.8,7.2,4.9,6.3,5.9,7.8,7.9,7.9,7.9,7.9,7.9,7.2,5.0,4.8,4.9,6.4,5.0,7.8,7.5,5.1,7.2,4.9,7.8,7.5]
          detected: [....73] [ip4][..tcp] [..192.168.1.103][58041] -> [203.205.147.171][..443] [TLS.WeChat][Tencent][Chat][Fun][web.wechat.com]
+                   RISK: (Possible) Slow DoS
  detection-update: [....73] [ip4][..tcp] [..192.168.1.103][58041] -> [203.205.147.171][..443] [TLS.WeChat][Tencent][Chat][Fun][web.wechat.com]
+                   RISK: (Possible) Slow DoS
  detection-update: [....73] [ip4][..tcp] [..192.168.1.103][58041] -> [203.205.147.171][..443] [TLS.WeChat][Tencent][Chat][Fun][web.wechat.com]
+                   RISK: (Possible) Slow DoS
               end: [....52] [ip4][..tcp] [..192.168.1.103][54119] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
-              end: [....53] [ip4][..tcp] [..192.168.1.103][54120] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun]
+              end: [....53] [ip4][..tcp] [..192.168.1.103][54120] -> [203.205.151.162][..443] [TLS.WeChat][Unknown][Chat][Fun][web.wechat.com]
+                   RISK: (Possible) Slow DoS
            update: [....54] [ip4][..udp] [..192.168.1.103][60356] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][web.wechat.com]
            update: [....70] [ip6][icmp6] [.....................................::] -> [......................ff02::1:ff86:6c5b] [ICMPV6][Unknown][Network][Acceptable]
            update: [....68] [ip6][icmp6] [...............fe80::842:a3f3:a286:6c5b] -> [................................ff02::2] [ICMPV6][Unknown][Network][Acceptable]
-              end: [....55] [ip4][..tcp] [..192.168.1.103][58036] -> [203.205.147.171][..443] [TLS.WeChat][Tencent][Chat][Fun]
+              end: [....55] [ip4][..tcp] [..192.168.1.103][58036] -> [203.205.147.171][..443] [TLS.WeChat][Tencent][Chat][Fun][web.wechat.com]
            update: [....69] [ip4][..udp] [........0.0.0.0][...68] -> [255.255.255.255][...67] [DHCP][Unknown][Network][Acceptable][iphonedimonica]
            update: [....62] [ip4][..udp] [..192.168.1.100][49832] -> [....224.0.0.252][.5355] [LLMNR][Unknown][Network][Acceptable][cansaqcq]
            update: [....61] [ip4][..udp] [..192.168.1.100][54124] -> [....224.0.0.252][.5355] [LLMNR][Unknown][Network][Acceptable][lbjamwptxz]
@@ -495,6 +506,7 @@
  detection-update: [....74] [ip4][..tcp] [..192.168.1.103][58042] -> [203.205.147.171][..443] [TLS.WeChat][Tencent][Chat][Fun][web.wechat.com]
  detection-update: [....74] [ip4][..tcp] [..192.168.1.103][58042] -> [203.205.147.171][..443] [TLS.WeChat][Tencent][Chat][Fun][web.wechat.com]
           guessed: [....56] [ip4][..tcp] [..192.168.1.103][58037] -> [203.205.147.171][..443] [TLS][Tencent][Web][Safe]
+                   RISK: (Possible) Slow DoS
               end: [....56] [ip4][..tcp] [..192.168.1.103][58037] -> [203.205.147.171][..443]
            update: [....70] [ip6][icmp6] [.....................................::] -> [......................ff02::1:ff86:6c5b] [ICMPV6][Unknown][Network][Acceptable]
            update: [....54] [ip4][..udp] [..192.168.1.103][60356] -> [..192.168.1.254][...53] [DNS][Unknown][Network][Acceptable][web.wechat.com]
@@ -526,10 +538,12 @@
              idle: [....66] [ip6][..udp] [..............fe80::91f9:3df3:7436:6cd6][50577] -> [..............................ff02::1:3][.5355] [LLMNR][Unknown][Network][Acceptable][mcztmpkc]
               end: [....57] [ip4][..tcp] [..192.168.1.103][58038] -> [203.205.147.171][..443] [TLS.WeChat][Tencent][Chat][Fun][web.wechat.com]
           guessed: [....58] [ip4][..tcp] [..192.168.1.103][58039] -> [203.205.147.171][..443] [TLS][Tencent][Web][Safe]
+                   RISK: (Possible) Slow DoS
               end: [....58] [ip4][..tcp] [..192.168.1.103][58039] -> [203.205.147.171][..443]
               end: [....72] [ip4][..tcp] [..192.168.1.103][58040] -> [203.205.147.171][..443] [TLS.WeChat][Tencent][Chat][Fun][web.wechat.com]
-              end: [....73] [ip4][..tcp] [..192.168.1.103][58041] -> [203.205.147.171][..443] [TLS.WeChat][Tencent][Chat][Fun]
-              end: [....74] [ip4][..tcp] [..192.168.1.103][58042] -> [203.205.147.171][..443] [TLS.WeChat][Tencent][Chat][Fun]
+              end: [....73] [ip4][..tcp] [..192.168.1.103][58041] -> [203.205.147.171][..443] [TLS.WeChat][Tencent][Chat][Fun][web.wechat.com]
+                   RISK: (Possible) Slow DoS
+              end: [....74] [ip4][..tcp] [..192.168.1.103][58042] -> [203.205.147.171][..443] [TLS.WeChat][Tencent][Chat][Fun][web.wechat.com]
               new: [....78] [ip4][..tcp] [..192.168.1.103][39207] -> [...95.101.34.34][...80] [MIDSTREAM]
               new: [....79] [ip4][..tcp] [..192.168.1.103][34996] -> [...95.101.34.33][...80] [MIDSTREAM]
               new: [....80] [ip4][..tcp] [..192.168.1.103][34999] -> [...95.101.34.33][...80] [MIDSTREAM]
@@ -640,6 +654,7 @@
                    RISK: Unidirectional Traffic
               end: [....87] [ip4][..tcp] [..192.168.1.103][52020] -> [.95.101.180.179][...80]
           guessed: [....75] [ip4][..tcp] [..192.168.1.103][58043] -> [203.205.147.171][..443] [TLS][Tencent][Web][Safe]
+                   RISK: (Possible) Slow DoS
              idle: [....75] [ip4][..tcp] [..192.168.1.103][58043] -> [203.205.147.171][..443]
           guessed: [....88] [ip4][..tcp] [..192.168.1.103][58226] -> [203.205.147.171][..443] [TLS][Tencent][Web][Safe]
                    RISK: Unidirectional Traffic

@@ -5,6 +5,7 @@
               new: [.....2] [ip4][..tcp] [.....10.0.0.227][56916] -> [.....10.0.0.151][.8009]
               new: [.....3] [ip4][..tcp] [.....10.0.0.227][56320] -> [.....10.0.0.149][.8009] [MIDSTREAM]
          detected: [.....3] [ip4][..tcp] [.....10.0.0.227][56320] -> [.....10.0.0.149][.8009] [TLS][Unknown][Web][Safe]
+ detection-update: [.....3] [ip4][..tcp] [.....10.0.0.227][56320] -> [.....10.0.0.149][.8009] [TLS][Unknown][Web][Safe]
                    RISK: Known Proto on Non Std Port
               new: [.....4] [ip4][....2] [.......10.0.0.1] -> [......224.0.0.1]
          detected: [.....4] [ip4][....2] [.......10.0.0.1] -> [......224.0.0.1] [IGMP][Unknown][Network][Acceptable]
@@ -87,7 +88,7 @@
          detected: [....29] [ip4][..tcp] [.....10.0.0.227][56910] -> [...35.201.124.9][..443] [TLS][GoogleCloud][Web][Safe]
               new: [....30] [ip4][..tcp] [.....10.0.0.227][56921] -> [....8.37.96.194][.4287]
          detected: [....30] [ip4][..tcp] [.....10.0.0.227][56921] -> [....8.37.96.194][.4287] [TLS][Unknown][Web][Safe][]
-                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
+                   RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
  detection-update: [....30] [ip4][..tcp] [.....10.0.0.227][56921] -> [....8.37.96.194][.4287] [TLS][Unknown][Web][Safe][]
                    RISK: Known Proto on Non Std Port, Self-signed Cert, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
               new: [....31] [ip4][..udp] [.....10.0.0.227][64972] -> [....75.75.75.75][...53]
@@ -150,8 +151,8 @@
          detected: [....41] [ip4][..udp] [.....10.0.0.227][57253] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][mozilla.org]
               new: [....42] [ip4][..udp] [.....10.0.0.227][62427] -> [....75.75.75.75][...53]
          detected: [....42] [ip4][..udp] [.....10.0.0.227][62427] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][detectportal.firefox.com]
-         detected: [....25] [ip4][..tcp] [.....10.0.0.227][56884] -> [...184.25.56.77][...80] [HTTP][Akamai][ConnCheck][Safe][detectportal.firefox.com]
-         detected: [....24] [ip4][..tcp] [.....10.0.0.227][56917] -> [...184.25.56.77][...80] [HTTP][Akamai][ConnCheck][Safe][detectportal.firefox.com]
+         detected: [....25] [ip4][..tcp] [.....10.0.0.227][56884] -> [...184.25.56.77][...80] [HTTP.Mozilla][Akamai][ConnCheck][Safe][detectportal.firefox.com]
+         detected: [....24] [ip4][..tcp] [.....10.0.0.227][56917] -> [...184.25.56.77][...80] [HTTP.Mozilla][Akamai][ConnCheck][Safe][detectportal.firefox.com]
  detection-update: [....41] [ip4][..udp] [.....10.0.0.227][57253] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][mozilla.org]
  detection-update: [....42] [ip4][..udp] [.....10.0.0.227][62427] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][detectportal.firefox.com]
               new: [....43] [ip4][..tcp] [.....10.0.0.227][56879] -> [..52.10.115.210][..443] [MIDSTREAM]
@@ -170,7 +171,7 @@
  detection-update: [....45] [ip4][..udp] [.....10.0.0.227][60341] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][www.apple.com]
  detection-update: [....47] [ip4][..udp] [.....10.0.0.227][59582] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][1-courier.sandbox.push.apple.com]
  detection-update: [....46] [ip4][..udp] [.....10.0.0.227][51060] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][1-courier.push.apple.com]
-         detected: [....44] [ip4][..tcp] [.....10.0.0.227][56886] -> [..17.57.144.116][.5223] [TLS][Apple][Web][Safe]
+         detected: [....44] [ip4][..tcp] [.....10.0.0.227][56886] -> [..17.57.144.116][.5223] [TLS][ApplePush][Web][Safe]
                    RISK: Known Proto on Non Std Port
  detection-update: [....48] [ip4][..udp] [.....10.0.0.227][64193] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][24-courier.push.apple.com]
               new: [....50] [ip4][..udp] [.....10.0.0.227][49781] -> [....75.75.75.75][...53]
@@ -203,8 +204,12 @@
               new: [....62] [ip4][..tcp] [.....10.0.0.227][56954] -> [.....10.0.0.149][.8008]
               new: [....63] [ip4][..tcp] [.....10.0.0.227][56955] -> [.....10.0.0.151][.8060]
          detected: [....62] [ip4][..tcp] [.....10.0.0.227][56954] -> [.....10.0.0.149][.8008] [HTTP][Unknown][Web][Acceptable][10.0.0.149]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
          detected: [....63] [ip4][..tcp] [.....10.0.0.227][56955] -> [.....10.0.0.151][.8060] [HTTP][Unknown][Web][Acceptable][10.0.0.151]
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
+ detection-update: [....62] [ip4][..tcp] [.....10.0.0.227][56954] -> [.....10.0.0.149][.8008] [HTTP][Unknown][Web][Acceptable][10.0.0.149]
+                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
+ detection-update: [....63] [ip4][..tcp] [.....10.0.0.227][56955] -> [.....10.0.0.151][.8060] [HTTP][Unknown][Web][Acceptable][10.0.0.151]
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
               new: [....64] [ip4][..udp] [.....10.0.0.149][49816] -> [.....10.0.0.227][57547]
          detected: [....64] [ip4][..udp] [.....10.0.0.149][49816] -> [.....10.0.0.227][57547] [SSDP][Unknown][System][Acceptable][]
@@ -217,8 +222,6 @@
            update: [.....5] [ip6][icmp6] [..............fe80::2e7e:81ff:feb0:4aa1] -> [................................ff02::1] [ICMPV6][Unknown][Network][Acceptable]
            update: [....23] [ip6][icmp6] [...............fe80::408:3e45:3abc:1552] -> [...............................ff02::16] [ICMPV6][Unknown][Network][Acceptable]
            update: [....17] [ip4][.icmp] [.....10.0.0.227] -> [....75.75.76.76] [ICMP][Unknown][Network][Acceptable]
-     not-detected: [....60] [ip4][..udp] [.....10.0.0.227][52595] -> [.......10.0.0.1][..192] [Unknown][Unknown][Unspecified][Unrated]
-                   RISK: Unidirectional Traffic
               new: [....68] [ip4][..udp] [.....10.0.0.149][.5353] -> [....224.0.0.251][.5353]
          detected: [....68] [ip4][..udp] [.....10.0.0.149][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable][_googlezone._tcp.local]
  detection-update: [....68] [ip4][..udp] [.....10.0.0.149][.5353] -> [....224.0.0.251][.5353] [MDNS][Unknown][Network][Acceptable][79d88e83-725c-b71b-bad0-5862d5b22386._googlezone._tcp.local]
@@ -267,7 +270,7 @@
              idle: [....41] [ip4][..udp] [.....10.0.0.227][57253] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][mozilla.org]
              idle: [....33] [ip4][..udp] [.....10.0.0.227][57261] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][vcacrashplan01.hq.corp.viasat.com]
                    RISK: Error Code
-              end: [....44] [ip4][..tcp] [.....10.0.0.227][56886] -> [..17.57.144.116][.5223] [TLS][Apple][Web][Safe]
+              end: [....44] [ip4][..tcp] [.....10.0.0.227][56886] -> [..17.57.144.116][.5223] [TLS][ApplePush][Web][Safe]
                    RISK: Known Proto on Non Std Port
              idle: [....52] [ip4][..udp] [.....10.0.0.227][58074] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][www.outlook.com]
              idle: [....27] [ip4][..udp] [.....10.0.0.227][58155] -> [....75.75.76.76][...53] [DNS][Unknown][Network][Acceptable][slack.com]
@@ -275,7 +278,7 @@
                    RISK: Error Code
              idle: [....47] [ip4][..udp] [.....10.0.0.227][59582] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][1-courier.sandbox.push.apple.com]
              idle: [....19] [ip6][..udp] [...............fe80::408:3e45:3abc:1552][.5353] -> [...............................ff02::fb][.5353] [MDNS][Unknown][Network][Acceptable][_raop._tcp.local]
-              end: [....28] [ip4][..tcp] [.....10.0.0.227][56920] -> [...99.86.34.156][..443] [TLS.Slack][AWS_Cloudfront][Collaborative][Acceptable]
+              end: [....28] [ip4][..tcp] [.....10.0.0.227][56920] -> [...99.86.34.156][..443] [TLS.Slack][AWS_Cloudfront][Collaborative][Acceptable][slack.com]
              idle: [....45] [ip4][..udp] [.....10.0.0.227][60341] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][www.apple.com]
              idle: [....10] [ip4][..udp] [.....10.0.0.227][61387] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][vco.pandion.viasat.com]
              idle: [....32] [ip4][..udp] [.....10.0.0.227][61613] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable]
@@ -290,8 +293,9 @@
              idle: [....31] [ip4][..udp] [.....10.0.0.227][64972] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable]
                    RISK: Error Code
              idle: [....17] [ip4][.icmp] [.....10.0.0.227] -> [....75.75.76.76] [ICMP][Unknown][Network][Acceptable]
-             idle: [....60] [ip4][..udp] [.....10.0.0.227][52595] -> [.......10.0.0.1][..192] [Unknown][Unknown][Unspecified][Unrated]
+     not-detected: [....60] [ip4][..udp] [.....10.0.0.227][52595] -> [.......10.0.0.1][..192] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
+             idle: [....60] [ip4][..udp] [.....10.0.0.227][52595] -> [.......10.0.0.1][..192]
           guessed: [....53] [ip4][..tcp] [.....10.0.0.227][56874] -> [.74.125.197.188][..443] [TLS][Google][Web][Safe]
               end: [....53] [ip4][..tcp] [.....10.0.0.227][56874] -> [.74.125.197.188][..443]
              idle: [....57] [ip4][..udp] [.....10.0.0.227][57547] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250]
@@ -299,10 +303,10 @@
              idle: [....43] [ip4][..tcp] [.....10.0.0.227][56879] -> [..52.10.115.210][..443] [TLS][AWS_EC2][Web][Safe]
              idle: [....54] [ip4][..udp] [.....10.0.0.227][61328] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250]
              idle: [....56] [ip4][..udp] [.....10.0.0.151][.1900] -> [.....10.0.0.227][61328] [SSDP][Unknown][System][Acceptable]
-             idle: [....25] [ip4][..tcp] [.....10.0.0.227][56884] -> [...184.25.56.77][...80] [HTTP][Akamai][ConnCheck][Safe][detectportal.firefox.com]
+             idle: [....25] [ip4][..tcp] [.....10.0.0.227][56884] -> [...184.25.56.77][...80] [HTTP.Mozilla][Akamai][ConnCheck][Safe][detectportal.firefox.com]
           guessed: [.....1] [ip4][..tcp] [.....10.0.0.227][56885] -> [...184.25.56.53][...80] [HTTP][Akamai][Web][Acceptable][]
               end: [.....1] [ip4][..tcp] [.....10.0.0.227][56885] -> [...184.25.56.53][...80]
-             idle: [....24] [ip4][..tcp] [.....10.0.0.227][56917] -> [...184.25.56.77][...80] [HTTP][Akamai][ConnCheck][Safe][detectportal.firefox.com]
+             idle: [....24] [ip4][..tcp] [.....10.0.0.227][56917] -> [...184.25.56.77][...80] [HTTP.Mozilla][Akamai][ConnCheck][Safe][detectportal.firefox.com]
              idle: [....58] [ip4][..udp] [.....10.0.0.227][54107] -> [....8.37.102.91][..443] [DTLS][Unknown][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older)
              idle: [.....3] [ip4][..tcp] [.....10.0.0.227][56320] -> [.....10.0.0.149][.8009] [TLS][Unknown][Web][Safe]

@@ -23,7 +23,7 @@
          detected: [.....2] [ip4][..tcp] [....192.168.0.4][54318] -> [192.254.189.169][...80] [HTTP][Unknown][Web][Acceptable][browserspy.dk]
                    RISK: Clear-Text Credentials
  detection-update: [.....2] [ip4][..tcp] [....192.168.0.4][54318] -> [192.254.189.169][...80] [HTTP][Unknown][Web][Acceptable][browserspy.dk]
-                   RISK: Clear-Text Credentials, Error Code
+                   RISK: Clear-Text Credentials, Error Code, (Possible) Slow DoS
           analyse: [.....2] [ip4][..tcp] [....192.168.0.4][54318] -> [192.254.189.169][...80] [HTTP][Unknown][Web][Acceptable][browserspy.dk]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     7.939|     0.797|     2.054|      4220874.654|    2.400]
@@ -53,7 +53,7 @@
          detected: [.....8] [ip4][..tcp] [....192.168.0.4][54338] -> [192.254.189.169][...80] [HTTP][Unknown][Web][Acceptable][browserspy.dk]
                    RISK: Clear-Text Credentials
  detection-update: [.....8] [ip4][..tcp] [....192.168.0.4][54338] -> [192.254.189.169][...80] [HTTP][Unknown][Web][Acceptable][browserspy.dk]
-                   RISK: Clear-Text Credentials, Error Code
+                   RISK: Clear-Text Credentials, Error Code, (Possible) Slow DoS
           analyse: [.....8] [ip4][..tcp] [....192.168.0.4][54338] -> [192.254.189.169][...80] [HTTP][Unknown][Web][Acceptable][browserspy.dk]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     5.591|     0.470|     1.348|      1817151.799|    2.200]
@@ -118,6 +118,8 @@
                    [PKTLENS.....: 64,60,52,714,52,1500,597,52,131,52,274,52,365,52,1500,1500,52,1500,1500,52,1500,52,1500,1500,52,1500,52,1500,1500,52,289,52]
                    [ENTROPIES...: 4.4,5.2,5.2,5.9,5.1,5.4,5.5,5.1,5.4,5.1,5.7,5.1,5.7,5.1,5.3,5.0,5.1,5.1,5.1,5.1,5.1,5.1,5.1,5.1,5.1,5.2,5.0,5.3,5.6,5.1,5.8,5.1]
          detected: [....16] [ip4][..tcp] [....192.168.0.4][54506] -> [192.254.189.169][...80] [HTTP][Unknown][Web][Acceptable][browserspy.dk]
+ detection-update: [....16] [ip4][..tcp] [....192.168.0.4][54506] -> [192.254.189.169][...80] [HTTP][Unknown][Web][Acceptable][browserspy.dk]
+                   RISK: (Possible) Slow DoS
           analyse: [....16] [ip4][..tcp] [....192.168.0.4][54506] -> [192.254.189.169][...80] [HTTP][Unknown][Web][Acceptable][browserspy.dk]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........:      0.001|     9.537|     0.739|     2.305|      5311970.148|    2.000]
@@ -157,19 +159,21 @@
               end: [.....1] [ip4][..tcp] [....192.168.0.4][54317] -> [192.254.189.169][...80] [HTTP][Unknown][Web][Acceptable][browserspy.dk]
                    RISK: Error Code
               end: [.....2] [ip4][..tcp] [....192.168.0.4][54318] -> [192.254.189.169][...80] [HTTP][Unknown][Web][Acceptable][browserspy.dk]
-                   RISK: Clear-Text Credentials, Error Code
+                   RISK: Clear-Text Credentials, Error Code, (Possible) Slow DoS
           guessed: [.....3] [ip4][..tcp] [....192.168.0.4][54319] -> [192.254.189.169][...80] [HTTP][Unknown][Web][Acceptable][]
               end: [.....3] [ip4][..tcp] [....192.168.0.4][54319] -> [192.254.189.169][...80]
           guessed: [.....4] [ip4][..tcp] [....192.168.0.4][54320] -> [192.254.189.169][...80] [HTTP][Unknown][Web][Acceptable][]
               end: [.....4] [ip4][..tcp] [....192.168.0.4][54320] -> [192.254.189.169][...80]
           guessed: [.....5] [ip4][..tcp] [....192.168.0.4][54321] -> [192.254.189.169][...80] [HTTP][Unknown][Web][Acceptable][]
+                   RISK: (Possible) Slow DoS
               end: [.....5] [ip4][..tcp] [....192.168.0.4][54321] -> [192.254.189.169][...80]
           guessed: [.....6] [ip4][..tcp] [....192.168.0.4][54322] -> [192.254.189.169][...80] [HTTP][Unknown][Web][Acceptable][]
+                   RISK: (Possible) Slow DoS
               end: [.....6] [ip4][..tcp] [....192.168.0.4][54322] -> [192.254.189.169][...80]
               end: [.....7] [ip4][..tcp] [....192.168.0.4][54337] -> [192.254.189.169][...80] [HTTP][Unknown][Web][Acceptable][browserspy.dk]
                    RISK: Clear-Text Credentials, Error Code
               end: [.....8] [ip4][..tcp] [....192.168.0.4][54338] -> [192.254.189.169][...80] [HTTP][Unknown][Web][Acceptable][browserspy.dk]
-                   RISK: Clear-Text Credentials, Error Code
+                   RISK: Clear-Text Credentials, Error Code, (Possible) Slow DoS
               end: [.....9] [ip4][..tcp] [....192.168.0.4][54340] -> [192.254.189.169][...80] [HTTP][Unknown][Web][Acceptable][browserspy.dk]
                    RISK: Clear-Text Credentials
               end: [....10] [ip4][..tcp] [....192.168.0.4][54341] -> [192.254.189.169][...80] [HTTP][Unknown][Web][Acceptable][browserspy.dk]
@@ -185,11 +189,13 @@
               end: [....15] [ip4][..tcp] [....192.168.0.4][54505] -> [192.254.189.169][...80] [HTTP][Unknown][Web][Acceptable][browserspy.dk]
                    RISK: Clear-Text Credentials
               end: [....16] [ip4][..tcp] [....192.168.0.4][54506] -> [192.254.189.169][...80] [HTTP][Unknown][Web][Acceptable][browserspy.dk]
+                   RISK: (Possible) Slow DoS
           guessed: [....17] [ip4][..tcp] [....192.168.0.4][54507] -> [192.254.189.169][...80] [HTTP][Unknown][Web][Acceptable][]
               end: [....17] [ip4][..tcp] [....192.168.0.4][54507] -> [192.254.189.169][...80]
           guessed: [....18] [ip4][..tcp] [....192.168.0.4][54508] -> [192.254.189.169][...80] [HTTP][Unknown][Web][Acceptable][]
               end: [....18] [ip4][..tcp] [....192.168.0.4][54508] -> [192.254.189.169][...80]
           guessed: [....19] [ip4][..tcp] [....192.168.0.4][54509] -> [192.254.189.169][...80] [HTTP][Unknown][Web][Acceptable][]
+                   RISK: (Possible) Slow DoS
               end: [....19] [ip4][..tcp] [....192.168.0.4][54509] -> [192.254.189.169][...80]
               end: [....20] [ip4][..tcp] [....192.168.0.4][54580] -> [192.254.189.169][...80] [HTTP][Unknown][Web][Acceptable][browserspy.dk]
                    RISK: Clear-Text Credentials
@@ -202,5 +208,6 @@
               end: [....24] [ip4][..tcp] [....192.168.0.4][54584] -> [192.254.189.169][...80] [HTTP][Unknown][Web][Acceptable][browserspy.dk]
                    RISK: Clear-Text Credentials
           guessed: [....25] [ip4][..tcp] [....192.168.0.4][54596] -> [192.254.189.169][...80] [HTTP][Unknown][Web][Acceptable][]
+                   RISK: (Possible) Slow DoS
               end: [....25] [ip4][..tcp] [....192.168.0.4][54596] -> [192.254.189.169][...80]
      DAEMON-EVENT: shutdown

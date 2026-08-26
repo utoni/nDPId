@@ -88,7 +88,6 @@ error-event-threshold-time      = 10000000
 
 [ndpi]
 packets_limit_per_flow      = 32
-flow.direction_detection    = enable
 flow.track_payload          = disable
 tcp_ack_payload_heuristic   = disable
 fully_encrypted_heuristic   = enable

@@ -1,0 +1,5 @@
+     DAEMON-EVENT: init
+              new: [.....1] [ip4][..udp] [.....192.0.2.10][41414] -> [..198.51.100.20][.4242]
+         detected: [.....1] [ip4][..udp] [.....192.0.2.10][41414] -> [..198.51.100.20][.4242] [Nebula][Unknown][VPN][Acceptable]
+             idle: [.....1] [ip4][..udp] [.....192.0.2.10][41414] -> [..198.51.100.20][.4242] [Nebula][Unknown][VPN][Acceptable]
+     DAEMON-EVENT: shutdown

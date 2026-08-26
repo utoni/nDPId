@@ -4,5 +4,5 @@
               new: [.....1] [ip4][..tcp] [.192.91.186.174][..443] -> [...25.137.80.32][38134]
          detected: [.....1] [ip4][..tcp] [.192.91.186.174][..443] -> [...25.137.80.32][38134] [TLS.Instagram][Unknown][SocialNetwork][Fun][i.instagram.com]
  detection-update: [.....1] [ip4][..tcp] [.192.91.186.174][..443] -> [...25.137.80.32][38134] [TLS.Instagram][Unknown][SocialNetwork][Fun][i.instagram.com]
-             idle: [.....1] [ip4][..tcp] [.192.91.186.174][..443] -> [...25.137.80.32][38134] [TLS.Instagram][Unknown][SocialNetwork][Fun]
+             idle: [.....1] [ip4][..tcp] [.192.91.186.174][..443] -> [...25.137.80.32][38134] [TLS.Instagram][Unknown][SocialNetwork][Fun][i.instagram.com]
      DAEMON-EVENT: shutdown

@@ -7,5 +7,5 @@
          detected: [.....2] [ip4][..tcp] [...10.215.173.1][49352] -> [.104.166.182.25][..443] [TLS.DingTalk][Unknown][Chat][Acceptable][static.dingtalk.com]
  detection-update: [.....2] [ip4][..tcp] [...10.215.173.1][49352] -> [.104.166.182.25][..443] [TLS.DingTalk][Unknown][Chat][Acceptable][static.dingtalk.com]
              idle: [.....1] [ip4][..tcp] [...10.215.173.1][48910] -> [..47.246.133.39][..443] [DingTalk][Alibaba][Chat][Acceptable]
-              end: [.....2] [ip4][..tcp] [...10.215.173.1][49352] -> [.104.166.182.25][..443] [TLS.DingTalk][Unknown][Chat][Acceptable]
+              end: [.....2] [ip4][..tcp] [...10.215.173.1][49352] -> [.104.166.182.25][..443] [TLS.DingTalk][Unknown][Chat][Acceptable][static.dingtalk.com]
      DAEMON-EVENT: shutdown

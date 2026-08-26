@@ -6,7 +6,7 @@
               new: [.....2] [ip4][..tcp] [.192.168.12.156][39034] -> [..128.116.122.4][..443]
          detected: [.....2] [ip4][..tcp] [.192.168.12.156][39034] -> [..128.116.122.4][..443] [TLS.Roblox][Roblox][Game][Fun][assetgame.roblox.com]
  detection-update: [.....2] [ip4][..tcp] [.192.168.12.156][39034] -> [..128.116.122.4][..443] [TLS.Roblox][Roblox][Game][Fun][assetgame.roblox.com]
-          analyse: [.....2] [ip4][..tcp] [.192.168.12.156][39034] -> [..128.116.122.4][..443] [TLS.Roblox][Roblox][Game][Fun]
+          analyse: [.....2] [ip4][..tcp] [.192.168.12.156][39034] -> [..128.116.122.4][..443] [TLS.Roblox][Roblox][Game][Fun][assetgame.roblox.com]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|    10.786|     0.747|     2.538|      6441959.162|    1.700]
                    [PKTLEN......:     40.000|  1500.000|   357.700|   487.700|       237869.300|    3.900]

@@ -12,8 +12,8 @@
               new: [.....5] [ip4][..tcp] [..10.54.169.250][52288] -> [..173.252.74.22][...80] [MIDSTREAM]
          detected: [.....5] [ip4][..tcp] [..10.54.169.250][52288] -> [..173.252.74.22][...80] [HTTP.Facebook][Facebook][SocialNetwork][Fun][www.facebook.com]
               new: [.....6] [ip4][..tcp] [..10.54.169.250][33277] -> [..120.28.26.231][...80] [MIDSTREAM]
-         detected: [.....6] [ip4][..tcp] [..10.54.169.250][33277] -> [..120.28.26.231][...80] [HTTP.Google][Unknown][Web][Acceptable][clients3.google.com]
- detection-update: [.....6] [ip4][..tcp] [..10.54.169.250][33277] -> [..120.28.26.231][...80] [HTTP.Google][Unknown][Web][Acceptable][clients3.google.com]
+         detected: [.....6] [ip4][..tcp] [..10.54.169.250][33277] -> [..120.28.26.231][...80] [HTTP.Google][Unknown][ConnCheck][Acceptable][clients3.google.com]
+ detection-update: [.....6] [ip4][..tcp] [..10.54.169.250][33277] -> [..120.28.26.231][...80] [HTTP.Google][Unknown][ConnCheck][Acceptable][clients3.google.com]
                    RISK: Mismatching Protocol with server IP address
               new: [.....7] [ip4][..tcp] [..10.54.169.250][44793] -> [....31.13.68.49][...80] [MIDSTREAM]
          detected: [.....7] [ip4][..tcp] [..10.54.169.250][44793] -> [....31.13.68.49][...80] [HTTP.Facebook][Facebook][SocialNetwork][Fun][www.facebook.com]
@@ -23,22 +23,18 @@
          detected: [.....9] [ip4][..tcp] [..10.54.169.250][52007] -> [...120.28.35.40][...80] [HTTP][Unknown][Streaming][Fun][vod-singtelhawk.quickplay.com]
               new: [....10] [ip4][..tcp] [..10.54.169.250][54883] -> [203.205.151.160][...80] [MIDSTREAM]
          detected: [....10] [ip4][..tcp] [..10.54.169.250][54883] -> [203.205.151.160][...80] [HTTP_Proxy.QQ][Unknown][Chat][Fun][hkextshort.weixin.qq.com]
-                   RISK: Known Proto on Non Std Port
               new: [....11] [ip4][..tcp] [..10.54.169.250][52009] -> [...120.28.35.40][...80] [MIDSTREAM]
          detected: [....11] [ip4][..tcp] [..10.54.169.250][52009] -> [...120.28.35.40][...80] [HTTP][Unknown][Streaming][Fun][vod-singtelhawk.quickplay.com]
               new: [....12] [ip4][..tcp] [..10.54.169.250][42761] -> [203.205.129.101][...80] [MIDSTREAM]
          detected: [....12] [ip4][..tcp] [..10.54.169.250][42761] -> [203.205.129.101][...80] [HTTP_Proxy.QQ][Tencent][Chat][Fun][hkextshort.weixin.qq.com]
-                   RISK: Known Proto on Non Std Port
               new: [....13] [ip4][..tcp] [..10.54.169.250][54885] -> [203.205.151.160][...80] [MIDSTREAM]
          detected: [....13] [ip4][..tcp] [..10.54.169.250][54885] -> [203.205.151.160][...80] [HTTP_Proxy.QQ][Unknown][Chat][Fun][hkextshort.weixin.qq.com]
-                   RISK: Known Proto on Non Std Port
  detection-update: [....12] [ip4][..tcp] [..10.54.169.250][42761] -> [203.205.129.101][...80] [HTTP_Proxy.QQ][Tencent][Download][Fun][hkextshort.weixin.qq.com]
                    RISK: Known Proto on Non Std Port, Binary File/Data Transfer (Attempt)
  detection-update: [....13] [ip4][..tcp] [..10.54.169.250][54885] -> [203.205.151.160][...80] [HTTP_Proxy.QQ][Unknown][Download][Fun][hkextshort.weixin.qq.com]
                    RISK: Known Proto on Non Std Port, Binary File/Data Transfer (Attempt)
               new: [....14] [ip4][..tcp] [..10.54.169.250][42762] -> [203.205.129.101][...80] [MIDSTREAM]
          detected: [....14] [ip4][..tcp] [..10.54.169.250][42762] -> [203.205.129.101][...80] [HTTP_Proxy.QQ][Tencent][Chat][Fun][hkextshort.weixin.qq.com]
-                   RISK: Known Proto on Non Std Port
  detection-update: [....14] [ip4][..tcp] [..10.54.169.250][42762] -> [203.205.129.101][...80] [HTTP_Proxy.QQ][Tencent][Download][Fun][hkextshort.weixin.qq.com]
                    RISK: Known Proto on Non Std Port, Binary File/Data Transfer (Attempt)
           analyse: [....11] [ip4][..tcp] [..10.54.169.250][52009] -> [...120.28.35.40][...80] [HTTP][Unknown][Streaming][Fun][vod-singtelhawk.quickplay.com]
@@ -53,7 +49,6 @@
                    [ENTROPIES...: 5.9,7.9,6.0,7.1,5.9,5.9,7.8,5.9,5.9,7.7,6.0,5.0,6.0,7.8,6.0,5.9,6.6,5.9,7.7,6.0,7.8,5.9,7.8,6.0,7.3,5.9,7.9,5.9,7.8,5.9,7.6,5.9]
               new: [....15] [ip4][..tcp] [..10.54.169.250][35670] -> [203.205.147.215][...80] [MIDSTREAM]
          detected: [....15] [ip4][..tcp] [..10.54.169.250][35670] -> [203.205.147.215][...80] [HTTP_Proxy.QQ][Tencent][Chat][Fun][hkminorshort.weixin.qq.com]
-                   RISK: Known Proto on Non Std Port
  detection-update: [....15] [ip4][..tcp] [..10.54.169.250][35670] -> [203.205.147.215][...80] [HTTP_Proxy.QQ][Tencent][Download][Fun][hkminorshort.weixin.qq.com]
                    RISK: Known Proto on Non Std Port, Binary File/Data Transfer (Attempt)
               new: [....16] [ip4][..tcp] [..10.54.169.250][56381] -> [..54.179.140.65][...80] [MIDSTREAM]
@@ -87,10 +82,9 @@
                    RISK: Known Proto on Non Std Port, Binary File/Data Transfer (Attempt)
              idle: [....16] [ip4][..tcp] [..10.54.169.250][56381] -> [..54.179.140.65][...80] [HTTP.Xiaomi][AWS_EC2][Web][Fun][api.account.xiaomi.com]
              idle: [.....3] [ip4][..tcp] [..10.54.169.250][33064] -> [....120.28.5.18][...80] [HTTP][Unknown][Streaming][Fun]
-             idle: [.....6] [ip4][..tcp] [..10.54.169.250][33277] -> [..120.28.26.231][...80] [HTTP.Google][Unknown][Web][Acceptable][clients3.google.com]
+             idle: [.....6] [ip4][..tcp] [..10.54.169.250][33277] -> [..120.28.26.231][...80] [HTTP.Google][Unknown][ConnCheck][Acceptable][clients3.google.com]
                    RISK: Mismatching Protocol with server IP address
              idle: [....10] [ip4][..tcp] [..10.54.169.250][54883] -> [203.205.151.160][...80] [HTTP_Proxy.QQ][Unknown][Chat][Fun]
-                   RISK: Known Proto on Non Std Port
              idle: [.....7] [ip4][..tcp] [..10.54.169.250][44793] -> [....31.13.68.49][...80] [HTTP.Facebook][Facebook][SocialNetwork][Fun][www.facebook.com]
              idle: [.....4] [ip4][..tcp] [..10.54.169.250][52285] -> [..173.252.74.22][...80] [HTTP.Facebook][Facebook][SocialNetwork][Fun][www.facebook.com]
              idle: [.....5] [ip4][..tcp] [..10.54.169.250][52288] -> [..173.252.74.22][...80] [HTTP.Facebook][Facebook][SocialNetwork][Fun][www.facebook.com]

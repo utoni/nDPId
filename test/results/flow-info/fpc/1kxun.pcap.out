@@ -143,6 +143,8 @@
                    [ENTROPIES...: 4.5,4.5,5.0,4.8,4.8,5.8,5.8,4.3,5.6,5.0,4.8,4.8,4.8,5.3,5.2,5.1,4.7,4.7,6.0,5.1,5.2,4.8,4.8,5.8,5.1,4.7,4.7,4.5,4.7,4.7,5.6,5.2]
               new: [....38] [ip4][..tcp] [..192.168.115.8][49607] -> [218.244.135.170][.9099]
          detected: [....38] [ip4][..tcp] [..192.168.115.8][49607] -> [218.244.135.170][.9099] [HTTP][Alibaba][Web][Acceptable][218.244.135.170]
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
+ detection-update: [....38] [ip4][..tcp] [..192.168.115.8][49607] -> [218.244.135.170][.9099] [HTTP][Alibaba][Web][Acceptable][218.244.135.170]
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
               new: [....39] [ip4][..udp] [..192.168.115.8][54420] -> [........8.8.8.8][...53]
          detected: [....39] [ip4][..udp] [..192.168.115.8][54420] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][vv.video.qq.com]
@@ -152,6 +154,8 @@
               new: [....41] [ip4][..tcp] [..192.168.115.8][49609] -> [..42.120.51.152][.8080]
               new: [....42] [ip4][..udp] [.192.168.10.110][60480] -> [255.255.255.255][62976]
          detected: [....41] [ip4][..tcp] [..192.168.115.8][49609] -> [..42.120.51.152][.8080] [HTTP][Alibaba][Web][Acceptable][42.120.51.152]
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
+ detection-update: [....41] [ip4][..tcp] [..192.168.115.8][49609] -> [..42.120.51.152][.8080] [HTTP][Alibaba][Web][Acceptable][42.120.51.152]
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
               new: [....43] [ip4][..udp] [...192.168.5.37][56366] -> [....224.0.0.252][.5355]
          detected: [....43] [ip4][..udp] [...192.168.5.37][56366] -> [....224.0.0.252][.5355] [LLMNR][Unknown][Network][Acceptable]
@@ -402,15 +406,18 @@
            update: [....33] [ip6][..udp] [..............fe80::e98f:bae2:19f7:6b0f][54888] -> [..............................ff02::1:3][.5355] [LLMNR][Unknown][Network][Acceptable][????????????]
                    RISK: Non-Printable/Invalid Chars Detected
      DAEMON-EVENT: [Processed: 1032 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 129 / 129|skipped: 0|!detected: 0|guessed: 1|detection-updates: 12|updates: 38]
+     DAEMON-EVENT: [Flows][active: 129 / 129|skipped: 0|!detected: 0|guessed: 1|detection-updates: 14|updates: 38]
               new: [...130] [ip4][..tcp] [..192.168.2.126][60962] -> [..172.104.93.92][.1234] [MIDSTREAM]
          detected: [...130] [ip4][..tcp] [..192.168.2.126][60962] -> [..172.104.93.92][.1234] [HTTP.1kxun][Unknown][Streaming][Fun][ws.1kxun.mobi]
+ detection-update: [...130] [ip4][..tcp] [..192.168.2.126][60962] -> [..172.104.93.92][.1234] [HTTP.1kxun][Unknown][Streaming][Fun][ws.1kxun.mobi]
                    RISK: Known Proto on Non Std Port
               new: [...131] [ip4][..tcp] [..192.168.2.126][60972] -> [..172.104.93.92][.1234] [MIDSTREAM]
          detected: [...131] [ip4][..tcp] [..192.168.2.126][60972] -> [..172.104.93.92][.1234] [HTTP.1kxun][Unknown][Streaming][Fun][ws.1kxun.mobi]
+ detection-update: [...131] [ip4][..tcp] [..192.168.2.126][60972] -> [..172.104.93.92][.1234] [HTTP.1kxun][Unknown][Streaming][Fun][ws.1kxun.mobi]
                    RISK: Known Proto on Non Std Port
               new: [...132] [ip4][..tcp] [..192.168.2.126][60984] -> [..172.104.93.92][.1234] [MIDSTREAM]
          detected: [...132] [ip4][..tcp] [..192.168.2.126][60984] -> [..172.104.93.92][.1234] [HTTP.1kxun][Unknown][Streaming][Fun][ws.1kxun.mobi]
+ detection-update: [...132] [ip4][..tcp] [..192.168.2.126][60984] -> [..172.104.93.92][.1234] [HTTP.1kxun][Unknown][Streaming][Fun][ws.1kxun.mobi]
                    RISK: Known Proto on Non Std Port
               new: [...133] [ip4][..tcp] [..192.168.2.126][47230] -> [..161.117.13.29][...80] [MIDSTREAM]
          detected: [...133] [ip4][..tcp] [..192.168.2.126][47230] -> [..161.117.13.29][...80] [HTTP.1kxun][Alibaba][Streaming][Fun][kankan.1kxun.mobi]
@@ -489,13 +496,13 @@
                    RISK: HTTP Susp User-Agent
           guessed: [....17] [ip4][..tcp] [...192.168.5.16][53622] -> [.192.168.115.75][..443] [TLS][Unknown][Web][Safe]
               end: [....17] [ip4][..tcp] [...192.168.5.16][53622] -> [.192.168.115.75][..443]
-              end: [....45] [ip4][..tcp] [...192.168.5.16][53623] -> [.192.168.115.75][..443] [TLS][Unknown][Web][Safe]
+              end: [....45] [ip4][..tcp] [...192.168.5.16][53623] -> [.192.168.115.75][..443] [TLS][Unknown][Web][Safe][192.168.115.75]
                    RISK: Weak TLS Cipher, HTTP/TLS/QUIC Numeric Hostname/SNI, TLS (probably) Not Carrying HTTPS
-              end: [....87] [ip4][..tcp] [...192.168.5.16][53625] -> [.192.168.115.75][..443] [TLS][Unknown][Web][Safe]
+              end: [....87] [ip4][..tcp] [...192.168.5.16][53625] -> [.192.168.115.75][..443] [TLS][Unknown][Web][Safe][192.168.115.75]
                    RISK: Weak TLS Cipher, HTTP/TLS/QUIC Numeric Hostname/SNI, TLS (probably) Not Carrying HTTPS
-              end: [...107] [ip4][..tcp] [...192.168.5.16][53626] -> [.192.168.115.75][..443] [TLS][Unknown][Web][Safe]
+              end: [...107] [ip4][..tcp] [...192.168.5.16][53626] -> [.192.168.115.75][..443] [TLS][Unknown][Web][Safe][192.168.115.75]
                    RISK: Weak TLS Cipher, HTTP/TLS/QUIC Numeric Hostname/SNI, TLS (probably) Not Carrying HTTPS
-              end: [...117] [ip4][..tcp] [...192.168.5.16][53629] -> [.192.168.115.75][..443] [TLS][Unknown][Web][Safe]
+              end: [...117] [ip4][..tcp] [...192.168.5.16][53629] -> [.192.168.115.75][..443] [TLS][Unknown][Web][Safe][192.168.115.75]
                    RISK: Weak TLS Cipher, HTTP/TLS/QUIC Numeric Hostname/SNI, TLS (probably) Not Carrying HTTPS
              idle: [...127] [ip4][..udp] [...192.168.5.44][59062] -> [....224.0.0.252][.5355] [LLMNR][Unknown][Network][Acceptable][jason-pc]
              idle: [....27] [ip4][..tcp] [..192.168.115.8][49599] -> [.106.187.35.246][...80] [HTTP.1kxun][Unknown][Streaming][Fun][pic.1kxun.com]

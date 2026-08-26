@@ -4,6 +4,7 @@
               new: [.....1] [ip4][..tcp] [......127.0.0.1][54900] -> [......127.0.0.1][.1234]
               new: [.....2] [ip4][..tcp] [......127.0.0.1][49996] -> [......127.0.0.1][.1234]
      not-detected: [.....1] [ip4][..tcp] [......127.0.0.1][54900] -> [......127.0.0.1][.1234] [Unknown][Unknown][Unspecified][Unrated]
+                   RISK: (Possible) Slow DoS
           analyse: [.....1] [ip4][..tcp] [......127.0.0.1][54900] -> [......127.0.0.1][.1234] [Unknown][Unknown][Unspecified][Unrated]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|   139.815|     9.060|    34.338|   1179090124.014|    1.000]
@@ -22,4 +23,5 @@
      not-detected: [.....2] [ip4][..tcp] [......127.0.0.1][49996] -> [......127.0.0.1][.1234] [Unknown][Unknown][Unspecified][Unrated]
              idle: [.....2] [ip4][..tcp] [......127.0.0.1][49996] -> [......127.0.0.1][.1234]
              idle: [.....1] [ip4][..tcp] [......127.0.0.1][54900] -> [......127.0.0.1][.1234] [Unknown][Unknown][Unspecified][Unrated]
+                   RISK: (Possible) Slow DoS
      DAEMON-EVENT: shutdown

@@ -3,11 +3,10 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [..192.168.17.53][49640] -> [.212.227.17.186][..143]
          detected: [.....1] [ip4][..tcp] [..192.168.17.53][49640] -> [.212.227.17.186][..143] [IMAPS][Unknown][Email][Safe]
-                   RISK: Known Proto on Non Std Port
  detection-update: [.....1] [ip4][..tcp] [..192.168.17.53][49640] -> [.212.227.17.186][..143] [IMAPS][Unknown][Email][Safe]
-                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
+                   RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
  detection-update: [.....1] [ip4][..tcp] [..192.168.17.53][49640] -> [.212.227.17.186][..143] [IMAPS][Unknown][Email][Safe]
-                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
+                   RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
  detection-update: [.....1] [ip4][..tcp] [..192.168.17.53][49640] -> [.212.227.17.186][..143] [IMAPS][Unknown][Email][Safe]
                    RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
           analyse: [.....1] [ip4][..tcp] [..192.168.17.53][49640] -> [.212.227.17.186][..143] [IMAPS][Unknown][Email][Safe]

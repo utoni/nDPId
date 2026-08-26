@@ -115,9 +115,9 @@
      DAEMON-EVENT: [Processed: 691 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 9|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [....10] [ip4][..udp] [.192.168.12.156][37383] -> [.217.138.197.43][.1234]
-         detected: [....10] [ip4][..udp] [.192.168.12.156][37383] -> [.217.138.197.43][.1234] [OpenVPN.NordVPN][NordVPN][VPN][Acceptable]
+         detected: [....10] [ip4][..udp] [.192.168.12.156][37383] -> [.217.138.197.43][.1234] [OpenVPN][Unknown][VPN][Acceptable]
                    RISK: Known Proto on Non Std Port
-             idle: [....10] [ip4][..udp] [.192.168.12.156][37383] -> [.217.138.197.43][.1234] [OpenVPN.NordVPN][NordVPN][VPN][Acceptable]
+             idle: [....10] [ip4][..udp] [.192.168.12.156][37383] -> [.217.138.197.43][.1234] [OpenVPN][Unknown][VPN][Acceptable]
                    RISK: Known Proto on Non Std Port
              idle: [.....9] [ip4][..udp] [.192.168.12.156][41133] -> [.107.161.86.131][..443] [OpenVPN][Unknown][VPN][Acceptable]
                    RISK: Known Proto on Non Std Port, Susp Entropy

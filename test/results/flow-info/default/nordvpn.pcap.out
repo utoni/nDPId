@@ -1,6 +1,6 @@
      DAEMON-EVENT: init
               new: [.....1] [ip4][..udp] [..192.168.1.204][53465] -> [.138.199.54.231][51820]
-         detected: [.....1] [ip4][..udp] [..192.168.1.204][53465] -> [.138.199.54.231][51820] [WireGuard.NordVPN][NordVPN][VPN][Acceptable]
+         detected: [.....1] [ip4][..udp] [..192.168.1.204][53465] -> [.138.199.54.231][51820] [WireGuard][Unknown][VPN][Acceptable]
               new: [.....2] [ip4][..udp] [..192.168.1.204][63670] -> [.192.145.125.35][.1198]
           guessed: [.....2] [ip4][..udp] [..192.168.1.204][63670] -> [.192.145.125.35][.1198] [NordVPN][NordVPN][VPN][Acceptable]
                    RISK: Susp Entropy
@@ -28,14 +28,14 @@
                    [PKTLENS.....: 52,52,40,128,46,140,423,136,1500,1500,1500,40,140,116,252,863,152,46,728,46,298,160,383,164,405,40,1457,46,142,46,143,46]
                    [ENTROPIES...: 4.6,4.9,4.8,6.5,4.5,6.6,7.0,6.6,7.9,7.9,7.9,4.9,6.5,6.3,7.0,7.7,6.6,4.9,7.7,4.9,7.2,6.5,7.4,6.5,7.5,4.9,7.8,5.0,6.6,4.8,6.6,4.9]
               new: [.....4] [ip4][..tcp] [..192.168.1.204][49788] -> [...45.80.28.142][.8443]
-         detected: [.....4] [ip4][..tcp] [..192.168.1.204][49788] -> [...45.80.28.142][.8443] [TLS.NordVPN][NordVPN][VPN][Acceptable][it315.nordvpn.com]
+         detected: [.....4] [ip4][..tcp] [..192.168.1.204][49788] -> [...45.80.28.142][.8443] [TLS.NordVPN][Unknown][VPN][Acceptable][it315.nordvpn.com]
+                   RISK: TLS (probably) Not Carrying HTTPS
+ detection-update: [.....4] [ip4][..tcp] [..192.168.1.204][49788] -> [...45.80.28.142][.8443] [TLS.NordVPN][Unknown][VPN][Acceptable][it315.nordvpn.com]
                    RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
- detection-update: [.....4] [ip4][..tcp] [..192.168.1.204][49788] -> [...45.80.28.142][.8443] [TLS.NordVPN][NordVPN][VPN][Acceptable][it315.nordvpn.com]
-                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
-             idle: [.....1] [ip4][..udp] [..192.168.1.204][53465] -> [.138.199.54.231][51820] [WireGuard.NordVPN][NordVPN][VPN][Acceptable]
+             idle: [.....1] [ip4][..udp] [..192.168.1.204][53465] -> [.138.199.54.231][51820] [WireGuard][Unknown][VPN][Acceptable]
              idle: [.....2] [ip4][..udp] [..192.168.1.204][63670] -> [.192.145.125.35][.1198] [NordVPN][NordVPN][VPN][Acceptable]
                    RISK: Susp Entropy
-             idle: [.....4] [ip4][..tcp] [..192.168.1.204][49788] -> [...45.80.28.142][.8443] [TLS.NordVPN][NordVPN][VPN][Acceptable]
+             idle: [.....4] [ip4][..tcp] [..192.168.1.204][49788] -> [...45.80.28.142][.8443] [TLS.NordVPN][Unknown][VPN][Acceptable][it315.nordvpn.com]
                    RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
              idle: [.....3] [ip4][..tcp] [..192.168.1.204][49766] -> [.212.129.45.224][..995] [POPS][NordVPN][Email][Safe]
                    RISK: Susp Entropy

@@ -4,7 +4,7 @@
               new: [.....1] [ip4][..udp] [....192.168.2.1][57621] -> [..192.168.2.255][57621]
          detected: [.....1] [ip4][..udp] [....192.168.2.1][57621] -> [..192.168.2.255][57621] [Spotify][Unknown][Music][Fun]
               new: [.....2] [ip4][..tcp] [...192.168.2.12][49355] -> [..157.240.20.53][.5222] [MIDSTREAM]
-          guessed: [.....2] [ip4][..tcp] [...192.168.2.12][49355] -> [..157.240.20.53][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
+          guessed: [.....2] [ip4][..tcp] [...192.168.2.12][49355] -> [..157.240.20.53][.5222] [Facebook][Facebook][SocialNetwork][Fun]
                    RISK: Susp Entropy
               new: [.....3] [ip4][..udp] [...192.168.2.12][53688] -> [....31.13.86.48][.3478]
          detected: [.....3] [ip4][..udp] [...192.168.2.12][53688] -> [....31.13.86.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
@@ -18,7 +18,7 @@
          detected: [.....7] [ip4][..udp] [...192.168.2.12][53688] -> [.157.240.196.62][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable][]
               new: [.....8] [ip4][..udp] [...192.168.2.12][51277] -> [239.255.255.250][.1900]
          detected: [.....8] [ip4][..udp] [...192.168.2.12][51277] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250]
-          analyse: [.....2] [ip4][..tcp] [...192.168.2.12][49355] -> [..157.240.20.53][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
+          analyse: [.....2] [ip4][..tcp] [...192.168.2.12][49355] -> [..157.240.20.53][.5222] [Facebook][Facebook][SocialNetwork][Fun]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........:      0.000|     2.404|     0.176|     0.474|       224629.621|    2.400]
                    [PKTLEN......:     52.000|  1440.000|   268.400|   335.200|       112371.900|    4.200]
@@ -71,7 +71,7 @@
              idle: [.....6] [ip4][..udp] [...192.168.2.12][53688] -> [..179.60.192.48][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
              idle: [.....4] [ip4][..udp] [...192.168.2.12][53688] -> [..185.60.216.51][.3478] [STUN.WhatsAppCall][Facebook][VoIP][Acceptable]
              idle: [....12] [ip4][..udp] [....192.168.2.1][17500] -> [..192.168.2.255][17500] [Dropbox][Unknown][Cloud][Acceptable]
-             idle: [.....2] [ip4][..tcp] [...192.168.2.12][49355] -> [..157.240.20.53][.5222] [WhatsApp][WhatsApp][Chat][Acceptable]
+             idle: [.....2] [ip4][..tcp] [...192.168.2.12][49355] -> [..157.240.20.53][.5222] [Facebook][Facebook][SocialNetwork][Fun]
                    RISK: Susp Entropy
              idle: [....11] [ip4][..udp] [...192.168.2.12][53688] -> [...91.252.56.51][32641] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
              idle: [.....8] [ip4][..udp] [...192.168.2.12][51277] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250]

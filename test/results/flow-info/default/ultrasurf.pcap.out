@@ -15,7 +15,7 @@
                    [ENTROPIES...: 7.9,7.9,7.8,7.8,7.9,7.9,5.5,5.4,7.9,7.9,7.9,5.5,7.9,7.9,7.8,7.9,5.5,5.3,5.4,5.4,7.8,5.5,7.8,7.9,7.9,5.5,5.5,7.9,7.9,7.9,7.9,7.9]
               new: [.....2][.200] [ip4][..tcp] [....10.132.0.23][38120] -> [....65.49.68.25][50053]
          detected: [.....2][.200] [ip4][..tcp] [....10.132.0.23][38120] -> [....65.49.68.25][50053] [TLS][Unknown][Web][Safe][]
-                   RISK: Known Proto on Non Std Port, Missing SNI TLS Extn, ALPN/SNI Mismatch
+                   RISK: Missing SNI TLS Extn, ALPN/SNI Mismatch
  detection-update: [.....2][.200] [ip4][..tcp] [....10.132.0.23][38120] -> [....65.49.68.25][50053] [TLS][Unknown][Web][Safe][]
                    RISK: Known Proto on Non Std Port, Missing SNI TLS Extn, ALPN/SNI Mismatch
           analyse: [.....2][.200] [ip4][..tcp] [....10.132.0.23][38120] -> [....65.49.68.25][50053] [TLS][Unknown][Web][Safe]
@@ -30,7 +30,7 @@
                    [ENTROPIES...: 4.7,5.2,5.3,6.1,5.1,7.8,7.8,7.8,5.2,5.2,5.2,6.1,6.4,7.7,6.3,5.9,5.7,6.1,5.8,5.2,6.0,7.9,5.9,7.8,7.7,7.7,5.2,5.9,6.9,6.8,5.9,6.2]
               new: [.....3][.200] [ip4][..tcp] [....10.132.0.23][38152] -> [....65.49.68.25][50053]
          detected: [.....3][.200] [ip4][..tcp] [....10.132.0.23][38152] -> [....65.49.68.25][50053] [TLS][Unknown][Web][Safe][]
-                   RISK: Known Proto on Non Std Port, Missing SNI TLS Extn, ALPN/SNI Mismatch
+                   RISK: Missing SNI TLS Extn, ALPN/SNI Mismatch
  detection-update: [.....3][.200] [ip4][..tcp] [....10.132.0.23][38152] -> [....65.49.68.25][50053] [TLS][Unknown][Web][Safe][]
                    RISK: Known Proto on Non Std Port, Missing SNI TLS Extn, ALPN/SNI Mismatch
           analyse: [.....3][.200] [ip4][..tcp] [....10.132.0.23][38152] -> [....65.49.68.25][50053] [TLS][Unknown][Web][Safe]

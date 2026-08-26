@@ -124,17 +124,17 @@
      DAEMON-EVENT: [Flows][active: 2 / 31|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 10]
               new: [....32] [ip4][..tcp] [......127.0.0.1][58930] -> [......127.0.0.1][.1337]
          detected: [....32] [ip4][..tcp] [......127.0.0.1][58930] -> [......127.0.0.1][.1337] [HTTP][Unknown][Web][Acceptable][127.0.0.1]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
               new: [....33] [ip4][..tcp] [......127.0.0.1][58938] -> [......127.0.0.1][.1337]
          detected: [....33] [ip4][..tcp] [......127.0.0.1][58938] -> [......127.0.0.1][.1337] [HTTP][Unknown][Web][Acceptable][127.0.0.1]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
              idle: [....30] [ip4][..udp] [......127.0.0.1][48459] -> [......127.0.0.1][.1337] [JSON][Unknown][Network][Acceptable]
              idle: [....31] [ip4][..udp] [......127.0.0.1][59588] -> [......127.0.0.1][.1337] [JSON][Unknown][Network][Acceptable]
               new: [....34] [ip4][..tcp] [......127.0.0.1][51188] -> [......127.0.0.1][.1337]
          detected: [....34] [ip4][..tcp] [......127.0.0.1][51188] -> [......127.0.0.1][.1337] [JSON][Unknown][Network][Acceptable]
               end: [....34] [ip4][..tcp] [......127.0.0.1][51188] -> [......127.0.0.1][.1337] [JSON][Unknown][Network][Acceptable]
               end: [....32] [ip4][..tcp] [......127.0.0.1][58930] -> [......127.0.0.1][.1337] [HTTP.JSON][Unknown][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
               end: [....33] [ip4][..tcp] [......127.0.0.1][58938] -> [......127.0.0.1][.1337] [HTTP.JSON][Unknown][Web][Acceptable]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
      DAEMON-EVENT: shutdown

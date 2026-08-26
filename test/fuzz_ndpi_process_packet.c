@@ -55,7 +55,7 @@ int LLVMFuzzerTestOneInput(const uint8_t * data, size_t size)
             return 1;
         }
 
-        workflow->ndpi_struct = ndpi_init_detection_module(global_context);
+        workflow->ndpi_struct = ndpi_init_detection_module(global_context, NDPI_LICENSE_NOT_FOR_PROFIT_LGPL);
         if (workflow->ndpi_struct == NULL)
         {
             return 1;

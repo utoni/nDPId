@@ -30,7 +30,6 @@
          detected: [.....8] [ip6][..udp] [...............fe80::189c:c31b:1298:224][.5353] -> [...............................ff02::fb][.5353] [MDNS][Unknown][Network][Acceptable][_raop._tcp.local]
               new: [.....9] [ip4][..tcp] [..17.110.229.14][.5223] -> [....192.168.2.4][49193] [MIDSTREAM]
          detected: [.....9] [ip4][..tcp] [..17.110.229.14][.5223] -> [....192.168.2.4][49193] [TLS][Apple][Web][Safe]
-                   RISK: Known Proto on Non Std Port
  detection-update: [.....9] [ip4][..tcp] [..17.110.229.14][.5223] -> [....192.168.2.4][49193] [TLS][Apple][Web][Safe]
                    RISK: Known Proto on Non Std Port, Unidirectional Traffic
              idle: [.....6] [ip4][..udp] [........0.0.0.0][...68] -> [255.255.255.255][...67] [DHCP][Unknown][Network][Acceptable][lucas-imac]

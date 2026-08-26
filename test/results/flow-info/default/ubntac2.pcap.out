@@ -3,10 +3,12 @@
          detected: [.....1] [ip4][..udp] [..192.168.1.138][60790] -> [255.255.255.255][10001] [UBNTAC2][Unknown][Network][Safe]
               new: [.....2] [ip4][..tcp] [..192.168.1.138][35726] -> [..192.168.1.204][.8080]
          detected: [.....2] [ip4][..tcp] [..192.168.1.138][35726] -> [..192.168.1.204][.8080] [HTTP.UBNTAC2][Unknown][Network][Safe][192.168.1.204]
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
+ detection-update: [.....2] [ip4][..tcp] [..192.168.1.138][35726] -> [..192.168.1.204][.8080] [HTTP.UBNTAC2][Unknown][Network][Safe][192.168.1.204]
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
            update: [.....1] [ip4][..udp] [..192.168.1.138][60790] -> [255.255.255.255][10001] [UBNTAC2][Unknown][Network][Safe]
      DAEMON-EVENT: [Processed: 11 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 2 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 1]
+     DAEMON-EVENT: [Flows][active: 2 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 1|updates: 1]
               new: [.....3] [ip4][..udp] [....192.168.1.1][34085] -> [255.255.255.255][10001]
          detected: [.....3] [ip4][..udp] [....192.168.1.1][34085] -> [255.255.255.255][10001] [UBNTAC2][Unknown][Network][Safe]
              idle: [.....1] [ip4][..udp] [..192.168.1.138][60790] -> [255.255.255.255][10001] [UBNTAC2][Unknown][Network][Safe]
@@ -30,7 +32,7 @@
          detected: [....10] [ip4][..udp] [....192.168.1.1][42838] -> [255.255.255.255][10001] [UBNTAC2][Unknown][Network][Safe]
            update: [.....5] [ip4][..udp] [....192.168.1.1][55321] -> [255.255.255.255][10001] [UBNTAC2][Unknown][Network][Safe]
      DAEMON-EVENT: [Processed: 19 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 8 / 10|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 4]
+     DAEMON-EVENT: [Flows][active: 8 / 10|skipped: 0|!detected: 0|guessed: 0|detection-updates: 1|updates: 4]
               new: [....11] [ip4][..udp] [192.168.178.176][10001] -> [255.255.255.255][10001]
          detected: [....11] [ip4][..udp] [192.168.178.176][10001] -> [255.255.255.255][10001] [UBNTAC2][Unknown][Network][Safe]
               new: [....12] [ip4][..udp] [.192.168.178.92][10001] -> [192.168.178.176][10001]

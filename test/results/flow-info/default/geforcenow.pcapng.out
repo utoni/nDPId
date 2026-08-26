@@ -3,12 +3,10 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [..192.168.1.245][57490] -> [..80.84.167.206][49100]
          detected: [.....1] [ip4][..tcp] [..192.168.1.245][57490] -> [..80.84.167.206][49100] [TLS.GeForceNow][Nvidia][Game][Fun][80-84-167-206.cloudmatchbeta.nvidiagrid.net]
-                   RISK: Known Proto on Non Std Port
+ detection-update: [.....1] [ip4][..tcp] [..192.168.1.245][57490] -> [..80.84.167.206][49100] [TLS.GeForceNow][Nvidia][Game][Fun][80-84-167-206.cloudmatchbeta.nvidiagrid.net]
  detection-update: [.....1] [ip4][..tcp] [..192.168.1.245][57490] -> [..80.84.167.206][49100] [TLS.GeForceNow][Nvidia][Game][Fun][80-84-167-206.cloudmatchbeta.nvidiagrid.net]
                    RISK: Known Proto on Non Std Port
- detection-update: [.....1] [ip4][..tcp] [..192.168.1.245][57490] -> [..80.84.167.206][49100] [TLS.GeForceNow][Nvidia][Game][Fun][80-84-167-206.cloudmatchbeta.nvidiagrid.net]
-                   RISK: Known Proto on Non Std Port
-          analyse: [.....1] [ip4][..tcp] [..192.168.1.245][57490] -> [..80.84.167.206][49100] [TLS.GeForceNow][Nvidia][Game][Fun]
+          analyse: [.....1] [ip4][..tcp] [..192.168.1.245][57490] -> [..80.84.167.206][49100] [TLS.GeForceNow][Nvidia][Game][Fun][80-84-167-206.cloudmatchbeta.nvidiagrid.net]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........:      0.000|     0.047|     0.015|     0.018|          312.463|    3.900]
                    [PKTLEN......:     52.000|  2948.000|  1089.800|  1283.500|      1647314.500|    4.000]

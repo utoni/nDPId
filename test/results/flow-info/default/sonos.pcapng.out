@@ -3,12 +3,12 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [...192.168.1.29][52425] -> [...192.168.1.70][.1443]
          detected: [.....1] [ip4][..tcp] [...192.168.1.29][52425] -> [...192.168.1.70][.1443] [TLS][Unknown][Web][Safe][192.168.1.70]
-                   RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI, TLS (probably) Not Carrying HTTPS
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI, TLS (probably) Not Carrying HTTPS
  detection-update: [.....1] [ip4][..tcp] [...192.168.1.29][52425] -> [...192.168.1.70][.1443] [TLS][Unknown][Web][Safe][192.168.1.70]
-                   RISK: Known Proto on Non Std Port, Weak TLS Cipher, HTTP/TLS/QUIC Numeric Hostname/SNI, TLS (probably) Not Carrying HTTPS
+                   RISK: Weak TLS Cipher, HTTP/TLS/QUIC Numeric Hostname/SNI, TLS (probably) Not Carrying HTTPS
  detection-update: [.....1] [ip4][..tcp] [...192.168.1.29][52425] -> [...192.168.1.70][.1443] [TLS.Sonos][Unknown][Music][Fun][192.168.1.70]
                    RISK: Known Proto on Non Std Port, Weak TLS Cipher, TLS Cert Mismatch, TLS (probably) Not Carrying HTTPS
-          analyse: [.....1] [ip4][..tcp] [...192.168.1.29][52425] -> [...192.168.1.70][.1443] [TLS.Sonos][Unknown][Music][Fun]
+          analyse: [.....1] [ip4][..tcp] [...192.168.1.29][52425] -> [...192.168.1.70][.1443] [TLS.Sonos][Unknown][Music][Fun][192.168.1.70]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.077|     0.006|     0.016|          258.244|    2.100]
                    [PKTLEN......:     52.000|  1500.000|   388.600|   553.200|       306044.500|    3.800]

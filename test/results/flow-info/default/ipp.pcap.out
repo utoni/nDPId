@@ -3,9 +3,13 @@
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [....10.10.10.49][55341] -> [...10.10.10.251][..631]
          detected: [.....1] [ip4][..tcp] [....10.10.10.49][55341] -> [...10.10.10.251][..631] [HTTP.IPP][Unknown][System][Acceptable][10.10.10.251]
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
+ detection-update: [.....1] [ip4][..tcp] [....10.10.10.49][55341] -> [...10.10.10.251][..631] [HTTP.IPP][Unknown][System][Acceptable][10.10.10.251]
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
               new: [.....2] [ip4][..tcp] [....10.10.10.49][55342] -> [...10.10.10.251][..631]
          detected: [.....2] [ip4][..tcp] [....10.10.10.49][55342] -> [...10.10.10.251][..631] [HTTP.IPP][Unknown][System][Acceptable][10.10.10.251]
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
+ detection-update: [.....2] [ip4][..tcp] [....10.10.10.49][55342] -> [...10.10.10.251][..631] [HTTP.IPP][Unknown][System][Acceptable][10.10.10.251]
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
           analyse: [.....2] [ip4][..tcp] [....10.10.10.49][55342] -> [...10.10.10.251][..631] [HTTP.IPP][Unknown][System][Acceptable][10.10.10.251]
                                          min|       max|       avg|    stddev|         variance|  entropy
@@ -19,6 +23,8 @@
                    [ENTROPIES...: 4.4,4.7,4.6,5.5,5.4,4.7,5.2,4.6,4.1,4.0,4.7,3.7,3.5,4.7,3.5,3.5,4.6,4.1,4.5,4.7,4.3,4.2,4.7,4.2,4.7,4.7,4.7,4.3,4.7,4.2,4.1,4.6]
               new: [.....3] [ip4][..tcp] [....10.10.10.49][55343] -> [...10.10.10.251][..631]
          detected: [.....3] [ip4][..tcp] [....10.10.10.49][55343] -> [...10.10.10.251][..631] [HTTP.IPP][Unknown][System][Acceptable][10.10.10.251]
+                   RISK: HTTP/TLS/QUIC Numeric Hostname/SNI
+ detection-update: [.....3] [ip4][..tcp] [....10.10.10.49][55343] -> [...10.10.10.251][..631] [HTTP.IPP][Unknown][System][Acceptable][10.10.10.251]
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
               end: [.....1] [ip4][..tcp] [....10.10.10.49][55341] -> [...10.10.10.251][..631] [HTTP.IPP][Unknown][System][Acceptable][10.10.10.251]
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI

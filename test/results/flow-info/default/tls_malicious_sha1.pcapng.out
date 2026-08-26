@@ -5,5 +5,5 @@
          detected: [.....1] [ip6][..tcp] [..2001:b07:a3d:c112:9726:f643:a838:b0c4][40294] -> [...............2a00:1450:4002:414::2013][..443] [TLS][Google][Web][Safe][www.prbtest.dev]
  detection-update: [.....1] [ip6][..tcp] [..2001:b07:a3d:c112:9726:f643:a838:b0c4][40294] -> [...............2a00:1450:4002:414::2013][..443] [TLS][Google][Web][Safe][www.prbtest.dev]
  detection-update: [.....1] [ip6][..tcp] [..2001:b07:a3d:c112:9726:f643:a838:b0c4][40294] -> [...............2a00:1450:4002:414::2013][..443] [TLS][Google][Web][Safe][www.prbtest.dev]
-             idle: [.....1] [ip6][..tcp] [..2001:b07:a3d:c112:9726:f643:a838:b0c4][40294] -> [...............2a00:1450:4002:414::2013][..443] [TLS][Google][Web][Safe]
+             idle: [.....1] [ip6][..tcp] [..2001:b07:a3d:c112:9726:f643:a838:b0c4][40294] -> [...............2a00:1450:4002:414::2013][..443] [TLS][Google][Web][Safe][www.prbtest.dev]
      DAEMON-EVENT: shutdown

@@ -1,0 +1,70 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip4][..tcp] [.192.168.16.213][58639] -> [...192.168.16.5][...22]
+         detected: [.....1] [ip4][..tcp] [.192.168.16.213][58639] -> [...192.168.16.5][...22] [SSH][Unknown][RemoteAccess][Acceptable]
+                   RISK: SSH Obsolete Ser Vers/Cipher
+ detection-update: [.....1] [ip4][..tcp] [.192.168.16.213][58639] -> [...192.168.16.5][...22] [SSH][Unknown][RemoteAccess][Acceptable]
+                   RISK: SSH Obsolete Cli Vers/Cipher, SSH Obsolete Ser Vers/Cipher
+ detection-update: [.....1] [ip4][..tcp] [.192.168.16.213][58639] -> [...192.168.16.5][...22] [SSH][Unknown][RemoteAccess][Acceptable]
+                   RISK: SSH Obsolete Cli Vers/Cipher, SSH Obsolete Ser Vers/Cipher
+ detection-update: [.....1] [ip4][..tcp] [.192.168.16.213][58639] -> [...192.168.16.5][...22] [SSH][Unknown][RemoteAccess][Acceptable]
+                   RISK: SSH Obsolete Cli Vers/Cipher, SSH Obsolete Ser Vers/Cipher
+     DAEMON-EVENT: [Processed: 22 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 3|updates: 0]
+              new: [.....2] [ip4][..tcp] [..192.168.1.126][33336] -> [........1.1.1.1][...22]
+             idle: [.....1] [ip4][..tcp] [.192.168.16.213][58639] -> [...192.168.16.5][...22] [SSH][Unknown][RemoteAccess][Acceptable]
+                   RISK: SSH Obsolete Cli Vers/Cipher, SSH Obsolete Ser Vers/Cipher
+     DAEMON-EVENT: [Processed: 25 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 1 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 3|updates: 0]
+              new: [.....3] [ip4][..tcp] [...192.168.1.10][52345] -> [...192.168.1.20][...22]
+         detected: [.....3] [ip4][..tcp] [...192.168.1.10][52345] -> [...192.168.1.20][...22] [SSH][Unknown][RemoteAccess][Acceptable]
+                   RISK: SSH Obsolete Cli Vers/Cipher, Malicious Fingerprint
+ detection-update: [.....3] [ip4][..tcp] [...192.168.1.10][52345] -> [...192.168.1.20][...22] [SSH][Unknown][RemoteAccess][Acceptable]
+                   RISK: SSH Obsolete Cli Vers/Cipher, SSH Obsolete Ser Vers/Cipher, Malicious Fingerprint
+ detection-update: [.....3] [ip4][..tcp] [...192.168.1.10][52345] -> [...192.168.1.20][...22] [SSH][Unknown][RemoteAccess][Acceptable]
+                   RISK: SSH Obsolete Cli Vers/Cipher, SSH Obsolete Ser Vers/Cipher, Malicious Fingerprint
+ detection-update: [.....3] [ip4][..tcp] [...192.168.1.10][52345] -> [...192.168.1.20][...22] [SSH][Unknown][RemoteAccess][Acceptable]
+                   RISK: SSH Obsolete Cli Vers/Cipher, SSH Obsolete Ser Vers/Cipher, Malicious Fingerprint
+          guessed: [.....2] [ip4][..tcp] [..192.168.1.126][33336] -> [........1.1.1.1][...22] [SSH][Unknown][RemoteAccess][Acceptable]
+                   RISK: Unidirectional Traffic
+             idle: [.....2] [ip4][..tcp] [..192.168.1.126][33336] -> [........1.1.1.1][...22]
+              new: [.....4] [ip4][..tcp] [...192.168.1.10][52346] -> [...192.168.1.20][...22]
+         detected: [.....4] [ip4][..tcp] [...192.168.1.10][52346] -> [...192.168.1.20][...22] [SSH][Unknown][RemoteAccess][Acceptable]
+                   RISK: SSH Obsolete Cli Vers/Cipher, Malicious Fingerprint
+ detection-update: [.....4] [ip4][..tcp] [...192.168.1.10][52346] -> [...192.168.1.20][...22] [SSH][Unknown][RemoteAccess][Acceptable]
+                   RISK: SSH Obsolete Cli Vers/Cipher, SSH Obsolete Ser Vers/Cipher, Malicious Fingerprint
+ detection-update: [.....4] [ip4][..tcp] [...192.168.1.10][52346] -> [...192.168.1.20][...22] [SSH][Unknown][RemoteAccess][Acceptable]
+                   RISK: SSH Obsolete Cli Vers/Cipher, SSH Obsolete Ser Vers/Cipher, Malicious Fingerprint
+ detection-update: [.....4] [ip4][..tcp] [...192.168.1.10][52346] -> [...192.168.1.20][...22] [SSH][Unknown][RemoteAccess][Acceptable]
+                   RISK: SSH Obsolete Cli Vers/Cipher, SSH Obsolete Ser Vers/Cipher, Malicious Fingerprint
+              new: [.....5] [ip4][..tcp] [...192.168.1.10][52347] -> [...192.168.1.20][...22]
+         detected: [.....5] [ip4][..tcp] [...192.168.1.10][52347] -> [...192.168.1.20][...22] [SSH][Unknown][RemoteAccess][Acceptable]
+                   RISK: SSH Obsolete Cli Vers/Cipher, Malicious Fingerprint
+ detection-update: [.....5] [ip4][..tcp] [...192.168.1.10][52347] -> [...192.168.1.20][...22] [SSH][Unknown][RemoteAccess][Acceptable]
+                   RISK: SSH Obsolete Cli Vers/Cipher, SSH Obsolete Ser Vers/Cipher, Malicious Fingerprint
+ detection-update: [.....5] [ip4][..tcp] [...192.168.1.10][52347] -> [...192.168.1.20][...22] [SSH][Unknown][RemoteAccess][Acceptable]
+                   RISK: SSH Obsolete Cli Vers/Cipher, SSH Obsolete Ser Vers/Cipher, Malicious Fingerprint
+ detection-update: [.....5] [ip4][..tcp] [...192.168.1.10][52347] -> [...192.168.1.20][...22] [SSH][Unknown][RemoteAccess][Acceptable]
+                   RISK: SSH Obsolete Cli Vers/Cipher, SSH Obsolete Ser Vers/Cipher, Malicious Fingerprint
+              new: [.....6] [ip4][..tcp] [...192.168.1.10][52348] -> [...192.168.1.20][...22]
+         detected: [.....6] [ip4][..tcp] [...192.168.1.10][52348] -> [...192.168.1.20][...22] [SSH][Unknown][RemoteAccess][Acceptable]
+                   RISK: SSH Obsolete Cli Vers/Cipher, Malicious Fingerprint
+ detection-update: [.....6] [ip4][..tcp] [...192.168.1.10][52348] -> [...192.168.1.20][...22] [SSH][Unknown][RemoteAccess][Acceptable]
+                   RISK: SSH Obsolete Cli Vers/Cipher, Malicious Fingerprint
+              new: [.....7] [ip4][..tcp] [...192.168.1.20][...22] -> [...192.168.1.10][52349]
+         detected: [.....7] [ip4][..tcp] [...192.168.1.20][...22] -> [...192.168.1.10][52349] [SSH][Unknown][RemoteAccess][Acceptable]
+                   RISK: SSH Obsolete Ser Vers/Cipher
+ detection-update: [.....7] [ip4][..tcp] [...192.168.1.20][...22] -> [...192.168.1.10][52349] [SSH][Unknown][RemoteAccess][Acceptable]
+                   RISK: SSH Obsolete Ser Vers/Cipher
+              end: [.....3] [ip4][..tcp] [...192.168.1.10][52345] -> [...192.168.1.20][...22] [SSH][Unknown][RemoteAccess][Acceptable]
+                   RISK: SSH Obsolete Cli Vers/Cipher, SSH Obsolete Ser Vers/Cipher, Malicious Fingerprint
+              end: [.....4] [ip4][..tcp] [...192.168.1.10][52346] -> [...192.168.1.20][...22] [SSH][Unknown][RemoteAccess][Acceptable]
+                   RISK: SSH Obsolete Cli Vers/Cipher, SSH Obsolete Ser Vers/Cipher, Malicious Fingerprint
+              end: [.....5] [ip4][..tcp] [...192.168.1.10][52347] -> [...192.168.1.20][...22] [SSH][Unknown][RemoteAccess][Acceptable]
+                   RISK: SSH Obsolete Cli Vers/Cipher, SSH Obsolete Ser Vers/Cipher, Malicious Fingerprint
+              end: [.....6] [ip4][..tcp] [...192.168.1.10][52348] -> [...192.168.1.20][...22] [SSH][Unknown][RemoteAccess][Acceptable]
+                   RISK: SSH Obsolete Cli Vers/Cipher, Malicious Fingerprint
+              end: [.....7] [ip4][..tcp] [...192.168.1.20][...22] -> [...192.168.1.10][52349] [SSH][Unknown][RemoteAccess][Acceptable]
+                   RISK: SSH Obsolete Ser Vers/Cipher
+     DAEMON-EVENT: shutdown

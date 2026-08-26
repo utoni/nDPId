@@ -1,0 +1,29 @@
+     DAEMON-EVENT: init
+     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....1] [ip6][..udp] [..............fe80::7cce:ae80:8900:9424][.9001] -> [..............................ff02::114][.9001]
+              new: [.....2] [ip4][..tcp] [...192.168.3.25][52268] -> [..5.252.226.123][.1340] [MIDSTREAM]
+         detected: [.....2] [ip4][..tcp] [...192.168.3.25][52268] -> [..5.252.226.123][.1340] [HTTP.Yggdrasil][Unknown][VPN][Acceptable][ygg1.mk16.de]
+              new: [.....3] [ip4][..tcp] [...192.168.3.25][50826] -> [..5.252.226.123][.1337] [MIDSTREAM]
+         detected: [.....3] [ip4][..tcp] [...192.168.3.25][50826] -> [..5.252.226.123][.1337] [Yggdrasil][Unknown][VPN][Acceptable]
+              new: [.....4] [ip4][..tcp] [...192.168.3.25][38860] -> [..5.252.226.123][.1338] [MIDSTREAM]
+         detected: [.....4] [ip4][..tcp] [...192.168.3.25][38860] -> [..5.252.226.123][.1338] [TLS][Unknown][Web][Safe][ygg1.mk16.de]
+                   RISK: TLS (probably) Not Carrying HTTPS
+              new: [.....5] [ip4][..udp] [..5.252.226.123][.1339] -> [...192.168.3.25][46520]
+         detected: [.....5] [ip4][..udp] [..5.252.226.123][.1339] -> [...192.168.3.25][46520] [QUIC][Unknown][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+ detection-update: [.....2] [ip4][..tcp] [...192.168.3.25][52268] -> [..5.252.226.123][.1340] [HTTP.Yggdrasil][Unknown][VPN][Acceptable][ygg1.mk16.de]
+                   RISK: Known Proto on Non Std Port
+ detection-update: [.....4] [ip4][..tcp] [...192.168.3.25][38860] -> [..5.252.226.123][.1338] [TLS][Unknown][Web][Safe][ygg1.mk16.de]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+          guessed: [.....1] [ip6][..udp] [..............fe80::7cce:ae80:8900:9424][.9001] -> [..............................ff02::114][.9001] [Yggdrasil][Yggdrasil][VPN][Acceptable]
+                   RISK: Susp Entropy
+             idle: [.....1] [ip6][..udp] [..............fe80::7cce:ae80:8900:9424][.9001] -> [..............................ff02::114][.9001]
+             idle: [.....4] [ip4][..tcp] [...192.168.3.25][38860] -> [..5.252.226.123][.1338] [TLS][Unknown][Web][Safe][ygg1.mk16.de]
+                   RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS
+             idle: [.....5] [ip4][..udp] [..5.252.226.123][.1339] -> [...192.168.3.25][46520] [QUIC][Unknown][Web][Acceptable]
+                   RISK: Known Proto on Non Std Port
+             idle: [.....3] [ip4][..tcp] [...192.168.3.25][50826] -> [..5.252.226.123][.1337] [Yggdrasil][Unknown][VPN][Acceptable]
+             idle: [.....2] [ip4][..tcp] [...192.168.3.25][52268] -> [..5.252.226.123][.1340] [HTTP.Yggdrasil][Unknown][VPN][Acceptable][ygg1.mk16.de]
+                   RISK: Known Proto on Non Std Port
+     DAEMON-EVENT: shutdown

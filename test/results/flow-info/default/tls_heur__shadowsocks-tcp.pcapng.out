@@ -13,7 +13,7 @@
  detection-update: [.....4] [ip6][..tcp] [..2001:b07:a3d:c112:8628:88aa:8b00:913c][45334] -> [...............2a00:1450:4002:416::200e][..443] [TLS.YouTube][Google][Media][Fun][www.youtube.com]
      not-detected: [.....3] [ip4][..tcp] [......127.0.0.1][40164] -> [......127.0.0.1][.1234] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Susp Entropy
-          analyse: [.....4] [ip6][..tcp] [..2001:b07:a3d:c112:8628:88aa:8b00:913c][45334] -> [...............2a00:1450:4002:416::200e][..443] [TLS.YouTube][Google][Media][Fun]
+          analyse: [.....4] [ip6][..tcp] [..2001:b07:a3d:c112:8628:88aa:8b00:913c][45334] -> [...............2a00:1450:4002:416::200e][..443] [TLS.YouTube][Google][Media][Fun][www.youtube.com]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........:      0.000|     0.050|     0.008|     0.014|          183.336|    3.300]
                    [PKTLEN......:     72.000|  4948.000|   786.900|  1186.200|      1407143.500|    3.900]

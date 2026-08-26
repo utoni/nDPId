@@ -7,23 +7,21 @@
               new: [.....4] [ip4][..tcp] [...10.24.82.188][48489] -> [203.205.147.215][...80]
               new: [.....5] [ip4][..tcp] [.216.58.220.161][..443] -> [...10.24.82.188][56697] [MIDSTREAM]
          detected: [.....4] [ip4][..tcp] [...10.24.82.188][48489] -> [203.205.147.215][...80] [HTTP_Proxy.QQ][Tencent][Chat][Fun][hkminorshort.weixin.qq.com]
-                   RISK: Known Proto on Non Std Port
  detection-update: [.....4] [ip4][..tcp] [...10.24.82.188][48489] -> [203.205.147.215][...80] [HTTP_Proxy.QQ][Tencent][Download][Fun][hkminorshort.weixin.qq.com]
                    RISK: Known Proto on Non Std Port, Binary File/Data Transfer (Attempt)
               new: [.....6] [ip4][..tcp] [...10.24.82.188][32968] -> [..110.76.143.50][.8080]
          detected: [.....6] [ip4][..tcp] [...10.24.82.188][32968] -> [..110.76.143.50][.8080] [TLS][Unknown][Web][Safe][]
-                   RISK: Known Proto on Non Std Port, Obsolete TLS (v1.1 or older)
+                   RISK: Obsolete TLS (v1.1 or older)
  detection-update: [.....6] [ip4][..tcp] [...10.24.82.188][32968] -> [..110.76.143.50][.8080] [TLS.KakaoTalk][Unknown][Chat][Acceptable][]
                    RISK: Known Proto on Non Std Port, Self-signed Cert, Obsolete TLS (v1.1 or older), Weak TLS Cipher
               new: [.....7] [ip4][..tcp] [..139.150.0.125][..443] -> [...10.24.82.188][46947] [MIDSTREAM]
               new: [.....8] [ip4][..tcp] [...10.24.82.188][58857] -> [..110.76.143.50][.9001]
          detected: [.....8] [ip4][..tcp] [...10.24.82.188][58857] -> [..110.76.143.50][.9001] [TLS][Unknown][Web][Safe][]
-                   RISK: Known Proto on Non Std Port, Obsolete TLS (v1.1 or older)
+                   RISK: Obsolete TLS (v1.1 or older)
  detection-update: [.....8] [ip4][..tcp] [...10.24.82.188][58857] -> [..110.76.143.50][.9001] [TLS.KakaoTalk][Unknown][Chat][Acceptable][]
                    RISK: Known Proto on Non Std Port, Self-signed Cert, Obsolete TLS (v1.1 or older), Weak TLS Cipher
               new: [.....9] [ip4][..tcp] [...10.24.82.188][34686] -> [.173.194.72.188][.5228] [MIDSTREAM]
          detected: [.....9] [ip4][..tcp] [...10.24.82.188][34686] -> [.173.194.72.188][.5228] [TLS][Google][Web][Safe]
-                   RISK: Known Proto on Non Std Port
               new: [....10] [ip4][..udp] [...10.24.82.188][11321] -> [....1.201.1.174][23045]
          detected: [....10] [ip4][..udp] [...10.24.82.188][11321] -> [....1.201.1.174][23045] [KakaoTalk_Voice][Unknown][VoIP][Acceptable]
               new: [....11] [ip4][..udp] [...10.24.82.188][10269] -> [....1.201.1.174][23047]
@@ -125,5 +123,4 @@
           guessed: [.....1] [ip4][..tcp] [...10.24.82.188][51021] -> [.103.246.57.251][.8080] [HTTP_Proxy][Unknown][Web][Acceptable][]
              idle: [.....1] [ip4][..tcp] [...10.24.82.188][51021] -> [.103.246.57.251][.8080]
              idle: [.....9] [ip4][..tcp] [...10.24.82.188][34686] -> [.173.194.72.188][.5228] [TLS][Google][Web][Safe]
-                   RISK: Known Proto on Non Std Port
      DAEMON-EVENT: shutdown

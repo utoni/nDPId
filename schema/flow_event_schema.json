@@ -257,7 +257,8 @@
                         "Shopping", "Productivity", "FileSharing", "ConnCheck", "IoT-Scada",
                         "VirtAssistant", "Cybersecurity", "AdultContent", "Mining", "Malware",
                         "Advertisement", "Banned_Site", "Site_Unavailable", "Allowed_Site",
-                        "Antimalware", "Crypto_Currency", "Gambling", "Health"
+                        "Antimalware", "Crypto_Currency", "Gambling", "Health", "Hosting",
+                        "ArtifIntelligence"
                     ]
                 },
                 "category_id": {
@@ -1344,6 +1345,25 @@
                                 }
                             },
                             "additionalProperties": false
+                        },
+                        "57": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string", "enum": [ "(Possible) Slow DoS" ] },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 350, "maximum": 360 },
+                                        "client": { "type": "number", "minimum": 235, "maximum": 240 },
+                                        "server": { "type": "number", "minimum": 115, "maximum": 120 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
                         }
                     },
                     "additionalProperties": false
@@ -1439,6 +1459,9 @@
                     "type": "object"
                 },
                 "imap": {
+                    "type": "object"
+                },
+                "ipsec": {
                     "type": "object"
                 },
                 "http": {

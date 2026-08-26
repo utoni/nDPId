@@ -1594,7 +1594,7 @@ static struct nDPId_workflow * init_workflow(char const * const file_or_device)
     }
 #endif
 
-    workflow->ndpi_struct = ndpi_init_detection_module(global_context);
+    workflow->ndpi_struct = ndpi_init_detection_module(global_context, NDPI_LICENSE_NOT_FOR_PROFIT_LGPL);
     if (workflow->ndpi_struct == NULL)
     {
         logger_early(1, "%s", "BUG: Could not init ndpi detection module");
