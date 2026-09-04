@@ -26,7 +26,7 @@ define Package/nDPId-testing
  TITLE:=nDPId is a tiny nDPI based daemons / toolkit (nDPId source repository)
  SECTION:=net
  CATEGORY:=Network
- DEPENDS:=@!SMALL_FLASH @!LOW_MEMORY_FOOTPRINT +libpcap +zlib +LIBNDPI_GCRYPT:libgcrypt +NDPID_TESTING_ENABLE_TLS:libopenssl +NDPID_TESTING_INFLUXDB:libcurl +NDPID_TESTING_PFRING:libpfring
+ DEPENDS:=@!SMALL_FLASH @!LOW_MEMORY_FOOTPRINT +libpcap +zlib +LIBNDPI_GCRYPT:libgcrypt +NDPID_TESTING_ENABLE_TLS:libopenssl +NDPID_TESTING_INFLUXDB:libcurl +NDPID_TESTING_NFCONNTRACK:libnetfilter-conntrack +NDPID_TESTING_NFCONNTRACK:nftables +NDPID_TESTING_PFRING:libpfring
  URL:=http://github.com/lnslbrty/nDPId
 endef
 
@@ -68,6 +68,13 @@ config NDPID_TESTING_INFLUXDB
      An InfluxDB push daemon. It aggregates various statistics gathered from nDPId.
      The results are sent to a specified InfluxDB endpoint.
 
+config NDPID_TESTING_NFCONNTRACK
+	bool "nDPIsrvd-nf-conntrack"
+	depends on PACKAGE_nDPId-testing
+	default n
+	help
+		An Netfilter Conntrack NAT session killer.
+
 config NDPID_TESTING_PFRING
    bool "PF_RING support"
    depends on PACKAGE_nDPId-testing
@@ -105,8 +112,24 @@ ifneq ($(CONFIG_NDPID_TESTING_INFLUXDB),)
 CMAKE_OPTIONS += -DENABLE_CURL=ON
 endif
 
+ifneq ($(CONFIG_NDPID_TESTING_NFCONNTRACK),)
+CMAKE_OPTIONS += -DENABLE_CONNTRACK=ON
+endif
+
 ifneq ($(CONFIG_LIBNDPI_GCRYPT),)
 CMAKE_OPTIONS += -DNDPI_WIDTH_GCRYPT=ON
+endif
+
+ifdef CONFIG_NDPID_TESTING_INFLUXD_SUPPORT
+define Package/nDPId-testing/install-influxd-files
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/nDPIsrvd-influxd $(1)/usr/bin/nDPIsrvd-testing-influxd
+endef
+endif
+
+ifdef CONFIG_NDPID_TESTING_NFCONNTRACK_SUPPORT
+define Package/nDPId-testing/install-nfconntrack-files
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/nDPIsrvd-nf-conntrack $(1)/usr/bin/nDPIsrvd-testing-nf-conntrack
+endef
 endif
 
 ifdef CONFIG_NDPID_TESTING_COLLECTD_SUPPORT
@@ -174,6 +197,8 @@ define Package/nDPId-testing/install
 	$(INSTALL_DIR) $(1)/etc/config
 	$(INSTALL_CONF) $(PKG_NAME).config $(1)/etc/config/$(PKG_NAME)
 
+	$(call Package/nDPId-testing/install-influxd-files,$(1))
+	$(call Package/nDPId-testing/install-nfconntrack-files,$(1))
 	$(call Package/nDPId-testing/install-collectd-files,$(1))
 endef
 
