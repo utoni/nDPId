@@ -42,6 +42,7 @@ static struct {
 static struct nDPIsrvd_socket * ndpisrvd_socket = NULL;
 static struct nfct_handle * nf_querier = NULL;
 static struct nfct_handle * nf_deleter = NULL;
+static struct nft_ctx * nf_blocker = NULL;
 static int main_thread_shutdown = 0;
 
 typedef uint8_t IP_BUF[IP_BUFSIZ];
@@ -147,7 +148,7 @@ static int nf_conntrack_cb(enum nf_conntrack_msg_type type, struct nf_conntrack 
     (void)type;
     struct filter * f = data;
 
-    if (!matches(ct, f))
+    if (matches(ct, f) == 0)
         return NFCT_CB_CONTINUE;
 
     f->matched++;
@@ -157,20 +158,21 @@ static int nf_conntrack_cb(enum nf_conntrack_msg_type type, struct nf_conntrack 
 
     if (options.dry_run != 0)
     {
-        logger(0, "[dry-run] Delete: %s\n", buf);
+        logger(0, "Delete: %s (dry-run)", buf);
         return NFCT_CB_CONTINUE;
     }
 
     if (nfct_query(nf_deleter, NFCT_Q_DESTROY, ct) < 0)
     {
-        logger(1, "Can not delete (%s): %s\n", strerror(errno), buf);
+        logger(1, "Can not delete (%s): %s", strerror(errno), buf);
     }
     else
     {
         f->deleted++;
         if (options.verbose != 0)
-            logger(0, "Deleted: %s\n", buf);
+            logger(0, "Deleted: %s", buf);
     }
+
     return NFCT_CB_CONTINUE;
 }
 
@@ -252,9 +254,9 @@ static int parse_options(int argc, char ** argv)
 
 static int run_netfilter_conntrack(struct filter * const flt)
 {
-    if (!flt->have_src && !flt->have_dst && !flt->have_sport && !flt->have_dport)
+    if (flt->have_src == 0 && flt->have_dst == 0 && flt->have_sport == 0 && flt->have_dport == 0)
     {
-        logger(1, "Missing at least one filter criteria (source/dest IP or Port)");
+        logger(1, "Missing at least one filter criteria (source/dest IP/Port)");
         return 1;
     }
 
@@ -264,16 +266,14 @@ static int run_netfilter_conntrack(struct filter * const flt)
         return 1;
     }
 
-    if (options.dry_run == 0) {
-        uint32_t family = flt->dst.family;
-        errno = 0;
-        int ret = nfct_query(nf_querier, NFCT_Q_DUMP, &family);
-        if (ret < 0)
-            logger(1, "Could not query or dump Netfilter Conntrack: %s", strerror(errno));
-    }
+    uint32_t family = flt->dst.family;
+    errno = 0;
+    int ret = nfct_query(nf_querier, NFCT_Q_DUMP, &family);
+    if (ret < 0)
+        logger(1, "Could not query Netfilter Conntrack: %s", strerror(errno));
 
-    if (options.verbose) {
-        logger(0, "Netfilter Conntrack found: %lu entries, deleted: %lu entries%s",
+    if (options.dry_run != 0 || options.verbose != 0) {
+        logger(0, "Netfilter Conntrack: %lu entries, deleted: %lu entries%s",
                flt->matched, flt->deleted, options.dry_run != 0 ? " (dry-run)" : "");
     }
 
@@ -285,12 +285,6 @@ static int run_netfilter_conntrack(struct filter * const flt)
 static int run_netfilter_block(struct filter const * const flt)
 {
     int rv = 0;
-    struct nft_ctx *ctx;
-
-    ctx = nft_ctx_new(NFT_CTX_DEFAULT);
-
-    if (ctx == NULL)
-        return 1;
 
     if (flt->have_src == 0 || flt->have_dst == 0)
         return 1;
@@ -308,7 +302,7 @@ static int run_netfilter_block(struct filter const * const flt)
         errno = 0;
         if (options.dry_run != 0) {
             logger(0, "Netfilter Block rule: '%s' (dry-run)", buf);
-        } else if (nft_run_cmd_from_buffer(ctx, buf) != 0) {
+        } else if (nft_run_cmd_from_buffer(nf_blocker, buf) != 0) {
             logger(1, "Failed to add Netfilter block rule '%s': %s",
                    buf, strerror(errno));
             rv = 1;
@@ -316,8 +310,6 @@ static int run_netfilter_block(struct filter const * const flt)
     } else {
         rv = 1;
     }
-
-    nft_ctx_free(ctx);
 
     return rv;
 }
@@ -565,10 +557,19 @@ int main(int argc, char ** argv)
         return 1;
     }
 
-    if (parse_options(argc, argv) != 0)
+    if (options.dry_run == 0)
     {
-        return 1;
+        errno = 0;
+        nf_blocker = nft_ctx_new(NFT_CTX_DEFAULT);
+        if (nf_blocker == NULL)
+        {
+            logger(1, "Could not open Netfilter (blocker): %s", strerror(errno));
+            return 1;
+        }
     }
+
+    if (parse_options(argc, argv) != 0)
+        return 1;
 
     logger(0, "Recv buffer size: %u", NETWORK_BUFFER_MAX_SIZE);
     logger(0, "Connecting to `%s'..", options.distributor_host);
@@ -609,6 +610,8 @@ int main(int argc, char ** argv)
     nDPIsrvd_socket_free(&ndpisrvd_socket);
     shutdown_logging();
 
+    if (options.dry_run == 0)
+        nft_ctx_free(nf_blocker);
     nfct_close(nf_deleter);
     nfct_close(nf_querier);
 
