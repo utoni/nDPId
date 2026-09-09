@@ -2211,7 +2211,7 @@ static void process_idle_flow(struct nDPId_reader_thread * const reader_thread, 
 
                     }
 
-                    if (flow->info.detection_data->flow.protocol_was_guessed != 0)
+                    if (flow->info.detection_data->flow.core.protocol_was_guessed != 0)
                     {
                         workflow->total_guessed_flows++;
                         jsonize_flow_detection_event(reader_thread, flow, FLOW_EVENT_GUESSED);
@@ -3266,8 +3266,8 @@ static void jsonize_flow_event(struct nDPId_reader_thread * const reader_thread,
                     {
                         ndpi_serialize_proto(workflow->ndpi_struct,
                                              &workflow->ndpi_serializer,
-                                             flow->info.detection_data->flow.risk,
-                                             flow->info.detection_data->flow.confidence,
+                                             flow->info.detection_data->flow.core.risk,
+                                             flow->info.detection_data->flow.core.confidence,
                                              flow->flow_extended.detected_l7_protocol);
                     }
                     ndpi_serialize_end_of_block(&workflow->ndpi_serializer);
@@ -3619,17 +3619,17 @@ static uint32_t calculate_ndpi_flow_struct_hash(struct ndpi_flow_struct const * 
      * At the time of writing, nDPI has no API function to check if the detection changed
      * or has some new information available. This is far from perfect.
      */
-    uint32_t hash = murmur3_32((uint8_t const *)&ndpi_flow->protos, sizeof(ndpi_flow->protos), nDPId_FLOW_STRUCT_SEED);
-    hash += ndpi_flow->category;
-    hash += (ndpi_flow->risk & 0xFFFFFFFF) + (ndpi_flow->risk >> 32); // nDPI Risks are u64's (might change in the
-                                                                      // future)
-    hash += ndpi_flow->confidence;
+    uint32_t hash = murmur3_32((uint8_t const *)&ndpi_flow->metadata.protos, sizeof(ndpi_flow->metadata.protos), nDPId_FLOW_STRUCT_SEED);
+    hash += ndpi_flow->core.category;
+    // nDPI Risks are u64's (might change in the future)
+    hash += (ndpi_flow->core.risk & 0xFFFFFFFF) + (ndpi_flow->core.risk >> 32);
+    hash += ndpi_flow->core.confidence;
 
     size_t host_server_name_len =
-        strnlen((const char *)ndpi_flow->host_server_name, sizeof(ndpi_flow->host_server_name));
+        strnlen((const char *)ndpi_flow->core.host_server_name, sizeof(ndpi_flow->core.host_server_name));
     hash += host_server_name_len;
-    hash += murmur3_32((uint8_t const *)&ndpi_flow->host_server_name,
-                       sizeof(ndpi_flow->host_server_name),
+    hash += murmur3_32((uint8_t const *)&ndpi_flow->core.host_server_name,
+                       sizeof(ndpi_flow->core.host_server_name),
                        nDPId_FLOW_STRUCT_SEED);
 
     return hash;
@@ -4894,7 +4894,7 @@ process_layer3_again:
                                       NULL);
 
     if (ndpi_is_protocol_detected(flow_to_process->flow_extended.detected_l7_protocol) != 0 &&
-        flow_to_process->info.detection_data->flow.protocol_was_guessed == 0 &&
+        flow_to_process->info.detection_data->flow.core.protocol_was_guessed == 0 &&
         flow_to_process->info.detection_completed == 0)
     {
         flow_to_process->info.detection_completed = 1;
@@ -4908,7 +4908,7 @@ process_layer3_again:
             1)
         {
             ndpi_unset_risk(workflow->ndpi_struct,
-                            &flow_to_process->info.detection_data->flow,
+                            &flow_to_process->info.detection_data->flow.core,
                             NDPI_UNIDIRECTIONAL_TRAFFIC);
         }
         jsonize_flow_detection_event(reader_thread, flow_to_process, FLOW_EVENT_DETECTED);
@@ -4926,18 +4926,18 @@ process_layer3_again:
         }
     }
 
-    if ((flow_to_process->info.detection_data->flow.num_processed_pkts ==
+    if ((flow_to_process->info.detection_data->flow.core.num_processed_pkts ==
              GET_CMDARG_ULL(nDPId_options.max_packets_per_flow_to_process) &&
          flow_to_process->info.detection_completed == 0) ||
         (flow_to_process->flow_extended.detected_l7_protocol.state == NDPI_STATE_CLASSIFIED &&
          (ndpi_is_protocol_detected(flow_to_process->flow_extended.detected_l7_protocol) == 0 ||
-          flow_to_process->info.detection_data->flow.protocol_was_guessed != 0)))
+          flow_to_process->info.detection_data->flow.core.protocol_was_guessed != 0)))
     {
         /* last chance to guess something, better then nothing */
         flow_to_process->info.detection_data->guessed_l7_protocol =
             ndpi_detection_giveup(workflow->ndpi_struct,
                                   &flow_to_process->info.detection_data->flow);
-        if (flow_to_process->info.detection_data->flow.protocol_was_guessed != 0)
+        if (flow_to_process->info.detection_data->flow.core.protocol_was_guessed != 0)
         {
             workflow->total_guessed_flows++;
             jsonize_flow_detection_event(reader_thread, flow_to_process, FLOW_EVENT_GUESSED);
@@ -4949,7 +4949,7 @@ process_layer3_again:
         }
     }
 
-    if (flow_to_process->info.detection_data->flow.num_processed_pkts ==
+    if (flow_to_process->info.detection_data->flow.core.num_processed_pkts ==
             GET_CMDARG_ULL(nDPId_options.max_packets_per_flow_to_process) ||
         flow_to_process->flow_extended.detected_l7_protocol.state == NDPI_STATE_CLASSIFIED)
     {
@@ -4959,17 +4959,17 @@ process_layer3_again:
             detected_l7_protocol = flow_to_process->info.detection_data->guessed_l7_protocol;
         }
 
-        ndpi_risk risk = flow_to_process->info.detection_data->flow.risk;
-        ndpi_confidence_t confidence = flow_to_process->info.detection_data->flow.confidence;
+        ndpi_risk risk = flow_to_process->info.detection_data->flow.core.risk;
+        ndpi_confidence_t confidence = flow_to_process->info.detection_data->flow.core.confidence;
         char * hostname = NULL;
-        if (flow_to_process->info.detection_data->flow.host_server_name[0] != '\0')
+        if (flow_to_process->info.detection_data->flow.core.host_server_name[0] != '\0')
         {
 #if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
-            _Static_assert(sizeof(flow_to_process->info.detection_data->flow.host_server_name) == 80,
+            _Static_assert(sizeof(flow_to_process->info.detection_data->flow.core.host_server_name) == 80,
                            "Size of nDPI flow host server name changed. Please review manually.");
 #endif
-            hostname = strndup(&flow_to_process->info.detection_data->flow.host_server_name[0],
-                               sizeof(flow_to_process->info.detection_data->flow.host_server_name));
+            hostname = strndup(&flow_to_process->info.detection_data->flow.core.host_server_name[0],
+                               sizeof(flow_to_process->info.detection_data->flow.core.host_server_name));
         }
 
         free_detection_data(flow_to_process);

@@ -32,6 +32,7 @@ if [[ ! -z "${CC}" ]]; then
     HOST_TRIPLET="$(${CC} ${CFLAGS} -dumpmachine)"
 fi
 
+CFLAGS="${CFLAGS:-} -Wno-unused-function"
 MAKEFLAGS="-${MAKEFLAGS}"
 
 cat <<EOF
