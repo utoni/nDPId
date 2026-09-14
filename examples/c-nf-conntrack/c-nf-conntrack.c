@@ -40,7 +40,6 @@ static struct {
 };
 
 static struct nDPIsrvd_socket * ndpisrvd_socket = NULL;
-static struct nfct_handle * nf_querier = NULL;
 static struct nfct_handle * nf_deleter = NULL;
 static struct nft_ctx * nf_blocker = NULL;
 static int main_thread_shutdown = 0;
@@ -71,110 +70,6 @@ struct filter
     unsigned long matched;
     unsigned long deleted;
 };
-
-static int match_ip(struct nf_conntrack const * const ct,
-                    enum nf_conntrack_attr attr,
-                    struct ip const * const ip)
-{
-    switch (ip->family) {
-        case AF_INET:
-            if (nfct_attr_is_set(ct, attr) != 0)
-                return 1;
-            return (nfct_get_attr_u32(ct, attr) == ip->addr4 ? 0 : 1);
-        case AF_INET6:
-            if (nfct_attr_is_set(ct, attr) != 0)
-                return 1;
-            return (memcmp(nfct_get_attr(ct, attr), ip->addr6, IP_BUFSIZ) == 0 ? 0 : 1);
-    }
-
-    return -1;
-}
-
-static int match_orig(const struct nf_conntrack * ct, const struct filter * f)
-{
-    if (f->have_src &&
-        (match_ip(ct, ATTR_ORIG_IPV4_SRC, &f->src) == 0 ||
-         match_ip(ct, ATTR_ORIG_IPV6_SRC, &f->src) == 0))
-    {
-        return 0;
-    }
-    if (f->have_dst &&
-        (match_ip(ct, ATTR_ORIG_IPV4_DST, &f->dst) == 0 ||
-         match_ip(ct, ATTR_ORIG_IPV6_DST, &f->dst) == 0))
-    {
-        return 0;
-    }
-    if (f->have_sport && nfct_get_attr_u16(ct, ATTR_ORIG_PORT_SRC) != f->sport)
-        return 0;
-    if (f->have_dport && nfct_get_attr_u16(ct, ATTR_ORIG_PORT_DST) != f->dport)
-        return 0;
-    return 1;
-}
-
-static int match_reply(const struct nf_conntrack * ct, const struct filter * f)
-{
-    if (f->have_src &&
-        (match_ip(ct, ATTR_REPL_IPV4_SRC, &f->src) == 0 ||
-         match_ip(ct, ATTR_REPL_IPV6_SRC, &f->src) == 0))
-    {
-        return 0;
-    }
-    if (f->have_dst &&
-        (match_ip(ct, ATTR_REPL_IPV4_DST, &f->dst) == 0 ||
-         match_ip(ct, ATTR_REPL_IPV6_DST, &f->dst) == 0))
-    {
-        return 0;
-    }
-    if (f->have_sport && nfct_get_attr_u16(ct, ATTR_REPL_PORT_SRC) != f->sport)
-        return 0;
-    if (f->have_dport && nfct_get_attr_u16(ct, ATTR_REPL_PORT_DST) != f->dport)
-        return 0;
-    return 1;
-}
-
-static int matches(const struct nf_conntrack * ct, const struct filter * f)
-{
-    if (nfct_get_attr_u8(ct, ATTR_L4PROTO) != IPPROTO_TCP)
-        return 0;
-    if (match_orig(ct, f))
-        return 1;
-    if (f->match_reply && match_reply(ct, f))
-        return 1;
-    return 0;
-}
-
-static int nf_conntrack_cb(enum nf_conntrack_msg_type type, struct nf_conntrack * ct, void * data)
-{
-    (void)type;
-    struct filter * f = data;
-
-    if (matches(ct, f) == 0)
-        return NFCT_CB_CONTINUE;
-
-    f->matched++;
-
-    char buf[1024];
-    nfct_snprintf(buf, sizeof(buf), ct, NFCT_T_UNKNOWN, NFCT_O_DEFAULT, NFCT_OF_SHOW_LAYER3);
-
-    if (options.dry_run != 0)
-    {
-        logger(0, "Delete: %s (dry-run)", buf);
-        return NFCT_CB_CONTINUE;
-    }
-
-    if (nfct_query(nf_deleter, NFCT_Q_DESTROY, ct) < 0)
-    {
-        logger(1, "Can not delete (%s): %s", strerror(errno), buf);
-    }
-    else
-    {
-        f->deleted++;
-        if (options.verbose != 0)
-            logger(0, "Deleted: %s", buf);
-    }
-
-    return NFCT_CB_CONTINUE;
-}
 
 static void print_usage(const char * arg0)
 {
@@ -252,7 +147,32 @@ static int parse_options(int argc, char ** argv)
     return 0;
 }
 
-static int run_netfilter_conntrack(struct filter * const flt)
+static struct nf_conntrack *
+build_conntrack_ctx(struct filter const * const flt)
+{
+    struct nf_conntrack * const ct = nfct_new();
+
+    if (ct == NULL)
+        return NULL;
+
+    if (flt->src.family != AF_INET ||
+        flt->dst.family != AF_INET)
+    {
+        nfct_destroy(ct);
+        return NULL;
+    }
+
+    nfct_set_attr_u8(ct,  ATTR_L3PROTO, AF_INET);
+    nfct_set_attr_u32(ct, ATTR_IPV4_SRC, flt->src.addr4);
+    nfct_set_attr_u32(ct, ATTR_IPV4_DST, flt->dst.addr4);
+    nfct_set_attr_u8(ct,  ATTR_L4PROTO, IPPROTO_TCP);
+    nfct_set_attr_u16(ct, ATTR_PORT_SRC, htons(flt->sport));
+    nfct_set_attr_u16(ct, ATTR_PORT_DST, htons(flt->dport));
+
+    return ct;
+}
+
+static int run_netfilter_conntrack(struct filter const * const flt)
 {
     if (flt->have_src == 0 && flt->have_dst == 0 && flt->have_sport == 0 && flt->have_dport == 0)
     {
@@ -260,24 +180,18 @@ static int run_netfilter_conntrack(struct filter * const flt)
         return 1;
     }
 
-    errno = 0;
-    if (nfct_callback_register(nf_querier, NFCT_T_ALL, nf_conntrack_cb, flt) != 0) {
-        logger(1, "Could not register Netfilter Conntrack callback: %s", strerror(errno));
+    struct nf_conntrack * const src_to_dst = build_conntrack_ctx(flt);
+    if (src_to_dst == NULL) {
+        logger(1, "Failed to build conntrack deleter context");
         return 1;
     }
 
-    uint32_t family = flt->dst.family;
     errno = 0;
-    int ret = nfct_query(nf_querier, NFCT_Q_DUMP, &family);
-    if (ret < 0)
-        logger(1, "Could not query Netfilter Conntrack: %s", strerror(errno));
-
-    if (options.dry_run != 0 || options.verbose != 0) {
-        logger(0, "Netfilter Conntrack: %lu entries, deleted: %lu entries%s",
-               flt->matched, flt->deleted, options.dry_run != 0 ? " (dry-run)" : "");
+    int ret = nfct_query(nf_deleter, NFCT_Q_DESTROY, src_to_dst);
+    if (ret == -1) {
+        logger(1, "Could not destroy conntrack entry: %s", strerror(errno));
+        return 1;
     }
-
-    nfct_callback_unregister(nf_querier);
 
     return 0;
 }
@@ -542,14 +456,6 @@ int main(int argc, char ** argv)
     }
 
     errno = 0;
-    nf_querier = nfct_open(CONNTRACK, 0);
-    if (nf_querier == NULL)
-    {
-        logger(1, "Could not open Netfilter Conntrack (deleter handle): %s", strerror(errno));
-        return 1;
-    }
-
-    errno = 0;
     nf_deleter = nfct_open(CONNTRACK, 0);
     if (nf_deleter == NULL)
     {
@@ -613,7 +519,6 @@ int main(int argc, char ** argv)
     if (options.dry_run == 0)
         nft_ctx_free(nf_blocker);
     nfct_close(nf_deleter);
-    nfct_close(nf_querier);
 
     return retval;
 }
