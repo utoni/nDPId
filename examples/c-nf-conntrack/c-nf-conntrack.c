@@ -23,20 +23,28 @@
 #include "nDPIsrvd.h"
 #include "utils.h"
 
+#define NF_DEFAULT_TABLE "filter"
+
 #define IP_BUFSIZ (sizeof(struct in6_addr))
 
 static struct {
     int dry_run;
     int verbose;
+    int ignore_source;
+    int no_conntrack;
     char * distributor_host;
     char * user;
     char * group;
+    char * table;
 } options = {
     .dry_run = 0,
     .verbose = 0,
+    .ignore_source = 0,
+    .no_conntrack = 0,
     .distributor_host = NULL,
     .user = NULL,
     .group = NULL,
+    .table = NULL,
 };
 
 static struct nDPIsrvd_socket * ndpisrvd_socket = NULL;
@@ -64,12 +72,32 @@ struct filter
     int have_dport;
     struct ip src;
     struct ip dst;
+    int layer4_proto;
     uint16_t sport;
     uint16_t dport;
-    int match_reply;
-    unsigned long matched;
-    unsigned long deleted;
 };
+
+#ifdef ENABLE_MEMORY_PROFILING
+void nDPIsrvd_memprof_log_alloc(size_t alloc_size)
+{
+    (void)alloc_size;
+}
+
+void nDPIsrvd_memprof_log_free(size_t free_size)
+{
+    (void)free_size;
+}
+
+void nDPIsrvd_memprof_log(char const * const format, ...)
+{
+    va_list ap;
+
+    va_start(ap, format);
+    logger(0, "%s", "nDPIsrvd MemoryProfiler: ");
+    vlogger(0, format, ap);
+    va_end(ap);
+}
+#endif
 
 static void print_usage(const char * arg0)
 {
@@ -79,6 +107,9 @@ static void print_usage(const char * arg0)
         "\t-s, --server       distributor host\n"
         "\t-u, --user         change user after connect\n"
         "\t-g, --group        change group after connect\n"
+        "\t-t, --table        Netfilter table to use\n"
+        "\t-i, --ignore       Ignore source address, block destination only\n"
+        "\t--no-conntrack     Disable Netfilter Conntrack entry deletion\n"
         "\t-n, --dry-run      only show what would have been done\n"
         "\t-c, --console      log to console instead of syslog\n"
         "\t-v, --verbose      log even more debug messages\n"
@@ -92,6 +123,9 @@ static int parse_options(int argc, char ** argv)
     static const struct option opts[] = {{"server", required_argument, 0, 's'},
                                          {"user", required_argument, 0, 'u'},
                                          {"group", required_argument, 0, 'g'},
+                                         {"table", required_argument, 0, 't'},
+                                         {"ignore", no_argument, 0, 'i'},
+                                         {"no-conntrack", no_argument, 0, 0},
                                          {"dry-run", no_argument, 0, 'n'},
                                          {"console", no_argument, 0, 'c'},
                                          {"verbose", no_argument, 0, 'v'},
@@ -99,10 +133,15 @@ static int parse_options(int argc, char ** argv)
                                          {0, 0, 0, 0}};
 
     int c;
-    while ((c = getopt_long(argc, argv, "s:u:g:ncvh", opts, NULL)) != -1)
+    int optindex;
+    while ((c = getopt_long(argc, argv, "s:u:g:t:incvh", opts, &optindex)) != -1)
     {
         switch (c)
         {
+            case 0:
+                if (strcmp(opts[optindex].name, "no-conntrack") == 0)
+                    options.no_conntrack = 1;
+                break;
             case 's':
                 free(options.distributor_host);
                 options.distributor_host = strdup(optarg);
@@ -115,6 +154,13 @@ static int parse_options(int argc, char ** argv)
                 free(options.group);
                 options.group = strdup(optarg);
                 break;
+            case 't':
+                free(options.table);
+                options.table = strdup(optarg);
+                break;
+            case 'i':
+                options.ignore_source = 1;
+                break;
             case 'n':
                 options.dry_run = 1;
                 break;
@@ -126,17 +172,18 @@ static int parse_options(int argc, char ** argv)
                 break;
             case 'h':
                 print_usage(argv[0]);
-                return 0;
+                return 1;
             default:
                 print_usage(argv[0]);
                 return 1;
         }
     }
 
+    if (options.table == NULL)
+        options.table = strdup(NF_DEFAULT_TABLE);
+
     if (options.distributor_host == NULL)
-    {
         options.distributor_host = strdup(DISTRIBUTOR_UNIX_SOCKET);
-    }
 
     if (nDPIsrvd_setup_address(&ndpisrvd_socket->address, options.distributor_host) != 0)
     {
@@ -148,25 +195,36 @@ static int parse_options(int argc, char ** argv)
 }
 
 static struct nf_conntrack *
-build_conntrack_ctx(struct filter const * const flt)
+build_conntrack(struct filter const * const flt)
 {
     struct nf_conntrack * const ct = nfct_new();
 
     if (ct == NULL)
         return NULL;
 
-    if (flt->src.family != AF_INET ||
-        flt->dst.family != AF_INET)
+    if ((flt->src.family != AF_INET &&
+         flt->src.family != AF_INET6) ||
+        flt->src.family != flt->dst.family ||
+        (flt->layer4_proto != IPPROTO_TCP &&
+         flt->layer4_proto != IPPROTO_UDP))
     {
         nfct_destroy(ct);
         return NULL;
     }
 
-    nfct_set_attr_u8(ct,  ATTR_L3PROTO, AF_INET);
-    nfct_set_attr_u32(ct, ATTR_IPV4_SRC, flt->src.addr4);
-    nfct_set_attr_u32(ct, ATTR_IPV4_DST, flt->dst.addr4);
-    nfct_set_attr_u8(ct,  ATTR_L4PROTO, IPPROTO_TCP);
-    nfct_set_attr_u16(ct, ATTR_PORT_SRC, htons(flt->sport));
+    nfct_set_attr_u8(ct,  ATTR_L3PROTO, flt->src.family);
+    if (flt->src.family == AF_INET) {
+        if (options.ignore_source == 0)
+            nfct_set_attr_u32(ct, ATTR_IPV4_SRC, flt->src.addr4);
+        nfct_set_attr_u32(ct, ATTR_IPV4_DST, flt->dst.addr4);
+    } else {
+        if (options.ignore_source == 0)
+            nfct_set_attr(ct, ATTR_IPV6_SRC, flt->src.addr6);
+        nfct_set_attr(ct, ATTR_IPV6_DST, flt->dst.addr6);
+    }
+    nfct_set_attr_u8(ct,  ATTR_L4PROTO, flt->layer4_proto);
+    if (options.ignore_source == 0)
+        nfct_set_attr_u16(ct, ATTR_PORT_SRC, htons(flt->sport));
     nfct_set_attr_u16(ct, ATTR_PORT_DST, htons(flt->dport));
 
     return ct;
@@ -180,7 +238,7 @@ static int run_netfilter_conntrack(struct filter const * const flt)
         return 1;
     }
 
-    struct nf_conntrack * const src_to_dst = build_conntrack_ctx(flt);
+    struct nf_conntrack * const src_to_dst = build_conntrack(flt);
     if (src_to_dst == NULL) {
         logger(1, "Failed to build conntrack deleter context");
         return 1;
@@ -189,11 +247,206 @@ static int run_netfilter_conntrack(struct filter const * const flt)
     errno = 0;
     int ret = nfct_query(nf_deleter, NFCT_Q_DESTROY, src_to_dst);
     if (ret == -1) {
+        nfct_destroy(src_to_dst);
         logger(1, "Could not destroy conntrack entry: %s", strerror(errno));
         return 1;
     }
 
+    nfct_destroy(src_to_dst);
     return 0;
+}
+
+static int
+nft_dpi_rule_exists(void)
+{
+    char buf[BUFSIZ];
+    int written = snprintf(buf, sizeof(buf),
+        "nft list chain inet %s forward 2>/dev/null", options.table);
+    if (written >= BUFSIZ)
+        return 0;
+
+    FILE *fp = popen(buf, "r");
+    if (fp == NULL)
+        return 0;
+
+    char line[BUFSIZ];
+    while (fgets(line, sizeof(line), fp) != NULL) {
+        if (strstr(line, "nDPIsrvd-dpi-block") != NULL) {
+            pclose(fp);
+            return 1;
+        }
+    }
+
+    pclose(fp);
+    return 0;
+}
+
+static int run_netfilter_init(void)
+{
+    int rv = 0;
+    char buf[BUFSIZ];
+
+    if (nft_dpi_rule_exists() != 0) {
+        logger(0, "Table %s with chain forward does already exist, skipping init..", options.table);
+        return 0;
+    }
+
+    int written = snprintf(buf, sizeof(buf),
+        "add table inet %s", options.table);
+    if (written < BUFSIZ) {
+        errno = 0;
+        if (options.dry_run != 0) {
+            logger(0, "Netfilter init Set: '%s' (dry-run)", buf);
+        } else if (nft_run_cmd_from_buffer(nf_blocker, buf) != 0) {
+            logger(1, "Failed to init Netfilter Set '%s': %s",
+                   buf, strerror(errno));
+            rv = 1;
+        }
+    } else {
+        rv = 1;
+    }
+
+    written = snprintf(buf, sizeof(buf),
+        "add set inet %s dpi_block_ip4 "
+        "{ type ipv4_addr . ipv4_addr; flags timeout; timeout 60s; }",
+        options.table);
+    if (written < BUFSIZ) {
+        errno = 0;
+        if (options.dry_run != 0) {
+            logger(0, "Netfilter init Set: '%s' (dry-run)", buf);
+        } else if (nft_run_cmd_from_buffer(nf_blocker, buf) != 0) {
+            logger(1, "Failed to init Netfilter Set '%s': %s",
+                   buf, strerror(errno));
+            rv = 1;
+        }
+    } else {
+        rv = 1;
+    }
+
+    written = snprintf(buf, sizeof(buf),
+        "add set inet %s dpi_block_ip4_dst "
+        "{ type ipv4_addr; flags timeout; timeout 60s; }",
+        options.table);
+    if (written < BUFSIZ) {
+        errno = 0;
+        if (options.dry_run != 0) {
+            logger(0, "Netfilter init Set: '%s' (dry-run)", buf);
+        } else if (nft_run_cmd_from_buffer(nf_blocker, buf) != 0) {
+            logger(1, "Failed to init Netfilter Set '%s': %s",
+                   buf, strerror(errno));
+            rv = 1;
+        }
+    } else {
+        rv = 1;
+    }
+
+    written = snprintf(buf, sizeof(buf),
+        "add set inet %s dpi_block_ip6 "
+        "{ type ipv6_addr . ipv6_addr; flags timeout; timeout 60s; }",
+        options.table);
+    if (written < BUFSIZ) {
+        errno = 0;
+        if (options.dry_run != 0) {
+            logger(0, "Netfilter init Set: '%s' (dry-run)", buf);
+        } else if (nft_run_cmd_from_buffer(nf_blocker, buf) != 0) {
+            logger(1, "Failed to init Netfilter Set '%s': %s",
+                   buf, strerror(errno));
+            rv = 1;
+        }
+    } else {
+        rv = 1;
+    }
+
+    written = snprintf(buf, sizeof(buf),
+        "add set inet %s dpi_block_ip6_dst "
+        "{ type ipv6_addr; flags timeout; timeout 60s; }",
+        options.table);
+    if (written < BUFSIZ) {
+        errno = 0;
+        if (options.dry_run != 0) {
+            logger(0, "Netfilter init Set: '%s' (dry-run)", buf);
+        } else if (nft_run_cmd_from_buffer(nf_blocker, buf) != 0) {
+            logger(1, "Failed to init Netfilter Set '%s': %s",
+                   buf, strerror(errno));
+            rv = 1;
+        }
+    } else {
+        rv = 1;
+    }
+
+    written = snprintf(buf, sizeof(buf),
+        "insert rule inet %s forward "
+        "ip saddr . ip daddr @dpi_block_ip4 "
+        "counter drop "
+        "comment \"nDPIsrvd-dpi-block-ip4\"", options.table);
+    if (written < BUFSIZ) {
+        errno = 0;
+        if (options.dry_run != 0) {
+            logger(0, "Netfilter init Set: '%s' (dry-run)", buf);
+        } else if (nft_run_cmd_from_buffer(nf_blocker, buf) != 0) {
+            logger(1, "Failed to init Netfilter Set '%s': %s",
+                   buf, strerror(errno));
+            rv = 1;
+        }
+    } else {
+        rv = 1;
+    }
+
+    written = snprintf(buf, sizeof(buf),
+        "insert rule inet %s forward "
+        "ip daddr @dpi_block_ip4_dst "
+        "counter drop "
+        "comment \"nDPIsrvd-dpi-block-ip4-dst\"", options.table);
+    if (written < BUFSIZ) {
+        errno = 0;
+        if (options.dry_run != 0) {
+            logger(0, "Netfilter init Set: '%s' (dry-run)", buf);
+        } else if (nft_run_cmd_from_buffer(nf_blocker, buf) != 0) {
+            logger(1, "Failed to init Netfilter Set '%s': %s",
+                   buf, strerror(errno));
+            rv = 1;
+        }
+    } else {
+        rv = 1;
+    }
+
+    written = snprintf(buf, sizeof(buf),
+        "insert rule inet %s forward "
+        "ip6 saddr . ip6 daddr @dpi_block_ip6 "
+        "counter drop "
+        "comment \"nDPIsrvd-dpi-block-ip6\"", options.table);
+    if (written < BUFSIZ) {
+        errno = 0;
+        if (options.dry_run != 0) {
+            logger(0, "Netfilter init Set: '%s' (dry-run)", buf);
+        } else if (nft_run_cmd_from_buffer(nf_blocker, buf) != 0) {
+            logger(1, "Failed to init Netfilter Set '%s': %s",
+                   buf, strerror(errno));
+            rv = 1;
+        }
+    } else {
+        rv = 1;
+    }
+
+    written = snprintf(buf, sizeof(buf),
+        "insert rule inet %s forward "
+        "ip6 daddr @dpi_block_ip6_dst "
+        "counter drop "
+        "comment \"nDPIsrvd-dpi-block-ip6-dst\"", options.table);
+    if (written < BUFSIZ) {
+        errno = 0;
+        if (options.dry_run != 0) {
+            logger(0, "Netfilter init Set: '%s' (dry-run)", buf);
+        } else if (nft_run_cmd_from_buffer(nf_blocker, buf) != 0) {
+            logger(1, "Failed to init Netfilter Set '%s': %s",
+                   buf, strerror(errno));
+            rv = 1;
+        }
+    } else {
+        rv = 1;
+    }
+
+    return rv;
 }
 
 static int run_netfilter_block(struct filter const * const flt)
@@ -203,15 +456,21 @@ static int run_netfilter_block(struct filter const * const flt)
     if (flt->have_src == 0 || flt->have_dst == 0)
         return 1;
 
-    char const * const src_family = (flt->src.family == AF_INET ? "ip" : "ip6");
-    char const * const dst_family = (flt->dst.family == AF_INET ? "ip" : "ip6");
-
     char buf[BUFSIZ];
-    int written = snprintf(buf, sizeof(buf),
-        "add rule inet filter forward"
-        " %s saddr %s %s daddr %s drop",
-        src_family, flt->src.addr_str,
-        dst_family, flt->dst.addr_str);
+    int written = BUFSIZ;
+    if (options.ignore_source == 0) {
+        written = snprintf(buf, sizeof(buf),
+            "add element inet %s dpi_block_ip%c {"
+            " %s . %s timeout 60s }",
+            options.table, (flt->src.family == AF_INET ? '4' : '6'),
+            flt->src.addr_str, flt->dst.addr_str);
+    } else {
+        written = snprintf(buf, sizeof(buf),
+            "add element inet %s dpi_block_ip%c_dst {"
+            " %s timeout 60s }",
+            options.table, (flt->src.family == AF_INET ? '4' : '6'),
+            flt->dst.addr_str);
+    }
     if (written < BUFSIZ) {
         errno = 0;
         if (options.dry_run != 0) {
@@ -273,23 +532,28 @@ static int token_equals(struct nDPIsrvd_socket * const sock,
     size_t token_length = 0;
     char const * const token_value = TOKEN_GET_VALUE(sock, token, &token_length);
 
-    if (token_value == NULL)
+    if (token_value == NULL || token_length == 0)
         return 1;
 
-    return (memcmp(token_value, equals_to_string, token_length) == 0 ? 1 : 0);
+    return (strncmp(token_value, equals_to_string, token_length) == 0 ? 1 : 0);
 }
 
 static void run_netfilter(struct nDPIsrvd_socket * const sock,
                           struct nDPIsrvd_json_token const * const l3_proto,
                           struct nDPIsrvd_json_token const * const src_ip,
                           struct nDPIsrvd_json_token const * const dst_ip,
+                          struct nDPIsrvd_json_token const * const l4_proto,
                           struct nDPIsrvd_json_token const * const src_port,
                           struct nDPIsrvd_json_token const * const dst_port)
 {
     int is_ip4 = token_equals(sock, l3_proto, "ip4");
     int is_ip6 = token_equals(sock, l3_proto, "ip6");
+    int is_tcp = token_equals(sock, l4_proto, "tcp");
+    int is_udp = token_equals(sock, l4_proto, "udp");
 
     if (is_ip4 == 0 && is_ip6 == 0)
+        return;
+    if (is_tcp == 0 && is_udp == 0)
         return;
 
     struct filter flt;
@@ -320,26 +584,30 @@ static void run_netfilter(struct nDPIsrvd_socket * const sock,
         logger(1, "Not a valid destination IP address: '%s'", flt.dst.addr_str);
     }
 
+    flt.layer4_proto = (is_tcp != 0 ? IPPROTO_TCP : IPPROTO_UDP);
+
     uint16_t src_port_u16;
     uint16_t dst_port_u16;
 
-    if (token_to_port(sock, src_port, &src_port_u16) == 0)
+    if (token_to_port(sock, src_port, &src_port_u16) == 0) {
+        flt.sport = src_port_u16;
         flt.have_sport = 1;
-    if (token_to_port(sock, dst_port, &dst_port_u16) == 0)
+    }
+    if (token_to_port(sock, dst_port, &dst_port_u16) == 0) {
+        flt.dport = dst_port_u16;
         flt.have_dport = 1;
+    }
 
     if (options.verbose) {
-        logger(0, "src -> dst: '%s' port %u -> '%s' port %u",
+        logger(0, "src -> dst: %s [%s]:%u -> [%s]:%u",
+               (is_tcp != 0 ? "TCP" : "UDP"),
                flt.src.addr_str, src_port_u16, flt.dst.addr_str, dst_port_u16);
     }
 
     if (run_netfilter_block(&flt) != 0)
         return;
-    if (run_netfilter_conntrack(&flt) != 0) {
-        logger(1, "Netfilter Conntrack failed: src -> dst: '%s' port %u -> '%s' port %u",
-               flt.src.addr_str, src_port_u16, flt.dst.addr_str, dst_port_u16);
+    if (options.no_conntrack == 0 && run_netfilter_conntrack(&flt) != 0)
         return;
-    }
 }
 
 static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_socket * const sock,
@@ -386,7 +654,7 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
         if (src_ip == NULL || dst_ip == NULL)
             return CALLBACK_ERROR;
 
-        run_netfilter(sock, l3_proto, src_ip, dst_ip, src_port, dst_port);
+        run_netfilter(sock, l3_proto, src_ip, dst_ip, l4_proto, src_port, dst_port);
     }
 
     return CALLBACK_OK;
@@ -475,6 +743,9 @@ int main(int argc, char ** argv)
     }
 
     if (parse_options(argc, argv) != 0)
+        return 1;
+
+    if (run_netfilter_init() != 0)
         return 1;
 
     logger(0, "Recv buffer size: %u", NETWORK_BUFFER_MAX_SIZE);
