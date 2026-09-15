@@ -2,7 +2,7 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1][1606] [ip4][..tcp] [...10.10.109.10][.3128] -> [...10.100.3.133][50474]
-         detected: [.....1][1606] [ip4][..tcp] [...10.10.109.10][.3128] -> [...10.100.3.133][50474] [HTTP][Unknown][Web][Acceptable][]
+         detected: [.....1][1606] [ip4][..tcp] [...10.10.109.10][.3128] -> [...10.100.3.133][50474] [HTTP][Unknown][Web][Acceptable]
                    RISK: HTTP Susp User-Agent, Susp Entropy, Error Code
  detection-update: [.....1][1606] [ip4][..tcp] [...10.10.109.10][.3128] -> [...10.100.3.133][50474] [HTTP_Connect.WindowsUpdate][Unknown][SoftwareUpdate][Safe][fe3cr.delivery.mp.microsoft.com]
                    RISK: HTTP Susp User-Agent, Susp Entropy

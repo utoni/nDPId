@@ -149,7 +149,7 @@
              idle: [....49] [ip4][..tcp] [..192.168.1.100][.3531] -> [...2.228.46.112][...80] [HTTP.Blizzard][Unknown][Game][Fun][bnetcmsus-a.akamaihd.net]
              idle: [....50] [ip4][..tcp] [..192.168.1.100][.3532] -> [...2.228.46.112][...80] [HTTP.Blizzard][Unknown][Game][Fun]
              idle: [....51] [ip4][..tcp] [..192.168.1.100][.3533] -> [...2.228.46.112][...80] [HTTP.Blizzard][Unknown][Game][Fun]
-          guessed: [....52] [ip4][..tcp] [..192.168.1.100][.3534] -> [...2.228.46.112][...80] [HTTP][Unknown][Web][Acceptable][]
+          guessed: [....52] [ip4][..tcp] [..192.168.1.100][.3534] -> [...2.228.46.112][...80] [HTTP][Unknown][Web][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....52] [ip4][..tcp] [..192.168.1.100][.3534] -> [...2.228.46.112][...80]
               end: [....24] [ip4][..tcp] [..192.168.1.100][.3479] -> [...2.228.46.114][..443] [TLS][Unknown][Web][Safe]

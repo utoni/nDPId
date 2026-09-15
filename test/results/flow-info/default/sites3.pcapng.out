@@ -56,7 +56,23 @@
               new: [.....8] [ip4][..tcp] [..192.168.1.126][39304] -> [..140.82.113.17][..443]
          detected: [.....8] [ip4][..tcp] [..192.168.1.126][39304] -> [..140.82.113.17][..443] [TLS.GithubCopilot][Github][ArtifIntelligence][Acceptable][githubcopilot.com]
  detection-update: [.....8] [ip4][..tcp] [..192.168.1.126][39304] -> [..140.82.113.17][..443] [TLS.GithubCopilot][Github][ArtifIntelligence][Acceptable][githubcopilot.com]
+     DAEMON-EVENT: [Processed: 247 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 3 / 8|skipped: 0|!detected: 0|guessed: 0|detection-updates: 8|updates: 0]
+              new: [.....9] [ip4][..tcp] [..192.168.8.177][49130] -> [.40.114.177.156][..443]
+         detected: [.....9] [ip4][..tcp] [..192.168.8.177][49130] -> [.40.114.177.156][..443] [TLS.DuckDuckGo][Azure][Search_Engine][Acceptable][duckduckgo.com]
+                   RISK: TLS (probably) Not Carrying HTTPS
+ detection-update: [.....9] [ip4][..tcp] [..192.168.8.177][49130] -> [.40.114.177.156][..443] [TLS.DuckDuckGo][Azure][Search_Engine][Acceptable][duckduckgo.com]
+                   RISK: TLS (probably) Not Carrying HTTPS
               end: [.....8] [ip4][..tcp] [..192.168.1.126][39304] -> [..140.82.113.17][..443] [TLS.GithubCopilot][Github][ArtifIntelligence][Acceptable][githubcopilot.com]
              idle: [.....6] [ip4][..tcp] [..192.168.1.126][59780] -> [...57.150.87.97][..443] [TLS.GithubActions][Azure][Cloud][Acceptable][productionresultssa2.blob.core.windows.net]
              idle: [.....7] [ip4][..tcp] [..192.168.1.126][33430] -> [..140.82.121.34][..443] [TLS.GithubPackages][Github][Hosting][Acceptable][docker.pkg.github.com]
+              new: [....10] [ip4][..tcp] [..192.168.8.177][55802] -> [..23.201.43.163][..443]
+         detected: [....10] [ip4][..tcp] [..192.168.8.177][55802] -> [..23.201.43.163][..443] [TLS.Peacock][Akamai][Streaming][Fun][peacocktv.com]
+                   RISK: TLS (probably) Not Carrying HTTPS
+ detection-update: [....10] [ip4][..tcp] [..192.168.8.177][55802] -> [..23.201.43.163][..443] [TLS.Peacock][Akamai][Streaming][Fun][peacocktv.com]
+                   RISK: TLS (probably) Not Carrying HTTPS
+              end: [....10] [ip4][..tcp] [..192.168.8.177][55802] -> [..23.201.43.163][..443] [TLS.Peacock][Akamai][Streaming][Fun][peacocktv.com]
+                   RISK: TLS (probably) Not Carrying HTTPS
+              end: [.....9] [ip4][..tcp] [..192.168.8.177][49130] -> [.40.114.177.156][..443] [TLS.DuckDuckGo][Azure][Search_Engine][Acceptable][duckduckgo.com]
+                   RISK: TLS (probably) Not Carrying HTTPS
      DAEMON-EVENT: shutdown

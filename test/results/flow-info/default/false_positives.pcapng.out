@@ -63,7 +63,7 @@
          detected: [.....6][..77] [ip4][..tcp] [..91.238.181.21][35888] -> [....89.31.79.12][.3389] [RDP][Unknown][RemoteAccess][Acceptable]
                    RISK: Desktop/File Sharing
  detection-update: [.....6][..77] [ip4][..tcp] [..91.238.181.21][35888] -> [....89.31.79.12][.3389] [TLS.RDP][Unknown][RemoteAccess][Acceptable][]
-                   RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Desktop/File Sharing, TLS Susp Extn, Non-Printable/Invalid Chars Detected, Possible Exploit Attempt
+                   RISK: TLS (probably) Not Carrying HTTPS, Desktop/File Sharing, TLS Susp Extn, Non-Printable/Invalid Chars Detected, Possible Exploit Attempt
      not-detected: [.....5] [ip4][..udp] [.192.168.12.156][37649] -> [..57.128.172.97][.9981] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Susp Entropy
              idle: [.....5] [ip4][..udp] [.192.168.12.156][37649] -> [..57.128.172.97][.9981]
@@ -81,8 +81,8 @@
                    [IATS(ms)....: 0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
                    [PKTLENS.....: 56,56,52,138,85,339,85,97,86,87,58,98,1500,1500,1500,1500,52,1500,1500,1500,1500,1500,1500,1500,1362,52,98,58,101,52,52,52]
                    [ENTROPIES...: 4.6,5.1,5.0,5.8,5.6,5.2,5.6,5.5,5.6,5.5,5.1,5.6,5.4,4.7,4.7,4.7,5.0,4.7,4.7,4.7,4.6,4.7,4.7,4.6,4.9,5.0,5.5,5.1,5.5,5.0,5.1,5.0]
-             idle: [.....6][..77] [ip4][..tcp] [..91.238.181.21][35888] -> [....89.31.79.12][.3389] [TLS.RDP][Unknown][RemoteAccess][Acceptable]
-                   RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Desktop/File Sharing, TLS Susp Extn, Non-Printable/Invalid Chars Detected, Possible Exploit Attempt
+             idle: [.....6][..77] [ip4][..tcp] [..91.238.181.21][35888] -> [....89.31.79.12][.3389] [TLS.RDP][Unknown][RemoteAccess][Acceptable][]
+                   RISK: TLS (probably) Not Carrying HTTPS, Desktop/File Sharing, TLS Susp Extn, Non-Printable/Invalid Chars Detected, Possible Exploit Attempt
      DAEMON-EVENT: [Processed: 83 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 7|skipped: 0|!detected: 4|guessed: 0|detection-updates: 1|updates: 0]
               new: [.....8] [ip4][..udp] [..192.168.12.67][48612] -> [..93.38.195.192][42034]

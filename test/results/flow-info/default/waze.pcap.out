@@ -12,21 +12,21 @@
               new: [.....6] [ip4][..tcp] [.......10.8.0.1][36102] -> [..46.51.173.182][..443]
          detected: [.....4] [ip4][..tcp] [.......10.8.0.1][45529] -> [.54.230.227.172][...80] [HTTP.Waze][AWS_Cloudfront][Web][Acceptable][roadshields.waze.com]
               new: [.....7] [ip4][..tcp] [.......10.8.0.1][36585] -> [.173.194.118.48][..443]
-         detected: [.....5] [ip4][..tcp] [.......10.8.0.1][36100] -> [..46.51.173.182][..443] [TLS][AWS_EC2][Web][Safe][]
+         detected: [.....5] [ip4][..tcp] [.......10.8.0.1][36100] -> [..46.51.173.182][..443] [TLS][AWS_EC2][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older)
-         detected: [.....7] [ip4][..tcp] [.......10.8.0.1][36585] -> [.173.194.118.48][..443] [TLS][Google][Web][Safe][]
+         detected: [.....7] [ip4][..tcp] [.......10.8.0.1][36585] -> [.173.194.118.48][..443] [TLS][Google][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older)
-         detected: [.....6] [ip4][..tcp] [.......10.8.0.1][36102] -> [..46.51.173.182][..443] [TLS][AWS_EC2][Web][Safe][]
+         detected: [.....6] [ip4][..tcp] [.......10.8.0.1][36102] -> [..46.51.173.182][..443] [TLS][AWS_EC2][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older)
- detection-update: [.....7] [ip4][..tcp] [.......10.8.0.1][36585] -> [.173.194.118.48][..443] [TLS][Google][Web][Safe][]
+ detection-update: [.....7] [ip4][..tcp] [.......10.8.0.1][36585] -> [.173.194.118.48][..443] [TLS][Google][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
               new: [.....8] [ip4][..tcp] [.......10.8.0.1][45536] -> [.54.230.227.172][...80]
          detected: [.....8] [ip4][..tcp] [.......10.8.0.1][45536] -> [.54.230.227.172][...80] [HTTP.Waze][AWS_Cloudfront][Web][Acceptable][cres.waze.com]
- detection-update: [.....6] [ip4][..tcp] [.......10.8.0.1][36102] -> [..46.51.173.182][..443] [TLS][AWS_EC2][Web][Safe][]
+ detection-update: [.....6] [ip4][..tcp] [.......10.8.0.1][36102] -> [..46.51.173.182][..443] [TLS][AWS_EC2][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
- detection-update: [.....5] [ip4][..tcp] [.......10.8.0.1][36100] -> [..46.51.173.182][..443] [TLS.Waze][AWS_EC2][Web][Acceptable][]
+ detection-update: [.....5] [ip4][..tcp] [.......10.8.0.1][36100] -> [..46.51.173.182][..443] [TLS.Waze][AWS_EC2][Web][Acceptable]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
- detection-update: [.....6] [ip4][..tcp] [.......10.8.0.1][36102] -> [..46.51.173.182][..443] [TLS.Waze][AWS_EC2][Web][Acceptable][]
+ detection-update: [.....6] [ip4][..tcp] [.......10.8.0.1][36102] -> [..46.51.173.182][..443] [TLS.Waze][AWS_EC2][Web][Acceptable]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
  detection-update: [.....3] [ip4][..tcp] [.......10.8.0.1][54915] -> [..65.39.128.135][...80] [HTTP][Unknown][Download][Acceptable][xtra1.gpsonextra.net]
                    RISK: Binary File/Data Transfer (Attempt), (Possible) Slow DoS
@@ -39,22 +39,22 @@
               new: [....13] [ip4][..tcp] [.......10.8.0.1][51051] -> [.176.34.103.105][..443]
               new: [....14] [ip4][..tcp] [.......10.8.0.1][39010] -> [..52.17.114.219][..443]
               new: [....15] [ip4][..tcp] [.......10.8.0.1][45546] -> [.54.230.227.172][...80]
-         detected: [....11] [ip4][..tcp] [.......10.8.0.1][51049] -> [.176.34.103.105][..443] [TLS][AWS_EC2][Web][Safe][]
+         detected: [....11] [ip4][..tcp] [.......10.8.0.1][51049] -> [.176.34.103.105][..443] [TLS][AWS_EC2][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older)
-         detected: [....12] [ip4][..tcp] [.......10.8.0.1][51050] -> [.176.34.103.105][..443] [TLS][AWS_EC2][Web][Safe][]
+         detected: [....12] [ip4][..tcp] [.......10.8.0.1][51050] -> [.176.34.103.105][..443] [TLS][AWS_EC2][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older)
-         detected: [....13] [ip4][..tcp] [.......10.8.0.1][51051] -> [.176.34.103.105][..443] [TLS][AWS_EC2][Web][Safe][]
+         detected: [....13] [ip4][..tcp] [.......10.8.0.1][51051] -> [.176.34.103.105][..443] [TLS][AWS_EC2][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older)
-         detected: [....14] [ip4][..tcp] [.......10.8.0.1][39010] -> [..52.17.114.219][..443] [TLS][AWS_EC2][Web][Safe][]
+         detected: [....14] [ip4][..tcp] [.......10.8.0.1][39010] -> [..52.17.114.219][..443] [TLS][AWS_EC2][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older)
          detected: [....15] [ip4][..tcp] [.......10.8.0.1][45546] -> [.54.230.227.172][...80] [HTTP.Waze][AWS_Cloudfront][Web][Acceptable][cres.waze.com]
               new: [....16] [ip4][..tcp] [.......10.8.0.1][45552] -> [.54.230.227.172][...80]
          detected: [....16] [ip4][..tcp] [.......10.8.0.1][45552] -> [.54.230.227.172][...80] [HTTP.Waze][AWS_Cloudfront][Web][Acceptable][cres.waze.com]
- detection-update: [....13] [ip4][..tcp] [.......10.8.0.1][51051] -> [.176.34.103.105][..443] [TLS][AWS_EC2][Web][Safe][]
+ detection-update: [....13] [ip4][..tcp] [.......10.8.0.1][51051] -> [.176.34.103.105][..443] [TLS][AWS_EC2][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older)
- detection-update: [....11] [ip4][..tcp] [.......10.8.0.1][51049] -> [.176.34.103.105][..443] [TLS][AWS_EC2][Web][Safe][]
+ detection-update: [....11] [ip4][..tcp] [.......10.8.0.1][51049] -> [.176.34.103.105][..443] [TLS][AWS_EC2][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older)
- detection-update: [....14] [ip4][..tcp] [.......10.8.0.1][39010] -> [..52.17.114.219][..443] [TLS.Waze][AWS_EC2][Web][Acceptable][]
+ detection-update: [....14] [ip4][..tcp] [.......10.8.0.1][39010] -> [..52.17.114.219][..443] [TLS.Waze][AWS_EC2][Web][Acceptable]
                    RISK: Obsolete TLS (v1.1 or older)
               new: [....17] [ip4][..tcp] [.......10.8.0.1][45554] -> [.54.230.227.172][...80]
          detected: [....17] [ip4][..tcp] [.......10.8.0.1][45554] -> [.54.230.227.172][...80] [HTTP.Waze][AWS_Cloudfront][Web][Acceptable][cres.waze.com]
@@ -78,39 +78,39 @@
                    [IATS(ms)....: 1.2,10.9,357.2,367.1,474.4,475.3,8.1,9.0,265.9,317.7,52.0,0.9,0.6,0.3,0.3,1430.1,1483.3,119.5,172.8,51.4,51.9,1.4,0.9,0.5,0.4,0.3,0.4,1601.9,1658.8,0.2,57.1]
                    [PKTLENS.....: 60,40,40,222,40,3187,40,366,40,274,189,40,576,40,101,40,5501,40,189,40,576,40,576,40,576,40,101,40,4397,40,189,40]
                    [ENTROPIES...: 4.3,4.7,4.7,5.2,4.7,7.4,4.6,7.3,4.7,7.0,6.9,4.6,7.6,4.7,6.1,4.6,8.0,4.7,6.8,4.6,7.6,4.6,7.7,4.6,7.6,4.7,6.2,4.7,8.0,4.6,6.8,4.6]
- detection-update: [....12] [ip4][..tcp] [.......10.8.0.1][51050] -> [.176.34.103.105][..443] [TLS][AWS_EC2][Web][Safe][]
+ detection-update: [....12] [ip4][..tcp] [.......10.8.0.1][51050] -> [.176.34.103.105][..443] [TLS][AWS_EC2][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older)
- detection-update: [....13] [ip4][..tcp] [.......10.8.0.1][51051] -> [.176.34.103.105][..443] [TLS.Waze][AWS_EC2][Web][Acceptable][]
+ detection-update: [....13] [ip4][..tcp] [.......10.8.0.1][51051] -> [.176.34.103.105][..443] [TLS.Waze][AWS_EC2][Web][Acceptable]
                    RISK: Obsolete TLS (v1.1 or older)
- detection-update: [....12] [ip4][..tcp] [.......10.8.0.1][51050] -> [.176.34.103.105][..443] [TLS.Waze][AWS_EC2][Web][Acceptable][]
+ detection-update: [....12] [ip4][..tcp] [.......10.8.0.1][51050] -> [.176.34.103.105][..443] [TLS.Waze][AWS_EC2][Web][Acceptable]
                    RISK: Obsolete TLS (v1.1 or older)
- detection-update: [....11] [ip4][..tcp] [.......10.8.0.1][51049] -> [.176.34.103.105][..443] [TLS.Waze][AWS_EC2][Web][Acceptable][]
+ detection-update: [....11] [ip4][..tcp] [.......10.8.0.1][51049] -> [.176.34.103.105][..443] [TLS.Waze][AWS_EC2][Web][Acceptable]
                    RISK: Obsolete TLS (v1.1 or older)
               new: [....18] [ip4][..tcp] [.......10.8.0.1][39021] -> [..52.17.114.219][..443]
-         detected: [....18] [ip4][..tcp] [.......10.8.0.1][39021] -> [..52.17.114.219][..443] [TLS][AWS_EC2][Web][Safe][]
+         detected: [....18] [ip4][..tcp] [.......10.8.0.1][39021] -> [..52.17.114.219][..443] [TLS][AWS_EC2][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older)
               new: [....19] [ip4][..tcp] [.......10.8.0.1][36312] -> [.176.34.186.180][..443]
- detection-update: [....18] [ip4][..tcp] [.......10.8.0.1][39021] -> [..52.17.114.219][..443] [TLS][AWS_EC2][Web][Safe][]
+ detection-update: [....18] [ip4][..tcp] [.......10.8.0.1][39021] -> [..52.17.114.219][..443] [TLS][AWS_EC2][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older)
- detection-update: [....18] [ip4][..tcp] [.......10.8.0.1][39021] -> [..52.17.114.219][..443] [TLS.Waze][AWS_EC2][Web][Acceptable][]
+ detection-update: [....18] [ip4][..tcp] [.......10.8.0.1][39021] -> [..52.17.114.219][..443] [TLS.Waze][AWS_EC2][Web][Acceptable]
                    RISK: Obsolete TLS (v1.1 or older)
-         detected: [....19] [ip4][..tcp] [.......10.8.0.1][36312] -> [.176.34.186.180][..443] [TLS][AWS_EC2][Web][Safe][]
+         detected: [....19] [ip4][..tcp] [.......10.8.0.1][36312] -> [.176.34.186.180][..443] [TLS][AWS_EC2][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older)
               new: [....20] [ip4][..tcp] [.......10.8.0.1][36314] -> [.176.34.186.180][..443]
- detection-update: [....19] [ip4][..tcp] [.......10.8.0.1][36312] -> [.176.34.186.180][..443] [TLS][AWS_EC2][Web][Safe][]
+ detection-update: [....19] [ip4][..tcp] [.......10.8.0.1][36312] -> [.176.34.186.180][..443] [TLS][AWS_EC2][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older)
- detection-update: [....19] [ip4][..tcp] [.......10.8.0.1][36312] -> [.176.34.186.180][..443] [TLS.Waze][AWS_EC2][Web][Acceptable][]
+ detection-update: [....19] [ip4][..tcp] [.......10.8.0.1][36312] -> [.176.34.186.180][..443] [TLS.Waze][AWS_EC2][Web][Acceptable]
                    RISK: Obsolete TLS (v1.1 or older)
-         detected: [....20] [ip4][..tcp] [.......10.8.0.1][36314] -> [.176.34.186.180][..443] [TLS][AWS_EC2][Web][Safe][]
+         detected: [....20] [ip4][..tcp] [.......10.8.0.1][36314] -> [.176.34.186.180][..443] [TLS][AWS_EC2][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older)
               new: [....21] [ip4][..tcp] [.......10.8.0.1][36316] -> [.176.34.186.180][..443]
- detection-update: [....20] [ip4][..tcp] [.......10.8.0.1][36314] -> [.176.34.186.180][..443] [TLS][AWS_EC2][Web][Safe][]
+ detection-update: [....20] [ip4][..tcp] [.......10.8.0.1][36314] -> [.176.34.186.180][..443] [TLS][AWS_EC2][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older)
- detection-update: [....20] [ip4][..tcp] [.......10.8.0.1][36314] -> [.176.34.186.180][..443] [TLS.Waze][AWS_EC2][Web][Acceptable][]
+ detection-update: [....20] [ip4][..tcp] [.......10.8.0.1][36314] -> [.176.34.186.180][..443] [TLS.Waze][AWS_EC2][Web][Acceptable]
                    RISK: Obsolete TLS (v1.1 or older)
-         detected: [....21] [ip4][..tcp] [.......10.8.0.1][36316] -> [.176.34.186.180][..443] [TLS][AWS_EC2][Web][Safe][]
+         detected: [....21] [ip4][..tcp] [.......10.8.0.1][36316] -> [.176.34.186.180][..443] [TLS][AWS_EC2][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older)
- detection-update: [....21] [ip4][..tcp] [.......10.8.0.1][36316] -> [.176.34.186.180][..443] [TLS.Waze][AWS_EC2][Web][Acceptable][]
+ detection-update: [....21] [ip4][..tcp] [.......10.8.0.1][36316] -> [.176.34.186.180][..443] [TLS.Waze][AWS_EC2][Web][Acceptable]
                    RISK: Obsolete TLS (v1.1 or older)
               new: [....22] [ip4][..tcp] [...10.16.37.157][43991] -> [...200.160.4.31][...80] [MIDSTREAM]
               new: [....23] [ip4][..tcp] [...10.16.37.157][46473] -> [...200.160.4.49][...80] [MIDSTREAM]
@@ -152,24 +152,24 @@
                    [PKTLENS.....: 60,40,40,222,40,1052,40,2175,40,366,40,274,40,221,40,541,40,93,40,1052,40,3646,40,189,40,301,40,317,40,77,40,40]
                    [ENTROPIES...: 4.3,4.7,4.7,5.2,4.6,7.0,4.7,7.5,4.6,7.3,4.7,7.0,4.7,7.0,4.7,7.5,4.7,6.1,4.7,7.8,4.7,7.9,4.7,6.8,4.7,7.2,4.7,7.3,4.7,5.7,4.6,4.7]
               new: [....31] [ip4][..tcp] [.......10.8.0.1][36134] -> [..46.51.173.182][..443]
-         detected: [....31] [ip4][..tcp] [.......10.8.0.1][36134] -> [..46.51.173.182][..443] [TLS][AWS_EC2][Web][Safe][]
+         detected: [....31] [ip4][..tcp] [.......10.8.0.1][36134] -> [..46.51.173.182][..443] [TLS][AWS_EC2][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older)
- detection-update: [....31] [ip4][..tcp] [.......10.8.0.1][36134] -> [..46.51.173.182][..443] [TLS.Waze][AWS_EC2][Web][Acceptable][]
+ detection-update: [....31] [ip4][..tcp] [.......10.8.0.1][36134] -> [..46.51.173.182][..443] [TLS.Waze][AWS_EC2][Web][Acceptable]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
               new: [....32] [ip4][..tcp] [.......10.8.0.1][50828] -> [108.168.176.228][..443]
          detected: [....32] [ip4][..tcp] [.......10.8.0.1][50828] -> [108.168.176.228][..443] [WhatsApp][Unknown][Chat][Acceptable]
               new: [....33] [ip4][..tcp] [.......10.8.0.1][36137] -> [..46.51.173.182][..443]
-         detected: [....33] [ip4][..tcp] [.......10.8.0.1][36137] -> [..46.51.173.182][..443] [TLS][AWS_EC2][Web][Safe][]
+         detected: [....33] [ip4][..tcp] [.......10.8.0.1][36137] -> [..46.51.173.182][..443] [TLS][AWS_EC2][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older)
- detection-update: [....33] [ip4][..tcp] [.......10.8.0.1][36137] -> [..46.51.173.182][..443] [TLS][AWS_EC2][Web][Safe][]
+ detection-update: [....33] [ip4][..tcp] [.......10.8.0.1][36137] -> [..46.51.173.182][..443] [TLS][AWS_EC2][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
- detection-update: [....33] [ip4][..tcp] [.......10.8.0.1][36137] -> [..46.51.173.182][..443] [TLS.Waze][AWS_EC2][Web][Acceptable][]
+ detection-update: [....33] [ip4][..tcp] [.......10.8.0.1][36137] -> [..46.51.173.182][..443] [TLS.Waze][AWS_EC2][Web][Acceptable]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
-          guessed: [....26] [ip4][..tcp] [...10.16.37.157][52953] -> [...200.160.4.49][...80] [HTTP][Unknown][Web][Acceptable][]
+          guessed: [....26] [ip4][..tcp] [...10.16.37.157][52953] -> [...200.160.4.49][...80] [HTTP][Unknown][Web][Acceptable]
               end: [....26] [ip4][..tcp] [...10.16.37.157][52953] -> [...200.160.4.49][...80]
               end: [.....3] [ip4][..tcp] [.......10.8.0.1][54915] -> [..65.39.128.135][...80] [HTTP][Unknown][Download][Acceptable][xtra1.gpsonextra.net]
                    RISK: Binary File/Data Transfer (Attempt), (Possible) Slow DoS
-          guessed: [....28] [ip4][..tcp] [.......10.8.0.1][60574] -> [...200.160.4.49][...80] [HTTP][Unknown][Web][Acceptable][]
+          guessed: [....28] [ip4][..tcp] [.......10.8.0.1][60574] -> [...200.160.4.49][...80] [HTTP][Unknown][Web][Acceptable]
               end: [....28] [ip4][..tcp] [.......10.8.0.1][60574] -> [...200.160.4.49][...80]
           guessed: [....30] [ip4][..tcp] [.......10.8.0.1][60479] -> [...200.160.4.49][..443] [TLS][Unknown][Web][Safe]
               end: [....30] [ip4][..tcp] [.......10.8.0.1][60479] -> [...200.160.4.49][..443]
@@ -201,15 +201,15 @@
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
           guessed: [....29] [ip4][..tcp] [.......10.8.0.1][43089] -> [..200.160.4.198][..443] [TLS][Unknown][Web][Safe]
               end: [....29] [ip4][..tcp] [.......10.8.0.1][43089] -> [..200.160.4.198][..443]
-          guessed: [....24] [ip4][..tcp] [...10.16.37.157][41823] -> [...200.160.4.49][...80] [HTTP][Unknown][Web][Acceptable][]
+          guessed: [....24] [ip4][..tcp] [...10.16.37.157][41823] -> [...200.160.4.49][...80] [HTTP][Unknown][Web][Acceptable]
               end: [....24] [ip4][..tcp] [...10.16.37.157][41823] -> [...200.160.4.49][...80]
-          guessed: [....25] [ip4][..tcp] [.......10.8.0.1][45169] -> [..200.160.4.198][...80] [HTTP][Unknown][Web][Acceptable][]
+          guessed: [....25] [ip4][..tcp] [.......10.8.0.1][45169] -> [..200.160.4.198][...80] [HTTP][Unknown][Web][Acceptable]
               end: [....25] [ip4][..tcp] [.......10.8.0.1][45169] -> [..200.160.4.198][...80]
              idle: [.....7] [ip4][..tcp] [.......10.8.0.1][36585] -> [.173.194.118.48][..443] [TLS][Google][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
-          guessed: [....22] [ip4][..tcp] [...10.16.37.157][43991] -> [...200.160.4.31][...80] [HTTP][Unknown][Web][Acceptable][]
+          guessed: [....22] [ip4][..tcp] [...10.16.37.157][43991] -> [...200.160.4.31][...80] [HTTP][Unknown][Web][Acceptable]
               end: [....22] [ip4][..tcp] [...10.16.37.157][43991] -> [...200.160.4.31][...80]
-          guessed: [....23] [ip4][..tcp] [...10.16.37.157][46473] -> [...200.160.4.49][...80] [HTTP][Unknown][Web][Acceptable][]
+          guessed: [....23] [ip4][..tcp] [...10.16.37.157][46473] -> [...200.160.4.49][...80] [HTTP][Unknown][Web][Acceptable]
               end: [....23] [ip4][..tcp] [...10.16.37.157][46473] -> [...200.160.4.49][...80]
      not-detected: [.....1] [ip4][..tcp] [...10.16.37.157][42256] -> [..174.37.231.81][.5222] [Unknown][Unknown][Unspecified][Unrated]
               end: [.....1] [ip4][..tcp] [...10.16.37.157][42256] -> [..174.37.231.81][.5222]
@@ -220,6 +220,6 @@
               end: [....13] [ip4][..tcp] [.......10.8.0.1][51051] -> [.176.34.103.105][..443] [TLS.Waze][AWS_EC2][Web][Acceptable]
                    RISK: Obsolete TLS (v1.1 or older)
              idle: [....32] [ip4][..tcp] [.......10.8.0.1][50828] -> [108.168.176.228][..443] [WhatsApp][Unknown][Chat][Acceptable]
-          guessed: [....27] [ip4][..tcp] [...10.16.37.157][52746] -> [...200.160.4.49][...80] [HTTP][Unknown][Web][Acceptable][]
+          guessed: [....27] [ip4][..tcp] [...10.16.37.157][52746] -> [...200.160.4.49][...80] [HTTP][Unknown][Web][Acceptable]
               end: [....27] [ip4][..tcp] [...10.16.37.157][52746] -> [...200.160.4.49][...80]
      DAEMON-EVENT: shutdown

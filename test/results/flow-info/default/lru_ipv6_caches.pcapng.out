@@ -18,8 +18,8 @@
  detection-update: [.....3] [ip6][..udp] [.2a2f:8509:1cb2:466d:ecbf:69d6:109c:608][62229] -> [.3991:72d:336e:65ec:c5bf:a5fa:83ad:23de][.6881] [BitTorrent][Unknown][Download][Acceptable]
                    RISK: Unidirectional Traffic
               new: [.....7] [ip6][..udp] [2118:ec33:112b:7908:2c80:27ff:fef7:d71f][48415] -> [....32fb:f967:681e:e96b:face:b00c::74fd][.3478]
-         detected: [.....7] [ip6][..udp] [2118:ec33:112b:7908:2c80:27ff:fef7:d71f][48415] -> [....32fb:f967:681e:e96b:face:b00c::74fd][.3478] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable][]
- detection-update: [.....7] [ip6][..udp] [2118:ec33:112b:7908:2c80:27ff:fef7:d71f][48415] -> [....32fb:f967:681e:e96b:face:b00c::74fd][.3478] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable][]
+         detected: [.....7] [ip6][..udp] [2118:ec33:112b:7908:2c80:27ff:fef7:d71f][48415] -> [....32fb:f967:681e:e96b:face:b00c::74fd][.3478] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
+ detection-update: [.....7] [ip6][..udp] [2118:ec33:112b:7908:2c80:27ff:fef7:d71f][48415] -> [....32fb:f967:681e:e96b:face:b00c::74fd][.3478] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
                    RISK: Unidirectional Traffic
               new: [.....8] [ip6][..tcp] [........................2001:db8:200::1][..443] -> [..........................2001:db8:1::1][44144]
          detected: [.....8] [ip6][..tcp] [........................2001:db8:200::1][..443] -> [..........................2001:db8:1::1][44144] [TLS][Unknown][Web][Safe]
@@ -31,10 +31,10 @@
          detected: [....10] [ip6][..tcp] [........................2001:db8:200::1][..443] -> [..........................2001:db8:1::1][44192] [TLS.Cloudflare][Unknown][Web][Acceptable]
  detection-update: [....10] [ip6][..tcp] [........................2001:db8:200::1][..443] -> [..........................2001:db8:1::1][44192] [TLS.Cloudflare][Unknown][Web][Acceptable]
               new: [....11] [ip6][..udp] [.3297:a1af:5121:cfc:360b:2e07:872f:1ea0][43865] -> [....32fb:f967:681e:e96b:face:b00c::74fd][.3478]
-         detected: [....11] [ip6][..udp] [.3297:a1af:5121:cfc:360b:2e07:872f:1ea0][43865] -> [....32fb:f967:681e:e96b:face:b00c::74fd][.3478] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable][]
+         detected: [....11] [ip6][..udp] [.3297:a1af:5121:cfc:360b:2e07:872f:1ea0][43865] -> [....32fb:f967:681e:e96b:face:b00c::74fd][.3478] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
               new: [....12] [ip6][..udp] [.3069:c624:1d42:9469:98b1:67ff:fe43:325][56131] -> [....32fb:f967:681e:e96b:face:b00c::74fd][.3478]
-         detected: [....12] [ip6][..udp] [.3069:c624:1d42:9469:98b1:67ff:fe43:325][56131] -> [....32fb:f967:681e:e96b:face:b00c::74fd][.3478] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable][]
- detection-update: [....12] [ip6][..udp] [.3069:c624:1d42:9469:98b1:67ff:fe43:325][56131] -> [....32fb:f967:681e:e96b:face:b00c::74fd][.3478] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable][]
+         detected: [....12] [ip6][..udp] [.3069:c624:1d42:9469:98b1:67ff:fe43:325][56131] -> [....32fb:f967:681e:e96b:face:b00c::74fd][.3478] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
+ detection-update: [....12] [ip6][..udp] [.3069:c624:1d42:9469:98b1:67ff:fe43:325][56131] -> [....32fb:f967:681e:e96b:face:b00c::74fd][.3478] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....11] [ip6][..udp] [.3297:a1af:5121:cfc:360b:2e07:872f:1ea0][43865] -> [....32fb:f967:681e:e96b:face:b00c::74fd][.3478] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]
              idle: [.....7] [ip6][..udp] [2118:ec33:112b:7908:2c80:27ff:fef7:d71f][48415] -> [....32fb:f967:681e:e96b:face:b00c::74fd][.3478] [STUN.WhatsAppCall][Unknown][VoIP][Acceptable]

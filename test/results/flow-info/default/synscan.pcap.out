@@ -2415,7 +2415,7 @@
      not-detected: [...157] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][...24] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...157] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][...24]
-          guessed: [....35] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][...25] [SMTP][Unknown][Email][Acceptable][]
+          guessed: [....35] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][...25] [SMTP][Unknown][Email][Acceptable]
                    RISK: TCP Connection Issues, Probing Attempt
               end: [....35] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][...25]
      not-detected: [...293] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][...26] [Unknown][Unknown][Unspecified][Unrated]
@@ -2451,13 +2451,13 @@
      not-detected: [...694] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][...42] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...694] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][...42]
-          guessed: [..1222] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][...43] [Whois-DAS][Unknown][Network][Acceptable][]
+          guessed: [..1222] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][...43] [Whois-DAS][Unknown][Network][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [..1222] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][...43]
      not-detected: [...753] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][...42] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...753] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][...42]
-          guessed: [..1276] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][...43] [Whois-DAS][Unknown][Network][Acceptable][]
+          guessed: [..1276] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][...43] [Whois-DAS][Unknown][Network][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [..1276] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][...43]
      not-detected: [..1485] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][...49] [Unknown][Unknown][Unspecified][Unrated]
@@ -2466,7 +2466,7 @@
      not-detected: [..1564] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][...49] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [..1564] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][...49]
-          guessed: [.....9] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][...53] [DNS][Unknown][Network][Acceptable][]
+          guessed: [.....9] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][...53] [DNS][Unknown][Network][Acceptable]
                    RISK: (Possible) Slow DoS
              idle: [.....9] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][...53]
      not-detected: [..1184] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][...70] [Unknown][Unknown][Unspecified][Unrated]
@@ -2478,7 +2478,7 @@
      not-detected: [..1260] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][...79] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [..1260] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][...79]
-          guessed: [....13] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][...80] [HTTP][Unknown][Web][Acceptable][]
+          guessed: [....13] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][...80] [HTTP][Unknown][Web][Acceptable]
                    RISK: (Possible) Slow DoS
              idle: [....13] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][...80]
      not-detected: [..1365] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][...81] [Unknown][Unknown][Unspecified][Unrated]
@@ -2589,10 +2589,10 @@
           guessed: [....61] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][..135] [DCERPC][Unknown][RPC][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....61] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][..135]
-          guessed: [....14] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][..139] [NetBIOS][Unknown][System][Acceptable][]
+          guessed: [....14] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][..139] [NetBIOS][Unknown][System][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....14] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][..139]
-          guessed: [....19] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][..139] [NetBIOS][Unknown][System][Acceptable][]
+          guessed: [....19] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][..139] [NetBIOS][Unknown][System][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....19] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][..139]
           guessed: [.....2] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][..143] [IMAP][Unknown][Email][Unsafe]
@@ -2901,10 +2901,10 @@
      not-detected: [..1153] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][33354] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [..1153] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][33354]
-          guessed: [.....8] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][..587] [SMTP][Unknown][Email][Acceptable][]
+          guessed: [.....8] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][..587] [SMTP][Unknown][Email][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [.....8] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][..587]
-          guessed: [....22] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][..587] [SMTP][Unknown][Email][Acceptable][]
+          guessed: [....22] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][..587] [SMTP][Unknown][Email][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....22] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][..587]
      not-detected: [..1391] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][..593] [Unknown][Unknown][Unspecified][Unrated]
@@ -5139,10 +5139,10 @@
      not-detected: [...166] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][.3077] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...166] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][.3077]
-          guessed: [..1831] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][.3128] [HTTP_Proxy][Unknown][Web][Acceptable][]
+          guessed: [..1831] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][.3128] [HTTP_Proxy][Unknown][Web][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [..1831] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][.3128]
-          guessed: [..1900] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][.3128] [HTTP_Proxy][Unknown][Web][Acceptable][]
+          guessed: [..1900] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][.3128] [HTTP_Proxy][Unknown][Web][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [..1900] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][.3128]
      not-detected: [...805] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][.3168] [Unknown][Unknown][Unspecified][Unrated]
@@ -5607,10 +5607,10 @@
      not-detected: [..1758] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][.4321] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [..1758] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][.4321]
-          guessed: [...622] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][.4343] [Whois-DAS][Unknown][Network][Acceptable][]
+          guessed: [...622] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][.4343] [Whois-DAS][Unknown][Network][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [...622] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][.4343]
-          guessed: [...675] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][.4343] [Whois-DAS][Unknown][Network][Acceptable][]
+          guessed: [...675] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][.4343] [Whois-DAS][Unknown][Network][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [...675] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][.4343]
      not-detected: [...991] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][.4443] [Unknown][Unknown][Unspecified][Unrated]
@@ -6735,13 +6735,13 @@
      not-detected: [...280] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][.8045] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [...280] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][.8045]
-          guessed: [....33] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][.8080] [HTTP_Proxy][Unknown][Web][Acceptable][]
+          guessed: [....33] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][.8080] [HTTP_Proxy][Unknown][Web][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....33] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][.8080]
      not-detected: [..1442] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][.8081] [Unknown][Unknown][Unspecified][Unrated]
                    RISK: Unidirectional Traffic
              idle: [..1442] [ip4][..tcp] [.....172.16.0.8][36050] -> [...64.13.134.52][.8081]
-          guessed: [....66] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][.8080] [HTTP_Proxy][Unknown][Web][Acceptable][]
+          guessed: [....66] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][.8080] [HTTP_Proxy][Unknown][Web][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [....66] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][.8080]
      not-detected: [..1504] [ip4][..tcp] [.....172.16.0.8][36051] -> [...64.13.134.52][.8081] [Unknown][Unknown][Unspecified][Unrated]

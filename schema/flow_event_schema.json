@@ -258,7 +258,7 @@
                         "VirtAssistant", "Cybersecurity", "AdultContent", "Mining", "Malware",
                         "Advertisement", "Banned_Site", "Site_Unavailable", "Allowed_Site",
                         "Antimalware", "Crypto_Currency", "Gambling", "Health", "Hosting",
-                        "ArtifIntelligence"
+                        "ArtifIntelligence", "CDN_Proxy", "Search_Engine"
                     ]
                 },
                 "category_id": {

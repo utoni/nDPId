@@ -11,34 +11,34 @@
               new: [.....8] [ip4][..tcp] [...192.168.2.61][43895] -> [...192.168.2.39][...80]
               new: [.....9] [ip4][..tcp] [...192.168.2.61][43895] -> [..192.168.2.219][...80]
               new: [....10] [ip4][..tcp] [...192.168.2.61][43895] -> [...192.168.2.44][...80]
-          guessed: [.....6] [ip4][..tcp] [...192.168.2.61][43895] -> [..192.168.2.189][...80] [HTTP][Unknown][Web][Acceptable][]
+          guessed: [.....6] [ip4][..tcp] [...192.168.2.61][43895] -> [..192.168.2.189][...80] [HTTP][Unknown][Web][Acceptable]
                    RISK: Malicious Fingerprint, Unidirectional Traffic
              idle: [.....6] [ip4][..tcp] [...192.168.2.61][43895] -> [..192.168.2.189][...80]
-          guessed: [.....7] [ip4][..tcp] [...192.168.2.61][43895] -> [..192.168.2.119][...80] [HTTP][Unknown][Web][Acceptable][]
+          guessed: [.....7] [ip4][..tcp] [...192.168.2.61][43895] -> [..192.168.2.119][...80] [HTTP][Unknown][Web][Acceptable]
                    RISK: Malicious Fingerprint, Unidirectional Traffic
              idle: [.....7] [ip4][..tcp] [...192.168.2.61][43895] -> [..192.168.2.119][...80]
-          guessed: [.....3] [ip4][..tcp] [...192.168.2.61][43895] -> [..192.168.2.182][...80] [HTTP][Unknown][Web][Acceptable][]
+          guessed: [.....3] [ip4][..tcp] [...192.168.2.61][43895] -> [..192.168.2.182][...80] [HTTP][Unknown][Web][Acceptable]
                    RISK: Malicious Fingerprint, Unidirectional Traffic
              idle: [.....3] [ip4][..tcp] [...192.168.2.61][43895] -> [..192.168.2.182][...80]
-          guessed: [....10] [ip4][..tcp] [...192.168.2.61][43895] -> [...192.168.2.44][...80] [HTTP][Unknown][Web][Acceptable][]
+          guessed: [....10] [ip4][..tcp] [...192.168.2.61][43895] -> [...192.168.2.44][...80] [HTTP][Unknown][Web][Acceptable]
                    RISK: Malicious Fingerprint, Unidirectional Traffic
              idle: [....10] [ip4][..tcp] [...192.168.2.61][43895] -> [...192.168.2.44][...80]
-          guessed: [.....8] [ip4][..tcp] [...192.168.2.61][43895] -> [...192.168.2.39][...80] [HTTP][Unknown][Web][Acceptable][]
+          guessed: [.....8] [ip4][..tcp] [...192.168.2.61][43895] -> [...192.168.2.39][...80] [HTTP][Unknown][Web][Acceptable]
                    RISK: Malicious Fingerprint, Unidirectional Traffic
              idle: [.....8] [ip4][..tcp] [...192.168.2.61][43895] -> [...192.168.2.39][...80]
-          guessed: [.....9] [ip4][..tcp] [...192.168.2.61][43895] -> [..192.168.2.219][...80] [HTTP][Unknown][Web][Acceptable][]
+          guessed: [.....9] [ip4][..tcp] [...192.168.2.61][43895] -> [..192.168.2.219][...80] [HTTP][Unknown][Web][Acceptable]
                    RISK: Malicious Fingerprint, Unidirectional Traffic
              idle: [.....9] [ip4][..tcp] [...192.168.2.61][43895] -> [..192.168.2.219][...80]
-          guessed: [.....5] [ip4][..tcp] [...192.168.2.61][43895] -> [....192.168.2.1][...80] [HTTP][Unknown][Web][Acceptable][]
+          guessed: [.....5] [ip4][..tcp] [...192.168.2.61][43895] -> [....192.168.2.1][...80] [HTTP][Unknown][Web][Acceptable]
                    RISK: Malicious Fingerprint, Unidirectional Traffic
              idle: [.....5] [ip4][..tcp] [...192.168.2.61][43895] -> [....192.168.2.1][...80]
-          guessed: [.....4] [ip4][..tcp] [...192.168.2.61][43895] -> [....192.168.2.9][...80] [HTTP][Unknown][Web][Acceptable][]
+          guessed: [.....4] [ip4][..tcp] [...192.168.2.61][43895] -> [....192.168.2.9][...80] [HTTP][Unknown][Web][Acceptable]
                    RISK: Malicious Fingerprint, Unidirectional Traffic
              idle: [.....4] [ip4][..tcp] [...192.168.2.61][43895] -> [....192.168.2.9][...80]
-          guessed: [.....2] [ip4][..tcp] [...192.168.2.61][43895] -> [...192.168.2.99][...80] [HTTP][Unknown][Web][Acceptable][]
+          guessed: [.....2] [ip4][..tcp] [...192.168.2.61][43895] -> [...192.168.2.99][...80] [HTTP][Unknown][Web][Acceptable]
                    RISK: Malicious Fingerprint, Unidirectional Traffic
              idle: [.....2] [ip4][..tcp] [...192.168.2.61][43895] -> [...192.168.2.99][...80]
-          guessed: [.....1] [ip4][..tcp] [...192.168.2.61][43895] -> [..192.168.2.208][...80] [HTTP][Unknown][Web][Acceptable][]
+          guessed: [.....1] [ip4][..tcp] [...192.168.2.61][43895] -> [..192.168.2.208][...80] [HTTP][Unknown][Web][Acceptable]
                    RISK: Malicious Fingerprint, Unidirectional Traffic
              idle: [.....1] [ip4][..tcp] [...192.168.2.61][43895] -> [..192.168.2.208][...80]
      DAEMON-EVENT: shutdown

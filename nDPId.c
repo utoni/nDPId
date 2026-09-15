@@ -3625,11 +3625,10 @@ static uint32_t calculate_ndpi_flow_struct_hash(struct ndpi_flow_struct const * 
     hash += (ndpi_flow->core.risk & 0xFFFFFFFF) + (ndpi_flow->core.risk >> 32);
     hash += ndpi_flow->core.confidence;
 
-    size_t host_server_name_len =
-        strnlen((const char *)ndpi_flow->core.host_server_name, sizeof(ndpi_flow->core.host_server_name));
+    size_t host_server_name_len = (ndpi_flow->core.host_server_name == NULL ? 0 : strlen(ndpi_flow->core.host_server_name));
     hash += host_server_name_len;
-    hash += murmur3_32((uint8_t const *)&ndpi_flow->core.host_server_name,
-                       sizeof(ndpi_flow->core.host_server_name),
+    hash += murmur3_32((uint8_t const *)ndpi_flow->core.host_server_name,
+                       host_server_name_len,
                        nDPId_FLOW_STRUCT_SEED);
 
     return hash;
@@ -4962,14 +4961,13 @@ process_layer3_again:
         ndpi_risk risk = flow_to_process->info.detection_data->flow.core.risk;
         ndpi_confidence_t confidence = flow_to_process->info.detection_data->flow.core.confidence;
         char * hostname = NULL;
-        if (flow_to_process->info.detection_data->flow.core.host_server_name[0] != '\0')
+        if (flow_to_process->info.detection_data->flow.core.host_server_name != NULL)
         {
 #if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
-            _Static_assert(sizeof(flow_to_process->info.detection_data->flow.core.host_server_name) == 80,
+            _Static_assert(sizeof(flow_to_process->info.detection_data->flow.core.host_server_name) == sizeof(char *),
                            "Size of nDPI flow host server name changed. Please review manually.");
 #endif
-            hostname = strndup(&flow_to_process->info.detection_data->flow.core.host_server_name[0],
-                               sizeof(flow_to_process->info.detection_data->flow.core.host_server_name));
+            hostname = strdup(flow_to_process->info.detection_data->flow.core.host_server_name);
         }
 
         free_detection_data(flow_to_process);

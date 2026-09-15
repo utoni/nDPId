@@ -221,6 +221,11 @@ static struct
         uint64_t flow_category_history_count;
         uint64_t flow_category_polit_count;
         uint64_t flow_category_vehi_count;
+        uint64_t flow_category_se_count;
+        uint64_t flow_category_children_count;
+        uint64_t flow_category_violence_count;
+        uint64_t flow_category_drugs_count;
+        uint64_t flow_category_weapons_count;
         uint64_t flow_category_unknown_count;
 
         uint64_t flow_confidence_by_port;
@@ -271,15 +276,10 @@ struct global_map
     };
 };
 
-#define ANALYSED_STATS_COUNTER_PTR(member)                                                                             \
-    {                                                                                                                  \
-        .global_stat_inc = &(analysed_statistics.counters.member), NULL                                                \
-    }
+#define ANALYSED_STATS_COUNTER_PTR(member) {.global_stat_inc = &(analysed_statistics.counters.member), NULL}
 #define ANALYSED_STATS_GAUGE_PTR(member)                                                                               \
-    {                                                                                                                  \
-        .global_stat_inc = &(analysed_statistics.gauges[0].member),                                                    \
-        .global_stat_dec = &(analysed_statistics.gauges[1].member)                                                     \
-    }
+    {.global_stat_inc = &(analysed_statistics.gauges[0].member),                                                       \
+     .global_stat_dec = &(analysed_statistics.gauges[1].member)}
 #define ANALYSED_STATS_COUNTER_INC(member) (analysed_statistics.counters.member++)
 #define ANALYSED_STATS_GAUGE_RES(member) (analysed_statistics.gauges[0].member--)
 #define ANALYSED_STATS_GAUGE_INC(member) (analysed_statistics.gauges[0].member++)
@@ -430,6 +430,11 @@ static struct global_map const categories_map[] = {
     {"History", ANALYSED_STATS_GAUGE_PTR(flow_category_history_count)},
     {"Politics", ANALYSED_STATS_GAUGE_PTR(flow_category_polit_count)},
     {"Vehicles", ANALYSED_STATS_GAUGE_PTR(flow_category_vehi_count)},
+    {"Search_Engine", ANALYSED_STATS_GAUGE_PTR(flow_category_se_count)},
+    {"Children", ANALYSED_STATS_GAUGE_PTR(flow_category_children_count)},
+    {"Violence", ANALYSED_STATS_GAUGE_PTR(flow_category_violence_count)},
+    {"Drugs", ANALYSED_STATS_GAUGE_PTR(flow_category_drugs_count)},
+    {"Weapons", ANALYSED_STATS_GAUGE_PTR(flow_category_weapons_count)},
     {NULL, ANALYSED_STATS_GAUGE_PTR(flow_category_unknown_count)}};
 
 static struct global_map const confidence_map[] = {
@@ -1819,20 +1824,21 @@ static int write_global_flow_stats(void)
                                                     ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
                                                         ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
                                                             ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
-                                                                ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
+                                                                ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
                                                                     ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
                                                                         ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
                                                                             ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
                                                                                 ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
-                                                                                    ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
+                                                                                    ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
                                                                                         ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
                                                                                             ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
                                                                                                 ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
-                                                                                                    ANALYSEDB_FORMAT()
-                                                                                                        ANALYSEDB_FORMAT()
+                                                                                                    ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
+                                                                                                        ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
                                                                                                             ANALYSEDB_FORMAT()
                                                                                                                 ANALYSEDB_FORMAT()
-                                                                                                                    ANALYSEDB_FORMAT(),
+                                                                                                                    ANALYSEDB_FORMAT()
+                                                                                                                        ANALYSEDB_FORMAT(),
 
         ANALYSEDB_VALUE_GAUGE(flow_category_unspecified_count),
         ANALYSEDB_VALUE_GAUGE(flow_category_media_count),
@@ -1924,6 +1930,11 @@ static int write_global_flow_stats(void)
         ANALYSEDB_VALUE_GAUGE(flow_category_history_count),
         ANALYSEDB_VALUE_GAUGE(flow_category_polit_count),
         ANALYSEDB_VALUE_GAUGE(flow_category_vehi_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_se_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_children_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_violence_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_drugs_count),
+        ANALYSEDB_VALUE_GAUGE(flow_category_weapons_count),
         ANALYSEDB_VALUE_GAUGE(flow_category_unknown_count));
     CHECK_SNPRINTF_RET(bytes);
 

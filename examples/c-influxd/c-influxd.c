@@ -221,6 +221,11 @@ static struct
         uint64_t flow_category_history_count;
         uint64_t flow_category_polit_count;
         uint64_t flow_category_vehi_count;
+        uint64_t flow_category_se_count;
+        uint64_t flow_category_children_count;
+        uint64_t flow_category_violence_count;
+        uint64_t flow_category_drugs_count;
+        uint64_t flow_category_weapons_count;
         uint64_t flow_category_unknown_count;
 
         uint64_t flow_confidence_by_port;
@@ -271,15 +276,10 @@ struct global_map
     };
 };
 
-#define INFLUXD_STATS_COUNTER_PTR(member)                                                                              \
-    {                                                                                                                  \
-        .global_stat_inc = &(influxd_statistics.counters.member), NULL                                                 \
-    }
+#define INFLUXD_STATS_COUNTER_PTR(member) {.global_stat_inc = &(influxd_statistics.counters.member), NULL}
 #define INFLUXD_STATS_GAUGE_PTR(member)                                                                                \
-    {                                                                                                                  \
-        .global_stat_inc = &(influxd_statistics.gauges[0].member),                                                     \
-        .global_stat_dec = &(influxd_statistics.gauges[1].member)                                                      \
-    }
+    {.global_stat_inc = &(influxd_statistics.gauges[0].member),                                                        \
+     .global_stat_dec = &(influxd_statistics.gauges[1].member)}
 #define INFLUXD_STATS_COUNTER_INC(member) (influxd_statistics.counters.member++)
 #define INFLUXD_STATS_GAUGE_RES(member) (influxd_statistics.gauges[0].member--)
 #define INFLUXD_STATS_GAUGE_INC(member) (influxd_statistics.gauges[0].member++)
@@ -430,6 +430,11 @@ static struct global_map const categories_map[] = {
     {"History", INFLUXD_STATS_GAUGE_PTR(flow_category_history_count)},
     {"Politics", INFLUXD_STATS_GAUGE_PTR(flow_category_polit_count)},
     {"Vehicles", INFLUXD_STATS_GAUGE_PTR(flow_category_vehi_count)},
+    {"Search_Engine", INFLUXD_STATS_GAUGE_PTR(flow_category_se_count)},
+    {"Children", INFLUXD_STATS_GAUGE_PTR(flow_category_children_count)},
+    {"Violence", INFLUXD_STATS_GAUGE_PTR(flow_category_violence_count)},
+    {"Drugs", INFLUXD_STATS_GAUGE_PTR(flow_category_drugs_count)},
+    {"Weapons", INFLUXD_STATS_GAUGE_PTR(flow_category_weapons_count)},
     {NULL, INFLUXD_STATS_GAUGE_PTR(flow_category_unknown_count)}};
 
 static struct global_map const confidence_map[] = {
@@ -599,15 +604,16 @@ static int serialize_influx_line(char * buf, size_t siz)
                                                                         INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
                                                                             INFLUXDB_FORMAT() INFLUXDB_FORMAT()
                                                                                 INFLUXDB_FORMAT() INFLUXDB_FORMAT()
-                                                                                    INFLUXDB_FORMAT() INFLUXDB_FORMAT()
-                                                                                        INFLUXDB_FORMAT() INFLUXDB_FORMAT()
+                                                                                    INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
+                                                                                        INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
                                                                                             INFLUXDB_FORMAT() INFLUXDB_FORMAT()
                                                                                                 INFLUXDB_FORMAT() INFLUXDB_FORMAT()
-                                                                                                    INFLUXDB_FORMAT()
-                                                                                                        INFLUXDB_FORMAT()
+                                                                                                    INFLUXDB_FORMAT() INFLUXDB_FORMAT()
+                                                                                                        INFLUXDB_FORMAT() INFLUXDB_FORMAT()
                                                                                                             INFLUXDB_FORMAT()
                                                                                                                 INFLUXDB_FORMAT()
-                                                                                                                    INFLUXDB_FORMAT_END(),
+                                                                                                                    INFLUXDB_FORMAT()
+                                                                                                                        INFLUXDB_FORMAT_END(),
 
         "category",
         INFLUXDB_VALUE_GAUGE(flow_category_unspecified_count),
@@ -700,6 +706,11 @@ static int serialize_influx_line(char * buf, size_t siz)
         INFLUXDB_VALUE_GAUGE(flow_category_history_count),
         INFLUXDB_VALUE_GAUGE(flow_category_polit_count),
         INFLUXDB_VALUE_GAUGE(flow_category_vehi_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_se_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_children_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_violence_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_drugs_count),
+        INFLUXDB_VALUE_GAUGE(flow_category_weapons_count),
         INFLUXDB_VALUE_GAUGE(flow_category_unknown_count));
     CHECK_SNPRINTF_RET(bytes);
 
@@ -890,7 +901,10 @@ static int init_influx_ctx(struct influx_ctx * const ctx, char const * const url
         return -1;
     }
     ctx->http_header = curl_slist_append(ctx->http_header, auth);
-    for (size_t i = 0; i < sizeof(auth); i++) { *(volatile char *)(auth + i) = 0; }
+    for (size_t i = 0; i < sizeof(auth); i++)
+    {
+        *(volatile char *)(auth + i) = 0;
+    }
     if (ctx->http_header == NULL)
     {
         return -1;

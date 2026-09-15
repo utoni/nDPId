@@ -6,11 +6,11 @@
  detection-update: [.....1] [ip4][..tcp] [192.168.149.129][36351] -> [..51.83.239.144][...80] [TLS][AnyDesk][Web][Safe]
                    RISK: Known Proto on Non Std Port
               new: [.....2] [ip4][..tcp] [192.168.149.129][43535] -> [..51.83.238.219][...80]
-         detected: [.....2] [ip4][..tcp] [192.168.149.129][43535] -> [..51.83.238.219][...80] [TLS][AnyDesk][Web][Safe][]
+         detected: [.....2] [ip4][..tcp] [192.168.149.129][43535] -> [..51.83.238.219][...80] [TLS][AnyDesk][Web][Safe]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
- detection-update: [.....2] [ip4][..tcp] [192.168.149.129][43535] -> [..51.83.238.219][...80] [TLS][AnyDesk][Web][Safe][]
+ detection-update: [.....2] [ip4][..tcp] [192.168.149.129][43535] -> [..51.83.238.219][...80] [TLS][AnyDesk][Web][Safe]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
- detection-update: [.....2] [ip4][..tcp] [192.168.149.129][43535] -> [..51.83.238.219][...80] [TLS.AnyDesk][AnyDesk][RemoteAccess][Acceptable][]
+ detection-update: [.....2] [ip4][..tcp] [192.168.149.129][43535] -> [..51.83.238.219][...80] [TLS.AnyDesk][AnyDesk][RemoteAccess][Acceptable]
                    RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Desktop/File Sharing
           analyse: [.....2] [ip4][..tcp] [192.168.149.129][43535] -> [..51.83.238.219][...80] [TLS.AnyDesk][AnyDesk][RemoteAccess][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
@@ -35,14 +35,14 @@
              idle: [.....2] [ip4][..tcp] [192.168.149.129][43535] -> [..51.83.238.219][...80] [TLS.AnyDesk][AnyDesk][RemoteAccess][Acceptable]
                    RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Desktop/File Sharing
               new: [.....5] [ip4][..tcp] [..192.168.1.187][54164] -> [..192.168.1.178][.7070]
-         detected: [.....5] [ip4][..tcp] [..192.168.1.187][54164] -> [..192.168.1.178][.7070] [TLS][Unknown][Web][Safe][]
+         detected: [.....5] [ip4][..tcp] [..192.168.1.187][54164] -> [..192.168.1.178][.7070] [TLS][Unknown][Web][Safe]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
- detection-update: [.....5] [ip4][..tcp] [..192.168.1.187][54164] -> [..192.168.1.178][.7070] [TLS.AnyDesk][Unknown][RemoteAccess][Acceptable][]
+ detection-update: [.....5] [ip4][..tcp] [..192.168.1.187][54164] -> [..192.168.1.178][.7070] [TLS.AnyDesk][Unknown][RemoteAccess][Acceptable]
                    RISK: Known Proto on Non Std Port, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Desktop/File Sharing
               new: [.....6] [ip4][..tcp] [..192.168.1.178][52039] -> [..192.168.1.187][.7070]
-         detected: [.....6] [ip4][..tcp] [..192.168.1.178][52039] -> [..192.168.1.187][.7070] [TLS][Unknown][Web][Safe][]
+         detected: [.....6] [ip4][..tcp] [..192.168.1.178][52039] -> [..192.168.1.187][.7070] [TLS][Unknown][Web][Safe]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
- detection-update: [.....6] [ip4][..tcp] [..192.168.1.178][52039] -> [..192.168.1.187][.7070] [TLS.AnyDesk][Unknown][RemoteAccess][Acceptable][]
+ detection-update: [.....6] [ip4][..tcp] [..192.168.1.178][52039] -> [..192.168.1.187][.7070] [TLS.AnyDesk][Unknown][RemoteAccess][Acceptable]
                    RISK: Known Proto on Non Std Port, Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, Desktop/File Sharing
           analyse: [.....5] [ip4][..tcp] [..192.168.1.187][54164] -> [..192.168.1.178][.7070] [TLS.AnyDesk][Unknown][RemoteAccess][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
@@ -57,11 +57,11 @@
      DAEMON-EVENT: [Processed: 120 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 4 / 6|skipped: 0|!detected: 0|guessed: 0|detection-updates: 7|updates: 0]
               new: [.....7] [ip4][..tcp] [..192.168.1.128][48260] -> [195.181.174.176][..443]
-         detected: [.....7] [ip4][..tcp] [..192.168.1.128][48260] -> [195.181.174.176][..443] [TLS.AnyDesk][Unknown][RemoteAccess][Acceptable][]
+         detected: [.....7] [ip4][..tcp] [..192.168.1.128][48260] -> [195.181.174.176][..443] [TLS.AnyDesk][Unknown][RemoteAccess][Acceptable]
                    RISK: Missing SNI TLS Extn, Desktop/File Sharing, Uncommon TLS ALPN
- detection-update: [.....7] [ip4][..tcp] [..192.168.1.128][48260] -> [195.181.174.176][..443] [TLS.AnyDesk][Unknown][RemoteAccess][Acceptable][]
+ detection-update: [.....7] [ip4][..tcp] [..192.168.1.128][48260] -> [195.181.174.176][..443] [TLS.AnyDesk][Unknown][RemoteAccess][Acceptable]
                    RISK: Missing SNI TLS Extn, Desktop/File Sharing, Uncommon TLS ALPN
- detection-update: [.....7] [ip4][..tcp] [..192.168.1.128][48260] -> [195.181.174.176][..443] [TLS.AnyDesk][Unknown][RemoteAccess][Acceptable][]
+ detection-update: [.....7] [ip4][..tcp] [..192.168.1.128][48260] -> [195.181.174.176][..443] [TLS.AnyDesk][Unknown][RemoteAccess][Acceptable]
                    RISK: Missing SNI TLS Extn, Desktop/File Sharing, Uncommon TLS ALPN
           analyse: [.....7] [ip4][..tcp] [..192.168.1.128][48260] -> [195.181.174.176][..443] [TLS.AnyDesk][Unknown][RemoteAccess][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy

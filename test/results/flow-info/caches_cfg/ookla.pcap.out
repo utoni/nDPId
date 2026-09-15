@@ -10,7 +10,7 @@
                    RISK: HTTP Obsolete Server
               new: [.....4] [ip4][..tcp] [....192.168.1.7][51215] -> [..46.44.253.187][.8080]
          detected: [.....4] [ip4][..tcp] [....192.168.1.7][51215] -> [..46.44.253.187][.8080] [Ookla][Unknown][Network][Safe]
-          guessed: [.....2] [ip4][..tcp] [..192.168.1.192][51156] -> [..89.96.108.170][.8080] [HTTP_Proxy][Unknown][Web][Acceptable][]
+          guessed: [.....2] [ip4][..tcp] [..192.168.1.192][51156] -> [..89.96.108.170][.8080] [HTTP_Proxy][Unknown][Web][Acceptable]
                    RISK: Susp Entropy
              idle: [.....2] [ip4][..tcp] [..192.168.1.192][51156] -> [..89.96.108.170][.8080]
              idle: [.....1] [ip4][..tcp] [..192.168.1.192][37790] -> [185.157.229.246][.8080] [Ookla][Unknown][Network][Safe]

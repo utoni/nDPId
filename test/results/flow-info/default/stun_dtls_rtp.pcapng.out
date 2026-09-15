@@ -2,7 +2,7 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [.192.168.12.156][37967] -> [..142.250.82.76][19305]
-         detected: [.....1] [ip4][..udp] [.192.168.12.156][37967] -> [..142.250.82.76][19305] [STUN.GoogleCall][Google][VoIP][Acceptable][]
+         detected: [.....1] [ip4][..udp] [.192.168.12.156][37967] -> [..142.250.82.76][19305] [STUN.GoogleCall][Google][VoIP][Acceptable]
  detection-update: [.....1] [ip4][..udp] [.192.168.12.156][37967] -> [..142.250.82.76][19305] [DTLS.GoogleCall][Google][VoIP][Acceptable]
  detection-update: [.....1] [ip4][..udp] [.192.168.12.156][37967] -> [..142.250.82.76][19305] [DTLS.GoogleCall][Google][VoIP][Acceptable]
           analyse: [.....1] [ip4][..udp] [.192.168.12.156][37967] -> [..142.250.82.76][19305] [DTLS.GoogleCall][Google][VoIP][Acceptable]
@@ -18,7 +18,7 @@
      DAEMON-EVENT: [Processed: 39 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 2|updates: 0]
               new: [.....2] [ip4][..tcp] [.192.168.12.182][50221] -> [.142.250.82.249][.3478]
-         detected: [.....2] [ip4][..tcp] [.192.168.12.182][50221] -> [.142.250.82.249][.3478] [STUN.GoogleCall][Google][VoIP][Acceptable][]
+         detected: [.....2] [ip4][..tcp] [.192.168.12.182][50221] -> [.142.250.82.249][.3478] [STUN.GoogleCall][Google][VoIP][Acceptable]
  detection-update: [.....2] [ip4][..tcp] [.192.168.12.182][50221] -> [.142.250.82.249][.3478] [STUN.GoogleCall][Google][VoIP][Acceptable][turn.l.google.com]
           analyse: [.....2] [ip4][..tcp] [.192.168.12.182][50221] -> [.142.250.82.249][.3478] [STUN.GoogleCall][Google][VoIP][Acceptable][turn.l.google.com]
                                          min|       max|       avg|    stddev|         variance|  entropy

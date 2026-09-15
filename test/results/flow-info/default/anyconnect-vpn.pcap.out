@@ -27,22 +27,22 @@
          detected: [....11] [ip4][..udp] [.....10.0.0.227][62322] -> [....75.75.76.76][...53] [DNS][Unknown][Network][Acceptable][vco.pandion.viasat.com]
  detection-update: [....11] [ip4][..udp] [.....10.0.0.227][62322] -> [....75.75.76.76][...53] [DNS][Unknown][Network][Acceptable][vco.pandion.viasat.com]
               new: [....12] [ip4][..tcp] [.....10.0.0.227][56918] -> [....8.37.102.91][..443]
-         detected: [....12] [ip4][..tcp] [.....10.0.0.227][56918] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe][]
+         detected: [....12] [ip4][..tcp] [.....10.0.0.227][56918] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe]
                    RISK: Missing SNI TLS Extn, ALPN/SNI Mismatch
- detection-update: [....12] [ip4][..tcp] [.....10.0.0.227][56918] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe][]
+ detection-update: [....12] [ip4][..tcp] [.....10.0.0.227][56918] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe]
                    RISK: Weak TLS Cipher, Missing SNI TLS Extn, ALPN/SNI Mismatch
- detection-update: [....12] [ip4][..tcp] [.....10.0.0.227][56918] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe][]
+ detection-update: [....12] [ip4][..tcp] [.....10.0.0.227][56918] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe]
                    RISK: Weak TLS Cipher, Missing SNI TLS Extn, ALPN/SNI Mismatch
               new: [....13] [ip4][..tcp] [.....10.0.0.227][56915] -> [..52.37.243.173][..443] [MIDSTREAM]
          detected: [....13] [ip4][..tcp] [.....10.0.0.227][56915] -> [..52.37.243.173][..443] [TLS][AWS_EC2][Web][Safe]
               new: [....14] [ip4][..tcp] [.....10.0.0.227][56914] -> [..52.37.243.173][..443] [MIDSTREAM]
          detected: [....14] [ip4][..tcp] [.....10.0.0.227][56914] -> [..52.37.243.173][..443] [TLS][AWS_EC2][Web][Safe]
               new: [....15] [ip4][..tcp] [.....10.0.0.227][56919] -> [....8.37.102.91][..443]
-         detected: [....15] [ip4][..tcp] [.....10.0.0.227][56919] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe][]
+         detected: [....15] [ip4][..tcp] [.....10.0.0.227][56919] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe]
                    RISK: Missing SNI TLS Extn, ALPN/SNI Mismatch
- detection-update: [....15] [ip4][..tcp] [.....10.0.0.227][56919] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe][]
+ detection-update: [....15] [ip4][..tcp] [.....10.0.0.227][56919] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe]
                    RISK: Weak TLS Cipher, Missing SNI TLS Extn, ALPN/SNI Mismatch
- detection-update: [....15] [ip4][..tcp] [.....10.0.0.227][56919] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe][]
+ detection-update: [....15] [ip4][..tcp] [.....10.0.0.227][56919] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe]
                    RISK: Weak TLS Cipher, Missing SNI TLS Extn, ALPN/SNI Mismatch
           analyse: [....15] [ip4][..tcp] [.....10.0.0.227][56919] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe]
                                          min|       max|       avg|    stddev|         variance|  entropy
@@ -87,9 +87,9 @@
               new: [....29] [ip4][..tcp] [.....10.0.0.227][56910] -> [...35.201.124.9][..443] [MIDSTREAM]
          detected: [....29] [ip4][..tcp] [.....10.0.0.227][56910] -> [...35.201.124.9][..443] [TLS][GoogleCloud][Web][Safe]
               new: [....30] [ip4][..tcp] [.....10.0.0.227][56921] -> [....8.37.96.194][.4287]
-         detected: [....30] [ip4][..tcp] [.....10.0.0.227][56921] -> [....8.37.96.194][.4287] [TLS][Unknown][Web][Safe][]
+         detected: [....30] [ip4][..tcp] [.....10.0.0.227][56921] -> [....8.37.96.194][.4287] [TLS][Unknown][Web][Safe]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
- detection-update: [....30] [ip4][..tcp] [.....10.0.0.227][56921] -> [....8.37.96.194][.4287] [TLS][Unknown][Web][Safe][]
+ detection-update: [....30] [ip4][..tcp] [.....10.0.0.227][56921] -> [....8.37.96.194][.4287] [TLS][Unknown][Web][Safe]
                    RISK: Known Proto on Non Std Port, Self-signed Cert, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
               new: [....31] [ip4][..udp] [.....10.0.0.227][64972] -> [....75.75.75.75][...53]
          detected: [....31] [ip4][..udp] [.....10.0.0.227][64972] -> [....75.75.75.75][...53] [DNS][Unknown][Network][Acceptable][lb._dns-sd._udp.0.128.28.172.in-addr.arpa]
@@ -129,11 +129,11 @@
                    [ENTROPIES...: 4.3,5.0,4.8,5.4,5.1,7.4,4.9,7.6,4.9,5.9,4.8,7.5,5.0,7.5,4.9,7.3,5.0,6.5,5.0,7.7,5.0,7.9,4.9,7.8,4.9,6.1,5.0,6.2,4.9,6.0,5.1,6.1]
               new: [....37] [ip4][..tcp] [.....10.0.0.227][56881] -> [.162.222.43.153][..443] [MIDSTREAM]
               new: [....38] [ip4][..tcp] [.....10.0.0.227][56929] -> [....8.37.102.91][..443]
-         detected: [....38] [ip4][..tcp] [.....10.0.0.227][56929] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe][]
+         detected: [....38] [ip4][..tcp] [.....10.0.0.227][56929] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
- detection-update: [....38] [ip4][..tcp] [.....10.0.0.227][56929] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe][]
+ detection-update: [....38] [ip4][..tcp] [.....10.0.0.227][56929] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
- detection-update: [....38] [ip4][..tcp] [.....10.0.0.227][56929] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe][]
+ detection-update: [....38] [ip4][..tcp] [.....10.0.0.227][56929] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe]
                    RISK: Weak TLS Cipher, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
           analyse: [....38] [ip4][..tcp] [.....10.0.0.227][56929] -> [....8.37.102.91][..443] [TLS][Unknown][Web][Safe]
                                          min|       max|       avg|    stddev|         variance|  entropy
@@ -186,21 +186,21 @@
               new: [....54] [ip4][..udp] [.....10.0.0.227][61328] -> [239.255.255.250][.1900]
          detected: [....54] [ip4][..udp] [.....10.0.0.227][61328] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250]
               new: [....55] [ip4][..udp] [.....10.0.0.149][38616] -> [.....10.0.0.227][61328]
-         detected: [....55] [ip4][..udp] [.....10.0.0.149][38616] -> [.....10.0.0.227][61328] [SSDP][Unknown][System][Acceptable][]
+         detected: [....55] [ip4][..udp] [.....10.0.0.149][38616] -> [.....10.0.0.227][61328] [SSDP][Unknown][System][Acceptable]
               new: [....56] [ip4][..udp] [.....10.0.0.151][.1900] -> [.....10.0.0.227][61328]
-         detected: [....56] [ip4][..udp] [.....10.0.0.151][.1900] -> [.....10.0.0.227][61328] [SSDP][Unknown][System][Acceptable][]
+         detected: [....56] [ip4][..udp] [.....10.0.0.151][.1900] -> [.....10.0.0.227][61328] [SSDP][Unknown][System][Acceptable]
               new: [....57] [ip4][..udp] [.....10.0.0.227][57547] -> [239.255.255.250][.1900]
          detected: [....57] [ip4][..udp] [.....10.0.0.227][57547] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250]
               new: [....58] [ip4][..udp] [.....10.0.0.227][54107] -> [....8.37.102.91][..443]
          detected: [....58] [ip4][..udp] [.....10.0.0.227][54107] -> [....8.37.102.91][..443] [DTLS][Unknown][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older)
               new: [....59] [ip4][..udp] [.....10.0.0.149][50081] -> [.....10.0.0.227][57547]
-         detected: [....59] [ip4][..udp] [.....10.0.0.149][50081] -> [.....10.0.0.227][57547] [SSDP][Unknown][System][Acceptable][]
+         detected: [....59] [ip4][..udp] [.....10.0.0.149][50081] -> [.....10.0.0.227][57547] [SSDP][Unknown][System][Acceptable]
  detection-update: [....58] [ip4][..udp] [.....10.0.0.227][54107] -> [....8.37.102.91][..443] [DTLS][Unknown][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older)
               new: [....60] [ip4][..udp] [.....10.0.0.227][52595] -> [.......10.0.0.1][..192]
               new: [....61] [ip4][..udp] [.....10.0.0.151][.1900] -> [.....10.0.0.227][57547]
-         detected: [....61] [ip4][..udp] [.....10.0.0.151][.1900] -> [.....10.0.0.227][57547] [SSDP][Unknown][System][Acceptable][]
+         detected: [....61] [ip4][..udp] [.....10.0.0.151][.1900] -> [.....10.0.0.227][57547] [SSDP][Unknown][System][Acceptable]
               new: [....62] [ip4][..tcp] [.....10.0.0.227][56954] -> [.....10.0.0.149][.8008]
               new: [....63] [ip4][..tcp] [.....10.0.0.227][56955] -> [.....10.0.0.151][.8060]
          detected: [....62] [ip4][..tcp] [.....10.0.0.227][56954] -> [.....10.0.0.149][.8008] [HTTP][Unknown][Web][Acceptable][10.0.0.149]
@@ -212,11 +212,11 @@
  detection-update: [....63] [ip4][..tcp] [.....10.0.0.227][56955] -> [.....10.0.0.151][.8060] [HTTP][Unknown][Web][Acceptable][10.0.0.151]
                    RISK: Known Proto on Non Std Port, HTTP/TLS/QUIC Numeric Hostname/SNI
               new: [....64] [ip4][..udp] [.....10.0.0.149][49816] -> [.....10.0.0.227][57547]
-         detected: [....64] [ip4][..udp] [.....10.0.0.149][49816] -> [.....10.0.0.227][57547] [SSDP][Unknown][System][Acceptable][]
+         detected: [....64] [ip4][..udp] [.....10.0.0.149][49816] -> [.....10.0.0.227][57547] [SSDP][Unknown][System][Acceptable]
               new: [....65] [ip4][..udp] [.....10.0.0.149][48166] -> [.....10.0.0.227][57547]
-         detected: [....65] [ip4][..udp] [.....10.0.0.149][48166] -> [.....10.0.0.227][57547] [SSDP][Unknown][System][Acceptable][]
+         detected: [....65] [ip4][..udp] [.....10.0.0.149][48166] -> [.....10.0.0.227][57547] [SSDP][Unknown][System][Acceptable]
               new: [....66] [ip4][..udp] [.....10.0.0.149][51382] -> [.....10.0.0.227][57547]
-         detected: [....66] [ip4][..udp] [.....10.0.0.149][51382] -> [.....10.0.0.227][57547] [SSDP][Unknown][System][Acceptable][]
+         detected: [....66] [ip4][..udp] [.....10.0.0.149][51382] -> [.....10.0.0.227][57547] [SSDP][Unknown][System][Acceptable]
               new: [....67] [ip4][..udp] [.....10.0.0.227][..137] -> [.....10.0.0.255][..137]
          detected: [....67] [ip4][..udp] [.....10.0.0.227][..137] -> [.....10.0.0.255][..137] [NetBIOS][Unknown][System][Acceptable][lp-rkerur-osx]
            update: [.....5] [ip6][icmp6] [..............fe80::2e7e:81ff:feb0:4aa1] -> [................................ff02::1] [ICMPV6][Unknown][Network][Acceptable]
@@ -304,7 +304,7 @@
              idle: [....54] [ip4][..udp] [.....10.0.0.227][61328] -> [239.255.255.250][.1900] [SSDP][Unknown][System][Acceptable][239.255.255.250]
              idle: [....56] [ip4][..udp] [.....10.0.0.151][.1900] -> [.....10.0.0.227][61328] [SSDP][Unknown][System][Acceptable]
              idle: [....25] [ip4][..tcp] [.....10.0.0.227][56884] -> [...184.25.56.77][...80] [HTTP.Mozilla][Akamai][ConnCheck][Safe][detectportal.firefox.com]
-          guessed: [.....1] [ip4][..tcp] [.....10.0.0.227][56885] -> [...184.25.56.53][...80] [HTTP][Akamai][Web][Acceptable][]
+          guessed: [.....1] [ip4][..tcp] [.....10.0.0.227][56885] -> [...184.25.56.53][...80] [HTTP][Akamai][Web][Acceptable]
               end: [.....1] [ip4][..tcp] [.....10.0.0.227][56885] -> [...184.25.56.53][...80]
              idle: [....24] [ip4][..tcp] [.....10.0.0.227][56917] -> [...184.25.56.77][...80] [HTTP.Mozilla][Akamai][ConnCheck][Safe][detectportal.firefox.com]
              idle: [....58] [ip4][..udp] [.....10.0.0.227][54107] -> [....8.37.102.91][..443] [DTLS][Unknown][Web][Safe]

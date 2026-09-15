@@ -11,7 +11,7 @@
           guessed: [.....4] [ip4][..tcp] [..192.168.1.178][43067] -> [....192.168.1.2][.3389] [RDP][Unknown][RemoteAccess][Acceptable]
                    RISK: Desktop/File Sharing, TCP Connection Issues, Probing Attempt
               end: [.....4] [ip4][..tcp] [..192.168.1.178][43067] -> [....192.168.1.2][.3389]
-          guessed: [.....1] [ip4][..tcp] [..192.168.1.178][56272] -> [....192.168.1.2][...80] [HTTP][Unknown][Web][Acceptable][]
+          guessed: [.....1] [ip4][..tcp] [..192.168.1.178][56272] -> [....192.168.1.2][...80] [HTTP][Unknown][Web][Acceptable]
                    RISK: TCP Connection Issues, Probing Attempt
               end: [.....1] [ip4][..tcp] [..192.168.1.178][56272] -> [....192.168.1.2][...80]
           guessed: [.....2] [ip4][..tcp] [..192.168.1.178][56273] -> [....192.168.1.2][..443] [TLS][Unknown][Web][Safe]

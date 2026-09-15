@@ -112,7 +112,12 @@ static char const * const flow_categories[] = {"Unspecified",
                                                "Beauty",
                                                "History",
                                                "Politics",
-                                               "Vehicles"};
+                                               "Vehicles",
+                                               "Search_Engine",
+                                               "Children",
+                                               "Violence",
+                                               "Drugs",
+                                               "Weapons"};
 
 static uint8_t desired_flow_severities[nDPIsrvd_ARRAY_LENGTH(flow_severities)] = {};
 static uint8_t desired_flow_breeds[nDPIsrvd_ARRAY_LENGTH(flow_breeds)] = {};

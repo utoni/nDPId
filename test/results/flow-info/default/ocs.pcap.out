@@ -20,7 +20,7 @@
               new: [.....9] [ip4][..udp] [..192.168.180.2][48770] -> [........8.8.8.8][...53]
          detected: [.....9] [ip4][..udp] [..192.168.180.2][48770] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][android.clients.google.com]
               new: [....10] [ip4][..tcp] [..192.168.180.2][41223] -> [..216.58.208.46][..443]
-         detected: [....10] [ip4][..tcp] [..192.168.180.2][41223] -> [..216.58.208.46][..443] [TLS][Google][Web][Safe][]
+         detected: [....10] [ip4][..tcp] [..192.168.180.2][41223] -> [..216.58.208.46][..443] [TLS][Google][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older)
          detected: [.....6] [ip4][..tcp] [..192.168.180.2][39263] -> [..23.21.230.199][..443] [TLS.Crashlytics][AWS_EC2][DataTransfer][Acceptable][settings.crashlytics.com]
                    RISK: Obsolete TLS (v1.1 or older)
@@ -56,7 +56,7 @@
               new: [....17] [ip4][..udp] [..192.168.180.2][11793] -> [........8.8.8.8][...53]
          detected: [....17] [ip4][..udp] [..192.168.180.2][11793] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][play.googleapis.com]
               new: [....18] [ip4][..tcp] [..192.168.180.2][47803] -> [..64.233.166.95][..443]
-         detected: [....18] [ip4][..tcp] [..192.168.180.2][47803] -> [..64.233.166.95][..443] [TLS][Google][Web][Safe][]
+         detected: [....18] [ip4][..tcp] [..192.168.180.2][47803] -> [..64.233.166.95][..443] [TLS][Google][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older)
            update: [.....4] [ip4][..udp] [..192.168.180.2][.1291] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable]
            update: [....14] [ip4][..udp] [..192.168.180.2][.2589] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable]

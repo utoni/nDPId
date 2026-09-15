@@ -11,7 +11,7 @@
               new: [.....5] [ip4][..udp] [........0.0.0.0][...68] -> [255.255.255.255][...67]
          detected: [.....5] [ip4][..udp] [........0.0.0.0][...68] -> [255.255.255.255][...67] [DHCP][Unknown][Network][Acceptable][msedgewin10]
               new: [.....6] [ip4][..udp] [.......10.0.2.2][...67] -> [......10.0.2.15][...68]
-         detected: [.....6] [ip4][..udp] [.......10.0.2.2][...67] -> [......10.0.2.15][...68] [DHCP][Unknown][Network][Acceptable][]
+         detected: [.....6] [ip4][..udp] [.......10.0.2.2][...67] -> [......10.0.2.15][...68] [DHCP][Unknown][Network][Acceptable]
               new: [.....7] [ip6][..udp] [..............fe80::c50d:519f:96a4:e108][..546] -> [..............................ff02::1:2][..547]
          detected: [.....7] [ip6][..udp] [..............fe80::c50d:519f:96a4:e108][..546] -> [..............................ff02::1:2][..547] [DHCPV6][Unknown][Network][Acceptable]
               new: [.....8] [ip4][....2] [......10.0.2.15] -> [.....224.0.0.22]
@@ -693,7 +693,7 @@
                    RISK: Unsafe Protocol
          detected: [...277] [ip4][..tcp] [......10.0.2.15][50301] -> [..87.123.54.234][54130] [Gnutella][Unknown][Download][Potentially_Dangerous]
                    RISK: Unsafe Protocol
-         detected: [...290] [ip4][..tcp] [......10.0.2.15][50314] -> [...80.7.252.192][.6888] [TLS][Unknown][Web][Safe][]
+         detected: [...290] [ip4][..tcp] [......10.0.2.15][50314] -> [...80.7.252.192][.6888] [TLS][Unknown][Web][Safe]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
          detected: [...274] [ip4][..tcp] [......10.0.2.15][50298] -> [.46.128.114.107][.6578] [Gnutella][Unknown][Download][Potentially_Dangerous]
                    RISK: Unsafe Protocol
@@ -709,7 +709,7 @@
                    RISK: Unsafe Protocol
          detected: [...271] [ip4][..tcp] [......10.0.2.15][50295] -> [.38.142.119.234][49732] [Gnutella][Unknown][Download][Potentially_Dangerous]
                    RISK: Unsafe Protocol
- detection-update: [...290] [ip4][..tcp] [......10.0.2.15][50314] -> [...80.7.252.192][.6888] [TLS][Unknown][Web][Safe][]
+ detection-update: [...290] [ip4][..tcp] [......10.0.2.15][50314] -> [...80.7.252.192][.6888] [TLS][Unknown][Web][Safe]
                    RISK: Known Proto on Non Std Port, Self-signed Cert, TLS Cert Expired, TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, TLS Cert Validity Too Long
               new: [...302] [ip4][..udp] [......10.0.2.15][28681] -> [.185.187.74.173][53489]
          detected: [...302] [ip4][..udp] [......10.0.2.15][28681] -> [.185.187.74.173][53489] [Gnutella][Unknown][Download][Potentially_Dangerous]

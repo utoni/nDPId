@@ -227,6 +227,11 @@ static struct
         uint64_t flow_category_history_count;
         uint64_t flow_category_polit_count;
         uint64_t flow_category_vehi_count;
+        uint64_t flow_category_se_count;
+        uint64_t flow_category_children_count;
+        uint64_t flow_category_violence_count;
+        uint64_t flow_category_drugs_count;
+        uint64_t flow_category_weapons_count;
         uint64_t flow_category_unknown_count;
 
         uint64_t flow_confidence_by_port;
@@ -277,15 +282,10 @@ struct global_map
     };
 };
 
-#define COLLECTD_STATS_COUNTER_PTR(member)                                                                             \
-    {                                                                                                                  \
-        .global_stat_inc = &(collectd_statistics.counters.member), NULL                                                \
-    }
+#define COLLECTD_STATS_COUNTER_PTR(member) {.global_stat_inc = &(collectd_statistics.counters.member), NULL}
 #define COLLECTD_STATS_GAUGE_PTR(member)                                                                               \
-    {                                                                                                                  \
-        .global_stat_inc = &(collectd_statistics.gauges[0].member),                                                    \
-        .global_stat_dec = &(collectd_statistics.gauges[1].member)                                                     \
-    }
+    {.global_stat_inc = &(collectd_statistics.gauges[0].member),                                                       \
+     .global_stat_dec = &(collectd_statistics.gauges[1].member)}
 #define COLLECTD_STATS_COUNTER_INC(member) (collectd_statistics.counters.member++)
 #define COLLECTD_STATS_GAUGE_RES(member) (collectd_statistics.gauges[0].member--)
 #define COLLECTD_STATS_GAUGE_INC(member) (collectd_statistics.gauges[0].member++)
@@ -436,6 +436,11 @@ static struct global_map const categories_map[] = {
     {"History", COLLECTD_STATS_GAUGE_PTR(flow_category_history_count)},
     {"Politics", COLLECTD_STATS_GAUGE_PTR(flow_category_polit_count)},
     {"Vehicles", COLLECTD_STATS_GAUGE_PTR(flow_category_vehi_count)},
+    {"Search_Engine", COLLECTD_STATS_GAUGE_PTR(flow_category_se_count)},
+    {"Children", COLLECTD_STATS_GAUGE_PTR(flow_category_children_count)},
+    {"Violence", COLLECTD_STATS_GAUGE_PTR(flow_category_violence_count)},
+    {"Drugs", COLLECTD_STATS_GAUGE_PTR(flow_category_drugs_count)},
+    {"Weapons", COLLECTD_STATS_GAUGE_PTR(flow_category_weapons_count)},
     {NULL, COLLECTD_STATS_GAUGE_PTR(flow_category_unknown_count)}};
 
 static struct global_map const confidence_map[] = {
@@ -765,17 +770,19 @@ static void print_collectd_exec_output(void)
                                                                                     COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
                                                                                         COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
                                                                                             COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
-                                                                                                COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
+                                                                                                COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
                                                                                                     COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
                                                                                                         COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
                                                                                                             COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
                                                                                                                 COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
-                                                                                                                    COLLECTD_GAUGE_N_FORMAT()
-                                                                                                                        COLLECTD_GAUGE_N_FORMAT()
+                                                                                                                    COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
+                                                                                                                        COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()
                                                                                                                             COLLECTD_GAUGE_N_FORMAT()
                                                                                                                                 COLLECTD_GAUGE_N_FORMAT()
                                                                                                                                     COLLECTD_GAUGE_N_FORMAT()
-                                                                                                                                        COLLECTD_GAUGE_N_FORMAT(),
+                                                                                                                                        COLLECTD_GAUGE_N_FORMAT()
+                                                                                                                                            COLLECTD_COUNTER_N_FORMAT()
+                                                                                                                                                COLLECTD_COUNTER_N_FORMAT(),
 
         COLLECTD_GAUGE_N(flow_category_unspecified_count),
         COLLECTD_GAUGE_N(flow_category_media_count),
@@ -867,6 +874,11 @@ static void print_collectd_exec_output(void)
         COLLECTD_GAUGE_N(flow_category_history_count),
         COLLECTD_GAUGE_N(flow_category_polit_count),
         COLLECTD_GAUGE_N(flow_category_vehi_count),
+        COLLECTD_GAUGE_N(flow_category_se_count),
+        COLLECTD_GAUGE_N(flow_category_children_count),
+        COLLECTD_GAUGE_N(flow_category_violence_count),
+        COLLECTD_GAUGE_N(flow_category_drugs_count),
+        COLLECTD_GAUGE_N(flow_category_weapons_count),
         COLLECTD_GAUGE_N(flow_category_unknown_count));
 
     printf(COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT() COLLECTD_GAUGE_N_FORMAT()

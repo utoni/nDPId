@@ -47,7 +47,7 @@
                    [PKTLENS.....: 305,1470,52,1431,52,1470,52,1470,52,1470,52,1470,52,172,52,1470,52,1470,52,1470,52,1470,1470,52,52,1470,1470,1470,52,1470,52,1470]
                    [ENTROPIES...: 5.8,6.9,5.0,7.6,5.0,7.8,5.0,7.8,5.0,7.8,5.1,7.8,5.0,6.5,5.0,6.9,5.0,7.5,5.0,7.8,5.0,7.8,7.8,5.1,5.1,7.8,7.8,7.8,5.1,7.8,5.1,7.8]
               new: [.....7] [ip4][..tcp] [..192.168.0.103][33976] -> [....77.67.29.17][...80] [MIDSTREAM]
-          guessed: [.....7] [ip4][..tcp] [..192.168.0.103][33976] -> [....77.67.29.17][...80] [HTTP][Unknown][Web][Acceptable][]
+          guessed: [.....7] [ip4][..tcp] [..192.168.0.103][33976] -> [....77.67.29.17][...80] [HTTP][Unknown][Web][Acceptable]
                    RISK: Susp Entropy
           analyse: [.....5] [ip4][..tcp] [..192.168.0.103][44379] -> [...82.85.26.186][...80] [HTTP.Instagram][Unknown][SocialNetwork][Fun][photos-e.ak.instagram.com]
                                          min|       max|       avg|    stddev|         variance|  entropy
@@ -124,7 +124,7 @@
  detection-update: [....23] [ip4][..tcp] [..192.168.0.103][41182] -> [...82.85.26.154][..443] [TLS.Instagram][Unknown][SocialNetwork][Fun][igcdn-photos-a-a.akamaihd.net]
                    RISK: Obsolete TLS (v1.1 or older)
               new: [....25] [ip4][..tcp] [..92.122.48.138][...80] -> [..192.168.0.103][41562] [MIDSTREAM]
-          guessed: [....25] [ip4][..tcp] [..92.122.48.138][...80] -> [..192.168.0.103][41562] [HTTP][Akamai][Web][Acceptable][]
+          guessed: [....25] [ip4][..tcp] [..92.122.48.138][...80] -> [..192.168.0.103][41562] [HTTP][Akamai][Web][Acceptable]
               new: [....26] [ip4][..tcp] [..192.168.0.103][58052] -> [...82.85.26.162][...80] [MIDSTREAM]
          detected: [....26] [ip4][..tcp] [..192.168.0.103][58052] -> [...82.85.26.162][...80] [HTTP.Instagram][Unknown][SocialNetwork][Fun][photos-g.ak.instagram.com]
               new: [....27] [ip4][..tcp] [..192.168.0.103][58053] -> [...82.85.26.162][...80] [MIDSTREAM]
@@ -140,7 +140,7 @@
                    [PKTLENS.....: 312,1470,1470,1461,52,52,52,1470,52,1470,52,1470,1470,1470,52,52,52,1470,1470,1470,52,52,1470,52,52,1470,52,1470,52,382,1470,1470]
                    [ENTROPIES...: 5.9,7.4,7.8,7.9,5.0,5.0,5.0,7.8,5.0,7.9,5.0,7.8,7.8,7.8,5.0,5.0,5.0,7.8,7.9,7.8,5.0,5.0,7.8,5.0,5.0,7.7,5.0,7.8,5.0,7.4,7.7,7.7]
               new: [....28] [ip4][..tcp] [....31.13.86.52][...80] -> [..192.168.0.103][58216] [MIDSTREAM]
-          guessed: [....28] [ip4][..tcp] [....31.13.86.52][...80] -> [..192.168.0.103][58216] [HTTP][Facebook][Web][Acceptable][]
+          guessed: [....28] [ip4][..tcp] [....31.13.86.52][...80] -> [..192.168.0.103][58216] [HTTP][Facebook][Web][Acceptable]
           analyse: [....28] [ip4][..tcp] [....31.13.86.52][...80] -> [..192.168.0.103][58216] [HTTP][Facebook][Web][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.002|<    0.001|<    0.001|            0.353|    4.600]
@@ -157,7 +157,7 @@
          detected: [....30] [ip4][..tcp] [..192.168.0.103][58690] -> [...46.33.70.159][..443] [TLS][Unknown][Web][Safe]
               new: [....31] [ip4][..udp] [..192.168.0.103][27124] -> [........8.8.8.8][...53]
          detected: [....31] [ip4][..udp] [..192.168.0.103][27124] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][photos-b.ak.instagram.com]
-          guessed: [....29] [ip4][..tcp] [....2.22.236.51][...80] -> [..192.168.0.103][44151] [HTTP][Akamai][Web][Acceptable][]
+          guessed: [....29] [ip4][..tcp] [....2.22.236.51][...80] -> [..192.168.0.103][44151] [HTTP][Akamai][Web][Acceptable]
           analyse: [....29] [ip4][..tcp] [....2.22.236.51][...80] -> [..192.168.0.103][44151] [HTTP][Akamai][Web][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy
                    [IAT.........: <    0.001|     0.004|     0.001|     0.001|            1.362|    4.300]
@@ -213,14 +213,14 @@
              idle: [....10] [ip4][..udp] [..192.168.0.106][17500] -> [..192.168.0.255][17500] [Dropbox][Unknown][Cloud][Acceptable]
              idle: [.....4] [ip4][..tcp] [..192.168.0.103][57936] -> [...82.85.26.162][...80] [HTTP.Instagram][Unknown][SocialNetwork][Fun][photos-g.ak.instagram.com]
              idle: [.....6] [ip4][..tcp] [..192.168.0.103][57965] -> [...82.85.26.185][...80] [HTTP.Instagram][Unknown][SocialNetwork][Fun]
-          guessed: [....19] [ip4][..tcp] [..192.168.0.103][57966] -> [...82.85.26.185][...80] [HTTP][Unknown][Web][Acceptable][]
+          guessed: [....19] [ip4][..tcp] [..192.168.0.103][57966] -> [...82.85.26.185][...80] [HTTP][Unknown][Web][Acceptable]
               end: [....19] [ip4][..tcp] [..192.168.0.103][57966] -> [...82.85.26.185][...80]
              idle: [....26] [ip4][..tcp] [..192.168.0.103][58052] -> [...82.85.26.162][...80] [HTTP.Instagram][Unknown][SocialNetwork][Fun][photos-g.ak.instagram.com]
              idle: [....27] [ip4][..tcp] [..192.168.0.103][58053] -> [...82.85.26.162][...80] [HTTP.Instagram][Unknown][SocialNetwork][Fun]
              idle: [.....3] [ip4][..tcp] [..192.168.0.103][38816] -> [...46.33.70.160][...80] [HTTP.Instagram][Unknown][SocialNetwork][Fun][photos-h.ak.instagram.com]
-          guessed: [....16] [ip4][..tcp] [..192.168.0.103][38817] -> [...46.33.70.160][...80] [HTTP][Unknown][Web][Acceptable][]
+          guessed: [....16] [ip4][..tcp] [..192.168.0.103][38817] -> [...46.33.70.160][...80] [HTTP][Unknown][Web][Acceptable]
               end: [....16] [ip4][..tcp] [..192.168.0.103][38817] -> [...46.33.70.160][...80]
-          guessed: [....32] [ip4][..tcp] [...46.33.70.150][...80] -> [..192.168.0.103][40855] [HTTP][Unknown][Web][Acceptable][]
+          guessed: [....32] [ip4][..tcp] [...46.33.70.150][...80] -> [..192.168.0.103][40855] [HTTP][Unknown][Web][Acceptable]
              idle: [....32] [ip4][..tcp] [...46.33.70.150][...80] -> [..192.168.0.103][40855]
              idle: [....29] [ip4][..tcp] [....2.22.236.51][...80] -> [..192.168.0.103][44151] [HTTP][Akamai][Web][Acceptable]
               end: [.....7] [ip4][..tcp] [..192.168.0.103][33976] -> [....77.67.29.17][...80] [HTTP][Unknown][Web][Acceptable]

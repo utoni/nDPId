@@ -2,12 +2,12 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..udp] [......10.10.0.1][65226] -> [.......10.1.0.3][57730]
-         detected: [.....1] [ip4][..udp] [......10.10.0.1][65226] -> [.......10.1.0.3][57730] [STUN][Unknown][Network][Acceptable][]
+         detected: [.....1] [ip4][..udp] [......10.10.0.1][65226] -> [.......10.1.0.3][57730] [STUN][Unknown][Network][Acceptable]
               new: [.....2] [ip4][..udp] [.......10.1.0.3][.5853] -> [......10.10.0.1][.2808]
-         detected: [.....2] [ip4][..udp] [.......10.1.0.3][.5853] -> [......10.10.0.1][.2808] [STUN][Unknown][Network][Acceptable][]
- detection-update: [.....1] [ip4][..udp] [......10.10.0.1][65226] -> [.......10.1.0.3][57730] [STUN][Unknown][Network][Acceptable][]
+         detected: [.....2] [ip4][..udp] [.......10.1.0.3][.5853] -> [......10.10.0.1][.2808] [STUN][Unknown][Network][Acceptable]
+ detection-update: [.....1] [ip4][..udp] [......10.10.0.1][65226] -> [.......10.1.0.3][57730] [STUN][Unknown][Network][Acceptable]
                    RISK: Unidirectional Traffic
- detection-update: [.....2] [ip4][..udp] [.......10.1.0.3][.5853] -> [......10.10.0.1][.2808] [STUN][Unknown][Network][Acceptable][]
+ detection-update: [.....2] [ip4][..udp] [.......10.1.0.3][.5853] -> [......10.10.0.1][.2808] [STUN][Unknown][Network][Acceptable]
                    RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..udp] [.......10.1.0.3][.5853] -> [......10.10.0.1][.2808] [STUN][Unknown][Network][Acceptable]
                    RISK: Unidirectional Traffic

@@ -28,13 +28,13 @@
                    [PKTLENS.....: 60,60,52,312,52,179,58,1500,1500,246,52,52,52,52,52,132,52,516,52,140,140,52,425,169,52,111,52,139,52,323,52,169]
                    [ENTROPIES...: 4.8,5.3,5.2,6.1,5.2,6.5,5.2,7.9,7.9,7.1,5.2,5.2,5.2,5.2,5.2,6.3,5.2,7.6,5.2,6.6,6.4,5.2,7.5,6.7,5.2,6.1,5.3,6.6,5.0,7.2,5.2,6.7]
               new: [.....3] [ip4][..udp] [..192.168.12.67][43281] -> [...141.101.90.1][.3478]
-         detected: [.....3] [ip4][..udp] [..192.168.12.67][43281] -> [...141.101.90.1][.3478] [STUN][Cloudflare][Network][Acceptable][]
+         detected: [.....3] [ip4][..udp] [..192.168.12.67][43281] -> [...141.101.90.1][.3478] [STUN][Cloudflare][Network][Acceptable]
  detection-update: [.....3] [ip4][..udp] [..192.168.12.67][43281] -> [...141.101.90.1][.3478] [STUN.SignalVoip][Cloudflare][VoIP][Acceptable][turn.cloudflare.com]
               new: [.....4] [ip4][..udp] [..192.168.12.67][43281] -> [...10.219.164.8][50017]
-         detected: [.....4] [ip4][..udp] [..192.168.12.67][43281] -> [...10.219.164.8][50017] [STUN.SignalVoip][Unknown][VoIP][Acceptable][]
+         detected: [.....4] [ip4][..udp] [..192.168.12.67][43281] -> [...10.219.164.8][50017] [STUN.SignalVoip][Unknown][VoIP][Acceptable]
               new: [.....5] [ip4][..udp] [..192.168.12.67][43281] -> [...93.40.63.219][49514]
-         detected: [.....5] [ip4][..udp] [..192.168.12.67][43281] -> [...93.40.63.219][49514] [STUN.SignalVoip][Unknown][VoIP][Acceptable][]
- detection-update: [.....4] [ip4][..udp] [..192.168.12.67][43281] -> [...10.219.164.8][50017] [STUN.SignalVoip][Unknown][VoIP][Acceptable][]
+         detected: [.....5] [ip4][..udp] [..192.168.12.67][43281] -> [...93.40.63.219][49514] [STUN.SignalVoip][Unknown][VoIP][Acceptable]
+ detection-update: [.....4] [ip4][..udp] [..192.168.12.67][43281] -> [...10.219.164.8][50017] [STUN.SignalVoip][Unknown][VoIP][Acceptable]
                    RISK: Unidirectional Traffic
           analyse: [.....5] [ip4][..udp] [..192.168.12.67][43281] -> [...93.40.63.219][49514] [STUN.SignalVoip][Unknown][VoIP][Acceptable]
                                          min|       max|       avg|    stddev|         variance|  entropy

@@ -2,9 +2,9 @@
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
               new: [.....1] [ip4][..tcp] [.192.168.10.101][.3967] -> [..206.33.61.113][..443]
-         detected: [.....1] [ip4][..tcp] [.192.168.10.101][.3967] -> [..206.33.61.113][..443] [TLS][Unknown][Web][Safe][]
+         detected: [.....1] [ip4][..tcp] [.192.168.10.101][.3967] -> [..206.33.61.113][..443] [TLS][Unknown][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older)
- detection-update: [.....1] [ip4][..tcp] [.192.168.10.101][.3967] -> [..206.33.61.113][..443] [TLS][Unknown][Web][Safe][]
+ detection-update: [.....1] [ip4][..tcp] [.192.168.10.101][.3967] -> [..206.33.61.113][..443] [TLS][Unknown][Web][Safe]
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
      DAEMON-EVENT: [Processed: 8 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 1|updates: 0]

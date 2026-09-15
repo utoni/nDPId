@@ -124,6 +124,6 @@
              idle: [....16] [ip4][..tcp] [.......10.8.0.1][50904] -> [.104.17.154.236][..443] [TLS.TunnelBear][Cloudflare][VPN][Acceptable][api.tunnelbear.com]
              idle: [....12] [ip4][..tcp] [.......10.8.0.1][60224] -> [...157.240.7.32][..443] [TLS.FacebookMessenger][Facebook][Chat][Acceptable][mqtt-mini.facebook.com]
                    RISK: TLS (probably) Not Carrying HTTPS
-          guessed: [....11] [ip4][..tcp] [..10.158.132.91][51120] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable][]
+          guessed: [....11] [ip4][..tcp] [..10.158.132.91][51120] -> [........8.8.8.8][...53] [DNS][Google][Network][Acceptable]
               end: [....11] [ip4][..tcp] [..10.158.132.91][51120] -> [........8.8.8.8][...53]
      DAEMON-EVENT: shutdown
