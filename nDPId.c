@@ -67,10 +67,10 @@
 #define PPP_P_IP 0x0021
 #define PPP_P_IPV6 0x0057
 
-#define NDPI_VERSION_CHECK ((NDPI_MAJOR == 4 && NDPI_MINOR < 9) || NDPI_MAJOR < 4)
+#define NDPI_VERSION_CHECK ((NDPI_MAJOR == 6 && NDPI_MINOR < 1) || NDPI_MAJOR < 6)
 
 #if NDPI_VERSION_CHECK
-#error "nDPI >= 4.9.0 required"
+#error "nDPI >= 6.1.0 required"
 #endif
 
 #if nDPId_MAX_READER_THREADS <= 0
@@ -241,8 +241,8 @@ _Static_assert(offsetof(struct nDPId_flow_skipped, flow_basic) == 0,
 #endif
 
 /*
- * Structure which is important for the detection process.
- * The structure is also a compression target, if activated.
+ * Structure which is important for the (nDPI) detection process.
+ * It is also a compression target, if activated.
  */
 struct nDPId_detection_data
 {
@@ -477,6 +477,17 @@ static MT_VALUE(zlib_compression_diff, uint64_t) = MT_INIT(0);
 static MT_VALUE(zlib_compression_bytes, uint64_t) = MT_INIT(0);
 #endif
 
+struct nDPId_if_ip {
+    union nDPId_ip address;
+    union nDPId_ip netmask;
+    union nDPId_ip subnet;
+};
+
+struct nDPId_if_ip_list {
+    size_t size;
+    struct nDPId_if_ip * if_ips;
+};
+
 #ifdef ENABLE_CRYPTO
 static struct ncrypt_ctx ncrypt_ctx;
 #endif
@@ -484,9 +495,8 @@ static struct
 {
     /* options which are resolved automatically */
     struct nDPIsrvd_address parsed_collector_address;
-    union nDPId_ip pcap_dev_ip4, pcap_dev_ip6;
-    union nDPId_ip pcap_dev_netmask4, pcap_dev_netmask6;
-    union nDPId_ip pcap_dev_subnet4, pcap_dev_subnet6;
+    struct nDPId_if_ip_list pcap_dev_ip4;
+    struct nDPId_if_ip_list pcap_dev_ip6;
     /* opts */
     struct cmdarg config_file;
     struct cmdarg pcap_file_or_interface;
@@ -1066,6 +1076,34 @@ static int is_ip_in_subnet(union nDPId_ip const * const cmp_ip,
     return 0;
 }
 
+static int is_ip_in_if_subnet(union nDPId_ip const * const cmp_ip,
+                              enum nDPId_l3_type const type)
+{
+    struct nDPId_if_ip_list const * ip_list = NULL;
+
+    switch (type) {
+        case L3_IP:
+            ip_list = &nDPId_options.pcap_dev_ip4;
+            break;
+        case L3_IP6:
+            ip_list = &nDPId_options.pcap_dev_ip6;
+            break;
+    }
+    if (ip_list == NULL) {
+        return 0;
+    }
+
+    for (size_t i = 0; i < ip_list->size; ++i) {
+        if (is_ip_in_subnet(cmp_ip, &ip_list->if_ips[i].netmask,
+                            &ip_list->if_ips[i].subnet, type) != 0)
+        {
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
 static void get_ip4_from_sockaddr(struct sockaddr_in const * const saddr, union nDPId_ip * dest)
 {
     if (saddr->sin_family == AF_INET)
@@ -1092,45 +1130,36 @@ static void get_ip6_from_sockaddr(struct sockaddr_in6 const * const saddr, union
     }
 }
 
-static void get_ip6_address_and_netmask(struct ifaddrs const * const ifaddr)
+static void get_ip_address_and_netmask(struct ifaddrs const * const ifaddr, struct nDPId_if_ip * const if_ip)
 {
-    get_ip6_from_sockaddr((struct sockaddr_in6 *)ifaddr->ifa_netmask, &nDPId_options.pcap_dev_netmask6);
-    get_ip6_from_sockaddr((struct sockaddr_in6 *)ifaddr->ifa_addr, &nDPId_options.pcap_dev_ip6);
-    ip_netmask_to_subnet(&nDPId_options.pcap_dev_ip6,
-                         &nDPId_options.pcap_dev_netmask6,
-                         &nDPId_options.pcap_dev_subnet6,
-                         L3_IP6);
-    {
-        char addr[INET6_ADDRSTRLEN];
-        char netm[INET6_ADDRSTRLEN];
-        char subn[INET6_ADDRSTRLEN];
-        void const * saddr = &nDPId_options.pcap_dev_ip6.v6.ip;
-        void const * snetm = &nDPId_options.pcap_dev_netmask6.v6.ip;
-        void const * ssubn = &nDPId_options.pcap_dev_subnet6.v6.ip;
+    enum nDPId_l3_type l3_type = (ifaddr->ifa_addr->sa_family == AF_INET ? L3_IP : L3_IP6);
+
+    if (l3_type == L3_IP6) {
+        get_ip6_from_sockaddr((struct sockaddr_in6 *)ifaddr->ifa_netmask, &if_ip->netmask);
+        get_ip6_from_sockaddr((struct sockaddr_in6 *)ifaddr->ifa_addr, &if_ip->address);
+    } else {
+        get_ip4_from_sockaddr((struct sockaddr_in *)ifaddr->ifa_netmask, &if_ip->netmask);
+        get_ip4_from_sockaddr((struct sockaddr_in *)ifaddr->ifa_addr, &if_ip->address);
+    }
+    ip_netmask_to_subnet(&if_ip->address, &if_ip->netmask, &if_ip->subnet, l3_type);
+
+    char addr[INET6_ADDRSTRLEN];
+    char netm[INET6_ADDRSTRLEN];
+    char subn[INET6_ADDRSTRLEN];
+    if (l3_type == L3_IP6) {
+        void const * saddr = if_ip->address.v6.ip;
+        void const * snetm = if_ip->netmask.v6.ip;
+        void const * ssubn = if_ip->subnet.v6.ip;
         logger(0,
                "%s IPv6 address netmask subnet: %s %s %s",
                GET_CMDARG_STR(nDPId_options.pcap_file_or_interface),
                inet_ntop(AF_INET6, saddr, addr, sizeof(addr)),
                inet_ntop(AF_INET6, snetm, netm, sizeof(netm)),
                inet_ntop(AF_INET6, ssubn, subn, sizeof(subn)));
-    }
-}
-
-static void get_ip4_address_and_netmask(struct ifaddrs const * const ifaddr)
-{
-    get_ip4_from_sockaddr((struct sockaddr_in *)ifaddr->ifa_netmask, &nDPId_options.pcap_dev_netmask4);
-    get_ip4_from_sockaddr((struct sockaddr_in *)ifaddr->ifa_addr, &nDPId_options.pcap_dev_ip4);
-    ip_netmask_to_subnet(&nDPId_options.pcap_dev_ip4,
-                         &nDPId_options.pcap_dev_netmask4,
-                         &nDPId_options.pcap_dev_subnet4,
-                         L3_IP);
-    {
-        char addr[INET_ADDRSTRLEN];
-        char netm[INET_ADDRSTRLEN];
-        char subn[INET_ADDRSTRLEN];
-        void const * saddr = &nDPId_options.pcap_dev_ip4.v4.ip;
-        void const * snetm = &nDPId_options.pcap_dev_netmask4.v4.ip;
-        void const * ssubn = &nDPId_options.pcap_dev_subnet4.v4.ip;
+    } else {
+        void const * saddr = &if_ip->address.v4.ip;
+        void const * snetm = &if_ip->netmask.v4.ip;
+        void const * ssubn = &if_ip->subnet.v4.ip;
         logger(0,
                "%s IPv4 address netmask subnet: %s %s %s",
                GET_CMDARG_STR(nDPId_options.pcap_file_or_interface),
@@ -1148,6 +1177,8 @@ static int get_ip_netmask_from_pcap_dev(char const * const pcap_dev)
     int ip6_interface_avail = 0;
     struct ifaddrs * ifaddrs = NULL;
     struct ifaddrs * ifa;
+    size_t ip4_addresses = 0;
+    size_t ip6_addresses = 0;
 
     if (getifaddrs(&ifaddrs) != 0 || ifaddrs == NULL)
     {
@@ -1171,11 +1202,60 @@ static int get_ip_netmask_from_pcap_dev(char const * const pcap_dev)
             switch (ifa->ifa_addr->sa_family)
             {
                 case AF_INET:
-                    get_ip4_address_and_netmask(ifa);
+                    ip4_addresses++;
+                    break;
+                case AF_INET6:
+                    ip6_addresses++;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    if (ip4_addresses > 0) {
+        nDPId_options.pcap_dev_ip4.size = ip4_addresses;
+        nDPId_options.pcap_dev_ip4.if_ips = (struct nDPId_if_ip *)ndpi_calloc(
+            ip4_addresses, sizeof(*nDPId_options.pcap_dev_ip4.if_ips)
+        );
+        if (nDPId_options.pcap_dev_ip4.if_ips == NULL) {
+            freeifaddrs(ifaddrs);
+            return 1;
+        }
+    }
+    if (ip6_addresses > 0) {
+        nDPId_options.pcap_dev_ip6.size = ip6_addresses;
+        nDPId_options.pcap_dev_ip6.if_ips = (struct nDPId_if_ip *)ndpi_calloc(
+            ip6_addresses, sizeof(*nDPId_options.pcap_dev_ip6.if_ips)
+        );
+        if (nDPId_options.pcap_dev_ip6.if_ips == NULL) {
+            freeifaddrs(ifaddrs);
+            return 1;
+        }
+    }
+
+    ip4_addresses = 0;
+    ip6_addresses = 0;
+    for (ifa = ifaddrs; ifa != NULL; ifa = ifa->ifa_next)
+    {
+        if (ifa->ifa_addr == NULL || (ifa->ifa_flags & IFF_RUNNING) == 0)
+        {
+            continue;
+        }
+
+        size_t ifnamelen = strnlen(ifa->ifa_name, IFNAMSIZ);
+        if (strncmp(ifa->ifa_name, pcap_dev, IFNAMSIZ) == 0 && ifnamelen == strnlen(pcap_dev, IFNAMSIZ))
+        {
+            switch (ifa->ifa_addr->sa_family)
+            {
+                case AF_INET:
+                    get_ip_address_and_netmask(ifa,
+                        &nDPId_options.pcap_dev_ip4.if_ips[ip4_addresses++]);
                     ip4_interface_avail = 1;
                     break;
                 case AF_INET6:
-                    get_ip6_address_and_netmask(ifa);
+                    get_ip_address_and_netmask(ifa,
+                        &nDPId_options.pcap_dev_ip6.if_ips[ip6_addresses++]);
                     ip6_interface_avail = 1;
                     break;
                 default:
@@ -4623,23 +4703,10 @@ process_layer3_again:
         /* flow still not found, must be new or midstream */
         direction = FD_SRC2DST;
 
-        union nDPId_ip const * netmask = NULL;
-        union nDPId_ip const * subnet = NULL;
-        switch (flow_basic.l3_type)
-        {
-            case L3_IP:
-                netmask = &nDPId_options.pcap_dev_netmask4;
-                subnet = &nDPId_options.pcap_dev_subnet4;
-                break;
-            case L3_IP6:
-                netmask = &nDPId_options.pcap_dev_netmask6;
-                subnet = &nDPId_options.pcap_dev_subnet6;
-                break;
-        }
         if (GET_CMDARG_BOOL(nDPId_options.process_internal_initial_direction) != 0 &&
             flow_basic.tcp_is_midstream_flow == 0)
         {
-            if (is_ip_in_subnet(&flow_basic.src, netmask, subnet, flow_basic.l3_type) == 0)
+            if (is_ip_in_if_subnet(&flow_basic.src, flow_basic.l3_type) == 0)
             {
                 if (add_new_flow(workflow, &flow_basic, FS_SKIPPED, hashed_index) == NULL &&
                     is_error_event_threshold(reader_thread->workflow) == 0)
@@ -4665,7 +4732,7 @@ process_layer3_again:
         else if (GET_CMDARG_BOOL(nDPId_options.process_external_initial_direction) != 0 &&
                  flow_basic.tcp_is_midstream_flow == 0)
         {
-            if (is_ip_in_subnet(&flow_basic.src, netmask, subnet, flow_basic.l3_type) != 0)
+            if (is_ip_in_if_subnet(&flow_basic.src, flow_basic.l3_type) != 0)
             {
                 if (add_new_flow(workflow, &flow_basic, FS_SKIPPED, hashed_index) == NULL &&
                     is_error_event_threshold(reader_thread->workflow) == 0)

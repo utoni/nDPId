@@ -286,7 +286,7 @@ static int run_netfilter_init(void)
     int rv = 0;
     char buf[BUFSIZ];
 
-    if (nft_dpi_rule_exists() != 0) {
+    if (options.dry_run == 0 && nft_dpi_rule_exists() != 0) {
         logger(0, "Table %s with chain forward does already exist, skipping init..", options.table);
         return 0;
     }
