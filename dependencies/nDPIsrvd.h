@@ -2,9 +2,9 @@
 #define NDPISRVD_H 1
 
 #include <arpa/inet.h>
-#include <ctype.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <netdb.h>
 #include <netinet/in.h>
 #include <stdarg.h>
 #include <stdint.h>
@@ -14,6 +14,7 @@
 #include <sys/socket.h>
 #include <sys/time.h>
 #include <sys/un.h>
+#include <time.h>
 #include <unistd.h>
 
 #ifndef JSMN_PARENT_LINKS
@@ -653,6 +654,59 @@ static inline void nDPIsrvd_socket_free(struct nDPIsrvd_socket ** const sock)
     *sock = NULL;
 }
 
+static inline int nDPIsrvd_resolve_host(struct nDPIsrvd_address * const address,
+                                        char const * const host, in_port_t const port)
+{
+    struct addrinfo hints;
+    struct addrinfo *result;
+    struct addrinfo *rp;
+
+    memset(&hints, 0, sizeof(hints));
+    hints.ai_family = AF_UNSPEC;
+    hints.ai_socktype = SOCK_STREAM;
+
+    int ret = getaddrinfo(host, NULL, &hints, &result);
+    if (ret != 0) {
+        //printf("GAI Error: %s (`%s')\n", gai_strerror(ret), host);
+        return 1;
+    }
+
+    static const size_t max_results = 8;
+    size_t result_count = 0;
+    struct {
+        socklen_t size;
+        struct sockaddr address;
+    } result_addrs[max_results];
+    for (rp = result; rp != NULL; rp = rp->ai_next) {
+        if (result_count >= max_results)
+            break;
+
+        if (rp->ai_family != AF_INET &&
+            rp->ai_family != AF_INET6)
+        {
+            continue;
+        }
+
+        result_addrs[result_count].address = *rp->ai_addr;
+        result_addrs[result_count].size = rp->ai_addrlen;
+        result_count++;
+    }
+
+    if (result_count > 0) {
+        size_t result_index = (time(NULL) % result_count);
+        address->raw = result_addrs[result_index].address;
+        address->size = result_addrs[result_index].size;
+        if (address->raw.sa_family == AF_INET) {
+            address->in.sin_port = port;
+        } else {
+            address->in6.sin6_port = port;
+        }
+    }
+
+    freeaddrinfo(result);
+    return (result_count > 0 ? 0 : 1);
+}
+
 static inline int nDPIsrvd_setup_address(struct nDPIsrvd_address * const address, char const * const destination)
 {
     if (address == NULL || destination == NULL)
@@ -722,7 +776,9 @@ static inline int nDPIsrvd_setup_address(struct nDPIsrvd_address * const address
         }
         if (inet_pton(address->raw.sa_family, addr_buf, sock_addr) != 1)
         {
-            return 1;
+            char buf[512];
+            snprintf(buf, sizeof(buf), "%.*s", (int)(last_colon - destination), destination);
+            return nDPIsrvd_resolve_host(address, buf, (in_port_t)htons(atoi(last_colon + 1)));
         }
     }
 

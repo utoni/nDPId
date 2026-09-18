@@ -9,6 +9,8 @@
 #include <openssl/x509v3.h>
 #include <unistd.h>
 
+#include "utils.h"
+
 int ncrypt_init(void)
 {
     SSL_load_error_strings();
@@ -47,14 +49,33 @@ static int ncrypt_load_pems(struct ncrypt_ctx * const ctx,
                             char const * const privkey_pem_path,
                             char const * const cert_pem_path)
 {
-    if (SSL_CTX_use_certificate_file(ctx->ssl_ctx, cert_pem_path, SSL_FILETYPE_PEM) <= 0 ||
-        SSL_CTX_use_PrivateKey_file(ctx->ssl_ctx, privkey_pem_path, SSL_FILETYPE_PEM) <= 0 ||
-        SSL_CTX_load_verify_locations(ctx->ssl_ctx, ca_path, NULL) <= 0)
+    char err_buf[256];
+
+    err_buf[0] = '\0';
+    if (SSL_CTX_use_certificate_file(ctx->ssl_ctx, cert_pem_path, SSL_FILETYPE_PEM) <= 0) {
+        ERR_error_string_n(ERR_get_error(), err_buf, sizeof(err_buf));
+        logger_early(1, "Failed to load Certificate `%s': %s", cert_pem_path, err_buf);
+        while (ERR_get_error() != 0) {}
+    }
+    if (SSL_CTX_use_PrivateKey_file(ctx->ssl_ctx, privkey_pem_path, SSL_FILETYPE_PEM) <= 0) {
+        ERR_error_string_n(ERR_get_error(), err_buf, sizeof(err_buf));
+        logger_early(1, "Failed to load Private Key `%s': %s", privkey_pem_path, err_buf);
+        while (ERR_get_error() != 0) {}
+    }
+    if (SSL_CTX_load_verify_locations(ctx->ssl_ctx, ca_path, NULL) <= 0)
     {
+        ERR_error_string_n(ERR_get_error(), err_buf, sizeof(err_buf));
+        logger_early(1, "Failed to load CA File `%s': %s", ca_path, err_buf);
+        while (ERR_get_error() != 0) {}
+    }
+    if (err_buf[0] != '\0') {
         return NCRYPT_PEM_LOAD_FAILED;
     }
 
     if (SSL_CTX_check_private_key(ctx->ssl_ctx) != 1) {
+        ERR_error_string_n(ERR_get_error(), err_buf, sizeof(err_buf));
+        logger_early(1, "Private Key Verification failed: %s", err_buf);
+        while (ERR_get_error() != 0) {}
         return NCRYPT_PEM_LOAD_FAILED;
     }
 
