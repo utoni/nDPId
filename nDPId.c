@@ -7,6 +7,7 @@
 #include <ifaddrs.h>
 #include <net/ethernet.h>
 #include <net/if.h>
+#include <netinet/if_ether.h>
 #include <netinet/in.h>
 #include <ndpi_api.h>
 #include <ndpi_classify.h>
@@ -54,6 +55,18 @@
 
 #ifndef ETHERTYPE_PAE
 #define ETHERTYPE_PAE 0x888e
+#endif
+
+#ifndef ETHERTYPE_REALTEK
+#define ETHERTYPE_REALTEK 0x8899
+#endif
+
+#ifndef ETH_ALEN
+#define ETH_ALEN 6
+#endif
+
+#ifndef ETH_P_RARP
+#define ETH_P_RARP 0x8035
 #endif
 
 #ifndef DLT_DSA_TAG_DSA
@@ -3997,6 +4010,12 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
                 return 1;
             }
 
+            static uint8_t const ncb_mcast[ETH_ALEN] = { 0x01, 0x80, 0xC2, 0x00, 0x00, 0x00 };
+            if (memcmp(ethernet->h_dest, ncb_mcast, ETH_ALEN) == 0) {
+                /* Skip Nearest Customer Bridge frames */
+                return 1;
+            }
+
             *ip_offset = sizeof(struct ndpi_ethhdr) + eth_offset;
             *layer3_type = ntohs(ethernet->h_proto);
 
@@ -4057,6 +4076,8 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
                 case ETH_P_RARP: /* Reverse ARP */
                     return 1;
                 case ETHERTYPE_PAE: /* 802.1X Authentication */
+                    return 1;
+                case ETHERTYPE_REALTEK: /* Realtek Layer 2 Protocols */
                     return 1;
                 case ETHERTYPE_ARP: /* ARP */
                     return 1;
