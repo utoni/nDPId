@@ -3989,6 +3989,14 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
             }
 
             ethernet = (struct ndpi_ethhdr const *)&packet[eth_offset];
+
+            /* Cisco CDP Multicast Address */
+            static uint8_t const cdp_mcast[ETH_ALEN] = { 0x01, 0x00, 0x0C, 0xCC, 0xCC, 0xCC };
+            if (memcmp(ethernet->h_dest, cdp_mcast, ETH_ALEN) == 0) {
+                /* Skip Cisco CDP frames */
+                return 1;
+            }
+
             *ip_offset = sizeof(struct ndpi_ethhdr) + eth_offset;
             *layer3_type = ntohs(ethernet->h_proto);
 
@@ -4046,6 +4054,8 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
                     break;
                 case ETH_P_IPV6: /* IPV6 */
                     break;
+                case ETH_P_RARP: /* Reverse ARP */
+                    return 1;
                 case ETHERTYPE_PAE: /* 802.1X Authentication */
                     return 1;
                 case ETHERTYPE_ARP: /* ARP */

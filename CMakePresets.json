@@ -1,0 +1,60 @@
+{
+  "version": 2,
+  "configurePresets": [
+    {
+      "name": "unix",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build"
+    },
+    {
+      "name": "minimal-unix",
+      "inherits": "unix",
+      "binaryDir": "${sourceDir}/build-minimal",
+      "cacheVariables": {
+        "BUILD_NDPI": "ON"
+      }
+    },
+    {
+      "name": "default-unix",
+      "inherits": "minimal-unix",
+      "binaryDir": "${sourceDir}/build-default",
+      "cacheVariables": {
+        "BUILD_EXAMPLES": "ON"
+      }
+    },
+    {
+      "name": "all-unix",
+      "inherits": "default-unix",
+      "cacheVariables": {
+        "BUILD_RUST_EXAMPLES": "ON",
+        "ENABLE_CONNTRACK": "ON",
+        "ENABLE_CRYPTO": "ON",
+        "ENABLE_CURL": "ON",
+        "ENABLE_DBUS": "ON",
+        "ENABLE_SYSTEMD": "ON",
+        "ENABLE_ZLIB": "ON"
+      }
+    },
+    {
+      "name": "all-unix-asan",
+      "inherits": "all-unix",
+      "cacheVariables": {
+        "ENABLE_SANITIZER": "ON"
+      }
+    },
+    {
+      "name": "all-unix-tsan",
+      "inherits": "all-unix",
+      "cacheVariables": {
+        "ENABLE_SANITIZER_THREAD": "ON"
+      }
+    },
+    {
+      "name": "all-unix-profiler",
+      "inherits": "all-unix",
+      "cacheVariables": {
+        "ENABLE_MEMORY_PROFILING": "ON"
+      }
+    }
+  ]
+}
