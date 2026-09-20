@@ -13,10 +13,10 @@
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
      DAEMON-EVENT: [Processed: 9 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 1|updates: 0]
-      ERROR-EVENT: Unknown packet type [1/16]
-      ERROR-EVENT: Unknown packet type [2/16]
-      ERROR-EVENT: Unknown packet type [3/16]
+              new: [.....3][...2] [ip4][..udp] [...10.238.36.64][.2152] -> [..10.238.244.49][.2152]
+         detected: [.....3][...2] [ip4][..udp] [...10.238.36.64][.2152] -> [..10.238.244.49][.2152] [GTP.GTP_U][Unknown][Network][Acceptable]
           guessed: [.....2] [ip4][..tcp] [...74.80.160.99][.3258] -> [...67.217.77.28][..443] [TLS][Unknown][Web][Safe]
                    RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..tcp] [...74.80.160.99][.3258] -> [...67.217.77.28][..443]
+             idle: [.....3][...2] [ip4][..udp] [...10.238.36.64][.2152] -> [..10.238.244.49][.2152] [GTP.GTP_U][Unknown][Network][Acceptable]
      DAEMON-EVENT: shutdown

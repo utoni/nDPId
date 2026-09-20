@@ -3743,7 +3743,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
                                   uint16_t * const layer3_type,
                                   uint16_t * const vlan_id)
 {
-    const uint16_t eth_offset = 0;
+    uint16_t eth_offset = 0;
     int datalink_type;
     const struct ndpi_ethhdr * ethernet;
 
@@ -3985,6 +3985,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
             }
             break;
         case DLT_EN10MB:
+decode_layer2_again:
             if (header->caplen < sizeof(struct ndpi_ethhdr))
             {
                 if (is_error_event_threshold(reader_thread->workflow) == 0)
@@ -4081,6 +4082,10 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
                     return 1;
                 case ETHERTYPE_ARP: /* ARP */
                     return 1;
+                case ETHERTYPE_VLAN:
+                    /* Decode Layer 2 again. */
+                    eth_offset += 4;
+                    goto decode_layer2_again;
                 default:
                     if (is_error_event_threshold(reader_thread->workflow) == 0)
                     {

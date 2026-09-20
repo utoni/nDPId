@@ -1,8 +1,12 @@
      DAEMON-EVENT: init
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-      ERROR-EVENT: Unknown packet type [1/16]
-     DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-      ERROR-EVENT: Unknown packet type [1/16]
+              new: [.....1][...5] [ip4][..udp] [...10.238.80.26][.2152] -> [..10.238.254.75][.2152]
+         detected: [.....1][...5] [ip4][..udp] [...10.238.80.26][.2152] -> [..10.238.254.75][.2152] [GTP.GTP_U][Unknown][Network][Acceptable]
+     DAEMON-EVENT: [Processed: 1 pkts][ZLib][compressions: 0|diff: 0 / 0]
+     DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
+              new: [.....2][...2] [ip4][..udp] [...10.238.36.92][.2152] -> [..10.238.254.77][.2152]
+         detected: [.....2][...2] [ip4][..udp] [...10.238.36.92][.2152] -> [..10.238.254.77][.2152] [GTP.GTP_U][Unknown][Network][Acceptable]
+             idle: [.....2][...2] [ip4][..udp] [...10.238.36.92][.2152] -> [..10.238.254.77][.2152] [GTP.GTP_U][Unknown][Network][Acceptable]
+             idle: [.....1][...5] [ip4][..udp] [...10.238.80.26][.2152] -> [..10.238.254.75][.2152] [GTP.GTP_U][Unknown][Network][Acceptable]
      DAEMON-EVENT: shutdown
