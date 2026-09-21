@@ -34,9 +34,12 @@
       ERROR-EVENT: Unknown packet type [1/16]
      DAEMON-EVENT: [Processed: 84 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 5|updates: 0]
-              new: [.....3][.223] [ip4][..udp] [...10.132.78.32][.2152] -> [...10.133.104.0][.2152]
-         detected: [.....3][.223] [ip4][..udp] [...10.132.78.32][.2152] -> [...10.133.104.0][.2152] [GTP.GTP_U][Unknown][Network][Acceptable]
-             idle: [.....3][.223] [ip4][..udp] [...10.132.78.32][.2152] -> [...10.133.104.0][.2152] [GTP.GTP_U][Unknown][Network][Acceptable]
+              new: [.....3][.223] [ip4][..udp] [..10.140.124.26][50424] -> [...34.149.76.49][..443]
+         detected: [.....3][.223] [ip4][..udp] [..10.140.124.26][50424] -> [...34.149.76.49][..443] [QUIC][GoogleCloud][Web][Acceptable]
+ detection-update: [.....3][.223] [ip4][..udp] [..10.140.124.26][50424] -> [...34.149.76.49][..443] [QUIC][GoogleCloud][Advertisement][Tracker_Ads][gateway.unityads.unity3d.com]
+                   RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..tcp] [..172.26.219.44][58639] -> [..172.30.69.103][...22] [SSH][Unknown][RemoteAccess][Acceptable]
                    RISK: SSH Obsolete Cli Vers/Cipher, SSH Obsolete Ser Vers/Cipher
+             idle: [.....3][.223] [ip4][..udp] [..10.140.124.26][50424] -> [...34.149.76.49][..443] [QUIC][GoogleCloud][Advertisement][Tracker_Ads][gateway.unityads.unity3d.com]
+                   RISK: Unidirectional Traffic
      DAEMON-EVENT: shutdown

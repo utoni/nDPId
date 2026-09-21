@@ -36,8 +36,7 @@
     "if": {
         "properties": { "error_event_name": { "enum": [ "Packet too short", "IP4 packet too short",
                                                         "IP6 packet too short", "TCP packet smaller than expected",
-                                                        "UDP packet smaller than expected",
-                                                        "Captured packet size is smaller than expected packet size" ] } }
+                                                        "UDP packet smaller than expected" ] } }
     },
     "then": {
         "anyOf": [
@@ -108,7 +107,6 @@
                 "Tunnel decoding failed",
                 "TCP packet smaller than expected",
                 "UDP packet smaller than expected",
-                "Captured packet size is smaller than expected packet size",
                 "Max flows to track reached",
                 "Flow memory allocation failed"
             ]

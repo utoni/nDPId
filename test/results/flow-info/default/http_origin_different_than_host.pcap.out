@@ -1,7 +1,7 @@
      DAEMON-EVENT: init
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1][.113] [ip4][..udp] [....10.134.25.5][.2152] -> [..10.132.15.176][.2152]
-         detected: [.....1][.113] [ip4][..udp] [....10.134.25.5][.2152] -> [..10.132.15.176][.2152] [GTP.GTP_U][Unknown][Network][Acceptable]
-             idle: [.....1][.113] [ip4][..udp] [....10.134.25.5][.2152] -> [..10.132.15.176][.2152] [GTP.GTP_U][Unknown][Network][Acceptable]
+              new: [.....1][.113] [ip4][..tcp] [..10.140.206.74][34536] -> [.18.135.206.102][...80]
+         detected: [.....1][.113] [ip4][..tcp] [..10.140.206.74][34536] -> [.18.135.206.102][...80] [HTTP.WebSocket][AWS_EC2][Web][Acceptable][csb.performgroup.io]
+             idle: [.....1][.113] [ip4][..tcp] [..10.140.206.74][34536] -> [.18.135.206.102][...80] [HTTP.WebSocket][AWS_EC2][Web][Acceptable][csb.performgroup.io]
      DAEMON-EVENT: shutdown

@@ -13,10 +13,12 @@
                    RISK: Obsolete TLS (v1.1 or older), Weak TLS Cipher
      DAEMON-EVENT: [Processed: 9 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 1|updates: 0]
-              new: [.....3][...2] [ip4][..udp] [...10.238.36.64][.2152] -> [..10.238.244.49][.2152]
-         detected: [.....3][...2] [ip4][..udp] [...10.238.36.64][.2152] -> [..10.238.244.49][.2152] [GTP.GTP_U][Unknown][Network][Acceptable]
+              new: [.....3][...2] [ip4][..tcp] [..10.191.139.17][58552] -> [..54.221.224.45][..443]
+         detected: [.....3][...2] [ip4][..tcp] [..10.191.139.17][58552] -> [..54.221.224.45][..443] [TLS.Crashlytics][AWS_EC2][DataTransfer][Acceptable][e.crashlytics.com]
+                   RISK: Uncommon TLS ALPN, TLS Susp Extn
+             idle: [.....3][...2] [ip4][..tcp] [..10.191.139.17][58552] -> [..54.221.224.45][..443] [TLS.Crashlytics][AWS_EC2][DataTransfer][Acceptable]
+                   RISK: Uncommon TLS ALPN, TLS Susp Extn
           guessed: [.....2] [ip4][..tcp] [...74.80.160.99][.3258] -> [...67.217.77.28][..443] [TLS][Unknown][Web][Safe]
                    RISK: Unidirectional Traffic
              idle: [.....2] [ip4][..tcp] [...74.80.160.99][.3258] -> [...67.217.77.28][..443]
-             idle: [.....3][...2] [ip4][..udp] [...10.238.36.64][.2152] -> [..10.238.244.49][.2152] [GTP.GTP_U][Unknown][Network][Acceptable]
      DAEMON-EVENT: shutdown

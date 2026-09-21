@@ -8,18 +8,26 @@
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
      DAEMON-EVENT: [Processed: 2 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 1|updates: 0]
-              new: [.....2][..10] [ip4][..udp] [....10.116.8.57][.2152] -> [..10.238.250.51][.2152]
-         detected: [.....2][..10] [ip4][..udp] [....10.116.8.57][.2152] -> [..10.238.250.51][.2152] [GTP.GTP_U][Unknown][Network][Acceptable]
+              new: [.....2][..10] [ip4][..udp] [..10.191.227.13][54162] -> [.157.240.16.128][.3478]
+         detected: [.....2][..10] [ip4][..udp] [..10.191.227.13][54162] -> [.157.240.16.128][.3478] [DTLS][Facebook][Web][Safe]
+                   RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
+ detection-update: [.....2][..10] [ip4][..udp] [..10.191.227.13][54162] -> [.157.240.16.128][.3478] [DTLS][Facebook][Web][Safe]
+                   RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
+ detection-update: [.....2][..10] [ip4][..udp] [..10.191.227.13][54162] -> [.157.240.16.128][.3478] [DTLS][Facebook][Web][Safe]
+                   RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
+ detection-update: [.....2][..10] [ip4][..udp] [..10.191.227.13][54162] -> [.157.240.16.128][.3478] [DTLS][Facebook][Web][Safe]
+                   RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, TLS Fatal Alert
              idle: [.....1] [ip4][..udp] [.192.168.13.203][40739] -> [..192.168.13.57][56515] [DTLS][Unknown][Web][Safe]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
      DAEMON-EVENT: [Processed: 6 pkts][ZLib][compressions: 0|diff: 0 / 0]
-     DAEMON-EVENT: [Flows][active: 1 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 1|updates: 0]
+     DAEMON-EVENT: [Flows][active: 1 / 2|skipped: 0|!detected: 0|guessed: 0|detection-updates: 4|updates: 0]
               new: [.....3] [ip4][..udp] [......127.0.0.1][40983] -> [......127.0.0.1][11111]
          detected: [.....3] [ip4][..udp] [......127.0.0.1][40983] -> [......127.0.0.1][11111] [DTLS][Unknown][Web][Safe]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
  detection-update: [.....3] [ip4][..udp] [......127.0.0.1][40983] -> [......127.0.0.1][11111] [DTLS][Unknown][Web][Safe]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
+             idle: [.....2][..10] [ip4][..udp] [..10.191.227.13][54162] -> [.157.240.16.128][.3478] [DTLS][Facebook][Web][Safe]
+                   RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn, TLS Fatal Alert
              idle: [.....3] [ip4][..udp] [......127.0.0.1][40983] -> [......127.0.0.1][11111] [DTLS][Unknown][Web][Safe]
                    RISK: TLS (probably) Not Carrying HTTPS, Missing SNI TLS Extn
-             idle: [.....2][..10] [ip4][..udp] [....10.116.8.57][.2152] -> [..10.238.250.51][.2152] [GTP.GTP_U][Unknown][Network][Acceptable]
      DAEMON-EVENT: shutdown

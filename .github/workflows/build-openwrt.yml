@@ -35,7 +35,7 @@ jobs:
 
       - name: Download SDK
         run: |
-          SDK_VER="25.12.4"
+          SDK_VER="25.12.5"
           GCC_VER="14.3.0"
           case "${{ matrix.target }}" in
             x86-64)
@@ -88,7 +88,7 @@ jobs:
       - name: Build package
         run: |
           cd $SDK_DIR
-          make package/nDPId-testing/compile -j$(nproc) V=s
+          make package/nDPId-testing/compile -j$(nproc)
 
       - name: Upload APK
         uses: actions/upload-artifact@v7

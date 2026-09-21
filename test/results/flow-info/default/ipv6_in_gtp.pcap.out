@@ -1,12 +1,13 @@
      DAEMON-EVENT: init
      DAEMON-EVENT: [Processed: 0 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 0 / 0|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....1][...5] [ip4][..udp] [...10.238.80.26][.2152] -> [..10.238.254.75][.2152]
-         detected: [.....1][...5] [ip4][..udp] [...10.238.80.26][.2152] -> [..10.238.254.75][.2152] [GTP.GTP_U][Unknown][Network][Acceptable]
+              new: [.....1] [ip6][..udp] [.2607:fc20:4052:39e:490a:ea4d:17fe:e09c][49120] -> [.................fd00:976a:bc67:193e::7][25658]
      DAEMON-EVENT: [Processed: 1 pkts][ZLib][compressions: 0|diff: 0 / 0]
      DAEMON-EVENT: [Flows][active: 1 / 1|skipped: 0|!detected: 0|guessed: 0|detection-updates: 0|updates: 0]
-              new: [.....2][...2] [ip4][..udp] [...10.238.36.92][.2152] -> [..10.238.254.77][.2152]
-         detected: [.....2][...2] [ip4][..udp] [...10.238.36.92][.2152] -> [..10.238.254.77][.2152] [GTP.GTP_U][Unknown][Network][Acceptable]
-             idle: [.....2][...2] [ip4][..udp] [...10.238.36.92][.2152] -> [..10.238.254.77][.2152] [GTP.GTP_U][Unknown][Network][Acceptable]
-             idle: [.....1][...5] [ip4][..udp] [...10.238.80.26][.2152] -> [..10.238.254.75][.2152] [GTP.GTP_U][Unknown][Network][Acceptable]
+              new: [.....2] [ip6][...50] [.......2a01:4c8:c014:144e:1:2:945b:6761] -> [...................2a01:4c8:f000:f49::4]
+         detected: [.....2] [ip6][...50] [.......2a01:4c8:c014:144e:1:2:945b:6761] -> [...................2a01:4c8:f000:f49::4] [ESP][Unknown][VPN][Safe]
+             idle: [.....2] [ip6][...50] [.......2a01:4c8:c014:144e:1:2:945b:6761] -> [...................2a01:4c8:f000:f49::4] [ESP][Unknown][VPN][Safe]
+     not-detected: [.....1] [ip6][..udp] [.2607:fc20:4052:39e:490a:ea4d:17fe:e09c][49120] -> [.................fd00:976a:bc67:193e::7][25658] [Unknown][Unknown][Unspecified][Unrated]
+                   RISK: Susp Entropy, Unidirectional Traffic
+             idle: [.....1] [ip6][..udp] [.2607:fc20:4052:39e:490a:ea4d:17fe:e09c][49120] -> [.................fd00:976a:bc67:193e::7][25658]
      DAEMON-EVENT: shutdown

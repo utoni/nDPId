@@ -8,7 +8,7 @@
 #bpf = udp or tcp
 
 # Decapsulate Layer4 tunnel protocols.
-# Supported protocols: GRE
+# Supported protocols: GTP / GRE
 #decode-tunnel = true
 
 #pidfile     = /tmp/ndpid.pid
