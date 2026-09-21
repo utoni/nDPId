@@ -100,14 +100,12 @@ static struct
         uint64_t error_packet_type_unknown;
         uint64_t error_packet_header_invalid;
         uint64_t error_ip4_packet_too_short;
-        uint64_t error_ip4_size_smaller_than_header;
         uint64_t error_ip4_l4_payload_detection;
         uint64_t error_ip6_packet_too_short;
-        uint64_t error_ip6_size_smaller_than_header;
         uint64_t error_ip6_l4_payload_detection;
+        uint64_t error_tunnel_decoding;
         uint64_t error_tcp_packet_too_short;
         uint64_t error_udp_packet_too_short;
-        uint64_t error_capture_size_smaller_than_packet;
         uint64_t error_max_flows_to_track;
         uint64_t error_flow_memory_alloc;
 
@@ -316,15 +314,12 @@ static struct global_map const error_event_map[] = {
     {"Unknown packet type", INFLUXD_STATS_COUNTER_PTR(error_packet_type_unknown)},
     {"Packet header invalid", INFLUXD_STATS_COUNTER_PTR(error_packet_header_invalid)},
     {"IP4 packet too short", INFLUXD_STATS_COUNTER_PTR(error_ip4_packet_too_short)},
-    {"Packet smaller than IP4 header", INFLUXD_STATS_COUNTER_PTR(error_ip4_size_smaller_than_header)},
     {"nDPI IPv4\\/L4 payload detection failed", INFLUXD_STATS_COUNTER_PTR(error_ip4_l4_payload_detection)},
     {"IP6 packet too short", INFLUXD_STATS_COUNTER_PTR(error_ip6_packet_too_short)},
-    {"Packet smaller than IP6 header", INFLUXD_STATS_COUNTER_PTR(error_ip6_size_smaller_than_header)},
     {"nDPI IPv6\\/L4 payload detection failed", INFLUXD_STATS_COUNTER_PTR(error_ip6_l4_payload_detection)},
+    {"Tunnel decoding failed", INFLUXD_STATS_COUNTER_PTR(error_tunnel_decoding)},
     {"TCP packet smaller than expected", INFLUXD_STATS_COUNTER_PTR(error_tcp_packet_too_short)},
     {"UDP packet smaller than expected", INFLUXD_STATS_COUNTER_PTR(error_udp_packet_too_short)},
-    {"Captured packet size is smaller than expected packet size",
-     INFLUXD_STATS_COUNTER_PTR(error_capture_size_smaller_than_packet)},
     {"Max flows to track reached", INFLUXD_STATS_COUNTER_PTR(error_max_flows_to_track)},
     {"Flow memory allocation failed", INFLUXD_STATS_COUNTER_PTR(error_flow_memory_alloc)}};
 
@@ -520,8 +515,8 @@ static int serialize_influx_line(char * buf, size_t siz)
                                  INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
                                      INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
                                          INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
-                                             INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
-                                                 INFLUXDB_FORMAT() INFLUXDB_FORMAT_END(),
+                                             INFLUXDB_FORMAT() INFLUXDB_FORMAT() INFLUXDB_FORMAT()
+                                                 INFLUXDB_FORMAT_END(),
                      "events",
                      INFLUXDB_VALUE_COUNTER(flow_new_count),
                      INFLUXDB_VALUE_COUNTER(flow_end_count),
@@ -546,14 +541,12 @@ static int serialize_influx_line(char * buf, size_t siz)
                      INFLUXDB_VALUE_COUNTER(error_packet_type_unknown),
                      INFLUXDB_VALUE_COUNTER(error_packet_header_invalid),
                      INFLUXDB_VALUE_COUNTER(error_ip4_packet_too_short),
-                     INFLUXDB_VALUE_COUNTER(error_ip4_size_smaller_than_header),
                      INFLUXDB_VALUE_COUNTER(error_ip4_l4_payload_detection),
                      INFLUXDB_VALUE_COUNTER(error_ip6_packet_too_short),
-                     INFLUXDB_VALUE_COUNTER(error_ip6_size_smaller_than_header),
                      INFLUXDB_VALUE_COUNTER(error_ip6_l4_payload_detection),
+                     INFLUXDB_VALUE_COUNTER(error_tunnel_decoding),
                      INFLUXDB_VALUE_COUNTER(error_tcp_packet_too_short),
                      INFLUXDB_VALUE_COUNTER(error_udp_packet_too_short),
-                     INFLUXDB_VALUE_COUNTER(error_capture_size_smaller_than_packet),
                      INFLUXDB_VALUE_COUNTER(error_max_flows_to_track),
                      INFLUXDB_VALUE_COUNTER(error_flow_memory_alloc));
     CHECK_SNPRINTF_RET(bytes);

@@ -976,34 +976,6 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "error_ip4_size_smaller_than_header"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "IPv4 Header Size"
-              },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "green",
-                      "value": null
-                    },
-                    {
-                      "color": "yellow",
-                      "value": 1
-                    }
-                  ]
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
               "options": "error_ip6_l4_payload_detection"
             },
             "properties": [
@@ -1038,34 +1010,6 @@
               {
                 "id": "displayName",
                 "value": "IPv6 Packet Size"
-              },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "green",
-                      "value": null
-                    },
-                    {
-                      "color": "yellow",
-                      "value": 1
-                    }
-                  ]
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "error_ip6_size_smaller_than_header"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "IPv6 Header Size"
               },
               {
                 "id": "thresholds",
@@ -1262,6 +1206,34 @@
               {
                 "id": "displayName",
                 "value": "Unknown L3 Protocol"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "error_tunnel_decoding"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Tunnel decoding failed"
               },
               {
                 "id": "thresholds",

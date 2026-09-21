@@ -107,16 +107,14 @@ They are 17 distinct events, indicating that layer2 or layer3 packet processing 
 5. Unknown packet type
 6. Packet header invalid
 7. IP4 packet too short
-8. Packet smaller than IP4 header:
-9. nDPI IPv4/L4 payload detection failed
-10. IP6 packet too short
-11. Packet smaller than IP6 header
-12. nDPI IPv6/L4 payload detection failed
-13. TCP packet smaller than expected
-14. UDP packet smaller than expected
-15. Captured packet size is smaller than expected packet size
-16. Max flows to track reached
-17. Flow memory allocation failed
+8. nDPI IPv4/L4 payload detection failed
+9. IP6 packet too short
+10. nDPI IPv6/L4 payload detection failed
+11. GRE/GTP Tunnel decoding failed
+12. TCP packet smaller than expected
+13. UDP packet smaller than expected
+14. Max flows to track reached
+15. Flow memory allocation failed
 
 Detailed JSON-schema is available [here](schema/error_event_schema.json)
 

@@ -100,14 +100,12 @@ static struct
         uint64_t error_packet_type_unknown;
         uint64_t error_packet_header_invalid;
         uint64_t error_ip4_packet_too_short;
-        uint64_t error_ip4_size_smaller_than_header;
         uint64_t error_ip4_l4_payload_detection;
         uint64_t error_ip6_packet_too_short;
-        uint64_t error_ip6_size_smaller_than_header;
         uint64_t error_ip6_l4_payload_detection;
+        uint64_t error_tunnel_decoding;
         uint64_t error_tcp_packet_too_short;
         uint64_t error_udp_packet_too_short;
-        uint64_t error_capture_size_smaller_than_packet;
         uint64_t error_max_flows_to_track;
         uint64_t error_flow_memory_alloc;
 
@@ -316,15 +314,12 @@ static struct global_map const error_event_map[] = {
     {"Unknown packet type", ANALYSED_STATS_COUNTER_PTR(error_packet_type_unknown)},
     {"Packet header invalid", ANALYSED_STATS_COUNTER_PTR(error_packet_header_invalid)},
     {"IP4 packet too short", ANALYSED_STATS_COUNTER_PTR(error_ip4_packet_too_short)},
-    {"Packet smaller than IP4 header", ANALYSED_STATS_COUNTER_PTR(error_ip4_size_smaller_than_header)},
     {"nDPI IPv4\\/L4 payload detection failed", ANALYSED_STATS_COUNTER_PTR(error_ip4_l4_payload_detection)},
     {"IP6 packet too short", ANALYSED_STATS_COUNTER_PTR(error_ip6_packet_too_short)},
-    {"Packet smaller than IP6 header", ANALYSED_STATS_COUNTER_PTR(error_ip6_size_smaller_than_header)},
     {"nDPI IPv6\\/L4 payload detection failed", ANALYSED_STATS_COUNTER_PTR(error_ip6_l4_payload_detection)},
+    {"Tunnel decoding failed", ANALYSED_STATS_COUNTER_PTR(error_tunnel_decoding)},
     {"TCP packet smaller than expected", ANALYSED_STATS_COUNTER_PTR(error_tcp_packet_too_short)},
     {"UDP packet smaller than expected", ANALYSED_STATS_COUNTER_PTR(error_udp_packet_too_short)},
-    {"Captured packet size is smaller than expected packet size",
-     ANALYSED_STATS_COUNTER_PTR(error_capture_size_smaller_than_packet)},
     {"Max flows to track reached", ANALYSED_STATS_COUNTER_PTR(error_max_flows_to_track)},
     {"Flow memory allocation failed", ANALYSED_STATS_COUNTER_PTR(error_flow_memory_alloc)}};
 
@@ -1613,13 +1608,13 @@ static int parse_options(int argc, char ** argv)
                     "json_lines,json_bytes,flow_src_total_bytes,flow_dst_total_bytes,"
                     "flow_new_count,flow_end_count,flow_idle_count,flow_update_count,flow_analyse_count,flow_guessed_"
                     "count,flow_detected_count,flow_detection_update_count,flow_not_detected_count,flow_risky_count,"
-                    "packet_count,packet_flow_count,init_count,reconnect_count,shutdown_count,status_count,error_"
-                    "unknown_datalink,error_unknown_l3_protocol,error_unsupported_datalink,error_packet_too_short,"
-                    "error_packet_type_unknown,error_packet_header_invalid,error_ip4_packet_too_short,error_ip4_size_"
-                    "smaller_than_header,error_ip4_l4_payload_detection,error_ip6_packet_too_short,error_ip6_size_"
-                    "smaller_than_header,error_ip6_l4_payload_detection,error_tcp_packet_too_short,error_udp_packet_"
-                    "too_short,error_capture_size_smaller_than_packet,error_max_flows_to_track,error_flow_memory_"
-                    "alloc,"
+                    "packet_count,packet_flow_count,init_count,reconnect_count,shutdown_count,status_count,"
+                    "error_unknown_datalink,error_unknown_l3_protocol,error_unsupported_datalink,error_packet_too_short,"
+                    "error_packet_type_unknown,error_packet_header_invalid,error_ip4_packet_too_short,"
+                    "error_ip4_l4_payload_detection,error_ip6_packet_too_short,"
+                    "error_ip6_l4_payload_detection,error_tunnel_decoding,"
+                    "error_tcp_packet_too_short,error_udp_packet_too_short,"
+                    "error_max_flows_to_track,error_flow_memory_alloc,"
                     "flow_state_info,flow_state_finished,"
                     "flow_breed_safe_count,flow_breed_acceptable_count,flow_breed_fun_count,flow_breed_unsafe_count,"
                     "flow_breed_potentially_dangerous_count,flow_breed_tracker_ads_count,flow_breed_dangerous_count,"
@@ -1749,7 +1744,7 @@ static int write_global_flow_stats(void)
                                      ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
                                          ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
                                              ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT()
-                                                 ANALYSEDB_FORMAT() ANALYSEDB_FORMAT() ANALYSEDB_FORMAT(),
+                                                 ANALYSEDB_FORMAT(),
                      ANALYSEDB_VALUE_COUNTER(flow_new_count),
                      ANALYSEDB_VALUE_COUNTER(flow_end_count),
                      ANALYSEDB_VALUE_COUNTER(flow_idle_count),
@@ -1773,14 +1768,12 @@ static int write_global_flow_stats(void)
                      ANALYSEDB_VALUE_COUNTER(error_packet_type_unknown),
                      ANALYSEDB_VALUE_COUNTER(error_packet_header_invalid),
                      ANALYSEDB_VALUE_COUNTER(error_ip4_packet_too_short),
-                     ANALYSEDB_VALUE_COUNTER(error_ip4_size_smaller_than_header),
                      ANALYSEDB_VALUE_COUNTER(error_ip4_l4_payload_detection),
                      ANALYSEDB_VALUE_COUNTER(error_ip6_packet_too_short),
-                     ANALYSEDB_VALUE_COUNTER(error_ip6_size_smaller_than_header),
                      ANALYSEDB_VALUE_COUNTER(error_ip6_l4_payload_detection),
+                     ANALYSEDB_VALUE_COUNTER(error_tunnel_decoding),
                      ANALYSEDB_VALUE_COUNTER(error_tcp_packet_too_short),
                      ANALYSEDB_VALUE_COUNTER(error_udp_packet_too_short),
-                     ANALYSEDB_VALUE_COUNTER(error_capture_size_smaller_than_packet),
                      ANALYSEDB_VALUE_COUNTER(error_max_flows_to_track),
                      ANALYSEDB_VALUE_COUNTER(error_flow_memory_alloc));
     CHECK_SNPRINTF_RET(bytes);

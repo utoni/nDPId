@@ -106,14 +106,12 @@ static struct
         uint64_t error_packet_type_unknown;
         uint64_t error_packet_header_invalid;
         uint64_t error_ip4_packet_too_short;
-        uint64_t error_ip4_size_smaller_than_header;
         uint64_t error_ip4_l4_payload_detection;
         uint64_t error_ip6_packet_too_short;
-        uint64_t error_ip6_size_smaller_than_header;
         uint64_t error_ip6_l4_payload_detection;
+        uint64_t error_tunnel_decoding;
         uint64_t error_tcp_packet_too_short;
         uint64_t error_udp_packet_too_short;
-        uint64_t error_capture_size_smaller_than_packet;
         uint64_t error_max_flows_to_track;
         uint64_t error_flow_memory_alloc;
 
@@ -322,15 +320,12 @@ static struct global_map const error_event_map[] = {
     {"Unknown packet type", COLLECTD_STATS_COUNTER_PTR(error_packet_type_unknown)},
     {"Packet header invalid", COLLECTD_STATS_COUNTER_PTR(error_packet_header_invalid)},
     {"IP4 packet too short", COLLECTD_STATS_COUNTER_PTR(error_ip4_packet_too_short)},
-    {"Packet smaller than IP4 header", COLLECTD_STATS_COUNTER_PTR(error_ip4_size_smaller_than_header)},
     {"nDPI IPv4\\/L4 payload detection failed", COLLECTD_STATS_COUNTER_PTR(error_ip4_l4_payload_detection)},
     {"IP6 packet too short", COLLECTD_STATS_COUNTER_PTR(error_ip6_packet_too_short)},
-    {"Packet smaller than IP6 header", COLLECTD_STATS_COUNTER_PTR(error_ip6_size_smaller_than_header)},
     {"nDPI IPv6\\/L4 payload detection failed", COLLECTD_STATS_COUNTER_PTR(error_ip6_l4_payload_detection)},
+    {"Tunnel decoding failed", COLLECTD_STATS_COUNTER_PTR(error_tunnel_decoding)},
     {"TCP packet smaller than expected", COLLECTD_STATS_COUNTER_PTR(error_tcp_packet_too_short)},
     {"UDP packet smaller than expected", COLLECTD_STATS_COUNTER_PTR(error_udp_packet_too_short)},
-    {"Captured packet size is smaller than expected packet size",
-     COLLECTD_STATS_COUNTER_PTR(error_capture_size_smaller_than_packet)},
     {"Max flows to track reached", COLLECTD_STATS_COUNTER_PTR(error_max_flows_to_track)},
     {"Flow memory allocation failed", COLLECTD_STATS_COUNTER_PTR(error_flow_memory_alloc)}};
 
@@ -691,9 +686,7 @@ static void print_collectd_exec_output(void)
                                                    COLLECTD_COUNTER_N_FORMAT() COLLECTD_COUNTER_N_FORMAT()
                                                        COLLECTD_COUNTER_N_FORMAT() COLLECTD_COUNTER_N_FORMAT()
                                                            COLLECTD_COUNTER_N_FORMAT() COLLECTD_COUNTER_N_FORMAT()
-                                                               COLLECTD_COUNTER_N_FORMAT() COLLECTD_COUNTER_N_FORMAT()
-                                                                   COLLECTD_COUNTER_N_FORMAT()
-                                                                       COLLECTD_COUNTER_N_FORMAT(),
+                                                               COLLECTD_COUNTER_N_FORMAT() COLLECTD_COUNTER_N_FORMAT(),
 
            COLLECTD_COUNTER_N(json_lines),
            COLLECTD_COUNTER_N(json_bytes),
@@ -722,14 +715,12 @@ static void print_collectd_exec_output(void)
            COLLECTD_COUNTER_N(error_packet_type_unknown),
            COLLECTD_COUNTER_N(error_packet_header_invalid),
            COLLECTD_COUNTER_N(error_ip4_packet_too_short),
-           COLLECTD_COUNTER_N(error_ip4_size_smaller_than_header),
            COLLECTD_COUNTER_N(error_ip4_l4_payload_detection),
            COLLECTD_COUNTER_N(error_ip6_packet_too_short),
-           COLLECTD_COUNTER_N(error_ip6_size_smaller_than_header),
            COLLECTD_COUNTER_N(error_ip6_l4_payload_detection),
+           COLLECTD_COUNTER_N(error_tunnel_decoding),
            COLLECTD_COUNTER_N(error_tcp_packet_too_short),
            COLLECTD_COUNTER_N(error_udp_packet_too_short),
-           COLLECTD_COUNTER_N(error_capture_size_smaller_than_packet),
            COLLECTD_COUNTER_N(error_max_flows_to_track),
            COLLECTD_COUNTER_N(error_flow_memory_alloc));
 
