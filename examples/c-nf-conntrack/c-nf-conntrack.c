@@ -36,6 +36,11 @@ static struct {
     char * user;
     char * group;
     char * table;
+    char * protocol;
+    char * category;
+    char * breed;
+    int encrypted;
+    int plaintext;
 } options = {
     .dry_run = 0,
     .verbose = 0,
@@ -45,6 +50,11 @@ static struct {
     .user = NULL,
     .group = NULL,
     .table = NULL,
+    .protocol = NULL,
+    .category = NULL,
+    .breed = NULL,
+    .encrypted = 0,
+    .plaintext = 0
 };
 
 static struct nDPIsrvd_socket * ndpisrvd_socket = NULL;
@@ -110,6 +120,14 @@ static void print_usage(const char * arg0)
         "\t-t, --table        Netfilter table to use\n"
         "\t-i, --ignore       Ignore source address, block destination only\n"
         "\t--no-conntrack     Disable Netfilter Conntrack entry deletion\n"
+        "\t--flow-protocol    Filter only a detected flow protocol\n"
+        "\t                   Example: tls.lagofast\n"
+        "\t--flow-category    Filter only a detected flow category\n"
+        "\t                   Example: vpn\n"
+        "\t--flow-breed       Filter only a detected flow breed\n"
+        "\t                   Example: dangerous\n"
+        "\t--flow-encrypted   Filter only encrypted traffic\n"
+        "\t--flow-plaintext   Filter only plaintext traffic\n"
         "\t-n, --dry-run      only show what would have been done\n"
         "\t-c, --console      log to console instead of syslog\n"
         "\t-v, --verbose      log even more debug messages\n"
@@ -126,6 +144,11 @@ static int parse_options(int argc, char ** argv)
                                          {"table", required_argument, 0, 't'},
                                          {"ignore", no_argument, 0, 'i'},
                                          {"no-conntrack", no_argument, 0, 0},
+                                         {"flow-protocol", required_argument, 0, 0},
+                                         {"flow-category", required_argument, 0, 0},
+                                         {"flow-breed", required_argument, 0, 0},
+                                         {"flow-encrypted", no_argument, 0, 0},
+                                         {"flow-plaintext", no_argument, 0, 0},
                                          {"dry-run", no_argument, 0, 'n'},
                                          {"console", no_argument, 0, 'c'},
                                          {"verbose", no_argument, 0, 'v'},
@@ -141,6 +164,20 @@ static int parse_options(int argc, char ** argv)
             case 0:
                 if (strcmp(opts[optindex].name, "no-conntrack") == 0)
                     options.no_conntrack = 1;
+                else if (strcmp(opts[optindex].name, "flow-protocol") == 0)
+                    options.protocol = strdup(optarg);
+                else if (strcmp(opts[optindex].name, "flow-category") == 0)
+                    options.category = strdup(optarg);
+                else if (strcmp(opts[optindex].name, "flow-breed") == 0)
+                    options.breed = strdup(optarg);
+                else if (strcmp(opts[optindex].name, "flow-encrypted") == 0)
+                    options.encrypted = 1;
+                else if (strcmp(opts[optindex].name, "flow-plaintext") == 0)
+                    options.plaintext = 1;
+                else {
+                    print_usage(argv[0]);
+                    return 1;
+                }
                 break;
             case 's':
                 free(options.distributor_host);
@@ -177,6 +214,14 @@ static int parse_options(int argc, char ** argv)
                 print_usage(argv[0]);
                 return 1;
         }
+    }
+
+    if (options.encrypted != 0 && options.plaintext != 0)
+    {
+        fprintf(stderr,
+                "%s: Exclusive filtering encrypted and plaintext traffic at the same time does not make any sense\n",
+                argv[0]);
+        return 1;
     }
 
     if (options.table == NULL)
@@ -227,6 +272,10 @@ build_conntrack(struct filter const * const flt)
         nfct_set_attr_u16(ct, ATTR_PORT_SRC, htons(flt->sport));
     nfct_set_attr_u16(ct, ATTR_PORT_DST, htons(flt->dport));
 
+    if (options.verbose != 0)
+        logger(0, "Netfilter Conntrack buffer: %s",
+               (flt->src.family == AF_INET ? "AF_INET" : "AF_INET6"));
+
     return ct;
 }
 
@@ -244,12 +293,14 @@ static int run_netfilter_conntrack(struct filter const * const flt)
         return 1;
     }
 
-    errno = 0;
-    int ret = nfct_query(nf_deleter, NFCT_Q_DESTROY, src_to_dst);
-    if (ret == -1) {
-        nfct_destroy(src_to_dst);
-        logger(1, "Could not destroy conntrack entry: %s", strerror(errno));
-        return 1;
+    if (options.dry_run == 0) {
+        errno = 0;
+        int ret = nfct_query(nf_deleter, NFCT_Q_DESTROY, src_to_dst);
+        if (ret == -1) {
+            nfct_destroy(src_to_dst);
+            logger(1, "Could not destroy conntrack entry: %s", strerror(errno));
+            return 1;
+        }
     }
 
     nfct_destroy(src_to_dst);
@@ -551,18 +602,26 @@ static void run_netfilter(struct nDPIsrvd_socket * const sock,
     int is_tcp = token_equals(sock, l4_proto, "tcp");
     int is_udp = token_equals(sock, l4_proto, "udp");
 
-    if (is_ip4 == 0 && is_ip6 == 0)
+    if (is_ip4 == 0 && is_ip6 == 0) {
+        logger(1, "Not blocking traffic as Layer3 is neither IPv4 nor IPv6");
         return;
-    if (is_tcp == 0 && is_udp == 0)
+    }
+    if (is_tcp == 0 && is_udp == 0) {
+        logger(1, "Not blocking traffic as Layer4 is neither TCP nor UDP");
         return;
+    }
 
     struct filter flt;
     memset(&flt, '\0', sizeof(flt));
 
-    if (token_to_ip_str(sock, src_ip, flt.src.addr_str) != 0)
+    if (token_to_ip_str(sock, src_ip, flt.src.addr_str) != 0) {
+        logger(1, "Could not convert token to source IP");
         return;
-    if (token_to_ip_str(sock, dst_ip, flt.dst.addr_str) != 0)
+    }
+    if (token_to_ip_str(sock, dst_ip, flt.dst.addr_str) != 0) {
+        logger(1, "Could not convert token to destination IP");
         return;
+    }
 
     if (is_ip4 != 0 && inet_pton(AF_INET, flt.src.addr_str, &flt.src.addr4) == 1) {
         flt.src.family = AF_INET;
@@ -592,10 +651,14 @@ static void run_netfilter(struct nDPIsrvd_socket * const sock,
     if (token_to_port(sock, src_port, &src_port_u16) == 0) {
         flt.sport = src_port_u16;
         flt.have_sport = 1;
+    } else {
+        logger(1, "Could not convert token to source Port");
     }
     if (token_to_port(sock, dst_port, &dst_port_u16) == 0) {
         flt.dport = dst_port_u16;
         flt.have_dport = 1;
+    } else {
+        logger(1, "Could not convert token to destination Port");
     }
 
     if (options.verbose) {
@@ -622,21 +685,121 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
     int do_block = 0;
 
     {
-        struct nDPIsrvd_json_token const * const flow_risk = TOKEN_GET_SZ(sock, "ndpi", "flow_risk");
-        if (flow_risk != NULL) {
-            do_block++;
-        }
+        struct nDPIsrvd_json_token const * const flow_event_name = TOKEN_GET_SZ(sock, "flow_event_name");
+        if (flow_event_name == NULL)
+            return CALLBACK_OK;
     }
     {
         struct nDPIsrvd_json_token const * const flow_proto = TOKEN_GET_SZ(sock, "ndpi", "proto");
-        if (flow_proto != NULL) {
-            do_block++;
+        if (flow_proto != NULL && options.protocol != NULL) {
+            size_t proto_length = 0;
+            char const * const proto = TOKEN_GET_VALUE(sock, flow_proto, &proto_length);
+            if (proto != NULL && proto_length > 0)
+            {
+                if (options.verbose != 0)
+                    logger(0, "Matching `%s' against `%.*s' (flow-protocol)",
+                           options.protocol, (int)proto_length, proto);
+
+                if (proto_length >= strlen(options.protocol))
+                {
+                    if (strncasecmp(proto, options.protocol, proto_length) == 0)
+                    {
+                        do_block++;
+                    } else {
+                        if (options.verbose != 0)
+                            logger(0, "NO match `%s' against `%.*s' (flow-protocol)",
+                                   options.protocol, (int)proto_length, proto);
+                        char const * app_proto = NULL;
+                        for (size_t i = 0; i < proto_length; ++i) {
+                            if (proto[i] == '.') {
+                                app_proto = &proto[i + 1];
+                                break;
+                            }
+                        }
+                        if (app_proto != NULL) {
+                            size_t app_length = proto_length - (app_proto - proto);
+                            if (options.verbose != 0)
+                                logger(0, "Matching `%s' against application `%.*s' (flow-protocol)",
+                                       options.protocol, (int)app_length, app_proto);
+
+                            if (app_length > 0 &&
+                                strncasecmp(app_proto, options.protocol, app_length) == 0)
+                            {
+                                do_block++;
+                            } else if (options.verbose != 0) {
+                                logger(0, "NO match `%s' against application `%.*s' (flow-protocol)",
+                                       options.protocol, (int)app_length, app_proto);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
     {
         struct nDPIsrvd_json_token const * const flow_category = TOKEN_GET_SZ(sock, "ndpi", "category");
-        if (flow_category != NULL) {
-            do_block++;
+        if (flow_category != NULL && options.category != NULL) {
+            size_t category_length = 0;
+            char const * const category = TOKEN_GET_VALUE(sock, flow_category, &category_length);
+            if (category != NULL && category_length > 0)
+            {
+                if (options.verbose != 0)
+                    logger(0, "Matching `%s' against `%.*s' (flow-category)",
+                           options.category, (int)category_length, category);
+                if (category_length >= strlen(options.category) &&
+                    strncasecmp(category, options.category, category_length) == 0)
+                {
+                    do_block++;
+                } else if (options.verbose != 0)
+                    logger(0, "NO match `%s' against `%.*s' (flow-category)",
+                           options.category, (int)category_length, category);
+            }
+        }
+    }
+    {
+        struct nDPIsrvd_json_token const * const flow_breed = TOKEN_GET_SZ(sock, "ndpi", "breed");
+        if (flow_breed != NULL && options.breed != NULL) {
+            size_t breed_length = 0;
+            char const * const breed = TOKEN_GET_VALUE(sock, flow_breed, &breed_length);
+            if (breed != NULL && breed_length > 0)
+            {
+                if (options.verbose != 0)
+                    logger(0, "Matching `%s' against `%.*s' (flow-breed)",
+                           options.breed, (int)breed_length, breed);
+                if (breed_length >= strlen(options.breed) &&
+                    strncasecmp(breed, options.breed, breed_length) == 0)
+                {
+                    do_block++;
+                } else if (options.verbose != 0)
+                    logger(0, "NO match `%s' against `%.*s' (flow-breed)",
+                           options.breed, (int)breed_length, breed);
+            }
+        }
+    }
+    {
+        struct nDPIsrvd_json_token const * const flow_encrypted = TOKEN_GET_SZ(sock, "ndpi", "encrypted");
+        if (flow_encrypted != NULL && (options.encrypted != 0 || options.plaintext != 0)) {
+            size_t encrypted_length = 0;
+            char const * const encrypted = TOKEN_GET_VALUE(sock, flow_encrypted, &encrypted_length);
+            if (encrypted != NULL && encrypted_length > 0) {
+                if (options.verbose != 0) {
+                    if (options.encrypted != 0)
+                        logger(0, "Matching 1 against `%.*s' (flow-encrypted)",
+                               (int)encrypted_length, encrypted);
+                    if (options.plaintext != 0)
+                        logger(0, "Matching 0 against `%.*s' (flow-plaintext)",
+                               (int)encrypted_length, encrypted);
+                }
+                if (strncmp(encrypted, "1", encrypted_length) == 0) {
+                    if (options.encrypted != 0)
+                        do_block++;
+                } else if (options.plaintext != 0) {
+                    do_block++;
+                } else {
+                    logger(0, "NO match 1 / 0 against `%.*s' (flow-encrypted / flow-plaintext)",
+                           (int)encrypted_length, encrypted);
+                }
+            }
         }
     }
 
@@ -649,10 +812,18 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
         struct nDPIsrvd_json_token const * const src_port = TOKEN_GET_SZ(sock, "src_port");
         struct nDPIsrvd_json_token const * const dst_port = TOKEN_GET_SZ(sock, "dst_port");
 
-        if (l3_proto == NULL || l4_proto == NULL)
+        if (options.verbose != 0)
+            logger(0, "Matched %u DPI criteria", do_block);
+        if (l3_proto == NULL || l4_proto == NULL) {
+            if (options.verbose != 0)
+                logger(0, "Not blocking traffic as Layer3 or Layer4 protocol missing");
             return CALLBACK_ERROR;
-        if (src_ip == NULL || dst_ip == NULL)
+        }
+        if (src_ip == NULL || dst_ip == NULL) {
+            if (options.verbose != 0)
+                logger(0, "Not blocking traffic as Source or Destination IP address missing");
             return CALLBACK_ERROR;
+        }
 
         run_netfilter(sock, l3_proto, src_ip, dst_ip, l4_proto, src_port, dst_port);
     }
