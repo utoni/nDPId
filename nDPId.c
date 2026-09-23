@@ -2248,7 +2248,7 @@ static void process_idle_flow(struct nDPId_reader_thread * const reader_thread, 
 
     while (workflow->cur_idle_flows > 0)
     {
-        struct nDPId_flow_basic * const flow_basic =
+        struct nDPId_flow_basic * flow_basic =
             (struct nDPId_flow_basic *)workflow->ndpi_flows_idle[--workflow->cur_idle_flows];
 
         switch (flow_basic->state)
@@ -2326,8 +2326,13 @@ static void process_idle_flow(struct nDPId_reader_thread * const reader_thread, 
             }
         }
 
-        ndpi_tdelete(flow_basic, &workflow->ndpi_flows_active[idle_scan_index], ndpi_workflow_node_cmp);
-        ndpi_flow_info_free(flow_basic);
+        flow_basic = (struct nDPId_flow_basic *)ndpi_tdelete(
+            flow_basic, &workflow->ndpi_flows_active[idle_scan_index],
+            ndpi_workflow_node_cmp
+        );
+        if (flow_basic != NULL) {
+            ndpi_flow_info_free(flow_basic);
+        }
         workflow->cur_active_flows--;
     }
 }

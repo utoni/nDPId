@@ -1,3 +1,5 @@
+#include <sys/mman.h> // memfd_create()
+
 #define NO_MAIN 1
 #include "../utils.c"
 #include "../nio.c"
@@ -15,10 +17,18 @@ int LLVMFuzzerTestOneInput(const uint8_t * data, size_t size)
 
         init_logging("fuzz_ndpi_process_packet");
         log_app_info();
+        enable_console_logger();
 
         set_cmdarg_string(&nDPId_options.instance_alias, "fuzz_ndpi_process_packet");
-        set_cmdarg_ull(&nDPId_options.max_flows_per_thread, 1024);
-        set_cmdarg_ull(&nDPId_options.max_idle_flows_per_thread, 16);
+        set_cmdarg_ull(&nDPId_options.error_event_threshold_n, 0u);
+        set_cmdarg_ull(&nDPId_options.error_event_threshold_time, 0u);
+        set_cmdarg_ull(&nDPId_options.generic_max_idle_time, 5u);
+        set_cmdarg_ull(&nDPId_options.icmp_max_idle_time, 2u);
+        set_cmdarg_ull(&nDPId_options.tcp_max_idle_time, 5u);
+        set_cmdarg_ull(&nDPId_options.udp_max_idle_time, 2u);
+        set_cmdarg_ull(&nDPId_options.tcp_max_post_end_flow_time, 1u);
+        set_cmdarg_ull(&nDPId_options.max_flows_per_thread, 65535);
+        set_cmdarg_ull(&nDPId_options.max_idle_flows_per_thread, 1024);
         set_cmdarg_ull(&nDPId_options.reader_thread_count, 1);
         set_cmdarg_boolean(&nDPId_options.enable_data_analysis, 1);
         set_cmdarg_ull(&nDPId_options.max_packets_per_flow_to_send, 5);
@@ -41,8 +51,14 @@ int LLVMFuzzerTestOneInput(const uint8_t * data, size_t size)
         workflow->max_active_flows = GET_CMDARG_ULL(nDPId_options.max_flows_per_thread);
         workflow->ndpi_flows_idle = (void **)ndpi_calloc(workflow->max_idle_flows, sizeof(void *));
         workflow->ndpi_flows_active = (void **)ndpi_calloc(workflow->max_active_flows, sizeof(void *));
-        reader_threads[0].collector_sockfd = -1;
+        reader_threads[0].collector_sockfd = memfd_create("collector", MFD_CLOEXEC);
         reader_threads[0].workflow = workflow;
+
+        if (reader_threads[0].collector_sockfd < 0 ||
+            set_collector_nonblock(&reader_threads[0]) != 0)
+        {
+            return 1;
+        }
 
         if (workflow->ndpi_flows_idle == NULL || workflow->ndpi_flows_active == NULL)
         {
@@ -66,8 +82,20 @@ int LLVMFuzzerTestOneInput(const uint8_t * data, size_t size)
     }
 
     struct pcap_pkthdr pcap_hdr = {.caplen = size, .len = size};
-    gettimeofday(&pcap_hdr.ts, NULL); // not optimal; more difficult to reproduce via crash files
+    if (size >= 8)
+        pcap_hdr.ts.tv_sec = get_u_int64_t(data, 0);
     ndpi_process_packet((uint8_t *)&reader_threads[0], &pcap_hdr, data);
+
+    char cbuf[BUFSIZ];
+    ssize_t bytes_read = 0;
+    while ((bytes_read = read(reader_threads[0].collector_sockfd, cbuf, sizeof(cbuf))) > 0)
+    {
+    }
+
+    struct timeval tval;
+    get_current_time(&tval);
+    uint64_t tval_us = tval.tv_sec * 1000 * 1000 + tval.tv_usec;
+    reader_threads[0].workflow->last_global_time += tval_us;
 
     return 0;
 }

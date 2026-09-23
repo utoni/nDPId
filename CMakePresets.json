@@ -25,6 +25,7 @@
     {
       "name": "all-unix",
       "inherits": "default-unix",
+      "binaryDir": "${sourceDir}/build-all",
       "cacheVariables": {
         "BUILD_RUST_EXAMPLES": "ON",
         "ENABLE_CONNTRACK": "ON",
@@ -36,8 +37,21 @@
       }
     },
     {
+      "name": "all-unix-local-ndpi",
+      "inherits": "all-unix",
+      "binaryDir": "${sourceDir}/build-all-local-ndpi",
+      "cacheVariables": {
+        "BUILD_NDPI": "OFF",
+        "NDPI_WITH_GCRYPT": "ON",
+        "NDPI_WITH_MAXMINDDB": "ON",
+        "NDPI_WITH_PCRE": "ON",
+        "NDPI_WITH_PLUGIN_SYSTEM": "ON"
+      }
+    },
+    {
       "name": "all-unix-asan",
       "inherits": "all-unix",
+      "binaryDir": "${sourceDir}/build-asan",
       "cacheVariables": {
         "ENABLE_SANITIZER": "ON"
       }
@@ -45,6 +59,7 @@
     {
       "name": "all-unix-tsan",
       "inherits": "all-unix",
+      "binaryDir": "${sourceDir}/build-tsan",
       "cacheVariables": {
         "ENABLE_SANITIZER_THREAD": "ON"
       }
@@ -52,7 +67,9 @@
     {
       "name": "all-unix-profiler",
       "inherits": "all-unix",
+      "binaryDir": "${sourceDir}/build-memprof",
       "cacheVariables": {
+        "ENABLE_MEMORY_STATUS": "ON",
         "ENABLE_MEMORY_PROFILING": "ON"
       }
     }
