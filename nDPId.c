@@ -3774,7 +3774,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
         case DLT_NULL:
         {
             /* DLT header values can be stored as big or little endian. */
-            if (header->caplen < sizeof(uint32_t))
+            if (header->caplen < eth_offset + sizeof(uint32_t))
             {
                 if (is_error_event_threshold(reader_thread->workflow) == 0)
                 {
@@ -3818,7 +3818,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
         }
         case DLT_PPP_SERIAL:
         {
-            if (header->caplen < sizeof(struct ndpi_chdlc))
+            if (header->caplen < eth_offset + sizeof(struct ndpi_chdlc))
             {
                 if (is_error_event_threshold(reader_thread->workflow) == 0)
                 {
@@ -3841,7 +3841,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
         }
         case DLT_C_HDLC:
         case DLT_PPP:
-            if (header->caplen < sizeof(struct ndpi_chdlc))
+            if (header->caplen < eth_offset + sizeof(struct ndpi_chdlc))
             {
                 if (is_error_event_threshold(reader_thread->workflow) == 0)
                 {
@@ -3870,7 +3870,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
             }
             break;
         case DLT_LINUX_SLL:
-            if (header->caplen < 16)
+            if (header->caplen < eth_offset + 16u)
             {
                 if (is_error_event_threshold(reader_thread->workflow) == 0)
                 {
@@ -3886,7 +3886,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
             break;
         case DLT_IEEE802_11_RADIO:
         {
-            if (header->caplen < sizeof(struct ndpi_radiotap_header))
+            if (header->caplen < eth_offset + sizeof(struct ndpi_radiotap_header))
             {
                 if (is_error_event_threshold(reader_thread->workflow) == 0)
                 {
@@ -3917,7 +3917,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
                 return 1;
             }
 
-            if (header->caplen < (eth_offset + radio_len + sizeof(struct ndpi_wifi_header)))
+            if (header->caplen < eth_offset + radio_len + sizeof(struct ndpi_wifi_header))
             {
                 if (is_error_event_threshold(reader_thread->workflow) == 0)
                 {
@@ -3954,7 +3954,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
             }
 
             /* Check ether_type from LLC */
-            if (header->caplen < (eth_offset + wifi_len + radio_len + sizeof(struct ndpi_llc_header_snap)))
+            if (header->caplen < eth_offset + wifi_len + radio_len + sizeof(struct ndpi_llc_header_snap))
             {
                 return 1;
             }
@@ -3990,7 +3990,7 @@ static int process_datalink_layer(struct nDPId_reader_thread * const reader_thre
             break;
         case DLT_EN10MB:
 decode_layer2_again:
-            if (header->caplen < sizeof(struct ndpi_ethhdr))
+            if (header->caplen < eth_offset + sizeof(struct ndpi_ethhdr))
             {
                 if (is_error_event_threshold(reader_thread->workflow) == 0)
                 {
@@ -4027,7 +4027,7 @@ decode_layer2_again:
             /* Cisco FabricPath (data center ethernet devices) */
             if (*layer3_type == ETHERTYPE_DCE)
             {
-                if (header->caplen < sizeof(struct ndpi_ethhdr) + 20 /* sizeof(Ethernet/DCE-header) */)
+                if (header->caplen < eth_offset + sizeof(struct ndpi_ethhdr) + 20 /* sizeof(Ethernet/DCE-header) */)
                 {
                     if (is_error_event_threshold(reader_thread->workflow) == 0)
                     {
@@ -4051,7 +4051,7 @@ decode_layer2_again:
             /* 802.1Q VLAN */
             if (*layer3_type == ETHERTYPE_VLAN)
             {
-                if (header->caplen < sizeof(struct ndpi_ethhdr) + 4 /* sizeof(802.1Q-header) */)
+                if (header->caplen < eth_offset + sizeof(struct ndpi_ethhdr) + 4 /* sizeof(802.1Q-header) */)
                 {
                     if (is_error_event_threshold(reader_thread->workflow) == 0)
                     {
@@ -4116,11 +4116,16 @@ decode_layer2_again:
         default:
             if (is_error_event_threshold(reader_thread->workflow) == 0)
             {
-                jsonize_error_eventf(reader_thread,
-                                     UNKNOWN_DATALINK_LAYER,
-                                     "%s%u",
-                                     "layer_type",
-                                     ntohl(*((uint32_t const *)&packet[eth_offset])));
+                if (header->caplen < eth_offset + sizeof(uint32_t)) {
+                    jsonize_error_eventf(reader_thread,
+                                         UNKNOWN_DATALINK_LAYER, NULL);
+                } else {
+                    jsonize_error_eventf(reader_thread,
+                                         UNKNOWN_DATALINK_LAYER,
+                                         "%s%u",
+                                         "layer_type",
+                                         ntohl(*((uint32_t const *)&packet[eth_offset])));
+                }
                 jsonize_packet_event(reader_thread, header, packet, 0, 0, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
             }
             return 1;
@@ -4442,12 +4447,12 @@ static int decode_gtp_tunnel(struct nDPId_reader_thread * const reader_thread,
         offset += 4;
     }
     if ((flags & 0x04) != 0) {
-        uint32_t ext_len = 0;
+        uint16_t ext_len = 0;
 
-        while (offset < header->caplen) {
+        while (offset + 1u < header->caplen) {
             ext_len = packet[offset] << 2;
 	          offset += ext_len;
-            if (offset >= header->caplen || ext_len == 0) {
+            if (offset < ext_len || offset >= header->caplen || ext_len == 0) {
                 return 0;
             }
             if(packet[offset - 1] == 0) {
@@ -4456,7 +4461,7 @@ static int decode_gtp_tunnel(struct nDPId_reader_thread * const reader_thread,
         }
     }
 
-    if (header->caplen < (offset + sizeof(struct ndpi_iphdr))) {
+    if (header->caplen < offset + sizeof(struct ndpi_iphdr)) {
         return 0;
     }
     struct ndpi_iphdr const * const iph = (struct ndpi_iphdr const *)&packet[offset];
