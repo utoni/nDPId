@@ -173,6 +173,10 @@
         "global_ts_usec": {
             "type": "number",
             "minimum": 0
+        },
+
+        "gtp_message_type": {
+            "type": "number"
         }
     },
     "additionalProperties": false

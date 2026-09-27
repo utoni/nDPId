@@ -1,1 +1,2 @@
-Flow 1 not-detected: 41 174.3.73.24 -> 184.105.255.26
+Flow 10 risky: tcp 2001:470:1f17:13f:3e97:eff:fe73:4dec:60205 -> 2604:a880:1:20::224:b001:443
+Flow 6 risky: icmp6 2a03:2880:1010:6f03:face:b00c::2 -> 2001:470:1f17:13f:3e97:eff:fe73:4dec
