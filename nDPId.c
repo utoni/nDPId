@@ -1146,6 +1146,15 @@ static void get_ip_address_and_netmask(struct ifaddrs const * const ifaddr, stru
 {
     enum nDPId_l3_type l3_type = (ifaddr->ifa_addr->sa_family == AF_INET ? L3_IP : L3_IP6);
 
+    if (ifaddr->ifa_addr == NULL) {
+        logger(1, "Expected IP address, but none found: -E and -I will not work!");
+        return;
+    }
+    if (ifaddr->ifa_netmask == NULL) {
+        logger(1, "Expected IP netmask, but none found: -E and -I will not work!");
+        return;
+    }
+
     if (l3_type == L3_IP6) {
         get_ip6_from_sockaddr((struct sockaddr_in6 *)ifaddr->ifa_netmask, &if_ip->netmask);
         get_ip6_from_sockaddr((struct sockaddr_in6 *)ifaddr->ifa_addr, &if_ip->address);
@@ -1846,6 +1855,11 @@ static int alloc_detection_data(struct nDPId_flow * const flow)
         flow->flow_extended.flow_analysis->entropies =
             (float *)ndpi_malloc(sizeof(*flow->flow_extended.flow_analysis->entropies) *
                                  GET_CMDARG_ULL(nDPId_options.max_packets_per_flow_to_analyse));
+        if (flow->flow_extended.flow_analysis->directions == NULL ||
+            flow->flow_extended.flow_analysis->entropies == NULL)
+        {
+            goto error;
+        }
 
         if (ndpi_init_bin(&flow->flow_extended.flow_analysis->payload_len_bin[FD_SRC2DST],
                           ndpi_bin_family8,
@@ -1864,6 +1878,10 @@ static int alloc_detection_data(struct nDPId_flow * const flow)
 
     return 0;
 error:
+    if (GET_CMDARG_BOOL(nDPId_options.enable_data_analysis) != 0)
+    {
+        free_analysis_data(&flow->flow_extended);
+    }
     free_detection_data(flow);
     flow->info.detection_completed = 1;
     return 1;
@@ -1942,7 +1960,7 @@ static void free_workflow(struct nDPId_workflow ** const workflow)
 
 static char * get_default_pcapdev(char * errbuf)
 {
-    char * ifname;
+    char * ifname = NULL;
     pcap_if_t * all_devices = NULL;
 
     if (pcap_findalldevs(&all_devices, errbuf) != 0)
@@ -1954,7 +1972,10 @@ static char * get_default_pcapdev(char * errbuf)
         return NULL;
     }
 
-    ifname = strdup(all_devices[0].name);
+    if (all_devices->name != NULL)
+    {
+        ifname = strdup(all_devices->name);
+    }
     pcap_freealldevs(all_devices);
 
     return ifname;
@@ -2050,19 +2071,35 @@ static int ip_tuples_compare(struct nDPId_flow_basic const * const A, struct nDP
     }
     else if (A->l3_type == L3_IP6 && B->l3_type == L3_IP6)
     {
-        if (A->src.v6.ip[0] < B->src.v6.ip[0] || A->src.v6.ip[1] < B->src.v6.ip[1])
+        if (A->src.v6.ip[0] < B->src.v6.ip[0])
         {
             return -1;
         }
-        if (A->src.v6.ip[0] > B->src.v6.ip[0] && A->src.v6.ip[1] > B->src.v6.ip[1])
+        if (A->src.v6.ip[0] > B->src.v6.ip[0])
         {
             return 1;
         }
-        if (A->dst.v6.ip[0] < B->dst.v6.ip[0] || A->dst.v6.ip[1] < B->dst.v6.ip[1])
+        if (A->src.v6.ip[1] < B->src.v6.ip[1])
         {
             return -1;
         }
-        if (A->dst.v6.ip[0] > B->dst.v6.ip[0] && A->dst.v6.ip[1] > B->dst.v6.ip[1])
+        if (A->src.v6.ip[1] > B->src.v6.ip[1])
+        {
+            return 1;
+        }
+        if (A->dst.v6.ip[0] < B->dst.v6.ip[0])
+        {
+            return -1;
+        }
+        if (A->dst.v6.ip[0] > B->dst.v6.ip[0])
+        {
+            return 1;
+        }
+        if (A->dst.v6.ip[1] < B->dst.v6.ip[1])
+        {
+            return -1;
+        }
+        if (A->dst.v6.ip[1] > B->dst.v6.ip[1])
         {
             return 1;
         }
@@ -2148,7 +2185,8 @@ static int is_flow_update_required(struct nDPId_workflow const * const workflow,
 
 static int is_error_event_threshold(struct nDPId_workflow * const workflow)
 {
-    if (workflow->last_global_time - workflow->last_error_time >
+    if (workflow->last_global_time >= workflow->last_error_time &&
+        workflow->last_global_time - workflow->last_error_time >
         GET_CMDARG_ULL(nDPId_options.error_event_threshold_time))
     {
         workflow->error_count = 0;
@@ -2746,13 +2784,14 @@ static int connect_to_collector(struct nDPId_reader_thread * const reader_thread
     if (reader_thread->collector_sockfd < 0 || set_fd_cloexec(reader_thread->collector_sockfd) < 0)
     {
         reader_thread->collector_sock_last_errno = errno;
-        return 1;
+        goto error;
     }
 
     int opt = NETWORK_BUFFER_MAX_SIZE;
     if (setsockopt(reader_thread->collector_sockfd, SOL_SOCKET, SO_SNDBUF, &opt, sizeof(opt)) < 0)
     {
-        return 1;
+        reader_thread->collector_sock_last_errno = errno;
+        goto error;
     }
 
     struct timeval sock_read;
@@ -2760,7 +2799,8 @@ static int connect_to_collector(struct nDPId_reader_thread * const reader_thread
     sock_read.tv_usec = 0;
     if (setsockopt(reader_thread->collector_sockfd, SOL_SOCKET, SO_RCVTIMEO, &sock_read, sizeof(sock_read)) < 0)
     {
-        return 1;
+        reader_thread->collector_sock_last_errno = errno;
+        goto error;
     }
 
     if (connect(reader_thread->collector_sockfd,
@@ -2768,17 +2808,21 @@ static int connect_to_collector(struct nDPId_reader_thread * const reader_thread
                 nDPId_options.parsed_collector_address.size) < 0)
     {
         reader_thread->collector_sock_last_errno = errno;
-        return 1;
+        goto error;
     }
 
     if (set_collector_nonblock(reader_thread) != 0)
     {
-        return 1;
+        goto error;
     }
 
     reader_thread->collector_sock_last_errno = 0;
 
     return 0;
+error:
+    close(reader_thread->collector_sockfd);
+    reader_thread->collector_sockfd = -1;
+    return 1;
 }
 
 static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
@@ -4675,12 +4719,12 @@ process_layer3_again:
             if (distribute_single_packet(reader_thread) != 0 && is_error_event_threshold(reader_thread->workflow) == 0)
             {
                 jsonize_error_eventf(reader_thread,
-                                     IP4_PACKET_TOO_SHORT,
+                                     IP6_PACKET_TOO_SHORT,
                                      "%s%u %s%zu",
                                      "size",
                                      header->caplen,
                                      "expected",
-                                     ip_offset + 1 + sizeof(*ip));
+                                     ip_offset + 1 + sizeof(*ip6));
                 jsonize_packet_event(reader_thread, header, packet, type, ip_offset, 0, 0, NULL, PACKET_EVENT_PAYLOAD);
             }
             return;
@@ -6065,21 +6109,29 @@ static int read_uuid_from_file(char const * const path)
         return 1;
     }
     uuid_len = fread(uuid, sizeof(uuid[0]), sizeof(uuid), fp);
-    if (uuid_len == 0)
+    if (ferror(fp) != 0)
     {
         logger_early(1, "Could not read UUID from file `%s': %s", path, strerror(errno));
         fclose(fp);
         return 1;
     }
-    if (uuid_len >= 36)
-    {
-        uuid[36] = '\0';
-    }
-    else
-    {
-        uuid[uuid_len] = '\0';
-    }
     fclose(fp);
+
+    if (uuid_len == 40)
+    {
+        logger_early(1, "UUID file `%s' invalid amount of characters (>= %zu) found", path, uuid_len);
+        return 1;
+    } else if (uuid_len > 36) {
+        if (uuid[36] != '\r' && uuid[36] != '\n')
+        {
+            logger_early(1, "Unexpected character in UUID file `%s' found: `%c'", path, uuid[36]);
+            return 1;
+        }
+        uuid[36] = '\0';
+    } else {
+        logger_early(1, "UUID file `%s' not an ASCII UUID, expected format 00000000-dead-c0de-0000-123456789abc", path);
+        return 1;
+    }
 
     set_cmdarg_string(&nDPId_options.instance_uuid, uuid);
     return 0;
@@ -6194,17 +6246,7 @@ static int nDPId_parse_options(int argc, char ** argv)
                 set_cmdarg_string(&nDPId_options.instance_alias, optarg);
                 break;
             case 'U':
-                if (strncmp(optarg, "/", 1) == 0 || strncmp(optarg, ".", 1) == 0)
-                {
-                    if (read_uuid_from_file(optarg) != 0)
-                    {
-                        return 1;
-                    }
-                }
-                else
-                {
-                    set_cmdarg_string(&nDPId_options.instance_uuid, optarg);
-                }
+                set_cmdarg_string(&nDPId_options.instance_uuid, optarg);
                 break;
             case 'A':
                 set_cmdarg_boolean(&nDPId_options.enable_data_analysis, 1);
@@ -6382,13 +6424,14 @@ static int validate_options(void)
         char hname[256];
 
         errno = 0;
-        if (gethostname(hname, sizeof(hname)) != 0)
+        if (gethostname(hname, sizeof(hname) - 1) != 0)
         {
             logger_early(1, "Could not retrieve your hostname: %s", strerror(errno));
             retval = 1;
         }
         else
         {
+            hname[sizeof(hname) - 1] = '\0';
             set_cmdarg_string(&nDPId_options.instance_alias, hname);
             logger_early(1,
                          "No instance alias given, using your hostname `%s'",
@@ -6401,6 +6444,15 @@ static int validate_options(void)
     }
     if (IS_CMDARG_SET(nDPId_options.instance_uuid) != 0)
     {
+        if (strncmp(GET_CMDARG_STR(nDPId_options.instance_uuid), "/", 1) == 0 ||
+            strncmp(GET_CMDARG_STR(nDPId_options.instance_uuid), ".", 1) == 0)
+        {
+            if (read_uuid_from_file(GET_CMDARG_STR(nDPId_options.instance_uuid)) != 0)
+            {
+                return 1;
+            }
+        }
+
         size_t uuid_errors = validate_uuid();
         if (uuid_errors != 0)
         {
@@ -6712,6 +6764,8 @@ int main(int argc, char ** argv)
         logger_early(1, "Could not initialize libnDPI global context.");
     }
 
+    signal(SIGPIPE, SIG_IGN);
+
     if (setup_reader_threads() != 0)
     {
         return 1;
@@ -6724,7 +6778,6 @@ int main(int argc, char ** argv)
 
     signal(SIGINT, sighandler);
     signal(SIGTERM, sighandler);
-    signal(SIGPIPE, SIG_IGN);
 
     while (MT_GET_AND_ADD(nDPId_main_thread_shutdown, 0) == 0 && processing_threads_error_or_eof() == 0)
     {
