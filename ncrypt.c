@@ -11,6 +11,33 @@
 
 #include "utils.h"
 
+char const *
+ncrypt_strerror(int ncrypt_error)
+{
+    switch (ncrypt_error) {
+        case NCRYPT_SUCCESS:
+            return "Crypto Success";
+        case NCRYPT_NOT_INITIALIZED:
+            return "Crypto not Initialized";
+        case NCRYPT_ALREADY_INITIALIZED:
+            return "Crypto already Initialized";
+        case NCRYPT_NULL_PTR:
+            return "Crypto NULL Pointer";
+        case NCRYPT_PEM_LOAD_FAILED:
+            return "Crypto PEM load failure";
+        case NCRYPT_WANT_READ:
+            return "Crypto requires receiving bytes";
+        case NCRYPT_WANT_WRITE:
+            return "Crypto requires sending bytes";
+        case NCRYPT_HANDSHAKE_FAILED:
+            return "Crypto handshake failure";
+        case NCRYPT_IO_ERROR:
+            return "Input/Output Error";
+    }
+
+    return "Unknown Crypto Error";
+}
+
 int ncrypt_init(void)
 {
     SSL_load_error_strings();
@@ -37,6 +64,7 @@ static int ncrypt_init_ctx(struct ncrypt_ctx * const ctx, SSL_METHOD const * con
         return NCRYPT_NOT_INITIALIZED;
     }
 
+    SSL_CTX_set_mode(ctx->ssl_ctx, SSL_MODE_AUTO_RETRY);
     SSL_CTX_set_min_proto_version(ctx->ssl_ctx, TLS1_3_VERSION);
     SSL_CTX_set_max_proto_version(ctx->ssl_ctx, TLS1_3_VERSION);
     SSL_CTX_set_ciphersuites(ctx->ssl_ctx, "TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256");

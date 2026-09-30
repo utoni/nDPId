@@ -326,6 +326,9 @@ static int add_to_additional_write_buffers(struct nio * const io,
 
     if (utarray_len(additional_write_buffers) >= GET_CMDARG_ULL(nDPIsrvd_options.max_write_buffers))
     {
+        if (nio_can_output(io, remote->fd) == NIO_SUCCESS) {
+            return 0;
+        }
         logger_nDPIsrvd(remote,
                         "Buffer limit for",
                         "reached, remote too slow: %u lines (increase buffer limit with `-M')",
@@ -1691,15 +1694,17 @@ static int handle_incoming_data(struct nio * const io, struct remote_desc * cons
                 // Retry if interrupted by a signal.
             }
             if (bytes_read < 0) {
-                if (ncrypt_last_error(&current->event_collector_in.ncrypt_entity) == NCRYPT_WANT_READ)
+                int ncrypt_errno = ncrypt_last_error(&current->event_collector_in.ncrypt_entity);
+                if (ncrypt_errno == NCRYPT_WANT_READ)
                 {
                     return set_in_event(io, current);
                 }
-                if (ncrypt_last_error(&current->event_collector_in.ncrypt_entity) == NCRYPT_WANT_WRITE)
+                else if (ncrypt_errno == NCRYPT_WANT_WRITE)
                 {
                     return set_out_event(io, current);
                 }
-                logger_nDPIsrvd(current, "Collector TLS connection", "failed during read with: %s", strerror(errno));
+                logger_nDPIsrvd(current, "Collector TLS connection", "failed during read with: %s",
+                                (ncrypt_errno != NCRYPT_SUCCESS ? "Crypto Error" : strerror(errno)));
                 disconnect_client(io, current);
                 return 1;
             }
@@ -1893,15 +1898,17 @@ static int handle_data_event(struct nio * const io, int index)
                 // Retry if interrupted by a signal.
             }
             if (bytes_read < 0) {
-                if (ncrypt_last_error(&current->event_distributor_in.ncrypt_entity) == NCRYPT_WANT_READ)
+                int ncrypt_errno = ncrypt_last_error(&current->event_distributor_in.ncrypt_entity);
+                if (ncrypt_errno == NCRYPT_WANT_READ)
                 {
                     return set_in_event(io, current);
                 }
-                if (ncrypt_last_error(&current->event_distributor_in.ncrypt_entity) == NCRYPT_WANT_WRITE)
+                else if (ncrypt_errno == NCRYPT_WANT_WRITE)
                 {
                     return set_out_event(io, current);
                 }
-                logger_nDPIsrvd(current, "Distributor TLS connection", "failed during read with: %s", strerror(errno));
+                logger_nDPIsrvd(current, "Distributor TLS connection", "failed during read with: %s",
+                                (ncrypt_errno != NCRYPT_SUCCESS ? "Crypto Error" : strerror(errno)));
                 disconnect_client(io, current);
                 return 1;
             }

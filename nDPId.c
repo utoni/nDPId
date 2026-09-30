@@ -329,9 +329,6 @@ struct nDPId_workflow
     uint64_t total_compression_diff;
     uint64_t current_compression_diff;
 #endif
-#ifdef ENABLE_CRYPTO
-    struct ncrypt_entity ncrypt_entity;
-#endif
 
     uint64_t last_scan_time;
     uint64_t last_status_time;
@@ -359,6 +356,10 @@ struct nDPId_reader_thread
 {
     struct nDPId_workflow * workflow;
     pthread_t thread;
+    struct nio io;
+#ifdef ENABLE_CRYPTO
+    struct ncrypt_entity ncrypt_entity;
+#endif
     int collector_sockfd;
     int collector_sock_last_errno;
     size_t array_index;
@@ -2035,6 +2036,7 @@ static int setup_reader_threads(void)
         {
             return 1;
         }
+        nio_init(&reader_threads[i].io);
     }
 
     return 0;
@@ -2769,12 +2771,16 @@ static int connect_to_collector(struct nDPId_reader_thread * const reader_thread
 {
     if (reader_thread->collector_sockfd >= 0)
     {
+        if (nio_del_fd(&reader_thread->io, reader_thread->collector_sockfd) != NIO_SUCCESS)
+        {
+            /* Ignore event queue deletion failures. */
+        }
         close(reader_thread->collector_sockfd);
 #ifdef ENABLE_CRYPTO
         if (nDPId_TLS_USED() != 0) {
-            ncrypt_free_entity(&reader_thread->workflow->ncrypt_entity);
-            ncrypt_entity(&reader_thread->workflow->ncrypt_entity);
-            ncrypt_clear_handshake(&reader_thread->workflow->ncrypt_entity);
+            ncrypt_free_entity(&reader_thread->ncrypt_entity);
+            ncrypt_entity(&reader_thread->ncrypt_entity);
+            ncrypt_clear_handshake(&reader_thread->ncrypt_entity);
         }
 #endif
     }
@@ -2803,6 +2809,11 @@ static int connect_to_collector(struct nDPId_reader_thread * const reader_thread
         goto error;
     }
 
+    if (set_collector_block(reader_thread) != 0)
+    {
+        goto error;
+    }
+
     if (connect(reader_thread->collector_sockfd,
                 &nDPId_options.parsed_collector_address.raw,
                 nDPId_options.parsed_collector_address.size) < 0)
@@ -2817,6 +2828,11 @@ static int connect_to_collector(struct nDPId_reader_thread * const reader_thread
     }
 
     reader_thread->collector_sock_last_errno = 0;
+    errno = 0;
+    if (nio_add_fd(&reader_thread->io, reader_thread->collector_sockfd, NIO_EVENT_INPUT, NULL) != NIO_SUCCESS)
+    {
+        goto error;
+    }
 
     return 0;
 error:
@@ -2868,7 +2884,7 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
         if (connect_to_collector(reader_thread) == 0)
         {
             logger(1,
-                   "[%8llu, %zu] Reconnected to nDPIsrvd Collector at %s",
+                   "[%8llu, %zu] Reconnected to Collector at %s",
                    workflow->packets_captured,
                    reader_thread->array_index,
                    GET_CMDARG_STR(nDPId_options.collector_address));
@@ -2879,7 +2895,7 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
             if (saved_errno != reader_thread->collector_sock_last_errno)
             {
                 logger(1,
-                       "[%8llu, %zu] Could not reconnect to nDPIsrvd Collector at %s, will try again later. Error: %s",
+                       "[%8llu, %zu] Could not reconnect to Collector at %s, will try again later. Error: %s",
                        workflow->packets_captured,
                        reader_thread->array_index,
                        GET_CMDARG_STR(nDPId_options.collector_address),
@@ -2894,28 +2910,30 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
 #ifdef ENABLE_CRYPTO
     if (nDPId_TLS_USED() != 0)
     {
-        if (ncrypt_handshake_done(&workflow->ncrypt_entity) == 0)
+        if (ncrypt_handshake_done(&reader_thread->ncrypt_entity) == 0)
         {
             set_collector_block(reader_thread);
-            if (ncrypt_on_connect(&ncrypt_ctx, reader_thread->collector_sockfd, &workflow->ncrypt_entity) != NCRYPT_SUCCESS)
+            errno = 0;
+            if (ncrypt_on_connect(&ncrypt_ctx, reader_thread->collector_sockfd, &reader_thread->ncrypt_entity) != NCRYPT_SUCCESS)
             {
-                switch (ncrypt_last_error(&workflow->ncrypt_entity)) {
+                int saved_errno = errno;
+                switch (ncrypt_last_error(&reader_thread->ncrypt_entity)) {
                     case NCRYPT_WANT_READ:
                     case NCRYPT_WANT_WRITE:
                         break;
                     default:
                         logger(1,
-                               "[%8llu, %zu] TLS handshake failed with: %d",
+                               "[%8llu, %zu] TLS handshake failed with: %s",
                                workflow->packets_captured,
                                reader_thread->array_index,
-                               ncrypt_last_error(&workflow->ncrypt_entity));
-                        reader_thread->collector_sock_last_errno = EPIPE;
+                               ncrypt_last_strerror(&reader_thread->ncrypt_entity));
+                        reader_thread->collector_sock_last_errno = (saved_errno != 0 ? saved_errno : EPIPE);
                         break;
                 }
                 return;
             }
             set_collector_nonblock(reader_thread);
-            ncrypt_set_handshake(&workflow->ncrypt_entity);
+            ncrypt_set_handshake(&reader_thread->ncrypt_entity);
         }
     }
 #endif
@@ -2930,25 +2948,38 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
 #ifdef ENABLE_CRYPTO
     if (nDPId_TLS_USED() != 0)
     {
-        written = ncrypt_write(&workflow->ncrypt_entity, newline_json_msg, s_ret);
+        written = ncrypt_write(&reader_thread->ncrypt_entity, newline_json_msg, s_ret);
+        saved_errno = errno;
+        if (written < 0 && ncrypt_last_error(&reader_thread->ncrypt_entity) != NCRYPT_WANT_WRITE) {
+            logger(1, "[%8llu, %zu] Encrypted write to Collector failed: %s",
+                   workflow->packets_captured, reader_thread->array_index,
+                   ncrypt_last_strerror(&reader_thread->ncrypt_entity));
+        }
     }
     else
 #endif
     {
         written = write(reader_thread->collector_sockfd, newline_json_msg, s_ret);
+        saved_errno = errno;
     }
 
     if (written != s_ret)
     {
-        saved_errno = errno;
         if (saved_errno == EPIPE || written == 0)
         {
             logger(1,
-                   "[%8llu, %zu] Lost connection to nDPIsrvd Collector",
+                   "[%8llu, %zu] Lost connection to Collector",
                    workflow->packets_captured,
                    reader_thread->array_index);
         }
+
+#ifdef ENABLE_CRYPTO
+        if ((nDPId_TLS_USED() != 0 &&
+             ncrypt_last_error(&reader_thread->ncrypt_entity) != NCRYPT_WANT_WRITE) ||
+            saved_errno != EAGAIN)
+#else
         if (saved_errno != EAGAIN)
+#endif
         {
             reader_thread->collector_sock_last_errno = saved_errno;
         }
@@ -2958,26 +2989,33 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
             set_collector_block(reader_thread);
             while (1)
             {
+                errno = 0;
 #ifdef ENABLE_CRYPTO
                 if (nDPId_TLS_USED() != 0)
                 {
-                    written = ncrypt_write(&workflow->ncrypt_entity, newline_json_msg + pos, s_ret - pos);
+                    written = ncrypt_write(&reader_thread->ncrypt_entity, newline_json_msg + pos, s_ret - pos);
+                    saved_errno = errno;
+                    if (written < 0) {
+                        logger(1, "[%8llu, %zu] Encrypted write (blocking I/O) to connection failed: %s",
+                               workflow->packets_captured, reader_thread->array_index,
+                               ncrypt_last_strerror(&reader_thread->ncrypt_entity));
+                    }
                 }
                 else
 #endif
                 {
                     written = write(reader_thread->collector_sockfd, newline_json_msg + pos, s_ret - pos);
+                    saved_errno = errno;
                 }
                 if (written > 0 && (size_t)written == s_ret - pos)
                 {
                     break;
                 }
 
-                saved_errno = errno;
                 if (saved_errno == EPIPE || written == 0)
                 {
                     logger(1,
-                           "[%8llu, %zu] Lost connection (blocking I/O) to nDPIsrvd Collector",
+                           "[%8llu, %zu] Lost connection (blocking I/O) to Collector",
                            workflow->packets_captured,
                            reader_thread->array_index);
                     reader_thread->collector_sock_last_errno = saved_errno;
@@ -2990,7 +3028,7 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
                         continue;
                     }
                     logger(1,
-                           "[%8llu, %zu] Send data (blocking I/O) to nDPIsrvd Collector at %s failed: %s",
+                           "[%8llu, %zu] Send data (blocking I/O) to Collector at %s failed: %s",
                            workflow->packets_captured,
                            reader_thread->array_index,
                            GET_CMDARG_STR(nDPId_options.collector_address),
@@ -5504,37 +5542,19 @@ static void run_capture_loop(struct nDPId_reader_thread * const reader_thread)
             return;
         }
 
-        struct nio io;
-        nio_init(&io);
-#ifdef ENABLE_EPOLL
-        if ((GET_CMDARG_BOOL(nDPId_options.use_poll) == 0 && nio_use_epoll(&io, 32) != NIO_SUCCESS) ||
-            (GET_CMDARG_BOOL(nDPId_options.use_poll) != 0 &&
-             nio_use_poll(&io, nDPIsrvd_MAX_REMOTE_DESCRIPTORS) != NIO_SUCCESS))
-#else
-        if (nio_use_poll(&io, nDPIsrvd_MAX_REMOTE_DESCRIPTORS) != NIO_SUCCESS)
-#endif
-        {
-            logger(1, "%s", "Event I/O poll/epoll setup failed");
-            MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
-            nio_free(&io);
-            return;
-        }
-
         errno = 0;
-        if (nio_add_fd(&io, capture_fd, NIO_EVENT_INPUT, NULL) != NIO_SUCCESS)
+        if (nio_add_fd(&reader_thread->io, capture_fd, NIO_EVENT_INPUT, NULL) != NIO_SUCCESS)
         {
             logger(1, "Could not add pcap fd to event queue: %s", (errno != 0 ? strerror(errno) : "Internal Error"));
             MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
-            nio_free(&io);
             return;
         }
 #if !defined(__FreeBSD__) && !defined(__APPLE__)
         errno = 0;
-        if (nio_add_fd(&io, signal_fd, NIO_EVENT_INPUT, NULL) != NIO_SUCCESS)
+        if (nio_add_fd(&reader_thread->io, signal_fd, NIO_EVENT_INPUT, NULL) != NIO_SUCCESS)
         {
             logger(1, "Could not add signal fd to event queue: %s", (errno != 0 ? strerror(errno) : "Internal Error"));
             MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
-            nio_free(&io);
             return;
         }
 #endif
@@ -5545,14 +5565,14 @@ static void run_capture_loop(struct nDPId_reader_thread * const reader_thread)
         {
             get_current_time(&tval_before_epoll);
             errno = 0;
-            if (nio_run(&io, timeout_ms) != NIO_SUCCESS)
+            if (nio_run(&reader_thread->io, timeout_ms) != NIO_SUCCESS)
             {
                 logger(1, "Event I/O returned error: %s", strerror(errno));
                 MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
                 break;
             }
 
-            int nready = nio_get_nready(&io);
+            int nready = nio_get_nready(&reader_thread->io);
 
             if (nready == 0)
             {
@@ -5569,12 +5589,7 @@ static void run_capture_loop(struct nDPId_reader_thread * const reader_thread)
 
             for (int i = 0; i < nready; ++i)
             {
-                if (nio_has_error(&io, i) == NIO_SUCCESS)
-                {
-                    logger(1, "%s", "Event I/O error");
-                }
-
-                int fd = nio_get_fd(&io, i);
+                int fd = nio_get_fd(&reader_thread->io, i);
 
 #if !defined(__FreeBSD__) && !defined(__APPLE__)
                 if (fd == signal_fd)
@@ -5630,6 +5645,12 @@ static void run_capture_loop(struct nDPId_reader_thread * const reader_thread)
 #endif
                     if (fd == capture_fd)
                 {
+                    if (nio_has_error(&reader_thread->io, i) == NIO_SUCCESS)
+                    {
+                        logger(1, "%s", "Capture fd had an event I/O error");
+                        MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
+                        return;
+                    }
 #ifdef ENABLE_PFRING
                     if (GET_CMDARG_BOOL(nDPId_options.use_pfring) != 0)
                     {
@@ -5640,7 +5661,6 @@ static void run_capture_loop(struct nDPId_reader_thread * const reader_thread)
                         {
                             logger(1, "Error while reading packets from PF_RING: %d", rc);
                             MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
-                            nio_free(&io);
                             return;
                         }
 
@@ -5662,21 +5682,60 @@ static void run_capture_loop(struct nDPId_reader_thread * const reader_thread)
                                 break;
                             case PCAP_ERROR_BREAK:
                                 MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
-                                nio_free(&io);
                                 return;
                             default:
                                 break;
                         }
                     }
-                }
-                else
+                } else if (fd == reader_thread->collector_sockfd &&
+                           reader_thread->collector_sock_last_errno == 0)
                 {
-                    logger(1, "Unknown event descriptor or data returned: %p", nio_get_ptr(&io, i));
+                    ssize_t bytes_read;
+                    char buf[BUFSIZ];
+                    errno = 0;
+#ifdef ENABLE_CRYPTO
+                    if (nDPId_TLS_USED() != 0)
+                    {
+                        while ((bytes_read = ncrypt_read(&reader_thread->ncrypt_entity, buf, sizeof(buf))) > 0)
+                        {
+                            // TODO: Implement Control Interface?
+                            logger(1, "Received %zd bytes from Collector, discarded..", bytes_read);
+                        }
+                    } else
+#endif
+                    {
+                        while ((bytes_read = read(reader_thread->collector_sockfd, buf, sizeof(buf))) > 0)
+                        {
+                            // TODO: Implement Control Interface?
+                            logger(1, "Received %zd bytes from Collector, discarded..", bytes_read);
+                        }
+                    }
+
+                    if (bytes_read < 0 && errno != EINTR && errno != EAGAIN) {
+                        reader_thread->collector_sock_last_errno = errno;
+#ifdef ENABLE_CRYPTO
+                        if (errno == 0 && ncrypt_last_error(&reader_thread->ncrypt_entity) != NCRYPT_SUCCESS) {
+                            reader_thread->collector_sock_last_errno = ECONNRESET;
+                            logger(1, "Reading from Collector failed with: %s", ncrypt_last_strerror(&reader_thread->ncrypt_entity));
+                        } else
+#endif
+                        {
+                            logger(1, "Reading from Collector failed with: %s", strerror(reader_thread->collector_sock_last_errno));
+                        }
+                        if (nio_del_fd(&reader_thread->io, reader_thread->collector_sockfd) != NIO_SUCCESS) {
+                            logger(1, "Could not delete collector fd from event queue: %s", (errno != 0 ? strerror(errno) : "Internal Error"));
+                        }
+                        if (shutdown(reader_thread->collector_sockfd, SHUT_RDWR) != 0 &&
+                            errno != ENOTCONN)
+                        {
+                            logger(1, "Could not shutdown collector fd read/write: %s", strerror(errno));
+                        }
+                    }
+                } else {
+                    logger(1, "Unknown event descriptor or data returned: %p", nio_get_ptr(&reader_thread->io, i));
                 }
             }
         }
-
-        nio_free(&io);
     }
 }
 
@@ -5692,12 +5751,25 @@ static void * processing_thread(void * const ndpi_thread_arg)
 {
     struct nDPId_reader_thread * const reader_thread = (struct nDPId_reader_thread *)ndpi_thread_arg;
 
+#ifdef ENABLE_EPOLL
+    if ((GET_CMDARG_BOOL(nDPId_options.use_poll) == 0 && nio_use_epoll(&reader_thread->io, 32) != NIO_SUCCESS) ||
+        (GET_CMDARG_BOOL(nDPId_options.use_poll) != 0 &&
+         nio_use_poll(&reader_thread->io, nDPIsrvd_MAX_REMOTE_DESCRIPTORS) != NIO_SUCCESS))
+#else
+    if (nio_use_poll(&reader_thread->io, nDPIsrvd_MAX_REMOTE_DESCRIPTORS) != NIO_SUCCESS)
+#endif
+    {
+        logger(1, "%s", "Event I/O poll/epoll setup failed");
+        MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
+        return NULL;
+    }
+
     reader_thread->collector_sockfd = -1;
 
     if (connect_to_collector(reader_thread) != 0)
     {
         logger(1,
-               "Thread %zu: Could not connect to nDPIsrvd Collector at %s, will try again later. Error: %s",
+               "Thread %zu: Could not connect to Collector at %s, will try again later. Error: %s",
                reader_thread->array_index,
                GET_CMDARG_STR(nDPId_options.collector_address),
                (reader_thread->collector_sock_last_errno != 0 ? strerror(reader_thread->collector_sock_last_errno)
@@ -5709,7 +5781,6 @@ static void * processing_thread(void * const ndpi_thread_arg)
     }
 
     run_capture_loop(reader_thread);
-    set_collector_block(reader_thread);
     MT_GET_AND_ADD(reader_thread->workflow->error_or_eof, 1);
     return NULL;
 }
@@ -5942,6 +6013,7 @@ static void free_reader_threads(void)
         }
 
         free_workflow(&reader_threads[i].workflow);
+        nio_free(&reader_threads[i].io);
     }
 }
 
@@ -6005,7 +6077,7 @@ static void print_usage(char const * const arg0)
         "\t  \tDefault: disabled\n"
         "\t-L\tLog all messages to a log file.\n"
         "\t  \tDefault: disabled\n"
-        "\t-c\tPath to a UNIX socket (nDPIsrvd Collector) or a custom TCP endpoint.\n"
+        "\t-c\tPath to a UNIX socket (i.e. nDPIsrvd Collector) or a custom TCP endpoint.\n"
         "\t  \tDefault: `%s'\n"
 #ifdef ENABLE_CRYPTO
         "\t-k\tPath to the client certificate file (PEM format)\n"
@@ -6779,7 +6851,7 @@ int main(int argc, char ** argv)
     signal(SIGINT, sighandler);
     signal(SIGTERM, sighandler);
 
-    while (MT_GET_AND_ADD(nDPId_main_thread_shutdown, 0) == 0 && processing_threads_error_or_eof() == 0)
+    while (processing_threads_error_or_eof() == 0)
     {
         sleep(1);
     }

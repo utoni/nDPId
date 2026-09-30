@@ -36,6 +36,7 @@
         (x)->handshake_done = 0;                                                                                       \
     } while (0)
 #define ncrypt_since_start(x) ((long long int)(time(NULL) - (x)->handshake_started))
+#define ncrypt_last_strerror(x) (ncrypt_strerror((x)->last_ncrypt_error))
 
 enum
 {
@@ -64,6 +65,9 @@ struct ncrypt_entity
     unsigned int is_collector : 1;
     unsigned int is_distributor : 1;
 };
+
+char const *
+ncrypt_strerror(int ncrypt_errno);
 
 int ncrypt_init(void);
 
