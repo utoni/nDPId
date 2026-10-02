@@ -16,21 +16,21 @@ ncrypt_strerror(int ncrypt_error)
 {
     switch (ncrypt_error) {
         case NCRYPT_SUCCESS:
-            return "Crypto Success";
+            return "Success";
         case NCRYPT_NOT_INITIALIZED:
-            return "Crypto not Initialized";
+            return "Not Initialized";
         case NCRYPT_ALREADY_INITIALIZED:
-            return "Crypto already Initialized";
+            return "Already Initialized";
         case NCRYPT_NULL_PTR:
-            return "Crypto NULL Pointer";
+            return "NULL Pointer";
         case NCRYPT_PEM_LOAD_FAILED:
-            return "Crypto PEM load failure";
+            return "PEM Load Failure";
         case NCRYPT_WANT_READ:
-            return "Crypto requires receiving bytes";
+            return "Require Input";
         case NCRYPT_WANT_WRITE:
-            return "Crypto requires sending bytes";
+            return "Require Output";
         case NCRYPT_HANDSHAKE_FAILED:
-            return "Crypto handshake failure";
+            return "Handshake Failure";
         case NCRYPT_IO_ERROR:
             return "Input/Output Error";
     }

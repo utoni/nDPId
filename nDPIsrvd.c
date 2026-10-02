@@ -258,6 +258,28 @@ void nDPIsrvd_memprof_log(char const * const format, ...)
 #endif
 #endif
 
+#ifdef ENABLE_CRYPTO
+static struct ncrypt_entity * get_ncrypt_entity(struct remote_desc * const remote)
+{
+    if (nDPIsrvd_TLS_USED() == 0) {
+        return NULL;
+    }
+
+    switch (remote->sock_type) {
+        case COLLECTOR_UN:
+            return NULL;
+        case COLLECTOR_IN:
+            return &remote->event_collector_in.ncrypt_entity;
+        case DISTRIBUTOR_UN:
+            return NULL;
+        case DISTRIBUTOR_IN:
+            return &remote->event_distributor_in.ncrypt_entity;
+    }
+
+    return NULL;
+}
+#endif
+
 static struct nDPIsrvd_json_buffer * get_read_buffer(struct remote_desc * const remote)
 {
     switch (remote->sock_type)
@@ -311,7 +333,7 @@ static UT_array * get_additional_write_buffers(struct remote_desc * const remote
     return NULL;
 }
 
-static int add_to_additional_write_buffers(struct nio * const io,
+static int add_to_additional_write_buffers(struct nio * const io, int index,
                                            struct remote_desc * const remote,
                                            uint8_t * const buf,
                                            nDPIsrvd_ull json_message_length)
@@ -324,11 +346,11 @@ static int add_to_additional_write_buffers(struct nio * const io,
         return -1;
     }
 
+    if (nio_can_output(io, index) == NIO_SUCCESS) {
+        return 0;
+    }
     if (utarray_len(additional_write_buffers) >= GET_CMDARG_ULL(nDPIsrvd_options.max_write_buffers))
     {
-        if (nio_can_output(io, remote->fd) == NIO_SUCCESS) {
-            return 0;
-        }
         logger_nDPIsrvd(remote,
                         "Buffer limit for",
                         "reached, remote too slow: %u lines (increase buffer limit with `-M')",
@@ -449,16 +471,19 @@ static int drain_main_buffer(struct nio * const io, struct remote_desc * const r
                 &remote->event_distributor_in.ncrypt_entity,
                 (char const *)write_buffer->buf.ptr.raw,
                 write_buffer->buf.used);
+            int saved_errno = errno;
             if (bytes_written < 0) {
-                if (ncrypt_last_error(&remote->event_distributor_in.ncrypt_entity) == NCRYPT_WANT_READ)
+                int ncrypt_errno = ncrypt_last_error(&remote->event_distributor_in.ncrypt_entity);
+                if (ncrypt_errno == NCRYPT_WANT_READ)
                 {
                     return set_in_event(io, remote);
                 }
-                if (ncrypt_last_error(&remote->event_distributor_in.ncrypt_entity) == NCRYPT_WANT_WRITE)
+                else if (ncrypt_errno == NCRYPT_WANT_WRITE)
                 {
                     return set_out_event(io, remote);
                 }
             }
+            errno = saved_errno;
         }
         else
 #endif
@@ -522,6 +547,7 @@ static int drain_write_buffers(struct nio * const io,
                 written = ncrypt_write(&remote->event_distributor_in.ncrypt_entity,
                                        (char const *)(buf->buf.ptr.raw + buf->written),
                                        buf->buf.used - buf->written);
+                int saved_errno = errno;
                 if (written < 0) {
                     if (ncrypt_last_error(&remote->event_distributor_in.ncrypt_entity) == NCRYPT_WANT_READ)
                     {
@@ -532,6 +558,7 @@ static int drain_write_buffers(struct nio * const io,
                         return set_out_event(io, remote);
                     }
                 }
+                errno = saved_errno;
             }
             else
 #endif
@@ -817,9 +844,6 @@ static struct remote_desc * get_remote_descriptor(enum sock_type type, int remot
         {
             int err = 0;
             struct nDPIsrvd_json_buffer * read_buffer = NULL;
-#ifdef ENABLE_CRYPTO
-            struct ncrypt_entity * crypt_ent = NULL;
-#endif
             struct nDPIsrvd_write_buffer * write_buffer = NULL;
             UT_array ** additional_write_buffers = NULL;
 
@@ -830,11 +854,6 @@ static struct remote_desc * get_remote_descriptor(enum sock_type type, int remot
                     break;
                 case COLLECTOR_IN:
                     read_buffer = &remotes.desc[i].event_collector_in.main_read_buffer;
-#ifdef ENABLE_CRYPTO
-                    if (nDPIsrvd_TLS_USED() != 0) {
-                        crypt_ent = &remotes.desc[i].event_collector_in.ncrypt_entity;
-                    }
-#endif
                     break;
                 case DISTRIBUTOR_UN:
                     write_buffer = &remotes.desc[i].event_distributor_un.main_write_buffer;
@@ -843,19 +862,8 @@ static struct remote_desc * get_remote_descriptor(enum sock_type type, int remot
                 case DISTRIBUTOR_IN:
                     write_buffer = &remotes.desc[i].event_distributor_in.main_write_buffer;
                     additional_write_buffers = &remotes.desc[i].event_distributor_in.additional_write_buffers;
-#ifdef ENABLE_CRYPTO
-                    if (nDPIsrvd_TLS_USED() != 0) {
-                        crypt_ent = &remotes.desc[i].event_distributor_in.ncrypt_entity;
-                    }
-#endif
                     break;
             }
-
-#ifdef ENABLE_CRYPTO
-            if (crypt_ent != NULL) {
-                ncrypt_entity(crypt_ent);
-            }
-#endif
 
             if (read_buffer != NULL)
             {
@@ -892,15 +900,22 @@ static struct remote_desc * get_remote_descriptor(enum sock_type type, int remot
                 if (read_buffer != NULL) {
                     nDPIsrvd_json_buffer_free(read_buffer);
                 }
-#ifdef ENABLE_CRYPTO
-                ncrypt_free_entity(crypt_ent);
-#endif
                 return NULL;
             }
 
             remotes.desc_used++;
             remotes.desc[i].sock_type = type;
             remotes.desc[i].fd = remote_fd;
+#ifdef ENABLE_CRYPTO
+            /*
+             * Do not move this before sock_type was set,
+             * get_ncrypt_entity relies on remote descriptor sock type.
+             */
+            struct ncrypt_entity * const crypt_ent = get_ncrypt_entity(&remotes.desc[i]);
+            if (crypt_ent != NULL) {
+                ncrypt_entity(crypt_ent);
+            }
+#endif
             return &remotes.desc[i];
         }
     }
@@ -943,9 +958,6 @@ static void free_remote(struct nio * const io, struct remote_desc * remote)
                     logger_nDPIsrvd(remote, "Error closing collector connection", ": %s", strerror(errno));
                 }
                 nDPIsrvd_json_buffer_free(&remote->event_collector_in.main_read_buffer);
-#ifdef ENABLE_CRYPTO
-                ncrypt_free_entity(&remote->event_collector_in.ncrypt_entity);
-#endif
                 break;
             case DISTRIBUTOR_UN:
                 if (errno != 0)
@@ -971,11 +983,15 @@ static void free_remote(struct nio * const io, struct remote_desc * remote)
                     utarray_free(remote->event_distributor_in.additional_write_buffers);
                 }
                 nDPIsrvd_buffer_free(&remote->event_distributor_in.main_write_buffer.buf);
-#ifdef ENABLE_CRYPTO
-                ncrypt_free_entity(&remote->event_distributor_in.ncrypt_entity);
-#endif
                 break;
         }
+
+#ifdef ENABLE_CRYPTO
+        struct ncrypt_entity * const crypt_ent = get_ncrypt_entity(remote);
+        if (crypt_ent != NULL) {
+            ncrypt_free_entity(crypt_ent);
+        }
+#endif
 
         memset(remote, 0, sizeof(*remote));
         remote->fd = -1;
@@ -1048,6 +1064,7 @@ static int del_event(struct nio * const io, int fd)
 
 static void disconnect_client(struct nio * const io, struct remote_desc * const remote)
 {
+    logger_nDPIsrvd(remote, "Disconnecting client", "%s", "");
     free_remote(io, remote);
 }
 
@@ -1639,7 +1656,7 @@ static int handle_collector_protocol(struct nio * const io, struct remote_desc *
     return 0;
 }
 
-static int handle_incoming_data(struct nio * const io, struct remote_desc * const current)
+static int handle_incoming_data(struct nio * const io, int index, struct remote_desc * const current)
 {
     struct nDPIsrvd_json_buffer * const json_read_buffer = get_read_buffer(current);
     unsigned long long int * const json_bytes = get_collector_json_bytes(current);
@@ -1693,9 +1710,10 @@ static int handle_incoming_data(struct nio * const io, struct remote_desc * cons
             {
                 // Retry if interrupted by a signal.
             }
+            int saved_errno = errno;
             if (bytes_read < 0) {
                 int ncrypt_errno = ncrypt_last_error(&current->event_collector_in.ncrypt_entity);
-                if (ncrypt_errno == NCRYPT_WANT_READ)
+                if (ncrypt_errno == NCRYPT_WANT_READ || saved_errno == EAGAIN)
                 {
                     return set_in_event(io, current);
                 }
@@ -1703,10 +1721,14 @@ static int handle_incoming_data(struct nio * const io, struct remote_desc * cons
                 {
                     return set_out_event(io, current);
                 }
-                logger_nDPIsrvd(current, "Collector TLS connection", "failed during read with: %s",
-                                (ncrypt_errno != NCRYPT_SUCCESS ? "Crypto Error" : strerror(errno)));
-                disconnect_client(io, current);
-                return 1;
+                else
+                {
+                    logger_nDPIsrvd(current, "Collector TLS connection", "failed during read with: %s (%s)",
+                                    ncrypt_strerror(ncrypt_errno),
+                                    (saved_errno == 0 ? "TLS Error" : strerror(saved_errno)));
+                    disconnect_client(io, current);
+                    return 1;
+                }
             }
         }
         else
@@ -1746,25 +1768,9 @@ static int handle_incoming_data(struct nio * const io, struct remote_desc * cons
         for (size_t i = 0; i < remotes.desc_size; ++i)
         {
 #ifdef ENABLE_CRYPTO
-            if (nDPIsrvd_TLS_USED() != 0)
-            {
-                struct ncrypt_entity const * ent = NULL;
-                switch (remotes.desc[i].sock_type) {
-                    case COLLECTOR_UN:
-                        break;
-                    case COLLECTOR_IN:
-                        ent = &remotes.desc[i].event_collector_in.ncrypt_entity;
-                        break;
-                    case DISTRIBUTOR_UN:
-                        break;
-                    case DISTRIBUTOR_IN:
-                        ent = &remotes.desc[i].event_distributor_in.ncrypt_entity;
-                        break;
-                }
-                if (ent != NULL && ncrypt_handshake_done(ent) == 0)
-                {
-                    continue;
-                }
+            struct ncrypt_entity * const crypt_ent = get_ncrypt_entity(&remotes.desc[i]);
+            if (crypt_ent != NULL && ncrypt_handshake_done(crypt_ent) == 0) {
+                continue;
             }
 #endif
 
@@ -1779,7 +1785,7 @@ static int handle_incoming_data(struct nio * const io, struct remote_desc * cons
             if (json_bytes == NULL || *json_bytes > write_buffer->buf.max - write_buffer->buf.used ||
                 utarray_len(additional_write_buffers) > 0)
             {
-                if (add_to_additional_write_buffers(io,
+                if (add_to_additional_write_buffers(io, index,
                                                     &remotes.desc[i],
                                                     json_read_buffer->buf.ptr.raw,
                                                     *json_bytes) != 0)
@@ -1839,15 +1845,16 @@ static int handle_data_event(struct nio * const io, int index)
         && (current->sock_type == COLLECTOR_IN ||
             current->sock_type == DISTRIBUTOR_IN))
     {
-        struct ncrypt_entity * ent;
-        if (current->sock_type == COLLECTOR_IN)
-            ent = &current->event_collector_in.ncrypt_entity;
-        else
-            ent = &current->event_distributor_in.ncrypt_entity;
+        struct ncrypt_entity * const crypt_ent = get_ncrypt_entity(current);
+        if (crypt_ent == NULL) {
+            logger_nDPIsrvd(current, "BUG: Client", "missing crypto entity");
+            disconnect_client(io, current);
+            return 1;
+        }
 
-        if (ncrypt_handshake_done(ent) == 0) {
+        if (ncrypt_handshake_done(crypt_ent) == 0) {
             errno = 0;
-            int rv = ncrypt_on_accept(&ncrypt_ctx, current->fd, ent);
+            int rv = ncrypt_on_accept(&ncrypt_ctx, current->fd, crypt_ent);
             if (rv != NCRYPT_SUCCESS) {
                 if (rv == NCRYPT_WANT_READ) {
                     return set_in_event(io, current);
@@ -1855,11 +1862,9 @@ static int handle_data_event(struct nio * const io, int index)
                 if (rv == NCRYPT_WANT_WRITE) {
                     return set_out_event(io, current);
                 }
-                if (errno != 0)
-                    logger_nDPIsrvd(current, "TLS handshake from", "failed with: %d (%s)",
-                                    rv, strerror(errno));
-                else
-                    logger_nDPIsrvd(current, "TLS handshake from", "failed");
+                logger_nDPIsrvd(current, "TLS connection from", "failed with: %s",
+                                (rv != NCRYPT_SUCCESS ?
+                                 ncrypt_strerror(rv) : strerror(errno)));
                 disconnect_client(io, current);
                 return 1;
             }
@@ -1877,7 +1882,7 @@ static int handle_data_event(struct nio * const io, int index)
                 disconnect_client(io, current);
                 return 1;
             }
-            ncrypt_set_handshake(ent);
+            ncrypt_set_handshake(crypt_ent);
             return 0;
         }
 
@@ -1897,9 +1902,10 @@ static int handle_data_event(struct nio * const io, int index)
             {
                 // Retry if interrupted by a signal.
             }
+            int saved_errno = errno;
             if (bytes_read < 0) {
                 int ncrypt_errno = ncrypt_last_error(&current->event_distributor_in.ncrypt_entity);
-                if (ncrypt_errno == NCRYPT_WANT_READ)
+                if (ncrypt_errno == NCRYPT_WANT_READ || saved_errno == EAGAIN)
                 {
                     return set_in_event(io, current);
                 }
@@ -1907,10 +1913,14 @@ static int handle_data_event(struct nio * const io, int index)
                 {
                     return set_out_event(io, current);
                 }
-                logger_nDPIsrvd(current, "Distributor TLS connection", "failed during read with: %s",
-                                (ncrypt_errno != NCRYPT_SUCCESS ? "Crypto Error" : strerror(errno)));
-                disconnect_client(io, current);
-                return 1;
+                else
+                {
+                    logger_nDPIsrvd(current, "Distributor TLS connection", "failed during read with: %s (%s)",
+                                    ncrypt_strerror(ncrypt_errno),
+                                    (saved_errno == 0 ? "TLS Error" : strerror(saved_errno)));
+                    disconnect_client(io, current);
+                    return 1;
+                }
             }
             if (bytes_read == 0) {
                 disconnect_client(io, current);
@@ -1928,7 +1938,7 @@ static int handle_data_event(struct nio * const io, int index)
 
     if (nio_has_input(io, index) == NIO_SUCCESS)
     {
-        return handle_incoming_data(io, current);
+        return handle_incoming_data(io, index, current);
     }
     else
     {
@@ -2115,16 +2125,15 @@ static int mainloop(struct nio * const io)
                     if (remotes.desc[i].fd < 0) {
                         continue;
                     }
-                    struct ncrypt_entity const * crypt_ent = NULL;
-                    if (remotes.desc[i].sock_type == COLLECTOR_IN) {
-                        crypt_ent = &remotes.desc[i].event_collector_in.ncrypt_entity;
-                    } else if (remotes.desc[i].sock_type == DISTRIBUTOR_IN) {
-                        crypt_ent = &remotes.desc[i].event_distributor_in.ncrypt_entity;
+                    struct ncrypt_entity const * crypt_ent = get_ncrypt_entity(&remotes.desc[i]);
+                    if (crypt_ent == NULL) {
+                        continue;
                     }
                     if (crypt_ent != NULL && ncrypt_handshake_done(crypt_ent) == 0) {
-                        if (ncrypt_since_start(crypt_ent) >= TLS_HANDSHAKE_TIMEOUT) {
+                        long long int started = ncrypt_since_start(crypt_ent);
+                        if (started >= TLS_HANDSHAKE_TIMEOUT) {
                             logger_nDPIsrvd(&remotes.desc[i], "TLS handshake timeout for",
-                                            "after %lld seconds", ncrypt_since_start(crypt_ent));
+                                            "after %lld seconds", started);
                             disconnect_client(io, &remotes.desc[i]);
                             continue;
                         }

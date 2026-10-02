@@ -2923,7 +2923,7 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
                         break;
                     default:
                         logger(1,
-                               "[%8llu, %zu] TLS handshake failed with: %s",
+                               "[%8llu, %zu] TLS connection failed with: %s",
                                workflow->packets_captured,
                                reader_thread->array_index,
                                ncrypt_last_strerror(&reader_thread->ncrypt_entity));
@@ -2950,10 +2950,20 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
     {
         written = ncrypt_write(&reader_thread->ncrypt_entity, newline_json_msg, s_ret);
         saved_errno = errno;
-        if (written < 0 && ncrypt_last_error(&reader_thread->ncrypt_entity) != NCRYPT_WANT_WRITE) {
-            logger(1, "[%8llu, %zu] Encrypted write to Collector failed: %s",
-                   workflow->packets_captured, reader_thread->array_index,
-                   ncrypt_last_strerror(&reader_thread->ncrypt_entity));
+        if (written < 0) {
+            int ncrypt_error = ncrypt_last_error(&reader_thread->ncrypt_entity);
+            if (ncrypt_error != NCRYPT_WANT_WRITE)
+            {
+                logger(1, "[%8llu, %zu] Send data to TLS Collector failed: %s (%s)",
+                       workflow->packets_captured, reader_thread->array_index,
+                       ncrypt_strerror(ncrypt_error),
+                       (saved_errno == 0 ? "TLS Error" : strerror(saved_errno)));
+                if (saved_errno == 0) {
+                    saved_errno = EPIPE;
+                }
+            } else {
+                saved_errno = EAGAIN;
+            }
         }
     }
     else
@@ -2973,13 +2983,7 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
                    reader_thread->array_index);
         }
 
-#ifdef ENABLE_CRYPTO
-        if ((nDPId_TLS_USED() != 0 &&
-             ncrypt_last_error(&reader_thread->ncrypt_entity) != NCRYPT_WANT_WRITE) ||
-            saved_errno != EAGAIN)
-#else
         if (saved_errno != EAGAIN)
-#endif
         {
             reader_thread->collector_sock_last_errno = saved_errno;
         }
@@ -2996,9 +3000,13 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
                     written = ncrypt_write(&reader_thread->ncrypt_entity, newline_json_msg + pos, s_ret - pos);
                     saved_errno = errno;
                     if (written < 0) {
-                        logger(1, "[%8llu, %zu] Encrypted write (blocking I/O) to connection failed: %s",
+                        logger(1, "[%8llu, %zu] Send data (blocking I/O) to TLS Collector failed: %s (%s)",
                                workflow->packets_captured, reader_thread->array_index,
-                               ncrypt_last_strerror(&reader_thread->ncrypt_entity));
+                               ncrypt_last_strerror(&reader_thread->ncrypt_entity),
+                               (saved_errno == 0 ? "TLS Error" : strerror(saved_errno)));
+                        if (saved_errno == 0) {
+                            saved_errno = EPIPE;
+                        }
                     }
                 }
                 else
@@ -3006,6 +3014,14 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
                 {
                     written = write(reader_thread->collector_sockfd, newline_json_msg + pos, s_ret - pos);
                     saved_errno = errno;
+                    if (written < 0) {
+                        logger(1,
+                               "[%8llu, %zu] Send data (blocking I/O) to Collector at %s failed: %s",
+                               workflow->packets_captured,
+                               reader_thread->array_index,
+                               GET_CMDARG_STR(nDPId_options.collector_address),
+                               strerror(saved_errno));
+                    }
                 }
                 if (written > 0 && (size_t)written == s_ret - pos)
                 {
@@ -3023,16 +3039,10 @@ static void send_to_collector(struct nDPId_reader_thread * const reader_thread,
                 }
                 else if (written < 0)
                 {
-                    if (saved_errno == EINTR)
+                    if (saved_errno == EINTR || saved_errno == EAGAIN)
                     {
                         continue;
                     }
-                    logger(1,
-                           "[%8llu, %zu] Send data (blocking I/O) to Collector at %s failed: %s",
-                           workflow->packets_captured,
-                           reader_thread->array_index,
-                           GET_CMDARG_STR(nDPId_options.collector_address),
-                           strerror(saved_errno));
                     reader_thread->collector_sock_last_errno = saved_errno;
                     break;
                 }
@@ -5687,8 +5697,7 @@ static void run_capture_loop(struct nDPId_reader_thread * const reader_thread)
                                 break;
                         }
                     }
-                } else if (fd == reader_thread->collector_sockfd &&
-                           reader_thread->collector_sock_last_errno == 0)
+                } else if (fd == reader_thread->collector_sockfd)
                 {
                     ssize_t bytes_read;
                     char buf[BUFSIZ];
@@ -5699,7 +5708,7 @@ static void run_capture_loop(struct nDPId_reader_thread * const reader_thread)
                         while ((bytes_read = ncrypt_read(&reader_thread->ncrypt_entity, buf, sizeof(buf))) > 0)
                         {
                             // TODO: Implement Control Interface?
-                            logger(1, "Received %zd bytes from Collector, discarded..", bytes_read);
+                            logger(1, "Received %zd bytes from TLS Collector, discarded..", bytes_read);
                         }
                     } else
 #endif
@@ -5710,25 +5719,42 @@ static void run_capture_loop(struct nDPId_reader_thread * const reader_thread)
                             logger(1, "Received %zd bytes from Collector, discarded..", bytes_read);
                         }
                     }
+                    int saved_errno = errno;
 
-                    if (bytes_read < 0 && errno != EINTR && errno != EAGAIN) {
-                        reader_thread->collector_sock_last_errno = errno;
+                    if (bytes_read == 0) {
+                        if (nio_del_fd(&reader_thread->io, reader_thread->collector_sockfd) != NIO_SUCCESS) {
+                            logger(1, "Could not delete collector fd from event queue: %s", strerror(errno));
+                        }
 #ifdef ENABLE_CRYPTO
-                        if (errno == 0 && ncrypt_last_error(&reader_thread->ncrypt_entity) != NCRYPT_SUCCESS) {
-                            reader_thread->collector_sock_last_errno = ECONNRESET;
-                            logger(1, "Reading from Collector failed with: %s", ncrypt_last_strerror(&reader_thread->ncrypt_entity));
+                        if (nDPId_TLS_USED() != 0) {
+                            if (shutdown(reader_thread->collector_sockfd, SHUT_RDWR) != 0)
+                            {
+                                logger(1, "Could not shutdown TLS Collector fd read/write: %s", strerror(errno));
+                            }
+                        }
+#endif
+                    }
+                    else if (bytes_read < 0 && saved_errno != EAGAIN)
+                    {
+                        reader_thread->collector_sock_last_errno = (saved_errno == 0 ? ECONNRESET : saved_errno);
+#ifdef ENABLE_CRYPTO
+                        if (nDPId_TLS_USED() != 0)
+                        {
+                            logger(1, "Reading from TLS Collector failed with: %s (%s)",
+                                   ncrypt_last_strerror(&reader_thread->ncrypt_entity),
+                                   (saved_errno == 0 ? "TLS Error" : strerror(saved_errno)));
                         } else
 #endif
                         {
-                            logger(1, "Reading from Collector failed with: %s", strerror(reader_thread->collector_sock_last_errno));
+                            logger(1, "Reading from Collector failed with: %s", strerror(saved_errno));
                         }
                         if (nio_del_fd(&reader_thread->io, reader_thread->collector_sockfd) != NIO_SUCCESS) {
-                            logger(1, "Could not delete collector fd from event queue: %s", (errno != 0 ? strerror(errno) : "Internal Error"));
+                            logger(1, "Could not delete collector fd from event queue: %s", strerror(errno));
                         }
-                        if (shutdown(reader_thread->collector_sockfd, SHUT_RDWR) != 0 &&
-                            errno != ENOTCONN)
+                        if (shutdown(reader_thread->collector_sockfd, SHUT_RDWR) != 0
+                            && errno != ENOTCONN)
                         {
-                            logger(1, "Could not shutdown collector fd read/write: %s", strerror(errno));
+                            logger(1, "Could not shutdown Collector fd read/write: %s", strerror(errno));
                         }
                     }
                 } else {
