@@ -499,7 +499,7 @@ static int drain_main_buffer(struct nio * const io, struct remote_desc * const r
             {
                 return set_out_event(io, remote);
             }
-            logger_nDPIsrvd(remote, "Distributor connection", "closed, send failed: %s", strerror(errno));
+            logger_nDPIsrvd(remote, "Distributor connection", "closed, write failed: %s", strerror(errno));
             return -1;
         case 0:
             logger_nDPIsrvd(remote, "Distributor connection", "closed");
@@ -996,6 +996,8 @@ static void free_remote(struct nio * const io, struct remote_desc * remote)
         memset(remote, 0, sizeof(*remote));
         remote->fd = -1;
         remotes.desc_used--;
+    } else {
+        logger(1, "BUG: Can not disconnect client with invalid fd %d", remote->fd);
     }
 }
 

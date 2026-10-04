@@ -32,7 +32,7 @@
 
 #define nDPIsrvd_MAX_JSON_TOKENS (512u)
 #define nDPIsrvd_JSON_KEY_STRLEN (32)
-#define nDPIsrvd_HASHKEY_SEED (0x995fd871u)
+#define nDPIsrvd_HASHKEY_SEED (0x995fd871ull | ((0xe6546b64ull) << 32u))
 
 #define nDPIsrvd_ARRAY_LENGTH(s) ((size_t)(sizeof(s) / sizeof(s[0])))
 #define nDPIsrvd_STRLEN_SZ(s) ((size_t)((sizeof(s) / sizeof(s[0])) - sizeof(s[0])))
@@ -120,7 +120,7 @@ enum nDPIsrvd_cleanup_reason
 
 typedef unsigned long long int nDPIsrvd_ull;
 typedef nDPIsrvd_ull * nDPIsrvd_ull_ptr;
-typedef uint32_t nDPIsrvd_hashkey;
+typedef unsigned long long int nDPIsrvd_hashkey;
 
 struct nDPIsrvd_flow
 {
@@ -538,6 +538,9 @@ static inline void nDPIsrvd_cleanup_flows(struct nDPIsrvd_socket * const sock,
     struct nDPIsrvd_flow * current_flow;
     struct nDPIsrvd_flow * ftmp;
 
+    if (instance == NULL || thread_data == NULL) {
+        return;
+    }
     if (instance->flow_table != NULL)
     {
 #ifdef ENABLE_MEMORY_PROFILING
@@ -724,7 +727,8 @@ static inline int nDPIsrvd_setup_address(struct nDPIsrvd_address * const address
     {
         address->raw.sa_family = AF_UNIX;
         address->size = sizeof(address->un);
-        if (snprintf(address->un.sun_path, sizeof(address->un.sun_path), "%s", destination) <= 0)
+        int ret = snprintf(address->un.sun_path, sizeof(address->un.sun_path), "%s", destination);
+        if (ret <= 0 || (size_t)ret >= sizeof(address->un.sun_path))
         {
             return 1;
         }
@@ -866,7 +870,7 @@ static inline enum nDPIsrvd_conversion_return str_value_to_ull(char const * cons
 
 static inline nDPIsrvd_hashkey nDPIsrvd_build_key(char const * str, size_t len)
 {
-    uint32_t hash = nDPIsrvd_HASHKEY_SEED;
+    nDPIsrvd_hashkey hash = nDPIsrvd_HASHKEY_SEED;
     uint32_t c;
 
     while (len-- > 0 && (c = *str++) != 0)
@@ -1048,7 +1052,8 @@ static inline int nDPIsrvd_token_iterate(struct nDPIsrvd_socket const * const so
                                          struct nDPIsrvd_json_token const * const start,
                                          struct nDPIsrvd_json_token * const next)
 {
-    if (start == NULL || next->token_index >= sock->jsmn.tokens_found ||
+    if (start == NULL || next->token_index + 1 >= sock->jsmn.tokens_found ||
+        start->token_index >= sock->jsmn.tokens_found ||
         sock->jsmn.tokens[start->token_index].type != JSMN_ARRAY)
     {
         return 1;
@@ -1084,6 +1089,9 @@ static inline struct nDPIsrvd_json_token const * nDPIsrvd_get_token(struct nDPIs
     HASH_FIND_INT(sock->json.token_table, &hash_key, token);
     if (token != NULL && token->token_index >= 0)
     {
+        if (hash_key != token->token_keys_hash) {
+            return NULL;
+        }
         return token;
     }
 
@@ -1307,7 +1315,10 @@ static inline struct nDPIsrvd_thread_data * nDPIsrvd_get_thread_data(
 
     {
         nDPIsrvd_ull thread_key = 0;
-        TOKEN_VALUE_TO_ULL(sock, thread_id_token, &thread_key);
+        if (TOKEN_VALUE_TO_ULL(sock, thread_id_token, &thread_key) != CONVERSION_OK)
+        {
+            return NULL;
+        }
         thread_id = (nDPIsrvd_hashkey)thread_key;
     }
 
@@ -1334,7 +1345,10 @@ static inline struct nDPIsrvd_thread_data * nDPIsrvd_get_thread_data(
     if (ts_usec_token != NULL)
     {
         nDPIsrvd_ull thread_ts_usec = 0;
-        TOKEN_VALUE_TO_ULL(sock, ts_usec_token, &thread_ts_usec);
+        if (TOKEN_VALUE_TO_ULL(sock, ts_usec_token, &thread_ts_usec) != CONVERSION_OK)
+        {
+            return NULL;
+        }
 
         if (thread_ts_usec > thread_data->most_recent_flow_time)
         {
@@ -1400,7 +1414,10 @@ static inline struct nDPIsrvd_flow * nDPIsrvd_get_flow(struct nDPIsrvd_socket * 
         flow->flow_key = flow_key;
         flow->thread_id = (*thread_data)->thread_key;
 
-        TOKEN_VALUE_TO_ULL(sock, tokens[TOKEN_FLOW_ID], &flow->id_as_ull);
+        if (TOKEN_VALUE_TO_ULL(sock, tokens[TOKEN_FLOW_ID], &flow->id_as_ull) != CONVERSION_OK)
+        {
+            return NULL;
+        }
         HASH_ADD_INT((*instance)->flow_table, flow_key, flow);
 #ifdef ENABLE_MEMORY_PROFILING
         nDPIsrvd_memprof_log("Flow %llu added: %zu bytes.", flow->id_as_ull, sizeof(*flow) + sock->flow_user_data_size);
@@ -1410,7 +1427,10 @@ static inline struct nDPIsrvd_flow * nDPIsrvd_get_flow(struct nDPIsrvd_socket * 
     if (tokens[TOKEN_FLOW_SRC_LAST_PKT_TIME] != NULL)
     {
         nDPIsrvd_ull nmb = 0;
-        TOKEN_VALUE_TO_ULL(sock, tokens[TOKEN_FLOW_SRC_LAST_PKT_TIME], &nmb);
+        if (TOKEN_VALUE_TO_ULL(sock, tokens[TOKEN_FLOW_SRC_LAST_PKT_TIME], &nmb) != CONVERSION_OK)
+        {
+            return NULL;
+        }
         if (nmb > flow->last_seen)
         {
             flow->last_seen = nmb;
@@ -1419,7 +1439,10 @@ static inline struct nDPIsrvd_flow * nDPIsrvd_get_flow(struct nDPIsrvd_socket * 
     if (tokens[TOKEN_FLOW_DST_LAST_PKT_TIME] != NULL)
     {
         nDPIsrvd_ull nmb = 0;
-        TOKEN_VALUE_TO_ULL(sock, tokens[TOKEN_FLOW_DST_LAST_PKT_TIME], &nmb);
+        if (TOKEN_VALUE_TO_ULL(sock, tokens[TOKEN_FLOW_DST_LAST_PKT_TIME], &nmb) != CONVERSION_OK)
+        {
+            return NULL;
+        }
         if (nmb > flow->last_seen)
         {
             flow->last_seen = nmb;
@@ -1429,7 +1452,10 @@ static inline struct nDPIsrvd_flow * nDPIsrvd_get_flow(struct nDPIsrvd_socket * 
     if (tokens[TOKEN_FLOW_IDLE_TIME] != NULL)
     {
         nDPIsrvd_ull flow_idle_time = 0;
-        TOKEN_VALUE_TO_ULL(sock, tokens[TOKEN_FLOW_IDLE_TIME], &flow_idle_time);
+        if (TOKEN_VALUE_TO_ULL(sock, tokens[TOKEN_FLOW_IDLE_TIME], &flow_idle_time) != CONVERSION_OK)
+        {
+            return NULL;
+        }
         flow->idle_time = flow_idle_time;
     }
 

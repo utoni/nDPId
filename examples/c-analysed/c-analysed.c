@@ -491,7 +491,7 @@ static void nDPIsrvd_write_flow_info_cb(struct nDPIsrvd_socket const * sock,
     }
 
     logger(0,
-           "[Thread %2d][Flow %5llu][ptr: "
+           "[Thread %5llu][Flow %5llu][ptr: "
 #ifdef __LP64__
            "0x%016llx"
 #else
@@ -523,7 +523,7 @@ static void nDPIsrvd_verify_flows_cb(struct nDPIsrvd_thread_data const * const t
         if (flow->last_seen + flow->idle_time >= thread_data->most_recent_flow_time)
         {
             logger(1,
-                   "Thread %d / %d, Flow %llu verification failed",
+                   "Thread %llu / %llu, Flow %llu verification failed",
                    thread_data->thread_key,
                    flow->thread_id,
                    flow->id_as_ull);
@@ -531,7 +531,7 @@ static void nDPIsrvd_verify_flows_cb(struct nDPIsrvd_thread_data const * const t
         else
         {
             logger(1,
-                   "Thread %d / %d, Flow %llu verification failed, diff: %llu",
+                   "Thread %llu / %llu, Flow %llu verification failed, diff: %llu",
                    thread_data->thread_key,
                    flow->thread_id,
                    flow->id_as_ull,
@@ -558,7 +558,7 @@ static void sighandler(int signum)
         {
             if (nDPIsrvd_verify_flows(current_instance, nDPIsrvd_verify_flows_cb, NULL) != 0)
             {
-                logger(1, "Flow verification failed for instance %d", current_instance->alias_source_key);
+                logger(1, "Flow verification failed for instance %llu", current_instance->alias_source_key);
                 verification_failed = 1;
             }
         }

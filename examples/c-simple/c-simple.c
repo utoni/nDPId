@@ -42,7 +42,7 @@ static void nDPIsrvd_write_flow_info_cb(struct nDPIsrvd_socket const * sock,
     (void)user_data;
 
     fprintf(stderr,
-            "[Thread %2d][Flow %5llu][ptr: "
+            "[Thread %5llu][Flow %5llu][ptr: "
 #ifdef __LP64__
             "0x%016llx"
 #else
@@ -74,7 +74,7 @@ static void nDPIsrvd_verify_flows_cb(struct nDPIsrvd_thread_data const * const t
         if (flow->last_seen + flow->idle_time >= thread_data->most_recent_flow_time)
         {
             fprintf(stderr,
-                    "Thread %d / %d, Flow %llu verification failed\n",
+                    "Thread %llu / %llu, Flow %llu verification failed\n",
                     thread_data->thread_key,
                     flow->thread_id,
                     flow->id_as_ull);
@@ -82,7 +82,7 @@ static void nDPIsrvd_verify_flows_cb(struct nDPIsrvd_thread_data const * const t
         else
         {
             fprintf(stderr,
-                    "Thread %d / %d, Flow %llu verification failed, diff: %llu\n",
+                    "Thread %llu / %llu, Flow %llu verification failed, diff: %llu\n",
                     thread_data->thread_key,
                     flow->thread_id,
                     flow->id_as_ull,
@@ -109,7 +109,7 @@ static void sighandler(int signum)
         {
             if (nDPIsrvd_verify_flows(current_instance, nDPIsrvd_verify_flows_cb, NULL) != 0)
             {
-                fprintf(stderr, "Flow verification failed for instance %d\n", current_instance->alias_source_key);
+                fprintf(stderr, "Flow verification failed for instance %llu\n", current_instance->alias_source_key);
                 verification_failed = 1;
             }
         }
@@ -152,7 +152,7 @@ static enum nDPIsrvd_callback_return simple_json_callback(struct nDPIsrvd_socket
     struct nDPIsrvd_json_token const * const flow_event_name = TOKEN_GET_SZ(sock, "flow_event_name");
     if (TOKEN_VALUE_EQUALS_SZ(sock, flow_event_name, "new") != 0)
     {
-        printf("Instance %.*s/%.*s (HT-Key: 0x%x), Thread %d, Flow %llu new\n",
+        printf("Instance %.*s/%.*s (HT-Key: 0x%llx), Thread %llu, Flow %llu new\n",
                nDPIsrvd_get_token_size(sock, alias),
                nDPIsrvd_get_token_value(sock, alias),
                nDPIsrvd_get_token_size(sock, source),
@@ -184,7 +184,7 @@ static void simple_flow_cleanup_callback(struct nDPIsrvd_socket * const sock,
     }
 
     char const * const reason_str = nDPIsrvd_enum_to_string(reason);
-    printf("Instance %.*s/%.*s (HT-Key: 0x%x), Thread %d, Flow %llu cleanup, reason: %s\n",
+    printf("Instance %.*s/%.*s (HT-Key: 0x%llx), Thread %llu, Flow %llu cleanup, reason: %s\n",
            nDPIsrvd_get_token_size(sock, alias),
            nDPIsrvd_get_token_value(sock, alias),
            nDPIsrvd_get_token_size(sock, source),
