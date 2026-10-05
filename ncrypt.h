@@ -75,13 +75,15 @@ WARN_UNUSED
 int ncrypt_init_client(struct ncrypt_ctx * const ctx,
                        char const * const ca_path,
                        char const * const privkey_pem_path,
-                       char const * const cert_pem_path);
+                       char const * const cert_pem_path,
+                       char const * const crl_path);
 
 WARN_UNUSED
 int ncrypt_init_server(struct ncrypt_ctx * const ctx,
                        char const * const ca_path,
                        char const * const privkey_pem_path,
-                       char const * const cert_pem_path);
+                       char const * const cert_pem_path,
+                       char const * const crl_path);
 
 WARN_UNUSED
 int ncrypt_on_connect(struct ncrypt_ctx * const ctx, int connect_fd, struct ncrypt_entity * const ent);

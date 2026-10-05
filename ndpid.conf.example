@@ -29,6 +29,7 @@ collector   = /run/nDPIsrvd/collector
 #cert-pem-file = /path/to/client-crt.pem
 #key-pem-file  = /path/to/client-key.pem
 #ca-pem-file   = /path/to/ca.pem
+#crl-pem-file	 = /path/to/crl.pem
 
 # Set a name for this nDPId instance
 #alias       = myhostname

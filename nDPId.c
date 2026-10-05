@@ -542,6 +542,7 @@ static struct
     struct cmdarg client_crt_pem_file;
     struct cmdarg client_key_pem_file;
     struct cmdarg server_ca_pem_file;
+    struct cmdarg crl_pem_file;
 #endif
     /* subopts */
     struct cmdarg max_flows_per_thread;
@@ -597,6 +598,7 @@ static struct
                    .client_crt_pem_file = CMDARG_STR(NULL),
                    .client_key_pem_file = CMDARG_STR(NULL),
                    .server_ca_pem_file = CMDARG_STR(NULL),
+                   .crl_pem_file = CMDARG_STR(NULL),
 #endif
                    .max_flows_per_thread = CMDARG_ULL(nDPId_MAX_FLOWS_PER_THREAD / 2),
                    .max_idle_flows_per_thread = CMDARG_ULL(nDPId_MAX_IDLE_FLOWS_PER_THREAD / 2),
@@ -660,6 +662,7 @@ struct confopt general_config_map[] = {CONFOPT("netif", &nDPId_options.pcap_file
                                        CONFOPT("cert-pem-file", &nDPId_options.client_crt_pem_file),
                                        CONFOPT("key-pem-file", &nDPId_options.client_key_pem_file),
                                        CONFOPT("ca-pem-file", &nDPId_options.server_ca_pem_file),
+                                       CONFOPT("crl-pem-file", &nDPId_options.crl_pem_file),
 #endif
 };
 struct confopt tuning_config_map[] = {
@@ -6112,6 +6115,8 @@ static void print_usage(char const * const arg0)
         "\t  \tDefault: disabled\n"
         "\t-F\tPath to the server CA file (PEM format)\n"
         "\t  \tDefault: disabled\n"
+        "\t-V\tPath to the CRL file (PEM format)\n"
+        "\t  \tDefault: disabled\n"
 #endif
 #ifdef ENABLE_EPOLL
         "\t-e\tUse poll() instead of epoll().\n"
@@ -6239,7 +6244,7 @@ static int nDPId_parse_options(int argc, char ** argv)
 {
     int opt;
 
-    while ((opt = getopt(argc, argv, "f:i:rIEB:tlL:c:k:K:F:edp:u:g:R:P:C:J:S:a:U:Azo:vh")) != -1)
+    while ((opt = getopt(argc, argv, "f:i:rIEB:tlL:c:k:K:F:V:edp:u:g:R:P:C:J:S:a:U:Azo:vh")) != -1)
     {
         switch (opt)
         {
@@ -6303,6 +6308,14 @@ static int nDPId_parse_options(int argc, char ** argv)
                 break;
 #else
                 logger(1, "Server CA PEM file: %s", "nDPId was built w/o OpenSSL/Crypto support");
+                return 1;
+#endif
+            case 'V':
+#ifdef ENABLE_CRYPTO
+                set_cmdarg_string(&nDPId_options.crl_pem_file, optarg);
+                break;
+#else
+                logger(1, "CRL PEM file: %s", "nDPId was built w/o OpenSSL/Crypto support");
                 return 1;
 #endif
             case 'e':
@@ -6686,6 +6699,11 @@ static int validate_options(void)
         logger_early(1, "%s", "Encryption requires an TCP endpoint set with `-c'.");
         retval = 1;
     }
+    if (nDPId_TLS_USED() == 0 && IS_CMDARG_SET(nDPId_options.crl_pem_file) != 0)
+    {
+        logger_early(1, "%s", "Setting a CRL requires enabled TLS. See `-k', `-K' and `-F'.");
+        return 1;
+    }
 #endif
 
     return retval;
@@ -6824,7 +6842,8 @@ int main(int argc, char ** argv)
         ncrypt_init_client(&ncrypt_ctx,
                            GET_CMDARG_STR(nDPId_options.server_ca_pem_file),
                            GET_CMDARG_STR(nDPId_options.client_key_pem_file),
-                           GET_CMDARG_STR(nDPId_options.client_crt_pem_file)) != NCRYPT_SUCCESS)
+                           GET_CMDARG_STR(nDPId_options.client_crt_pem_file),
+                           GET_CMDARG_STR(nDPId_options.crl_pem_file)) != NCRYPT_SUCCESS)
     {
         logger_early(1, "%s", "Could not initialize crypto.");
         return 1;

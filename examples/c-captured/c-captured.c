@@ -181,7 +181,11 @@ static void decode_base64(pcap_dumper_t * const pd,
 
     if (nDPIsrvd_base64decode(base64_packet, base64_packet_size, pkt_buf, &pkt_buf_len) != 0 || pkt_buf_len == 0)
     {
-        logger(1, "packet base64 decode failed (%zu bytes): %s", base64_packet_size, base64_packet);
+        if (base64_packet != NULL) {
+            logger(1, "Packet event Base64 decode failed (%zu bytes): %s", base64_packet_size, base64_packet);
+        } else {
+            logger(1, "Packet event Base64 decode failed (%zu bytes)", base64_packet_size);
+        }
     }
     else
     {

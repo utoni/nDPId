@@ -146,6 +146,7 @@ static struct
     struct cmdarg server_crt_pem_file;
     struct cmdarg server_key_pem_file;
     struct cmdarg server_ca_pem_file;
+    struct cmdarg crl_pem_file;
 #endif
 } nDPIsrvd_options = {.config_file = CMDARG_STR(NULL),
                       .pidfile = CMDARG_STR(nDPIsrvd_PIDFILE),
@@ -167,7 +168,8 @@ static struct
                           ,
                       .server_crt_pem_file = CMDARG_STR(NULL),
                       .server_key_pem_file = CMDARG_STR(NULL),
-                      .server_ca_pem_file = CMDARG_STR(NULL)
+                      .server_ca_pem_file = CMDARG_STR(NULL),
+                      .crl_pem_file = CMDARG_STR(NULL),
 #endif
 };
 struct confopt config_map[] = {CONFOPT("pidfile", &nDPIsrvd_options.pidfile),
@@ -189,7 +191,8 @@ struct confopt config_map[] = {CONFOPT("pidfile", &nDPIsrvd_options.pidfile),
                                    ,
                                CONFOPT("cert-pem-file", &nDPIsrvd_options.server_crt_pem_file),
                                CONFOPT("key-pem-file", &nDPIsrvd_options.server_key_pem_file),
-                               CONFOPT("ca-pem-file", &nDPIsrvd_options.server_ca_pem_file)
+                               CONFOPT("ca-pem-file", &nDPIsrvd_options.server_ca_pem_file),
+                               CONFOPT("crl-pem-file", &nDPIsrvd_options.crl_pem_file),
 #endif
 };
 
@@ -1005,7 +1008,9 @@ static void free_remotes(struct nio * const io)
 {
     for (size_t i = 0; i < remotes.desc_size; ++i)
     {
-        free_remote(io, &remotes.desc[i]);
+        if (remotes.desc[i].fd >= 0) {
+            free_remote(io, &remotes.desc[i]);
+        }
     }
     nDPIsrvd_free(remotes.desc);
     remotes.desc = NULL;
@@ -1074,7 +1079,7 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
 {
     int opt;
 
-    while ((opt = getopt(argc, argv, "f:lL:c:C:k:K:F:edp:s:S:G:m:u:g:M:vh")) != -1)
+    while ((opt = getopt(argc, argv, "f:lL:c:C:k:K:F:V:edp:s:S:G:m:u:g:M:vh")) != -1)
     {
         switch (opt)
         {
@@ -1101,7 +1106,7 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
                 set_cmdarg_string(&nDPIsrvd_options.server_crt_pem_file, optarg);
                 break;
 #else
-                logger_early(1, "%s", "nDPIsrvd was built w/o OpenSSL/Crypto support");
+                logger_early(1, "Server cert PEM file: %s", "nDPIsrvd was built w/o OpenSSL/Crypto support");
                 return 1;
 #endif
             case 'K':
@@ -1109,7 +1114,7 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
                 set_cmdarg_string(&nDPIsrvd_options.server_key_pem_file, optarg);
                 break;
 #else
-                logger_early(1, "%s", "nDPIsrvd was built w/o OpenSSL/Crypto support");
+                logger_early(1, "Server key PEM file: %s", "nDPIsrvd was built w/o OpenSSL/Crypto support");
                 return 1;
 #endif
             case 'F':
@@ -1117,7 +1122,15 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
                 set_cmdarg_string(&nDPIsrvd_options.server_ca_pem_file, optarg);
                 break;
 #else
-                logger_early(1, "%s", "nDPIsrvd was built w/o OpenSSL/Crypto support");
+                logger_early(1, "Server CA PEM file: %s", "nDPIsrvd was built w/o OpenSSL/Crypto support");
+                return 1;
+#endif
+            case 'V':
+#ifdef ENABLE_CRYPTO
+                set_cmdarg_string(&nDPIsrvd_options.crl_pem_file, optarg);
+                break;
+#else
+                logger_early(1, "CRL PEM file: %s", "nDPIsrvd was built w/o OpenSSL/Crypto support");
                 return 1;
 #endif
             case 'e':
@@ -1212,8 +1225,13 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
                         "\t-C\tAddress:Port of the listening TCP/IP socket (nDPIsrvd Collector).\n"
 #ifdef ENABLE_CRYPTO
                         "\t-k\tPath to the server certificate file (PEM format).\n"
+                        "\t  \tDefault: disabled\n"
                         "\t-K\tPath to the server key file (PEM format).\n"
+                        "\t  \tDefault: disabled\n"
                         "\t-F\tPath to the client CA file (PEM format).\n"
+                        "\t  \tDefault: disabled\n"
+                        "\t-V\tPath to the CRL file (PEM format).\n"
+                        "\t  \tDefault: disabled\n"
 #endif
                         "\t-e\tUse poll() instead of epoll().\n"
                         "\t  \tDefault: epoll() on Linux, poll() otherwise\n"
@@ -1321,6 +1339,11 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
         IS_CMDARG_SET(nDPIsrvd_options.distributor_in_address) == 0)
     {
         logger_early(1, "%s", "TLS requires a TCP collector endpoint `-C' or TCP distributor endpoint `-S'.");
+        return 1;
+    }
+    if (nDPIsrvd_TLS_USED() == 0 && IS_CMDARG_SET(nDPIsrvd_options.crl_pem_file) != 0)
+    {
+        logger_early(1, "%s", "Setting a CRL requires enabled TLS. See `-k', `-K' and `-F'.");
         return 1;
     }
 #endif
@@ -2007,6 +2030,7 @@ static int mainloop(struct nio * const io)
 
             if (clock_gettime(CLOCK_REALTIME, &now) != 0)
             {
+                close(ncrypt_handshake_timerfd);
                 return 1;
             }
             timeout.it_value.tv_sec = now.tv_sec + TLS_HANDSHAKE_TIMEOUT;
@@ -2015,6 +2039,7 @@ static int mainloop(struct nio * const io)
             timeout.it_interval.tv_nsec = 0;
             if (timerfd_settime(ncrypt_handshake_timerfd, TFD_TIMER_ABSTIME, &timeout, NULL) != 0)
             {
+                close(ncrypt_handshake_timerfd);
                 return 1;
             }
         }
@@ -2022,6 +2047,7 @@ static int mainloop(struct nio * const io)
         {
             logger(1, "Error adding TLS handshake timer: %s",
                    (errno != 0 ? strerror(errno) : "Internal Error"));
+            close(ncrypt_handshake_timerfd);
             return 1;
         }
     }
@@ -2367,7 +2393,8 @@ int main(int argc, char ** argv)
         if (ncrypt_init_server(&ncrypt_ctx,
                                GET_CMDARG_STR(nDPIsrvd_options.server_ca_pem_file),
                                GET_CMDARG_STR(nDPIsrvd_options.server_key_pem_file),
-                               GET_CMDARG_STR(nDPIsrvd_options.server_crt_pem_file)) != NCRYPT_SUCCESS)
+                               GET_CMDARG_STR(nDPIsrvd_options.server_crt_pem_file),
+                               GET_CMDARG_STR(nDPIsrvd_options.crl_pem_file)) != NCRYPT_SUCCESS)
         {
             logger_early(1, "%s", "Could not initialize crypto.");
             return 1;
@@ -2415,7 +2442,7 @@ int main(int argc, char ** argv)
 #endif
         {
             logger(1,
-                   "Please keep in mind that using a TCP Distributor without TLS may leak sensitive information to "
+                   "Please keep in mind that using a TCP Collector/Distributor without TLS may leak sensitive information to "
                    "everyone with access to the device/network. You've been warned!");
         }
     }

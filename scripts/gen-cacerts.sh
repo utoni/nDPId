@@ -31,10 +31,29 @@ OLDPWD="$(pwd)"
 mkdir -p "${OUT_DIR}"
 cd "${OUT_DIR}"
 
+cat <<EOF >./openssl.conf
+[ca]
+default_ca=CA
+[CA]
+database=./crl_index.txt
+crlnumber=./crl_num.txt
+certificate=./ca.crt
+private_key=./ca.key
+default_md=sha384
+default_crl_days=30
+EOF
+
 if [[ ! -r ./ca.key || ! -r ./ca.crt ]]; then
     printf '%s\n' '[*] Create CA...'
     openssl genrsa -out ./ca.key 4096
     openssl req -x509 -new -nodes -key ./ca.key -sha256 -days 3650 -out ./ca.crt -subj "/CN=nDPId Root CA"
+fi
+
+if [[ ! -r ./crl.crt ]]; then
+    CRLNUM=$(date +%s)
+    [ -r ./crl_index.txt ] || : >./crl_index.txt
+    printf '%s' "${CRLNUM}" >./crl_num.txt
+    openssl ca -gencrl -config ./openssl.conf -out ./crl.crt
 fi
 
 if [[ ! -r ./server_${SERVER_CN}.key || ! -r ./server_${SERVER_CN}.crt ]]; then
@@ -50,7 +69,8 @@ if [[ ! -r ./client_collector_${CLIENT_CN}.key || ! -r ./client_collector_${CLIE
     openssl genrsa -out ./client_collector_${CLIENT_CN}.key 2048
     openssl req -new -key ./client_collector_${CLIENT_CN}.key -out ./client_collector_${CLIENT_CN}.csr \
         -subj "/CN=${CLIENT_CN}" -addext "subjectAltName=DNS:collector"
-    openssl x509 -req -in ./client_collector_${CLIENT_CN}.csr -CA ./ca.crt -CAkey ./ca.key -CAcreateserial \
+    openssl x509 \
+        -req -in ./client_collector_${CLIENT_CN}.csr -CA ./ca.crt -CAkey ./ca.key -CAcreateserial \
         -out ./client_collector_${CLIENT_CN}.crt -days 825 -sha256 -copy_extensions copy
 fi
 
@@ -59,7 +79,8 @@ if [[ ! -r ./client_distributor_${CLIENT_CN}.key || ! -r ./client_distributor_${
     openssl genrsa -out ./client_distributor_${CLIENT_CN}.key 2048
     openssl req -new -key ./client_distributor_${CLIENT_CN}.key -out ./client_distributor_${CLIENT_CN}.csr \
         -subj "/CN=${CLIENT_CN}" -addext "subjectAltName=DNS:distributor"
-    openssl x509 -req -in ./client_distributor_${CLIENT_CN}.csr -CA ./ca.crt -CAkey ./ca.key -CAcreateserial \
+    openssl x509 \
+        -req -in ./client_distributor_${CLIENT_CN}.csr -CA ./ca.crt -CAkey ./ca.key -CAcreateserial \
         -out ./client_distributor_${CLIENT_CN}.crt -days 825 -sha256 -copy_extensions copy
 fi
 

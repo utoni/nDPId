@@ -2,7 +2,6 @@
 
 #include <endian.h>
 #include <openssl/conf.h>
-#include <openssl/core_names.h>
 #include <openssl/err.h>
 #include <openssl/pem.h>
 #include <openssl/ssl.h>
@@ -40,8 +39,10 @@ ncrypt_strerror(int ncrypt_error)
 
 int ncrypt_init(void)
 {
-    SSL_load_error_strings();
-    OpenSSL_add_all_algorithms();
+    if (OPENSSL_init_ssl(OPENSSL_INIT_LOAD_SSL_STRINGS | OPENSSL_INIT_LOAD_CRYPTO_STRINGS, NULL) != 1)
+    {
+        return NCRYPT_NOT_INITIALIZED;
+    }
     //ERR_print_errors_fp(stderr);
 
     return NCRYPT_SUCCESS;
@@ -65,6 +66,7 @@ static int ncrypt_init_ctx(struct ncrypt_ctx * const ctx, SSL_METHOD const * con
     }
 
     SSL_CTX_set_mode(ctx->ssl_ctx, SSL_MODE_AUTO_RETRY);
+    SSL_CTX_set_options(ctx->ssl_ctx, SSL_OP_NO_RENEGOTIATION | SSL_OP_NO_COMPRESSION | SSL_OP_NO_TICKET);
     SSL_CTX_set_min_proto_version(ctx->ssl_ctx, TLS1_3_VERSION);
     SSL_CTX_set_max_proto_version(ctx->ssl_ctx, TLS1_3_VERSION);
     SSL_CTX_set_ciphersuites(ctx->ssl_ctx, "TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256");
@@ -72,10 +74,43 @@ static int ncrypt_init_ctx(struct ncrypt_ctx * const ctx, SSL_METHOD const * con
     return NCRYPT_SUCCESS;
 }
 
+static int ncrypt_load_crl(struct ncrypt_ctx * const ctx, char const * const crl_pem_path)
+{
+    if (crl_pem_path == NULL)
+    {
+        return NCRYPT_SUCCESS;
+    }
+
+    X509_STORE * const store = SSL_CTX_get_cert_store(ctx->ssl_ctx);
+    if (store == NULL)
+    {
+        return NCRYPT_NOT_INITIALIZED;
+    }
+
+    X509_LOOKUP * const lookup = X509_STORE_add_lookup(store, X509_LOOKUP_file());
+    if (lookup == NULL ||
+        X509_load_crl_file(lookup, crl_pem_path, X509_FILETYPE_PEM) <= 0)
+    {
+        char err_buf[256];
+        ERR_error_string_n(ERR_get_error(), err_buf, sizeof(err_buf));
+        logger_early(1, "Failed to load CRL `%s': %s", crl_pem_path, err_buf);
+        while (ERR_get_error() != 0) {}
+        return NCRYPT_PEM_LOAD_FAILED;
+    }
+
+    if (X509_STORE_set_flags(store, X509_V_FLAG_CRL_CHECK) != 1)
+    {
+        return NCRYPT_PEM_LOAD_FAILED;
+    }
+
+    return NCRYPT_SUCCESS;
+}
+
 static int ncrypt_load_pems(struct ncrypt_ctx * const ctx,
                             char const * const ca_path,
                             char const * const privkey_pem_path,
-                            char const * const cert_pem_path)
+                            char const * const cert_pem_path,
+                            char const * const crl_path)
 {
     char err_buf[256];
 
@@ -107,6 +142,13 @@ static int ncrypt_load_pems(struct ncrypt_ctx * const ctx,
         return NCRYPT_PEM_LOAD_FAILED;
     }
 
+    if (crl_path != NULL) {
+        int rv = ncrypt_load_crl(ctx, crl_path);
+        if (rv != NCRYPT_SUCCESS) {
+            return rv;
+        }
+    }
+
     SSL_CTX_set_verify(ctx->ssl_ctx, SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT, NULL);
     SSL_CTX_set_verify_depth(ctx->ssl_ctx, 1);
     return NCRYPT_SUCCESS;
@@ -115,7 +157,8 @@ static int ncrypt_load_pems(struct ncrypt_ctx * const ctx,
 int ncrypt_init_client(struct ncrypt_ctx * const ctx,
                        char const * const ca_path,
                        char const * const privkey_pem_path,
-                       char const * const cert_pem_path)
+                       char const * const cert_pem_path,
+                       char const * const crl_path)
 {
     if (ca_path == NULL || privkey_pem_path == NULL || cert_pem_path == NULL)
     {
@@ -129,13 +172,14 @@ int ncrypt_init_client(struct ncrypt_ctx * const ctx,
         return rv;
     }
 
-    return ncrypt_load_pems(ctx, ca_path, privkey_pem_path, cert_pem_path);
+    return ncrypt_load_pems(ctx, ca_path, privkey_pem_path, cert_pem_path, crl_path);
 }
 
 int ncrypt_init_server(struct ncrypt_ctx * const ctx,
                        char const * const ca_path,
                        char const * const privkey_pem_path,
-                       char const * const cert_pem_path)
+                       char const * const cert_pem_path,
+                       char const * const crl_path)
 {
     if (ca_path == NULL || privkey_pem_path == NULL || cert_pem_path == NULL)
     {
@@ -149,7 +193,9 @@ int ncrypt_init_server(struct ncrypt_ctx * const ctx,
         return rv;
     }
 
-    return ncrypt_load_pems(ctx, ca_path, privkey_pem_path, cert_pem_path);
+    SSL_CTX_set_num_tickets(ctx->ssl_ctx, 0);
+
+    return ncrypt_load_pems(ctx, ca_path, privkey_pem_path, cert_pem_path, crl_path);
 }
 
 int ncrypt_on_connect(struct ncrypt_ctx * const ctx, int connect_fd, struct ncrypt_entity * const ent)
@@ -163,6 +209,7 @@ int ncrypt_on_connect(struct ncrypt_ctx * const ctx, int connect_fd, struct ncry
             return NCRYPT_NOT_INITIALIZED;
         }
         SSL_set1_host(ent->ssl, "nDPIsrvd");
+        SSL_set_purpose(ent->ssl, X509_PURPOSE_SSL_CLIENT);
         SSL_set_hostflags(ent->ssl, X509_CHECK_FLAG_NO_PARTIAL_WILDCARDS);
         SSL_set_fd(ent->ssl, connect_fd);
         SSL_set_connect_state(ent->ssl);
@@ -186,6 +233,11 @@ int ncrypt_on_connect(struct ncrypt_ctx * const ctx, int connect_fd, struct ncry
         return NCRYPT_HANDSHAKE_FAILED;
     }
 
+    if (SSL_get_verify_result(ent->ssl) != X509_V_OK) {
+        ent->last_ncrypt_error = NCRYPT_HANDSHAKE_FAILED;
+        return NCRYPT_HANDSHAKE_FAILED;
+    }
+
     return NCRYPT_SUCCESS;
 }
 
@@ -201,6 +253,7 @@ int ncrypt_on_accept(struct ncrypt_ctx * const ctx, int accept_fd, struct ncrypt
         }
         SSL_set_fd(ent->ssl, accept_fd);
         SSL_set_accept_state(ent->ssl);
+        SSL_set_purpose(ent->ssl, X509_PURPOSE_SSL_SERVER);
     }
 
     int rv = SSL_accept(ent->ssl);
@@ -221,7 +274,12 @@ int ncrypt_on_accept(struct ncrypt_ctx * const ctx, int accept_fd, struct ncrypt
         return NCRYPT_HANDSHAKE_FAILED;
     }
 
-    X509 * const peer = SSL_get_peer_certificate(ent->ssl);
+    if (SSL_get_verify_result(ent->ssl) != X509_V_OK) {
+        ent->last_ncrypt_error = NCRYPT_HANDSHAKE_FAILED;
+        return NCRYPT_HANDSHAKE_FAILED;
+    }
+
+    X509 * const peer = SSL_get1_peer_certificate(ent->ssl);
     if (peer == NULL)
     {
         ent->last_ncrypt_error = NCRYPT_HANDSHAKE_FAILED;

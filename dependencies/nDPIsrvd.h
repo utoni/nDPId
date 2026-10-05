@@ -30,7 +30,7 @@
 #include <stdarg.h>
 #endif
 
-#define nDPIsrvd_MAX_JSON_TOKENS (512u)
+#define nDPIsrvd_MAX_JSON_TOKENS (1024u)
 #define nDPIsrvd_JSON_KEY_STRLEN (32)
 #define nDPIsrvd_HASHKEY_SEED (0x995fd871ull | ((0xe6546b64ull) << 32u))
 

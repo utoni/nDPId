@@ -19,6 +19,7 @@
 #cert-pem-file = /path/to/server-crt.pem
 #key-pem-file  = /path/to/server-key.pem
 #ca-pem-file   = /path/to/ca.pem
+#crl-pem-file	 = /path/to/crl.pem
 
 # Change group of the collector socket
 #collector-group        = daemon
