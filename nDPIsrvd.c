@@ -336,7 +336,7 @@ static UT_array * get_additional_write_buffers(struct remote_desc * const remote
     return NULL;
 }
 
-static int add_to_additional_write_buffers(struct nio * const io, int index,
+static int add_to_additional_write_buffers(struct nio * const io,
                                            struct remote_desc * const remote,
                                            uint8_t * const buf,
                                            nDPIsrvd_ull json_message_length)
@@ -349,9 +349,6 @@ static int add_to_additional_write_buffers(struct nio * const io, int index,
         return -1;
     }
 
-    if (nio_can_output(io, index) == NIO_SUCCESS) {
-        return 0;
-    }
     if (utarray_len(additional_write_buffers) >= GET_CMDARG_ULL(nDPIsrvd_options.max_write_buffers))
     {
         logger_nDPIsrvd(remote,
@@ -1807,10 +1804,14 @@ static int handle_incoming_data(struct nio * const io, int index, struct remote_
                 continue;
             }
 
+            if (nio_can_output(io, index) == NIO_SUCCESS) {
+                continue;
+            }
+
             if (json_bytes == NULL || *json_bytes > write_buffer->buf.max - write_buffer->buf.used ||
                 utarray_len(additional_write_buffers) > 0)
             {
-                if (add_to_additional_write_buffers(io, index,
+                if (add_to_additional_write_buffers(io,
                                                     &remotes.desc[i],
                                                     json_read_buffer->buf.ptr.raw,
                                                     *json_bytes) != 0)

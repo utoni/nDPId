@@ -149,9 +149,9 @@ static int pcap_open_or_append(int packet_datalink,
     return 0;
 }
 
-static void decode_base64(pcap_dumper_t * const pd,
-                          struct packet_data * const pd_elt,
-                          struct flow_packet_data * const fd_elt)
+static int decode_base64(pcap_dumper_t * const pd,
+                         struct packet_data * const pd_elt,
+                         struct flow_packet_data * const fd_elt)
 {
     char const * base64_packet;
     size_t base64_packet_size;
@@ -176,7 +176,7 @@ static void decode_base64(pcap_dumper_t * const pd,
     else
     {
         logger(1, "%s", "BUG: Can not decode base64 packet.");
-        return;
+        return 1;
     }
 
     if (nDPIsrvd_base64decode(base64_packet, base64_packet_size, pkt_buf, &pkt_buf_len) != 0 || pkt_buf_len == 0)
@@ -186,6 +186,7 @@ static void decode_base64(pcap_dumper_t * const pd,
         } else {
             logger(1, "Packet event Base64 decode failed (%zu bytes)", base64_packet_size);
         }
+        return 1;
     }
     else
     {
@@ -195,6 +196,7 @@ static void decode_base64(pcap_dumper_t * const pd,
         phdr.caplen = pkt_buf_len;
         phdr.len = pkt_buf_len;
         pcap_dump((unsigned char *)pd, &phdr, pkt_buf);
+        return 0;
     }
 }
 
@@ -735,7 +737,7 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
 
         if (TOKEN_GET_SZ(sock, "error_event_name") != NULL)
         {
-            logger(1, "Received an error event for packet id %llu.", packet_id);
+            //logger(1, "Received an error event for packet id %llu.", packet_id);
 
             if (TOKEN_GET_SZ(sock, "error_event_id") == NULL)
             {
@@ -754,7 +756,7 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
         }
         else if (TOKEN_VALUE_EQUALS_SZ(sock, TOKEN_GET_SZ(sock, "packet_event_name"), "packet") != 0)
         {
-            logger(1, "Received an packet event for packet id %llu.", packet_id);
+            //logger(1, "Received an packet event for packet id %llu.", packet_id);
 
             if (capture_mode != 0)
             {
@@ -804,7 +806,7 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
 
                 if (packet_write_pcap_file(global_user) != 0)
                 {
-                    logger(1, "%s", "Could not dump non-flow packet data");
+                    //logger(1, "%s", "Could not dump non-flow packet data");
                     return CALLBACK_OK;
                 }
             }
@@ -977,7 +979,7 @@ static enum nDPIsrvd_callback_return captured_json_callback(struct nDPIsrvd_sock
                     errno = 0;
                     if (flow_write_pcap_file(flow_user, pcap_filename) != 0)
                     {
-                        logger(1, "Could not dump packet data to pcap file %s: %s", pcap_filename, strerror(errno));
+                        //logger(1, "Could not dump packet data to pcap file %s", pcap_filename);
                         return CALLBACK_OK;
                     }
                 }
