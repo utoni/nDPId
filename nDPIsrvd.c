@@ -351,16 +351,20 @@ static int add_to_additional_write_buffers(struct nio * const io,
 
     if (utarray_len(additional_write_buffers) >= GET_CMDARG_ULL(nDPIsrvd_options.max_write_buffers))
     {
-        logger_nDPIsrvd(remote,
-                        "Buffer limit for",
-                        "reached, remote too slow: %u lines (increase buffer limit with `-M')",
-                        utarray_len(additional_write_buffers));
         return set_out_event(io, remote);
     }
 
     buf_src.buf.ptr.raw = buf;
     buf_src.buf.used = buf_src.buf.max = json_message_length;
     utarray_push_back(additional_write_buffers, &buf_src);
+
+    if (utarray_len(additional_write_buffers) == GET_CMDARG_ULL(nDPIsrvd_options.max_write_buffers))
+    {
+        logger_nDPIsrvd(remote,
+                        "Buffer limit for",
+                        "reached, remote too slow: %u lines (increase buffer limit with `-M')",
+                        utarray_len(additional_write_buffers));
+    }
 
     return 0;
 }
@@ -474,13 +478,13 @@ static int drain_main_buffer(struct nio * const io, struct remote_desc * const r
             int saved_errno = errno;
             if (bytes_written < 0) {
                 int ncrypt_errno = ncrypt_last_error(&remote->event_distributor_in.ncrypt_entity);
-                if (ncrypt_errno == NCRYPT_WANT_READ)
-                {
-                    return set_in_event(io, remote);
-                }
-                else if (ncrypt_errno == NCRYPT_WANT_WRITE)
+                if (ncrypt_errno == NCRYPT_WANT_WRITE || saved_errno == EAGAIN)
                 {
                     return set_out_event(io, remote);
+                }
+                else if (ncrypt_errno == NCRYPT_WANT_READ)
+                {
+                    return set_in_event(io, remote);
                 }
             }
             errno = saved_errno;
@@ -549,13 +553,13 @@ static int drain_write_buffers(struct nio * const io,
                                        buf->buf.used - buf->written);
                 int saved_errno = errno;
                 if (written < 0) {
+                    if (ncrypt_last_error(&remote->event_distributor_in.ncrypt_entity) == NCRYPT_WANT_WRITE || saved_errno == EAGAIN)
+                    {
+                        return set_out_event(io, remote);
+                    }
                     if (ncrypt_last_error(&remote->event_distributor_in.ncrypt_entity) == NCRYPT_WANT_READ)
                     {
                         return set_in_event(io, remote);
-                    }
-                    if (ncrypt_last_error(&remote->event_distributor_in.ncrypt_entity) == NCRYPT_WANT_WRITE)
-                    {
-                        return set_out_event(io, remote);
                     }
                 }
                 errno = saved_errno;
@@ -1804,6 +1808,13 @@ static int handle_incoming_data(struct nio * const io, int index, struct remote_
                 continue;
             }
 
+#ifndef NO_MAIN
+            /* I/O Error checking does not work reliably within nDPId-test */
+            if (nio_has_error(io, index) == NIO_SUCCESS) {
+                disconnect_client(io, &remotes.desc[i]);
+                continue;
+            }
+#endif
             if (nio_can_output(io, index) == NIO_SUCCESS) {
                 continue;
             }
@@ -1844,6 +1855,95 @@ static int handle_incoming_data(struct nio * const io, int index, struct remote_
     return 0;
 }
 
+#ifdef ENABLE_CRYPTO
+static int handle_crypto_handshake(struct nio * const io, struct ncrypt_entity * const crypt_ent,
+                                   struct remote_desc * const current)
+{
+    errno = 0;
+    int rv = ncrypt_on_accept(&ncrypt_ctx, current->fd, crypt_ent);
+    if (rv != NCRYPT_SUCCESS) {
+        if (rv == NCRYPT_WANT_READ) {
+            return set_in_event(io, current);
+        }
+        if (rv == NCRYPT_WANT_WRITE) {
+            return set_out_event(io, current);
+        }
+        logger_nDPIsrvd(current, "TLS connection from", "failed with: %s",
+                        (rv != NCRYPT_SUCCESS ?
+                         ncrypt_strerror(rv) : strerror(errno)));
+        disconnect_client(io, current);
+        return 1;
+    }
+    if (current->sock_type == COLLECTOR_IN &&
+        current->event_collector_in.ncrypt_entity.is_collector == 0)
+    {
+        logger_nDPIsrvd(current, "TLS ACL denial from", "not a collector");
+        disconnect_client(io, current);
+        return 1;
+    }
+    if (current->sock_type == DISTRIBUTOR_IN &&
+        current->event_distributor_in.ncrypt_entity.is_distributor == 0)
+    {
+        logger_nDPIsrvd(current, "TLS ACL denial from", "not a distributor");
+        disconnect_client(io, current);
+        return 1;
+    }
+
+    ncrypt_set_handshake(crypt_ent);
+    return 0;
+}
+
+static int handle_crypto_read(struct nio * const io, int index, struct remote_desc * const current)
+{
+    ssize_t bytes_read;
+    char garbage = 0;
+
+    if (nio_can_output(io, index) == NIO_SUCCESS)
+    {
+        return handle_outgoing_data(io, current);
+    }
+
+    while ((bytes_read = ncrypt_read(&current->event_distributor_in.ncrypt_entity,
+                                     &garbage, sizeof(garbage))) < 0
+           && errno == EINTR)
+    {
+        // Retry if interrupted by a signal.
+    }
+    int saved_errno = errno;
+
+    if (bytes_read < 0) {
+        int ncrypt_errno = ncrypt_last_error(&current->event_distributor_in.ncrypt_entity);
+        if (ncrypt_errno == NCRYPT_WANT_READ || saved_errno == EAGAIN)
+        {
+            return set_in_event(io, current);
+        }
+        else if (ncrypt_errno == NCRYPT_WANT_WRITE)
+        {
+            return set_out_event(io, current);
+        }
+        else
+        {
+            logger_nDPIsrvd(current, "Distributor TLS connection", "failed during read with: %s (%s)",
+                            ncrypt_strerror(ncrypt_errno),
+                            (saved_errno == 0 ? "TLS Error" : strerror(saved_errno)));
+            disconnect_client(io, current);
+            return 1;
+        }
+    }
+    if (bytes_read == 0) {
+        disconnect_client(io, current);
+        return 1;
+    }
+    if (bytes_read > 0) {
+        logger_nDPIsrvd(current, "Received data from", "who is not allowed to send us some.");
+        disconnect_client(io, current);
+        return 1;
+    }
+
+    return 0;
+}
+#endif
+
 static int handle_data_event(struct nio * const io, int index)
 {
     struct remote_desc * const current = (struct remote_desc *)nio_get_ptr(io, index);
@@ -1879,85 +1979,12 @@ static int handle_data_event(struct nio * const io, int index)
         }
 
         if (ncrypt_handshake_done(crypt_ent) == 0) {
-            errno = 0;
-            int rv = ncrypt_on_accept(&ncrypt_ctx, current->fd, crypt_ent);
-            if (rv != NCRYPT_SUCCESS) {
-                if (rv == NCRYPT_WANT_READ) {
-                    return set_in_event(io, current);
-                }
-                if (rv == NCRYPT_WANT_WRITE) {
-                    return set_out_event(io, current);
-                }
-                logger_nDPIsrvd(current, "TLS connection from", "failed with: %s",
-                                (rv != NCRYPT_SUCCESS ?
-                                 ncrypt_strerror(rv) : strerror(errno)));
-                disconnect_client(io, current);
-                return 1;
-            }
-            if (current->sock_type == COLLECTOR_IN &&
-                current->event_collector_in.ncrypt_entity.is_collector == 0)
-            {
-                logger_nDPIsrvd(current, "TLS ACL denial from", "not a collector");
-                disconnect_client(io, current);
-                return 1;
-            }
-            if (current->sock_type == DISTRIBUTOR_IN &&
-                current->event_distributor_in.ncrypt_entity.is_distributor == 0)
-            {
-                logger_nDPIsrvd(current, "TLS ACL denial from", "not a distributor");
-                disconnect_client(io, current);
-                return 1;
-            }
-            ncrypt_set_handshake(crypt_ent);
-            return 0;
+            return handle_crypto_handshake(io, crypt_ent, current);
         }
 
         if (current->sock_type == DISTRIBUTOR_IN)
         {
-            ssize_t bytes_read;
-            char garbage = 0;
-
-            if (nio_can_output(io, index) == NIO_SUCCESS)
-            {
-                return handle_outgoing_data(io, current);
-            }
-
-            while ((bytes_read = ncrypt_read(&current->event_distributor_in.ncrypt_entity,
-                                             &garbage, sizeof(garbage))) < 0 &&
-                   errno == EINTR)
-            {
-                // Retry if interrupted by a signal.
-            }
-            int saved_errno = errno;
-            if (bytes_read < 0) {
-                int ncrypt_errno = ncrypt_last_error(&current->event_distributor_in.ncrypt_entity);
-                if (ncrypt_errno == NCRYPT_WANT_READ || saved_errno == EAGAIN)
-                {
-                    return set_in_event(io, current);
-                }
-                else if (ncrypt_errno == NCRYPT_WANT_WRITE)
-                {
-                    return set_out_event(io, current);
-                }
-                else
-                {
-                    logger_nDPIsrvd(current, "Distributor TLS connection", "failed during read with: %s (%s)",
-                                    ncrypt_strerror(ncrypt_errno),
-                                    (saved_errno == 0 ? "TLS Error" : strerror(saved_errno)));
-                    disconnect_client(io, current);
-                    return 1;
-                }
-            }
-            if (bytes_read == 0) {
-                disconnect_client(io, current);
-                return 1;
-            }
-            if (bytes_read > 0) {
-                logger_nDPIsrvd(current, "Received data from", "who is not allowed to send us some.");
-                disconnect_client(io, current);
-                return 1;
-            }
-            return 0;
+            return handle_crypto_read(io, index, current);
         }
     }
 #endif
