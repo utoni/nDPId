@@ -17,7 +17,6 @@
 #endif
 #include <sys/socket.h>
 #ifndef __APPLE__
-// bad apples claim to be POSIX compatible, but they aren't
 // TODO: Use kqueue / kevent based Timer instead
 #include <sys/timerfd.h>
 #endif
@@ -66,18 +65,19 @@ struct remote_desc
 #endif
 
             struct nDPIsrvd_json_buffer main_read_buffer;
-        } event_collector_un;
+        } event_collector_un; /* UNIX socket */
         struct
         {
             struct sockaddr_in peer;
-            char peer_addr[INET_ADDRSTRLEN];
+            char peer_addr[INET6_ADDRSTRLEN];
             unsigned long long int json_bytes;
+            int is_connect_socket;
 #ifdef ENABLE_CRYPTO
             struct ncrypt_entity ncrypt_entity;
 #endif
 
             struct nDPIsrvd_json_buffer main_read_buffer;
-        } event_collector_in;
+        } event_collector_in; /* TCP/IP socket */
         struct
         {
             struct sockaddr_un peer;
@@ -92,7 +92,7 @@ struct remote_desc
         struct
         {
             struct sockaddr_in peer;
-            char peer_addr[INET_ADDRSTRLEN];
+            char peer_addr[INET6_ADDRSTRLEN];
 #ifdef ENABLE_CRYPTO
             struct ncrypt_entity ncrypt_entity;
 #endif
@@ -115,6 +115,9 @@ static int collector_un_sockfd = -1;
 static int collector_in_sockfd = -1;
 static int distributor_un_sockfd = -1;
 static int distributor_in_sockfd = -1;
+static struct nDPIsrvd_address collector_connect_address = {
+    .raw.sa_family = (sa_family_t)0xFFFF,
+};
 static struct nDPIsrvd_address collector_sock_address = {
     .raw.sa_family = (sa_family_t)0xFFFF,
 };
@@ -129,6 +132,7 @@ static struct
 {
     struct cmdarg config_file;
     struct cmdarg pidfile;
+    struct cmdarg collector_connect_in_address;
     struct cmdarg collector_un_sockpath;
     struct cmdarg collector_in_address;
     struct cmdarg distributor_un_sockpath;
@@ -150,6 +154,7 @@ static struct
 #endif
 } nDPIsrvd_options = {.config_file = CMDARG_STR(NULL),
                       .pidfile = CMDARG_STR(nDPIsrvd_PIDFILE),
+                      .collector_connect_in_address = CMDARG_STR(NULL),
                       .collector_un_sockpath = CMDARG_STR(COLLECTOR_UNIX_SOCKET),
                       .collector_in_address = CMDARG_STR(NULL),
                       .distributor_un_sockpath = CMDARG_STR(DISTRIBUTOR_UNIX_SOCKET),
@@ -173,6 +178,7 @@ static struct
 #endif
 };
 struct confopt config_map[] = {CONFOPT("pidfile", &nDPIsrvd_options.pidfile),
+                               CONFOPT("collector-connect", &nDPIsrvd_options.collector_connect_in_address),
                                CONFOPT("collector", &nDPIsrvd_options.collector_un_sockpath),
                                CONFOPT("collector-in", &nDPIsrvd_options.collector_in_address),
                                CONFOPT("distributor-unix", &nDPIsrvd_options.distributor_un_sockpath),
@@ -206,7 +212,13 @@ static int add_in_event(struct nio * const io, struct remote_desc * const remote
 static int del_event(struct nio * const io, int fd);
 static int set_in_event(struct nio * const io, struct remote_desc * const remote);
 static int set_out_event(struct nio * const io, struct remote_desc * const remote);
+static struct remote_desc * connect_remote(struct nio * const io,
+                                           struct nDPIsrvd_address const * const remote_addr);
 static void disconnect_client(struct nio * const io, struct remote_desc * const current);
+#ifdef ENABLE_CRYPTO
+static int handle_crypto_handshake(struct nio * const io, struct ncrypt_entity * const crypt_ent,
+                                   struct remote_desc * const current);
+#endif
 
 static void nDPIsrvd_buffer_array_copy(void * dst, const void * src)
 {
@@ -425,11 +437,13 @@ static __attribute__((format(printf, 3, 4))) void logger_nDPIsrvd(struct remote_
             break;
         case COLLECTOR_IN:
             logger(1,
-                   "%s %.*s:%u %s",
+                   "%s %.*s:%u (%s) %s",
                    prefix,
                    (int)sizeof(remote->event_collector_in.peer_addr),
                    remote->event_collector_in.peer_addr,
                    ntohs(remote->event_collector_in.peer.sin_port),
+                   (remote->event_collector_in.is_connect_socket != 0 ?
+                       "Connect to Distributor" : "Listen"),
                    logbuf);
             break;
     }
@@ -644,7 +658,23 @@ static int fcntl_add_flags(int fd, int flags)
     return fcntl(fd, F_SETFL, cur_flags | flags);
 }
 
-static int create_listen_sockets(void)
+static int create_connect_socket(struct nio * const io)
+{
+    if (IS_CMDARG_SET(nDPIsrvd_options.collector_connect_in_address) == 0)
+    {
+        return 0;
+    }
+
+    if (nDPIsrvd_setup_address(&collector_connect_address,
+                               GET_CMDARG_STR(nDPIsrvd_options.collector_connect_in_address)) != 0)
+    {
+        return 1;
+    }
+
+    return connect_remote(io, &collector_connect_address) != NULL ? 0 : 1;
+}
+
+static int create_listen_sockets()
 {
     collector_un_sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
     distributor_un_sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
@@ -1080,7 +1110,7 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
 {
     int opt;
 
-    while ((opt = getopt(argc, argv, "f:lL:c:C:k:K:F:V:edp:s:S:G:m:u:g:M:vh")) != -1)
+    while ((opt = getopt(argc, argv, "f:lL:c:C:o:k:K:F:V:edp:s:S:G:m:u:g:M:vh")) != -1)
     {
         switch (opt)
         {
@@ -1101,6 +1131,9 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
                 break;
             case 'C':
                 set_cmdarg_string(&nDPIsrvd_options.collector_in_address, optarg);
+                break;
+            case 'o':
+                set_cmdarg_string(&nDPIsrvd_options.collector_connect_in_address, optarg);
                 break;
             case 'k':
 #ifdef ENABLE_CRYPTO
@@ -1212,7 +1245,8 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
                 fprintf(stderr, "%s\n", get_nDPId_version());
                 fprintf(stderr,
                         "Usage: %s [-f config-file] [-l] [-L logfile]\n"
-                        "\t[-c collector-unix-socket] [-C collector-host:port] [-k cert.pem] [-K key.pem] [-F ca.pem] [-e] [-d] [-p pidfile]\n"
+                        "\t[-c collector-unix-socket] [-C collector-host:port] [-o collector-connect-host:port]\n"
+                        "\t[-k cert.pem] [-K key.pem] [-F ca.pem] [-e] [-d] [-p pidfile]\n"
                         "\t[-s path-to-distributor-unix-socket] [-S distributor-host:port]\n"
                         "\t[-G collector-unix-socket-group:distributor-unix-socket-group]\n"
                         "\t[-m max-remote-descriptors] [-u user] [-g group]\n"
@@ -1224,6 +1258,7 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
                         "\t-c\tPath to a listening UNIX socket (nDPIsrvd Collector).\n"
                         "\t  \tDefault: %s\n"
                         "\t-C\tAddress:Port of the listening TCP/IP socket (nDPIsrvd Collector).\n"
+                        "\t-o\tAddress:Port of the connecting TCP/IP socket (nDPIsrvd Collector Connect).\n"
 #ifdef ENABLE_CRYPTO
                         "\t-k\tPath to the server certificate file (PEM format).\n"
                         "\t  \tDefault: disabled\n"
@@ -1337,14 +1372,22 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
          IS_CMDARG_SET(nDPIsrvd_options.server_key_pem_file) != 0 ||
          IS_CMDARG_SET(nDPIsrvd_options.server_ca_pem_file) != 0) &&
         IS_CMDARG_SET(nDPIsrvd_options.collector_in_address) == 0 &&
-        IS_CMDARG_SET(nDPIsrvd_options.distributor_in_address) == 0)
+        IS_CMDARG_SET(nDPIsrvd_options.distributor_in_address) == 0 &&
+        IS_CMDARG_SET(nDPIsrvd_options.collector_connect_in_address) == 0)
     {
-        logger_early(1, "%s", "TLS requires a TCP collector endpoint `-C' or TCP distributor endpoint `-S'.");
+        logger_early(1, "%s", "TLS requires a TCP collector (connect/listen) endpoint `-o' / `-C' or TCP distributor endpoint `-S'.");
         return 1;
     }
     if (nDPIsrvd_TLS_USED() == 0 && IS_CMDARG_SET(nDPIsrvd_options.crl_pem_file) != 0)
     {
         logger_early(1, "%s", "Setting a CRL requires enabled TLS. See `-k', `-K' and `-F'.");
+        return 1;
+    }
+    if (nDPIsrvd_TLS_USED() != 0 && IS_CMDARG_SET(nDPIsrvd_options.collector_connect_in_address) != 0 &&
+        (IS_CMDARG_SET(nDPIsrvd_options.collector_in_address) != 0 ||
+         IS_CMDARG_SET(nDPIsrvd_options.distributor_in_address) != 0))
+    {
+        logger_early(1, "%s", "Using TLS collector connect `-o' together with `-C' or `-S' is currently not supported.");
         return 1;
     }
 #endif
@@ -1356,6 +1399,31 @@ static int nDPIsrvd_parse_options(int argc, char ** argv)
     }
 
     return 0;
+}
+
+static void reset_peer_addr(struct remote_desc * const remote)
+{
+    switch (remote->sock_type) {
+        case COLLECTOR_UN:
+#if !defined(__FreeBSD__) && !defined(__APPLE__)
+            remote->event_collector_un.pid = 0;
+#endif
+            break;
+        case COLLECTOR_IN:
+            strncpy(&remote->event_collector_in.peer_addr[0], "Unknown",
+                    sizeof(remote->event_collector_in.peer_addr));
+            break;
+        case DISTRIBUTOR_UN:
+#if !defined(__FreeBSD__) && !defined(__APPLE__)
+            remote->event_distributor_un.pid = 0;
+            remote->event_distributor_un.user_name = NULL;
+#endif
+            break;
+        case DISTRIBUTOR_IN:
+            strncpy(&remote->event_distributor_in.peer_addr[0], "Unknown",
+                    sizeof(remote->event_distributor_in.peer_addr));
+            break;
+    }
 }
 
 static struct remote_desc * accept_remote(int server_fd,
@@ -1386,6 +1454,113 @@ static struct remote_desc * accept_remote(int server_fd,
         logger(1, "Could not acquire remote descriptor from the internal descriptor table, too many clients connected?");
         return NULL;
     }
+
+    reset_peer_addr(current);
+    return current;
+}
+
+static struct remote_desc * connect_remote(struct nio * const io,
+                                           struct nDPIsrvd_address const * const remote_addr)
+{
+    int client_fd;
+
+    while ((client_fd = socket(remote_addr->raw.sa_family, SOCK_STREAM, 0)) < 0 && errno == EINTR) {}
+    if (client_fd < 0)
+    {
+        logger(1, "Socket failed: %s", strerror(errno));
+    }
+
+    /* nonblocking fd is mandatory */
+    if (fcntl_add_flags(client_fd, O_NONBLOCK) != 0)
+    {
+        close(client_fd);
+        logger(1, "Error setting fd flags to non-blocking mode: %s", strerror(errno));
+        return NULL;
+    }
+
+    if (set_fd_cloexec(client_fd) < 0)
+    {
+        close(client_fd);
+        logger(1, "Set close on exec() for fd %d failed: %s", client_fd, strerror(errno));
+        return NULL;
+    }
+
+    int sockopt = NETWORK_BUFFER_MAX_SIZE;
+    if (setsockopt(client_fd, SOL_SOCKET, SO_RCVBUF, &sockopt, sizeof(sockopt)) < 0)
+    {
+        close(client_fd);
+        logger(1, "Error setting socket option SO_RCVBUF: %s", strerror(errno));
+        return NULL;
+    }
+
+    struct remote_desc * current = get_remote_descriptor(COLLECTOR_IN, client_fd, NETWORK_BUFFER_MAX_SIZE);
+    if (current == NULL)
+    {
+        close(client_fd);
+        logger(1, "Could not acquire remote descriptor from the internal descriptor table, too many clients connected?");
+        return NULL;
+    }
+    current->event_collector_in.peer = remote_addr->in;
+    current->event_collector_in.json_bytes = 0;
+    current->event_collector_in.is_connect_socket = 1;
+    reset_peer_addr(current);
+
+    if (inet_ntop(current->event_collector_in.peer.sin_family,
+                  &current->event_collector_in.peer.sin_addr,
+                  &current->event_collector_in.peer_addr[0],
+                  sizeof(current->event_collector_in.peer_addr)) == NULL)
+    {
+        logger(1, "Error converting an internet address: %s", strerror(errno));
+        disconnect_client(io, current);
+        return NULL;
+    }
+
+    logger(0, "Connecting Collector Client to %s:%u..",
+           current->event_collector_in.peer_addr,
+           (remote_addr->raw.sa_family == AF_INET ?
+            ntohs(remote_addr->in.sin_port) :
+            ntohs(remote_addr->in6.sin6_port)));
+    while (connect(client_fd, &remote_addr->raw, remote_addr->size) != 0)
+    {
+        if (errno == EINTR) {
+            continue;
+        }
+        if (errno == EINPROGRESS) {
+            break;
+        }
+        logger(1, "Connecting Collector Client to %s:%u failed: %s",
+               current->event_collector_in.peer_addr,
+               (remote_addr->raw.sa_family == AF_INET ?
+                ntohs(remote_addr->in.sin_port) :
+                ntohs(remote_addr->in6.sin6_port)),
+               strerror(errno));
+        disconnect_client(io, current);
+        return NULL;
+    }
+
+    /* setup event I/O */
+    errno = 0;
+    if (add_in_event(io, current) != NIO_SUCCESS)
+    {
+        logger(1, "Error adding input event to %d: %s", current->fd, (errno != 0 ? strerror(errno) : "Internal Error"));
+        disconnect_client(io, current);
+        return NULL;
+    }
+
+#ifdef ENABLE_CRYPTO
+    if (nDPIsrvd_TLS_USED() != 0) {
+        struct ncrypt_entity * const crypt_ent = get_ncrypt_entity(current);
+        if (crypt_ent == NULL) {
+            logger_nDPIsrvd(current, "BUG: Client", "missing crypto entity");
+            disconnect_client(io, current);
+            return NULL;
+        }
+
+        if (ncrypt_handshake_done(crypt_ent) == 0) {
+            return (handle_crypto_handshake(io, crypt_ent, current) == 0 ? current : NULL);
+        }
+    }
+#endif
 
     return current;
 }
@@ -1475,6 +1650,7 @@ static int new_connection(struct nio * const io, int eventfd)
         case COLLECTOR_IN:
             current->event_collector_in.peer = sockaddr.saddr_collector_in;
             current->event_collector_in.json_bytes = 0;
+            current->event_collector_in.is_connect_socket = 0;
 
             sockopt = NETWORK_BUFFER_MAX_SIZE;
             if (setsockopt(current->fd, SOL_SOCKET, SO_RCVBUF, &sockopt, sizeof(sockopt)) < 0)
@@ -1860,7 +2036,13 @@ static int handle_crypto_handshake(struct nio * const io, struct ncrypt_entity *
                                    struct remote_desc * const current)
 {
     errno = 0;
-    int rv = ncrypt_on_accept(&ncrypt_ctx, current->fd, crypt_ent);
+    int rv = NCRYPT_HANDSHAKE_FAILED;
+    if (current->sock_type == COLLECTOR_IN && current->event_collector_in.is_connect_socket != 0)
+    {
+        rv = ncrypt_on_connect(&ncrypt_ctx, current->fd, crypt_ent);
+    } else {
+        rv = ncrypt_on_accept(&ncrypt_ctx, current->fd, crypt_ent);
+    }
     if (rv != NCRYPT_SUCCESS) {
         if (rv == NCRYPT_WANT_READ) {
             return set_in_event(io, current);
@@ -1874,13 +2056,25 @@ static int handle_crypto_handshake(struct nio * const io, struct ncrypt_entity *
         disconnect_client(io, current);
         return 1;
     }
-    if (current->sock_type == COLLECTOR_IN &&
-        current->event_collector_in.ncrypt_entity.is_collector == 0)
+    if (current->sock_type == COLLECTOR_IN)
     {
-        logger_nDPIsrvd(current, "TLS ACL denial from", "not a collector");
-        disconnect_client(io, current);
-        return 1;
+        if (current->event_collector_in.is_connect_socket == 0 &&
+            current->event_collector_in.ncrypt_entity.is_collector == 0)
+        {
+            logger_nDPIsrvd(current, "TLS ACL denial from", "not a collector");
+            disconnect_client(io, current);
+            return 1;
+        }
+        if (current->event_collector_in.is_connect_socket != 0 &&
+            (current->event_collector_in.ncrypt_entity.is_distributor != 0 ||
+             current->event_collector_in.ncrypt_entity.is_collector != 0))
+        {
+            logger_nDPIsrvd(current, "TLS ACL denial from", "collector or distributor matched");
+            disconnect_client(io, current);
+            return 1;
+        }
     }
+
     if (current->sock_type == DISTRIBUTOR_IN &&
         current->event_distributor_in.ncrypt_entity.is_distributor == 0)
     {
@@ -1962,7 +2156,7 @@ static int handle_data_event(struct nio * const io, int index)
 
     if (current->fd < 0)
     {
-        logger(1, "File descriptor `%d' got from event data invalid.", current->fd);
+        logger(1, "File descriptor %d got from event data invalid.", current->fd);
         return 1;
     }
 
@@ -2209,7 +2403,6 @@ static int mainloop(struct nio * const io)
     }
 
     free_remotes(io);
-    nio_free(io);
 #if defined(ENABLE_CRYPTO) && !defined(__APPLE__)
     close(ncrypt_handshake_timerfd);
 #endif
@@ -2418,13 +2611,24 @@ int main(int argc, char ** argv)
 #ifdef ENABLE_CRYPTO
     if (nDPIsrvd_TLS_USED() != 0)
     {
-        if (ncrypt_init_server(&ncrypt_ctx,
+        if (IS_CMDARG_SET(nDPIsrvd_options.collector_connect_in_address) != 0) {
+            if (ncrypt_init_client(&ncrypt_ctx,
+                                   GET_CMDARG_STR(nDPIsrvd_options.server_ca_pem_file),
+                                   GET_CMDARG_STR(nDPIsrvd_options.server_key_pem_file),
+                                   GET_CMDARG_STR(nDPIsrvd_options.server_crt_pem_file),
+                                   GET_CMDARG_STR(nDPIsrvd_options.crl_pem_file)) != NCRYPT_SUCCESS)
+            {
+                logger_early(1, "%s", "Could not initialize (Client) crypto.");
+                return 1;
+            }
+        }
+        else if (ncrypt_init_server(&ncrypt_ctx,
                                GET_CMDARG_STR(nDPIsrvd_options.server_ca_pem_file),
                                GET_CMDARG_STR(nDPIsrvd_options.server_key_pem_file),
                                GET_CMDARG_STR(nDPIsrvd_options.server_crt_pem_file),
                                GET_CMDARG_STR(nDPIsrvd_options.crl_pem_file)) != NCRYPT_SUCCESS)
         {
-            logger_early(1, "%s", "Could not initialize crypto.");
+            logger_early(1, "%s", "Could not initialize (Server) crypto.");
             return 1;
         }
     }
@@ -2457,6 +2661,18 @@ int main(int argc, char ** argv)
         {
             logger(1,
                    "Please keep in mind that using a TCP Collector without TLS may leak sensitive information to "
+                   "everyone with access to the device/network. You've been warned!");
+        }
+    }
+    if (IS_CMDARG_SET(nDPIsrvd_options.collector_connect_in_address) != 0)
+    {
+        logger(0, "collector TCP/IP socket connect to `%s'", GET_CMDARG_STR(nDPIsrvd_options.collector_connect_in_address));
+#ifdef ENABLE_CRYPTO
+        if (nDPIsrvd_TLS_USED() == 0)
+#endif
+        {
+            logger(1,
+                   "Please keep in mind that using TCP Collector Connect without TLS may leak sensitive information to "
                    "everyone with access to the device/network. You've been warned!");
         }
     }
@@ -2574,6 +2790,11 @@ int main(int argc, char ** argv)
         goto error_unlink_sockets;
     }
 
+    if (create_connect_socket(&io) != 0) {
+        logger(1, "Could not create connect sockets");
+        goto error_unlink_sockets;
+    }
+
     retval = mainloop(&io);
 
 error_unlink_sockets:
@@ -2600,6 +2821,7 @@ error:
 #endif
     logger(0, "Bye.");
     shutdown_logging();
+    nio_free(&io);
 
     return retval;
 }

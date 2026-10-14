@@ -1690,6 +1690,88 @@ error:
     return 1;
 }
 
+static int nDPIsrvd_selftest()
+{
+    int rv = 0;
+    struct nio io;
+    int collector_pipefds[2] = { -1, -1 };
+    int distributor_pipefds[2] = { -1, -1 };
+
+    nio_init(&io);
+#ifdef ENABLE_EPOLL
+    if (nio_use_epoll(&io, 32) != NIO_SUCCESS)
+#else
+    if (nio_use_poll(&io, nDPIsrvd_MAX_REMOTE_DESCRIPTORS) != NIO_SUCCESS)
+#endif
+    {
+        rv++;
+        goto error;
+    }
+    if (setup_remote_descriptors(2) != 0) {
+        rv++;
+        goto error;
+    }
+
+    {
+        const size_t max_buffer_size = 32;
+        if (pipe(collector_pipefds) != 0 ||
+            pipe(distributor_pipefds) != 0)
+        {
+            rv++;
+            goto error;
+        }
+
+        struct remote_desc * const collector_remote = get_remote_descriptor(COLLECTOR_UN, collector_pipefds[0], max_buffer_size);
+        if (collector_remote == NULL || add_in_event(&io, collector_remote) != NIO_SUCCESS) {
+            rv++;
+            goto error;
+        }
+
+        struct remote_desc * const distributor_remote = get_remote_descriptor(DISTRIBUTOR_UN, distributor_pipefds[1], max_buffer_size);
+        if (distributor_remote == NULL || add_in_event(&io, distributor_remote) != NIO_SUCCESS) {
+            rv++;
+            goto error;
+        }
+
+        char const * const buf = "00021{\"AAAAAAAABBBBBBBB\"}\n";
+        const ssize_t buf_len = strlen(buf);
+        if (write(collector_pipefds[1], buf, buf_len) != buf_len) {
+            rv++;
+            goto error;
+        }
+
+        if (nio_run(&io, 10) != NIO_SUCCESS) {
+            rv++;
+            goto error;
+        }
+        int nready = nio_get_nready(&io);
+        if (nready <= 0) {
+            rv++;
+            goto error;
+        }
+        for (int i = 0; i < nready; ++i) {
+            if (handle_data_event(&io, i) != 0) {
+                rv++;
+            }
+        }
+        char recv_buf[max_buffer_size];
+        if (read(distributor_pipefds[0], recv_buf, max_buffer_size) != buf_len) {
+            rv++;
+            goto error;
+        }
+    }
+
+error:
+    free_remotes(&io);
+    close(collector_pipefds[0]);
+    close(collector_pipefds[1]);
+    close(distributor_pipefds[0]);
+    close(distributor_pipefds[1]);
+    nio_free(&io);
+
+    return rv;
+}
+
 #define THREADS_RETURNED_ERROR()                                                                                       \
     (nDPId_return.thread_return_value.val != 0 || nDPIsrvd_return.val != 0 ||                                          \
      distributor_return.thread_return_value.val != 0)
@@ -1721,6 +1803,7 @@ int main(int argc, char ** argv)
 
         retval += base64_selftest();
         retval += nio_selftest();
+        retval += nDPIsrvd_selftest();
 
         logger(1, "Selftest returned: %d%s", retval, (retval == 0 ? " (OK)" : ""));
         return retval;
