@@ -217,19 +217,27 @@ def onJsonLineRecvd(json_dict, instance, current_flow, global_user_data):
     except AttributeError:
         pass
 
+    if 'packet_id' in json_dict:
+        if lowest_possible_packet_id > json_dict['packet_id']:
+            raise SemanticValidationException(current_flow,
+                                              'Invalid packet id for thread {} received: ' \
+                                              'expected packet id lesser or equal {}, ' \
+                                              'got {}'.format(json_dict['thread_id'],
+                                                              lowest_possible_packet_id,
+                                                              json_dict['packet_id']))
+        if td is not None:
+            td.lowest_possible_packet_id = lowest_possible_packet_id
+
+    if 'error_event_name' in json_dict and 'packet_id' in json_dict:
+        if td is not None and json_dict['packet_id'] != td.lowest_error_packet_id:
+            raise SemanticValidationException(current_flow,
+                                              'Invalid Error Event packet id {} received, ' \
+                                              'expected: {}'.format(json_dict['packet_id'], td.lowest_error_packet_id))
+
     if 'packet_event_name' in json_dict:
         base64.b64decode(json_dict['pkt'], validate=True)
-
-        if json_dict['packet_event_name'] == 'packet-flow':
-            if lowest_possible_packet_id > json_dict['packet_id']:
-                raise SemanticValidationException(current_flow,
-                                                  'Invalid packet id for thread {} received: ' \
-                                                  'expected packet id lesser or equal {}, ' \
-                                                  'got {}'.format(json_dict['thread_id'],
-                                                                  lowest_possible_packet_id,
-                                                                  json_dict['packet_id']))
-            if td is not None:
-                td.lowest_possible_packet_id = lowest_possible_packet_id
+        if td is not None:
+            td.lowest_error_packet_id = lowest_possible_packet_id
 
     if 'flow_id' in json_dict:
         if current_flow.flow_id != json_dict['flow_id']:
