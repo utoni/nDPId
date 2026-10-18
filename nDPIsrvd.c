@@ -2,6 +2,7 @@
 #include <sys/stat.h>
 #endif
 #include <arpa/inet.h>
+#include <ctype.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <netdb.h>
@@ -17,8 +18,9 @@
 #endif
 #include <sys/socket.h>
 #ifndef __APPLE__
-// TODO: Use kqueue / kevent based Timer instead
 #include <sys/timerfd.h>
+#else
+#include <sys/event.h>
 #endif
 #include <sys/types.h>
 #include <unistd.h>
@@ -219,6 +221,110 @@ static void disconnect_client(struct nio * const io, struct remote_desc * const 
 static int handle_crypto_handshake(struct nio * const io, struct ncrypt_entity * const crypt_ent,
                                    struct remote_desc * const current);
 #endif
+
+static int ntimer_create(void) {
+#if defined(__APPLE__)
+    int kq = kqueue();
+    if (kq >= 0) {
+        fcntl(kq, F_SETFD, FD_CLOEXEC);
+    }
+    return kq;
+#else
+    return timerfd_create(CLOCK_MONOTONIC, TFD_NONBLOCK | TFD_CLOEXEC);
+#endif
+}
+
+static int ntimer_settime(int kq_or_fd, int64_t sec) {
+    if (sec <= 0) {
+        return -1;
+    }
+#if defined(__APPLE__)
+    struct kevent ev;
+    EV_SET(&ev, 1, EVFILT_TIMER,
+           EV_ADD | EV_ENABLE,
+           NOTE_SECONDS, sec, NULL);
+    return kevent(kq_or_fd, &ev, 1, NULL, 0, NULL);
+#else
+    struct itimerspec timeout = {};
+
+    timeout.it_value.tv_sec = sec;
+    timeout.it_interval.tv_sec = sec;
+    return timerfd_settime(kq_or_fd, 0, &timeout, NULL);
+#endif
+}
+
+static int ntimer_read(int kq_or_fd, uint64_t *expirations) {
+#if defined(__APPLE__)
+    struct kevent ev;
+    struct timespec zero = {};
+    int n = kevent(kq_or_fd, NULL, 0, &ev, 1, &zero);
+
+    if (n == 0) {
+        errno = EAGAIN;
+        return -1;
+    }
+    if (n < 0) {
+        logger(1, "Timer read failed: %s", (n < 0 ? strerror(errno) : "Time limit expired"));
+        return -1;
+    }
+    *expirations = (uint64_t)ev.data;
+    return 0;
+#else
+    ssize_t s;
+
+    s = read(kq_or_fd, expirations, sizeof(*expirations));
+    if (s < 0) {
+        if (errno != EAGAIN) {
+            logger(1, "Timer read failed: %s", strerror(errno));
+        }
+        return -1;
+    }
+    if (s != sizeof(*expirations)) {
+        logger(1, "Timer read %zd instead of %zu bytes",
+               s, sizeof(*expirations));
+        return -1;
+    }
+    return 0;
+#endif
+}
+
+static void setup_tcp_keepalive(int fd)
+{
+    int enabled = 1;
+    int idle = 30;
+    int interval = 5;
+    int count = 3;
+
+    if (setsockopt(fd, SOL_SOCKET, SO_KEEPALIVE, &enabled, sizeof(enabled)) < 0) {
+        logger(1, "Set socket option SO_KEEPALIVE failed with: %s", strerror(errno));
+    }
+    if (setsockopt(fd, IPPROTO_TCP, TCP_KEEPIDLE, &idle, sizeof(idle)) < 0) {
+        logger(1, "Set socket option TCP_KEEPIDLE failed with: %s", strerror(errno));
+    }
+    if (setsockopt(fd, IPPROTO_TCP, TCP_KEEPINTVL, &interval, sizeof(interval)) < 0) {
+        logger(1, "Set socket option TCP_KEEPINTVL failed with: %s", strerror(errno));
+    }
+    if (setsockopt(fd, IPPROTO_TCP, TCP_KEEPCNT, &count, sizeof(count)) < 0) {
+        logger(1, "Set socket option TCP_KEEPCNT failed with: %s", strerror(errno));
+    }
+}
+
+static void log_socket_error(struct remote_desc const * const remote)
+{
+    int err = 0;
+    socklen_t len = sizeof(err);
+
+    if (remote == NULL || remote->fd < 0) {
+        return;
+    }
+    if (getsockopt(remote->fd, SOL_SOCKET, SO_ERROR, &err, &len) != 0) {
+        logger(1, "Can not get socket error from fd: %s", strerror(errno));
+    } else if (err != 0) {
+        logger(1, "Event I/O socket error: %s", strerror(err));
+    } else {
+        /* No error i.e. for (E)POLLHUP */
+    }
+}
 
 static void nDPIsrvd_buffer_array_copy(void * dst, const void * src)
 {
@@ -443,7 +549,7 @@ static __attribute__((format(printf, 3, 4))) void logger_nDPIsrvd(struct remote_
                    remote->event_collector_in.peer_addr,
                    ntohs(remote->event_collector_in.peer.sin_port),
                    (remote->event_collector_in.is_connect_socket != 0 ?
-                       "Connect to Distributor" : "Listen"),
+                       "Connect to Distributor" : "Collector Listen"),
                    logbuf);
             break;
     }
@@ -1447,6 +1553,10 @@ static struct remote_desc * accept_remote(int server_fd,
         return NULL;
     }
 
+    if (socktype == COLLECTOR_IN || socktype == DISTRIBUTOR_IN) {
+        setup_tcp_keepalive(client_fd);
+    }
+
     struct remote_desc * current = get_remote_descriptor(socktype, client_fd, NETWORK_BUFFER_MAX_SIZE);
     if (current == NULL)
     {
@@ -1492,6 +1602,8 @@ static struct remote_desc * connect_remote(struct nio * const io,
         logger(1, "Error setting socket option SO_RCVBUF: %s", strerror(errno));
         return NULL;
     }
+
+    setup_tcp_keepalive(client_fd);
 
     struct remote_desc * current = get_remote_descriptor(COLLECTOR_IN, client_fd, NETWORK_BUFFER_MAX_SIZE);
     if (current == NULL)
@@ -1787,10 +1899,16 @@ static int handle_collector_protocol(struct nio * const io, struct remote_desc *
 
     if (json_read_buffer->buf.ptr.text[NETWORK_BUFFER_LENGTH_DIGITS] != '{')
     {
-        logger_nDPIsrvd(current,
-                        "BUG: Collector connection",
-                        "JSON invalid opening character: '%c'",
-                        json_read_buffer->buf.ptr.text[NETWORK_BUFFER_LENGTH_DIGITS]);
+        const char invalid = json_read_buffer->buf.ptr.text[NETWORK_BUFFER_LENGTH_DIGITS];
+        if (isalnum(invalid) != 0) {
+            logger_nDPIsrvd(current,
+                            "BUG: Collector connection",
+                            "JSON invalid opening character: '%c'", invalid);
+        } else {
+            logger_nDPIsrvd(current,
+                            "BUG: Collector connection",
+                            "JSON invalid opening character: [not-alpha-numeric]");
+        }
         disconnect_client(io, current);
         return 1;
     }
@@ -1987,6 +2105,7 @@ static int handle_incoming_data(struct nio * const io, int index, struct remote_
 #ifndef NO_MAIN
             /* I/O Error checking does not work reliably within nDPId-test */
             if (nio_has_error(io, index) == NIO_SUCCESS) {
+                log_socket_error(&remotes.desc[i]);
                 disconnect_client(io, &remotes.desc[i]);
                 continue;
             }
@@ -2237,43 +2356,25 @@ static int mainloop(struct nio * const io)
         return 1;
     }
 #endif
-#if defined(ENABLE_CRYPTO) && !defined(__APPLE__)
-    int ncrypt_handshake_timerfd = -1;
-    if (nDPIsrvd_TLS_USED() != 0) {
-        ncrypt_handshake_timerfd = timerfd_create(CLOCK_REALTIME, TFD_NONBLOCK | TFD_CLOEXEC);
-        if (ncrypt_handshake_timerfd < 0)
-        {
-            logger(1, "Could not initialize TLS handshake timer: %s", strerror(errno));
-            return 1;
-        }
-        {
-            struct timespec now;
-            struct itimerspec timeout = {};
 
-            if (clock_gettime(CLOCK_REALTIME, &now) != 0)
-            {
-                close(ncrypt_handshake_timerfd);
-                return 1;
-            }
-            timeout.it_value.tv_sec = now.tv_sec + TLS_HANDSHAKE_TIMEOUT;
-            timeout.it_value.tv_nsec = now.tv_nsec;
-            timeout.it_interval.tv_sec = TLS_HANDSHAKE_TIMEOUT;
-            timeout.it_interval.tv_nsec = 0;
-            if (timerfd_settime(ncrypt_handshake_timerfd, TFD_TIMER_ABSTIME, &timeout, NULL) != 0)
-            {
-                close(ncrypt_handshake_timerfd);
-                return 1;
-            }
-        }
-        if (add_in_event_fd(io, ncrypt_handshake_timerfd) != 0)
-        {
-            logger(1, "Error adding TLS handshake timer: %s",
-                   (errno != 0 ? strerror(errno) : "Internal Error"));
-            close(ncrypt_handshake_timerfd);
-            return 1;
-        }
+    const int64_t background_tasks_interval = 1;
+    const int background_tasks_timerfd = ntimer_create();
+    if (background_tasks_timerfd < 0)
+    {
+        return 1;
     }
-#endif
+    if (ntimer_settime(background_tasks_timerfd, background_tasks_interval) != 0)
+    {
+        close(background_tasks_timerfd);
+        return 1;
+    }
+    if (add_in_event_fd(io, background_tasks_timerfd) != 0)
+    {
+        logger(1, "Error adding background tasks timer: %s",
+               (errno != 0 ? strerror(errno) : "Internal Error"));
+        close(background_tasks_timerfd);
+        return 1;
+    }
 
     while (nDPIsrvd_main_thread_shutdown == 0)
     {
@@ -2294,6 +2395,7 @@ static int mainloop(struct nio * const io)
                     fd != distributor_in_sockfd)
                 {
                     struct remote_desc * const current = (struct remote_desc *)nio_get_ptr(io, i);
+                    log_socket_error(current);
                     switch (current->sock_type)
                     {
                         case COLLECTOR_UN:
@@ -2306,10 +2408,8 @@ static int mainloop(struct nio * const io)
                             break;
                     }
                     disconnect_client(io, current);
-                }
-                else
-                {
-                    logger(1, "Event I/O error: %s", (errno != 0 ? strerror(errno) : "unknown"));
+                } else {
+                    logger(1, "BUG: Event I/O error for fd %d", fd);
                 }
                 continue;
             }
@@ -2354,31 +2454,23 @@ static int mainloop(struct nio * const io)
                 }
             }
 #endif
-#if defined(ENABLE_CRYPTO) && !defined(__APPLE__)
-            else if (fd == ncrypt_handshake_timerfd)
+            else if (fd == background_tasks_timerfd)
             {
-                uint64_t exp;
-                ssize_t s;
-
-                s = read(ncrypt_handshake_timerfd, &exp, sizeof(exp));
-                if (s < 0) {
+                uint64_t expiration;
+                if (ntimer_read(fd, &expiration) != 0)
+                {
                     logger(1, "Timer read failed: %s", strerror(errno));
                     continue;
                 }
-                if (s != sizeof(exp)) {
-                    logger(1, "Timer read %zd instead of %zu bytes",
-                           s, sizeof(exp));
-                    continue;
-                }
+
+                int connect_socket_found = 0;
                 for (size_t i = 0; i < remotes.desc_size; ++i)
                 {
                     if (remotes.desc[i].fd < 0) {
                         continue;
                     }
+#ifdef ENABLE_CRYPTO
                     struct ncrypt_entity const * crypt_ent = get_ncrypt_entity(&remotes.desc[i]);
-                    if (crypt_ent == NULL) {
-                        continue;
-                    }
                     if (crypt_ent != NULL && ncrypt_handshake_done(crypt_ent) == 0) {
                         long long int started = ncrypt_since_start(crypt_ent);
                         if (started >= TLS_HANDSHAKE_TIMEOUT) {
@@ -2388,9 +2480,22 @@ static int mainloop(struct nio * const io)
                             continue;
                         }
                     }
+#endif
+                    if (IS_CMDARG_SET(nDPIsrvd_options.collector_connect_in_address) != 0)
+                    {
+                        if (remotes.desc[i].sock_type == COLLECTOR_IN
+                            && remotes.desc[i].event_collector_in.is_connect_socket != 0)
+                        {
+                            connect_socket_found = 1;
+                        }
+                    }
+                }
+                if (connect_socket_found == 0) {
+                    if (create_connect_socket(io) != 0) {
+                        logger(1, "Could not create connect socket");
+                    }
                 }
             }
-#endif
             else
             {
                 /* Incoming data / Outoing data ready to receive / send. */
@@ -2403,9 +2508,7 @@ static int mainloop(struct nio * const io)
     }
 
     free_remotes(io);
-#if defined(ENABLE_CRYPTO) && !defined(__APPLE__)
-    close(ncrypt_handshake_timerfd);
-#endif
+    close(background_tasks_timerfd);
 #if !defined(__FreeBSD__) && !defined(__APPLE__)
     close(signalfd);
 #endif
@@ -2686,7 +2789,7 @@ int main(int argc, char ** argv)
 #endif
         {
             logger(1,
-                   "Please keep in mind that using a TCP Collector/Distributor without TLS may leak sensitive information to "
+                   "Please keep in mind that using a TCP Distributor without TLS may leak sensitive information to "
                    "everyone with access to the device/network. You've been warned!");
         }
     }
@@ -2791,7 +2894,7 @@ int main(int argc, char ** argv)
     }
 
     if (create_connect_socket(&io) != 0) {
-        logger(1, "Could not create connect sockets");
+        logger(1, "Could not create connect socket");
         goto error_unlink_sockets;
     }
 

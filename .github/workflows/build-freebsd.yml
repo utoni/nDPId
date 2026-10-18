@@ -36,5 +36,6 @@ jobs:
           echo "User.............: $(whoami)"
           echo "FreeBSD Version..: $(freebsd-version)"
           # TODO: Make examples I/O event agnostic i.e. use nio
+          # TODO: Make examples timer API agnostic i.e. use nio
           cmake -S . -B build -DBUILD_NDPI=ON -DBUILD_EXAMPLES=OFF #-DENABLE_CURL=ON -DENABLE_DBUS=ON
           cmake --build build
