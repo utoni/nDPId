@@ -322,9 +322,9 @@ static void log_socket_error(struct remote_desc const * const remote)
         return;
     }
     if (getsockopt(remote->fd, SOL_SOCKET, SO_ERROR, &err, &len) != 0) {
-        logger(1, "Can not get socket error from fd: %s", strerror(errno));
+        logger_nDPIsrvd(remote, "Can not get socket error for", "%s", strerror(errno));
     } else if (err != 0) {
-        logger(1, "Event I/O socket error: %s", strerror(err));
+        logger_nDPIsrvd(remote, "Event I/O socket error for", "%s", strerror(err));
     } else {
         /* No error i.e. for (E)POLLHUP */
     }
@@ -1077,7 +1077,7 @@ static void free_remote(struct nio * const io, struct remote_desc * remote)
     if (remote->fd > -1)
     {
         errno = 0;
-        if (del_event(io, remote->fd) != 0)
+        if (del_event(io, remote->fd) != 0 && errno != ENOENT)
         {
             logger_nDPIsrvd(remote,
                             "Could not delete event from queue for connection",
@@ -1997,10 +1997,6 @@ static int handle_incoming_data(struct nio * const io, int index, struct remote_
             {
                 logger_nDPIsrvd(current, "Received data from", "who is not allowed to send us some.");
             }
-            else
-            {
-                logger_nDPIsrvd(current, "Distributor connection", "closed");
-            }
             disconnect_client(io, current);
             return 1;
         }
@@ -2400,17 +2396,6 @@ static int mainloop(struct nio * const io)
                 {
                     struct remote_desc * const current = (struct remote_desc *)nio_get_ptr(io, i);
                     log_socket_error(current);
-                    switch (current->sock_type)
-                    {
-                        case COLLECTOR_UN:
-                        case COLLECTOR_IN:
-                            logger_nDPIsrvd(current, "Collector connection", "closed");
-                            break;
-                        case DISTRIBUTOR_UN:
-                        case DISTRIBUTOR_IN:
-                            logger_nDPIsrvd(current, "Distributor connection", "closed");
-                            break;
-                    }
                     disconnect_client(io, current);
                 } else {
                     logger(1, "BUG: Event I/O error for fd %d", fd);
@@ -2495,9 +2480,7 @@ static int mainloop(struct nio * const io)
                     }
                 }
                 if (connect_socket_found == 0) {
-                    if (create_connect_socket(io) != 0) {
-                        logger(1, "Could not create connect socket");
-                    }
+                    create_connect_socket(io);
                 }
             }
             else
