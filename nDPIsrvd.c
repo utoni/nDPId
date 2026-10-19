@@ -291,16 +291,20 @@ static int ntimer_read(int kq_or_fd, uint64_t *expirations) {
 static void setup_tcp_keepalive(int fd)
 {
     int enabled = 1;
+#ifndef __APPLE__
     int idle = 30;
+#endif
     int interval = 5;
     int count = 3;
 
     if (setsockopt(fd, SOL_SOCKET, SO_KEEPALIVE, &enabled, sizeof(enabled)) < 0) {
         logger(1, "Set socket option SO_KEEPALIVE failed with: %s", strerror(errno));
     }
+#ifndef __APPLE__
     if (setsockopt(fd, IPPROTO_TCP, TCP_KEEPIDLE, &idle, sizeof(idle)) < 0) {
         logger(1, "Set socket option TCP_KEEPIDLE failed with: %s", strerror(errno));
     }
+#endif
     if (setsockopt(fd, IPPROTO_TCP, TCP_KEEPINTVL, &interval, sizeof(interval)) < 0) {
         logger(1, "Set socket option TCP_KEEPINTVL failed with: %s", strerror(errno));
     }
