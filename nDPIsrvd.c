@@ -322,9 +322,9 @@ static void log_socket_error(struct remote_desc const * const remote)
         return;
     }
     if (getsockopt(remote->fd, SOL_SOCKET, SO_ERROR, &err, &len) != 0) {
-        logger_nDPIsrvd(remote, "Can not get socket error for", "%s", strerror(errno));
+        logger_nDPIsrvd(remote, "Socket error retrieval for", "failed with: %s", strerror(errno));
     } else if (err != 0) {
-        logger_nDPIsrvd(remote, "Event I/O socket error for", "%s", strerror(err));
+        logger_nDPIsrvd(remote, "Event I/O for", "failed with: %s", strerror(err));
     } else {
         /* No error i.e. for (E)POLLHUP */
     }
@@ -546,15 +546,24 @@ static __attribute__((format(printf, 3, 4))) void logger_nDPIsrvd(struct remote_
 #endif
             break;
         case COLLECTOR_IN:
-            logger(1,
-                   "%s %.*s:%u (%s) %s",
-                   prefix,
-                   (int)sizeof(remote->event_collector_in.peer_addr),
-                   remote->event_collector_in.peer_addr,
-                   ntohs(remote->event_collector_in.peer.sin_port),
-                   (remote->event_collector_in.is_connect_socket != 0 ?
-                       "Connect to Distributor" : "Collector Listen"),
-                   logbuf);
+            if (remote->event_collector_in.is_connect_socket != 0)
+            {
+                logger(1,
+                       "%s %.*s:%u (Connect to Distributor) %s",
+                       prefix,
+                       (int)sizeof(remote->event_collector_in.peer_addr),
+                       remote->event_collector_in.peer_addr,
+                       ntohs(remote->event_collector_in.peer.sin_port),
+                       logbuf);
+            } else {
+                logger(1,
+                       "%s %.*s:%u %s",
+                       prefix,
+                       (int)sizeof(remote->event_collector_in.peer_addr),
+                       remote->event_collector_in.peer_addr,
+                       ntohs(remote->event_collector_in.peer.sin_port),
+                       logbuf);
+            }
             break;
     }
 

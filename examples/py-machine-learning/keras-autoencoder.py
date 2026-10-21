@@ -16,7 +16,7 @@ import sys
 
 import tensorflow as tf
 from tensorflow.keras import models
-from tensorflow.keras.layers import Input, Dense
+from tensorflow.keras.layers import Input, Dense, LayerNormalization, ReLU
 from tensorflow.keras.models import Model
 from tensorflow.keras.utils import plot_model
 from tensorflow.keras.losses import MeanSquaredError, KLDivergence
@@ -31,12 +31,12 @@ import nDPIsrvd
 from nDPIsrvd import nDPIsrvdSocket, TermColor
 
 INPUT_SIZE    = nDPIsrvd.nDPId_PACKETS_PLEN_MAX
-LATENT_SIZE   = 8
-TRAINING_SIZE = 512
-EPOCH_COUNT   = 3
-BATCH_SIZE    = 16
-LEARNING_RATE = 0.000001
-ES_PATIENCE   = 3
+LATENT_SIZE   = 16
+TRAINING_SIZE = 4096
+EPOCH_COUNT   = 30
+BATCH_SIZE    = 64
+LEARNING_RATE = 0.0001
+ES_PATIENCE   = 10
 GENERATED_PACKET_COUNT = 512
 MIN_LATENT_STD = 1e-9
 MIN_PACKET_LENGTH = 1
@@ -53,26 +53,23 @@ TB_LOGPATH    = 'logs/' + dt.datetime.now().strftime("%Y%m%d-%H%M%S")
 VAE_USE_KLDIV = False
 VAE_USE_SGD   = False
 
+def dense_block(x, units, name):
+    x = Dense(units, kernel_initializer='he_normal', name=name)(x)
+    x = LayerNormalization(name=name + '_ln')(x)
+    return ReLU(name=name + '_act')(x)
+
 def generate_autoencoder():
     input_i = Input(shape=(INPUT_SIZE,), name='input_i')
-    encoded_h1 = Dense(4096, activation='relu', name='encoded_h1')(input_i)
-    encoded_h2 = Dense(2048, activation='relu', name='encoded_h2')(encoded_h1)
-    encoded_h3 = Dense(1024, activation='relu', name='encoded_h3')(encoded_h2)
-    encoded_h4 = Dense(512, activation='relu', name='encoded_h4')(encoded_h3)
-    encoded_h5 = Dense(128, activation='relu', name='encoded_h5')(encoded_h4)
-    encoded_h6 = Dense(64, activation='relu', name='encoded_h6')(encoded_h5)
-    encoded_h7 = Dense(32, activation='relu', name='encoded_h7')(encoded_h6)
-    latent = Dense(LATENT_SIZE, activation='relu', name='latent')(encoded_h7)
+    encoded_h1 = dense_block(input_i, 1024, 'encoded_h1')
+    encoded_h2 = dense_block(encoded_h1, 256, 'encoded_h2')
+    encoded_h3 = dense_block(encoded_h2, 64, 'encoded_h3')
+    latent = Dense(LATENT_SIZE, activation='linear', name='latent')(encoded_h3)
 
     input_l = Input(shape=(LATENT_SIZE,), name='input_l')
-    decoder_h1 = Dense(32, activation='relu', name='decoder_h1')(input_l)
-    decoder_h2 = Dense(64, activation='relu', name='decoder_h2')(decoder_h1)
-    decoder_h3 = Dense(128, activation='relu', name='decoder_h3')(decoder_h2)
-    decoder_h4 = Dense(512, activation='relu', name='decoder_h4')(decoder_h3)
-    decoder_h5 = Dense(1024, activation='relu', name='decoder_h5')(decoder_h4)
-    decoder_h6 = Dense(2048, activation='relu', name='decoder_h6')(decoder_h5)
-    decoder_h7 = Dense(4096, activation='relu', name='decoder_h7')(decoder_h6)
-    output_i = Dense(INPUT_SIZE, activation='sigmoid', name='output_i')(decoder_h7)
+    decoder_h1 = dense_block(input_l, 64, 'decoder_h1')
+    decoder_h2 = dense_block(decoder_h1, 256, 'decoder_h2')
+    decoder_h3 = dense_block(decoder_h2, 1024, 'decoder_h3')
+    output_i = Dense(INPUT_SIZE, activation='sigmoid', name='output_i')(decoder_h3)
 
     encoder = Model(input_i, latent, name='encoder')
     decoder = Model(input_l, output_i, name='decoder')
@@ -219,8 +216,22 @@ def keras_worker(load_model, save_model, save_pcap, generated_packets_count, sha
     if TENSORBOARD is True:
         tensorboard = TensorBoard(log_dir=TB_LOGPATH, histogram_freq=1)
         additional_callbacks += [tensorboard]
-    early_stopping = EarlyStopping(monitor='val_loss', min_delta=0.0001, patience=ES_PATIENCE, restore_best_weights=True, start_from_epoch=0, verbose=0, mode='auto')
-    additional_callbacks += [early_stopping]
+    early_stopping = EarlyStopping(
+        monitor='val_loss',
+        min_delta=1e-5,
+        patience=ES_PATIENCE,
+        restore_best_weights=True,
+        verbose=1
+    )
+    lr_scheduler = tf.keras.callbacks.ReduceLROnPlateau(
+        monitor='val_loss',
+        factor=0.5,
+        patience=5,
+        min_delta=1e-5,
+        min_lr=1e-5,
+        verbose=1
+    )
+    additional_callbacks += [early_stopping, lr_scheduler]
     shared_training_event.clear()
 
     try:
@@ -243,12 +254,18 @@ def keras_worker(load_model, save_model, save_pcap, generated_packets_count, sha
                 shared_training_event.set()
                 print('\nGot {} packets, training..'.format(len(packets)))
                 tmp = np.array(packets)
+                baseline_mean = float(np.mean(np.var(tmp, axis=0)))
+                baseline_zero = float(np.mean(np.square(tmp)))
+                print('Baseline MSE (Mean Forecast): {:.5f}, (Null Forecast): {:.5f}'.format(baseline_mean, baseline_zero))
+                autoencoder.optimizer.learning_rate.assign(LEARNING_RATE)
                 history = autoencoder.fit(
                                           tmp, tmp, epochs=EPOCH_COUNT, batch_size=BATCH_SIZE,
                                           validation_split=0.2,
                                           shuffle=True,
                                           callbacks=additional_callbacks
                                          )
+                if min(history.history['val_loss']) >= baseline_mean:
+                    print('WARNING: val_loss >= Mean Forecast - Model collapsed?')
                 reconstructed_data = autoencoder.predict(tmp)
                 mse = np.mean(np.square(tmp - reconstructed_data))
                 reconstruction_accuracy = (1.0 / mse)

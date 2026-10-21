@@ -1364,6 +1364,44 @@
                                 }
                             },
                             "additionalProperties": false
+                        },
+                        "58": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string", "enum": [ "Non PQC Compliant Flow" ] },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 350, "maximum": 360 },
+                                        "client": { "type": "number", "minimum": 235, "maximum": 240 },
+                                        "server": { "type": "number", "minimum": 115, "maximum": 120 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "59": {
+                            "type": "object",
+                            "required": [ "risk", "severity", "risk_score" ],
+                            "properties": {
+                                "risk": { "type": "string", "enum": [ "Possible AI Inference Traffic" ] },
+                                "severity": { "type": "string" },
+                                "risk_score": {
+                                    "type": "object",
+                                    "required": [ "total", "client", "server" ],
+                                    "properties": {
+                                        "total": { "type": "number", "minimum": 350, "maximum": 360 },
+                                        "client": { "type": "number", "minimum": 235, "maximum": 240 },
+                                        "server": { "type": "number", "minimum": 115, "maximum": 120 },
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
                         }
                     },
                     "additionalProperties": false

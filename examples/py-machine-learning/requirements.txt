@@ -1,5 +1,5 @@
 joblib
-tensorflow
+tensorflow[and-cuda]==2.20.0
 scikit-learn
 scipy
 matplotlib
